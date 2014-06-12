@@ -1,0 +1,34 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% block pageheader %}
+        <div class="page-header page-header-nomargin">
+            <div class="container-fluid">
+                {% block pageheader-inner %}{% endblock pageheader-inner %}
+            </div>
+        </div>
+    {% endblock pageheader %}
+
+    {% crispy form formhelper %}
+
+    <script>
+        $(function() {
+            // Focus on the first field in the form.
+            $('form.django_cradmin_form :input:visible:enabled:first').focus();
+
+            // Insert help icon before all help block paragraphs in .cradmin-focusfield
+            $('form.django_cradmin_form .cradmin-focusfield p.help-block').prepend(
+                '<span class="fa fa-question-circle"></span>');
+
+            function open_preview(preview_url) {
+                window.open(preview_url, "_blank");
+            }
+
+            {% if show_preview %}
+                open_preview("{{ preview_url }}");
+            {% endif %}
+        });
+    </script>
+{% endblock content %}

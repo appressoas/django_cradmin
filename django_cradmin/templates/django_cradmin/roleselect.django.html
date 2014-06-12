@@ -1,0 +1,18 @@
+{% extends "django_cradmin/standalone-base.django.html" %}
+{% load i18n %}
+{% load cradmin_tags %}
+
+{% block body %}
+    <div class="container">
+        <h1>{% trans "What would you want to administer?" %}</h1>
+        <ul>
+            {% for role in roles %}
+                <li>
+                    <a href="{% cradmin_rolefrontpage_url role %}">
+                        {% cradmin_titletext_for_role role %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock body %}

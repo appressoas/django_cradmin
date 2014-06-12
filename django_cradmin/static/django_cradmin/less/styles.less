@@ -1,0 +1,21 @@
+@import "font-awesome";
+@import "bootstrap";
+@import "mixins";
+@import "menu";
+@import "page-header";
+@import "grid";
+@import "forms";
+@import "table";
+@import "buttons";
+@import "objecttableview";
+
+body {
+    background-color: #E6E6E6;
+    color: #666666;
+}
+
+#django_cradmin_contentwrapper {
+    @media (min-width: @screen-sm-min) {
+        padding-left: @cradmin-menu-width;
+    }
+}

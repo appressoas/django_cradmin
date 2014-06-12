@@ -1,0 +1,10 @@
+*.o
+*.pyc
+*.pyo
+*.tmp
+.*.swp
+.*.swo
+*~
+.DS_Store
+*.egg-info/
+dist/

@@ -1,0 +1,15 @@
+{% extends "django_cradmin/viewhelpers/create_update_base.django.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block pageheader-inner %}
+    {% block headingicon %}
+        <span class="fa fa-plus-square"></span>
+    {% endblock headingicon %}
+    <h1>
+        {% block heading %}
+            <strong>{% trans "NEW" %}</strong>
+            {{ model_verbose_name }}
+        {% endblock heading %}
+    </h1>
+{% endblock pageheader-inner %}

@@ -1,0 +1,35 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+
+{% block content %}
+    {% block pageheader %}
+        <div class="page-header page-header-nomargin">
+            <div class="container-fluid">
+                {% block headingicon %}
+                    <span class="fa fa-trash-o"></span>
+                {% endblock headingicon %}
+                <h1>
+                    {% block heading %}
+                        <strong>{% trans "DELETE" %}</strong>
+                        {{ model_verbose_name }}
+                    {% endblock heading %}
+                </h1>
+            </div>
+        </div>
+    {% endblock pageheader %}
+
+    {% block deletequestion %}
+        <div class="container-fluid container-focus">
+            <p>{% blocktrans %}Are you sure you want to delete "{{ object_preview }}"?{% endblocktrans %}</p>
+        </div>
+    {% endblock deletequestion %}
+
+    {% block delete-form %}
+        <form action="{{ success_url }}" method="post" class="django_cradmin_form">{% csrf_token %}
+            <div class="django_cradmin_submitrow">
+                <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                <a class="btn btn-cancel" href="{{ cancel_url }}">{% trans "Cancel" %}</a>
+            </div>
+        </form>
+    {% endblock delete-form%}
+{% endblock content %}

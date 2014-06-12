@@ -1,0 +1,53 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+
+{% block content %}
+    {% block pageheader %}
+        <div class="page-header page-header-nomargin">
+            <div class="container-fluid">
+                {% block headingicon %}{% endblock headingicon %}
+                <h1>
+                    {% block heading %}
+                        {{ model_verbose_name_plural }}
+                    {% endblock heading %}
+                </h1>
+                {% if buttons %}
+                    <p>
+                        {% for button in buttons %}
+                            {{ button.render }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endblock pageheader %}
+
+    <table id="objecttableview-table" class="table table-cradmin-fluid">
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column.get_header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table %}
+                <tr>
+                    {% for cell in row.cells %}
+                        <td>
+                            {{ cell }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(function() {
+            $('#objecttableview_selectall').click(function() {
+                $('#objecttableview-table tbody input[type=checkbox]').prop('checked', this.checked);
+            });
+        });
+    </script>
+{% endblock content %}

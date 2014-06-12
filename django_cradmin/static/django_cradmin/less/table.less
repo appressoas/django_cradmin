@@ -1,0 +1,33 @@
+table.table.table-cradmin-fluid {
+    tbody tr td,
+    thead tr th {
+        &:first-child {
+            padding-left: @cradmin-bodypadding-xs;
+            @media (min-width: @screen-sm-min) {
+                padding-left: @cradmin-bodypadding;
+            }
+        }
+    }
+    thead {
+        border-bottom: 1px solid #E6E6E6;
+        background-color: #FAFAFA;
+        tr th {
+            border: none;
+        }
+    }
+    tbody {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        tr {
+            border-top: 1px dashed #D9D9D9;
+            &:first-child {
+                border-top: none;
+            }
+            td {
+                border: none;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+        }
+    }
+}
