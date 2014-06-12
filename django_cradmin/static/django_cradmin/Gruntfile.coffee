@@ -35,7 +35,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-less')
   grunt.loadNpmTasks('grunt-contrib-copy')
 
-  grunt.renameTask('watch', 'delta')
+  # grunt.renameTask('watch', 'delta')
   grunt.registerTask('build', ['less', 'copy:vendor'])
-  grunt.registerTask('watch', ['build', 'delta'])
+  # grunt.registerTask('watch', ['build', 'delta'])
   grunt.registerTask('default', ['build'])
