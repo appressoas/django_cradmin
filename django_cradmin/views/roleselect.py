@@ -17,5 +17,6 @@ class RoleSelectView(ListView):
         if self.get_queryset().count() == 1:
             cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
             only_role = self.get_queryset().first()
-            return HttpResponseRedirect(cradmin_instance.rolefrontpage_url(only_role))
+            return HttpResponseRedirect(cradmin_instance.rolefrontpage_url(
+                cradmin_instance.get_roleid(only_role))
         return super(RoleSelectView, self).get(*args, **kwargs)
