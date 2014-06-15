@@ -1,0 +1,4 @@
+Django==1.6.5
+django-crispy-forms==1.4.0
+
+-e .
