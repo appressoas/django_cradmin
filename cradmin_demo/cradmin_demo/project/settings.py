@@ -38,11 +38,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'cradmin_demo.webdemo',
-    # 'silk',
+    'silk',
 )
 
 MIDDLEWARE_CLASSES = (
-    # 'silk.middleware.SilkyMiddleware',
+    'silk.middleware.SilkyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,7 +51,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'cradmin_demo.urls'
+ROOT_URLCONF = 'cradmin_demo.project.urls'
 
 #WSGI_APPLICATION = 'cradmin_demo.wsgi.application'
 
@@ -86,8 +86,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Django-Silk configuration:
-# SILKY_AUTHENTICATION = True  # User must login
-# SILKY_AUTHORISATION = True  # User must have permissions
-# SILKY_MAX_REQUEST_BODY_SIZE = -1  # Silk takes anything <0 as no limit
-# SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # If response body>1024kb, ignore
-# SILKY_META = True
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+SILKY_MAX_REQUEST_BODY_SIZE = -1  # Silk takes anything <0 as no limit
+SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # If response body>1024kb, ignore
+SILKY_META = True
