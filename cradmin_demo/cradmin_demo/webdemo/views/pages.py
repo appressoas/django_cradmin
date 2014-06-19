@@ -42,8 +42,6 @@ class PagesListView(objecttable.ObjectTableView):
 
 class PageCreateUpdateMixin(object):
     model = Page
-    # def get_preview_url(self):
-    #     return reverse('lokalt_company_product_preview')
 
     def get_field_layout(self):
         return [
