@@ -12,6 +12,7 @@ class Site(models.Model):
 
 
 class Page(models.Model):
+    site = models.ForeignKey(Site)
     title = models.CharField(max_length=100)
     body = models.TextField()
     # tags = models.ManyToManyField(Tag)
