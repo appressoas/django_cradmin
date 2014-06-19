@@ -3,16 +3,16 @@ from django_cradmin import crinstance, crmenu
 
 from .models import Site
 from .views import dashboard
-# from .views import pages
+from .views import pages
 
 
 class Menu(crmenu.Menu):
     def build_menu(self):
         self.add(label=_('Dashboard'), url=self.appindex_url('dashboard'),
             icon="home")
-        # self.add(label=_('Pages'), url=self.appindex_url('pages'),
-        #     icon="database")
-        
+        self.add(label=_('Pages'), url=self.appindex_url('pages'),
+            icon="database")
+
 
 class CrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'webdemo'
@@ -22,7 +22,7 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
 
     apps = [
         ('dashboard', dashboard.App),
-        # ('pages', pages.App)
+        ('pages', pages.App)
     ]
 
     def get_rolequeryset(self):
