@@ -12,5 +12,6 @@ mock==1.0.1
 
 # For debugging
 django-debug-toolbar==1.2.1
+django-silk==0.3
 
 -e .
