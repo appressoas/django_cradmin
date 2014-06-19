@@ -14,4 +14,6 @@ mock==1.0.1
 django-debug-toolbar==1.2.1
 django-silk==0.3
 
+-e git+https://github.com/devilry/trix2.git#egg=trix
+
 -e .
