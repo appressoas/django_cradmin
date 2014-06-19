@@ -1,12 +1,12 @@
 from django.conf.urls import patterns, include, url
+from cradmin_demo.webdemo.cradmin import CrAdminInstance
 
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'cradmin_demo.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
 
+
+urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^a/', include(CrAdminInstance.urls()))
 )
