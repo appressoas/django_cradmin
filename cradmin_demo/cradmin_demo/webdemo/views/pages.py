@@ -42,6 +42,7 @@ class PagesListView(objecttable.ObjectTableView):
 
 class PageCreateUpdateMixin(object):
     model = Page
+    roleid_field = 'site'
 
     def get_field_layout(self):
         return [
