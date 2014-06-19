@@ -1,14 +1,18 @@
 from fabric.api import task, local
-from fabric.context_managers import shell_env
-from os import remove
-from os.path import exists
+import os
 
 
 SQLITE_DATABASE = 'db.sqlite3'
+DUMPSCRIPT_DATAFILE = os.path.join(
+    'cradmin_demo', 'project', 'dumps', 'dev', 'data.py')
 
 
-def _manage(args):
-    local('python manage.py {0} --traceback'.format(args))
+def _manage(args, capture=False):
+    command = 'python manage.py {0} --traceback'.format(args)
+    if capture:
+        return local(command, capture=True)
+    else:
+        local(command)
 
 
 
@@ -24,16 +28,16 @@ def removedb():
     """
     Remove the database.
     """
-    if exists(SQLITE_DATABASE):
-        remove(SQLITE_DATABASE)
+    if os.path.exists(SQLITE_DATABASE):
+        os.remove(SQLITE_DATABASE)
 
 @task
 def resetdb():
     """
     Remove db.sqlite if it exists, and run the ``syncmigrate`` task.
     """
-    if exists(SQLITE_DATABASE):
-        remove(SQLITE_DATABASE)
+    if os.path.exists(SQLITE_DATABASE):
+        os.remove(SQLITE_DATABASE)
     syncmigrate()
 
 
@@ -42,5 +46,15 @@ def recreate_devdb():
     """
     Recreate the test database.
     """
-    resetdb(djangoenv)
+    resetdb()
     _manage('runscript cradmin_demo.project.dumps.dev.data')
+
+
+@task
+def dump_current_db_to_dumpscript_datafile():
+    """
+    Dump current db to the dumpscript dataset.
+    """
+    dump = _manage('dumpscript auth.User webdemo', capture=True)
+    with open(DUMPSCRIPT_DATAFILE, 'wb') as outfile:
+        outfile.write(dump + '\n')
