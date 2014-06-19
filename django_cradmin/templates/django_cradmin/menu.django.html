@@ -6,7 +6,7 @@
         {% endblock icon %}
     </div>
     <div class="cradmin_menumobileheader">
-        <button type="button" class="btn btn-default cradmin_menutoggle">
+        <button type="button" class="btn btn-default cradmin_menutoggle" ng>
             <span class="sr-only">{% trans "Toggle navigation" %}</span>
             <span class="fa fa-bars"></span>
         </button>
@@ -19,9 +19,9 @@
 </div>
 
 <script>
-    $(function() {
-        $("#cradmin_menu .cradmin_menutoggle").on('click', function() {
-            $('#cradmin_menu .cradmin_menucontent').toggleClass('cradmin_menucontent_display');
-        });
-    });
+    // $(function() {
+        // $("#cradmin_menu .cradmin_menutoggle").on('click', function() {
+            // $('#cradmin_menu .cradmin_menucontent').toggleClass('cradmin_menucontent_display');
+        // });
+    // });
 </script>

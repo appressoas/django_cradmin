@@ -13,7 +13,8 @@ setup(
     install_requires=[
         'setuptools',
         'django-crispy-forms',
-        'Django'
+        'Django',
+        'django-angular',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

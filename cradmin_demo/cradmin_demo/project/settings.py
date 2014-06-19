@@ -36,12 +36,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
 
-    'crispy_forms',
+    # Required by django cradmin
     'django_cradmin',
-    'cradmin_demo.webdemo',
+    'crispy_forms',
+    'djangular',
+
+    # Nice for debugging, but not required to use django_cradmin
     'silk',
+    'django_extensions',
+    
+    # The demo
+    'cradmin_demo.webdemo',
 )
 
 MIDDLEWARE_CLASSES = (
