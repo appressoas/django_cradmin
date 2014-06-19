@@ -1,4 +1,16 @@
 Django==1.6.5
 django-crispy-forms==1.4.0
 
+# Required by sphinx
+Jinja2==2.7.2
+Sphinx==1.2.2
+sphinxcontrib-napoleon==0.2.7
+sphinx_rtd_theme==0.1.6
+
+# For mocking tests
+mock==1.0.1
+
+# For debugging
+django-debug-toolbar==1.2.1
+
 -e .
