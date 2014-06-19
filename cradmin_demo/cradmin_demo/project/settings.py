@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
 
+    'django_cradmin',
     'cradmin_demo.webdemo',
     'silk',
 )
