@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,9 +38,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'cradmin_demo.webdemo',
+    # 'silk',
 )
 
 MIDDLEWARE_CLASSES = (
+    # 'silk.middleware.SilkyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,3 +84,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django-Silk configuration:
+# SILKY_AUTHENTICATION = True  # User must login
+# SILKY_AUTHORISATION = True  # User must have permissions
+# SILKY_MAX_REQUEST_BODY_SIZE = -1  # Silk takes anything <0 as no limit
+# SILKY_MAX_RESPONSE_BODY_SIZE = 1024  # If response body>1024kb, ignore
+# SILKY_META = True
