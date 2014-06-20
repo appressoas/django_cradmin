@@ -6,6 +6,7 @@ from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
 from django_cradmin import crapp
+from django_cradmin.wysihtml5.widgets import WysiHtmlTextArea
 from crispy_forms import layout
 
 from cradmin_demo.webdemo.models import Page
@@ -49,6 +50,11 @@ class PageCreateUpdateMixin(object):
             layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
             layout.Div('body', css_class="cradmin-focusfield")
         ]
+
+    def get_form(self, *args, **kwargs):
+        form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
+        form.fields['body'].widget = WysiHtmlTextArea(attrs={})
+        return form
 
 
 class PageCreateView(PageCreateUpdateMixin, create.CreateView):
