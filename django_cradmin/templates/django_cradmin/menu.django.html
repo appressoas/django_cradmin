@@ -1,17 +1,19 @@
 {% load i18n %}
-<div id="cradmin_menu">
+<div id="cradmin_menu" ng-controller="CradminMenuController">
     <div class="cradmin_menuicon">
         {% block icon %}
             <span class="fa fa-wrench"></span>
         {% endblock icon %}
     </div>
     <div class="cradmin_menumobileheader">
-        <button type="button" class="btn btn-default cradmin_menutoggle" ng>
+        <button type="button" class="btn btn-default cradmin_menutoggle"
+                ng-click="toggleNavigation()">
             <span class="sr-only">{% trans "Toggle navigation" %}</span>
             <span class="fa fa-bars"></span>
         </button>
     </div>
-    <div class="cradmin_menucontent">
+    <div class="cradmin_menucontent"
+            ng-class="{cradmin_menucontent_display: displayMenu}">
         {% for menuitem in request.cradmin_instance.get_menu %}
             {{ menuitem.render|safe }}
         {% endfor %}
