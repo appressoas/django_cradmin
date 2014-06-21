@@ -6,13 +6,18 @@ module.exports = (grunt) ->
     less: ['src/less/*.less', 'src/less/**/*.less']
   }
 
-  vendorfiles = [
-    'bower_components/fontawesome/fonts/FontAwesome.otf'
-    'bower_components/fontawesome/fonts/fontawesome-webfont.eot'
-    'bower_components/fontawesome/fonts/fontawesome-webfont.svg'
-    'bower_components/fontawesome/fonts/fontawesome-webfont.ttf'
-    'bower_components/fontawesome/fonts/fontawesome-webfont.woff'
-  ]
+  vendorfiles = {
+    fonts: [
+      'bower_components/fontawesome/fonts/FontAwesome.otf'
+      'bower_components/fontawesome/fonts/fontawesome-webfont.eot'
+      'bower_components/fontawesome/fonts/fontawesome-webfont.svg'
+      'bower_components/fontawesome/fonts/fontawesome-webfont.ttf'
+      'bower_components/fontawesome/fonts/fontawesome-webfont.woff'
+    ]
+    js: [
+      'bower_components/angular/angular.min.js'
+    ]
+  }
 
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-less')
@@ -29,7 +34,7 @@ module.exports = (grunt) ->
         tasks: 'less'
       coffee:
         files: appfiles.coffee
-        tasks: ['coffeelint:code', 'coffee:devbuild']
+        tasks: ['coffeelint:code', 'coffee:code']
       gruntfile:
         files: 'Gruntfile.coffee'
         tasks: ['coffeelint:gruntfile']
@@ -38,7 +43,7 @@ module.exports = (grunt) ->
         options:
           paths: ["less", "bower_components"]
         files:
-          "dist/styles.css": "src/less/styles.less"
+          "dist/css/styles.css": "src/less/styles.less"
 
     coffeelint:
       code: appfiles.coffee
@@ -46,35 +51,40 @@ module.exports = (grunt) ->
       gruntfile: ['Gruntfile.coffee']
 
     coffee:
-      devbuild:
-        expand: true
-        flatten: false
-        cwd: '.'
-        src: appfiles.coffee
-        dest: 'devbuild/'
-        ext: '.js'
+      code:
+        files:
+          'dist/js/cradmin.js': appfiles.coffee
 
     copy:
       vendor:
-        files: [
-          {
-            expand: true
-            flatten: true
-            src: vendorfiles
-            dest: 'dist/'
-          }
-        ]
+        files: [{
+          expand: true
+          flatten: true
+          src: vendorfiles.fonts
+          dest: 'dist/vendor/fonts/'
+        }, {
+          expand: true
+          flatten: true
+          src: vendorfiles.js
+          dest: 'dist/vendor/js/'
+        }]
   })
 
-  grunt.registerTask('devbuild', [
+  grunt.registerTask('build', [
     'less'
-    'coffee:devbuild'
+    'coffee:code'
     'copy:vendor'
   ])
 
-  # Rename the watch task to delta, and make a new watch task that runs
-  # devbuild on startup
-  grunt.renameTask('watch', 'delta')
-  grunt.registerTask('watch', ['devbuild', 'delta'])
 
-  grunt.registerTask('default', ['devbuild'])
+  grunt.registerTask('dist', [
+    'build'
+    # TODO minify
+  ])
+
+  # Rename the watch task to delta, and make a new watch task that runs
+  # build on startup
+  grunt.renameTask('watch', 'delta')
+  grunt.registerTask('watch', ['build', 'delta'])
+
+  grunt.registerTask('default', ['build'])
