@@ -18,23 +18,32 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-less')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-coffee')
+  grunt.loadNpmTasks('grunt-coffeelint')
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
 
-    watch:
+    delta:
       less:
-        tasks: 'less'
         files: appfiles.less
+        tasks: 'less'
       coffee:
-        tasks: 'coffee:devbuild'
         files: appfiles.coffee
+        tasks: ['coffeelint:code', 'coffee:devbuild']
+      gruntfile:
+        files: 'Gruntfile.coffee'
+        tasks: ['coffeelint:gruntfile']
     less:
       development:
         options:
           paths: ["less", "bower_components"]
         files:
           "dist/styles.css": "less/styles.less"
+
+    coffeelint:
+      code: appfiles.coffee
+      tests: appfiles.coffeeunit
+      gruntfile: ['Gruntfile.coffee']
 
     coffee:
       devbuild:
@@ -62,5 +71,10 @@ module.exports = (grunt) ->
     'coffee:devbuild'
     'copy:vendor'
   ])
+
+  # Rename the watch task to delta, and make a new watch task that runs
+  # devbuild on startup
+  grunt.renameTask('watch', 'delta')
+  grunt.registerTask('watch', ['devbuild', 'delta'])
 
   grunt.registerTask('default', ['devbuild'])
