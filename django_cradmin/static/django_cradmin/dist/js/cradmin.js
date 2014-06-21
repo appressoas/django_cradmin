@@ -1,5 +1,5 @@
 (function() {
-  angular.module('djangoCradmin.default', ['djangoCradmin.default.menu']);
+  angular.module('djangoCradmin.default', ['ui.bootstrap', 'djangoCradmin.default.menu']);
 
 }).call(this);
 
