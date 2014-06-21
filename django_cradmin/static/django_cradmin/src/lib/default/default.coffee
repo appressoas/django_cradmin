@@ -1,3 +1,3 @@
-angular.module('django_cradmin.default', [
-  'django_cradmin.default.menu'
+angular.module('djangoCradmin.default', [
+  'djangoCradmin.default.menu'
 ])

@@ -7,7 +7,7 @@
 {% endcomment %}{% spaceless %}
     {% load static %}
 {% endspaceless %}<!DOCTYPE html>
-<html lang="en" ng-app="django-cradmin">
+<html lang="en" ng-app="djangoCradmin">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,9 +31,9 @@
 
         {% block initializeAngular %}
             <script>
-                angular.module('django-cradmin', [
-                    'django_cradmin.default',
-                    'django_cradmin.wysihtml'
+                angular.module('djangoCradmin', [
+                    'djangoCradmin.default',
+                    'djangoCradmin.wysihtml'
                 ]);
             </script>
         {% endblock %}
