@@ -3,7 +3,7 @@ module.exports = (grunt) ->
   appfiles = {
     coffee: ['src/**/*.coffee', '!src/**/*.spec.coffee']
     coffeeunit: ['src/**/*.spec.coffee']
-    less: ['less/*.less', 'less/**/*.less']
+    less: ['src/less/*.less', 'src/less/**/*.less']
   }
 
   vendorfiles = [
@@ -38,7 +38,7 @@ module.exports = (grunt) ->
         options:
           paths: ["less", "bower_components"]
         files:
-          "dist/styles.css": "less/styles.less"
+          "dist/styles.css": "src/less/styles.less"
 
     coffeelint:
       code: appfiles.coffee
