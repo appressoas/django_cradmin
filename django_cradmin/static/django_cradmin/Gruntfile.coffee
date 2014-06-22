@@ -34,6 +34,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-coffeelint')
+  grunt.loadNpmTasks('grunt-contrib-concat')
+  grunt.loadNpmTasks('grunt-contrib-uglify')
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
@@ -48,6 +50,7 @@ module.exports = (grunt) ->
       gruntfile:
         files: 'Gruntfile.coffee'
         tasks: ['coffeelint:gruntfile']
+
     less:
       development:
         options:
@@ -62,8 +65,27 @@ module.exports = (grunt) ->
 
     coffee:
       code:
+        expand: true
+        cwd: '.'
+        src: ['src/**/*.coffee']
+        dest: '.'
+        ext: '.js'
+      # code:
+      #   files:
+      #     'dist/js/cradmin.js': appfiles.coffee
+
+    concat:
+      cradmin:
+        src: ['src/**/*.js']
+        dest: 'dist/js/cradmin.js'
+
+    uglify:
+      options:
+        mangle: false
+        sourceMap: true
+      cradmin:
         files:
-          'dist/js/cradmin.js': appfiles.coffee
+          'dist/js/cradmin.min.js': ['dist/js/cradmin.js']
 
     copy:
       vendor:
@@ -88,13 +110,14 @@ module.exports = (grunt) ->
   grunt.registerTask('build', [
     'less'
     'coffee:code'
-    'copy:vendor'
   ])
 
 
   grunt.registerTask('dist', [
     'build'
-    # TODO minify
+    'concat:cradmin'
+    'uglify:cradmin'
+    'copy:vendor'
   ])
 
   # Rename the watch task to delta, and make a new watch task that runs
