@@ -1,8 +1,11 @@
-describe 'Menu', ->
-  # beforeEach(module('djangoCradmin.default.menu'))
+describe 'CradminMenuController', ->
+  beforeEach(module('djangoCradmin.default.menu'))
 
-  it 'should have a dummy test', inject ->
-    expect( true ).toBeTruthy()
-
-  it 'stuff', inject ->
-    expect( false ).toBeTruthy()
+  it 'should start toggle displayMenu attribute', inject ($controller) ->
+    scope = {}
+    ctrl = $controller('CradminMenuController', {$scope:scope})
+    expect(scope.displayMenu).toBe(false)
+    scope.toggleNavigation()
+    expect(scope.displayMenu).toBe(true)
+    scope.toggleNavigation()
+    expect(scope.displayMenu).toBe(false)
