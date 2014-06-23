@@ -1,8 +1,8 @@
 module.exports = (grunt) ->
 
   appfiles = {
-    coffee: ['src/**/*.coffee', '!src/**/*.spec.coffee']
-    coffeeunit: ['src/**/*.spec.coffee']
+    coffeecode: ['src/**/*.coffee', '!src/**/*.spec.coffee']
+    coffeetests: ['src/**/*.spec.coffee']
     less: ['src/less/*.less', 'src/less/**/*.less']
   }
 
@@ -36,6 +36,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-coffeelint')
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-karma')
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
@@ -44,9 +45,12 @@ module.exports = (grunt) ->
       less:
         files: appfiles.less
         tasks: 'less'
-      coffee:
-        files: appfiles.coffee
-        tasks: ['coffeelint:code', 'coffee:code']
+      coffeecode:
+        files: appfiles.coffeecode
+        tasks: ['coffeelint:code', 'coffee:code', 'karma:watchrunner:run']
+      coffeetests:
+        files: appfiles.coffeetests
+        tasks: ['coffeelint:tests', 'coffee:tests', 'karma:watchrunner:run']
       gruntfile:
         files: 'Gruntfile.coffee'
         tasks: ['coffeelint:gruntfile']
@@ -59,24 +63,27 @@ module.exports = (grunt) ->
           "dist/css/styles.css": "src/less/styles.less"
 
     coffeelint:
-      code: appfiles.coffee
-      tests: appfiles.coffeeunit
+      code: appfiles.coffeecode
+      tests: appfiles.coffeetests
       gruntfile: ['Gruntfile.coffee']
 
     coffee:
       code:
         expand: true
         cwd: '.'
-        src: ['src/**/*.coffee']
+        src: appfiles.coffeecode
         dest: '.'
         ext: '.js'
-      # code:
-      #   files:
-      #     'dist/js/cradmin.js': appfiles.coffee
+      tests:
+        expand: true
+        cwd: '.'
+        src: appfiles.coffeetests
+        dest: '.'
+        ext: '.spec.js'
 
     concat:
       cradmin:
-        src: ['src/**/*.js']
+        src: ['src/**/*.js', '!src/**/*.spec.js']
         dest: 'dist/js/cradmin.js'
 
     uglify:
@@ -105,11 +112,77 @@ module.exports = (grunt) ->
           src: vendorfiles.ace_markdown_editor
           dest: 'dist/vendor/js/ace-markdown-editor/'
         }]
+
+    karma:
+      options:
+        # base path that will be used to resolve all patterns
+        basePath: ''
+
+        # frameworks to use
+        # available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: ['jasmine']
+
+        # Browsers to autostart
+        browsers : ['Chrome']
+
+        # list of files / patterns to load in the browser
+        files: [
+          'bower_components/angular/angular.js'
+          'bower_components/angular-mocks/angular-mocks.js'
+          #'bower_components/angular-ui-ace/ui-ace.min.js'
+          #'bower_components/ace-builds/src-min-noconflict/ace.js'
+          'src/lib/**/*.js'
+        ]
+
+        # list of files to exclude
+        exclude: []
+
+        plugins : [
+          'karma-chrome-launcher'
+          'karma-firefox-launcher'
+          'karma-jasmine'
+        ]
+
+        # preprocess matching files before serving them to the browser
+        # available preprocessors:
+        # https://npmjs.org/browse/keyword/karma-preprocessor
+        preprocessors: {}
+
+        # test results reporter to use
+        # possible values: 'dots', 'progress'
+        # available reporters: https://npmjs.org/browse/keyword/karma-reporter
+        reporters: ['dots'],
+
+        # enable / disable colors in the output (reporters and logs)
+        colors: true
+
+        # level of logging
+        logLevel: 'INFO'
+
+        # enable / disable watching file and executing tests whenever any file
+        # changes
+        autoWatch: false
+
+      # Runs the test server in the background. We trigger tests
+      # using ``karma:watchrunner:run``
+      watchrunner:
+        port: 9019,
+        background: true
+
+      # Used when we just want to run the tests and exit
+      singlerun:
+        singleRun: true
+        port: 9876
+
+
   })
 
   grunt.registerTask('build', [
+    'coffeelint'
     'less'
     'coffee:code'
+    'coffee:tests'
+    'karma:singlerun'
   ])
 
 
@@ -123,6 +196,10 @@ module.exports = (grunt) ->
   # Rename the watch task to delta, and make a new watch task that runs
   # build on startup
   grunt.renameTask('watch', 'delta')
-  grunt.registerTask('watch', ['build', 'delta'])
+  grunt.registerTask('watch', [
+    'build'
+    'karma:watchrunner:start'
+    'delta'
+  ])
 
   grunt.registerTask('default', ['build'])
