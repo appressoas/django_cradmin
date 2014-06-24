@@ -22,7 +22,7 @@ module.exports = (grunt) ->
       # 'bower_components/angular/angular.js.map'
       'bower_components/angular-bootstrap/ui-bootstrap.min.js'
     ]
-    ace_markdown_editor: [
+    ace_editor: [
       'bower_components/angular-ui-ace/ui-ace.min.js'
       'bower_components/ace-builds/src-min-noconflict/ace.js'
       'bower_components/ace-builds/src-min-noconflict/mode-markdown.js'
@@ -114,8 +114,8 @@ module.exports = (grunt) ->
         }, {
           expand: true
           flatten: true
-          src: vendorfiles.ace_markdown_editor
-          dest: 'dist/vendor/js/ace-markdown-editor/'
+          src: vendorfiles.ace_editor
+          dest: 'dist/vendor/js/ace-editor/'
         }]
 
     karma:
@@ -205,11 +205,11 @@ module.exports = (grunt) ->
     'coffee:tests'
     'buildCode',
     'karma:singlerun'
+    'copy:vendor'
   ])
 
   grunt.registerTask('dist', [
     'build'
-    'copy:vendor'
   ])
 
   # Rename the watch task to delta, and make a new watch task that runs

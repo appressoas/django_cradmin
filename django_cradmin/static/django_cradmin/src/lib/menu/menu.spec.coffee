@@ -1,5 +1,5 @@
 describe 'CradminMenuController', ->
-  beforeEach(module('djangoCradmin.default.menu'))
+  beforeEach(module('djangoCradmin.menu'))
 
   it 'should start toggle displayMenu attribute', inject ($controller) ->
     scope = {}
