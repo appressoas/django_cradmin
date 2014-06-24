@@ -3,6 +3,7 @@ angular.module('djangoCradmin.acemarkdown', [
 ])
 
 .directive 'djangoCradminAcemarkdown', () ->
+  console.log 'hei'
   return {
     restrict: 'A'
     transclude: true
