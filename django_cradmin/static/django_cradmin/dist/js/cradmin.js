@@ -1,4 +1,15 @@
 (function() {
+  angular.module('djangoCradmin.acemarkdown', ['ui.ace']).directive('djangoCradminAcemarkdown', function() {
+    return {
+      restrict: 'A',
+      transclude: true,
+      template: '<div><div ng-transclude></div></div>'
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.default', ['ui.bootstrap', 'djangoCradmin.default.menu']);
 
 }).call(this);
@@ -9,15 +20,6 @@
     return $scope.toggleNavigation = function() {
       return $scope.displayMenu = !$scope.displayMenu;
     };
-  });
-
-}).call(this);
-
-(function() {
-  describe('Menu works', function() {
-    return it('should have a dummy test', inject(function() {
-      return expect(true).toBeTruthy();
-    }));
   });
 
 }).call(this);

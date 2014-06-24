@@ -14,6 +14,7 @@
     {% crispy form formhelper %}
 
     <script>
+        {% comment %}
         $(function() {
             // Focus on the first field in the form.
             $('form.django_cradmin_form :input:visible:enabled:first').focus();
@@ -30,5 +31,6 @@
                 open_preview("{{ preview_url }}");
             {% endif %}
         });
+        {% endcomment %}
     </script>
 {% endblock content %}

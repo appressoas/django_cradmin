@@ -1,15 +1,15 @@
 from django.utils.translation import ugettext_lazy as _
-from django.template.defaultfilters import truncatechars
-from django import forms
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
 from django_cradmin import crapp
-from django_cradmin.wysihtml5.widgets import WysiHtmlTextArea
+# from django_cradmin.wysihtml5.widgets import WysiHtmlTextArea
+from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from crispy_forms import layout
 
 from cradmin_demo.webdemo.models import Page
+
 
 class TitleColumn(objecttable.MultiActionColumn):
     modelfield = 'title'
@@ -41,6 +41,7 @@ class PagesListView(objecttable.ObjectTableView):
             objecttable.Button(_('Create'), url=app.reverse_appurl('create')),
         ]
 
+
 class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
@@ -53,7 +54,8 @@ class PageCreateUpdateMixin(object):
 
     def get_form(self, *args, **kwargs):
         form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
-        form.fields['body'].widget = WysiHtmlTextArea(attrs={})
+        # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
+        form.fields['body'].widget = AceMarkdownWidget()
         return form
 
 
@@ -62,16 +64,19 @@ class PageCreateView(PageCreateUpdateMixin, create.CreateView):
     View used to create new products.
     """
 
+
 class PageUpdateView(PageCreateUpdateMixin, update.UpdateView):
     """
     View used to create edit existing products.
     """
+
 
 class PageDeleteView(delete.DeleteView):
     """
     View used to delete existing products.
     """
     model = Page
+
 
 class App(crapp.App):
     appurls = [

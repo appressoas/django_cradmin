@@ -47,7 +47,7 @@ module.exports = (grunt) ->
         tasks: 'less'
       coffeecode:
         files: appfiles.coffeecode
-        tasks: ['coffeelint:code', 'coffee:code', 'karma:watchrunner:run']
+        tasks: ['coffeelint:code', 'buildCode', 'karma:watchrunner:run']
       coffeetests:
         files: appfiles.coffeetests
         tasks: ['coffeelint:tests', 'coffee:tests', 'karma:watchrunner:run']
@@ -177,19 +177,22 @@ module.exports = (grunt) ->
 
   })
 
+  grunt.registerTask('buildCode', [
+    'coffee:code'
+    'concat:cradmin'
+    'uglify:cradmin'
+  ])
+
   grunt.registerTask('build', [
     'coffeelint'
     'less'
-    'coffee:code'
     'coffee:tests'
+    'buildCode',
     'karma:singlerun'
   ])
 
-
   grunt.registerTask('dist', [
     'build'
-    'concat:cradmin'
-    'uglify:cradmin'
     'copy:vendor'
   ])
 
