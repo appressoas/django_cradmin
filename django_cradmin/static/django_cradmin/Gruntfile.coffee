@@ -49,13 +49,15 @@ module.exports = (grunt) ->
         tasks: 'less'
       coffeecode:
         files: appfiles.coffeecode
-        tasks: ['coffeelint:code', 'buildCode', 'karma:watchrunner:run']
+        tasks: [
+          'coffeelint:code', 'coffee:code', 'buildCodeDist',
+          'karma:watchrunner:run']
       coffeetests:
         files: appfiles.coffeetests
         tasks: ['coffeelint:tests', 'coffee:tests', 'karma:watchrunner:run']
       templates:
         files: appfiles.templates
-        tasks: ['html2js:templates', 'karma:watchrunner:run']
+        tasks: ['html2js:templates', 'buildCodeDist', 'karma:watchrunner:run']
       gruntfile:
         files: 'Gruntfile.coffee'
         tasks: ['coffeelint:gruntfile']
@@ -192,9 +194,7 @@ module.exports = (grunt) ->
         dest: 'src/lib/templates.js'
   })
 
-  grunt.registerTask('buildCode', [
-    'coffee:code'
-    'html2js'
+  grunt.registerTask('buildCodeDist', [
     'concat:cradmin'
     'uglify:cradmin'
   ])
@@ -203,7 +203,9 @@ module.exports = (grunt) ->
     'coffeelint'
     'less'
     'coffee:tests'
-    'buildCode',
+    'coffee:code'
+    'html2js'
+    'buildCodeDist',
     'karma:singlerun'
     'copy:vendor'
   ])
