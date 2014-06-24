@@ -20,10 +20,8 @@ module.exports = (grunt) ->
       # 'bower_components/angular/angular.min.js.map'
       # 'bower_components/angular/angular.js'
       # 'bower_components/angular/angular.js.map'
-      'bower_components/angular-bootstrap/ui-bootstrap.min.js'
     ]
     ace_editor: [
-      'bower_components/angular-ui-ace/ui-ace.min.js'
       'bower_components/ace-builds/src-min-noconflict/ace.js'
       'bower_components/ace-builds/src-min-noconflict/mode-markdown.js'
       'bower_components/ace-builds/src-min-noconflict/theme-tomorrow.js'

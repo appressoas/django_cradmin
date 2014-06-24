@@ -35,9 +35,7 @@ angular.module('djangoCradmin.acemarkdown', [
       markdownCtrl.setEditor(scope)
 
     controller: ($scope) ->
-      # console.log('editor scope', $scope)
       $scope.setValue = (value) ->
-        console.log 'editor setValue', value
         $scope.aceEditor.getSession().setValue(value)
       $scope.focus = ->
         $scope.aceEditor.focus()
