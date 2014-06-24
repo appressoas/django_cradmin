@@ -6,5 +6,6 @@ angular.module('djangoCradmin.acemarkdown', [
   return {
     restrict: 'A'
     transclude: true
-    template: '<div><div ng-transclude></div></div>'
+    # template: '<div><div ng-transclude></div></div>',
+    templateUrl: 'acemarkdown/acemarkdown.tpl.html'
   }

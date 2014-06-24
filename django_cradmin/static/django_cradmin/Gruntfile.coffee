@@ -3,6 +3,7 @@ module.exports = (grunt) ->
   appfiles = {
     coffeecode: ['src/**/*.coffee', '!src/**/*.spec.coffee']
     coffeetests: ['src/**/*.spec.coffee']
+    templates: ['src/lib/**/*.tpl.html']
     less: ['src/less/*.less', 'src/less/**/*.less']
   }
 
@@ -37,6 +38,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-karma')
+  grunt.loadNpmTasks('grunt-html2js')
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
@@ -51,6 +53,9 @@ module.exports = (grunt) ->
       coffeetests:
         files: appfiles.coffeetests
         tasks: ['coffeelint:tests', 'coffee:tests', 'karma:watchrunner:run']
+      templates:
+        files: appfiles.templates
+        tasks: ['html2js:templates', 'karma:watchrunner:run']
       gruntfile:
         files: 'Gruntfile.coffee'
         tasks: ['coffeelint:gruntfile']
@@ -174,11 +179,22 @@ module.exports = (grunt) ->
         singleRun: true
         port: 9876
 
-
+    # HTML2JS is a Grunt plugin that takes all of your template files and
+    # places them into JavaScript files as strings that are added to
+    # AngularJS's template cache. This means that the templates too become
+    # part of the initial payload as one JavaScript file.
+    html2js:
+      templates:
+        options:
+          base: 'src/lib/'
+          module: 'djangoCradmin.templates'
+        src: appfiles.templates
+        dest: 'src/lib/templates.js'
   })
 
   grunt.registerTask('buildCode', [
     'coffee:code'
+    'html2js'
     'concat:cradmin'
     'uglify:cradmin'
   ])
