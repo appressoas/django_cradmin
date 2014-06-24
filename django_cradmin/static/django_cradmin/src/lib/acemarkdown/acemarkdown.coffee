@@ -26,19 +26,38 @@ angular.module('djangoCradmin.acemarkdown', [
     require: '^djangoCradminAcemarkdown'
     restrict: 'A'
     template: '<div></div>'
-    scope: {}
-    link: (scope, element, attrs, markdownCtrl) ->
-      scope.aceEditor = ace.edit(element[0])
-      scope.aceEditor.on 'change', ->
-        value = scope.aceEditor.getSession().getValue()
-        markdownCtrl.setTextAreaValue(value)
-      markdownCtrl.setEditor(scope)
+    scope: {
+      'config': '=djangoCradminAcemarkdownEditor'
+    }
 
     controller: ($scope) ->
       $scope.setValue = (value) ->
         $scope.aceEditor.getSession().setValue(value)
       $scope.focus = ->
         $scope.aceEditor.focus()
+      return
+
+    link: (scope, element, attrs, markdownCtrl) ->
+      scope.aceEditor = ace.edit(element[0])
+
+      scope.aceEditor.setHighlightActiveLine(false)
+      scope.aceEditor.setShowPrintMargin(false)
+      scope.aceEditor.renderer.setShowGutter(false)
+      theme = scope.config.theme
+      if not theme
+        theme = 'tomorrow'
+      scope.aceEditor.setTheme("ace/theme/#{theme}")
+
+      session = scope.aceEditor.getSession()
+      session.setMode("ace/mode/markdown")
+      session.setUseWrapMode(true)
+      session.setUseSoftTabs(true)
+
+      scope.aceEditor.on 'change', ->
+        value = scope.aceEditor.getSession().getValue()
+        markdownCtrl.setTextAreaValue(value)
+
+      markdownCtrl.setEditor(scope)
       return
   }
 
@@ -47,11 +66,6 @@ angular.module('djangoCradmin.acemarkdown', [
     require: '^djangoCradminAcemarkdown'
     restrict: 'A'
     scope: {}
-    link: (scope, element, attrs, markdownCtrl) ->
-      scope.textarea = element
-      markdownCtrl.setTextarea(scope)
-      scope.textarea.on 'focus', ->
-        markdownCtrl.focusOnEditor()
 
     controller: ($scope) ->
       $scope.setValue = (value) ->
@@ -61,5 +75,12 @@ angular.module('djangoCradmin.acemarkdown', [
       $scope.setValue = (value) ->
         if $scope.getValue() != value
           $scope.textarea.val(value)
+      return
+
+    link: (scope, element, attrs, markdownCtrl) ->
+      scope.textarea = element
+      markdownCtrl.setTextarea(scope)
+      scope.textarea.on 'focus', ->
+        markdownCtrl.focusOnEditor()
       return
   }
