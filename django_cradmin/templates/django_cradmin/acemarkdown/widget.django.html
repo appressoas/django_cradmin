@@ -1,49 +1,48 @@
-<div django-cradmin-acemarkdown="{
-    showTextarea: false,
-    theme: 'tomorrow'
-}" class="cradmin-acemarkdown cradmin-div-styled-as-textarea">
+<div django-cradmin-acemarkdown="{{ directiveconfig }}" class="cradmin-acemarkdown cradmin-div-styled-as-textarea">
     <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group">
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '\n\n# ', post: '\n'}">
-                <span class="fa fa-header fa-django-cradmin-h1"></span>
-                <span class="sr-only">Heading</span>
-            </a>
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '\n\n## ', post: '\n'}">
-                <span class="fa fa-header fa-django-cradmin-h2"></span>
-                <span class="sr-only">Heading</span>
-            </a>
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '\n\n### ', post: '\n'}">
-                <span class="fa fa-header fa-django-cradmin-h3"></span>
-                <span class="sr-only">Heading</span>
-            </a>
-        </div>
-        <div class="btn-group">
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '*', post: '*', emptyText: 'Text Here'}">
-                <span class="fa fa-bold"></span>
-                <span class="sr-only">Bold</span>
-            </a>
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '_', post: '_'}">
-                <span class="fa fa-italic"></span>
-                <span class="sr-only">Italic</span>
-            </a>
-        </div>
-        <div class="btn-group">
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '\n* ', post: '\n'}">
-                <span class="fa fa-list-ul"></span>
-                <span class="sr-only">Bulletlist</span>
-            </a>
-            <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                    pre: '\n1. ', post: '\n'}">
-                <span class="fa fa-list-ol"></span>
-                <span class="sr-only">Numbered list</span>
-            </a>
-        </div>
+        {% block toolbar %}
+            <div class="btn-group">
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '\n\n# ', post: '\n'}">
+                    <span class="fa fa-header fa-django-cradmin-h1"></span>
+                    <span class="sr-only">Heading</span>
+                </a>
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '\n\n## ', post: '\n'}">
+                    <span class="fa fa-header fa-django-cradmin-h2"></span>
+                    <span class="sr-only">Heading</span>
+                </a>
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '\n\n### ', post: '\n'}">
+                    <span class="fa fa-header fa-django-cradmin-h3"></span>
+                    <span class="sr-only">Heading</span>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '*', post: '*', emptyText: 'Text Here'}">
+                    <span class="fa fa-bold"></span>
+                    <span class="sr-only">Bold</span>
+                </a>
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '_', post: '_'}">
+                    <span class="fa fa-italic"></span>
+                    <span class="sr-only">Italic</span>
+                </a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '\n* ', post: '\n'}">
+                    <span class="fa fa-list-ul"></span>
+                    <span class="sr-only">Bulletlist</span>
+                </a>
+                <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
+                        pre: '\n1. ', post: '\n'}">
+                    <span class="fa fa-list-ol"></span>
+                    <span class="sr-only">Numbered list</span>
+                </a>
+            </div>
+        {% endblock toolbar %}
     </div>
     <div django-cradmin-acemarkdown-editor></div>
     {{ textarea|safe }}
