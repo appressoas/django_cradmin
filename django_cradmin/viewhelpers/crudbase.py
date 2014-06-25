@@ -130,6 +130,7 @@ class CreateUpdateViewMixin(object):
         helper.form_class = 'django_cradmin_form'
         layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
         helper.layout = layout.Layout(*layoutargs)
+        helper.form_action = self.request.get_full_path()
         return helper
 
     def get_context_data(self, **kwargs):
