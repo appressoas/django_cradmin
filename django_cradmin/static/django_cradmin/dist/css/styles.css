@@ -7537,7 +7537,8 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text],
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email],
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number],
-.django_cradmin_form .cradmin-focusfield .form-group .controls textarea {
+.django_cradmin_form .cradmin-focusfield .form-group .controls textarea,
+.django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea {
   border: none;
   outline: none;
   box-shadow: none;
@@ -7554,7 +7555,8 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number],
-  .django_cradmin_form .cradmin-focusfield .form-group .controls textarea {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea {
     padding-left: 50px;
     padding-right: 50px;
   }
@@ -7562,14 +7564,23 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text]:focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email]:focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number]:focus,
-.django_cradmin_form .cradmin-focusfield .form-group .controls textarea:focus {
+.django_cradmin_form .cradmin-focusfield .form-group .controls textarea:focus,
+.django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea:focus {
+  background-color: #F4FCFC;
+}
+.django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text].cradmin-focus,
+.django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email].cradmin-focus,
+.django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number].cradmin-focus,
+.django_cradmin_form .cradmin-focusfield .form-group .controls textarea.cradmin-focus,
+.django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea.cradmin-focus {
   background-color: #F4FCFC;
 }
 @media (min-width: 992px) {
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number],
-  .django_cradmin_form .cradmin-focusfield .form-group .controls textarea {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea {
     max-width: 600px;
     border-right: 1px dashed #ccc;
   }
@@ -7578,7 +7589,8 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number],
-  .django_cradmin_form .cradmin-focusfield .form-group .controls textarea {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea {
     max-width: 800px;
   }
 }
@@ -7837,6 +7849,15 @@ table.table.table-cradmin-fluid tbody tr td {
 .btn.btn-cancel:hover {
   color: #2e7a79;
 }
+.fa-header.fa-django-cradmin-h1 {
+  font-size: 20px;
+}
+.fa-header.fa-django-cradmin-h2 {
+  font-size: 16px;
+}
+.fa-header.fa-django-cradmin-h3 {
+  font-size: 12px;
+}
 #objecttableview-table tbody tr td:first-child .objecttable-cellvalue {
   font-weight: bold;
 }
@@ -7858,6 +7879,28 @@ table.table.table-cradmin-fluid tbody tr td {
   #objecttableview-table tbody tr td:hover .objecttable-cellbuttons {
     opacity: 1;
   }
+}
+.cradmin-acemarkdown textarea.cradmin-acemarkdowntextarea {
+  display: none;
+}
+.cradmin-acemarkdown.cradmin-acemarkdown-textareavisible textarea.cradmin-acemarkdowntextarea {
+  display: block;
+}
+.cradmin-acemarkdown .btn-toolbar {
+  margin-bottom: 10px;
+}
+.cradmin-acemarkdown .ace_editor {
+  font-size: 16px;
+  height: 400px;
+}
+.django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .btn-toolbar {
+  margin-top: -30px;
+  opacity: 0;
+  transition-duration: 0.3s;
+  transition-property: opacity;
+}
+.django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea.cradmin-focus .btn-toolbar {
+  opacity: 1.0;
 }
 body {
   background-color: #E6E6E6;
