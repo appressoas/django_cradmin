@@ -20,6 +20,8 @@ angular.module('djangoCradmin.acemarkdown', [
         $scope.textarea.setValue(value)
       @focusOnEditor = ->
         $scope.editor.focus()
+      @editorSurroundSelectionWith = (options) ->
+        $scope.editor.surroundSelectionWith(options)
       return
 
     link: (scope, element) ->
@@ -73,6 +75,30 @@ angular.module('djangoCradmin.acemarkdown', [
         value = $scope.aceEditor.getSession().getValue()
         $scope.markdownCtrl.setTextAreaValue(value)
 
+      $scope.surroundSelectionWith = (options) ->
+        {pre, post, emptyText} = options
+        if not emptyText?
+          emptyText = ''
+        if not pre?
+          pre = ''
+        if not post?
+          post = ''
+        selectionRange = $scope.aceEditor.getSelectionRange()
+        selectedText = $scope.aceEditor.session.getTextRange(selectionRange)
+        noSelection = selectedText == ''
+        if noSelection
+          selectedText = emptyText
+        $scope.aceEditor.insert("#{pre}#{selectedText}#{post}")
+        if noSelection
+          newlines = pre.split('\n').length - 1
+          selectionRange.start.row += newlines
+          selectionRange.end.row = selectionRange.start.row
+          selectionRange.start.column += pre.length - newlines
+          selectionRange.end.column += selectionRange.start.column +
+            emptyText.length
+          $scope.aceEditor.getSelection().setSelectionRange(selectionRange)
+        $scope.aceEditor.focus()
+
       return
 
     link: (scope, element, attrs, markdownCtrl) ->
@@ -91,9 +117,28 @@ angular.module('djangoCradmin.acemarkdown', [
       scope.aceEditor.on 'change', ->
         scope.onChange()
 
+
       markdownCtrl.setEditor(scope)
       return
   }
+
+
+.directive 'djangoCradminAcemarkdownTool', ->
+  return {
+    require: '^djangoCradminAcemarkdown'
+    restrict: 'A'
+    scope: {
+      'config': '=djangoCradminAcemarkdownTool'
+    }
+
+    link: (scope, element, attr, markdownCtrl) ->
+      element.on 'click', (e) ->
+        e.preventDefault()
+        markdownCtrl.editorSurroundSelectionWith(scope.config)
+      return
+  }
+
+
 
 .directive 'djangoCradminAcemarkdownTextarea', ->
   return {
@@ -126,6 +171,7 @@ angular.module('djangoCradmin.acemarkdown', [
 
     link: (scope, element, attrs, markdownCtrl) ->
       scope.textarea = element
+      scope.textarea.addClass('django-cradmin-acemarkdowntextarea')
       scope.textarea.on 'focus', ->
         markdownCtrl.focusOnEditor()
 
