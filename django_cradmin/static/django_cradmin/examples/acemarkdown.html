@@ -11,7 +11,10 @@
 
         <div class="container">
             <h1>Ace Markdown editor</h1>
-            <div django-cradmin-acemarkdown style="background-color: #fff;">
+            <div django-cradmin-acemarkdown="{
+                showTextarea: false,
+                theme: 'tomorrow'
+            }" style="background-color: #fff;">
                 <!--
                 <div ui-ace="{
                     mode: 'markdown',
@@ -19,17 +22,12 @@
                     theme: 'tomorrow'
                 }"></div>
                 -->
-                <div style="width: 600px; height: 300px; border: 1px solid #999;"
-                    django-cradmin-acemarkdown-editor="{
-                        theme: 'tomorrow'
-                    }"
-                ></div>
-<textarea django-cradmin-acemarkdown-textarea ng-show="true" cols="70" rows="10">
+                <div style="width: 600px; height: 300px; border: 1px solid #999;" django-cradmin-acemarkdown-editor></div>
+<textarea django-cradmin-acemarkdown-textarea cols="70" rows="10">
 Hello
 -----
 Check out the Ace live [demo](http://ajaxorg.github.com/ace/) or get a [Cloud9 IDE account](http://run.cloud9ide.com) to experience Ace while editing one of your own GitHub projects.
 
-Pre:
 
 ```
 Text here
