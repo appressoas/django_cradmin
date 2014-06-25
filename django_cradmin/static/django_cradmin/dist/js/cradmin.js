@@ -192,7 +192,22 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.menu', 'djangoCradmin.acemarkdown', 'djangoCradmin.wysihtml']);
+  angular.module('djangoCradmin.directives', []).directive('djangoCradminBack', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.on('click', function() {
+          history.back();
+          return scope.$apply();
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.acemarkdown', 'djangoCradmin.wysihtml']);
 
 }).call(this);
 

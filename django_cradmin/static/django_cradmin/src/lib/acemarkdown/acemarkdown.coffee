@@ -1,6 +1,4 @@
-angular.module('djangoCradmin.acemarkdown', [
-  # 'ui.ace'
-])
+angular.module('djangoCradmin.acemarkdown', [])
 
 .directive 'djangoCradminAcemarkdown', ->
   return {
