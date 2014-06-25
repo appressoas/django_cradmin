@@ -25,7 +25,8 @@
                 input[type=text],
                 input[type=email],
                 input[type=number],
-                textarea {
+                textarea,
+                .cradmin-div-styled-as-textarea {
                     border: none;
                     outline: none;
                     box-shadow: none;
@@ -37,6 +38,9 @@
                     height: auto;
                     text-align: left;
                     &:focus {
+                        background-color: #F4FCFC;
+                    }
+                    &.cradmin-focus {
                         background-color: #F4FCFC;
                     }
 

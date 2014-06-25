@@ -13,6 +13,11 @@ angular.module('djangoCradmin.acemarkdown', [
     controller: ($scope) ->
       @setEditor = (editorScope) ->
         $scope.editor = editorScope
+        $scope.editor.aceEditor.on 'focus', ->
+          $scope.element.addClass('cradmin-focus')
+        $scope.editor.aceEditor.on 'blur', ->
+          $scope.element.removeClass('cradmin-focus')
+
       @setTextarea = (textareaScope) ->
         $scope.textarea = textareaScope
         $scope.editor.setValue($scope.textarea.getValue())
@@ -25,9 +30,9 @@ angular.module('djangoCradmin.acemarkdown', [
       return
 
     link: (scope, element) ->
-      element.addClass('django-cradmin-acemarkdown')
+      scope.element = element
       if scope.config.showTextarea
-        element.addClass('django-cradmin-acemarkdown-textareavisible')
+        element.addClass('cradmin-acemarkdown-textareavisible')
 
       theme = scope.config.theme
       if not theme
@@ -117,7 +122,6 @@ angular.module('djangoCradmin.acemarkdown', [
       scope.aceEditor.on 'change', ->
         scope.onChange()
 
-
       markdownCtrl.setEditor(scope)
       return
   }
@@ -171,7 +175,7 @@ angular.module('djangoCradmin.acemarkdown', [
 
     link: (scope, element, attrs, markdownCtrl) ->
       scope.textarea = element
-      scope.textarea.addClass('django-cradmin-acemarkdowntextarea')
+      scope.textarea.addClass('cradmin-acemarkdowntextarea')
       scope.textarea.on 'focus', ->
         markdownCtrl.focusOnEditor()
 

@@ -2,13 +2,9 @@
 <html ng-app="djangoCradminExample">
     <head>
         <link href='../dist/css/styles.css' rel="stylesheet">
-        <style type="text/css">
-            .ace_editor { height: 200px; }
-        </style>
     </head>
 
     <body>
-        
         <div class="container">
             <h1>ACE markdown editor directive example</h1>
             <p>You must run this example on the Django server, not from the local filesystem.
@@ -18,21 +14,22 @@
             <div django-cradmin-acemarkdown="{
                 showTextarea: false,
                 theme: 'tomorrow'
-            }" style="background-color: #fff;">
+            }" class="cradmin-acemarkdown" style="background-color: #fff;">
+               
                 <div class="btn-toolbar" role="toolbar">
                     <div class="btn-group btn-group-lg">
                         <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                                pre: '\n\n# ', post: '\n'}">
+                                pre: '\n# ', post: '\n'}">
                             <span class="fa fa-header fa-django-cradmin-h1"></span>
                             <span class="sr-only">Heading</span>
                         </a>
                         <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                                pre: '\n\n## ', post: '\n'}">
+                                pre: '\n## ', post: '\n'}">
                             <span class="fa fa-header fa-django-cradmin-h2"></span>
                             <span class="sr-only">Heading</span>
                         </a>
                         <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
-                                pre: '\n\n### ', post: '\n'}">
+                                pre: '\n### ', post: '\n'}">
                             <span class="fa fa-header fa-django-cradmin-h3"></span>
                             <span class="sr-only">Heading</span>
                         </a>

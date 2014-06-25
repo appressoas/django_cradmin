@@ -5,6 +5,14 @@ from django.template.loader import render_to_string
 class AceMarkdownWidget(forms.widgets.Textarea):
     template_name = 'django_cradmin/acemarkdown/widget.django.html'
 
+    @property
+    def media(self):
+        return forms.Media(
+            js=[
+                'django_cradmin/dist/vendor/js/ace-editor/ace.js',
+            ]
+        )
+
     def render(self, name, value, attrs=None):
         attrs = attrs.copy()
         attrs['textarea django-cradmin-acemarkdown-textarea'] = ''

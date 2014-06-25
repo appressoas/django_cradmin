@@ -1,22 +1,9 @@
-{% comment %}
-<div django-cradmin-acemarkdown>
-    <div ui-ace="{
-        mode: 'markdown',
-        showGutter: false,
-        theme: 'tomorrow'
-    }"></div>
-    <div ng-show="false">
-        {{ textarea|safe }}
-    </div>
-</div>
-{% endcomment %}
-
 <div django-cradmin-acemarkdown="{
     showTextarea: false,
     theme: 'tomorrow'
-}" style="background-color: #fff;">
+}" class="cradmin-acemarkdown cradmin-div-styled-as-textarea">
     <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group btn-group-lg">
+        <div class="btn-group">
             <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
                     pre: '\n\n# ', post: '\n'}">
                 <span class="fa fa-header fa-django-cradmin-h1"></span>
@@ -33,7 +20,7 @@
                 <span class="sr-only">Heading</span>
             </a>
         </div>
-        <div class="btn-group btn-group-lg">
+        <div class="btn-group">
             <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
                     pre: '*', post: '*', emptyText: 'Text Here'}">
                 <span class="fa fa-bold"></span>
@@ -45,7 +32,7 @@
                 <span class="sr-only">Italic</span>
             </a>
         </div>
-        <div class="btn-group btn-group-lg">
+        <div class="btn-group">
             <a class="btn btn-default" django-cradmin-acemarkdown-tool="{
                     pre: '\n* ', post: '\n'}">
                 <span class="fa fa-list-ul"></span>
@@ -58,6 +45,6 @@
             </a>
         </div>
     </div>
-    <div django-cradmin-acemarkdown-editor style="width: 600px; height: 300px; border: 1px solid #999;"></div>
+    <div django-cradmin-acemarkdown-editor></div>
     {{ textarea|safe }}
-</div> <!-- django-cradmin-acemarkdown END -->
+</div>
