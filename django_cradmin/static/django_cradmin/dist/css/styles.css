@@ -7902,6 +7902,29 @@ table.table.table-cradmin-fluid tbody tr td {
 .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea.cradmin-focus .btn-toolbar {
   opacity: 1.0;
 }
+.django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .ace_editor {
+  height: 100px;
+}
+@media (min-height: 400px) {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .ace_editor {
+    height: 200px;
+  }
+}
+@media (min-height: 500px) {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .ace_editor {
+    height: 300px;
+  }
+}
+@media (min-height: 600px) {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .ace_editor {
+    height: 400px;
+  }
+}
+@media (min-height: 800px) {
+  .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .ace_editor {
+    height: 600px;
+  }
+}
 body {
   background-color: #E6E6E6;
   color: #666666;
