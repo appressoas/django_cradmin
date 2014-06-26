@@ -176,8 +176,17 @@ class CreateUpdateViewMixin(object):
             return self.render_to_response(self.get_context_data(form=form))
         else:
             self.object = form.save()
+            self.form_saved(self.object)
         return http.HttpResponseRedirect(self.get_success_url())
 
+    def form_saved(self, object):
+        """
+        Called after the form has been saved.
+        The ``object`` is the saved object.
+
+        Does nothing by default, but you can override it.
+        """
+        pass
 
     def preview_requested(self):
         """
