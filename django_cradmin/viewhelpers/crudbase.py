@@ -150,6 +150,12 @@ class CreateUpdateViewMixin(object):
         """
         return self.request.cradmin_app.reverse_appurl(self.listing_viewname)
 
+    def get_default_save_success_url(self):
+        if 'success_url' in self.request.GET:
+            return self.request.GET['success_url']
+        else:
+            return self.get_listing_url()
+
     def get_editurl(self, obj):
         """
         Get the edit URL for ``obj``.
@@ -162,7 +168,7 @@ class CreateUpdateViewMixin(object):
 
     def get_success_url(self):
         if 'submit-save' in self.request.POST:
-            return self.get_listing_url()
+            return self.get_default_save_success_url()
         else:
             return self.get_editurl(self.object)
 
