@@ -1,3 +1,4 @@
+import urllib
 from django import forms
 from django import http
 from django.core import serializers
@@ -164,7 +165,12 @@ class CreateUpdateViewMixin(object):
 
             self.request.cradmin_app.reverse_appurl('edit', args=[obj.pk])
         """
-        return self.request.cradmin_app.reverse_appurl('edit', args=[obj.pk])
+        url = self.request.cradmin_app.reverse_appurl('edit', args=[obj.pk])
+        if 'success_url' in self.request.GET:
+            url = '{}?{}'.format(
+                url, urllib.urlencode({
+                    'success_url': self.request.GET['success_url']}))
+        return url
 
     def get_success_url(self):
         if 'submit-save' in self.request.POST:
