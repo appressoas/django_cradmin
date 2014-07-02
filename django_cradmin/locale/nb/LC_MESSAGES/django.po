@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django_cradmin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-02 21:53+0000\n"
+"PO-Revision-Date: 2014-07-02 23:55+0100\n"
+"Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nb\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.5\n"
+
+#: templates/django_cradmin/invalid_roleid.django.html:6
+msgid "Invalid role"
+msgstr "Ugyldig rolle"
+
+#: templates/django_cradmin/invalid_roleid.django.html:7
+msgid "The requested role does not exist."
+msgstr "Den ønskede rollen finnes ikke."
+
+#: templates/django_cradmin/menu.django.html:11
+msgid "Toggle navigation"
+msgstr "Vis/sjul navigasjon"
+
+#: templates/django_cradmin/missing_role.django.html:6
+msgid "Permission denied"
+msgstr ""
+
+#: templates/django_cradmin/missing_role.django.html:8
+#, python-format
+msgid "You do not have permission to administer \"%(what)s\"."
+msgstr ""
+
+#: templates/django_cradmin/roleselect.django.html:7
+msgid "What would you like to administer?"
+msgstr "Hva ønsker du å administrere?"
+
+#: templates/django_cradmin/viewhelpers/create.django.html:11
+msgid "NEW"
+msgstr "NY"
+
+#: templates/django_cradmin/viewhelpers/delete.django.html:13
+msgid "DELETE"
+msgstr "SLETT"
+
+#: templates/django_cradmin/viewhelpers/delete.django.html:23
+#, python-format
+msgid "Are you sure you want to delete \"%(object_preview)s\"?"
+msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
+
+#: templates/django_cradmin/viewhelpers/delete.django.html:30
+msgid "Delete"
+msgstr "Slett"
+
+#: templates/django_cradmin/viewhelpers/delete.django.html:31
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: templates/django_cradmin/viewhelpers/update.django.html:10
+msgid "EDIT"
+msgstr "REDIGER"
+
+#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
+msgid "(None)"
+msgstr "(Ingen)"
+
+#: viewhelpers/create.py:14
+msgid "Create"
+msgstr "Opprett"
+
+#: viewhelpers/create.py:15
+msgid "Create and continue editing"
+msgstr "Opprett og fortsett å redigere"
+
+#: viewhelpers/create.py:19 viewhelpers/update.py:19
+msgid "Preview"
+msgstr "Forhåndsvis"
+
+#: viewhelpers/update.py:14
+msgid "Save"
+msgstr "Lagre"
+
+#: viewhelpers/update.py:15
+msgid "Save and continue editing"
+msgstr "Lagre og fortsett redigering"
