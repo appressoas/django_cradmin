@@ -105,7 +105,6 @@ class Button(object):
         })
 
 
-
 class ObjectTableView(ListView):
     """
     A view inspired by the changelist in ``django.contrib.admin``.
@@ -129,7 +128,9 @@ class ObjectTableView(ListView):
     paginate_by = 30
     template_name = 'django_cradmin/viewhelpers/objecttable/objecttable.django.html'
 
-    #: The model class to list objects for.
+    #: The model class to list objects for. You do not have to specify
+    #: this, but if you do not specify this, you have to override
+    #: :meth:`.get_pagetitle`.
     model = None
 
     #: Defines the columns in the table. See :meth:`.get_columns`.
@@ -194,11 +195,18 @@ class ObjectTableView(ListView):
         for obj in object_list:
             yield self._create_row(obj)
 
+    def get_pagetitle(self):
+        """
+        Get the page title/heading.
+
+        Defaults to the ``verbose_name_plural`` of the :obj:`.model`.
+        """
+        return self.model._meta.verbose_name_plural
+
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
         object_list = context['object_list']
-        context['model_verbose_name'] = self.model._meta.verbose_name
-        context['model_verbose_name_plural'] = self.model._meta.verbose_name_plural
+        context['pagetitle'] = self.get_pagetitle()
         context['columns'] = self._get_columns()
         context['table'] = self._iter_table(object_list)
         context['buttons'] = self.get_buttons()

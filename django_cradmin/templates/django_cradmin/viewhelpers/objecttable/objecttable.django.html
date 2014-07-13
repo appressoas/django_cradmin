@@ -1,6 +1,8 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load i18n %}
 
+{% block title %}{{ pagetitle }}{% endblock title %}
+
 {% block content %}
     {% block pageheader %}
         <div class="page-header page-header-nomargin">
@@ -8,7 +10,7 @@
                 {% block headingicon %}{% endblock headingicon %}
                 <h1>
                     {% block heading %}
-                        {{ model_verbose_name_plural }}
+                        {{ pagetitle }}
                     {% endblock heading %}
                 </h1>
                 {% if buttons %}
