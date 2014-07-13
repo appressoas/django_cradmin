@@ -5,12 +5,10 @@ from functools import update_wrapper
 from .decorators import cradminview
 
 
-
 #: The name of the app index view (the landing page for the app).
 #: We do not enforce this, but we assume that each app has a
 #: view with this name.
 INDEXVIEW_NAME = 'INDEX'
-
 
 
 class Url(object):
@@ -23,7 +21,6 @@ class Url(object):
         self.view = view
         self.kwargs = kwargs
         self.name = name
-
 
 
 class App(object):
@@ -45,6 +42,14 @@ class App(object):
             appname=self.appname, viewname=viewname,
             args=args, kwargs=kwargs)
 
+    def reverse_appindexurl(self):
+        """
+        Shortcut for::
+
+            from django_cradmin import crapp
+            cradmin_app.reverse_appurl(crapp.INDEXVIEW_NAME)
+        """
+        return self.reverse_appurl(viewname=INDEXVIEW_NAME)
 
     @classmethod
     def _wrap_view(cls, appname, view):
@@ -56,10 +61,6 @@ class App(object):
         update_wrapper(viewwrapper, view, updated=())
 
         return viewwrapper
-
-    @classmethod
-    def _build_urlname(cls, name):
-        return 
 
     @classmethod
     def build_urls(cls, cradmin_instance_id, appname):

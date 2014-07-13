@@ -75,7 +75,9 @@ class PageDeleteView(delete.DeleteView):
     """
     View used to delete existing products.
     """
-    model = Page
+
+    def get_queryset(self):
+        return Page.objects.filter(site=self.request.cradmin_role)
 
 
 class App(crapp.App):
