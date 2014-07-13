@@ -26,14 +26,21 @@ class TitleColumn(objecttable.MultiActionColumn):
         ]
 
 
-class PagesListView(objecttable.ObjectTableView):
+class PagesQuerySetForRoleMixin(object):
+    """
+    Used by listing, update and delete view to ensure
+    that only pages that the current role has access to
+    is available.
+    """
+    def get_queryset_for_role(self, site):
+        return Page.objects.filter(site=site)
+
+
+class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     columns = [
         TitleColumn
     ]
-
-    def get_queryset_for_role(self, obj):
-        return self.model.objects.all()
 
     def get_buttons(self):
         app = self.request.cradmin_app
@@ -65,19 +72,16 @@ class PageCreateView(PageCreateUpdateMixin, create.CreateView):
     """
 
 
-class PageUpdateView(PageCreateUpdateMixin, update.UpdateView):
+class PageUpdateView(PagesQuerySetForRoleMixin, PageCreateUpdateMixin, update.UpdateView):
     """
     View used to create edit existing pages.
     """
 
 
-class PageDeleteView(delete.DeleteView):
+class PageDeleteView(PagesQuerySetForRoleMixin, delete.DeleteView):
     """
     View used to delete existing pages.
     """
-
-    def get_queryset(self):
-        return Page.objects.filter(site=self.request.cradmin_role)
 
 
 class App(crapp.App):

@@ -159,7 +159,6 @@ class ObjectTableView(ListView):
         """
         return []
 
-
     def get_queryset_for_role(self, role):
         """
         Get a queryset with all objects of :obj:`.model`  that
