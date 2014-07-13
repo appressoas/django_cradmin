@@ -6,12 +6,29 @@
 Welcome to Django CRadmin's documentation!
 ==========================================
 
-Contents:
+Getting started
+---------------
 
 .. toctree::
    :maxdepth: 2
 
    install
+
+
+Viewhelpers
+-----------
+
+.. toctree::
+   :maxdepth: 1
+
+   viewhelpers_delete
+
+
+Development
+-----------
+.. toctree::
+   :maxdepth: 1
+
    databasedumps
 
 

@@ -61,19 +61,19 @@ class PageCreateUpdateMixin(object):
 
 class PageCreateView(PageCreateUpdateMixin, create.CreateView):
     """
-    View used to create new products.
+    View used to create new pages.
     """
 
 
 class PageUpdateView(PageCreateUpdateMixin, update.UpdateView):
     """
-    View used to create edit existing products.
+    View used to create edit existing pages.
     """
 
 
 class PageDeleteView(delete.DeleteView):
     """
-    View used to delete existing products.
+    View used to delete existing pages.
     """
 
     def get_queryset(self):
