@@ -7869,15 +7869,8 @@ table.table.table-cradmin-fluid tbody tr td {
   text-transform: uppercase;
 }
 @media (min-width: 768px) {
-  #objecttableview-table tbody tr td .objecttable-cellbuttons {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
   #objecttableview-table tbody tr td .objecttable-cellbuttons .btn-sm {
     padding: 3px 10px;
-  }
-  #objecttableview-table tbody tr td:hover .objecttable-cellbuttons {
-    opacity: 1;
   }
 }
 .cradmin-acemarkdown textarea.cradmin-acemarkdowntextarea {
