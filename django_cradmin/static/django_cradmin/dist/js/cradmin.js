@@ -210,7 +210,6 @@
       },
       controller: function($scope) {
         $scope.$watch('value', function(newValue) {
-          console.log('Action value changed', newValue);
           return $scope.element.attr('action', newValue);
         });
       },

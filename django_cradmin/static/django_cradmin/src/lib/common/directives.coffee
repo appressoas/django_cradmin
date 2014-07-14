@@ -19,7 +19,6 @@ angular.module('djangoCradmin.directives', [])
 
     controller: ($scope) ->
       $scope.$watch 'value', (newValue) ->
-        console.log 'Action value changed', newValue
         $scope.element.attr('action', newValue)
       return
 
