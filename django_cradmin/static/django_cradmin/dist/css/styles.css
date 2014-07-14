@@ -7858,6 +7858,13 @@ table.table.table-cradmin-fluid tbody tr td {
 .fa-header.fa-django-cradmin-h3 {
   font-size: 12px;
 }
+#objecttableview-table tbody tr.objecttableview-selected-row {
+  background-color: #FFE2A8;
+}
+#objecttableview-table tbody tr th.objecttableview-multiselectcolumn,
+#objecttableview-table tbody tr td.objecttableview-multiselectcolumn {
+  width: 85px;
+}
 #objecttableview-table tbody tr td:first-child .objecttable-cellvalue {
   font-weight: bold;
 }
@@ -7872,6 +7879,11 @@ table.table.table-cradmin-fluid tbody tr td {
   #objecttableview-table tbody tr td .objecttable-cellbuttons .btn-sm {
     padding: 3px 10px;
   }
+}
+.objecttableview-multiselect-submitrow select.form-control {
+  max-width: 70%;
+  display: inline-block;
+  height: 40px;
 }
 .cradmin-acemarkdown textarea.cradmin-acemarkdowntextarea {
   display: none;

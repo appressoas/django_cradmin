@@ -24,24 +24,85 @@
         </div>
     {% endblock pageheader %}
 
-    <table id="objecttableview-table" class="table table-cradmin-fluid">
-        <thead>
-            <tr>
-                {% for column in columns %}
-                    <th>{{ column.get_header }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in table %}
-                <tr>
-                    {% for cell in row.cells %}
-                        <td>
-                            {{ cell }}
-                        </td>
+    <div
+        {% if multiselect_actions %}
+            ng-controller="CradminMultiselectObjectTableViewController"
+            ng-init="
+                items={
+                    {% for row in table %}
+                        'item_{{ row.object.pk }}': false{% if not forloop.last %},{% endif %}
                     {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                };
+                actions={{ multiselect_actions }}
+            "
+        {% endif %}
+    >
+        <form class="django_cradmin_form" method="post"
+                {% if multiselect_actions %}
+                    {% comment %}
+                        What we put here does not really matter - it just needs
+                        to be a value so AngularJS does not prevent submit.
+                    {% endcomment %}
+                    action="{{ request.build_absolute_uri }}"
+                    django-cradmin-form-action="{% verbatim %}selectedAction.url{% endverbatim %}"
+                {% endif %}>
+            {% csrf_token %}
+            <table id="objecttableview-table" class="table table-cradmin-fluid">
+                <thead>
+                    <tr>
+                        {% if multiselect_actions %}
+                            <th class="objecttableview-multiselectcolumn">
+                                <input type="checkbox"
+                                    ng-cloak
+                                    ng-checked="selectAllChecked"
+                                    ng-click="toggleAllCheckboxes()">
+                            </th>
+                        {% endif %}
+                        {% for column in columns %}
+                            <th>{{ column.get_header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table %}
+                        <tr
+                            {% if multiselect_actions %}
+                                ng-class="{'objecttableview-selected-row': items.item_{{ row.object.pk }} }"
+                            {% endif %}
+                        >
+                            {% if multiselect_actions %}
+                                <td class="objecttableview-multiselectcolumn">
+                                    <input type="checkbox"
+                                        name="objecttable-multiselectitem"
+                                        value="{{ row.object.pk }}"
+                                        ng-cloak
+                                        ng-checked="items.item_{{ row.object.pk }}"
+                                        ng-click="toggleCheckbox('item_{{ row.object.pk }}')">
+                                </td>
+                            {% endif %}
+                            {% for cell in row.cells %}
+                                <td>
+                                    {{ cell }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if multiselect_actions %}
+                <div class="django_cradmin_submitrow objecttableview-multiselect-submitrow"
+                        nng-show="numberOfSelected &gt; 0">
+                    <select class="form-control"
+                            ng-model="selectedAction"
+                            ng-options="action.label for action in actions">
+                        <option value="">--- {% trans "Select an action" %} ---</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" ng-disabled="!selectedAction">
+                        {% trans "Go" %}
+                    </button>
+                </div>
+            {% endif %}
+        </form>
+    </div>
 {% endblock content %}

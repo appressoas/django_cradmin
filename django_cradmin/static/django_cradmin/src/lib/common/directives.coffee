@@ -9,3 +9,21 @@ angular.module('djangoCradmin.directives', [])
         scope.$apply()
       return
   }
+
+.directive 'djangoCradminFormAction', ->
+  return {
+    restrict: 'A'
+    scope: {
+      'value': '=djangoCradminFormAction'
+    }
+
+    controller: ($scope) ->
+      $scope.$watch 'value', (newValue) ->
+        console.log 'Action value changed', newValue
+        $scope.element.attr('action', newValue)
+      return
+
+    link: (scope, element, attrs) ->
+      scope.element = element
+      return
+  }

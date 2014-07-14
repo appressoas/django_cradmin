@@ -48,6 +48,16 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
             objecttable.Button(_('Create'), url=app.reverse_appurl('create')),
         ]
 
+    def get_multiselect_actions(self):
+        app = self.request.cradmin_app
+        return [
+            objecttable.MultiSelectAction(
+                label=_('Delete'),
+                # url=app.reverse_appurl('multidelete')
+                url='/to/do'
+            ),
+        ]
+
 
 class PageCreateUpdateMixin(object):
     model = Page

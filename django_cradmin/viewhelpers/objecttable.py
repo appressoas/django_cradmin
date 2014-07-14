@@ -1,3 +1,4 @@
+import json
 from django.template.loader import render_to_string
 from django.views.generic import ListView
 
@@ -105,6 +106,22 @@ class Button(object):
         })
 
 
+class MultiSelectAction(object):
+    """
+    Used to define multiselect actions for
+    :meth:`.ObjectTableView.get_multiselect_actions`.
+    """
+    def __init__(self, label, url):
+        self.label = label
+        self.url = url
+
+    def serialize(self):
+        return {
+            'label': unicode(self.label),
+            'url': self.url
+        }
+
+
 class ObjectTableView(ListView):
     """
     A view inspired by the changelist in ``django.contrib.admin``.
@@ -135,6 +152,19 @@ class ObjectTableView(ListView):
 
     #: Defines the columns in the table. See :meth:`.get_columns`.
     columns = [None]
+
+    def get_multiselect_actions(self):
+        """
+        Multiselect actions. If this returns a non-empty iterator, each row
+        has a cell with a select box in the first column. Selecting at least
+        one of the rows will reveal a dropdown menu with all the available
+        actions.
+
+        Returns:
+            An iterator (list, tuple, ...) yielding :class:`.MultiSelectAction`
+            objects. Returns an empty list by default.
+        """
+        return []
 
     def get_columns(self):
         """
@@ -206,8 +236,12 @@ class ObjectTableView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
         object_list = context['object_list']
+        multiselect_actions = self.get_multiselect_actions()
+        if multiselect_actions:
+            context['multiselect_actions'] = json.dumps(
+                [action.serialize() for action in multiselect_actions])
         context['pagetitle'] = self.get_pagetitle()
         context['columns'] = self._get_columns()
-        context['table'] = self._iter_table(object_list)
+        context['table'] = list(self._iter_table(object_list))
         context['buttons'] = self.get_buttons()
         return context

@@ -1,6 +1,15 @@
 #objecttableview-table {
     tbody {
         tr {
+            &.objecttableview-selected-row {
+                background-color: #FFE2A8;
+            }
+
+            th, td {
+                &.objecttableview-multiselectcolumn {
+                    width: 85px;
+                }
+            }
             td {
                 &:first-child {
                     .objecttable-cellvalue {
@@ -31,5 +40,13 @@
                 }
             }
         }
+    }
+}
+
+.objecttableview-multiselect-submitrow {
+    select.form-control {
+        max-width: 70%;
+        display: inline-block;
+        height: 40px;
     }
 }

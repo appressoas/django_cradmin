@@ -202,12 +202,28 @@
         });
       }
     };
+  }).directive('djangoCradminFormAction', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        'value': '=djangoCradminFormAction'
+      },
+      controller: function($scope) {
+        $scope.$watch('value', function(newValue) {
+          console.log('Action value changed', newValue);
+          return $scope.element.attr('action', newValue);
+        });
+      },
+      link: function(scope, element, attrs) {
+        scope.element = element;
+      }
+    };
   });
 
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.acemarkdown', 'djangoCradmin.wysihtml']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.wysihtml']);
 
 }).call(this);
 
@@ -218,6 +234,42 @@
       return $scope.displayMenu = !$scope.displayMenu;
     };
   });
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.objecttable', []).controller('CradminMultiselectObjectTableViewController', [
+    '$scope', '$timeout', function($scope, $timeout) {
+      $scope.selectAllChecked = false;
+      $scope.numberOfSelected = 0;
+      $scope.selectedAction = null;
+      $scope.setCheckboxValue = function(itemkey, value) {
+        if (value) {
+          $scope.numberOfSelected += 1;
+        } else {
+          $scope.numberOfSelected -= 1;
+        }
+        return $scope.items[itemkey] = value;
+      };
+      $scope.getCheckboxValue = function(itemkey) {
+        return $scope.items[itemkey];
+      };
+      $scope.toggleAllCheckboxes = function() {
+        $scope.selectAllChecked = !$scope.selectAllChecked;
+        return angular.forEach($scope.items, function(checked, itemkey) {
+          return $scope.setCheckboxValue(itemkey, $scope.selectAllChecked);
+        });
+      };
+      return $scope.toggleCheckbox = function(itemkey) {
+        var newvalue;
+        newvalue = !$scope.getCheckboxValue(itemkey);
+        $scope.setCheckboxValue(itemkey, newvalue);
+        if (!newvalue) {
+          return $scope.selectAllChecked = false;
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 
