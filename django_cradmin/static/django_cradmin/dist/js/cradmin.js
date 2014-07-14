@@ -244,11 +244,6 @@
       $scope.numberOfSelected = 0;
       $scope.selectedAction = null;
       $scope.setCheckboxValue = function(itemkey, value) {
-        if (value) {
-          $scope.numberOfSelected += 1;
-        } else {
-          $scope.numberOfSelected -= 1;
-        }
         return $scope.items[itemkey] = value;
       };
       $scope.getCheckboxValue = function(itemkey) {
@@ -256,15 +251,22 @@
       };
       $scope.toggleAllCheckboxes = function() {
         $scope.selectAllChecked = !$scope.selectAllChecked;
+        $scope.numberOfSelected = 0;
         return angular.forEach($scope.items, function(checked, itemkey) {
-          return $scope.setCheckboxValue(itemkey, $scope.selectAllChecked);
+          $scope.setCheckboxValue(itemkey, $scope.selectAllChecked);
+          if ($scope.selectAllChecked) {
+            return $scope.numberOfSelected += 1;
+          }
         });
       };
       return $scope.toggleCheckbox = function(itemkey) {
         var newvalue;
         newvalue = !$scope.getCheckboxValue(itemkey);
         $scope.setCheckboxValue(itemkey, newvalue);
-        if (!newvalue) {
+        if (newvalue) {
+          return $scope.numberOfSelected += 1;
+        } else {
+          $scope.numberOfSelected -= 1;
           return $scope.selectAllChecked = false;
         }
       };

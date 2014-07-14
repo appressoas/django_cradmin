@@ -92,7 +92,7 @@
 
             {% if multiselect_actions %}
                 <div class="django_cradmin_submitrow objecttableview-multiselect-submitrow"
-                        nng-show="numberOfSelected &gt; 0">
+                        ng-class="{django_cradmin_submitrow_hidden: numberOfSelected==0}">
                     <select class="form-control"
                             ng-model="selectedAction"
                             ng-options="action.label for action in actions">

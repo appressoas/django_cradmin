@@ -179,12 +179,18 @@
 
     .django_cradmin_submitrow {
         position: fixed;
-        bottom: 0;
+        bottom: -60px;
         left: @cradmin-bodypadding-xs;
         right: @cradmin-bodypadding-xs;
         background-color: #333;
         padding: 8px;
         border-radius: 3px 3px 0 0;
+        .transition(all .3s);
+        .translate(0, -60px);
+
+        &.django_cradmin_submitrow_hidden {
+            .translate(0, 0);
+        }
 
         @media (min-width: @screen-sm-min) {
             left: (@cradmin-menu-width + @cradmin-bodypadding);

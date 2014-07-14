@@ -26,10 +26,6 @@ angular.module('djangoCradmin.objecttable', [])
 
 
     $scope.setCheckboxValue = (itemkey, value) ->
-      if value
-        $scope.numberOfSelected += 1
-      else
-        $scope.numberOfSelected -= 1
       $scope.items[itemkey] = value
 
     $scope.getCheckboxValue = (itemkey) ->
@@ -37,12 +33,18 @@ angular.module('djangoCradmin.objecttable', [])
 
     $scope.toggleAllCheckboxes = ->
       $scope.selectAllChecked = not $scope.selectAllChecked
+      $scope.numberOfSelected = 0
       angular.forEach $scope.items, (checked, itemkey) ->
         $scope.setCheckboxValue(itemkey, $scope.selectAllChecked)
+        if $scope.selectAllChecked
+          $scope.numberOfSelected += 1
 
     $scope.toggleCheckbox = (itemkey) ->
       newvalue = not $scope.getCheckboxValue(itemkey)
       $scope.setCheckboxValue(itemkey, newvalue)
-      if not newvalue
+      if newvalue
+        $scope.numberOfSelected += 1
+      else
+        $scope.numberOfSelected -= 1
         $scope.selectAllChecked = false
 ])
