@@ -53,8 +53,7 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
         return [
             objecttable.MultiSelectAction(
                 label=_('Delete'),
-                # url=app.reverse_appurl('multidelete')
-                url='/to/do'
+                url=app.reverse_appurl('multidelete')
             ),
         ]
 
@@ -96,16 +95,24 @@ class PageDeleteView(PagesQuerySetForRoleMixin, delete.DeleteView):
 
 class App(crapp.App):
     appurls = [
-        crapp.Url(r'^$',
+        crapp.Url(
+            r'^$',
             PagesListView.as_view(),
             name=crapp.INDEXVIEW_NAME),
-        crapp.Url(r'^create$',
+        crapp.Url(
+            r'^create$',
             PageCreateView.as_view(),
             name="create"),
-        crapp.Url(r'^edit/(?P<pk>\d+)$',
+        crapp.Url(
+            r'^edit/(?P<pk>\d+)$',
             PageUpdateView.as_view(),
             name="edit"),
-        crapp.Url(r'^delete/(?P<pk>\d+)$',
+        crapp.Url(
+            r'^delete/(?P<pk>\d+)$',
             PageDeleteView.as_view(),
-            name="delete")
+            name="delete"),
+        crapp.Url(
+            r'^multidelete/$',
+            PageDeleteView.as_view(),
+            name="multidelete")
     ]

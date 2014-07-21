@@ -8,6 +8,9 @@ Sphinx==1.2.2
 sphinxcontrib-napoleon==0.2.7
 sphinx_rtd_theme==0.1.6
 
+# For testing HTML output in tests
+htmls==0.9.4
+
 # For mocking tests
 mock==1.0.1
 
