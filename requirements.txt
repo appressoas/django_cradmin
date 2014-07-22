@@ -8,6 +8,10 @@ Sphinx==1.2.2
 sphinxcontrib-napoleon==0.2.7
 sphinx_rtd_theme==0.1.6
 
+# For test/CI automation
+flake8==2.2.2
+tox==1.7.2
+
 # For testing HTML output in tests
 htmls==0.9.4
 
@@ -16,7 +20,6 @@ mock==1.0.1
 
 # For debugging
 django-debug-toolbar==1.2.1
-django-silk==0.3
 
 # Better Django shell and other utils for development
 django-extensions==1.3.6
