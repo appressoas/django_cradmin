@@ -142,7 +142,12 @@ class ObjectTableView(ListView):
                     company=company)
 
     """
+    #: Paginate by this number of items. You can safely override this.
     paginate_by = 30
+
+    #: The template used to render the view. You can override this,
+    #: but if you override it, you should extend the default template
+    #: (django_cradmin/viewhelpers/objecttable/objecttable.django.html).
     template_name = 'django_cradmin/viewhelpers/objecttable/objecttable.django.html'
 
     #: The model class to list objects for. You do not have to specify
