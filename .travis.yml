@@ -1,0 +1,18 @@
+# See:
+# - http://about.travis-ci.org/docs/user/build-configuration/
+# - http://www.dominicrodger.com/tox-and-travis.html
+
+language: python
+python:
+  - "2.7"
+
+# NOTE: We can add more tox testenvs here, and they will all be executed
+env:
+  - TOX_ENV=py27
+  - TOX_ENV=flake8
+
+install:
+  - pip install tox
+
+script:
+  - tox -e $TOX_ENV
