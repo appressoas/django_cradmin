@@ -44,7 +44,7 @@ INSTALLED_APPS = (
 
     # Nice for debugging, but not required to use django_cradmin
     'django_extensions',
-    
+
     # The demo
     'cradmin_demo.webdemo',
 )
@@ -71,7 +71,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 ROOT_URLCONF = 'cradmin_demo.project.urls'
 
-#WSGI_APPLICATION = 'cradmin_demo.wsgi.application'
+# WSGI_APPLICATION = 'cradmin_demo.wsgi.application'
 
 
 # Database

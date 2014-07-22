@@ -103,8 +103,8 @@ class BaseCrAdminInstance(object):
         (if :meth:.`get_role_from_roleid`) returns ``None``.
 
         Returns:
-            django.http.HttpResponse: Defaults to rendering 
-                ``django_cradmin/invalid_roleid.django.html``
+            django.http.HttpResponse: Defaults to rendering
+                ``django_cradmin/invalid_roleid.django.html``.
         """
         return render(self.request, 'django_cradmin/invalid_roleid.django.html', {
             'roleid': roleid
@@ -120,9 +120,9 @@ class BaseCrAdminInstance(object):
         """
         This is called whenever someone requests a role that exists but that
         they do not have (where meth:`.user_has_role` returns ``False``).
-        
+
         Returns:
-            django.http.HttpResponse: Defaults to rendering 
+            django.http.HttpResponse: Defaults to rendering
                 ``django_cradmin/missing_role.django.html``
         """
         return render(self.request, 'django_cradmin/missing_role.django.html', {
@@ -150,7 +150,6 @@ class BaseCrAdminInstance(object):
             :class:`django_cradmin.menu.BaseCrAdminMenu`.
         """
         return self._get_menu()
-
 
     def _build_urlname(self, appname, viewname):
         return '{}-{}-{}'.format(self.id, appname, viewname)
@@ -207,7 +206,7 @@ class BaseCrAdminInstance(object):
 
             from django_cradmin.views import roleselect
             from django.contrib.auth.decorators import login_required
-            return login_required(roleselect.RoleSelectView.as_view()) 
+            return login_required(roleselect.RoleSelectView.as_view())
 
         If you want to provide your own role select view, you can simply implement
         it here. Another option is to extend RoleSelectView and override the ``template_name``.
@@ -251,7 +250,8 @@ class BaseCrAdminInstance(object):
         Get the url patterns for the cradmin instance.
         """
         cradmin_instance_registry.add(cls)
-        return patterns('',
+        return patterns(
+            '',
             url('^$', cls.get_roleselect_view(),
                 name='{}-roleselect'.format(cls.id)),
             *cls._get_app_urls())

@@ -70,7 +70,9 @@ class App(object):
         """
         urls = []
         for pattern in cls.appurls:
-            urls.append(url(pattern.regex, cls._wrap_view(appname, pattern.view),
-                name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
-                kwargs=pattern.kwargs))
+            urls.append(
+                url(
+                    pattern.regex, cls._wrap_view(appname, pattern.view),
+                    name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
+                    kwargs=pattern.kwargs))
         return patterns('', *urls)

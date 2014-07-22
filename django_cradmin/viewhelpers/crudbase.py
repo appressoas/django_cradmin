@@ -43,7 +43,7 @@ class CreateUpdateViewMixin(object):
         Simple example (same as specifying the fields in :obj:`.fields`)::
 
             from crispy_forms import layout
-            
+
             class MyCreateView(CreateView):
                 def get_field_layout(self):
                     return [
@@ -53,9 +53,9 @@ class CreateUpdateViewMixin(object):
                     ]
 
         A slightly more complex example::
-            
+
             from crispy_forms import layout
-            
+
             class MyCreateView(CreateView):
                 def get_field_layout(self):
                     return [
@@ -112,8 +112,7 @@ class CreateUpdateViewMixin(object):
         returned by :meth:`.get_buttons`.
         """
         return [
-            layout.Div(*self.get_buttons(),
-                css_class="django_cradmin_submitrow")
+            layout.Div(*self.get_buttons(), css_class="django_cradmin_submitrow")
         ]
 
     def get_formhelper(self):

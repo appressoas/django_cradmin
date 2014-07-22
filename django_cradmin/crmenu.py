@@ -7,7 +7,8 @@ class MenuItem(object):
     create a HTML element.
 
     If you want to make major changes to the look and feel of the
-    menu, you may want to subclass this and use 
+    menu, you may want to subclass this and override the template
+    and/or :meth:`render` method.
     """
     template_name = 'django_cradmin/menuitem.django.html'
 

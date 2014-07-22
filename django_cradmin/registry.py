@@ -68,7 +68,7 @@ class CrAdminInstanceRegistry(object):
         Parameters:
             cradmin_instance_class: A subclass of :class:`django_cradmin.crinstance.BaseCrAdminInstance`.
         """
-        if not cradmin_instance_class.id in self._registry:
+        if cradmin_instance_class.id not in self._registry:
             self._registry[cradmin_instance_class.id] = cradmin_instance_class
 
 

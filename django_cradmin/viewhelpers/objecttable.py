@@ -17,8 +17,7 @@ class Column(object):
             raise NotImplementedError()
 
     def reverse_appurl(self, name, args=[], kwargs={}):
-        return self.view.request.cradmin_app.reverse_appurl(name,
-            args=args, kwargs=kwargs)
+        return self.view.request.cradmin_app.reverse_appurl(name, args=args, kwargs=kwargs)
 
     def render_value(self, obj):
         if self.modelfield:
@@ -215,8 +214,7 @@ class ObjectTableView(ListView):
             self._columns = []
             for columnclass in self.columns:
                 if isinstance(columnclass, basestring):
-                    columnclass = type('SimpleColumn', (PlainTextColumn,),
-                        dict(modelfield=columnclass))
+                    columnclass = type('SimpleColumn', (PlainTextColumn,), dict(modelfield=columnclass))
                 self._columns.append(columnclass(view=self))
         return self._columns
 

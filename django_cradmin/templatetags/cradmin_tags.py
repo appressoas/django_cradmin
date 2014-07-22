@@ -17,7 +17,6 @@ def cradmin_titletext_for_role(context, role):
     return cradmin_instance.get_titletext_for_role(role)
 
 
-
 @register.simple_tag(takes_context=True)
 def cradmin_rolefrontpage_url(context, role):
     """

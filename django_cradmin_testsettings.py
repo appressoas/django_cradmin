@@ -49,7 +49,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
-#ROOT_URLCONF = 'cradmin_demo.project.urls'
+# ROOT_URLCONF = 'cradmin_demo.project.urls'
 
 # We do not set a name -- the test framework does that.
 DATABASES = {

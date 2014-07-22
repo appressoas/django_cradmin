@@ -40,7 +40,6 @@ def cradminview(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_ur
             path = request.build_absolute_uri()
             resolved_login_url = force_str(
                 resolve_url(login_url or settings.LOGIN_URL))
-            return redirect_to_login(path,
-                resolved_login_url, redirect_field_name)
+            return redirect_to_login(path, resolved_login_url, redirect_field_name)
 
     return wrapper

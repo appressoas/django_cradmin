@@ -15,13 +15,13 @@ def _manage(args, capture=False):
         local(command)
 
 
-
 @task
 def syncmigrate():
     """
     Runs the syncdb and migrate django management commands.
     """
     _manage('syncdb --noinput')
+
 
 @task
 def removedb():
@@ -30,6 +30,7 @@ def removedb():
     """
     if os.path.exists(SQLITE_DATABASE):
         os.remove(SQLITE_DATABASE)
+
 
 @task
 def resetdb():

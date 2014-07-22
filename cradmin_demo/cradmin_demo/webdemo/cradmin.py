@@ -8,10 +8,8 @@ from .views import pages
 
 class Menu(crmenu.Menu):
     def build_menu(self):
-        self.add(label=_('Dashboard'), url=self.appindex_url('dashboard'),
-            icon="home")
-        self.add(label=_('Pages'), url=self.appindex_url('pages'),
-            icon="database")
+        self.add(label=_('Dashboard'), url=self.appindex_url('dashboard'), icon="home")
+        self.add(label=_('Pages'), url=self.appindex_url('pages'), icon="database")
 
 
 class CrAdminInstance(crinstance.BaseCrAdminInstance):

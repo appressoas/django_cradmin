@@ -14,7 +14,7 @@ def docs():
         rmtree(apidocdir)
 
     exclude = glob('../django_cradmin/*/migrations/') \
-            + glob('../django_cradmin/*/tests/')
+        + glob('../django_cradmin/*/tests/')
     exclude = map(os.path.abspath, exclude)
 
     local('sphinx-apidoc -o develop/_apidoc/ --no-toc ../django_cradmin {exclude}'.format(

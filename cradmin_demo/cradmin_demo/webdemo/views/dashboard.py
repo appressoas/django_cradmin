@@ -9,7 +9,5 @@ class DashboardView(TemplateView):
 
 class App(crapp.App):
     appurls = [
-        crapp.Url(r'^$',
-            DashboardView.as_view(),
-            name=crapp.INDEXVIEW_NAME)
+        crapp.Url(r'^$', DashboardView.as_view(), name=crapp.INDEXVIEW_NAME)
     ]
