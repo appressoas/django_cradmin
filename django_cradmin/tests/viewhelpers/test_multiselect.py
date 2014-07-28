@@ -92,6 +92,9 @@ class TestMultiSelectFormView(TestCase):
                 queryset.filter.return_value = [item1]
                 return queryset
 
+            def get_field_layout(self):
+                return ['data']
+
         request = self.factory.post('/test', {
             'selected_objects': [1],
             'is_the_multiselect_form': 'yes'
@@ -100,11 +103,12 @@ class TestMultiSelectFormView(TestCase):
         response = SimpleMultiSelectFormView.as_view()(request)
         response.render()
         selector = htmls.S(response.content)
+        selector.prettyprint()
         self.assertEquals(selector.count('#django_cradmin_contentwrapper form'), 1)
         self.assertEquals(selector.one('input[name=selected_objects]')['type'], 'hidden')
         self.assertEquals(selector.one('input[name=selected_objects]')['value'], '1')
         self.assertEquals(selector.count('input[name=data]'), 1)
-        self.assertFalse(selector.exists('form .errorlist'))
+        self.assertFalse(selector.exists('form .has-error'))
 
     def test_form_invalid(self):
         class DemoForm(forms.Form):
@@ -121,6 +125,9 @@ class TestMultiSelectFormView(TestCase):
                 queryset.filter.return_value = [item1]
                 return queryset
 
+            def get_field_layout(self):
+                return ['data']
+
         request = self.factory.post('/test', {
             'selected_objects': [1],
         })
@@ -133,7 +140,7 @@ class TestMultiSelectFormView(TestCase):
         self.assertEquals(selector.one('input[name=selected_objects]')['value'], '1')
         self.assertEquals(selector.count('input[name=data]'), 1)
         self.assertEquals(
-            selector.one('form .errorlist').alltext_normalized,
+            selector.one('#div_id_data .help-block').alltext_normalized,
             'This field is required.')
 
     def test_form_valid(self):

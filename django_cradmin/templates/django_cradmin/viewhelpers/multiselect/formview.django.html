@@ -20,8 +20,7 @@
         <form method="post" action="{{ request.build_absolute_uri }}">
             {% csrf_token %}
             {{ selected_objects_form.as_ul }}
-            {{ form.as_ul }}
-            {# {% crispy form formhelper %} #}
+            {% crispy form formhelper %}
         </form>
     {% endblock forms %}
 

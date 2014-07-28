@@ -3,6 +3,8 @@ from django import forms
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormMixin
 from django.shortcuts import render
+from crispy_forms import layout
+from crispy_forms.helper import FormHelper
 
 
 class MultiSelectView(TemplateView):
@@ -82,6 +84,10 @@ class MultiSelectView(TemplateView):
         return context
 
 
+class NoFormActionFormHelper(FormHelper):
+    form_action = ''
+
+
 class MultiSelectFormView(MultiSelectView, FormMixin):
     template_name = 'django_cradmin/viewhelpers/multiselect/formview.django.html'
 
@@ -89,6 +95,11 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
     #: this, but if you do not specify this, you have to override
     #: :meth:`.get_pagetitle`.
     model = None
+
+    #: The field that should always be set to the current role.
+    #: Adds a hidden field with the correct value for the current
+    #: role. See :meth:`.get_hidden_fields`.
+    roleid_field = None
 
     def object_selection_valid(self):
         form_class = self.get_form_class()
@@ -136,4 +147,95 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
     def get_context_data(self, **kwargs):
         context = super(MultiSelectFormView, self).get_context_data(**kwargs)
         context['pagetitle'] = self.get_pagetitle()
+        context['formhelper'] = self.get_formhelper()
         return context
+
+    def get_field_layout(self):
+        """
+        Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
+        Defaults to a all fields on the model. If :obj:`.fields`, we use those fields.
+
+        Simple example (same as specifying the fields in :obj:`.fields`)::
+
+            from crispy_forms import layout
+
+            class MyCreateView(CreateView):
+                def get_field_layout(self):
+                    return [
+                        layout.Div(
+                            'title', 'name', 'size', 'tags',
+                            css_class='cradmin-globalfields')
+                    ]
+
+        A slightly more complex example::
+
+            from crispy_forms import layout
+
+            class MyEditView(MultiSelectFormView):
+                def get_field_layout(self):
+                    return [
+                        layout.Div('data', css_class="cradmin-formfield-like-fieldset"),
+                    ]
+
+        """
+        raise NotImplementedError()
+
+    def get_hidden_fields(self):
+        """
+        Get hidden fields for the form.
+
+        If you set :obj:`.roleid_field`, a hidden field named whatever you
+        specify in :obj:`.roleid_field` with value set to the current role ID
+        is added automatically.
+
+        Returns:
+            An iterable of :class:`crispy_forms.layout.Hidden` objects.
+        """
+        fields = []
+        if self.roleid_field:
+            roleid = self.request.cradmin_instance.get_roleid(self.request.cradmin_role)
+            fields.append(layout.Hidden(self.roleid_field, roleid))
+        return fields
+
+    def get_buttons(self):
+        """
+        Get buttons for the form, normally one or more submit button.
+
+        Each button must be a crispy form layout object, typically some
+        subclass of :class:`crispy_forms.layout.Submit`.
+
+        See:
+            This method is used by :meth:`.get_button_layout`.
+        """
+        return []
+
+    def get_button_layout(self):
+        """
+        Get the button layout. This is added to the crispy form layout.
+
+        Defaults to a :class:`crispy_forms.layout.Div` with css class
+        ``django_cradmin_submitrow`` containing all the buttons
+        returned by :meth:`.get_buttons`.
+        """
+        return [
+            layout.Div(*self.get_buttons(), css_class="django_cradmin_submitrow")
+        ]
+
+    def get_formhelper(self):
+        """
+        Get a :class:`crispy_forms.helper.FormHelper`.
+
+        You normally do not need to override this directly. Instead
+        you should override:
+
+        - :meth:`.get_field_layout`.
+        - :meth:`.get_hidden_fields`
+        - :meth:`.get_buttons` (or perhaps :meth:`.get_button_layout`)
+        """
+        helper = NoFormActionFormHelper()
+        helper.form_class = 'django_cradmin_form'
+        layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
+        helper.layout = layout.Layout(*layoutargs)
+        helper.form_tag = False  # NOTE: We render the form tag in the template because we render multiple forms.
+        helper.disable_csrf = True  # NOTE: We render csrf token in the template.
+        return helper
