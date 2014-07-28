@@ -212,3 +212,9 @@ class TestButton(TestCase):
             'My', 'Btn', '</a>']
         result = btn.render().split()
         self.assertEquals(result, expected)
+
+
+class TestObjectTableView(TestCase):
+
+    def test_get_columns(self):
+        pass

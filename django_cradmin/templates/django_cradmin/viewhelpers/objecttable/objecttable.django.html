@@ -46,7 +46,16 @@
                     action="{{ request.build_absolute_uri }}"
                     django-cradmin-form-action="{% verbatim %}selectedAction.url{% endverbatim %}"
                 {% endif %}>
+
+            {% if multiselect_actions %}
+                {% comment %}
+                    NOTE: Used by the views handling the multiselect to distinguish
+                    between POST requests from this view, and within that view.
+                {% endcomment %}
+                <input type="hidden" name="is_the_multiselect_form" value="yes">
+            {% endif %}
             {% csrf_token %}
+
             <table id="objecttableview-table" class="table table-cradmin-fluid">
                 <thead>
                     <tr>
@@ -73,7 +82,7 @@
                             {% if multiselect_actions %}
                                 <td class="objecttableview-multiselectcolumn">
                                     <input type="checkbox"
-                                        name="objecttable-multiselectitem"
+                                        name="selected_objects"
                                         value="{{ row.object.pk }}"
                                         ng-cloak
                                         ng-checked="items.item_{{ row.object.pk }}"

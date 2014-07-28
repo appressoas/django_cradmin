@@ -1,8 +1,10 @@
 from django.utils.translation import ugettext_lazy as _
+from django import forms
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
+from django_cradmin.viewhelpers import multiselect
 from django_cradmin import crapp
 # from django_cradmin.wysihtml5.widgets import WysiHtmlTextArea
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
@@ -52,8 +54,8 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
         app = self.request.cradmin_app
         return [
             objecttable.MultiSelectAction(
-                label=_('Delete'),
-                url=app.reverse_appurl('multidelete')
+                label=_('Edit'),
+                url=app.reverse_appurl('multiedit')
             ),
         ]
 
@@ -93,6 +95,28 @@ class PageDeleteView(PagesQuerySetForRoleMixin, delete.DeleteView):
     """
 
 
+class PageMultiEditForm(forms.Form):
+    pages = forms.CharField(required=True, widget=forms.Textarea)
+
+
+class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectView):
+    """
+    View used to edit multiple pages at the same time.
+    """
+    template_name = ''
+
+    def object_selection_valid(self, selected_objects):
+        if 'pages' in self.request.POST:
+            form = PageMultiEditForm(self.request.POST)
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+        else:
+            form = PageMultiEditForm()
+        return self.render_to_response(self.get_context_data(form=form))
+
+
 class App(crapp.App):
     appurls = [
         crapp.Url(
@@ -112,7 +136,7 @@ class App(crapp.App):
             PageDeleteView.as_view(),
             name="delete"),
         crapp.Url(
-            r'^multidelete/$',
-            PageDeleteView.as_view(),
-            name="multidelete")
+            r'^multiedit/$',
+            PageMultiEditView.as_view(),
+            name="multiedit")
     ]

@@ -1,0 +1,32 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% block pageheader %}
+        <div class="page-header page-header-nomargin">
+            {% block headingicon %}
+                <span class="fa fa-edit"></span>
+            {% endblock headingicon %}
+
+            <div class="container-fluid">
+                <strong>{% trans "EDIT" %}</strong>
+                {{ pagetitle }}
+            </div>
+        </div>
+    {% endblock pageheader %}
+
+    {% block forms %}
+        <form method="post" action="{{ request.build_absolute_uri }}">
+            {% csrf_token %}
+            {{ selected_objects_form.as_ul }}
+            {{ form.as_ul }}
+            {# {% crispy form formhelper %} #}
+        </form>
+    {% endblock forms %}
+
+    {% comment %}
+        NOTE: This will probably break when https://github.com/maraujop/django-crispy-forms/issues/263 is fixed
+    {% endcomment %}
+    {{ form.media }}
+{% endblock content %}
