@@ -167,3 +167,33 @@ class TestMultiSelectFormView(TestCase):
         request.cradmin_role = mock.MagicMock()
         response = SimpleMultiSelectFormView.as_view()(request)
         self.assertEquals(response.content, 'Submitted: Hello world')
+
+    def test_form_valid_success_redirect(self):
+        class DemoForm(forms.Form):
+            data = forms.CharField()
+
+        class SimpleMultiSelectFormView(multiselect.MultiSelectFormView):
+            form_class = DemoForm
+            model = mock.MagicMock()
+
+            def get_queryset_for_role(self, role):
+                queryset = mock.MagicMock()
+                item1 = mock.MagicMock()
+                item1.pk = 1
+                queryset.filter.return_value = [item1]
+                return queryset
+
+            def get_success_url(self):
+                return '/success'
+
+            def form_valid(self, form):
+                return self.success_redirect_response()
+
+        request = self.factory.post('/test', {
+            'selected_objects': [1],
+            'data': 'Hello world'
+        })
+        request.cradmin_role = mock.MagicMock()
+        response = SimpleMultiSelectFormView.as_view()(request)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response['Location'], '/success')

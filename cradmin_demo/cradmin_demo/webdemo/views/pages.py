@@ -99,7 +99,9 @@ class PageDeleteView(PagesQuerySetForRoleMixin, delete.DeleteView):
 
 
 class PageMultiEditForm(forms.Form):
-    pages = forms.CharField(required=True, widget=forms.Textarea)
+    new_body = forms.CharField(
+        label="New value for the page body",
+        required=True, widget=forms.Textarea)
 
 
 class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectFormView):
@@ -108,16 +110,17 @@ class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectFormVi
 
     def get_buttons(self):
         return [
-            PrimarySubmit('submit-save', _('Save'))
+            PrimarySubmit('submit-save', _('Update text for selected pages'))
         ]
 
     def get_field_layout(self):
         return [
-            layout.Div('pages', css_class="cradmin-focusfield"),
+            layout.Div('new_body', css_class="cradmin-focusfield"),
         ]
 
     def form_valid(self, form):
-        return http.HttpResponse('Form submitted OK. Nothing was saved.')
+        self.selected_objects.update(body=form.cleaned_data['new_body'])
+        return self.success_redirect_response()
 
 
 class App(crapp.App):

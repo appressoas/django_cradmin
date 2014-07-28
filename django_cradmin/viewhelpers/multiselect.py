@@ -3,6 +3,7 @@ from django import forms
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormMixin
 from django.shortcuts import render
+from django import http
 from crispy_forms import layout
 from crispy_forms.helper import FormHelper
 
@@ -53,7 +54,7 @@ class MultiSelectView(TemplateView):
         """
         self.selected_objects_form = self._get_selected_objects_form()
         if self.selected_objects_form.is_valid():
-            self.selected_objects = self.selected_objects_form['selected_objects']
+            self.selected_objects = self.selected_objects_form.cleaned_data['selected_objects']
             return self.object_selection_valid()
         else:
             return self.object_selection_invalid(self.selected_objects_form)
@@ -88,6 +89,7 @@ class MultiSelectView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MultiSelectView, self).get_context_data(**kwargs)
         context['selected_objects_form'] = self.selected_objects_form
+        context['selected_objects'] = self.selected_objects
         return context
 
     def get_success_url(self):
@@ -97,6 +99,13 @@ class MultiSelectView(TemplateView):
         Defaults to :obj:`.success_viewname`.
         """
         return self.request.cradmin_app.reverse_appurl(self.success_viewname)
+
+    def success_redirect_response(self):
+        """
+        Return a :class:`django.http.HttpResponseRedirect` response with
+        :meth:`.get_success_url` as the URL.
+        """
+        return http.HttpResponseRedirect(self.get_success_url())
 
 
 class NoFormActionFormHelper(FormHelper):
