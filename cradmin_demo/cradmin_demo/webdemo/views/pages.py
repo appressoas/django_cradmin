@@ -1,5 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
+from django import http
+from crispy_forms import layout
+
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
@@ -8,7 +11,7 @@ from django_cradmin.viewhelpers import multiselect
 from django_cradmin import crapp
 # from django_cradmin.wysihtml5.widgets import WysiHtmlTextArea
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
-from crispy_forms import layout
+from django_cradmin.crispylayouts import PrimarySubmit
 
 from cradmin_demo.webdemo.models import Page
 
@@ -99,22 +102,22 @@ class PageMultiEditForm(forms.Form):
     pages = forms.CharField(required=True, widget=forms.Textarea)
 
 
-class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectView):
-    """
-    View used to edit multiple pages at the same time.
-    """
-    template_name = ''
+class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectFormView):
+    form_class = PageMultiEditForm
+    model = Page
 
-    def object_selection_valid(self, selected_objects):
-        if 'pages' in self.request.POST:
-            form = PageMultiEditForm(self.request.POST)
-            if form.is_valid():
-                return self.form_valid(form)
-            else:
-                return self.form_invalid(form)
-        else:
-            form = PageMultiEditForm()
-        return self.render_to_response(self.get_context_data(form=form))
+    def get_buttons(self):
+        return [
+            PrimarySubmit('submit-save', _('Save'))
+        ]
+
+    def get_field_layout(self):
+        return [
+            layout.Div('pages', css_class="cradmin-focusfield"),
+        ]
+
+    def form_valid(self, form):
+        return http.HttpResponse('Form submitted OK. Nothing was saved.')
 
 
 class App(crapp.App):

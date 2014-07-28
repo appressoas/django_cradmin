@@ -59,8 +59,8 @@ class CreateUpdateViewMixin(object):
             class MyCreateView(CreateView):
                 def get_field_layout(self):
                     return [
-                        layout.Div('title', css_class="cradmin-formfield-like-fieldset"),
-                        layout.Div('description', css_class="cradmin-formfield-like-fieldset"),
+                        layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
+                        layout.Div('description', css_class="cradmin-focusfield"),
                         layout.Fieldset('Metadata',
                             'size',
                             'tags'

@@ -103,7 +103,6 @@ class TestMultiSelectFormView(TestCase):
         response = SimpleMultiSelectFormView.as_view()(request)
         response.render()
         selector = htmls.S(response.content)
-        selector.prettyprint()
         self.assertEquals(selector.count('#django_cradmin_contentwrapper form'), 1)
         self.assertEquals(selector.one('input[name=selected_objects]')['type'], 'hidden')
         self.assertEquals(selector.one('input[name=selected_objects]')['value'], '1')

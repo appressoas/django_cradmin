@@ -6,12 +6,19 @@ from django.shortcuts import render
 from crispy_forms import layout
 from crispy_forms.helper import FormHelper
 
+from django_cradmin import crapp
+
 
 class MultiSelectView(TemplateView):
     """
     Base view for multiselect views (views used when the
     user selects one or more items for some action).
     """
+
+    #: The view name for the success page.
+    #: You can set this, or implement :meth:`.get_listing_url`.
+    #: Defaults to :obj:`django_cradmin.crapp.INDEXVIEW_NAME`.
+    success_viewname = crapp.INDEXVIEW_NAME
 
     def get_queryset_for_role(self, role):
         """
@@ -82,6 +89,14 @@ class MultiSelectView(TemplateView):
         context = super(MultiSelectView, self).get_context_data(**kwargs)
         context['selected_objects_form'] = self.selected_objects_form
         return context
+
+    def get_success_url(self):
+        """
+        Get the URL to redirect to on success.
+
+        Defaults to :obj:`.success_viewname`.
+        """
+        return self.request.cradmin_app.reverse_appurl(self.success_viewname)
 
 
 class NoFormActionFormHelper(FormHelper):
@@ -174,7 +189,7 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
             class MyEditView(MultiSelectFormView):
                 def get_field_layout(self):
                     return [
-                        layout.Div('data', css_class="cradmin-formfield-like-fieldset"),
+                        layout.Div('data', css_class="cradmin-focusfield"),
                     ]
 
         """
@@ -233,7 +248,6 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
         - :meth:`.get_buttons` (or perhaps :meth:`.get_button_layout`)
         """
         helper = NoFormActionFormHelper()
-        helper.form_class = 'django_cradmin_form'
         layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
         helper.layout = layout.Layout(*layoutargs)
         helper.form_tag = False  # NOTE: We render the form tag in the template because we render multiple forms.
