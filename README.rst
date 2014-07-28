@@ -2,6 +2,9 @@ Django cradmin
 ==============
 Django custom role based admin UI.
 
+.. image:: https://travis-ci.org/appressoas/django_cradmin.svg?branch=master
+    :target: https://travis-ci.org/appressoas/django_cradmin
+
 
 License
 =======
