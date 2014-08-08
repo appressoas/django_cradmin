@@ -146,13 +146,32 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
     #: role. See :meth:`.get_hidden_fields`.
     roleid_field = None
 
+    def get_form_kwargs(self):
+        """
+        Returns the keyword arguments for instantiating the form.
+
+        Overridden to handle the fact that we always POST. So instead
+        of distinquishing between POST and GET, we check
+        :meth:`.MultiSelectView.is_first_load`.
+        """
+        kwargs = {
+            'initial': self.get_initial(),
+            'prefix': self.get_prefix(),
+        }
+
+        if not self.is_first_load() and self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+        return kwargs
+
     def object_selection_valid(self):
         form_class = self.get_form_class()
+        form = self.get_form(form_class)
         if self.is_first_load():
-            form = form_class()
             return self.first_load(form)
         else:
-            form = self.get_form(form_class)
             if form.is_valid():
                 return self.form_valid(form)
             else:

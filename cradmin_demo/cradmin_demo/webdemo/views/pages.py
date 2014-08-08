@@ -121,6 +121,11 @@ class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectFormVi
         self.selected_objects.update(body=form.cleaned_data['new_body'])
         return self.success_redirect_response()
 
+    def get_initial(self):
+        return {
+            'new_body': 'Write something here...'
+        }
+
 
 class App(crapp.App):
     appurls = [
