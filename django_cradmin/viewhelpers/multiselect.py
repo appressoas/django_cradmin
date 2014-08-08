@@ -113,6 +113,13 @@ class NoFormActionFormHelper(FormHelper):
 
 
 class MultiSelectFormView(MultiSelectView, FormMixin):
+    """
+    Extends :class:`.MultiSelectView` and :class:`django.views.generic.edit.FormMixin`
+    to make a base class for multiselect form views.
+
+    You only have to override :meth:`.form_valid` and :meth:`.get_field_layout`,
+    but you will most likely want to override :meth:.get_buttons` too.
+    """
     template_name = 'django_cradmin/viewhelpers/multiselect/formview.django.html'
 
     #: The model class to edit. You do not have to specify
