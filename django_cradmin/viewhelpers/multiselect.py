@@ -14,6 +14,10 @@ class MultiSelectView(TemplateView):
     """
     Base view for multiselect views (views used when the
     user selects one or more items for some action).
+
+    You must override:
+    - :meth:`.get_queryset_for_role`.
+    - :meth:`.object_selection_valid`
     """
 
     #: The view name for the success page.
@@ -117,11 +121,16 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
     Extends :class:`.MultiSelectView` and :class:`django.views.generic.edit.FormMixin`
     to make a base class for multiselect form views.
 
-    You only have to override :meth:`.form_valid` and :meth:`.get_field_layout`,
-    but you will most likely want to override :meth:.get_buttons` too.
-    You also have to set :obj:`.model` (or override a method as explained in
-    the docs for the model attribute), and you have to specify ``form_class`` or
-    ``get_form_class(...)`` as documented in the Django FormMixin docs.
+    You must override:
+    - :meth:`.get_queryset_for_role`
+    - :meth:`.form_valid`
+    - :meth:`.get_field_layout`
+
+    And you have to set:
+    - :obj:`.model`, or override a method as explained in its docs.
+    - ``form_class`` or override ``get_form_class(...)`` as documented in the Django FormMixin docs.
+
+    You will most likely also want to override :meth:.get_buttons`.
     """
     template_name = 'django_cradmin/viewhelpers/multiselect/formview.django.html'
 
