@@ -72,10 +72,12 @@ class MultiSelectView(TemplateView):
         """
         return 'is_the_multiselect_form' in self.request.POST
 
-    def object_selection_valid(self, selected_objects):
+    def object_selection_valid(self):
         """
         Called if the form used to validate the selected objects is valid.
         Must be overridden.
+
+        The selected objects is available as ``self.selected_objects``.
         """
         raise NotImplementedError()
 
