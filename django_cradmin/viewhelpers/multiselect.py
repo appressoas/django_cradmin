@@ -119,6 +119,9 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
 
     You only have to override :meth:`.form_valid` and :meth:`.get_field_layout`,
     but you will most likely want to override :meth:.get_buttons` too.
+    You also have to set :obj:`.model` (or override a method as explained in
+    the docs for the model attribute), and you have to specify ``form_class`` or
+    ``get_form_class(...)`` as documented in the Django FormMixin docs.
     """
     template_name = 'django_cradmin/viewhelpers/multiselect/formview.django.html'
 
