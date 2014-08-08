@@ -1,6 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
-from django import http
 from crispy_forms import layout
 
 from django_cradmin.viewhelpers import objecttable
