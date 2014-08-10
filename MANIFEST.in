@@ -1,2 +1,4 @@
 include README.rst
 recursive-include django_cradmin/static *
+prune django_cradmin/static/django_cradmin/node_modules
+prune django_cradmin/static/django_cradmin/bower_components
