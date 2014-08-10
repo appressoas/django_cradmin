@@ -1,10 +1,10 @@
-{% extends "django_cradmin/standalone-base.django.html" %}
+{% extends "django_cradmin/base-internal.django.html" %}
+{% comment %}
+    You can replace this template in your own project, and
+    override stuff from base-internal.django.html. This means
+    that you can put ``django_cradmin/base.django.html`` in
+    your own project, and override it without having to reimplement
+    anything.
 
-{% block body %}
-    {% block menu %}
-        {% include "django_cradmin/menu.django.html" %}
-    {% endblock menu %}
-    <div id="django_cradmin_contentwrapper">
-        {% block content %}{% endblock content %}
-    </div>
-{% endblock body %}
+    We will NEVER add anything to this template by default.
+{% endcomment %}
