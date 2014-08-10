@@ -111,7 +111,7 @@
             selectionRange.start.row += newlines;
             selectionRange.end.row = selectionRange.start.row;
             selectionRange.start.column += pre.length - newlines;
-            selectionRange.end.column += selectionRange.start.column + emptyText.length;
+            selectionRange.end.column += pre.length - newlines + emptyText.length;
             $scope.aceEditor.getSelection().setSelectionRange(selectionRange);
           }
           return $scope.aceEditor.focus();
