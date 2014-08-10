@@ -148,7 +148,31 @@
         });
       }
     };
-  }).directive('djangoCradminAcemarkdownTextarea', function() {
+  }).directive('djangoCradminAcemarkdownLink', [
+    '$window', function($window) {
+      return {
+        require: '^djangoCradminAcemarkdown',
+        restrict: 'A',
+        scope: {
+          'config': '=djangoCradminAcemarkdownLink'
+        },
+        link: function(scope, element, attr, markdownCtrl) {
+          element.on('click', function(e) {
+            var url;
+            e.preventDefault();
+            url = $window.prompt(scope.config.help, '');
+            if (url != null) {
+              return markdownCtrl.editorSurroundSelectionWith({
+                pre: '[',
+                post: "](" + url + ")",
+                emptyText: scope.config.emptyText
+              });
+            }
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminAcemarkdownTextarea', function() {
     return {
       require: '^djangoCradminAcemarkdown',
       restrict: 'A',

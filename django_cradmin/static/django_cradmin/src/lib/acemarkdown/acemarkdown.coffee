@@ -141,6 +141,30 @@ angular.module('djangoCradmin.acemarkdown', [])
   }
 
 
+.directive('djangoCradminAcemarkdownLink', [
+  '$window',
+  ($window) ->
+    return {
+      require: '^djangoCradminAcemarkdown'
+      restrict: 'A'
+      scope: {
+        'config': '=djangoCradminAcemarkdownLink'
+      }
+
+      link: (scope, element, attr, markdownCtrl) ->
+        element.on 'click', (e) ->
+          e.preventDefault()
+          url = $window.prompt(scope.config.help, '')
+          if url?
+            markdownCtrl.editorSurroundSelectionWith({
+              pre: '['
+              post: "](#{url})"
+              emptyText: scope.config.emptyText
+            })
+        return
+    }
+])
+
 
 .directive 'djangoCradminAcemarkdownTextarea', ->
   return {
