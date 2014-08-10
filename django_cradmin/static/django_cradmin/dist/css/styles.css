@@ -7349,7 +7349,7 @@ button.close {
   font-size: 70px;
   color: #111;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   #cradmin_menu .cradmin_menuicon {
     display: block;
   }
@@ -7435,12 +7435,12 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   color: #333333;
   background-color: #eeeeee;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle {
     display: none;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   #cradmin_menu {
     position: fixed;
     top: 0;
@@ -7824,14 +7824,9 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   -ms-transform: translate(0, 0);
   transform: translate(0, 0);
 }
-@media (min-width: 768px) {
-  .django_cradmin_form .django_cradmin_submitrow {
-    left: 220px;
-    right: 50px;
-  }
-}
 @media (min-width: 992px) {
   .django_cradmin_form .django_cradmin_submitrow {
+    left: 220px;
     width: 500px;
     right: auto;
   }
@@ -8003,7 +7998,7 @@ body {
   background-color: #E6E6E6;
   color: #666666;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   #django_cradmin_contentwrapper {
     padding-left: 170px;
   }
