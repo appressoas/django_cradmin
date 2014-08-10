@@ -1842,12 +1842,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #43b1b0;
+  color: #377ca8;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #2e7a79;
+  color: #24516e;
   text-decoration: underline;
 }
 a:focus {
@@ -3572,7 +3572,7 @@ select[multiple].input-lg {
 }
 .btn:hover,
 .btn:focus {
-  color: #43b1b0;
+  color: #377ca8;
   text-decoration: none;
 }
 .btn:active,
@@ -3593,7 +3593,7 @@ fieldset[disabled] .btn {
   box-shadow: none;
 }
 .btn-default {
-  color: #43b1b0;
+  color: #377ca8;
   background-color: #ffffff;
   border-color: #d9d9d9;
 }
@@ -3602,7 +3602,7 @@ fieldset[disabled] .btn {
 .btn-default:active,
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
-  color: #43b1b0;
+  color: #377ca8;
   background-color: #ebebeb;
   border-color: #bababa;
 }
@@ -3631,12 +3631,12 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-default .badge {
   color: #ffffff;
-  background-color: #43b1b0;
+  background-color: #377ca8;
 }
 .btn-primary {
   color: #ffffff;
-  background-color: #43b1b0;
-  border-color: #358c8b;
+  background-color: #377ca8;
+  border-color: #224d68;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -3644,8 +3644,8 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #ffffff;
-  background-color: #389393;
-  border-color: #24605f;
+  background-color: #2d6589;
+  border-color: #132b3a;
 }
 .btn-primary:active,
 .btn-primary.active,
@@ -3667,11 +3667,11 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-  background-color: #43b1b0;
-  border-color: #358c8b;
+  background-color: #377ca8;
+  border-color: #224d68;
 }
 .btn-primary .badge {
-  color: #43b1b0;
+  color: #377ca8;
   background-color: #ffffff;
 }
 .btn-success {
@@ -3839,7 +3839,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #ffffff;
 }
 .btn-link {
-  color: #43b1b0;
+  color: #377ca8;
   font-weight: normal;
   cursor: pointer;
   border-radius: 0;
@@ -3860,7 +3860,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #2e7a79;
+  color: #24516e;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -5032,7 +5032,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a:hover,
 .nav .open > a:focus {
   background-color: #eeeeee;
-  border-color: #43b1b0;
+  border-color: #377ca8;
 }
 .nav .nav-divider {
   height: 1px;
@@ -5697,7 +5697,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 6px 12px;
   line-height: 1.42857143;
   text-decoration: none;
-  color: #43b1b0;
+  color: #377ca8;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   margin-left: -1px;
@@ -5717,7 +5717,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .pagination > li > span:hover,
 .pagination > li > a:focus,
 .pagination > li > span:focus {
-  color: #2e7a79;
+  color: #24516e;
   background-color: #eeeeee;
   border-color: #dddddd;
 }
@@ -5912,7 +5912,7 @@ a.badge:focus {
 }
 a.list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
-  color: #43b1b0;
+  color: #377ca8;
   background-color: #ffffff;
 }
 .nav-pills > li > a > .badge {
@@ -5972,7 +5972,7 @@ a.list-group-item.active > .badge,
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #43b1b0;
+  border-color: #377ca8;
 }
 .thumbnail .caption {
   padding: 9px;
@@ -7458,7 +7458,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   margin: 0 0 20px 0;
   padding: 20px 0 22px 0;
   border: 0;
-  background-color: #43b1b0;
+  background-color: #377ca8;
   color: #ffffff;
 }
 .page-header .fa,
@@ -7487,15 +7487,15 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   }
 }
 .page-header .btn.btn-default {
-  background-color: #43b1b0;
-  border-color: #358c8b;
+  background-color: #377ca8;
+  border-color: #224d68;
   color: #ffffff;
   transition: background-color 0.3s ease;
 }
 .page-header .btn.btn-default:hover {
-  background-color: #358c8b;
+  background-color: #224d68;
   color: #ffffff;
-  border-color: #358c8b;
+  border-color: #224d68;
 }
 .container-fluid {
   padding-left: 15px;
@@ -7549,6 +7549,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea {
   border: none;
   outline: none;
+  border-radius: 0;
   box-shadow: none;
   margin: 0;
   padding-left: 15px;
@@ -7574,14 +7575,14 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number]:focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls textarea:focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea:focus {
-  background-color: #F4FCFC;
+  background-color: #e1edf4;
 }
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text].cradmin-focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email].cradmin-focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number].cradmin-focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls textarea.cradmin-focus,
 .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-div-styled-as-textarea.cradmin-focus {
-  background-color: #F4FCFC;
+  background-color: #e1edf4;
 }
 @media (min-width: 992px) {
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text],
@@ -7777,7 +7778,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .cradmin-globalfields .form-group textarea:focus,
 .django_cradmin_form fieldset .form-group select:focus,
 .django_cradmin_form .cradmin-globalfields .form-group select:focus {
-  background-color: #f4fcfc;
+  background-color: #e1edf4;
 }
 .django_cradmin_form fieldset .form-group input[type=text],
 .django_cradmin_form .cradmin-globalfields .form-group input[type=text],
@@ -7853,12 +7854,12 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   color: #fff;
 }
 .django_cradmin_form .django_cradmin_submitrow .btn.btn-cancel {
-  color: #43b1b0;
+  color: #377ca8;
   font-size: 16px;
   text-transform: none;
 }
 .django_cradmin_form .django_cradmin_submitrow .btn.btn-cancel:hover {
-  color: #76cbca;
+  color: #60a2cb;
 }
 table.table.table-cradmin-fluid tbody tr td:first-child,
 table.table.table-cradmin-fluid thead tr th:first-child {
@@ -7897,21 +7898,21 @@ table.table.table-cradmin-fluid tbody tr td {
   transition-property: background-color color border-color;
 }
 .btn.btn-default:hover {
-  background-color: #43b1b0;
-  border-color: #43b1b0;
+  background-color: #377ca8;
+  border-color: #377ca8;
   color: #fff;
 }
 .btn.btn-primary:hover {
-  background-color: #358c8b;
-  border-color: #358c8b;
+  background-color: #224d68;
+  border-color: #224d68;
   color: #fff;
 }
 .btn.btn-cancel {
-  color: #43b1b0;
+  color: #377ca8;
   text-decoration: underline;
 }
 .btn.btn-cancel:hover {
-  color: #2e7a79;
+  color: #24516e;
 }
 .fa-header.fa-django-cradmin-h1 {
   font-size: 20px;

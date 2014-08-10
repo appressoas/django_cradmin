@@ -36,6 +36,7 @@
                 .cradmin-div-styled-as-textarea {
                     border: none;
                     outline: none;
+                    border-radius: 0;
                     box-shadow: none;
                     margin: 0;
                     .body-side-padding();
@@ -45,10 +46,10 @@
                     height: auto;
                     text-align: left;
                     &:focus {
-                        background-color: #F4FCFC;
+                        background-color: @cradmin-form-selected-bg;
                     }
                     &.cradmin-focus {
-                        background-color: #F4FCFC;
+                        background-color: @cradmin-form-selected-bg;
                     }
 
                     @media (min-width: @screen-md-min) {
