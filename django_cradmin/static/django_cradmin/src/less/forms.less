@@ -1,4 +1,11 @@
 
+.scaleToScreenHeight(@size) {
+    @media (min-height: @size) {
+        height: @size - 200px;
+    }
+}
+
+
 .django_cradmin_form {
     background-color: #eee;
     padding-bottom: 0;
@@ -107,6 +114,32 @@
                 input[type=email],
                 input[type=number] {
                     font-size: ceil(@font-size-base + 8px);
+                }
+            }
+        }
+
+        /**
+        # .cradmin-focusfield-screenheight
+        Scale the field focusfield to the screen height.
+        Uses css media queries just like the bootstrap responsive grid does
+        for the screen width.
+        */
+        &.cradmin-focusfield-screenheight {
+            .form-group {
+                margin: 0;
+                box-sizing: border-box;
+                .controls {
+                    textarea,
+                    .cradmin-div-styled-as-textarea {
+                        height: 200px;
+                        .scaleToScreenHeight(500px);
+                        .scaleToScreenHeight(550px);
+                        .scaleToScreenHeight(650px);
+                        .scaleToScreenHeight(750px);
+                        .scaleToScreenHeight(850px);
+                        .scaleToScreenHeight(950px);
+                        .scaleToScreenHeight(1050px);
+                    }
                 }
             }
         }

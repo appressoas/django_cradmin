@@ -7527,6 +7527,14 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   font-size: 18px;
   line-height: 22px;
 }
+.django_cradmin_form .cradmin-focusfield {
+  /**
+        # .cradmin-focusfield-screenheight
+        Scale the field focusfield to the screen height.
+        Uses css media queries just like the bootstrap responsive grid does
+        for the screen width.
+        */
+}
 .django_cradmin_form .cradmin-focusfield .form-group {
   margin: 0;
   box-sizing: border-box;
@@ -7650,6 +7658,56 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-lg .form-group input[type=number] {
   font-size: 24px;
 }
+.django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group {
+  margin: 0;
+  box-sizing: border-box;
+}
+.django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+.django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+  height: 200px;
+}
+@media (min-height: 500px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 300px;
+  }
+}
+@media (min-height: 550px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 350px;
+  }
+}
+@media (min-height: 650px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 450px;
+  }
+}
+@media (min-height: 750px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 550px;
+  }
+}
+@media (min-height: 850px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 650px;
+  }
+}
+@media (min-height: 950px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 750px;
+  }
+}
+@media (min-height: 1050px) {
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls textarea,
+  .django_cradmin_form .cradmin-focusfield.cradmin-focusfield-screenheight .form-group .controls .cradmin-div-styled-as-textarea {
+    height: 850px;
+  }
+}
 .django_cradmin_form fieldset legend,
 .django_cradmin_form .cradmin-focusfield label {
   display: block;
@@ -7748,6 +7806,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 }
 .django_cradmin_form .django_cradmin_submitrow {
   position: fixed;
+  z-index: 10000;
   bottom: -60px;
   left: 15px;
   right: 15px;

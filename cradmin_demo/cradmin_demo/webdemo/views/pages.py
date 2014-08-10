@@ -114,7 +114,7 @@ class PageMultiEditView(PagesQuerySetForRoleMixin, multiselect.MultiSelectFormVi
 
     def get_field_layout(self):
         return [
-            layout.Div('new_body', css_class="cradmin-focusfield"),
+            layout.Div('new_body', css_class="cradmin-focusfield cradmin-focusfield-screenheight"),
         ]
 
     def form_valid(self, form):
