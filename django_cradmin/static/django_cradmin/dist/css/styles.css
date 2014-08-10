@@ -7349,7 +7349,7 @@ button.close {
   font-size: 70px;
   color: #111;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   #cradmin_menu .cradmin_menuicon {
     display: block;
   }
@@ -7435,12 +7435,12 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   color: #333333;
   background-color: #eeeeee;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle {
     display: none;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   #cradmin_menu {
     position: fixed;
     top: 0;
@@ -7481,7 +7481,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .page-header.page-header-nomargin {
   margin: 0;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .page-header .btn.btn-sm {
     padding: 3px 10px;
   }
@@ -7501,7 +7501,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   padding-left: 15px;
   padding-right: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .container-fluid {
     padding-left: 50px;
     padding-right: 50px;
@@ -7559,7 +7559,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   height: auto;
   text-align: left;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=text],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=email],
   .django_cradmin_form .cradmin-focusfield .form-group .controls input[type=number],
@@ -7606,7 +7606,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   padding-left: 15px;
   padding-right: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .django_cradmin_form .cradmin-focusfield .form-group .controls span.help-block {
     padding-left: 50px;
     padding-right: 50px;
@@ -7624,7 +7624,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   top: 3px;
   font-size: 20px;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .django_cradmin_form .cradmin-focusfield .form-group .controls p.help-block {
     padding-left: 72px;
     padding-right: 50px;
@@ -7723,7 +7723,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   padding-left: 15px;
   padding-right: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .django_cradmin_form fieldset legend,
   .django_cradmin_form .cradmin-focusfield label {
     padding-left: 50px;
@@ -7739,7 +7739,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   padding-right: 15px;
   background-color: #fff;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .django_cradmin_form fieldset .form-group,
   .django_cradmin_form .cradmin-globalfields .form-group {
     padding-left: 50px;
@@ -7824,7 +7824,7 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
   -ms-transform: translate(0, 0);
   transform: translate(0, 0);
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .django_cradmin_form .django_cradmin_submitrow {
     left: 220px;
     right: 50px;
@@ -7869,7 +7869,7 @@ table.table.table-cradmin-fluid tbody tr td:first-child,
 table.table.table-cradmin-fluid thead tr th:first-child {
   padding-left: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   table.table.table-cradmin-fluid tbody tr td:first-child,
   table.table.table-cradmin-fluid thead tr th:first-child {
     padding-left: 50px;
@@ -7944,7 +7944,7 @@ table.table.table-cradmin-fluid tbody tr td {
 #objecttableview-table tbody tr td .objecttable-cellbuttons .btn-sm {
   text-transform: uppercase;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   #objecttableview-table tbody tr td .objecttable-cellbuttons .btn-sm {
     padding: 3px 10px;
   }
@@ -8003,7 +8003,7 @@ body {
   background-color: #E6E6E6;
   color: #666666;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   #django_cradmin_contentwrapper {
     padding-left: 170px;
   }
