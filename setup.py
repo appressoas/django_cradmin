@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='django_cradmin',
     description='Django cradmin.',
-    version='1.0.0-alpha.002',
+    version='1.0.0-alpha.003',
     url='https://github.com/appressoas/django_cradmin',
     author='Espen Angell Kristiansen, Vegard Angell',
     license='BSD',
