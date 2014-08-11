@@ -7808,22 +7808,15 @@ fieldset[disabled] #cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.a
 .django_cradmin_form .django_cradmin_submitrow {
   position: fixed;
   z-index: 10000;
-  bottom: -60px;
+  bottom: 0px;
   left: 15px;
   right: 15px;
   background-color: #333;
   padding: 8px;
   border-radius: 3px 3px 0 0;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  -webkit-transform: translate(0, -60px);
-  -ms-transform: translate(0, -60px);
-  transform: translate(0, -60px);
 }
 .django_cradmin_form .django_cradmin_submitrow.django_cradmin_submitrow_hidden {
-  -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
+  display: none;
 }
 @media (min-width: 992px) {
   .django_cradmin_form .django_cradmin_submitrow {
