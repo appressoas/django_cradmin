@@ -5,7 +5,7 @@
   "devDependencies": {
     "angular": "~1.2",
     "angular-mocks": "~1.2",
-    "fontawesome": "~4.1.0",
+    "fontawesome": "~4.2.0",
     "bootstrap": "~3.1.1",
     "ace-builds": "~1.1.3"
   }
