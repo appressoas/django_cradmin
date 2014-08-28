@@ -155,7 +155,7 @@ class ObjectTableView(ListView):
     model = None
 
     #: Defines the columns in the table. See :meth:`.get_columns`.
-    columns = [None]
+    columns = []
 
     def get_multiselect_actions(self):
         """
@@ -202,6 +202,10 @@ class ObjectTableView(ListView):
         raise NotImplementedError()
 
     def get_queryset(self):
+        """
+        DO NOT override this. Override :meth:`.get_queryset_for_role`
+        instead.
+        """
         queryset = self.get_queryset_for_role(self.request.cradmin_role)
         # TODO: Support filters
         return queryset

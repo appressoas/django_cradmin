@@ -7967,6 +7967,9 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
 .django_cradmin_form .django_cradmin_submitrow .btn.btn-cancel:hover {
   color: #60a2cb;
 }
+table.table.table-cradmin-fluid {
+  margin: 0;
+}
 table.table.table-cradmin-fluid tbody tr td:first-child,
 table.table.table-cradmin-fluid thead tr th:first-child {
   padding-left: 15px;
@@ -8019,6 +8022,35 @@ table.table.table-cradmin-fluid tbody tr td {
 }
 .btn.btn-cancel:hover {
   color: #24516e;
+}
+.pager-container .pager {
+  margin: 0;
+  padding: 10px 0;
+  color: #999;
+}
+.pager-container .pager li > a,
+.pager-container .pager li > span {
+  background-color: transparent;
+  border: none;
+  padding: 5px 14px;
+}
+.pager-container .pager li,
+.pager-container .pager li > a {
+  line-height: 24px;
+}
+.pager-container .pager li > a {
+  padding: 0;
+}
+.pager-container .pager li > a:hover {
+  background: transparent;
+  color: #377ca8;
+}
+.pager-container .pager li.disabled > a,
+.pager-container .pager li.disabled > a:hover,
+.pager-container .pager li.disabled > a:focus,
+.pager-container .pager li.disabled {
+  color: #777777;
+  background-color: transparent;
 }
 .fa-header.fa-django-cradmin-h1 {
   font-size: 20px;

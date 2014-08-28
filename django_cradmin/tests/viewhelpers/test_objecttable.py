@@ -1,8 +1,10 @@
+import htmls
 import mock
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.db import models
 
 from django_cradmin.viewhelpers import objecttable
+from django_cradmin.django_cradmin_testapp import models as testmodels
 
 
 class TestColumn(TestCase):
@@ -215,6 +217,97 @@ class TestButton(TestCase):
 
 
 class TestObjectTableView(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
 
-    def test_get_columns(self):
-        pass
+    def _mock_request(self, request):
+        request.cradmin_role = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+
+    def test_paginate_by_singlepage(self):
+        testmodels.SomeItem.objects.bulk_create(
+            [testmodels.SomeItem(name=unicode(x)) for x in xrange(4)])
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            paginate_by = 4
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        # selector.one('#django_cradmin_contentwrapper').prettyprint()
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 4)
+        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager'))
+
+    def test_paginate_by_firstpage(self):
+        testmodels.SomeItem.objects.bulk_create(
+            [testmodels.SomeItem(name=unicode(x)) for x in xrange(5)])
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            paginate_by = 4
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 4)
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager'))
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next'))
+        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))
+
+    def test_paginate_by_lastpage(self):
+        testmodels.SomeItem.objects.bulk_create(
+            [testmodels.SomeItem(name=unicode(x)) for x in xrange(5)])
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            paginate_by = 4
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'page': 2
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager'))
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .previous'))
+        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))
+
+    def test_paginate_by_middlepage(self):
+        testmodels.SomeItem.objects.bulk_create(
+            [testmodels.SomeItem(name=unicode(x)) for x in xrange(9)])
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            paginate_by = 4
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'page': 2
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        # selector.one('#django_cradmin_contentwrapper').prettyprint()
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 4)
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager'))
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .previous'))
+        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next'))
+        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
+        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))

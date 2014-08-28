@@ -32,5 +32,9 @@ class UpdateView(CreateUpdateViewMixin, DjangoUpdateView):
         raise NotImplementedError()
 
     def get_queryset(self):
+        """
+        DO NOT override this. Override :meth:`.get_queryset_for_role`
+        instead.
+        """
         queryset = self.get_queryset_for_role(self.request.cradmin_role)
         return queryset

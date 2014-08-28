@@ -23,6 +23,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'django_cradmin',
+    'django_cradmin.django_cradmin_testapp',
 
     # Required by django cradmin
     'crispy_forms',

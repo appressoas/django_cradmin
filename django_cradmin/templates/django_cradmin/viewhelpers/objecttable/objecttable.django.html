@@ -98,6 +98,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% include "django_cradmin/viewhelpers/includes/pager.django.html" %}
 
             {% if multiselect_actions %}
                 <div class="django_cradmin_submitrow objecttableview-multiselect-submitrow"
