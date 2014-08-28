@@ -9,3 +9,7 @@
 *.egg-info/
 /dist/
 .tox
+
+# Ignore user-specific pycharm settings
+.idea/workspace.xml
+.idea/tasks.xml
