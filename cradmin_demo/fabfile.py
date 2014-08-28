@@ -52,6 +52,15 @@ def recreate_devdb():
 
 
 @task
+def recreate_devdb_with_randomdata():
+    """
+    Recreate the test database and create random test data
+    """
+    recreate_devdb()
+    _manage('cradmin_webdemo_autogenerate_data')
+
+
+@task
 def dump_current_db_to_dumpscript_datafile():
     """
     Dump current db to the dumpscript dataset.

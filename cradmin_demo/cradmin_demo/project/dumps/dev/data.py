@@ -133,26 +133,18 @@ def import_data():
 
     from cradmin_demo.webdemo.models import Page
 
-
-    # Processing model: Site
-
-    from cradmin_demo.webdemo.models import Site
-
-    webdemo_site_1 = Site()
-    webdemo_site_1.name = u'Demosite'
-    webdemo_site_1 = importer.save_or_locate(webdemo_site_1)
-
-    webdemo_site_2 = Site()
-    webdemo_site_2.name = u'Comicbook store'
-    webdemo_site_2 = importer.save_or_locate(webdemo_site_2)
+    webdemo_page_1 = Page()
+    webdemo_page_1.title = u'This is a test!'
+    webdemo_page_1.body = u'Testing'
+    webdemo_page_1 = importer.save_or_locate(webdemo_page_1)
 
     # Processing model: User
 
     from django.contrib.auth.models import User
 
     auth_user_1 = User()
-    auth_user_1.password = u'pbkdf2_sha256$12000$9AsjYKIMnVOv$CPDJ36j3FXP/qVTxevJSo5T3I7ha6QWdCkaOMB9l9Lc='
-    auth_user_1.last_login = dateutil.parser.parse("2014-06-19T14:28:35.953228+00:00")
+    auth_user_1.password = u'pbkdf2_sha256$12000$N3dxNStcYNmH$OQpa2UzNJ3dSfyoFb00pKvVWIfJJfGBsbG3TcEyQvaU='
+    auth_user_1.last_login = dateutil.parser.parse("2014-08-28T15:06:42.255112+00:00")
     auth_user_1.is_superuser = True
     auth_user_1.username = u'grandma'
     auth_user_1.first_name = u''
@@ -163,10 +155,28 @@ def import_data():
     auth_user_1.date_joined = dateutil.parser.parse("2014-06-19T10:52:07.105000+00:00")
     auth_user_1 = importer.save_or_locate(auth_user_1)
 
-    # Re-processing model: Site
+    # Processing model: Site
+
+    from cradmin_demo.webdemo.models import Site
+
+    webdemo_site_1 = Site()
+    webdemo_site_1.name = u'Demosite'
+    webdemo_site_1 = importer.save_or_locate(webdemo_site_1)
 
     webdemo_site_1.admins.add(auth_user_1)
 
+    webdemo_site_2 = Site()
+    webdemo_site_2.name = u'Comicbook store'
+    webdemo_site_2 = importer.save_or_locate(webdemo_site_2)
+
     webdemo_site_2.admins.add(auth_user_1)
 
+    # Re-processing model: Page
+
+    webdemo_page_1.site = webdemo_site_1
+    webdemo_page_1 = importer.save_or_locate(webdemo_page_1)
+
     # Re-processing model: User
+
+
+    # Re-processing model: Site
