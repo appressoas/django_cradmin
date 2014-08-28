@@ -129,15 +129,6 @@ def run():
 def import_data():
     # Initial Imports
 
-    # Processing model: Page
-
-    from cradmin_demo.webdemo.models import Page
-
-    webdemo_page_1 = Page()
-    webdemo_page_1.title = u'This is a test!'
-    webdemo_page_1.body = u'Testing'
-    webdemo_page_1 = importer.save_or_locate(webdemo_page_1)
-
     # Processing model: User
 
     from django.contrib.auth.models import User
@@ -155,7 +146,6 @@ def import_data():
     auth_user_1.date_joined = dateutil.parser.parse("2014-06-19T10:52:07.105000+00:00")
     auth_user_1 = importer.save_or_locate(auth_user_1)
 
-    # Processing model: Site
 
     from cradmin_demo.webdemo.models import Site
 
@@ -171,12 +161,13 @@ def import_data():
 
     webdemo_site_2.admins.add(auth_user_1)
 
-    # Re-processing model: Page
 
+    # Processing model: Page
+
+    from cradmin_demo.webdemo.models import Page
+
+    webdemo_page_1 = Page()
+    webdemo_page_1.title = u'This is a test!'
+    webdemo_page_1.body = u'Testing'
     webdemo_page_1.site = webdemo_site_1
     webdemo_page_1 = importer.save_or_locate(webdemo_page_1)
-
-    # Re-processing model: User
-
-
-    # Re-processing model: Site

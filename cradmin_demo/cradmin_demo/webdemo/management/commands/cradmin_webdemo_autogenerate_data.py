@@ -37,7 +37,7 @@ class Command(BaseCommand):
         for x in xrange(100):
             pages.append(demomodels.Page(
                 site=site,
-                title=self._lorem_words(random.randint(1, 4)),
+                title=u'{} {}'.format(self.autoprefix, self._lorem_words(random.randint(1, 4))),
                 body=self._lorem_para(random.randint(1, 8))
             ))
         demomodels.Page.objects.bulk_create(pages)
