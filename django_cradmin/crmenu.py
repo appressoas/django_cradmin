@@ -12,16 +12,27 @@ class MenuItem(object):
     """
     template_name = 'django_cradmin/menuitem.django.html'
 
-    def __init__(self, label, url, icon=None, attributes={}):
+    def __init__(self, label, url, icon='circle-o', active=False, attributes={}):
+        """
+        Parameters:
+            label: A label shown in the menu.
+            url: The url to go to whem the user clicks the menu item.
+            icon: The name of a font-awesome icon (E.g.: "database", "user", ...).
+            active: Should be ``True`` if the menuitem should be styled as active.
+        """
         self.label = label
         self.url = url
         self.icon = icon
         self.attributes = attributes
+        self.active = active
 
     def render(self):
         return render_to_string(self.template_name, {
             'menuitem': self
         })
+
+    def is_active(self):
+        return self.active
 
 
 class Menu(object):

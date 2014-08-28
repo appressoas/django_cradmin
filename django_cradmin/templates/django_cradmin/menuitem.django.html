@@ -1,4 +1,4 @@
-<li>
+<li class="{% if menuitem.is_active %}cradmin_menu_activeitem{% endif %}">
     <a href="{{ menuitem.url }}" title="{{ menuitem.description }}">
         {% if menuitem.icon %}
             <span class="fa fa-{{ menuitem.icon }}"></span>

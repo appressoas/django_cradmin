@@ -7494,6 +7494,10 @@ nav#cradmin_menu ul.cradmin_menucontent li a .fa {
   top: 11px;
   left: 12px;
 }
+nav#cradmin_menu ul.cradmin_menucontent li.cradmin_menu_activeitem a {
+  color: #eeeeee;
+  font-weight: bold;
+}
 nav#cradmin_menu .cradmin_menumobileheader {
   border-bottom: 1px solid #444444;
   text-align: right;
