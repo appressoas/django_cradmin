@@ -1,8 +1,10 @@
-<a href="{{ menuitem.url }}" title="{{ menuitem.description }}">
-    {% if menuitem.icon %}
-        <span class="fa fa-{{ menuitem.icon }}"></span>
-    {% else %}
-        <span class="fa fa-dot-circle-o"></span>
-    {% endif %}
-    {{ menuitem.label }}
-</a>
+<li>
+    <a href="{{ menuitem.url }}" title="{{ menuitem.description }}">
+        {% if menuitem.icon %}
+            <span class="fa fa-{{ menuitem.icon }}"></span>
+        {% else %}
+            <span class="fa fa-dot-circle-o"></span>
+        {% endif %}
+        {{ menuitem.label }}
+    </a>
+</li>

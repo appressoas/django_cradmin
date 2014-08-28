@@ -1,5 +1,5 @@
 {% load i18n %}
-<div id="cradmin_menu" ng-controller="CradminMenuController">
+<nav id="cradmin_menu" ng-controller="CradminMenuController">
     <div class="cradmin_menuicon">
         {% block icon %}
             <span class="fa fa-wrench"></span>
@@ -12,10 +12,10 @@
             <span class="fa fa-bars"></span>
         </button>
     </div>
-    <div class="cradmin_menucontent"
+    <ul class="cradmin_menucontent"
             ng-class="{cradmin_menucontent_display: displayMenu}">
         {% for menuitem in request.cradmin_instance.get_menu %}
             {{ menuitem.render|safe }}
         {% endfor %}
-    </div>
-</div>
+    </ul>
+</nav>
