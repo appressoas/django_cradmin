@@ -276,6 +276,7 @@ class TestObjectTableView(TestCase):
     def test_paginate_by_singlepage(self):
         testmodels.SomeItem.objects.bulk_create(
             [testmodels.SomeItem(name=unicode(x)) for x in xrange(4)])
+
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
             paginate_by = 4
@@ -295,6 +296,7 @@ class TestObjectTableView(TestCase):
     def test_paginate_by_firstpage(self):
         testmodels.SomeItem.objects.bulk_create(
             [testmodels.SomeItem(name=unicode(x)) for x in xrange(5)])
+
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
             paginate_by = 4
@@ -316,6 +318,7 @@ class TestObjectTableView(TestCase):
     def test_paginate_by_lastpage(self):
         testmodels.SomeItem.objects.bulk_create(
             [testmodels.SomeItem(name=unicode(x)) for x in xrange(5)])
+
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
             paginate_by = 4
@@ -339,6 +342,7 @@ class TestObjectTableView(TestCase):
     def test_paginate_by_middlepage(self):
         testmodels.SomeItem.objects.bulk_create(
             [testmodels.SomeItem(name=unicode(x)) for x in xrange(9)])
+
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
             paginate_by = 4
@@ -360,3 +364,64 @@ class TestObjectTableView(TestCase):
         self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next'))
         self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
         self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))
+
+    def test_render_single_simple_column(self):
+        testmodels.SomeItem.objects.create(name='Item One')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+
+        self.assertEquals(selector.count('#objecttableview-table>thead>tr>th'), 1)
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th').alltext_normalized,
+            'The name - Click to order ascending')
+
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
+        self.assertEquals(selector.count('#objecttableview-table>tbody>tr>td'), 1)
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr>td').alltext_normalized,
+            'Item One')
+
+    def test_render_multiple_simple_columns(self):
+        testmodels.SomeItem.objects.create(name='Item One', somenumber=10)
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name', 'somenumber']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        selector.one('#django_cradmin_contentwrapper tbody').prettyprint()
+
+        self.assertEquals(selector.count('#objecttableview-table>thead>tr>th'), 2)
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th:first-child').alltext_normalized,
+            'The name - Click to order ascending')
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th:last-child').alltext_normalized,
+            'somenumber - Click to order ascending')
+
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
+        self.assertEquals(selector.count('#objecttableview-table>tbody>tr>td'), 2)
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr>td:first-child').alltext_normalized,
+            'Item One')
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr>td:last-child').alltext_normalized,
+            '10')

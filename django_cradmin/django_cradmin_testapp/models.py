@@ -6,6 +6,7 @@ class SomeItem(models.Model):
         max_length=30,
         verbose_name='The name'
     )
+    somenumber = models.IntegerField(null=True, blank=True)
     text = models.TextField(
         blank=True, null=False, default=''
     )

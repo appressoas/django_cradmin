@@ -112,6 +112,7 @@
                 <tbody>
                     {% for row in table %}
                         <tr
+                            class="cradmintest-objecttableview-object-with-pk-{{ row.object.pk }}"
                             {% if multiselect_actions %}
                                 ng-class="{'objecttableview-selected-row': items.item_{{ row.object.pk }} }"
                             {% endif %}
