@@ -526,3 +526,49 @@ class TestObjectTableView(TestCase):
         self.assertEquals(
             selector.one('#objecttableview-table>tbody>tr:last-child>td:first-child').alltext_normalized,
             'Item B')
+
+    def test_render_search_nomatch(self):
+        testmodels.SomeItem.objects.create(name='Item One')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+            searchfields = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'search': 'Nothing matches this'
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 0)
+
+    def test_render_search_match(self):
+        testmodels.SomeItem.objects.create(name='Item One')
+        testmodels.SomeItem.objects.create(name='Item Two')
+        testmodels.SomeItem.objects.create(name='Item Three')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+            searchfields = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'search': 'Item Two'
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr>td').alltext_normalized,
+            'Item Two')

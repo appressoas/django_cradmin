@@ -2,9 +2,11 @@ from collections import OrderedDict
 import json
 import re
 import logging
+from django import forms
 
 from django.template.loader import render_to_string
 from django.views.generic import ListView
+from django.db import models
 
 
 logger = logging.getLogger(__name__)
@@ -318,6 +320,10 @@ class OrderingStringParser(object):
         return len(self.orderingdict)
 
 
+class SearchForm(forms.Form):
+    search = forms.CharField(required=True)
+
+
 class ObjectTableView(ListView):
     """
     A view inspired by the changelist in ``django.contrib.admin``.
@@ -353,6 +359,17 @@ class ObjectTableView(ListView):
 
     #: Defines the columns in the table. See :meth:`.get_columns`.
     columns = []
+
+    #: The fields to search.
+    #: Setting this enables search. If you implement a custom
+    #: :meth:`.filter_search` method that does not make use of
+    #: ``searchfields``, you can override :meth:`.enable_search`
+    #: instead of setting this to some fake value.
+    searchfields = []
+
+    #: The default implementation of :meth:`.filter_search` uses this comparator
+    #: when searching the given :obj:`.searchfields`.
+    search_comparator = 'icontains'
 
     def get_multiselect_actions(self):
         """
@@ -398,6 +415,15 @@ class ObjectTableView(ListView):
         """
         raise NotImplementedError()
 
+    def enable_search(self):
+        """
+        Enable search?
+
+        The default implementation returns ``True`` if :obj:`.searchfields` is
+        not empty.
+        """
+        return len(self.searchfields) > 0
+
     def get_queryset(self):
         """
         DO NOT override this. Override :meth:`.get_queryset_for_role`
@@ -409,6 +435,12 @@ class ObjectTableView(ListView):
             orderby.extend(columnobject.get_orderby_args(orderinginfo.order_ascending))
         if orderby:
             queryset = queryset.order_by(*orderby)
+        if self.enable_search():
+            searchform = SearchForm(self.request.GET)
+            self.current_search = ''
+            if searchform.is_valid():
+                self.current_search = searchform.cleaned_data['search']
+                queryset = self.filter_search(searchstring=self.current_search, queryset=queryset)
         return queryset
 
     def _get_columnobjects(self):
@@ -452,6 +484,10 @@ class ObjectTableView(ListView):
         context['columns'] = self._get_columnobjects()
         context['table'] = list(self.__iter_table(object_list))
         context['buttons'] = self.get_buttons()
+        context['enable_search'] = self.enable_search()
+        if self.enable_search():
+            context['current_search'] = self.current_search
+            context['pager_extra_querystring'] = u'search={}'.format(self.current_search)
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         return context
 
@@ -501,3 +537,35 @@ class ObjectTableView(ListView):
                 pass
             else:
                 yield (columnobject, orderinginfo)
+
+    def filter_search(self, queryset, searchstring):
+        """
+        Filter the queryset on search.
+
+        The default implementation uses :obj:`.search_comparator` to compare
+        earch of the :obj:`.searchfields` with the given ``searchstring``.
+        This does not give a very good search experience, but it works
+        fine for small data sets.
+
+        If you want to use a search engine, you should make sure your
+        search engine can yield a list of ids/primary-keys, and override
+        this method with something like this::
+
+             def filter_search(self, queryset, searchstring):
+                ids = my_searchengine.search(searchstring)
+                return queryset.filter(id__in=ids)
+
+        If you use a custom search engine, you will most likely also want
+        to override :meth:`.enable_search` and just return ``True``.
+        """
+        if self.searchfields:
+            query = None
+            for fieldname in self.searchfields:
+                kwargs = {'{}__{}'.format(fieldname, self.search_comparator): searchstring}
+                fieldquery = models.Q(**kwargs)
+                if query:
+                    query |= fieldquery
+                else:
+                    query = fieldquery
+            queryset = queryset.filter(query)
+        return queryset

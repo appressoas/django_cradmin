@@ -7574,12 +7574,12 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   background-color: #377ca8;
   color: #ffffff;
 }
-.page-header .fa,
+.page-header .fa.cradmin-page-header-icon,
 .page-header h1 {
   line-height: 44px;
   vertical-align: middle;
 }
-.page-header .fa {
+.page-header .fa.cradmin-page-header-icon {
   font-size: 42px;
   margin-right: 8px;
   margin-left: -1px;
