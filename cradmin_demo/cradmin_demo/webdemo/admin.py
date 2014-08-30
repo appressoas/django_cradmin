@@ -13,6 +13,6 @@ admin.site.register(Site, SiteAdmin)
 
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title', 'site')
 
 admin.site.register(Page, PageAdmin)

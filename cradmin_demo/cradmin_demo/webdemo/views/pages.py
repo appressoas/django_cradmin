@@ -43,7 +43,8 @@ class PagesQuerySetForRoleMixin(object):
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     columns = [
-        TitleColumn
+        TitleColumn,
+        'body'
     ]
 
     def get_buttons(self):

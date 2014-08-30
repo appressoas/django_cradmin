@@ -8061,12 +8061,30 @@ table.table.table-cradmin-fluid tbody tr td {
 .fa-header.fa-django-cradmin-h3 {
   font-size: 12px;
 }
+#objecttableview-table thead th.objecttableview-sortable-header {
+  white-space: nowrap;
+}
+#objecttableview-table thead th.objecttableview-sortable-header a {
+  text-decoration: none;
+  display: inline-block;
+}
+#objecttableview-table thead th.objecttableview-sortable-header a:hover {
+  text-decoration: none;
+}
+#objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta {
+  font-weight: normal;
+  float: right;
+}
+#objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta a.objecttableview-remove-ordering-button {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+#objecttableview-table th.objecttableview-multiselectcolumn,
+#objecttableview-table td.objecttableview-multiselectcolumn {
+  width: 85px;
+}
 #objecttableview-table tbody tr.objecttableview-selected-row {
   background-color: #FFE2A8;
-}
-#objecttableview-table tbody tr th.objecttableview-multiselectcolumn,
-#objecttableview-table tbody tr td.objecttableview-multiselectcolumn {
-  width: 85px;
 }
 #objecttableview-table tbody tr td:first-child .objecttable-cellvalue {
   font-weight: bold;

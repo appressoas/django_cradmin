@@ -24,18 +24,13 @@ class TestColumn(TestCase):
         self.model_testobject = TestModel()
         view = mock.MagicMock()
         view.model = self.model_testobject
-        self.column_subclass = TestColSubclass(view=view)
-        self.column_subclass_noview = TestColSubclass()
+        self.column_subclass = TestColSubclass(view=view, columnindex=0)
 
     def test_get_header_not_implemented(self):
-        test = objecttable.Column()
+        test = objecttable.Column(view=None, columnindex=0)
 
         with self.assertRaises(NotImplementedError):
             test.get_header()
-
-    def test_get_header_no_view(self):
-        with self.assertRaises(AttributeError):
-            self.column_subclass_noview.get_header()
 
     def test_get_header(self):
         self.assertEqual("Test Value", self.column_subclass.get_header())
@@ -46,14 +41,14 @@ class TestColumn(TestCase):
 
     # check that you get an exception when running render_value without having modelfield..
     def test_render_value_not_implemented(self):
-        col = objecttable.Column()
+        col = objecttable.Column(view=None, columnindex=0)
 
         with self.assertRaises(NotImplementedError):
             col.render_value(None)
 
     # check that you get an exception when running render_cell without overriding with subclass..
     def test_render_cell_not_implemented(self):
-        col = objecttable.Column()
+        col = objecttable.Column(view=None, columnindex=0)
 
         with self.assertRaises(NotImplementedError):
             col.render_cell(None)
@@ -76,8 +71,7 @@ class TestPlainTextColumn(TestCase):
         self.model_testobject = TestModel()
         view = mock.MagicMock()
         view.model = self.model_testobject
-        self.column_subclass = TestColSubclass(view=view)
-        self.column_subclass_noview = TestColSubclass()
+        self.column_subclass = TestColSubclass(view=view, columnindex=0)
 
     def test_render_cell(self):
         self.model_testobject.testfield = 'test_value'
@@ -120,8 +114,8 @@ class TestSingleActionColumn(TestCase):
         self.model_testobject = TestModel(testfield="test_value")
         view = mock.MagicMock()
         view.model = self.model_testobject
-        self.column_subclass = TestColSubclass(view=view)
-        self.column_subclass_incomplete = TestIncompleteColSubclass(view=view)
+        self.column_subclass = TestColSubclass(view=view, columnindex=0)
+        self.column_subclass_incomplete = TestIncompleteColSubclass(view=view, columnindex=0)
 
     def test_get_actionurl_ExceptionRaised(self):
         with self.assertRaises(NotImplementedError):
@@ -171,8 +165,8 @@ class TestMultiActionColumn(TestCase):
         self.model_testobject = TestModel(testfield="test_value")
         view = mock.MagicMock()
         view.model = self.model_testobject
-        self.column_subclass = TestColSubclass(view=view)
-        self.column_subclass_incomplete = TestIncompleteColSubclass(view=view)
+        self.column_subclass = TestColSubclass(view=view, columnindex=0)
+        self.column_subclass_incomplete = TestIncompleteColSubclass(view=view, columnindex=0)
 
     def test_get_buttons_ExceptionRaised(self):
         with self.assertRaises(NotImplementedError):
@@ -214,6 +208,61 @@ class TestButton(TestCase):
             'My', 'Btn', '</a>']
         result = btn.render().split()
         self.assertEquals(result, expected)
+
+
+class TestOrderingStringParser(TestCase):
+    def test_parse_empty(self):
+        orderingqueryarg = objecttable.OrderingStringParser('')
+        self.assertEquals(len(orderingqueryarg.orderingdict), 0)
+
+    def test_parse_single(self):
+        orderingqueryarg = objecttable.OrderingStringParser('a3')
+        self.assertEquals(len(orderingqueryarg.orderingdict), 1)
+        self.assertTrue(orderingqueryarg.orderingdict[3])
+
+    def test_parse_multi(self):
+        orderingqueryarg = objecttable.OrderingStringParser('a3.d1')
+        self.assertEquals(len(orderingqueryarg.orderingdict), 2)
+        self.assertTrue(orderingqueryarg.orderingdict[3].order_ascending)
+        self.assertFalse(orderingqueryarg.orderingdict[1].order_ascending)
+
+    def test_remove_column(self):
+        self.assertEqual(
+            objecttable.OrderingStringParser('a3.d1.a6').remove_column(6),
+            'a3.d1')
+        self.assertEqual(
+            objecttable.OrderingStringParser('a3.d1.a6').remove_column(1),
+            'a3.a6')
+
+    def test_remove_nonexisting_colum(self):
+        self.assertEqual(
+            objecttable.OrderingStringParser('').remove_column(2),
+            '')
+        self.assertEqual(
+            objecttable.OrderingStringParser('a1').remove_column(2),
+            'a1')
+        self.assertEqual(
+            objecttable.OrderingStringParser('a3.d1.a6').remove_column(2),
+            'a3.d1.a6')
+
+    def test_flip_existing_column(self):
+        self.assertEqual(
+            objecttable.OrderingStringParser('d1').flip_column(1),
+            'a1')
+        self.assertEqual(
+            objecttable.OrderingStringParser('a3.d1.a6').flip_column(1),
+            'a3.a1.a6')
+        self.assertEqual(
+            objecttable.OrderingStringParser('a3.d1.a6').flip_column(3),
+            'd3.d1.a6')
+
+    def test_flip_new_column(self):
+        self.assertEqual(
+            objecttable.OrderingStringParser('').flip_column(1),
+            'a1')
+        self.assertEqual(
+            objecttable.OrderingStringParser('a3').flip_column(1),
+            'a3.a1')
 
 
 class TestObjectTableView(TestCase):

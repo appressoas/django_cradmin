@@ -1,52 +1,81 @@
 #objecttableview-table {
-    tbody {
-        tr {
-            &.objecttableview-selected-row {
-                background-color: #FFE2A8;
-            }
 
-            th, td {
-                &.objecttableview-multiselectcolumn {
-                    width: 85px;
-                }
-            }
-            td {
-                &:first-child {
-                    .objecttable-cellvalue {
-                        font-weight: bold;
-                    }
-                }
-                .objecttable-cellbuttons {
-                    padding: 0;
-                    margin: 0;
-                    .btn-sm {
-                        text-transform: uppercase;
-                    }
-                }
-                @media (min-width: @screen-sm-min) {
-                    .objecttable-cellbuttons {
-                        // opacity: 0;
-                        // transition: opacity 0.2s ease;
-
-                        .btn-sm {
-                            padding: 3px 10px;
-                        }
-                    }
-                    // &:hover {
-                    //     .objecttable-cellbuttons {
-                    //         opacity: 1;
-                    //     }
-                    // }
-                }
-            }
+  thead {
+    th.objecttableview-sortable-header {
+      white-space: nowrap;
+      a {
+        text-decoration: none;
+        display: inline-block;
+        &:hover {
+          text-decoration: none;
         }
+        &.objecttableview-flip-ordering-button {
+        }
+      }
+      .objecttableview-orderingindex {
+
+      }
+      .objecttableview-orderingmeta {
+        font-weight: normal;
+        float: right;
+        a.objecttableview-remove-ordering-button {
+          margin-left: 10px;
+          margin-right: 5px;
+        }
+      }
     }
+  }
+
+  th, td {
+    &.objecttableview-multiselectcolumn {
+      width: 85px;
+    }
+  }
+
+  tbody {
+    tr {
+      &.objecttableview-selected-row {
+        background-color: #FFE2A8;
+      }
+
+
+      td {
+        &:first-child {
+          .objecttable-cellvalue {
+            font-weight: bold;
+          }
+        }
+        .objecttable-cellbuttons {
+          padding: 0;
+          margin: 0;
+          .btn-sm {
+            text-transform: uppercase;
+          }
+        }
+        @media (min-width: @screen-sm-min) {
+          .objecttable-cellbuttons {
+            // opacity: 0;
+            // transition: opacity 0.2s ease;
+
+            .btn-sm {
+              padding: 3px 10px;
+            }
+          }
+          // &:hover {
+          //     .objecttable-cellbuttons {
+          //         opacity: 1;
+          //     }
+          // }
+        }
+      }
+    }
+  }
 }
 
 .objecttableview-multiselect-submitrow {
-    select.form-control {
-        max-width: 70%;
-        display: inline-block;
-        height: 40px;
-    }
+  select.form-control {
+    max-width: 70%;
+    display: inline-block;
+    height: 40px;
+  }
 }
