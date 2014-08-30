@@ -38,6 +38,7 @@ class Command(BaseCommand):
             pages.append(demomodels.Page(
                 site=site,
                 title=u'{} {}'.format(self.autoprefix, self._lorem_words(random.randint(1, 4))),
+                intro=self._lorem_shortpara(random.randint(3, 10)),
                 body=self._lorem_para(random.randint(1, 8))
             ))
         demomodels.Page.objects.bulk_create(pages)

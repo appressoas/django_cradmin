@@ -167,7 +167,8 @@ def import_data():
     from cradmin_demo.webdemo.models import Page
 
     webdemo_page_1 = Page()
-    webdemo_page_1.title = u'This is a test!'
+    webdemo_page_1.title = u'My supertest!'
+    webdemo_page_1.intro = 'Hello cruel world'
     webdemo_page_1.body = u'Testing'
     webdemo_page_1.site = webdemo_site_1
     webdemo_page_1 = importer.save_or_locate(webdemo_page_1)

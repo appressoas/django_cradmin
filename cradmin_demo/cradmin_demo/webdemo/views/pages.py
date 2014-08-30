@@ -44,7 +44,7 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     columns = [
         TitleColumn,
-        'body'
+        'intro'
     ]
 
     def get_buttons(self):
@@ -70,6 +70,7 @@ class PageCreateUpdateMixin(object):
     def get_field_layout(self):
         return [
             layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
+            layout.Div('intro', css_class="cradmin-focusfield"),
             layout.Div('body', css_class="cradmin-focusfield")
         ]
 

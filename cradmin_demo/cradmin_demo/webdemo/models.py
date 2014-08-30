@@ -17,6 +17,8 @@ class Page(models.Model):
     title = models.CharField(
         max_length=100,
         verbose_name=_('Title'))
+    intro = models.TextField(
+        verbose_name=_('Intro'))
     body = models.TextField(
         verbose_name=_('Body'))
     # tags = models.ManyToManyField(Tag)
