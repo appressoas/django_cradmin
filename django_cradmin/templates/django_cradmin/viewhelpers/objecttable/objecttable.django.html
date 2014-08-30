@@ -74,9 +74,9 @@
                                             href="{{ column.get_flip_ordering_url }}">
                                         {{ column.get_header }}
                                         {% if column.is_ordered_ascending %}
-                                            <span class="sr-only">- {% trans "Click to order descending" %}</span>
+                                            <span class="sr-only">- {% trans "Ordered ascending - Click to order descending" %}</span>
                                         {% else %}
-                                            <span class="sr-only">- {% trans "Click to order ascending" %}</span>
+                                            <span class="sr-only">- {% trans "Ordered descending - Click to order ascending" %}</span>
                                         {% endif %}
                                     </a>
                                     {% if column.is_ordered %}
@@ -88,15 +88,14 @@
                                             </a>
                                             {% if multicolumn_ordering %}
                                                 <span class="objecttableview-orderingindex">
-                                                    {{ column.orderinginfo.orderingstringindex }}
+                                                    <span class="sr-only"> - {% trans "Ordering priority" %}</span>
+                                                    {{ column.orderinginfo.orderingstringindex|add:1 }}
                                                 </span>
                                             {% endif %}
                                             <span class="objecttableview-orderingdirection">
                                                 {% if column.is_ordered_descending %}
                                                     <span class="fa fa-caret-up"></span>
-                                                    <span class="sr-only">{% trans "- Currently ordered descending" %}</span>
                                                 {% else %}
-                                                    <span class="sr-only">{% trans "- Currently ordered asscending" %}</span>
                                                     <span class="fa fa-caret-down"></span>
                                                 {% endif %}
                                             </span>

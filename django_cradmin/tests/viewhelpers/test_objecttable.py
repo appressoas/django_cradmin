@@ -384,7 +384,7 @@ class TestObjectTableView(TestCase):
         self.assertEquals(selector.count('#objecttableview-table>thead>tr>th'), 1)
         self.assertEquals(
             selector.one('#objecttableview-table>thead>tr>th').alltext_normalized,
-            'The name - Click to order ascending')
+            'The name - Ordered descending - Click to order ascending')
 
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
         self.assertEquals(selector.count('#objecttableview-table>tbody>tr>td'), 1)
@@ -407,15 +407,14 @@ class TestObjectTableView(TestCase):
         response = MyObjectTableView.as_view()(request)
         response.render()
         selector = htmls.S(response.content)
-        selector.one('#django_cradmin_contentwrapper tbody').prettyprint()
 
         self.assertEquals(selector.count('#objecttableview-table>thead>tr>th'), 2)
         self.assertEquals(
             selector.one('#objecttableview-table>thead>tr>th:first-child').alltext_normalized,
-            'The name - Click to order ascending')
+            'The name - Ordered descending - Click to order ascending')
         self.assertEquals(
             selector.one('#objecttableview-table>thead>tr>th:last-child').alltext_normalized,
-            'somenumber - Click to order ascending')
+            'somenumber - Ordered descending - Click to order ascending')
 
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
         self.assertEquals(selector.count('#objecttableview-table>tbody>tr>td'), 2)
@@ -425,3 +424,105 @@ class TestObjectTableView(TestCase):
         self.assertEquals(
             selector.one('#objecttableview-table>tbody>tr>td:last-child').alltext_normalized,
             '10')
+
+    def test_render_order_ascending_singlecolumn(self):
+        testmodels.SomeItem.objects.create(name='Item A')
+        testmodels.SomeItem.objects.create(name='Item B')
+        testmodels.SomeItem.objects.create(name='Item C')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'ordering': 'a0'
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 3)
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr:first-child>td').alltext_normalized,
+            'Item A')
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr:last-child>td').alltext_normalized,
+            'Item C')
+
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th').alltext_normalized,
+            'The name - Ordered ascending - Click to order descending')
+
+    def test_render_order_descending_column(self):
+        testmodels.SomeItem.objects.create(name='Item A')
+        testmodels.SomeItem.objects.create(name='Item B')
+        testmodels.SomeItem.objects.create(name='Item C')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'ordering': 'd0'
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        # selector.one('#django_cradmin_contentwrapper thead').prettyprint()
+
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 3)
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr:first-child>td').alltext_normalized,
+            'Item C')
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr:last-child>td').alltext_normalized,
+            'Item A')
+
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th').alltext_normalized,
+            'The name - Ordered descending - Click to order ascending')
+
+    def test_render_order_multicolumn(self):
+        testmodels.SomeItem.objects.create(name='Item A', somenumber=1)
+        testmodels.SomeItem.objects.create(name='Item B', somenumber=2)
+        testmodels.SomeItem.objects.create(name='Item C', somenumber=2)
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name', 'somenumber']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/test', {
+            'ordering': 'a1.d0'
+        })
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        # selector.one('#django_cradmin_contentwrapper thead').prettyprint()
+
+        self.assertEquals(selector.count('#objecttableview-table>thead>tr>th'), 2),
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th:first-child').alltext_normalized,
+            'The name - Ordered descending - Click to order ascending - Ordering priority 2')
+        self.assertEquals(
+            selector.one('#objecttableview-table>thead>tr>th:last-child').alltext_normalized,
+            'somenumber - Ordered ascending - Click to order descending - Ordering priority 1')
+
+        self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 3)
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr:first-child>td:first-child').alltext_normalized,
+            'Item A')
+        self.assertEquals(
+            selector.one('#objecttableview-table>tbody>tr:last-child>td:first-child').alltext_normalized,
+            'Item B')

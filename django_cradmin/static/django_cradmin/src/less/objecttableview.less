@@ -1,26 +1,45 @@
 #objecttableview-table {
 
   thead {
+    th {
+      line-height: @cradmin-objecttable-header-line-height;
+      vertical-align: middle;
+    }
     th.objecttableview-sortable-header {
       white-space: nowrap;
+      line-height: @cradmin-objecttable-header-line-height;
       a {
+        line-height: @cradmin-objecttable-header-line-height;
         text-decoration: none;
         display: inline-block;
+        vertical-align: middle;
         &:hover {
           text-decoration: none;
         }
-        &.objecttableview-flip-ordering-button {
-        }
       }
-      .objecttableview-orderingindex {
-
+      a.objecttableview-flip-ordering-button {
       }
       .objecttableview-orderingmeta {
-        font-weight: normal;
         float: right;
+        line-height: @cradmin-objecttable-header-line-height;
+        font-weight: normal;
         a.objecttableview-remove-ordering-button {
-          margin-left: 10px;
-          margin-right: 5px;
+          line-height: @cradmin-objecttable-header-line-height;
+          vertical-align: middle;
+          padding-left: 12px;
+          padding-right: 5px;
+          font-size: ceil(@font-size-base - 2px);
+        }
+        .objecttableview-orderingindex {
+          line-height: @cradmin-objecttable-header-line-height;
+          vertical-align: middle;
+          font-size: ceil(@font-size-base - 2px);
+          color: #666;
+        }
+        .objecttableview-orderingdirection {
+          font-size: ceil(@font-size-base + 6px);
+          line-height: @cradmin-objecttable-header-line-height;
+          vertical-align: middle;
         }
       }
     }

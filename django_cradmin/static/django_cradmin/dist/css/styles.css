@@ -8061,23 +8061,45 @@ table.table.table-cradmin-fluid tbody tr td {
 .fa-header.fa-django-cradmin-h3 {
   font-size: 12px;
 }
+#objecttableview-table thead th {
+  line-height: 40px;
+  vertical-align: middle;
+}
 #objecttableview-table thead th.objecttableview-sortable-header {
   white-space: nowrap;
+  line-height: 40px;
 }
 #objecttableview-table thead th.objecttableview-sortable-header a {
+  line-height: 40px;
   text-decoration: none;
   display: inline-block;
+  vertical-align: middle;
 }
 #objecttableview-table thead th.objecttableview-sortable-header a:hover {
   text-decoration: none;
 }
 #objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta {
-  font-weight: normal;
   float: right;
+  line-height: 40px;
+  font-weight: normal;
 }
 #objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta a.objecttableview-remove-ordering-button {
-  margin-left: 10px;
-  margin-right: 5px;
+  line-height: 40px;
+  vertical-align: middle;
+  padding-left: 12px;
+  padding-right: 5px;
+  font-size: 14px;
+}
+#objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta .objecttableview-orderingindex {
+  line-height: 40px;
+  vertical-align: middle;
+  font-size: 14px;
+  color: #666;
+}
+#objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta .objecttableview-orderingdirection {
+  font-size: 22px;
+  line-height: 40px;
+  vertical-align: middle;
 }
 #objecttableview-table th.objecttableview-multiselectcolumn,
 #objecttableview-table td.objecttableview-multiselectcolumn {
