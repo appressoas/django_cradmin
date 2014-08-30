@@ -7980,6 +7980,16 @@ table.table.table-cradmin-fluid thead tr th:first-child {
     padding-left: 50px;
   }
 }
+table.table.table-cradmin-fluid tbody tr td:last-child,
+table.table.table-cradmin-fluid thead tr th:last-child {
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  table.table.table-cradmin-fluid tbody tr td:last-child,
+  table.table.table-cradmin-fluid thead tr th:last-child {
+    padding-right: 50px;
+  }
+}
 table.table.table-cradmin-fluid thead {
   border-bottom: 1px solid #E6E6E6;
   background-color: #FAFAFA;
@@ -8069,6 +8079,22 @@ table.table.table-cradmin-fluid tbody tr td {
   white-space: nowrap;
   line-height: 40px;
 }
+#objecttableview-table thead th.objecttableview-sortable-header:before,
+#objecttableview-table thead th.objecttableview-sortable-header:after {
+  content: " ";
+  display: table;
+}
+#objecttableview-table thead th.objecttableview-sortable-header:after {
+  clear: both;
+}
+#objecttableview-table thead th.objecttableview-sortable-header:before,
+#objecttableview-table thead th.objecttableview-sortable-header:after {
+  content: " ";
+  display: table;
+}
+#objecttableview-table thead th.objecttableview-sortable-header:after {
+  clear: both;
+}
 #objecttableview-table thead th.objecttableview-sortable-header a {
   line-height: 40px;
   text-decoration: none;
@@ -8077,6 +8103,10 @@ table.table.table-cradmin-fluid tbody tr td {
 }
 #objecttableview-table thead th.objecttableview-sortable-header a:hover {
   text-decoration: none;
+}
+#objecttableview-table thead th.objecttableview-sortable-header a.objecttableview-flip-ordering-button {
+  display: block;
+  float: left;
 }
 #objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta {
   float: right;
@@ -8108,7 +8138,8 @@ table.table.table-cradmin-fluid tbody tr td {
 #objecttableview-table tbody tr.objecttableview-selected-row {
   background-color: #FFE2A8;
 }
-#objecttableview-table tbody tr td:first-child .objecttable-cellvalue {
+#objecttableview-table tbody tr td:first-child .objecttable-cellvalue,
+#objecttableview-table tbody tr td.objecttableview-multiselectcolumn + td .objecttable-cellvalue {
   font-weight: bold;
 }
 #objecttableview-table tbody tr td .objecttable-cellbuttons {
