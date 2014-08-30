@@ -73,7 +73,7 @@
                                     <a class="objecttableview-flip-ordering-button"
                                             href="{{ column.get_flip_ordering_url }}">
                                         {{ column.get_header }}
-                                        {% if column.is_ordered_ascending %}
+                                        {% if column.orderinginfo.order_ascending %}
                                             <span class="sr-only">- {% trans "Ordered ascending - Click to order descending" %}</span>
                                         {% else %}
                                             <span class="sr-only">- {% trans "Ordered descending - Click to order ascending" %}</span>
@@ -93,10 +93,10 @@
                                                 </span>
                                             {% endif %}
                                             <span class="objecttableview-orderingdirection">
-                                                {% if column.is_ordered_descending %}
-                                                    <span class="fa fa-caret-up"></span>
-                                                {% else %}
+                                                {% if column.orderinginfo.order_ascending %}
                                                     <span class="fa fa-caret-down"></span>
+                                                {% else %}
+                                                    <span class="fa fa-caret-up"></span>
                                                 {% endif %}
                                             </span>
                                         </span>

@@ -26,8 +26,6 @@ class Column(object):
     def __init__(self, view, columnindex):
         self.view = view
         self.columnindex = columnindex
-        if self.is_sortable():
-            self.orderinginfo = self.view._get_orderinginfo_for_column(self.columnindex)
 
     def get_header(self):
         if self.modelfield:
@@ -62,11 +60,14 @@ class Column(object):
         """
         return self.view._get_remove_ordering_url_for_column(self.columnindex)
 
-    def is_ordered_ascending(self):
-        return self.is_ordered() and self.orderinginfo.order_ascending == True
-
-    def is_ordered_descending(self):
-        return self.is_ordered() and self.orderinginfo.order_ascending == False
+    @property
+    def orderinginfo(self):
+        if not hasattr(self, '_orderinginfo'):
+            if self.is_sortable():
+                self._orderinginfo = self.view._get_orderinginfo_for_column(self.columnindex)
+            else:
+                self._orderinginfo = None
+        return self._orderinginfo
 
     def is_ordered(self):
         return self.orderinginfo and self.orderinginfo.order_ascending is not None
@@ -99,7 +100,30 @@ class Column(object):
         if orderingfield:
             return ['{}{}'.format(sortprefix, orderingfield)]
         else:
-            raise NotImplementedError('You must override get_ordering, set orderingfield or set modelfield.')
+            raise NotImplementedError('You must override get_orderby_args, set orderingfield or set modelfield.')
+
+    def get_default_order_is_ascending(self):
+        """
+        Determine if the default ordering for the field shown in this column is
+        ascending.
+
+        Returns:
+            ``True`` if the default ordering is ascending.
+            ``False`` if the default ordering is descending.
+            ``None`` if no default ordering is configured for this column.
+        """
+        orderingfield = self.orderingfield or self.modelfield
+        if orderingfield:
+            default_ordering = self.view.model._meta.ordering
+            descending_orderingfield = '-{}'.format(orderingfield)
+            if orderingfield in default_ordering:
+                return True
+            elif descending_orderingfield in default_ordering:
+                return False
+            else:
+                return None
+        else:
+            raise NotImplementedError('You must override get_default_order_is_ascending, set orderingfield or set modelfield.')
 
 
 class PlainTextColumn(Column):
@@ -381,7 +405,7 @@ class ObjectTableView(ListView):
         """
         queryset = self.get_queryset_for_role(self.request.cradmin_role)
         orderby = []
-        for columnobject, orderinginfo in self._iter_columnobjects_with_orderinginfo():
+        for columnobject, orderinginfo in self.__iter_columnobjects_with_orderinginfo():
             orderby.extend(columnobject.get_orderby_args(orderinginfo.order_ascending))
         if orderby:
             queryset = queryset.order_by(*orderby)
@@ -431,9 +455,22 @@ class ObjectTableView(ListView):
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         return context
 
+    def __create_orderingstring_from_default_ordering(self):
+        orderinglist = []
+        for columnindex, columnobject in enumerate(self._get_columnobjects()):
+            order_ascending = columnobject.get_default_order_is_ascending()
+            if order_ascending is not None:
+                orderinglist.append(ColumnOrderingInfo.create_orderingstringentry(
+                    columnindex=columnindex,
+                    order_ascending=order_ascending
+                ))
+        return '.'.join(orderinglist)
+
     def __parse_orderingstring(self):
         if not hasattr(self, '__orderingstringparser'):
             orderingstring = self.request.GET.get('ordering', None)
+            if orderingstring is None:
+                orderingstring = self.__create_orderingstring_from_default_ordering()
             self.__orderingstringparser = OrderingStringParser(orderingstring)
         return self.__orderingstringparser
 
@@ -455,7 +492,7 @@ class ObjectTableView(ListView):
     def _get_orderinginfo_for_column(self, columnindex):
         return self.__parse_orderingstring().get(columnindex)
 
-    def _iter_columnobjects_with_orderinginfo(self):
+    def __iter_columnobjects_with_orderinginfo(self):
         columnobjects = self._get_columnobjects()
         for orderinginfo in self.__parse_orderingstring().orderingdict.itervalues():
             try:

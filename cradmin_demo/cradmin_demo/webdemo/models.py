@@ -29,3 +29,4 @@ class Page(models.Model):
     class Meta:
         verbose_name = _('Page')
         verbose_name_plural = _('Pages')
+        ordering = ('title', 'intro')
