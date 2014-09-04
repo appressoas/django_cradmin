@@ -39,6 +39,7 @@ INSTALLED_APPS = (
 
     # Required by django cradmin
     'django_cradmin',
+    'django_cradmin.apps.cradmin_imagearchive',
     'crispy_forms',
     'djangular',
 
