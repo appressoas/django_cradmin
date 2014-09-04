@@ -60,6 +60,12 @@ class ArchiveImage(models.Model):
             'the information carried in the image (if any).'),
     )
 
+    #: Create datetime.
+    created_datetime = models.DateTimeField(
+        editable=False,
+        auto_now_add=True
+    )
+
     class Meta:
         verbose_name = _('archive image')
         verbose_name_plural = _('archive images')

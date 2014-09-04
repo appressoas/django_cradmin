@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 {% if enable_search %}
                     <div class="row">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8 col-md-9">
                 {% endif %}
                 {% block headingicon %}{% endblock headingicon %}
                 <h1>
@@ -26,7 +26,7 @@
                 {% endif %}
                 {% if enable_search %}
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-4 col-md-3">
                             <form class="form-inline cradmin-searchform" role="search" method="get" action="{{ request.path }}">
                                 <div class="input-group">
                                     <input class="form-control" name="search" type="text"
@@ -95,7 +95,7 @@
                                 {% if column.is_sortable %}
                                     <a class="objecttableview-flip-ordering-button"
                                             href="{{ column.get_flip_ordering_url }}">
-                                        {{ column.get_header }}
+                                        {{ column.get_header|capfirst }}
                                         {% if column.orderinginfo.order_ascending %}
                                             <span class="sr-only">- {% trans "Ordered ascending - Click to order descending" %}</span>
                                         {% else %}
@@ -125,7 +125,7 @@
                                         </span>
                                     {% endif %}
                                 {% else %}
-                                    {{ column.get_header }}
+                                    {{ column.get_header|capfirst }}
                                 {% endif %}
                             </th>
                         {% endfor %}
