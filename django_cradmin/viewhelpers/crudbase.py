@@ -177,6 +177,16 @@ class CreateUpdateViewMixin(object):
         else:
             return self.get_editurl(self.object)
 
+    def save_object(self, form):
+        """
+        Save the object. You can override this to customize how the
+        form is turned into a saved object.
+
+        Returns:
+            The saved object.
+        """
+        return form.save()
+
     def form_valid(self, form):
         """
         If the form is valid, save the associated model.
@@ -186,7 +196,7 @@ class CreateUpdateViewMixin(object):
             self._store_preview_in_session(self.serialize_preview(form))
             return self.render_to_response(self.get_context_data(form=form))
         else:
-            self.object = form.save()
+            self.object = self.save_object(form)
             self.form_saved(self.object)
         return http.HttpResponseRedirect(self.get_success_url())
 

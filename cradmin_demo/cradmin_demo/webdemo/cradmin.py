@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
+from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
 
 from .models import Site
 from .views import dashboard
@@ -14,6 +15,9 @@ class Menu(crmenu.Menu):
         self.add(
             label=_('Pages'), url=self.appindex_url('pages'), icon="database",
             active=self.request.cradmin_app.appname == 'pages')
+        self.add(
+            label=_('Images'), url=self.appindex_url('imagearchive'), icon="image",
+            active=self.request.cradmin_app.appname == 'imagearchive')
 
 
 class CrAdminInstance(crinstance.BaseCrAdminInstance):
@@ -24,7 +28,8 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
 
     apps = [
         ('dashboard', dashboard.App),
-        ('pages', pages.App)
+        ('pages', pages.App),
+        ('imagearchive', imagearchive.App),
     ]
 
     def get_rolequeryset(self):

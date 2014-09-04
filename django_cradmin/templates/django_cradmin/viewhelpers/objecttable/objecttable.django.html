@@ -1,7 +1,7 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load i18n %}
 
-{% block title %}{{ pagetitle }}{% endblock title %}
+{% block title %}{{ pagetitle|capfirst }}{% endblock title %}
 
 {% block content %}
     {% block pageheader %}
@@ -14,7 +14,7 @@
                 {% block headingicon %}{% endblock headingicon %}
                 <h1>
                     {% block heading %}
-                        {{ pagetitle }}
+                        {{ pagetitle|capfirst }}
                     {% endblock heading %}
                 </h1>
                 {% if buttons %}

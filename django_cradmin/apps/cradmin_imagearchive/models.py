@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -6,27 +7,30 @@ from django.utils.translation import ugettext_lazy as _
 
 
 def archiveimage_upload_to(archiveimage, filename):
+    if archiveimage.id is None:
+        raise ValueError('Can not set image until after the ArchiveImage object has been created.')
+    name, extension = os.path.splitext(filename)
     filenamepattern = getattr(settings, 'DJANGO_CRADMIN_IMAGEARCHIVE_FILENAMEPATTERN',
-                              'cradmin_imagearchive_images/{id}.{extension}')
+                              'cradmin_imagearchive_images/{id}{extension}')
     return filenamepattern.format(
         id=archiveimage.id,
-        extension=archiveimage.file_extension)
+        extension=extension)
 
 
 class ArchiveImage(models.Model):
-    role = models.ForeignKey(
+    content_type = models.ForeignKey(
         ContentType,
         verbose_name=_('role'),
         help_text=_('The role owning this image.'))
     object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    role = GenericForeignKey('content_type', 'object_id')
 
     #: The image.
     image = models.ImageField(
         max_length=255, null=True, blank=False,
-        height_field='logo_height',
-        width_field='logo_width',
-        verbose_name=_('logo'),
+        height_field='image_height',
+        width_field='image_width',
+        verbose_name=_('image'),
         upload_to=archiveimage_upload_to)
 
     #: The height of the :obj:`.image`. Autopopulated by the :obj:`.image` field.
@@ -43,14 +47,11 @@ class ArchiveImage(models.Model):
     name = models.CharField(
         max_length=255, blank=False, null=False,
         verbose_name=_('name'),
-        help_text=_(
-            'You can give the image a name. This is mostly useful for '
-            'yourself and other administrators.'),
     )
 
     #: An optional description of the image.
     description = models.TextField(
-        blank=False, null=False,
+        blank=True, null=False, default='',
         verbose_name=_('description'),
         help_text=_(
             'An optional description of the image. Think if this as a description '
@@ -58,7 +59,9 @@ class ArchiveImage(models.Model):
             'the information carried in the image (if any).'),
     )
 
-
     class Meta:
         verbose_name = _('archive image')
         verbose_name_plural = _('archive images')
+
+    def clean(self):
+        self.file_extension = os.path.splitext(self.image.name)[1]
