@@ -1,4 +1,5 @@
 import os
+import posixpath
 from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -64,4 +65,8 @@ class ArchiveImage(models.Model):
         verbose_name_plural = _('archive images')
 
     def clean(self):
-        self.file_extension = os.path.splitext(self.image.name)[1]
+        if self.name:
+            self.file_extension = os.path.splitext(self.image.name)[1]
+        if not self.name:
+            if self.image:
+                self.name = os.path.splitext(posixpath.basename(self.image.name))[0]

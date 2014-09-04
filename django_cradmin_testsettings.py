@@ -24,6 +24,7 @@ INSTALLED_APPS = (
 
     'django_cradmin',
     'django_cradmin.django_cradmin_testapp',
+    'django_cradmin.apps.cradmin_imagearchive',
 
     # Required by django cradmin
     'crispy_forms',
@@ -74,3 +75,5 @@ STATIC_URL = '/static/'
 
 # Django crispy forms:
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+ROOT_URLCONF = 'django_cradmin_testurls'

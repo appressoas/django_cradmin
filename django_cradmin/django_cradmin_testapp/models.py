@@ -1,6 +1,12 @@
 from django.db import models
 
 
+class TstRole(models.Model):
+    """
+    Used by tests that require a role object.
+    """
+
+
 class SomeItem(models.Model):
     name = models.CharField(
         max_length=30,

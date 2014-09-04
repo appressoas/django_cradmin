@@ -56,20 +56,18 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
 
 class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
-    # roleid_field = 'role'
+    roleid_field = 'role'
 
     def get_field_layout(self):
         return [
             layout.Div('name', css_class="cradmin-focusfield cradmin-focusfield-lg"),
             layout.Div('image', css_class="cradmin-focusfield"),
             layout.Div('description', css_class="cradmin-focusfield"),
-            layout.Div('content_type'),
-            layout.Div('object_id'),
         ]
 
     def get_form(self, *args, **kwargs):
         form = super(ArchiveImageCreateUpdateMixin, self).get_form(*args, **kwargs)
-        # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
+        form.fields['name'].required = False
         return form
 
 
@@ -77,8 +75,8 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     """
     View used to create new pages.
     """
-    def save_object(self, form):
-        archiveimage = form.save(commit=False)
+    def save_object(self, form, commit=True):
+        archiveimage = super(ArchiveImageCreateView, self).save_object(form, commit=False)
         image = archiveimage.image
         archiveimage.image = None
         archiveimage.save()
