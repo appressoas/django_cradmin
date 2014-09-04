@@ -8071,42 +8071,60 @@ table.table.table-cradmin-fluid tbody tr td {
 .fa-header.fa-django-cradmin-h3 {
   font-size: 12px;
 }
-.django_cradmin_form .django_cradmin_imagewidget,
 .django_cradmin_form .django_cradmin_filewidget {
-  background-color: #eee;
   padding: 10px 15px;
 }
-.django_cradmin_form .django_cradmin_imagewidget a,
-.django_cradmin_form .django_cradmin_filewidget a {
+.django_cradmin_form .django_cradmin_filewidget a.django_cradmin_filewidget_fullviewlink {
   display: block;
   border: none;
   margin-bottom: 10px;
 }
-.django_cradmin_form .django_cradmin_imagewidget label,
-.django_cradmin_form .django_cradmin_filewidget label {
+.django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper {
+  position: relative;
+}
+.django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper input[type=file],
+.django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper a.django_cradmin_filewidget_fieldoverlay {
+  width: 300px;
+  height: 40px;
+  border-radius: 3px;
+}
+.django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper input[type=file] {
+  opacity: 0 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden !important;
+  cursor: pointer;
+}
+.django_cradmin_form .django_cradmin_filewidget.django_cradmin_filewidget_clearable label.django_cradmin_filewidget_clear {
+  margin-top: 10px;
+  font-weight: normal;
   padding: 0;
   margin: 0;
   background-color: #eee;
 }
-.django_cradmin_form .django_cradmin_imagewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear,
-.django_cradmin_form .django_cradmin_filewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear,
-.django_cradmin_form .django_cradmin_imagewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear,
-.django_cradmin_form .django_cradmin_filewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear {
-  margin-top: 10px;
-  font-weight: normal;
-}
-.django_cradmin_form .cradmin-focusfield .django_cradmin_imagewidget,
 .django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {
   padding-left: 15px;
   padding-right: 15px;
+  background-color: #fff;
   padding-top: 20px;
   padding-bottom: 20px;
 }
 @media (min-width: 768px) {
-  .django_cradmin_form .cradmin-focusfield .django_cradmin_imagewidget,
   .django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {
     padding-left: 50px;
     padding-right: 50px;
+  }
+}
+@media (min-width: 992px) {
+  .django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {
+    max-width: 600px;
+    border-right: 1px dashed #ccc;
+  }
+}
+@media (min-width: 1200px) {
+  .django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {
+    max-width: 800px;
   }
 }
 #objecttableview-table thead th {

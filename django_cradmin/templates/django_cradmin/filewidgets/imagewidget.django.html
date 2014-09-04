@@ -1,18 +1,28 @@
 {% load i18n %}
 {% load thumbnail %}
 
-<div class="django_cradmin_imagewidget{% if clearable %} django_cradmin_imagewidget_clearable{% endif %}">
+<div class="django_cradmin_imagewidget django_cradmin_filewidget{% if clearable %} django_cradmin_filewidget_clearable{% endif %}">
     {% if image_path %}
         <a href="{{ MEDIA_URL }}{{ image_path }}" target="_blank"
-                class="django_cradmin_image_field_fullviewlink">
+                class="django_cradmin_filewidget_fullviewlink">
             {% thumbnail image_path preview_size format=preview_format as thumb %}
                 <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
             {% endthumbnail %}
         </a>
     {% endif %}
-    {{ input_html|safe }}
+    <div class="django_cradmin_filewidget_field_and_overlay_wrapper">
+        {{ input_html|safe }}
+        <a class="btn btn-default django_cradmin_filewidget_fieldoverlay" href="#">
+            <span class="fa fa-folder-open-o"></span>
+            {% if image_path %}
+                {% trans "Replace image" %}
+            {% else %}
+                {% trans "Upload image" %}
+            {% endif %}
+        </a>
+    </div>
     {% if clearable %}
-        <label class="django_cradmin_imagewidget_clear">
+        <label class="django_cradmin_filewidget_clear">
             <input type="checkbox" name="{{ clear_checkbox_name }}">
             {% trans "Remove image" %}
         </label>
