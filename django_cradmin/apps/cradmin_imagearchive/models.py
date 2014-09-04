@@ -32,6 +32,7 @@ class ArchiveImage(models.Model):
         height_field='image_height',
         width_field='image_width',
         verbose_name=_('image'),
+        help_text=_('Select an image to add to the archive.'),
         upload_to=archiveimage_upload_to)
 
     #: The height of the :obj:`.image`. Autopopulated by the :obj:`.image` field.

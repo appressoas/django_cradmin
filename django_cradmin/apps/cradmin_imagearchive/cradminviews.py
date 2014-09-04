@@ -26,6 +26,15 @@ class NameColumn(objecttable.MultiActionColumn):
                 buttonclass="danger"),
         ]
 
+class ImageColumn(objecttable.ImagePreviewColumn):
+    modelfield = 'image'
+    preview_width = 100
+    preview_height = 70
+    column_width = '100px'
+
+    def get_header(self):
+        return _('Preview')
+
 
 class ArchiveImagesQuerySetForRoleMixin(object):
     """
@@ -42,10 +51,11 @@ class ArchiveImagesQuerySetForRoleMixin(object):
 class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = ArchiveImage
     columns = [
+        ImageColumn,
         NameColumn,
         'description'
     ]
-    searchfields = ['name', 'description', 'extension']
+    searchfields = ['name', 'description', 'file_extension']
 
     def get_buttons(self):
         app = self.request.cradmin_app

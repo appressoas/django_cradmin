@@ -1,0 +1,9 @@
+{% load i18n %}
+{% load thumbnail %}
+{% if image_path == None %}
+    <em class="text-muted">{% trans "(None)" %}</em>
+{% else %}
+    {% thumbnail image_path preview_size format=preview_format as thumb %}
+        <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
+    {% endthumbnail %}
+{% endif %}

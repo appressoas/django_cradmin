@@ -25,16 +25,53 @@ class Column(object):
     #: and :meth:`.is_sortable`.
     orderingfield = None
 
+    #: The template used to render a cell in the Column.
+    template_name = None
+
+    #: The column width. Setting this is generally not recommended, but
+    #: sometimes you need exact scaling of the column.
+    #: Examples: ``"100px", "20%"``.
+    column_width = None
+
     def __init__(self, view, columnindex):
         self.view = view
         self.columnindex = columnindex
 
     def get_header(self):
+        """
+        Get the header of the column. Defaults to the ``verbose_name``
+        of the :obj:`.modelfield`.
+        """
         if self.modelfield:
             field = self.view.model._meta.get_field(self.modelfield)
             return field.verbose_name
         else:
             raise NotImplementedError()
+
+    def get_headercell_css_style(self):
+        """
+        Get the css styles of the header cell of the column.
+        Defaults to setting the :obj:`.column_width` as a css style.
+
+        You normally want to avoid setting styles with this and use
+        :meth:`.get_headercell_css_class` instead, but this is provided for
+        those cases where setting the style attribute is the only decent solution.
+        """
+        if self.column_width:
+            return 'width: {}'.format(self.column_width)
+        else:
+            return ''
+
+    def get_headercell_css_class(self):
+        """
+        Get the css class of the header cell of the column.
+        Defaults to setting the ``objecttableview-sortable-header``
+        class if :meth:`.is_sortable`.
+        """
+        if self.is_sortable():
+            return 'objecttableview-sortable-header'
+        else:
+            return ''
 
     def reverse_appurl(self, name, args=[], kwargs={}):
         return self.view.request.cradmin_app.reverse_appurl(name, args=args, kwargs=kwargs)
@@ -45,8 +82,20 @@ class Column(object):
         else:
             raise NotImplementedError()
 
+    def get_context_data(self, obj):
+        """
+        Get context data for rendering the cell (see :meth:`.render_cell`.
+        """
+        return {
+            'value': self.render_value(obj),
+            'object': obj
+        }
+
     def render_cell(self, obj):
-        raise NotImplementedError()
+        """
+        Render the cell using the template specifed in :obj:`.template_name`.
+        """
+        return render_to_string(self.template_name, self.get_context_data(obj))
 
     def get_flip_ordering_url(self):
         """
@@ -131,12 +180,6 @@ class Column(object):
 class PlainTextColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html'
 
-    def render_cell(self, obj):
-        return render_to_string(self.template_name, {
-            'object': obj,
-            'value': self.render_value(obj),
-        })
-
 
 class SingleActionColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/singleactioncolumn-cell.django.html'
@@ -147,12 +190,33 @@ class SingleActionColumn(Column):
     def get_actionurl(self, obj):
         raise NotImplementedError()
 
-    def render_cell(self, obj):
-        return render_to_string(self.template_name, {
-            'object': obj,
-            'value': self.render_value(obj),
-            'action_url': self.get_actionurl(obj),
+    def get_context_data(self, obj):
+        context = super(SingleActionColumn, self).get_context_data(obj)
+        context['action_url'] = self.get_actionurl(obj)
+        return context
+
+
+class ImagePreviewColumn(Column):
+    template_name = 'django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html'
+    preview_format = 'JPEG'
+    preview_width = 100
+    preview_height = 70
+
+    def is_sortable(self):
+        return False
+
+    def get_context_data(self, obj):
+        context = super(ImagePreviewColumn, self).get_context_data(obj)
+        image_path = None
+        imagefieldfile = self.render_value(obj)
+        if imagefieldfile:
+            image_path = imagefieldfile.name
+        context.update({
+            'image_path': image_path,
+            'preview_size': '{}x{}'.format(self.preview_width, self.preview_height),
+            'preview_format': self.preview_format
         })
+        return context
 
 
 class MultiActionColumn(Column):
@@ -170,12 +234,10 @@ class MultiActionColumn(Column):
         """
         raise NotImplementedError()
 
-    def render_cell(self, obj):
-        return render_to_string(self.template_name, {
-            'object': obj,
-            'value': self.render_value(obj),
-            'buttons': self.get_buttons(obj),
-        })
+    def get_context_data(self, obj):
+        context = super(MultiActionColumn, self).get_context_data(obj)
+        context['buttons'] = self.get_buttons(obj)
+        return context
 
 
 class Button(object):

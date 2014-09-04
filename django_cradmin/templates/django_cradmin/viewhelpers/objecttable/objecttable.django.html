@@ -91,7 +91,8 @@
                             </th>
                         {% endif %}
                         {% for column in columns %}
-                            <th class="{% if column.is_sortable %}objecttableview-sortable-header{% endif %}">
+                            <th class="{{ column.get_headercell_css_class }}"
+                                    style="{{ column.get_headercell_css_style }}">
                                 {% if column.is_sortable %}
                                     <a class="objecttableview-flip-ordering-button"
                                             href="{{ column.get_flip_ordering_url }}">
