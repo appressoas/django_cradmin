@@ -1,6 +1,8 @@
 import urllib
 from django import forms
 from django import http
+from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
 
 from crispy_forms import layout
@@ -31,8 +33,9 @@ class CreateUpdateViewMixin(object):
     listing_viewname = crapp.INDEXVIEW_NAME
 
     #: The field that should always be set to the current role.
-    #: Adds a hidden field with the correct value for the current
-    #: role. See :meth:`.get_hidden_fields`.
+    #: Removes the field from the form (see :meth:`.get_form`),
+    #: and instead sets the value directly on the object in
+    #: :meth:`.save_object`.
     roleid_field = None
 
     def get_field_layout(self):
@@ -78,18 +81,11 @@ class CreateUpdateViewMixin(object):
         """
         Get hidden fields for the form.
 
-        If you set :obj:`.roleid_field`, a hidden field named whatever you
-        specify in :obj:`.roleid_field` with value set to the current role ID
-        is added automatically.
-
         Returns:
             An iterable of :class:`crispy_forms.layout.Hidden` objects.
+            Defaults to an empty list.
         """
-        fields = []
-        if self.roleid_field:
-            roleid = self.request.cradmin_instance.get_roleid(self.request.cradmin_role)
-            fields.append(layout.Hidden(self.roleid_field, roleid))
-        return fields
+        return []
 
     def get_buttons(self):
         """
@@ -114,6 +110,27 @@ class CreateUpdateViewMixin(object):
         return [
             layout.Div(*self.get_buttons(), css_class="django_cradmin_submitrow")
         ]
+
+    def get_form(self, form_class):
+        """
+        If you set :obj:`.roleid_field`, we will remove that field from
+        the form.
+
+        .. note::
+            The :obj:`.roleid_field` handling also works for GenericForeignKey
+            fields (removes the content type and object pk field from the form).
+        """
+        form = super(CreateUpdateViewMixin, self).get_form(form_class)
+        if self.roleid_field:
+            roleid_fieldobject = getattr(self.model, self.roleid_field, None)
+            if isinstance(roleid_fieldobject, GenericForeignKey):
+                for fieldname in roleid_fieldobject.fk_field, roleid_fieldobject.ct_field:
+                    if fieldname in form.fields:
+                        del form.fields[fieldname]
+            else:
+                if self.roleid_field in form.fields:
+                    del form.fields[self.roleid_field]
+        return form
 
     def get_formhelper(self):
         """
@@ -177,15 +194,28 @@ class CreateUpdateViewMixin(object):
         else:
             return self.get_editurl(self.object)
 
-    def save_object(self, form):
+    def save_object(self, form, commit=True):
         """
         Save the object. You can override this to customize how the
         form is turned into a saved object.
 
+        Make sure you call ``super`` if you override this (see the docs for the commit parameter).
+        If you do not, you will loose the automatic handling of obj:`.roleid_field`.
+
+        Parameters:
+            commit (boolean): If this is ``False``, the object is returned
+                unsaved. Very useful when you want to manipulate the object
+                before saving it in a subclass.
+
         Returns:
             The saved object.
         """
-        return form.save()
+        obj = form.save(commit=False)
+        if self.roleid_field:
+            setattr(obj, self.roleid_field, self.request.cradmin_role)
+        if commit:
+            obj.save()
+        return obj
 
     def form_valid(self, form):
         """
