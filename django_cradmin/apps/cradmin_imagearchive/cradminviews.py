@@ -9,7 +9,7 @@ from django_cradmin.viewhelpers import delete
 from django_cradmin import crapp
 
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
-
+from django_cradmin.widgets import filewidgets
 
 
 class NameColumn(objecttable.MultiActionColumn):
@@ -58,9 +58,11 @@ class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
     roleid_field = 'role'
 
-    # def get_form(self, *args, **kwargs):
-    #     form = super(ArchiveImageCreateUpdateMixin, self).get_form(*args, **kwargs)
-    #     return form
+    def get_form(self, *args, **kwargs):
+        form = super(ArchiveImageCreateUpdateMixin, self).get_form(*args, **kwargs)
+        form.fields['image'].widget = filewidgets.ImageWidget(
+                preview_width=300, preview_height=300, clearable=False)
+        return form
 
 
 class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):

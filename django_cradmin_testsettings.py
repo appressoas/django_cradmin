@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     # Required by django cradmin
     'crispy_forms',
     'djangular',
+    'sorl.thumbnail',  # Required by cradmin_imagearchive
 )
 
 MIDDLEWARE_CLASSES = (

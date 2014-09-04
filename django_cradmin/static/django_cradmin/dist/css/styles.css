@@ -8071,6 +8071,44 @@ table.table.table-cradmin-fluid tbody tr td {
 .fa-header.fa-django-cradmin-h3 {
   font-size: 12px;
 }
+.django_cradmin_form .django_cradmin_imagewidget,
+.django_cradmin_form .django_cradmin_filewidget {
+  background-color: #eee;
+  padding: 10px 15px;
+}
+.django_cradmin_form .django_cradmin_imagewidget a,
+.django_cradmin_form .django_cradmin_filewidget a {
+  display: block;
+  border: none;
+  margin-bottom: 10px;
+}
+.django_cradmin_form .django_cradmin_imagewidget label,
+.django_cradmin_form .django_cradmin_filewidget label {
+  padding: 0;
+  margin: 0;
+  background-color: #eee;
+}
+.django_cradmin_form .django_cradmin_imagewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear,
+.django_cradmin_form .django_cradmin_filewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear,
+.django_cradmin_form .django_cradmin_imagewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear,
+.django_cradmin_form .django_cradmin_filewidget.django_cradmin_imagewidget_clearable label.django_cradmin_imagewidget_clear {
+  margin-top: 10px;
+  font-weight: normal;
+}
+.django_cradmin_form .cradmin-focusfield .django_cradmin_imagewidget,
+.django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+@media (min-width: 768px) {
+  .django_cradmin_form .cradmin-focusfield .django_cradmin_imagewidget,
+  .django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
 #objecttableview-table thead th {
   line-height: 40px;
   vertical-align: middle;

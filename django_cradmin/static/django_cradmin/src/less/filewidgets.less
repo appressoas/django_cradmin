@@ -1,0 +1,35 @@
+.django_cradmin_form {
+  .django_cradmin_imagewidget,
+  .django_cradmin_filewidget {
+    background-color: #eee;
+    padding: 10px 15px;
+    a {
+      display: block;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    label {
+      padding: 0;
+      margin: 0;
+      background-color: #eee;
+    }
+
+    &.django_cradmin_imagewidget_clearable,
+    &.django_cradmin_imagewidget_clearable {
+      label.django_cradmin_imagewidget_clear {
+        margin-top: 10px;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .cradmin-focusfield {
+    .django_cradmin_imagewidget,
+    .django_cradmin_filewidget {
+      .body-side-padding();
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{% load i18n %}
+{% load thumbnail %}
+
+<div class="django_cradmin_imagewidget{% if clearable %} django_cradmin_imagewidget_clearable{% endif %}">
+    <a href="{{ MEDIA_URL }}{{ image_path }}" target="_blank"
+            class="django_cradmin_image_field_fullviewlink">
+        {% thumbnail image_path preview_size format=preview_format as thumb %}
+            <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
+        {% endthumbnail %}
+    </a>
+    {{ input_html|safe }}
+    {% if clearable %}
+        <label class="django_cradmin_imagewidget_clear">
+            <input type="checkbox" name="{{ clear_checkbox_name }}">
+            {% trans "Remove image" %}
+        </label>
+    {% endif %}
+</div>
