@@ -30,7 +30,7 @@ class NameColumn(objecttable.MultiActionColumn):
 class ArchiveImagesQuerySetForRoleMixin(object):
     """
     Used by listing, update and delete view to ensure
-    that only pages that the current role has access to
+    that only images that the current role has access to
     is available.
     """
     def get_queryset_for_role(self, role):
@@ -58,23 +58,23 @@ class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
     roleid_field = 'role'
 
-    def get_field_layout(self):
-        return [
-            layout.Div('name', css_class="cradmin-focusfield cradmin-focusfield-lg"),
-            layout.Div('image', css_class="cradmin-focusfield"),
-            layout.Div('description', css_class="cradmin-focusfield"),
-        ]
-
-    def get_form(self, *args, **kwargs):
-        form = super(ArchiveImageCreateUpdateMixin, self).get_form(*args, **kwargs)
-        form.fields['name'].required = False
-        return form
+    # def get_form(self, *args, **kwargs):
+    #     form = super(ArchiveImageCreateUpdateMixin, self).get_form(*args, **kwargs)
+    #     return form
 
 
 class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     """
-    View used to create new pages.
+    View used to create new images.
     """
+    fields = ['image', 'description']
+
+    def get_field_layout(self):
+        return [
+            layout.Div('image', css_class="cradmin-focusfield"),
+            layout.Div('description', css_class="cradmin-focusfield"),
+        ]
+
     def save_object(self, form, commit=True):
         archiveimage = super(ArchiveImageCreateView, self).save_object(form, commit=False)
         image = archiveimage.image
@@ -87,13 +87,19 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
 
 class ArchiveImageUpdateView(ArchiveImagesQuerySetForRoleMixin, ArchiveImageCreateUpdateMixin, update.UpdateView):
     """
-    View used to create edit existing pages.
+    View used to create edit existing images.
     """
+    def get_field_layout(self):
+        return [
+            layout.Div('image', css_class="cradmin-focusfield"),
+            layout.Div('name', css_class="cradmin-focusfield cradmin-focusfield-lg"),
+            layout.Div('description', css_class="cradmin-focusfield"),
+        ]
 
 
 class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteView):
     """
-    View used to delete existing pages.
+    View used to delete existing images.
     """
 
 
