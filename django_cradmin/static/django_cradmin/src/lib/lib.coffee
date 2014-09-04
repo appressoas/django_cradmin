@@ -4,5 +4,6 @@ angular.module('djangoCradmin', [
   'djangoCradmin.menu'
   'djangoCradmin.objecttable'
   'djangoCradmin.acemarkdown'
-  'djangoCradmin.wysihtml'
+#  'djangoCradmin.wysihtml'
+  'djangoCradmin.imagepreview'
 ])

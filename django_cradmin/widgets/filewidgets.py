@@ -25,6 +25,8 @@ class ImageWidget(forms.ClearableFileInput):
         super(ImageWidget, self).__init__(attrs)
 
     def render(self, name, value, attrs=None):
+        attrs = attrs or {}
+        attrs['django-cradmin-image-preview-filefield'] = ''
         input_html = forms.FileInput.render(self, name, value, attrs)
         output = render_to_string(self.template_name, {
             'input_html': input_html,

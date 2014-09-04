@@ -246,7 +246,70 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.wysihtml']);
+  angular.module('djangoCradmin.imagepreview', []).directive('djangoCradminImagePreview', function() {
+    return {
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        this.setImg = function(imgScope) {
+          return $scope.img = imgScope;
+        };
+        this.previewFile = function(file) {
+          return $scope.img.previewFile(file);
+        };
+      },
+      link: function(scope, element, attrs) {
+        scope.element = element;
+      }
+    };
+  }).directive('djangoCradminImagePreviewImg', function() {
+    return {
+      require: '^djangoCradminImagePreview',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        console.log('field');
+        return $scope.previewFile = function(file) {
+          var reader;
+          console.log('preview!!', file);
+          reader = new FileReader();
+          reader.onload = function(evt) {
+            console.log('loaded', evt.target.result);
+            $scope.element.attr('height', '');
+            return $scope.element[0].src = evt.target.result;
+          };
+          return reader.readAsDataURL(file);
+        };
+      },
+      link: function(scope, element, attrs, previewCtrl) {
+        scope.element = element;
+        previewCtrl.setImg(scope);
+      }
+    };
+  }).directive('djangoCradminImagePreviewFilefield', function() {
+    return {
+      require: '^djangoCradminImagePreview',
+      restrict: 'A',
+      scope: {},
+      link: function(scope, element, attrs, previewCtrl) {
+        scope.previewCtrl = previewCtrl;
+        scope.element = element;
+        element.bind('change', function(evt) {
+          var file;
+          if (evt.target.files != null) {
+            file = evt.target.files[0];
+            console.log('change!', file);
+            return scope.previewCtrl.previewFile(file);
+          }
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.imagepreview']);
 
 }).call(this);
 
