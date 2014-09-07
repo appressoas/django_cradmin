@@ -257,9 +257,6 @@
         this.previewFile = function(file) {
           return $scope.img.previewFile(file);
         };
-      },
-      link: function(scope, element, attrs) {
-        scope.element = element;
       }
     };
   }).directive('djangoCradminImagePreviewImg', function() {
@@ -268,13 +265,10 @@
       restrict: 'A',
       scope: {},
       controller: function($scope) {
-        console.log('field');
-        return $scope.previewFile = function(file) {
+        $scope.previewFile = function(file) {
           var reader;
-          console.log('preview!!', file);
           reader = new FileReader();
           reader.onload = function(evt) {
-            console.log('loaded', evt.target.result);
             $scope.element.attr('height', '');
             return $scope.element[0].src = evt.target.result;
           };
@@ -298,7 +292,6 @@
           var file;
           if (evt.target.files != null) {
             file = evt.target.files[0];
-            console.log('change!', file);
             return scope.previewCtrl.previewFile(file);
           }
         });

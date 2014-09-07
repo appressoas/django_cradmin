@@ -69,6 +69,13 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
 class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
+    external_select_fields = ['image']
+
+    def get_external_select_url(self, fieldname):
+        if fieldname == 'image':
+            return self.request.cradmin_instance.appindex_url('imagearchive')
+        else:
+            raise ValueError()
 
     def get_field_layout(self):
         return [

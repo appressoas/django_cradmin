@@ -38,6 +38,10 @@ class CreateUpdateViewMixin(object):
     #: :meth:`.save_object`.
     roleid_field = None
 
+    #: List of fields that support getting their value by navigating to
+    #: another view (and back to this view after selecting a value).
+    external_select_fields = []
+
     def get_field_layout(self):
         """
         Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
@@ -217,18 +221,47 @@ class CreateUpdateViewMixin(object):
             obj.save()
         return obj
 
+    def _external_select_requested_check(self):
+        for fieldname in self.external_select_fields:
+            if 'submit_select_{}'.format(fieldname) in self.request.POST:
+                return fieldname
+        return None
+
+    def get_external_select_url(self, fieldname):
+        raise NotImplementedError()
+
+    def _get_external_select_url(self, fieldname, current_value):
+        url = self.get_external_select_url(fieldname)
+        return '{}?{}'.format(
+            url, urllib.urlencode({
+                'select_requested': 'single',
+                'select_fieldname': fieldname,
+                'select_current_value': current_value
+            }))
+
+    def _handle_external_select(self, form, external_select_fieldname):
+        self._store_preview_in_session(self.serialize_preview(form))
+        current_value = form.data[external_select_fieldname]
+        url = self._get_external_select_url(
+            fieldname=external_select_fieldname,
+            current_value=current_value)
+        return http.HttpResponseRedirect(url)
+
     def form_valid(self, form):
         """
         If the form is valid, save the associated model.
         """
-        if self.preview_requested():
-            self.show_preview = True
+        external_select_fieldname = self._external_select_requested_check()
+        if external_select_fieldname:
+            return self._handle_external_select(form, external_select_fieldname)
+        elif self.preview_requested():
             self._store_preview_in_session(self.serialize_preview(form))
+            self.show_preview = True
             return self.render_to_response(self.get_context_data(form=form))
         else:
             self.object = self.save_object(form)
             self.form_saved(self.object)
-        return http.HttpResponseRedirect(self.get_success_url())
+            return http.HttpResponseRedirect(self.get_success_url())
 
     def form_saved(self, object):
         """
@@ -265,7 +298,7 @@ class CreateUpdateViewMixin(object):
         You can safely override this, but you will also have to override
         :meth:`deserialize_preview`.
         """
-        return serializers.serialize('json', [form.save(commit=False)])
+        return serializers.serialize('json', [self.save_object(form, commit=False)])
 
     @classmethod
     def deserialize_preview(self, serialized):

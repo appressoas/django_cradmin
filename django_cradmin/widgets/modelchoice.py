@@ -28,5 +28,5 @@ class ModelChoiceWidget(widgets.TextInput):
         return render_to_string(self.template_name, {
             'input_html': input_html,
             'preview': preview,
-            'has_value': value is not None
+            'fieldname': name
         })
