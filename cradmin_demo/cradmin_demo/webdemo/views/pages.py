@@ -73,7 +73,7 @@ class PageCreateUpdateMixin(object):
 
     def get_external_select_url(self, fieldname):
         if fieldname == 'image':
-            return self.request.cradmin_instance.appindex_url('imagearchive')
+            return self.request.cradmin_instance.reverse_url('imagearchive', 'singleselect')
         else:
             raise ValueError()
 

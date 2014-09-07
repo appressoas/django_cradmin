@@ -234,9 +234,9 @@ class CreateUpdateViewMixin(object):
         url = self.get_external_select_url(fieldname)
         return '{}?{}'.format(
             url, urllib.urlencode({
-                'select_requested': 'single',
                 'select_fieldname': fieldname,
-                'select_current_value': current_value
+                'select_current_value': current_value,
+                'select_redirect_url': self.request.path
             }))
 
     def _handle_external_select(self, form, external_select_fieldname):

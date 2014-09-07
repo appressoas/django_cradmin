@@ -1,4 +1,4 @@
-from django.contrib.contenttypes.models import ContentType
+import urllib
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 
@@ -18,13 +18,33 @@ class NameColumn(objecttable.MultiActionColumn):
     def get_buttons(self, obj):
         return [
             objecttable.Button(
-                label='Edit',
+                label=_('Edit'),
                 url=self.reverse_appurl('edit', args=[obj.id])),
             objecttable.Button(
-                label='Delete',
+                label=_('Delete'),
                 url=self.reverse_appurl('delete', args=[obj.id]),
                 buttonclass="danger"),
         ]
+
+
+class NameSelectColumn(objecttable.MultiActionColumn):
+    modelfield = 'name'
+
+    def get_buttons(self, obj):
+        fieldname = self.view.request.GET['select_fieldname']
+        # current_value = self.view.request.GET['select_current_value']
+        redirect_url = self.view.request.GET['select_redirect_url']
+        select_url = '{}?{}'.format(redirect_url, urllib.urlencode({
+            'selected_fieldname': fieldname,
+            'selected_value': obj.pk
+        }))
+        return [
+            objecttable.Button(
+                label=_('Use this'),
+                url=select_url)
+        ]
+
+
 
 class ImageColumn(objecttable.ImagePreviewColumn):
     modelfield = 'image'
@@ -60,6 +80,23 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
         return [
             objecttable.Button(_('Add image'), url=app.reverse_appurl('create')),
         ]
+
+
+class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView):
+    model = ArchiveImage
+    columns = [
+        ImageColumn,
+        NameSelectColumn,
+        'description'
+    ]
+    searchfields = ['name', 'description', 'file_extension']
+
+    def get_buttons(self):
+        app = self.request.cradmin_app
+        return [
+            objecttable.Button(_('Add image'), url=app.reverse_appurl('create')),
+        ]
+
 
 
 class ArchiveImageCreateUpdateMixin(object):
@@ -119,6 +156,10 @@ class App(crapp.App):
             r'^$',
             ArchiveImagesListView.as_view(),
             name=crapp.INDEXVIEW_NAME),
+        crapp.Url(
+            r'^singleselect$',
+            ArchiveImagesSingleSelectView.as_view(),
+            name='singleselect'),
         crapp.Url(
             r'^create$',
             ArchiveImageCreateView.as_view(),
