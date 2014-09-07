@@ -414,7 +414,7 @@ class TestObjectTableView(TestCase):
             'The name - Ordered descending - Click to order ascending')
         self.assertEquals(
             selector.one('#objecttableview-table>thead>tr>th:last-child').alltext_normalized,
-            'somenumber - Ordered descending - Click to order ascending')
+            'Somenumber - Ordered descending - Click to order ascending')
 
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
         self.assertEquals(selector.count('#objecttableview-table>tbody>tr>td'), 2)
@@ -517,7 +517,7 @@ class TestObjectTableView(TestCase):
             'The name - Ordered descending - Click to order ascending - Ordering priority 2')
         self.assertEquals(
             selector.one('#objecttableview-table>thead>tr>th:last-child').alltext_normalized,
-            'somenumber - Ordered ascending - Click to order descending - Ordering priority 1')
+            'Somenumber - Ordered ascending - Click to order descending - Ordering priority 1')
 
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 3)
         self.assertEquals(
