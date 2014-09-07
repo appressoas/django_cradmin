@@ -19,12 +19,12 @@ def archiveimage_upload_to(archiveimage, filename):
 
 
 class ArchiveImage(models.Model):
-    content_type = models.ForeignKey(
+    role_content_type = models.ForeignKey(
         ContentType,
         verbose_name=_('role'),
         help_text=_('The role owning this image.'))
-    object_id = models.PositiveIntegerField()
-    role = GenericForeignKey('content_type', 'object_id')
+    role_object_id = models.PositiveIntegerField()
+    role = GenericForeignKey('role_content_type', 'role_object_id')
 
     #: The image.
     image = models.ImageField(
