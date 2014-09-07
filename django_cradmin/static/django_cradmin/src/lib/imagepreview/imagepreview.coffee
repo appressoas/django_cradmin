@@ -23,7 +23,7 @@ angular.module('djangoCradmin.imagepreview', [])
       $scope.previewFile = (file) ->
         reader = new FileReader()
         reader.onload = (evt) ->
-          $scope.element.attr('height', '')  # Unset height to avoid stretching the image
+          $scope.element.attr('height', '')  # Unset height to avoid stretching
           $scope.element[0].src = evt.target.result
         reader.readAsDataURL(file)
       return
