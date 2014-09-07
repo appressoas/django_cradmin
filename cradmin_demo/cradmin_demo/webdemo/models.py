@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from django_cradmin.apps.cradmin_imagearchive import models as imagearchivemodels
+
 
 class Site(models.Model):
     name = models.CharField(max_length=100)
@@ -19,6 +21,10 @@ class Page(models.Model):
         verbose_name=_('Title'))
     intro = models.TextField(
         verbose_name=_('Intro'))
+    image = models.ForeignKey(
+        imagearchivemodels.ArchiveImage,
+        verbose_name=_('Image'),
+        null=True, blank=True)
     body = models.TextField(
         verbose_name=_('Body'))
     # tags = models.ManyToManyField(Tag)

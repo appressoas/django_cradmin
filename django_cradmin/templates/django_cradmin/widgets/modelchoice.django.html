@@ -1,0 +1,11 @@
+{% load i18n %}
+
+{{ input_html|safe }}
+<p>
+    {% if preview %}
+        {{ preview }}
+    {% endif %}
+</p>
+<a href="#" class="btn btn-default">
+    {% trans "Select" %}
+</a>

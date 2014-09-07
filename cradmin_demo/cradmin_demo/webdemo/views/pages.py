@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from crispy_forms import layout
+from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -13,6 +14,7 @@ from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import PrimarySubmit
 
 from cradmin_demo.webdemo.models import Page
+from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -70,15 +72,22 @@ class PageCreateUpdateMixin(object):
 
     def get_field_layout(self):
         return [
+            layout.Fieldset(
+                'Advanced',
+                layout.Div('image')
+            ),
             layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
             layout.Div('intro', css_class="cradmin-focusfield"),
-            layout.Div('body', css_class="cradmin-focusfield")
+            layout.Div('body', css_class="cradmin-focusfield"),
         ]
 
     def get_form(self, *args, **kwargs):
         form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
         # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
         form.fields['body'].widget = AceMarkdownWidget()
+        form.fields['image'].widget = ModelChoiceWidget(
+            queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role)
+        )
         return form
 
 

@@ -18,7 +18,16 @@ def archiveimage_upload_to(archiveimage, filename):
         extension=extension)
 
 
+class ArchiveImageManager(models.Manager):
+    def filter_owned_by_role(self, role):
+        return self.get_queryset().filter(
+            role_object_id=role.id,
+            role_content_type=ContentType.objects.get_for_model(role.__class__))
+
+
 class ArchiveImage(models.Model):
+    objects = ArchiveImageManager()
+
     role_content_type = models.ForeignKey(
         ContentType,
         verbose_name=_('role'),

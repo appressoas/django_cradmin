@@ -43,9 +43,7 @@ class ArchiveImagesQuerySetForRoleMixin(object):
     is available.
     """
     def get_queryset_for_role(self, role):
-        return ArchiveImage.objects.filter(
-            role_object_id=role.id,
-            role_content_type=ContentType.objects.get_for_model(role.__class__))
+        return ArchiveImage.objects.filter_owned_by_role(role)
 
 
 class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView):
