@@ -86,3 +86,6 @@ class ArchiveImage(models.Model):
         if not self.name:
             if self.image:
                 self.name = os.path.splitext(posixpath.basename(self.image.name))[0]
+
+    def __unicode__(self):
+        return self.name

@@ -42,9 +42,20 @@ class PagesQuerySetForRoleMixin(object):
         return Page.objects.filter(site=site)
 
 
+class ArchiveImagePreviewColumn(objecttable.ImagePreviewColumn):
+    modelfield = 'image'
+
+    def render_value(self, obj):
+        if obj.image:
+            return obj.image.image
+        else:
+            return None
+
+
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     columns = [
+        ArchiveImagePreviewColumn,
         TitleColumn,
         'intro'
     ]
@@ -92,9 +103,9 @@ class PageCreateUpdateMixin(object):
         form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
         # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
         form.fields['body'].widget = AceMarkdownWidget()
-        form.fields['image'].widget = ModelChoiceWidget(
-            queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role)
-        )
+        # form.fields['image'].widget = ModelChoiceWidget(
+        #     queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role)
+        # )
         return form
 
 

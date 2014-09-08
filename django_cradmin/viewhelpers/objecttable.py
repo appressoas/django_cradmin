@@ -174,7 +174,9 @@ class Column(object):
             else:
                 return None
         else:
-            raise NotImplementedError('You must override get_default_order_is_ascending, set orderingfield or set modelfield.')
+            raise NotImplementedError(
+                'You must return False from is_sortable(), override '
+                'get_default_order_is_ascending(), set orderingfield or set modelfield.')
 
 
 class PlainTextColumn(Column):
@@ -556,12 +558,13 @@ class ObjectTableView(ListView):
     def __create_orderingstring_from_default_ordering(self):
         orderinglist = []
         for columnindex, columnobject in enumerate(self._get_columnobjects()):
-            order_ascending = columnobject.get_default_order_is_ascending()
-            if order_ascending is not None:
-                orderinglist.append(ColumnOrderingInfo.create_orderingstringentry(
-                    columnindex=columnindex,
-                    order_ascending=order_ascending
-                ))
+            if columnobject.is_sortable():
+                order_ascending = columnobject.get_default_order_is_ascending()
+                if order_ascending is not None:
+                    orderinglist.append(ColumnOrderingInfo.create_orderingstringentry(
+                        columnindex=columnindex,
+                        order_ascending=order_ascending
+                    ))
         return '.'.join(orderinglist)
 
     def __parse_orderingstring(self):
