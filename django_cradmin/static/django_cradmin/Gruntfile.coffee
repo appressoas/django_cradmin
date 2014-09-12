@@ -68,6 +68,12 @@ module.exports = (grunt) ->
           "dist/css/styles.css": "src/less/styles.less"
 
     coffeelint:
+      options:
+        max_line_length:
+          name: "max_line_length"
+          value: 120
+          level: "warn"
+          limitComments: true
       code: appfiles.coffeecode
       tests: appfiles.coffeetests
       gruntfile: ['Gruntfile.coffee']

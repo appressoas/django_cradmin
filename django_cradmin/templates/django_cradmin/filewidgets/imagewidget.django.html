@@ -4,13 +4,13 @@
 <div class="django_cradmin_imagewidget django_cradmin_filewidget {% if clearable %}django_cradmin_filewidget_clearable{% endif %}"
         django-cradmin-image-preview>
     {% if image_path %}
-        <a href="{{ MEDIA_URL }}{{ image_path }}" target="_blank"
-                class="django_cradmin_filewidget_fullviewlink">
-            {% thumbnail image_path preview_size format=preview_format as thumb %}
-                <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
-                        django-cradmin-image-preview-img>
-            {% endthumbnail %}
-        </a>
+        {% thumbnail image_path preview_size format=preview_format as thumb %}
+            <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
+                    django-cradmin-image-preview-img>
+        {% endthumbnail %}
+    {% else %}
+        {# Used for the preview - hidden before we have a preview #}
+        <img django-cradmin-image-preview-img>
     {% endif %}
     <div class="django_cradmin_filewidget_field_and_overlay_wrapper">
         {{ input_html|safe }}
