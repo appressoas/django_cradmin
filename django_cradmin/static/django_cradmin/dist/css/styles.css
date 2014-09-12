@@ -8074,6 +8074,12 @@ table.table.table-cradmin-fluid tbody tr td {
 .django_cradmin_form .django_cradmin_filewidget {
   padding: 10px 15px;
 }
+.django_cradmin_form .django_cradmin_filewidget img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+}
 .django_cradmin_form .django_cradmin_filewidget a.django_cradmin_filewidget_fullviewlink {
   display: block;
   border: none;
