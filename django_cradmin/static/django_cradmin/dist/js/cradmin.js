@@ -267,8 +267,8 @@
 
     var controller;
     controller = function($scope) {
-      this.setImg = function(imgScope) {
-        return $scope.img = imgScope;
+      this.setImg = function(imgscope) {
+        return $scope.img = imgscope;
       };
       this.previewFile = function(file) {
         return $scope.img.previewFile(file);
@@ -315,12 +315,19 @@
     link = function(scope, element, attrs, previewCtrl) {
       scope.previewCtrl = previewCtrl;
       scope.element = element;
+      scope.wrapperelement = element.parent();
       element.bind('change', function(evt) {
         var file;
         if (evt.target.files != null) {
           file = evt.target.files[0];
           return scope.previewCtrl.previewFile(file);
         }
+      });
+      element.bind('mouseover', function() {
+        return scope.wrapperelement.addClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover');
+      });
+      element.bind('mouseleave', function() {
+        return scope.wrapperelement.removeClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover');
       });
     };
     return {

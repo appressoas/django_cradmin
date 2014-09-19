@@ -8075,7 +8075,7 @@ table.table.table-cradmin-fluid tbody tr td {
   padding: 10px 15px;
 }
 .django_cradmin_form .django_cradmin_filewidget img {
-  max-width: 100%;
+  max-width: 300px;
   height: auto;
   display: block;
   margin-bottom: 10px;
@@ -8094,6 +8094,11 @@ table.table.table-cradmin-fluid tbody tr td {
   height: 40px;
   border-radius: 3px;
 }
+.django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper.django_cradmin_filewidget_field_and_overlay_wrapper_hover a.btn.btn-default {
+  background-color: #377ca8;
+  border-color: #377ca8;
+  color: #fff;
+}
 .django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper input[type=file] {
   opacity: 0 !important;
   position: absolute;
@@ -8103,10 +8108,9 @@ table.table.table-cradmin-fluid tbody tr td {
   cursor: pointer;
 }
 .django_cradmin_form .django_cradmin_filewidget.django_cradmin_filewidget_clearable label.django_cradmin_filewidget_clear {
-  margin-top: 10px;
   font-weight: normal;
   padding: 0;
-  margin: 0;
+  margin: 10px 0 0 0;
   background-color: #eee;
 }
 .django_cradmin_form .cradmin-focusfield .django_cradmin_filewidget {

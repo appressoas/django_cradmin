@@ -19,8 +19,8 @@ angular.module('djangoCradmin.imagepreview', [])
     </div>
   ###
   controller = ($scope) ->
-    @setImg = (imgScope) ->
-      $scope.img = imgScope
+    @setImg = (imgscope) ->
+      $scope.img = imgscope
     @previewFile = (file) ->
       $scope.img.previewFile(file)
     return
@@ -63,10 +63,15 @@ angular.module('djangoCradmin.imagepreview', [])
   link = (scope, element, attrs, previewCtrl) ->
     scope.previewCtrl = previewCtrl
     scope.element = element
+    scope.wrapperelement = element.parent()
     element.bind 'change', (evt) ->
       if evt.target.files?
         file = evt.target.files[0]
         scope.previewCtrl.previewFile(file)
+    element.bind 'mouseover', ->
+      scope.wrapperelement.addClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover')
+    element.bind 'mouseleave', ->
+      scope.wrapperelement.removeClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover')
     return
 
   return {
