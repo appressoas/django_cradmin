@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django_cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-02 21:53+0000\n"
-"PO-Revision-Date: 2014-07-02 23:55+0100\n"
+"POT-Creation-Date: 2014-09-29 03:41+0000\n"
+"PO-Revision-Date: 2014-09-29 05:47+0100\n"
 "Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb\n"
@@ -17,6 +17,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.5\n"
+
+#: apps/cradmin_imagearchive/cradminviews.py:21
+msgid "Edit"
+msgstr "Rediger"
+
+#: apps/cradmin_imagearchive/cradminviews.py:24
+#: templates/django_cradmin/viewhelpers/delete.django.html:30
+msgid "Delete"
+msgstr "Slett"
+
+#: apps/cradmin_imagearchive/cradminviews.py:43
+msgid "Use this"
+msgstr "Bruk dette"
+
+#: apps/cradmin_imagearchive/cradminviews.py:56 viewhelpers/create.py:19
+#: viewhelpers/update.py:19
+msgid "Preview"
+msgstr "Forhåndsvis"
+
+#: apps/cradmin_imagearchive/cradminviews.py:81
+#: apps/cradmin_imagearchive/cradminviews.py:97
+msgid "Add image"
+msgstr "Legg til bilde"
+
+#: apps/cradmin_imagearchive/models.py:33
+msgid "role"
+msgstr "rolle"
+
+#: apps/cradmin_imagearchive/models.py:34
+msgid "The role owning this image."
+msgstr "Rollen som eier dette bildet."
+
+#: apps/cradmin_imagearchive/models.py:43
+msgid "image"
+msgstr "image"
+
+#: apps/cradmin_imagearchive/models.py:44
+msgid "Select an image to add to the archive."
+msgstr "Velg et bilde som du ønsker å legge til i arkivet."
+
+#: apps/cradmin_imagearchive/models.py:60
+msgid "name"
+msgstr "navn"
+
+#: apps/cradmin_imagearchive/models.py:66
+msgid "description"
+msgstr "beskrivelse"
+
+#: apps/cradmin_imagearchive/models.py:68
+msgid ""
+"An optional description of the image. Think if this as a description of the "
+"image for visually impaired users. This means that you should describe the "
+"information carried in the image (if any)."
+msgstr ""
+"En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet "
+"for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
+
+#: apps/cradmin_imagearchive/models.py:80
+msgid "archive image"
+msgstr "arkivbilde"
+
+#: apps/cradmin_imagearchive/models.py:81
+msgid "archive images"
+msgstr "arkivbilder"
+
+#: templates/django_cradmin/error.django.html:10
+msgid "Error"
+msgstr "Feil"
 
 #: templates/django_cradmin/invalid_roleid.django.html:6
 msgid "Invalid role"
@@ -32,16 +100,89 @@ msgstr "Vis/sjul navigasjon"
 
 #: templates/django_cradmin/missing_role.django.html:6
 msgid "Permission denied"
-msgstr ""
+msgstr "Ingen tilgang"
 
 #: templates/django_cradmin/missing_role.django.html:8
 #, python-format
 msgid "You do not have permission to administer \"%(what)s\"."
 msgstr ""
+"Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
 
 #: templates/django_cradmin/roleselect.django.html:7
 msgid "What would you like to administer?"
 msgstr "Hva ønsker du å administrere?"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:10
+msgid "Heading 1"
+msgstr "Overskrift 1"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:15
+msgid "Heading 2"
+msgstr "Overskrift 2"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:20
+msgid "Heading 3"
+msgstr "Overskrift 3"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:27
+msgid "Text here"
+msgstr "Tekst her"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:29
+msgid "Bold"
+msgstr "Fet"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:34
+msgid "Italic"
+msgstr "Kursiv"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:38
+msgid ""
+"Write the URL in the field below. Make sure you include the http:// or "
+"https:// part of the URL."
+msgstr ""
+"Skriv en nettaddresse i feltet nedenfor. Du må passe på å få med http:// "
+"eller https:// delen av nettaddressen."
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:39
+msgid "Link title here"
+msgstr "Linktittel her"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:41
+msgid "Link"
+msgstr "Link"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:50
+msgid "Bulletlist"
+msgstr "Punktliste"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:55
+msgid "Numbered list"
+msgstr "Nummerert liste"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:63
+msgid "programminglanguage"
+msgstr "programmeringsspråk"
+
+#: templates/django_cradmin/acemarkdown/widget.django.html:66
+msgid "Code block"
+msgstr "Kodeblokk"
+
+#: templates/django_cradmin/filewidgets/filewidget.django.html:16
+msgid "Remove file"
+msgstr "Fjern fil"
+
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:20
+msgid "Replace image"
+msgstr "Erstatt bilde"
+
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:22
+msgid "Upload image"
+msgstr "Last opp bilde"
+
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:29
+msgid "Remove image"
+msgstr "Fjern bilde"
 
 #: templates/django_cradmin/viewhelpers/create.django.html:11
 msgid "NEW"
@@ -56,21 +197,68 @@ msgstr "SLETT"
 msgid "Are you sure you want to delete \"%(object_preview)s\"?"
 msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
 
-#: templates/django_cradmin/viewhelpers/delete.django.html:30
-msgid "Delete"
-msgstr "Slett"
-
 #: templates/django_cradmin/viewhelpers/delete.django.html:31
 msgid "Cancel"
 msgstr "Avbryt"
 
 #: templates/django_cradmin/viewhelpers/update.django.html:10
+#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:10
 msgid "EDIT"
 msgstr "REDIGER"
 
+#: templates/django_cradmin/viewhelpers/includes/pager.django.html:27
+msgid "Previous"
+msgstr "Forrige"
+
+#: templates/django_cradmin/viewhelpers/includes/pager.django.html:31
+#, python-format
+msgid "Page %(number)s of %(total)s"
+msgstr "Side %(number)s av %(total)s"
+
+#: templates/django_cradmin/viewhelpers/includes/pager.django.html:36
+msgid "Next"
+msgstr "Neste"
+
+#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
 #: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
 msgid "(None)"
 msgstr "(Ingen)"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:33
+msgid "Search..."
+msgstr "Søk..."
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:37
+msgid "Search"
+msgstr "Søk"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:103
+msgid "Ordered ascending - Click to order descending"
+msgstr "Sortert stigende - klikk for å sortere synkende"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:105
+msgid "Ordered descending - Click to order ascending"
+msgstr "Sortert synkende - klikk for å sortere stigende"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:112
+msgid "Do not order by this column"
+msgstr "Ikke sorter etter denne kolonnen"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:117
+msgid "Ordering priority"
+msgstr "Sorteringsprioritet"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:171
+msgid "Select an action"
+msgstr "Velg en handling"
+
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:174
+msgid "Go"
+msgstr "Gå"
+
+#: templates/django_cradmin/widgets/modelchoice.django.html:10
+msgid "Select"
+msgstr "Velg"
 
 #: viewhelpers/create.py:14
 msgid "Create"
@@ -80,9 +268,13 @@ msgstr "Opprett"
 msgid "Create and continue editing"
 msgstr "Opprett og fortsett å redigere"
 
-#: viewhelpers/create.py:19 viewhelpers/update.py:19
-msgid "Preview"
-msgstr "Forhåndsvis"
+#: viewhelpers/multiselect.py:91
+msgid ""
+"Invalid selection. This is usually caused by someone else changing "
+"permissions while you where selecting items to edit."
+msgstr ""
+"Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet "
+"rettigheter fra din bruker."
 
 #: viewhelpers/update.py:14
 msgid "Save"
