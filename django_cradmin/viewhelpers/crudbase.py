@@ -42,6 +42,10 @@ class CreateUpdateViewMixin(object):
     #: another view (and back to this view after selecting a value).
     external_select_fields = []
 
+    #: The viewname within this app for the edit view.
+    #: See :meth:`.get_editurl`.
+    editview_appurl_name = 'edit'
+
     def get_field_layout(self):
         """
         Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
@@ -183,9 +187,12 @@ class CreateUpdateViewMixin(object):
 
         Defaults to::
 
-            self.request.cradmin_app.reverse_appurl('edit', args=[obj.pk])
+            self.request.cradmin_app.reverse_appurl(self.editview_appurl_name, args=[obj.pk])
         """
-        url = self.request.cradmin_app.reverse_appurl('edit', args=[obj.pk])
+        return self.request.cradmin_app.reverse_appurl(self.editview_appurl_name, args=[obj.pk])
+
+    def _get_full_editurl(self, obj):
+        url = self.get_editurl(obj)
         if 'success_url' in self.request.GET:
             url = '{}?{}'.format(
                 url, urllib.urlencode({
@@ -196,7 +203,7 @@ class CreateUpdateViewMixin(object):
         if 'submit-save' in self.request.POST:
             return self.get_default_save_success_url()
         else:
-            return self.get_editurl(self.object)
+            return self._get_full_editurl(self.object)
 
     def save_object(self, form, commit=True):
         """
