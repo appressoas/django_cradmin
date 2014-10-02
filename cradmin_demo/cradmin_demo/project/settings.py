@@ -119,3 +119,42 @@ THUMBNAIL_DEBUG = False
 MEDIA_ROOT = 'django_media_root'
 
 MEDIA_URL = '/media/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '[%(levelname)s %(asctime)s %(name)s %(pathname)s:%(lineno)s] %(message)s'
+        }
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'stderr': {
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+            'class': 'logging.StreamHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['stderr'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'django.db': {
+            'handlers': ['stderr'],
+            'level': 'INFO',  # Do not set to debug - logs all queries
+            'propagate': False
+        },
+        '': {
+            'handlers': ['stderr'],
+            'level': 'DEBUG',
+            'propagate': False
+        }
+    }
+}

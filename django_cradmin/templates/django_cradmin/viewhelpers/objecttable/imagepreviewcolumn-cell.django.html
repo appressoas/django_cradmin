@@ -1,9 +1,7 @@
 {% load i18n %}
-{% load thumbnail %}
+{% load cradmin_image_tags %}
 {% if image_path == None %}
     <em class="text-muted">{% trans "(None)" %}</em>
 {% else %}
-    {% thumbnail image_path preview_size format=preview_format as thumb %}
-        <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}">
-    {% endthumbnail %}
+    <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height format=preview_format %}"
 {% endif %}

@@ -45,8 +45,10 @@ def request_thumbnail(
 
             The default is ``contain``.
     """
-    if width is None and height is None:
+    if not width and not height:
         raise ValueError('At least one of width and height must be specified')
+    width = width or ''
+    height = height or ''
     size = '{}x{}'.format(width, height)
 
     if scalemethod == 'contain':
@@ -57,7 +59,11 @@ def request_thumbnail(
         raise ValueError('{!r} is an invalid value for scalemethod. Valid values: "contain", "cover".')
 
     if format == 'auto':
-        name, extension = os.path.splitext(image.name)
+        if hasattr(image, 'name'):
+            path = image.name
+        else:
+            path = image
+        name, extension = os.path.splitext(path)
         if extension in ('.png', '.gif'):
             detected_format = 'PNG'
         else:
@@ -67,4 +73,9 @@ def request_thumbnail(
     else:
         detected_format = format
     return get_thumbnail(
-        image, size, upscale=upscale, quality=quality, crop=crop, format=detected_format)
+        image, size,
+        upscale=upscale,
+        quality=quality,
+        crop=crop,
+        format=detected_format,
+        colorspace=colorspace)

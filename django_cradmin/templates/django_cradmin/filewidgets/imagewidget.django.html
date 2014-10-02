@@ -1,13 +1,11 @@
 {% load i18n %}
-{% load thumbnail %}
+{% load cradmin_image_tags %}
 
 <div class="django_cradmin_imagewidget django_cradmin_filewidget {% if clearable %}django_cradmin_filewidget_clearable{% endif %}"
         django-cradmin-image-preview>
     {% if image_path %}
-        {% thumbnail image_path preview_size format=preview_format as thumb %}
-            <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
-                    django-cradmin-image-preview-img>
-        {% endthumbnail %}
+        <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height format=preview_format %}"
+             django-cradmin-image-preview-img>
     {% else %}
         {# Used for the preview - hidden before we have a preview #}
         <img django-cradmin-image-preview-img>

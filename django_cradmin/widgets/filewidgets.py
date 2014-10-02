@@ -15,7 +15,7 @@ class ImageWidget(forms.ClearableFileInput):
     template_name = 'django_cradmin/filewidgets/imagewidget.django.html'
 
     def __init__(self, attrs=None, template_name=None, clearable=True,
-                 preview_width=300, preview_height=200, preview_format='JPEG'):
+                 preview_width=300, preview_height=200, preview_format='auto'):
         self.clearable = clearable
         if template_name:
             self.template_name = template_name
@@ -34,7 +34,8 @@ class ImageWidget(forms.ClearableFileInput):
             'MEDIA_URL': settings.MEDIA_URL,
             'clear_checkbox_name': self.clear_checkbox_name(name),
             'clearable': self.clearable,
-            'preview_size': '{}x{}'.format(self.preview_width, self.preview_height),
+            'preview_width': self.preview_width,
+            'preview_height': self.preview_height,
             'preview_format': self.preview_format
         })
         return mark_safe(output)

@@ -200,7 +200,7 @@ class SingleActionColumn(Column):
 
 class ImagePreviewColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html'
-    preview_format = 'JPEG'
+    preview_format = 'auto'
     preview_width = 100
     preview_height = 70
 
@@ -215,7 +215,8 @@ class ImagePreviewColumn(Column):
             image_path = imagefieldfile.name
         context.update({
             'image_path': image_path,
-            'preview_size': '{}x{}'.format(self.preview_width, self.preview_height),
+            'preview_width': self.preview_width,
+            'preview_height': self.preview_height,
             'preview_format': self.preview_format
         })
         return context
