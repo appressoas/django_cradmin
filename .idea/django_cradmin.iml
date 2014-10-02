@@ -18,7 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/django_cradmin.egg-info" />
       <excludeFolder url="file://$MODULE_DIR$/docs/_build" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 2.7.5 virtualenv at ~/Envs/django_cradmin" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 2.7.5 virtualenv at ~/.virtualenvs/django_cradmin" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
