@@ -2,7 +2,6 @@ from django.forms import widgets
 from django.template.loader import render_to_string
 
 
-
 class ModelChoiceWidget(widgets.TextInput):
     """
     Model choice autocomplete widget.
@@ -23,7 +22,7 @@ class ModelChoiceWidget(widgets.TextInput):
         input_html = super(ModelChoiceWidget, self).render(
             name=name, value=value, attrs=attrs)
         preview = ''
-        if not value is None:
+        if value is not None:
             preview = self.get_object(pk=value)
         return render_to_string(self.template_name, {
             'input_html': input_html,

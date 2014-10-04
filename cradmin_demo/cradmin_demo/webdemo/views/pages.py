@@ -1,7 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from crispy_forms import layout
-from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -9,12 +8,10 @@ from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
 from django_cradmin.viewhelpers import multiselect
 from django_cradmin import crapp
-# from django_cradmin.wysihtml5.widgets import WysiHtmlTextArea
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import PrimarySubmit
 
 from cradmin_demo.webdemo.models import Page
-from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):

@@ -2,7 +2,6 @@ import urllib
 from django import forms
 from django import http
 from django.contrib.contenttypes.generic import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
 
 from crispy_forms import layout

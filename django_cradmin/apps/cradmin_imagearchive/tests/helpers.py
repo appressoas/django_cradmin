@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw
 from cStringIO import StringIO
-from django.core.files.base import ContentFile
 
 
 def create_image(width, height, filetype='PNG'):
