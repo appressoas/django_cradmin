@@ -27,21 +27,16 @@ class NameColumn(objecttable.MultiActionColumn):
         ]
 
 
-class NameSelectColumn(objecttable.MultiActionColumn):
+class NameSelectColumn(objecttable.UseThisActionColumn):
     modelfield = 'name'
 
     def get_buttons(self, obj):
-        fieldname = self.view.request.GET['select_fieldname']
-        # current_value = self.view.request.GET['select_current_value']
-        redirect_url = self.view.request.GET['select_redirect_url']
-        select_url = '{}?{}'.format(redirect_url, urllib.urlencode({
-            'selected_fieldname': fieldname,
-            'selected_value': obj.pk
-        }))
+        fieldid = self.view.request.GET['select_fieldid']
         return [
-            objecttable.Button(
+            objecttable.UseThisButton(
                 label=_('Use this'),
-                url=select_url)
+                selected_fieldid=fieldid,
+                selected_value=obj.pk)
         ]
 
 

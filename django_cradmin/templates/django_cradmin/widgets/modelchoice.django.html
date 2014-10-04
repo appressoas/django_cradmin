@@ -1,11 +1,27 @@
 {% load i18n %}
 
-{{ input_html|safe }}
-<p>
-    {% if preview %}
-        {{ preview }}
-    {% endif %}
-</p>
-<button type="submit" name="submit_select_{{ fieldname }}" class="btn btn-default">
-    {% trans "Select" %}
-</button>
+<div id="id_cradmin_modelchoicefieldwrapper_{{ fieldname }}"
+        class="cradmin-modelchoicefield-wrapper"
+        django-cradmin-model-choice-field-wrapper>
+
+    <input type="text" value="{{ fieldvalue }}"
+           id="{{ fieldid }}" name="{{ fieldname }}"
+           django-cradmin-model-choice-field-hidden-input>
+
+    <p>
+        {% if preview %}
+            {{ preview }}
+        {% endif %}
+    </p>
+
+    <button class="btn btn-default" django-cradmin-model-choice-field-changebegin-button>
+        {% trans "Select" %}
+    </button>
+
+    <div class="ng-hide cradmin-floating-iframe-wrapper cradmin-modelchoicefield-iframe-wrapper"
+            style="border: 1px solid #111; width: 600px; height: 450px; overflow: auto; -webkit-overflow-scrolling:touch;"
+            django-cradmin-model-choice-field-iframe-wrapper>
+        <iframe style="width: 100%; height: 100%;"
+                src="{{ selectview_url }}"></iframe>
+    </div>
+</div>

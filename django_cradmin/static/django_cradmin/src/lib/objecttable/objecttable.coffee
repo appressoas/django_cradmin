@@ -1,8 +1,8 @@
 angular.module('djangoCradmin.objecttable', [])
 
 .controller('CradminMultiselectObjectTableViewController', [
-  '$scope', '$timeout'
-  ($scope, $timeout) ->
+  '$scope'
+  ($scope) ->
 
     # $scope.selectAllChecked tracks the value of the select all
     # checkbox.
@@ -47,4 +47,17 @@ angular.module('djangoCradmin.objecttable', [])
       else
         $scope.numberOfSelected -= 1
         $scope.selectAllChecked = false
+])
+
+
+.controller('CradminObjectTableNameSelectColumnController', [
+  '$scope'
+  ($scope) ->
+    $scope.onClickUseThis = ($event, selected_fieldid, selected_value) ->
+      $event.preventDefault()
+#      console.log 'Use this', selected_fieldid, selected_value
+#      window.parent.document.getElementById(selected_fieldid).value = selected_value
+      window.parent.postMessage(
+        angular.toJson({selected_fieldid: selected_fieldid, selected_value: selected_value}),
+        window.parent.location.href)
 ])

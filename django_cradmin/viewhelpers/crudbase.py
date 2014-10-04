@@ -227,40 +227,11 @@ class CreateUpdateViewMixin(object):
             obj.save()
         return obj
 
-    def _external_select_requested_check(self):
-        for fieldname in self.external_select_fields:
-            if 'submit_select_{}'.format(fieldname) in self.request.POST:
-                return fieldname
-        return None
-
-    def get_external_select_url(self, fieldname):
-        raise NotImplementedError()
-
-    def _get_external_select_url(self, fieldname, current_value):
-        url = self.get_external_select_url(fieldname)
-        return '{}?{}'.format(
-            url, urllib.urlencode({
-                'select_fieldname': fieldname,
-                'select_current_value': current_value,
-                'select_redirect_url': self.request.path
-            }))
-
-    def _handle_external_select(self, form, external_select_fieldname):
-        self._store_preview_in_session(self.serialize_preview(form))
-        current_value = form.data[external_select_fieldname]
-        url = self._get_external_select_url(
-            fieldname=external_select_fieldname,
-            current_value=current_value)
-        return http.HttpResponseRedirect(url)
-
     def form_valid(self, form):
         """
         If the form is valid, save the associated model.
         """
-        external_select_fieldname = self._external_select_requested_check()
-        if external_select_fieldname:
-            return self._handle_external_select(form, external_select_fieldname)
-        elif self.preview_requested():
+        if self.preview_requested():
             self._store_preview_in_session(self.serialize_preview(form))
             self.show_preview = True
             return self.render_to_response(self.get_context_data(form=form))

@@ -10,8 +10,9 @@ from django_cradmin.viewhelpers import multiselect
 from django_cradmin import crapp
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import PrimarySubmit
-
+from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from cradmin_demo.webdemo.models import Page
+from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -79,11 +80,8 @@ class PageCreateUpdateMixin(object):
     roleid_field = 'site'
     external_select_fields = ['image']
 
-    def get_external_select_url(self, fieldname):
-        if fieldname == 'image':
-            return self.request.cradmin_instance.reverse_url('imagearchive', 'singleselect')
-        else:
-            raise ValueError()
+    def _get_image_selectview_url(self):
+        return self.request.cradmin_instance.reverse_url('imagearchive', 'singleselect')
 
     def get_field_layout(self):
         return [
@@ -100,9 +98,10 @@ class PageCreateUpdateMixin(object):
         form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
         # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
         form.fields['body'].widget = AceMarkdownWidget()
-        # form.fields['image'].widget = ModelChoiceWidget(
-        #     queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role)
-        # )
+        form.fields['image'].widget = ModelChoiceWidget(
+            queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role),
+            selectview_url=self._get_image_selectview_url()
+        )
         return form
 
 

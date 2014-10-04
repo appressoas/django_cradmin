@@ -246,6 +246,93 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.forms.modelchoicefield', []).directive('djangoCradminModelChoiceFieldWrapper', [
+    '$window', function($window) {
+      return {
+        restrict: 'A',
+        controller: function($scope) {
+          this.setIframeWrapper = function(iframeWrapperScope) {
+            return $scope.iframeWrapperScope = iframeWrapperScope;
+          };
+          this.setHiddenField = function(hiddenFieldScope) {
+            return $scope.hiddenFieldScope = hiddenFieldScope;
+          };
+          this.onChangeValueBegin = function() {
+            return $scope.iframeWrapperScope.show();
+          };
+          $scope.origin = "" + window.location.protocol + "//" + window.location.host;
+          $scope.onValueChangeMessage = function(event) {
+            var data;
+            if (event.origin !== $scope.origin) {
+              console.error("Message origin '" + event.origin + "' does not match current origin '" + $scope.origin + "'.");
+              return;
+            }
+            data = angular.fromJson(event.data);
+            $scope.hiddenFieldScope.setValue(data.selected_fieldid, data.selected_value);
+            return $scope.iframeWrapperScope.hide();
+          };
+          $window.addEventListener('message', $scope.onValueChangeMessage, false);
+        },
+        link: function(scope, element) {}
+      };
+    }
+  ]).directive('djangoCradminModelChoiceFieldHiddenInput', [
+    '$window', function($window) {
+      return {
+        require: '^djangoCradminModelChoiceFieldWrapper',
+        restrict: 'A',
+        controller: function($scope) {
+          $scope.setValue = function(fieldid, value) {
+            if (fieldid !== $scope.hiddenInputFieldid) {
+              return;
+            }
+            return $scope.hiddenInputElement.val(value);
+          };
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          scope.hiddenInputElement = element;
+          scope.hiddenInputFieldid = attrs.id;
+          wrapperCtrl.setHiddenField(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminModelChoiceFieldChangebeginButton', [
+    '$window', function($window) {
+      return {
+        require: '^djangoCradminModelChoiceFieldWrapper',
+        restrict: 'A',
+        link: function(scope, element, attrs, wrapperCtrl) {
+          element.on('click', function(e) {
+            e.preventDefault();
+            return wrapperCtrl.onChangeValueBegin();
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminModelChoiceFieldIframeWrapper', [
+    '$window', function($window) {
+      return {
+        require: '^djangoCradminModelChoiceFieldWrapper',
+        restrict: 'A',
+        controller: function($scope) {
+          $scope.show = function() {
+            return $scope.iframeWrapperElement.removeClass('ng-hide');
+          };
+          $scope.hide = function() {
+            return $scope.iframeWrapperElement.addClass('ng-hide');
+          };
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          scope.iframeWrapperElement = element;
+          wrapperCtrl.setIframeWrapper(scope);
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.imagepreview', []).directive('djangoCradminImagePreview', function() {
     /*
     A directive that shows a preview when an image field changes
@@ -341,7 +428,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.imagepreview']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.imagepreview', 'djangoCradmin.forms.modelchoicefield']);
 
 }).call(this);
 
@@ -357,7 +444,7 @@
 
 (function() {
   angular.module('djangoCradmin.objecttable', []).controller('CradminMultiselectObjectTableViewController', [
-    '$scope', '$timeout', function($scope, $timeout) {
+    '$scope', function($scope) {
       $scope.selectAllChecked = false;
       $scope.numberOfSelected = 0;
       $scope.selectedAction = null;
@@ -387,6 +474,16 @@
           $scope.numberOfSelected -= 1;
           return $scope.selectAllChecked = false;
         }
+      };
+    }
+  ]).controller('CradminObjectTableNameSelectColumnController', [
+    '$scope', function($scope) {
+      return $scope.onClickUseThis = function($event, selected_fieldid, selected_value) {
+        $event.preventDefault();
+        return window.parent.postMessage(angular.toJson({
+          selected_fieldid: selected_fieldid,
+          selected_value: selected_value
+        }), window.parent.location.href);
       };
     }
   ]);

@@ -2,6 +2,7 @@ from collections import OrderedDict
 import json
 import re
 import logging
+from xml.sax.saxutils import quoteattr
 from django import forms
 
 from django.template.loader import render_to_string
@@ -243,6 +244,27 @@ class MultiActionColumn(Column):
         return context
 
 
+class UseThisActionColumn(Column):
+    template_name = 'django_cradmin/viewhelpers/objecttable/usethisactioncolumn-cell.django.html'
+
+    def __init__(self, **kwargs):
+        super(UseThisActionColumn, self).__init__(**kwargs)
+
+    def get_buttons(self, obj):
+        """
+        Get an iterable over the buttons/actions for the given ``obj``.
+
+        Returns:
+            An iterable yielding :class:`.Button` objects.
+        """
+        raise NotImplementedError()
+
+    def get_context_data(self, obj):
+        context = super(UseThisActionColumn, self).get_context_data(obj)
+        context['buttons'] = self.get_buttons(obj)
+        return context
+
+
 class Button(object):
     """
     A pythonic interface for creating a HTML link styled as a button.
@@ -254,11 +276,31 @@ class Button(object):
     """
     template_name = 'django_cradmin/viewhelpers/objecttable/button.django.html'
 
-    def __init__(self, label, url, buttonclass='default', icon=None):
+    def __init__(self, label, url='#', buttonclass='default', icon=None):
+        """
+        Parameters:
+            label (unicode): The label of the button.
+            url (unicode): The url/href attribute of the button.
+            icon (unicode): An icon to show alongside the label. Example: ``fa-thumbs-up``.
+            buttonclass (unicode): The bootstrap css class suffix of the button (default|primany|success|danger).
+        """
         self.label = label
         self.url = url
         self.icon = icon
         self.buttonclass = buttonclass
+
+    def get_attributes(self):
+        """
+        Returns a dict of custom attributes to add to the button.
+        They are automatically escaped before they are added to the button.
+        """
+        return {}
+
+    def _iter_attributes(self):
+        for key, value in self.get_attributes().iteritems():
+            attrname = u'data-{}'.format(key)
+            attrvalue = quoteattr(value)
+            yield u'{}={}'.format(attrname, attrvalue)
 
     def render(self):
         return render_to_string(self.template_name, {
@@ -266,7 +308,26 @@ class Button(object):
             'url': self.url,
             'icon': self.icon,
             'buttonclass': self.buttonclass,
+            'attributes': self._iter_attributes(),
         })
+
+
+class UseThisButton(Button):
+    """
+    Button for :class:`.UseThisActionColumn`.
+    """
+    def __init__(self, label, selected_fieldid, selected_value, buttonclass='default', icon=None):
+        self.selected_fieldid = selected_fieldid
+        self.selected_value = selected_value
+        super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass, icon=icon)
+        
+    def get_attributes(self):
+        return {
+            'ng-click': u'onClickUseThis($event, "{selected_fieldid}", "{selected_value}")'.format(
+                selected_fieldid=self.selected_fieldid,
+                selected_value=self.selected_value,
+            )
+        }
 
 
 class MultiSelectAction(object):

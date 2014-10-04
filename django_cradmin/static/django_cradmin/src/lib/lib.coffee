@@ -6,4 +6,5 @@ angular.module('djangoCradmin', [
   'djangoCradmin.acemarkdown'
 #  'djangoCradmin.wysihtml'
   'djangoCradmin.imagepreview'
+  'djangoCradmin.forms.modelchoicefield'
 ])
