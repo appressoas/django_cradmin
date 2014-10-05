@@ -1,8 +1,6 @@
-<div ng-controller="CradminObjectTableNameSelectColumnController">
-    <p class="objecttable-cellvalue">{{ value }}</p>
-    <p class="objecttable-cellbuttons">
-        {% for button in buttons %}
-            {{ button.render }}
-        {% endfor %}
-    </p>
-</div>
+<p class="objecttable-cellvalue">{{ value }}</p>
+<p class="objecttable-cellbuttons">
+    {% for button in buttons %}
+        {{ button.render }}
+    {% endfor %}
+</p>

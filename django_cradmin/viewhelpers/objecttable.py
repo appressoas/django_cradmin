@@ -323,10 +323,8 @@ class UseThisButton(Button):
         
     def get_attributes(self):
         return {
-            'ng-click': u'onClickUseThis($event, "{selected_fieldid}", "{selected_value}")'.format(
-                selected_fieldid=self.selected_fieldid,
-                selected_value=self.selected_value,
-            )
+            'django-cradmin-use-this': unicode(self.selected_value),
+            'django-cradmin-fieldid': self.selected_fieldid
         }
 
 
