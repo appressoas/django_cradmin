@@ -91,7 +91,6 @@ class ArchiveImage(models.Model):
     def __unicode__(self):
         return self.name
 
-
     def get_preview_html(self):
         return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', {
             'archiveimage': self

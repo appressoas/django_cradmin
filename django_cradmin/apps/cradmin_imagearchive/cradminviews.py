@@ -1,4 +1,3 @@
-import urllib
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 
@@ -119,7 +118,6 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     submit_use_label = _('Upload and select')
     submit_save_label = _('Upload image')
     submit_save_and_continue_edititing_label = _('Upload and continue editing')
-
 
     def get_field_layout(self):
         return [

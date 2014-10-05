@@ -322,7 +322,7 @@ class UseThisButton(Button):
         self.view = view
         self.obj = obj
         super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass, icon=icon)
-        
+
     def get_attributes(self):
         attributes = {
             'django-cradmin-use-this': json.dumps({
