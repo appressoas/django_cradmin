@@ -8328,3 +8328,8 @@ body {
     padding-left: 200px;
   }
 }
+@media (min-width: 992px) {
+  body.django-cradmin-hide-menu #django_cradmin_contentwrapper {
+    padding-left: 0;
+  }
+}

@@ -476,6 +476,12 @@ class ObjectTableView(ListView):
     #: (django_cradmin/viewhelpers/objecttable/objecttable.django.html).
     template_name = 'django_cradmin/viewhelpers/objecttable/objecttable.django.html'
 
+    #: Set this to ``True`` to make the template not render the menu.
+    #: Very useful when creating foreign-key select views, and other views
+    #: where you do not want your users to accidentally click out of the
+    #: current view.
+    hide_menu = False
+
     #: The model class to list objects for. You do not have to specify
     #: this, but if you do not specify this, you have to override
     #: :meth:`.get_pagetitle`.
@@ -609,6 +615,7 @@ class ObjectTableView(ListView):
         context['table'] = list(self.__iter_table(object_list))
         context['buttons'] = self.get_buttons()
         context['enable_search'] = self.enable_search()
+        context['cradmin_hide_menu'] = self.hide_menu
         if self.enable_search():
             context['current_search'] = self.current_search
             context['pager_extra_querystring'] = u'search={}'.format(self.current_search)

@@ -26,9 +26,14 @@
             {% endcomment %}
         {% endblock %}
     </head>
-    <body>
+    <body class="
+            {% block bodyclass %}
+                {% if cradmin_hide_menu %}
+                    django-cradmin-hide-menu
+                {% endif %}
+            {% endblock bodyclass %}
+            ">
         {% block body %}{% endblock body %}
-
 
         {% block initialize_angular %}
             <script>

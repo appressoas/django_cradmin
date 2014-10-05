@@ -1,21 +1,28 @@
+{% comment %}
+    Includes the cradmin menu. You can make your view not render the menu by
+    setting the ``cradmin_hide_menu`` context variable to ``True``.
+{% endcomment %}
 {% load i18n %}
-<nav id="cradmin_menu" ng-controller="CradminMenuController">
-    <div class="cradmin_menuicon">
-        {% block icon %}
-            <span class="fa fa-wrench"></span>
-        {% endblock icon %}
-    </div>
-    <div class="cradmin_menumobileheader">
-        <button type="button" class="btn btn-default cradmin_menutoggle"
-                ng-click="toggleNavigation()">
-            <span class="sr-only">{% trans "Toggle navigation" %}</span>
-            <span class="fa fa-bars"></span>
-        </button>
-    </div>
-    <ul class="cradmin_menucontent"
-            ng-class="{cradmin_menucontent_display: displayMenu}">
-        {% for menuitem in request.cradmin_instance.get_menu %}
-            {{ menuitem.render|safe }}
-        {% endfor %}
-    </ul>
-</nav>
+
+{% if not cradmin_hide_menu %}
+    <nav id="cradmin_menu" ng-controller="CradminMenuController">
+        <div class="cradmin_menuicon">
+            {% block icon %}
+                <span class="fa fa-wrench"></span>
+            {% endblock icon %}
+        </div>
+        <div class="cradmin_menumobileheader">
+            <button type="button" class="btn btn-default cradmin_menutoggle"
+                    ng-click="toggleNavigation()">
+                <span class="sr-only">{% trans "Toggle navigation" %}</span>
+                <span class="fa fa-bars"></span>
+            </button>
+        </div>
+        <ul class="cradmin_menucontent"
+                ng-class="{cradmin_menucontent_display: displayMenu}">
+            {% for menuitem in request.cradmin_instance.get_menu %}
+                {{ menuitem.render|safe }}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endif %}
