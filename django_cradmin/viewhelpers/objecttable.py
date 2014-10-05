@@ -335,15 +335,15 @@ class ForeignKeySelectButton(Button):
     Used to make buttons that lead to views that handle foreign key selection.
 
     It is just like a normal :class:`.Button`, except that it requires a request
-    object, and uses that to add ``select_fieldid`` and ``select_current_value``
-    to the url.
+    object, and uses that to add ``foreignkey_select_fieldid`` and
+    ``foreignkey_select_current_value`` to the url.
     """
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request')
         super(ForeignKeySelectButton, self).__init__(*args, **kwargs)
         self.url = '{}?{}'.format(self.url, urllib.urlencode({
-            'select_fieldid': request.GET['select_fieldid'],
-            'select_current_value': request.GET.get('select_current_value', ''),
+            'foreignkey_select_fieldid': request.GET['foreignkey_select_fieldid'],
+            'foreignkey_select_current_value': request.GET.get('foreignkey_select_current_value', ''),
             'success_url': request.get_full_path()
         }))
 
@@ -661,7 +661,7 @@ class ObjectTableView(ListView):
         if foreignkey_selected_value:
             context['selected_foreignkey'] = {
                 'value': foreignkey_selected_value,
-                'fieldid': self.request.GET['select_fieldid']
+                'fieldid': self.request.GET['foreignkey_select_fieldid']
             }
 
         return context

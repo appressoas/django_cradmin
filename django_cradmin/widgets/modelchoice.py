@@ -23,8 +23,8 @@ class ModelChoiceWidget(widgets.TextInput):
     def _make_selectview_url(self, fieldid, current_value):
         return '{}?{}'.format(
             self.selectview_url, urllib.urlencode({
-                'select_fieldid': fieldid,
-                'select_current_value': current_value,
+                'foreignkey_select_fieldid': fieldid,
+                'foreignkey_select_current_value': current_value,
             }))
 
     def render(self, name, value, attrs=None):

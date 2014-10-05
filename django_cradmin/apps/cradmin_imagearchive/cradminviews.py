@@ -31,7 +31,7 @@ class NameSelectColumn(objecttable.UseThisActionColumn):
     modelfield = 'name'
 
     def get_buttons(self, obj):
-        fieldid = self.view.request.GET['select_fieldid']
+        fieldid = self.view.request.GET['foreignkey_select_fieldid']
         return [
             objecttable.UseThisButton(
                 label=_('Use this'),
@@ -85,7 +85,7 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     ]
     searchfields = ['name', 'description', 'file_extension']
     hide_menu = True
-    # paginate_by = 2
+    # paginate_by = 10
 
     def get_buttons(self):
         app = self.request.cradmin_app

@@ -12,7 +12,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     template_name = 'django_cradmin/viewhelpers/create.django.html'
 
     #: If this is ``True`` (default), we go into foreignkey select mode
-    #: if ``select_fieldid`` is in the querystring.
+    #: if ``foreignkey_select_fieldid`` is in the querystring.
     #: Foreignkey select mode changes the buttons and removes the menu.
     allow_foreignkey_select = True
 
@@ -55,7 +55,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         return helper
 
     def _foreignkey_select_mode(self):
-        return self.allow_foreignkey_select and 'select_fieldid' in self.request.GET
+        return self.allow_foreignkey_select and 'foreignkey_select_fieldid' in self.request.GET
 
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)
