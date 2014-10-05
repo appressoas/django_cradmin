@@ -2,6 +2,7 @@ from collections import OrderedDict
 import json
 import re
 import logging
+import urllib
 from xml.sax.saxutils import quoteattr
 from django import forms
 
@@ -608,6 +609,15 @@ class ObjectTableView(ListView):
             if key != 'search':
                 yield key, value
 
+    def _get_pager_extra_querystring(self):
+        querystring = self.request.GET.copy()
+        if 'page' in querystring:
+            del querystring['page']
+        if querystring:
+            return urllib.urlencode(querystring)
+        else:
+            return ''
+
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
         object_list = context['object_list']
@@ -623,8 +633,8 @@ class ObjectTableView(ListView):
         context['cradmin_hide_menu'] = self.hide_menu
         if self.enable_search():
             context['current_search'] = self.current_search
-            context['pager_extra_querystring'] = u'search={}'.format(self.current_search)
             context['search_hidden_fields'] = self._get_search_hidden_fields()
+        context['pager_extra_querystring'] = self._get_pager_extra_querystring()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         return context
 
