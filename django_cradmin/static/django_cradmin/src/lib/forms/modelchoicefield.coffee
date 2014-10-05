@@ -8,6 +8,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
       scope: {}
 
       controller: ($scope) ->
+        $scope.origin = "#{window.location.protocol}//#{window.location.host}"
 
         @setIframeWrapper = (iframeWrapperScope) ->
           $scope.iframeWrapperScope = iframeWrapperScope
@@ -22,15 +23,15 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           $scope.iframeScope.reset()
           $scope.iframeWrapperScope.show()
 
-        $scope.origin = "#{window.location.protocol}//#{window.location.host}"
-        $scope.onValueChangeMessage = (event) ->
+        $scope.onChangeValue = (event) ->
           if event.origin != $scope.origin
             console.error "Message origin '#{event.origin}' does not match current origin '#{$scope.origin}'."
             return
           data = angular.fromJson(event.data)
           $scope.hiddenFieldScope.setValue(data.selected_fieldid, data.selected_value)
           $scope.iframeWrapperScope.hide()
-        $window.addEventListener('message', $scope.onValueChangeMessage, false)
+
+        $window.addEventListener('message', $scope.onChangeValue, false)
 
         return
 
@@ -64,7 +65,20 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     }
 ])
 
-.directive('djangoCradminModelChoiceFieldChangebeginButton', [
+.directive 'djangoCradminModelChoiceFieldChangebeginButton', ->
+  return {
+    require: '^djangoCradminModelChoiceFieldWrapper'
+    restrict: 'A'
+    scope: {}
+
+    link: (scope, element, attrs, wrapperCtrl) ->
+      element.on 'click', (e) ->
+        e.preventDefault()
+        wrapperCtrl.onChangeValueBegin()
+      return
+  }
+
+.directive('djangoCradminModelChoiceFieldIframeWrapper', [
   '$window'
   ($window) ->
     return {
@@ -72,36 +86,24 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
       restrict: 'A'
       scope: {}
 
+      controller: ($scope) ->
+        $scope.bodyElement = angular.element($window.document.body)
+        $scope.show = ->
+          $scope.iframeWrapperElement.removeClass('ng-hide')
+          $scope.bodyElement.addClass('django-cradmin-noscroll')
+        $scope.hide = ->
+          $scope.iframeWrapperElement.addClass('ng-hide')
+          $scope.bodyElement.removeClass('django-cradmin-noscroll')
+        @closeIframe = ->
+          $scope.hide()
+        return
+
       link: (scope, element, attrs, wrapperCtrl) ->
-        element.on 'click', (e) ->
-          e.preventDefault()
-          wrapperCtrl.onChangeValueBegin()
+        scope.iframeWrapperElement = element
+        wrapperCtrl.setIframeWrapper(scope)
         return
     }
 ])
-
-.directive 'djangoCradminModelChoiceFieldIframeWrapper', ->
-  return {
-    require: '^djangoCradminModelChoiceFieldWrapper'
-    restrict: 'A'
-    scope: {}
-
-    controller: ($scope) ->
-      $scope.show = ->
-        $scope.iframeWrapperElement.removeClass('ng-hide')
-      $scope.hide = ->
-        $scope.iframeWrapperElement.addClass('ng-hide')
-
-      @closeIframe = ->
-        $scope.hide()
-
-      return
-
-    link: (scope, element, attrs, wrapperCtrl) ->
-      scope.iframeWrapperElement = element
-      wrapperCtrl.setIframeWrapper(scope)
-      return
-  }
 
 .directive 'djangoCradminModelChoiceFieldIframeClosebutton', ->
   return {

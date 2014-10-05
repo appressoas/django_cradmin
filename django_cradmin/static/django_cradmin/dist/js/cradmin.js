@@ -252,6 +252,7 @@
         restrict: 'A',
         scope: {},
         controller: function($scope) {
+          $scope.origin = "" + window.location.protocol + "//" + window.location.host;
           this.setIframeWrapper = function(iframeWrapperScope) {
             return $scope.iframeWrapperScope = iframeWrapperScope;
           };
@@ -265,8 +266,7 @@
             $scope.iframeScope.reset();
             return $scope.iframeWrapperScope.show();
           };
-          $scope.origin = "" + window.location.protocol + "//" + window.location.host;
-          $scope.onValueChangeMessage = function(event) {
+          $scope.onChangeValue = function(event) {
             var data;
             if (event.origin !== $scope.origin) {
               console.error("Message origin '" + event.origin + "' does not match current origin '" + $scope.origin + "'.");
@@ -276,7 +276,7 @@
             $scope.hiddenFieldScope.setValue(data.selected_fieldid, data.selected_value);
             return $scope.iframeWrapperScope.hide();
           };
-          $window.addEventListener('message', $scope.onValueChangeMessage, false);
+          $window.addEventListener('message', $scope.onChangeValue, false);
         },
         link: function(scope, element) {}
       };
@@ -302,42 +302,45 @@
         }
       };
     }
-  ]).directive('djangoCradminModelChoiceFieldChangebeginButton', [
+  ]).directive('djangoCradminModelChoiceFieldChangebeginButton', function() {
+    return {
+      require: '^djangoCradminModelChoiceFieldWrapper',
+      restrict: 'A',
+      scope: {},
+      link: function(scope, element, attrs, wrapperCtrl) {
+        element.on('click', function(e) {
+          e.preventDefault();
+          return wrapperCtrl.onChangeValueBegin();
+        });
+      }
+    };
+  }).directive('djangoCradminModelChoiceFieldIframeWrapper', [
     '$window', function($window) {
       return {
         require: '^djangoCradminModelChoiceFieldWrapper',
         restrict: 'A',
         scope: {},
+        controller: function($scope) {
+          $scope.bodyElement = angular.element($window.document.body);
+          $scope.show = function() {
+            $scope.iframeWrapperElement.removeClass('ng-hide');
+            return $scope.bodyElement.addClass('django-cradmin-noscroll');
+          };
+          $scope.hide = function() {
+            $scope.iframeWrapperElement.addClass('ng-hide');
+            return $scope.bodyElement.removeClass('django-cradmin-noscroll');
+          };
+          this.closeIframe = function() {
+            return $scope.hide();
+          };
+        },
         link: function(scope, element, attrs, wrapperCtrl) {
-          element.on('click', function(e) {
-            e.preventDefault();
-            return wrapperCtrl.onChangeValueBegin();
-          });
+          scope.iframeWrapperElement = element;
+          wrapperCtrl.setIframeWrapper(scope);
         }
       };
     }
-  ]).directive('djangoCradminModelChoiceFieldIframeWrapper', function() {
-    return {
-      require: '^djangoCradminModelChoiceFieldWrapper',
-      restrict: 'A',
-      scope: {},
-      controller: function($scope) {
-        $scope.show = function() {
-          return $scope.iframeWrapperElement.removeClass('ng-hide');
-        };
-        $scope.hide = function() {
-          return $scope.iframeWrapperElement.addClass('ng-hide');
-        };
-        this.closeIframe = function() {
-          return $scope.hide();
-        };
-      },
-      link: function(scope, element, attrs, wrapperCtrl) {
-        scope.iframeWrapperElement = element;
-        wrapperCtrl.setIframeWrapper(scope);
-      }
-    };
-  }).directive('djangoCradminModelChoiceFieldIframeClosebutton', function() {
+  ]).directive('djangoCradminModelChoiceFieldIframeClosebutton', function() {
     return {
       require: '^djangoCradminModelChoiceFieldIframeWrapper',
       restrict: 'A',

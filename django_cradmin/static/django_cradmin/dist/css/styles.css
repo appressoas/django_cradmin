@@ -7442,6 +7442,27 @@ button.close {
     display: none !important;
   }
 }
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: #E6E6E6;
+  color: #666666;
+}
+body.django-cradmin-noscroll {
+  overflow: hidden;
+}
+@media (min-width: 992px) {
+  #django_cradmin_contentwrapper {
+    padding-left: 200px;
+  }
+}
+@media (min-width: 992px) {
+  body.django-cradmin-hide-menu #django_cradmin_contentwrapper {
+    padding-left: 0;
+  }
+}
 nav#cradmin_menu {
   background-color: #333333;
 }
@@ -8318,23 +8339,5 @@ table.table.table-cradmin-fluid tbody tr td {
 @media (min-height: 800px) {
   .django_cradmin_form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea .ace_editor {
     height: 600px;
-  }
-}
-html,
-body {
-  height: 100%;
-}
-body {
-  background-color: #E6E6E6;
-  color: #666666;
-}
-@media (min-width: 992px) {
-  #django_cradmin_contentwrapper {
-    padding-left: 200px;
-  }
-}
-@media (min-width: 992px) {
-  body.django-cradmin-hide-menu #django_cradmin_contentwrapper {
-    padding-left: 0;
   }
 }
