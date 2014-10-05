@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericForeignKey
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -89,3 +90,9 @@ class ArchiveImage(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+    def get_preview_html(self):
+        return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', {
+            'archiveimage': self
+        })

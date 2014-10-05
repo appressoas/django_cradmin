@@ -262,6 +262,9 @@
           this.setHiddenField = function(hiddenFieldScope) {
             return $scope.hiddenFieldScope = hiddenFieldScope;
           };
+          this.setPreviewElement = function(previewElementScope) {
+            return $scope.previewElementScope = previewElementScope;
+          };
           this.onChangeValueBegin = function() {
             $scope.iframeScope.reset();
             return $scope.iframeWrapperScope.show();
@@ -274,6 +277,7 @@
             }
             data = angular.fromJson(event.data);
             $scope.hiddenFieldScope.setValue(data.value);
+            $scope.previewElementScope.setPreviewHtml(data.preview);
             return $scope.iframeWrapperScope.hide();
           };
           $window.addEventListener('message', $scope.onChangeValue, false);
@@ -294,6 +298,21 @@
       link: function(scope, element, attrs, wrapperCtrl) {
         scope.hiddenInputElement = element;
         wrapperCtrl.setHiddenField(scope);
+      }
+    };
+  }).directive('djangoCradminModelChoiceFieldPreview', function() {
+    return {
+      require: '^djangoCradminModelChoiceFieldWrapper',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        $scope.setPreviewHtml = function(previewHtml) {
+          return $scope.previewElement.html(previewHtml);
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.previewElement = element;
+        wrapperCtrl.setPreviewElement(scope);
       }
     };
   }).directive('djangoCradminModelChoiceFieldChangebeginButton', function() {

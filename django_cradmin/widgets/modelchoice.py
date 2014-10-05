@@ -10,15 +10,16 @@ class ModelChoiceWidget(widgets.TextInput):
     template_name = 'django_cradmin/widgets/modelchoice.django.html'
     input_type = 'text'
 
-    def __init__(self, queryset, selectview_url, template_name=None):
+    def __init__(self, queryset, selectview_url, preview='', template_name=None):
         self.queryset = queryset
+        self.preview = preview
         self.selectview_url = selectview_url
         if template_name:
             self.template_name = template_name
         super(ModelChoiceWidget, self).__init__()
 
-    def get_object(self, pk):
-        return self.queryset.get(pk=pk)
+    # def get_object(self, pk):
+    #     return self.queryset.get(pk=pk)
 
     def _make_selectview_url(self, fieldid, current_value):
         return '{}?{}'.format(
@@ -28,14 +29,11 @@ class ModelChoiceWidget(widgets.TextInput):
             }))
 
     def render(self, name, value, attrs=None):
-        preview = ''
         if value is None:
             value = ''
-        else:
-            preview = self.get_object(pk=value)
         fieldid = attrs['id']
         return render_to_string(self.template_name, {
-            'preview': preview,
+            'preview': self.preview,
             'fieldname': name,
             'fieldid': fieldid,
             'fieldvalue': value,

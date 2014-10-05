@@ -86,6 +86,9 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     hide_menu = True
     # paginate_by = 10
 
+    def make_foreignkey_preview_for(self, obj):
+        return obj.get_preview_html()
+
     def get_buttons(self):
         app = self.request.cradmin_app
         return [

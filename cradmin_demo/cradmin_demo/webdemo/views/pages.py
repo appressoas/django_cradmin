@@ -98,8 +98,12 @@ class PageCreateUpdateMixin(object):
         form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
         # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
         form.fields['body'].widget = AceMarkdownWidget()
+        preview = '<p class="text-muted">(No image selected)</p>'
+        if self.object and self.object.image:
+            preview = self.object.image.get_preview_html()
         form.fields['image'].widget = ModelChoiceWidget(
             queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role),
+            preview=preview,
             selectview_url=self._get_image_selectview_url()
         )
         return form

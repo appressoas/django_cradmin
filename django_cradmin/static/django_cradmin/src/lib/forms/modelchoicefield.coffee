@@ -19,6 +19,9 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
         @setHiddenField = (hiddenFieldScope) ->
           $scope.hiddenFieldScope = hiddenFieldScope
 
+        @setPreviewElement = (previewElementScope) ->
+          $scope.previewElementScope = previewElementScope
+
         @onChangeValueBegin = ->
           $scope.iframeScope.reset()
           $scope.iframeWrapperScope.show()
@@ -29,6 +32,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
             return
           data = angular.fromJson(event.data)
           $scope.hiddenFieldScope.setValue(data.value)
+          $scope.previewElementScope.setPreviewHtml(data.preview)
           $scope.iframeWrapperScope.hide()
 
         $window.addEventListener('message', $scope.onChangeValue, false)
@@ -54,6 +58,23 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.hiddenInputElement = element
       wrapperCtrl.setHiddenField(scope)
+      return
+  }
+
+.directive 'djangoCradminModelChoiceFieldPreview', ->
+  return {
+    require: '^djangoCradminModelChoiceFieldWrapper'
+    restrict: 'A'
+    scope: {}
+
+    controller: ($scope) ->
+      $scope.setPreviewHtml = (previewHtml) ->
+        $scope.previewElement.html(previewHtml)
+      return
+
+    link: (scope, element, attrs, wrapperCtrl) ->
+      scope.previewElement = element
+      wrapperCtrl.setPreviewElement(scope)
       return
   }
 

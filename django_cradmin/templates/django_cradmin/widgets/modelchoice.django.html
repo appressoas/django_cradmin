@@ -8,11 +8,11 @@
            id="{{ fieldid }}" name="{{ fieldname }}"
            django-cradmin-model-choice-field-hidden-input>
 
-    <p>
+    <div django-cradmin-model-choice-field-preview>
         {% if preview %}
-            {{ preview }}
+            {{ preview|safe }}
         {% endif %}
-    </p>
+    </div>
 
     <button class="btn btn-default" django-cradmin-model-choice-field-changebegin-button>
         {% trans "Select" %}
