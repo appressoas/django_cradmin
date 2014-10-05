@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django_cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-29 03:41+0000\n"
-"PO-Revision-Date: 2014-09-29 05:47+0100\n"
+"POT-Creation-Date: 2014-10-05 14:49+0000\n"
+"PO-Revision-Date: 2014-10-05 16:50+0100\n"
 "Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb\n"
@@ -27,45 +27,58 @@ msgstr "Rediger"
 msgid "Delete"
 msgstr "Slett"
 
-#: apps/cradmin_imagearchive/cradminviews.py:43
+#: apps/cradmin_imagearchive/cradminviews.py:37
 msgid "Use this"
 msgstr "Bruk dette"
 
-#: apps/cradmin_imagearchive/cradminviews.py:56 viewhelpers/create.py:19
+#: apps/cradmin_imagearchive/cradminviews.py:49 viewhelpers/create.py:40
 #: viewhelpers/update.py:19
 msgid "Preview"
 msgstr "Forhåndsvis"
 
-#: apps/cradmin_imagearchive/cradminviews.py:81
-#: apps/cradmin_imagearchive/cradminviews.py:97
+#: apps/cradmin_imagearchive/cradminviews.py:74
+#: apps/cradmin_imagearchive/cradminviews.py:96
 msgid "Add image"
 msgstr "Legg til bilde"
 
-#: apps/cradmin_imagearchive/models.py:33
+#: apps/cradmin_imagearchive/cradminviews.py:119
+msgid "Upload and select"
+msgstr "Last opp og velg"
+
+#: apps/cradmin_imagearchive/cradminviews.py:120
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:20
+msgid "Upload image"
+msgstr "Last opp bilde"
+
+#: apps/cradmin_imagearchive/cradminviews.py:121
+msgid "Upload and continue editing"
+msgstr "Last opp og fortsett redigering"
+
+#: apps/cradmin_imagearchive/models.py:34
 msgid "role"
 msgstr "rolle"
 
-#: apps/cradmin_imagearchive/models.py:34
+#: apps/cradmin_imagearchive/models.py:35
 msgid "The role owning this image."
 msgstr "Rollen som eier dette bildet."
 
-#: apps/cradmin_imagearchive/models.py:43
+#: apps/cradmin_imagearchive/models.py:44
 msgid "image"
 msgstr "image"
 
-#: apps/cradmin_imagearchive/models.py:44
+#: apps/cradmin_imagearchive/models.py:45
 msgid "Select an image to add to the archive."
 msgstr "Velg et bilde som du ønsker å legge til i arkivet."
 
-#: apps/cradmin_imagearchive/models.py:60
+#: apps/cradmin_imagearchive/models.py:61
 msgid "name"
 msgstr "navn"
 
-#: apps/cradmin_imagearchive/models.py:66
+#: apps/cradmin_imagearchive/models.py:67
 msgid "description"
 msgstr "beskrivelse"
 
-#: apps/cradmin_imagearchive/models.py:68
+#: apps/cradmin_imagearchive/models.py:69
 msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
@@ -74,11 +87,11 @@ msgstr ""
 "En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet "
 "for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
 
-#: apps/cradmin_imagearchive/models.py:80
+#: apps/cradmin_imagearchive/models.py:81
 msgid "archive image"
 msgstr "arkivbilde"
 
-#: apps/cradmin_imagearchive/models.py:81
+#: apps/cradmin_imagearchive/models.py:82
 msgid "archive images"
 msgstr "arkivbilder"
 
@@ -94,7 +107,7 @@ msgstr "Ugyldig rolle"
 msgid "The requested role does not exist."
 msgstr "Den ønskede rollen finnes ikke."
 
-#: templates/django_cradmin/menu.django.html:11
+#: templates/django_cradmin/menu.django.html:17
 msgid "Toggle navigation"
 msgstr "Vis/sjul navigasjon"
 
@@ -168,19 +181,19 @@ msgstr "programmeringsspråk"
 msgid "Code block"
 msgstr "Kodeblokk"
 
-#: templates/django_cradmin/filewidgets/filewidget.django.html:16
+#: templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:6
+msgid "Image preview"
+msgstr "Forhåndsvisning av bilde"
+
+#: templates/django_cradmin/filewidgets/filewidget.django.html:15
 msgid "Remove file"
 msgstr "Fjern fil"
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:20
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:18
 msgid "Replace image"
 msgstr "Erstatt bilde"
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:22
-msgid "Upload image"
-msgstr "Last opp bilde"
-
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:29
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:27
 msgid "Remove image"
 msgstr "Fjern bilde"
 
@@ -224,47 +237,55 @@ msgstr "Neste"
 msgid "(None)"
 msgstr "(Ingen)"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:33
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:44
 msgid "Search..."
 msgstr "Søk..."
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:37
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:48
 msgid "Search"
 msgstr "Søk"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:103
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:114
 msgid "Ordered ascending - Click to order descending"
 msgstr "Sortert stigende - klikk for å sortere synkende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:105
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:116
 msgid "Ordered descending - Click to order ascending"
 msgstr "Sortert synkende - klikk for å sortere stigende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:112
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:123
 msgid "Do not order by this column"
 msgstr "Ikke sorter etter denne kolonnen"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:117
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:128
 msgid "Ordering priority"
 msgstr "Sorteringsprioritet"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:171
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:182
 msgid "Select an action"
 msgstr "Velg en handling"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:174
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:185
 msgid "Go"
 msgstr "Gå"
 
-#: templates/django_cradmin/widgets/modelchoice.django.html:10
-msgid "Select"
-msgstr "Velg"
+#: templates/django_cradmin/widgets/modelchoice.django.html:18
+msgid "Select ..."
+msgstr "Velg ..."
 
-#: viewhelpers/create.py:14
+#: templates/django_cradmin/widgets/modelchoice.django.html:26
+msgid "Close choice window"
+msgstr "Lukk vindu"
+
+#: viewhelpers/create.py:24 viewhelpers/create.py:31
+msgid "Create and select"
+msgstr "Opprett og velg"
+
+#: viewhelpers/create.py:25
 msgid "Create"
 msgstr "Opprett"
 
-#: viewhelpers/create.py:15
+#: viewhelpers/create.py:26
 msgid "Create and continue editing"
 msgstr "Opprett og fortsett å redigere"
 
