@@ -8223,6 +8223,12 @@ table.table.table-cradmin-fluid tbody tr td {
   color: #fff;
   text-decoration: none;
 }
+.cradmin-floating-fullsize-iframe-wrapper .cradmin-floating-fullsize-loadspinner {
+  color: #ccc;
+  font-size: 50px;
+  text-align: center;
+  padding-top: 25px;
+}
 .cradmin-floating-fullsize-iframe-wrapper .cradmin-floating-fullsize-iframe-inner {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
