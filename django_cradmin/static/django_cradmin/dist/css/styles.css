@@ -7642,11 +7642,11 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
 }
 .django_cradmin_form .cradmin-focusfield {
   /**
-        # .cradmin-focusfield-screenheight
-        Scale the field focusfield to the screen height.
-        Uses css media queries just like the bootstrap responsive grid does
-        for the screen width.
-        */
+    # .cradmin-focusfield-screenheight
+    Scale the field focusfield to the screen height.
+    Uses css media queries just like the bootstrap responsive grid does
+    for the screen width.
+    */
 }
 .django_cradmin_form .cradmin-focusfield .form-group {
   margin: 0;
@@ -7917,55 +7917,6 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   .django_cradmin_form .cradmin-globalfields .form-group {
     max-width: 800px;
   }
-}
-.django_cradmin_form .django_cradmin_submitrow {
-  position: fixed;
-  z-index: 10000;
-  bottom: 0px;
-  left: 15px;
-  right: 15px;
-  background-color: #333;
-  padding: 8px;
-  border-radius: 3px 3px 0 0;
-}
-.django_cradmin_form .django_cradmin_submitrow.django_cradmin_submitrow_hidden {
-  display: none;
-}
-@media (min-width: 992px) {
-  .django_cradmin_form .django_cradmin_submitrow {
-    left: 250px;
-    width: 500px;
-    right: auto;
-  }
-}
-@media (min-width: 1200px) {
-  .django_cradmin_form .django_cradmin_submitrow {
-    width: 700px;
-  }
-}
-.django_cradmin_form .django_cradmin_submitrow .btn {
-  text-transform: uppercase;
-  font-size: 14px;
-  line-height: 18px;
-  padding: 10px 12px;
-}
-.django_cradmin_form .django_cradmin_submitrow .btn.btn-default {
-  background-color: #808080;
-  border-color: #808080;
-  color: #fff;
-}
-.django_cradmin_form .django_cradmin_submitrow .btn.btn-default:hover {
-  background-color: #666;
-  border-color: #666;
-  color: #fff;
-}
-.django_cradmin_form .django_cradmin_submitrow .btn.btn-cancel {
-  color: #377ca8;
-  font-size: 16px;
-  text-transform: none;
-}
-.django_cradmin_form .django_cradmin_submitrow .btn.btn-cancel:hover {
-  color: #60a2cb;
 }
 table.table.table-cradmin-fluid {
   margin: 0;
@@ -8269,6 +8220,60 @@ table.table.table-cradmin-fluid tbody tr td {
   height: 100%;
   width: 100%;
   border: none;
+}
+.django_cradmin_submitrow {
+  position: fixed;
+  z-index: 10000;
+  bottom: 0px;
+  left: 15px;
+  right: 15px;
+  background-color: #333;
+  padding: 8px;
+  border-radius: 3px 3px 0 0;
+}
+.django_cradmin_submitrow.django_cradmin_submitrow_hidden {
+  display: none;
+}
+@media (min-width: 992px) {
+  .django_cradmin_submitrow {
+    left: 250px;
+    width: 500px;
+    right: auto;
+  }
+}
+@media (min-width: 1200px) {
+  .django_cradmin_submitrow {
+    width: 700px;
+  }
+}
+.django_cradmin_submitrow .btn {
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 10px 12px;
+}
+.django_cradmin_submitrow .btn.btn-default {
+  background-color: #808080;
+  border-color: #808080;
+  color: #fff;
+}
+.django_cradmin_submitrow .btn.btn-default:hover {
+  background-color: #666;
+  border-color: #666;
+  color: #fff;
+}
+.django_cradmin_submitrow .btn.btn-cancel {
+  color: #377ca8;
+  font-size: 16px;
+  text-transform: none;
+}
+.django_cradmin_submitrow .btn.btn-cancel:hover {
+  color: #60a2cb;
+}
+@media (min-width: 992px) {
+  body.django-cradmin-hide-menu .django_cradmin_submitrow {
+    left: 50px;
+  }
 }
 .cradmin-acemarkdown textarea.cradmin-acemarkdowntextarea {
   display: none;
