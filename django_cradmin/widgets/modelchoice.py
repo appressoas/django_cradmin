@@ -29,7 +29,9 @@ class ModelChoiceWidget(widgets.TextInput):
 
     def render(self, name, value, attrs=None):
         preview = ''
-        if value is not None:
+        if value is None:
+            value = ''
+        else:
             preview = self.get_object(pk=value)
         fieldid = attrs['id']
         return render_to_string(self.template_name, {

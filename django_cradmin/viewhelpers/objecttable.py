@@ -323,10 +323,29 @@ class UseThisButton(Button):
         super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass, icon=icon)
         
     def get_attributes(self):
-        return {
+        attributes = {
             'django-cradmin-use-this': unicode(self.selected_value),
             'django-cradmin-fieldid': self.selected_fieldid
         }
+        return attributes
+
+
+class ForeignKeySelectButton(Button):
+    """
+    Used to make buttons that lead to views that handle foreign key selection.
+
+    It is just like a normal :class:`.Button`, except that it requires a request
+    object, and uses that to add ``select_fieldid`` and ``select_current_value``
+    to the url.
+    """
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request')
+        super(ForeignKeySelectButton, self).__init__(*args, **kwargs)
+        self.url = '{}?{}'.format(self.url, urllib.urlencode({
+            'select_fieldid': request.GET['select_fieldid'],
+            'select_current_value': request.GET.get('select_current_value', ''),
+            'success_url': request.get_full_path()
+        }))
 
 
 class MultiSelectAction(object):
@@ -636,6 +655,15 @@ class ObjectTableView(ListView):
             context['search_hidden_fields'] = self._get_search_hidden_fields()
         context['pager_extra_querystring'] = self._get_pager_extra_querystring()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
+
+        # Handle foreignkey selection
+        foreignkey_selected_value = self.request.GET.get('selected_value', '')
+        if foreignkey_selected_value:
+            context['selected_foreignkey'] = {
+                'value': foreignkey_selected_value,
+                'fieldid': self.request.GET['select_fieldid']
+            }
+
         return context
 
     def __create_orderingstring_from_default_ordering(self):

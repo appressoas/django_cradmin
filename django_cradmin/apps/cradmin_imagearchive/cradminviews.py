@@ -85,12 +85,15 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     ]
     searchfields = ['name', 'description', 'file_extension']
     hide_menu = True
-    paginate_by = 2
+    # paginate_by = 2
 
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Add image'), url=app.reverse_appurl('create')),
+            objecttable.ForeignKeySelectButton(
+                _('Add image'),
+                request=self.request,
+                url=app.reverse_appurl('create')),
         ]
 
 

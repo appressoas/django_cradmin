@@ -393,10 +393,10 @@
         restrict: 'A',
         scope: {
           'value': '@djangoCradminUseThis',
-          'fieldid': '@djangoCradminFieldid'
+          'fieldid': '@djangoCradminFieldid',
+          'selected_value': '@djangoCradminSelectedvalue'
         },
         link: function(scope, element, attrs) {
-          scope.iframeWrapperElement = element;
           element.on('click', function(e) {
             e.preventDefault();
             return $window.parent.postMessage(angular.toJson({
@@ -405,6 +405,33 @@
               selected_value: scope.value
             }), window.parent.location.href);
           });
+        }
+      };
+    }
+  ]).directive('djangoCradminUseThisHidden', [
+    '$window', function($window) {
+      /*
+      Works just like the ``django-cradmin-usethis`` directive, except this
+      is intended to be triggered on load.
+      
+      The intended use-case is to trigger the same action as clicking a
+      ``django-cradmin-usethis``-button but on load, typically after creating/adding
+      a new item that the user wants to be selected without any further manual input.
+      */
+
+      return {
+        restrict: 'A',
+        scope: {
+          'value': '@djangoCradminUseThisHidden',
+          'fieldid': '@djangoCradminFieldid',
+          'selected_value': '@djangoCradminSelectedvalue'
+        },
+        link: function(scope, element, attrs) {
+          $window.parent.postMessage(angular.toJson({
+            postmessageid: 'django-cradmin-usethis',
+            selected_fieldid: scope.fieldid,
+            selected_value: scope.value
+          }), window.parent.location.href);
         }
       };
     }

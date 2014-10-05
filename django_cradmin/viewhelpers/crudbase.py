@@ -199,10 +199,10 @@ class CreateUpdateViewMixin(object):
         return url
 
     def get_success_url(self):
-        if 'submit-save' in self.request.POST:
-            return self.get_default_save_success_url()
-        else:
+        if 'submit-save-and-continue-editing' in self.request.POST:
             return self._get_full_editurl(self.object)
+        else:
+            return self.get_default_save_success_url()
 
     def save_object(self, form, commit=True):
         """
