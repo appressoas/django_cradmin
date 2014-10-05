@@ -603,6 +603,11 @@ class ObjectTableView(ListView):
         """
         return self.model._meta.verbose_name_plural
 
+    def _get_search_hidden_fields(self):
+        for key, value in self.request.GET.iteritems():
+            if key != 'search':
+                yield key, value
+
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
         object_list = context['object_list']
@@ -619,6 +624,7 @@ class ObjectTableView(ListView):
         if self.enable_search():
             context['current_search'] = self.current_search
             context['pager_extra_querystring'] = u'search={}'.format(self.current_search)
+            context['search_hidden_fields'] = self._get_search_hidden_fields()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         return context
 

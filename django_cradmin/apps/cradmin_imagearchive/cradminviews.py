@@ -85,6 +85,7 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     ]
     searchfields = ['name', 'description', 'file_extension']
     hide_menu = True
+    paginate_by = 2
 
     def get_buttons(self):
         app = self.request.cradmin_app

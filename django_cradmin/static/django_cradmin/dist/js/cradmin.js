@@ -413,22 +413,6 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.forms.iframe', []).directive('djangoCradminIframeWrapper', [
-    '$window', function($window) {
-      /*
-      */
-
-      return {
-        restrict: 'A',
-        scope: {},
-        link: function(scope, element, attrs) {}
-      };
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   angular.module('djangoCradmin.imagepreview', []).directive('djangoCradminImagePreview', function() {
     /*
     A directive that shows a preview when an image field changes

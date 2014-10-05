@@ -27,8 +27,15 @@
                 {% if enable_search %}
                         </div>
                         <div class="col-sm-4 col-md-3">
-                            <form class="form-inline cradmin-searchform" role="search" method="get" action="{{ request.path }}">
+                            <form class="form-inline cradmin-searchform" role="search" method="get"
+                                    action="{{ request.get_full_path }}">
                                 <div class="input-group">
+                                    {% for name, value in search_hidden_fields %}
+                                        <input type="hidden"
+                                               name="{{ name }}"
+                                               value="{{ value }}">
+                                    {% endfor %}
+
                                     <input class="form-control" name="search" type="text"
                                            placeholder="{% trans 'Search...' %}"
                                            value="{{ current_search }}">
