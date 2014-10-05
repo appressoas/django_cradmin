@@ -12,10 +12,14 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
         @setIframeWrapper = (iframeWrapperScope) ->
           $scope.iframeWrapperScope = iframeWrapperScope
 
+        @setIframe = (iframeScope) ->
+          $scope.iframeScope = iframeScope
+
         @setHiddenField = (hiddenFieldScope) ->
           $scope.hiddenFieldScope = hiddenFieldScope
 
         @onChangeValueBegin = ->
+          $scope.iframeScope.reset()
           $scope.iframeWrapperScope.show()
 
         $scope.origin = "#{window.location.protocol}//#{window.location.host}"
@@ -109,5 +113,23 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
       element.on 'click', (e) ->
         e.preventDefault()
         iframeWrapperCtrl.closeIframe()
+      return
+  }
+
+.directive 'djangoCradminModelChoiceFieldIframe', ->
+  return {
+    require: '^djangoCradminModelChoiceFieldWrapper'
+    restrict: 'A'
+    scope: {
+      src: '@djangoCradminModelChoiceFieldIframe'
+    }
+
+    controller: ($scope) ->
+      $scope.reset = ->
+        $scope.element.attr('src', $scope.src)
+
+    link: (scope, element, attrs, wrapperCtrl) ->
+      scope.element = element
+      wrapperCtrl.setIframe(scope)
       return
   }

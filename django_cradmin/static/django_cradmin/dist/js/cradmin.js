@@ -255,10 +255,14 @@
           this.setIframeWrapper = function(iframeWrapperScope) {
             return $scope.iframeWrapperScope = iframeWrapperScope;
           };
+          this.setIframe = function(iframeScope) {
+            return $scope.iframeScope = iframeScope;
+          };
           this.setHiddenField = function(hiddenFieldScope) {
             return $scope.hiddenFieldScope = hiddenFieldScope;
           };
           this.onChangeValueBegin = function() {
+            $scope.iframeScope.reset();
             return $scope.iframeWrapperScope.show();
           };
           $scope.origin = "" + window.location.protocol + "//" + window.location.host;
@@ -343,6 +347,23 @@
           e.preventDefault();
           return iframeWrapperCtrl.closeIframe();
         });
+      }
+    };
+  }).directive('djangoCradminModelChoiceFieldIframe', function() {
+    return {
+      require: '^djangoCradminModelChoiceFieldWrapper',
+      restrict: 'A',
+      scope: {
+        src: '@djangoCradminModelChoiceFieldIframe'
+      },
+      controller: function($scope) {
+        return $scope.reset = function() {
+          return $scope.element.attr('src', $scope.src);
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.element = element;
+        wrapperCtrl.setIframe(scope);
       }
     };
   });
