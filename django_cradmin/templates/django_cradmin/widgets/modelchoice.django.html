@@ -4,7 +4,7 @@
         class="django-cradmin-modelchoicefield-wrapper"
         django-cradmin-model-choice-field-wrapper>
 
-    <input type="text" value="{{ fieldvalue }}"
+    <input type="hidden" value="{{ fieldvalue }}"
            id="{{ fieldid }}" name="{{ fieldname }}"
            django-cradmin-model-choice-field-hidden-input>
 
@@ -15,7 +15,7 @@
     </div>
 
     <button class="btn btn-default" django-cradmin-model-choice-field-changebegin-button>
-        {% trans "Select" %}
+        {% trans "Select ..." %}
     </button>
 
     <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper django-cradmin-modelchoicefield-iframe-wrapper"
