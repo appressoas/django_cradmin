@@ -4,9 +4,8 @@
 {% block title %}{{ pagetitle|capfirst }}{% endblock title %}
 
 {% block content %}
-    {% if selected_foreignkey %}
-        <div django-cradmin-use-this-hidden="{{ selected_foreignkey.value }}"
-             django-cradmin-fieldid="{{ selected_foreignkey.fieldid }}"></div>
+    {% if use_this_hidden_attribute %}
+        <div django-cradmin-use-this-hidden={{ use_this_hidden_attribute|safe }}></div>
     {% endif %}
     
     {% block pageheader %}

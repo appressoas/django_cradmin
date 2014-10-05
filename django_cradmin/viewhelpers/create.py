@@ -12,8 +12,13 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     template_name = 'django_cradmin/viewhelpers/create.django.html'
 
     #: If this is ``True`` (default), we go into foreignkey select mode
-    #: if ``foreignkey_select_fieldid`` is in the querystring.
-    #: Foreignkey select mode changes the buttons and removes the menu.
+    #: if ``foreignkey_select_mode=1`` is in the querystring.
+    #:
+    #: Foreignkey select mode:
+    #:
+    #: - replaces the normal save buttons with a ``submit-use`` button.
+    #: - removes the menu (sets the ``cradmin_hide_menu`` template context variable to ``True``).
+    #: - add a ``foreignkey_selected_value=<selected pk>`` to the querystring of the success url.
     allow_foreignkey_select = True
 
     submit_use_label = _('Create and select')
@@ -36,18 +41,16 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         return buttons
 
     def get_default_save_success_url(self):
-        if 'success_url' in self.request.GET and self._foreignkey_select_mode():
-            # Insert ``selected_value`` attribute in the querystring
-            url = urllib.unquote_plus(self.request.GET['success_url'])
+        url = super(CreateView, self).get_default_save_success_url()
+        if self._foreignkey_select_mode():
+            url = urllib.unquote_plus(url)
             urllist = list(urlparse.urlsplit(url))
             querystring = urllist[3]
             querydict = urlparse.parse_qs(querystring)
-            querydict['selected_value'] = [unicode(self.object.pk)]
+            querydict['foreignkey_selected_value'] = [unicode(self.object.pk)]
             urllist[3] = urllib.urlencode(querydict, doseq=True)
             url = urlparse.urlunsplit(urllist)
-            return url
-        else:
-            return super(CreateView, self).get_default_save_success_url()
+        return url
 
     def get_formhelper(self):
         helper = super(CreateView, self).get_formhelper()
@@ -55,7 +58,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         return helper
 
     def _foreignkey_select_mode(self):
-        return self.allow_foreignkey_select and 'foreignkey_select_fieldid' in self.request.GET
+        return self.allow_foreignkey_select and self.request.GET.get('foreignkey_select_mode') == '1'
 
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)

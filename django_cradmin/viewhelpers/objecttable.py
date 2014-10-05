@@ -5,6 +5,7 @@ import logging
 import urllib
 from xml.sax.saxutils import quoteattr
 from django import forms
+from django.shortcuts import get_object_or_404
 
 from django.template.loader import render_to_string
 from django.views.generic import ListView
@@ -317,14 +318,16 @@ class UseThisButton(Button):
     """
     Button for :class:`.UseThisActionColumn`.
     """
-    def __init__(self, label, selected_value, buttonclass='default', icon=None):
-        self.selected_value = selected_value
+    def __init__(self, view, label, obj, buttonclass='default', icon=None):
+        self.view = view
+        self.obj = obj
         super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass, icon=icon)
         
     def get_attributes(self):
         attributes = {
             'django-cradmin-use-this': json.dumps({
-                'value': self.selected_value
+                'value': self.obj.pk,
+                'preview': self.view.make_foreignkey_preview_for(self.obj)
             })
         }
         return attributes
@@ -335,15 +338,13 @@ class ForeignKeySelectButton(Button):
     Used to make buttons that lead to views that handle foreign key selection.
 
     It is just like a normal :class:`.Button`, except that it requires a request
-    object, and uses that to add ``foreignkey_select_fieldid`` and
-    ``foreignkey_select_current_value`` to the url.
+    object, and uses that to set success_url to the current URL.
     """
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request')
         super(ForeignKeySelectButton, self).__init__(*args, **kwargs)
         self.url = '{}?{}'.format(self.url, urllib.urlencode({
-            'foreignkey_select_fieldid': request.GET['foreignkey_select_fieldid'],
-            'foreignkey_select_current_value': request.GET.get('foreignkey_select_current_value', ''),
+            'foreignkey_select_mode': '1',
             'success_url': request.get_full_path()
         }))
 
@@ -637,6 +638,18 @@ class ObjectTableView(ListView):
         else:
             return ''
 
+    def make_foreignkey_preview_for(self, obj):
+        return unicode(obj)
+
+    def _get_use_this_hidden_attribute(self):
+        pk = self.request.GET['foreignkey_selected_value']
+        obj = get_object_or_404(self.get_queryset_for_role(self.request.cradmin_role), pk=pk)
+        data = json.dumps({
+            'value': obj.pk,
+            'preview': self.make_foreignkey_preview_for(obj)
+        })
+        return quoteattr(data)
+
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
         object_list = context['object_list']
@@ -657,12 +670,8 @@ class ObjectTableView(ListView):
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
 
         # Handle foreignkey selection
-        foreignkey_selected_value = self.request.GET.get('selected_value', '')
-        if foreignkey_selected_value:
-            context['selected_foreignkey'] = {
-                'value': foreignkey_selected_value,
-                'fieldid': self.request.GET['foreignkey_select_fieldid']
-            }
+        if 'foreignkey_selected_value' in self.request.GET:
+            context['use_this_hidden_attribute'] = self._get_use_this_hidden_attribute()
 
         return context
 

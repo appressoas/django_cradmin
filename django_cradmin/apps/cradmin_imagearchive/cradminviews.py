@@ -33,8 +33,9 @@ class NameSelectColumn(objecttable.UseThisActionColumn):
     def get_buttons(self, obj):
         return [
             objecttable.UseThisButton(
+                view=self.view,
                 label=_('Use this'),
-                selected_value=obj.pk)
+                obj=obj)
         ]
 
 
