@@ -29,9 +29,9 @@ angular.module('djangoCradmin.forms.usethisbutton', [])
 
     ```
     {
-      postmessageid: 'django-cradmin-usethis',
-      'selected_value': '<the value provided via the django-cradmin attribute>',
-      'selected_fieldid': '<the fieldid provided via the django-cradmin-fieldid attribute>',
+      postmessageid: 'django-cradmin-use-this',
+      value: '<the value provided via the django-cradmin attribute>',
+      selected_fieldid: '<the fieldid provided via the django-cradmin-fieldid attribute>',
     }
     ```
 
@@ -42,20 +42,16 @@ angular.module('djangoCradmin.forms.usethisbutton', [])
     return {
       restrict: 'A'
       scope: {
-        'value': '@djangoCradminUseThis'
-        'fieldid': '@djangoCradminFieldid'
-        'selected_value': '@djangoCradminSelectedvalue'
+        data: '@djangoCradminUseThis'
       }
 
       link: (scope, element, attrs) ->
         element.on 'click', (e) ->
           e.preventDefault()
+          data = angular.fromJson(scope.data)
+          data.postmessageid = 'django-cradmin-use-this'
           $window.parent.postMessage(
-            angular.toJson({
-              postmessageid: 'django-cradmin-usethis',
-              selected_fieldid: scope.fieldid,
-              selected_value: scope.value
-            }),
+            angular.toJson(data),
             window.parent.location.href)
 
         return
@@ -66,30 +62,25 @@ angular.module('djangoCradmin.forms.usethisbutton', [])
   '$window'
   ($window) ->
     ###
-    Works just like the ``django-cradmin-usethis`` directive, except this
+    Works just like the ``django-cradmin-use-this`` directive, except this
     is intended to be triggered on load.
 
     The intended use-case is to trigger the same action as clicking a
-    ``django-cradmin-usethis``-button but on load, typically after creating/adding
+    ``django-cradmin-use-this``-button but on load, typically after creating/adding
     a new item that the user wants to be selected without any further manual input.
     ###
     return {
       restrict: 'A'
       scope: {
-        'value': '@djangoCradminUseThisHidden'
-        'fieldid': '@djangoCradminFieldid'
-        'selected_value': '@djangoCradminSelectedvalue'
+        data: '@djangoCradminUseThisHidden'
       }
 
       link: (scope, element, attrs) ->
+        data = angular.fromJson(scope.data)
+        data.postmessageid = 'django-cradmin-use-this'
         $window.parent.postMessage(
-          angular.toJson({
-            postmessageid: 'django-cradmin-usethis',
-            selected_fieldid: scope.fieldid,
-            selected_value: scope.value
-          }),
+          angular.toJson(data),
           window.parent.location.href)
-
         return
     }
 ])

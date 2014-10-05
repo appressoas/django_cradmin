@@ -317,15 +317,15 @@ class UseThisButton(Button):
     """
     Button for :class:`.UseThisActionColumn`.
     """
-    def __init__(self, label, selected_fieldid, selected_value, buttonclass='default', icon=None):
-        self.selected_fieldid = selected_fieldid
+    def __init__(self, label, selected_value, buttonclass='default', icon=None):
         self.selected_value = selected_value
         super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass, icon=icon)
         
     def get_attributes(self):
         attributes = {
-            'django-cradmin-use-this': unicode(self.selected_value),
-            'django-cradmin-fieldid': self.selected_fieldid
+            'django-cradmin-use-this': json.dumps({
+                'value': self.selected_value
+            })
         }
         return attributes
 

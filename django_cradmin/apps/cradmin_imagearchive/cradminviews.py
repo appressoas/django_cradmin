@@ -31,11 +31,9 @@ class NameSelectColumn(objecttable.UseThisActionColumn):
     modelfield = 'name'
 
     def get_buttons(self, obj):
-        fieldid = self.view.request.GET['foreignkey_select_fieldid']
         return [
             objecttable.UseThisButton(
                 label=_('Use this'),
-                selected_fieldid=fieldid,
                 selected_value=obj.pk)
         ]
 

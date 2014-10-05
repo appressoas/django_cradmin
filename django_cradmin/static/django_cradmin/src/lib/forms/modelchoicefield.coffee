@@ -28,7 +28,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
             console.error "Message origin '#{event.origin}' does not match current origin '#{$scope.origin}'."
             return
           data = angular.fromJson(event.data)
-          $scope.hiddenFieldScope.setValue(data.selected_fieldid, data.selected_value)
+          $scope.hiddenFieldScope.setValue(data.value)
           $scope.iframeWrapperScope.hide()
 
         $window.addEventListener('message', $scope.onChangeValue, false)
@@ -40,30 +40,22 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     }
 ])
 
-.directive('djangoCradminModelChoiceFieldHiddenInput', [
-  '$window'
-  ($window) ->
-    return {
-      require: '^djangoCradminModelChoiceFieldWrapper'
-      restrict: 'A'
-      scope: {}
+.directive 'djangoCradminModelChoiceFieldHiddenInput', ->
+  return {
+    require: '^djangoCradminModelChoiceFieldWrapper'
+    restrict: 'A'
+    scope: {}
 
-      controller: ($scope) ->
-        $scope.setValue = (fieldid, value) ->
-          if fieldid != $scope.hiddenInputFieldid
-#            console.log "Received fieldid '#{fieldid}' does not match my fieldid #{scope.hiddenInputFieldid}."
-            return
-          $scope.hiddenInputElement.val(value)
+    controller: ($scope) ->
+      $scope.setValue = (value) ->
+        $scope.hiddenInputElement.val(value)
+      return
 
-        return
-
-      link: (scope, element, attrs, wrapperCtrl) ->
-        scope.hiddenInputElement = element
-        scope.hiddenInputFieldid = attrs.id
-        wrapperCtrl.setHiddenField(scope)
-        return
-    }
-])
+    link: (scope, element, attrs, wrapperCtrl) ->
+      scope.hiddenInputElement = element
+      wrapperCtrl.setHiddenField(scope)
+      return
+  }
 
 .directive 'djangoCradminModelChoiceFieldChangebeginButton', ->
   return {

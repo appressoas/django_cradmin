@@ -273,7 +273,7 @@
               return;
             }
             data = angular.fromJson(event.data);
-            $scope.hiddenFieldScope.setValue(data.selected_fieldid, data.selected_value);
+            $scope.hiddenFieldScope.setValue(data.value);
             return $scope.iframeWrapperScope.hide();
           };
           $window.addEventListener('message', $scope.onChangeValue, false);
@@ -281,28 +281,22 @@
         link: function(scope, element) {}
       };
     }
-  ]).directive('djangoCradminModelChoiceFieldHiddenInput', [
-    '$window', function($window) {
-      return {
-        require: '^djangoCradminModelChoiceFieldWrapper',
-        restrict: 'A',
-        scope: {},
-        controller: function($scope) {
-          $scope.setValue = function(fieldid, value) {
-            if (fieldid !== $scope.hiddenInputFieldid) {
-              return;
-            }
-            return $scope.hiddenInputElement.val(value);
-          };
-        },
-        link: function(scope, element, attrs, wrapperCtrl) {
-          scope.hiddenInputElement = element;
-          scope.hiddenInputFieldid = attrs.id;
-          wrapperCtrl.setHiddenField(scope);
-        }
-      };
-    }
-  ]).directive('djangoCradminModelChoiceFieldChangebeginButton', function() {
+  ]).directive('djangoCradminModelChoiceFieldHiddenInput', function() {
+    return {
+      require: '^djangoCradminModelChoiceFieldWrapper',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        $scope.setValue = function(value) {
+          return $scope.hiddenInputElement.val(value);
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.hiddenInputElement = element;
+        wrapperCtrl.setHiddenField(scope);
+      }
+    };
+  }).directive('djangoCradminModelChoiceFieldChangebeginButton', function() {
     return {
       require: '^djangoCradminModelChoiceFieldWrapper',
       restrict: 'A',
@@ -402,9 +396,9 @@
       
       ```
       {
-        postmessageid: 'django-cradmin-usethis',
-        'selected_value': '<the value provided via the django-cradmin attribute>',
-        'selected_fieldid': '<the fieldid provided via the django-cradmin-fieldid attribute>',
+        postmessageid: 'django-cradmin-use-this',
+        value: '<the value provided via the django-cradmin attribute>',
+        selected_fieldid: '<the fieldid provided via the django-cradmin-fieldid attribute>',
       }
       ```
       
@@ -416,18 +410,15 @@
       return {
         restrict: 'A',
         scope: {
-          'value': '@djangoCradminUseThis',
-          'fieldid': '@djangoCradminFieldid',
-          'selected_value': '@djangoCradminSelectedvalue'
+          data: '@djangoCradminUseThis'
         },
         link: function(scope, element, attrs) {
           element.on('click', function(e) {
+            var data;
             e.preventDefault();
-            return $window.parent.postMessage(angular.toJson({
-              postmessageid: 'django-cradmin-usethis',
-              selected_fieldid: scope.fieldid,
-              selected_value: scope.value
-            }), window.parent.location.href);
+            data = angular.fromJson(scope.data);
+            data.postmessageid = 'django-cradmin-use-this';
+            return $window.parent.postMessage(angular.toJson(data), window.parent.location.href);
           });
         }
       };
@@ -435,27 +426,24 @@
   ]).directive('djangoCradminUseThisHidden', [
     '$window', function($window) {
       /*
-      Works just like the ``django-cradmin-usethis`` directive, except this
+      Works just like the ``django-cradmin-use-this`` directive, except this
       is intended to be triggered on load.
       
       The intended use-case is to trigger the same action as clicking a
-      ``django-cradmin-usethis``-button but on load, typically after creating/adding
+      ``django-cradmin-use-this``-button but on load, typically after creating/adding
       a new item that the user wants to be selected without any further manual input.
       */
 
       return {
         restrict: 'A',
         scope: {
-          'value': '@djangoCradminUseThisHidden',
-          'fieldid': '@djangoCradminFieldid',
-          'selected_value': '@djangoCradminSelectedvalue'
+          data: '@djangoCradminUseThisHidden'
         },
         link: function(scope, element, attrs) {
-          $window.parent.postMessage(angular.toJson({
-            postmessageid: 'django-cradmin-usethis',
-            selected_fieldid: scope.fieldid,
-            selected_value: scope.value
-          }), window.parent.location.href);
+          var data;
+          data = angular.fromJson(scope.data);
+          data.postmessageid = 'django-cradmin-use-this';
+          $window.parent.postMessage(angular.toJson(data), window.parent.location.href);
         }
       };
     }
