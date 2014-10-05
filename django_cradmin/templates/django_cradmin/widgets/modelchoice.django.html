@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div id="id_cradmin_modelchoicefieldwrapper_{{ fieldname }}"
-        class="cradmin-modelchoicefield-wrapper"
+        class="django-cradmin-modelchoicefield-wrapper"
         django-cradmin-model-choice-field-wrapper>
 
     <input type="text" value="{{ fieldvalue }}"
@@ -18,10 +18,14 @@
         {% trans "Select" %}
     </button>
 
-    <div class="ng-hide cradmin-floating-iframe-wrapper cradmin-modelchoicefield-iframe-wrapper"
-            style="border: 1px solid #111; width: 600px; height: 450px; overflow: auto; -webkit-overflow-scrolling:touch;"
+    <div class="ng-hide cradmin-floating-fullsize-iframe-wrapper django-cradmin-modelchoicefield-iframe-wrapper"
             django-cradmin-model-choice-field-iframe-wrapper>
-        <iframe style="width: 100%; height: 100%;"
-                src="{{ selectview_url }}"></iframe>
+        <a href="#" class="cradmin-floating-fullsize-iframe-closebutton"
+                django-cradmin-model-choice-field-iframe-closebutton>
+            <span class="fa fa-close"></span>
+        </a>
+        <div class="cradmin-floating-fullsize-iframe-inner">
+            <iframe src="{{ selectview_url }}"></iframe>
+        </div>
     </div>
 </div>

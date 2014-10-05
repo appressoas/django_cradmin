@@ -5,6 +5,8 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
   ($window) ->
     return {
       restrict: 'A'
+      scope: {}
+
       controller: ($scope) ->
 
         @setIframeWrapper = (iframeWrapperScope) ->
@@ -39,6 +41,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     return {
       require: '^djangoCradminModelChoiceFieldWrapper'
       restrict: 'A'
+      scope: {}
 
       controller: ($scope) ->
         $scope.setValue = (fieldid, value) ->
@@ -63,6 +66,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     return {
       require: '^djangoCradminModelChoiceFieldWrapper'
       restrict: 'A'
+      scope: {}
 
       link: (scope, element, attrs, wrapperCtrl) ->
         element.on 'click', (e) ->
@@ -72,23 +76,38 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     }
 ])
 
-.directive('djangoCradminModelChoiceFieldIframeWrapper', [
-  '$window'
-  ($window) ->
-    return {
-      require: '^djangoCradminModelChoiceFieldWrapper'
-      restrict: 'A'
+.directive 'djangoCradminModelChoiceFieldIframeWrapper', ->
+  return {
+    require: '^djangoCradminModelChoiceFieldWrapper'
+    restrict: 'A'
+    scope: {}
 
-      controller: ($scope) ->
-        $scope.show = ->
-          $scope.iframeWrapperElement.removeClass('ng-hide')
-        $scope.hide = ->
-          $scope.iframeWrapperElement.addClass('ng-hide')
-        return
+    controller: ($scope) ->
+      $scope.show = ->
+        $scope.iframeWrapperElement.removeClass('ng-hide')
+      $scope.hide = ->
+        $scope.iframeWrapperElement.addClass('ng-hide')
 
-      link: (scope, element, attrs, wrapperCtrl) ->
-        scope.iframeWrapperElement = element
-        wrapperCtrl.setIframeWrapper(scope)
-        return
-    }
-])
+      @closeIframe = ->
+        $scope.hide()
+
+      return
+
+    link: (scope, element, attrs, wrapperCtrl) ->
+      scope.iframeWrapperElement = element
+      wrapperCtrl.setIframeWrapper(scope)
+      return
+  }
+
+.directive 'djangoCradminModelChoiceFieldIframeClosebutton', ->
+  return {
+    require: '^djangoCradminModelChoiceFieldIframeWrapper'
+    restrict: 'A'
+    scope: {}
+
+    link: (scope, element, attrs, iframeWrapperCtrl) ->
+      element.on 'click', (e) ->
+        e.preventDefault()
+        iframeWrapperCtrl.closeIframe()
+      return
+  }

@@ -250,6 +250,7 @@
     '$window', function($window) {
       return {
         restrict: 'A',
+        scope: {},
         controller: function($scope) {
           this.setIframeWrapper = function(iframeWrapperScope) {
             return $scope.iframeWrapperScope = iframeWrapperScope;
@@ -281,6 +282,7 @@
       return {
         require: '^djangoCradminModelChoiceFieldWrapper',
         restrict: 'A',
+        scope: {},
         controller: function($scope) {
           $scope.setValue = function(fieldid, value) {
             if (fieldid !== $scope.hiddenInputFieldid) {
@@ -301,6 +303,7 @@
       return {
         require: '^djangoCradminModelChoiceFieldWrapper',
         restrict: 'A',
+        scope: {},
         link: function(scope, element, attrs, wrapperCtrl) {
           element.on('click', function(e) {
             e.preventDefault();
@@ -309,26 +312,40 @@
         }
       };
     }
-  ]).directive('djangoCradminModelChoiceFieldIframeWrapper', [
-    '$window', function($window) {
-      return {
-        require: '^djangoCradminModelChoiceFieldWrapper',
-        restrict: 'A',
-        controller: function($scope) {
-          $scope.show = function() {
-            return $scope.iframeWrapperElement.removeClass('ng-hide');
-          };
-          $scope.hide = function() {
-            return $scope.iframeWrapperElement.addClass('ng-hide');
-          };
-        },
-        link: function(scope, element, attrs, wrapperCtrl) {
-          scope.iframeWrapperElement = element;
-          wrapperCtrl.setIframeWrapper(scope);
-        }
-      };
-    }
-  ]);
+  ]).directive('djangoCradminModelChoiceFieldIframeWrapper', function() {
+    return {
+      require: '^djangoCradminModelChoiceFieldWrapper',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        $scope.show = function() {
+          return $scope.iframeWrapperElement.removeClass('ng-hide');
+        };
+        $scope.hide = function() {
+          return $scope.iframeWrapperElement.addClass('ng-hide');
+        };
+        this.closeIframe = function() {
+          return $scope.hide();
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.iframeWrapperElement = element;
+        wrapperCtrl.setIframeWrapper(scope);
+      }
+    };
+  }).directive('djangoCradminModelChoiceFieldIframeClosebutton', function() {
+    return {
+      require: '^djangoCradminModelChoiceFieldIframeWrapper',
+      restrict: 'A',
+      scope: {},
+      link: function(scope, element, attrs, iframeWrapperCtrl) {
+        element.on('click', function(e) {
+          e.preventDefault();
+          return iframeWrapperCtrl.closeIframe();
+        });
+      }
+    };
+  });
 
 }).call(this);
 
@@ -389,6 +406,22 @@
             }), window.parent.location.href);
           });
         }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.forms.iframe', []).directive('djangoCradminIframeWrapper', [
+    '$window', function($window) {
+      /*
+      */
+
+      return {
+        restrict: 'A',
+        scope: {},
+        link: function(scope, element, attrs) {}
       };
     }
   ]);
