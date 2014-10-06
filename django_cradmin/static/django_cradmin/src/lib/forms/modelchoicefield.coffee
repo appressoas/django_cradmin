@@ -16,8 +16,8 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
         @setIframe = (iframeScope) ->
           $scope.iframeScope = iframeScope
 
-        @setHiddenField = (hiddenFieldScope) ->
-          $scope.hiddenFieldScope = hiddenFieldScope
+        @setField = (fieldScope) ->
+          $scope.fieldScope = fieldScope
 
         @setPreviewElement = (previewElementScope) ->
           $scope.previewElementScope = previewElementScope
@@ -31,9 +31,14 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
             console.error "Message origin '#{event.origin}' does not match current origin '#{$scope.origin}'."
             return
           data = angular.fromJson(event.data)
-          $scope.hiddenFieldScope.setValue(data.value)
+          if $scope.fieldScope.fieldid != data.fieldid
+            # console.log "The received message was not for this field " +
+            #   "(#{$scope.fieldScope.fieldid}), it was for #{data.fieldid}"
+            return
+          $scope.fieldScope.setValue(data.value)
           $scope.previewElementScope.setPreviewHtml(data.preview)
           $scope.iframeWrapperScope.hide()
+          $scope.iframeScope.clear()
 
         $window.addEventListener('message', $scope.onChangeValue, false)
 
@@ -44,7 +49,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     }
 ])
 
-.directive 'djangoCradminModelChoiceFieldHiddenInput', ->
+.directive 'djangoCradminModelChoiceFieldInput', ->
   return {
     require: '^djangoCradminModelChoiceFieldWrapper'
     restrict: 'A'
@@ -52,12 +57,13 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
 
     controller: ($scope) ->
       $scope.setValue = (value) ->
-        $scope.hiddenInputElement.val(value)
+        $scope.inputElement.val(value)
       return
 
     link: (scope, element, attrs, wrapperCtrl) ->
-      scope.hiddenInputElement = element
-      wrapperCtrl.setHiddenField(scope)
+      scope.inputElement = element
+      scope.fieldid = attrs['id']
+      wrapperCtrl.setField(scope)
       return
   }
 
@@ -140,6 +146,8 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     }
 
     controller: ($scope) ->
+      $scope.clear = ->
+        $scope.element.attr('src', '')
       $scope.reset = ->
         $scope.element.attr('src', $scope.src)
 

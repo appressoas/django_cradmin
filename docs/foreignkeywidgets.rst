@@ -33,7 +33,7 @@ The components that make up forkeignkey selection
   information between the views:
 
   - We send the current value and ID of the field into the foreignkey select
-    view as the ``foreignkey_selected_value`` and ``foreignkey_selected_fieldid``
+    view as the ``foreignkey_select_value`` and ``foreignkey_select_fieldid``
     querystring arguments.
   - The foreignkey select view sends the selected value, the fieldid and a preview
     HTML blob back to the parent window of the iframe using ``window.postMessage()``

@@ -327,6 +327,7 @@ class UseThisButton(Button):
         attributes = {
             'django-cradmin-use-this': json.dumps({
                 'value': self.obj.pk,
+                'fieldid': self.view.request.GET['foreignkey_select_fieldid'],
                 'preview': self.view.make_foreignkey_preview_for(self.obj)
             })
         }
@@ -646,6 +647,7 @@ class ObjectTableView(ListView):
         obj = get_object_or_404(self.get_queryset_for_role(self.request.cradmin_role), pk=pk)
         data = json.dumps({
             'value': obj.pk,
+            'fieldid': self.request.GET['foreignkey_select_fieldid'],
             'preview': self.make_foreignkey_preview_for(obj)
         })
         return quoteattr(data)

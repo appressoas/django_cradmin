@@ -36,6 +36,7 @@ class ModelChoiceWidget(widgets.TextInput):
         return '{}?{}'.format(
             self.selectview_url, urllib.urlencode({
                 'foreignkey_select_current_value': current_value,
+                'foreignkey_select_fieldid': fieldid,
             }))
 
     def render(self, name, value, attrs=None):

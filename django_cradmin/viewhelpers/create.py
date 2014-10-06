@@ -18,7 +18,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     #:
     #: - replaces the normal save buttons with a ``submit-use`` button.
     #: - removes the menu (sets the ``cradmin_hide_menu`` template context variable to ``True``).
-    #: - add a ``foreignkey_selected_value=<selected pk>`` to the querystring of the success url.
+    #: - adds a ``foreignkey_selected_value=<selected pk>`` to the querystring of the success url.
     allow_foreignkey_select = True
 
     submit_use_label = _('Create and select')

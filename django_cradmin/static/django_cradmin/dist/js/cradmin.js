@@ -259,8 +259,8 @@
           this.setIframe = function(iframeScope) {
             return $scope.iframeScope = iframeScope;
           };
-          this.setHiddenField = function(hiddenFieldScope) {
-            return $scope.hiddenFieldScope = hiddenFieldScope;
+          this.setField = function(fieldScope) {
+            return $scope.fieldScope = fieldScope;
           };
           this.setPreviewElement = function(previewElementScope) {
             return $scope.previewElementScope = previewElementScope;
@@ -276,28 +276,33 @@
               return;
             }
             data = angular.fromJson(event.data);
-            $scope.hiddenFieldScope.setValue(data.value);
+            if ($scope.fieldScope.fieldid !== data.fieldid) {
+              return;
+            }
+            $scope.fieldScope.setValue(data.value);
             $scope.previewElementScope.setPreviewHtml(data.preview);
-            return $scope.iframeWrapperScope.hide();
+            $scope.iframeWrapperScope.hide();
+            return $scope.iframeScope.clear();
           };
           $window.addEventListener('message', $scope.onChangeValue, false);
         },
         link: function(scope, element) {}
       };
     }
-  ]).directive('djangoCradminModelChoiceFieldHiddenInput', function() {
+  ]).directive('djangoCradminModelChoiceFieldInput', function() {
     return {
       require: '^djangoCradminModelChoiceFieldWrapper',
       restrict: 'A',
       scope: {},
       controller: function($scope) {
         $scope.setValue = function(value) {
-          return $scope.hiddenInputElement.val(value);
+          return $scope.inputElement.val(value);
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {
-        scope.hiddenInputElement = element;
-        wrapperCtrl.setHiddenField(scope);
+        scope.inputElement = element;
+        scope.fieldid = attrs['id'];
+        wrapperCtrl.setField(scope);
       }
     };
   }).directive('djangoCradminModelChoiceFieldPreview', function() {
@@ -373,6 +378,9 @@
         src: '@djangoCradminModelChoiceFieldIframe'
       },
       controller: function($scope) {
+        $scope.clear = function() {
+          return $scope.element.attr('src', '');
+        };
         return $scope.reset = function() {
           return $scope.element.attr('src', $scope.src);
         };
@@ -410,16 +418,18 @@
       How it works
       ============
       When the user clicks an element with this directive, the click
-      is captured, the default action is prevented, and we JSON encode
-      the following:
+      is captured, the default action is prevented, and we decode the
+      given JSON encoded value and add ``postmessageid='django-cradmin-use-this'``
+      to the object making it look something like this::
       
-      ```
-      {
-        postmessageid: 'django-cradmin-use-this',
-        value: '<the value provided via the django-cradmin attribute>',
-        selected_fieldid: '<the fieldid provided via the django-cradmin-fieldid attribute>',
-      }
-      ```
+        ```
+        {
+          postmessageid: 'django-cradmin-use-this',
+          value: '<the value provided via the django-cradmin attribute>',
+          fieldid: '<the fieldid provided via the django-cradmin-fieldid attribute>',
+          preview: '<the preview HTML>'
+        }
+        ```
       
       We assume there is a event listener listening for the ``message`` event on
       the message in the parent of the iframe where this was clicked, but no checks
