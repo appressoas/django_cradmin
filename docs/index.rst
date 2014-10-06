@@ -24,6 +24,15 @@ Viewhelpers
    viewhelpers_delete
 
 
+Widgets
+-------
+
+.. toctree::
+   :maxdepth: 1
+
+   foreignkeywidgets
+
+
 Development
 -----------
 .. toctree::

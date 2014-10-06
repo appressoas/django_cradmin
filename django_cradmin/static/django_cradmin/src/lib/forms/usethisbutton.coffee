@@ -24,16 +24,18 @@ angular.module('djangoCradmin.forms.usethisbutton', [])
     How it works
     ============
     When the user clicks an element with this directive, the click
-    is captured, the default action is prevented, and we JSON encode
-    the following:
+    is captured, the default action is prevented, and we decode the
+    given JSON encoded value and add ``postmessageid='django-cradmin-use-this'``
+    to the object making it look something like this::
 
-    ```
-    {
-      postmessageid: 'django-cradmin-use-this',
-      value: '<the value provided via the django-cradmin attribute>',
-      selected_fieldid: '<the fieldid provided via the django-cradmin-fieldid attribute>',
-    }
-    ```
+      ```
+      {
+        postmessageid: 'django-cradmin-use-this',
+        value: '<the value provided via the django-cradmin attribute>',
+        fieldid: '<the fieldid provided via the django-cradmin-fieldid attribute>',
+        preview: '<the preview HTML>'
+      }
+      ```
 
     We assume there is a event listener listening for the ``message`` event on
     the message in the parent of the iframe where this was clicked, but no checks
