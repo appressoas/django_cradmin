@@ -1,21 +1,32 @@
 import urllib
+from django.utils.translation import ugettext_lazy as _
 from django.forms import widgets
 from django.template.loader import render_to_string
 
 
 class ModelChoiceWidget(widgets.TextInput):
     """
-    Model choice autocomplete widget.
+    Model choice widget that uses an iframe popup to enable users
+    to select their foreign key value.
     """
+    #: The template used to render the widget.
     template_name = 'django_cradmin/widgets/modelchoice.django.html'
-    input_type = 'text'
 
-    def __init__(self, queryset, selectview_url, preview='', template_name=None):
+    #: The HTMP input element type. Defaults to ``hidden``, but
+    #: you can change it to something like ``text`` (mostly useful for debugging).
+    input_type = 'hidden'
+
+    #: The default select-button text. You can override this in a subclass,
+    #: or use the ``selectbutton_text``-argument for the constructor to
+    #: change the button text.
+    default_selectbutton_text = _('Select ...')
+
+    def __init__(self, queryset, selectview_url, preview='',
+                 selectbutton_text=None):
         self.queryset = queryset
         self.preview = preview
         self.selectview_url = selectview_url
-        if template_name:
-            self.template_name = template_name
+        self.selectbutton_text = selectbutton_text or self.default_selectbutton_text
         super(ModelChoiceWidget, self).__init__()
 
     # def get_object(self, pk):
@@ -36,5 +47,7 @@ class ModelChoiceWidget(widgets.TextInput):
             'fieldname': name,
             'fieldid': fieldid,
             'fieldvalue': value,
-            'selectview_url': self._make_selectview_url(fieldid, value)
+            'selectview_url': self._make_selectview_url(fieldid, value),
+            'selectbutton_text': self.selectbutton_text,
+            'input_type': self.input_type,
         })
