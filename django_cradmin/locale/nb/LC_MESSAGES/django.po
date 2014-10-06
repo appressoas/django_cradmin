@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django_cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-05 14:49+0000\n"
-"PO-Revision-Date: 2014-10-05 16:50+0100\n"
+"POT-Creation-Date: 2014-10-06 03:25+0000\n"
+"PO-Revision-Date: 2014-10-06 05:23+0100\n"
 "Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb\n"
@@ -18,39 +18,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: apps/cradmin_imagearchive/cradminviews.py:21
+#: apps/cradmin_imagearchive/cradminviews.py:20
 msgid "Edit"
 msgstr "Rediger"
 
-#: apps/cradmin_imagearchive/cradminviews.py:24
+#: apps/cradmin_imagearchive/cradminviews.py:23
 #: templates/django_cradmin/viewhelpers/delete.django.html:30
 msgid "Delete"
 msgstr "Slett"
 
-#: apps/cradmin_imagearchive/cradminviews.py:37
+#: apps/cradmin_imagearchive/cradminviews.py:36
 msgid "Use this"
 msgstr "Bruk dette"
 
-#: apps/cradmin_imagearchive/cradminviews.py:49 viewhelpers/create.py:40
+#: apps/cradmin_imagearchive/cradminviews.py:48 viewhelpers/create.py:40
 #: viewhelpers/update.py:19
 msgid "Preview"
 msgstr "Forhåndsvis"
 
-#: apps/cradmin_imagearchive/cradminviews.py:74
-#: apps/cradmin_imagearchive/cradminviews.py:96
+#: apps/cradmin_imagearchive/cradminviews.py:73
+#: apps/cradmin_imagearchive/cradminviews.py:95
 msgid "Add image"
 msgstr "Legg til bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:119
+#: apps/cradmin_imagearchive/cradminviews.py:118
 msgid "Upload and select"
 msgstr "Last opp og velg"
 
-#: apps/cradmin_imagearchive/cradminviews.py:120
+#: apps/cradmin_imagearchive/cradminviews.py:119
 #: templates/django_cradmin/filewidgets/imagewidget.django.html:20
 msgid "Upload image"
 msgstr "Last opp bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:121
+#: apps/cradmin_imagearchive/cradminviews.py:120
 msgid "Upload and continue editing"
 msgstr "Last opp og fortsett redigering"
 
@@ -198,8 +198,8 @@ msgid "Remove image"
 msgstr "Fjern bilde"
 
 #: templates/django_cradmin/viewhelpers/create.django.html:11
-msgid "NEW"
-msgstr "NY"
+msgid "CREATE"
+msgstr "OPPRETT"
 
 #: templates/django_cradmin/viewhelpers/delete.django.html:13
 msgid "DELETE"
@@ -304,3 +304,6 @@ msgstr "Lagre"
 #: viewhelpers/update.py:15
 msgid "Save and continue editing"
 msgstr "Lagre og fortsett redigering"
+
+#~ msgid "NEW"
+#~ msgstr "NY"
