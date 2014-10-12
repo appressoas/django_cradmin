@@ -35,7 +35,7 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
     def get_rolequeryset(self):
         queryset = Site.objects.all()
         if not self.request.user.is_superuser:
-            queryset = queryset.filter(admins=self.requestuser)
+            queryset = queryset.filter(admins=self.request.user)
         return queryset
 
     def get_titletext_for_role(self, role):
