@@ -188,12 +188,20 @@ class PlainTextColumn(Column):
 
 
 class TruncatecharsPlainTextColumn(PlainTextColumn):
+    """
+    A variant of :class:`.PlainTextColumn` that truncates the text down to
+    a configurable length. The length is configured in :obj:`.maxlength`.
+    """
+
+    #: Maximum length of the value displayed in the column.
+    maxlength = 30
+
     def render_value(self, obj):
         value = super(TruncatecharsPlainTextColumn, self).render_value(obj)
         if value is None:
             return None
         else:
-            return truncatechars(value, 30)
+            return truncatechars(value, self.maxlength)
 
 
 class SingleActionColumn(Column):
