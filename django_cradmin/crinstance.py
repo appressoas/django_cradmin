@@ -44,6 +44,7 @@ class BaseCrAdminInstance(object):
     #: Iterable of ``(appname, appclass)`` tuples where ``appname``
     #: is a slug for the app and ``appclass`` is a subclass of
     #: :class:`django_cradmin.crapp.App`.
+    #: Can also be specified by overriding :meth:`.get_apps`.
     apps = []
 
     def __init__(self, request):
@@ -235,9 +236,16 @@ class BaseCrAdminInstance(object):
         raise NotImplementedError()
 
     @classmethod
+    def get_apps(cls):
+        """
+        See :obj:`.apps`. Defaults to returning :obj:`.apps`, but can be overridden.
+        """
+        return cls.apps
+
+    @classmethod
     def _get_app_urls(cls):
         urls = []
-        for appname, appclass in cls.apps:
+        for appname, appclass in cls.get_apps():
             appurlpatterns = appclass.build_urls(cls.id, appname)
             urls.append(url(r'^(?P<roleid>{})/{}/'.format(
                 cls.roleid_regex, appname),
