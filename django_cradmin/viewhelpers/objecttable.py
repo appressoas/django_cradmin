@@ -6,6 +6,7 @@ import urllib
 from xml.sax.saxutils import quoteattr
 from django import forms
 from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import truncatechars
 
 from django.template.loader import render_to_string
 from django.views.generic import ListView
@@ -184,6 +185,15 @@ class Column(object):
 
 class PlainTextColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html'
+
+
+class TruncatecharsPlainTextColumn(PlainTextColumn):
+    def render_value(self, obj):
+        value = super(TruncatecharsPlainTextColumn, self).render_value(obj)
+        if value is None:
+            return None
+        else:
+            return truncatechars(value, 30)
 
 
 class SingleActionColumn(Column):
