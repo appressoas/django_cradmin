@@ -6,6 +6,7 @@ import urllib
 from xml.sax.saxutils import quoteattr
 from django import forms
 from django.shortcuts import get_object_or_404
+from django.template import defaultfilters
 from django.template.defaultfilters import truncatechars
 
 from django.template.loader import render_to_string
@@ -185,6 +186,17 @@ class Column(object):
 
 class PlainTextColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html'
+
+
+class DatetimeColumn(PlainTextColumn):
+    datetime_format = 'SHORT_DATETIME_FORMAT'
+
+    def render_value(self, obj):
+        value = obj.publish_datetime
+        if value is None:
+            return None
+        else:
+            return defaultfilters.date(obj.publish_datetime, self.datetime_format)
 
 
 class TruncatecharsPlainTextColumn(PlainTextColumn):
