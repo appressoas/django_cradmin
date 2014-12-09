@@ -2,12 +2,12 @@ from collections import OrderedDict
 import json
 import re
 import logging
-import urllib
 from xml.sax.saxutils import quoteattr
 from django import forms
 from django.shortcuts import get_object_or_404
 from django.template import defaultfilters
 from django.template.defaultfilters import truncatechars
+from django.utils.http import urlencode
 
 from django.template.loader import render_to_string
 from django.views.generic import ListView
@@ -374,7 +374,7 @@ class ForeignKeySelectButton(Button):
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request')
         super(ForeignKeySelectButton, self).__init__(*args, **kwargs)
-        self.url = '{}?{}'.format(self.url, urllib.urlencode({
+        self.url = '{}?{}'.format(self.url, urlencode({
             'foreignkey_select_mode': '1',
             'success_url': request.get_full_path()
         }))
@@ -665,7 +665,7 @@ class ObjectTableView(ListView):
         if 'page' in querystring:
             del querystring['page']
         if querystring:
-            return urllib.urlencode(querystring)
+            return urlencode(querystring)
         else:
             return ''
 
@@ -778,7 +778,9 @@ class ObjectTableView(ListView):
         if self.searchfields:
             query = None
             for fieldname in self.searchfields:
-                kwargs = {'{}__{}'.format(fieldname, self.search_comparator): searchstring}
+                kwargs = {
+                    '{}__{}'.format(fieldname, self.search_comparator): searchstring
+                }
                 fieldquery = models.Q(**kwargs)
                 if query:
                     query |= fieldquery
