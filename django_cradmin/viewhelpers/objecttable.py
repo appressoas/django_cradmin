@@ -784,5 +784,5 @@ class ObjectTableView(ListView):
                     query |= fieldquery
                 else:
                     query = fieldquery
-            queryset = queryset.filter(query)
+            queryset = queryset.filter(query).distinct()
         return queryset
