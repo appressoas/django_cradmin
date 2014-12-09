@@ -13,13 +13,5 @@
     </inspection_tool>
     <inspection_tool class="SqlDialectInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SqlNoDataSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="TaskInspection" enabled="true" level="INFO" enabled_by_default="true">
-      <option name="suppressedTasks">
-        <set>
-          <option value="CoffeeScript" />
-          <option value="LESS" />
-        </set>
-      </option>
-    </inspection_tool>
   </profile>
 </component>
