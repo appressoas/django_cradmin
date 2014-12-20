@@ -77,10 +77,6 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
         ]
 
 
-class PreviewPageView(TemplateView):
-    template_name = 'webdemo/pages/preview.django.html'
-
-
 class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
@@ -128,6 +124,16 @@ class PageUpdateView(PagesQuerySetForRoleMixin, PageCreateUpdateMixin, update.Up
     """
     View used to create edit existing pages.
     """
+
+
+class PreviewPageView(TemplateView):
+    template_name = 'webdemo/pages/preview.django.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PreviewPageView, self).get_context_data(**kwargs)
+        context['page'] = PageCreateView.get_preview_data(self.request)
+        return context
+
 
 
 class PageDeleteView(PagesQuerySetForRoleMixin, delete.DeleteView):
