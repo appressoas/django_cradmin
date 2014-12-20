@@ -78,8 +78,7 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
 
 
 class PreviewPageView(TemplateView):
-    def get(self, *args, **kwargs):
-        return HttpResponse('Pre vi ew')
+    template_name = 'webdemo/pages/preview.django.html'
 
 
 class PageCreateUpdateMixin(object):

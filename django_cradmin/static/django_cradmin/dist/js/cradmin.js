@@ -576,7 +576,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.imagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
 
 }).call(this);
 
@@ -625,6 +625,102 @@
       };
     }
   ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.pagepreview', []).directive('djangoCradminPagePreviewWrapper', [
+    function() {
+      return {
+        restrict: 'A',
+        scope: {},
+        controller: function($scope) {
+          $scope.origin = "" + window.location.protocol + "//" + window.location.host;
+          this.setIframeWrapper = function(iframeWrapperScope) {
+            return $scope.iframeWrapperScope = iframeWrapperScope;
+          };
+          this.setIframe = function(iframeScope) {
+            return $scope.iframeScope = iframeScope;
+          };
+          this.showPreview = function(url) {
+            $scope.iframeScope.setUrl(url);
+            return $scope.iframeWrapperScope.show();
+          };
+        },
+        link: function(scope, element) {}
+      };
+    }
+  ]).directive('djangoCradminPagePreviewOpenOnPageLoad', [
+    function() {
+      /*
+      A directive that opens the given URL in an iframe overlay instantly (on page load).
+      */
+
+      return {
+        require: '^djangoCradminPagePreviewWrapper',
+        restrict: 'A',
+        scope: {
+          previewUrl: '=djangoCradminPagePreviewOpenOnPageLoad'
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          wrapperCtrl.showPreview(scope.previewUrl);
+        }
+      };
+    }
+  ]).directive('djangoCradminPagePreviewIframeWrapper', [
+    '$window', function($window) {
+      return {
+        require: '^djangoCradminPagePreviewWrapper',
+        restrict: 'A',
+        scope: {},
+        controller: function($scope) {
+          $scope.bodyElement = angular.element($window.document.body);
+          $scope.show = function() {
+            $scope.iframeWrapperElement.removeClass('ng-hide');
+            return $scope.bodyElement.addClass('django-cradmin-noscroll');
+          };
+          $scope.hide = function() {
+            $scope.iframeWrapperElement.addClass('ng-hide');
+            return $scope.bodyElement.removeClass('django-cradmin-noscroll');
+          };
+          this.closeIframe = function() {
+            return $scope.hide();
+          };
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          scope.iframeWrapperElement = element;
+          wrapperCtrl.setIframeWrapper(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminPagePreviewIframeClosebutton', function() {
+    return {
+      require: '^djangoCradminPagePreviewIframeWrapper',
+      restrict: 'A',
+      scope: {},
+      link: function(scope, element, attrs, iframeWrapperCtrl) {
+        element.on('click', function(e) {
+          e.preventDefault();
+          return iframeWrapperCtrl.closeIframe();
+        });
+      }
+    };
+  }).directive('djangoCradminPagePreviewIframe', function() {
+    return {
+      require: '^djangoCradminPagePreviewWrapper',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        return $scope.setUrl = function(url) {
+          return $scope.element.attr('src', url);
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.element = element;
+        wrapperCtrl.setIframe(scope);
+      }
+    };
+  });
 
 }).call(this);
 

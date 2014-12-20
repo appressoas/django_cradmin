@@ -18,16 +18,9 @@
     {% endcomment %}
     {{ form.media }}
 
+    {% comment %}
     <script>
-        {% comment %}
         $(function() {
-            // Focus on the first field in the form.
-            $('form.django_cradmin_form :input:visible:enabled:first').focus();
-
-            // Insert help icon before all help block paragraphs in .cradmin-focusfield
-            $('form.django_cradmin_form .cradmin-focusfield p.help-block').prepend(
-                '<span class="fa fa-question-circle"></span>');
-
             function open_preview(preview_url) {
                 window.open(preview_url, "_blank");
             }
@@ -36,12 +29,30 @@
                 open_preview("{{ preview_url }}");
             {% endif %}
         });
-        {% endcomment %}
     </script>
+    {% endcomment %}
 
     {% block handle_preview %}
         {% if show_preview %}
-            <div django-cradmin-page-preview="{{ preview_url }}"></div>
+            <div django-cradmin-page-preview-wrapper>
+
+                <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
+                     django-cradmin-page-preview-iframe-wrapper>
+                    <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
+                       django-cradmin-page-preview-iframe-closebutton>
+                        <span class="fa fa-close"></span>
+                        <span class="sr-only">{% trans "Close choice window" %}</span>
+                    </a>
+                    <div class="django-cradmin-floating-fullsize-loadspinner">
+                        <span class="fa fa-spinner fa-spin"></span>
+                    </div>
+                    <div class="django-cradmin-floating-fullsize-iframe-inner">
+                        <iframe django-cradmin-page-preview-iframe></iframe>
+                    </div>
+                </div>
+
+                <div django-cradmin-page-preview-open-on-page-load="'{{ preview_url }}'"></div>
+            </div>
         {% endif %}
     {% endblock handle_preview %}
 {% endblock content %}
