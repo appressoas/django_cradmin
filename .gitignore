@@ -13,3 +13,8 @@
 # Ignore user-specific pycharm settings
 .idea/workspace.xml
 .idea/tasks.xml
+
+# Files created when running tests and demos
+cradmin_imagearchive_images/
+django_media_root/
+/cache/
