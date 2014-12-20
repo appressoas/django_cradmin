@@ -24,7 +24,8 @@ mock==1.0.1
 django-debug-toolbar==1.2.1
 
 # Better Django shell and other utils for development
-django-extensions==1.3.6
+django-extensions==1.4.9
+python-dateutil==2.3
 ipython==2.0.0
 
 # We use fabric for common development tasks
