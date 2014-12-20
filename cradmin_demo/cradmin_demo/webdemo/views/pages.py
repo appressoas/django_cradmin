@@ -1,6 +1,8 @@
+from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from crispy_forms import layout
+from django.views.generic import TemplateView
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -75,10 +77,18 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
         ]
 
 
+class PreviewPageView(TemplateView):
+    def get(self, *args, **kwargs):
+        return HttpResponse('Pre vi ew')
+
+
 class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
     external_select_fields = ['image']
+
+    def get_preview_url(self):
+        return self.request.cradmin_app.reverse_appurl('preview')
 
     def _get_image_selectview_url(self):
         return self.request.cradmin_instance.reverse_url('imagearchive', 'singleselect')
@@ -171,6 +181,10 @@ class App(crapp.App):
             r'^edit/(?P<pk>\d+)$',
             PageUpdateView.as_view(),
             name="edit"),
+        crapp.Url(
+            r'^preview$',
+            PreviewPageView.as_view(),
+            name="preview"),
         crapp.Url(
             r'^delete/(?P<pk>\d+)$',
             PageDeleteView.as_view(),

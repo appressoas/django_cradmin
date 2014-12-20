@@ -38,4 +38,10 @@
         });
         {% endcomment %}
     </script>
+
+    {% block handle_preview %}
+        {% if show_preview %}
+            <div django-cradmin-page-preview="{{ preview_url }}"></div>
+        {% endif %}
+    {% endblock handle_preview %}
 {% endblock content %}
