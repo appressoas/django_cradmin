@@ -180,8 +180,8 @@ class TestMultiActionColumn(TestCase):
         expected = [
             '<p', 'class="objecttable-cellvalue">test_value</p>',
             '<p', 'class="objecttable-cellbuttons">',
-            '<a', 'href="www.example.com/btn1"', 'class="btn', 'btn-default', 'btn-sm">', 'Btn1', '</a>',
-            '<a', 'href="www.example.com/btn2"', 'class="btn', 'btn-default', 'btn-sm">', 'Btn2', '</a>',
+            '<a', 'href="www.example.com/btn1"', 'class="btn', 'btn-default', 'btn-sm"', '>', 'Btn1', '</a>',
+            '<a', 'href="www.example.com/btn2"', 'class="btn', 'btn-default', 'btn-sm"', '>', 'Btn2', '</a>',
             '</p>'
         ]
         result = self.column_subclass.render_cell(self.model_testobject).split()
@@ -195,7 +195,7 @@ class TestButton(TestCase):
             buttonclass="danger",
             icon="glyphicon glyphicon-shopping-cart")
         expected = [
-            '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-danger', 'btn-sm">',
+            '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-danger', 'btn-sm"', '>',
             '<span', 'class="glyphicon', 'glyphicon-shopping-cart"></span>', 'My', 'Btn', '</a>'
         ]
         result = btn.render().split()
@@ -204,7 +204,7 @@ class TestButton(TestCase):
     def test_render_simple(self):
         btn = objecttable.Button(label="My Btn", url="www.example.com/mybtnurl")
         expected = [
-            '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-default', 'btn-sm">',
+            '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-default', 'btn-sm"', '>',
             'My', 'Btn', '</a>']
         result = btn.render().split()
         self.assertEquals(result, expected)
