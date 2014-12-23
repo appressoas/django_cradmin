@@ -33,9 +33,7 @@ class Column(object):
     #: The template used to render a cell in the Column.
     template_name = None
 
-    #: The column width. Setting this is generally not recommended, but
-    #: sometimes you need exact scaling of the column.
-    #: Examples: ``"100px", "20%"``.
+    #: The column width. See :meth:`.get_column_width`.
     column_width = None
 
     def __init__(self, view, columnindex):
@@ -53,17 +51,27 @@ class Column(object):
         else:
             raise NotImplementedError()
 
+    def get_column_width(self):
+        """
+        Returns the column width. Setting this is generally not recommended, but
+        sometimes you need exact scaling of the column.
+
+        Example legal values: ``"100px", "20%"``. Defaults to :obj:`.column_width`.
+        """
+        return self.column_width
+
     def get_headercell_css_style(self):
         """
         Get the css styles of the header cell of the column.
-        Defaults to setting the :obj:`.column_width` as a css style.
+        Defaults to setting :meth:`.get_column_width` as a css style.
 
         You normally want to avoid setting styles with this and use
         :meth:`.get_headercell_css_class` instead, but this is provided for
         those cases where setting the style attribute is the only decent solution.
         """
-        if self.column_width:
-            return 'width: {}'.format(self.column_width)
+        column_width = self.get_column_width()
+        if column_width:
+            return 'width: {}'.format(column_width)
         else:
             return ''
 
@@ -233,12 +241,45 @@ class SingleActionColumn(Column):
 
 class ImagePreviewColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html'
+
+    #: See :meth:`.get_preview_format`
     preview_format = 'auto'
+
+    #: See :meth:`.get_preview_width`
     preview_width = 100
+
+    #: See :meth:`.get_preview_height`
     preview_height = 70
 
     def is_sortable(self):
         return False
+
+    def get_preview_width(self):
+        """
+        Returns the width of the preview thumbnail. Can be overridden.
+        Defaults to :obj:`.preview_width`, so you can just override that
+        class variable instead of this method.
+        """
+        return self.preview_width
+
+    def get_preview_height(self):
+        """
+        Returns the height of the preview thumbnail. Can be overridden.
+        Defaults to :obj:`.preview_height`, so you can just override that
+        class variable instead of this method.
+        """
+        return self.preview_height
+
+    def get_preview_format(self):
+        """
+        Returns the format of the preview thumbnail. Can be overridden.
+        Defaults to :obj:`.preview_format`, so you can just override that
+        class variable instead of this method.
+        """
+        return self.preview_format
+
+    def get_column_width(self):
+        return u'{}px'.format(self.get_preview_width())
 
     def get_context_data(self, obj):
         context = super(ImagePreviewColumn, self).get_context_data(obj)
@@ -248,9 +289,9 @@ class ImagePreviewColumn(Column):
             image_path = imagefieldfile.name
         context.update({
             'image_path': image_path,
-            'preview_width': self.preview_width,
-            'preview_height': self.preview_height,
-            'preview_format': self.preview_format
+            'preview_width': self.get_preview_width(),
+            'preview_height': self.get_preview_height(),
+            'preview_format': self.get_preview_format()
         })
         return context
 
