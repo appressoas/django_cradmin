@@ -18,20 +18,6 @@
     {% endcomment %}
     {{ form.media }}
 
-    {% comment %}
-    <script>
-        $(function() {
-            function open_preview(preview_url) {
-                window.open(preview_url, "_blank");
-            }
-
-            {% if show_preview %}
-                open_preview("{{ preview_url }}");
-            {% endif %}
-        });
-    </script>
-    {% endcomment %}
-
     {% block handle_preview %}
         {% if show_preview %}
             <div django-cradmin-page-preview-wrapper>
