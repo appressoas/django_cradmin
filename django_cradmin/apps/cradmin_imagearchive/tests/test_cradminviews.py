@@ -146,15 +146,15 @@ class TestUpdateView(TestCase):
         self.assertEqual(update_image.description, 'My description')
 
     def test_post_noname(self):
-        request = self.factory.post('/test', {})
+        testimage = create_image(200, 100)
+        request = self.factory.post('/test', {
+            'image': SimpleUploadedFile('testname.png', testimage),
+        })
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
         request.cradmin_role = self.role
 
         response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 200)
-        response.render()
-        selector = htmls.S(response.content)
-        self.assertIn(
-            'This field is required',
-            selector.one('#django_cradmin_contentwrapper #div_id_name').alltext_normalized)
+        self.assertEquals(response.status_code, 302)
+        update_image = ArchiveImage.objects.first()
+        self.assertEqual(update_image.name, 'testname')
