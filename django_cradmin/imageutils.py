@@ -3,7 +3,7 @@ from sorl.thumbnail import get_thumbnail
 
 
 def request_thumbnail(
-        image, width=None, height=None, format='auto', colorspace='RGB',
+        image, width=None, height=None, image_format='auto', colorspace='RGB',
         upscale=True, quality=95,
         scalemethod='contain'):
     """
@@ -21,8 +21,8 @@ def request_thumbnail(
             The maximum height of the resulting image.
             How this is handled depends on the ``scalemethod``.
             Can be ``None`` if ``width`` is specified.
-        format:
-            Must be one of
+        image_format:
+            Must be one of "auto", "JPEG" or "PNG".
         upscale:
             Upscale is a boolean and controls if the image can be upscaled or not.
             For example if your source is 100x100 and you request a thumbnail of size
@@ -58,7 +58,7 @@ def request_thumbnail(
     else:
         raise ValueError('{!r} is an invalid value for scalemethod. Valid values: "contain", "cover".')
 
-    if format == 'auto':
+    if image_format == 'auto':
         if hasattr(image, 'name'):
             path = image.name
         else:
@@ -68,10 +68,10 @@ def request_thumbnail(
             detected_format = 'PNG'
         else:
             detected_format = 'JPEG'
-    elif format not in ('JPEG', 'PNG'):
-        raise ValueError('{!r} is an invalid value for format. Valid values: "auto", "JPEG", "PNG".')
+    elif image_format not in ('JPEG', 'PNG'):
+        raise ValueError('{!r} is an invalid value for image_format. Valid values: "auto", "JPEG", "PNG".')
     else:
-        detected_format = format
+        detected_format = image_format
     return get_thumbnail(
         image, size,
         upscale=upscale,
