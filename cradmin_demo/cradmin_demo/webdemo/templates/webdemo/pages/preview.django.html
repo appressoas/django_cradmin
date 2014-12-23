@@ -1,27 +1,18 @@
+{% extends "webdemo/base.django.html" %}
 {% load cradmin_image_tags %}
-<html>
-    <head>
-        <style type="text/css">
-            body {
-                background-color: #fff;
-                font-family: sans-serif;
-                font-size: 16px;
-            }
-            .pageintro {
-                font-size: 20px;
-                white-space: pre-wrap;
-            }
-        </style>
-    </head>
-    <body>
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block content %}
+    <div class="container">
         <h1>{{ page.title }}</h1>
-        <p class="pageintro">{{ page.intro }}</p>
+        <p class="lead">{{ page.intro }}</p>
         {% if page.image %}
             <p>
                 <img src="{% cradmin_archiveimage_thumbnail page.image width=400 height=300 %}"
-                     alt="{{ page.image.description }}">
+                     alt="{{ page.image.description }}" class="img-responsive">
             </p>
         {% endif %}
-        <div class="pagebody">{{ page.body }}</div>
-    </body>
-</html>
+        {{ page.body }}
+    </div>
+{% endblock content %}
