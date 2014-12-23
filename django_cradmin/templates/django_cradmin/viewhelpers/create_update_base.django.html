@@ -35,22 +35,7 @@
     {% block handle_preview %}
         {% if show_preview %}
             <div django-cradmin-page-preview-wrapper>
-
-                <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
-                     django-cradmin-page-preview-iframe-wrapper>
-                    <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
-                       django-cradmin-page-preview-iframe-closebutton>
-                        <span class="fa fa-close"></span>
-                        <span class="sr-only">{% trans "Close choice window" %}</span>
-                    </a>
-                    <div class="django-cradmin-floating-fullsize-loadspinner">
-                        <span class="fa fa-spinner fa-spin"></span>
-                    </div>
-                    <div class="django-cradmin-floating-fullsize-iframe-inner">
-                        <iframe django-cradmin-page-preview-iframe></iframe>
-                    </div>
-                </div>
-
+                {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
                 <div django-cradmin-page-preview-open-on-page-load="'{{ preview_url }}'"></div>
             </div>
         {% endif %}
