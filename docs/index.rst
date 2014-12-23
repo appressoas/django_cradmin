@@ -39,6 +39,7 @@ Development
    :maxdepth: 1
 
    databasedumps
+   locale
 
 
 
