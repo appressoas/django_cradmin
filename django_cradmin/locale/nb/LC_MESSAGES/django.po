@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django_cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-06 03:25+0000\n"
-"PO-Revision-Date: 2014-10-06 05:23+0100\n"
+"POT-Creation-Date: 2014-12-23 10:35+0000\n"
+"PO-Revision-Date: 2014-12-23 11:36+0100\n"
 "Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb\n"
@@ -74,11 +74,19 @@ msgstr "Velg et bilde som du ønsker å legge til i arkivet."
 msgid "name"
 msgstr "navn"
 
-#: apps/cradmin_imagearchive/models.py:67
+#: apps/cradmin_imagearchive/models.py:63
+msgid ""
+"Give the image a name (optional). If you leave this blank, the name of the "
+"uploaded image file is used."
+msgstr ""
+"Gi bildet et navn. Dette er valgfritt, hvis du lar feltet stå tomt, bruker "
+"vi navnet på bildefilen."
+
+#: apps/cradmin_imagearchive/models.py:70
 msgid "description"
 msgstr "beskrivelse"
 
-#: apps/cradmin_imagearchive/models.py:69
+#: apps/cradmin_imagearchive/models.py:72
 msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
@@ -87,11 +95,11 @@ msgstr ""
 "En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet "
 "for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
 
-#: apps/cradmin_imagearchive/models.py:81
+#: apps/cradmin_imagearchive/models.py:84
 msgid "archive image"
 msgstr "arkivbilde"
 
-#: apps/cradmin_imagearchive/models.py:82
+#: apps/cradmin_imagearchive/models.py:85
 msgid "archive images"
 msgstr "arkivbilder"
 
@@ -201,6 +209,11 @@ msgstr "Fjern bilde"
 msgid "CREATE"
 msgstr "OPPRETT"
 
+#: templates/django_cradmin/viewhelpers/create_update_base.django.html:46
+#: templates/django_cradmin/widgets/modelchoice.django.html:33
+msgid "Close choice window"
+msgstr "Lukk vindu"
+
 #: templates/django_cradmin/viewhelpers/delete.django.html:13
 msgid "DELETE"
 msgstr "SLETT"
@@ -269,13 +282,10 @@ msgstr "Velg en handling"
 msgid "Go"
 msgstr "Gå"
 
-#: templates/django_cradmin/widgets/modelchoice.django.html:18
+#: templates/django_cradmin/widgets/modelchoice.django.html:23
+#: widgets/modelchoice.py:22
 msgid "Select ..."
 msgstr "Velg ..."
-
-#: templates/django_cradmin/widgets/modelchoice.django.html:26
-msgid "Close choice window"
-msgstr "Lukk vindu"
 
 #: viewhelpers/create.py:24 viewhelpers/create.py:31
 msgid "Create and select"
