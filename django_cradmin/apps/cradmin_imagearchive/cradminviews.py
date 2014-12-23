@@ -113,7 +113,7 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     """
     View used to create new images.
     """
-    fields = ['image', 'description']
+    fields = ['image', 'name', 'description']
 
     submit_use_label = _('Upload and select')
     submit_save_label = _('Upload image')
@@ -122,6 +122,7 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     def get_field_layout(self):
         return [
             layout.Div('image', css_class="cradmin-focusfield"),
+            layout.Div('name', css_class="cradmin-focusfield cradmin-focusfield-lg"),
             layout.Div('description', css_class="cradmin-focusfield"),
         ]
 

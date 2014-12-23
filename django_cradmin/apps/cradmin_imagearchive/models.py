@@ -57,8 +57,11 @@ class ArchiveImage(models.Model):
 
     #: The name of the image file.
     name = models.CharField(
-        max_length=255, blank=False, null=False,
+        max_length=255, blank=True, null=False,
         verbose_name=_('name'),
+        help_text=_(
+            'Give the image a name (optional). If you leave this blank, the name of the uploaded image file is used.'
+        )
     )
 
     #: An optional description of the image.
