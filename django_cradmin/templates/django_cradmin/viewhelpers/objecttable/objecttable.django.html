@@ -58,6 +58,12 @@
         </div>
     {% endblock pageheader %}
 
+
+    {% if enable_previews %}
+        <div django-cradmin-page-preview-wrapper>
+            {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
+    {% endif %}
+
     <div
         {% if multiselect_actions %}
             ng-controller="CradminMultiselectObjectTableViewController"
@@ -185,5 +191,10 @@
                 </div>
             {% endif %}
         </form>
-    </div>
+    </div> {# END div with ng-controller="CradminMultiselectObjectTableViewController" #}
+
+    {% if enable_previews %}
+        </div>
+    {% endif %}
+
 {% endblock content %}

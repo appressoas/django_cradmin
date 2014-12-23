@@ -706,20 +706,40 @@
       */
 
       return {
-        require: '^djangoCradminPagePreviewWrapper',
+        require: '^^djangoCradminPagePreviewWrapper',
         restrict: 'A',
         scope: {
-          previewUrl: '=djangoCradminPagePreviewOpenOnPageLoad'
+          previewUrl: '@djangoCradminPagePreviewOpenOnPageLoad'
         },
         link: function(scope, element, attrs, wrapperCtrl) {
           wrapperCtrl.showPreview(scope.previewUrl);
         }
       };
     }
+  ]).directive('djangoCradminPagePreviewOpenOnClick', [
+    function() {
+      /*
+      A directive that opens the given URL in an iframe overlay on click.
+      */
+
+      return {
+        require: '^^djangoCradminPagePreviewWrapper',
+        restrict: 'A',
+        scope: {
+          previewUrl: '@djangoCradminPagePreviewOpenOnClick'
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          element.on('click', function(e) {
+            e.preventDefault();
+            return wrapperCtrl.showPreview(scope.previewUrl);
+          });
+        }
+      };
+    }
   ]).directive('djangoCradminPagePreviewIframeWrapper', [
     '$window', function($window) {
       return {
-        require: '^djangoCradminPagePreviewWrapper',
+        require: '^^djangoCradminPagePreviewWrapper',
         restrict: 'A',
         scope: {},
         controller: function($scope) {
@@ -744,7 +764,7 @@
     }
   ]).directive('djangoCradminPagePreviewIframeClosebutton', function() {
     return {
-      require: '^djangoCradminPagePreviewIframeWrapper',
+      require: '^^djangoCradminPagePreviewIframeWrapper',
       restrict: 'A',
       scope: {},
       link: function(scope, element, attrs, iframeWrapperCtrl) {
@@ -756,7 +776,7 @@
     };
   }).directive('djangoCradminPagePreviewIframe', function() {
     return {
-      require: '^djangoCradminPagePreviewWrapper',
+      require: '^^djangoCradminPagePreviewWrapper',
       restrict: 'A',
       scope: {},
       controller: function($scope) {

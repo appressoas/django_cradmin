@@ -22,7 +22,7 @@
         {% if show_preview %}
             <div django-cradmin-page-preview-wrapper>
                 {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
-                <div django-cradmin-page-preview-open-on-page-load="'{{ preview_url }}'"></div>
+                <div django-cradmin-page-preview-open-on-page-load="{{ preview_url }}"></div>
             </div>
         {% endif %}
     {% endblock handle_preview %}

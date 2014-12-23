@@ -14,21 +14,17 @@
 
 {% endcomment %}
 
-<div django-cradmin-page-preview-wrapper>
-    <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
-         django-cradmin-page-preview-iframe-wrapper>
-        <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
-           django-cradmin-page-preview-iframe-closebutton>
-            <span class="fa fa-close"></span>
-            <span class="sr-only">{% trans "Close preview" %}</span>
-        </a>
-        <div class="django-cradmin-floating-fullsize-loadspinner">
-            <span class="fa fa-spinner fa-spin"></span>
-        </div>
-        <div class="django-cradmin-floating-fullsize-iframe-inner">
-            <iframe django-cradmin-page-preview-iframe></iframe>
-        </div>
+<div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
+     django-cradmin-page-preview-iframe-wrapper>
+    <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
+       django-cradmin-page-preview-iframe-closebutton>
+        <span class="fa fa-close"></span>
+        <span class="sr-only">{% trans "Close preview" %}</span>
+    </a>
+    <div class="django-cradmin-floating-fullsize-loadspinner">
+        <span class="fa fa-spinner fa-spin"></span>
     </div>
-
-    <div django-cradmin-page-preview-open-on-page-load="'{{ preview_url }}'"></div>
+    <div class="django-cradmin-floating-fullsize-iframe-inner">
+        <iframe django-cradmin-page-preview-iframe></iframe>
+    </div>
 </div>

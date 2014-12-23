@@ -385,6 +385,22 @@ class Button(object):
         })
 
 
+class PagePreviewButton(Button):
+    """
+    A button variant that uses the ``django-cradmin-page-preview-open-on-click``
+    AngularJS directive to open a preview in an overlay containing an IFRAME.
+    Works just like a regular button. The only difference is that the url is
+    opened in the IFRAME in the overlay instead of in the current window.
+
+    For this to work, you need to set :obj:`.ObjectTableView.enable_previews` to ``True``
+    (or override :meth:`.ObjectTableView.get_enable_previews`).
+    """
+    def get_attributes(self):
+        return {
+            'django-cradmin-page-preview-open-on-click': self.url
+        }
+
+
 class UseThisButton(Button):
     """
     Button for :class:`.UseThisActionColumn`.
@@ -594,6 +610,19 @@ class ObjectTableView(ListView):
     #: when searching the given :obj:`.searchfields`.
     search_comparator = 'icontains'
 
+    #: Enable previews? See :meth:`.get_enable_previews`. Defaults to ``False``.
+    enable_previews = False
+
+    def get_enable_previews(self):
+        """
+        If this returns ``True``, we enable previews. When previews are
+        enabled, you can add :class:`.PagePreviewButton` to columns
+        to show previews.
+
+        Defaults to :obj:`.enable_previews`.
+        """
+        return self.enable_previews
+
     def get_multiselect_actions(self):
         """
         Multiselect actions. If this returns a non-empty iterator, each row
@@ -735,6 +764,7 @@ class ObjectTableView(ListView):
         context['table'] = list(self.__iter_table(object_list))
         context['buttons'] = self.get_buttons()
         context['enable_search'] = self.enable_search()
+        context['enable_previews'] = self.get_enable_previews()
         context['cradmin_hide_menu'] = self.hide_menu
         if self.enable_search():
             context['current_search'] = self.current_search

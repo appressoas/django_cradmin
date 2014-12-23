@@ -81,10 +81,10 @@ angular.module('djangoCradmin.pagepreview', [])
     A directive that opens the given URL in an iframe overlay instantly (on page load).
     ###
     return {
-      require: '^djangoCradminPagePreviewWrapper'
+      require: '^^djangoCradminPagePreviewWrapper'
       restrict: 'A'
       scope: {
-        previewUrl: '=djangoCradminPagePreviewOpenOnPageLoad'
+        previewUrl: '@djangoCradminPagePreviewOpenOnPageLoad'
       }
       link: (scope, element, attrs, wrapperCtrl) ->
         wrapperCtrl.showPreview(scope.previewUrl)
@@ -96,11 +96,32 @@ angular.module('djangoCradmin.pagepreview', [])
 ])
 
 
+.directive('djangoCradminPagePreviewOpenOnClick', [
+  ->
+    ###
+    A directive that opens the given URL in an iframe overlay on click.
+    ###
+    return {
+      require: '^^djangoCradminPagePreviewWrapper'
+      restrict: 'A'
+      scope: {
+        previewUrl: '@djangoCradminPagePreviewOpenOnClick'
+      }
+      link: (scope, element, attrs, wrapperCtrl) ->
+        element.on 'click', (e) ->
+          e.preventDefault()
+          wrapperCtrl.showPreview(scope.previewUrl)
+        return
+
+    }
+])
+
+
 .directive('djangoCradminPagePreviewIframeWrapper', [
   '$window'
   ($window) ->
     return {
-      require: '^djangoCradminPagePreviewWrapper'
+      require: '^^djangoCradminPagePreviewWrapper'
       restrict: 'A'
       scope: {}
 
@@ -125,7 +146,7 @@ angular.module('djangoCradmin.pagepreview', [])
 
 .directive 'djangoCradminPagePreviewIframeClosebutton', ->
   return {
-    require: '^djangoCradminPagePreviewIframeWrapper'
+    require: '^^djangoCradminPagePreviewIframeWrapper'
     restrict: 'A'
     scope: {}
 
@@ -138,7 +159,7 @@ angular.module('djangoCradmin.pagepreview', [])
 
 .directive 'djangoCradminPagePreviewIframe', ->
   return {
-    require: '^djangoCradminPagePreviewWrapper'
+    require: '^^djangoCradminPagePreviewWrapper'
     restrict: 'A'
     scope: {}
 

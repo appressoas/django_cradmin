@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from crispy_forms import layout
@@ -25,6 +26,9 @@ class TitleColumn(objecttable.MultiActionColumn):
             objecttable.Button(
                 label='Edit',
                 url=self.reverse_appurl('edit', args=[obj.id])),
+            objecttable.PagePreviewButton(
+                label='View',
+                url=self.reverse_appurl('preview', args=[obj.id])),
             objecttable.Button(
                 label='Delete',
                 url=self.reverse_appurl('delete', args=[obj.id]),
@@ -54,6 +58,7 @@ class ArchiveImagePreviewColumn(objecttable.ImagePreviewColumn):
 
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
+    enable_previews = True
     columns = [
         ArchiveImagePreviewColumn,
         TitleColumn,
@@ -129,11 +134,18 @@ class PageUpdateView(PagesQuerySetForRoleMixin, PageCreateUpdateMixin, update.Up
 class PreviewPageView(TemplateView):
     template_name = 'webdemo/pages/preview.django.html'
 
+    def __get_page(self):
+        if self.kwargs['pk'] is None:
+            return PageCreateView.get_preview_data(self.request)
+        else:
+            # NOTE: The queryset ensures only admins on the current site gains access.
+            site = self.request.cradmin_role
+            return get_object_or_404(Page.objects.filter(site=site), pk=self.kwargs['pk'])
+
     def get_context_data(self, **kwargs):
         context = super(PreviewPageView, self).get_context_data(**kwargs)
-        context['page'] = PageCreateView.get_preview_data(self.request)
+        context['page'] = self.__get_page()
         return context
-
 
 
 class PageDeleteView(PagesQuerySetForRoleMixin, delete.DeleteView):
@@ -187,7 +199,7 @@ class App(crapp.App):
             PageUpdateView.as_view(),
             name="edit"),
         crapp.Url(
-            r'^preview$',
+            r'^preview/(?P<pk>\d+)?$',
             PreviewPageView.as_view(),
             name="preview"),
         crapp.Url(
