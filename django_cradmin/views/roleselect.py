@@ -14,9 +14,14 @@ class RoleSelectView(ListView):
         return cradmin_instance.get_rolequeryset()
 
     def get(self, *args, **kwargs):
+        cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
         if self.get_queryset().count() == 1:
-            cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
             only_role = self.get_queryset().first()
             return HttpResponseRedirect(cradmin_instance.rolefrontpage_url(
                 cradmin_instance.get_roleid(only_role)))
-        return super(RoleSelectView, self).get(*args, **kwargs)
+        else:
+            # Add cradmin_instance to request just like django_cradmin.decorators.cradminview.
+            # Convenient when overriding standalone-base.django.html and using the current
+            # CrInstance to distinguish multiple crinstances.
+            self.request.cradmin_instance = cradmin_instance
+            return super(RoleSelectView, self).get(*args, **kwargs)
