@@ -33,7 +33,27 @@
                 {% endif %}
             {% endblock bodyclass %}
             ">
+        {% block global-pre-body %}
+            {% comment %}
+                This block is here to be overridden in standalone-base.django.html
+                and base.django.html. It should be used to add some global component
+                before the body, such as a global navigation header.
+
+                This block is not intended to be, and should never be overridden in app views.
+            {% endcomment %}
+        {% endblock global-pre-body %}
+
         {% block body %}{% endblock body %}
+
+        {% block global-post-body %}
+            {% comment %}
+                This block is here to be overridden in standalone-base.django.html
+                and base.django.html. It should be used to add some global component
+                after the body, such as a global footer header.
+
+                This block is not intended to be, and should never be overridden in app views.
+            {% endcomment %}
+        {% endblock global-post-body %}
 
         {% block initialize_angular %}
             <script>
