@@ -200,11 +200,11 @@ class DatetimeColumn(PlainTextColumn):
     datetime_format = 'SHORT_DATETIME_FORMAT'
 
     def render_value(self, obj):
-        value = obj.publish_datetime
+        value = super(DatetimeColumn, self).render_value(obj)
         if value is None:
             return None
         else:
-            return defaultfilters.date(obj.publish_datetime, self.datetime_format)
+            return defaultfilters.date(value, self.datetime_format)
 
 
 class TruncatecharsPlainTextColumn(PlainTextColumn):
