@@ -44,3 +44,14 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
         Remember that the role is a Site.
         """
         return role.name
+
+    def get_descriptiontext_for_role(self, role):
+        """
+        Get a short description of the given ``role``.
+        Remember that the role is a Site.
+        """
+        admins = list(role.admins.all())
+        if admins:
+            return u'Admins: {}'.format(', '.join([unicode(user) for user in admins]))
+        else:
+            return u'No admins'

@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf.urls import patterns, url, include
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from django.utils.html import format_html
 
 from .registry import cradmin_instance_registry
 from . import crapp
@@ -72,9 +73,27 @@ class BaseCrAdminInstance(object):
     def get_descriptiontext_for_role(self, role):
         """
         Get a longer description for the given ``role``.
-        This is always shown after/below :meth:`.get_titletext_for_role`.
+
+        This is never used directly on its own - it is just the default text
+        used by :meth:`.get_descriptionhtml_for_role`. If you want
+        HTML in your description, override :meth:`.get_descriptionhtml_for_role`
+        instead.
         """
-        raise NotImplementedError()
+        return None
+
+    def get_descriptionhtml_for_role(self, role):
+        """
+        Get a longer description for the given ``role``.
+        This is always shown after/below :meth:`.get_titletext_for_role`.
+
+        Defaults to :meth:`.get_descriptiontext_for_role` filtered to
+        make it HTML safe and wrapped in a paragraph tag.
+        """
+        descriptiontext = self.get_descriptiontext_for_role(role)
+        if descriptiontext:
+            return format_html(u'<p>{}</p>', descriptiontext)
+        else:
+            return ''
 
     def get_roleid(self, role):
         """

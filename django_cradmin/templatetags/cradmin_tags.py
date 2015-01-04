@@ -17,6 +17,17 @@ def cradmin_titletext_for_role(context, role):
     return cradmin_instance.get_titletext_for_role(role)
 
 
+@register.assignment_tag(takes_context=True)
+def cradmin_descriptionhtml_for_role(context, role):
+    """
+    Template tag implementation of
+    :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role`.
+    """
+    request = context['request']
+    cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+    return cradmin_instance.get_descriptionhtml_for_role(role)
+
+
 @register.simple_tag(takes_context=True)
 def cradmin_rolefrontpage_url(context, role):
     """
