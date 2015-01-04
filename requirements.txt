@@ -19,6 +19,7 @@ htmls==0.9.4
 
 # For mocking tests
 mock==1.0.1
+mock-django==0.6.6
 
 # For debugging
 django-debug-toolbar==1.2.1
