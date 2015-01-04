@@ -3,7 +3,7 @@
 {% load cradmin_tags %}
 
 {% block body %}
-    <div id="django_cradmin_roleselect" class="container-fluid">
+    <div id="django_cradmin_roleselect" class="container">
         <h1>{% trans "What would you like to administer?" %}</h1>
         <ul>
             {% for role in roles %}
@@ -14,7 +14,6 @@
                 </li>
             {% endfor %}
         </ul>
-
     </div>
-    {% include "django_cradmin/viewhelpers/includes/pager.django.html" %}
+    {% include "django_cradmin/viewhelpers/includes/pager.django.html" with pager_container_cssclass="container" %}
 {% endblock body %}

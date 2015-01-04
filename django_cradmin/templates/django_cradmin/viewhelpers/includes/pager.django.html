@@ -19,7 +19,7 @@
 {% load i18n %}
 
 {% if is_paginated %}
-    <div class="container-fluid pager-container">
+    <div class="{% if pager_container_cssclass %}{{ pager_container_cssclass }}{% else %}container-fluid{% endif %} pager-container">
         <ul class="pager {{ pager_extraclass }}">
             <li class="previous {% if not page_obj.has_previous %}disabled{% endif %}">
                 <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}&amp;{{ extra_querystring }}">
