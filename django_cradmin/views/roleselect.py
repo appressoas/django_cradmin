@@ -5,7 +5,7 @@ from django_cradmin.registry import cradmin_instance_registry
 
 
 class RoleSelectView(ListView):
-    paginate_by = 30
+    paginate_by = 1
     template_name = 'django_cradmin/roleselect.django.html'
     context_object_name = 'roles'
 
