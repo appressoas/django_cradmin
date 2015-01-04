@@ -46,6 +46,34 @@ class TestRoleSelectView(TestCase):
         cradmin_instance.get_rolequeryset.return_value = QuerySetMock(None, *roles)
         return cradmin_instance
 
+    def test_render_pagetitle(self):
+        class CustomRoleSelectView(RoleSelectView):
+            pagetitle = u'Test title'
+
+        role1 = mock.MagicMock()
+        role1.id = 1
+        role1.title = 'Role One'
+        role2 = mock.MagicMock()
+        role2.id = 2
+        role2.title = 'Role Two'
+        cradmin_instance = self.__mock_cradmin_instance(roles=[role1, role2])
+        cradmin_instance_registry = mock.MagicMock()
+        cradmin_instance_registry.get_current_instance.return_value = cradmin_instance
+        with mock.patch(
+                'django_cradmin.views.roleselect.cradmin_instance_registry',
+                cradmin_instance_registry):
+            with mock.patch(
+                    'django_cradmin.templatetags.cradmin_tags.cradmin_instance_registry',
+                    cradmin_instance_registry):
+                request = self.factory.get('/roleselecttest')
+                response = CustomRoleSelectView.as_view()(request)
+                self.assertEquals(response.status_code, 200)
+                response.render()
+                selector = htmls.S(response.content)
+                self.assertEqual(
+                    selector.one('.django-cradmin-roleselect-pagetitle').alltext_normalized,
+                    'Test title')
+
     def test_render_list_titles(self):
         role1 = mock.MagicMock()
         role1.id = 1
@@ -69,9 +97,9 @@ class TestRoleSelectView(TestCase):
                 response.render()
                 selector = htmls.S(response.content)
 
-                self.assertEqual(selector.count('#django_cradmin_roleselect li'), 2)
+                self.assertEqual(selector.count('.django-cradmin-roleselect-role-title'), 2)
                 titletextlist = [element.alltext_normalized
-                                 for element in selector.list('#django_cradmin_roleselect li h2')]
+                                 for element in selector.list('.django-cradmin-roleselect-role-title')]
                 self.assertEquals(titletextlist, ['Role One', 'Role Two'])
 
     def test_render_list_descriptions(self):
@@ -99,7 +127,7 @@ class TestRoleSelectView(TestCase):
                 response.render()
                 selector = htmls.S(response.content)
 
-                self.assertEqual(selector.count('#django_cradmin_roleselect li'), 2)
+                self.assertEqual(selector.count('.django-cradmin-roleselect-role-description'), 2)
                 titletextlist = [element.alltext_normalized
                                  for element in selector.list('.django-cradmin-roleselect-role-description')]
                 self.assertEquals(titletextlist, ['Role One desc', 'Role Two desc'])

@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView
 from django.http import HttpResponseRedirect
 
@@ -8,6 +9,7 @@ class RoleSelectView(ListView):
     paginate_by = 30
     template_name = 'django_cradmin/roleselect.django.html'
     context_object_name = 'roles'
+    pagetitle = _('What would you like to edit?')
 
     def get_queryset(self):
         cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
@@ -25,3 +27,11 @@ class RoleSelectView(ListView):
             # CrInstance to distinguish multiple crinstances.
             self.request.cradmin_instance = cradmin_instance
             return super(RoleSelectView, self).get(*args, **kwargs)
+
+    def get_pagetitle(self):
+        return self.pagetitle
+
+    def get_context_data(self, **kwargs):
+        context = super(RoleSelectView, self).get_context_data(**kwargs)
+        context['pagetitle'] = self.get_pagetitle()
+        return context
