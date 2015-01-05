@@ -193,8 +193,8 @@ class TestRoleSelectView(TestCase):
                 response_page2.render()
                 selector_page2 = htmls.S(response_page2.content)
 
-                self.assertEqual(selector_page1.count('#django_cradmin_roleselect li'), 3)
-                self.assertEqual(selector_page2.count('#django_cradmin_roleselect li'), 2)
+                self.assertEqual(selector_page1.count('.django-cradmin-roleselect-list li'), 3)
+                self.assertEqual(selector_page2.count('.django-cradmin-roleselect-list li'), 2)
 
                 self.assertTrue(selector_page1.exists('.pager-container'))
                 self.assertTrue(selector_page1.exists('.pager-container li.previous.disabled'))

@@ -8347,3 +8347,17 @@ table.table.table-cradmin-fluid tbody tr td {
     height: 600px;
   }
 }
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li {
+  margin: 0 0 20px 0;
+}
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a {
+  display: block;
+}
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover {
+  text-decoration: none;
+}

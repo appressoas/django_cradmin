@@ -3,25 +3,27 @@
 {% load cradmin_tags %}
 
 {% block body %}
-    <div id="django_cradmin_roleselect" class="container">
-        <h1 class="django-cradmin-roleselect-pagetitle">{{ pagetitle }}</h1>
-        <ul>
-            {% for role in roles %}
-                <li>
-                    <a href="{% cradmin_rolefrontpage_url role %}">
-                        <h2 class="django-cradmin-roleselect-role-title">
-                            {% cradmin_titletext_for_role role %}
-                        </h2>
-                        {% cradmin_descriptionhtml_for_role role as descriptionhtml %}
-                        {% if descriptionhtml %}
-                            <div class="django-cradmin-roleselect-role-description">
-                                {{ descriptionhtml }}
-                            </div>
-                        {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+    <div id="django_cradmin_roleselect">
+        <div class="container">
+            <h1 class="django-cradmin-roleselect-pagetitle">{{ pagetitle }}</h1>
+            <ul class="{{ list_cssclass }}">
+                {% for role in roles %}
+                    <li>
+                        <a href="{% cradmin_rolefrontpage_url role %}">
+                            <h2 class="django-cradmin-roleselect-role-title">
+                                {% cradmin_titletext_for_role role %}
+                            </h2>
+                            {% cradmin_descriptionhtml_for_role role as descriptionhtml %}
+                            {% if descriptionhtml %}
+                                <div class="django-cradmin-roleselect-role-description">
+                                    {{ descriptionhtml }}
+                                </div>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% include "django_cradmin/viewhelpers/includes/pager.django.html" with pager_container_cssclass="container" %}
     </div>
-    {% include "django_cradmin/viewhelpers/includes/pager.django.html" with pager_container_cssclass="container" %}
 {% endblock body %}
