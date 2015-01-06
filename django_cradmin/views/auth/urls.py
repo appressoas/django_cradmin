@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns(
     'django_cradmin.views.auth',
     url(r'^login$', 'login.cradmin_loginview', name='django_cradmin-login'),
-    # url(r'^logout$', 'views.logout.logoutview', name='django_cradmin-logout'),
+    url(r'^logout$', 'logout.cradmin_logoutview', name='django_cradmin-logout'),
 
     # url(r'^signup/$', SignupView.as_view(), name='django_cradmin-signup'),
     # url(r'^signup/success$', SignupSuccessView.as_view(), name='django_cradmin-signup-success'),
