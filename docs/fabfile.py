@@ -1,6 +1,3 @@
-from shutil import rmtree
-import os.path
-from glob import glob
 from fabric.api import local, task
 
 
