@@ -37,12 +37,13 @@
           line-height: @cradmin-objecttable-header-line-height;
           vertical-align: middle;
           font-size: ceil(@font-size-base - 2px);
-          color: #666;
+          color: @cradmin-objecttable-orderingindex-color;
         }
         .objecttableview-orderingdirection {
           font-size: ceil(@font-size-base + 6px);
           line-height: @cradmin-objecttable-header-line-height;
           vertical-align: middle;
+          color: @cradmin-objecttable-orderingdirection-color;
         }
       }
     }
@@ -57,7 +58,7 @@
   tbody {
     tr {
       &.objecttableview-selected-row {
-        background-color: #FFE2A8;
+        background-color: @cradmin-objecttable-selected-row-bg;
       }
 
       td:first-child,

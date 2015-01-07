@@ -7939,47 +7939,47 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
     max-width: 800px;
   }
 }
-table.table.table-cradmin-fluid {
+table.table.cradmin-table-fluid {
   margin: 0;
 }
-table.table.table-cradmin-fluid tbody tr td:first-child,
-table.table.table-cradmin-fluid thead tr th:first-child {
+table.table.cradmin-table-fluid tbody tr td:first-child,
+table.table.cradmin-table-fluid thead tr th:first-child {
   padding-left: 15px;
 }
 @media (min-width: 768px) {
-  table.table.table-cradmin-fluid tbody tr td:first-child,
-  table.table.table-cradmin-fluid thead tr th:first-child {
+  table.table.cradmin-table-fluid tbody tr td:first-child,
+  table.table.cradmin-table-fluid thead tr th:first-child {
     padding-left: 50px;
   }
 }
-table.table.table-cradmin-fluid tbody tr td:last-child,
-table.table.table-cradmin-fluid thead tr th:last-child {
+table.table.cradmin-table-fluid tbody tr td:last-child,
+table.table.cradmin-table-fluid thead tr th:last-child {
   padding-right: 15px;
 }
 @media (min-width: 768px) {
-  table.table.table-cradmin-fluid tbody tr td:last-child,
-  table.table.table-cradmin-fluid thead tr th:last-child {
+  table.table.cradmin-table-fluid tbody tr td:last-child,
+  table.table.cradmin-table-fluid thead tr th:last-child {
     padding-right: 50px;
   }
 }
-table.table.table-cradmin-fluid thead {
-  border-bottom: 1px solid #E6E6E6;
-  background-color: #FAFAFA;
+table.table.cradmin-table-fluid thead {
+  border-bottom: 1px solid #cccccc;
+  background-color: #fafafa;
 }
-table.table.table-cradmin-fluid thead tr th {
+table.table.cradmin-table-fluid thead tr th {
   border: none;
 }
-table.table.table-cradmin-fluid tbody {
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
+table.table.cradmin-table-fluid tbody {
+  background-color: #ffffff;
+  border-bottom: 1px solid #cccccc;
 }
-table.table.table-cradmin-fluid tbody tr {
-  border-top: 1px dashed #D9D9D9;
+table.table.cradmin-table-fluid tbody tr {
+  border-top: 1px dashed #d9d9d9;
 }
-table.table.table-cradmin-fluid tbody tr:first-child {
+table.table.cradmin-table-fluid tbody tr:first-child {
   border-top: none;
 }
-table.table.table-cradmin-fluid tbody tr td {
+table.table.cradmin-table-fluid tbody tr td {
   border: none;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -8213,19 +8213,20 @@ table.table.table-cradmin-fluid tbody tr td {
   line-height: 40px;
   vertical-align: middle;
   font-size: 14px;
-  color: #666;
+  color: #666666;
 }
 #objecttableview-table thead th.objecttableview-sortable-header .objecttableview-orderingmeta .objecttableview-orderingdirection {
   font-size: 22px;
   line-height: 40px;
   vertical-align: middle;
+  color: #666666;
 }
 #objecttableview-table th.objecttableview-multiselectcolumn,
 #objecttableview-table td.objecttableview-multiselectcolumn {
   width: 85px;
 }
 #objecttableview-table tbody tr.objecttableview-selected-row {
-  background-color: #FFE2A8;
+  background-color: #ffe2a8;
 }
 #objecttableview-table tbody tr td:first-child .objecttable-cellvalue,
 #objecttableview-table tbody tr td.objecttableview-multiselectcolumn + td .objecttable-cellvalue {
@@ -8347,17 +8348,42 @@ table.table.table-cradmin-fluid tbody tr td {
     height: 600px;
   }
 }
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list {
+  /**
+    ## .django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat
+    The roleselect list rendered as a flat list.
+    */
+}
 #django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat {
   list-style: none;
   margin: 0;
   padding: 0;
+  background: #ffffff;
 }
 #django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li {
-  margin: 0 0 20px 0;
+  margin: 0;
+  border-bottom: 1px dashed #d9d9d9;
+  padding: 15px 20px;
 }
 #django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a {
   display: block;
 }
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a h2.django-cradmin-roleselect-role-title {
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a .django-cradmin-roleselect-role-description {
+  color: #999999;
+  font-size: 14px;
+}
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a .django-cradmin-roleselect-role-description p:last-child {
+  margin-bottom: 0;
+}
 #django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover {
   text-decoration: none;
+}
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover .django-cradmin-roleselect-role-description {
+  color: #808080;
 }
