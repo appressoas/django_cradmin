@@ -20,6 +20,7 @@ class Command(BaseCommand):
             first_name='Elvira "Grandma"',
             last_name='Coot')
         self._create_pages()
+        self._create_extra_sites()
 
     def _create_user_if_not_exists(self, username, **kwargs):
         User = get_user_model()
@@ -58,3 +59,12 @@ class Command(BaseCommand):
 
     def _lorem_para(self, count):
         return u'\n\n'.join(lorem_ipsum.paragraphs(count, common=False))
+
+    def _create_extra_sites(self):
+        sites = []
+        for site in xrange(120):
+            site = demomodels.Site(
+                name=self._lorem_words(random.randint(3, 5)),
+                description=self._lorem_para(1))
+            sites.append(site)
+        demomodels.Site.objects.bulk_create(sites)

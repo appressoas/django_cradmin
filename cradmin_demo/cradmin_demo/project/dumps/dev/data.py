@@ -151,12 +151,14 @@ def import_data():
 
     webdemo_site_1 = Site()
     webdemo_site_1.name = u'Demosite'
+    webdemo_site_1.description = u'A demo site'
     webdemo_site_1 = importer.save_or_locate(webdemo_site_1)
 
     webdemo_site_1.admins.add(auth_user_1)
 
     webdemo_site_2 = Site()
     webdemo_site_2.name = u'Comicbook store'
+    webdemo_site_2.description = u'The local comicbook store'
     webdemo_site_2 = importer.save_or_locate(webdemo_site_2)
 
     webdemo_site_2.admins.add(auth_user_1)

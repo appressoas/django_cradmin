@@ -1,3 +1,4 @@
+from django.template.defaultfilters import truncatechars
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
@@ -50,8 +51,4 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
         Get a short description of the given ``role``.
         Remember that the role is a Site.
         """
-        admins = list(role.admins.all())
-        if admins:
-            return u'Admins: {}'.format(', '.join([unicode(user) for user in admins]))
-        else:
-            return u'No admins'
+        return truncatechars(role.description, 100)
