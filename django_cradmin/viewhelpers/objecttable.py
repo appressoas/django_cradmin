@@ -36,6 +36,17 @@ class Column(object):
     #: The column width. See :meth:`.get_column_width`.
     column_width = None
 
+    #: The name of the template context object.
+    #: The object is always available as ``object``, but you
+    #: can override this to make it available by another name.
+    context_object_name = None
+
+    #: The name of the template context variable containing the return value from
+    #: meth:`.get_value`.
+    #: This is always available as ``value``, but you
+    #: can override this to make it available by another name.
+    context_value_name = None
+
     def __init__(self, view, columnindex):
         self.view = view
         self.columnindex = columnindex
@@ -99,16 +110,22 @@ class Column(object):
         """
         Get context data for rendering the cell (see :meth:`.render_cell`.
         """
-        return {
-            'value': self.render_value(obj),
+        value = self.render_value(obj)
+        context = {
+            'value': value,
             'object': obj
         }
+        if self.context_object_name:
+            context[self.context_object_name] = obj
+        if self.context_value_name:
+            context[self.context_value_name] = value
+        return context
 
     def render_cell(self, obj):
         """
         Render the cell using the template specifed in :obj:`.template_name`.
         """
-        return render_to_string(self.template_name, self.get_context_data(obj))
+        return render_to_string(self.template_name, self.get_context_data(obj=obj))
 
     def get_flip_ordering_url(self):
         """
@@ -234,7 +251,7 @@ class SingleActionColumn(Column):
         raise NotImplementedError()
 
     def get_context_data(self, obj):
-        context = super(SingleActionColumn, self).get_context_data(obj)
+        context = super(SingleActionColumn, self).get_context_data(obj=obj)
         context['action_url'] = self.get_actionurl(obj)
         return context
 
@@ -282,7 +299,7 @@ class ImagePreviewColumn(Column):
         return u'{}px'.format(self.get_preview_width())
 
     def get_context_data(self, obj):
-        context = super(ImagePreviewColumn, self).get_context_data(obj)
+        context = super(ImagePreviewColumn, self).get_context_data(obj=obj)
         image_path = None
         imagefieldfile = self.render_value(obj)
         if imagefieldfile:
@@ -312,7 +329,7 @@ class MultiActionColumn(Column):
         raise NotImplementedError()
 
     def get_context_data(self, obj):
-        context = super(MultiActionColumn, self).get_context_data(obj)
+        context = super(MultiActionColumn, self).get_context_data(obj=obj)
         context['buttons'] = self.get_buttons(obj)
         return context
 
@@ -333,7 +350,7 @@ class UseThisActionColumn(Column):
         raise NotImplementedError()
 
     def get_context_data(self, obj):
-        context = super(UseThisActionColumn, self).get_context_data(obj)
+        context = super(UseThisActionColumn, self).get_context_data(obj=obj)
         context['buttons'] = self.get_buttons(obj)
         return context
 
