@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.template import defaultfilters
 from django.template.defaultfilters import truncatechars
 from django.utils.http import urlencode
-
+from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.views.generic import ListView
 from django.db import models
@@ -627,8 +627,19 @@ class ObjectTableView(ListView):
     #: when searching the given :obj:`.searchfields`.
     search_comparator = 'icontains'
 
+    #: The search placeholder text. See :meth:`.get_enable_previews`. Defaults to "Search...".
+    search_placeholder_text = _('Search...')
+
     #: Enable previews? See :meth:`.get_enable_previews`. Defaults to ``False``.
     enable_previews = False
+
+    def get_search_placeholder_text(self):
+        """
+        Returns the search placeholder text. Defaults to :obj:`.search_placeholder_text`.
+
+        Only used if search is enabled (see :obj:`.searchfields`).
+        """
+        return self.search_placeholder_text
 
     def get_enable_previews(self):
         """
