@@ -1,5 +1,4 @@
 from django import template
-from django.template.loader import render_to_string
 
 from django_cradmin.registry import cradmin_instance_registry
 
