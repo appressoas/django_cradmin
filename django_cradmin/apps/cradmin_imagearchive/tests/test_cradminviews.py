@@ -17,13 +17,13 @@ class TestCreateView(TestCase):
     def test_get_render(self):
         request = self.factory.get('/test')
         request.cradmin_instance = mock.MagicMock()
+        request.cradmin_instance.__getitem__.return_value = None  # This avoids rendering the menu
         request.cradmin_role = None
 
         response = cradminviews.ArchiveImageCreateView.as_view()(request)
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
-        # selector.one('#django_cradmin_contentwrapper #div_id_name').prettyprint()
         self.assertTrue(selector.exists('input[type=file][name=image]'))
         self.assertTrue(selector.exists('textarea#id_description'))
 

@@ -1,4 +1,5 @@
 from django import template
+from django.template.loader import render_to_string
 
 from django_cradmin.registry import cradmin_instance_registry
 
@@ -46,3 +47,23 @@ def cradmin_appurl(context, viewname, *args, **kwargs):
     """
     request = context['request']
     return request.cradmin_app.reverse_appurl(viewname, args=args, kwargs=kwargs)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_render_menu(context):
+    """
+    Template tag that renders the cradmin menu.
+
+    We use this instead of an include tag to handle some issues
+    with mocking tests.
+    """
+    request = context['request']
+    if hasattr(request, 'cradmin_instance'):
+        menu_template_name = request.cradmin_instance.get_menu_template_name
+        # isinstance(menu_template_name, basestring) is to make the
+        # cradmin_instance easier to mock. Without this, we would have
+        # to mock __getitem__ of cradmin_instance for all tests of
+        # views with the menu (basically all apps).
+        if menu_template_name and isinstance(menu_template_name, basestring):
+            return render_to_string(menu_template_name, context)
+    return ''

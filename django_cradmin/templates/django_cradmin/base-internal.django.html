@@ -1,8 +1,9 @@
 {% extends "django_cradmin/standalone-base.django.html" %}
+{% load cradmin_tags %}
 
 {% block body %}
     {% block menu %}
-        {% include request.cradmin_instance.get_menu_template_name %}
+        {% cradmin_render_menu %}
     {% endblock menu %}
     <div id="django_cradmin_contentwrapper">
         {% block content %}{% endblock content %}
