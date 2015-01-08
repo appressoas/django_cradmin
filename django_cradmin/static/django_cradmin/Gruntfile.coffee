@@ -65,7 +65,7 @@ module.exports = (grunt) ->
         options:
           paths: ["less", "bower_components"]
         files:
-          "dist/css/styles.css": "src/less/styles.less"
+          "dist/css/themes/default.css": "src/less/themes/default.less"
 
     coffeelint:
       options:
