@@ -59,7 +59,7 @@ def cradmin_render_menu(context):
     """
     request = context['request']
     if hasattr(request, 'cradmin_instance'):
-        menu_template_name = request.cradmin_instance.get_menu_template_name
+        menu_template_name = request.cradmin_instance.get_menu_template_name()
         # isinstance(menu_template_name, basestring) is to make the
         # cradmin_instance easier to mock. Without this, we would have
         # to mock __getitem__ of cradmin_instance for all tests of
