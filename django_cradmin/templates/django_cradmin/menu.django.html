@@ -6,11 +6,8 @@
 
 {% if not cradmin_hide_menu %}
     <nav id="cradmin_menu" ng-controller="CradminMenuController">
-        <div class="cradmin_menuicon">
-            {% block icon %}
-                <span class="fa fa-wrench"></span>
-            {% endblock icon %}
-        </div>
+        {% block pre-menu %}{% endblock pre-menu %}
+
         <div class="cradmin_menumobileheader">
             <button type="button" class="btn btn-default cradmin_menutoggle"
                     ng-click="toggleNavigation()">
@@ -20,9 +17,13 @@
         </div>
         <ul class="cradmin_menucontent"
                 ng-class="{cradmin_menucontent_display: displayMenu}">
-            {% for menuitem in request.cradmin_instance.get_menu %}
-                {{ menuitem.render|safe }}
-            {% endfor %}
+            {% block menucontent %}
+                {% for menuitem in request.cradmin_instance.get_menu %}
+                    {{ menuitem.render|safe }}
+                {% endfor %}
+            {% endblock menucontent %}
         </ul>
+
+        {% block post-menu %}{% endblock post-menu %}
     </nav>
 {% endif %}

@@ -217,6 +217,9 @@ class BaseCrAdminInstance(object):
         """
         return reverse('{}-roleselect'.format(self.id))
 
+    def get_menu_template_name(self):
+        return "django_cradmin/menu.django.html"
+
     @classmethod
     def get_roleselect_view(cls):
         """
