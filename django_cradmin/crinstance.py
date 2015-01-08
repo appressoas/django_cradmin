@@ -218,7 +218,7 @@ class BaseCrAdminInstance(object):
         return reverse('{}-roleselect'.format(self.id))
 
     @classmethod
-    def get_roleselect_view(self):
+    def get_roleselect_view(cls):
         """
         The view for selecting role.
 

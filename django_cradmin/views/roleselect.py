@@ -10,6 +10,7 @@ class RoleSelectView(ListView):
     template_name = 'django_cradmin/roleselect.django.html'
     context_object_name = 'roles'
     pagetitle = _('What would you like to edit?')
+    autoredirect_if_single_role = True
     list_cssclass = 'django-cradmin-roleselect-list django-cradmin-roleselect-list-flat'
 
     def get_queryset(self):
@@ -18,7 +19,7 @@ class RoleSelectView(ListView):
 
     def get(self, *args, **kwargs):
         cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
-        if self.get_queryset().count() == 1:
+        if self.get_autoredirect_if_single_role() and self.get_queryset().count() == 1:
             only_role = self.get_queryset().first()
             return HttpResponseRedirect(cradmin_instance.rolefrontpage_url(
                 cradmin_instance.get_roleid(only_role)))
@@ -28,6 +29,9 @@ class RoleSelectView(ListView):
             # CrInstance to distinguish multiple crinstances.
             self.request.cradmin_instance = cradmin_instance
             return super(RoleSelectView, self).get(*args, **kwargs)
+
+    def get_autoredirect_if_single_role(self):
+        return self.autoredirect_if_single_role
 
     def get_pagetitle(self):
         return self.pagetitle
