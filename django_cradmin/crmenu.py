@@ -53,6 +53,10 @@ class Menu(object):
             to add items to the menu.
     """
 
+    #: The name of the template to use for rendering the menu.
+    #: Used by :meth:`.get_template_name`.
+    template_name = "django_cradmin/menu.django.html"
+
     def __init__(self, cradmin_instance):
         """
         Parameters:
@@ -111,3 +115,20 @@ class Menu(object):
         See :meth:`django_cradmin.BaseInstance.appindex_url`.
         """
         return self.cradmin_instance.appindex_url(appname)
+
+    def get_template_name(self):
+        """
+        Get the name of the template to use for rendering the menu.
+
+        Defaults to :obj:`.template_name`.
+        """
+        return self.template_name
+
+    def render(self, context):
+        """
+        Render the menu.
+
+        Returns:
+            The menu as HTML.
+        """
+        return render_to_string(self.get_template_name(), context)

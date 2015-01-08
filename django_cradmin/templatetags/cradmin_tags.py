@@ -59,11 +59,5 @@ def cradmin_render_menu(context):
     """
     request = context['request']
     if hasattr(request, 'cradmin_instance'):
-        menu_template_name = request.cradmin_instance.get_menu_template_name()
-        # isinstance(menu_template_name, basestring) is to make the
-        # cradmin_instance easier to mock. Without this, we would have
-        # to mock __getitem__ of cradmin_instance for all tests of
-        # views with the menu (basically all apps).
-        if menu_template_name and isinstance(menu_template_name, basestring):
-            return render_to_string(menu_template_name, context)
+        return request.cradmin_instance.get_menu().render(context)
     return ''
