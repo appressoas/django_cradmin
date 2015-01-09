@@ -24,6 +24,15 @@ Viewhelpers
    viewhelpers_delete
 
 
+Modelhelpers
+------------
+
+.. toctree::
+   :maxdepth: 1
+
+   sortable
+
+
 Widgets
 -------
 
@@ -49,4 +58,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

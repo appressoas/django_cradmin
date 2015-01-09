@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'django_cradmin',
     'django_cradmin.django_cradmin_testapp',
     'django_cradmin.apps.cradmin_imagearchive',
+    'django_cradmin.tests.modelhelpers.cradmin_sortable_testapp',
 
     # Required by django cradmin
     'crispy_forms',
