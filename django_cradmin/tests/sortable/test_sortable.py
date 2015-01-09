@@ -1,7 +1,7 @@
 from django import test
 
-from django_cradmin.tests.modelhelpers.cradmin_sortable_testapp.models import SortableItem
-from django_cradmin.tests.modelhelpers.cradmin_sortable_testapp.models import ItemContainer
+from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import SortableItem
+from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import ItemContainer
 
 
 class TestSortableItem(test.TestCase):

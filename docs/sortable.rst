@@ -1,5 +1,5 @@
 #######################################################################
-:mod:`django_cradmin.modelhelpers.sortable` --- Making objects sortable
+:mod:`django_cradmin.sortable.models` --- Making objects sortable
 #######################################################################
 
 To make a model sortable, you need the following two additions to your model:
@@ -10,8 +10,8 @@ To make a model sortable, you need the following two additions to your model:
 
 Example::
 
-    from django_cradmin.modelhelpers.sortable import SortableBase
-    from django_cradmin.modelhelpers.sortable import SortableManagerBase
+    from django_cradmin.sortable.models import SortableBase
+    from django_cradmin.sortable.models import SortableManagerBase
 
     class MySortableItemManager(SortableManagerBase):
         parent_attribute = 'container'
@@ -35,9 +35,9 @@ How to sort
 
 Sorting is done by using these methods:
 
-- :meth:`django_cradmin.modelhelpers.sortable.SortableManagerBase.sort_before`
-- :meth:`django_cradmin.modelhelpers.sortable.SortableManagerBase.sort_last`
-- :meth:`django_cradmin.modelhelpers.sortable.SortableManagerBase.set_newitem_sort_index_to_last`
+- :meth:`django_cradmin.sortable.models.SortableManagerBase.sort_before`
+- :meth:`django_cradmin.sortable.models.SortableManagerBase.sort_last`
+- :meth:`django_cradmin.sortable.models.SortableManagerBase.set_newitem_sort_index_to_last`
 
 Example::
 
@@ -61,10 +61,10 @@ Example::
 Makin an Admin UI that automatically adds items last in parent
 **************************************************************
 Making an Admin UI that automatically adds items last in parent is easy. Just extend
-:class:`ninja.ninja_sortable.adminhelpers.SortableModelAdmin` instead of
+:class:`django_cradmin.sortable.admin.SortableModelAdmin` instead of
 ``django.contrib.admin.ModelAdmin``::
 
-    from ninja.ninja_sortable.adminhelpers import SortableModelAdmin
+    from django_cradmin.sortable.admin import SortableModelAdmin
 
     class MySortableItemAdmin(SortableModelAdmin):
         pass
@@ -82,11 +82,11 @@ with something like this::
 API
 ***
 
-.. autoclass:: django_cradmin.modelhelpers.sortable.SortableManagerBase
+.. autoclass:: django_cradmin.sortable.models.SortableManagerBase
     :members:
 
-.. autoclass:: django_cradmin.modelhelpers.sortable.SortableBase
+.. autoclass:: django_cradmin.sortable.models.SortableBase
     :members:
 
-.. autoclass:: django_cradmin.modelhelpers.sortable.SortableModelAdmin
+.. autoclass:: django_cradmin.sortable.admin.SortableModelAdmin
     :members:

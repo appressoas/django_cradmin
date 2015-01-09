@@ -2,8 +2,8 @@
 An example app using Sortable.
 """
 from django.db import models
-from django_cradmin.modelhelpers.sortable import SortableBase
-from django_cradmin.modelhelpers.sortable import SortableManagerBase
+from django_cradmin.sortable.models import SortableBase
+from django_cradmin.sortable.models import SortableManagerBase
 
 
 class ItemContainer(models.Model):
