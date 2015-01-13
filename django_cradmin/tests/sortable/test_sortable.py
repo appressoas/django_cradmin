@@ -34,37 +34,37 @@ class TestSortableItem(test.TestCase):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_last(i1)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [2,3,4,5,6,1])
+        self.assertEquals(reordered, [2, 3, 4, 5, 6, 1])
 
     def test_sort_item_3_last(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_last(i3)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [1,2,4,5,6,3])
+        self.assertEquals(reordered, [1, 2, 4, 5, 6, 3])
 
     def test_sort_last_item_first(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i6, i1.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [6,1,2,3,4,5])
+        self.assertEquals(reordered, [6, 1, 2, 3, 4, 5])
 
     def test_sort_item_3_first(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i3, i1.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [3,1,2,4,5,6])
+        self.assertEquals(reordered, [3, 1, 2, 4, 5, 6])
 
     def test_sort_item_move_first_before_id_4(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i1, i4.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [2,3,1,4,5,6])
+        self.assertEquals(reordered, [2, 3, 1, 4, 5, 6])
 
     def test_sort_item_move_second_before_id_4(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i2, i4.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [1,3,2,4,5,6])
+        self.assertEquals(reordered, [1, 3, 2, 4, 5, 6])
 
     def test_sort_item_move_second_before_id_4_in_allready_reordered_list(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
@@ -72,7 +72,7 @@ class TestSortableItem(test.TestCase):
         # now list is [2,3,4,5,6,1]
         SortableItem.objects.sort_before(i2, i4.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [3,2,4,5,6,1])
+        self.assertEquals(reordered, [3, 2, 4, 5, 6, 1])
 
     def test_set_sort_index_to_last_no_siblings(self):
         container = self._create_container()
