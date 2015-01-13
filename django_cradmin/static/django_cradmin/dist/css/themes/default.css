@@ -8380,3 +8380,6 @@ table.table.cradmin-table-fluid tbody tr td {
 #django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover .django-cradmin-roleselect-role-description {
   color: #808080;
 }
+#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-child {
+  border-bottom: none;
+}

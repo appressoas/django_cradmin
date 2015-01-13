@@ -13,7 +13,7 @@ class Menu(crmenu.Menu):
         self.add_headeritem(
             label=_('Select site'),
             url=self.roleselectview_url(),
-            icon='arrow-up')
+            icon='chevron-up')
 
         self.add(
             label=_('Dashboard'), url=self.appindex_url('dashboard'), icon="home",
