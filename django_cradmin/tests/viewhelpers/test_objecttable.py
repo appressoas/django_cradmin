@@ -1,20 +1,14 @@
 import htmls
 import mock
 from django.test import TestCase, RequestFactory
-from django.db import models
 
+from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import TestModel
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.django_cradmin_testapp import models as testmodels
 
 
 class TestColumn(TestCase):
     def setUp(self):
-        class TestModel(models.Model):
-            testfield = models.CharField(verbose_name=u'Test Value')
-
-            class Meta:
-                app_label = 'django_cradmin.viewhelpers_test'
-
         class TestColSubclass(objecttable.Column):
             modelfield = 'testfield'
 
@@ -56,12 +50,6 @@ class TestColumn(TestCase):
 
 class TestPlainTextColumn(TestCase):
     def setUp(self):
-        class TestModel(models.Model):
-            testfield = models.CharField(verbose_name=u'Test Value')
-
-            class Meta:
-                app_label = 'django_cradmin.viewhelpers_test'
-
         class TestColSubclass(objecttable.PlainTextColumn):
             modelfield = 'testfield'
 
@@ -82,20 +70,6 @@ class TestPlainTextColumn(TestCase):
 
 class TestSingleActionColumn(TestCase):
     def setUp(self):
-        class TestModel(models.Model):
-            testfield = models.CharField(verbose_name=u'Test Value')
-
-            class Meta:
-                app_label = 'django_cradmin.viewhelpers_test'
-
-            def __unicode__(self):
-                print 'running __unicode__!'
-                return self.testfield.verbose_name
-
-            def __str__(self):
-                print 'running __str__!'
-                return self.testfield.verbose_name
-
         class TestIncompleteColSubclass(objecttable.SingleActionColumn):
             modelfield = 'testfield'
 
@@ -132,20 +106,6 @@ class TestSingleActionColumn(TestCase):
 
 class TestMultiActionColumn(TestCase):
     def setUp(self):
-        class TestModel(models.Model):
-            testfield = models.CharField(verbose_name=u'Test Value')
-
-            class Meta:
-                app_label = 'django_cradmin.viewhelpers_test'
-
-            def __unicode__(self):
-                print 'running __unicode__!'
-                return self.testfield.verbose_name
-
-            def __str__(self):
-                print 'running __str__!'
-                return self.testfield.verbose_name
-
         class TestIncompleteColSubclass(objecttable.MultiActionColumn):
             modelfield = 'testfield'
 
