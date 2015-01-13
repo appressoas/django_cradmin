@@ -14,13 +14,12 @@ Install ``django_cradmin``::
 *********
 Configure
 *********
-Add ``django_cradmin``, ``djangular`` and ``crispy_forms`` to the
+Add ``django_cradmin`` and ``crispy_forms`` to the
 ``INSTALLED_APPS`` setting::
     
     INSTALLED_APPS = (
         ...
         'django_cradmin',
-        'djangular',
         'crispy_forms',
         ...
     )

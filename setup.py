@@ -19,7 +19,6 @@ setup(
         'setuptools',
         'django-crispy-forms',
         'Django',
-        'django-angular',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

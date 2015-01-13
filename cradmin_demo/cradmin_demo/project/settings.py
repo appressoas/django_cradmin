@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
     'crispy_forms',
-    'djangular',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
     # Nice for debugging, but not required to use django_cradmin

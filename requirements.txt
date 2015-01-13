@@ -1,6 +1,5 @@
 Django==1.7.1
 django-crispy-forms==1.4.0
-django-angular==0.7.2
 Pillow==2.5.3
 sorl-thumbnail==12.1c
 
