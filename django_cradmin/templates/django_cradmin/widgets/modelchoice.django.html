@@ -5,7 +5,7 @@
         django-cradmin-model-choice-field-wrapper>
 
     {% block input %}
-        <input type="{{ input_type }}" value="{{ fieldvalue }}"
+        <input type="{{ rendered_input_type }}" value="{{ fieldvalue }}"
                id="{{ fieldid }}" name="{{ fieldname }}"
                django-cradmin-model-choice-field-input>
     {% endblock input %}

@@ -94,11 +94,11 @@ class PageCreateUpdateMixin(object):
 
     def get_field_layout(self):
         return [
-            layout.Fieldset(
-                'Advanced',
-                layout.Div('image')
-            ),
             layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
+            layout.Fieldset(
+                'Image',
+                'image',
+            ),
             layout.Div('intro', css_class="cradmin-focusfield"),
             layout.Div('body', css_class="cradmin-focusfield"),
         ]
