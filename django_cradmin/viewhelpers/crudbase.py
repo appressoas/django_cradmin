@@ -37,10 +37,6 @@ class CreateUpdateViewMixin(object):
     #: :meth:`.save_object`.
     roleid_field = None
 
-    #: List of fields that support getting their value by navigating to
-    #: another view (and back to this view after selecting a value).
-    external_select_fields = []
-
     #: The viewname within this app for the edit view.
     #: See :meth:`.get_editurl`.
     editview_appurl_name = 'edit'
