@@ -64,23 +64,65 @@ class Menu(object):
         """
         self.cradmin_instance = cradmin_instance
         self.request = cradmin_instance.request
-        self.menu = []
+        self.headeritems = []
+        self.mainitems = []
+        self.footeritems = []
         self.build_menu()
 
     def add(self, *args, **kwargs):
         """
-        Add menu items.
+        Add menu item.
 
-        args and kwargs are forwarded to the menu class (see :meth:`.get_menuitemclass`).
+        args and kwargs are forwarded to the menu class (see :meth:`.get_menuitem_class`).
         """
-        menuitemclass = self.get_menuitemclass()
-        self.menu.append(
+        menuitemclass = self.get_menuitem_class()
+        self.mainitems.append(
             menuitemclass(*args, **kwargs)
         )
 
-    def get_menuitemclass(self):
+    def get_menuitem_class(self):
         """
         Get the class used to render each menu item.
+
+        Returns:
+            :class:`.MenuItem` by default.
+        """
+        return MenuItem
+
+    def add_headeritem(self, *args, **kwargs):
+        """
+        Add item to the menu header.
+
+        args and kwargs are forwarded to the menu class (see :meth:`.get_headeritem_class`).
+        """
+        headeritem_class = self.get_headeritem_class()
+        self.headeritems.append(
+            headeritem_class(*args, **kwargs)
+        )
+
+    def get_headeritem_class(self):
+        """
+        Get the class used to render each item in the menu header.
+
+        Returns:
+            :class:`.MenuItem` by default.
+        """
+        return MenuItem
+
+    def add_footeritem(self, *args, **kwargs):
+        """
+        Add item to the menu footer.
+
+        args and kwargs are forwarded to the menu class (see :meth:`.get_footeritem_class`).
+        """
+        footeritem_class = self.get_footeritem_class()
+        self.footeritems.append(
+            footeritem_class(*args, **kwargs)
+        )
+
+    def get_footeritem_class(self):
+        """
+        Get the class used to render each item in the menu footer.
 
         Returns:
             :class:`.MenuItem` by default.
@@ -115,6 +157,14 @@ class Menu(object):
         See :meth:`django_cradmin.BaseInstance.appindex_url`.
         """
         return self.cradmin_instance.appindex_url(appname)
+
+    def roleselectview_url(self):
+        """
+        Shortcut for ``self.cradmin_instance.roleselectview_url()``.
+
+        See :meth:`django_cradmin.BaseInstance.roleselectview_url`.
+        """
+        return self.cradmin_instance.roleselectview_url()
 
     def get_template_name(self):
         """

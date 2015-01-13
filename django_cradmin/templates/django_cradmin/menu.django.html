@@ -15,14 +15,35 @@
                 <span class="fa fa-bars"></span>
             </button>
         </div>
-        <ul class="cradmin_menucontent"
+
+        <div class="cradmin_menucontent"
                 ng-class="{cradmin_menucontent_display: displayMenu}">
             {% block menucontent %}
-                {% for menuitem in request.cradmin_instance.get_menu %}
-                    {{ menuitem.render|safe }}
-                {% endfor %}
+                {% with menu=request.cradmin_instance.get_menu %}
+                    {% if menu.headeritems %}
+                        <ul class="cradmin_menucontent_header">
+                            {% for menuitem in menu.headeritems %}
+                                {{ menuitem.render|safe }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if menu.mainitems %}
+                        <ul class="cradmin_menucontent_main">
+                            {% for menuitem in menu.mainitems %}
+                                {{ menuitem.render|safe }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% if menu.footeritems %}
+                        <ul class="cradmin_menucontent_footer">
+                            {% for menuitem in menu.footeritems %}
+                                {{ menuitem.render|safe }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
             {% endblock menucontent %}
-        </ul>
+        </div>
 
         {% block post-menu %}{% endblock post-menu %}
     </nav>

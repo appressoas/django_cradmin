@@ -10,6 +10,11 @@ from .views import pages
 
 class Menu(crmenu.Menu):
     def build_menu(self):
+        self.add_headeritem(
+            label=_('Select site'),
+            url=self.roleselectview_url(),
+            icon='arrow-up')
+
         self.add(
             label=_('Dashboard'), url=self.appindex_url('dashboard'), icon="home",
             active=self.request.cradmin_app.appname == 'dashboard')
