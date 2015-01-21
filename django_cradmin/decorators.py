@@ -30,7 +30,7 @@ def cradminview(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_ur
             if not role:
                 return cradmin_instance.invalid_roleid_response(roleid)
             try:
-                role_from_rolequeryset =  cradmin_instance.get_role_from_rolequeryset(role)
+                role_from_rolequeryset = cradmin_instance.get_role_from_rolequeryset(role)
             except ObjectDoesNotExist:
                 return cradmin_instance.missing_role_response(role)
             else:
