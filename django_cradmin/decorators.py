@@ -1,6 +1,7 @@
 from functools import wraps
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import force_str
 from django.shortcuts import resolve_url
 
@@ -28,12 +29,14 @@ def cradminview(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_ur
             role = cradmin_instance.get_role_from_roleid(roleid)
             if not role:
                 return cradmin_instance.invalid_roleid_response(roleid)
-            if cradmin_instance.user_has_role(role):
-                request.cradmin_instance = cradmin_instance
-                request.cradmin_role = role
-                return view_function(request, *args, **kwargs)
-            else:
+            try:
+                role_from_rolequeryset =  cradmin_instance.get_role_from_rolequeryset(role)
+            except ObjectDoesNotExist:
                 return cradmin_instance.missing_role_response(role)
+            else:
+                request.cradmin_instance = cradmin_instance
+                request.cradmin_role = role_from_rolequeryset
+                return view_function(request, *args, **kwargs)
         else:
             # Redirect to login just like login_required()
             from django.contrib.auth.views import redirect_to_login

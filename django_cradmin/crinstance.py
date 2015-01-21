@@ -130,16 +130,19 @@ class BaseCrAdminInstance(object):
             'roleid': roleid
         })
 
-    def user_has_role(self, role):
+    def get_role_from_rolequeryset(self, role):
         """
-        Returns ``True`` if the requesting user has the given role.
+        Returns the given role extracted via the :meth:`.get_rolequeryset`
+        queryset.
+
+        Raises ObjectDoesNotExist if the role is not found in the queryset.
         """
-        return self.get_rolequeryset().filter(pk=role.pk).exists()
+        return self.get_rolequeryset().get(pk=role.pk)
 
     def missing_role_response(self, role):
         """
         This is called whenever someone requests a role that exists but that
-        they do not have (where meth:`.user_has_role` returns ``False``).
+        they do not have (where meth:`.get_role_from_rolequeryset` raises ``DoesNotExist``).
 
         Returns:
             django.http.HttpResponse: Defaults to rendering
