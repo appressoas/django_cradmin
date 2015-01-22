@@ -158,3 +158,74 @@ class TestUpdateView(TestCase):
         self.assertEquals(response.status_code, 302)
         update_image = ArchiveImage.objects.first()
         self.assertEqual(update_image.name, 'testname')
+
+
+class TestArchiveImageBulkAddView(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_get_render(self):
+        request = self.factory.get('/test')
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_instance.__getitem__.return_value = None  # This avoids rendering the menu
+        request.cradmin_role = None
+
+        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertTrue(selector.exists('.django_cradmin_bulkfileupload_form'))
+        self.assertTrue(selector.exists('input[type=hidden][name=multifile_formset-TOTAL_FORMS]'))
+
+    def test_post_single_image(self):
+        testimage = create_image(200, 100)
+        request = self.factory.post('/test', {
+            'multifile_formset-TOTAL_FORMS': 1,
+            'multifile_formset-INITIAL_FORMS': 0,
+            'multifile_formset-MAX_NUM_FORMS': 1,
+            'multifile_formset-0-file': SimpleUploadedFile('testname.png', testimage)
+        })
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.cradmin_app.reverse_appurl.return_value = '/success'
+        request.cradmin_role = TstRole.objects.create()
+
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response['Location'], '/success')
+        self.assertEqual(ArchiveImage.objects.count(), 1)
+        created_image = ArchiveImage.objects.first()
+        self.assertEqual(created_image.image.read(), testimage)
+        self.assertEqual(created_image.name, 'testname')
+        self.assertEqual(created_image.description, '')
+
+    def test_post_multiple_images(self):
+        testimage1 = create_image(200, 100)
+        testimage2 = create_image(100, 100)
+        request = self.factory.post('/test', {
+            'multifile_formset-TOTAL_FORMS': 2,
+            'multifile_formset-INITIAL_FORMS': 0,
+            'multifile_formset-MAX_NUM_FORMS': 2,
+            'multifile_formset-0-file': SimpleUploadedFile('A.png', testimage1),
+            'multifile_formset-1-file': SimpleUploadedFile('B.png', testimage2)
+        })
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.cradmin_app.reverse_appurl.return_value = '/success'
+        request.cradmin_role = TstRole.objects.create()
+
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response['Location'], '/success')
+        self.assertEqual(ArchiveImage.objects.count(), 2)
+        created_images = ArchiveImage.objects.order_by('name')
+
+        self.assertEqual(created_images[0].image.read(), testimage1)
+        self.assertEqual(created_images[0].name, 'A')
+        self.assertEqual(created_images[0].description, '')
+
+        self.assertEqual(created_images[1].image.read(), testimage2)
+        self.assertEqual(created_images[1].name, 'B')
+        self.assertEqual(created_images[1].description, '')

@@ -1,0 +1,33 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    {{ pagetitle }}
+{% endblock title %}
+
+{% block content %}
+    <div class="page-header">
+        <div class="container-fluid">
+            {% block pageheader %}
+                <h1>
+                    {% block pageheader-h1 %}
+                        {{ pagetitle }}
+                    {% endblock pageheader-h1 %}
+                </h1>
+            {% endblock pageheader %}
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% block bulkfileupload_form_pre %}{% endblock bulkfileupload_form_pre %}
+        <form action="{{ request.path }}" class="django_cradmin_bulkfileupload_form"
+                method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% block bulkfileupload_form_inner %}
+                {{ multifile_formset.management_form }}
+            {% endblock bulkfileupload_form_inner %}
+        </form>
+        {% block bulkfileupload_form_post %}{% endblock bulkfileupload_form_post %}
+    </div>
+{% endblock content %}

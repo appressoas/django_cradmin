@@ -1,5 +1,8 @@
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
+from django.views.generic import TemplateView
+from django import forms
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -8,6 +11,7 @@ from django_cradmin.viewhelpers import delete
 from django_cradmin import crapp
 
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
+from django_cradmin.viewhelpers.bulkfileupload import BulkFileUploadView
 from django_cradmin.widgets import filewidgets
 
 
@@ -154,6 +158,37 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
     """
 
 
+class ArchiveImageMultiuploadView(TemplateView):
+    """
+
+    """
+
+
+class FileUploadForm(forms.Form):
+    file = forms.FileField(
+        label=_('Upload a file'))
+
+
+class ArchiveImageBulkAddView(BulkFileUploadView):
+    form_class = FileUploadForm
+
+    def get_pagetitle(self):
+        return _('Bulk add archive images')
+
+    def formset_valid(self, uploadedfiles):
+        for uploadedfile in uploadedfiles:
+            archiveimage = ArchiveImage(
+                role=self.request.cradmin_role,
+                image=None
+            )
+            archiveimage.save()  # Save to create an ID
+            archiveimage.image = uploadedfile
+            archiveimage.full_clean()
+            archiveimage.save()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
 class App(crapp.App):
     appurls = [
         crapp.Url(
@@ -176,4 +211,9 @@ class App(crapp.App):
             r'^delete/(?P<pk>\d+)$',
             ArchiveImageDeleteView.as_view(),
             name="delete"),
+        crapp.Url(
+            r'bulkadd$',
+            ArchiveImageBulkAddView.as_view(),
+            name='bulkadd'
+        )
     ]
