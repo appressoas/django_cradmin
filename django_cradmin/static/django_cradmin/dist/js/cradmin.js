@@ -216,6 +216,131 @@
 }).call(this);
 
 (function() {
+  var DjangoCradminFileFieldWrapper;
+
+  DjangoCradminFileFieldWrapper = (function() {
+    function DjangoCradminFileFieldWrapper(fileFieldElement) {
+      this.fileFieldElement = fileFieldElement;
+    }
+
+    DjangoCradminFileFieldWrapper.prototype.getPath = function() {
+      return this.fileFieldElement.val();
+    };
+
+    return DjangoCradminFileFieldWrapper;
+
+  })();
+
+  angular.module('djangoCradmin.bulkfileupload', []).directive('djangoCradminBulkfileupload', function() {
+    return {
+      restrict: 'A',
+      scope: {
+        config: '=djangoCradminBulkfileupload'
+      },
+      controller: function($scope) {
+        $scope._updateTotalForms = function() {
+          return $scope.totalFormsElement.val("" + $scope.fileInfoListScope.uploadedFiles.length);
+        };
+        this.setFileInfoListScope = function(fileInfoListScope) {
+          return $scope.fileInfoListScope = fileInfoListScope;
+        };
+        this.setAddedFileFieldElementListScope = function(addedFileFieldElementListScope) {
+          return $scope.addedFileFieldElementListScope = addedFileFieldElementListScope;
+        };
+        this.setFileFieldScope = function(fileFieldScope) {
+          var formsetprefix;
+          $scope.fileFieldScope = fileFieldScope;
+          formsetprefix = fileFieldScope.formsetprefix;
+          return $scope.totalFormsElement = angular.element(document.getElementById("id_" + formsetprefix + "-TOTAL_FORMS"));
+        };
+        this.onFileAdded = function(fileFieldElement) {
+          $scope.fileInfoListScope.addFileToList(fileFieldElement);
+          $scope.addedFileFieldElementListScope.addFileFieldElement(fileFieldElement);
+          return $scope._updateTotalForms();
+        };
+        this.debugIsEnabled = function() {
+          var _ref;
+          return ((_ref = $scope.config) != null ? _ref.debug : void 0) != null;
+        };
+        this.getFileCount = function() {
+          return $scope.fileInfoListScope.uploadedFiles.length;
+        };
+      }
+    };
+  }).directive('djangoCradminBulkfileuploadFileInfoList', function() {
+    return {
+      require: '^djangoCradminBulkfileupload',
+      restrict: 'A',
+      scope: {},
+      templateUrl: 'bulkfileupload/bulkfileupload-files.tpl.html',
+      controller: function($scope) {
+        $scope.uploadedFiles = [];
+        $scope.addFileToList = function(fileFieldElement) {
+          var fileFieldWrapper;
+          fileFieldWrapper = new DjangoCradminFileFieldWrapper(fileFieldElement);
+          $scope.uploadedFiles.push(fileFieldWrapper);
+          return $scope.$apply();
+        };
+      },
+      link: function(scope, element, attr, bulkfileuploadController) {
+        bulkfileuploadController.setFileInfoListScope(scope);
+      }
+    };
+  }).directive('djangoCradminBulkfileuploadAddedFileFieldElementList', function() {
+    return {
+      require: '^djangoCradminBulkfileupload',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        $scope.addFileFieldElement = function(fileFieldElement) {
+          console.log('Add file element');
+          return $scope.element.append(fileFieldElement);
+        };
+      },
+      link: function(scope, element, attr, bulkfileuploadController) {
+        scope.element = element;
+        bulkfileuploadController.setAddedFileFieldElementListScope(scope);
+        if (!bulkfileuploadController.debugIsEnabled()) {
+          scope.element.addClass('ng-hide');
+        }
+      }
+    };
+  }).directive('djangoCradminBulkfileuploadFileField', function() {
+    return {
+      require: '^djangoCradminBulkfileupload',
+      restrict: 'A',
+      scope: {
+        formsetprefix: '@djangoCradminBulkfileuploadFileField'
+      },
+      templateUrl: 'bulkfileupload/bulkfileupload-filefield.tpl.html',
+      link: function(scope, element, attr, bulkfileuploadController) {
+        bulkfileuploadController.setFileFieldScope(scope);
+        scope.element = element;
+        scope._onFileFieldChange = function(fileFieldElement) {
+          bulkfileuploadController.onFileAdded(fileFieldElement);
+          return scope._resetElement();
+        };
+        scope._resetElement = function() {
+          var fileCount;
+          fileCount = bulkfileuploadController.getFileCount();
+          console.log(fileCount);
+          scope.fileFieldElement = angular.element("<input name='" + scope.formsetprefix + "-" + fileCount + "-file' type='file' />");
+          scope.element.append(scope.fileFieldElement);
+          return scope.fileFieldElement.on('change', function() {
+            return scope._onFileFieldChange(scope.fileFieldElement);
+          });
+        };
+        scope._init = function() {
+          return scope._resetElement();
+        };
+        scope._init();
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.directives', []).directive('djangoCradminBack', function() {
     return {
       restrict: 'A',
@@ -576,7 +701,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
 
 }).call(this);
 
@@ -793,11 +918,31 @@
 
 }).call(this);
 
-angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html']);
+angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/bulkfileupload-filefield.tpl.html', 'bulkfileupload/bulkfileupload-files.tpl.html']);
 
 angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("acemarkdown/acemarkdown.tpl.html",
     "<div ng-transclude></div>");
+}]);
+
+angular.module("bulkfileupload/bulkfileupload-filefield.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("bulkfileupload/bulkfileupload-filefield.tpl.html",
+    "<ul>\n" +
+    "    <li ng-repeat=\"uploadedFile in uploadedFiles\">\n" +
+    "        {{ uploadedFile.filename }}\n" +
+    "    </li>\n" +
+    "</ul>\n" +
+    "");
+}]);
+
+angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("bulkfileupload/bulkfileupload-files.tpl.html",
+    "<ul>\n" +
+    "    <li ng-repeat=\"fileFieldWrapper in uploadedFiles\">\n" +
+    "        {{ fileFieldWrapper.getPath() }}\n" +
+    "    </li>\n" +
+    "</ul>\n" +
+    "");
 }]);
 
 (function() {

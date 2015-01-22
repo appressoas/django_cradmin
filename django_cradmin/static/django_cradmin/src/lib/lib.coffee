@@ -4,6 +4,7 @@ angular.module('djangoCradmin', [
   'djangoCradmin.menu'
   'djangoCradmin.objecttable'
   'djangoCradmin.acemarkdown'
+  'djangoCradmin.bulkfileupload'
 #  'djangoCradmin.wysihtml'
   'djangoCradmin.imagepreview'
   'djangoCradmin.pagepreview'

@@ -92,4 +92,5 @@ class BulkFileUploadView(TemplateView):
             context['multifile_formset'] = self.create_formset()
         context['pagetitle'] = self.get_pagetitle()
         context['submit_button_label'] = self.get_submit_button_label()
+        context['formset_prefix'] = self.get_formset_prefix()
         return context
