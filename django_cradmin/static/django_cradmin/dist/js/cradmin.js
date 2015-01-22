@@ -216,16 +216,32 @@
 }).call(this);
 
 (function() {
-  var DjangoCradminFileFieldWrapper;
+  var DjangoCradminFileFieldWrapper, DjangoCradminFileInfo;
+
+  DjangoCradminFileInfo = (function() {
+    function DjangoCradminFileInfo(file) {
+      this.file = file;
+    }
+
+    DjangoCradminFileInfo.prototype.getName = function() {
+      return this.file.name;
+    };
+
+    return DjangoCradminFileInfo;
+
+  })();
 
   DjangoCradminFileFieldWrapper = (function() {
     function DjangoCradminFileFieldWrapper(fileFieldElement) {
+      var file, _i, _len, _ref;
       this.fileFieldElement = fileFieldElement;
+      this.fileInfoList = [];
+      _ref = this.fileFieldElement[0].files;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        file = _ref[_i];
+        this.fileInfoList.push(new DjangoCradminFileInfo(file));
+      }
     }
-
-    DjangoCradminFileFieldWrapper.prototype.getPath = function() {
-      return this.fileFieldElement.val();
-    };
 
     return DjangoCradminFileFieldWrapper;
 
@@ -239,7 +255,7 @@
       },
       controller: function($scope) {
         $scope._updateTotalForms = function() {
-          return $scope.totalFormsElement.val("" + $scope.fileInfoListScope.uploadedFiles.length);
+          return $scope.totalFormsElement.val("" + $scope.fileInfoListScope.fileFieldWrappers.length);
         };
         this.setFileInfoListScope = function(fileInfoListScope) {
           return $scope.fileInfoListScope = fileInfoListScope;
@@ -248,10 +264,10 @@
           return $scope.addedFileFieldElementListScope = addedFileFieldElementListScope;
         };
         this.setFileFieldScope = function(fileFieldScope) {
-          var formsetprefix;
+          var formsetPrefix;
           $scope.fileFieldScope = fileFieldScope;
-          formsetprefix = fileFieldScope.formsetprefix;
-          return $scope.totalFormsElement = angular.element(document.getElementById("id_" + formsetprefix + "-TOTAL_FORMS"));
+          formsetPrefix = fileFieldScope.formsetPrefix;
+          return $scope.totalFormsElement = angular.element(document.getElementById("id_" + formsetPrefix + "-TOTAL_FORMS"));
         };
         this.onFileAdded = function(fileFieldElement) {
           $scope.fileInfoListScope.addFileToList(fileFieldElement);
@@ -263,7 +279,7 @@
           return ((_ref = $scope.config) != null ? _ref.debug : void 0) != null;
         };
         this.getFileCount = function() {
-          return $scope.fileInfoListScope.uploadedFiles.length;
+          return $scope.fileInfoListScope.fileFieldWrappers.length;
         };
       }
     };
@@ -274,12 +290,26 @@
       scope: {},
       templateUrl: 'bulkfileupload/bulkfileupload-files.tpl.html',
       controller: function($scope) {
-        $scope.uploadedFiles = [];
+        $scope.fileFieldWrappers = [];
         $scope.addFileToList = function(fileFieldElement) {
           var fileFieldWrapper;
           fileFieldWrapper = new DjangoCradminFileFieldWrapper(fileFieldElement);
-          $scope.uploadedFiles.push(fileFieldWrapper);
+          $scope.fileFieldWrappers.push(fileFieldWrapper);
           return $scope.$apply();
+        };
+        $scope.getFlatFileInfoArray = function() {
+          var fileFieldWrapper, fileInfo, flatFileInfoArray, _i, _j, _len, _len1, _ref, _ref1;
+          flatFileInfoArray = [];
+          _ref = $scope.fileFieldWrappers;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            fileFieldWrapper = _ref[_i];
+            _ref1 = fileFieldWrapper.fileInfoList;
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              fileInfo = _ref1[_j];
+              flatFileInfoArray.push(fileInfo);
+            }
+          }
+          return flatFileInfoArray;
         };
       },
       link: function(scope, element, attr, bulkfileuploadController) {
@@ -310,7 +340,8 @@
       require: '^djangoCradminBulkfileupload',
       restrict: 'A',
       scope: {
-        formsetprefix: '@djangoCradminBulkfileuploadFileField'
+        formsetPrefix: '@formsetPrefix',
+        filesfieldName: '@filesfieldName'
       },
       templateUrl: 'bulkfileupload/bulkfileupload-filefield.tpl.html',
       link: function(scope, element, attr, bulkfileuploadController) {
@@ -324,7 +355,7 @@
           var fileCount;
           fileCount = bulkfileuploadController.getFileCount();
           console.log(fileCount);
-          scope.fileFieldElement = angular.element("<input name='" + scope.formsetprefix + "-" + fileCount + "-file' type='file' />");
+          scope.fileFieldElement = angular.element("<input name='" + scope.formsetPrefix + "-" + fileCount + "-" + scope.filesfieldName + "' type='file' multiple>");
           scope.element.append(scope.fileFieldElement);
           return scope.fileFieldElement.on('change', function() {
             return scope._onFileFieldChange(scope.fileFieldElement);
@@ -938,8 +969,8 @@ angular.module("bulkfileupload/bulkfileupload-filefield.tpl.html", []).run(["$te
 angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/bulkfileupload-files.tpl.html",
     "<ul>\n" +
-    "    <li ng-repeat=\"fileFieldWrapper in uploadedFiles\">\n" +
-    "        {{ fileFieldWrapper.getPath() }}\n" +
+    "    <li ng-repeat=\"fileInfo in getFlatFileInfoArray()\">\n" +
+    "        {{ fileInfo.getName() }}\n" +
     "    </li>\n" +
     "</ul>\n" +
     "");

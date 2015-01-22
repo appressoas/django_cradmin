@@ -15,6 +15,9 @@ class BulkFileUploadView(TemplateView):
     #: The form class used in the file upload form set.
     form_class = None
 
+    #: The name of the form field that stores files. See :meth:`.get_filesfield_name`.
+    filesfield_name = None
+
     #: See :meth:`.get_submit_button_label`.
     submit_button_label = _('Upload files')
 
@@ -29,6 +32,27 @@ class BulkFileUploadView(TemplateView):
         Get the submit button label.
         """
         return self.submit_button_label
+
+    def get_filesfield_name(self):
+        """
+        Returns the name of the form field that stores files.
+
+        The form field should be a :class:`multiupload.fields.MultiFileField`.
+
+        So if your form class looks like this::
+
+            class FileUploadForm(forms.Form):
+                files = MultiFileField(
+                    max_file_size=1000000 * 100)  # 100MB max file size
+
+        this method should return "files".
+
+        Defaults to :obj:`.filesfield_name`.
+        """
+        filesfield_name = self.filesfield_name
+        if filesfield_name is None:
+            raise AttributeError('You must set filesfield_name or override get_filesfield_name')
+        return filesfield_name
 
     def get_form_class(self):
         return self.form_class
@@ -56,7 +80,11 @@ class BulkFileUploadView(TemplateView):
     def post(self, *args, **kwargs):
         multifile_formset = self.create_formset()
         if multifile_formset.is_valid():
-            uploadedfiles = [data['file'] for data in multifile_formset.cleaned_data if 'file' in data]
+            uploadedfiles = []
+            for form_cleaned_data in multifile_formset.cleaned_data:
+                if self.get_filesfield_name() in form_cleaned_data:
+                    uploadedfiles.extend(form_cleaned_data[self.get_filesfield_name()])
+
             if len(uploadedfiles) < self.get_minumum_files():
                 return self.render_to_response(self.get_context_data(
                     no_files_selected=True,
@@ -64,6 +92,7 @@ class BulkFileUploadView(TemplateView):
             else:
                 return self.formset_valid(uploadedfiles)
         else:
+            print multifile_formset.errors
             raise Exception('Getting here should not be possible.')
 
     def formset_valid(self, uploadedfiles):
@@ -93,4 +122,5 @@ class BulkFileUploadView(TemplateView):
         context['pagetitle'] = self.get_pagetitle()
         context['submit_button_label'] = self.get_submit_button_label()
         context['formset_prefix'] = self.get_formset_prefix()
+        context['filesfield_name'] = self.get_filesfield_name()
         return context

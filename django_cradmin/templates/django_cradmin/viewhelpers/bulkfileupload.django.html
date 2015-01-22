@@ -29,7 +29,9 @@
                 <div django-cradmin-bulkfileupload-file-info-list></div>
                 <div django-cradmin-bulkfileupload-added-file-field-element-list></div>
                 <hr>
-                <div django-cradmin-bulkfileupload-file-field="{{ formset_prefix }}"></div>
+                <div django-cradmin-bulkfileupload-file-field
+                     formset-prefix="{{ formset_prefix }}"
+                     filesfield-name="{{ filesfield_name }}"></div>
 {#                {% for form in multifile_formset %}#}
 {#                    {{ form.as_p }}#}
 {#                {% endfor %}#}

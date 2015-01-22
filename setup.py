@@ -19,6 +19,7 @@ setup(
         'setuptools',
         'django-crispy-forms',
         'Django',
+        'django-multiupload'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

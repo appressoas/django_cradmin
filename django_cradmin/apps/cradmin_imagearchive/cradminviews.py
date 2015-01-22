@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
-from django.views.generic import TemplateView
 from django import forms
+from multiupload.fields import MultiFileField
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -158,19 +159,14 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
     """
 
 
-class ArchiveImageMultiuploadView(TemplateView):
-    """
-
-    """
-
-
 class FileUploadForm(forms.Form):
-    file = forms.FileField(
-        label=_('Upload a file'))
+    files = MultiFileField(
+        max_file_size=1000000 * getattr(settings, 'DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE_MB', 100))
 
 
 class ArchiveImageBulkAddView(BulkFileUploadView):
     form_class = FileUploadForm
+    filesfield_name = 'files'
 
     def get_pagetitle(self):
         return _('Bulk add archive images')

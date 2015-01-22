@@ -183,7 +183,7 @@ class TestArchiveImageBulkAddView(TestCase):
             'multifile_formset-TOTAL_FORMS': 1,
             'multifile_formset-INITIAL_FORMS': 0,
             'multifile_formset-MAX_NUM_FORMS': 1,
-            'multifile_formset-0-file': SimpleUploadedFile('testname.png', testimage)
+            'multifile_formset-0-files': SimpleUploadedFile('testname.png', testimage)
         })
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
@@ -207,8 +207,8 @@ class TestArchiveImageBulkAddView(TestCase):
             'multifile_formset-TOTAL_FORMS': 2,
             'multifile_formset-INITIAL_FORMS': 0,
             'multifile_formset-MAX_NUM_FORMS': 2,
-            'multifile_formset-0-file': SimpleUploadedFile('A.png', testimage1),
-            'multifile_formset-1-file': SimpleUploadedFile('B.png', testimage2)
+            'multifile_formset-0-files': SimpleUploadedFile('A.png', testimage1),
+            'multifile_formset-1-files': SimpleUploadedFile('B.png', testimage2)
         })
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
@@ -229,3 +229,6 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEqual(created_images[1].image.read(), testimage2)
         self.assertEqual(created_images[1].name, 'B')
         self.assertEqual(created_images[1].description, '')
+
+    def test_post_no_files(self):
+        raise Exception()

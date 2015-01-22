@@ -1,9 +1,16 @@
 
+class DjangoCradminFileInfo
+  constructor: (@file) ->
+
+  getName: ->
+    return @file.name
+
+
 class DjangoCradminFileFieldWrapper
   constructor: (@fileFieldElement) ->
-
-  getPath: ->
-    return @fileFieldElement.val()
+    @fileInfoList = []
+    for file in @fileFieldElement[0].files
+      @fileInfoList.push(new DjangoCradminFileInfo(file))
 
 
 angular.module('djangoCradmin.bulkfileupload', [])
@@ -17,7 +24,7 @@ angular.module('djangoCradmin.bulkfileupload', [])
 
     controller: ($scope) ->
       $scope._updateTotalForms = ->
-        $scope.totalFormsElement.val("#{$scope.fileInfoListScope.uploadedFiles.length}")
+        $scope.totalFormsElement.val("#{$scope.fileInfoListScope.fileFieldWrappers.length}")
 
       @setFileInfoListScope = (fileInfoListScope) ->
         $scope.fileInfoListScope = fileInfoListScope
@@ -27,9 +34,9 @@ angular.module('djangoCradmin.bulkfileupload', [])
 
       @setFileFieldScope = (fileFieldScope) ->
         $scope.fileFieldScope = fileFieldScope
-        formsetprefix = fileFieldScope.formsetprefix
+        formsetPrefix = fileFieldScope.formsetPrefix
         $scope.totalFormsElement = angular.element(
-          document.getElementById("id_#{formsetprefix}-TOTAL_FORMS"))
+          document.getElementById("id_#{formsetPrefix}-TOTAL_FORMS"))
 
       @onFileAdded = (fileFieldElement) ->
         $scope.fileInfoListScope.addFileToList(fileFieldElement)
@@ -40,8 +47,7 @@ angular.module('djangoCradmin.bulkfileupload', [])
         return $scope.config?.debug?
 
       @getFileCount = ->
-        return $scope.fileInfoListScope.uploadedFiles.length
-
+        return $scope.fileInfoListScope.fileFieldWrappers.length
 
       return
 
@@ -57,12 +63,19 @@ angular.module('djangoCradmin.bulkfileupload', [])
 
     controller: ($scope) ->
       # List of DjangoCradminFileFieldWrapper objects
-      $scope.uploadedFiles = []
+      $scope.fileFieldWrappers = []
 
       $scope.addFileToList = (fileFieldElement) ->
         fileFieldWrapper = new DjangoCradminFileFieldWrapper(fileFieldElement)
-        $scope.uploadedFiles.push(fileFieldWrapper)
+        $scope.fileFieldWrappers.push(fileFieldWrapper)
         $scope.$apply()
+
+      $scope.getFlatFileInfoArray = ->
+        flatFileInfoArray = []
+        for fileFieldWrapper in $scope.fileFieldWrappers
+          for fileInfo in fileFieldWrapper.fileInfoList
+            flatFileInfoArray.push(fileInfo)
+        return flatFileInfoArray
 
       return
 
@@ -100,7 +113,8 @@ angular.module('djangoCradmin.bulkfileupload', [])
     require: '^djangoCradminBulkfileupload'
     restrict: 'A'
     scope: {
-      formsetprefix: '@djangoCradminBulkfileuploadFileField'
+      formsetPrefix: '@formsetPrefix'
+      filesfieldName: '@filesfieldName'
     }
     templateUrl: 'bulkfileupload/bulkfileupload-filefield.tpl.html'
 
@@ -115,7 +129,8 @@ angular.module('djangoCradmin.bulkfileupload', [])
       scope._resetElement = ->
         fileCount = bulkfileuploadController.getFileCount()
         console.log fileCount
-        scope.fileFieldElement = angular.element("<input name='#{scope.formsetprefix}-#{fileCount}-file' type='file' />")
+        scope.fileFieldElement = angular.element(
+          "<input name='#{scope.formsetPrefix}-#{fileCount}-#{scope.filesfieldName}' type='file' multiple>")
         scope.element.append(scope.fileFieldElement)
         scope.fileFieldElement.on 'change', ->
           scope._onFileFieldChange(scope.fileFieldElement)
