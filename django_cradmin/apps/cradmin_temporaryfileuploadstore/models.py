@@ -19,7 +19,7 @@ class TemporaryFileCollection(models.Model):
     3. In the code handling the form POST request, retrieve the temporary
        file(s), move them into some form of persistent storage (perhaps
        after manipulating the file in some way).
-    4. Delete the temporary file.
+    4. Delete the collection.
     """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -58,8 +58,8 @@ class TemporaryFile(models.Model):
     """
     A temporary file uploaded by a user.
     """
-    filename = models.TextField()
     collection = models.ForeignKey(
         TemporaryFileCollection, on_delete=models.CASCADE)
+    filename = models.TextField()
     file = models.FileField(
         upload_to=temporary_file_upload_to)

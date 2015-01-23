@@ -373,6 +373,7 @@
         restrict: 'A',
         scope: true,
         controller: function($scope) {
+          $scope.collectionid = null;
           $scope.$watch('cradminBulkFileUploadFiles', function() {
             var file, _i, _len, _ref, _results;
             if ($scope.cradminBulkFileUploadFiles != null) {
@@ -390,17 +391,20 @@
               url: $scope.uploadUrl,
               method: 'POST',
               data: {
-                myObj: $scope.myModelObj
+                collectionid: $scope.collectionid
               },
               file: file,
               fileFormDataName: 'file',
               headers: {
-                'X-CSRFToken': $cookies.csrftoken
+                'X-CSRFToken': $cookies.csrftoken,
+                'Content-Type': 'multipart/form-data'
               }
             }).progress(function(evt) {
               return console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + evt.config.file.name);
             }).success(function(data, status, headers, config) {
-              return console.log('file ' + config.file.name + 'is uploaded successfully. Response: ' + data);
+              console.log('file ' + config.file.name + 'is uploaded successfully. Response: ');
+              console.log(data);
+              return $scope.collectionid = data.collectionid;
             });
           };
         },

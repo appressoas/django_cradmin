@@ -13,19 +13,28 @@
         </div>
     </div>
     <div class="container-fluid">
-        <div django-cradmin-bulkfileupload-two django-cradmin-bulkfileupload-url="{% url 'cradmin_temporary_file_upload_api' %}">
-            <button class="btn btn-default" ng-file-select ng-model="cradminBulkFileUploadFiles" multiple="true">Attach Any File</button>
-            <div ng-file-drop ng-model="cradminBulkFileUploadFiles" class="drop-box"
-                drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
-                multiple="true" allow-dir="true" accept="image/*,application/pdf">
-                        Drop Images or PDFs files here
-            </div>
-            <div ng-no-file-drop>File Farg/Drop is not supported for this browser</div>
-        </div>
 
-{#        <form action="{{ request.path }}" class="django_cradmin_bulkfileupload_form"#}
-{#                method="post" enctype="multipart/form-data">#}
-{#            {% csrf_token %}#}
-{#        </form>#}
+        <form action="{{ request.path }}" class="django_cradmin_bulkfileupload_form"
+                method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div django-cradmin-bulkfileupload-two django-cradmin-bulkfileupload-url="{% url 'cradmin_temporary_file_upload_api' %}">
+                <button class="btn btn-default" ng-file-select ng-model="cradminBulkFileUploadFiles" multiple="true">Attach Any File</button>
+                <div ng-file-drop ng-model="cradminBulkFileUploadFiles" class="drop-box"
+                    drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
+                    multiple="true" allow-dir="true" accept="image/*,application/pdf"
+                    style="background-color: green; height: 200px;">
+                            Drop Images or PDFs files here
+                </div>
+                <div ng-no-file-drop>File Farg/Drop is not supported for this browser</div>
+
+{#                <input type="text" name="filecollectionid" django-cradmin-bulkfileupload-collectionid-field>#}
+            </div>
+
+
+            <button class="btn btn-primary">
+                Upload files
+            </button>
+        </form>
     </div>
 {% endblock content %}
