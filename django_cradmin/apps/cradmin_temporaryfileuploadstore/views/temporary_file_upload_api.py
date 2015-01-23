@@ -5,7 +5,6 @@ from django.views.generic import FormView
 
 # from django.utils.translation import ugettext_lazy as _
 from django import forms
-from multiupload.fields import MultiFileField
 
 
 class FileUploadForm(forms.Form):

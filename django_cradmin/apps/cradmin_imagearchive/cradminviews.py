@@ -1,19 +1,13 @@
-from django.conf import settings
-from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
-from django import forms
 from django.views.generic import TemplateView
-from multiupload.fields import MultiFileField
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
 from django_cradmin import crapp
-
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
-from django_cradmin.viewhelpers.bulkfileupload import BulkFileUploadView
 from django_cradmin.widgets import filewidgets
 
 
@@ -160,33 +154,7 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
     """
 
 
-class FileUploadForm(forms.Form):
-    files = MultiFileField(
-        max_file_size=1000000 * getattr(settings, 'DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE_MB', 100))
-
-
-class ArchiveImageBulkAddView(BulkFileUploadView):
-    form_class = FileUploadForm
-    filesfield_name = 'files'
-
-    def get_pagetitle(self):
-        return _('Bulk add archive images')
-
-    def formset_valid(self, uploadedfiles):
-        for uploadedfile in uploadedfiles:
-            archiveimage = ArchiveImage(
-                role=self.request.cradmin_role,
-                image=None
-            )
-            archiveimage.save()  # Save to create an ID
-            archiveimage.image = uploadedfile
-            archiveimage.full_clean()
-            archiveimage.save()
-
-        return HttpResponseRedirect(self.get_success_url())
-
-
-class ArchiveImageBulkAddView2(TemplateView):
+class ArchiveImageBulkAddView(TemplateView):
     template_name = 'django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html'
 
 
@@ -216,10 +184,5 @@ class App(crapp.App):
             r'bulkadd$',
             ArchiveImageBulkAddView.as_view(),
             name='bulkadd'
-        ),
-        crapp.Url(
-            r'bulkadd2$',
-            ArchiveImageBulkAddView2.as_view(),
-            name='bulkadd2'
         )
     ]
