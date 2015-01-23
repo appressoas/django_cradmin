@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     # Required by django cradmin
     'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
+    'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 

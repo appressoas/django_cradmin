@@ -247,7 +247,7 @@
 
   })();
 
-  angular.module('djangoCradmin.bulkfileupload', []).directive('djangoCradminBulkfileupload', function() {
+  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileupload', function() {
     return {
       restrict: 'A',
       scope: {
@@ -367,7 +367,49 @@
         scope._init();
       }
     };
-  });
+  }).directive('djangoCradminBulkfileuploadTwo', [
+    '$upload', '$cookies', function($upload, $cookies) {
+      return {
+        restrict: 'A',
+        scope: true,
+        controller: function($scope) {
+          $scope.$watch('cradminBulkFileUploadFiles', function() {
+            var file, _i, _len, _ref, _results;
+            if ($scope.cradminBulkFileUploadFiles != null) {
+              _ref = $scope.cradminBulkFileUploadFiles;
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                file = _ref[_i];
+                _results.push($scope._uploadFile(file));
+              }
+              return _results;
+            }
+          });
+          $scope._uploadFile = function(file) {
+            return $scope.upload = $upload.upload({
+              url: $scope.uploadUrl,
+              method: 'POST',
+              data: {
+                myObj: $scope.myModelObj
+              },
+              file: file,
+              fileFormDataName: 'file',
+              headers: {
+                'X-CSRFToken': $cookies.csrftoken
+              }
+            }).progress(function(evt) {
+              return console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + evt.config.file.name);
+            }).success(function(data, status, headers, config) {
+              return console.log('file ' + config.file.name + 'is uploaded successfully. Response: ' + data);
+            });
+          };
+        },
+        link: function(scope, element, attr) {
+          return scope.uploadUrl = attr.djangoCradminBulkfileuploadUrl;
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 

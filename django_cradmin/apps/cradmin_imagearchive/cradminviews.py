@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
+from django.views.generic import TemplateView
 from multiupload.fields import MultiFileField
 
 from django_cradmin.viewhelpers import objecttable
@@ -185,6 +186,10 @@ class ArchiveImageBulkAddView(BulkFileUploadView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+class ArchiveImageBulkAddView2(TemplateView):
+    template_name = 'django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html'
+
+
 class App(crapp.App):
     appurls = [
         crapp.Url(
@@ -211,5 +216,10 @@ class App(crapp.App):
             r'bulkadd$',
             ArchiveImageBulkAddView.as_view(),
             name='bulkadd'
+        ),
+        crapp.Url(
+            r'bulkadd2$',
+            ArchiveImageBulkAddView2.as_view(),
+            name='bulkadd2'
         )
     ]

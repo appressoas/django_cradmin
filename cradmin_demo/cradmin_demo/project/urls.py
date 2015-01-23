@@ -15,6 +15,7 @@ urlpatterns = patterns(
         {'template_name': 'webdemo/logout.django.html'}),
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^cradmin/', include(CrAdminInstance.urls())),
+    url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
     url(r'^$', RedirectView.as_view(url='/cradmin/', permanent=False)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT})
