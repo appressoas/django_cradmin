@@ -27,4 +27,10 @@ class TemporaryFileCollectionAdmin(admin.ModelAdmin):
     ]
     date_hierarchy = 'created_datetime'
 
+    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return super(TemporaryFileCollectionAdmin, self).get_queryset(request)
+        else:
+            return TemporaryFile.objects.none()
+
 admin.site.register(TemporaryFileCollection, TemporaryFileCollectionAdmin)
