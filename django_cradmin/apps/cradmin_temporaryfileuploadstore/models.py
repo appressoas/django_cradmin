@@ -25,8 +25,6 @@ class TemporaryFileCollection(models.Model):
         settings.AUTH_USER_MODEL,
         help_text='The user that owns this temporary file. Users should not'
                   'be allowed access to other users temporary files.')
-    uploaded_by_app = models.TextField(
-        help_text='The app that uploaded this file.')
     created_datetime = models.DateTimeField(auto_now_add=True)
     minutes_to_live = models.PositiveIntegerField(
         default=60,
@@ -59,7 +57,8 @@ class TemporaryFile(models.Model):
     A temporary file uploaded by a user.
     """
     collection = models.ForeignKey(
-        TemporaryFileCollection, on_delete=models.CASCADE)
+        TemporaryFileCollection, on_delete=models.CASCADE,
+        related_name='files')
     filename = models.TextField()
     file = models.FileField(
         upload_to=temporary_file_upload_to)
