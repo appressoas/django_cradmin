@@ -1,16 +1,18 @@
 import json
+from django.conf import settings
 from django.http import HttpResponse
 from django.views.generic import FormView
 
 # from django.utils.translation import ugettext_lazy as _
 from django import forms
+from multiupload.fields import MultiFileField
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
 
 
 class FileUploadForm(forms.Form):
-    # files = MultiFileField(
-    #     max_file_size=1000000 * getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_MAX_FILE_SIZE_MB', 100))
-    file = forms.FileField()
+    file = MultiFileField(
+        max_file_size=1000000 * getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_MAX_FILE_SIZE_MB', 100))
+    # file = forms.FileField()
     collectionid = forms.IntegerField(
         required=False)
     minutes_to_live = forms.IntegerField(
@@ -59,6 +61,14 @@ class UploadTemporaryFilesView(FormView):
         return self.json_response(form.errors.as_json(), status=400)
 
     def form_valid(self, form):
+        print
+        print "*" * 70
+        print
+        print form.cleaned_data
+        print
+        print "*" * 70
+        print
+
         collectionid = form.cleaned_data['collectionid']
         minutes_to_live = form.cleaned_data['minutes_to_live']
         try:
@@ -73,10 +83,11 @@ class UploadTemporaryFilesView(FormView):
                 ]
             }), status=400)
         else:
-            self.save_uploaded_file(
-                collection=collection,
-                formfile=form.cleaned_data['file'],
-                mode=form.cleaned_data['mode'])
+            for formfile in form.cleaned_data['file']:
+                self.save_uploaded_file(
+                    collection=collection,
+                    formfile=formfile,
+                    mode=form.cleaned_data['mode'])
             return self.json_response(json.dumps({
                 'collectionid': collection.id
             }))

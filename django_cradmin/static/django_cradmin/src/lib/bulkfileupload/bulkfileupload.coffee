@@ -16,17 +16,19 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
           $scope.fileUploadFieldScope = fileUploadFieldScope
 
         $scope.$watch 'cradminBulkFileUploadFiles', ->
-          for file in $scope.cradminBulkFileUploadFiles
-            $scope._uploadFile(file)
+#          for file in $scope.cradminBulkFileUploadFiles
+          if $scope.cradminBulkFileUploadFiles.length > 0
+            $scope._uploadFiles()
 
-        $scope._uploadFile = (file) ->
+        $scope._uploadFiles = (file) ->
+          console.log 'Upload with collectionid=', $scope.collectionid
           $scope.upload = $upload.upload({
             url: $scope.uploadUrl
             method: 'POST'
             data: {
               collectionid: $scope.collectionid
             }
-            file: file  # single file or a list of files. list is only for html5
+            file: $scope.cradminBulkFileUploadFiles  # single file or a list of files. list is only for html5
             fileFormDataName: 'file'  # The form field name
             headers: {
               'X-CSRFToken': $cookies.csrftoken

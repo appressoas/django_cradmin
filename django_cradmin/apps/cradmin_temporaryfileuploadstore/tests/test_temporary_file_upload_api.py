@@ -34,6 +34,23 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEqual(uploadedfile.file.read(), 'Test1')
 
     def test_post_multiple_files(self):
+        request = self.factory.post('/test', {
+            'file': [
+                SimpleUploadedFile('testfile1.txt', 'Test1'),
+                SimpleUploadedFile('testfile2.txt', 'Test2'),
+            ]
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+        self.assertIsNotNone(responsedata['collectionid'])
+
+        collectionid = responsedata['collectionid']
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+        self.assertEquals(collection.files.count(), 2)
+
+    def test_post_multiple_requests_for_same_collection(self):
         request1 = self.factory.post('/test', {
             'file': SimpleUploadedFile('testfile1.txt', 'Test1')
         })

@@ -228,23 +228,19 @@
             return $scope.fileUploadFieldScope = fileUploadFieldScope;
           };
           $scope.$watch('cradminBulkFileUploadFiles', function() {
-            var file, _i, _len, _ref, _results;
-            _ref = $scope.cradminBulkFileUploadFiles;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              file = _ref[_i];
-              _results.push($scope._uploadFile(file));
+            if ($scope.cradminBulkFileUploadFiles.length > 0) {
+              return $scope._uploadFiles();
             }
-            return _results;
           });
-          $scope._uploadFile = function(file) {
+          $scope._uploadFiles = function(file) {
+            console.log('Upload with collectionid=', $scope.collectionid);
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
               method: 'POST',
               data: {
                 collectionid: $scope.collectionid
               },
-              file: file,
+              file: $scope.cradminBulkFileUploadFiles,
               fileFormDataName: 'file',
               headers: {
                 'X-CSRFToken': $cookies.csrftoken,
