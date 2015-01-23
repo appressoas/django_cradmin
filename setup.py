@@ -19,7 +19,8 @@ setup(
         'setuptools',
         'django-crispy-forms',
         'Django',
-        'django-multiupload'
+        'django-multiupload',
+        'pytz'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
