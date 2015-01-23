@@ -1,4 +1,5 @@
 import json
+import os
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, TestCase
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
@@ -7,7 +8,7 @@ from django_cradmin.apps.cradmin_temporaryfileuploadstore.views.temporary_file_u
 from django_cradmin.tests.helpers import create_user
 
 
-class TestArchiveImageBulkAddView(TestCase):
+class TestUploadTemporaryFilesView(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.testuser = create_user('testuser')
@@ -55,6 +56,39 @@ class TestArchiveImageBulkAddView(TestCase):
         response2data = json.loads(response2.content)
         self.assertEquals(collectionid, response2data['collectionid'])
         self.assertEquals(collection.files.count(), 2)
+
+    def test_post_multiple_files_singlefile_mode(self):
+        request1 = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'mode': 'singlefile'
+        })
+        request1.user = self.testuser
+        response1 = UploadTemporaryFilesView.as_view()(request1)
+        self.assertEquals(response1.status_code, 200)
+        response1data = json.loads(response1.content)
+        self.assertIsNotNone(response1data['collectionid'])
+        collectionid = response1data['collectionid']
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+        self.assertEquals(collection.files.count(), 1)
+        uploadedfile1 = collection.files.first()
+        uploadedfile1_physical_file_path = uploadedfile1.file.path
+        self.assertTrue(os.path.exists(uploadedfile1_physical_file_path))
+
+        request2 = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testfile2.txt', 'Test2'),
+            'collectionid': collectionid,
+            'mode': 'singlefile'
+        })
+        request2.user = self.testuser
+        response2 = UploadTemporaryFilesView.as_view()(request2)
+        self.assertEquals(response2.status_code, 200)
+        response2data = json.loads(response2.content)
+        self.assertEquals(collectionid, response2data['collectionid'])
+        self.assertEquals(collection.files.count(), 1)
+        uploadedfile2 = collection.files.first()
+        self.assertEqual(uploadedfile2.filename, 'testfile2.txt')
+        self.assertEqual(uploadedfile2.file.read(), 'Test2')
+        self.assertFalse(os.path.exists(uploadedfile1_physical_file_path))
 
     def test_post_form_invalid_no_file(self):
         request = self.factory.post('/test')

@@ -37,6 +37,11 @@ class TemporaryFileCollection(models.Model):
                   'file upload process.'
     )
 
+    def clear_files(self):
+        for temporaryfile in self.files.all():
+            temporaryfile.file.delete()
+            temporaryfile.delete()
+
 
 def temporary_file_upload_to(instance, filename):
     filename, extension = os.path.splitext(filename)

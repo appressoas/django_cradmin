@@ -1,6 +1,4 @@
 import json
-from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.views.generic import FormView
 
@@ -18,6 +16,13 @@ class FileUploadForm(forms.Form):
     minutes_to_live = forms.IntegerField(
         min_value=1,
         required=False)
+    mode = forms.ChoiceField(
+        required=False,
+        choices=[
+            (None, 'Multifile'),
+            ('singlefile', 'Single file')
+        ]
+    )
 
 
 class UploadTemporaryFilesView(FormView):
@@ -44,7 +49,9 @@ class UploadTemporaryFilesView(FormView):
         else:
             return self.get_existing_collection(collectionid)
 
-    def save_uploaded_file(self, collection, formfile):
+    def save_uploaded_file(self, collection, formfile, mode):
+        if mode == 'singlefile':
+            collection.clear_files()
         temporaryfile = TemporaryFile(collection=collection, filename=formfile.name)
         temporaryfile.file.save(formfile.name, formfile)
 
@@ -66,7 +73,10 @@ class UploadTemporaryFilesView(FormView):
                 ]
             }), status=400)
         else:
-            self.save_uploaded_file(collection, form.cleaned_data['file'])
+            self.save_uploaded_file(
+                collection=collection,
+                formfile=form.cleaned_data['file'],
+                mode=form.cleaned_data['mode'])
             return self.json_response(json.dumps({
                 'collectionid': collection.id
             }))

@@ -18,18 +18,7 @@
                 method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div django-cradmin-bulkfileupload="{% url 'cradmin_temporary_file_upload_api' %}">
-                <button class="btn btn-default" ng-file-select ng-model="cradminBulkFileUploadFiles" multiple="true">Attach Any File</button>
-                <div ng-file-drop ng-model="cradminBulkFileUploadFiles" class="drop-box"
-                    drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
-                    multiple="true" allow-dir="false" accept="image/*,application/pdf"
-                    style="background-color: green; height: 200px;">
-                            Drop Images or PDFs files here
-                </div>
-
-                <input type="text" name="filecollectionid" django-cradmin-bulkfileupload-collectionid-field>
-            </div>
-
+            {% include "django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html" with hiddenfieldname='filecollectionid' %}
 
             <button class="btn btn-primary">
                 Upload files
