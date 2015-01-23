@@ -1,7 +1,7 @@
 angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'])
 
 
-.directive('djangoCradminBulkfileuploadTwo', [
+.directive('djangoCradminBulkfileupload', [
   '$upload', '$cookies'
   ($upload, $cookies) ->
     return {
@@ -39,6 +39,6 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
         return
 
       link: (scope, element, attr) ->
-        scope.uploadUrl = attr.djangoCradminBulkfileuploadUrl
+        scope.uploadUrl = attr.djangoCradminBulkfileupload
     }
 ])

@@ -216,7 +216,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileuploadTwo', [
+  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileupload', [
     '$upload', '$cookies', function($upload, $cookies) {
       return {
         restrict: 'A',
@@ -258,7 +258,7 @@
           };
         },
         link: function(scope, element, attr) {
-          return scope.uploadUrl = attr.djangoCradminBulkfileuploadUrl;
+          return scope.uploadUrl = attr.djangoCradminBulkfileupload;
         }
       };
     }
