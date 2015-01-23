@@ -22,13 +22,12 @@
                 <button class="btn btn-default" ng-file-select ng-model="cradminBulkFileUploadFiles" multiple="true">Attach Any File</button>
                 <div ng-file-drop ng-model="cradminBulkFileUploadFiles" class="drop-box"
                     drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
-                    multiple="true" allow-dir="true" accept="image/*,application/pdf"
+                    multiple="true" allow-dir="false" accept="image/*,application/pdf"
                     style="background-color: green; height: 200px;">
                             Drop Images or PDFs files here
                 </div>
-                <div ng-no-file-drop>File Farg/Drop is not supported for this browser</div>
 
-{#                <input type="text" name="filecollectionid" django-cradmin-bulkfileupload-collectionid-field>#}
+                <input type="text" name="filecollectionid" django-cradmin-bulkfileupload-collectionid-field>
             </div>
 
 

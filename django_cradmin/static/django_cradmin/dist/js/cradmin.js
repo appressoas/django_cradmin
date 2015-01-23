@@ -223,17 +223,19 @@
         scope: true,
         controller: function($scope) {
           $scope.collectionid = null;
+          $scope.cradminBulkFileUploadFiles = [];
+          this.setFileUploadFieldScope = function(fileUploadFieldScope) {
+            return $scope.fileUploadFieldScope = fileUploadFieldScope;
+          };
           $scope.$watch('cradminBulkFileUploadFiles', function() {
             var file, _i, _len, _ref, _results;
-            if ($scope.cradminBulkFileUploadFiles != null) {
-              _ref = $scope.cradminBulkFileUploadFiles;
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                file = _ref[_i];
-                _results.push($scope._uploadFile(file));
-              }
-              return _results;
+            _ref = $scope.cradminBulkFileUploadFiles;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              file = _ref[_i];
+              _results.push($scope._uploadFile(file));
             }
+            return _results;
           });
           $scope._uploadFile = function(file) {
             return $scope.upload = $upload.upload({
@@ -253,12 +255,33 @@
             }).success(function(data, status, headers, config) {
               console.log('file ' + config.file.name + 'is uploaded successfully. Response: ');
               console.log(data);
-              return $scope.collectionid = data.collectionid;
+              return $scope._setCollectionId(data.collectionid);
             });
+          };
+          $scope._setCollectionId = function(collectionid) {
+            $scope.collectionid = collectionid;
+            return $scope.fileUploadFieldScope.setCollectionId(collectionid);
           };
         },
         link: function(scope, element, attr) {
-          return scope.uploadUrl = attr.djangoCradminBulkfileupload;
+          scope.uploadUrl = attr.djangoCradminBulkfileupload;
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadCollectionidField', [
+    function() {
+      return {
+        require: '^djangoCradminBulkfileupload',
+        restrict: 'A',
+        scope: {},
+        controller: function($scope) {
+          $scope.setCollectionId = function(collectionid) {
+            return $scope.element.val("" + collectionid);
+          };
+        },
+        link: function(scope, element, attr, uploadController) {
+          scope.element = element;
+          uploadController.setFileUploadFieldScope(scope);
         }
       };
     }

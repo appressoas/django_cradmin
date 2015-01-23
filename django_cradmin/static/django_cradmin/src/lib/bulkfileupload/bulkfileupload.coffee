@@ -10,10 +10,14 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
 
       controller: ($scope) ->
         $scope.collectionid = null
+        $scope.cradminBulkFileUploadFiles = []
+
+        @setFileUploadFieldScope = (fileUploadFieldScope) ->
+          $scope.fileUploadFieldScope = fileUploadFieldScope
+
         $scope.$watch 'cradminBulkFileUploadFiles', ->
-          if $scope.cradminBulkFileUploadFiles?
-            for file in $scope.cradminBulkFileUploadFiles
-              $scope._uploadFile(file)
+          for file in $scope.cradminBulkFileUploadFiles
+            $scope._uploadFile(file)
 
         $scope._uploadFile = (file) ->
           $scope.upload = $upload.upload({
@@ -34,11 +38,37 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
             # file is uploaded successfully
             console.log('file ' + config.file.name + 'is uploaded successfully. Response: ')
             console.log data
-            $scope.collectionid = data.collectionid
+            $scope._setCollectionId(data.collectionid)
           )
+
+        $scope._setCollectionId = (collectionid) ->
+          $scope.collectionid = collectionid
+          $scope.fileUploadFieldScope.setCollectionId(collectionid)
+
         return
 
       link: (scope, element, attr) ->
         scope.uploadUrl = attr.djangoCradminBulkfileupload
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadCollectionidField', [
+  ->
+    return {
+      require: '^djangoCradminBulkfileupload'
+      restrict: 'A'
+      scope: {}
+
+      controller: ($scope) ->
+        $scope.setCollectionId = (collectionid) ->
+          $scope.element.val("#{collectionid}")
+        return
+
+      link: (scope, element, attr, uploadController) ->
+        scope.element = element
+        uploadController.setFileUploadFieldScope(scope)
+        return
     }
 ])
