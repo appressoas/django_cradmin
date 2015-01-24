@@ -34,23 +34,12 @@
         </div>
     {% endblock droparea %}
     {% block button %}
-        <div class="django-cradmin-bulkfileupload-buttonwrapper">
-{#            <div ng-file-select#}
-{#                    ng-model="cradminBulkFileUploadFiles"#}
-{#                    multiple="{% if singlemode %}false{% else %}true{% endif %}"#}
-{#                    class="django-cradmin-bulkfileupload-button">#}
-{#                {% block buttoncontent %}#}
-{#                    {% if singlemode %}#}
-{#                        {% trans "... or select a file" %}#}
-{#                    {% else %}#}
-{#                        {% trans "... or select files" %}#}
-{#                    {% endif %}#}
-{#                {% endblock buttoncontent %}#}
-{#            </div>#}
-            <button django-cradmin-bulkfileupload-fileselect-button type="button"
+        <p class="django-cradmin-bulkfileupload-buttonwrapper">
+            <button ng-file-select
+                    type="button"
                     ng-model="cradminBulkFileUploadFiles"
                     multiple="{% if singlemode %}false{% else %}true{% endif %}"
-                    class="btn btn-link">
+                    class="btn-link django-cradmin-bulkfileupload-button">
                 {% block buttoncontent %}
                     {% if singlemode %}
                         {% trans "... or select a file" %}
@@ -59,7 +48,7 @@
                     {% endif %}
                 {% endblock buttoncontent %}
             </button>
-        </div>
+        </p>
     {% endblock button %}
 
     <div style="margin-top: 10px;">

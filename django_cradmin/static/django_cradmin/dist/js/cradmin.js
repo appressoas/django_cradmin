@@ -226,9 +226,7 @@
       return {
         restrict: 'A',
         scope: {},
-        controller: function($scope) {
-          console.log('Yo');
-        },
+        controller: function($scope) {},
         link: function(scope, element, attr, uploadController) {
           scope.element = element;
         }
