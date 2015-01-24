@@ -15,6 +15,9 @@
 .idea/tasks.xml
 
 # Files created when running tests and demos
-cradmin_imagearchive_images/
-django_media_root/
+/django_media_root/
+/test_django_media_root/
+/cradmin_demo/django_media_root/
+/cradmin_demo/test_django_media_root/
 /cache/
+
