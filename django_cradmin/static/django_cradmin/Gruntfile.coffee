@@ -16,11 +16,12 @@ module.exports = (grunt) ->
       'bower_components/fontawesome/fonts/fontawesome-webfont.woff'
     ]
     js: [
-      'bower_components/angular/angular.min.js'
-      'bower_components/angular/angular.min.js.map'
-      'bower_components/angular-cookies/angular-cookies.min.js'
-      'bower_components/angular-cookies/angular-cookies.min.js.map'
-      'bower_components/ng-file-upload/angular-file-upload.min.js'
+      'bower_components/jquery/dist/jquery.js'
+      'bower_components/angular/angular.js'
+#      'bower_components/angular/angular.min.js.map'
+      'bower_components/angular-cookies/angular-cookies.js'
+#      'bower_components/angular-cookies/angular-cookies.min.js.map'
+      'bower_components/ng-file-upload/angular-file-upload.js'
       # 'bower_components/angular/angular.js'
       # 'bower_components/angular/angular.js.map'
     ]
@@ -107,6 +108,7 @@ module.exports = (grunt) ->
       cradmin:
         files:
           'dist/js/cradmin.min.js': ['dist/js/cradmin.js']
+          'dist/vendor/cradmin-vendorjs.js': vendorfiles.js
 
     copy:
       vendor:
@@ -115,11 +117,11 @@ module.exports = (grunt) ->
           flatten: true
           src: vendorfiles.fonts
           dest: 'dist/vendor/fonts/'
-        }, {
-          expand: true
-          flatten: true
-          src: vendorfiles.js
-          dest: 'dist/vendor/js/'
+#        }, {
+#          expand: true
+#          flatten: true
+#          src: vendorfiles.js
+#          dest: 'dist/vendor/js/'
         }, {
           expand: true
           flatten: true
