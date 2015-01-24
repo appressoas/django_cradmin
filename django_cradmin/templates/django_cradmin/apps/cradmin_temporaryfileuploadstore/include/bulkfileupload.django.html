@@ -32,7 +32,7 @@
         </div>
     {% endblock droparea %}
     {% block button %}
-        <button ng-file-select
+        <div ng-file-select
                 ng-model="cradminBulkFileUploadFiles"
                 multiple="{% if singlemode %}false{% else %}true{% endif %}"
                 class="btn btn-default btn-block">
@@ -44,7 +44,7 @@
                     {% trans "... or select files" %}
                 {% endif %}
             {% endblock buttoncontent %}
-        </button>
+        </div>
     {% endblock button %}
     <input type="text" name="{{ hiddenfieldname }}" django-cradmin-bulkfileupload-collectionid-field>
 </div>

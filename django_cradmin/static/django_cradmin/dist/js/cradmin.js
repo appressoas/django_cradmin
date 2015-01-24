@@ -216,9 +216,28 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileupload', [
+  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileuploadForm', [
+    function() {
+      /*
+      A form containing ``django-cradmin-bulkfileupload`` fields
+      must use this directive.
+      */
+
+      return {
+        restrict: 'A',
+        scope: {},
+        controller: function($scope) {
+          console.log('Yo');
+        },
+        link: function(scope, element, attr, uploadController) {
+          scope.element = element;
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileupload', [
     '$upload', '$cookies', function($upload, $cookies) {
       return {
+        require: '^djangoCradminBulkfileuploadForm',
         restrict: 'A',
         scope: true,
         controller: function($scope) {

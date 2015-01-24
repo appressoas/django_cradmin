@@ -1,10 +1,32 @@
 angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'])
 
 
+.directive('djangoCradminBulkfileuploadForm', [
+  ->
+    ###
+    A form containing ``django-cradmin-bulkfileupload`` fields
+    must use this directive.
+    ###
+    return {
+      restrict: 'A'
+      scope: {}
+
+      controller: ($scope) ->
+        console.log 'Yo'
+        return
+
+      link: (scope, element, attr, uploadController) ->
+        scope.element = element
+        return
+    }
+])
+
+
 .directive('djangoCradminBulkfileupload', [
   '$upload', '$cookies'
   ($upload, $cookies) ->
     return {
+      require: '^djangoCradminBulkfileuploadForm'
       restrict: 'A'
       scope: true
 
