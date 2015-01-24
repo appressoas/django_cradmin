@@ -12,16 +12,18 @@
 {% endcomment %}
 {% load i18n %}
 
-<div django-cradmin-bulkfileupload="{% url 'cradmin_temporary_file_upload_api' %}">
+<div django-cradmin-bulkfileupload="{% url 'cradmin_temporary_file_upload_api' %}"
+        class="django-cradmin-bulkfileupload">
     {% block droparea %}
         <div ng-file-drop
                 ng-model="cradminBulkFileUploadFiles"
                 multiple="{% if singlemode %}false{% else %}true{% endif %}"
                 allow-dir="false"
-
-                class="drop-box"
-                drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}"
-                style="background-color: #fff; height: 200px;">
+                class="django-cradmin-bulkfileupload-dropbox"
+                drag-over-class="{
+                    accept:'django-cradmin-bulkfileupload-dropbox-dragover',
+                    reject:'django-cradmin-bulkfileupload-dropbox-dragover-err',
+                    delay:100}">
             {% block dropareacontent %}
                 {% if singlemode %}
                     {% trans "Upload a file by dragging and dropping it here" %}
@@ -32,19 +34,35 @@
         </div>
     {% endblock droparea %}
     {% block button %}
-        <div ng-file-select
-                ng-model="cradminBulkFileUploadFiles"
-                multiple="{% if singlemode %}false{% else %}true{% endif %}"
-                class="btn btn-default btn-block">
-
-            {% block buttoncontent %}
-                {% if singlemode %}
-                    {% trans "... or select a file" %}
-                {% else %}
-                    {% trans "... or select files" %}
-                {% endif %}
-            {% endblock buttoncontent %}
+        <div class="django-cradmin-bulkfileupload-buttonwrapper">
+{#            <div ng-file-select#}
+{#                    ng-model="cradminBulkFileUploadFiles"#}
+{#                    multiple="{% if singlemode %}false{% else %}true{% endif %}"#}
+{#                    class="django-cradmin-bulkfileupload-button">#}
+{#                {% block buttoncontent %}#}
+{#                    {% if singlemode %}#}
+{#                        {% trans "... or select a file" %}#}
+{#                    {% else %}#}
+{#                        {% trans "... or select files" %}#}
+{#                    {% endif %}#}
+{#                {% endblock buttoncontent %}#}
+{#            </div>#}
+            <button django-cradmin-bulkfileupload-fileselect-button type="button"
+                    ng-model="cradminBulkFileUploadFiles"
+                    multiple="{% if singlemode %}false{% else %}true{% endif %}"
+                    class="btn btn-link">
+                {% block buttoncontent %}
+                    {% if singlemode %}
+                        {% trans "... or select a file" %}
+                    {% else %}
+                        {% trans "... or select files" %}
+                    {% endif %}
+                {% endblock buttoncontent %}
+            </button>
         </div>
     {% endblock button %}
-    <input type="text" name="{{ hiddenfieldname }}" django-cradmin-bulkfileupload-collectionid-field>
+
+    <div style="margin-top: 10px;">
+        <input type="text" name="{{ hiddenfieldname }}" django-cradmin-bulkfileupload-collectionid-field>
+    </div>
 </div>
