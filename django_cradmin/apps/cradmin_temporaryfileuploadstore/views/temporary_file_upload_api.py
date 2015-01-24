@@ -43,7 +43,7 @@ class UploadTemporaryFilesView(FormView):
         return collection
 
     def get_existing_collection(self, collectionid):
-        return TemporaryFileCollection.objects.get(id=collectionid)
+        return TemporaryFileCollection.objects.filter(user=self.request.user).get(id=collectionid)
 
     def create_or_get_collection_id(self, collectionid, minutes_to_live):
         if collectionid is None:
@@ -81,7 +81,7 @@ class UploadTemporaryFilesView(FormView):
                         'code': 'doesnotexist'
                     }
                 ]
-            }), status=400)
+            }), status=404)
         else:
             for formfile in form.cleaned_data['file']:
                 self.save_uploaded_file(

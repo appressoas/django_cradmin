@@ -133,6 +133,18 @@ class TestUploadTemporaryFilesView(TestCase):
         })
         request.user = self.testuser
         response = UploadTemporaryFilesView.as_view()(request)
-        self.assertEquals(response.status_code, 400)
+        self.assertEquals(response.status_code, 404)
+        responsedata = json.loads(response.content)
+        self.assertEquals(responsedata['collectionid'][0]['code'], 'doesnotexist')
+
+    def test_post_form_collection_not_owned_by_user(self):
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'collectionid': collection.id
+        })
+        request.user = create_user('otheruser')
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 404)
         responsedata = json.loads(response.content)
         self.assertEquals(responsedata['collectionid'][0]['code'], 'doesnotexist')
