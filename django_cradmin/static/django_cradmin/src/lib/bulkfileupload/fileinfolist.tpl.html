@@ -1,4 +1,6 @@
-{{ fileInfoList.percent }}%
-<div ng-repeat="file in fileInfoList.files">
-    {{file.name}}
-</div>
+<p ng-repeat="file in fileInfoList.files" class="django-cradmin-bulkfileupload-in-progress-or-finished-item">
+    <span class="django-cradmin-progresspercent">
+        <span class="django-cradmin-progresspercent-number">{{ fileInfoList.percent }}</span>%
+    </span>
+    <span class="django-cradmin-filename">{{file.name}}</span>
+</p>

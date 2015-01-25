@@ -1,17 +1,27 @@
-class FileInfoList
-  constructor: (options) ->
-    @percent = options.percent
-    @files = options.files
-    console.log @files
-#    console.log options
-
-  updatePercent: (percent) ->
-    @percent = percent
-
 
 angular.module('djangoCradmin.bulkfileupload', [
   'angularFileUpload', 'ngCookies'
 ])
+
+
+.factory 'cradminBulkfileupload', ->
+  class FileInfoList
+    constructor: (options) ->
+      @percent = options.percent
+      @finished = false
+      @files = options.files
+
+    updatePercent: (percent) ->
+      @percent = percent
+
+    finish: ->
+      console.log 'Finished!'
+      @finished = true
+
+  return {
+    createFileInfoList: (options) ->
+      new FileInfoList(options)
+  }
 
 
 .directive('djangoCradminBulkfileuploadForm', [
@@ -21,7 +31,7 @@ angular.module('djangoCradmin.bulkfileupload', [
     must use this directive.
     ###
     return {
-      restrict: 'A'
+      restrict: 'AE'
       scope: {}
 
       controller: ($scope) ->
@@ -39,7 +49,7 @@ angular.module('djangoCradmin.bulkfileupload', [
   ($upload, $cookies, cradminDetectize) ->
     return {
       require: '^djangoCradminBulkfileuploadForm'
-      restrict: 'A'
+      restrict: 'AE'
       scope: true
 
       controller: ($scope) ->
@@ -79,16 +89,10 @@ angular.module('djangoCradmin.bulkfileupload', [
             $scope._uploadFiles()
 
         $scope._uploadFiles = () ->
-          console.log 'Upload with collectionid=', $scope.collectionid
-
-          files = []
-          for file in $scope.cradminBulkFileUploadFiles
-            files.push(file)
-          progressInfo = new FileInfoList({
+          progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
             percent: 0
-            files: files
+            files: $scope.cradminBulkFileUploadFiles.slice()
           })
-          $scope._addFileInfoList(progressInfo)
 
           $scope.upload = $upload.upload({
             url: $scope.uploadUrl
@@ -103,18 +107,19 @@ angular.module('djangoCradmin.bulkfileupload', [
               'Content-Type': 'multipart/form-data'
             }
           }).progress((evt) ->
-            files = ''
-            for file in evt.config.file
-              files += "#{file.name} "
-            console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ files)
+#            files = ''
+#            for file in evt.config.file
+#              files += "#{file.name} "
+#            console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ files)
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
             # file is uploaded successfully
-            files = ''
-            for file in config.file
-              files += "#{file.name} "
-            console.log('file ' + files + ' is uploaded successfully. Response: ')
+#            files = ''
+#            for file in config.file
+#              files += "#{file.name} "
+#            console.log('file ' + files + ' is uploaded successfully. Response: ')
 #            console.log data
+            progressInfo.finish()
             $scope._setCollectionId(data.collectionid)
           )
 
@@ -124,7 +129,7 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         return
 
-      link: (scope, element, attr) ->
+      link: (scope, element, attr, formController) ->
         scope.uploadUrl = attr.djangoCradminBulkfileupload
         return
     }
@@ -132,25 +137,28 @@ angular.module('djangoCradmin.bulkfileupload', [
 
 
 .directive('djangoCradminBulkInProgressOrFinished', [
-  ->
+  'cradminBulkfileupload'
+  (cradminBulkfileupload) ->
     return {
-      restrict: 'A'
+      restrict: 'AE'
       require: '^djangoCradminBulkfileupload'
       templateUrl: 'bulkfileupload/progress.tpl.html'
       scope: {}
 
       controller: ($scope) ->
         $scope.fileInfoLists = [
-          new FileInfoList({
-            percent: 10
-            files: [{
-              name: 'test.txt'
-            }]
-          })
+#          new FileInfoList({
+#            percent: 10
+#            files: [{
+#              name: 'test.txt'
+#            }]
+#          })
         ]
 
-        $scope.addFileInfoList = (fileInfoList) ->
+        $scope.addFileInfoList = (options) ->
+          fileInfoList = cradminBulkfileupload.createFileInfoList(options)
           $scope.fileInfoLists.push(fileInfoList)
+          return fileInfoList
 
         return
 
@@ -164,16 +172,15 @@ angular.module('djangoCradmin.bulkfileupload', [
 .directive('djangoCradminBulkFileInfoList', [
   ->
     return {
-      restrict: 'A'
+      restrict: 'AE'
       scope: {
         fileInfoList: '=djangoCradminBulkFileInfoList'
       }
       templateUrl: 'bulkfileupload/fileinfolist.tpl.html'
       transclude: true
 
-      controller: ($scope) ->
-        console.log $scope.fileInfoList
-        return
+#      controller: ($scope) ->
+#        return
     }
 ])
 
@@ -183,7 +190,7 @@ angular.module('djangoCradmin.bulkfileupload', [
   ->
     return {
       require: '^djangoCradminBulkfileupload'
-      restrict: 'A'
+      restrict: 'AE'
       scope: {}
 
       controller: ($scope) ->
@@ -203,7 +210,7 @@ angular.module('djangoCradmin.bulkfileupload', [
   ->
     return {
       require: '^djangoCradminBulkfileupload'
-      restrict: 'A'
+      restrict: 'AE'
       scope: {}
 
       link: (scope, element, attr, uploadController) ->
@@ -220,7 +227,7 @@ angular.module('djangoCradmin.bulkfileupload', [
   ->
     return {
       require: '^djangoCradminBulkfileupload'
-      restrict: 'A'
+      restrict: 'AE'
       scope: {}
 
       link: (scope, element, attr, uploadController) ->

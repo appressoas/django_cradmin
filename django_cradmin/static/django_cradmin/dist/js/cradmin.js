@@ -216,24 +216,33 @@
 }).call(this);
 
 (function() {
-  var FileInfoList;
+  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).factory('cradminBulkfileupload', function() {
+    var FileInfoList;
+    FileInfoList = (function() {
+      function FileInfoList(options) {
+        this.percent = options.percent;
+        this.finished = false;
+        this.files = options.files;
+      }
 
-  FileInfoList = (function() {
-    function FileInfoList(options) {
-      this.percent = options.percent;
-      this.files = options.files;
-      console.log(this.files);
-    }
+      FileInfoList.prototype.updatePercent = function(percent) {
+        return this.percent = percent;
+      };
 
-    FileInfoList.prototype.updatePercent = function(percent) {
-      return this.percent = percent;
+      FileInfoList.prototype.finish = function() {
+        console.log('Finished!');
+        return this.finished = true;
+      };
+
+      return FileInfoList;
+
+    })();
+    return {
+      createFileInfoList: function(options) {
+        return new FileInfoList(options);
+      }
     };
-
-    return FileInfoList;
-
-  })();
-
-  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileuploadForm', [
+  }).directive('djangoCradminBulkfileuploadForm', [
     function() {
       /*
       A form containing ``django-cradmin-bulkfileupload`` fields
@@ -241,7 +250,7 @@
       */
 
       return {
-        restrict: 'A',
+        restrict: 'AE',
         scope: {},
         controller: function($scope) {},
         link: function(scope, element, attr, uploadController) {
@@ -253,7 +262,7 @@
     '$upload', '$cookies', 'cradminDetectize', function($upload, $cookies, cradminDetectize) {
       return {
         require: '^djangoCradminBulkfileuploadForm',
-        restrict: 'A',
+        restrict: 'AE',
         scope: true,
         controller: function($scope) {
           $scope.collectionid = null;
@@ -292,19 +301,11 @@
             }
           });
           $scope._uploadFiles = function() {
-            var file, files, progressInfo, _i, _len, _ref;
-            console.log('Upload with collectionid=', $scope.collectionid);
-            files = [];
-            _ref = $scope.cradminBulkFileUploadFiles;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              file = _ref[_i];
-              files.push(file);
-            }
-            progressInfo = new FileInfoList({
+            var progressInfo;
+            progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
               percent: 0,
-              files: files
+              files: $scope.cradminBulkFileUploadFiles.slice()
             });
-            $scope._addFileInfoList(progressInfo);
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
               method: 'POST',
@@ -318,24 +319,9 @@
                 'Content-Type': 'multipart/form-data'
               }
             }).progress(function(evt) {
-              var _j, _len1, _ref1;
-              files = '';
-              _ref1 = evt.config.file;
-              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                file = _ref1[_j];
-                files += "" + file.name + " ";
-              }
-              console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + files);
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              var _j, _len1, _ref1;
-              files = '';
-              _ref1 = config.file;
-              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                file = _ref1[_j];
-                files += "" + file.name + " ";
-              }
-              console.log('file ' + files + ' is uploaded successfully. Response: ');
+              progressInfo.finish();
               return $scope._setCollectionId(data.collectionid);
             });
           };
@@ -344,31 +330,25 @@
             return $scope.fileUploadFieldScope.setCollectionId(collectionid);
           };
         },
-        link: function(scope, element, attr) {
+        link: function(scope, element, attr, formController) {
           scope.uploadUrl = attr.djangoCradminBulkfileupload;
         }
       };
     }
   ]).directive('djangoCradminBulkInProgressOrFinished', [
-    function() {
+    'cradminBulkfileupload', function(cradminBulkfileupload) {
       return {
-        restrict: 'A',
+        restrict: 'AE',
         require: '^djangoCradminBulkfileupload',
         templateUrl: 'bulkfileupload/progress.tpl.html',
         scope: {},
         controller: function($scope) {
-          $scope.fileInfoLists = [
-            new FileInfoList({
-              percent: 10,
-              files: [
-                {
-                  name: 'test.txt'
-                }
-              ]
-            })
-          ];
-          $scope.addFileInfoList = function(fileInfoList) {
-            return $scope.fileInfoLists.push(fileInfoList);
+          $scope.fileInfoLists = [];
+          $scope.addFileInfoList = function(options) {
+            var fileInfoList;
+            fileInfoList = cradminBulkfileupload.createFileInfoList(options);
+            $scope.fileInfoLists.push(fileInfoList);
+            return fileInfoList;
           };
         },
         link: function(scope, element, attr, uploadController) {
@@ -379,22 +359,19 @@
   ]).directive('djangoCradminBulkFileInfoList', [
     function() {
       return {
-        restrict: 'A',
+        restrict: 'AE',
         scope: {
           fileInfoList: '=djangoCradminBulkFileInfoList'
         },
         templateUrl: 'bulkfileupload/fileinfolist.tpl.html',
-        transclude: true,
-        controller: function($scope) {
-          console.log($scope.fileInfoList);
-        }
+        transclude: true
       };
     }
   ]).directive('djangoCradminBulkfileuploadCollectionidField', [
     function() {
       return {
         require: '^djangoCradminBulkfileupload',
-        restrict: 'A',
+        restrict: 'AE',
         scope: {},
         controller: function($scope) {
           $scope.setCollectionId = function(collectionid) {
@@ -411,7 +388,7 @@
     function() {
       return {
         require: '^djangoCradminBulkfileupload',
-        restrict: 'A',
+        restrict: 'AE',
         scope: {},
         link: function(scope, element, attr, uploadController) {
           scope.hide = function() {
@@ -425,7 +402,7 @@
     function() {
       return {
         require: '^djangoCradminBulkfileupload',
-        restrict: 'A',
+        restrict: 'AE',
         scope: {},
         link: function(scope, element, attr, uploadController) {
           scope.hide = function() {
@@ -1062,21 +1039,22 @@ angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templa
 
 angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
-    "{{ fileInfoList.percent }}%\n" +
-    "<div ng-repeat=\"file in fileInfoList.files\">\n" +
-    "    {{file.name}}\n" +
-    "</div>\n" +
+    "<p ng-repeat=\"file in fileInfoList.files\" class=\"django-cradmin-bulkfileupload-in-progress-or-finished-item\">\n" +
+    "    <span class=\"django-cradmin-progresspercent\">\n" +
+    "        <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
+    "    </span>\n" +
+    "    <span class=\"django-cradmin-filename\">{{file.name}}</span>\n" +
+    "</p>\n" +
     "");
 }]);
 
 angular.module("bulkfileupload/progress.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/progress.tpl.html",
-    "Progress!\n" +
-    "<ol>\n" +
-    "    <li ng-repeat=\"fileInfoList in fileInfoLists\">\n" +
+    "<div class=\"django-cradmin-bulkfileupload-in-progress-or-finished\">\n" +
+    "    <div ng-repeat=\"fileInfoList in fileInfoLists\">\n" +
     "        <div django-cradmin-bulk-file-info-list=\"fileInfoList\"></div>\n" +
-    "    </li>\n" +
-    "</ol>\n" +
+    "    </div>\n" +
+    "</div>\n" +
     "");
 }]);
 
