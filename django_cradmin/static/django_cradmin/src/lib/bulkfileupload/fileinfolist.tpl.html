@@ -1,6 +1,11 @@
-<p ng-repeat="file in fileInfoList.files" class="django-cradmin-bulkfileupload-progress-item">
-    <span class="django-cradmin-progresspercent">
-        <span class="django-cradmin-progresspercent-number">{{ fileInfoList.percent }}</span>%
+<p ng-repeat="file in fileInfoList.files"
+        class="django-cradmin-bulkfileupload-progress-item"
+        ng-class="{'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished}">
+    <span class="django-cradmin-progressbar">
+        <span class="django-cradmin-progressbar-progress" ng-style="{'width': fileInfoList.percent+'%'}">&nbsp;</span>
+        <span class="django-cradmin-progresspercent">
+            <span class="django-cradmin-progresspercent-number">{{ fileInfoList.percent }}</span>%
+        </span>
     </span>
     <span class="django-cradmin-filename">{{file.name}}</span>
 </p>

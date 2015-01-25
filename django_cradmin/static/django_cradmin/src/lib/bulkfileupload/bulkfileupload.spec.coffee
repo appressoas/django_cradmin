@@ -171,3 +171,13 @@ describe 'djangoCradminBulkfileuploadInProgressOrFinished', ->
     expect(getProgressFilenames()[3]).toBe('test4.txt')
     expect(inProgressOrFinishedElement.find(
       '.django-cradmin-bulkfileupload-progress-fileinfolist').length).toBe(2)
+
+  it 'should add finished class when finished', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      finished: true
+      files: [{name: 'test1.txt'}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.hasClass('django-cradmin-bulkfileupload-progress-item-finished')).toBe(true)

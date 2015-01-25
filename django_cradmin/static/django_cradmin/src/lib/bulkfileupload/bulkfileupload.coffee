@@ -147,10 +147,19 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       controller: ($scope) ->
         $scope.fileInfoLists = [
-#          new FileInfoList({
+#          new cradminBulkfileupload.createFileInfoList({
 #            percent: 10
 #            files: [{
 #              name: 'test.txt'
+#            }, {
+#              name: 'test2.txt'
+#            }]
+#          }),
+#          new cradminBulkfileupload.createFileInfoList({
+#            percent: 100
+#            finished: true
+#            files: [{
+#              name: 'Some kind of test.txt'
 #            }]
 #          })
         ]

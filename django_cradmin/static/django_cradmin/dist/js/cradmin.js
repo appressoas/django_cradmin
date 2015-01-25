@@ -1039,9 +1039,14 @@ angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templa
 
 angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
-    "<p ng-repeat=\"file in fileInfoList.files\" class=\"django-cradmin-bulkfileupload-progress-item\">\n" +
-    "    <span class=\"django-cradmin-progresspercent\">\n" +
-    "        <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
+    "<p ng-repeat=\"file in fileInfoList.files\"\n" +
+    "        class=\"django-cradmin-bulkfileupload-progress-item\"\n" +
+    "        ng-class=\"{'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished}\">\n" +
+    "    <span class=\"django-cradmin-progressbar\">\n" +
+    "        <span class=\"django-cradmin-progressbar-progress\" ng-style=\"{'width': fileInfoList.percent+'%'}\">&nbsp;</span>\n" +
+    "        <span class=\"django-cradmin-progresspercent\">\n" +
+    "            <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
+    "        </span>\n" +
     "    </span>\n" +
     "    <span class=\"django-cradmin-filename\">{{file.name}}</span>\n" +
     "</p>\n" +
