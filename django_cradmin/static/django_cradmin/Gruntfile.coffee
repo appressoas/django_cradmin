@@ -141,8 +141,13 @@ module.exports = (grunt) ->
 
         # list of files / patterns to load in the browser
         files: [
+          'bower_components/jquery/dist/jquery.js'
           'bower_components/angular/angular.js'
           'bower_components/angular-mocks/angular-mocks.js'
+          'bower_components/angular-cookies/angular-cookies.js'
+          'bower_components/ng-file-upload/angular-file-upload.js'
+          'bower_components/modernizr/modernizr.js'
+          'bower_components/detectizr/dist/detectizr.js'
           #'bower_components/angular-ui-ace/ui-ace.min.js'
           #'bower_components/ace-builds/src-min-noconflict/ace.js'
           'src/lib/**/*.js'

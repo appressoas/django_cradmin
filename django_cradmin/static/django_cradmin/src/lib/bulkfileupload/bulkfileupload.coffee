@@ -22,8 +22,8 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
 
 
 .directive('djangoCradminBulkfileupload', [
-  '$upload', '$cookies'
-  ($upload, $cookies) ->
+  '$upload', '$cookies', 'cradminDetectize'
+  ($upload, $cookies, cradminDetectize) ->
     return {
       require: '^djangoCradminBulkfileuploadForm'
       restrict: 'A'
@@ -48,7 +48,7 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
 
         $scope._showAppropriateWidget = ->
           if $scope.advancedWidgetScope and $scope.simpleWidgetScope
-            if Detectizr.device.type == 'desktop'
+            if cradminDetectize.device.type == 'desktop'
               $scope.simpleWidgetScope.hide()
             else
               $scope.advancedWidgetScope.hide()

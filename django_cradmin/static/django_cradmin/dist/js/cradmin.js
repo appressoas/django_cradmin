@@ -233,7 +233,7 @@
       };
     }
   ]).directive('djangoCradminBulkfileupload', [
-    '$upload', '$cookies', function($upload, $cookies) {
+    '$upload', '$cookies', 'cradminDetectize', function($upload, $cookies, cradminDetectize) {
       return {
         require: '^djangoCradminBulkfileuploadForm',
         restrict: 'A',
@@ -256,7 +256,7 @@
           };
           $scope._showAppropriateWidget = function() {
             if ($scope.advancedWidgetScope && $scope.simpleWidgetScope) {
-              if (Detectizr.device.type === 'desktop') {
+              if (cradminDetectize.device.type === 'desktop') {
                 return $scope.simpleWidgetScope.hide();
               } else {
                 return $scope.advancedWidgetScope.hide();
@@ -375,6 +375,22 @@
         scope.element = element;
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.detectizr', []).factory('cradminDetectize', function() {
+    Detectizr.detect({
+      addAllFeaturesAsClass: false,
+      detectDevice: true,
+      detectDeviceModel: false,
+      detectScreen: false,
+      detectOS: false,
+      detectBrowser: false,
+      detectPlugins: false
+    });
+    return Detectizr;
   });
 
 }).call(this);
@@ -710,7 +726,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
 
 }).call(this);
 
