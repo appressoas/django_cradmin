@@ -136,7 +136,7 @@ angular.module('djangoCradmin.bulkfileupload', [
 ])
 
 
-.directive('djangoCradminBulkInProgressOrFinished', [
+.directive('djangoCradminBulkProgress', [
   'cradminBulkfileupload'
   (cradminBulkfileupload) ->
     return {

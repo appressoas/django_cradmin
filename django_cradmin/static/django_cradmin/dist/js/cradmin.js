@@ -335,7 +335,7 @@
         }
       };
     }
-  ]).directive('djangoCradminBulkInProgressOrFinished', [
+  ]).directive('djangoCradminBulkProgress', [
     'cradminBulkfileupload', function(cradminBulkfileupload) {
       return {
         restrict: 'AE',
@@ -1039,7 +1039,7 @@ angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templa
 
 angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
-    "<p ng-repeat=\"file in fileInfoList.files\" class=\"django-cradmin-bulkfileupload-in-progress-or-finished-item\">\n" +
+    "<p ng-repeat=\"file in fileInfoList.files\" class=\"django-cradmin-bulkfileupload-progress-item\">\n" +
     "    <span class=\"django-cradmin-progresspercent\">\n" +
     "        <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
     "    </span>\n" +
@@ -1050,9 +1050,10 @@ angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache"
 
 angular.module("bulkfileupload/progress.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/progress.tpl.html",
-    "<div class=\"django-cradmin-bulkfileupload-in-progress-or-finished\">\n" +
+    "<div class=\"django-cradmin-bulkfileupload-progress\">\n" +
     "    <div ng-repeat=\"fileInfoList in fileInfoLists\">\n" +
-    "        <div django-cradmin-bulk-file-info-list=\"fileInfoList\"></div>\n" +
+    "        <div django-cradmin-bulk-file-info-list=\"fileInfoList\"\n" +
+    "             class=\"django-cradmin-bulkfileupload-progress-fileinfolist\"></div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "");

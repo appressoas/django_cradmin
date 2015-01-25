@@ -92,36 +92,43 @@ describe 'djangoCradminBulkfileuploadInProgressOrFinished', ->
     html = """
       <form django-cradmin-bulkfileupload-form>
         <div django-cradmin-bulkfileupload="/file_upload_api_mock">
-          <div django-cradmin-bulk-in-progress-or-finished id="in-progress-or-finished"></div>
+          <div django-cradmin-bulk-progress id="progress"></div>
         </div>
       </form>
     """
 
     formElement = $compile(html)($rootScope)
     $rootScope.$digest()
-    inProgressOrFinishedElement = formElement.find('#in-progress-or-finished')
+    inProgressOrFinishedElement = formElement.find('#progress')
     inProgressOrFinishedScope = inProgressOrFinishedElement.isolateScope()
   )
 
   getProgressPercents = ->
     progressPercents = []
-    elements = inProgressOrFinishedElement.find(
-      '.django-cradmin-progresspercent-number')
+    elements = inProgressOrFinishedElement.find('.django-cradmin-progresspercent-number')
     for domelement in elements
       percent = angular.element(domelement).text().trim()
       progressPercents.push(percent)
     return progressPercents
 
+  getProgressFilenames = ->
+    filenames = []
+    elements = inProgressOrFinishedElement.find('.django-cradmin-filename')
+    for domelement in elements
+      filename = angular.element(domelement).text().trim()
+      filenames.push(filename)
+    return filenames
+
   it 'should re-render when adding FileInfoList', ->
     expect(inProgressOrFinishedElement.find(
-      '.django-cradmin-bulkfileupload-in-progress-or-finished-item').length).toBe(0)
+      '.django-cradmin-bulkfileupload-progress-item').length).toBe(0)
     inProgressOrFinishedScope.fileInfoLists.push({
       percent: 0
       files: [{name: 'test.txt'}]
     })
     inProgressOrFinishedScope.$apply()
     expect(inProgressOrFinishedElement.find(
-      '.django-cradmin-bulkfileupload-in-progress-or-finished-item').length).toBe(1)
+      '.django-cradmin-bulkfileupload-progress-item').length).toBe(1)
 
   it 'should re-render when changing percent', ->
     inProgressOrFinishedScope.fileInfoLists = [{
@@ -134,3 +141,33 @@ describe 'djangoCradminBulkfileuploadInProgressOrFinished', ->
     inProgressOrFinishedScope.fileInfoLists[0].percent = '20'
     inProgressOrFinishedScope.$apply()
     expect(getProgressPercents()[0]).toBe('20')
+
+  it 'should render files when one file in each item', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 0
+      files: [{name: 'test1.txt'}]
+    }, {
+      percent: 0
+      files: [{name: 'test2.txt'}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    expect(getProgressFilenames()[0]).toBe('test1.txt')
+    expect(getProgressFilenames()[1]).toBe('test2.txt')
+    expect(inProgressOrFinishedElement.find(
+      '.django-cradmin-bulkfileupload-progress-fileinfolist').length).toBe(2)
+
+  it 'should render files when multiple files in each item', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 0
+      files: [{name: 'test1.txt'}, {name: 'test2.txt'}]
+    }, {
+      percent: 0
+      files: [{name: 'test3.txt'}, {name: 'test4.txt'}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    expect(getProgressFilenames()[0]).toBe('test1.txt')
+    expect(getProgressFilenames()[1]).toBe('test2.txt')
+    expect(getProgressFilenames()[2]).toBe('test3.txt')
+    expect(getProgressFilenames()[3]).toBe('test4.txt')
+    expect(inProgressOrFinishedElement.find(
+      '.django-cradmin-bulkfileupload-progress-fileinfolist').length).toBe(2)
