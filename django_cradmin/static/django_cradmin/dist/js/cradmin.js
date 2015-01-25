@@ -216,6 +216,23 @@
 }).call(this);
 
 (function() {
+  var FileInfoList;
+
+  FileInfoList = (function() {
+    function FileInfoList(options) {
+      this.percent = options.percent;
+      this.files = options.files;
+      console.log(this.files);
+    }
+
+    FileInfoList.prototype.updatePercent = function(percent) {
+      return this.percent = percent;
+    };
+
+    return FileInfoList;
+
+  })();
+
   angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).directive('djangoCradminBulkfileuploadForm', [
     function() {
       /*
@@ -243,6 +260,9 @@
           $scope.cradminBulkFileUploadFiles = [];
           $scope.simpleWidgetScope = null;
           $scope.advancedWidgetScope = null;
+          this.setInProgressOrFinishedScope = function(inProgressOrFinishedScope) {
+            return $scope.inProgressOrFinishedScope = inProgressOrFinishedScope;
+          };
           this.setFileUploadFieldScope = function(fileUploadFieldScope) {
             return $scope.fileUploadFieldScope = fileUploadFieldScope;
           };
@@ -253,6 +273,9 @@
           this.setAdvancedWidgetScope = function(advancedWidgetScope) {
             $scope.advancedWidgetScope = advancedWidgetScope;
             return $scope._showAppropriateWidget();
+          };
+          $scope._addFileInfoList = function(fileInfoList) {
+            return $scope.inProgressOrFinishedScope.addFileInfoList(fileInfoList);
           };
           $scope._showAppropriateWidget = function() {
             if ($scope.advancedWidgetScope && $scope.simpleWidgetScope) {
@@ -268,8 +291,20 @@
               return $scope._uploadFiles();
             }
           });
-          $scope._uploadFiles = function(file) {
+          $scope._uploadFiles = function() {
+            var file, files, progressInfo, _i, _len, _ref;
             console.log('Upload with collectionid=', $scope.collectionid);
+            files = [];
+            _ref = $scope.cradminBulkFileUploadFiles;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              file = _ref[_i];
+              files.push(file);
+            }
+            progressInfo = new FileInfoList({
+              percent: 0,
+              files: files
+            });
+            $scope._addFileInfoList(progressInfo);
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
               method: 'POST',
@@ -283,10 +318,24 @@
                 'Content-Type': 'multipart/form-data'
               }
             }).progress(function(evt) {
-              return console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + evt.config.file.name);
+              var _j, _len1, _ref1;
+              files = '';
+              _ref1 = evt.config.file;
+              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                file = _ref1[_j];
+                files += "" + file.name + " ";
+              }
+              console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + files);
+              return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              console.log('file ' + config.file.name + 'is uploaded successfully. Response: ');
-              console.log(data);
+              var _j, _len1, _ref1;
+              files = '';
+              _ref1 = config.file;
+              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                file = _ref1[_j];
+                files += "" + file.name + " ";
+              }
+              console.log('file ' + files + ' is uploaded successfully. Response: ');
               return $scope._setCollectionId(data.collectionid);
             });
           };
@@ -297,6 +346,47 @@
         },
         link: function(scope, element, attr) {
           scope.uploadUrl = attr.djangoCradminBulkfileupload;
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkInProgressOrFinished', [
+    function() {
+      return {
+        restrict: 'A',
+        require: '^djangoCradminBulkfileupload',
+        templateUrl: 'bulkfileupload/progress.tpl.html',
+        scope: {},
+        controller: function($scope) {
+          $scope.fileInfoLists = [
+            new FileInfoList({
+              percent: 10,
+              files: [
+                {
+                  name: 'test.txt'
+                }
+              ]
+            })
+          ];
+          $scope.addFileInfoList = function(fileInfoList) {
+            return $scope.fileInfoLists.push(fileInfoList);
+          };
+        },
+        link: function(scope, element, attr, uploadController) {
+          uploadController.setInProgressOrFinishedScope(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkFileInfoList', [
+    function() {
+      return {
+        restrict: 'A',
+        scope: {
+          fileInfoList: '=djangoCradminBulkFileInfoList'
+        },
+        templateUrl: 'bulkfileupload/fileinfolist.tpl.html',
+        transclude: true,
+        controller: function($scope) {
+          console.log($scope.fileInfoList);
         }
       };
     }
@@ -943,7 +1033,7 @@
 
 }).call(this);
 
-angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/bulkfileupload-filefield.tpl.html', 'bulkfileupload/bulkfileupload-files.tpl.html']);
+angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/bulkfileupload-filefield.tpl.html', 'bulkfileupload/bulkfileupload-files.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html']);
 
 angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("acemarkdown/acemarkdown.tpl.html",
@@ -967,6 +1057,26 @@ angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templa
     "        {{ fileInfo.getName() }}\n" +
     "    </li>\n" +
     "</ul>\n" +
+    "");
+}]);
+
+angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
+    "{{ fileInfoList.percent }}%\n" +
+    "<div ng-repeat=\"file in fileInfoList.files\">\n" +
+    "    {{file.name}}\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("bulkfileupload/progress.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("bulkfileupload/progress.tpl.html",
+    "Progress!\n" +
+    "<ol>\n" +
+    "    <li ng-repeat=\"fileInfoList in fileInfoLists\">\n" +
+    "        <div django-cradmin-bulk-file-info-list=\"fileInfoList\"></div>\n" +
+    "    </li>\n" +
+    "</ol>\n" +
     "");
 }]);
 
