@@ -8429,3 +8429,7 @@ table.table.cradmin-table-fluid tbody tr td {
   font-size: 14px;
   color: #ffffff;
 }
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-progress-item-error {
+  background-color: #f2dede;
+  color: #a94442;
+}

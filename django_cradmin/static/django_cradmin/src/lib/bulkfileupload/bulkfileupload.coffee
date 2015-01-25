@@ -9,6 +9,7 @@ angular.module('djangoCradmin.bulkfileupload', [
     constructor: (options) ->
       @percent = options.percent
       @finished = false
+      @hasErrors = false
       @files = options.files
 
     updatePercent: (percent) ->
@@ -17,6 +18,11 @@ angular.module('djangoCradmin.bulkfileupload', [
     finish: ->
       console.log 'Finished!'
       @finished = true
+
+    setErrors: (errors) ->
+      @hasErrors = true
+      @errors = errors
+      console.log errors
 
   return {
     createFileInfoList: (options) ->
@@ -121,6 +127,8 @@ angular.module('djangoCradmin.bulkfileupload', [
 #            console.log data
             progressInfo.finish()
             $scope._setCollectionId(data.collectionid)
+          ).error((data) ->
+            progressInfo.setErrors(data)
           )
 
         $scope._setCollectionId = (collectionid) ->

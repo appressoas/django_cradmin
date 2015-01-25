@@ -181,3 +181,30 @@ describe 'djangoCradminBulkfileuploadInProgressOrFinished', ->
     inProgressOrFinishedScope.$apply()
     firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
     expect(firstItem.hasClass('django-cradmin-bulkfileupload-progress-item-finished')).toBe(true)
+
+  it 'should add error message on error', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      files: [{name: 'test1.txt'}]
+      hasErrors: true
+      errors: {
+        file: [{
+          message: 'File is too big'
+        }]
+      }
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.find('.django-cradmin-bulkfileupload-error').length).toBe(1)
+    expect(firstItem.find('.django-cradmin-bulkfileupload-error').text().trim()).toBe('File is too big')
+
+  it 'should add error class on error', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      hasErrors: true
+      files: [{name: 'test1.txt'}]
+      errors: {}
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.hasClass('django-cradmin-bulkfileupload-progress-item-error')).toBe(true)

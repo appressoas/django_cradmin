@@ -222,6 +222,7 @@
       function FileInfoList(options) {
         this.percent = options.percent;
         this.finished = false;
+        this.hasErrors = false;
         this.files = options.files;
       }
 
@@ -232,6 +233,12 @@
       FileInfoList.prototype.finish = function() {
         console.log('Finished!');
         return this.finished = true;
+      };
+
+      FileInfoList.prototype.setErrors = function(errors) {
+        this.hasErrors = true;
+        this.errors = errors;
+        return console.log(errors);
       };
 
       return FileInfoList;
@@ -323,6 +330,8 @@
             }).success(function(data, status, headers, config) {
               progressInfo.finish();
               return $scope._setCollectionId(data.collectionid);
+            }).error(function(data) {
+              return progressInfo.setErrors(data);
             });
           };
           $scope._setCollectionId = function(collectionid) {
@@ -1041,14 +1050,26 @@ angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache"
   $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
     "<p ng-repeat=\"file in fileInfoList.files\"\n" +
     "        class=\"django-cradmin-bulkfileupload-progress-item\"\n" +
-    "        ng-class=\"{'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished}\">\n" +
-    "    <span class=\"django-cradmin-progressbar\">\n" +
-    "        <span class=\"django-cradmin-progressbar-progress\" ng-style=\"{'width': fileInfoList.percent+'%'}\">&nbsp;</span>\n" +
-    "        <span class=\"django-cradmin-progresspercent\">\n" +
-    "            <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
+    "        ng-class=\"{\n" +
+    "            'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished,\n" +
+    "            'django-cradmin-bulkfileupload-progress-item-error': fileInfoList.hasErrors\n" +
+    "        }\">\n" +
+    "    <span ng-if=\"fileInfoList.hasErrors\">\n" +
+    "        <span ng-repeat=\"(errorfield,errors) in fileInfoList.errors\">\n" +
+    "            <span ng-repeat=\"error in errors\" class=\"django-cradmin-bulkfileupload-error\">\n" +
+    "                {{ error.message }}\n" +
+    "            </span>\n" +
     "        </span>\n" +
     "    </span>\n" +
-    "    <span class=\"django-cradmin-filename\">{{file.name}}</span>\n" +
+    "    <span ng-if=\"!fileInfoList.hasErrors\">\n" +
+    "        <span class=\"django-cradmin-progressbar\">\n" +
+    "            <span class=\"django-cradmin-progressbar-progress\" ng-style=\"{'width': fileInfoList.percent+'%'}\">&nbsp;</span>\n" +
+    "            <span class=\"django-cradmin-progresspercent\">\n" +
+    "                <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
+    "            </span>\n" +
+    "        </span>\n" +
+    "        <span class=\"django-cradmin-filename\">{{file.name}}</span>\n" +
+    "    </span>\n" +
     "</p>\n" +
     "");
 }]);

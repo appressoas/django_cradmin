@@ -11,7 +11,7 @@ from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import Temporar
 
 class FileUploadForm(forms.Form):
     file = MultiFileField(
-        max_file_size=1000000 * getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_MAX_FILE_SIZE_MB', 1000))
+        max_file_size=1000000 * getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_MAX_FILE_SIZE_MB', 1))
     # file = forms.FileField()
     collectionid = forms.IntegerField(
         required=False)
