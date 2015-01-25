@@ -8392,13 +8392,13 @@ table.table.cradmin-table-fluid tbody tr td {
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
   background-color: #fff;
 }
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-buttonwrapper {
+.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
   text-align: center;
 }
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-buttonwrapper .django-cradmin-bulkfileupload-button {
+.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton {
   display: inline-block;
   color: #377ca8;
 }
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-buttonwrapper .django-cradmin-bulkfileupload-button:hover {
+.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton:hover {
   color: #24516e;
 }

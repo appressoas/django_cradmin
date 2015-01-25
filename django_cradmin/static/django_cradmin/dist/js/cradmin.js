@@ -241,8 +241,27 @@
         controller: function($scope) {
           $scope.collectionid = null;
           $scope.cradminBulkFileUploadFiles = [];
+          $scope.simpleWidgetScope = null;
+          $scope.advancedWidgetScope = null;
           this.setFileUploadFieldScope = function(fileUploadFieldScope) {
             return $scope.fileUploadFieldScope = fileUploadFieldScope;
+          };
+          this.setSimpleWidgetScope = function(simpleWidgetScope) {
+            $scope.simpleWidgetScope = simpleWidgetScope;
+            return $scope._showAppropriateWidget();
+          };
+          this.setAdvancedWidgetScope = function(advancedWidgetScope) {
+            $scope.advancedWidgetScope = advancedWidgetScope;
+            return $scope._showAppropriateWidget();
+          };
+          $scope._showAppropriateWidget = function() {
+            if ($scope.advancedWidgetScope && $scope.simpleWidgetScope) {
+              if (Detectizr.device.type === 'desktop') {
+                return $scope.simpleWidgetScope.hide();
+              } else {
+                return $scope.advancedWidgetScope.hide();
+              }
+            }
           };
           $scope.$watch('cradminBulkFileUploadFiles', function() {
             if ($scope.cradminBulkFileUploadFiles.length > 0) {
@@ -295,6 +314,34 @@
         link: function(scope, element, attr, uploadController) {
           scope.element = element;
           uploadController.setFileUploadFieldScope(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadAdvancedWidget', [
+    function() {
+      return {
+        require: '^djangoCradminBulkfileupload',
+        restrict: 'A',
+        scope: {},
+        link: function(scope, element, attr, uploadController) {
+          scope.hide = function() {
+            return element.css('display', 'none');
+          };
+          uploadController.setAdvancedWidgetScope(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadSimpleWidget', [
+    function() {
+      return {
+        require: '^djangoCradminBulkfileupload',
+        restrict: 'A',
+        scope: {},
+        link: function(scope, element, attr, uploadController) {
+          scope.hide = function() {
+            return element.css('display', 'none');
+          };
+          uploadController.setSimpleWidgetScope(scope);
         }
       };
     }

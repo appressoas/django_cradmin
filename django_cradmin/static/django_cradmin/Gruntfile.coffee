@@ -18,12 +18,10 @@ module.exports = (grunt) ->
     js: [
       'bower_components/jquery/dist/jquery.js'
       'bower_components/angular/angular.js'
-#      'bower_components/angular/angular.min.js.map'
       'bower_components/angular-cookies/angular-cookies.js'
-#      'bower_components/angular-cookies/angular-cookies.min.js.map'
       'bower_components/ng-file-upload/angular-file-upload.js'
-      # 'bower_components/angular/angular.js'
-      # 'bower_components/angular/angular.js.map'
+      'bower_components/modernizr/modernizr.js'
+      'bower_components/detectizr/dist/detectizr.js'
     ]
     ace_editor: [
       'bower_components/ace-builds/src-min-noconflict/ace.js'

@@ -32,12 +32,29 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
       controller: ($scope) ->
         $scope.collectionid = null
         $scope.cradminBulkFileUploadFiles = []
+        $scope.simpleWidgetScope = null
+        $scope.advancedWidgetScope = null
 
         @setFileUploadFieldScope = (fileUploadFieldScope) ->
           $scope.fileUploadFieldScope = fileUploadFieldScope
 
+        @setSimpleWidgetScope = (simpleWidgetScope) ->
+          $scope.simpleWidgetScope = simpleWidgetScope
+          $scope._showAppropriateWidget()
+
+        @setAdvancedWidgetScope = (advancedWidgetScope) ->
+          $scope.advancedWidgetScope = advancedWidgetScope
+          $scope._showAppropriateWidget()
+
+        $scope._showAppropriateWidget = ->
+          if $scope.advancedWidgetScope and $scope.simpleWidgetScope
+            if Detectizr.device.type == 'desktop'
+              $scope.simpleWidgetScope.hide()
+            else
+              $scope.advancedWidgetScope.hide()
+
+
         $scope.$watch 'cradminBulkFileUploadFiles', ->
-#          for file in $scope.cradminBulkFileUploadFiles
           if $scope.cradminBulkFileUploadFiles.length > 0
             $scope._uploadFiles()
 
@@ -92,6 +109,41 @@ angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies'
       link: (scope, element, attr, uploadController) ->
         scope.element = element
         uploadController.setFileUploadFieldScope(scope)
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadAdvancedWidget', [
+  ->
+    return {
+      require: '^djangoCradminBulkfileupload'
+      restrict: 'A'
+      scope: {}
+
+      link: (scope, element, attr, uploadController) ->
+        scope.hide = ->
+          element.css('display', 'none')
+
+        uploadController.setAdvancedWidgetScope(scope)
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadSimpleWidget', [
+  ->
+    return {
+      require: '^djangoCradminBulkfileupload'
+      restrict: 'A'
+      scope: {}
+
+      link: (scope, element, attr, uploadController) ->
+        scope.hide = ->
+          element.css('display', 'none')
+
+        uploadController.setSimpleWidgetScope(scope)
+
         return
     }
 ])
