@@ -217,9 +217,29 @@
 
 (function() {
   angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).factory('cradminBulkfileupload', function() {
-    var FileInfoList;
+    var FileInfo, FileInfoList;
+    FileInfo = (function() {
+      function FileInfo(options) {
+        this.file = options.file;
+        this.temporaryfileid = options.temporaryfileid;
+        this.name = this.file.name;
+        this.isRemoving = false;
+      }
+
+      FileInfo.prototype.markAsIsRemoving = function() {
+        return this.isRemoving = true;
+      };
+
+      FileInfo.prototype.markAsIsNotRemoving = function() {
+        return this.isRemoving = false;
+      };
+
+      return FileInfo;
+
+    })();
     FileInfoList = (function() {
       function FileInfoList(options) {
+        var file, _i, _len, _ref;
         this.percent = options.percent;
         if (options.finished) {
           this.finished = true;
@@ -231,7 +251,16 @@
         } else {
           this.hasErrors = false;
         }
-        this.files = options.files;
+        this.files = [];
+        _ref = options.files;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          file = _ref[_i];
+          this.files.push(new FileInfo({
+            temporaryfileid: null,
+            name: file.name,
+            file: file
+          }));
+        }
         this.errors = options.errors;
       }
 
@@ -239,13 +268,31 @@
         return this.percent = percent;
       };
 
-      FileInfoList.prototype.finish = function() {
-        return this.finished = true;
+      FileInfoList.prototype.finish = function(temporaryfiles) {
+        var index, temporaryfile, _i, _len, _results;
+        this.finished = true;
+        index = 0;
+        _results = [];
+        for (_i = 0, _len = temporaryfiles.length; _i < _len; _i++) {
+          temporaryfile = temporaryfiles[_i];
+          this.files[index].name = temporaryfile.filename;
+          this.files[index].temporaryfileid = temporaryfile.id;
+          _results.push(index += 1);
+        }
+        return _results;
       };
 
       FileInfoList.prototype.setErrors = function(errors) {
         this.hasErrors = true;
         return this.errors = errors;
+      };
+
+      FileInfoList.prototype.indexOf = function(fileInfo) {
+        return this.files.indexOf(fileInfo);
+      };
+
+      FileInfoList.prototype.remove = function(index) {
+        return this.files.splice(index, 1);
       };
 
       return FileInfoList;
@@ -365,6 +412,12 @@
             $scope.advancedWidgetScope = advancedWidgetScope;
             return $scope._showAppropriateWidget();
           };
+          this.getUploadUrl = function() {
+            return $scope.uploadUrl;
+          };
+          this.getCollectionId = function() {
+            return $scope.collectionid;
+          };
           $scope._addFileInfoList = function(fileInfoList) {
             return $scope.inProgressOrFinishedScope.addFileInfoList(fileInfoList);
           };
@@ -405,7 +458,7 @@
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
               $scope._setCollectionId(data.collectionid);
-              progressInfo.finish();
+              progressInfo.finish(data.temporaryfiles);
               return $scope.formController.removeInProgress();
             }).error(function(data) {
               progressInfo.setErrors(data);
@@ -424,7 +477,7 @@
       };
     }
   ]).directive('djangoCradminBulkProgress', [
-    'cradminBulkfileupload', function(cradminBulkfileupload) {
+    'cradminBulkfileupload', '$http', '$cookies', function(cradminBulkfileupload, $http, $cookies) {
       return {
         restrict: 'AE',
         require: '^djangoCradminBulkfileupload',
@@ -432,6 +485,53 @@
         scope: {},
         controller: function($scope) {
           $scope.fileInfoLists = [];
+          $scope._findFileInfo = function(fileInfo) {
+            var fileInfoIndex, fileInfoList, _i, _len, _ref;
+            if (fileInfo.temporaryfileid == null) {
+              throw new Error("Can not remove files without a temporaryfileid");
+            }
+            _ref = $scope.fileInfoLists;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              fileInfoList = _ref[_i];
+              fileInfoIndex = fileInfoList.indexOf(fileInfo);
+              if (fileInfoIndex !== -1) {
+                return {
+                  fileInfoList: fileInfoList,
+                  index: fileInfoIndex
+                };
+              }
+            }
+            throw new Error("Could not find requested fileInfo with temporaryfileid=" + fileInfo.temporaryfileid + ".");
+          };
+          this.removeFile = function(fileInfo) {
+            var fileInfoLocation;
+            console.log('Removing', fileInfo);
+            fileInfoLocation = $scope._findFileInfo(fileInfo);
+            fileInfo.markAsIsRemoving();
+            $scope.$apply();
+            return $http({
+              url: $scope.uploadController.getUploadUrl(),
+              method: 'DELETE',
+              headers: {
+                'X-CSRFToken': $cookies.csrftoken
+              },
+              data: {
+                collectionid: $scope.uploadController.getCollectionId(),
+                temporaryfileid: fileInfo.temporaryfileid
+              }
+            }).success(function(data, status, headers, config) {
+              console.log('success', data);
+              return fileInfoLocation.fileInfoList.remove(fileInfoLocation.index);
+            }).error(function(data, status, headers, config) {
+              if (typeof console !== "undefined" && console !== null) {
+                if (typeof console.error === "function") {
+                  console.error('ERROR', data);
+                }
+              }
+              alert('An error occurred while removing the file. Please try again.');
+              return fileInfo.markAsIsNotRemoving();
+            });
+          };
           $scope.addFileInfoList = function(options) {
             var fileInfoList;
             fileInfoList = cradminBulkfileupload.createFileInfoList(options);
@@ -440,6 +540,7 @@
           };
         },
         link: function(scope, element, attr, uploadController) {
+          scope.uploadController = uploadController;
           uploadController.setInProgressOrFinishedScope(scope);
         }
       };
@@ -473,6 +574,22 @@
           element.on('click', function(evt) {
             evt.preventDefault();
             return fileInfoListController.close();
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadRemoveFileButton', [
+    function() {
+      return {
+        restrict: 'A',
+        require: '^djangoCradminBulkProgress',
+        scope: {
+          'fileInfo': '=djangoCradminBulkfileuploadRemoveFileButton'
+        },
+        link: function(scope, element, attr, progressController) {
+          element.on('click', function(evt) {
+            evt.preventDefault();
+            return progressController.removeFile(scope.fileInfo);
           });
         }
       };
@@ -1129,7 +1246,7 @@ angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", fu
 
 angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
-    "<p ng-repeat=\"file in fileInfoList.files\"\n" +
+    "<p ng-repeat=\"fileInfo in fileInfoList.files\"\n" +
     "        class=\"django-cradmin-bulkfileupload-progress-item\"\n" +
     "        ng-class=\"{\n" +
     "            'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished,\n" +
@@ -1149,13 +1266,29 @@ angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache"
     "        </span>\n" +
     "    </span>\n" +
     "    <span ng-if=\"!fileInfoList.hasErrors\">\n" +
+    "        <button django-cradmin-bulkfileupload-remove-file-button=\"fileInfo\"\n" +
+    "                ng-if=\"fileInfoList.finished\"\n" +
+    "                type=\"button\"\n" +
+    "                class=\"btn btn-link django-cradmin-bulkfileupload-remove-file-button\">\n" +
+    "            <span ng-if=\"!fileInfo.isRemoving\"\n" +
+    "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isnotremoving\">\n" +
+    "                <span class=\"fa fa-times\"></span>\n" +
+    "                <span class=\"sr-only\">Remove</span>\n" +
+    "            </span>\n" +
+    "            <span ng-if=\"fileInfo.isRemoving\"\n" +
+    "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isremoving\">\n" +
+    "                <span class=\"fa fa-spinner fa-spin\"></span>\n" +
+    "                <span class=\"sr-only\">Removing ...</span>\n" +
+    "            </span>\n" +
+    "        </button>\n" +
+    "\n" +
     "        <span class=\"django-cradmin-progressbar\">\n" +
     "            <span class=\"django-cradmin-progressbar-progress\" ng-style=\"{'width': fileInfoList.percent+'%'}\">&nbsp;</span>\n" +
     "            <span class=\"django-cradmin-progresspercent\">\n" +
     "                <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
     "            </span>\n" +
     "        </span>\n" +
-    "        <span class=\"django-cradmin-filename\">{{file.name}}</span>\n" +
+    "        <span class=\"django-cradmin-filename\">{{fileInfo.name}}</span>\n" +
     "    </span>\n" +
     "</p>\n" +
     "");

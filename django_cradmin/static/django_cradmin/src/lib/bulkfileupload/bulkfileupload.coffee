@@ -5,6 +5,19 @@ angular.module('djangoCradmin.bulkfileupload', [
 
 
 .factory 'cradminBulkfileupload', ->
+  class FileInfo
+    constructor: (options) ->
+      @file = options.file
+      @temporaryfileid = options.temporaryfileid
+      @name = @file.name
+      @isRemoving = false
+
+    markAsIsRemoving: ->
+      @isRemoving = true
+
+    markAsIsNotRemoving: ->
+      @isRemoving = false
+
   class FileInfoList
     constructor: (options) ->
       @percent = options.percent
@@ -16,18 +29,37 @@ angular.module('djangoCradmin.bulkfileupload', [
         @hasErrors = true
       else
         @hasErrors = false
-      @files = options.files
+      @files = []
+      for file in options.files
+        @files.push(new FileInfo({
+          temporaryfileid: null
+          name: file.name
+          file: file
+        }))
       @errors = options.errors
 
     updatePercent: (percent) ->
       @percent = percent
 
-    finish: ->
+    finish: (temporaryfiles) ->
       @finished = true
+
+      # Update the client provided filenames with the filename from the server
+      index = 0
+      for temporaryfile in temporaryfiles
+        @files[index].name = temporaryfile.filename
+        @files[index].temporaryfileid = temporaryfile.id
+        index += 1
 
     setErrors: (errors) ->
       @hasErrors = true
       @errors = errors
+
+    indexOf: (fileInfo) ->
+      return @files.indexOf(fileInfo)
+
+    remove: (index) ->
+      return @files.splice(index, 1)
 
   return {
     createFileInfoList: (options) ->
@@ -129,7 +161,6 @@ angular.module('djangoCradmin.bulkfileupload', [
         @setInProgressOrFinishedScope = (inProgressOrFinishedScope) ->
           $scope.inProgressOrFinishedScope = inProgressOrFinishedScope
 
-
         @setFileUploadFieldScope = (fileUploadFieldScope) ->
           $scope.fileUploadFieldScope = fileUploadFieldScope
 
@@ -141,6 +172,12 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.advancedWidgetScope = advancedWidgetScope
           $scope._showAppropriateWidget()
 
+        @getUploadUrl = ->
+          return $scope.uploadUrl
+
+        @getCollectionId = ->
+          return $scope.collectionid
+
         $scope._addFileInfoList = (fileInfoList) ->
           $scope.inProgressOrFinishedScope.addFileInfoList(fileInfoList)
 
@@ -150,7 +187,6 @@ angular.module('djangoCradmin.bulkfileupload', [
               $scope.simpleWidgetScope.hide()
             else
               $scope.advancedWidgetScope.hide()
-
 
         $scope.$watch 'cradminBulkFileUploadFiles', ->
           if $scope.cradminBulkFileUploadFiles.length > 0
@@ -179,7 +215,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
             $scope._setCollectionId(data.collectionid)
-            progressInfo.finish()
+            progressInfo.finish(data.temporaryfiles)
             $scope.formController.removeInProgress()
           ).error((data) ->
             progressInfo.setErrors(data)
@@ -201,8 +237,8 @@ angular.module('djangoCradmin.bulkfileupload', [
 
 
 .directive('djangoCradminBulkProgress', [
-  'cradminBulkfileupload'
-  (cradminBulkfileupload) ->
+  'cradminBulkfileupload', '$http', '$cookies'
+  (cradminBulkfileupload, $http, $cookies) ->
     return {
       restrict: 'AE'
       require: '^djangoCradminBulkfileupload'
@@ -242,6 +278,43 @@ angular.module('djangoCradmin.bulkfileupload', [
 #          }),
 #        ]
 
+        $scope._findFileInfo = (fileInfo) ->
+          if not fileInfo.temporaryfileid?
+            throw new Error("Can not remove files without a temporaryfileid")
+          for fileInfoList in $scope.fileInfoLists
+            fileInfoIndex = fileInfoList.indexOf(fileInfo)
+            if fileInfoIndex != -1
+              return {
+                fileInfoList: fileInfoList
+                index: fileInfoIndex
+              }
+          throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
+
+        @removeFile = (fileInfo) ->
+          console.log 'Removing', fileInfo
+          fileInfoLocation = $scope._findFileInfo(fileInfo)
+          fileInfo.markAsIsRemoving()
+          $scope.$apply()
+
+          $http({
+              url: $scope.uploadController.getUploadUrl()
+              method: 'DELETE'
+              headers:
+                'X-CSRFToken': $cookies.csrftoken
+              data:
+                collectionid: $scope.uploadController.getCollectionId()
+                temporaryfileid: fileInfo.temporaryfileid
+            })
+            .success((data, status, headers, config) ->
+              console.log 'success', data
+              fileInfoLocation.fileInfoList.remove(fileInfoLocation.index)
+            ).
+            error((data, status, headers, config) ->
+              console?.error? 'ERROR', data
+              alert('An error occurred while removing the file. Please try again.')
+              fileInfo.markAsIsNotRemoving()
+            )
+
         $scope.addFileInfoList = (options) ->
           fileInfoList = cradminBulkfileupload.createFileInfoList(options)
           $scope.fileInfoLists.push(fileInfoList)
@@ -250,6 +323,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         return
 
       link: (scope, element, attr, uploadController) ->
+        scope.uploadController = uploadController
         uploadController.setInProgressOrFinishedScope(scope)
         return
     }
@@ -289,6 +363,24 @@ angular.module('djangoCradmin.bulkfileupload', [
         element.on 'click', (evt) ->
           evt.preventDefault()
           fileInfoListController.close()
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadRemoveFileButton', [
+  ->
+    return {
+      restrict: 'A'
+      require: '^djangoCradminBulkProgress'
+      scope: {
+        'fileInfo': '=djangoCradminBulkfileuploadRemoveFileButton'
+      }
+
+      link: (scope, element, attr, progressController) ->
+        element.on 'click', (evt) ->
+          evt.preventDefault()
+          progressController.removeFile(scope.fileInfo)
         return
     }
 ])

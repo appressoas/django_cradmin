@@ -201,10 +201,64 @@ describe 'djangoCradminBulkfileuploadInProgressOrFinished', ->
   it 'should add error class on error', ->
     inProgressOrFinishedScope.fileInfoLists = [{
       percent: 100
-      hasErrors: true
       files: [{name: 'test1.txt'}]
+      hasErrors: true
       errors: {}
     }]
     inProgressOrFinishedScope.$apply()
     firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
     expect(firstItem.hasClass('django-cradmin-bulkfileupload-progress-item-error')).toBe(true)
+
+  it 'should show delete button when finished', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      finished: true
+      files: [{name: 'test1.txt'}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button').length).toBe(1)
+
+  it 'should not show delete button when not finished', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      finished: false
+      files: [{name: 'test1.txt'}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button').length).toBe(0)
+
+  it 'should not show delete button when not successful', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      finished: true
+      files: [{name: 'test1.txt'}]
+      hasErrors: true
+      errors: {}
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button').length).toBe(0)
+
+  it 'should show isRemoving message when removing', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      finished: true
+      files: [{name: 'test1.txt', isRemoving: true}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button-isremoving').length).toBe(1)
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button-isnotremoving').length).toBe(0)
+
+  it 'should not show isRemoving message when not removing', ->
+    inProgressOrFinishedScope.fileInfoLists = [{
+      percent: 100
+      finished: true
+      files: [{name: 'test1.txt'}]
+    }]
+    inProgressOrFinishedScope.$apply()
+    firstItem = inProgressOrFinishedElement.find('.django-cradmin-bulkfileupload-progress-item')
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button-isremoving').length).toBe(0)
+    expect(firstItem.find('.django-cradmin-bulkfileupload-remove-file-button-isnotremoving').length).toBe(1)
