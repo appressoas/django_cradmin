@@ -7976,13 +7976,25 @@ table.table.cradmin-table-fluid tbody tr td {
   padding-bottom: 15px;
 }
 .btn {
-  transition-duration: 0.3s;
-  transition-property: background-color color border-color;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
+}
+@media (min-width: 768px) {
+  .btn {
+    transition-duration: 0.3s;
+    transition-property: background-color color border-color;
+  }
 }
 .btn.btn-default:hover {
-  background-color: #377ca8;
-  border-color: #377ca8;
-  color: #fff;
+  background-color: #ffffff;
+  border-color: #d9d9d9;
+  color: #377ca8;
+}
+@media (min-width: 768px) {
+  .btn.btn-default:hover {
+    background-color: #377ca8;
+    border-color: #377ca8;
+    color: #ffffff;
+  }
 }
 .btn.btn-primary:hover {
   background-color: #224d68;
@@ -8109,9 +8121,16 @@ table.table.cradmin-table-fluid tbody tr td {
   border-radius: 3px;
 }
 .django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper.django_cradmin_filewidget_field_and_overlay_wrapper_hover a.btn.btn-default {
-  background-color: #377ca8;
-  border-color: #377ca8;
-  color: #fff;
+  background-color: #ffffff;
+  border-color: #d9d9d9;
+  color: #377ca8;
+}
+@media (min-width: 768px) {
+  .django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper.django_cradmin_filewidget_field_and_overlay_wrapper_hover a.btn.btn-default {
+    background-color: #377ca8;
+    border-color: #377ca8;
+    color: #ffffff;
+  }
 }
 .django_cradmin_form .django_cradmin_filewidget .django_cradmin_filewidget_field_and_overlay_wrapper input[type=file] {
   opacity: 0 !important;
@@ -8402,14 +8421,23 @@ table.table.cradmin-table-fluid tbody tr td {
 .django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton:hover {
   color: #24516e;
 }
+.django-cradmin-bulkfileupload .btn.django-cradmin-bulkfileupload-simple-button {
+  padding: 10px 16px;
+  margin: 10px 0 0 0;
+}
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item {
   background-color: #e1e1e1;
   color: #666666;
   font-weight: normal;
   font-size: 16px;
-  padding: 10px 15px;
   margin: 0;
   text-align: left;
+  padding: 20px 15px;
+}
+@media (min-width: 992px) {
+  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item {
+    padding: 10px 15px;
+  }
 }
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar {
   display: inline-block;

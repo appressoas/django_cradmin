@@ -13,6 +13,7 @@
 {% load i18n %}
 
 <div django-cradmin-bulkfileupload="{% url 'cradmin_temporary_file_upload_api' %}"
+        django-cradmin-bulkfileupload-widget="simple"
         class="django-cradmin-bulkfileupload">
 
     <div django-cradmin-bulk-progress></div>
@@ -63,7 +64,7 @@
                         type="button"
                         ng-model="cradminBulkFileUploadFiles"
                         multiple="{% if singlemode %}false{% else %}true{% endif %}"
-                        class="btn btn-default django-cradmin-bulkfileupload-simple-button">
+                        class="btn btn-default btn-block django-cradmin-bulkfileupload-simple-button">
                     {% block fileselectbutton-simple-content %}
                         {% if singlemode %}
                             {% trans "Select a file" %} ...

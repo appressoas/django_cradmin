@@ -22,15 +22,24 @@
     }
   }
 
+  .btn.django-cradmin-bulkfileupload-simple-button {
+    padding: @cradmin-bulkfileupload-simple-button-padding;
+    margin: @cradmin-bulkfileupload-simple-button-margin;
+  }
+
   .django-cradmin-bulkfileupload-progress {
     .django-cradmin-bulkfileupload-progress-item {
       background-color: @cradmin-bulkfileupload-progress-item-bg;
       color: @cradmin-bulkfileupload-progress-item-color;
       font-weight: @cradmin-bulkfileupload-progress-item-font-weight;
       font-size: @cradmin-bulkfileupload-progress-item-font-size;
-      padding: @cradmin-bulkfileupload-progress-item-padding;
       margin: @cradmin-bulkfileupload-progress-item-margin;
       text-align: @cradmin-bulkfileupload-progress-item-text-align;
+      padding: @cradmin-bulkfileupload-progress-item-padding-mobile;
+
+      @media (min-width: @screen-md-min) {
+        padding: @cradmin-bulkfileupload-progress-item-padding;
+      }
 
       .django-cradmin-progressbar {
         display: inline-block;
