@@ -39,8 +39,10 @@
 
 // Form
 // @cradmin-form-selected-bg: #F4FCFC;
+@cradmin-form-bg: #eee;
 @cradmin-form-selected-bg: #E1EDF4;
 @cradmin-form-selected-border: darken(@cradmin-form-selected-bg, 10%);
+
 
 // Objecttable
 @cradmin-objecttable-header-line-height: 40px;
@@ -64,7 +66,10 @@
 @cradmin-roleselect-list-flat-itemseparator-style: dashed;
 
 // bulkfileupload
-@cradmin-bulkfileupload-dropbox-bg: darken(@cradmin-bodybg, 5%);
+@cradmin-bulkfileupload-padding: 0;
+@cradmin-bulkfileupload-bg: @cradmin-form-bg;
+
+@cradmin-bulkfileupload-dropbox-bg: darken(@cradmin-bodybg, 6%);
 @cradmin-bulkfileupload-dropbox-color: @cradmin-bodycolor;
 @cradmin-bulkfileupload-dropbox-font-weight: bold;
 @cradmin-bulkfileupload-dropbox-font-size: @font-size-base;
@@ -75,10 +80,9 @@
 @cradmin-bulkfileupload-advanced-fileselectbutton-hover-color: @link-hover-color;
 @cradmin-bulkfileupload-advanced-fileselectbutton-align: center;
 
+@cradmin-bulkfileupload-simple-button-wrapper-padding: 10px 15px;
 @cradmin-bulkfileupload-simple-button-padding: 10px 16px;
-@cradmin-bulkfileupload-simple-button-margin: 10px 0 0 0;
 
-@cradmin-bulkfileupload-progress-item-bg: darken(@cradmin-bodybg, 2%);
 @cradmin-bulkfileupload-progress-item-color: @cradmin-bodycolor;
 @cradmin-bulkfileupload-progress-item-font-weight: normal;
 @cradmin-bulkfileupload-progress-item-font-size: @font-size-base;

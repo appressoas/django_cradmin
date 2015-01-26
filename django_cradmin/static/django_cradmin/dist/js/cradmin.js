@@ -423,7 +423,7 @@
           };
           $scope._showAppropriateWidget = function() {
             if ($scope.advancedWidgetScope && $scope.simpleWidgetScope) {
-              if (cradminDetectize.device.type === 'desktop2') {
+              if (cradminDetectize.device.type === 'desktop') {
                 return $scope.simpleWidgetScope.hide();
               } else {
                 return $scope.advancedWidgetScope.hide();
