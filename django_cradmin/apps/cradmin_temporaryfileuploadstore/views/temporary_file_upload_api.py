@@ -56,6 +56,7 @@ class UploadTemporaryFilesView(FormView):
             collection.clear_files()
         temporaryfile = TemporaryFile(collection=collection, filename=formfile.name)
         temporaryfile.file.save(formfile.name, formfile)
+        return temporaryfile
 
     def form_invalid(self, form):
         return self.json_response(form.errors.as_json(), status=400)
@@ -75,13 +76,19 @@ class UploadTemporaryFilesView(FormView):
                 ]
             }), status=404)
         else:
+            uploadedfiles_data = []
             for formfile in form.cleaned_data['file']:
-                self.save_uploaded_file(
+                temporaryfile = self.save_uploaded_file(
                     collection=collection,
                     formfile=formfile,
                     mode=form.cleaned_data['mode'])
+                uploadedfiles_data.append({
+                    'id': temporaryfile.id,
+                    'filename': temporaryfile.filename
+                })
             return self.json_response(json.dumps({
-                'collectionid': collection.id
+                'collectionid': collection.id,
+                'files': uploadedfiles_data
             }))
 
     def json_response(self, data, status=200):

@@ -33,6 +33,9 @@ class TestUploadTemporaryFilesView(TestCase):
             'cradmin_temporaryfileuploadstore/{}/'.format(collection.id)))
         self.assertEqual(uploadedfile.file.read(), 'Test1')
 
+        self.assertEquals(len(responsedata['files']), 1)
+        self.assertEquals(responsedata['files'][0]['filename'], 'testfile1.txt')
+
     def test_post_multiple_files(self):
         request = self.factory.post('/test', {
             'file': [
@@ -49,6 +52,9 @@ class TestUploadTemporaryFilesView(TestCase):
         collectionid = responsedata['collectionid']
         collection = TemporaryFileCollection.objects.get(id=collectionid)
         self.assertEquals(collection.files.count(), 2)
+        self.assertEquals(len(responsedata['files']), 2)
+        self.assertEquals(responsedata['files'][0]['filename'], 'testfile1.txt')
+        self.assertEquals(responsedata['files'][1]['filename'], 'testfile2.txt')
 
     def test_post_multiple_requests_for_same_collection(self):
         request1 = self.factory.post('/test', {
