@@ -7453,6 +7453,9 @@ body {
 body.django-cradmin-noscroll {
   overflow: hidden;
 }
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
+}
 @media (min-width: 992px) {
   #django_cradmin_contentwrapper {
     padding-left: 200px;
