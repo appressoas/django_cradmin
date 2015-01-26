@@ -41,10 +41,22 @@ angular.module('djangoCradmin.bulkfileupload', [
       scope: {}
 
       controller: ($scope) ->
+        $scope._inProgressCounter = 0
+
+        @addInProgress = ->
+          $scope._inProgressCounter += 1
+
+        @removeInProgress = ->
+          if $scope._inProgressCounter == 0
+            throw new Error("It should not be possible to get _inProgressCounter below 0")
+          $scope._inProgressCounter -= 1
+
         return
 
       link: (scope, element, attr, uploadController) ->
-        scope.element = element
+        element.on 'submit', (evt) ->
+          if scope._inProgressCounter != 0
+            evt.preventDefault()
         return
     }
 ])
@@ -99,6 +111,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             percent: 0
             files: $scope.cradminBulkFileUploadFiles.slice()
           })
+          $scope.formController.addInProgress()
 
           $scope.upload = $upload.upload({
             url: $scope.uploadUrl
@@ -113,22 +126,14 @@ angular.module('djangoCradmin.bulkfileupload', [
               'Content-Type': 'multipart/form-data'
             }
           }).progress((evt) ->
-#            files = ''
-#            for file in evt.config.file
-#              files += "#{file.name} "
-#            console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ files)
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            # file is uploaded successfully
-#            files = ''
-#            for file in config.file
-#              files += "#{file.name} "
-#            console.log('file ' + files + ' is uploaded successfully. Response: ')
-#            console.log data
             progressInfo.finish()
             $scope._setCollectionId(data.collectionid)
+            $scope.formController.removeInProgress()
           ).error((data) ->
             progressInfo.setErrors(data)
+            $scope.formController.removeInProgress()
           )
 
         $scope._setCollectionId = (collectionid) ->
@@ -139,6 +144,7 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       link: (scope, element, attr, formController) ->
         scope.uploadUrl = attr.djangoCradminBulkfileupload
+        scope.formController = formController
         return
     }
 ])

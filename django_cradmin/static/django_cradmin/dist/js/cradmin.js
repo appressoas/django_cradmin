@@ -259,9 +259,24 @@
       return {
         restrict: 'AE',
         scope: {},
-        controller: function($scope) {},
+        controller: function($scope) {
+          $scope._inProgressCounter = 0;
+          this.addInProgress = function() {
+            return $scope._inProgressCounter += 1;
+          };
+          this.removeInProgress = function() {
+            if ($scope._inProgressCounter === 0) {
+              throw new Error("It should not be possible to get _inProgressCounter below 0");
+            }
+            return $scope._inProgressCounter -= 1;
+          };
+        },
         link: function(scope, element, attr, uploadController) {
-          scope.element = element;
+          element.on('submit', function(evt) {
+            if (scope._inProgressCounter !== 0) {
+              return evt.preventDefault();
+            }
+          });
         }
       };
     }
@@ -313,6 +328,7 @@
               percent: 0,
               files: $scope.cradminBulkFileUploadFiles.slice()
             });
+            $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
               method: 'POST',
@@ -329,9 +345,11 @@
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
               progressInfo.finish();
-              return $scope._setCollectionId(data.collectionid);
+              $scope._setCollectionId(data.collectionid);
+              return $scope.formController.removeInProgress();
             }).error(function(data) {
-              return progressInfo.setErrors(data);
+              progressInfo.setErrors(data);
+              return $scope.formController.removeInProgress();
             });
           };
           $scope._setCollectionId = function(collectionid) {
@@ -341,6 +359,7 @@
         },
         link: function(scope, element, attr, formController) {
           scope.uploadUrl = attr.djangoCradminBulkfileupload;
+          scope.formController = formController;
         }
       };
     }
