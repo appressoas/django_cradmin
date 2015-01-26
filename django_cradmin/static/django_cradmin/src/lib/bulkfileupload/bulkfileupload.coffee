@@ -16,13 +16,11 @@ angular.module('djangoCradmin.bulkfileupload', [
       @percent = percent
 
     finish: ->
-      console.log 'Finished!'
       @finished = true
 
     setErrors: (errors) ->
       @hasErrors = true
       @errors = errors
-      console.log errors
 
   return {
     createFileInfoList: (options) ->
@@ -43,13 +41,31 @@ angular.module('djangoCradmin.bulkfileupload', [
       controller: ($scope) ->
         $scope._inProgressCounter = 0
 
+        # Simple submit buttons are simply disabled when files are beeing uploaded.
+        $scope._submitButtonScopes = []
+
+        $scope._setSubmitButtonsInProgress = ->
+          for buttonScope in $scope._submitButtonScopes
+            buttonScope.setNotInProgress()
+
+        $scope._setSubmitButtonsNotInProgress = ->
+          for buttonScope in $scope._submitButtonScopes
+            buttonScope.setInProgress()
+
         @addInProgress = ->
           $scope._inProgressCounter += 1
+          if $scope._inProgressCounter == 1
+            $scope._setSubmitButtonsInProgress()
 
         @removeInProgress = ->
           if $scope._inProgressCounter == 0
             throw new Error("It should not be possible to get _inProgressCounter below 0")
           $scope._inProgressCounter -= 1
+          if $scope._inProgressCounter == 0
+            $scope._setSubmitButtonsNotInProgress()
+
+        @addSubmitButtonScope = (submitButtonScope) ->
+          $scope._submitButtonScopes.push(submitButtonScope)
 
         return
 
@@ -60,6 +76,33 @@ angular.module('djangoCradmin.bulkfileupload', [
         return
     }
 ])
+
+
+.directive('djangoCradminBulkfileuploadSubmit', [
+  ->
+    return {
+      require: '^djangoCradminBulkfileuploadForm'
+      restrict: 'A'
+      scope: true
+
+      controller: ($scope) ->
+        $scope.inProgress = false
+
+        $scope.setInProgress = ->
+          $scope.element.prop('disabled', false)
+          $scope.inProgress = false
+
+        $scope.setNotInProgress = ->
+          $scope.element.prop('disabled', true)
+          $scope.inProgress = true
+
+      link: (scope, element, attr, formController) ->
+        scope.element = element
+        formController.addSubmitButtonScope(scope)
+        return
+    }
+])
+
 
 
 .directive('djangoCradminBulkfileupload', [
@@ -128,8 +171,8 @@ angular.module('djangoCradmin.bulkfileupload', [
           }).progress((evt) ->
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            progressInfo.finish()
             $scope._setCollectionId(data.collectionid)
+            progressInfo.finish()
             $scope.formController.removeInProgress()
           ).error((data) ->
             progressInfo.setErrors(data)

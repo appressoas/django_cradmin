@@ -231,14 +231,12 @@
       };
 
       FileInfoList.prototype.finish = function() {
-        console.log('Finished!');
         return this.finished = true;
       };
 
       FileInfoList.prototype.setErrors = function(errors) {
         this.hasErrors = true;
-        this.errors = errors;
-        return console.log(errors);
+        return this.errors = errors;
       };
 
       return FileInfoList;
@@ -261,14 +259,44 @@
         scope: {},
         controller: function($scope) {
           $scope._inProgressCounter = 0;
+          $scope._submitButtonScopes = [];
+          $scope._setSubmitButtonsInProgress = function() {
+            var buttonScope, _i, _len, _ref, _results;
+            _ref = $scope._submitButtonScopes;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              buttonScope = _ref[_i];
+              _results.push(buttonScope.setNotInProgress());
+            }
+            return _results;
+          };
+          $scope._setSubmitButtonsNotInProgress = function() {
+            var buttonScope, _i, _len, _ref, _results;
+            _ref = $scope._submitButtonScopes;
+            _results = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              buttonScope = _ref[_i];
+              _results.push(buttonScope.setInProgress());
+            }
+            return _results;
+          };
           this.addInProgress = function() {
-            return $scope._inProgressCounter += 1;
+            $scope._inProgressCounter += 1;
+            if ($scope._inProgressCounter === 1) {
+              return $scope._setSubmitButtonsInProgress();
+            }
           };
           this.removeInProgress = function() {
             if ($scope._inProgressCounter === 0) {
               throw new Error("It should not be possible to get _inProgressCounter below 0");
             }
-            return $scope._inProgressCounter -= 1;
+            $scope._inProgressCounter -= 1;
+            if ($scope._inProgressCounter === 0) {
+              return $scope._setSubmitButtonsNotInProgress();
+            }
+          };
+          this.addSubmitButtonScope = function(submitButtonScope) {
+            return $scope._submitButtonScopes.push(submitButtonScope);
           };
         },
         link: function(scope, element, attr, uploadController) {
@@ -277,6 +305,29 @@
               return evt.preventDefault();
             }
           });
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadSubmit', [
+    function() {
+      return {
+        require: '^djangoCradminBulkfileuploadForm',
+        restrict: 'A',
+        scope: true,
+        controller: function($scope) {
+          $scope.inProgress = false;
+          $scope.setInProgress = function() {
+            $scope.element.prop('disabled', false);
+            return $scope.inProgress = false;
+          };
+          return $scope.setNotInProgress = function() {
+            $scope.element.prop('disabled', true);
+            return $scope.inProgress = true;
+          };
+        },
+        link: function(scope, element, attr, formController) {
+          scope.element = element;
+          formController.addSubmitButtonScope(scope);
         }
       };
     }
@@ -344,8 +395,8 @@
             }).progress(function(evt) {
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              progressInfo.finish();
               $scope._setCollectionId(data.collectionid);
+              progressInfo.finish();
               return $scope.formController.removeInProgress();
             }).error(function(data) {
               progressInfo.setErrors(data);

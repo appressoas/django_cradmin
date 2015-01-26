@@ -13,7 +13,6 @@
         </div>
     </div>
     <div class="container-fluid">
-
         <form action="{{ request.path }}"
                 django-cradmin-bulkfileupload-form
                 method="post" enctype="multipart/form-data">
@@ -21,8 +20,15 @@
 
             {% include "django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html" with hiddenfieldname='filecollectionid' %}
 
-            <button class="btn btn-primary">
-                Upload files
+            <button django-cradmin-bulkfileupload-submit
+                    class="btn btn-primary btn-lg" type="submit">
+                <span ng-if="inProgress">
+                    <span class="fa fa-spinner fa-spin"></span>
+                    {% trans "Uploading files" %}
+                </span>
+                <span ng-if="!inProgress">
+                    {% trans "Upload files" %}
+                </span>
             </button>
         </form>
     </div>
