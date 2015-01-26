@@ -1,8 +1,9 @@
 import json
 import os
+from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, TestCase
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.views.temporary_file_upload_api import \
     UploadTemporaryFilesView
 from django_cradmin.tests.helpers import create_user
@@ -33,8 +34,8 @@ class TestUploadTemporaryFilesView(TestCase):
             'cradmin_temporaryfileuploadstore/{}/'.format(collection.id)))
         self.assertEqual(uploadedfile.file.read(), 'Test1')
 
-        self.assertEquals(len(responsedata['files']), 1)
-        self.assertEquals(responsedata['files'][0]['filename'], 'testfile1.txt')
+        self.assertEquals(len(responsedata['temporaryfiles']), 1)
+        self.assertEquals(responsedata['temporaryfiles'][0]['filename'], 'testfile1.txt')
 
     def test_post_multiple_files(self):
         request = self.factory.post('/test', {
@@ -52,9 +53,9 @@ class TestUploadTemporaryFilesView(TestCase):
         collectionid = responsedata['collectionid']
         collection = TemporaryFileCollection.objects.get(id=collectionid)
         self.assertEquals(collection.files.count(), 2)
-        self.assertEquals(len(responsedata['files']), 2)
-        self.assertEquals(responsedata['files'][0]['filename'], 'testfile1.txt')
-        self.assertEquals(responsedata['files'][1]['filename'], 'testfile2.txt')
+        self.assertEquals(len(responsedata['temporaryfiles']), 2)
+        self.assertEquals(responsedata['temporaryfiles'][0]['filename'], 'testfile1.txt')
+        self.assertEquals(responsedata['temporaryfiles'][1]['filename'], 'testfile2.txt')
 
     def test_post_multiple_requests_for_same_collection(self):
         request1 = self.factory.post('/test', {
@@ -154,3 +155,68 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEquals(response.status_code, 404)
         responsedata = json.loads(response.content)
         self.assertEquals(responsedata['collectionid'][0]['code'], 'doesnotexist')
+
+    def test_delete_single_file(self):
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.txt')
+        temporaryfile.file.save('testfile.txt', ContentFile('testcontent'))
+
+        request = self.factory.delete('/test', json.dumps({
+            'collectionid': collection.id,
+            'temporaryfileid': temporaryfile.id
+        }))
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+
+        self.assertEquals(responsedata['collectionid'], collection.id)
+        self.assertEquals(responsedata['temporaryfileid'], temporaryfile.id)
+
+        self.assertTrue(TemporaryFileCollection.objects.filter(id=collection.id).exists())
+        self.assertFalse(TemporaryFile.objects.filter(id=temporaryfile.id).exists())
+
+    def test_delete_invalid_json_reqeust(self):
+        request = self.factory.delete('/test', data='invalid')
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 400)
+        responsedata = json.loads(response.content)
+        self.assertEquals(responsedata['errormessage'], 'Invalid JSON data in the request body.')
+
+    def test_delete_form_collectionid_does_not_exist(self):
+        request = self.factory.delete('/test', data=json.dumps({
+            'collectionid': '10001',
+            'temporaryfileid': '1'  # NOTE: This is ignored since we never get to the code looking it up
+        }))
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 404)
+        responsedata = json.loads(response.content)
+        self.assertEquals(responsedata['collectionid'][0]['code'], 'doesnotexist')
+
+    def test_delete_form_collection_not_owned_by_user(self):
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        request = self.factory.delete('/test', json.dumps({
+            'collectionid': collection.id,
+            'temporaryfileid': '1'  # NOTE: This is ignored since we never get to the code looking it up
+        }))
+        request.user = create_user('otheruser')
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 404)
+        responsedata = json.loads(response.content)
+        self.assertEquals(responsedata['collectionid'][0]['code'], 'doesnotexist')
+
+    def test_delete_form_temporaryfileid_does_not_exist(self):
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        request = self.factory.delete('/test', data=json.dumps({
+            'collectionid': collection.id,
+            'temporaryfileid': 10001
+        }))
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 404)
+        responsedata = json.loads(response.content)
+        self.assertEquals(responsedata['temporaryfileid'][0]['code'], 'doesnotexist')

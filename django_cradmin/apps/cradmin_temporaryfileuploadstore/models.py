@@ -39,8 +39,7 @@ class TemporaryFileCollection(models.Model):
 
     def clear_files(self):
         for temporaryfile in self.files.all():
-            temporaryfile.file.delete()
-            temporaryfile.delete()
+            temporaryfile.delete_object_and_file()
 
 
 def temporary_file_upload_to(instance, filename):
@@ -67,3 +66,7 @@ class TemporaryFile(models.Model):
     filename = models.TextField()
     file = models.FileField(
         upload_to=temporary_file_upload_to)
+
+    def delete_object_and_file(self):
+        self.file.delete()
+        self.delete()
