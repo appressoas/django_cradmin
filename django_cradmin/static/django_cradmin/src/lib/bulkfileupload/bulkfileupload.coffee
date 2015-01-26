@@ -291,7 +291,6 @@ angular.module('djangoCradmin.bulkfileupload', [
           throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
 
         @removeFile = (fileInfo) ->
-          console.log 'Removing', fileInfo
           fileInfoLocation = $scope._findFileInfo(fileInfo)
           fileInfo.markAsIsRemoving()
           $scope.$apply()
@@ -306,7 +305,6 @@ angular.module('djangoCradmin.bulkfileupload', [
                 temporaryfileid: fileInfo.temporaryfileid
             })
             .success((data, status, headers, config) ->
-              console.log 'success', data
               fileInfoLocation.fileInfoList.remove(fileInfoLocation.index)
             ).
             error((data, status, headers, config) ->

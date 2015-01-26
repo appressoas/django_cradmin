@@ -8429,6 +8429,14 @@ table.table.cradmin-table-fluid tbody tr td {
   font-size: 14px;
   color: #ffffff;
 }
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item .django-cradmin-bulkfileupload-remove-file-button {
+  float: right;
+  margin-top: -7px;
+  color: #a94442;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item .django-cradmin-bulkfileupload-remove-file-button:hover {
+  color: #7d3231;
+}
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-progress-item-error {
   background-color: #f2dede;
   color: #a94442;

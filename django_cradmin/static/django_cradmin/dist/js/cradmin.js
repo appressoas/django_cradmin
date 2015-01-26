@@ -505,7 +505,6 @@
           };
           this.removeFile = function(fileInfo) {
             var fileInfoLocation;
-            console.log('Removing', fileInfo);
             fileInfoLocation = $scope._findFileInfo(fileInfo);
             fileInfo.markAsIsRemoving();
             $scope.$apply();
@@ -520,7 +519,6 @@
                 temporaryfileid: fileInfo.temporaryfileid
               }
             }).success(function(data, status, headers, config) {
-              console.log('success', data);
               return fileInfoLocation.fileInfoList.remove(fileInfoLocation.index);
             }).error(function(data, status, headers, config) {
               if (typeof console !== "undefined" && console !== null) {
