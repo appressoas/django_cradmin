@@ -8433,3 +8433,11 @@ table.table.cradmin-table-fluid tbody tr td {
   background-color: #f2dede;
   color: #a94442;
 }
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-progress-item-error .django-cradmin-bulkfileupload-error-closebutton {
+  float: right;
+  margin-top: -7px;
+  color: #a94442;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress .django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-progress-item-error .django-cradmin-bulkfileupload-error-closebutton:hover {
+  color: #7d3231;
+}

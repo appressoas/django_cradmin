@@ -5,6 +5,12 @@
             'django-cradmin-bulkfileupload-progress-item-error': fileInfoList.hasErrors
         }">
     <span ng-if="fileInfoList.hasErrors">
+        <button django-cradmin-bulkfileupload-error-close-button
+                type="button"
+                class="btn btn-link django-cradmin-bulkfileupload-error-closebutton">
+            <span class="fa fa-times"></span>
+            <span class="sr-only">Close</span>
+        </button>
         <span ng-repeat="(errorfield,errors) in fileInfoList.errors">
             <span ng-repeat="error in errors" class="django-cradmin-bulkfileupload-error">
                 {{ error.message }}

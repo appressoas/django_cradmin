@@ -221,9 +221,18 @@
     FileInfoList = (function() {
       function FileInfoList(options) {
         this.percent = options.percent;
-        this.finished = false;
-        this.hasErrors = false;
+        if (options.finished) {
+          this.finished = true;
+        } else {
+          this.finished = false;
+        }
+        if (options.hasErrors) {
+          this.hasErrors = true;
+        } else {
+          this.hasErrors = false;
+        }
         this.files = options.files;
+        this.errors = options.errors;
       }
 
       FileInfoList.prototype.updatePercent = function(percent) {
@@ -443,7 +452,29 @@
           fileInfoList: '=djangoCradminBulkFileInfoList'
         },
         templateUrl: 'bulkfileupload/fileinfolist.tpl.html',
-        transclude: true
+        transclude: true,
+        controller: function($scope) {
+          this.close = function() {
+            return $scope.element.remove();
+          };
+        },
+        link: function(scope, element, attr) {
+          scope.element = element;
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadErrorCloseButton', [
+    function() {
+      return {
+        restrict: 'A',
+        require: '^djangoCradminBulkFileInfoList',
+        scope: {},
+        link: function(scope, element, attr, fileInfoListController) {
+          element.on('click', function(evt) {
+            evt.preventDefault();
+            return fileInfoListController.close();
+          });
+        }
       };
     }
   ]).directive('djangoCradminBulkfileuploadCollectionidField', [
@@ -1089,31 +1120,11 @@
 
 }).call(this);
 
-angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/bulkfileupload-filefield.tpl.html', 'bulkfileupload/bulkfileupload-files.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html']);
+angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html']);
 
 angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("acemarkdown/acemarkdown.tpl.html",
     "<div ng-transclude></div>");
-}]);
-
-angular.module("bulkfileupload/bulkfileupload-filefield.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("bulkfileupload/bulkfileupload-filefield.tpl.html",
-    "<ul>\n" +
-    "    <li ng-repeat=\"uploadedFile in uploadedFiles\">\n" +
-    "        {{ uploadedFile.filename }}\n" +
-    "    </li>\n" +
-    "</ul>\n" +
-    "");
-}]);
-
-angular.module("bulkfileupload/bulkfileupload-files.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("bulkfileupload/bulkfileupload-files.tpl.html",
-    "<ul>\n" +
-    "    <li ng-repeat=\"fileInfo in getFlatFileInfoArray()\">\n" +
-    "        {{ fileInfo.getName() }}\n" +
-    "    </li>\n" +
-    "</ul>\n" +
-    "");
 }]);
 
 angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -1125,6 +1136,12 @@ angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache"
     "            'django-cradmin-bulkfileupload-progress-item-error': fileInfoList.hasErrors\n" +
     "        }\">\n" +
     "    <span ng-if=\"fileInfoList.hasErrors\">\n" +
+    "        <button django-cradmin-bulkfileupload-error-close-button\n" +
+    "                type=\"button\"\n" +
+    "                class=\"btn btn-link django-cradmin-bulkfileupload-error-closebutton\">\n" +
+    "            <span class=\"fa fa-times\"></span>\n" +
+    "            <span class=\"sr-only\">Close</span>\n" +
+    "        </button>\n" +
     "        <span ng-repeat=\"(errorfield,errors) in fileInfoList.errors\">\n" +
     "            <span ng-repeat=\"error in errors\" class=\"django-cradmin-bulkfileupload-error\">\n" +
     "                {{ error.message }}\n" +

@@ -8,9 +8,16 @@ angular.module('djangoCradmin.bulkfileupload', [
   class FileInfoList
     constructor: (options) ->
       @percent = options.percent
-      @finished = false
-      @hasErrors = false
+      if options.finished
+        @finished = true
+      else
+        @finished = false
+      if options.hasErrors
+        @hasErrors = true
+      else
+        @hasErrors = false
       @files = options.files
+      @errors = options.errors
 
     updatePercent: (percent) ->
       @percent = percent
@@ -203,7 +210,8 @@ angular.module('djangoCradmin.bulkfileupload', [
       scope: {}
 
       controller: ($scope) ->
-        $scope.fileInfoLists = [
+        $scope.fileInfoLists = []
+#        $scope.fileInfoLists = [
 #          new cradminBulkfileupload.createFileInfoList({
 #            percent: 10
 #            files: [{
@@ -218,8 +226,21 @@ angular.module('djangoCradmin.bulkfileupload', [
 #            files: [{
 #              name: 'Some kind of test.txt'
 #            }]
-#          })
-        ]
+#          }),
+#          new cradminBulkfileupload.createFileInfoList({
+#            percent: 90
+#            finished: true
+#            files: [{
+#              name: 'mybigfile.txt'
+#            }]
+#            hasErrors: true
+#            errors: {
+#              file: [{
+#                message: 'File is too big'
+#              }]
+#            }
+#          }),
+#        ]
 
         $scope.addFileInfoList = (options) ->
           fileInfoList = cradminBulkfileupload.createFileInfoList(options)
@@ -245,11 +266,32 @@ angular.module('djangoCradmin.bulkfileupload', [
       templateUrl: 'bulkfileupload/fileinfolist.tpl.html'
       transclude: true
 
-#      controller: ($scope) ->
-#        return
+      controller: ($scope) ->
+        @close = ->
+          $scope.element.remove()
+        return
+
+      link: (scope, element, attr) ->
+        scope.element = element
+        return
     }
 ])
 
+
+.directive('djangoCradminBulkfileuploadErrorCloseButton', [
+  ->
+    return {
+      restrict: 'A'
+      require: '^djangoCradminBulkFileInfoList'
+      scope: {}
+
+      link: (scope, element, attr, fileInfoListController) ->
+        element.on 'click', (evt) ->
+          evt.preventDefault()
+          fileInfoListController.close()
+        return
+    }
+])
 
 
 .directive('djangoCradminBulkfileuploadCollectionidField', [
