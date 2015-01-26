@@ -61,14 +61,6 @@ class UploadTemporaryFilesView(FormView):
         return self.json_response(form.errors.as_json(), status=400)
 
     def form_valid(self, form):
-        print
-        print "*" * 70
-        print
-        print form.cleaned_data
-        print
-        print "*" * 70
-        print
-
         collectionid = form.cleaned_data['collectionid']
         minutes_to_live = form.cleaned_data['minutes_to_live']
         try:
