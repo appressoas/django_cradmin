@@ -119,7 +119,7 @@ class FormViewMixin(object):
         form styles.
         """
         form_css_classes = [
-            'django_cradmin_form'
+            'django-cradmin-form'
         ]
         form_css_classes.extend(self.get_extra_form_css_classes())
         return form_css_classes

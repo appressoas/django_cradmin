@@ -14,7 +14,7 @@
     {% endblock pageheader %}
 
     {% block forms %}
-        <form method="post" action="{{ request.build_absolute_uri }}" class="django_cradmin_form">
+        <form method="post" action="{{ request.build_absolute_uri }}" class="django-cradmin-form">
             {% csrf_token %}
             {{ selected_objects_form.as_ul }}
             {% crispy form formhelper %}
