@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from django.views.generic import FormView as DjangoFormView
 
 from django_cradmin import crapp
+from django_cradmin.crispylayouts import CradminFormHelper
 
 
 class FormViewMixin(object):
@@ -152,7 +153,7 @@ class FormViewMixin(object):
         - :meth:`.get_hidden_fields`
         - :meth:`.get_buttons` (or perhaps :meth:`.get_button_layout`)
         """
-        helper = FormHelper()
+        helper = CradminFormHelper()
         helper.form_class = ' '.join(self.get_form_css_classes())
         layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
         helper.layout = layout.Layout(*layoutargs)

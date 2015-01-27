@@ -1,6 +1,7 @@
 """
 Custom django-crispy-forms layouts.
 """
+from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from crispy_forms.utils import flatatt
 
@@ -28,3 +29,7 @@ class DangerSubmit(CradminSubmitButton):
 
 class DefaultSubmit(CradminSubmitButton):
     field_classes = "btn btn-default"
+
+
+class CradminFormHelper(FormHelper):
+    template = 'django_cradmin/crispylayouts/cradmin_form_helper.django.html'

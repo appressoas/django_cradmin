@@ -164,6 +164,10 @@ class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
         widget=BulkFileUploadWidget(),
+        label=_('Upload one or more files'),
+        help_text=_(
+            'Upload as many files as you like. '
+            'You can edit the name and description of the images after they have been uploaded.'),
         error_messages={
             'required': _('You must upload at least one file.')
         })
@@ -176,6 +180,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
         'django-cradmin-bulkfileupload-form': ''
     }
     form_id = 'django_cradmin_imagearchive_bulkadd_form'
+    extra_form_css_classes = ['django-cradmin-form-noasterisk']
 
     def get_buttons(self):
         return [
@@ -187,8 +192,16 @@ class ArchiveImageBulkAddView(formbase.FormView):
 
     def get_field_layout(self):
         return [
-            'filecollectionid'
+            layout.Div(
+                'filecollectionid',
+                # css_class="cradmin-globalfields"),
+                css_class="cradmin-focusfield"),
         ]
+
+    def get_formhelper(self):
+        formhelper = super(ArchiveImageBulkAddView, self).get_formhelper()
+        # formhelper.form_show_labels = False
+        return formhelper
 
     def upload_file_to_archive(self, temporaryfile):
         archiveimage = ArchiveImage(
