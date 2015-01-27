@@ -13,6 +13,7 @@ class ImageWidget(forms.ClearableFileInput):
     ``clearable`` argument for ``__init__``.
     """
     template_name = 'django_cradmin/filewidgets/imagewidget.django.html'
+    accept = 'image/png,image/jpeg,image/gif'
 
     def __init__(self, attrs=None, template_name=None, clearable=True,
                  preview_width=300, preview_height=200, preview_format='auto'):
@@ -27,6 +28,8 @@ class ImageWidget(forms.ClearableFileInput):
     def render(self, name, value, attrs=None):
         attrs = attrs or {}
         attrs['django-cradmin-image-preview-filefield'] = ''
+        if self.accept:
+            attrs['accept'] = self.accept
         input_html = forms.FileInput.render(self, name, value, attrs)
         output = render_to_string(self.template_name, {
             'input_html': input_html,
@@ -49,6 +52,7 @@ class FileWidget(forms.ClearableFileInput):
     ``clearable`` argument for ``__init__``.
     """
     template_name = 'django_cradmin/filewidgets/filewidget.django.html'
+    accept = None
 
     def __init__(self, attrs=None, template_name=None, clearable=True):
         self.clearable = clearable
@@ -57,6 +61,9 @@ class FileWidget(forms.ClearableFileInput):
         super(FileWidget, self).__init__(attrs)
 
     def render(self, name, value, attrs=None):
+        attrs = attrs or {}
+        if self.accept:
+            attrs['accept'] = self.accept
         input_html = forms.FileInput.render(self, name, value, attrs)
         file_path = getattr(value, 'name', None)
         if file_path:
