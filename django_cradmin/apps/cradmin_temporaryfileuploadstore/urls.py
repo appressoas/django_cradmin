@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.views.temporary_file_upload_api import \
     UploadTemporaryFilesView

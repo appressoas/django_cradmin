@@ -1,7 +1,6 @@
 from django import http
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
-from django.views.generic import FormView
 from django import forms
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 
@@ -9,7 +8,7 @@ from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
-from django_cradmin.viewhelpers import crudbase
+from django_cradmin.viewhelpers import formbase
 from django_cradmin import crapp
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.widgets import filewidgets
@@ -163,14 +162,14 @@ class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(required=True)
 
 
-class ArchiveImageBulkAddView(create.CreateView):
+class ArchiveImageBulkAddView(formbase.FormView):
     template_name = 'django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html'
     form_class = BulkAddForm
 
-    def get_form_kwargs(self):
-        kwargs = super(ArchiveImageBulkAddView, self).get_form_kwargs()
-        del kwargs['instance']
-        return kwargs
+    def get_field_layout(self):
+        return [
+            'filecollectionid'
+        ]
 
     def upload_file_to_archive(self, temporaryfile):
         archiveimage = ArchiveImage(
