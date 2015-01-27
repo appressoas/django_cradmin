@@ -163,10 +163,16 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
 class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
-        widget=BulkFileUploadWidget(accept='image/png,image/jpeg,image/gif'),
-        label=_('Upload one or more files'),
+        widget=BulkFileUploadWidget(
+            accept='image/png,image/jpeg,image/gif',
+            dropbox_text=_('Upload images by dragging and dropping them here'),
+            invalid_filetype_message=_('You can only upload images'),
+            advanced_fileselectbutton_text=_('... or select images'),
+            simple_fileselectbutton_text=_('Select images ...')
+        ),
+        label=_('Upload at least one image'),
         help_text=_(
-            'Upload as many files as you like. '
+            'Upload as many images as you like. '
             'You can edit the name and description of the images after they have been uploaded.'),
         error_messages={
             'required': _('You must upload at least one file.')
@@ -185,8 +191,8 @@ class ArchiveImageBulkAddView(formbase.FormView):
     def get_buttons(self):
         return [
             BulkFileUploadSubmit(
-                'submit', _('Add files to the image archive'),
-                uploading_text=_('Uploading files'),
+                'submit', _('Add to the image archive'),
+                uploading_text=_('Uploading images'),
                 uploading_icon_cssclass='fa fa-spinner fa-spin'),
         ]
 
@@ -200,7 +206,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
 
     def get_formhelper(self):
         formhelper = super(ArchiveImageBulkAddView, self).get_formhelper()
-        # formhelper.form_show_labels = False
+        formhelper.form_show_labels = False
         return formhelper
 
     def upload_file_to_archive(self, temporaryfile):

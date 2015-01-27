@@ -8423,6 +8423,9 @@ table.table.cradmin-table-fluid tbody tr td {
   border-color: #c7c7c7;
   border-width: 2px;
 }
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+  display: none;
+}
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
   background-color: #dff0d8;
   color: #3c763d;
@@ -8434,6 +8437,12 @@ table.table.cradmin-table-fluid tbody tr td {
   color: #a94442;
   border-style: solid;
   border-color: #ebccd1;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+  display: block;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error .django-cradmin-bulkfileupload-dropbox-text {
+  display: none;
 }
 .django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
   text-align: center;

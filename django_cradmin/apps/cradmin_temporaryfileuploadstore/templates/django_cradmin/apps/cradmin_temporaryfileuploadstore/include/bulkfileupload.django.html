@@ -33,11 +33,28 @@
                         reject:'django-cradmin-bulkfileupload-dropbox-dragover-error',
                         delay:100}">
                 {% block droparea-advanced-content %}
-                    {% if singlemode %}
-                        {% trans "Upload a file by dragging and dropping it here" %}
-                    {% else %}
-                        {% trans "Upload files by dragging and dropping them here" %}
-                    {% endif %}
+                    <div class="django-cradmin-bulkfileupload-dropbox-text">
+                        {% block django-cradmin-bulkfileupload-dropbox-text %}
+                            {% if dropbox_text %}
+                                {{ dropbox_text }}
+                            {% else %}
+                                {% if singlemode %}
+                                    {% trans "Upload a file by dragging and dropping it here" %}
+                                {% else %}
+                                    {% trans "Upload files by dragging and dropping them here" %}
+                                {% endif %}
+                            {% endif %}
+                        {% endblock django-cradmin-bulkfileupload-dropbox-text %}
+                    </div>
+                    <div class="django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage">
+                        {% block droparea-advanced-content-invalid-filetype-errormessage %}
+                            {% if invalid_filetype_message %}
+                                {{ invalid_filetype_message }}
+                            {% else %}
+                                {% trans "Invalid filetype" %}
+                            {% endif %}
+                        {% endblock droparea-advanced-content-invalid-filetype-errormessage %}
+                    </div>
                 {% endblock droparea-advanced-content %}
             </div>
         {% endblock droparea-advanced %}
@@ -52,10 +69,14 @@
                         {% endif %}
                         class="btn-link django-cradmin-bulkfileupload-advanced-fileselectbutton">
                     {% block fileselectbutton-advanced-content %}
-                        {% if singlemode %}
-                            {% trans "... or select a file" %}
+                        {% if advanced_fileselectbutton_text %}
+                            {{ advanced_fileselectbutton_text }}
                         {% else %}
-                            {% trans "... or select files" %}
+                            {% if singlemode %}
+                                {% trans "... or select a file" %}
+                            {% else %}
+                                {% trans "... or select files" %}
+                            {% endif %}
                         {% endif %}
                     {% endblock fileselectbutton-advanced-content %}
                 </button>
@@ -72,10 +93,14 @@
                         multiple="{% if singlemode %}false{% else %}true{% endif %}"
                         class="btn btn-default btn-block django-cradmin-bulkfileupload-simple-button">
                     {% block fileselectbutton-simple-content %}
-                        {% if singlemode %}
-                            {% trans "Select a file" %} ...
+                        {% if simple_fileselectbutton_text %}
+                            {{ simple_fileselectbutton_text }}
                         {% else %}
-                            {% trans "Select files" %} ...
+                            {% if singlemode %}
+                                {% trans "Select a file ..." %}
+                            {% else %}
+                                {% trans "Select files ..." %}
+                            {% endif %}
                         {% endif %}
                     {% endblock fileselectbutton-simple-content %}
                 </button>
