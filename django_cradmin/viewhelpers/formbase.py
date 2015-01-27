@@ -15,6 +15,10 @@ class FormViewMixin(object):
     #: Defaults to :obj:`django_cradmin.crapp.INDEXVIEW_NAME`.
     listing_viewname = crapp.INDEXVIEW_NAME
 
+    #: Used to add custom attributes like angularjs directives to the form.
+    #: See :meth:`.get_form_attributes`.
+    form_attributes = {}
+
     def get_field_layout(self):
         """
         Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
@@ -86,6 +90,21 @@ class FormViewMixin(object):
             layout.Div(*self.get_buttons(), css_class="django_cradmin_submitrow")
         ]
 
+    def get_form_attributes(self):
+        """
+        You can add custom attributes to the form via this method.
+
+        This is set as the ``attrs``-attribute of the crispy FormHelper
+        created in :meth:`.get_formhelper`.
+
+        Defaults to :obj:`.form_attributes`.
+
+        Returns:
+            A dictionary to set any kind of form attributes. Underscores in
+            keys are translated into hyphens.
+        """
+        return self.form_attributes
+
     def get_formhelper(self):
         """
         Get a :class:`crispy_forms.helper.FormHelper`.
@@ -102,6 +121,7 @@ class FormViewMixin(object):
         layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
         helper.layout = layout.Layout(*layoutargs)
         helper.form_action = self.request.get_full_path()
+        helper.attrs = self.get_form_attributes()
         return helper
 
     def get_context_data(self, **kwargs):
