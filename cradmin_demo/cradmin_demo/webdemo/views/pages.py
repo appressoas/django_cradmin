@@ -55,13 +55,20 @@ class ArchiveImagePreviewColumn(objecttable.ImagePreviewColumn):
             return None
 
 
+class IntroColumn(objecttable.TruncatecharsPlainTextColumn):
+    modelfield = 'intro'
+    maxlength = 40
+    allcells_css_classes = ['hidden-xs']
+
+
+
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     enable_previews = True
     columns = [
         ArchiveImagePreviewColumn,
         TitleColumn,
-        'intro'
+        IntroColumn,
     ]
     searchfields = ['title', 'intro']
 
