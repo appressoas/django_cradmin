@@ -8,8 +8,14 @@
     font-size: @cradmin-bulkfileupload-dropbox-font-size;
     padding: @cradmin-bulkfileupload-dropbox-padding;
     text-align: @cradmin-bulkfileupload-dropbox-text-align;
+    border-style: @cradmin-bulkfileupload-dropbox-border-style;
+    border-color: @cradmin-bulkfileupload-dropbox-border-color;
+    border-width: @cradmin-bulkfileupload-dropbox-border-width;
     &.django-cradmin-bulkfileupload-dropbox-dragover {
-      background-color: #fff;
+      background-color: @cradmin-bulkfileupload-dropbox-hover-bg;
+      color: @cradmin-bulkfileupload-dropbox-hover-color;
+      border-style: @cradmin-bulkfileupload-dropbox-hover-border-style;
+      border-color: @cradmin-bulkfileupload-dropbox-hover-border-color;
     }
   }
 
@@ -33,6 +39,7 @@
   }
 
   .django-cradmin-bulkfileupload-progress {
+    background: @cradmin-bulkfileupload-bg;
     .django-cradmin-bulkfileupload-progress-item {
       color: @cradmin-bulkfileupload-progress-item-color;
       font-weight: @cradmin-bulkfileupload-progress-item-font-weight;
@@ -92,4 +99,8 @@
       }
     }
   }
+}
+
+.django-cradmin-form .cradmin-focusfield .form-group .controls .django-cradmin-bulkfileupload {
+//  background: @cradmin-bulkfileupload-bg;
 }

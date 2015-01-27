@@ -1,4 +1,4 @@
-{% extends "django_cradmin/base.django.html" %}
+{% extends "django_cradmin/viewhelpers/formview_base.django.html" %}
 {% load i18n %}
 {% load static %}
 {% load crispy_forms_tags %}
@@ -7,26 +7,21 @@
     {% trans "Bulk upload archive images" %}
 {% endblock title %}
 
+{% block pageheader-inner %}
+    <h1>
+        {% trans "Bulk upload archive images" %}
+    </h1>
+{% endblock pageheader-inner %}
+
+
+{% comment %}
 {% block content %}
-    <div class="page-header">
-        <div class="container-fluid">
-            {% block pageheader %}
-                <h1>
-                    {% trans "Bulk upload archive images" %}
-                </h1>
-            {% endblock pageheader %}
-        </div>
-    </div>
-
-
     <div class="container-fluid">
-        {% crispy form formhelper %}
 
-        {% comment %}
         <form action="{{ request.path }}"
                 django-cradmin-bulkfileupload-form
                 method="post"
-                class="django_cradmin_form django-cradmin-bulkfileupload-form">
+                class="django-cradmin-form django-cradmin-bulkfileupload-form">
             {% csrf_token %}
 
 
@@ -45,7 +40,6 @@
                 </button>
             </div>
         </form>
-        {% endcomment %}
     </div>
-
 {% endblock content %}
+{% endcomment %}
