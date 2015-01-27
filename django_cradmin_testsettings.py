@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'django_cradmin',
     'django_cradmin.django_cradmin_testapp',
     'django_cradmin.apps.cradmin_imagearchive',
+    'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.tests.sortable.cradmin_sortable_testapp',
     'django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp',
 

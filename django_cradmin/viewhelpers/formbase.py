@@ -19,6 +19,12 @@ class FormViewMixin(object):
     #: See :meth:`.get_form_attributes`.
     form_attributes = {}
 
+    #: A list of extra form css classes. See :meth:`.get_extra_form_css_classes`.
+    extra_form_css_classes = []
+
+    #: The ID to set on the DOM element for the form. See :meth:`.get_form_id`.
+    form_id = None
+
     def get_field_layout(self):
         """
         Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
@@ -105,6 +111,36 @@ class FormViewMixin(object):
         """
         return self.form_attributes
 
+    def get_form_css_classes(self):
+        """
+        Returns list of css classes set on the form. You normally
+        want to override :meth:`.get_extra_form_css_classes` instead
+        of this method unless you want to provide completely custom
+        form styles.
+        """
+        form_css_classes = [
+            'django_cradmin_form'
+        ]
+        form_css_classes.extend(self.get_extra_form_css_classes())
+        return form_css_classes
+
+    def get_extra_form_css_classes(self):
+        """
+        Returns list of extra form css classes. These classes are added to
+        the default list of css classes in :meth:`.get_form_css_classes`.
+
+        Defaults to :obj:`.extra_form_css_classes`.
+        """
+        return self.extra_form_css_classes
+
+    def get_form_id(self):
+        """
+        Returns the ID to set on the DOM element for the form.
+
+        Defaults to :obj:`.form_id`.
+        """
+        return self.form_id
+
     def get_formhelper(self):
         """
         Get a :class:`crispy_forms.helper.FormHelper`.
@@ -117,10 +153,13 @@ class FormViewMixin(object):
         - :meth:`.get_buttons` (or perhaps :meth:`.get_button_layout`)
         """
         helper = FormHelper()
-        helper.form_class = 'django_cradmin_form'
+        helper.form_class = ' '.join(self.get_form_css_classes())
         layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
         helper.layout = layout.Layout(*layoutargs)
         helper.form_action = self.request.get_full_path()
+        form_id = self.get_form_id()
+        if form_id:
+            helper.form_id = form_id
         helper.attrs = self.get_form_attributes()
         return helper
 

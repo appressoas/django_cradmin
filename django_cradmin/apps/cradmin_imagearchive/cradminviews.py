@@ -1,10 +1,10 @@
 from django import http
-from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.crispylayouts import BulkFileUploadSubmit
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
-from django_cradmin.crispylayouts import PrimarySubmit
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -160,28 +160,13 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
     """
 
 
-class BulkFileUploadWidget(forms.Widget):
-    template_name = 'django_cradmin/apps/cradmin_temporaryfileuploadstore/bulkfileupload-crispy-field.django.html'
-
-    def get_template_context_data(self, **kwargs):
-        """
-        Can be overridden to adjust the template context data.
-        """
-        return kwargs
-
-    def render(self, name, value, attrs=None):
-        if value is None:
-            value = ''
-        return render_to_string(self.template_name, self.get_template_context_data(
-            fieldname=name,
-            fieldvalue=value,
-            widgetattrs=attrs))
-
-
 class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
-        widget=BulkFileUploadWidget())
+        widget=BulkFileUploadWidget(),
+        error_messages={
+            'required': _('You must upload at least one file.')
+        })
 
 
 class ArchiveImageBulkAddView(formbase.FormView):
@@ -190,10 +175,14 @@ class ArchiveImageBulkAddView(formbase.FormView):
     form_attributes = {
         'django-cradmin-bulkfileupload-form': ''
     }
+    form_id = 'django_cradmin_imagearchive_bulkadd_form'
 
     def get_buttons(self):
         return [
-            PrimarySubmit('submit', _('Add files to the image archive')),
+            BulkFileUploadSubmit(
+                'submit', _('Add files to the image archive'),
+                uploading_text=_('Uploading files'),
+                uploading_icon_cssclass='fa fa-spinner fa-spin'),
         ]
 
     def get_field_layout(self):

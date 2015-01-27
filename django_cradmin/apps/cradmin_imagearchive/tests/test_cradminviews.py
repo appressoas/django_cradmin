@@ -177,20 +177,24 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('.django-cradmin-bulkfileupload-form'))
+        self.assertTrue(selector.exists('#django_cradmin_imagearchive_bulkadd_form'))
         self.assertTrue(selector.exists('input[type=hidden][name=filecollectionid]'))
+        self.assertTrue(selector.exists('#div_id_filecollectionid'))
 
-    # def test_post_no_filecollectionid(self):
-    #     request = self.factory.post('/test', {})
-    #     request.cradmin_instance = mock.MagicMock()
-    #     request.cradmin_app = mock.MagicMock()
-    #     # request.cradmin_app.reverse_appurl.return_value = '/success'
-    #     request.cradmin_role = TstRole.objects.create()
-    #
-    #     self.assertEqual(ArchiveImage.objects.count(), 0)
-    #     response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-    #     response.render()
-    #     print response
+    def test_post_no_filecollectionid(self):
+        request = self.factory.post('/test', {})
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.cradmin_role = TstRole.objects.create()
+
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertTrue(selector.exists('#div_id_filecollectionid.has-error'))
+        self.assertIn(
+            'You must upload at least one file.',
+            selector.one('#div_id_filecollectionid').alltext_normalized)
 
     def test_post_single_image(self):
         testimage = create_image(200, 100)
