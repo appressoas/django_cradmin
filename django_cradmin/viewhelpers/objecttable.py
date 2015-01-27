@@ -47,6 +47,18 @@ class Column(object):
     #: can override this to make it available by another name.
     context_value_name = None
 
+    #: List of css classes to add to the header cell in this column.
+    #: See :meth:`.get_headercell_css_classes`.
+    headercell_css_classes = []
+
+    #: List of css classes to add to all the non-header cells in this column.
+    #: See :meth:`.get_normalcells_css_classes`.
+    normalcells_css_classes = []
+
+    #: List of css classes to add to both normal cells and the header cell in this column.
+    #: See :meth:`.get_allcells_css_classes`.
+    allcells_css_classes = []
+
     def __init__(self, view, columnindex):
         self.view = view
         self.columnindex = columnindex
@@ -77,7 +89,7 @@ class Column(object):
         Defaults to setting :meth:`.get_column_width` as a css style.
 
         You normally want to avoid setting styles with this and use
-        :meth:`.get_headercell_css_class` instead, but this is provided for
+        :meth:`.get_headercell_css_class_string` instead, but this is provided for
         those cases where setting the style attribute is the only decent solution.
         """
         column_width = self.get_column_width()
@@ -86,16 +98,54 @@ class Column(object):
         else:
             return ''
 
-    def get_headercell_css_class(self):
+    def get_headercell_css_classes(self):
+        """
+        Get the css classes of the header cell in this column.
+
+        Returns:
+            A list of css classes. Defaults to :obj:`.headercell_css_classes`.
+        """
+        return self.headercell_css_classes
+
+    def get_headercell_css_class_string(self):
         """
         Get the css class of the header cell of the column.
         Defaults to setting the ``objecttableview-sortable-header``
         class if :meth:`.is_sortable`.
         """
+        css_classes = self.get_headercell_css_classes() + self.get_allcells_css_classes()
         if self.is_sortable():
-            return 'objecttableview-sortable-header'
-        else:
-            return ''
+            css_classes.append('objecttableview-sortable-header')
+        return ' '.join(css_classes)
+
+    def get_normalcells_css_classes(self):
+        """
+        Get the css classes of all the normal (non-header) cells in this
+        column.
+
+        Returns:
+            A list of css classes. Defaults to :obj:`.normalcells_css_classes`.
+        """
+        return self.normalcells_css_classes
+
+    def get_normalcell_css_class_string(self):
+        """
+        Get the css class of the header cell of the column.
+        You normally do not override this. Override
+        :meth:`.get_normalcells_css_classes` instead.
+        """
+        css_classes = self.get_normalcells_css_classes() + self.get_allcells_css_classes()
+        return ' '.join(css_classes)
+
+    def get_allcells_css_classes(self):
+        """
+        Get css classes that should be added to all cells in this
+        column, including the header cell.
+
+        Returns:
+            A list of css classes. Defaults to :obj:`.allcells_css_classes`.
+        """
+        return self.allcells_css_classes
 
     def reverse_appurl(self, name, args=[], kwargs={}):
         return self.view.request.cradmin_app.reverse_appurl(name, args=args, kwargs=kwargs)
@@ -108,7 +158,7 @@ class Column(object):
 
     def get_context_data(self, obj):
         """
-        Get context data for rendering the cell (see :meth:`.render_cell`.
+        Get context data for rendering the cell (see :meth:`.render_cell_content`.
         """
         value = self.render_value(obj)
         context = {
@@ -121,7 +171,7 @@ class Column(object):
             context[self.context_value_name] = value
         return context
 
-    def render_cell(self, obj):
+    def render_cell_content(self, obj):
         """
         Render the cell using the template specifed in :obj:`.template_name`.
         """
@@ -738,7 +788,7 @@ class ObjectTableView(ListView):
     def __create_row(self, obj):
         return {
             'object': obj,
-            'cells': [column.render_cell(obj) for column in self._get_columnobjects()]
+            'cells': [(column, column.render_cell_content(obj)) for column in self._get_columnobjects()]
         }
 
     def __iter_table(self, object_list):

@@ -43,6 +43,12 @@ class NameSelectColumn(objecttable.UseThisActionColumn):
         ]
 
 
+class DescriptionColumn(objecttable.TruncatecharsPlainTextColumn):
+    modelfield = 'description'
+    maxlength = 80
+    allcells_css_classes = ['hidden-xs']
+
+
 class ImageColumn(objecttable.ImagePreviewColumn):
     modelfield = 'image'
     preview_width = 100
@@ -68,7 +74,7 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
     columns = [
         ImageColumn,
         NameColumn,
-        'description'
+        DescriptionColumn,
     ]
     searchfields = ['name', 'description', 'file_extension']
 
