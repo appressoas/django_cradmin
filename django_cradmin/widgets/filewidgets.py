@@ -13,6 +13,10 @@ class ImageWidget(forms.ClearableFileInput):
     ``clearable`` argument for ``__init__``.
     """
     template_name = 'django_cradmin/filewidgets/imagewidget.django.html'
+
+    #: Comma separated string of filetypes that we should accept.
+    #: Added to the file upload field as the accept attribute.
+    #: Defaults to ``"image/png,image/jpeg,image/gif"``.
     accept = 'image/png,image/jpeg,image/gif'
 
     def __init__(self, attrs=None, template_name=None, clearable=True,
@@ -52,6 +56,11 @@ class FileWidget(forms.ClearableFileInput):
     ``clearable`` argument for ``__init__``.
     """
     template_name = 'django_cradmin/filewidgets/filewidget.django.html'
+
+    #: Comma separated string of filetypes that we should accept.
+    #: Added to the file upload field as the accept attribute.
+    #: Defaults to ``None``, which means that all filetypes are allowed.
+    #: Example: ``"application/pdf,application/msword,text/plain"``.
     accept = None
 
     def __init__(self, attrs=None, template_name=None, clearable=True):
