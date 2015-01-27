@@ -114,6 +114,38 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEqual(uploadedfile2.file.read(), 'Test2')
         self.assertFalse(os.path.exists(uploadedfile1_physical_file_path))
 
+    def test_post_accept_ok(self):
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'accept': 'text/plain,application/pdf'
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+        collectionid = responsedata['collectionid']
+
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+        self.assertEquals(collection.accept, 'text/plain,application/pdf')
+        self.assertEquals(collection.files.count(), 1)
+        uploadedfile = collection.files.first()
+        self.assertEqual(uploadedfile.mimetype, 'text/plain')
+
+        self.assertEquals(responsedata['temporaryfiles'][0]['mimetype'], 'text/plain')
+
+    def test_post_accept_invalid_single_file(self):
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'accept': 'application/pdf'
+        })
+        request.user = self.testuser
+        self.assertEquals(TemporaryFileCollection.objects.count(), 0)
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 400)
+        responsedata = json.loads(response.content)
+        self.assertEquals(TemporaryFileCollection.objects.count(), 0)
+        self.assertEquals(responsedata['file'][0]['code'], 'unsupported_mimetype')
+
     def test_post_form_invalid_no_file(self):
         request = self.factory.post('/test')
         request.user = self.testuser

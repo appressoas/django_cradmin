@@ -1,8 +1,12 @@
+import fnmatch
+import mimetypes
 import os
 import time
 import uuid
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 class TemporaryFileCollectionQuerySet(models.QuerySet):
@@ -16,6 +20,21 @@ class TemporaryFileCollectionManager(models.Manager):
 
     def filter_for_user(self, user):
         return self.get_queryset().filter_for_user(user)
+
+
+def html_input_accept_match(accept, mimetype, filename):
+    filename = filename.lower()
+    for pattern in accept.split(','):
+        if '/' in pattern:
+            if mimetype and fnmatch.fnmatch(mimetype, pattern):
+                return True
+        elif pattern.startswith('.'):
+            if os.path.splitext(filename)[1] == pattern:
+                return True
+        else:
+            if fnmatch.fnmatch(filename, pattern):
+                return True
+    return False
 
 
 class TemporaryFileCollection(models.Model):
@@ -50,10 +69,23 @@ class TemporaryFileCollection(models.Model):
                   'you should always delete files explicitly as part of the '
                   'file upload process.'
     )
+    accept = models.TextField(
+        null=False, blank=True, default='',
+        help_text='An html input field accept attribute formatted string. '
+                  'This is validated by the API on upload. Note that this leaves '
+                  'the possibility for users to send their a custom accept value, '
+                  'so you should not rely on this to ensure you never get the wrong filetypes.'
+    )
 
     def clear_files(self):
         for temporaryfile in self.files.all():
             temporaryfile.delete_object_and_file()
+
+    def is_supported_filetype(self, mimetype, filename):
+        if self.accept:
+            return html_input_accept_match(self.accept, mimetype, filename)
+        else:
+            return True
 
 
 def temporary_file_upload_to(instance, filename):
@@ -80,7 +112,18 @@ class TemporaryFile(models.Model):
     filename = models.TextField()
     file = models.FileField(
         upload_to=temporary_file_upload_to)
+    mimetype = models.TextField(null=False, blank=True, default='')
 
     def delete_object_and_file(self):
         self.file.delete()
         self.delete()
+
+    def set_mimetype_from_filename(self):
+        self.mimetype = mimetypes.guess_type(self.filename)[0]
+
+    def clean(self):
+        if not self.mimetype and self.filename:
+            self.set_mimetype_from_filename()
+        if self.collection_id is not None:
+            if not self.collection.is_supported_filetype(self.mimetype, self.filename):
+                raise ValidationError(_('Unsupported filetype.'), code='unsupported_mimetype')

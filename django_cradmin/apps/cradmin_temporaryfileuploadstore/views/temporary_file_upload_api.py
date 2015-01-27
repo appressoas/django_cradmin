@@ -1,12 +1,15 @@
 import json
+import mimetypes
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.views.generic import FormView
+from django.utils.translation import ugettext_lazy as _
 
-# from django.utils.translation import ugettext_lazy as _
 from django import forms
 from multiupload.fields import MultiFileField
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile, \
+    html_input_accept_match
 
 
 class FileUploadForm(forms.Form):
@@ -25,6 +28,7 @@ class FileUploadForm(forms.Form):
             ('singlefile', 'Single file')
         ]
     )
+    accept = forms.CharField(required=False)
 
 
 class FileDeleteForm(forms.Form):
@@ -36,11 +40,13 @@ class UploadTemporaryFilesView(FormView):
     form_class = FileUploadForm
     http_method_names = ['post', 'delete']
 
-    def create_collection(self, collectionid, minutes_to_live):
+    def create_collection(self, minutes_to_live, accept):
         collection = TemporaryFileCollection(
             user=self.request.user)
         if minutes_to_live is not None:
             collection.minutes_to_live = minutes_to_live
+        if accept is not None:
+            collection.accept = accept
         collection.full_clean()
         collection.save()
         return collection
@@ -48,9 +54,9 @@ class UploadTemporaryFilesView(FormView):
     def get_existing_collection(self, collectionid):
         return TemporaryFileCollection.objects.filter(user=self.request.user).get(id=collectionid)
 
-    def create_or_get_collection_id(self, collectionid, minutes_to_live):
+    def create_or_get_collection_id(self, collectionid, minutes_to_live, accept):
         if collectionid is None:
-            return self.create_collection(collectionid, minutes_to_live)
+            return self.create_collection(minutes_to_live=minutes_to_live, accept=accept)
         else:
             return self.get_existing_collection(collectionid)
 
@@ -58,34 +64,68 @@ class UploadTemporaryFilesView(FormView):
         if mode == 'singlefile':
             collection.clear_files()
         temporaryfile = TemporaryFile(collection=collection, filename=formfile.name)
-        temporaryfile.file.save(formfile.name, formfile)
+        temporaryfile.file.save(formfile.name, formfile, save=False)
+        temporaryfile.full_clean()
+        temporaryfile.save()
         return temporaryfile
 
     def form_invalid(self, form):
         return self.__invalid_form_response(form)
 
+    def everything_valid(self, collection, form):
+        uploadedfiles_data = []
+        for formfile in form.cleaned_data['file']:
+            temporaryfile = self.save_uploaded_file(
+                collection=collection,
+                formfile=formfile,
+                mode=form.cleaned_data['mode'])
+            uploadedfiles_data.append({
+                'id': temporaryfile.id,
+                'filename': temporaryfile.filename,
+                'mimetype': temporaryfile.mimetype
+            })
+        return self.json_response(json.dumps({
+            'collectionid': collection.id,
+            'temporaryfiles': uploadedfiles_data
+        }))
+
+    def validate_all_files(self, accept, form):
+        if not accept:
+            return
+        for formfile in form.cleaned_data['file']:
+            if not html_input_accept_match(
+                    accept=accept,
+                    mimetype=mimetypes.guess_type(formfile.name)[0],
+                    filename=formfile.name):
+                raise ValidationError(
+                    _('%(filename)s: Unsupported filetype.') % {'filename': formfile.name},
+                    code='unsupported_mimetype')
+
     def form_valid(self, form):
         collectionid = form.cleaned_data['collectionid']
         minutes_to_live = form.cleaned_data['minutes_to_live']
+        accept = form.cleaned_data['accept']
         try:
-            collection = self.create_or_get_collection_id(collectionid, minutes_to_live)
-        except TemporaryFileCollection.DoesNotExist:
-            return self.__collection_does_not_exist_response(collectionid)
-        else:
-            uploadedfiles_data = []
-            for formfile in form.cleaned_data['file']:
-                temporaryfile = self.save_uploaded_file(
-                    collection=collection,
-                    formfile=formfile,
-                    mode=form.cleaned_data['mode'])
-                uploadedfiles_data.append({
-                    'id': temporaryfile.id,
-                    'filename': temporaryfile.filename
-                })
+            self.validate_all_files(accept=accept, form=form)
+        except ValidationError as e:
             return self.json_response(json.dumps({
-                'collectionid': collection.id,
-                'temporaryfiles': uploadedfiles_data
-            }))
+                'file': [
+                    {
+                        'message': e.message,
+                        'code': e.code
+                    }
+                ]
+            }), status=400)
+        else:
+            try:
+                collection = self.create_or_get_collection_id(
+                    collectionid=collectionid,
+                    minutes_to_live=minutes_to_live,
+                    accept=accept)
+            except TemporaryFileCollection.DoesNotExist:
+                return self.__collection_does_not_exist_response(collectionid)
+            else:
+                return self.everything_valid(collection=collection, form=form)
 
     def json_response(self, data, status=200):
         return HttpResponse(
