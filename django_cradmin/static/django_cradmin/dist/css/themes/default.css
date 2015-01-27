@@ -8259,10 +8259,16 @@ table.table.cradmin-table-fluid tbody tr td {
   padding: 0;
   margin: 0;
 }
+#objecttableview-table tbody tr td .objecttable-cellbuttons .btn {
+  margin: 0 5px 10px 0;
+}
 #objecttableview-table tbody tr td .objecttable-cellbuttons .btn-sm {
   text-transform: uppercase;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
+  #objecttableview-table tbody tr td .objecttable-cellbuttons .btn {
+    margin: 0 0 8px 0;
+  }
   #objecttableview-table tbody tr td .objecttable-cellbuttons .btn-sm {
     padding: 3px 10px;
   }
