@@ -80,22 +80,11 @@
           // Actual help blocks
           p.help-block {
             position: relative;
-            padding-left: (@cradmin-bodypadding-xs + 22px);
-            padding-right: @cradmin-bodypadding-xs;
-            .fa {
-              padding-left: @cradmin-bodypadding-xs;
-              position: absolute;
-              left: 0;
-              top: 3px;
-              font-size: (@font-size-base + 4px);
-            }
-            @media (min-width: @screen-sm-min) {
-              padding-left: (@cradmin-bodypadding + 22px);
-              padding-right: @cradmin-bodypadding;
-              .fa {
-                padding-left: @cradmin-bodypadding;
-              }
-            }
+            margin: 0;
+            padding-top: 5px;
+            padding-bottom: 15px;
+            .body-side-padding();
+
             @media (min-width: @screen-md-min) {
               display: block;
               position: absolute;
@@ -105,13 +94,8 @@
               overflow: hidden;
               padding-left: 22px;
               padding-right: 20px;
-              .fa {
-                padding-left: 0;
-                // position: absolute;
-                // left: 0;
-                // top: 3px;
-                // font-size: (@font-size-base + 4px);
-              }
+              padding-top: 0;
+              padding-bottom: 0;
             }
             @media (min-width: @screen-lg-min) {
               left: 825px;

@@ -7757,23 +7757,16 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
 }
 .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .form-group .controls p.help-block {
   position: relative;
-  padding-left: 37px;
-  padding-right: 15px;
-}
-.django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .form-group .controls p.help-block .fa {
+  margin: 0;
+  padding-top: 5px;
+  padding-bottom: 15px;
   padding-left: 15px;
-  position: absolute;
-  left: 0;
-  top: 3px;
-  font-size: 20px;
+  padding-right: 15px;
 }
 @media (min-width: 768px) {
   .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .form-group .controls p.help-block {
-    padding-left: 72px;
-    padding-right: 50px;
-  }
-  .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .form-group .controls p.help-block .fa {
     padding-left: 50px;
+    padding-right: 50px;
   }
 }
 @media (min-width: 992px) {
@@ -7786,9 +7779,8 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
     overflow: hidden;
     padding-left: 22px;
     padding-right: 20px;
-  }
-  .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .form-group .controls p.help-block .fa {
-    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 @media (min-width: 1200px) {
