@@ -7,7 +7,15 @@
 
 
 .django-cradmin-form-wrapper {
-  padding-bottom: 80px;
+
+  // Add some padding below the form. This is to avoid that the
+  // floating submitrow overlaps anything in the form. It is not perfect,
+  // but it works as long as there are not too many items in the submit row.
+  padding-bottom: 150px;
+  @media (min-width: @screen-sm-min) {
+    padding-bottom: 80px;
+  }
+
   .django-cradmin-form {
     background-color: @cradmin-form-bg;
     padding-bottom: 0;

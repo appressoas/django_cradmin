@@ -7641,7 +7641,12 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   background-color: #fff;
 }
 .django-cradmin-form-wrapper {
-  padding-bottom: 80px;
+  padding-bottom: 150px;
+}
+@media (min-width: 768px) {
+  .django-cradmin-form-wrapper {
+    padding-bottom: 80px;
+  }
 }
 .django-cradmin-form-wrapper .django-cradmin-form {
   background-color: #eeeeee;
@@ -8270,11 +8275,11 @@ table.table.cradmin-table-fluid tbody tr td {
 .django_cradmin_submitrow {
   position: fixed;
   z-index: 10000;
-  bottom: 0px;
+  bottom: 0;
   left: 15px;
   right: 15px;
-  background-color: #333;
-  padding: 8px;
+  background-color: #333333;
+  padding: 8px 8px 0 8px;
   border-radius: 3px 3px 0 0;
 }
 .django_cradmin_submitrow.django_cradmin_submitrow_hidden {
@@ -8297,6 +8302,7 @@ table.table.cradmin-table-fluid tbody tr td {
   font-size: 14px;
   line-height: 18px;
   padding: 10px 12px;
+  margin-bottom: 8px;
 }
 .django_cradmin_submitrow .btn.btn-default {
   background-color: #808080;
