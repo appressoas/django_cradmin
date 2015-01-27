@@ -8429,6 +8429,12 @@ table.table.cradmin-table-fluid tbody tr td {
   border-style: solid;
   border-color: #d6e9c6;
 }
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error {
+  background-color: #f2dede;
+  color: #a94442;
+  border-style: solid;
+  border-color: #ebccd1;
+}
 .django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
   text-align: center;
 }

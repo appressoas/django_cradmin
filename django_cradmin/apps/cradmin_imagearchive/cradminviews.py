@@ -163,7 +163,7 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
 class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
-        widget=BulkFileUploadWidget(),
+        widget=BulkFileUploadWidget(accept='image/png,image/jpeg,image/gif'),
         label=_('Upload one or more files'),
         help_text=_(
             'Upload as many files as you like. '

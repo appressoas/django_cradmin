@@ -23,11 +23,14 @@
             <div ng-file-drop
                     ng-model="cradminBulkFileUploadFiles"
                     multiple="{% if singlemode %}false{% else %}true{% endif %}"
+                    {% if accept %}
+                        accept="{{ accept }}"
+                    {% endif %}
                     allow-dir="false"
                     class="django-cradmin-bulkfileupload-dropbox"
                     drag-over-class="{
                         accept:'django-cradmin-bulkfileupload-dropbox-dragover',
-                        reject:'django-cradmin-bulkfileupload-dropbox-dragover-err',
+                        reject:'django-cradmin-bulkfileupload-dropbox-dragover-error',
                         delay:100}">
                 {% block droparea-advanced-content %}
                     {% if singlemode %}
@@ -44,6 +47,9 @@
                         type="button"
                         ng-model="cradminBulkFileUploadFiles"
                         multiple="{% if singlemode %}false{% else %}true{% endif %}"
+                        {% if accept %}
+                            accept="{{ accept }}"
+                        {% endif %}
                         class="btn-link django-cradmin-bulkfileupload-advanced-fileselectbutton">
                     {% block fileselectbutton-advanced-content %}
                         {% if singlemode %}
