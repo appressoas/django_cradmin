@@ -145,6 +145,47 @@ class TestUploadTemporaryFilesView(TestCase):
         responsedata = json.loads(response.content)
         self.assertEquals(TemporaryFileCollection.objects.count(), 0)
         self.assertEquals(responsedata['file'][0]['code'], 'unsupported_mimetype')
+        self.assertEquals(responsedata['file'][0]['message'], u'testfile1.txt: Unsupported filetype.')
+
+    def test_post_accept_invalid_existing_collection(self):
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.txt')
+        temporaryfile.save()
+
+        request = self.factory.post('/test', {
+            'collectionid': collection.id,
+            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'accept': 'application/pdf'
+        })
+        request.user = self.testuser
+        self.assertEquals(TemporaryFileCollection.objects.count(), 1)
+        self.assertEquals(collection.files.count(), 1)
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 400)
+        responsedata = json.loads(response.content)
+        self.assertEquals(TemporaryFileCollection.objects.count(), 1)
+        self.assertEquals(collection.files.count(), 1)
+        self.assertEquals(responsedata['file'][0]['code'], 'unsupported_mimetype')
+        self.assertEquals(responsedata['file'][0]['message'], u'testfile1.txt: Unsupported filetype.')
+
+    def test_post_accept_invalid_multiple_files(self):
+        request = self.factory.post('/test', {
+            'file': [
+                SimpleUploadedFile('testfile1.pdf', 'Test1'),
+                SimpleUploadedFile('testfile2.txt', 'Test2'),
+            ],
+            'accept': 'application/pdf'
+        })
+        request.user = self.testuser
+        self.assertEquals(TemporaryFileCollection.objects.count(), 0)
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 400)
+        responsedata = json.loads(response.content)
+        self.assertEquals(TemporaryFileCollection.objects.count(), 0)
+        self.assertEquals(responsedata['file'][0]['code'], 'unsupported_mimetype')
+        self.assertEquals(responsedata['file'][0]['message'], u'testfile2.txt: Unsupported filetype.')
 
     def test_post_form_invalid_no_file(self):
         request = self.factory.post('/test')
