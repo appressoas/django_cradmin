@@ -1,11 +1,15 @@
+from django import http
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
-from django.views.generic import TemplateView
+from django.views.generic import FormView
+from django import forms
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
+from django_cradmin.viewhelpers import crudbase
 from django_cradmin import crapp
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.widgets import filewidgets
@@ -155,8 +159,47 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
     """
 
 
-class ArchiveImageBulkAddView(TemplateView):
+class BulkAddForm(forms.Form):
+    filecollectionid = forms.IntegerField(required=True)
+
+
+class ArchiveImageBulkAddView(create.CreateView):
     template_name = 'django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html'
+    form_class = BulkAddForm
+
+    def get_form_kwargs(self):
+        kwargs = super(ArchiveImageBulkAddView, self).get_form_kwargs()
+        del kwargs['instance']
+        return kwargs
+
+    def upload_file_to_archive(self, temporaryfile):
+        archiveimage = ArchiveImage(
+            role=self.request.cradmin_role,
+            name=temporaryfile.filename)
+        archiveimage.clean()
+        archiveimage.save()
+        archiveimage.image.save(temporaryfile.filename, temporaryfile.file)
+        archiveimage.full_clean()
+        temporaryfile.delete_object_and_file()
+
+    def upload_files_to_archive(self, temporaryfilecollection):
+        for temporaryfile in temporaryfilecollection.files.all():
+            self.upload_file_to_archive(temporaryfile)
+
+    def get_collectionqueryset(self):
+        return TemporaryFileCollection.objects\
+            .filter_for_user(self.request.user)\
+            .prefetch_related('files')
+
+    def form_valid(self, form):
+        collectionid = form.cleaned_data['filecollectionid']
+        try:
+            temporaryfilecollection = self.get_collectionqueryset().get(id=collectionid)
+        except TemporaryFileCollection.DoesNotExist:
+            return http.HttpResponseNotFound()
+        else:
+            self.upload_files_to_archive(temporaryfilecollection)
+            return http.HttpResponseRedirect(self.get_success_url())
 
 
 class App(crapp.App):

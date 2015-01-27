@@ -2,6 +2,10 @@
 {% load i18n %}
 {% load static %}
 
+{% block title %}
+    {% trans "Bulk upload archive images" %}
+{% endblock title %}
+
 {% block content %}
     <div class="page-header">
         <div class="container-fluid">
@@ -16,7 +20,7 @@
         <form action="{{ request.path }}"
                 django-cradmin-bulkfileupload-form
                 method="post" enctype="multipart/form-data"
-                class="django_cradmin_form">
+                class="django_cradmin_form django-cradmin-bulkfileupload-form">
             {% csrf_token %}
 
             {% include "django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html" with hiddenfieldname='filecollectionid' %}

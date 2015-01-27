@@ -85,11 +85,11 @@ class ArchiveImage(models.Model):
         verbose_name_plural = _('archive images')
 
     def clean(self):
-        if self.name:
-            self.file_extension = os.path.splitext(self.image.name)[1]
         if not self.name:
             if self.image:
                 self.name = os.path.splitext(posixpath.basename(self.image.name))[0]
+        if self.name:
+            self.file_extension = os.path.splitext(self.name)[1]
 
     def __unicode__(self):
         return self.name

@@ -6,7 +6,9 @@ import mock
 
 from django_cradmin.apps.cradmin_imagearchive import cradminviews
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
 from django_cradmin.django_cradmin_testapp.models import TstRole
+from django_cradmin.tests.helpers import create_user
 from .helpers import create_image
 
 
@@ -163,6 +165,7 @@ class TestUpdateView(TestCase):
 class TestArchiveImageBulkAddView(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+        self.testuser = create_user('testuser')
 
     def test_get_render(self):
         request = self.factory.get('/test')
@@ -174,19 +177,35 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('.django_cradmin_bulkfileupload_form'))
-        self.assertTrue(selector.exists('input[type=hidden][name=multifile_formset-TOTAL_FORMS]'))
+        self.assertTrue(selector.exists('.django-cradmin-bulkfileupload-form'))
+        self.assertTrue(selector.exists('input[type=hidden][name=filecollectionid]'))
+
+    # def test_post_no_filecollectionid(self):
+    #     request = self.factory.post('/test', {})
+    #     request.cradmin_instance = mock.MagicMock()
+    #     request.cradmin_app = mock.MagicMock()
+    #     # request.cradmin_app.reverse_appurl.return_value = '/success'
+    #     request.cradmin_role = TstRole.objects.create()
+    #
+    #     self.assertEqual(ArchiveImage.objects.count(), 0)
+    #     response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
+    #     response.render()
+    #     print response
 
     def test_post_single_image(self):
         testimage = create_image(200, 100)
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.png')
+        temporaryfile.file.save('testfile.png', ContentFile(testimage))
+
         request = self.factory.post('/test', {
-            'multifile_formset-TOTAL_FORMS': 1,
-            'multifile_formset-INITIAL_FORMS': 0,
-            'multifile_formset-MAX_NUM_FORMS': 1,
-            'multifile_formset-0-files': SimpleUploadedFile('testname.png', testimage)
+            'filecollectionid': collection.id
         })
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
+        request.user = self.testuser
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
 
@@ -197,23 +216,30 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEqual(ArchiveImage.objects.count(), 1)
         created_image = ArchiveImage.objects.first()
         self.assertEqual(created_image.image.read(), testimage)
-        self.assertEqual(created_image.name, 'testname')
+        self.assertEqual(created_image.name, 'testfile.png')
         self.assertEqual(created_image.description, '')
 
     def test_post_multiple_images(self):
         testimage1 = create_image(200, 100)
         testimage2 = create_image(100, 100)
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile1.png')
+        temporaryfile.file.save('testfile1.png', ContentFile(testimage1))
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile2.png')
+        temporaryfile.file.save('testfile2.png', ContentFile(testimage2))
+
         request = self.factory.post('/test', {
-            'multifile_formset-TOTAL_FORMS': 2,
-            'multifile_formset-INITIAL_FORMS': 0,
-            'multifile_formset-MAX_NUM_FORMS': 2,
-            'multifile_formset-0-files': SimpleUploadedFile('A.png', testimage1),
-            'multifile_formset-1-files': SimpleUploadedFile('B.png', testimage2)
+            'filecollectionid': collection.id
         })
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
+        request.user = self.testuser
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
         response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
@@ -223,12 +249,9 @@ class TestArchiveImageBulkAddView(TestCase):
         created_images = ArchiveImage.objects.order_by('name')
 
         self.assertEqual(created_images[0].image.read(), testimage1)
-        self.assertEqual(created_images[0].name, 'A')
+        self.assertEqual(created_images[0].name, 'testfile1.png')
         self.assertEqual(created_images[0].description, '')
 
         self.assertEqual(created_images[1].image.read(), testimage2)
-        self.assertEqual(created_images[1].name, 'B')
+        self.assertEqual(created_images[1].name, 'testfile2.png')
         self.assertEqual(created_images[1].description, '')
-
-    def test_post_no_files(self):
-        raise Exception()

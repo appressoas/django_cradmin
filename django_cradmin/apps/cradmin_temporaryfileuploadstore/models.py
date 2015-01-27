@@ -5,6 +5,19 @@ from django.conf import settings
 from django.db import models
 
 
+class TemporaryFileCollectionQuerySet(models.QuerySet):
+    def filter_for_user(self, user):
+        return self.filter(user=user)
+
+
+class TemporaryFileCollectionManager(models.Manager):
+    def get_queryset(self):
+        return TemporaryFileCollectionQuerySet(self.model, using=self._db)
+
+    def filter_for_user(self, user):
+        return self.get_queryset().filter_for_user(user)
+
+
 class TemporaryFileCollection(models.Model):
     """
     A collection of temporary files uploaded by a user.
@@ -21,6 +34,7 @@ class TemporaryFileCollection(models.Model):
        after manipulating the file in some way).
     4. Delete the collection.
     """
+    objects = TemporaryFileCollectionManager()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         help_text='The user that owns this temporary file. Users should not'
