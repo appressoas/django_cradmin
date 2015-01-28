@@ -17,7 +17,7 @@ class ImageWidget(forms.ClearableFileInput):
     #: Comma separated string of filetypes that we should accept.
     #: Added to the file upload field as the accept attribute.
     #: Defaults to ``"image/png,image/jpeg,image/gif"``.
-    accept = 'image/png,image/jpeg,image/gif'
+    accept = 'image/*'
 
     def __init__(self, attrs=None, template_name=None, clearable=True,
                  preview_width=300, preview_height=200, preview_format='auto'):
