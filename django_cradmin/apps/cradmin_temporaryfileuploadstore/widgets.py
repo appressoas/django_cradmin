@@ -1,7 +1,7 @@
+import json
 from django import forms
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
-from django_extensions.db.fields import json
 
 
 class BulkFileUploadWidget(forms.Widget):
