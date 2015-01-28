@@ -157,6 +157,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.cradminBulkFileUploadFiles = []
         $scope.simpleWidgetScope = null
         $scope.advancedWidgetScope = null
+        $scope.rejectedFilesScope = null
 
         @setInProgressOrFinishedScope = (inProgressOrFinishedScope) ->
           $scope.inProgressOrFinishedScope = inProgressOrFinishedScope
@@ -171,6 +172,9 @@ angular.module('djangoCradmin.bulkfileupload', [
         @setAdvancedWidgetScope = (advancedWidgetScope) ->
           $scope.advancedWidgetScope = advancedWidgetScope
           $scope._showAppropriateWidget()
+
+        @setRejectFilesScope = (rejectedFilesScope) ->
+          $scope.rejectedFilesScope = rejectedFilesScope
 
         @getUploadUrl = ->
           return $scope.uploadUrl
@@ -188,6 +192,10 @@ angular.module('djangoCradmin.bulkfileupload', [
             else
               $scope.advancedWidgetScope.hide()
 
+        $scope.filesDropped = (files, evt, rejectedFiles) ->
+          if rejectedFiles.length > 0
+            $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles)
+
         $scope.$watch 'cradminBulkFileUploadFiles', ->
           if $scope.cradminBulkFileUploadFiles.length > 0
             $scope._uploadFiles()
@@ -204,6 +212,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             method: 'POST'
             data: {
               collectionid: $scope.collectionid
+              accept: $scope.serverAccept
             }
             file: $scope.cradminBulkFileUploadFiles  # single file or a list of files. list is only for html5
             fileFormDataName: 'file'  # The form field name
@@ -230,13 +239,47 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       link: (scope, element, attr, formController) ->
         scope.uploadUrl = attr.djangoCradminBulkfileupload
+        scope.serverAccept = attr.djangoCradminBulkfileuploadServerAccept
         scope.formController = formController
         return
     }
 ])
 
 
-.directive('djangoCradminBulkProgress', [
+.directive('djangoCradminBulkfileuploadRejectedFiles', [
+  ->
+    ###
+    This directive is used to show files that are rejected on drop because
+    of wrong mimetype. Each time a user drops one or more file with invalid
+    mimetype, this template is re-rendered and displayed.
+    ###
+    return {
+      restrict: 'A'
+      require: '^djangoCradminBulkfileupload'
+      templateUrl: 'bulkfileupload/rejectedfiles.tpl.html'
+      transclude: true
+      scope: {
+        rejectedFileErrorMessage: '@djangoCradminBulkfileuploadRejectedFiles'
+      }
+
+      controller: ($scope) ->
+        $scope.rejectedFiles = []
+        $scope.setRejectedFiles = (rejectedFiles) ->
+          $scope.rejectedFiles = rejectedFiles
+
+        $scope.closeMessage = (rejectedFile) ->
+          index = $scope.rejectedFiles.indexOf(rejectedFile)
+          if index != -1
+            $scope.rejectedFiles.splice(index, 1)
+
+      link: (scope, element, attr, bulkfileuploadController) ->
+        bulkfileuploadController.setRejectFilesScope(scope)
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadProgress', [
   'cradminBulkfileupload', '$http', '$cookies'
   (cradminBulkfileupload, $http, $cookies) ->
     return {
@@ -370,7 +413,7 @@ angular.module('djangoCradmin.bulkfileupload', [
   ->
     return {
       restrict: 'A'
-      require: '^djangoCradminBulkProgress'
+      require: '^djangoCradminBulkfileuploadProgress'
       scope: {
         'fileInfo': '=djangoCradminBulkfileuploadRemoveFileButton'
       }

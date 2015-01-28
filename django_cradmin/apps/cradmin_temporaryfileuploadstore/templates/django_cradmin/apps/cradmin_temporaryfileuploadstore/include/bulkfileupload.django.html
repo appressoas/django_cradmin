@@ -13,10 +13,13 @@
 {% load i18n %}
 
 <div django-cradmin-bulkfileupload="{% url 'cradmin_temporary_file_upload_api' %}"
-        django-cradmin-bulkfileupload-widget="simple"
+        {% if server_accept %}
+            django-cradmin-bulkfileupload-server-accept="{{ server_accept }}"
+        {% endif %}
         class="django-cradmin-bulkfileupload">
 
-    <div django-cradmin-bulk-progress></div>
+    <div django-cradmin-bulkfileupload-progress></div>
+    <div django-cradmin-bulkfileupload-rejected-files="{{ invalid_filetype_message }}"></div>
 
     <div django-cradmin-bulkfileupload-advanced-widget>
         {% block droparea-advanced %}
@@ -28,6 +31,7 @@
                     {% endif %}
                     allow-dir="false"
                     class="django-cradmin-bulkfileupload-dropbox"
+                    ng-file-change="filesDropped($files, $event, $rejectedFiles)"
                     drag-over-class="{
                         accept:'django-cradmin-bulkfileupload-dropbox-dragover',
                         reject:'django-cradmin-bulkfileupload-dropbox-dragover-error',

@@ -2,7 +2,7 @@
         class="django-cradmin-bulkfileupload-progress-item"
         ng-class="{
             'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished,
-            'django-cradmin-bulkfileupload-progress-item-error': fileInfoList.hasErrors
+            'django-cradmin-bulkfileupload-progress-item-error django-cradmin-bulkfileupload-errorparagraph': fileInfoList.hasErrors
         }">
     <span ng-if="fileInfoList.hasErrors">
         <button django-cradmin-bulkfileupload-error-close-button

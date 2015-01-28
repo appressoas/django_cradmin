@@ -5,7 +5,9 @@ from django.template.loader import render_to_string
 class BulkFileUploadWidget(forms.Widget):
     template_name = 'django_cradmin/apps/cradmin_temporaryfileuploadstore/bulkfileupload-widget.django.html'
 
-    def __init__(self, accept=None,
+    def __init__(self,
+                 accept=None,
+                 server_accept=None,
                  dropbox_text=None,
                  invalid_filetype_message=None,
                  advanced_fileselectbutton_text=None,
@@ -16,6 +18,7 @@ class BulkFileUploadWidget(forms.Widget):
                 Added to the file upload field as the accept attribute.
         """
         self.accept = accept
+        self.server_accept = server_accept
         self.dropbox_text = dropbox_text
         self.invalid_filetype_message = invalid_filetype_message
         self.advanced_fileselectbutton_text = advanced_fileselectbutton_text
@@ -27,6 +30,7 @@ class BulkFileUploadWidget(forms.Widget):
         Can be overridden to adjust the template context data.
         """
         context['accept'] = self.accept
+        context['server_accept'] = self.server_accept
         context['dropbox_text'] = self.dropbox_text
         context['invalid_filetype_message'] = self.invalid_filetype_message
         context['advanced_fileselectbutton_text'] = self.advanced_fileselectbutton_text

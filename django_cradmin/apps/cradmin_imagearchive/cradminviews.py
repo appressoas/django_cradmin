@@ -170,9 +170,11 @@ class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
         widget=BulkFileUploadWidget(
-            accept='image/png,image/jpeg,image/gif',
+            accept='image/*',
+            # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
+            server_accept='image/png,image/jpeg,image/gif',
             dropbox_text=_('Upload images by dragging and dropping them here'),
-            invalid_filetype_message=_('You can only upload images'),
+            invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
             advanced_fileselectbutton_text=_('... or select images'),
             simple_fileselectbutton_text=_('Select images ...')
         ),

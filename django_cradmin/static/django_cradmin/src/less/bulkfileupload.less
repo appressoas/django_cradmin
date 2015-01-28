@@ -55,19 +55,39 @@
     }
   }
 
-  .django-cradmin-bulkfileupload-progress {
-    background: @cradmin-bulkfileupload-bg;
-    .django-cradmin-bulkfileupload-progress-item {
-      color: @cradmin-bulkfileupload-progress-item-color;
+  .django-cradmin-bulkfileupload-progress,
+  .django-cradmin-bulkfileupload-rejectedfiles {
+    p.django-cradmin-bulkfileupload-progress-item,
+    p.django-cradmin-bulkfileupload-rejectedfile {
       font-weight: @cradmin-bulkfileupload-progress-item-font-weight;
       font-size: @cradmin-bulkfileupload-progress-item-font-size;
       margin: @cradmin-bulkfileupload-progress-item-margin;
-      text-align: @cradmin-bulkfileupload-progress-item-text-align;
       padding: @cradmin-bulkfileupload-progress-item-padding-mobile;
 
       @media (min-width: @screen-md-min) {
         padding: @cradmin-bulkfileupload-progress-item-padding;
       }
+
+      &.django-cradmin-bulkfileupload-errorparagraph {
+        background-color: @cradmin-bulkfileupload-progress-item-error-bg;
+        color: @cradmin-bulkfileupload-progress-item-error-color;
+
+        .django-cradmin-bulkfileupload-error-closebutton {
+          float: right;
+          margin-top: -7px;
+          margin-right: -7px;
+          color: @cradmin-bulkfileupload-progress-item-error-closebutton-color;
+          &:hover {
+            color: @cradmin-bulkfileupload-progress-item-error-closebutton-hover-color;
+          }
+        }
+      }
+    }
+  }
+  .django-cradmin-bulkfileupload-progress {
+    background: @cradmin-bulkfileupload-bg;
+    p.django-cradmin-bulkfileupload-progress-item {
+      color: @cradmin-bulkfileupload-progress-item-color;
 
       .django-cradmin-progressbar {
         display: inline-block;
@@ -96,22 +116,6 @@
         color: @cradmin-bulkfileupload-progress-item-remove-file-button-color;
         &:hover {
           color: @cradmin-bulkfileupload-progress-item-remove-file-button-hover-color;
-        }
-      }
-
-
-      &.django-cradmin-bulkfileupload-progress-item-error {
-        background-color: @cradmin-bulkfileupload-progress-item-error-bg;
-        color: @cradmin-bulkfileupload-progress-item-error-color;
-
-        .django-cradmin-bulkfileupload-error-closebutton {
-          float: right;
-          margin-top: -7px;
-          margin-right: -7px;
-          color: @cradmin-bulkfileupload-progress-item-error-closebutton-color;
-          &:hover {
-            color: @cradmin-bulkfileupload-progress-item-error-closebutton-hover-color;
-          }
         }
       }
     }

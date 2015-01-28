@@ -92,7 +92,7 @@ describe 'djangoCradminBulkfileuploadInProgressOrFinished', ->
     html = """
       <form django-cradmin-bulkfileupload-form>
         <div django-cradmin-bulkfileupload="/file_upload_api_mock">
-          <div django-cradmin-bulk-progress id="progress"></div>
+          <div django-cradmin-bulkfileupload-progress id="progress"></div>
         </div>
       </form>
     """
