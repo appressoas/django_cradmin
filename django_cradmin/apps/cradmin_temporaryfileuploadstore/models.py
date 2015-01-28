@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+import math
 
 
 class TemporaryFileCollectionQuerySet(models.query.QuerySet):
@@ -35,6 +36,20 @@ def html_input_accept_match(accept, mimetype, filename):
             if fnmatch.fnmatch(filename, pattern):
                 return True
     return False
+
+
+def truncate_filename(filename, maxlength, ellipsis='...'):
+    if len(filename) <= maxlength:
+        return filename
+    elif maxlength < 12:
+        return filename[-maxlength:]
+    else:
+        max_length_noellipsis = maxlength - len(ellipsis)
+        startlength = int(math.floor(max_length_noellipsis/2.0))
+        endlength = int(math.ceil(max_length_noellipsis/2.0))
+        start = filename[0:startlength]
+        end = filename[-endlength:]
+        return u'{}{}{}'.format(start, ellipsis, end)
 
 
 class TemporaryFileCollection(models.Model):
@@ -145,6 +160,9 @@ class TemporaryFile(models.Model):
     def clean(self):
         if not self.mimetype and self.filename:
             self.set_mimetype_from_filename()
-        if self.collection_id is not None:
+        if self.collection:
+            if self.filename and self.collection.max_filename_length:
+                self.filename = truncate_filename(filename=self.filename,
+                                                  maxlength=self.collection.max_filename_length)
             if not self.collection.is_supported_filetype(self.mimetype, self.filename):
                 raise ValidationError(_('Unsupported filetype.'), code='unsupported_mimetype')

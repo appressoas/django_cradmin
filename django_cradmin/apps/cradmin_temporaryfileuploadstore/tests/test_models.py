@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.test import TestCase
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile, \
-    html_input_accept_match
+    html_input_accept_match, truncate_filename
 from django_cradmin.tests.helpers import create_user
 
 
@@ -51,6 +51,18 @@ class TestModels(TestCase):
         temporaryfile.clean()
         self.assertEquals(temporaryfile.mimetype, 'image/png')
 
+    def clean_truncates_filename(self):
+        collection = TemporaryFileCollection(max_filename_length=6)
+        temporaryfile = TemporaryFile(filename='test.png', collection=collection)
+        temporaryfile.clean()
+        self.assertEquals(temporaryfile.filename, 'st.png')
+
+    def clean_does_not_truncate_filename_if_max_filename_length_is_none(self):
+        collection = TemporaryFileCollection(max_filename_length=None)
+        temporaryfile = TemporaryFile(filename='test.png', collection=collection)
+        temporaryfile.clean()
+        self.assertEquals(temporaryfile.filename, 'test.png')
+
     def clean_validates_accept(self):
         collection = TemporaryFileCollection.objects.create(
             user=create_user('testuser'),
@@ -86,3 +98,15 @@ class TestModels(TestCase):
 
     def test_html_input_accept_match_mimetype_none(self):
         self.assertFalse(html_input_accept_match(accept='image/jpeg', mimetype=None, filename='test.jpeg'))
+
+    def test_truncate_filename_not_above_max_length(self):
+        self.assertEquals(truncate_filename('test.txt', maxlength=8), 'test.txt')
+
+    def test_truncate_filename_veryshort_maxlength(self):
+        self.assertEquals(truncate_filename('test.txt', maxlength=5), 't.txt')
+
+    def test_truncate_filename_ellipsis_even_filelength_more_in_tail(self):
+        self.assertEquals(truncate_filename('abcdefghABCDEFGH', maxlength=14), 'abcde...CDEFGH')
+
+    def test_truncate_filename_ellipsis_odd_filelength(self):
+        self.assertEquals(truncate_filename('abcdeX___Xhijkl', maxlength=13), 'abcde...hijkl')

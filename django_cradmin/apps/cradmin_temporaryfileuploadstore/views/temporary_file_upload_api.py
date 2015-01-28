@@ -15,7 +15,6 @@ from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import Temporar
 class FileUploadForm(forms.Form):
     file = MultiFileField(
         max_file_size=1000000 * getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_MAX_FILE_SIZE_MB', 1000))
-    # file = forms.FileField()
     collectionid = forms.IntegerField(
         required=False)
     minutes_to_live = forms.IntegerField(
@@ -29,6 +28,8 @@ class FileUploadForm(forms.Form):
         ]
     )
     accept = forms.CharField(required=False)
+    max_filename_length = forms.IntegerField(min_value=0, required=False)
+    prevent_filename_duplicates = forms.BooleanField(required=False)
 
 
 class FileDeleteForm(forms.Form):
@@ -40,13 +41,17 @@ class UploadTemporaryFilesView(FormView):
     form_class = FileUploadForm
     http_method_names = ['post', 'delete']
 
-    def create_collection(self, minutes_to_live, accept):
+    def create_collection(self, minutes_to_live, accept, max_filename_length, prevent_filename_duplicates):
         collection = TemporaryFileCollection(
             user=self.request.user)
         if minutes_to_live is not None:
             collection.minutes_to_live = minutes_to_live
         if accept is not None:
             collection.accept = accept
+        if max_filename_length:
+            collection.max_filename_length = max_filename_length
+        if prevent_filename_duplicates:
+            collection.prevent_filename_duplicates = prevent_filename_duplicates
         collection.full_clean()
         collection.save()
         return collection
@@ -54,9 +59,14 @@ class UploadTemporaryFilesView(FormView):
     def get_existing_collection(self, collectionid):
         return TemporaryFileCollection.objects.filter(user=self.request.user).get(id=collectionid)
 
-    def create_or_get_collection_id(self, collectionid, minutes_to_live, accept):
+    def create_or_get_collection_id(self, collectionid, minutes_to_live, accept,
+                                    max_filename_length, prevent_filename_duplicates):
         if collectionid is None:
-            return self.create_collection(minutes_to_live=minutes_to_live, accept=accept)
+            return self.create_collection(
+                minutes_to_live=minutes_to_live,
+                accept=accept,
+                max_filename_length=max_filename_length,
+                prevent_filename_duplicates=prevent_filename_duplicates)
         else:
             return self.get_existing_collection(collectionid)
 
@@ -105,6 +115,8 @@ class UploadTemporaryFilesView(FormView):
         collectionid = form.cleaned_data['collectionid']
         minutes_to_live = form.cleaned_data['minutes_to_live']
         accept = form.cleaned_data['accept']
+        max_filename_length = form.cleaned_data['max_filename_length']
+        prevent_filename_duplicates = form.cleaned_data['prevent_filename_duplicates']
         try:
             self.validate_all_files(accept=accept, form=form)
         except ValidationError as e:
@@ -121,7 +133,9 @@ class UploadTemporaryFilesView(FormView):
                 collection = self.create_or_get_collection_id(
                     collectionid=collectionid,
                     minutes_to_live=minutes_to_live,
-                    accept=accept)
+                    accept=accept,
+                    max_filename_length=max_filename_length,
+                    prevent_filename_duplicates=prevent_filename_duplicates)
             except TemporaryFileCollection.DoesNotExist:
                 return self.__collection_does_not_exist_response(collectionid)
             else:

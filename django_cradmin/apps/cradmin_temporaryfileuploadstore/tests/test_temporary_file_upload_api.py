@@ -187,6 +187,36 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEquals(responsedata['file'][0]['code'], 'unsupported_mimetype')
         self.assertEquals(responsedata['file'][0]['message'], u'testfile2.txt: Unsupported filetype.')
 
+    def test_post_max_filename_length_not_truncated(self):
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('abc.txt', 'Testcontent'),
+            'max_filename_length': '7'
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+        collectionid = responsedata['collectionid']
+
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+        self.assertEquals(collection.files.first().filename, 'abc.txt')
+        self.assertEquals(responsedata['temporaryfiles'][0]['filename'], 'abc.txt')
+
+    def test_post_max_filename_length_truncated(self):
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('abc.txt', 'Testcontent'),
+            'max_filename_length': '6'
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+        collectionid = responsedata['collectionid']
+
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+        self.assertEquals(collection.files.first().filename, 'bc.txt')
+        self.assertEquals(responsedata['temporaryfiles'][0]['filename'], 'bc.txt')
+
     def test_post_form_invalid_no_file(self):
         request = self.factory.post('/test')
         request.user = self.testuser
