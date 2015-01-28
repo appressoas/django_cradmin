@@ -21,7 +21,7 @@ class TemporaryFileCollectionAdmin(admin.ModelAdmin):
         'user',
         'accept',
         'created_datetime',
-        'prevent_filename_duplicates',
+        'unique_filenames',
         'max_filename_length']
     search_fields = [
         'id',

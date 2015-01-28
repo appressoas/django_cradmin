@@ -217,6 +217,57 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEquals(collection.files.first().filename, 'bc.txt')
         self.assertEquals(responsedata['temporaryfiles'][0]['filename'], 'bc.txt')
 
+    def test_post_unique_filenames(self):
+        request = self.factory.post('/test', {
+            'file': [
+                SimpleUploadedFile('abc.txt', 'Testcontent1'),
+                SimpleUploadedFile('abc.txt', 'Testcontent2'),
+            ],
+            'unique_filenames': True
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+        collectionid = responsedata['collectionid']
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+
+        files_by_content = {}
+        for temporaryfile in collection.files.all():
+            files_by_content[temporaryfile.file.read()] = temporaryfile
+        self.assertEquals(files_by_content['Testcontent1'].filename, 'abc.txt')
+        self.assertNotEquals(files_by_content['Testcontent2'].filename, 'abc.txt')
+        self.assertTrue(files_by_content['Testcontent2'].filename.endswith('abc.txt'))
+
+        self.assertEquals(responsedata['temporaryfiles'][0]['filename'], 'abc.txt')
+        self.assertNotEquals(responsedata['temporaryfiles'][1]['filename'], 'abc.txt')
+        self.assertTrue(responsedata['temporaryfiles'][1]['filename'].endswith('abc.txt'))
+
+    def test_post_unique_filenames_and_max_filename_length(self):
+        request = self.factory.post('/test', {
+            'file': [
+                SimpleUploadedFile('t'*50, 'Testcontent1'),
+                SimpleUploadedFile('t'*50, 'Testcontent2'),
+            ],
+            'unique_filenames': True,
+            'max_filename_length': 45
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content)
+        collectionid = responsedata['collectionid']
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+
+        files_by_content = {}
+        for temporaryfile in collection.files.all():
+            files_by_content[temporaryfile.file.read()] = temporaryfile
+        self.assertEquals(files_by_content['Testcontent1'].filename,
+                          'ttttttttttttttttttttt...ttttttttttttttttttttt')
+        self.assertNotEquals(files_by_content['Testcontent2'].filename,
+                             'ttttttttttttttttttttt...ttttttttttttttttttttt')
+        self.assertTrue(files_by_content['Testcontent2'].filename.endswith('-tttttttt'))
+
     def test_post_form_invalid_no_file(self):
         request = self.factory.post('/test')
         request.user = self.testuser

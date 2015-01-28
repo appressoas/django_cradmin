@@ -52,6 +52,40 @@ def truncate_filename(filename, maxlength, ellipsis='...'):
         return u'{}{}{}'.format(start, ellipsis, end)
 
 
+def _make_unique_filename(filename_set, wanted_filename, generated_filename, max_filename_length, ellipsis):
+    if generated_filename in filename_set:
+        generated_uuid = str(uuid.uuid4())
+        if max_filename_length:
+            filename = truncate_filename(
+                filename=wanted_filename,
+                maxlength=max_filename_length-len(generated_uuid)-1,
+                ellipsis=ellipsis)
+        else:
+            filename = wanted_filename
+        generated_filename = u'{}-{}'.format(generated_uuid, filename)
+        return _make_unique_filename(
+            filename_set,
+            wanted_filename=wanted_filename,
+            generated_filename=generated_filename,
+            max_filename_length=max_filename_length,
+            ellipsis=ellipsis)
+    else:
+        return generated_filename
+
+
+def make_unique_filename(filename_set, wanted_filename, max_filename_length=None, ellipsis='...'):
+    if max_filename_length \
+            and max_filename_length < TemporaryFileCollection.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES:
+        raise ValueError('make_unique_filename requires max_filename_length to be at least 45.')
+    else:
+        return _make_unique_filename(
+            filename_set=filename_set,
+            wanted_filename=wanted_filename,
+            generated_filename=wanted_filename,
+            max_filename_length=max_filename_length,
+            ellipsis=ellipsis)
+
+
 class TemporaryFileCollection(models.Model):
     """
     A collection of temporary files uploaded by a user.
@@ -82,6 +116,12 @@ class TemporaryFileCollection(models.Model):
        hidden field with the collection-id instead of when they upload
        a file.
     """
+
+    #: Minimum value of ``max_filename_length`` when ``unique_filenames`` is ``True``.
+    #: It is 45 because ``len(str(uuid.uuid4()))`` is 36, and we need some room over for
+    #: the file extension.
+    MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES = 45
+
     objects = TemporaryFileCollectionManager()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -106,7 +146,7 @@ class TemporaryFileCollection(models.Model):
         null=True, blank=True, default=None,
         help_text='If specified, we shorten filenames to maximum the specified length. '
                   'This is validated by the API on upload.')
-    prevent_filename_duplicates = models.BooleanField(
+    unique_filenames = models.BooleanField(
         null=False, default=False,
         help_text='If this is True, we add random data when we '
                   'detect duplicate filenames. The duplicate prevention '
@@ -122,6 +162,15 @@ class TemporaryFileCollection(models.Model):
             return html_input_accept_match(self.accept, mimetype, filename)
         else:
             return True
+
+    def get_filename_set(self):
+        return set(self.files.values_list('filename', flat=True))
+
+    def clean(self):
+        if self.max_filename_length and self.unique_filenames:
+            if self.max_filename_length < self.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES:
+                raise ValidationError('max_filename_length must be at least {} when unique_filenames '
+                                      'is True'.format(self.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES))
 
 
 def temporary_file_upload_to(instance, filename):
@@ -155,7 +204,7 @@ class TemporaryFile(models.Model):
         self.delete()
 
     def set_mimetype_from_filename(self):
-        self.mimetype = mimetypes.guess_type(self.filename)[0]
+        self.mimetype = mimetypes.guess_type(self.filename)[0] or ''
 
     def clean(self):
         if not self.mimetype and self.filename:
