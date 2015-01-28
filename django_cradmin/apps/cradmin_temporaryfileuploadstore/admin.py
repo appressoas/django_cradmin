@@ -20,7 +20,9 @@ class TemporaryFileCollectionAdmin(admin.ModelAdmin):
     readonly_fields = [
         'user',
         'accept',
-        'created_datetime']
+        'created_datetime',
+        'prevent_filename_duplicates',
+        'max_filename_length']
     search_fields = [
         'id',
         'user__id',

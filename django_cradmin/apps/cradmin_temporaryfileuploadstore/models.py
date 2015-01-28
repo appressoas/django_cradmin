@@ -52,6 +52,20 @@ class TemporaryFileCollection(models.Model):
        file(s), move them into some form of persistent storage (perhaps
        after manipulating the file in some way).
     4. Delete the collection.
+
+    The ``accept``, ``max_filename_length`` and ``prevent_filename_duplicates``
+    attributes are set by the client. This means that you can not trust them
+    and have to perform error checking when you process temporary files. This
+    is not really a problem since:
+
+    1. You should have error checking in the views that
+       use TemporaryFileCollection.
+    2. If you have error checking in your views, the only thing
+       the user can do by manipulating the API call is to cause
+       themselves a less user-friendly experience - they will typically
+       get an error when they post the form containing the
+       hidden field with the collection-id instead of when they upload
+       a file.
     """
     objects = TemporaryFileCollectionManager()
     user = models.ForeignKey(
@@ -72,10 +86,17 @@ class TemporaryFileCollection(models.Model):
     accept = models.TextField(
         null=False, blank=True, default='',
         help_text='An html input field accept attribute formatted string. '
-                  'This is validated by the API on upload. Note that this leaves '
-                  'the possibility for users to send their a custom accept value, '
-                  'so you should not rely on this to ensure you never get the wrong filetypes.'
-    )
+                  'This is validated by the API on upload.')
+    max_filename_length = models.IntegerField(
+        null=True, blank=True, default=None,
+        help_text='If specified, we shorten filenames to maximum the specified length. '
+                  'This is validated by the API on upload.')
+    prevent_filename_duplicates = models.BooleanField(
+        null=False, default=False,
+        help_text='If this is True, we add random data when we '
+                  'detect duplicate filenames. The duplicate prevention '
+                  'algorithm handles max_filename.'
+                  'This is validated by the API on upload.')
 
     def clear_files(self):
         for temporaryfile in self.files.all():
@@ -109,7 +130,7 @@ class TemporaryFile(models.Model):
     collection = models.ForeignKey(
         TemporaryFileCollection, on_delete=models.CASCADE,
         related_name='files')
-    filename = models.TextField()
+    filename = models.TextField(db_index=True)
     file = models.FileField(
         upload_to=temporary_file_upload_to)
     mimetype = models.TextField(null=False, blank=True, default='')
