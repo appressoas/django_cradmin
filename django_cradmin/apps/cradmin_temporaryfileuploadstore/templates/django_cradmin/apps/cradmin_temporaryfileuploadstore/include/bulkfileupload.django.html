@@ -12,10 +12,8 @@
 {% endcomment %}
 {% load i18n %}
 
-<div django-cradmin-bulkfileupload="{% url 'cradmin_temporary_file_upload_api' %}"
-        {% if server_accept %}
-            django-cradmin-bulkfileupload-server-accept="{{ server_accept }}"
-        {% endif %}
+<div django-cradmin-bulkfileupload="{{ apiurl }}"
+        django-cradmin-bulkfileupload-apiparameters="{{ apiparameters|safe }}"
         class="django-cradmin-bulkfileupload">
 
     <div django-cradmin-bulkfileupload-progress></div>

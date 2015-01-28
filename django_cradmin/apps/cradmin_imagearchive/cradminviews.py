@@ -172,7 +172,9 @@ class BulkAddForm(forms.Form):
         widget=BulkFileUploadWidget(
             accept='image/*',
             # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
-            server_accept='image/png,image/jpeg,image/gif',
+            apiparameters={
+                'accept': 'image/png,image/jpeg,image/gif'
+            },
             dropbox_text=_('Upload images by dragging and dropping them here'),
             invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
             advanced_fileselectbutton_text=_('... or select images'),

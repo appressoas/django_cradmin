@@ -205,15 +205,13 @@ angular.module('djangoCradmin.bulkfileupload', [
             percent: 0
             files: $scope.cradminBulkFileUploadFiles.slice()
           })
+          $scope.apiparameters.collectionid = $scope.collectionid
           $scope.formController.addInProgress()
 
           $scope.upload = $upload.upload({
             url: $scope.uploadUrl
             method: 'POST'
-            data: {
-              collectionid: $scope.collectionid
-              accept: $scope.serverAccept
-            }
+            data: $scope.apiparameters
             file: $scope.cradminBulkFileUploadFiles  # single file or a list of files. list is only for html5
             fileFormDataName: 'file'  # The form field name
             headers: {
@@ -239,7 +237,7 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       link: (scope, element, attr, formController) ->
         scope.uploadUrl = attr.djangoCradminBulkfileupload
-        scope.serverAccept = attr.djangoCradminBulkfileuploadServerAccept
+        scope.apiparameters = attr.djangoCradminBulkfileuploadApiparameters
         scope.formController = formController
         return
     }

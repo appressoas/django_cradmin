@@ -450,14 +450,12 @@
               percent: 0,
               files: $scope.cradminBulkFileUploadFiles.slice()
             });
+            $scope.apiparameters.collectionid = $scope.collectionid;
             $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
               method: 'POST',
-              data: {
-                collectionid: $scope.collectionid,
-                accept: $scope.serverAccept
-              },
+              data: $scope.apiparameters,
               file: $scope.cradminBulkFileUploadFiles,
               fileFormDataName: 'file',
               headers: {
@@ -482,7 +480,7 @@
         },
         link: function(scope, element, attr, formController) {
           scope.uploadUrl = attr.djangoCradminBulkfileupload;
-          scope.serverAccept = attr.djangoCradminBulkfileuploadServerAccept;
+          scope.apiparameters = attr.djangoCradminBulkfileuploadApiparameters;
           scope.formController = formController;
         }
       };
