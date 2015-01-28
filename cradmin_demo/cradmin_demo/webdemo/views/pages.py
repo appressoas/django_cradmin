@@ -61,7 +61,6 @@ class IntroColumn(objecttable.TruncatecharsPlainTextColumn):
     allcells_css_classes = ['hidden-xs']
 
 
-
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     enable_previews = True

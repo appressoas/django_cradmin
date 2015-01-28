@@ -1,5 +1,4 @@
 from crispy_forms import layout
-from crispy_forms.helper import FormHelper
 from django.views.generic import FormView as DjangoFormView
 
 from django_cradmin import crapp
