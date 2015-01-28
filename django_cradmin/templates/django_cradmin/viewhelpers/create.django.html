@@ -2,6 +2,11 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+    {% trans "CREATE" %}
+    {{ model_verbose_name }}
+{% endblock title %}
+
 {% block pageheader-inner %}
     {% block headingicon %}
         <span class="fa fa-plus-square cradmin-page-header-icon"></span>
