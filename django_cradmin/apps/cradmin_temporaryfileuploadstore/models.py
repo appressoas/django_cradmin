@@ -9,7 +9,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class TemporaryFileCollectionQuerySet(models.QuerySet):
+class TemporaryFileCollectionQuerySet(models.query.QuerySet):
     def filter_for_user(self, user):
         return self.filter(user=user)
 
