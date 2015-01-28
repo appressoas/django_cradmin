@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django_cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-23 10:35+0000\n"
-"PO-Revision-Date: 2014-12-23 11:36+0100\n"
+"POT-Creation-Date: 2015-01-28 02:18+0000\n"
+"PO-Revision-Date: 2015-01-28 03:25+0100\n"
 "Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: nb\n"
@@ -18,41 +18,88 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: apps/cradmin_imagearchive/cradminviews.py:20
+#: apps/cradmin_imagearchive/cradminviews.py:25
 msgid "Edit"
 msgstr "Rediger"
 
-#: apps/cradmin_imagearchive/cradminviews.py:23
+#: apps/cradmin_imagearchive/cradminviews.py:28
 #: templates/django_cradmin/viewhelpers/delete.django.html:30
 msgid "Delete"
 msgstr "Slett"
 
-#: apps/cradmin_imagearchive/cradminviews.py:36
+#: apps/cradmin_imagearchive/cradminviews.py:41
 msgid "Use this"
 msgstr "Bruk dette"
 
-#: apps/cradmin_imagearchive/cradminviews.py:48 viewhelpers/create.py:40
+#: apps/cradmin_imagearchive/cradminviews.py:59 viewhelpers/create.py:40
 #: viewhelpers/update.py:19
 msgid "Preview"
 msgstr "Forhåndsvis"
 
-#: apps/cradmin_imagearchive/cradminviews.py:73
-#: apps/cradmin_imagearchive/cradminviews.py:95
+#: apps/cradmin_imagearchive/cradminviews.py:84
+#: apps/cradmin_imagearchive/cradminviews.py:107
 msgid "Add image"
 msgstr "Legg til bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:118
+#: apps/cradmin_imagearchive/cradminviews.py:85
+msgid "Bulk upload"
+msgstr "Legg til mange"
+
+#: apps/cradmin_imagearchive/cradminviews.py:130
 msgid "Upload and select"
 msgstr "Last opp og velg"
 
-#: apps/cradmin_imagearchive/cradminviews.py:119
+#: apps/cradmin_imagearchive/cradminviews.py:131
 #: templates/django_cradmin/filewidgets/imagewidget.django.html:20
 msgid "Upload image"
 msgstr "Last opp bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:120
+#: apps/cradmin_imagearchive/cradminviews.py:132
 msgid "Upload and continue editing"
 msgstr "Last opp og fortsett redigering"
+
+#: apps/cradmin_imagearchive/cradminviews.py:176
+msgid "Upload images by dragging and dropping them here"
+msgstr "Last opp bilder ved å dra og slippe de her"
+
+#: apps/cradmin_imagearchive/cradminviews.py:177
+msgid "Invalid filetype. You can only upload images."
+msgstr "Ygyldig filtype. Du kan kun laste opp bilder."
+
+#: apps/cradmin_imagearchive/cradminviews.py:178
+msgid "... or select images"
+msgstr "... eller velg bilder"
+
+#: apps/cradmin_imagearchive/cradminviews.py:179
+#| msgid "Select ..."
+msgid "Select images ..."
+msgstr "Velg bilder ..."
+
+#: apps/cradmin_imagearchive/cradminviews.py:181
+#| msgid "Upload image"
+msgid "Upload at least one image"
+msgstr "Last opp minst ett bilde"
+
+#: apps/cradmin_imagearchive/cradminviews.py:183
+msgid ""
+"Upload as many images as you like. You can edit the name and description of "
+"the images after they have been uploaded."
+msgstr ""
+"Last opp så mange bilder som du ønsker. Du kan redigere navn og beskrivelse "
+"etter opplasting."
+
+#: apps/cradmin_imagearchive/cradminviews.py:186
+msgid "You must upload at least one file."
+msgstr "Du må laste opp minst en fil."
+
+#: apps/cradmin_imagearchive/cradminviews.py:202
+msgid "Add to the image archive"
+msgstr "Legg til i bildearkivet"
+
+#: apps/cradmin_imagearchive/cradminviews.py:203
+#| msgid "Upload image"
+msgid "Uploading images"
+msgstr "Laster opp bilder"
 
 #: apps/cradmin_imagearchive/models.py:34
 msgid "role"
@@ -103,35 +150,55 @@ msgstr "arkivbilde"
 msgid "archive images"
 msgstr "arkivbilder"
 
-#: templates/django_cradmin/error.django.html:10
-msgid "Error"
-msgstr "Feil"
+#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:7
+#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:12
+#| msgid "archive images"
+msgid "Bulk upload archive images"
+msgstr "Bulkopplasting av arkivbilder"
 
-#: templates/django_cradmin/invalid_roleid.django.html:6
-msgid "Invalid role"
-msgstr "Ugyldig rolle"
+#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:6
+msgid "Image preview"
+msgstr "Forhåndsvisning av bilde"
 
-#: templates/django_cradmin/invalid_roleid.django.html:7
-msgid "The requested role does not exist."
-msgstr "Den ønskede rollen finnes ikke."
+#: apps/cradmin_temporaryfileuploadstore/models.py:129
+msgid "Unsupported filetype."
+msgstr "Ugyldig filtype."
 
-#: templates/django_cradmin/menu.django.html:17
-msgid "Toggle navigation"
-msgstr "Vis/sjul navigasjon"
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:46
+msgid "Upload a file by dragging and dropping it here"
+msgstr "Last opp en file ved å dra og slipp den her"
 
-#: templates/django_cradmin/missing_role.django.html:6
-msgid "Permission denied"
-msgstr "Ingen tilgang"
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:48
+msgid "Upload files by dragging and dropping them here"
+msgstr "Last opp filer ved å dra og slipp de her"
 
-#: templates/django_cradmin/missing_role.django.html:8
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:58
+#| msgid "Invalid role"
+msgid "Invalid filetype"
+msgstr "Ugyldig filtype"
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:80
+msgid "... or select a file"
+msgstr "... eller velg en file"
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:82
+msgid "... or select files"
+msgstr "... eller velg filer"
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:104
+#| msgid "Select ..."
+msgid "Select a file ..."
+msgstr "Velg en fil..."
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:106
+#| msgid "Select ..."
+msgid "Select files ..."
+msgstr "Velg filer ..."
+
+#: apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:101
 #, python-format
-msgid "You do not have permission to administer \"%(what)s\"."
-msgstr ""
-"Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
-
-#: templates/django_cradmin/roleselect.django.html:7
-msgid "What would you like to administer?"
-msgstr "Hva ønsker du å administrere?"
+msgid "%(filename)s: Unsupported filetype."
+msgstr "%(filename)s: Ugyldig filetype."
 
 #: templates/django_cradmin/acemarkdown/widget.django.html:10
 msgid "Heading 1"
@@ -189,9 +256,21 @@ msgstr "programmeringsspråk"
 msgid "Code block"
 msgstr "Kodeblokk"
 
-#: templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:6
-msgid "Image preview"
-msgstr "Forhåndsvisning av bilde"
+#: templates/django_cradmin/auth/login.django.html:8 views/auth/login.py:22
+msgid "Sign in"
+msgstr "Logg inn"
+
+#: templates/django_cradmin/auth/logout.django.html:6
+msgid "Signed out"
+msgstr "Logget ut"
+
+#: templates/django_cradmin/auth/logout.django.html:9
+msgid "Sign back in"
+msgstr "Logg inn igjen"
+
+#: templates/django_cradmin/error.django.html:10
+msgid "Error"
+msgstr "Feil"
 
 #: templates/django_cradmin/filewidgets/filewidget.django.html:15
 msgid "Remove file"
@@ -205,14 +284,37 @@ msgstr "Erstatt bilde"
 msgid "Remove image"
 msgstr "Fjern bilde"
 
-#: templates/django_cradmin/viewhelpers/create.django.html:11
+#: templates/django_cradmin/invalid_roleid.django.html:6
+msgid "Invalid role"
+msgstr "Ugyldig rolle"
+
+#: templates/django_cradmin/invalid_roleid.django.html:7
+msgid "The requested role does not exist."
+msgstr "Den ønskede rollen finnes ikke."
+
+#: templates/django_cradmin/menu.django.html:14
+msgid "Toggle navigation"
+msgstr "Vis/sjul navigasjon"
+
+#: templates/django_cradmin/missing_role.django.html:6
+msgid "Permission denied"
+msgstr "Ingen tilgang"
+
+#: templates/django_cradmin/missing_role.django.html:8
+#, python-format
+msgid "You do not have permission to administer \"%(what)s\"."
+msgstr ""
+"Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
+
+#: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:22
+#| msgid "Image preview"
+msgid "Close preview"
+msgstr "Lukk forhåndsvisning"
+
+#: templates/django_cradmin/viewhelpers/create.django.html:6
+#: templates/django_cradmin/viewhelpers/create.django.html:16
 msgid "CREATE"
 msgstr "OPPRETT"
-
-#: templates/django_cradmin/viewhelpers/create_update_base.django.html:46
-#: templates/django_cradmin/widgets/modelchoice.django.html:33
-msgid "Close choice window"
-msgstr "Lukk vindu"
 
 #: templates/django_cradmin/viewhelpers/delete.django.html:13
 msgid "DELETE"
@@ -227,11 +329,6 @@ msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/django_cradmin/viewhelpers/update.django.html:10
-#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:10
-msgid "EDIT"
-msgstr "REDIGER"
-
 #: templates/django_cradmin/viewhelpers/includes/pager.django.html:27
 msgid "Previous"
 msgstr "Forrige"
@@ -245,12 +342,19 @@ msgstr "Side %(number)s av %(total)s"
 msgid "Next"
 msgstr "Neste"
 
+#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:10
+#: templates/django_cradmin/viewhelpers/update.django.html:5
+#: templates/django_cradmin/viewhelpers/update.django.html:15
+msgid "EDIT"
+msgstr "REDIGER"
+
 #: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
 #: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
 msgid "(None)"
 msgstr "(Ingen)"
 
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:44
+#: viewhelpers/objecttable.py:681
 msgid "Search..."
 msgstr "Søk..."
 
@@ -258,34 +362,38 @@ msgstr "Søk..."
 msgid "Search"
 msgstr "Søk"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:114
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:120
 msgid "Ordered ascending - Click to order descending"
 msgstr "Sortert stigende - klikk for å sortere synkende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:116
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:122
 msgid "Ordered descending - Click to order ascending"
 msgstr "Sortert synkende - klikk for å sortere stigende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:123
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:129
 msgid "Do not order by this column"
 msgstr "Ikke sorter etter denne kolonnen"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:128
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:134
 msgid "Ordering priority"
 msgstr "Sorteringsprioritet"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:182
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:188
 msgid "Select an action"
 msgstr "Velg en handling"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:185
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:191
 msgid "Go"
 msgstr "Gå"
 
 #: templates/django_cradmin/widgets/modelchoice.django.html:23
-#: widgets/modelchoice.py:22
+#: widgets/modelchoice.py:27
 msgid "Select ..."
 msgstr "Velg ..."
+
+#: templates/django_cradmin/widgets/modelchoice.django.html:33
+msgid "Close choice window"
+msgstr "Lukk vindu"
 
 #: viewhelpers/create.py:24 viewhelpers/create.py:31
 msgid "Create and select"
@@ -314,6 +422,23 @@ msgstr "Lagre"
 #: viewhelpers/update.py:15
 msgid "Save and continue editing"
 msgstr "Lagre og fortsett redigering"
+
+#: views/auth/login.py:12
+msgid "Email"
+msgstr "Epost"
+
+#: views/auth/login.py:15
+msgid "Your email and password didn't match. Please try again."
+msgstr "Ugyldig epost/passord. Venligst prøv igjen."
+
+#: views/auth/login.py:16
+msgid "This account is inactive."
+msgstr "Denne kontoen er inaktiv."
+
+#: views/roleselect.py:12
+#| msgid "What would you like to administer?"
+msgid "What would you like to edit?"
+msgstr "Hva ønsker du å redigere?"
 
 #~ msgid "NEW"
 #~ msgstr "NY"

@@ -77,6 +77,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = 'test_django_media_root'
+STATIC_ROOT = 'test_django_static_root'
 
 # Django crispy forms:
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
