@@ -251,6 +251,7 @@
         } else {
           this.hasErrors = false;
         }
+        this.rawFiles = options.files;
         this.files = [];
         _ref = options.files;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -395,7 +396,9 @@
         scope: true,
         controller: function($scope) {
           $scope.collectionid = null;
-          $scope.cradminBulkFileUploadFiles = [];
+          $scope.cradminLastFilesSelectedByUser = [];
+          $scope.fileUploadQueue = [];
+          $scope.firstUploadInProgress = false;
           $scope.simpleWidgetScope = null;
           $scope.advancedWidgetScope = null;
           $scope.rejectedFilesScope = null;
@@ -439,17 +442,41 @@
               return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles);
             }
           };
-          $scope.$watch('cradminBulkFileUploadFiles', function() {
-            if ($scope.cradminBulkFileUploadFiles.length > 0) {
-              return $scope._uploadFiles();
+          $scope.$watch('cradminLastFilesSelectedByUser', function() {
+            if ($scope.cradminLastFilesSelectedByUser.length > 0) {
+              $scope._addFilesToQueue($scope.cradminLastFilesSelectedByUser.slice());
+              return $scope.cradminLastFilesSelectedByUser = [];
             }
           });
-          $scope._uploadFiles = function() {
-            var apidata, progressInfo;
+          $scope._addFilesToQueue = function(files) {
+            var progressInfo;
             progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
               percent: 0,
-              files: $scope.cradminBulkFileUploadFiles.slice()
+              files: files
             });
+            $scope.fileUploadQueue.push(progressInfo);
+            if ($scope.firstUploadInProgress) {
+              return;
+            }
+            if ($scope.collectionid === null) {
+              $scope.firstUploadInProgress = true;
+            }
+            return $scope._processFileUploadQueue();
+          };
+          $scope._onFileUploadComplete = function() {
+            /*
+            Called both on file upload success and error
+            */
+
+            $scope.firstUploadInProgress = false;
+            $scope.formController.removeInProgress();
+            if ($scope.fileUploadQueue.length > 0) {
+              return $scope._processFileUploadQueue();
+            }
+          };
+          $scope._processFileUploadQueue = function() {
+            var apidata, progressInfo;
+            progressInfo = $scope.fileUploadQueue.shift();
             apidata = angular.extend({}, $scope.apiparameters, {
               collectionid: $scope.collectionid
             });
@@ -458,7 +485,7 @@
               url: $scope.uploadUrl,
               method: 'POST',
               data: apidata,
-              file: $scope.cradminBulkFileUploadFiles,
+              file: progressInfo.rawFiles,
               fileFormDataName: 'file',
               headers: {
                 'X-CSRFToken': $cookies.csrftoken,
@@ -467,12 +494,12 @@
             }).progress(function(evt) {
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              $scope._setCollectionId(data.collectionid);
               progressInfo.finish(data.temporaryfiles);
-              return $scope.formController.removeInProgress();
+              $scope._setCollectionId(data.collectionid);
+              return $scope._onFileUploadComplete();
             }).error(function(data) {
               progressInfo.setErrors(data);
-              return $scope.formController.removeInProgress();
+              return $scope._onFileUploadComplete();
             });
           };
           $scope._setCollectionId = function(collectionid) {

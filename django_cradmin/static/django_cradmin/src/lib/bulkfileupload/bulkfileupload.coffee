@@ -29,6 +29,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         @hasErrors = true
       else
         @hasErrors = false
+      @rawFiles = options.files
       @files = []
       for file in options.files
         @files.push(new FileInfo({
@@ -154,7 +155,19 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       controller: ($scope) ->
         $scope.collectionid = null
-        $scope.cradminBulkFileUploadFiles = []
+
+        # The scope variable changed when users add files
+        $scope.cradminLastFilesSelectedByUser = []
+
+        # Queue of files waiting for upload. Each time $scope.cradminLastFilesSelectedByUser
+        # is changed, we add files here and clear $scope.cradminLastFilesSelectedByUser.
+        $scope.fileUploadQueue = []
+
+        # This is set to ``true`` when the first upload is in progress.
+        # While this is ``true``, we just add files to the $scope.fileUploadQueue
+        # but we do not upload the files until it becomes ``false``.
+        $scope.firstUploadInProgress = false
+
         $scope.simpleWidgetScope = null
         $scope.advancedWidgetScope = null
         $scope.rejectedFilesScope = null
@@ -196,16 +209,37 @@ angular.module('djangoCradmin.bulkfileupload', [
           if rejectedFiles.length > 0
             $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles)
 
-        $scope.$watch 'cradminBulkFileUploadFiles', ->
-          if $scope.cradminBulkFileUploadFiles.length > 0
-            $scope._uploadFiles()
+        $scope.$watch 'cradminLastFilesSelectedByUser', ->
+          if $scope.cradminLastFilesSelectedByUser.length > 0
+            $scope._addFilesToQueue($scope.cradminLastFilesSelectedByUser.slice())
+            $scope.cradminLastFilesSelectedByUser = []
 
-        $scope._uploadFiles = () ->
+        $scope._addFilesToQueue = (files) ->
           progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
             percent: 0
-            files: $scope.cradminBulkFileUploadFiles.slice()
+            files: files
           })
+          $scope.fileUploadQueue.push(progressInfo)
+          if $scope.firstUploadInProgress
+            # If the first upload is in progress, we need to postpone subsequent
+            # uploads until we get the response from the first upload containing
+            # the collectionid.
+            return
+          if $scope.collectionid == null
+            $scope.firstUploadInProgress = true
+          $scope._processFileUploadQueue()
 
+        $scope._onFileUploadComplete = ->
+          ###
+          Called both on file upload success and error
+          ###
+          $scope.firstUploadInProgress = false
+          $scope.formController.removeInProgress()
+          if $scope.fileUploadQueue.length > 0
+            $scope._processFileUploadQueue()
+
+        $scope._processFileUploadQueue = () ->
+          progressInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
           apidata = angular.extend({}, $scope.apiparameters, {collectionid: $scope.collectionid})
           $scope.formController.addInProgress()
 
@@ -213,7 +247,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             url: $scope.uploadUrl
             method: 'POST'
             data: apidata
-            file: $scope.cradminBulkFileUploadFiles  # single file or a list of files. list is only for html5
+            file: progressInfo.rawFiles
             fileFormDataName: 'file'  # The form field name
             headers: {
               'X-CSRFToken': $cookies.csrftoken
@@ -222,12 +256,12 @@ angular.module('djangoCradmin.bulkfileupload', [
           }).progress((evt) ->
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            $scope._setCollectionId(data.collectionid)
             progressInfo.finish(data.temporaryfiles)
-            $scope.formController.removeInProgress()
+            $scope._setCollectionId(data.collectionid)
+            $scope._onFileUploadComplete()
           ).error((data) ->
             progressInfo.setErrors(data)
-            $scope.formController.removeInProgress()
+            $scope._onFileUploadComplete()
           )
 
         $scope._setCollectionId = (collectionid) ->

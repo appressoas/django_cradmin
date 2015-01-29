@@ -22,7 +22,7 @@
     <div django-cradmin-bulkfileupload-advanced-widget>
         {% block droparea-advanced %}
             <div ng-file-drop
-                    ng-model="cradminBulkFileUploadFiles"
+                    ng-model="cradminLastFilesSelectedByUser"
                     multiple="{% if singlemode %}false{% else %}true{% endif %}"
                     {% if accept %}
                         accept="{{ accept }}"
@@ -64,7 +64,7 @@
             <p class="django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper">
                 <button ng-file-select
                         type="button"
-                        ng-model="cradminBulkFileUploadFiles"
+                        ng-model="cradminLastFilesSelectedByUser"
                         multiple="{% if singlemode %}false{% else %}true{% endif %}"
                         {% if accept %}
                             accept="{{ accept }}"
@@ -91,7 +91,7 @@
             <p class="django-cradmin-bulkfileupload-simple-button-wrapper">
                 <button ng-file-select
                         type="button"
-                        ng-model="cradminBulkFileUploadFiles"
+                        ng-model="cradminLastFilesSelectedByUser"
                         multiple="{% if singlemode %}false{% else %}true{% endif %}"
                         class="btn btn-default btn-block django-cradmin-bulkfileupload-simple-button">
                     {% block fileselectbutton-simple-content %}
