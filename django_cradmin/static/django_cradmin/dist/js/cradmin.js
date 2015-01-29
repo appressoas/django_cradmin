@@ -445,17 +445,19 @@
             }
           });
           $scope._uploadFiles = function() {
-            var progressInfo;
+            var apidata, progressInfo;
             progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
               percent: 0,
               files: $scope.cradminBulkFileUploadFiles.slice()
             });
-            $scope.apiparameters.collectionid = $scope.collectionid;
+            apidata = angular.extend({}, $scope.apiparameters, {
+              collectionid: $scope.collectionid
+            });
             $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
               method: 'POST',
-              data: $scope.apiparameters,
+              data: apidata,
               file: $scope.cradminBulkFileUploadFiles,
               fileFormDataName: 'file',
               headers: {
@@ -480,7 +482,14 @@
         },
         link: function(scope, element, attr, formController) {
           scope.uploadUrl = attr.djangoCradminBulkfileupload;
-          scope.apiparameters = attr.djangoCradminBulkfileuploadApiparameters;
+          if (attr.djangoCradminBulkfileuploadApiparameters != null) {
+            scope.apiparameters = scope.$parent.$eval(attr.djangoCradminBulkfileuploadApiparameters);
+            if (!angular.isObject(scope.apiparameters)) {
+              throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.');
+            }
+          } else {
+            scope.apiparameters = {};
+          }
           scope.formController = formController;
         }
       };

@@ -1,4 +1,5 @@
 import json
+from xml.sax.saxutils import quoteattr
 from django import forms
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
@@ -53,7 +54,7 @@ class BulkFileUploadWidget(forms.Widget):
         context['invalid_filetype_message'] = self.invalid_filetype_message
         context['advanced_fileselectbutton_text'] = self.advanced_fileselectbutton_text
         context['simple_fileselectbutton_text'] = self.simple_fileselectbutton_text
-        context['apiparameters'] = json.dumps(self.apiparameters)
+        context['apiparameters'] = quoteattr(json.dumps(self.apiparameters))
         context['apiurl'] = self.get_apiurl()
         return context
 
