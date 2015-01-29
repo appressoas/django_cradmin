@@ -227,7 +227,6 @@ class ArchiveImageBulkAddView(formbase.FormView):
         archiveimage.save()
         archiveimage.image.save(temporaryfile.filename, temporaryfile.file)
         archiveimage.full_clean()
-        temporaryfile.delete_object_and_file()
 
     def upload_files_to_archive(self, temporaryfilecollection):
         for temporaryfile in temporaryfilecollection.files.all():
@@ -246,6 +245,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
             return http.HttpResponseNotFound()
         else:
             self.upload_files_to_archive(temporaryfilecollection)
+            temporaryfilecollection.clear_files_and_delete()
             return http.HttpResponseRedirect(self.get_success_url())
 
 

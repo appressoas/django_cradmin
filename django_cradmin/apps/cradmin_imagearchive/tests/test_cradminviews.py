@@ -223,6 +223,27 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEqual(created_image.name, 'testfile.png')
         self.assertEqual(created_image.description, '')
 
+    def test_post_deletes_collection(self):
+        testimage = create_image(200, 100)
+        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.png')
+        temporaryfile.file.save('testfile.png', ContentFile(testimage))
+
+        request = self.factory.post('/test', {
+            'filecollectionid': collection.id
+        })
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.user = self.testuser
+        request.cradmin_app.reverse_appurl.return_value = '/success'
+        request.cradmin_role = TstRole.objects.create()
+
+        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
+        self.assertEquals(response.status_code, 302)
+        self.assertFalse(TemporaryFileCollection.objects.filter(id=collection.id).exists())
+
     def test_post_multiple_images(self):
         testimage1 = create_image(200, 100)
         testimage2 = create_image(100, 100)

@@ -157,6 +157,10 @@ class TemporaryFileCollection(models.Model):
         for temporaryfile in self.files.all():
             temporaryfile.delete_object_and_file()
 
+    def clear_files_and_delete(self):
+        self.clear_files()
+        self.delete()
+
     def is_supported_filetype(self, mimetype, filename):
         if self.accept:
             return html_input_accept_match(self.accept, mimetype, filename)
