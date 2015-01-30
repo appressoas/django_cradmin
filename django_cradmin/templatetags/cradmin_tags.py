@@ -1,4 +1,5 @@
 from django import template
+from django_cradmin.crinstance import reverse_cradmin_url
 
 from django_cradmin.registry import cradmin_instance_registry
 
@@ -46,6 +47,30 @@ def cradmin_appurl(context, viewname, *args, **kwargs):
     """
     request = context['request']
     return request.cradmin_app.reverse_appurl(viewname, args=args, kwargs=kwargs)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
+    """
+    Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.reverse_url`.
+    """
+    request = context['request']
+    return request.cradmin_instance.reverse_url(
+        appname=appname, viewname=viewname, args=args, kwargs=kwargs)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs):
+    """
+    Template tag implementation of :meth:`django_cradmin.crinstance.reverse_cradmin_url`.
+    """
+    request = context['request']
+    return reverse_cradmin_url(
+        instanceid=instanceid,
+        appname=appname,
+        roleid=roleid,
+        viewname=viewname, args=args, kwargs=kwargs)
+
 
 
 @register.simple_tag(takes_context=True)
