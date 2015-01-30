@@ -7472,6 +7472,42 @@ a {
   padding-bottom: 15px;
   border-bottom: 1px solid #cccccc;
 }
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-danger a {
+  color: inherit;
+  text-decoration: underline;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-warning a {
+  color: inherit;
+  text-decoration: underline;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-info a {
+  color: inherit;
+  text-decoration: underline;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+.django-cradmin-container-fluid-focus.django-cradmin-container-fluid-focus-success a {
+  color: inherit;
+  text-decoration: underline;
+}
 nav#cradmin_menu {
   background-color: #333333;
 }
