@@ -30,6 +30,7 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/django_cradmin/templates" />
+        <option value="$MODULE_DIR$/django_cradmin/templates" />
       </list>
     </option>
   </component>
