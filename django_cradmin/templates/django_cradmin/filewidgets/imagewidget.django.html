@@ -4,7 +4,7 @@
 <div class="django_cradmin_imagewidget django_cradmin_filewidget {% if clearable %}django_cradmin_filewidget_clearable{% endif %}"
         django-cradmin-image-preview>
     {% if image_path %}
-        <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height format=preview_format %}"
+        <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format %}"
              django-cradmin-image-preview-img>
     {% else %}
         {# Used for the preview - hidden before we have a preview #}
