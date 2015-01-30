@@ -15,4 +15,10 @@ class ArchiveImageAdmin(admin.ModelAdmin):
         'file_extension',
     ]
 
+    def get_queryset(self, request):
+        if request.user.is_superuser:
+            return super(ArchiveImageAdmin, self).get_queryset(request)
+        else:
+            return ArchiveImage.objects.none()
+
 admin.site.register(ArchiveImage, ArchiveImageAdmin)

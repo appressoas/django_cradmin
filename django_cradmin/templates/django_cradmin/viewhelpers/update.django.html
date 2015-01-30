@@ -1,6 +1,11 @@
 {% extends "django_cradmin/viewhelpers/create_update_base.django.html" %}
 {% load i18n %}
 
+{% block title %}
+    {% trans "EDIT" %}
+    {{ model_verbose_name }}
+{% endblock title %}
+
 {% block pageheader-inner %}
     {% block headingicon %}
         <span class="fa fa-edit cradmin-page-header-icon"></span>

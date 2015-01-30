@@ -16,10 +16,12 @@ module.exports = (grunt) ->
       'bower_components/fontawesome/fonts/fontawesome-webfont.woff'
     ]
     js: [
-      'bower_components/angular/angular.min.js'
-      # 'bower_components/angular/angular.min.js.map'
-      # 'bower_components/angular/angular.js'
-      # 'bower_components/angular/angular.js.map'
+      'bower_components/jquery/dist/jquery.js'
+      'bower_components/angular/angular.js'
+      'bower_components/angular-cookies/angular-cookies.js'
+      'bower_components/ng-file-upload/angular-file-upload.js'
+      'bower_components/modernizr/modernizr.js'
+      'bower_components/detectizr/dist/detectizr.js'
     ]
     ace_editor: [
       'bower_components/ace-builds/src-min-noconflict/ace.js'
@@ -104,6 +106,7 @@ module.exports = (grunt) ->
       cradmin:
         files:
           'dist/js/cradmin.min.js': ['dist/js/cradmin.js']
+          'dist/vendor/cradmin-vendorjs.js': vendorfiles.js
 
     copy:
       vendor:
@@ -112,11 +115,11 @@ module.exports = (grunt) ->
           flatten: true
           src: vendorfiles.fonts
           dest: 'dist/vendor/fonts/'
-        }, {
-          expand: true
-          flatten: true
-          src: vendorfiles.js
-          dest: 'dist/vendor/js/'
+#        }, {
+#          expand: true
+#          flatten: true
+#          src: vendorfiles.js
+#          dest: 'dist/vendor/js/'
         }, {
           expand: true
           flatten: true
@@ -138,8 +141,13 @@ module.exports = (grunt) ->
 
         # list of files / patterns to load in the browser
         files: [
+          'bower_components/jquery/dist/jquery.js'
           'bower_components/angular/angular.js'
           'bower_components/angular-mocks/angular-mocks.js'
+          'bower_components/angular-cookies/angular-cookies.js'
+          'bower_components/ng-file-upload/angular-file-upload.js'
+          'bower_components/modernizr/modernizr.js'
+          'bower_components/detectizr/dist/detectizr.js'
           #'bower_components/angular-ui-ace/ui-ace.min.js'
           #'bower_components/ace-builds/src-min-noconflict/ace.js'
           'src/lib/**/*.js'

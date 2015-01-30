@@ -2,6 +2,10 @@ Django==1.7.1
 django-crispy-forms==1.4.0
 Pillow==2.5.3
 sorl-thumbnail==12.1c
+pytz==2014.10
+
+# For HTML5 file uploads with the multiple attribute
+django-multiupload==0.3
 
 # Required by sphinx
 Jinja2==2.7.2

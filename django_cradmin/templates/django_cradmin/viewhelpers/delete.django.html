@@ -25,7 +25,7 @@
     {% endblock deletequestion %}
 
     {% block delete-form %}
-        <form action="{{ request.build_absolute_uri }}" method="post" class="django_cradmin_form">{% csrf_token %}
+        <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">{% csrf_token %}
             <div class="django_cradmin_submitrow">
                 <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
                 <a class="btn btn-cancel" django-cradmin-back>{% trans "Cancel" %}</a>

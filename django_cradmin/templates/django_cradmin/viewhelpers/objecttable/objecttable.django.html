@@ -77,7 +77,7 @@
             "
         {% endif %}
     >
-        <form class="django_cradmin_form" method="post"
+        <form class="django-cradmin-form" method="post"
                 {% if multiselect_actions %}
                     {% comment %}
                         What we put here does not really matter - it just needs
@@ -108,7 +108,7 @@
                             </th>
                         {% endif %}
                         {% for column in columns %}
-                            <th class="{{ column.get_headercell_css_class }}"
+                            <th class="{{ column.get_headercell_css_class_string }}"
                                     style="{{ column.get_headercell_css_style }}">
                                 {% if column.is_sortable %}
                                     <a class="objecttableview-flip-ordering-button"
@@ -166,9 +166,9 @@
                                         ng-click="toggleCheckbox('item_{{ row.object.pk }}')">
                                 </td>
                             {% endif %}
-                            {% for cell in row.cells %}
-                                <td>
-                                    {{ cell }}
+                            {% for column, rendered_cell in row.cells %}
+                                <td class="{{ column.get_normalcell_css_class_string }}">
+                                    {{ rendered_cell }}
                                 </td>
                             {% endfor %}
                         </tr>

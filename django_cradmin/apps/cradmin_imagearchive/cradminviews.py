@@ -1,12 +1,17 @@
+from django import http
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
+from django import forms
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.crispylayouts import BulkFileUploadSubmit
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
+from django_cradmin.viewhelpers import formbase
 from django_cradmin import crapp
-
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.widgets import filewidgets
 
@@ -38,6 +43,12 @@ class NameSelectColumn(objecttable.UseThisActionColumn):
         ]
 
 
+class DescriptionColumn(objecttable.TruncatecharsPlainTextColumn):
+    modelfield = 'description'
+    maxlength = 80
+    allcells_css_classes = ['hidden-xs']
+
+
 class ImageColumn(objecttable.ImagePreviewColumn):
     modelfield = 'image'
     preview_width = 100
@@ -63,7 +74,7 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
     columns = [
         ImageColumn,
         NameColumn,
-        'description'
+        DescriptionColumn,
     ]
     searchfields = ['name', 'description', 'file_extension']
 
@@ -71,6 +82,7 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
         app = self.request.cradmin_app
         return [
             objecttable.Button(_('Add image'), url=app.reverse_appurl('create')),
+            objecttable.Button(_('Bulk upload'), url=app.reverse_appurl('bulkadd')),
         ]
 
 
@@ -154,6 +166,89 @@ class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteVie
     """
 
 
+class BulkAddForm(forms.Form):
+    filecollectionid = forms.IntegerField(
+        required=True,
+        widget=BulkFileUploadWidget(
+            accept='image/*',
+            # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
+            apiparameters={
+                'accept': 'image/png,image/jpeg,image/gif'
+            },
+            dropbox_text=_('Upload images by dragging and dropping them here'),
+            invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
+            advanced_fileselectbutton_text=_('... or select images'),
+            simple_fileselectbutton_text=_('Select images ...')
+        ),
+        label=_('Upload at least one image'),
+        help_text=_(
+            'Upload as many images as you like. '
+            'You can edit the name and description of the images after they have been uploaded.'),
+        error_messages={
+            'required': _('You must upload at least one file.')
+        })
+
+
+class ArchiveImageBulkAddView(formbase.FormView):
+    template_name = 'django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html'
+    form_class = BulkAddForm
+    form_attributes = {
+        'django-cradmin-bulkfileupload-form': ''
+    }
+    form_id = 'django_cradmin_imagearchive_bulkadd_form'
+    extra_form_css_classes = ['django-cradmin-form-noasterisk']
+
+    def get_buttons(self):
+        return [
+            BulkFileUploadSubmit(
+                'submit', _('Add to the image archive'),
+                uploading_text=_('Uploading images'),
+                uploading_icon_cssclass='fa fa-spinner fa-spin'),
+        ]
+
+    def get_field_layout(self):
+        return [
+            layout.Div(
+                'filecollectionid',
+                # css_class="cradmin-globalfields"),
+                css_class="cradmin-focusfield"),
+        ]
+
+    def get_formhelper(self):
+        formhelper = super(ArchiveImageBulkAddView, self).get_formhelper()
+        formhelper.form_show_labels = False
+        return formhelper
+
+    def upload_file_to_archive(self, temporaryfile):
+        archiveimage = ArchiveImage(
+            role=self.request.cradmin_role,
+            name=temporaryfile.filename)
+        archiveimage.clean()
+        archiveimage.save()
+        archiveimage.image.save(temporaryfile.filename, temporaryfile.file)
+        archiveimage.full_clean()
+
+    def upload_files_to_archive(self, temporaryfilecollection):
+        for temporaryfile in temporaryfilecollection.files.all():
+            self.upload_file_to_archive(temporaryfile)
+
+    def get_collectionqueryset(self):
+        return TemporaryFileCollection.objects\
+            .filter_for_user(self.request.user)\
+            .prefetch_related('files')
+
+    def form_valid(self, form):
+        collectionid = form.cleaned_data['filecollectionid']
+        try:
+            temporaryfilecollection = self.get_collectionqueryset().get(id=collectionid)
+        except TemporaryFileCollection.DoesNotExist:
+            return http.HttpResponseNotFound()
+        else:
+            self.upload_files_to_archive(temporaryfilecollection)
+            temporaryfilecollection.clear_files_and_delete()
+            return http.HttpResponseRedirect(self.get_success_url())
+
+
 class App(crapp.App):
     appurls = [
         crapp.Url(
@@ -176,4 +271,9 @@ class App(crapp.App):
             r'^delete/(?P<pk>\d+)$',
             ArchiveImageDeleteView.as_view(),
             name="delete"),
+        crapp.Url(
+            r'bulkadd$',
+            ArchiveImageBulkAddView.as_view(),
+            name='bulkadd'
+        )
     ]

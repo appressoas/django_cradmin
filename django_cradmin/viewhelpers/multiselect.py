@@ -5,9 +5,9 @@ from django.views.generic.edit import FormMixin
 from django.shortcuts import render
 from django import http
 from crispy_forms import layout
-from crispy_forms.helper import FormHelper
 
 from django_cradmin import crapp
+from django_cradmin.crispylayouts import CradminFormHelper
 
 
 class MultiSelectView(TemplateView):
@@ -114,7 +114,7 @@ class MultiSelectView(TemplateView):
         return http.HttpResponseRedirect(self.get_success_url())
 
 
-class NoFormActionFormHelper(FormHelper):
+class NoFormActionFormHelper(CradminFormHelper):
     form_action = ''
 
 

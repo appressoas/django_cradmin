@@ -40,12 +40,12 @@ class TestColumn(TestCase):
         with self.assertRaises(NotImplementedError):
             col.render_value(None)
 
-    # check that you get an exception when running render_cell without overriding with subclass..
+    # check that you get an exception when running render_cell_content without overriding with subclass..
     def test_render_cell_not_implemented(self):
         col = objecttable.Column(view=None, columnindex=0)
 
         with self.assertRaises(NotImplementedError):
-            col.render_cell(None)
+            col.render_cell_content(None)
 
 
 class TestPlainTextColumn(TestCase):
@@ -65,7 +65,7 @@ class TestPlainTextColumn(TestCase):
         self.model_testobject.testfield = 'test_value'
         self.assertEquals(
             '<span class="objecttable-cellvalue">test_value</span>',
-            self.column_subclass.render_cell(self.model_testobject).strip())
+            self.column_subclass.render_cell_content(self.model_testobject).strip())
 
 
 class TestSingleActionColumn(TestCase):
@@ -97,11 +97,11 @@ class TestSingleActionColumn(TestCase):
 
     def test_render_cell_ExceptionRaised(self):
         with self.assertRaises(NotImplementedError):
-            self.column_subclass_incomplete.render_cell(self.model_testobject)
+            self.column_subclass_incomplete.render_cell_content(self.model_testobject)
 
     def test_render_cell(self):
         expected = '<a href="www.example.com/test_value" class="objecttable-cellvalue-link">test_value</a>'
-        self.assertEquals(self.column_subclass.render_cell(self.model_testobject), expected)
+        self.assertEquals(self.column_subclass.render_cell_content(self.model_testobject), expected)
 
 
 class TestMultiActionColumn(TestCase):
@@ -134,7 +134,7 @@ class TestMultiActionColumn(TestCase):
 
     def test_render_cell_ExceptionRaised(self):
         with self.assertRaises(NotImplementedError):
-            self.column_subclass_incomplete.render_cell(self.model_testobject)
+            self.column_subclass_incomplete.render_cell_content(self.model_testobject)
 
     def test_render_cell(self):
         expected = [
@@ -144,7 +144,7 @@ class TestMultiActionColumn(TestCase):
             '<a', 'href="www.example.com/btn2"', 'class="btn', 'btn-default', 'btn-sm"', '>', 'Btn2', '</a>',
             '</p>'
         ]
-        result = self.column_subclass.render_cell(self.model_testobject).split()
+        result = self.column_subclass.render_cell_content(self.model_testobject).split()
         self.assertEquals(result, expected)
 
 

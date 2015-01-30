@@ -1,0 +1,45 @@
+<p ng-repeat="fileInfo in fileInfoList.files"
+        class="django-cradmin-bulkfileupload-progress-item"
+        ng-class="{
+            'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished,
+            'django-cradmin-bulkfileupload-progress-item-error django-cradmin-bulkfileupload-errorparagraph': fileInfoList.hasErrors
+        }">
+    <span ng-if="fileInfoList.hasErrors">
+        <button django-cradmin-bulkfileupload-error-close-button
+                type="button"
+                class="btn btn-link django-cradmin-bulkfileupload-error-closebutton">
+            <span class="fa fa-times"></span>
+            <span class="sr-only">Close</span>
+        </button>
+        <span ng-repeat="(errorfield,errors) in fileInfoList.errors">
+            <span ng-repeat="error in errors" class="django-cradmin-bulkfileupload-error">
+                {{ error.message }}
+            </span>
+        </span>
+    </span>
+    <span ng-if="!fileInfoList.hasErrors">
+        <button django-cradmin-bulkfileupload-remove-file-button="fileInfo"
+                ng-if="fileInfoList.finished"
+                type="button"
+                class="btn btn-link django-cradmin-bulkfileupload-remove-file-button">
+            <span ng-if="!fileInfo.isRemoving"
+                  class="django-cradmin-bulkfileupload-remove-file-button-isnotremoving">
+                <span class="fa fa-times"></span>
+                <span class="sr-only">Remove</span>
+            </span>
+            <span ng-if="fileInfo.isRemoving"
+                  class="django-cradmin-bulkfileupload-remove-file-button-isremoving">
+                <span class="fa fa-spinner fa-spin"></span>
+                <span class="sr-only">Removing ...</span>
+            </span>
+        </button>
+
+        <span class="django-cradmin-progressbar">
+            <span class="django-cradmin-progressbar-progress" ng-style="{'width': fileInfoList.percent+'%'}">&nbsp;</span>
+            <span class="django-cradmin-progresspercent">
+                <span class="django-cradmin-progresspercent-number">{{ fileInfoList.percent }}</span>%
+            </span>
+        </span>
+        <span class="django-cradmin-filename">{{fileInfo.name}}</span>
+    </span>
+</p>

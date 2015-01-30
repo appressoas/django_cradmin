@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     # Required by django cradmin
     'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
+    'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
@@ -89,6 +90,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'nb'
 
 TIME_ZONE = 'UTC'
 

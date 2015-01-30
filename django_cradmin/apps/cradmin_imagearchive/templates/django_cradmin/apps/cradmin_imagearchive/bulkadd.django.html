@@ -1,0 +1,45 @@
+{% extends "django_cradmin/viewhelpers/formview_base.django.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% trans "Bulk upload archive images" %}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>
+        {% trans "Bulk upload archive images" %}
+    </h1>
+{% endblock pageheader-inner %}
+
+
+{% comment %}
+{% block content %}
+    <div class="container-fluid">
+
+        <form action="{{ request.path }}"
+                django-cradmin-bulkfileupload-form
+                method="post"
+                class="django-cradmin-form django-cradmin-bulkfileupload-form">
+            {% csrf_token %}
+
+
+            {% include "django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html" with hiddenfieldname='filecollectionid' %}
+
+            <div class="django_cradmin_submitrow">
+                <button django-cradmin-bulkfileupload-submit
+                        class="btn btn-primary" type="submit">
+                    <span ng-if="inProgress">
+                        <span class="fa fa-spinner fa-spin"></span>
+                        {% trans "Uploading files" %}
+                    </span>
+                    <span ng-if="!inProgress">
+                        {% trans "Add files to the image archive" %}
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+{% endcomment %}

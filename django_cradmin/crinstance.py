@@ -9,6 +9,40 @@ from . import crapp
 from .views import roleselect
 
 
+def reverse_cradmin_url(instanceid, appname, roleid,
+                        viewname=crapp.INDEXVIEW_NAME,
+                        args=None, kwargs=None):
+    """
+    Reverse an URL within a cradmin instance.
+
+    Usage is very similar to :func:`django.core.urlresolvers.reverse`,
+    but you specify the cradmin instance, appname, roleid and viewname
+    instead of the url-name
+
+    Examples::
+
+        myapp_index_url = reverse_cradmin_url(
+            instanceid='siteadmin',
+            appname='myapp',
+            roleid=site.id)
+
+        myapp_add_url = reverse_cradmin_url(
+            instanceid='siteadmin',
+            appname='myapp',
+            roleid=site.id,
+            viewname='add')
+    """
+    if args:
+        args = [roleid] + list(args)
+    else:
+        if not kwargs:
+            kwargs = {}
+        kwargs['roleid'] = roleid
+
+    urlname = u'{}-{}-{}'.format(instanceid, appname, viewname)
+    return reverse(urlname, args=args, kwargs=kwargs)
+
+
 class BaseCrAdminInstance(object):
     """
     Base class for a django_cradmin instance.
@@ -174,9 +208,6 @@ class BaseCrAdminInstance(object):
         """
         return self._get_menu()
 
-    def _build_urlname(self, appname, viewname):
-        return '{}-{}-{}'.format(self.id, appname, viewname)
-
     def reverse_url(self, appname, viewname, args=None, kwargs=None, roleid=None):
         """
         Reverse an URL within this cradmin instance.
@@ -188,13 +219,10 @@ class BaseCrAdminInstance(object):
         """
         if roleid is None:
             roleid = self.get_roleid(self.request.cradmin_role)
-        if args:
-            args = [roleid] + list(args)
-        else:
-            if not kwargs:
-                kwargs = {}
-            kwargs['roleid'] = roleid
-        return reverse(self._build_urlname(appname, viewname), args=args, kwargs=kwargs)
+        return reverse_cradmin_url(
+            instanceid=self.id,
+            appname=appname, viewname=viewname, roleid=roleid,
+            args=args, kwargs=kwargs)
 
     def appindex_url(self, appname, roleid=None):
         """
