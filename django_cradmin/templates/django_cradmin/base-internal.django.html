@@ -5,7 +5,16 @@
     {% block menu %}
         {% cradmin_render_menu %}
     {% endblock menu %}
+
     <div id="django_cradmin_contentwrapper">
+        {% block pageheader %}
+            <div class="page-header">
+                <div class="container-fluid">
+                    {% block pageheader-inner %}{% endblock pageheader-inner %}
+                </div>
+            </div>
+        {% endblock pageheader %}
+
         {% block content %}{% endblock content %}
     </div>
 {% endblock body %}

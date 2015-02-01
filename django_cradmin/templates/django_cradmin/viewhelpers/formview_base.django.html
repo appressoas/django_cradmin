@@ -3,14 +3,6 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    {% block pageheader %}
-        <div class="page-header page-header-nomargin">
-            <div class="container-fluid">
-                {% block pageheader-inner %}{% endblock pageheader-inner %}
-            </div>
-        </div>
-    {% endblock pageheader %}
-
     {% block form %}
         {% crispy form formhelper %}
 

@@ -2,23 +2,21 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-    {% block pageheader %}
-        <div class="page-header page-header-nomargin">
-            <div class="container-fluid">
-                <span class="fa fa-edit"></span>
-                <strong>{% trans "EDIT" %}</strong>
-                {{ pagetitle }}
-            </div>
-        </div>
-    {% endblock pageheader %}
+{% block pageheader-inner %}
+    <span class="fa fa-edit"></span>
+    <strong>{% trans "EDIT" %}</strong>
+    {{ pagetitle }}
+{% endblock pageheader-inner %}
 
+{% block content %}
     {% block forms %}
-        <form method="post" action="{{ request.build_absolute_uri }}" class="django-cradmin-form">
-            {% csrf_token %}
-            {{ selected_objects_form.as_ul }}
-            {% crispy form formhelper %}
-        </form>
+        <div class="django-cradmin-form-wrapper">
+            <form method="post" action="{{ request.build_absolute_uri }}" class="django-cradmin-form">
+                {% csrf_token %}
+                {{ selected_objects_form.as_ul }}
+                {% crispy form formhelper %}
+            </form>
+        </div>
     {% endblock forms %}
 
     {% comment %}

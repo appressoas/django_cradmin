@@ -3,18 +3,15 @@
 
 {% block title %}{{ pagetitle|capfirst }}{% endblock title %}
 
-{% block content %}
-    {% if use_this_hidden_attribute %}
-        <div django-cradmin-use-this-hidden={{ use_this_hidden_attribute|safe }}></div>
-    {% endif %}
-    
-    {% block pageheader %}
-        <div class="page-header page-header-nomargin">
-            <div class="container-fluid">
-                {% if enable_search %}
-                    <div class="row">
-                        <div class="col-sm-8 col-md-9">
-                {% endif %}
+{% block pageheader %}
+    <div class="page-header">
+        <div class="container-fluid">
+            {% if enable_search %}
+                <div class="row">
+                    <div class="col-sm-8 col-md-9">
+            {% endif %}
+
+            {% block pageheader-inner %}
                 {% block headingicon %}{% endblock headingicon %}
                 <h1>
                     {% block heading %}
@@ -28,35 +25,41 @@
                         {% endfor %}
                     </p>
                 {% endif %}
-                {% if enable_search %}
-                        </div>
-                        <div class="col-sm-4 col-md-3">
-                            <form class="form-inline cradmin-searchform" role="search" method="get"
-                                    action="{{ request.get_full_path }}">
-                                <div class="input-group">
-                                    {% for name, value in search_hidden_fields %}
-                                        <input type="hidden"
-                                               name="{{ name }}"
-                                               value="{{ value }}">
-                                    {% endfor %}
-
-                                    <input class="form-control" name="search" type="text"
-                                           placeholder="{% trans 'Search...' %}"
-                                           value="{{ current_search }}">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-default">
-                                            <span class="sr-only">{% trans "Search" %}</span>
-                                            <span class="fa fa-search"></span>
-                                        </button>
-                                    </span>
-                                </div>
-                             </form>
-                        </div>
+            {% endblock pageheader-inner %}
+            {% if enable_search %}
                     </div>
-                {% endif %}
-            </div>
+                    <div class="col-sm-4 col-md-3">
+                        <form class="form-inline cradmin-searchform" role="search" method="get"
+                                action="{{ request.get_full_path }}">
+                            <div class="input-group">
+                                {% for name, value in search_hidden_fields %}
+                                    <input type="hidden"
+                                           name="{{ name }}"
+                                           value="{{ value }}">
+                                {% endfor %}
+
+                                <input class="form-control" name="search" type="text"
+                                       placeholder="{% trans 'Search...' %}"
+                                       value="{{ current_search }}">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default">
+                                        <span class="sr-only">{% trans "Search" %}</span>
+                                        <span class="fa fa-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                         </form>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-    {% endblock pageheader %}
+    </div>
+{% endblock pageheader %}
+
+{% block content %}
+    {% if use_this_hidden_attribute %}
+        <div django-cradmin-use-this-hidden={{ use_this_hidden_attribute|safe }}></div>
+    {% endif %}
 
 
     {% if enable_previews %}
