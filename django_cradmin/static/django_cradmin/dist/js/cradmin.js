@@ -1097,7 +1097,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton']);
 
 }).call(this);
 
@@ -1108,6 +1108,25 @@
       return $scope.displayMenu = !$scope.displayMenu;
     };
   });
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.messages', []).controller('DjangoCradminMessagesCtrl', [
+    '$scope', '$timeout', function($scope, $timeout) {
+      $scope.loading = true;
+      $timeout(function() {
+        return $scope.loading = false;
+      }, 650);
+      $scope.messageHidden = {};
+      $scope.hideMessage = function(index) {
+        return $scope.messageHidden[index] = true;
+      };
+      $scope.messageIsHidden = function(index) {
+        return $scope.messageHidden[index];
+      };
+    }
+  ]);
 
 }).call(this);
 
