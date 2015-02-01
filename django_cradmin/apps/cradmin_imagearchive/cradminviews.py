@@ -257,7 +257,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
 
     def add_success_messages(self, temporaryfilecollection):
         """
-        Called after the form has been saved, and after :meth:`.form_saved` has been called.
+        Add success messages on successful upload.
 
         The ``temporaryfilecollection`` is the TemporaryFileCollection that was just uploaded.
 
