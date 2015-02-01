@@ -1,4 +1,5 @@
 from django import http
+from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
@@ -147,6 +148,9 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
         archiveimage.save()
         return archiveimage
 
+    def get_success_message(self, object):
+        return _(u'Uploaded "%(what)s".') % {'what': object}
+
 
 class ArchiveImageUpdateView(ArchiveImagesQuerySetForRoleMixin, ArchiveImageCreateUpdateMixin, update.UpdateView):
     """
@@ -237,6 +241,34 @@ class ArchiveImageBulkAddView(formbase.FormView):
             .filter_for_user(self.request.user)\
             .prefetch_related('files')
 
+    def get_success_message(self, temporaryfilecollection):
+        """
+        Override this to provide a success message.
+
+        The ``temporaryfilecollection`` is the TemporaryFileCollection that was just uploaded.
+
+        Used by :meth:`.add_success_messages`.
+        """
+        filenames = [u'"{}"'.format(temporaryfile.filename) for temporaryfile in temporaryfilecollection.files.all()]
+        return _(u'Uploaded %(what)s') % {
+            'what': u','.join(filenames)
+        }
+
+    def add_success_messages(self, temporaryfilecollection):
+        """
+        Called after the form has been saved, and after :meth:`.form_saved` has been called.
+
+        The ``temporaryfilecollection`` is the TemporaryFileCollection that was just uploaded.
+
+        Defaults to add :meth:`.get_success_message` as a django messages
+        success message if :meth:`.get_success_message` returns anything.
+
+        You can override this to add multiple messages or to show messages in some other way.
+        """
+        success_message = self.get_success_message(temporaryfilecollection)
+        if success_message:
+            messages.success(self.request, success_message)
+
     def form_valid(self, form):
         collectionid = form.cleaned_data['filecollectionid']
         try:
@@ -245,6 +277,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
             return http.HttpResponseNotFound()
         else:
             self.upload_files_to_archive(temporaryfilecollection)
+            self.add_success_messages(temporaryfilecollection)
             temporaryfilecollection.clear_files_and_delete()
             return http.HttpResponseRedirect(self.get_success_url())
 

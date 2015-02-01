@@ -1,8 +1,10 @@
 import urllib
 from django import forms
 from django import http
+from django.contrib import messages
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.core import serializers
+from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms import layout
 
@@ -161,16 +163,74 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         else:
             self.object = self.save_object(form)
             self.form_saved(self.object)
+            self.add_success_messages(self.object)
             return http.HttpResponseRedirect(self.get_success_url())
 
     def form_saved(self, object):
         """
-        Called after the form has been saved.
+        Called after the form has been successfully saved.
         The ``object`` is the saved object.
 
-        Does nothing by default, but you can override it.
+        Does nothing by default, but you can override it if you need to
+        do something extra post save.
         """
         pass
+
+    def get_success_message(self, object):
+        """
+        Override this to provide a success message.
+
+        The ``object`` is the saved object.
+
+        Used by :meth:`.add_success_messages`.
+        """
+        return None
+
+    def add_success_messages(self, object):
+        """
+        Called after the form has been saved, and after :meth:`.form_saved` has been called.
+
+        The ``object`` is the saved object.
+
+        Defaults to add :meth:`.get_success_message` as a django messages
+        success message if :meth:`.get_success_message` returns anything.
+
+        You can override this to add multiple messages or to show messages in some other way.
+        """
+        success_message = self.get_success_message(object)
+        if success_message:
+            messages.success(self.request, success_message)
+
+    def get_form_invalid_message(self, form):
+        """
+        You can override this to provide a custom error message.
+
+        Defaults to "Please fix the errors in the form below.".
+
+        The ``form`` is the invalid form object.
+
+        Used by :meth:`.add_form_invalid_messages`.
+        """
+        return _('Please fix the errors in the form below.')
+
+    def add_form_invalid_messages(self, form):
+        """
+        Called to add messages when the form does not validate.
+
+        The ``form`` is the invalid form object.
+
+        Defaults to add :meth:`.get_form_invalid_message` as a django messages
+        error message if :meth:`.get_form_invalid_message` returns anything.
+
+        You can override this to add multiple messages or to show error messages in some other way.
+        """
+        form_invalid_message = self.get_form_invalid_message(object)
+        if form_invalid_message:
+            messages.error(self.request, form_invalid_message)
+
+    def form_invalid(self, form):
+        self.add_form_invalid_messages(form)
+        return super(CreateUpdateViewMixin, self).form_invalid(form)
 
     def preview_requested(self):
         """

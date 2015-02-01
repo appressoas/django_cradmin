@@ -1,0 +1,22 @@
+.alert {
+  position: relative;
+  &.django-cradmin-alert-nomargin {
+    margin: 0;
+  }
+
+  &.django-cradmin-alert-edge-to-edge {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    .body-side-padding();
+  }
+
+  &.alert-dismissable button.close,
+  .django-cradmin-alert-loadspinner {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+    font-size: 24px;
+  }
+}

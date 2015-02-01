@@ -64,3 +64,6 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         context = super(CreateView, self).get_context_data(**kwargs)
         context['cradmin_hide_menu'] = self._foreignkey_select_mode()
         return context
+
+    def get_success_message(self, object):
+        return _('Created "%(object)s".') % {'object': object}

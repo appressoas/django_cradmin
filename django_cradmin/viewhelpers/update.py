@@ -38,3 +38,6 @@ class UpdateView(CreateUpdateViewMixin, DjangoUpdateView):
         """
         queryset = self.get_queryset_for_role(self.request.cradmin_role)
         return queryset
+
+    def get_success_message(self, object):
+        return _('Saved "%(object)s".') % {'object': object}
