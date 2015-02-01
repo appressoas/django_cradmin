@@ -18,6 +18,8 @@
                         {{ pagetitle|capfirst }}
                     {% endblock heading %}
                 </h1>
+            {% endblock pageheader-inner %}
+            {% block pageheader-buttons %}
                 {% if buttons %}
                     <p>
                         {% for button in buttons %}
@@ -25,7 +27,7 @@
                         {% endfor %}
                     </p>
                 {% endif %}
-            {% endblock pageheader-inner %}
+            {% endblock pageheader-buttons %}
             {% if enable_search %}
                     </div>
                     <div class="col-sm-4 col-md-3">
