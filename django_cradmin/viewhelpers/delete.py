@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.views.generic import DeleteView as DjangoDeleteView
+from django.utils.translation import ugettext_lazy as _
 
 
 class DeleteView(DjangoDeleteView):
@@ -44,3 +46,32 @@ class DeleteView(DjangoDeleteView):
         """
         queryset = self.get_queryset_for_role(self.request.cradmin_role)
         return queryset
+
+    def get_success_message(self, object_preview):
+        """
+        Override this to provide a success message.
+
+        Used by :meth:`.add_success_messages`.
+        """
+        return _('Deleted "%(what)s"') % {
+            'what': object_preview
+        }
+
+    def add_success_messages(self, object_preview):
+        """
+        Called after the object has been deleted.
+
+        Defaults to add :meth:`.get_success_message` as a django messages
+        success message if :meth:`.get_success_message` returns anything.
+
+        You can override this to add multiple messages or to show messages in some other way.
+        """
+        success_message = self.get_success_message(object_preview)
+        if success_message:
+            messages.success(self.request, success_message)
+
+    def delete(self, request, *args, **kwargs):
+        object_preview = self.get_object_preview()
+        response = super(DeleteView, self).delete(request, *args, **kwargs)
+        self.add_success_messages(object_preview)
+        return response

@@ -49,6 +49,7 @@ class TestDelete(TestCase):
                 return obj
 
         request = self.factory.post('/test')
+        request._messages = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
         SimpleDeleteView.as_view()(request, pk=10)
         obj.delete.assert_called_once_with()
