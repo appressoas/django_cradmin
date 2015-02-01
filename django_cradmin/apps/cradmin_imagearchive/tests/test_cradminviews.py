@@ -38,6 +38,7 @@ class TestCreateView(TestCase):
         request.cradmin_app = mock.MagicMock()
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
+        request._messages = mock.MagicMock()
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
         response = cradminviews.ArchiveImageCreateView.as_view()(request)
@@ -60,6 +61,7 @@ class TestCreateView(TestCase):
         request.cradmin_app = mock.MagicMock()
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
+        request._messages = mock.MagicMock()
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
         response = cradminviews.ArchiveImageCreateView.as_view()(request)
@@ -75,6 +77,7 @@ class TestCreateView(TestCase):
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
         request.cradmin_role = TstRole.objects.create()
+        request._messages = mock.MagicMock()
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
         response = cradminviews.ArchiveImageCreateView.as_view()(request)
@@ -116,6 +119,7 @@ class TestUpdateView(TestCase):
         request.cradmin_app = mock.MagicMock()
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = self.role
+        request._messages = mock.MagicMock()
 
         self.assertEqual(ArchiveImage.objects.count(), 1)
         response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
@@ -138,6 +142,7 @@ class TestUpdateView(TestCase):
         request.cradmin_app = mock.MagicMock()
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = self.role
+        request._messages = mock.MagicMock()
 
         response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
         self.assertEquals(response.status_code, 302)
@@ -155,6 +160,7 @@ class TestUpdateView(TestCase):
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
         request.cradmin_role = self.role
+        request._messages = mock.MagicMock()
 
         response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
         self.assertEquals(response.status_code, 302)
@@ -212,6 +218,7 @@ class TestArchiveImageBulkAddView(TestCase):
         request.user = self.testuser
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
+        request._messages = mock.MagicMock()
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
         response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
@@ -239,6 +246,7 @@ class TestArchiveImageBulkAddView(TestCase):
         request.user = self.testuser
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
+        request._messages = mock.MagicMock()
 
         response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
         self.assertEquals(response.status_code, 302)
@@ -265,6 +273,7 @@ class TestArchiveImageBulkAddView(TestCase):
         request.cradmin_app.reverse_appurl.return_value = '/success'
         request.cradmin_role = TstRole.objects.create()
         request.user = self.testuser
+        request._messages = mock.MagicMock()
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
         response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
