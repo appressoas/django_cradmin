@@ -149,7 +149,8 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
         return archiveimage
 
     def get_success_message(self, object):
-        return _(u'Uploaded "%(what)s".') % {'what': object}
+        what = u'"{}"'.format(object)
+        return _(u'Uploaded %(what)s.') % {'what': what}
 
 
 class ArchiveImageUpdateView(ArchiveImagesQuerySetForRoleMixin, ArchiveImageCreateUpdateMixin, update.UpdateView):
@@ -250,7 +251,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
         Used by :meth:`.add_success_messages`.
         """
         filenames = [u'"{}"'.format(temporaryfile.filename) for temporaryfile in temporaryfilecollection.files.all()]
-        return _(u'Uploaded %(what)s') % {
+        return _(u'Uploaded %(what)s.') % {
             'what': u','.join(filenames)
         }
 
