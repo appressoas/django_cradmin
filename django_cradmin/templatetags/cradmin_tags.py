@@ -64,13 +64,11 @@ def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs)
     """
     Template tag implementation of :meth:`django_cradmin.crinstance.reverse_cradmin_url`.
     """
-    request = context['request']
     return reverse_cradmin_url(
         instanceid=instanceid,
         appname=appname,
         roleid=roleid,
         viewname=viewname, args=args, kwargs=kwargs)
-
 
 
 @register.simple_tag(takes_context=True)
