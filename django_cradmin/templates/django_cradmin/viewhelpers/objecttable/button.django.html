@@ -1,4 +1,7 @@
 <a href="{{ url }}"
+        {% if dom_id %}
+            id="{{ dom_id }}"
+        {% endif %}
         class="btn btn-{{ buttonclass }} btn-sm"
         {% for attribute in attributes %}
             {{ attribute|safe }}

@@ -416,18 +416,20 @@ class Button(object):
     """
     template_name = 'django_cradmin/viewhelpers/objecttable/button.django.html'
 
-    def __init__(self, label, url='#', buttonclass='default', icon=None):
+    def __init__(self, label, url='#', buttonclass='default', icon=None, dom_id=None):
         """
         Parameters:
             label (unicode): The label of the button.
             url (unicode): The url/href attribute of the button.
             icon (unicode): An icon to show alongside the label. Example: ``fa-thumbs-up``.
             buttonclass (unicode): The bootstrap css class suffix of the button (default|primany|success|danger).
+            dom_id (unicode): If this is not None, it sets the id-attribute of the dom node for the button element.
         """
         self.label = label
         self.url = url
         self.icon = icon
         self.buttonclass = buttonclass
+        self.dom_id = dom_id
 
     def get_attributes(self):
         """
@@ -449,6 +451,7 @@ class Button(object):
             'icon': self.icon,
             'buttonclass': self.buttonclass,
             'attributes': self._iter_attributes(),
+            'dom_id': self.dom_id
         })
 
 
