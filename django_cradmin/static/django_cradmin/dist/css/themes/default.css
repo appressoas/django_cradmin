@@ -7527,6 +7527,14 @@ a {
     padding-right: 50px;
   }
 }
+.alert.django-cradmin-alert-edge-to-edge.alert-dismissable {
+  padding-right: 35px;
+}
+@media (min-width: 768px) {
+  .alert.django-cradmin-alert-edge-to-edge.alert-dismissable {
+    padding-right: 70px;
+  }
+}
 .alert.alert-dismissable button.close,
 .alert .django-cradmin-alert-loadspinner {
   position: relative;

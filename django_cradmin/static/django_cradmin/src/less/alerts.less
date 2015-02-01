@@ -9,6 +9,12 @@
     border-right: none;
     border-radius: 0;
     .body-side-padding();
+    &.alert-dismissable {
+      padding-right: (@cradmin-bodypadding-xs + 20px);
+      @media (min-width: @screen-sm-min) {
+        padding-right: (@cradmin-bodypadding + 20px);
+      }
+    }
   }
 
   &.alert-dismissable button.close,
