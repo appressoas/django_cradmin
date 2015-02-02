@@ -292,10 +292,18 @@ class TruncatecharsPlainTextColumn(PlainTextColumn):
 
 
 class SingleActionColumn(Column):
-    template_name = 'django_cradmin/viewhelpers/objecttable/singleactioncolumn-cell.django.html'
+    """
+    A column where the entire content is a link.
 
-    def __init__(self, **kwargs):
-        super(SingleActionColumn, self).__init__(**kwargs)
+    Usage::
+
+        class MySingleActionColumn(SingleActionColumn):
+            def get_actionurl(self, obj):
+                return reverse('something')
+
+    See also: :class:`.MultiActionColumn`.
+    """
+    template_name = 'django_cradmin/viewhelpers/objecttable/singleactioncolumn-cell.django.html'
 
     def get_actionurl(self, obj):
         raise NotImplementedError()
