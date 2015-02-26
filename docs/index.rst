@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Django CRadmin's documentation!
-==========================================
+django-CRadmin documentation
+============================
 
 Getting started
 ---------------
@@ -31,6 +31,15 @@ Modelhelpers
    :maxdepth: 1
 
    sortable
+
+
+Apps
+----
+.. toctree::
+    :maxdepth: 1
+
+    apps.cradmin_secure_user_token
+    apps.cradmin_passwordreset
 
 
 Widgets

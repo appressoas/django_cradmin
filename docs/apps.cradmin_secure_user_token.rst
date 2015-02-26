@@ -1,0 +1,71 @@
+############################################################################################
+:mod:`django_cradmin.apps.cradmin_user_single_use_token` --- Secure unique single use tokens
+############################################################################################
+
+.. currentmodule:: django_cradmin.apps.cradmin_user_single_use_token.models
+
+
+The purpose of the ``cradmin_user_single_use_token`` app is to provide
+single-use secure and unique tokens connected to a User object.
+
+Each token belongs to a user and an app. Tokens only live for a
+limited time, and this time can be configured on a per app basis.
+
+Very useful for single-use URLs like password reset, account activation, etc.
+
+
+************
+How it works
+************
+When you have a User and want to generate a unique token for that user, use::
+
+    from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
+    from django.contrib.auth import get_user_model
+
+    myuser = get_user_model().get(...)
+    singleusetoken = UserSingleUseToken.objects.generate(app='myapp', user=myuser)
+    # Use singleusetoken.token
+
+This creates a UserSingleUseToken object with a ``token``-attribute that
+contains a unique token. The app is provided for two reasons:
+
+- Makes it easier  to debug/browse the data model because you know what app
+  generated the token.
+- Makes it possible to configure different time to live for each app.
+
+When you have a token, typically from part of an URL, and want to get the
+user owning the token, use::
+
+    user = UserSingleUseToken.objects.pop(app='myapp', user=myuser)
+
+This returns the user, and deletes the UserSingleUseToken from the database.
+
+.. seealso::
+    :meth:`.UserSingleUseTokenBaseManager.generate` and  :meth:`.UserSingleUseTokenBaseManager.pop`.
+
+
+*********
+Configure
+*********
+You can configure the time to live of the generated tokens using the
+``DJANGO_CRADMIN_SECURE_USER_TOKEN_TIME_TO_LIVE_MINUTES`` setting::
+
+    DJANGO_CRADMIN_SECURE_USER_TOKEN_TIME_TO_LIVE_MINUTES = {
+        'default': 1440,
+        'myapp': 2500
+    }
+
+It defaults to::
+
+    DJANGO_CRADMIN_SECURE_USER_TOKEN_TIME_TO_LIVE_MINUTES = {
+        'default': 60*24*4
+    }
+
+
+
+***
+API
+***
+
+.. automodule:: django_cradmin.apps.cradmin_user_single_use_token.models
+    :members:
