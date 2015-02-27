@@ -29,10 +29,10 @@ def get_current_expiration_datetime(app):
     relative to ``now``.
 
     If the given app is configured to with 60 minutes time to live,
-    this will return a datetime object representing 60 minutes ago.
+    this will return a datetime object representing 60 minutes in the future.
     """
     time_to_live_minutes = get_time_to_live_minutes(app)
-    return _get_current_datetime() - timedelta(minutes=time_to_live_minutes)
+    return _get_current_datetime() + timedelta(minutes=time_to_live_minutes)
 
 
 def generate_token():

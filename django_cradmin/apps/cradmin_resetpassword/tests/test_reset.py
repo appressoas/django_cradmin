@@ -27,6 +27,9 @@ class TestResetPasswordView(TestCase):
         self._create_user_single_use_token(token='valid-token', user=self.testuser)
         response = self.client.get(self.__get_url('valid-token'))
         selector = htmls.S(response.content)
+        self.assertEqual(
+            selector.one('h1').alltext_normalized,
+            'Reset your password testuser')
         self.assertTrue(selector.exists('form#django_cradmin_resetpassword_reset_form'))
         self.assertTrue(selector.exists('input[type="password"][name="password1"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password2"]'))

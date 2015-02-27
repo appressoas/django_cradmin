@@ -87,3 +87,4 @@ STATIC_ROOT = 'test_django_static_root'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 ROOT_URLCONF = 'django_cradmin_testurls'
+DJANGO_CRADMIN_SITENAME = 'Testsite'
