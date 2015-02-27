@@ -165,3 +165,10 @@ class UserSingleUseToken(models.Model):
 
     #: Datetime when the token expires.
     expiration_datetime = models.DateTimeField()
+
+    def is_expired(self):
+        """
+        Returns `True` if :obj:`.UserSingleUseToken.expiration_datetime` is in the past,
+        and `False` if it is in the future or now.
+        """
+        return self.expiration_datetime < _get_current_datetime()

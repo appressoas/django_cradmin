@@ -36,12 +36,56 @@ contains a unique token. The app is provided for two reasons:
 When you have a token, typically from part of an URL, and want to get the
 user owning the token, use::
 
-    user = UserSingleUseToken.objects.pop(app='myapp', user=myuser)
+    user = UserSingleUseToken.objects.pop(app='myapp', token=token)
 
 This returns the user, and deletes the UserSingleUseToken from the database.
 
 .. seealso::
     :meth:`.UserSingleUseTokenBaseManager.generate` and  :meth:`.UserSingleUseTokenBaseManager.pop`.
+
+
+
+*********************************
+Use case --- password reset email
+*********************************
+Lets say you want to use UserSingleUseToken to generate a password reset email.
+
+First, we want to give the user an URL where they can go to reset the password::
+
+    url = 'http://example.com/resetpassword/{}'.format(
+        UserSingleUseToken.objects.generate(app='passwordreset', user=self.request.user)
+
+Since we are using Django, we will most likely want the url to be to a view,
+so this would most likely look more like this::
+
+    def start_password_reset_view(request):
+        url = request.build_absolute_uri(reverse('my-reset-password-accept-view', kwargs={
+            'token': UserSingleUseToken.objects.generate(app='passwordreset', user=self.request.user)
+        }
+        # ... send an email giving the receiver instructions to click the url
+
+
+In the view that lives at the URL that the user clicks to confirm the password
+reset request, we do something like the following::
+
+    class ResetThePassword(View):
+        def get(request, token):
+            try:
+                user = UserSingleUseToken.objects.get(app='passwordreset', token=token)
+            except UserSingleUseToken.DoesNotExist:
+                return HttpResponse('Invalid password reset token.')
+            else:
+                if token.is_expired():
+                    return HttpResponse('Your password reset token has expired.')
+                # show a password reset form
+
+        def post(request, token):
+            try:
+                user = UserSingleUseToken.objects.pop(app='passwordreset', token=token)
+            except UserSingleUseToken.DoesNotExist:
+                return HttpResponse('Invalid password reset token.')
+            else:
+                # reset the password
 
 
 *********

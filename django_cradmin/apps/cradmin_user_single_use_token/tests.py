@@ -125,3 +125,16 @@ class TestUserSingleUseToken(TestCase):
         self.assertEquals(UserSingleUseToken.objects.count(), 1)
         self.assertEquals(UserSingleUseToken.objects.first(),
                           unexpired_user_single_use_token)
+
+    def test_is_expired(self):
+        unexpired_user_single_use_token = self._create_user_single_use_token(
+            user=create_user('testuser1'), token='test-token1',
+            expiration_datetime=datetime(2015, 1, 1, 14, 30))
+        expired_user_single_use_token = self._create_user_single_use_token(
+            user=create_user('testuser2'), token='test-token2',
+            expiration_datetime=datetime(2015, 1, 1, 13, 30))
+
+        with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
+                        lambda: datetime(2015, 1, 1, 14)):
+            self.assertFalse(unexpired_user_single_use_token.is_expired())
+            self.assertTrue(expired_user_single_use_token.is_expired())
