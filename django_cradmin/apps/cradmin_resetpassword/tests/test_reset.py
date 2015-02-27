@@ -1,9 +1,12 @@
 from datetime import timedelta, datetime
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
+import mock
+from django_cradmin.apps.cradmin_resetpassword.views.reset import ResetPasswordView
 from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
 from django_cradmin.tests.helpers import create_user
 
@@ -100,7 +103,9 @@ class TestResetPasswordView(TestCase):
     def test_post(self):
         self._create_user_single_use_token(
             token='valid-token', user=self.testuser)
-        with self.settings(DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL='http://example.com'):
+
+        with self.settings(
+                DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL='http://example.com'):
             response = self.client.post(self.__get_url('valid-token'), {
                 'password1': 'newpassword',
                 'password2': 'newpassword',
@@ -109,3 +114,19 @@ class TestResetPasswordView(TestCase):
         self.assertEqual(response['location'], 'http://example.com')
         testuser = get_user_model().objects.get(pk=self.testuser.pk)
         self.assertTrue(testuser.check_password('newpassword'))
+
+    def test_post_success_message(self):
+        self._create_user_single_use_token(
+            token='valid-token', user=self.testuser)
+
+        request = RequestFactory().post('/test', {
+            'password1': 'newpassword',
+            'password2': 'newpassword',
+        })
+        request.user = self.testuser
+        request._messages = mock.MagicMock()
+
+        with self.settings(DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL='http://example.com'):
+            ResetPasswordView.as_view()(request, token='valid-token')
+        request._messages.add.assert_called_once_with(
+            messages.SUCCESS, 'Your password has been updated.', '')

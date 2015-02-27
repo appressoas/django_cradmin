@@ -1,6 +1,8 @@
 from crispy_forms import layout
 from crispy_forms.helper import FormHelper
 from django.conf import settings
+from django.contrib import messages
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.views.generic import FormView
@@ -55,6 +57,9 @@ class ResetPasswordView(FormView):
     def get_success_url(self):
         return getattr(settings, 'DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL', settings.LOGIN_URL)
 
+    def __get_success_message(self):
+        return render_to_string('cradmin_passwordreset/messages/successmessage.django.html').strip()
+
     def form_valid(self, form):
         try:
             user = UserSingleUseToken.objects.pop(
@@ -65,4 +70,5 @@ class ResetPasswordView(FormView):
             raw_password = form.cleaned_data['password1']
             user.set_password(raw_password)
             user.save()
+            messages.success(self.request, self.__get_success_message())
             return super(ResetPasswordView, self).form_valid(form)
