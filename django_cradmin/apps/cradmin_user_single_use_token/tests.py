@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from django.core.management import call_command
 from django.test import TestCase
 from django.utils import timezone
 import mock
@@ -92,3 +93,35 @@ class TestUserSingleUseToken(TestCase):
                         lambda: datetime(2015, 1, 1, 14)):
             with self.assertRaises(UserSingleUseToken.DoesNotExist):
                 UserSingleUseToken.objects.pop(app='testapp', token='test-token')
+
+    def test_delete_expired(self):
+        unexpired_user_single_use_token = self._create_user_single_use_token(
+            user=create_user('testuser1'), token='test-token1',
+            expiration_datetime=datetime(2015, 1, 1, 14, 30))
+        self._create_user_single_use_token(
+            user=create_user('testuser2'), token='test-token2',
+            expiration_datetime=datetime(2015, 1, 1, 13, 30))
+
+        self.assertEquals(UserSingleUseToken.objects.count(), 2)
+        with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
+                        lambda: datetime(2015, 1, 1, 14)):
+            UserSingleUseToken.objects.delete_expired()
+        self.assertEquals(UserSingleUseToken.objects.count(), 1)
+        self.assertEquals(UserSingleUseToken.objects.first(),
+                          unexpired_user_single_use_token)
+
+    def test_delete_expired_management_command(self):
+        unexpired_user_single_use_token = self._create_user_single_use_token(
+            user=create_user('testuser1'), token='test-token1',
+            expiration_datetime=datetime(2015, 1, 1, 14, 30))
+        self._create_user_single_use_token(
+            user=create_user('testuser2'), token='test-token2',
+            expiration_datetime=datetime(2015, 1, 1, 13, 30))
+
+        self.assertEquals(UserSingleUseToken.objects.count(), 2)
+        with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
+                        lambda: datetime(2015, 1, 1, 14)):
+            call_command('cradmin_secure_user_token_delete_expired')
+        self.assertEquals(UserSingleUseToken.objects.count(), 1)
+        self.assertEquals(UserSingleUseToken.objects.first(),
+                          unexpired_user_single_use_token)

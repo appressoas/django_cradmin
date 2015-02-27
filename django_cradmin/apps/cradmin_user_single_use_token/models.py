@@ -135,6 +135,12 @@ class UserSingleUseTokenBaseManager(models.Manager):
         """
         return self.filter_not_expired().unsafe_pop(app=app, token=token)
 
+    def delete_expired(self):
+        """
+        Delete all expired tokens.
+        """
+        self.filter_has_expired().delete()
+
 
 class UserSingleUseToken(models.Model):
     """

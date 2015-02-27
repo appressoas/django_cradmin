@@ -63,6 +63,24 @@ It defaults to::
 
 
 
+*********************
+Delete expired tokens
+*********************
+To delete expired tokens, you can use::
+
+    UserSingleUseToken.objects.delete_expired()
+
+or the ``cradmin_secure_user_token_delete_expired`` management command::
+
+    $ python manage.py cradmin_secure_user_token_delete_expired
+
+
+.. note::
+    You do not need to delete expired tokens very often unless you generate a lot of
+    tokens. Expired tokens are not available through the :meth:`.UserSingleUseTokenBaseManager.pop`
+    method. So if you use the API as intended, you will never use an expired token.
+
+
 ***
 API
 ***
