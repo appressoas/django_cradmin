@@ -5,7 +5,7 @@ from django_cradmin.apps.cradmin_resetpassword.views.reset import ResetPasswordV
 
 urlpatterns = patterns(
     '',
-    url(r'^begin-unauthenticated$',
+    url(r'^begin',
         BeginPasswordResetView.as_view(),
         name="cradmin-resetpassword-begin"),
     url(r'^email-sent',
