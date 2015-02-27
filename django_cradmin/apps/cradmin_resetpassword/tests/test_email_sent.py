@@ -14,7 +14,7 @@ class TestEmailSentView(TestCase):
         self.assertEqual(selector.one('h1').alltext_normalized, 'Check your email')
         self.assertIn(
             'We have sent you an email. Click the link in the email to reset your password.',
-            selector.one('.django-cradmin-passwordreset-content').alltext_normalized)
+            selector.one('#django_cradmin_focusedlayout_content').alltext_normalized)
         self.assertIn(
             'If you do not see the email, check your junk folder or try searching for "Reset your Testsite password".',
-            selector.one('.django-cradmin-passwordreset-content').alltext_normalized)
+            selector.one('#django_cradmin_focusedlayout_content').alltext_normalized)

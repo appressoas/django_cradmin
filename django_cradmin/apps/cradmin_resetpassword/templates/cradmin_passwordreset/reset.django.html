@@ -2,15 +2,20 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
+{% block title %}
+    {% trans "Reset your password" %}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>
+        {% trans "Reset your password" %}
+        {% if single_use_token and not single_use_token.is_expired %}
+            <small class="text-muted">{{ single_use_token.user }}</small>
+        {% endif %}
+    </h1>
+{% endblock pageheader-inner %}
+
 {% block content %}
-    <div class="page-header">
-        <h1>
-            {% trans "Reset your password" %}
-            {% if single_use_token and not single_use_token.is_expired %}
-                <small class="text-muted">{{ single_use_token.user }}</small>
-            {% endif %}
-        </h1>
-    </div>
     {% if single_use_token == None %}
         <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
             {% trans "Invalid password reset URL. Are you sure you copied the entire URL from the email?" %}

@@ -2,10 +2,15 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
+{% block subtitle %}
+    {% trans "Find your account" %}
+{% endblock subtitle %}
+
+{% block pageheader-inner %}
+    <h1>{% trans "Find your account" %}</h1>
+    <p>{% trans "Type in your email-address" %}</p>
+{% endblock pageheader-inner %}
+
 {% block content %}
-    <div class="page-header">
-        <h1>{% trans "Find your account" %}</h1>
-        <p>{% trans "Type in your email-address" %}</p>
-    </div>
     {% crispy form formhelper %}
 {% endblock content %}
