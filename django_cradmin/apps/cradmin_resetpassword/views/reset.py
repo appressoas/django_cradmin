@@ -8,7 +8,7 @@ from django import forms
 from django.views.generic import FormView
 
 from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
-from django_cradmin.crispylayouts import PrimarySubmit
+from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
 class RepeatPasswordForm(forms.Form):
@@ -40,7 +40,7 @@ class ResetPasswordView(FormView):
         helper.layout = layout.Layout(
             'password1',
             'password2',
-            PrimarySubmit('submit', _('Submit'))
+            PrimarySubmitLg('submit', _('Submit'))
         )
         return helper
 

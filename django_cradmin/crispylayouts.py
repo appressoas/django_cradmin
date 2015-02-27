@@ -23,6 +23,10 @@ class PrimarySubmit(CradminSubmitButton):
     field_classes = "btn btn-primary"
 
 
+class PrimarySubmitLg(CradminSubmitButton):
+    field_classes = "btn btn-primary btn-lg"
+
+
 class DangerSubmit(CradminSubmitButton):
     field_classes = "btn btn-danger"
 

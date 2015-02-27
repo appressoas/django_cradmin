@@ -12,7 +12,7 @@ from django.views.generic import FormView
 from crispy_forms.helper import FormHelper
 from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
 
-from django_cradmin.crispylayouts import PrimarySubmit
+from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
 def get_password_reset_email_subject():
@@ -42,8 +42,8 @@ class BeginPasswordResetView(FormView):
         helper.form_id = 'django_cradmin_resetpassword_begin_form'
         helper.form_show_labels = False
         helper.layout = layout.Layout(
-            'email',
-            PrimarySubmit('submit', _('Search'))
+            layout.Field('email', css_class='input-lg'),
+            PrimarySubmitLg('submit', _('Search'))
         )
         return helper
 
