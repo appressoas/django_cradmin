@@ -114,9 +114,9 @@ To delete expired tokens, you can use::
 
     UserSingleUseToken.objects.delete_expired()
 
-or the ``cradmin_secure_user_token_delete_expired`` management command::
+or the ``cradmin_user_single_use_token_delete_expired`` management command::
 
-    $ python manage.py cradmin_secure_user_token_delete_expired
+    $ python manage.py cradmin_user_single_use_token_delete_expired
 
 
 .. note::

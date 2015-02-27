@@ -38,7 +38,7 @@ Apps
 .. toctree::
     :maxdepth: 1
 
-    apps.cradmin_secure_user_token
+    apps.cradmin_user_single_use_token
     apps.cradmin_resetpassword
 
 
