@@ -1,0 +1,50 @@
+from django.core import mail
+from django.core.urlresolvers import reverse
+from django.test import TestCase
+import htmls
+import mock
+from django_cradmin.apps.cradmin_resetpassword.views.begin import BeginPasswordResetView
+from django_cradmin.tests.helpers import create_user
+
+
+class TestBeginPasswordResetView(TestCase):
+    def setUp(self):
+        self.url = reverse('cradmin-resetpassword-begin')
+
+    def test_get(self):
+        response = self.client.get(self.url)
+        selector = htmls.S(response.content)
+        self.assertTrue(selector.exists('form#django_cradmin_resetpassword_begin_form'))
+        self.assertEquals(selector.one('h1').alltext_normalized, 'Find your account')
+        self.assertIn(
+            'Type in your email-address',
+            selector.one('.page-header').alltext_normalized)
+        self.assertTrue(selector.exists('input[type="email"][name="email"]'))
+        self.assertEquals(selector.one('button[type="submit"]').alltext_normalized, 'Search')
+
+    def test_post_user_not_found(self):
+        response = self.client.post(self.url, {'email': 'testuser@example.com'})
+        self.assertEqual(response.status_code, 200)
+        selector = htmls.S(response.content)
+        self.assertIn(
+            'No account with this email address found',
+            selector.one('form#django_cradmin_resetpassword_begin_form').alltext_normalized)
+
+    def test_post_user_found(self):
+        create_user('testuser', email='testuser@example.com')
+        with mock.patch.object(BeginPasswordResetView, '_generate_token', lambda s, user: 'test-token'):
+            with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
+                response = self.client.post(self.url, {'email': 'testuser@example.com'})
+        self.assertRedirects(response, reverse('cradmin-resetpassword-email-sent'))
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Reset your Testsite password')
+        self.assertEqual(
+            mail.outbox[0].body,
+            "We received a request to reset the password for your\n"
+            "Testsite account, testuser."
+            "\n\n"
+            "If you made this request, click the link below. If you\n"
+            "did not make this request, you can ignore this email."
+            "\n\n"
+            "http://testserver/cradmin_resetpassword/reset/test-token")

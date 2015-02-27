@@ -71,7 +71,7 @@ reset request, we do something like the following::
     class ResetThePassword(View):
         def get(request, token):
             try:
-                user = UserSingleUseToken.objects.get(app='passwordreset', token=token)
+                token = UserSingleUseToken.objects.get(app='passwordreset', token=token)
             except UserSingleUseToken.DoesNotExist:
                 return HttpResponse('Invalid password reset token.')
             else:

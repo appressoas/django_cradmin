@@ -1,0 +1,21 @@
+{% extends "cradmin_passwordreset/base.django.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>
+            {% trans "Check your email" %}
+        </h1>
+    </div>
+
+    <p>
+        {% blocktrans with email=user_requesting_reset.email %}We have sent you an email. Click the link in the email to reset your password.{% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans with email_subject=email_subject %}If you do not see the email, check your junk folder or try searching for "{{ email_subject }}".{% endblocktrans %}
+    </p>
+{% endblock content %}
+
+
+

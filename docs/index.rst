@@ -39,7 +39,7 @@ Apps
     :maxdepth: 1
 
     apps.cradmin_secure_user_token
-    apps.cradmin_passwordreset
+    apps.cradmin_resetpassword
 
 
 Widgets

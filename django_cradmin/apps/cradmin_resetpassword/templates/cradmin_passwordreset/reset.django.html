@@ -1,0 +1,23 @@
+{% extends "cradmin_passwordreset/base.django.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>
+            {% trans "Reset your password" %}
+            <small class="text-muted">{{ user }}</small>
+        </h1>
+    </div>
+    {% if single_use_token.is_expired == None %}
+        <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
+            {% trans "Invalid password reset URL. Are you sure you copied the entire URL from the email?" %}
+        </div>
+    {% elif single_use_token.is_expired %}
+        <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
+            {% trans "This password reset link has expired." %}
+        </div>
+    {% else %}
+        {% crispy form formhelper %}
+    {% endif %}
+{% endblock content %}

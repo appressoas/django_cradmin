@@ -13,6 +13,8 @@ urlpatterns = patterns(
         {'template_name': 'webdemo/login.django.html'}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
         {'template_name': 'webdemo/logout.django.html'}),
+    url(r'^account/resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
+
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^cradmin/', include(CrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
