@@ -42,7 +42,7 @@ class BeginPasswordResetView(FormView):
         helper.form_id = 'django_cradmin_resetpassword_begin_form'
         helper.form_show_labels = False
         helper.layout = layout.Layout(
-            layout.Field('email', css_class='input-lg'),
+            layout.Field('email', css_class='input-lg', placeholder=_('Email')),
             PrimarySubmitLg('submit', _('Search'))
         )
         return helper

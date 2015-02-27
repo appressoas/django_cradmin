@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from django.views.generic import FormView

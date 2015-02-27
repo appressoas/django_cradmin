@@ -23,6 +23,12 @@
 {% endcomment %}
 
 {% block body %}
+    {% block messages %}
+        <div id="django_cradmin_messages_standalone_wrapper">
+            {% include "django_cradmin/include/messages.django.html" %}
+        </div>
+    {% endblock messages %}
+
     <div id="django_cradmin_focusedlayout_wrapper"
             class="{% block wrapperclass %}django-cradmin-focusedpage-wrapper{% endblock wrapperclass %}">
         {% block pageheader %}
@@ -30,10 +36,6 @@
                 {% block pageheader-inner %}{% endblock pageheader-inner %}
             </div>
         {% endblock pageheader %}
-
-        {% block messages %}
-            {% include "django_cradmin/include/messages.django.html" %}
-        {% endblock messages %}
 
         <div id="django_cradmin_focusedlayout_content" class="django-cradmin-focusedpage-content">
             {% block content %}{% endblock content %}
