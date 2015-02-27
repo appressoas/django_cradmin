@@ -27,7 +27,7 @@ And add something like this to your root url config::
 
     urlpatterns = patterns(
         # ...
-        url(r'^account/resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
+        url(r'^resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
         # ...
     )
 
