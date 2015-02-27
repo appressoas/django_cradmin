@@ -41,11 +41,8 @@ Required settings:
     DJANGO_CRADMIN_SITENAME
         The name of the site.
         You **must set this setting** unless you override the email subject
-        template as explained in :ref:`password_reset_emailtemplates`.
+        and message templates as explained in :ref:`password_reset_emailtemplates`.
 
-    DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL
-        The URL to redirect to when the password has been reset.
-        You **must set this setting**. More details in :ref:`password_reset_step_three`.
 
 
 Optional settings:
@@ -54,7 +51,11 @@ Optional settings:
         on success. More details in :ref:`password_reset_step_three`.
 
     DJANGO_CRADMIN_RESETPASSWORD_FROM_EMAIL
-        Defaults to ``DEFAULT_FROM_EMAIL``.
+        Defaults to the ``DEFAULT_FROM_EMAIL`` setting.
+
+    DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL
+        The URL to redirect to when the password has been reset.
+        Defaults to the ``LOGIN_URL`` setting. More details in :ref:`password_reset_step_three`.
 
 
 ************

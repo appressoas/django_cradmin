@@ -53,7 +53,7 @@ class ResetPasswordView(FormView):
         return context
 
     def get_success_url(self):
-        return settings.DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL
+        return getattr(settings, 'DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL', settings.LOGIN_URL)
 
     def form_valid(self, form):
         try:
