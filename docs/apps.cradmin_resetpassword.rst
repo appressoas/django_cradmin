@@ -139,6 +139,8 @@ cradmin_passwordreset/email/subject.django.txt
 cradmin_passwordreset/email/message.django.txt
     Override this to set the email message.
 
+    Any whitespace at the beginning of this template is removed automatically.
+
     Template context variables:
 
     - ``DJANGO_CRADMIN_SITENAME``: The value of the setting with the same name.
@@ -147,6 +149,8 @@ cradmin_passwordreset/email/message.django.txt
 
 cradmin_passwordreset/email/signature.django.txt
     Override this to replace signature of the email.
+
+    Any whitespace at the end of this template is removed automatically.
 
     Template context variables:
 
@@ -157,6 +161,8 @@ cradmin_passwordreset/email/body.django.txt
     Override this to replace both the message and the signature.
     Has the same context variables available as the message and signature
     templates.
+
+    Any whitespace at both ends of this template is removed automatically.
 
 
 ***************************************
