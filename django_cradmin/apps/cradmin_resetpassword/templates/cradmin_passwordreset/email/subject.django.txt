@@ -1,2 +1,2 @@
 {% load i18n %}
-Reset your {{ DJANGO_CRADMIN_SITENAME }} password
+{% blocktrans with sitename=DJANGO_CRADMIN_SITENAME %}Reset your {{ sitename }} password{% endblocktrans %}

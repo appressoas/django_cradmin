@@ -39,12 +39,10 @@ class TestBeginPasswordResetView(TestCase):
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Reset your Testsite password')
-        self.assertEqual(
-            mail.outbox[0].body,
-            "We received a request to reset the password for your\n"
-            "Testsite account, testuser."
-            "\n\n"
-            "If you made this request, click the link below. If you\n"
-            "did not make this request, you can ignore this email."
-            "\n\n"
-            "http://testserver/cradmin_resetpassword/reset/test-token")
+        expected_email_body = """
+We received a request to reset the password for your Testsite account, testuser.
+
+If you made this request, click the link below. If you did not make this request, you can ignore this email.
+
+http://testserver/cradmin_resetpassword/reset/test-token""".strip()
+        self.assertEqual(mail.outbox[0].body, expected_email_body)
