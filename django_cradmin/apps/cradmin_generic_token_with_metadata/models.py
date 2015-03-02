@@ -76,14 +76,18 @@ class GenericTokenWithMetadataQuerySet(QuerySet):
         Return a queryset containing only the expired GenericTokenWithMetadata objects in
         the current queryset.
         """
-        return self.filter(expiration_datetime__lt=_get_current_datetime())
+        return self.filter(
+            expiration_datetime__isnull=False,
+            expiration_datetime__lt=_get_current_datetime())
 
     def filter_not_expired(self):
         """
         Return a queryset containing only the un-expired GenericTokenWithMetadata objects in
         the current queryset.
         """
-        return self.filter(expiration_datetime__gte=_get_current_datetime())
+        return self.filter(
+            models.Q(expiration_datetime=None) |
+            models.Q(expiration_datetime__gte=_get_current_datetime()))
 
 
 class GenericTokenWithMetadataBaseManager(models.Manager):

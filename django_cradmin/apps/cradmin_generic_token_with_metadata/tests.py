@@ -57,14 +57,32 @@ class TestGenericTokenWithMetadata(TestCase):
             self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().first(),
                               unexpired_generic_token_with_metadata)
 
+    def test_filter_not_expired_none(self):
+        expired_none_generic_token_with_metadata = self._create_generic_token_with_metadata(
+            user=create_user('testuser1'), token='test-token1',
+            expiration_datetime=None)
+        self._create_generic_token_with_metadata(
+            user=create_user('testuser2'), token='test-token2',
+            expiration_datetime=datetime(2015, 1, 1, 13, 30))
+
+        with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
+                        lambda: datetime(2015, 1, 1, 14)):
+            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().count(), 1)
+            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().first(),
+                              expired_none_generic_token_with_metadata)
+
     def test_filter_has_expired(self):
         self._create_generic_token_with_metadata(
             user=create_user('testuser1'),
             app='testapp', token='test-token1',
             expiration_datetime=datetime(2015, 1, 1, 14, 30))
-        expired_generic_token_with_metadata = self._create_generic_token_with_metadata(
+        self._create_generic_token_with_metadata(
             user=create_user('testuser2'),
             app='testapp', token='test-token2',
+            expiration_datetime=None)
+        expired_generic_token_with_metadata = self._create_generic_token_with_metadata(
+            user=create_user('testuser3'),
+            app='testapp', token='test-token3',
             expiration_datetime=datetime(2015, 1, 1, 13, 30))
 
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
