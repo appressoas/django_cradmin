@@ -125,7 +125,9 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
         try:
             generic_token_with_metadata.save()
         except IntegrityError:
-            return self.generate(app, user)
+            return self.generate(
+                app=app, user=user,
+                expiration_datetime=expiration_datetime, metadata=metadata)
         else:
             return generic_token_with_metadata
 
