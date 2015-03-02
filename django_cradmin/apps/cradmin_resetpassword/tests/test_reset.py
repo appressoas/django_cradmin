@@ -7,7 +7,7 @@ from django.utils import timezone
 import htmls
 import mock
 from django_cradmin.apps.cradmin_resetpassword.views.reset import ResetPasswordView
-from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
+from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user
 
 
@@ -19,7 +19,7 @@ class TestResetPasswordView(TestCase):
         return reverse('cradmin-resetpassword-reset', kwargs={'token': token})
 
     def _create_user_single_use_token(self, created_datetime=None, expiration_datetime=None, **kwargs):
-        user_single_use_token = UserSingleUseToken.objects.create(
+        user_single_use_token = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
             app='cradmin_passwordreset',

@@ -38,7 +38,7 @@ def get_current_expiration_datetime(app):
 
 def generate_token():
     """
-    Generate a token for the :obj:`.UserSingleUseToken.token` field.
+    Generate a token for the :obj:`.GenericTokenWithMetadata.token` field.
 
     Joins an UUID1 (unique uuid) with an UUID4 (random uuid), so the chance
     of this not beeing unique is very low, and guessing this is
@@ -50,21 +50,21 @@ def generate_token():
     return u'{}-{}'.format(uuid.uuid1(), uuid.uuid4())
 
 
-class UserSingleUseTokenQuerySet(QuerySet):
+class GenericTokenWithMetadataQuerySet(QuerySet):
     """
-    QuerySet for :class:`.UserSingleUseToken`.
+    QuerySet for :class:`.GenericTokenWithMetadata`.
     """
     def unsafe_pop(self, app, token):
         """
-        Get the :class:`.UserSingleUseToken` matching the given
-        `token` and `app`. Removes the UserSingleUseToken from the database, and
-        returns the `UserSingleUseToken` object.
+        Get the :class:`.GenericTokenWithMetadata` matching the given
+        `token` and `app`. Removes the GenericTokenWithMetadata from the database, and
+        returns the `GenericTokenWithMetadata` object.
 
-        You should normally use :meth:`.UserSingleUseTokenBaseManager.pop`
+        You should normally use :meth:`.GenericTokenWithMetadataBaseManager.pop`
         instead of this.
 
         Raises:
-            UserSingleUseToken.DoesNotExist if no matching token is stored for
+            GenericTokenWithMetadata.DoesNotExist if no matching token is stored for
             the given app.
         """
         token = self.get(token=token, app=app)
@@ -73,35 +73,35 @@ class UserSingleUseTokenQuerySet(QuerySet):
 
     def filter_has_expired(self):
         """
-        Return a queryset containing only the expired UserSingleUseToken objects in
+        Return a queryset containing only the expired GenericTokenWithMetadata objects in
         the current queryset.
         """
         return self.filter(expiration_datetime__lt=_get_current_datetime())
 
     def filter_not_expired(self):
         """
-        Return a queryset containing only the un-expired UserSingleUseToken objects in
+        Return a queryset containing only the un-expired GenericTokenWithMetadata objects in
         the current queryset.
         """
         return self.filter(expiration_datetime__gte=_get_current_datetime())
 
 
-class UserSingleUseTokenBaseManager(models.Manager):
+class GenericTokenWithMetadataBaseManager(models.Manager):
     """
-    Manager for :class:`.UserSingleUseToken`.
+    Manager for :class:`.GenericTokenWithMetadata`.
 
-    Inherits all methods from :class:`.UserSingleUseTokenQuerySet`.
+    Inherits all methods from :class:`.GenericTokenWithMetadataQuerySet`.
     """
     def generate(self, app, user, metadata=None):
         """
         Generate and save a token for the given user and app.
 
         Returns:
-            A :class:`.UserSingleUseToken` object with a token
+            A :class:`.GenericTokenWithMetadata` object with a token
             that is guaranteed to be unique.
         """
         token = generate_token()
-        user_single_use_token = UserSingleUseToken(
+        user_single_use_token = GenericTokenWithMetadata(
             user=user, app=app, token=token,
             created_datetime=_get_current_datetime(),
             expiration_datetime=get_current_expiration_datetime(app))
@@ -125,14 +125,14 @@ class UserSingleUseTokenBaseManager(models.Manager):
 
     def pop(self, app, token):
         """
-        Get the :class:`.UserSingleUseToken` matching the given
-        `token` and `app`. Removes the UserSingleUseToken from the database, and
-        returns the `UserSingleUseToken` object.
+        Get the :class:`.GenericTokenWithMetadata` matching the given
+        `token` and `app`. Removes the GenericTokenWithMetadata from the database, and
+        returns the `GenericTokenWithMetadata` object.
 
         Does not return expired tokens.
 
         Raises:
-            UserSingleUseToken.DoesNotExist: If no matching token is stored for the
+            GenericTokenWithMetadata.DoesNotExist: If no matching token is stored for the
                 given app, or if the token is expired.
         """
         return self.filter_not_expired().unsafe_pop(app=app, token=token)
@@ -144,12 +144,12 @@ class UserSingleUseTokenBaseManager(models.Manager):
         self.filter_has_expired().delete()
 
 
-class UserSingleUseToken(models.Model):
+class GenericTokenWithMetadata(models.Model):
     """
     Provides a secure token with attached metadata suitable for
     email and sharing workflows like password reset, public share urls, etc.
     """
-    objects = UserSingleUseTokenBaseManager.from_queryset(UserSingleUseTokenQuerySet)()
+    objects = GenericTokenWithMetadataBaseManager.from_queryset(GenericTokenWithMetadataQuerySet)()
 
     #: The app that generated the token.
     #: You should set this to the name of the app the
@@ -179,14 +179,14 @@ class UserSingleUseToken(models.Model):
 
     def is_expired(self):
         """
-        Returns `True` if :obj:`.UserSingleUseToken.expiration_datetime` is in the past,
+        Returns `True` if :obj:`.GenericTokenWithMetadata.expiration_datetime` is in the past,
         and `False` if it is in the future or now.
         """
         return self.expiration_datetime is not None and self.expiration_datetime < _get_current_datetime()
 
     def get_metadata(self):
         """
-        Decode :obj:`.UserSingleUseToken.metadata_json` and return the result.
+        Decode :obj:`.GenericTokenWithMetadata.metadata_json` and return the result.
 
         Return `None` if metadata_json is empty.
         """
@@ -197,7 +197,7 @@ class UserSingleUseToken(models.Model):
 
     def set_metadata(self, metadata):
         """
-        Set :obj:`.UserSingleUseToken.metadata_json`. Encodes the given
+        Set :obj:`.GenericTokenWithMetadata.metadata_json`. Encodes the given
         metadata using `json.dumps`.
         """
         self.metadata_json = json.dumps(metadata)

@@ -3,13 +3,13 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.utils import timezone
 import mock
-from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken, generate_token
+from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata, generate_token
 from django_cradmin.tests.helpers import create_user
 
 
-class TestUserSingleUseToken(TestCase):
+class TestGenericTokenWithMetadata(TestCase):
     def _create_user_single_use_token(self, created_datetime=None, expiration_datetime=None, app='testapp', **kwargs):
-        user_single_use_token = UserSingleUseToken.objects.create(
+        user_single_use_token = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
             app=app,
@@ -22,7 +22,7 @@ class TestUserSingleUseToken(TestCase):
 
     def test_generate(self):
         testuser = create_user('testuser')
-        unique_user_token = UserSingleUseToken.objects.generate(user=testuser, app='testapp')
+        unique_user_token = GenericTokenWithMetadata.objects.generate(user=testuser, app='testapp')
         self.assertEqual(unique_user_token.user, testuser)
         self.assertEqual(unique_user_token.app, 'testapp')
         self.assertEqual(len(unique_user_token.token), 73)
@@ -31,17 +31,17 @@ class TestUserSingleUseToken(TestCase):
         self._create_user_single_use_token(user=create_user('testuser1'), app='testapp1', token='taken')
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models.generate_token',
                         iter(['taken', 'free']).next):
-            unique_user_token = UserSingleUseToken.objects.generate(user=create_user('testuser2'), app='testapp2')
+            unique_user_token = GenericTokenWithMetadata.objects.generate(user=create_user('testuser2'), app='testapp2')
         self.assertEqual(unique_user_token.token, 'free')
 
     def test_unsafe_pop(self):
         testuser = create_user('testuser')
         self._create_user_single_use_token(user=testuser, app='testapp1', token='test-token1')
         self._create_user_single_use_token(user=testuser, app='testapp2', token='test-token2')
-        self.assertEquals(UserSingleUseToken.objects.unsafe_pop(token='test-token1', app='testapp1').user, testuser)
-        self.assertEquals(UserSingleUseToken.objects.count(), 1)
-        self.assertEquals(UserSingleUseToken.objects.unsafe_pop(token='test-token2', app='testapp2').user, testuser)
-        self.assertEquals(UserSingleUseToken.objects.count(), 0)
+        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(token='test-token1', app='testapp1').user, testuser)
+        self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
+        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(token='test-token2', app='testapp2').user, testuser)
+        self.assertEquals(GenericTokenWithMetadata.objects.count(), 0)
 
     def test_filter_not_expired(self):
         unexpired_user_single_use_token = self._create_user_single_use_token(
@@ -53,8 +53,8 @@ class TestUserSingleUseToken(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(UserSingleUseToken.objects.filter_not_expired().count(), 1)
-            self.assertEquals(UserSingleUseToken.objects.filter_not_expired().first(),
+            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().count(), 1)
+            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().first(),
                               unexpired_user_single_use_token)
 
     def test_filter_has_expired(self):
@@ -69,8 +69,8 @@ class TestUserSingleUseToken(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(UserSingleUseToken.objects.filter_has_expired().count(), 1)
-            self.assertEquals(UserSingleUseToken.objects.filter_has_expired().first(),
+            self.assertEquals(GenericTokenWithMetadata.objects.filter_has_expired().count(), 1)
+            self.assertEquals(GenericTokenWithMetadata.objects.filter_has_expired().first(),
                               expired_user_single_use_token)
 
     def test_filter_pop_not_expired(self):
@@ -81,7 +81,7 @@ class TestUserSingleUseToken(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(UserSingleUseToken.objects.pop(app='testapp', token='test-token').user, testuser)
+            self.assertEquals(GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token').user, testuser)
 
     def test_filter_pop_expired(self):
         self._create_user_single_use_token(
@@ -91,8 +91,8 @@ class TestUserSingleUseToken(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            with self.assertRaises(UserSingleUseToken.DoesNotExist):
-                UserSingleUseToken.objects.pop(app='testapp', token='test-token')
+            with self.assertRaises(GenericTokenWithMetadata.DoesNotExist):
+                GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token')
 
     def test_delete_expired(self):
         unexpired_user_single_use_token = self._create_user_single_use_token(
@@ -102,12 +102,12 @@ class TestUserSingleUseToken(TestCase):
             user=create_user('testuser2'), token='test-token2',
             expiration_datetime=datetime(2015, 1, 1, 13, 30))
 
-        self.assertEquals(UserSingleUseToken.objects.count(), 2)
+        self.assertEquals(GenericTokenWithMetadata.objects.count(), 2)
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            UserSingleUseToken.objects.delete_expired()
-        self.assertEquals(UserSingleUseToken.objects.count(), 1)
-        self.assertEquals(UserSingleUseToken.objects.first(),
+            GenericTokenWithMetadata.objects.delete_expired()
+        self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
+        self.assertEquals(GenericTokenWithMetadata.objects.first(),
                           unexpired_user_single_use_token)
 
     def test_delete_expired_management_command(self):
@@ -118,12 +118,12 @@ class TestUserSingleUseToken(TestCase):
             user=create_user('testuser2'), token='test-token2',
             expiration_datetime=datetime(2015, 1, 1, 13, 30))
 
-        self.assertEquals(UserSingleUseToken.objects.count(), 2)
+        self.assertEquals(GenericTokenWithMetadata.objects.count(), 2)
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
             call_command('cradmin_user_single_use_token_delete_expired')
-        self.assertEquals(UserSingleUseToken.objects.count(), 1)
-        self.assertEquals(UserSingleUseToken.objects.first(),
+        self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
+        self.assertEquals(GenericTokenWithMetadata.objects.first(),
                           unexpired_user_single_use_token)
 
     def test_is_expired(self):

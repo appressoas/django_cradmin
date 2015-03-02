@@ -19,14 +19,14 @@ How it works
 ************
 When you have a User and want to generate a unique token for that user, use::
 
-    from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
+    from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
     from django.contrib.auth import get_user_model
 
     myuser = get_user_model().get(...)
-    singleusetoken = UserSingleUseToken.objects.generate(app='myapp', user=myuser)
+    singleusetoken = GenericTokenWithMetadata.objects.generate(app='myapp', user=myuser)
     # Use singleusetoken.token
 
-This creates a UserSingleUseToken object with a ``token``-attribute that
+This creates a GenericTokenWithMetadata object with a ``token``-attribute that
 contains a unique token. The app is provided for two reasons:
 
 - Makes it easier  to debug/browse the data model because you know what app
@@ -36,9 +36,9 @@ contains a unique token. The app is provided for two reasons:
 When you have a token, typically from part of an URL, and want to get the
 user owning the token, use::
 
-    user = UserSingleUseToken.objects.pop(app='myapp', token=token)
+    user = GenericTokenWithMetadata.objects.pop(app='myapp', token=token)
 
-This returns the user, and deletes the UserSingleUseToken from the database.
+This returns the user, and deletes the GenericTokenWithMetadata from the database.
 
 .. seealso::
     :meth:`.UserSingleUseTokenBaseManager.generate` and  :meth:`.UserSingleUseTokenBaseManager.pop`.
@@ -48,19 +48,19 @@ This returns the user, and deletes the UserSingleUseToken from the database.
 *********************************
 Use case --- password reset email
 *********************************
-Lets say you want to use UserSingleUseToken to generate a password reset email.
+Lets say you want to use GenericTokenWithMetadata to generate a password reset email.
 
 First, we want to give the user an URL where they can go to reset the password::
 
     url = 'http://example.com/resetpassword/{}'.format(
-        UserSingleUseToken.objects.generate(app='passwordreset', user=self.request.user)
+        GenericTokenWithMetadata.objects.generate(app='passwordreset', user=self.request.user)
 
 Since we are using Django, we will most likely want the url to be to a view,
 so this would most likely look more like this::
 
     def start_password_reset_view(request):
         url = request.build_absolute_uri(reverse('my-reset-password-accept-view', kwargs={
-            'token': UserSingleUseToken.objects.generate(app='passwordreset', user=self.request.user)
+            'token': GenericTokenWithMetadata.objects.generate(app='passwordreset', user=self.request.user)
         }
         # ... send an email giving the receiver instructions to click the url
 
@@ -71,8 +71,8 @@ reset request, we do something like the following::
     class ResetThePassword(View):
         def get(request, token):
             try:
-                token = UserSingleUseToken.objects.get(app='passwordreset', token=token)
-            except UserSingleUseToken.DoesNotExist:
+                token = GenericTokenWithMetadata.objects.get(app='passwordreset', token=token)
+            except GenericTokenWithMetadata.DoesNotExist:
                 return HttpResponse('Invalid password reset token.')
             else:
                 if token.is_expired():
@@ -81,8 +81,8 @@ reset request, we do something like the following::
 
         def post(request, token):
             try:
-                user = UserSingleUseToken.objects.pop(app='passwordreset', token=token)
-            except UserSingleUseToken.DoesNotExist:
+                user = GenericTokenWithMetadata.objects.pop(app='passwordreset', token=token)
+            except GenericTokenWithMetadata.DoesNotExist:
                 return HttpResponse('Invalid password reset token.')
             else:
                 # reset the password
@@ -112,7 +112,7 @@ Delete expired tokens
 *********************
 To delete expired tokens, you can use::
 
-    UserSingleUseToken.objects.delete_expired()
+    GenericTokenWithMetadata.objects.delete_expired()
 
 or the ``cradmin_user_single_use_token_delete_expired`` management command::
 

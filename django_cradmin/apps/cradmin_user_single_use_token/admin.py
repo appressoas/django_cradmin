@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.humanize.templatetags.humanize import naturaltime
-from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
+from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
 
 
-class UserSingleUseTokenAdmin(admin.ModelAdmin):
+class GenericTokenWithMetadataAdmin(admin.ModelAdmin):
     list_display = (
         'token',
         'user',
@@ -32,13 +32,13 @@ class UserSingleUseTokenAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         if request.user.is_superuser:
-            return super(UserSingleUseTokenAdmin, self).get_queryset(request)
+            return super(GenericTokenWithMetadataAdmin, self).get_queryset(request)
         else:
-            return UserSingleUseToken.objects.none()
+            return GenericTokenWithMetadata.objects.none()
 
     def expiration_naturaltime(self, obj):
         return naturaltime(obj.expiration_datetime)
     expiration_naturaltime.short_description = 'Expires'
     expiration_naturaltime.admin_order_field = 'expiration_datetime'
 
-admin.site.register(UserSingleUseToken, UserSingleUseTokenAdmin)
+admin.site.register(GenericTokenWithMetadata, GenericTokenWithMetadataAdmin)

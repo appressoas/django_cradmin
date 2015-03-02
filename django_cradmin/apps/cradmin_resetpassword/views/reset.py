@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.views.generic import FormView
 
-from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
+from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
 from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
@@ -48,9 +48,9 @@ class ResetPasswordView(FormView):
         context = super(ResetPasswordView, self).get_context_data(**kwargs)
         context['formhelper'] = self.get_formhelper()
         try:
-            context['single_use_token'] = UserSingleUseToken.objects.get(
+            context['single_use_token'] = GenericTokenWithMetadata.objects.get(
                 token=self.kwargs['token'], app='cradmin_passwordreset')
-        except UserSingleUseToken.DoesNotExist:
+        except GenericTokenWithMetadata.DoesNotExist:
             pass
         return context
 
@@ -62,9 +62,9 @@ class ResetPasswordView(FormView):
 
     def form_valid(self, form):
         try:
-            token = UserSingleUseToken.objects.pop(
+            token = GenericTokenWithMetadata.objects.pop(
                 token=self.kwargs['token'], app='cradmin_passwordreset')
-        except UserSingleUseToken.DoesNotExist:
+        except GenericTokenWithMetadata.DoesNotExist:
             return self.render_to_response(self.get_context_data())
         else:
             raw_password = form.cleaned_data['password1']

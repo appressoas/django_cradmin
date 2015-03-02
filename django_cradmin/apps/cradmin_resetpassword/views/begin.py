@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.views.generic import FormView
 from crispy_forms.helper import FormHelper
-from django_cradmin.apps.cradmin_user_single_use_token.models import UserSingleUseToken
+from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
 
 from django_cradmin.crispylayouts import PrimarySubmitLg
 
@@ -70,7 +70,7 @@ class BeginPasswordResetView(FormView):
             recipient_list=[user.email])
 
     def _generate_token(self, user):
-        return UserSingleUseToken.objects.generate(
+        return GenericTokenWithMetadata.objects.generate(
             app='cradmin_passwordreset',
             user=user).token
 
