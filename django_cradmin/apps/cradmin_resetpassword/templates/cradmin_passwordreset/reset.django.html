@@ -9,18 +9,18 @@
 {% block pageheader-inner %}
     <h1>
         {% trans "Reset your password" %}
-        {% if single_use_token and not single_use_token.is_expired %}
-            <small class="text-muted">{{ single_use_token.user }}</small>
+        {% if generic_token_with_metadata and not generic_token_with_metadata.is_expired %}
+            <small class="text-muted">{{ generic_token_with_metadata.user }}</small>
         {% endif %}
     </h1>
 {% endblock pageheader-inner %}
 
 {% block content %}
-    {% if single_use_token == None %}
+    {% if generic_token_with_metadata == None %}
         <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
             {% trans "Invalid password reset URL. Are you sure you copied the entire URL from the email?" %}
         </div>
-    {% elif single_use_token.is_expired %}
+    {% elif generic_token_with_metadata.is_expired %}
         <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
             {% trans "This password reset link has expired." %}
         </div>

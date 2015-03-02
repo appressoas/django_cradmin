@@ -1,5 +1,5 @@
 from django.core.management.base import NoArgsCommand
-from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 
 
 class Command(NoArgsCommand):

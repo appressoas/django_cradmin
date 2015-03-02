@@ -39,7 +39,7 @@ Apps
     :maxdepth: 1
 
     apps.cradmin_authenticate
-    apps.cradmin_user_single_use_token
+    apps.cradmin_generic_token_with_metadata
     apps.cradmin_resetpassword
 
 

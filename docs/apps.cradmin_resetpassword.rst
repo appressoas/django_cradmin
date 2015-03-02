@@ -18,7 +18,7 @@ Add the following to ``INSTALLED_APPS``::
     INSTALLED_APPS = (
         # ...
         'django_cradmin',
-        'django_cradmin.apps.cradmin_user_single_use_token',
+        'django_cradmin.apps.cradmin_generic_token_with_metadata',
         'django_cradmin.apps.cradmin_resetpassword',
     )
 
@@ -106,7 +106,7 @@ template to change the success message.
 *****************************************************
 About the password reset links and how we secure them
 *****************************************************
-Password reset links use :doc:`apps.cradmin_user_single_use_token`. This means
+Password reset links use :doc:`apps.cradmin_generic_token_with_metadata`. This means
 that the token at the end of the password reset URL:
 
 - Is random generated and very hard to guess.

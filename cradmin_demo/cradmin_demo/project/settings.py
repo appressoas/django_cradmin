@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
-    'django_cradmin.apps.cradmin_user_single_use_token',
+    'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
     'django_cradmin.apps.cradmin_resetpassword',
     'crispy_forms',

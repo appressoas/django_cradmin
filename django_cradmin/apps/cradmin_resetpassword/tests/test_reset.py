@@ -7,7 +7,7 @@ from django.utils import timezone
 import htmls
 import mock
 from django_cradmin.apps.cradmin_resetpassword.views.reset import ResetPasswordView
-from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user
 
 
@@ -18,16 +18,16 @@ class TestResetPasswordView(TestCase):
     def __get_url(self, token):
         return reverse('cradmin-resetpassword-reset', kwargs={'token': token})
 
-    def _create_user_single_use_token(self, created_datetime=None, expiration_datetime=None, **kwargs):
-        user_single_use_token = GenericTokenWithMetadata.objects.create(
+    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None, **kwargs):
+        generic_token_with_metadata = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
             app='cradmin_passwordreset',
             **kwargs)
-        return user_single_use_token
+        return generic_token_with_metadata
 
     def test_get(self):
-        self._create_user_single_use_token(token='valid-token', user=self.testuser)
+        self._create_generic_token_with_metadata(token='valid-token', user=self.testuser)
         response = self.client.get(self.__get_url('valid-token'))
         selector = htmls.S(response.content)
         self.assertEqual(
@@ -38,7 +38,7 @@ class TestResetPasswordView(TestCase):
         self.assertTrue(selector.exists('input[type="password"][name="password2"]'))
 
     def test_get_expired_token(self):
-        self._create_user_single_use_token(
+        self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser,
             expiration_datetime=datetime(2014, 1, 1))
         response = self.client.get(self.__get_url('valid-token'))
@@ -50,7 +50,7 @@ class TestResetPasswordView(TestCase):
             'This password reset link has expired.')
 
     def test_get_invalid_token(self):
-        self._create_user_single_use_token(
+        self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser)
         response = self.client.get(self.__get_url('invalid-token'))
         selector = htmls.S(response.content)
@@ -61,7 +61,7 @@ class TestResetPasswordView(TestCase):
             'Invalid password reset URL. Are you sure you copied the entire URL from the email?')
 
     def test_post_passwords_not_matching(self):
-        self._create_user_single_use_token(token='valid-token', user=self.testuser)
+        self._create_generic_token_with_metadata(token='valid-token', user=self.testuser)
         response = self.client.post(self.__get_url('valid-token'), {
             'password1': 'passwordOne',
             'password2': 'passwordTwo',
@@ -72,7 +72,7 @@ class TestResetPasswordView(TestCase):
             selector.one('form#django_cradmin_resetpassword_reset_form').alltext_normalized)
 
     def test_post_expired_token(self):
-        self._create_user_single_use_token(
+        self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser,
             expiration_datetime=datetime(2014, 1, 1))
         response = self.client.post(self.__get_url('valid-token'), {
@@ -87,7 +87,7 @@ class TestResetPasswordView(TestCase):
             'This password reset link has expired.')
 
     def test_post_invalid_token(self):
-        self._create_user_single_use_token(
+        self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser)
         response = self.client.post(self.__get_url('invalid-token'), {
             'password1': 'secret',
@@ -101,7 +101,7 @@ class TestResetPasswordView(TestCase):
             'Invalid password reset URL. Are you sure you copied the entire URL from the email?')
 
     def test_post(self):
-        self._create_user_single_use_token(
+        self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser)
 
         with self.settings(
@@ -116,7 +116,7 @@ class TestResetPasswordView(TestCase):
         self.assertTrue(testuser.check_password('newpassword'))
 
     def test_post_success_message(self):
-        self._create_user_single_use_token(
+        self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser)
 
         request = RequestFactory().post('/test', {

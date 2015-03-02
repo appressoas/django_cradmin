@@ -1,12 +1,12 @@
-###################################################################
-`cradmin_user_single_use_token` --- Secure unique single use tokens
-###################################################################
+#############################################################################
+`cradmin_generic_token_with_metadata` --- Secure generic tokens with metadata
+#############################################################################
 
-.. currentmodule:: django_cradmin.apps.cradmin_user_single_use_token.models
+.. currentmodule:: django_cradmin.apps.cradmin_generic_token_with_metadata.models
 
-
-The purpose of the :mod:`django_cradmin.apps.cradmin_user_single_use_token` app is to provide
-single-use secure and unique tokens connected to a User object.
+The purpose of the :mod:`django_cradmin.apps.cradmin_generic_token_with_metadata` app is to provide
+secure and unique tokens with attached metadata. The tokens are suitable for email confirmation
+workflows and public share urls.
 
 Each token belongs to a user and an app. Tokens only live for a
 limited time, and this time can be configured on a per app basis.
@@ -19,7 +19,7 @@ How it works
 ************
 When you have a User and want to generate a unique token for that user, use::
 
-    from django_cradmin.apps.cradmin_user_single_use_token.models import GenericTokenWithMetadata
+    from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
     from django.contrib.auth import get_user_model
 
     myuser = get_user_model().get(...)
@@ -41,7 +41,7 @@ user owning the token, use::
 This returns the user, and deletes the GenericTokenWithMetadata from the database.
 
 .. seealso::
-    :meth:`.UserSingleUseTokenBaseManager.generate` and  :meth:`.UserSingleUseTokenBaseManager.pop`.
+    :meth:`.GenericTokenWithMetadataBaseManager.generate` and  :meth:`.GenericTokenWithMetadataBaseManager.pop`.
 
 
 
@@ -114,14 +114,14 @@ To delete expired tokens, you can use::
 
     GenericTokenWithMetadata.objects.delete_expired()
 
-or the ``cradmin_user_single_use_token_delete_expired`` management command::
+or the ``cradmin_generic_token_with_metadata_delete_expired`` management command::
 
-    $ python manage.py cradmin_user_single_use_token_delete_expired
+    $ python manage.py cradmin_generic_token_with_metadata_delete_expired
 
 
 .. note::
     You do not need to delete expired tokens very often unless you generate a lot of
-    tokens. Expired tokens are not available through the :meth:`.UserSingleUseTokenBaseManager.pop`
+    tokens. Expired tokens are not available through the :meth:`.GenericTokenWithMetadataBaseManager.pop`
     method. So if you use the API as intended, you will never use an expired token.
 
 
@@ -129,5 +129,5 @@ or the ``cradmin_user_single_use_token_delete_expired`` management command::
 API
 ***
 
-.. automodule:: django_cradmin.apps.cradmin_user_single_use_token.models
+.. automodule:: django_cradmin.apps.cradmin_generic_token_with_metadata.models
     :members:

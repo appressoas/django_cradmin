@@ -101,15 +101,15 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
             that is guaranteed to be unique.
         """
         token = generate_token()
-        user_single_use_token = GenericTokenWithMetadata(
+        generic_token_with_metadata = GenericTokenWithMetadata(
             user=user, app=app, token=token,
             created_datetime=_get_current_datetime(),
             expiration_datetime=get_current_expiration_datetime(app))
         if metadata:
-            user_single_use_token.set_metadata(metadata)
+            generic_token_with_metadata.set_metadata(metadata)
 
         try:
-            user_single_use_token.full_clean()
+            generic_token_with_metadata.full_clean()
         except ValidationError as e:
             if 'token' in e.error_dict and e.error_dict['token'][0].code == 'unique':
                 return self.generate(app, user, metadata)
@@ -117,11 +117,11 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
                 raise
 
         try:
-            user_single_use_token.save()
+            generic_token_with_metadata.save()
         except IntegrityError:
             return self.generate(app, user)
         else:
-            return user_single_use_token
+            return generic_token_with_metadata
 
     def pop(self, app, token):
         """
