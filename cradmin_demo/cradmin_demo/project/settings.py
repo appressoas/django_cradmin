@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
     'django_cradmin.apps.cradmin_resetpassword',
+    'django_cradmin.apps.cradmin_activate_account',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 

@@ -1,0 +1,4 @@
+{% load i18n %}
+{% blocktrans with sitename=DJANGO_CRADMIN_SITENAME user=user %}Click the link below to activate your {{ sitename }} account, {{ user }}.{% endblocktrans %}
+
+{{ activate_url }}
