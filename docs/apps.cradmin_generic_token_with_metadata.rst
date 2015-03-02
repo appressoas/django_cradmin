@@ -76,12 +76,12 @@ reset request, we do something like the following::
     class ResetThePassword(View):
         def get(request, token):
             try:
-                token = GenericTokenWithMetadata.objects.get(app='passwordreset', token=token)
+                token = GenericTokenWithMetadata.objects.get_and_validate(app='passwordreset', token=token)
             except GenericTokenWithMetadata.DoesNotExist:
                 return HttpResponse('Invalid password reset token.')
+            except GenericTokenExpiredError:
+                return HttpResponse('Your password reset token has expired.')
             else:
-                if token.is_expired():
-                    return HttpResponse('Your password reset token has expired.')
                 # show a password reset form
 
         def post(request, token):

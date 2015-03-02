@@ -50,6 +50,13 @@ def generate_token():
     return u'{}-{}'.format(uuid.uuid1(), uuid.uuid4())
 
 
+class GenericTokenExpiredError(Exception):
+    """
+    Raised by :meth:`.GenericTokenWithMetadata.get_and_validate` when
+    the token is found, but has expired.
+    """
+
+
 class GenericTokenWithMetadataQuerySet(QuerySet):
     """
     QuerySet for :class:`.GenericTokenWithMetadata`.
@@ -150,6 +157,19 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
         Delete all expired tokens.
         """
         self.filter_has_expired().delete()
+
+    def get_and_validate(self, app, token):
+        """
+        Get the given ``token`` for the given ``app``.
+
+        Raises:
+            GenericTokenWithMetadata.DoesNotExist: If the token does not exist.
+            GenericTokenExpiredError: If the token has expired.
+        """
+        token = GenericTokenWithMetadata.objects.get(app=app, token=token)
+        if token.is_expired():
+            raise GenericTokenExpiredError('The token has expired.')
+        return token
 
 
 class GenericTokenWithMetadata(models.Model):

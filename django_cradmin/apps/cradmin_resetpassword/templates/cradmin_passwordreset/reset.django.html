@@ -17,13 +17,15 @@
 
 {% block content %}
     {% if generic_token_with_metadata == None %}
-        <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
-            {% trans "Invalid password reset URL. Are you sure you copied the entire URL from the email?" %}
-        </div>
-    {% elif generic_token_with_metadata.is_expired %}
-        <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
-            {% trans "This password reset link has expired." %}
-        </div>
+        {% if generic_token_with_metadata_is_expired %}
+            <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
+                {% trans "This password reset link has expired." %}
+            </div>
+        {% else %}
+            <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
+                {% trans "Invalid password reset URL. Are you sure you copied the entire URL from the email?" %}
+            </div>
+        {% endif %}
     {% else %}
         {% crispy form formhelper %}
     {% endif %}

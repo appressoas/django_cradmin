@@ -7,7 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.views.generic import FormView
 
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
+    GenericTokenExpiredError
 from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
@@ -48,10 +49,12 @@ class ResetPasswordView(FormView):
         context = super(ResetPasswordView, self).get_context_data(**kwargs)
         context['formhelper'] = self.get_formhelper()
         try:
-            context['generic_token_with_metadata'] = GenericTokenWithMetadata.objects.get(
+            context['generic_token_with_metadata'] = GenericTokenWithMetadata.objects.get_and_validate(
                 token=self.kwargs['token'], app='cradmin_passwordreset')
         except GenericTokenWithMetadata.DoesNotExist:
-            pass
+            context['generic_token_with_metadata'] = None
+        except GenericTokenExpiredError:
+            context['generic_token_with_metadata_is_expired'] = True
         return context
 
     def get_success_url(self):
