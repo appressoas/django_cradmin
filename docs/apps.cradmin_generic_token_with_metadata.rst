@@ -23,8 +23,10 @@ When you have a User and want to generate a unique token for that user, use::
     from django.contrib.auth import get_user_model
 
     myuser = get_user_model().get(...)
-    singleusetoken = GenericTokenWithMetadata.objects.generate(app='myapp', user=myuser)
-    # Use singleusetoken.token
+    generictoken = GenericTokenWithMetadata.objects.generate(
+        app='myapp', user=myuser,
+        expiration_datetime=get_expiration_datetime_for_app('myapp'))
+    # Use generictoken.token
 
 This creates a GenericTokenWithMetadata object with a ``token``-attribute that
 contains a unique token. The app is provided for two reasons:
@@ -36,9 +38,10 @@ contains a unique token. The app is provided for two reasons:
 When you have a token, typically from part of an URL, and want to get the
 user owning the token, use::
 
-    user = GenericTokenWithMetadata.objects.pop(app='myapp', token=token)
+    generictoken = GenericTokenWithMetadata.objects.pop(app='myapp', token=token)
+    # Use generictoken.user and generictoken.get_metadata()
 
-This returns the user, and deletes the GenericTokenWithMetadata from the database.
+This returns the GenericTokenWithMetadata, and deletes the GenericTokenWithMetadata from the database.
 
 .. seealso::
     :meth:`.GenericTokenWithMetadataBaseManager.generate` and  :meth:`.GenericTokenWithMetadataBaseManager.pop`.
@@ -60,7 +63,9 @@ so this would most likely look more like this::
 
     def start_password_reset_view(request):
         url = request.build_absolute_uri(reverse('my-reset-password-accept-view', kwargs={
-            'token': GenericTokenWithMetadata.objects.generate(app='passwordreset', user=self.request.user)
+            'token': GenericTokenWithMetadata.objects.generate(
+                app='passwordreset', user=self.request.user,
+                expiration_datetime=get_expiration_datetime_for_app('passwordreset'))
         }
         # ... send an email giving the receiver instructions to click the url
 
@@ -81,7 +86,7 @@ reset request, we do something like the following::
 
         def post(request, token):
             try:
-                user = GenericTokenWithMetadata.objects.pop(app='passwordreset', token=token)
+                token = GenericTokenWithMetadata.objects.pop(app='passwordreset', token=token)
             except GenericTokenWithMetadata.DoesNotExist:
                 return HttpResponse('Invalid password reset token.')
             else:
