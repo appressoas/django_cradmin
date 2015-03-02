@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 import htmls
 import mock
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.apps.cradmin_resetpassword.views.begin import BeginPasswordResetView
 from django_cradmin.tests.helpers import create_user
 
@@ -46,3 +47,11 @@ If you made this request, click the link below. If you did not make this request
 
 http://testserver/cradmin_resetpassword/reset/test-token""".strip()
         self.assertEqual(mail.outbox[0].body, expected_email_body)
+
+    def test_post_token_created(self):
+        create_user('testuser', email='testuser@example.com')
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
+        self.client.post(self.url, {'email': 'testuser@example.com'})
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 1)
+        token = GenericTokenWithMetadata.objects.first()
+        self.assertIsNotNone(token.expiration_datetime)

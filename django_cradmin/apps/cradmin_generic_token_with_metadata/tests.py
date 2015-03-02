@@ -3,7 +3,8 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.utils import timezone
 import mock
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, generate_token
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, generate_token, \
+    get_expiration_datetime_for_app
 from django_cradmin.tests.helpers import create_user
 
 
@@ -22,7 +23,9 @@ class TestGenericTokenWithMetadata(TestCase):
 
     def test_generate(self):
         testuser = create_user('testuser')
-        unique_user_token = GenericTokenWithMetadata.objects.generate(user=testuser, app='testapp')
+        unique_user_token = GenericTokenWithMetadata.objects.generate(
+            user=testuser, app='testapp',
+            expiration_datetime=get_expiration_datetime_for_app('testapp'))
         self.assertEqual(unique_user_token.user, testuser)
         self.assertEqual(unique_user_token.app, 'testapp')
         self.assertEqual(len(unique_user_token.token), 73)
@@ -31,7 +34,9 @@ class TestGenericTokenWithMetadata(TestCase):
         self._create_generic_token_with_metadata(user=create_user('testuser1'), app='testapp1', token='taken')
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models.generate_token',
                         iter(['taken', 'free']).next):
-            unique_user_token = GenericTokenWithMetadata.objects.generate(user=create_user('testuser2'), app='testapp2')
+            unique_user_token = GenericTokenWithMetadata.objects.generate(
+                user=create_user('testuser2'), app='testapp2',
+                expiration_datetime=get_expiration_datetime_for_app('testapp'))
         self.assertEqual(unique_user_token.token, 'free')
 
     def test_unsafe_pop(self):

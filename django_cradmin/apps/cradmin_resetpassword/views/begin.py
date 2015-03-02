@@ -10,7 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.views.generic import FormView
 from crispy_forms.helper import FormHelper
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
+    get_expiration_datetime_for_app
 
 from django_cradmin.crispylayouts import PrimarySubmitLg
 
@@ -72,7 +73,9 @@ class BeginPasswordResetView(FormView):
     def _generate_token(self, user):
         return GenericTokenWithMetadata.objects.generate(
             app='cradmin_passwordreset',
-            user=user).token
+            user=user,
+            expiration_datetime=get_expiration_datetime_for_app('cradmin_passwordreset')
+        ).token
 
     def __generate_reset_url(self, user):
         reset_url = reverse('cradmin-resetpassword-reset', kwargs={

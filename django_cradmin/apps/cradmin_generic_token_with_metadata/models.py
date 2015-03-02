@@ -24,7 +24,7 @@ def get_time_to_live_minutes(app):
     return time_to_live_minutes.get(app, time_to_live_minutes['default'])
 
 
-def get_current_expiration_datetime(app):
+def get_expiration_datetime_for_app(app):
     """
     Get the expiration datetime of tokens for the given ``app``
     relative to ``now``.
@@ -96,7 +96,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
 
     Inherits all methods from :class:`.GenericTokenWithMetadataQuerySet`.
     """
-    def generate(self, app, user, metadata=None):
+    def generate(self, app, user, expiration_datetime, metadata=None):
         """
         Generate and save a token for the given user and app.
 
@@ -108,7 +108,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
         generic_token_with_metadata = GenericTokenWithMetadata(
             user=user, app=app, token=token,
             created_datetime=_get_current_datetime(),
-            expiration_datetime=get_current_expiration_datetime(app))
+            expiration_datetime=expiration_datetime)
         if metadata:
             generic_token_with_metadata.set_metadata(metadata)
 
@@ -116,7 +116,9 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
             generic_token_with_metadata.full_clean()
         except ValidationError as e:
             if 'token' in e.error_dict and e.error_dict['token'][0].code == 'unique':
-                return self.generate(app, user, metadata)
+                return self.generate(
+                    app=app, user=user,
+                    expiration_datetime=expiration_datetime, metadata=metadata)
             else:
                 raise
 
