@@ -22,7 +22,7 @@
                 {% trans "This password reset link has expired." %}
             </div>
         {% else %}
-            <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_expired_message">
+            <div class="alert alert-danger" id="django_cradmin_resetpassword_reset_invalid_token_message">
                 {% trans "Invalid password reset URL. Are you sure you copied the entire URL from the email?" %}
             </div>
         {% endif %}
