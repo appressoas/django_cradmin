@@ -1,8 +1,8 @@
-######################################################################
-:mod:`django_cradmin.apps.cradmin_authenticate` --- Login/logout views
-######################################################################
+#############################################
+`cradmin_authenticate` --- Login/logout views
+#############################################
 
-The purpose of the ``cradmin_authenticate`` app is to provide a
+The purpose of the :mod:`cradmim.apps.cradmin_authenticate` app is to provide a
 general purpose login/logout workflow.
 
 It is designed to work with any user model that uses and email

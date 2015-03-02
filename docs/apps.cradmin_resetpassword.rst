@@ -1,8 +1,8 @@
-##############################################################################
-:mod:`django_cradmin.apps.cradmin_resetpassword` --- A password reset workflow
-##############################################################################
+#####################################################
+`cradmin_resetpassword` --- A password reset workflow
+#####################################################
 
-The purpose of the ``cradmin_resetpassword`` app is to provide a
+The purpose of the :mod:`django_cradmin.apps.cradmin_resetpassword` app is to provide a
 general purpose password reset workflow.
 
 It is designed to work with any user model as long as it

@@ -1,11 +1,11 @@
-############################################################################################
-:mod:`django_cradmin.apps.cradmin_user_single_use_token` --- Secure unique single use tokens
-############################################################################################
+###################################################################
+`cradmin_user_single_use_token` --- Secure unique single use tokens
+###################################################################
 
 .. currentmodule:: django_cradmin.apps.cradmin_user_single_use_token.models
 
 
-The purpose of the ``cradmin_user_single_use_token`` app is to provide
+The purpose of the :mod:`django_cradmin.apps.cradmin_user_single_use_token` app is to provide
 single-use secure and unique tokens connected to a User object.
 
 Each token belongs to a user and an app. Tokens only live for a
