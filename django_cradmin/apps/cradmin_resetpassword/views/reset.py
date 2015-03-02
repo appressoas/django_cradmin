@@ -62,13 +62,13 @@ class ResetPasswordView(FormView):
 
     def form_valid(self, form):
         try:
-            user = UserSingleUseToken.objects.pop(
+            token = UserSingleUseToken.objects.pop(
                 token=self.kwargs['token'], app='cradmin_passwordreset')
         except UserSingleUseToken.DoesNotExist:
             return self.render_to_response(self.get_context_data())
         else:
             raw_password = form.cleaned_data['password1']
-            user.set_password(raw_password)
-            user.save()
+            token.user.set_password(raw_password)
+            token.user.save()
             messages.success(self.request, self.__get_success_message())
             return super(ResetPasswordView, self).form_valid(form)

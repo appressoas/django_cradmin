@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import timedelta
 from django.conf import settings
@@ -55,9 +56,9 @@ class UserSingleUseTokenQuerySet(QuerySet):
     """
     def unsafe_pop(self, app, token):
         """
-        Get the User stored for the :class:`.UserSingleUseToken` matching the given
-        `token` and `user`. Removes the UserSingleUseToken from the database, and
-        returns the user object.
+        Get the :class:`.UserSingleUseToken` matching the given
+        `token` and `app`. Removes the UserSingleUseToken from the database, and
+        returns the `UserSingleUseToken` object.
 
         You should normally use :meth:`.UserSingleUseTokenBaseManager.pop`
         instead of this.
@@ -67,9 +68,8 @@ class UserSingleUseTokenQuerySet(QuerySet):
             the given app.
         """
         token = self.get(token=token, app=app)
-        user = token.user
         token.delete()
-        return user
+        return token
 
     def filter_has_expired(self):
         """
@@ -92,7 +92,7 @@ class UserSingleUseTokenBaseManager(models.Manager):
 
     Inherits all methods from :class:`.UserSingleUseTokenQuerySet`.
     """
-    def generate(self, app, user):
+    def generate(self, app, user, metadata=None):
         """
         Generate and save a token for the given user and app.
 
@@ -105,12 +105,14 @@ class UserSingleUseTokenBaseManager(models.Manager):
             user=user, app=app, token=token,
             created_datetime=_get_current_datetime(),
             expiration_datetime=get_current_expiration_datetime(app))
+        if metadata:
+            user_single_use_token.set_metadata(metadata)
 
         try:
             user_single_use_token.full_clean()
         except ValidationError as e:
             if 'token' in e.error_dict and e.error_dict['token'][0].code == 'unique':
-                return self.generate(app, user)
+                return self.generate(app, user, metadata)
             else:
                 raise
 
@@ -123,9 +125,9 @@ class UserSingleUseTokenBaseManager(models.Manager):
 
     def pop(self, app, token):
         """
-        Get the User stored for the :class:`.UserSingleUseToken` matching the given
-        `token` and `user`. Removes the UserSingleUseToken from the database, and
-        returns the user object.
+        Get the :class:`.UserSingleUseToken` matching the given
+        `token` and `app`. Removes the UserSingleUseToken from the database, and
+        returns the `UserSingleUseToken` object.
 
         Does not return expired tokens.
 
@@ -144,8 +146,8 @@ class UserSingleUseTokenBaseManager(models.Manager):
 
 class UserSingleUseToken(models.Model):
     """
-    Provides a secure token with a limited lifetime that
-    can be used to
+    Provides a secure token with attached metadata suitable for
+    email and sharing workflows like password reset, public share urls, etc.
     """
     objects = UserSingleUseTokenBaseManager.from_queryset(UserSingleUseTokenQuerySet)()
 
@@ -154,9 +156,6 @@ class UserSingleUseToken(models.Model):
     #: generated the token.
     app = models.CharField(db_index=True, max_length=255)
 
-    #: The user that the token is for.
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-
     #: A unique and random token, set it using :func:`.generate_token`.
     token = models.CharField(max_length=100, unique=True)
 
@@ -164,11 +163,41 @@ class UserSingleUseToken(models.Model):
     created_datetime = models.DateTimeField()
 
     #: Datetime when the token expires.
-    expiration_datetime = models.DateTimeField()
+    #: This can be `None`, which means that the token does not expire.
+    expiration_datetime = models.DateTimeField(null=True)
+
+    #: Single use?
+    #: If this is `False`, the token can be used an unlimited number of
+    #: times.
+    single_use = models.BooleanField(default=True)
+
+    #: The user that the token is for.
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, default=None)
+
+    #: JSON encoded metadata
+    metadata_json = models.TextField(null=False, blank=True, default='')
 
     def is_expired(self):
         """
         Returns `True` if :obj:`.UserSingleUseToken.expiration_datetime` is in the past,
         and `False` if it is in the future or now.
         """
-        return self.expiration_datetime < _get_current_datetime()
+        return self.expiration_datetime is not None and self.expiration_datetime < _get_current_datetime()
+
+    def get_metadata(self):
+        """
+        Decode :obj:`.UserSingleUseToken.metadata_json` and return the result.
+
+        Return `None` if metadata_json is empty.
+        """
+        if self.metadata_json:
+            return json.loads(self.metadata_json)
+        else:
+            return None
+
+    def set_metadata(self, metadata):
+        """
+        Set :obj:`.UserSingleUseToken.metadata_json`. Encodes the given
+        metadata using `json.dumps`.
+        """
+        self.metadata_json = json.dumps(metadata)

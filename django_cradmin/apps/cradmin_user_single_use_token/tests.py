@@ -38,9 +38,9 @@ class TestUserSingleUseToken(TestCase):
         testuser = create_user('testuser')
         self._create_user_single_use_token(user=testuser, app='testapp1', token='test-token1')
         self._create_user_single_use_token(user=testuser, app='testapp2', token='test-token2')
-        self.assertEquals(UserSingleUseToken.objects.unsafe_pop(token='test-token1', app='testapp1'), testuser)
+        self.assertEquals(UserSingleUseToken.objects.unsafe_pop(token='test-token1', app='testapp1').user, testuser)
         self.assertEquals(UserSingleUseToken.objects.count(), 1)
-        self.assertEquals(UserSingleUseToken.objects.unsafe_pop(token='test-token2', app='testapp2'), testuser)
+        self.assertEquals(UserSingleUseToken.objects.unsafe_pop(token='test-token2', app='testapp2').user, testuser)
         self.assertEquals(UserSingleUseToken.objects.count(), 0)
 
     def test_filter_not_expired(self):
@@ -81,7 +81,7 @@ class TestUserSingleUseToken(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(UserSingleUseToken.objects.pop(app='testapp', token='test-token'), testuser)
+            self.assertEquals(UserSingleUseToken.objects.pop(app='testapp', token='test-token').user, testuser)
 
     def test_filter_pop_expired(self):
         self._create_user_single_use_token(
@@ -121,7 +121,7 @@ class TestUserSingleUseToken(TestCase):
         self.assertEquals(UserSingleUseToken.objects.count(), 2)
         with mock.patch('django_cradmin.apps.cradmin_user_single_use_token.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            call_command('cradmin_secure_user_token_delete_expired')
+            call_command('cradmin_user_single_use_token_delete_expired')
         self.assertEquals(UserSingleUseToken.objects.count(), 1)
         self.assertEquals(UserSingleUseToken.objects.first(),
                           unexpired_user_single_use_token)
@@ -138,3 +138,9 @@ class TestUserSingleUseToken(TestCase):
                         lambda: datetime(2015, 1, 1, 14)):
             self.assertFalse(unexpired_user_single_use_token.is_expired())
             self.assertTrue(expired_user_single_use_token.is_expired())
+
+    def test_is_expired_expiration_datetime_none(self):
+        tokenobject = self._create_user_single_use_token(
+            user=create_user('testuser2'), token='test-token2',
+            expiration_datetime=None)
+        self.assertFalse(tokenobject.is_expired())
