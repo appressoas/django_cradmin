@@ -1,13 +1,13 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django_cradmin.apps.cradmin_register_account.forms.base import BaseCreateAccountForm
+from django_cradmin.apps.cradmin_register_account.forms.base import AbstractCreateAccountWithPasswordForm
 
 
-class AuthUserCreateAccountWithUsernameForm(BaseCreateAccountForm):
+class AuthUserCreateAccountWithUsernameForm(AbstractCreateAccountWithPasswordForm):
     """
 
     """
-    class Meta(BaseCreateAccountForm.Meta):
+    class Meta(AbstractCreateAccountWithPasswordForm.Meta):
         fields = ['email', 'username']
 
     def __init__(self, *args, **kwargs):

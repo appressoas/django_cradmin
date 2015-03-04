@@ -43,8 +43,6 @@ Required settings:
         You **must set this setting** unless you override the email subject
         and message templates as explained in :ref:`password_reset_emailtemplates`.
 
-
-
 Optional settings:
     DJANGO_CRADMIN_RESETPASSWORD_NO_SUCCESS_MESSAGE
         Set this to `False` to prevent adding a message to ``django.contrib.messages``

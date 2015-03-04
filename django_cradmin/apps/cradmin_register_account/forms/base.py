@@ -7,33 +7,21 @@ from django import forms
 from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
-class BaseCreateAccountForm(forms.ModelForm):
+class AbstractCreateAccountForm(forms.ModelForm):
+    """
+    Base class for account creation forms.
+    """
+
     #: Used to add custom attributes like angularjs directives to the form.
     #: See :meth:`.get_form_attributes`.
     form_attributes = {}
 
-    password1 = forms.CharField(
-        label=_('Type your password'),
-        widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label=_('Type your password one more time'),
-        widget=forms.PasswordInput)
-
     class Meta:
         model = get_user_model()
-
-    def clean(self):
-        cleaned_data = super(BaseCreateAccountForm, self).clean()
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
-
-        if password1 and password2:
-            if password1 != password2:
-                raise forms.ValidationError(_('The passwords do not match'))
-        return cleaned_data
+        fields = []
 
     def __init__(self, *args, **kwargs):
-        super(BaseCreateAccountForm, self).__init__(*args, **kwargs)
+        super(AbstractCreateAccountForm, self).__init__(*args, **kwargs)
         self.helper = self.get_formhelper()
 
     def get_formhelper(self):
@@ -57,6 +45,11 @@ class BaseCreateAccountForm(forms.ModelForm):
         return helper
 
     def get_submit_button_label(self):
+        """
+        Returns the submit button label.
+
+        Override this to provide a custom label.
+        """
         return _('Sign up for %(sitename)s') % {'sitename': settings.DJANGO_CRADMIN_SITENAME}
 
     def get_button_layout(self):
@@ -86,7 +79,7 @@ class BaseCreateAccountForm(forms.ModelForm):
         """
         Returns the ID to set on the DOM element for the form.
 
-        Defaults to :obj:`.form_id`.
+        Defaults to `"django_cradmin_register_account_form"`.
         """
         return 'django_cradmin_register_account_form'
 
@@ -101,7 +94,7 @@ class BaseCreateAccountForm(forms.ModelForm):
             from django.views.generic import FormView
             from crispy_forms import layout
 
-            class MyForm(BaseCreateAccountForm):
+            class MyForm(AbstractCreateAccountForm):
                 def get_field_layout(self):
                     return [
                         layout.Div('name', 'username')
@@ -117,3 +110,46 @@ class BaseCreateAccountForm(forms.ModelForm):
             Defaults to an empty list.
         """
         return []
+
+
+class AbstractCreateAccountWithPasswordForm(AbstractCreateAccountForm):
+    """
+    Extends :class:`.AbstractCreateAccountForm` with the typical
+    password +repeat password fields. Validates that the passwords
+    match.
+    """
+
+    #: The first password.
+    password1 = forms.CharField(
+        label=_('Type your password'),
+        widget=forms.PasswordInput)
+
+    #: The repeat password fields.
+    password2 = forms.CharField(
+        label=_('Type your password one more time'),
+        widget=forms.PasswordInput)
+
+    def clean(self):
+        """
+        Validate the form.
+
+        The default implementation validates that the passwords
+        match.
+
+        Make sure to call super if you override this::
+
+            class MyCreateAccountForm(AbstractCreateAccountWithPasswordForm):
+                ...
+                def clean(self):
+                    cleaned_data = super(MyCreateAccountForm, self).clean()
+                    # ...
+                    return cleaned_data
+        """
+        cleaned_data = super(AbstractCreateAccountWithPasswordForm, self).clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(_('The passwords do not match'))
+        return cleaned_data

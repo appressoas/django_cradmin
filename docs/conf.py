@@ -19,8 +19,9 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.abspath('.'))
 
-from django.conf import settings
-settings.configure()
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_cradmin_testsettings")
+import django
+django.setup()
 
 # Workaround for https://bitbucket.org/birkenfeld/sphinx/issue/1254/autodoc-fails-to-handle-descriptors-with
 from django.db.models.fields.files import FileDescriptor
@@ -88,7 +89,7 @@ exclude_patterns = ['_build']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
-# default_role = None
+# default_role = 'py:obj'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 # add_function_parentheses = True

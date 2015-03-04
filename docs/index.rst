@@ -39,8 +39,10 @@ Apps
     :maxdepth: 1
 
     apps.cradmin_authenticate
-    apps.cradmin_generic_token_with_metadata
+    apps.cradmin_register_account
+    apps.cradmin_activate_account
     apps.cradmin_resetpassword
+    apps.cradmin_generic_token_with_metadata
 
 
 Widgets
