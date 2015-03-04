@@ -1,11 +1,11 @@
 from datetime import timedelta, datetime
-from django.contrib import messages
+
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.utils import timezone
 import htmls
-import mock
+
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user
 
