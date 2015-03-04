@@ -15,7 +15,7 @@
 
 {% block content %}
     <p>
-        {% blocktrans with email=user_requesting_reset.email %}We have sent you an email. Click the link in the email to reset your password.{% endblocktrans %}
+        {% trans "We have sent you an email. Click the link in the email to reset your password." %}
     </p>
     <p>
         {% blocktrans with email_subject=email_subject %}If you do not see the email, check your junk folder or try searching for "{{ email_subject }}".{% endblocktrans %}
