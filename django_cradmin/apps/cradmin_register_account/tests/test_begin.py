@@ -1,11 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 import htmls
-import mock
+
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
-from django_cradmin.apps.cradmin_register_account.views.begin import BeginRegisterAccountView
 from django_cradmin.tests.helpers import create_user
 
 
@@ -17,8 +15,8 @@ class TestBeginRegisterAccountView(TestCase):
         response = self.client.get(self.url)
         selector = htmls.S(response.content)
         self.assertTrue(selector.exists('form#django_cradmin_register_account_form'))
-        self.assertEquals(selector.one('h1').alltext_normalized, 'Create your account')
-        self.assertEquals(selector.one('title').alltext_normalized, 'Create your account')
+        self.assertEquals(selector.one('h1').alltext_normalized, 'Create your Testsite account')
+        self.assertEquals(selector.one('title').alltext_normalized, 'Create your Testsite account')
         self.assertTrue(selector.exists('input[type="email"][name="email"]'))
         self.assertTrue(selector.exists('input[type="text"][name="username"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password1"]'))

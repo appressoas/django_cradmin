@@ -1,8 +1,9 @@
 from django.conf import settings
-
 from django.core.urlresolvers import reverse
 from django.utils.module_loading import import_string
+
 from django.views.generic import FormView
+
 from django_cradmin.apps.cradmin_activate_account.utils import ActivationEmail
 
 
@@ -14,6 +15,11 @@ class BeginRegisterAccountView(FormView):
             return self.form_class
         else:
             return import_string(settings.DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS)
+
+    def get_context_data(self, **kwargs):
+        context = super(BeginRegisterAccountView, self).get_context_data(**kwargs)
+        context['DJANGO_CRADMIN_SITENAME'] = settings.DJANGO_CRADMIN_SITENAME
+        return context
 
     def get_success_url(self):
         return reverse('cradmin-register-account-email-sent')

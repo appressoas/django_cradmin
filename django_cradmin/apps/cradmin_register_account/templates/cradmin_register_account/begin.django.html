@@ -3,11 +3,13 @@
 {% load i18n %}
 
 {% block title %}
-    {% trans "Create your account" %}
+    {% blocktrans with sitename=DJANGO_CRADMIN_SITENAME%}Create your {{ sitename }} account{% endblocktrans %}
 {% endblock title %}
 
 {% block pageheader-inner %}
-    <h1>{% trans "Create your account" %}</h1>
+    <h1>
+        {% blocktrans with sitename=DJANGO_CRADMIN_SITENAME%}Create your {{ sitename }} account{% endblocktrans %}
+    </h1>
 {% endblock pageheader-inner %}
 
 {% block content %}
