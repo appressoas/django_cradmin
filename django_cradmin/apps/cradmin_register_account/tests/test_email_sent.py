@@ -16,5 +16,5 @@ class TestEmailSentView(TestCase):
             'We have sent you an email. Click the link in the email to activate your account.',
             selector.one('#django_cradmin_focusedlayout_content').alltext_normalized)
         self.assertIn(
-            'If you do not see the email, check your junk folder or try searching for "Reset your Testsite password".',
+            'If you do not see the email, check your junk folder.',
             selector.one('#django_cradmin_focusedlayout_content').alltext_normalized)

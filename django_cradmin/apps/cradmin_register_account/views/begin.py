@@ -1,92 +1,32 @@
-from crispy_forms import layout
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
+
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
-from django.template.loader import render_to_string
-
-from django.utils.translation import ugettext_lazy as _
-from django import forms
+from django.utils.module_loading import import_string
 from django.views.generic import FormView
-from crispy_forms.helper import FormHelper
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
-    get_expiration_datetime_for_app
-
-from django_cradmin.crispylayouts import PrimarySubmitLg
-
-
-def get_register_email_subject():
-    return render_to_string('cradmin_passwordreset/email/subject.django.txt', {
-        'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME
-    }).strip()
-
-
-class EmailForm(forms.Form):
-    email = forms.EmailField()
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        user_model = get_user_model()
-        if not user_model.objects.filter(email=email).exists():
-            raise forms.ValidationError("No account with this email address found")
-        return email
+from django_cradmin.apps.cradmin_activate_account.utils import ActivationEmail
 
 
 class BeginRegisterAccountView(FormView):
-    template_name = 'cradmin_passwordreset/begin.django.html'
-    form_class = EmailForm
+    template_name = 'cradmin_register_account/begin.django.html'
 
-    def get_formhelper(self):
-        helper = FormHelper()
-        helper.form_action = '#'
-        helper.form_id = 'django_cradmin_resetpassword_begin_form'
-        helper.form_show_labels = False
-        helper.layout = layout.Layout(
-            layout.Field('email', css_class='input-lg', placeholder=_('Email')),
-            PrimarySubmitLg('submit', _('Search'))
-        )
-        return helper
-
-    def get_context_data(self, **kwargs):
-        context = super(BeginRegisterAccountView, self).get_context_data(**kwargs)
-        context['formhelper'] = self.get_formhelper()
-        return context
+    def get_form_class(self):
+        if self.form_class:
+            return self.form_class
+        else:
+            return import_string(settings.DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS)
 
     def get_success_url(self):
-        return reverse('cradmin-resetpassword-email-sent')
+        return reverse('cradmin-register-account-email-sent')
 
-    def __get_email_message(self, user, reset_url):
-        return render_to_string('cradmin_passwordreset/email/message.django.txt', {
-            'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME,
-            'user': user,
-            'reset_url': reset_url
-        }).strip()
-
-    def __send_email(self, user, reset_url):
-        send_mail(
-            subject=get_register_email_subject(),
-            message=self.__get_email_message(user=user, reset_url=reset_url),
-            from_email=getattr(settings, 'DJANGO_CRADMIN_RESETPASSWORD_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL),
-            recipient_list=[user.email])
-
-    def _generate_token(self, user):
-        return GenericTokenWithMetadata.objects.generate(
-            app='cradmin_passwordreset',
-            user=user,
-            expiration_datetime=get_expiration_datetime_for_app('cradmin_passwordreset')
-        ).token
-
-    def __generate_reset_url(self, user):
-        reset_url = reverse('cradmin-resetpassword-reset', kwargs={
-            'token': self._generate_token(user)
-        })
-        return self.request.build_absolute_uri(reset_url)
+    def send_activation_email(self, user):
+        next_url = '/'  # TODO: Handle this
+        activation_email = ActivationEmail(request=self.request, user=user, next_url=next_url)
+        activation_email.send()
 
     def form_valid(self, form):
-        email = form.cleaned_data['email']
-        user_model = get_user_model()
-        user = get_object_or_404(user_model, email=email)
-        reset_url = self.__generate_reset_url(user=user)
-        self.__send_email(user=user, reset_url=reset_url)
+        user = form.save()
+        raw_password = form.cleaned_data['password1']
+        user.set_password(raw_password)
+        user.save()
+        self.send_activation_email(user)
         return super(BeginRegisterAccountView, self).form_valid(form)

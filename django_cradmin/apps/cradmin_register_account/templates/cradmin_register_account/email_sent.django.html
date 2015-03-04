@@ -3,9 +3,9 @@
 {% load i18n %}
 
 
-{% block subtitle %}
+{% block title %}
     {% trans "Check your email" %}
-{% endblock subtitle %}
+{% endblock title %}
 
 {% block pageheader-inner %}
     <h1>
@@ -18,6 +18,6 @@
         {% trans "We have sent you an email. Click the link in the email to activate your account." %}
     </p>
     <p>
-        {% blocktrans with email_subject=email_subject %}If you do not see the email, check your junk folder or try searching for "{{ email_subject }}".{% endblocktrans %}
+        {% trans "If you do not see the email, check your junk folder." %}
     </p>
 {% endblock content %}

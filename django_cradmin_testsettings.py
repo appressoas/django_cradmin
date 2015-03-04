@@ -92,3 +92,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 ROOT_URLCONF = 'django_cradmin_testurls'
 DJANGO_CRADMIN_SITENAME = 'Testsite'
+DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
+    'django_cradmin.apps.cradmin_register_account.forms.auth_user_form.AuthUserCreateAccountWithUsernameForm'

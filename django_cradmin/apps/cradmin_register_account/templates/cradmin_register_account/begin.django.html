@@ -1,0 +1,15 @@
+{% extends "cradmin_register_account/base.django.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Create your account" %}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>{% trans "Create your account" %}</h1>
+{% endblock pageheader-inner %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock content %}

@@ -11,6 +11,7 @@ urlpatterns = patterns(
     '',
     url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
     url(r'^resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
+    url(r'^activate_account/', include('django_cradmin.apps.cradmin_activate_account.urls')),
     url(r'^register/', include('django_cradmin.apps.cradmin_register_account.urls')),
 
     url(r'^djangoadmin/', include(admin.site.urls)),

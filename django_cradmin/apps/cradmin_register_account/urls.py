@@ -1,6 +1,8 @@
 from django.conf.urls import url, patterns
+
 from django_cradmin.apps.cradmin_register_account.views.begin import BeginRegisterAccountView
 from django_cradmin.apps.cradmin_register_account.views.email_sent import EmailSentView
+
 
 urlpatterns = patterns(
     '',
