@@ -22,7 +22,7 @@ class TestResetPasswordView(TestCase):
         generic_token_with_metadata = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
-            app='cradmin_passwordreset',
+            app='cradmin_resetpassword',
             **kwargs)
         return generic_token_with_metadata
 

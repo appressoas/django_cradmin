@@ -31,7 +31,7 @@ class RepeatPasswordForm(forms.Form):
 
 
 class ResetPasswordView(FormView):
-    template_name = 'cradmin_passwordreset/reset.django.html'
+    template_name = 'cradmin_resetpassword/reset.django.html'
     form_class = RepeatPasswordForm
 
     def get_formhelper(self):
@@ -50,7 +50,7 @@ class ResetPasswordView(FormView):
         context['formhelper'] = self.get_formhelper()
         try:
             context['generic_token_with_metadata'] = GenericTokenWithMetadata.objects.get_and_validate(
-                token=self.kwargs['token'], app='cradmin_passwordreset')
+                token=self.kwargs['token'], app='cradmin_resetpassword')
         except GenericTokenWithMetadata.DoesNotExist:
             context['generic_token_with_metadata'] = None
         except GenericTokenExpiredError:
@@ -61,12 +61,12 @@ class ResetPasswordView(FormView):
         return getattr(settings, 'DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL', settings.LOGIN_URL)
 
     def __get_success_message(self):
-        return render_to_string('cradmin_passwordreset/messages/successmessage.django.html').strip()
+        return render_to_string('cradmin_resetpassword/messages/successmessage.django.html').strip()
 
     def form_valid(self, form):
         try:
             token = GenericTokenWithMetadata.objects.pop(
-                token=self.kwargs['token'], app='cradmin_passwordreset')
+                token=self.kwargs['token'], app='cradmin_resetpassword')
         except GenericTokenWithMetadata.DoesNotExist:
             return self.render_to_response(self.get_context_data())
         else:

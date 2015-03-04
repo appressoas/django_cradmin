@@ -17,7 +17,7 @@ from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
 def get_password_reset_email_subject():
-    return render_to_string('cradmin_passwordreset/email/subject.django.txt', {
+    return render_to_string('cradmin_resetpassword/email/subject.django.txt', {
         'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME
     }).strip()
 
@@ -34,7 +34,7 @@ class EmailForm(forms.Form):
 
 
 class BeginPasswordResetView(FormView):
-    template_name = 'cradmin_passwordreset/begin.django.html'
+    template_name = 'cradmin_resetpassword/begin.django.html'
     form_class = EmailForm
 
     def get_formhelper(self):
@@ -57,7 +57,7 @@ class BeginPasswordResetView(FormView):
         return reverse('cradmin-resetpassword-email-sent')
 
     def __get_email_message(self, user, reset_url):
-        return render_to_string('cradmin_passwordreset/email/message.django.txt', {
+        return render_to_string('cradmin_resetpassword/email/message.django.txt', {
             'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME,
             'user': user,
             'reset_url': reset_url
@@ -72,9 +72,9 @@ class BeginPasswordResetView(FormView):
 
     def _generate_token(self, user):
         return GenericTokenWithMetadata.objects.generate(
-            app='cradmin_passwordreset',
+            app='cradmin_resetpassword',
             user=user,
-            expiration_datetime=get_expiration_datetime_for_app('cradmin_passwordreset')
+            expiration_datetime=get_expiration_datetime_for_app('cradmin_resetpassword')
         ).token
 
     def __generate_reset_url(self, user):

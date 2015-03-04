@@ -1,2 +1,0 @@
-{% include "cradmin_passwordreset/email/body.django.txt" %}
-{% include "cradmin_passwordreset/email/signature.django.txt" %}

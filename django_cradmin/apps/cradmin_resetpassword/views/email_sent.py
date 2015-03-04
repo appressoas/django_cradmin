@@ -3,7 +3,7 @@ from django_cradmin.apps.cradmin_resetpassword.views.begin import get_password_r
 
 
 class EmailSentView(TemplateView):
-    template_name = 'cradmin_passwordreset/email_sent.django.html'
+    template_name = 'cradmin_resetpassword/email_sent.django.html'
 
     def get_context_data(self, **kwargs):
         context = super(EmailSentView, self).get_context_data(**kwargs)
