@@ -31,8 +31,5 @@ class BeginRegisterAccountView(FormView):
 
     def form_valid(self, form):
         user = form.save()
-        raw_password = form.cleaned_data['password1']
-        user.set_password(raw_password)
-        user.save()
         self.send_activation_email(user)
         return super(BeginRegisterAccountView, self).form_valid(form)
