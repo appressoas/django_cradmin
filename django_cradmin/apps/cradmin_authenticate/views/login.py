@@ -116,7 +116,10 @@ class LoginView(FormView):
         return formhelper
 
     def get_success_url(self):
-        return settings.LOGIN_REDIRECT_URL
+        if 'next' in self.request.GET:
+            return self.request.GET['next']
+        else:
+            return settings.LOGIN_REDIRECT_URL
 
     def form_valid(self, form):
         authenticated_user = form.get_user()

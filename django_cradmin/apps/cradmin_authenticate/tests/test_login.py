@@ -51,11 +51,21 @@ class TestEmailLogin(TestCase):
         self.assertEquals(selector.one('h1').alltext_normalized, 'Sign in')
 
     def test_login_ok(self):
-        response = self.client.post(self.url, {
+        with self.settings(LOGIN_REDIRECT_URL='/login/redirect'):
+            response = self.client.post(self.url, {
+                'email': 'testuser@example.com',
+                'password': 'test'
+            })
+        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response['location'], 'http://testserver/login/redirect')
+
+    def test_login_next(self):
+        response = self.client.post('{}?next=/next'.format(self.url), {
             'email': 'testuser@example.com',
             'password': 'test'
         })
         self.assertEquals(response.status_code, 302)
+        self.assertEqual(response['location'], 'http://testserver/next')
 
     def test_login_invalid(self):
         response = self.client.post(self.url, {
