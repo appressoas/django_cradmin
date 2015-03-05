@@ -43,7 +43,7 @@ class AuthUserCreateAccountForm(AbstractCreateAccountWithPasswordForm):
     def __init__(self, *args, **kwargs):
         super(AuthUserCreateAccountForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
-        self.fields['username'].required = True
+        # self.fields['username'].required = True
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -83,17 +83,11 @@ class AuthUserCreateAccountAutoUsernameForm(AuthUserCreateAccountForm):
             'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm'
 
     """
-    def __init__(self, *args, **kwargs):
-        super(AuthUserCreateAccountForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
-        self.fields['username'].widget = forms.HiddenInput()
-        self.fields['username'].required = False
+    class Meta(AuthUserCreateAccountForm.Meta):
+        fields = ['email']
 
-    @classmethod
-    def create_username_from_email(cls, email):
-        return email.replace('@', '_at_')[0:30]
+    def set_username(self, user):
+        user.username = user.email[0:30]
 
-    def clean_username(self):
-        email = self.cleaned_data['email']
-        username = self.__class__.create_username_from_email(email)
-        return username
+    def set_extra_user_attributes(self, user):
+        self.set_username(user)

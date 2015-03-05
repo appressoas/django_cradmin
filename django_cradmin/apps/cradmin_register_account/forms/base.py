@@ -153,10 +153,19 @@ class AbstractCreateAccountForm(forms.ModelForm):
         """
         raise NotImplementedError()
 
+    def set_extra_user_attributes(self, user):
+        """
+        Override this to set extra user attributes in addition to
+        :meth:`~.AbstractCreateAccountForm.deactivate_user` and
+        :meth:`~.AbstractCreateAccountForm.set_password`.
+        """
+
     def save(self, commit=True):
         user = super(AbstractCreateAccountForm, self).save(commit=False)
         self.set_password(user)
         self.deactivate_user(user)
+        self.set_extra_user_attributes(user)
+        user.full_clean()
         if commit:
             user.save()
         return user
