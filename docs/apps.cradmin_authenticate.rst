@@ -35,6 +35,52 @@ And add something like this to your root url config::
 Configure
 *********
 
+Required settings:
+    LOGIN_REDIRECT_URL
+        The default URL to redirect to after login unless you
+        provide a ``next``-attribute as input to the view
+        (see :ref:`authenticate_redirect_after_login`).
+
 Optional settings:
     DJANGO_CRADMIN_FORGOTPASSWORD_URL
         If this is set, we show a forgot password link on the login page.
+
+
+
+************
+How it works
+************
+We determine the username field from the ``USERNAME_FIELD``
+attribute of the user model. As long as the username field is
+``email`` or ``username``, and you use password to login,
+the view should just work out of the box.
+
+You can extend ``django_cradmin.apps.cradmin_authenticate.views.LoginView`` and
+add a custom login form class by overriding the ``get_form_class``-method.
+
+
+.. _authenticate_redirect_after_login:
+
+*****************************
+Where to redirect after login
+*****************************
+You can change the ``LOGIN_REDIRECT_URL`` setting as documented
+above if you want to change the default URL to redirect to after
+login. If login is part of a workflow where you just want users
+to login before they continue to the next step, you can use
+the ``next`` querystring parameter. Example:
+
+.. sourcecode:: django
+
+    <a href="{% url 'cradmin-authenticate-login' %}?next=/path/to/some/view"></a>
+
+
+*********************
+Views and their names
+*********************
+The app provides the following two views:
+
+cradmin-authenticate-login
+    The view named ``cradmin-authenticate-login`` is used for login.
+cradmin-authenticate-logout
+    The view named ``cradmin-authenticate-logout`` is used for logging users out.
