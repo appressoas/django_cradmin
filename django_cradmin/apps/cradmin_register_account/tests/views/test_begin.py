@@ -76,3 +76,38 @@ class TestBeginRegisterAccountView(TestCase):
         self.assertEqual(created_user.email, 'test@example.com')
         self.assertTrue(created_user.has_usable_password())
         self.assertTrue(created_user.check_password('test'))
+
+    def test_post_next_url_as_querystring_argument(self):
+        self.assertEqual(get_user_model().objects.count(), 0)
+        self.client.post('{}?next=/next'.format(self.url), {
+            'username': 'test',
+            'password1': 'test',
+            'password2': 'test',
+            'email': 'test@example.com'
+        })
+        token = GenericTokenWithMetadata.objects.first()
+        self.assertEqual(token.get_metadata()['next_url'], '/next')
+
+    def test_post_next_url_as_django_cradmin_register_account_redirect_url_setting(self):
+        self.assertEqual(get_user_model().objects.count(), 0)
+        with self.settings(DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL='/redirect'):
+            self.client.post(self.url, {
+                'username': 'test',
+                'password1': 'test',
+                'password2': 'test',
+                'email': 'test@example.com'
+            })
+        token = GenericTokenWithMetadata.objects.first()
+        self.assertEqual(token.get_metadata()['next_url'], '/redirect')
+
+    def test_post_next_url_as_login_url_setting(self):
+        self.assertEqual(get_user_model().objects.count(), 0)
+        with self.settings(LOGIN_URL='/login'):
+            self.client.post(self.url, {
+                'username': 'test',
+                'password1': 'test',
+                'password2': 'test',
+                'email': 'test@example.com'
+            })
+        token = GenericTokenWithMetadata.objects.first()
+        self.assertEqual(token.get_metadata()['next_url'], '/login')

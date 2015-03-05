@@ -207,11 +207,13 @@ They provide a common structure for all the register account forms.
 ****************************************************
 Where to redirect after the account has been created
 ****************************************************
-You can change the ``DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL`` setting
-as documented above if you want to change the default URL to redirect to after
-the account has been created. If account creation is part of a workflow where you
-just want users to register a user before they continue to the next step, you can use
-the ``next`` querystring parameter. Example:
+You can change the ``DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL`` or ``LOGIN_URL``
+settings as :ref:`documented above <register_account_settings>` if you want to change
+he default URL to redirect to after the account has been created.
+
+If account creation is part of a workflow where you just want users to register a
+user before they continue to the next step, you can use the ``next`` querystring
+parameter. Example:
 
 .. sourcecode:: django
 
