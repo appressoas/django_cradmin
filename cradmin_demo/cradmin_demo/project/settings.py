@@ -174,6 +174,6 @@ DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL = LOGIN_REDIRECT_URL
 DJANGO_CRADMIN_FORGOTPASSWORD_URL = '/resetpassword/begin'
 
 # DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
-#     'django_cradmin.apps.cradmin_register_account.forms.auth_user_form.AuthUserCreateAccountForm'
+#     'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm'
 DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
-    'django_cradmin.apps.cradmin_register_account.forms.auth_user_form.AuthUserCreateAccountWithUsernameForm'
+    'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountForm'

@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django_cradmin.apps.cradmin_register_account.forms.auth_user_form import AuthUserCreateAccountWithUsernameForm
+from django_cradmin.apps.cradmin_register_account.forms.auth_user import AuthUserCreateAccountForm
 from django_cradmin.tests.helpers import create_user
 
 
-class TestAuthUserCreateAccountWithUsernameForm(TestCase):
+class TestAuthUserCreateAccountForm(TestCase):
     def test_is_valid(self):
-        form = AuthUserCreateAccountWithUsernameForm({
+        form = AuthUserCreateAccountForm({
             'username': 'test',
             'password1': 'test',
             'password2': 'test',
@@ -15,7 +15,7 @@ class TestAuthUserCreateAccountWithUsernameForm(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_save(self):
-        form = AuthUserCreateAccountWithUsernameForm({
+        form = AuthUserCreateAccountForm({
             'username': 'test',
             'password1': 'test',
             'password2': 'test',
@@ -32,7 +32,7 @@ class TestAuthUserCreateAccountWithUsernameForm(TestCase):
         self.assertTrue(created_user.check_password('test'))
 
     def test_passwords_do_not_match(self):
-        form = AuthUserCreateAccountWithUsernameForm({
+        form = AuthUserCreateAccountForm({
             'username': 'unused',
             'password1': 'test1',
             'password2': 'test2',
@@ -43,7 +43,7 @@ class TestAuthUserCreateAccountWithUsernameForm(TestCase):
 
     def test_email_is_not_unique(self):
         create_user('testuser', email='test@example.com')
-        form = AuthUserCreateAccountWithUsernameForm({
+        form = AuthUserCreateAccountForm({
             'username': 'unused',
             'password1': 'unused',
             'password2': 'unused',
@@ -56,7 +56,7 @@ class TestAuthUserCreateAccountWithUsernameForm(TestCase):
 
     def test_username_is_not_unique(self):
         create_user('test')
-        form = AuthUserCreateAccountWithUsernameForm({
+        form = AuthUserCreateAccountForm({
             'username': 'test',
             'password1': 'unused',
             'password2': 'unused',

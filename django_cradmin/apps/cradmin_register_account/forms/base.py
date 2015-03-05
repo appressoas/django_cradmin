@@ -10,6 +10,11 @@ from django_cradmin.crispylayouts import PrimarySubmitLg
 class AbstractCreateAccountForm(forms.ModelForm):
     """
     Base class for account creation forms.
+
+    Subclasses **must** override:
+
+    - :meth:`~.AbstractCreateAccountForm.set_password`.
+    - :meth:`~.AbstractCreateAccountForm.deactivate_user`.
     """
 
     #: Used to add custom attributes like angularjs directives to the form.
@@ -162,6 +167,10 @@ class AbstractCreateAccountWithPasswordForm(AbstractCreateAccountForm):
     Extends :class:`.AbstractCreateAccountForm` with the typical
     password + repeat password fields. Validates that the passwords
     match.
+
+    Subclasses **must** override:
+
+    - :meth:`~.AbstractCreateAccountForm.deactivate_user`.
     """
 
     #: The first password.
