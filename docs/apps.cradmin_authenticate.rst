@@ -77,6 +77,58 @@ the ``next`` querystring parameter. Example:
     </a>
 
 
+*****************************
+Where to redirect after login
+*****************************
+Just like with the login view, you can supply a ``next`` querystring
+attribute to the logout view. This can be used for workflows
+like login as another user:
+
+.. sourcecode:: django
+
+    <a href="{% url 'cradmin-authenticate-logout' %}?next={% url 'cradmin-authenticate-login' %}">
+        Login as another user
+    </a>
+
+
+************************
+Nesting "next" redirects
+************************
+
+You can nest ``next`` --- you just have to url quote correctly.
+
+Lets say you want to add an add comment as another user
+button. This means that you want to logout, login, and then redirect to
+the add comment view, which we for this example assume is at ``/comments/add``.
+This would look something like this in a template:
+
+.. sourcecode:: django
+
+    <a href="{% url 'cradmin-authenticate-logout' %}?next={% url 'cradmin-authenticate-login' %}%3Fnext%3D%2Fcomments%2Fadd">
+        Add comment as another user
+    </a>
+
+The ``%<number><letter>`` stuff is URL escape codes. You will most likely want
+to handle this using python code. Lets generate the same URL using Python::
+
+    from django.utils.http import urlencode
+    from django.core.urlresolvers import reverse
+
+    login_url = '{login_url}?{arguments}'.format(
+        login_url=reverse('cradmin-authenticate-login'),
+        arguments=urlencode({
+            'next': '/comments/add'
+        })
+    )
+    logout_url = '{logout_url}?{arguments}'.format(
+        logout_url=reverse('cradmin-authenticate-logout'),
+        arguments=urlencode({
+            'next': login_url
+        })
+    )
+
+
+
 *********************
 Views and their names
 *********************
