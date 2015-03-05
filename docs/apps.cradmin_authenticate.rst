@@ -77,9 +77,9 @@ the ``next`` querystring parameter. Example:
     </a>
 
 
-*****************************
-Where to redirect after login
-*****************************
+******************************
+Where to redirect after logout
+******************************
 Just like with the login view, you can supply a ``next`` querystring
 attribute to the logout view. This can be used for workflows
 like login as another user:
