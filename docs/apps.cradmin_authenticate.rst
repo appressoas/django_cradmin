@@ -72,7 +72,9 @@ the ``next`` querystring parameter. Example:
 
 .. sourcecode:: django
 
-    <a href="{% url 'cradmin-authenticate-login' %}?next=/path/to/some/view"></a>
+    <a href="{% url 'cradmin-authenticate-login' %}?next=/comments/add">
+        Add comment
+    </a>
 
 
 *********************

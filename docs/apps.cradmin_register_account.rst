@@ -46,6 +46,11 @@ Set the ``DJANGO_CRADMIN_SITENAME`` setting to the name of your site::
 
     DJANGO_CRADMIN_SITENAME = 'Testsite'
 
+Set the ``LOGIN_URL`` or ``DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL`` setting
+to the URL you want your users to go to after the user is created and activated::
+
+    DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL = '/authenticate/login'
+
 Set the ``DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS`` setting to a register account
 form class compatible with your user model:
 
@@ -72,6 +77,17 @@ Configure
 Required settings:
     DJANGO_CRADMIN_SITENAME
         The name of the site.
+
+    DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL or LOGIN_URL
+        The URL to redirect to after login is found in the following order:
+
+        1. Via the ``next``-attribute as input to the view
+           (see :ref:`register_account_redirect_after_login`).
+        2. Use the ``DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL`` setting if defined.
+        3. Use the ``LOGIN_URL`` setting.
+
+        This means that you have to set one of the settings in order for
+        the workflow to work out of the box.
 
     DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS
         Must be set to the full Python path to a Django ModelForm
@@ -184,3 +200,21 @@ They provide a common structure for all the register account forms.
 
 .. autoclass:: django_cradmin.apps.cradmin_register_account.forms.base.AbstractCreateAccountWithPasswordForm
     :members:
+
+
+.. _register_account_redirect_after_login:
+
+****************************************************
+Where to redirect after the account has been created
+****************************************************
+You can change the ``DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL`` setting
+as documented above if you want to change the default URL to redirect to after
+the account has been created. If account creation is part of a workflow where you
+just want users to register a user before they continue to the next step, you can use
+the ``next`` querystring parameter. Example:
+
+.. sourcecode:: django
+
+    <a href="{% url 'cradmin-register-account-begin' %}?next=/account/edit/details">
+        Create account
+    </a>
