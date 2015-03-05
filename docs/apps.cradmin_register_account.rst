@@ -63,6 +63,7 @@ form class compatible with your user model:
     If your user model does not fit with any of these descriptions, or for more details,
     continue reading this document.
 
+Now you should be able to visit http://localhost:8000/register/begin to register a new user.
 
 *********
 Configure
