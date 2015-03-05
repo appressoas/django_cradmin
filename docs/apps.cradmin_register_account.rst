@@ -125,6 +125,16 @@ without any modification, or as base class for your own register account form cl
         ~django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountForm
         ~django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm
 
+If you have a custom user model, you may be able to use the following form classes
+without any modification, or as base class for your own register account form class:
+
+    In the ``django_cradmin.apps.cradmin_register_account.forms.auth_user_form`` module:
+
+    .. autosummary::
+        :nosignatures:
+
+        ~django_cradmin.apps.cradmin_register_account.forms.email.EmailUserCreateAccountForm
+
 If you want to create a completely custom register account form, you will most likely want
 to extend one of these abstract form classes:
 
@@ -139,7 +149,7 @@ to extend one of these abstract form classes:
 
 Form classes for ``django.contrib.auth.models.User``
 ====================================================
-The following orms are available in ``django_cradmin.apps.cradmin_register_account.forms.auth_user``.
+The following forms are available in ``django_cradmin.apps.cradmin_register_account.forms.auth_user``.
 They provide ready-to-use register account forms suitable if your user model is ``django.contrib.auth.models.User``.
 They can also be used as base classes for your own register account forms.
 
@@ -148,6 +158,17 @@ They can also be used as base classes for your own register account forms.
     :members:
 
 .. autoclass:: django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm
+    :members:
+
+
+Form classes for custom user models
+===================================
+The following forms are available in ``django_cradmin.apps.cradmin_register_account.forms.email``.
+They provide ready-to-use register account forms suitable if your user model has an ``email``-field
+and a ``set_password()``-method. They can also be used as base classes for your own register account forms.
+
+
+.. autoclass:: django_cradmin.apps.cradmin_register_account.forms.email.EmailUserCreateAccountForm
     :members:
 
 
