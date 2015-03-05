@@ -91,3 +91,11 @@ class AuthUserCreateAccountAutoUsernameForm(AuthUserCreateAccountForm):
 
     def set_extra_user_attributes(self, user):
         self.set_username(user)
+
+    def get_field_layout(self):
+        return [
+            'email',
+            'password1',
+            'password2',
+        ]
+
