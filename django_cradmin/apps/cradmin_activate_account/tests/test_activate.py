@@ -1,10 +1,13 @@
 from datetime import timedelta, datetime
+from django.contrib import messages
 
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
+import mock
+from django_cradmin.apps.cradmin_activate_account.views.activate import ActivateAccountView
 
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user
@@ -66,3 +69,14 @@ class TestActivateAccountView(TestCase):
         self.client.get(self.__get_url('valid-token'))
         testuser = get_user_model().objects.get(id=self.testuser.id)
         self.assertTrue(testuser.is_active)
+
+    def test_post_success_message(self):
+        self._create_generic_token_with_metadata(
+            token='valid-token', user=self.testuser,
+            metadata={'next_url': '/next'})
+        request = RequestFactory().get('/test')
+        request.user = self.testuser
+        request._messages = mock.MagicMock()
+        ActivateAccountView.as_view()(request, token='valid-token')
+        request._messages.add.assert_called_once_with(
+            messages.SUCCESS, 'Your account is now active.', '')

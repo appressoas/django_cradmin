@@ -17,7 +17,7 @@ class ActivationEmail(object):
         from django_cradmin.apps.cradmin_activate_account.utils import ActivationEmail
 
         def myview(request):
-            someuser = # ... code to get a user object ...
+            someuser = get_some_user()  # Insert your code to determine the user to activate here
             ActivationEmail(request=request, user=someuser).send()
     """
 

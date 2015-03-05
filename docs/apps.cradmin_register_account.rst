@@ -70,6 +70,9 @@ form class compatible with your user model:
 
 Now you should be able to visit http://localhost:8000/register/begin to register a new user.
 
+
+.. _register_account_settings:
+
 *********
 Configure
 *********

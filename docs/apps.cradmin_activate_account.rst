@@ -46,6 +46,14 @@ Now you should be able to use the
 class to initiate account activation.
 
 
+*************************
+The ActivationEmail class
+*************************
+
+.. autoclass:: django_cradmin.apps.cradmin_activate_account.utils.ActivationEmail
+    :members:
+
+
 *********
 Configure
 *********
@@ -115,10 +123,20 @@ All of the email templates get the following context variables:
 - ``user``: The user that is activating their account.
 
 
+*********************************************
+UI message templates and how to override them
+*********************************************
+You do not have to override the entire templates to adjust
+the text in the UI. We provide the following templates for
+you to override:
 
-*************************
-The ActivationEmail class
-*************************
+cradmin_activate_account/messages/success.django.html
+    The success message added to ``django.contrib.messages.success``
+    when the account is successfully activated. The activated
+    user is available as the ``user`` template context variable.
 
-.. autoclass:: django_cradmin.apps.cradmin_activate_account.utils.ActivationEmail
-    :members:
+cradmin_activate_account/messages/activation-link-invalid.django.html
+    The message shown in the UI when the activation link is invalid.
+
+cradmin_activate_account/messages/activation-link-expired.django.html
+    The message shown in the UI when the activation link is expired.
