@@ -41,3 +41,19 @@ class UpdateView(CreateUpdateViewMixin, DjangoUpdateView):
 
     def get_success_message(self, object):
         return _('Saved "%(object)s".') % {'object': object}
+
+
+class UpdateRoleView(UpdateView):
+    """
+    Extends :class:`.UpdateView` to streamline editing the current role
+    object.
+
+    Just like :class:`.UpdateView`, but with the get_object and
+    get_queryset_for_role methods implemented to edit the current role
+    object.
+    """
+    def get_object(self, queryset=None):
+        return self.get_queryset_for_role(self.request.cradmin_role).get()
+
+    def get_queryset_for_role(self, role):
+        return self.model.objects.filter(pk=role.pk)

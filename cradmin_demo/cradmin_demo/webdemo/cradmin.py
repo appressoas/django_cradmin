@@ -27,7 +27,7 @@ class Menu(crmenu.Menu):
             active=self.request.cradmin_app.appname == 'imagearchive')
 
 
-class CrAdminInstance(crinstance.BaseCrAdminInstance):
+class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'webdemo'
     menuclass = Menu
     roleclass = Site
@@ -58,3 +58,11 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
         Remember that the role is a Site.
         """
         return truncatechars(role.description, 100)
+
+    @classmethod
+    def matches_urlpath(cls, urlpath):
+        """
+        We only need this because we have multiple cradmin UIs
+        in the same project.
+        """
+        return urlpath.startswith('/webdemo')

@@ -1,6 +1,13 @@
 import collections
 
 
+class NoCrAdminInstanceFound(Exception):
+    """
+    Raised by :meth:`.CrAdminInstanceRegistry.get_current_instance`
+    when no instance is found.
+    """
+
+
 class CrAdminInstanceRegistry(object):
     """
     We want the _current_ CrAdmin instance to be available
@@ -50,8 +57,10 @@ class CrAdminInstanceRegistry(object):
             request (HttpRequest): The http request to the instance for.
 
         Returns:
-            BaseCrAdminInstance: The CrAdmin instance for the given request,
-                or ``None`` if no instance matching ``request.path`` is found.
+            BaseCrAdminInstance: The CrAdmin instance for the given request.
+
+        Raises:
+            NoCrAdminInstanceFound: If no instance matching ``request.path`` is found.
         """
         if len(self._registry) == 1:
             return self._registry.values()[0](request)
@@ -59,7 +68,8 @@ class CrAdminInstanceRegistry(object):
             for instanceclass in self._registry.itervalues():
                 if instanceclass.matches_urlpath(request.path):
                     return instanceclass(request)
-            return None
+            raise NoCrAdminInstanceFound('No CrAdminInstance matching {path} found'.format(
+                path=request.path))
 
     def add(self, cradmin_instance_class):
         """

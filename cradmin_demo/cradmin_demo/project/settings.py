@@ -54,6 +54,7 @@ INSTALLED_APPS = (
 
     # The demo
     'cradmin_demo.webdemo',
+    'cradmin_demo.usermanagerdemo',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -165,7 +166,7 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/cradmin/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/authenticate/login'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
