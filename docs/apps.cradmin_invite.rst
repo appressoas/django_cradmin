@@ -44,9 +44,9 @@ Lets say we have the following model::
 
 Create the invite email
 =======================
-Create a subclass of :class:`django_cradmin.apps.cradmin_invite.utils.InviteUrl`::
+Create a subclass of :class:`django_cradmin.apps.cradmin_invite.invite_url.InviteUrl`::
 
-    from django_cradmin.apps.cradmin_invite.utils import InviteUrl
+    from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 
     class MyInviteUrl(InviteUrl):
         def get_appname(self):
@@ -117,15 +117,15 @@ Add the views to your url patterns::
 ***************************
 Private vs public InviteUrl
 ***************************
-See :meth:`~django_cradmin.apps.cradmin_invite.utils.InviteUrl.get_share_url`
-and :meth:`~django_cradmin.apps.cradmin_invite.utils.InviteUrl.send_email`.
+See :meth:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl.get_share_url`
+and :meth:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl.send_email`.
 
 
 *******************
 The InviteUrl class
 *******************
 
-.. autoclass:: django_cradmin.apps.cradmin_invite.utils.InviteUrl
+.. autoclass:: django_cradmin.apps.cradmin_invite.invite_url.InviteUrl
     :members:
 
 

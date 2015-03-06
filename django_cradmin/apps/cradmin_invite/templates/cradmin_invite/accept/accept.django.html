@@ -17,4 +17,32 @@
     <div id="django_cradmin_invite_accept_description">
         {% include description_template %}
     </div>
+
+    <div class="django-cradmin-invite-accept-buttons">
+        {% if request.user.is_authenticated %}
+            <form method="post" action="{{ request.path }}">{% csrf_token %}
+                <button id="django_cradmin_invite_accept_as_button"
+                        type="submit" class="btn btn-lg btn-primary">
+                    {% blocktrans with user=request.user%}Accept as {{ user }}{% endblocktrans %}
+                </button>
+            </form>
+            <a href="{{ create_new_user_url }}" id="django_cradmin_invite_accept_create_new_user_button">
+                {% trans "Create new user" %}
+            </a>
+            |
+            <a href="{{ login_as_different_user_url }}"
+                    id="django_cradmin_invite_accept_login_as_different_user_button">
+                {% trans "Sign in as different user" %}
+            </a>
+        {% else %}
+            <a href="{{ login_url }}" class="btn btn-lg btn-primary"
+                    id="django_cradmin_invite_accept_login_button">
+                {% trans "Sign in" %}
+            </a>
+            <a href="{{ create_new_user_url }}" class="btn btn-lg btn-default"
+                    id="django_cradmin_invite_accept_create_new_user_button">
+                {% trans "Create new user" %}
+            </a>
+        {% endif %}
+    </div>
 {% endblock content %}

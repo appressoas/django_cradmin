@@ -1,17 +1,24 @@
 from datetime import timedelta, datetime
-from django.contrib import messages
+
+from django.contrib.auth.models import AnonymousUser
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
+
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
-import mock
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
+from django_cradmin.tests.helpers import create_user
 
 
 class AcceptInviteView(AbstractAcceptInviteView):
     def get_appname(self):
         return 'testapp'
+
+    def invite_accepted(self, token):
+        return HttpResponse('OK')
 
 
 class TestAbstractAcceptInviteView(TestCase):
@@ -64,3 +71,47 @@ class TestAbstractAcceptInviteView(TestCase):
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_description').alltext_normalized,
             'TODO: Set a description_template for your AbstractAcceptInviteView subclass.')
+
+    def test_get_render_is_authenticated(self):
+        request = self.factory.get('/test')
+        request.user = create_user('testuser')
+        token = self.__create_token()
+        response = AcceptInviteView.as_view()(request, token=token.token)
+        self.assertEqual(response.status_code, 200)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertTrue(selector.exists('button#django_cradmin_invite_accept_as_button'))
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_create_new_user_button')['href'],
+            '/cradmin_register_account/begin?next=%2Ftest')
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_login_as_different_user_button')['href'],
+            '/cradmin_authenticate/logout?next=%2Fcradmin_authenticate%2Flogin%3Fnext%3D%252Ftest')
+
+    def test_get_render_not_authenticated(self):
+        request = self.factory.get('/test')
+        token = self.__create_token()
+        response = AcceptInviteView.as_view()(request, token=token.token)
+        self.assertEqual(response.status_code, 200)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_login_button')['href'],
+            '/cradmin_authenticate/login?next=%2Ftest')
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_create_new_user_button')['href'],
+            '/cradmin_register_account/begin?next=%2Ftest')
+
+    def test_post_not_authenticated(self):
+        request = self.factory.post('/test')
+        request.user = AnonymousUser()
+        token = self.__create_token()
+        with self.assertRaises(PermissionDenied):
+            AcceptInviteView.as_view()(request, token=token.token)
+
+    def test_post_is_authenticated(self):
+        request = self.factory.post('/test')
+        request.user = create_user('testuser')
+        token = self.__create_token()
+        response = AcceptInviteView.as_view()(request, token=token.token)
+        self.assertEqual(response.content, 'OK')
