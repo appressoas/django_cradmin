@@ -42,6 +42,7 @@ Apps
     apps.cradmin_register_account
     apps.cradmin_activate_account
     apps.cradmin_resetpassword
+    apps.cradmin_invite
     apps.cradmin_generic_token_with_metadata
 
 
