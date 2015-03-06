@@ -18,11 +18,17 @@ class EditUserView(update.UpdateRoleView):
         'last_name',
     ]
 
+    def get_success_message(self, object):
+        return _('Updated your account information.') % {'object': object}
+
     def get_field_layout(self):
         return [
-            layout.Div('username', css_class="cradmin-focusfield cradmin-focusfield-lg"),
-            layout.Div('first_name', css_class="cradmin-focusfield"),
-            layout.Div('last_name', css_class="cradmin-focusfield"),
+            layout.Div(
+                'username',
+                'first_name',
+                'last_name',
+                css_class='cradmin-globalfields'
+            )
         ]
 
     def get_buttons(self):
