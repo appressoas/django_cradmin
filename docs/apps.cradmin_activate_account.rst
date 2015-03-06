@@ -1,6 +1,6 @@
-##########################################################
+###########################################################
 `cradmin_activate_account` --- An activate account workflow
-##########################################################
+###########################################################
 
 The purpose of the :mod:`django_cradmin.apps.cradmin_activate_account` app is to provide a
 general purpose activate account workflow.
