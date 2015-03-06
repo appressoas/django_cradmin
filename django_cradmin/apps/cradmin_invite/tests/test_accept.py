@@ -1,82 +1,66 @@
 from datetime import timedelta, datetime
 from django.contrib import messages
-
-from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
 import mock
-from django_cradmin.apps.cradmin_activate_account.views.activate import ActivateAccountView
-
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
-from django_cradmin.tests.helpers import create_user
+
+from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
 
 
-class TestActivateAccountView(TestCase):
+class AcceptInviteView(AbstractAcceptInviteView):
+    def get_appname(self):
+        return 'testapp'
+
+
+class TestAbstractAcceptInviteView(TestCase):
     def setUp(self):
-        self.testuser = create_user('testuser', is_active=False)
+        self.factory = RequestFactory()
+        # request._messages = mock.MagicMock()
 
-    def __get_url(self, token):
-        return reverse('cradmin-activate-account-activate', kwargs={'token': token})
-
-    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None,
-                                            metadata=None, **kwargs):
+    def __create_token(self, metadata=None, expiration_datetime=None, **kwargs):
         generic_token_with_metadata = GenericTokenWithMetadata(
-            created_datetime=(created_datetime or timezone.now()),
+            created_datetime=timezone.now(),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
-            app='cradmin_activate_account',
+            app='testapp',
             **kwargs)
-        if metadata:
-            generic_token_with_metadata.set_metadata(metadata)
+        generic_token_with_metadata.set_metadata(metadata or {})
         generic_token_with_metadata.save()
         return generic_token_with_metadata
 
     def test_get_expired_token(self):
-        self._create_generic_token_with_metadata(
-            token='valid-token', user=self.testuser,
+        self.__create_token(
+            token='valid-token',
             expiration_datetime=datetime(2014, 1, 1))
-        response = self.client.get(self.__get_url('valid-token'))
+        request = self.factory.get('/test')
+        response = AcceptInviteView.as_view()(request, token='valid-token')
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('#django_cradmin_activate_account_expired_message'))
+        self.assertTrue(selector.exists('#django_cradmin_invite_expired_message'))
         self.assertEqual(
-            selector.one('#django_cradmin_activate_account_expired_message').alltext_normalized,
-            'This account activation link has expired.')
+            selector.one('#django_cradmin_invite_expired_message').alltext_normalized,
+            'This invite link has expired.')
 
     def test_get_invalid_token(self):
-        self._create_generic_token_with_metadata(
-            token='valid-token', user=self.testuser)
-        response = self.client.get(self.__get_url('invalid-token'))
+        self.__create_token(
+            token='valid-token')
+        request = self.factory.get('/test')
+        response = AcceptInviteView.as_view()(request, token='invalid-token')
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('#django_cradmin_activate_account_invalid_token_message'))
+        self.assertTrue(selector.exists('#django_cradmin_invite_invalid_token_message'))
         self.assertEqual(
-            selector.one('#django_cradmin_activate_account_invalid_token_message').alltext_normalized,
-            'Invalid account activation URL. Are you sure you copied the entire URL from the email?')
+            selector.one('#django_cradmin_invite_invalid_token_message').alltext_normalized,
+            'Invalid invite URL. Are you sure you copied the entire URL from the email?')
 
-    def test_get_redirect_ok(self):
-        self._create_generic_token_with_metadata(
-            token='valid-token', user=self.testuser,
-            metadata={'next_url': '/next'})
-        response = self.client.get(self.__get_url('valid-token'))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], 'http://testserver/next')
-
-    def test_get_activate_ok(self):
-        self._create_generic_token_with_metadata(
-            token='valid-token', user=self.testuser,
-            metadata={'next_url': '/next'})
-        self.assertFalse(self.testuser.is_active)
-        self.client.get(self.__get_url('valid-token'))
-        testuser = get_user_model().objects.get(id=self.testuser.id)
-        self.assertTrue(testuser.is_active)
-
-    def test_post_success_message(self):
-        self._create_generic_token_with_metadata(
-            token='valid-token', user=self.testuser,
-            metadata={'next_url': '/next'})
-        request = RequestFactory().get('/test')
-        request.user = self.testuser
-        request._messages = mock.MagicMock()
-        ActivateAccountView.as_view()(request, token='valid-token')
-        request._messages.add.assert_called_once_with(
-            messages.SUCCESS, 'Your account is now active.', '')
+    def test_get_render(self):
+        request = self.factory.get('/test')
+        token = self.__create_token()
+        response = AcceptInviteView.as_view()(request, token=token.token)
+        self.assertEqual(response.status_code, 200)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertEqual(selector.one('title').alltext_normalized, 'Accept invite')
+        self.assertEqual(selector.one('.page-header h1').alltext_normalized, 'Accept invite')
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_description').alltext_normalized,
+            'TODO: Set a description_template for your AbstractAcceptInviteView subclass.')

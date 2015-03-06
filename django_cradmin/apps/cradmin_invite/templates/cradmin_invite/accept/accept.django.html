@@ -1,0 +1,20 @@
+{% extends "django_cradmin/layouts/standalone/focused.django.html" %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}
+    {% include title_template %}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>
+        {% include title_template %}
+    </h1>
+{% endblock pageheader-inner %}
+
+{% block content %}
+    <div id="django_cradmin_invite_accept_description">
+        {% include description_template %}
+    </div>
+{% endblock content %}

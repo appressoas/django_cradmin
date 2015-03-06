@@ -82,13 +82,16 @@ Create the view responsible for adding the user as admin
 ========================================================
 Create a subclass of :class:`django_cradmin.apps.cradmin_invite.baseviews.AbstractAcceptInviteView`::
 
-    from django_cradmin.apps.cradmin_invite.baseviews import AbstractAcceptInviteView
+    from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
     from myapp.models import Site
 
     class AcceptSiteAdminInviteView(AbstractAcceptInviteView):
-        invite_description_template = 'myapp/invite_description.django.html'
+        description_template = 'myapp/invite_description.django.html'
 
-        def token_verified(self, token):
+        def get_appname(self):
+            return 'myapp'
+
+        def invite_accepted(self, token):
             site = Site.objects.get(id=token.get_metadata()['site_id'])
             site.admins.add(self.request.user)
             messages.success(self.request, 'You are now admin on %(site)s' % {'site': site})

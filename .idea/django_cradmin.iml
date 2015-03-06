@@ -33,6 +33,7 @@
         <option value="$MODULE_DIR$/django_cradmin/templates" />
         <option value="$MODULE_DIR$/django_cradmin/apps/cradmin_register_account/templates" />
         <option value="$MODULE_DIR$/django_cradmin/apps/cradmin_resetpassword/templates" />
+        <option value="$MODULE_DIR$/django_cradmin/apps/cradmin_invite/templates" />
       </list>
     </option>
   </component>
