@@ -1,8 +1,8 @@
 ##########################################################
-`cradmin_activateaccount` --- An activate account workflow
+`cradmin_activate_account` --- An activate account workflow
 ##########################################################
 
-The purpose of the :mod:`django_cradmin.apps.cradmin_activateaccount` app is to provide a
+The purpose of the :mod:`django_cradmin.apps.cradmin_activate_account` app is to provide a
 general purpose activate account workflow.
 
 It is designed to work with any user model as long as it
@@ -19,7 +19,7 @@ Add the following to ``INSTALLED_APPS``::
         # ...
         'django_cradmin',
         'django_cradmin.apps.cradmin_generic_token_with_metadata',
-        'django_cradmin.apps.cradmin_activateaccount',
+        'django_cradmin.apps.cradmin_activate_account',
     )
 
 
@@ -27,7 +27,7 @@ And add something like this to your root url config::
 
     urlpatterns = patterns(
         # ...
-        url(r'^activateaccount/', include('django_cradmin.apps.cradmin_activateaccount.urls')),
+        url(r'^activateaccount/', include('django_cradmin.apps.cradmin_activate_account.urls')),
         # ...
     )
 
@@ -100,18 +100,18 @@ Email templates and how to override them
 ****************************************
 You can override the following templates:
 
-cradmin_activateaccount/email/subject.django.txt
+cradmin_activate_account/email/subject.django.txt
     Override this to set the email subject.
 
-cradmin_activateaccount/email/message.django.txt
+cradmin_activate_account/email/message.django.txt
     Override this to set the email message.
     Any whitespace at the beginning of this template is removed automatically.
 
-cradmin_activateaccount/email/signature.django.txt
+cradmin_activate_account/email/signature.django.txt
     Override this to replace signature of the email.
     Any whitespace at the end of this template is removed automatically.
 
-cradmin_activateaccount/email/body.django.txt
+cradmin_activate_account/email/body.django.txt
     Override this to replace both the message and the signature.
     Any whitespace at both ends of this template is removed automatically.
 
