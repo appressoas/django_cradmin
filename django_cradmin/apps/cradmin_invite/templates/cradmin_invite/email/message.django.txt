@@ -1,2 +1,2 @@
-{% include "cradmin_activate_account/email/body.django.txt" %}
-{% include "cradmin_activate_account/email/signature.django.txt" %}
+{% include "cradmin_invite/email/body.django.txt" %}
+{% include "cradmin_invite/email/signature.django.txt" %}

@@ -37,24 +37,16 @@ class InviteUrl(object):
     #: The email message template.
     email_message_template = 'cradmin_invite/email/message.django.txt'
 
-    #: The name of the app. Used for
-    #: :obj:`django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata.app`.
-    #:
-    #: Must be overridden in subclasses.
-    appname = None
-
-    def __init__(self, request, user, private=True, next_url=None):
+    def __init__(self, request, metadata, private):
         """
         Parameters:
             request: A Django HttpRequest object.
             private: If this is ``True`` we send unique single-use invite URLs.
             next_url: An optional URL to redirect to after the user has activated their account.
         """
-        self.user = user
         self.request = request
+        self.metadata = metadata
         self.private = private
-        self.next_url = next_url or getattr(
-            settings, 'DJANGO_CRADMIN_ACTIVATE_ACCOUNT_DEFAULT_NEXT_URL', settings.LOGIN_URL)
 
     def get_email_subject_template(self):
         return self.email_subject_template
@@ -63,15 +55,25 @@ class InviteUrl(object):
         return self.email_message_template
 
     def get_appname(self):
-        return self.appname
+        """
+        Get the appname for
+        :obj:`django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata.app`.
+
+        You must override this in subclasses.
+        """
+        raise NotImplementedError()
 
     def get_confirm_invite_url(self, token):
         """
         Get the confirm invite view URL.
+
+        Must be implemented in subclasses.
+
+        Parameters:
+            token: A :class:`~django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata`
+                object.
         """
-        return reverse('cradmin-activate-account-activate', kwargs={
-            'token': token.token
-        })
+        raise NotImplementedError()
 
     def __get_absolute_confirm_invite_url(self, token):
         return self.request.build_absolute_uri(self.get_confirm_invite_url(token))
@@ -101,38 +103,35 @@ class InviteUrl(object):
         """
         Get the email sender address.
 
-        Defaults to the ``DJANGO_CRADMIN_ACTIVATE_ACCOUNT_FROM_EMAIL`` setting
+        Defaults to the ``DJANGO_CRADMIN_INVITE_FROM_EMAIL`` setting
         falling back on the ``DEFAULT_FROM_EMAIL`` setting.
         """
-        return getattr(settings, 'DJANGO_CRADMIN_ACTIVATE_ACCOUNT_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL)
+        return getattr(settings, 'DJANGO_CRADMIN_INVITE_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL)
 
     def get_expiration_datetime(self):
         """
         Get the value to use for the ``expiration_datetime`` attribute of
         :class:`~django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata`.
         """
-        return get_expiration_datetime_for_app(self.appname)
+        return get_expiration_datetime_for_app(self.get_appname())
 
-    def __generate_token(self):
+    def _generate_token(self):
         return GenericTokenWithMetadata.objects.generate(
-            user=self.user,
-            app=self.appname,
+            app=self.get_appname(),
             expiration_datetime=self.get_expiration_datetime(),
-            metadata={
-                'next_url': self.next_url
-            }
+            metadata=self.metadata
         )
 
     def generate_token(self):
         if self.private:
             # If private generate unique tokens
-            return self.__generate_token()
+            return self._generate_token()
         else:
             # If public, re-use the same token
             if hasattr(self, '_token'):
                 return self._token
             else:
-                self._token = self.__generate_token()
+                self._token = self._generate_token()
                 return self._token
 
     def send_email(self, *emails):
@@ -166,4 +165,4 @@ class InviteUrl(object):
         return self.__get_absolute_confirm_invite_url(token)
 
     # def get_stored_tokens(self):
-    #     return GenericTokenWithMetadata.objects.filter_not_expired().filter(app=self.appname)
+    #     return GenericTokenWithMetadata.objects.filter_not_expired().filter(app=self.get_appname())

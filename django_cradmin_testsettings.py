@@ -32,6 +32,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_resetpassword',
     'django_cradmin.apps.cradmin_activate_account',
     'django_cradmin.apps.cradmin_register_account',
+    'django_cradmin.apps.cradmin_invite',
 
     'django_cradmin.tests.sortable.cradmin_sortable_testapp',
     'django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp',

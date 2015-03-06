@@ -1,4 +1,4 @@
 {% load i18n %}
-{% blocktrans with sitename=DJANGO_CRADMIN_SITENAME user=user %}Click the link below to activate your {{ sitename }} account, {{ user }}.{% endblocktrans %}
+{% trans "Click the link below to accept the invite." %}
 
-{{ activate_url }}
+{{ confirm_invite_url }}

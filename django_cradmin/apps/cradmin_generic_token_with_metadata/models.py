@@ -103,7 +103,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
 
     Inherits all methods from :class:`.GenericTokenWithMetadataQuerySet`.
     """
-    def generate(self, app, user, expiration_datetime, metadata=None):
+    def generate(self, app, expiration_datetime, metadata=None, user=None):
         """
         Generate and save a token for the given user and app.
 
@@ -200,7 +200,7 @@ class GenericTokenWithMetadata(models.Model):
     single_use = models.BooleanField(default=True)
 
     #: The user that the token is for.
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, default=None)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None)
 
     #: JSON encoded metadata
     metadata_json = models.TextField(null=False, blank=True, default='')

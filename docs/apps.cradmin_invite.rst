@@ -49,10 +49,14 @@ Create a subclass of :class:`django_cradmin.apps.cradmin_invite.utils.InviteUrl`
     from django_cradmin.apps.cradmin_invite.utils import InviteUrl
 
     class MyInviteUrl(InviteUrl):
-        appname = 'my_app'
+        def get_appname(self):
+            return 'myapp'
 
-        def get_confirm_invite_url(self):
-            return reverse('siteadmin-invite-accept')  # URL of the AcceptSiteAdminInviteView shown below
+        def get_confirm_invite_url(self, token):
+            # URL of the AcceptSiteAdminInviteView shown below
+            return reverse('siteadmin-invite-accept', {
+                'token': token.token
+            })
 
 
 And use it to send the invite email to ``test@example.com``::
