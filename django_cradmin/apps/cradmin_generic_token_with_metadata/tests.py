@@ -9,7 +9,8 @@ from django_cradmin.tests.helpers import create_user
 
 
 class TestGenericTokenWithMetadata(TestCase):
-    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None, app='testapp', **kwargs):
+    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None,
+                                            app='testapp', **kwargs):
         generic_token_with_metadata = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
@@ -43,9 +44,11 @@ class TestGenericTokenWithMetadata(TestCase):
         testuser = create_user('testuser')
         self._create_generic_token_with_metadata(user=testuser, app='testapp1', token='test-token1')
         self._create_generic_token_with_metadata(user=testuser, app='testapp2', token='test-token2')
-        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(token='test-token1', app='testapp1').user, testuser)
+        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(
+            token='test-token1', app='testapp1').user, testuser)
         self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
-        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(token='test-token2', app='testapp2').user, testuser)
+        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(
+            token='test-token2', app='testapp2').user, testuser)
         self.assertEquals(GenericTokenWithMetadata.objects.count(), 0)
 
     def test_filter_not_expired(self):

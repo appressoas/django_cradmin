@@ -98,4 +98,3 @@ class AuthUserCreateAccountAutoUsernameForm(AuthUserCreateAccountForm):
             'password1',
             'password2',
         ]
-
