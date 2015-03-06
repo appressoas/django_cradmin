@@ -19,7 +19,7 @@ class EditUserView(update.UpdateRoleView):
     ]
 
     def get_success_message(self, object):
-        return _('Updated your account information.') % {'object': object}
+        return _('Updated your account information.')
 
     def get_field_layout(self):
         return [
