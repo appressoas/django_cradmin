@@ -6,6 +6,7 @@ from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchiv
 from .models import Site
 from .crapps import dashboard
 from .crapps import pages
+from .crapps import inviteadmins
 
 
 class Menu(crmenu.Menu):
@@ -23,6 +24,9 @@ class Menu(crmenu.Menu):
             label=_('Pages'), url=self.appindex_url('pages'), icon="database",
             active=self.request.cradmin_app.appname == 'pages')
         self.add(
+            label=_('Invite admins'), url=self.appindex_url('inviteadmins'), icon="users",
+            active=self.request.cradmin_app.appname == 'inviteadmins')
+        self.add(
             label=_('Images'), url=self.appindex_url('imagearchive'), icon="image",
             active=self.request.cradmin_app.appname == 'imagearchive')
 
@@ -37,6 +41,7 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         ('dashboard', dashboard.App),
         ('pages', pages.App),
         ('imagearchive', imagearchive.App),
+        ('inviteadmins', inviteadmins.App),
     ]
 
     def get_rolequeryset(self):

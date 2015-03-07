@@ -170,5 +170,5 @@ class InviteUrl(object):
         generictoken = self.generate_generictoken()
         return self.__get_absolute_confirm_invite_url(generictoken)
 
-    # def get_stored_tokens(self):
+    # def get_tokens_stored_for_app(self):
     #     return GenericTokenWithMetadata.objects.filter_not_expired().filter(app=self.get_appname())
