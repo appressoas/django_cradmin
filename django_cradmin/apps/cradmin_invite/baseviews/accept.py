@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render
 from django.utils.http import urlencode
@@ -22,10 +24,6 @@ class AbstractAcceptInviteView(TemplateView):
 
     template_name = 'cradmin_invite/accept/accept.django.html'
 
-    #: The template used to render the title of the invite.
-    #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
-    title_template_name = 'cradmin_invite/accept/title.django.html'
-
     #: The template used to render the description of the invite.
     #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
     description_template_name = 'cradmin_invite/accept/description.django.html'
@@ -36,13 +34,35 @@ class AbstractAcceptInviteView(TemplateView):
     #: the ``invalid_token_message`` and ``expired_token_message`` blocks.
     token_error_template_name = 'cradmin_invite/accept/token_error.django.html'
 
-    def get_title_template_name(self):
+    def get_pagetitle(self):
         """
-        The method used to get :obj:`.title_template_name`. If
-        you need to dynamically determine the template, you can
-        override this instead of the class variable.
+        Get the title of the page.
         """
-        return self.title_template_name
+        return _('Accept invite')
+
+    def get_accept_as_button_label(self):
+        """
+        Get the label of the *Accept as authenticated user* button.
+        """
+        return _('Accept as %(user)s') % {'user': self.request.user}
+
+    def get_register_account_button_label(self):
+        """
+        Get the label of the *Sign up* button.
+        """
+        return _('Sign up for %(sitename)s') % {'sitename': settings.DJANGO_CRADMIN_SITENAME}
+
+    def get_login_as_different_user_button_label(self):
+        """
+        Get the label of the *Sign in as different user* button.
+        """
+        return _('Sign in as another user')
+
+    def get_login_button_label(self):
+        """
+        Get the label of the *Sign in* button.
+        """
+        return _('Sign in')
 
     def get_description_template_name(self):
         """
@@ -99,8 +119,7 @@ class AbstractAcceptInviteView(TemplateView):
 
         Parameters:
             url: The base url.
-            next_url:
-                The url to redirect to after whatever ``url`` does is successfully completed.
+            next_url: The url to redirect to after whatever ``url`` does is successfully completed.
                 Defaults to the absolute URI of the current request.
         """
         if not next_url:
@@ -112,7 +131,7 @@ class AbstractAcceptInviteView(TemplateView):
             })
         )
 
-    def get_create_new_user_url(self):
+    def get_register_account_url(self):
         """
         Get the URL to used to create a new user.
 
@@ -152,11 +171,17 @@ class AbstractAcceptInviteView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AbstractAcceptInviteView, self).get_context_data(**kwargs)
-        context['title_template_name'] = self.get_title_template_name()
+        context['pagetitle'] = self.get_pagetitle()
         context['description_template_name'] = self.get_description_template_name()
-        context['create_new_user_url'] = self.get_create_new_user_url()
+
+        context['register_account_url'] = self.get_register_account_url()
         context['login_url'] = self.get_login_url()
         context['login_as_different_user_url'] = self.get_login_as_different_user_url()
+
+        context['accept_as_button_label'] = self.get_accept_as_button_label()
+        context['register_account_button_label'] = self.get_register_account_button_label()
+        context['login_as_different_user_button_label'] = self.get_login_as_different_user_button_label()
+        context['login_button_label'] = self.get_login_button_label()
         return context
 
     def post(self, *args, **kwargs):

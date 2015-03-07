@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
+import mock
 
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
@@ -61,6 +62,7 @@ class TestAbstractAcceptInviteView(TestCase):
 
     def test_get_render(self):
         request = self.factory.get('/test')
+        request.user = mock.MagicMock()
         token = self.__create_token()
         response = AcceptInviteView.as_view()(request, token=token.token)
         self.assertEqual(response.status_code, 200)
@@ -76,23 +78,36 @@ class TestAbstractAcceptInviteView(TestCase):
         request = self.factory.get('/test')
         request.user = create_user('testuser')
         token = self.__create_token()
-        response = AcceptInviteView.as_view()(request, token=token.token)
+        with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
+            response = AcceptInviteView.as_view()(request, token=token.token)
         self.assertEqual(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
         self.assertTrue(selector.exists('button#django_cradmin_invite_accept_as_button'))
         self.assertEqual(
-            selector.one('#django_cradmin_invite_accept_create_new_user_button')['href'],
+            selector.one('#django_cradmin_invite_accept_register_account_button')['href'],
             '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_as_different_user_button')['href'],
             '/cradmin_authenticate/logout?'
             'next=%2Fcradmin_authenticate%2Flogin%3Fnext%3Dhttp%253A%252F%252Ftestserver%252Ftest')
 
+        self.assertEqual(
+            selector.one('button#django_cradmin_invite_accept_as_button').alltext_normalized,
+            'Accept as testuser')
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_register_account_button').alltext_normalized,
+            'Sign up for Testsite')
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_login_as_different_user_button').alltext_normalized,
+            'Sign in as another user')
+
     def test_get_render_not_authenticated(self):
         request = self.factory.get('/test')
+        request.user = AnonymousUser()
         token = self.__create_token()
-        response = AcceptInviteView.as_view()(request, token=token.token)
+        with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
+            response = AcceptInviteView.as_view()(request, token=token.token)
         self.assertEqual(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
@@ -100,8 +115,15 @@ class TestAbstractAcceptInviteView(TestCase):
             selector.one('#django_cradmin_invite_accept_login_button')['href'],
             '/cradmin_authenticate/login?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
-            selector.one('#django_cradmin_invite_accept_create_new_user_button')['href'],
+            selector.one('#django_cradmin_invite_accept_register_account_button')['href'],
             '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')
+
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_login_button').alltext_normalized,
+            'Sign in')
+        self.assertEqual(
+            selector.one('#django_cradmin_invite_accept_register_account_button').alltext_normalized,
+            'Sign up for Testsite')
 
     def test_post_not_authenticated(self):
         request = self.factory.post('/test')

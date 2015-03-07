@@ -4,12 +4,12 @@
 {% load i18n %}
 
 {% block title %}
-    {% include title_template_name %}
+    {{ pagetitle }}
 {% endblock title %}
 
 {% block pageheader-inner %}
     <h1>
-        {% include title_template_name %}
+        {{ pagetitle }}
     </h1>
 {% endblock pageheader-inner %}
 
@@ -23,25 +23,25 @@
             <form method="post" action="{{ request.path }}">{% csrf_token %}
                 <button id="django_cradmin_invite_accept_as_button"
                         type="submit" class="btn btn-lg btn-primary">
-                    {% blocktrans with user=request.user%}Accept as {{ user }}{% endblocktrans %}
+                    {{ accept_as_button_label }}
                 </button>
             </form>
-            <a href="{{ create_new_user_url }}" id="django_cradmin_invite_accept_create_new_user_button">
-                {% trans "Create new user" %}
+            <a href="{{ register_account_url }}" id="django_cradmin_invite_accept_register_account_button">
+                {{ register_account_button_label }}
             </a>
             |
             <a href="{{ login_as_different_user_url }}"
                     id="django_cradmin_invite_accept_login_as_different_user_button">
-                {% trans "Sign in as different user" %}
+                {{ login_as_different_user_button_label }}
             </a>
         {% else %}
             <a href="{{ login_url }}" class="btn btn-lg btn-primary"
                     id="django_cradmin_invite_accept_login_button">
-                {% trans "Sign in" %}
+                {{ login_button_label }}
             </a>
-            <a href="{{ create_new_user_url }}" class="btn btn-lg btn-default"
-                    id="django_cradmin_invite_accept_create_new_user_button">
-                {% trans "Create new user" %}
+            <a href="{{ register_account_url }}" class="btn btn-lg btn-default"
+                    id="django_cradmin_invite_accept_register_account_button">
+                {{ register_account_button_label }}
             </a>
         {% endif %}
     </div>

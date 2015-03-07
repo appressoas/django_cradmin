@@ -3,11 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+############################
 django-CRadmin documentation
-============================
+############################
 
+***************
 Getting started
----------------
+***************
 
 .. toctree::
    :maxdepth: 2
@@ -15,8 +17,9 @@ Getting started
    install
 
 
+***********
 Viewhelpers
------------
+***********
 
 .. toctree::
    :maxdepth: 1
@@ -24,8 +27,9 @@ Viewhelpers
    viewhelpers_delete
 
 
+************
 Modelhelpers
-------------
+************
 
 .. toctree::
    :maxdepth: 1
@@ -33,21 +37,32 @@ Modelhelpers
    sortable
 
 
-Apps
-----
+********************
+Account-related apps
+********************
 .. toctree::
     :maxdepth: 1
 
+    account-apps-overview
     apps.cradmin_authenticate
     apps.cradmin_register_account
     apps.cradmin_activate_account
     apps.cradmin_resetpassword
     apps.cradmin_invite
+
+
+******************************************
+Apps that provide utitities for other apps
+******************************************
+.. toctree::
+    :maxdepth: 1
+
     apps.cradmin_generic_token_with_metadata
 
 
+*******
 Widgets
--------
+*******
 
 .. toctree::
    :maxdepth: 1
@@ -55,8 +70,9 @@ Widgets
    foreignkeywidgets
 
 
+***********
 Development
------------
+***********
 .. toctree::
    :maxdepth: 1
 
@@ -64,9 +80,9 @@ Development
    locale
 
 
-
+******************
 Indices and tables
-==================
+******************
 
 * :ref:`genindex`
 * :ref:`modindex`

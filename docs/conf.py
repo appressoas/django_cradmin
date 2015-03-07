@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.extlinks',
+    'sphinxcontrib.napoleon',
 ]
 
 extlinks = {
