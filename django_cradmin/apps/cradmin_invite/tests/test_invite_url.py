@@ -37,7 +37,7 @@ class TestSendActivationEmail(TestCase):
 
     def test_generate_generictoken(self):
         token = InviteUrlMock(request=mock.MagicMock(), metadata={'test': 10}, private=True).generate_generictoken()
-        self.assertEquals(token.get_metadata(), {'test': 10})
+        self.assertEquals(token.metadata, {'test': 10})
 
     def test_send_email(self):
         testrequest = mock.MagicMock()

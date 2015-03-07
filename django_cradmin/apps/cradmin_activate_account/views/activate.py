@@ -78,7 +78,7 @@ class ActivateAccountView(TemplateView):
 
     def token_is_valid(self, token):
         user = token.user
-        next_url = token.get_metadata()['next_url']
+        next_url = token.metadata['next_url']
         self.activate_user(user)
         self.add_success_message(user)
         return HttpResponseRedirect(next_url)

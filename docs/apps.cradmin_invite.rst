@@ -92,7 +92,7 @@ Create a subclass of :class:`django_cradmin.apps.cradmin_invite.baseviews.Abstra
             return 'myapp'
 
         def invite_accepted(self, token):
-            site = Site.objects.get(id=token.get_metadata()['site_id'])
+            site = Site.objects.get(id=token.metadata['site_id'])
             site.admins.add(self.request.user)
             messages.success(self.request, 'You are now admin on %(site)s' % {'site': site})
 

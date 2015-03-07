@@ -86,7 +86,7 @@ class TestBeginRegisterAccountView(TestCase):
             'email': 'test@example.com'
         })
         token = GenericTokenWithMetadata.objects.first()
-        self.assertEqual(token.get_metadata()['next_url'], '/next')
+        self.assertEqual(token.metadata['next_url'], '/next')
 
     def test_post_next_url_as_django_cradmin_register_account_redirect_url_setting(self):
         self.assertEqual(get_user_model().objects.count(), 0)
@@ -98,7 +98,7 @@ class TestBeginRegisterAccountView(TestCase):
                 'email': 'test@example.com'
             })
         token = GenericTokenWithMetadata.objects.first()
-        self.assertEqual(token.get_metadata()['next_url'], '/redirect')
+        self.assertEqual(token.metadata['next_url'], '/redirect')
 
     def test_post_next_url_as_login_url_setting(self):
         self.assertEqual(get_user_model().objects.count(), 0)
@@ -110,4 +110,4 @@ class TestBeginRegisterAccountView(TestCase):
                 'email': 'test@example.com'
             })
         token = GenericTokenWithMetadata.objects.first()
-        self.assertEqual(token.get_metadata()['next_url'], '/login')
+        self.assertEqual(token.metadata['next_url'], '/login')

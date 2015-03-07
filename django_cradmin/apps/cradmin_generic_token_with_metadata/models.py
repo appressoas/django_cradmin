@@ -117,7 +117,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
             created_datetime=_get_current_datetime(),
             expiration_datetime=expiration_datetime)
         if metadata:
-            generic_token_with_metadata.set_metadata(metadata)
+            generic_token_with_metadata.metadata = metadata
 
         try:
             generic_token_with_metadata.full_clean()
@@ -212,20 +212,28 @@ class GenericTokenWithMetadata(models.Model):
         """
         return self.expiration_datetime is not None and self.expiration_datetime < _get_current_datetime()
 
-    def get_metadata(self):
+    @property
+    def metadata(self):
         """
         Decode :obj:`.GenericTokenWithMetadata.metadata_json` and return the result.
 
         Return `None` if metadata_json is empty.
         """
         if self.metadata_json:
-            return json.loads(self.metadata_json)
+            if not hasattr(self, '_metadata'):
+                # Store the decoded metadata to avoid re-decoding the json for
+                # each access. We invalidate this cache in the setter.
+                self._metadata = json.loads(self.metadata_json)
+            return self._metadata
         else:
             return None
 
-    def set_metadata(self, metadata):
+    @metadata.setter
+    def metadata(self, metadata):
         """
         Set :obj:`.GenericTokenWithMetadata.metadata_json`. Encodes the given
         metadata using `json.dumps`.
         """
         self.metadata_json = json.dumps(metadata)
+        if hasattr(self, '_metadata'):
+            delattr(self, '_metadata')

@@ -28,7 +28,7 @@ class TestActivateAccountView(TestCase):
             app='cradmin_activate_account',
             **kwargs)
         if metadata:
-            generic_token_with_metadata.set_metadata(metadata)
+            generic_token_with_metadata.metadata = metadata
         generic_token_with_metadata.save()
         return generic_token_with_metadata
 

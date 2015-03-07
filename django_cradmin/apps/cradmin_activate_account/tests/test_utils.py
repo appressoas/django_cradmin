@@ -11,12 +11,12 @@ class TestSendActivationEmail(TestCase):
 
     def test_generate_token(self):
         token = ActivationEmail(user=self.testuser, next_url='/', request=mock.MagicMock()).generate_token()
-        self.assertEquals(token.get_metadata()['next_url'], '/')
+        self.assertEquals(token.metadata['next_url'], '/')
 
     def test_generate_token_no_next_url(self):
         with self.settings(LOGIN_URL='/next'):
             token = ActivationEmail(user=self.testuser, request=mock.MagicMock()).generate_token()
-        self.assertEquals(token.get_metadata()['next_url'], '/next')
+        self.assertEquals(token.metadata['next_url'], '/next')
 
     def test_send(self):
         testtoken = mock.MagicMock()

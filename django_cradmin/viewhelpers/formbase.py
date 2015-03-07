@@ -7,7 +7,7 @@ from django_cradmin.crispylayouts import CradminFormHelper
 
 class FormViewMixin(object):
     """
-    Mixin class for Update and Create views.
+    Mixin class for form views.
     """
 
     #: Get the view name for the listing page.
@@ -190,8 +190,4 @@ class FormViewMixin(object):
 class FormView(FormViewMixin, DjangoFormView):
     """
     Form view with the :class:`.FormViewMixin`.
-
-    Usage::
-
-
     """

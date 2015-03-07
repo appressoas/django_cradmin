@@ -33,7 +33,7 @@ class TestAbstractAcceptInviteView(TestCase):
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
             app='testapp',
             **kwargs)
-        generic_token_with_metadata.set_metadata(metadata or {})
+        generic_token_with_metadata.metadata = metadata or {}
         generic_token_with_metadata.save()
         return generic_token_with_metadata
 

@@ -39,7 +39,7 @@ When you have a token, typically from part of an URL, and want to get the
 user owning the token, use::
 
     generictoken = GenericTokenWithMetadata.objects.pop(app='myapp', token=token)
-    # Use generictoken.user and generictoken.get_metadata()
+    # Use generictoken.user and generictoken.metadata
 
 This returns the GenericTokenWithMetadata, and deletes the GenericTokenWithMetadata from the database.
 
