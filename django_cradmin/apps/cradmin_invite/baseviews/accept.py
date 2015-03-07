@@ -24,11 +24,11 @@ class AbstractAcceptInviteView(TemplateView):
 
     #: The template used to render the title of the invite.
     #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
-    title_template = 'cradmin_invite/accept/title.django.html'
+    title_template_name = 'cradmin_invite/accept/title.django.html'
 
     #: The template used to render the description of the invite.
     #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
-    description_template = 'cradmin_invite/accept/description.django.html'
+    description_template_name = 'cradmin_invite/accept/description.django.html'
 
     #: The template used to render the view when the given token does not
     #: validate. If you just want to change the error messages, you can extend
@@ -36,14 +36,29 @@ class AbstractAcceptInviteView(TemplateView):
     #: the ``invalid_token_message`` and ``expired_token_message`` blocks.
     token_error_template_name = 'cradmin_invite/accept/token_error.django.html'
 
-    def get_appname(self):
+    def get_title_template_name(self):
         """
-        Get the name of the appname. Must match the appname returned by the
-        :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl.get_appname`
-        method of your :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl`
-        subclass.
+        The method used to get :obj:`.title_template_name`. If
+        you need to dynamically determine the template, you can
+        override this instead of the class variable.
         """
-        raise NotImplementedError()
+        return self.title_template_name
+
+    def get_description_template_name(self):
+        """
+        The method used to get :obj:`.description_template_name`. If
+        you need to dynamically determine the template, you can
+        override this instead of the class variable.
+        """
+        return self.description_template_name
+
+    def get_token_error_template_name(self):
+        """
+        The method used to get :obj:`.token_error_template_name`. If
+        you need to dynamically determine the template, you can
+        override this instead of the class variable.
+        """
+        return self.token_error_template_name
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -52,6 +67,8 @@ class AbstractAcceptInviteView(TemplateView):
 
         If the token is valid, we set ``self.generic_token`` to the
         :class:`~django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata`.
+
+        If the token is invalid, we respond with :meth:`.token_error_response`.
         """
         try:
             generictoken = GenericTokenWithMetadata.objects.get_and_validate(
@@ -65,16 +82,33 @@ class AbstractAcceptInviteView(TemplateView):
             return super(AbstractAcceptInviteView, self).dispatch(request, *args, **kwargs)
 
     def token_error_response(self, token_does_not_exist=False, token_expired=False):
-        return render(self.request, self.token_error_template_name, {
+        """
+        Generates the response when the token does not validate.
+
+        Unless you have some special needs, you will most likely want to just override
+        :obj:`.token_error_template_name` instead of this view.
+        """
+        return render(self.request, self.get_token_error_template_name(), {
             'token_does_not_exist': token_does_not_exist,
             'token_expired': token_expired
         })
 
-    def add_next_argument_to_url(self, url, next=None):
+    def add_next_argument_to_url(self, url, next_url=None):
+        """
+        Adds ``?next=<next_url>`` to the given ``url``.
+
+        Parameters:
+            url: The base url.
+            next_url:
+                The url to redirect to after whatever ``url`` does is successfully completed.
+                Defaults to the absolute URI of the current request.
+        """
+        if not next_url:
+            next_url = self.request.build_absolute_uri()
         return '{url}?{arguments}'.format(
             url=url,
             arguments=urlencode({
-                'next': next or self.request.path
+                'next': next_url
             })
         )
 
@@ -114,12 +148,12 @@ class AbstractAcceptInviteView(TemplateView):
         """
         return self.add_next_argument_to_url(
             url=reverse('cradmin-authenticate-logout'),
-            next=self.get_login_url())
+            next_url=self.get_login_url())
 
     def get_context_data(self, **kwargs):
         context = super(AbstractAcceptInviteView, self).get_context_data(**kwargs)
-        context['title_template'] = self.title_template
-        context['description_template'] = self.description_template
+        context['title_template_name'] = self.get_title_template_name()
+        context['description_template_name'] = self.get_description_template_name()
         context['create_new_user_url'] = self.get_create_new_user_url()
         context['login_url'] = self.get_login_url()
         context['login_as_different_user_url'] = self.get_login_as_different_user_url()
@@ -134,6 +168,15 @@ class AbstractAcceptInviteView(TemplateView):
             return self.invite_accepted(self.generictoken)
         else:
             raise PermissionDenied()
+
+    def get_appname(self):
+        """
+        Get the name of the appname. Must match the appname returned by the
+        :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl.get_appname`
+        method of your :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl`
+        subclass.
+        """
+        raise NotImplementedError()
 
     def invite_accepted(self, token):
         """

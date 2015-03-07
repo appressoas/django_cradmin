@@ -174,6 +174,20 @@ We provide the following class variables for you to override:
 - :obj:`~.AbstractAcceptInviteView.token_error_template_name`
 
 
+*********************************************
+UI message templates and how to override them
+*********************************************
+
+.. currentmodule:: django_cradmin.apps.cradmin_invite.baseviews.accept
+
+You do not have to override the entire template to adjust
+the text in the :class:`~.AbstractAcceptInviteView` UI.
+We provide the following class variables for you to override:
+
+- :obj:`~.AbstractAcceptInviteView.title_template`
+- :obj:`~.AbstractAcceptInviteView.description_template`
+- :obj:`~.AbstractAcceptInviteView.token_error_template_name`
+
 
 **********************************
 The AbstractAcceptInviteView class

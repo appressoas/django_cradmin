@@ -4,18 +4,18 @@
 {% load i18n %}
 
 {% block title %}
-    {% include title_template %}
+    {% include title_template_name %}
 {% endblock title %}
 
 {% block pageheader-inner %}
     <h1>
-        {% include title_template %}
+        {% include title_template_name %}
     </h1>
 {% endblock pageheader-inner %}
 
 {% block content %}
     <div id="django_cradmin_invite_accept_description">
-        {% include description_template %}
+        {% include description_template_name %}
     </div>
 
     <div class="django-cradmin-invite-accept-buttons">

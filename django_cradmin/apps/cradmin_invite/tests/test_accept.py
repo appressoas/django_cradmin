@@ -83,10 +83,11 @@ class TestAbstractAcceptInviteView(TestCase):
         self.assertTrue(selector.exists('button#django_cradmin_invite_accept_as_button'))
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_create_new_user_button')['href'],
-            '/cradmin_register_account/begin?next=%2Ftest')
+            '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_as_different_user_button')['href'],
-            '/cradmin_authenticate/logout?next=%2Fcradmin_authenticate%2Flogin%3Fnext%3D%252Ftest')
+            '/cradmin_authenticate/logout?'
+            'next=%2Fcradmin_authenticate%2Flogin%3Fnext%3Dhttp%253A%252F%252Ftestserver%252Ftest')
 
     def test_get_render_not_authenticated(self):
         request = self.factory.get('/test')
@@ -97,10 +98,10 @@ class TestAbstractAcceptInviteView(TestCase):
         selector = htmls.S(response.content)
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_button')['href'],
-            '/cradmin_authenticate/login?next=%2Ftest')
+            '/cradmin_authenticate/login?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_create_new_user_button')['href'],
-            '/cradmin_register_account/begin?next=%2Ftest')
+            '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')
 
     def test_post_not_authenticated(self):
         request = self.factory.post('/test')
