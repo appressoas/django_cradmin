@@ -10,32 +10,58 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import Gener
 
 
 class AbstractAcceptInviteView(TemplateView):
+    """
+    Base class for views that accept invites from
+    :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl`.
+
+    You have to override:
+
+    - :meth:`~.AbstractAcceptInviteView.get_appname`.
+    - :meth:`~.AbstractAcceptInviteView.invite_accepted`.
+    """
+
     template_name = 'cradmin_invite/accept/accept.django.html'
-    token_error_template_name = 'cradmin_invite/accept/token_error.django.html'
 
     #: The template used to render the title of the invite.
-    #: The template context is the one returned by the get_context_data()
-    #: method of this view.
+    #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
     title_template = 'cradmin_invite/accept/title.django.html'
 
     #: The template used to render the description of the invite.
-    #: The template context is the one returned by the get_context_data()
-    #: method of this view.
+    #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
     description_template = 'cradmin_invite/accept/description.django.html'
 
+    #: The template used to render the view when the given token does not
+    #: validate. If you just want to change the error messages, you can extend
+    #: the ``cradmin_invite/accept/token_error.django.html`` template and override
+    #: the ``invalid_token_message`` and ``expired_token_message`` blocks.
+    token_error_template_name = 'cradmin_invite/accept/token_error.django.html'
+
     def get_appname(self):
+        """
+        Get the name of the appname. Must match the appname returned by the
+        :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl.get_appname`
+        method of your :class:`~django_cradmin.apps.cradmin_invite.invite_url.InviteUrl`
+        subclass.
+        """
         raise NotImplementedError()
 
     def dispatch(self, request, *args, **kwargs):
+        """
+        Takes care of validating the token for both GET and POST
+        requests.
+
+        If the token is valid, we set ``self.generic_token`` to the
+        :class:`~django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata`.
+        """
         try:
-            token = GenericTokenWithMetadata.objects.get_and_validate(
+            generictoken = GenericTokenWithMetadata.objects.get_and_validate(
                 token=self.kwargs['token'], app=self.get_appname())
         except GenericTokenWithMetadata.DoesNotExist:
             return self.token_error_response(token_does_not_exist=True)
         except GenericTokenExpiredError:
             return self.token_error_response(token_expired=True)
         else:
-            self.token = token
+            self.generictoken = generictoken
             return super(AbstractAcceptInviteView, self).dispatch(request, *args, **kwargs)
 
     def token_error_response(self, token_does_not_exist=False, token_expired=False):
@@ -53,12 +79,39 @@ class AbstractAcceptInviteView(TemplateView):
         )
 
     def get_create_new_user_url(self):
+        """
+        Get the URL to used to create a new user.
+
+        Should have some way of returning the user to this view after
+        the user has been created.
+
+        Defaults to the ``cradmin-register-account-begin`` view in
+        ``django_cradmin.apps.cradmin_register_account``.
+        """
         return self.add_next_argument_to_url(reverse('cradmin-register-account-begin'))
 
     def get_login_url(self):
+        """
+        Get the URL to used to login if not already authenticated.
+
+        Should have some way of returning the user to this view after
+        login is complete.
+
+        Defaults to the ``cradmin-authenticate-login`` view in ``django_cradmin.apps.cradmin_authenticate``.
+        """
         return self.add_next_argument_to_url(reverse('cradmin-authenticate-login'))
 
     def get_login_as_different_user_url(self):
+        """
+        Get the URL to used to login as a different user.
+
+        Should have some way of returning the user to this view after
+        login is complete.
+
+        Defaults to the ``cradmin-authenticate-logout`` view in ``django_cradmin.apps.cradmin_authenticate``
+        with the next-argument set to the ``cradmin-authenticate-login`` view in the same app, with the next
+        argument of the ``cradmin-authenticate-login`` view set to the current url.
+        """
         return self.add_next_argument_to_url(
             url=reverse('cradmin-authenticate-logout'),
             next=self.get_login_url())
@@ -73,8 +126,12 @@ class AbstractAcceptInviteView(TemplateView):
         return context
 
     def post(self, *args, **kwargs):
+        """
+        If the user is authenticated, we return :meth:`~.AbstractAcceptInviteView.invite_accepted`.
+        If the user is not authenticated, we raise :exc:`django.core.exceptions.PermissionDenied`.
+        """
         if self.request.user.is_authenticated():
-            return self.invite_accepted(self.token)
+            return self.invite_accepted(self.generictoken)
         else:
             raise PermissionDenied()
 

@@ -129,22 +129,6 @@ The InviteUrl class
     :members:
 
 
-*********
-Configure
-*********
-
-Required settings:
-    DJANGO_CRADMIN_SITENAME
-        The name of the site.
-        You **must set this setting** unless you override the email subject
-        and message templates as explained in :ref:`invite_emailtemplates`.
-
-
-Optional settings:
-    DJANGO_CRADMIN_INVITE_FROM_EMAIL
-        Defaults to the ``DEFAULT_FROM_EMAIL`` setting.
-
-
 
 .. _invite_emailtemplates:
 
@@ -179,19 +163,38 @@ All of the email templates get the following context variables:
 UI message templates and how to override them
 *********************************************
 
-.. todo:: TODO: Update this!
+.. currentmodule:: django_cradmin.apps.cradmin_invite.baseviews.accept
 
-You do not have to override the entire templates to adjust
-the text in the UI. We provide the following templates for
-you to override:
+You do not have to override the entire template to adjust
+the text in the :class:`~.AbstractAcceptInviteView` UI.
+We provide the following class variables for you to override:
 
-cradmin_invite/messages/success.django.html
-    The success message added to ``django.contrib.messages.success``
-    when the account is successfully activated. The activated
-    user is available as the ``user`` template context variable.
+- :obj:`~.AbstractAcceptInviteView.title_template`
+- :obj:`~.AbstractAcceptInviteView.description_template`
+- :obj:`~.AbstractAcceptInviteView.token_error_template_name`
 
-cradmin_invite/messages/activation-link-invalid.django.html
-    The message shown in the UI when the activation link is invalid.
 
-cradmin_invite/messages/activation-link-expired.django.html
-    The message shown in the UI when the activation link is expired.
+
+**********************************
+The AbstractAcceptInviteView class
+**********************************
+
+.. autoclass:: django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView
+    :members:
+
+
+********
+Settings
+********
+
+Required settings:
+    DJANGO_CRADMIN_SITENAME
+        The name of the site.
+        You **must set this setting** unless you override the email subject
+        and message templates as explained in :ref:`invite_emailtemplates`.
+
+
+Optional settings:
+    DJANGO_CRADMIN_INVITE_FROM_EMAIL
+        Defaults to the ``DEFAULT_FROM_EMAIL`` setting.
+
