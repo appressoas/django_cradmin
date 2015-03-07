@@ -44,6 +44,7 @@ class FormViewMixin(object):
                             css_class='cradmin-globalfields')
                     ]
 
+
         A slightly more complex example::
 
             from crispy_forms import layout
@@ -61,6 +62,7 @@ class FormViewMixin(object):
                     ]
 
         """
+        raise NotImplementedError()
 
     def get_hidden_fields(self):
         """
@@ -189,5 +191,36 @@ class FormViewMixin(object):
 
 class FormView(FormViewMixin, DjangoFormView):
     """
-    Form view with the :class:`.FormViewMixin`.
+    A :class:`django.views.generic.edit.FormView` with :class:`.FormViewMixin`.
+
+    Examples:
+
+        Minimalistic example::
+
+            from django import forms
+            from django.http import HttpResponseRedirect
+            from django_cradmin.crispylayouts import PrimarySubmit
+
+            class MyForm(forms.Form):
+                first_name = forms.CharField(max_length=50)
+                last_name = forms.CharField(max_length=50)
+
+            class MyFormView(FormView):
+                template_name = 'myapp/myview.django.html'
+                form_class = MyForm
+
+                def get_field_layout(self):
+                    return [
+                        'first_name',
+                        'last_name',
+                    ]
+
+                def get_buttons(self):
+                    return [
+                        PrimarySubmit('save', _('Save')),
+                    ]
+
+                def form_valid(self, form):
+                    # ... do something with the form ...
+                    return HttpResponseRedirect('/some/view')
     """
