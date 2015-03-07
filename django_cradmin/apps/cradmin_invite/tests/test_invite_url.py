@@ -14,7 +14,7 @@ class InviteUrlMock(InviteUrl):
 
 
 class InviteUrlWithStaticTokenMock(InviteUrlMock):
-    def generate_token(self):
+    def generate_generictoken(self):
         testtoken = mock.MagicMock()
         testtoken.token = 'test-token'
         return testtoken
@@ -25,7 +25,7 @@ class InviteUrlWithTokenIteratorMock(InviteUrlMock):
         self.tokens = iter(['token1', 'token2', 'token3'])
         super(InviteUrlWithTokenIteratorMock, self).__init__(*args, **kwargs)
 
-    def _generate_token(self):
+    def _generate_generictoken(self):
         testtoken = mock.MagicMock()
         testtoken.token = self.tokens.next()
         return testtoken
@@ -35,8 +35,8 @@ class TestSendActivationEmail(TestCase):
     def setUp(self):
         self.testuser = create_user('testuser', email='testuser@example.com')
 
-    def test_generate_token(self):
-        token = InviteUrlMock(request=mock.MagicMock(), metadata={'test': 10}, private=True).generate_token()
+    def test_generate_generictoken(self):
+        token = InviteUrlMock(request=mock.MagicMock(), metadata={'test': 10}, private=True).generate_generictoken()
         self.assertEquals(token.get_metadata(), {'test': 10})
 
     def test_send_email(self):

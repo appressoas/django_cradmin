@@ -144,12 +144,13 @@ class AbstractCreateAccountForm(forms.ModelForm):
 
         Should not save the user, only set it as inactive.
 
-        Example::
+        Example:
+            Basic example that works with the default django user model::
 
-            class MyCreateAccountForm(AbstractCreateAccountForm):
-                ...
-                def deactivate_user(self, user):
-                    user.is_active = False
+                class MyCreateAccountForm(AbstractCreateAccountForm):
+                    ...
+                    def deactivate_user(self, user):
+                        user.is_active = False
         """
         raise NotImplementedError()
 
