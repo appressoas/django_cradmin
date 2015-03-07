@@ -4,8 +4,8 @@ from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
 
 from .models import Site
-from .views import dashboard
-from .views import pages
+from .crapps import dashboard
+from .crapps import pages
 
 
 class Menu(crmenu.Menu):

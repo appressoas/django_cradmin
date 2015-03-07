@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from django_cradmin import crinstance, crmenu
-from .views import overview
-from .views import edit_user
+from .crapps import overview
+from .crapps import edit_user
 
 
 class Menu(crmenu.Menu):
