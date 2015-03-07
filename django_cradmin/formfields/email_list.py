@@ -9,8 +9,15 @@ class EmailListField(forms.Field):
     default_error_messages = {
         'invalid': _('Type email-addresses separated by newlines, whitespace or comma.')
     }
+    default_help_text = _('Type email-addresses separated by newlines, whitespace or comma.')
+    widget = forms.Textarea
     stringsplit_regex = re.compile(r'(?:\s*,\s*)|\s+')
     email_validator = EmailValidator()
+
+    def __init__(self, *args, **kwargs):
+        if 'help_text' not in kwargs:
+            kwargs['help_text'] = self.default_help_text
+        super(EmailListField, self).__init__(*args, **kwargs)
 
     def string_to_list(self, value):
         return self.stringsplit_regex.split(value)
