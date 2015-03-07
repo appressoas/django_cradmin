@@ -4,7 +4,7 @@ from django_cradmin import crapp
 
 
 class DashboardView(TemplateView):
-    template_name = 'webdemo/frontpage.django.html'
+    template_name = 'webdemo/dashboard.django.html'
 
 
 class App(crapp.App):
