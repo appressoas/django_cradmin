@@ -10,6 +10,7 @@ def docs():
     """
     local('sphinx-build -b html . _build')
 
+
 @task
 def clean():
     """
