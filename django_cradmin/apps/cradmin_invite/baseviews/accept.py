@@ -24,14 +24,10 @@ class AbstractAcceptInviteView(TemplateView):
 
     template_name = 'cradmin_invite/accept/accept.django.html'
 
-    #: The template used to render the description of the invite.
-    #: The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
+    #: Default value for :meth:`~.AbstractAcceptInviteView.get_description_template_name`.
     description_template_name = 'cradmin_invite/accept/description.django.html'
 
-    #: The template used to render the view when the given token does not
-    #: validate. If you just want to change the error messages, you can extend
-    #: the ``cradmin_invite/accept/token_error.django.html`` template and override
-    #: the ``invalid_token_message`` and ``expired_token_message`` blocks.
+    #: Default value for :meth:`~.AbstractAcceptInviteView.get_token_error_template_name`.
     token_error_template_name = 'cradmin_invite/accept/token_error.django.html'
 
     def get_pagetitle(self):
@@ -66,17 +62,21 @@ class AbstractAcceptInviteView(TemplateView):
 
     def get_description_template_name(self):
         """
-        The method used to get :obj:`.description_template_name`. If
-        you need to dynamically determine the template, you can
-        override this instead of the class variable.
+        The template used to render the description of the invite.
+        The template context is the one returned by :meth:`~AbstractAcceptInviteView.get_context_data`.
+
+        Defaults to :obj:`.description_template_name`.
         """
         return self.description_template_name
 
     def get_token_error_template_name(self):
         """
-        The method used to get :obj:`.token_error_template_name`. If
-        you need to dynamically determine the template, you can
-        override this instead of the class variable.
+        The template used to render the view when the given token does not
+        validate. If you just want to change the error messages, you can extend
+        the ``cradmin_invite/accept/token_error.django.html`` template and override
+        the ``invalid_token_message`` and ``expired_token_message`` blocks.
+
+        Defaults to :obj:`.token_error_template_name`.
         """
         return self.token_error_template_name
 

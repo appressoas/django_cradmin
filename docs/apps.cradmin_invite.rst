@@ -86,7 +86,7 @@ Create a subclass of :class:`django_cradmin.apps.cradmin_invite.baseviews.Abstra
     from myapp.models import Site
 
     class AcceptSiteAdminInviteView(AbstractAcceptInviteView):
-        description_template = 'myapp/invite_description.django.html'
+        description_template_name = 'myapp/invite_description.django.html'
 
         def get_appname(self):
             return 'myapp'
@@ -159,34 +159,52 @@ All of the email templates get the following context variables:
 - ``activate_url``: The URL that users should click to activate their account.
 
 
-*********************************************
-UI message templates and how to override them
-*********************************************
+*******************************************
+UI messages/labels and how to override them
+*******************************************
 
 .. currentmodule:: django_cradmin.apps.cradmin_invite.baseviews.accept
 
 You do not have to override the entire template to adjust
 the text in the :class:`~.AbstractAcceptInviteView` UI.
-We provide the following class variables for you to override:
+We provide the following class methods for you to override:
 
-- :obj:`~.AbstractAcceptInviteView.title_template`
-- :obj:`~.AbstractAcceptInviteView.description_template`
-- :obj:`~.AbstractAcceptInviteView.token_error_template_name`
+.. autosummary::
+
+    ~django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView.get_pagetitle
+    ~django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView.get_description_template_name
+    ~django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView.get_accept_as_button_label
+    ~django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView.get_register_account_button_label
+    ~django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView.get_login_as_different_user_button_label
+    ~django_cradmin.apps.cradmin_invite.baseviews.accept.AbstractAcceptInviteView.get_login_button_label
 
 
-*********************************************
-UI message templates and how to override them
-*********************************************
+************************
+The token error template
+************************
+When the token fails to validate because it has expired or because
+the user does not copy the entire URL into their browser, we
+respond with :meth:`~.AbstractAcceptInviteView.token_error_response`.
+You normally do not want to override this method, but instead
+override :obj:`~.AbstractAcceptInviteView.token_error_template_name`
+or :meth:`~.AbstractAcceptInviteView.get_token_error_template_name`.
 
-.. currentmodule:: django_cradmin.apps.cradmin_invite.baseviews.accept
+Instead of creating a completely custom template, you can extend
+``cradmin_invite/accept/token_error.django.html`` and just
+override the ``invalid_token_message`` and ``expired_token_message`` blocks:
 
-You do not have to override the entire template to adjust
-the text in the :class:`~.AbstractAcceptInviteView` UI.
-We provide the following class variables for you to override:
+.. sourcecode:: django
 
-- :obj:`~.AbstractAcceptInviteView.title_template`
-- :obj:`~.AbstractAcceptInviteView.description_template`
-- :obj:`~.AbstractAcceptInviteView.token_error_template_name`
+    {% extend "cradmin_invite/accept/token_error.django.html" %}
+    {% load i18n %}
+
+    {% block invalid_token_message %}
+        {% trans "Invalid invite URL. Are you sure you copied the entire URL from the email?" %}
+    {% endblock invalid_token_message %}
+
+    {% block expired_token_message %}
+        {% trans "This invite link has expired." %}
+    {% endblock expired_token_message %}
 
 
 **********************************
