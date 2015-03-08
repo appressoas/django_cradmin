@@ -98,6 +98,26 @@ class GenericTokenWithMetadataQuerySet(QuerySet):
             models.Q(expiration_datetime=None) |
             models.Q(expiration_datetime__gte=_get_current_datetime()))
 
+    def filter_by_content_object(self, content_object):
+        """
+        Filter by :obj:`.GenericTokenWithMetadata.content_object`.
+
+        Examples:
+            Lets say the content_object is a User object, you
+            can find all tokens for that user in the
+            ``page_admin_invites`` app like this::
+
+                from django.contrib.auth import get_user_model
+                user = get_user_model()
+                GenericTokenWithMetadata.objects\
+                    .filter(app='page_admin_invites')\
+                    .filter_by_content_object(user)
+        """
+        content_type = ContentType.objects.get_for_model(content_object)
+        return self.filter(
+            object_id=content_object.pk,
+            content_type=content_type)
+
 
 class GenericTokenWithMetadataBaseManager(models.Manager):
     """
@@ -135,7 +155,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
             generic_token_with_metadata.save()
         except IntegrityError:
             return self.generate(
-                app=app, user=user,
+                app=app, content_object=content_object,
                 expiration_datetime=expiration_datetime, metadata=metadata)
         else:
             return generic_token_with_metadata

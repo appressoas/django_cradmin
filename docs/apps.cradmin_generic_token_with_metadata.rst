@@ -17,7 +17,7 @@ Very useful for single-use URLs like password reset, account activation, etc.
 ************
 How it works
 ************
-Lets say you have an object and want to generate a unique token for that object.
+Lets say you have an object and want to generate a unique token for that object::
 
     from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
     from django.contrib.auth import get_user_model

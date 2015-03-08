@@ -39,6 +39,17 @@ class TestGenericTokenWithMetadata(TestCase):
                 expiration_datetime=get_expiration_datetime_for_app('testapp'))
         self.assertEqual(unique_user_token.token, 'free')
 
+    def test_filter_by_content_object(self):
+        testobject1 = create_user('testobject1')
+        testobject2 = create_user('testobject2')
+        generictoken = GenericTokenWithMetadata.objects.generate(
+            content_object=testobject1, app='testapp',
+            expiration_datetime=get_expiration_datetime_for_app('testapp'))
+        self.assertEquals(
+            GenericTokenWithMetadata.objects.filter_by_content_object(testobject1).get(),
+            generictoken)
+        self.assertEquals(GenericTokenWithMetadata.objects.filter_by_content_object(testobject2).count(), 0)
+
     def test_unsafe_pop(self):
         testuser = create_user('testuser')
         self._create_generic_token_with_metadata(user=testuser, app='testapp1', token='test-token1')
@@ -98,7 +109,7 @@ class TestGenericTokenWithMetadata(TestCase):
             self.assertEquals(GenericTokenWithMetadata.objects.filter_has_expired().first(),
                               expired_generic_token_with_metadata)
 
-    def test_filter_pop_not_expired(self):
+    def test_pop_not_expired(self):
         testuser = create_user('testuser')
         self._create_generic_token_with_metadata(
             user=testuser, token='test-token',
@@ -109,7 +120,7 @@ class TestGenericTokenWithMetadata(TestCase):
             self.assertEquals(GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token').content_object,
                               testuser)
 
-    def test_filter_pop_expired(self):
+    def test_pop_expired(self):
         self._create_generic_token_with_metadata(
             user=create_user('testuser'),
             app='testapp', token='test-token',
