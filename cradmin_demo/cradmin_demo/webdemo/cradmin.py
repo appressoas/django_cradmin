@@ -7,7 +7,7 @@ from .models import Site
 from .crapps import dashboard
 from .crapps import pages
 from .crapps import inviteadmins_private
-from .crapps import inviteadmins_public
+from .crapps import sharable_link
 
 
 class Menu(crmenu.Menu):
@@ -32,8 +32,8 @@ class Menu(crmenu.Menu):
             label=_('Invite admins'), url=self.appindex_url('inviteadmins_private'), icon="users",
             active=self.request.cradmin_app.appname == 'inviteadmins_private')
         self.add_footeritem(
-            label=_('Share'), url=self.appindex_url('inviteadmins_public'), icon="users",
-            active=self.request.cradmin_app.appname == 'inviteadmins_public')
+            label=_('Share'), url=self.appindex_url('sharable_link'), icon="link",
+            active=self.request.cradmin_app.appname == 'sharable_link')
 
 
 class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
@@ -47,7 +47,7 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         ('pages', pages.App),
         ('imagearchive', imagearchive.App),
         ('inviteadmins_private', inviteadmins_private.App),
-        ('inviteadmins_public', inviteadmins_public.App),
+        ('sharable_link', sharable_link.App),
     ]
 
     def get_rolequeryset(self):

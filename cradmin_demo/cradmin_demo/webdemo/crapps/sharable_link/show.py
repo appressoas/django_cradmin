@@ -1,10 +1,10 @@
 from django.core.urlresolvers import reverse
-from cradmin_demo.webdemo.crapps.inviteadmins_public.mixins import QuerysetForRoleMixin
+from cradmin_demo.webdemo.crapps.sharable_link.mixins import QuerysetForRoleMixin
 from django_cradmin.viewhelpers.detail import DetailView
 
 
 class ShowView(QuerysetForRoleMixin, DetailView):
-    template_name = 'webdemo/inviteadmins_public/show.django.html'
+    template_name = 'webdemo/sharable_link/show.django.html'
     context_object_name = 'generictoken'
 
     def get_object(self, queryset=None):

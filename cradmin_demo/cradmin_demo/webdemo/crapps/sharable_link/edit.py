@@ -3,7 +3,7 @@ from crispy_forms import layout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-from cradmin_demo.webdemo.crapps.inviteadmins_public.mixins import QuerysetForRoleMixin
+from cradmin_demo.webdemo.crapps.sharable_link.mixins import QuerysetForRoleMixin
 
 from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 from django_cradmin.crispylayouts import PrimarySubmit
@@ -36,7 +36,7 @@ class SiteAdminInviteUrl(InviteUrl):
 
 class CreateOrEditSharableLinkView(FormView, QuerysetForRoleMixin):
     form_class = SharableLinkForm
-    template_name = 'webdemo/inviteadmins_public/create_public_invite.django.html'
+    template_name = 'webdemo/sharable_link/edit.django.html'
 
     def dispatch(self, request, *args, **kwargs):
         self.generictoken = self.get_queryset_for_role(self.request.cradmin_role).first()
