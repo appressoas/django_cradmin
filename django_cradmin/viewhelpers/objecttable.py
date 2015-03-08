@@ -671,7 +671,7 @@ class ObjectTableView(ListView):
 
     #: The model class to list objects for. You do not have to specify
     #: this, but if you do not specify this, you have to override
-    #: :meth:`.get_pagetitle`.
+    #: :meth:`~.ObjectTableView.get_pagetitle` and :meth:`~.ObjectTableView.get_no_items_message`.
     model = None
 
     #: Defines the columns in the table. See :meth:`.get_columns`.
@@ -693,6 +693,14 @@ class ObjectTableView(ListView):
 
     #: Enable previews? See :meth:`.get_enable_previews`. Defaults to ``False``.
     enable_previews = False
+
+    def get_no_items_message(self):
+        """
+        Get the message to show when there are no items.
+        """
+        return _('No %(modelname_plural)s') % {
+            'modelname_plural': self.model._meta.verbose_name_plural
+        }
 
     def get_search_placeholder_text(self):
         """
@@ -860,6 +868,8 @@ class ObjectTableView(ListView):
             context['search_hidden_fields'] = self._get_search_hidden_fields()
         context['pager_extra_querystring'] = self._get_pager_extra_querystring()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
+        context['has_items'] = self.get_queryset().exists()
+        context['no_items_message'] = self.get_no_items_message()
 
         # Handle foreignkey selection
         if 'foreignkey_selected_value' in self.request.GET:
