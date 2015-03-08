@@ -48,14 +48,14 @@ Create a subclass of :class:`django_cradmin.apps.cradmin_invite.invite_url.Invit
 
     from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 
-    class MyInviteUrl(InviteUrl):
+    class SiteAdminInviteUrl(InviteUrl):
         def get_appname(self):
             return 'myapp'
 
-        def get_confirm_invite_url(self, token):
+        def get_confirm_invite_url(self, generictoken):
             # URL of the AcceptSiteAdminInviteView shown below
-            return reverse('siteadmin-invite-accept', {
-                'token': token.token
+            return reverse('siteadmin-invite-accept', kwargs={
+                'token': generictoken.token
             })
 
 
@@ -69,7 +69,7 @@ And use it to send the invite email to ``test@example.com``::
             # NOTE: You will most likely want to put this code in a post() method
             #       and use a form as input.
             site = Site.objects.first()  # Code to get at Site object
-            invite = InviteUrl(request=request, private=True, metadata={
+            invite = SiteAdminInviteUrl(request=request, private=True, metadata={
                 'site_id': site.id
             })
             invite.send_email('test@example.com')
@@ -82,6 +82,10 @@ Create the view responsible for adding the user as admin
 ========================================================
 Create a subclass of :class:`django_cradmin.apps.cradmin_invite.baseviews.AbstractAcceptInviteView`::
 
+    from django.http import HttpResponseRedirect
+    from django.shortcuts import get_object_or_404
+    from django.conf import settings
+
     from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
     from myapp.models import Site
 
@@ -92,9 +96,10 @@ Create a subclass of :class:`django_cradmin.apps.cradmin_invite.baseviews.Abstra
             return 'myapp'
 
         def invite_accepted(self, token):
-            site = Site.objects.get(id=token.metadata['site_id'])
+            site = get_object_or_404(Site, id=token.metadata['site_id'])
             site.admins.add(self.request.user)
             messages.success(self.request, 'You are now admin on %(site)s' % {'site': site})
+            return HttpResponseRedirect(settings.LOGIN_URL)
 
 
 Add to urls
@@ -103,10 +108,10 @@ Add the views to your url patterns::
 
     urlpatterns = patterns(
         # ...
-        url(r'^siteadmin/invite/create',
+        url(r'^siteadmin/invite/create$',
             CreateInviteView.as_view(),
             name="siteadmin-invite-accept"),
-        url(r'^siteadmin/invite/accept/(?P<token>.+)',
+        url(r'^siteadmin/invite/accept/(?P<token>.+)$',
             AcceptSiteAdminInviteView.as_view(),
             name="siteadmin-invite-accept"),
         # ...

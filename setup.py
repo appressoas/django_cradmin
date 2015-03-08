@@ -6,6 +6,7 @@ setup(
     version='1.0.0-beta.018',
     url='https://github.com/appressoas/django_cradmin',
     author='Espen Angell Kristiansen, Tor Johansen, Vegard Angell, Magne Westlie',
+    author_email='post@appresso.no',
     license='BSD',
     packages=find_packages(
         exclude=[

@@ -16,10 +16,11 @@ urlpatterns = patterns(
     url(r'^register/', include('django_cradmin.apps.cradmin_register_account.urls')),
 
     url(r'^djangoadmin/', include(admin.site.urls)),
-    url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
+    url(r'^webdemoadmin/', include(WebdemoCrAdminInstance.urls())),
+    url(r'^webdemo/', include('cradmin_demo.webdemo.urls')),
     url(r'^usermanagerdemo/', include(UsermanagerCrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
-    url(r'^$', RedirectView.as_view(url='/webdemo/', permanent=False)),
+    url(r'^$', RedirectView.as_view(url='/webdemoadmin/', permanent=False)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT})
 )

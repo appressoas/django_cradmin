@@ -46,7 +46,7 @@ class InviteUrl(object):
         Parameters:
             request: A Django HttpRequest object.
             private: If this is ``True`` we send unique single-use invite URLs.
-            next_url: An optional URL to redirect to after the user has activated their account.
+            metadata: Metadata to accociate with the invite.
 
         """
         self.request = request
