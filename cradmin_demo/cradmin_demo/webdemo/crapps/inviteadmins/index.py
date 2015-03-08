@@ -2,6 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.viewhelpers import objecttable
+from .mixins import QuerysetForRoleMixin
 
 
 class EmailColumn(objecttable.MultiActionColumn):
@@ -36,7 +37,7 @@ class ExpirationDatetimeColumn(objecttable.DatetimeColumn):
     modelfield = 'expiration_datetime'
 
 
-class Overview(objecttable.ObjectTableView):
+class Overview(QuerysetForRoleMixin, objecttable.ObjectTableView):
     model = GenericTokenWithMetadata
     columns = [
         EmailColumn,
@@ -50,10 +51,6 @@ class Overview(objecttable.ObjectTableView):
 
     def get_pagetitle(self):
         return _('Invite admins')
-
-    def get_queryset_for_role(self, site):
-        return GenericTokenWithMetadata.objects.filter_usable_by_content_object_in_app(
-            content_object=site, app='webdemo_inviteadmins_private')
 
     def get_buttons(self):
         app = self.request.cradmin_app

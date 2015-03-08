@@ -9,7 +9,7 @@ class AcceptPrivateSiteAdminInviteView(AbstractAcceptInviteView):
     description_template_name = 'myapp/invite_description.django.html'
 
     def get_appname(self):
-        return 'webdemo_inviteadmins_private'
+        return 'webdemo_inviteadmins'
 
     def invite_accepted(self, generictoken):
         site = generictoken.content_object
