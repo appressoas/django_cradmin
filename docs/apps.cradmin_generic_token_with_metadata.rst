@@ -34,6 +34,7 @@ contains a unique token. The app is provided for two reasons:
 - Makes it easier  to debug/browse the data model because you know what app
   generated the token.
 - Makes it possible to configure different time to live for each app.
+- Isolation. Each app has their own "namespace" of tokens.
 
 When you have a token, typically from part of an URL, and want to get the
 user owning the token, use::
