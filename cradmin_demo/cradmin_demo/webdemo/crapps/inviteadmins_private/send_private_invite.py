@@ -29,7 +29,7 @@ class SiteAdminInviteUrl(InviteUrl):
 
 class SendPrivateInvites(FormView):
     form_class = InviteEmailsForm
-    template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
+    template_name = 'webdemo/inviteadmins_private/send_private_invite.django.html'
 
     def get_field_layout(self):
         return [

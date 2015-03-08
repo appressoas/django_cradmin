@@ -1,8 +1,8 @@
-from cradmin_demo.webdemo.crapps.inviteadmins import delete_private_invite
 from django_cradmin import crapp
 
 from . import index
 from . import send_private_invite
+from . import delete_private_invite
 
 
 class App(crapp.App):

@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
-from cradmin_demo.webdemo.crapps.inviteadmins.accept_private_invite import AcceptSiteAdminInviteView
+from cradmin_demo.webdemo.crapps.inviteadmins_private.accept_private_invite import AcceptSiteAdminInviteView
 
 
 urlpatterns = patterns(
