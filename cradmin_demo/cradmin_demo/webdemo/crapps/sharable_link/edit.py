@@ -26,7 +26,7 @@ class SharableLinkForm(forms.Form):
 
 class SiteAdminInviteUrl(InviteUrl):
     def get_appname(self):
-        return 'webdemo_inviteadmins_public'
+        return 'webdemo_sharable_link'
 
     def get_confirm_invite_url(self, generictoken):
         return reverse('webdemo-inviteadmins-public-accept', kwargs={
