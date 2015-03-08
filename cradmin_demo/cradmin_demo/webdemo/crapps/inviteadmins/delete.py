@@ -3,7 +3,7 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import Gener
 from django_cradmin.viewhelpers import delete
 
 
-class DeletePrivateInviteView(delete.DeleteView):
+class DeleteInvitesView(delete.DeleteView):
     """
     View used to delete existing invites.
     """

@@ -22,12 +22,12 @@ class SiteAdminInviteUrl(InviteUrl):
         return 'webdemo_inviteadmins_private'
 
     def get_confirm_invite_url(self, generictoken):
-        return reverse('webdemo-inviteadmins-private-accept', kwargs={
+        return reverse('webdemo-inviteadmins-accept', kwargs={
             'token': generictoken.token
         })
 
 
-class SendPrivateInvites(FormView):
+class SendInvitesView(FormView):
     form_class = InviteEmailsForm
     template_name = 'webdemo/inviteadmins_private/send_private_invite.django.html'
 
