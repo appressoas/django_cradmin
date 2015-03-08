@@ -9,6 +9,33 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
     #: The name of the template to use.
     template_name = 'django_cradmin/viewhelpers/delete.django.html'
 
+    def get_action_label(self):
+        """
+        The action we are performing.
+
+        Used as the prefix of the page title (see :meth:`.get_pagetitle`),
+        and as the default for :meth:`.get_delete_button_label`.
+        """
+        return _('Delete')
+
+    def get_delete_button_label(self):
+        """
+        The label of the delete button.
+
+        Defaults to :meth:`.get_action_label`.
+        """
+        return self.get_action_label()
+
+    def get_pagetitle(self):
+        """
+        Get the page title/heading.
+
+        Default to ``"<get_action_label().upper()> <get_object_preview()"``.
+        """
+        return u'{} {}'.format(
+            self.get_action_label().upper(),
+            self.get_object_preview())
+
     def get_object_preview(self):
         """
         The preview of the object. Used when asking the user if he/she wants to
@@ -16,6 +43,14 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
         """
         obj = self.get_object()
         return unicode(obj)
+
+    def get_confirm_message(self):
+        """
+        Get the confirm message shown in the focus area of the view.
+        """
+        return _('Are you sure you want to delete "%(object_preview)s"?') % {
+            'object_preview': self.get_object_preview()
+        }
 
     def get_success_url(self):
         """
@@ -31,6 +66,9 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
         context['model_verbose_name'] = obj._meta.verbose_name
         context['success_url'] = self.get_success_url()
         context['object_preview'] = self.get_object_preview()
+        context['pagetitle'] = self.get_pagetitle()
+        context['confirm_message'] = self.get_confirm_message()
+        context['delete_button_label'] = self.get_delete_button_label()
         return context
 
     def get_success_message(self, object_preview):
