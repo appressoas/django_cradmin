@@ -771,7 +771,7 @@ class ObjectTableView(ListView):
         The default implementation returns ``True`` if :obj:`.searchfields` is
         not empty.
         """
-        return len(self.searchfields) > 0
+        return len(self.searchfields) > 0 and self.queryset_contains_items()
 
     def get_queryset(self):
         """
@@ -813,6 +813,11 @@ class ObjectTableView(ListView):
     def __iter_table(self, object_list):
         for obj in object_list:
             yield self.__create_row(obj)
+
+    def queryset_contains_items(self):
+        if not hasattr(self, '_queryset_contains_items'):
+            self._queryset_contains_items = self.get_queryset_for_role(self.request.cradmin_role).exists()
+        return self._queryset_contains_items
 
     def get_pagetitle(self):
         """
@@ -868,7 +873,7 @@ class ObjectTableView(ListView):
             context['search_hidden_fields'] = self._get_search_hidden_fields()
         context['pager_extra_querystring'] = self._get_pager_extra_querystring()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
-        context['has_items'] = self.get_queryset().exists()
+        context['queryset_contains_items'] = self.queryset_contains_items()
         context['no_items_message'] = self.get_no_items_message()
 
         # Handle foreignkey selection

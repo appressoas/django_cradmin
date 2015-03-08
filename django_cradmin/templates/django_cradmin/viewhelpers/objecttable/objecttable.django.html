@@ -63,7 +63,7 @@
         <div django-cradmin-use-this-hidden={{ use_this_hidden_attribute|safe }}></div>
     {% endif %}
 
-    {% if has_items %}
+    {% if queryset_contains_items %}
         {% if enable_previews %}
             <div django-cradmin-page-preview-wrapper>
                 {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
