@@ -26,8 +26,8 @@ class AcceptSiteAdminInviteView(AbstractAcceptInviteView):
     def get_appname(self):
         return 'myapp'
 
-    def invite_accepted(self, token):
-        site = get_object_or_404(Site, id=token.metadata['site_id'])
+    def invite_accepted(self, generictoken):
+        site = generictoken.content_object
         site.admins.add(self.request.user)
         messages.success(self.request, 'You are now admin on %(site)s' % {'site': site})
         return HttpResponseRedirect(settings.LOGIN_URL)
@@ -63,9 +63,7 @@ class SendPrivateInvites(FormView):
     def form_valid(self, form):
         emails = form.cleaned_data['emails']
         site = self.request.cradmin_role
-        inviteurl = SiteAdminInviteUrl(request=self.request, private=True, metadata={
-            'site_id': site.id
-        })
+        inviteurl = SiteAdminInviteUrl(request=self.request, private=True, content_object=site)
         inviteurl.send_email(*emails)
         return HttpResponseRedirect(self.request.path)
 

@@ -93,8 +93,8 @@ Create a subclass of :class:`django_cradmin.apps.cradmin_invite.baseviews.Abstra
         def get_appname(self):
             return 'myapp'
 
-        def invite_accepted(self, token):
-            site = get_object_or_404(Site, id=token.metadata['site_id'])
+        def invite_accepted(self, generictoken):
+            site = generictoken.content_object
             site.admins.add(self.request.user)
             messages.success(self.request, 'You are now admin on %(site)s' % {'site': site})
             return HttpResponseRedirect(settings.LOGIN_URL)
