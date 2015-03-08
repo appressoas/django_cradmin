@@ -6,7 +6,7 @@ from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchiv
 from .models import Site
 from .crapps import dashboard
 from .crapps import pages
-from .crapps import inviteadmins_private
+from .crapps import inviteadmins
 from .crapps import sharable_link
 
 
@@ -29,8 +29,8 @@ class Menu(crmenu.Menu):
             active=self.request.cradmin_app.appname == 'imagearchive')
 
         self.add_footeritem(
-            label=_('Invite admins'), url=self.appindex_url('inviteadmins_private'), icon="users",
-            active=self.request.cradmin_app.appname == 'inviteadmins_private')
+            label=_('Invite admins'), url=self.appindex_url('inviteadmins'), icon="users",
+            active=self.request.cradmin_app.appname == 'inviteadmins')
         self.add_footeritem(
             label=_('Share'), url=self.appindex_url('sharable_link'), icon="link",
             active=self.request.cradmin_app.appname == 'sharable_link')
@@ -46,7 +46,7 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         ('dashboard', dashboard.App),
         ('pages', pages.App),
         ('imagearchive', imagearchive.App),
-        ('inviteadmins_private', inviteadmins_private.App),
+        ('inviteadmins', inviteadmins.App),
         ('sharable_link', sharable_link.App),
     ]
 
