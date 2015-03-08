@@ -14,7 +14,7 @@ class ShowView(QuerysetForRoleMixin, DetailView):
         context = super(ShowView, self).get_context_data(**kwargs)
         generictoken = context['object']
         if generictoken:
-            url = reverse('webdemo-inviteadmins-accept', kwargs={
+            url = reverse('webdemo-inviteadmins-public-accept', kwargs={
                 'token': generictoken.token
             })
             context['url'] = self.request.build_absolute_uri(url)

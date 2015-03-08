@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
 
 
-class AcceptSiteAdminInviteView(AbstractAcceptInviteView):
+class AcceptPrivateSiteAdminInviteView(AbstractAcceptInviteView):
     description_template_name = 'myapp/invite_description.django.html'
 
     def get_appname(self):

@@ -28,7 +28,7 @@ class SiteAdminInviteUrl(InviteUrl):
         return 'webdemo_inviteadmins_public'
 
     def get_confirm_invite_url(self, generictoken):
-        return reverse('webdemo-inviteadmins-accept', kwargs={
+        return reverse('webdemo-inviteadmins-public-accept', kwargs={
             'token': generictoken.token
         })
 
