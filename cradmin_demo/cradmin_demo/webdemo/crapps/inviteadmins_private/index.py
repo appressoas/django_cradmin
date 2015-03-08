@@ -45,6 +45,9 @@ class Overview(objecttable.ObjectTableView):
     ]
     searchfields = ['metadata_json']
 
+    def get_no_items_message(self):
+        return _('No pending invites. Click the button above to invite new administrators for the site.')
+
     def get_pagetitle(self):
         return _('Invite admins')
 
