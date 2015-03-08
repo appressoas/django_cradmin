@@ -20,7 +20,11 @@ class EmailListField(forms.Field):
         super(EmailListField, self).__init__(*args, **kwargs)
 
     def string_to_list(self, value):
-        return self.stringsplit_regex.split(value)
+        value = value.strip()
+        if value.strip():
+            return self.stringsplit_regex.split(value)
+        else:
+            return []
 
     def to_python_list(self, value):
         if value in validators.EMPTY_VALUES:
@@ -29,8 +33,10 @@ class EmailListField(forms.Field):
             return value
         elif isinstance(value, tuple):
             return list(value)
-        else:
+        elif isinstance(value, basestring):
             return self.string_to_list(value)
+        else:
+            raise TypeError('Invalid type for EmailListField: {}'.format(type(value)))
 
     def validate_list_of_emails(self, list_of_emails):
         for email in list_of_emails:
