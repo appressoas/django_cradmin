@@ -1,0 +1,26 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% block title %}
+    {% trans "Public share link" %}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>
+        {% trans "Public share link" %}
+    </h1>
+{% endblock pageheader-inner %}
+
+{% block content %}
+    <div class="container-fluid django-cradmin-container-fluid-focus">
+        <p>{% trans "Share the link below with anyone you want to make an administrator for this site." %}</p>
+        <input type="text" class="form-control" value="{{ url }}">
+
+        {% if generictoken.metadata.description %}
+            <h2>{% trans "Description" %}</h2>
+            <p>{{ generictoken.metadata.description }}</p>
+        {% endif %}
+    </div>
+{% endblock content %}

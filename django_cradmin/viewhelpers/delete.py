@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.views.generic import DeleteView as DjangoDeleteView
 from django.utils.translation import ugettext_lazy as _
+from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 
-class DeleteView(DjangoDeleteView):
+class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
 
     #: The name of the template to use.
     template_name = 'django_cradmin/viewhelpers/delete.django.html'
@@ -31,21 +32,6 @@ class DeleteView(DjangoDeleteView):
         context['success_url'] = self.get_success_url()
         context['object_preview'] = self.get_object_preview()
         return context
-
-    def get_queryset_for_role(self, role):
-        """
-        Get a queryset with all objects of :obj:`.model`  that
-        the current role can access.
-        """
-        raise NotImplementedError()
-
-    def get_queryset(self):
-        """
-        DO NOT override this. Override :meth:`.get_queryset_for_role`
-        instead.
-        """
-        queryset = self.get_queryset_for_role(self.request.cradmin_role)
-        return queryset
 
     def get_success_message(self, object_preview):
         """

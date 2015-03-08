@@ -40,7 +40,7 @@ class InviteUrl(object):
     #: The email message template.
     email_message_template = 'cradmin_invite/email/message.django.txt'
 
-    def __init__(self, request, private, content_object, metadata=None):
+    def __init__(self, request, private, content_object, metadata=None, expiration_datetime=None):
         """
 
         Parameters:
@@ -53,6 +53,7 @@ class InviteUrl(object):
         self.private = private
         self.content_object = content_object
         self.metadata = metadata
+        self.expiration_datetime = expiration_datetime
 
     def get_email_subject_template(self):
         return self.email_subject_template
@@ -119,8 +120,15 @@ class InviteUrl(object):
         """
         Get the value to use for the ``expiration_datetime`` attribute of
         :class:`~django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata`.
+
+        Defaults to the expiration_datetime provided via the constructor,
+        and falls back to getting the configured expiration datetime for
+        the app.
         """
-        return get_expiration_datetime_for_app(self.get_appname())
+        if self.expiration_datetime:
+            return self.expiration_datetime
+        else:
+            return get_expiration_datetime_for_app(self.get_appname())
 
     def _generate_generictoken(self, email=None):
         metadata = self.metadata

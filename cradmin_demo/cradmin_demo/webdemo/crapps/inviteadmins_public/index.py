@@ -4,14 +4,18 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import Gener
 from django_cradmin.viewhelpers import objecttable
 
 
-class EmailColumn(objecttable.MultiActionColumn):
-    modelfield = 'id'
+class TokenColumn(objecttable.MultiActionColumn):
+    modelfield = 'token'
 
     def get_header(self):
-        return _('Email')
+        return _('Url')
 
     def get_buttons(self, obj):
         return [
+            objecttable.Button(
+                label=_('Show'),
+                url=self.reverse_appurl('show', args=[obj.id]),
+                buttonclass="default"),
             objecttable.Button(
                 label=_('Delete'),
                 url=self.reverse_appurl('delete', args=[obj.id]),
@@ -19,7 +23,7 @@ class EmailColumn(objecttable.MultiActionColumn):
         ]
 
     def render_value(self, obj):
-        return obj.metadata['email']
+        return obj.token
 
     def is_sortable(self):
         return False
@@ -36,24 +40,38 @@ class ExpirationDatetimeColumn(objecttable.DatetimeColumn):
     modelfield = 'expiration_datetime'
 
 
+class DescriptionColumn(objecttable.PlainTextColumn):
+    modelfield = 'id'
+
+    def get_header(self):
+        return _('Description')
+
+    def is_sortable(self):
+        return False
+
+    def render_value(self, obj):
+        return obj.metadata['description']
+
+
 class Overview(objecttable.ObjectTableView):
     model = GenericTokenWithMetadata
     columns = [
-        EmailColumn,
+        TokenColumn,
         CreatedDatetimeColumn,
-        ExpirationDatetimeColumn
+        ExpirationDatetimeColumn,
+        DescriptionColumn,
     ]
-    searchfields = ['metadata_json']
+    searchfields = ['metadata_json', 'token']
 
     def get_pagetitle(self):
-        return _('Invite admins')
+        return _('Public share')
 
     def get_queryset_for_role(self, site):
         return GenericTokenWithMetadata.objects.filter_usable_by_content_object_in_app(
-            content_object=site, app='webdemo_inviteadmins_private')
+            content_object=site, app='webdemo_inviteadmins_public')
 
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Send private invite'), url=app.reverse_appurl('send')),
+            objecttable.Button(_('Create public share link'), url=app.reverse_appurl('create')),
         ]

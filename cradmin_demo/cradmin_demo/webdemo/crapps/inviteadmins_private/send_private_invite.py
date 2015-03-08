@@ -19,7 +19,7 @@ class InviteEmailsForm(forms.Form):
 
 class SiteAdminInviteUrl(InviteUrl):
     def get_appname(self):
-        return 'webdemo_invite_siteadmin'
+        return 'webdemo_inviteadmins_private'
 
     def get_confirm_invite_url(self, generictoken):
         return reverse('webdemo-inviteadmins-accept', kwargs={
