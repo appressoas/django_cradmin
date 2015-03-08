@@ -69,9 +69,7 @@ And use it to send the invite email to ``test@example.com``::
             # NOTE: You will most likely want to put this code in a post() method
             #       and use a form as input.
             site = Site.objects.first()  # Code to get at Site object
-            invite = SiteAdminInviteUrl(request=request, private=True, metadata={
-                'site_id': site.id
-            })
+            invite = SiteAdminInviteUrl(request=request, private=True, content_object=site)
             invite.send_email('test@example.com')
 
 Notice that we add the ID of the site as metadata. We need this to know which site

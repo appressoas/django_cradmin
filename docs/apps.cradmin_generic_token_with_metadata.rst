@@ -17,14 +17,14 @@ Very useful for single-use URLs like password reset, account activation, etc.
 ************
 How it works
 ************
-When you have a User and want to generate a unique token for that user, use::
+Lets say you have an object and want to generate a unique token for that object.
 
     from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
     from django.contrib.auth import get_user_model
 
-    myuser = get_user_model().get(...)
+    myuser = get_user_model().get(...)  # The user is the object the token is for.
     generictoken = GenericTokenWithMetadata.objects.generate(
-        app='myapp', user=myuser,
+        app='myapp', content_object=myuser,
         expiration_datetime=get_expiration_datetime_for_app('myapp'))
     # Use generictoken.token
 
@@ -56,7 +56,10 @@ Lets say you want to use GenericTokenWithMetadata to generate a password reset e
 First, we want to give the user an URL where they can go to reset the password::
 
     url = 'http://example.com/resetpassword/{}'.format(
-        GenericTokenWithMetadata.objects.generate(app='passwordreset', user=self.request.user)
+        GenericTokenWithMetadata.objects.generate(
+            app='passwordreset',
+            content_object=self.request.user,
+            expiration_datetime=get_expiration_datetime_for_app('passwordreset'))
 
 Since we are using Django, we will most likely want the url to be to a view,
 so this would most likely look more like this::
@@ -64,7 +67,7 @@ so this would most likely look more like this::
     def start_password_reset_view(request):
         url = request.build_absolute_uri(reverse('my-reset-password-accept-view', kwargs={
             'token': GenericTokenWithMetadata.objects.generate(
-                app='passwordreset', user=self.request.user,
+                app='passwordreset', content_object=self.request.user,
                 expiration_datetime=get_expiration_datetime_for_app('passwordreset'))
         }
         # ... send an email giving the receiver instructions to click the url
