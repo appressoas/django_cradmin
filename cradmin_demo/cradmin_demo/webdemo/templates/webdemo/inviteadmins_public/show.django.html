@@ -16,11 +16,13 @@
 {% block content %}
     <div class="container-fluid django-cradmin-container-fluid-focus">
         <p>{% trans "Share the link below with anyone you want to make an administrator for this site." %}</p>
-        <input type="text" class="form-control" value="{{ url }}">
+        <input type="text" class="form-control"
+               value="{{ url }}"
+               django-cradmin-select-text-for-copy-on-focus="{{ url }}">
 
-        {% if generictoken.metadata.description %}
-            <h2>{% trans "Description" %}</h2>
-            <p>{{ generictoken.metadata.description }}</p>
-        {% endif %}
+{#        {% if generictoken.metadata.description %}#}
+{#            <h2>{% trans "Description" %}</h2>#}
+{#            <p>{{ generictoken.metadata.description }}</p>#}
+{#        {% endif %}#}
     </div>
 {% endblock content %}
