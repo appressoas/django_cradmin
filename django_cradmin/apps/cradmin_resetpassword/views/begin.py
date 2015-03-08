@@ -73,7 +73,7 @@ class BeginPasswordResetView(FormView):
     def _generate_token(self, user):
         return GenericTokenWithMetadata.objects.generate(
             app='cradmin_resetpassword',
-            user=user,
+            content_object=user,
             expiration_datetime=get_expiration_datetime_for_app('cradmin_resetpassword')
         ).token
 

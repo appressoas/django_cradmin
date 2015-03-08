@@ -100,7 +100,7 @@ class ActivationEmail(object):
 
     def generate_token(self):
         return GenericTokenWithMetadata.objects.generate(
-            user=self.user,
+            content_object=self.user,
             app=self.appname,
             expiration_datetime=self.get_expiration_datetime(),
             metadata={

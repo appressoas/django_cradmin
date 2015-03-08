@@ -40,7 +40,7 @@ class InviteUrl(object):
     #: The email message template.
     email_message_template = 'cradmin_invite/email/message.django.txt'
 
-    def __init__(self, request, metadata, private):
+    def __init__(self, request, private, content_object, metadata=None):
         """
 
         Parameters:
@@ -50,8 +50,9 @@ class InviteUrl(object):
 
         """
         self.request = request
-        self.metadata = metadata
         self.private = private
+        self.content_object = content_object
+        self.metadata = metadata
 
     def get_email_subject_template(self):
         return self.email_subject_template
@@ -125,6 +126,7 @@ class InviteUrl(object):
         return GenericTokenWithMetadata.objects.generate(
             app=self.get_appname(),
             expiration_datetime=self.get_expiration_datetime(),
+            content_object=self.content_object,
             metadata=self.metadata
         )
 

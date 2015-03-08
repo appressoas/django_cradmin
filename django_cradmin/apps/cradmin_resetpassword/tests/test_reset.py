@@ -18,10 +18,11 @@ class TestResetPasswordView(TestCase):
     def __get_url(self, token):
         return reverse('cradmin-resetpassword-reset', kwargs={'token': token})
 
-    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None, **kwargs):
+    def _create_generic_token_with_metadata(self, user, created_datetime=None, expiration_datetime=None, **kwargs):
         generic_token_with_metadata = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
+            content_object=user,
             app='cradmin_resetpassword',
             **kwargs)
         return generic_token_with_metadata

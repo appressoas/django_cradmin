@@ -31,6 +31,7 @@ class TestAbstractAcceptInviteView(TestCase):
         generic_token_with_metadata = GenericTokenWithMetadata(
             created_datetime=timezone.now(),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
+            content_object=create_user('invitecontentobject'),
             app='testapp',
             **kwargs)
         generic_token_with_metadata.metadata = metadata or {}

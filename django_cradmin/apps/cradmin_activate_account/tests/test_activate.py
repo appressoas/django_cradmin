@@ -20,12 +20,13 @@ class TestActivateAccountView(TestCase):
     def __get_url(self, token):
         return reverse('cradmin-activate-account-activate', kwargs={'token': token})
 
-    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None,
+    def _create_generic_token_with_metadata(self, user, created_datetime=None, expiration_datetime=None,
                                             metadata=None, **kwargs):
         generic_token_with_metadata = GenericTokenWithMetadata(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
             app='cradmin_activate_account',
+            content_object=user,
             **kwargs)
         if metadata:
             generic_token_with_metadata.metadata = metadata

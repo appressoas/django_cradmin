@@ -2,6 +2,8 @@ import json
 import uuid
 from datetime import timedelta
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
 from django.db.models import QuerySet
@@ -103,7 +105,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
 
     Inherits all methods from :class:`.GenericTokenWithMetadataQuerySet`.
     """
-    def generate(self, app, expiration_datetime, metadata=None, user=None):
+    def generate(self, app, expiration_datetime, content_object, metadata=None):
         """
         Generate and save a token for the given user and app.
 
@@ -113,7 +115,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
         """
         token = generate_token()
         generic_token_with_metadata = GenericTokenWithMetadata(
-            user=user, app=app, token=token,
+            content_object=content_object, app=app, token=token,
             created_datetime=_get_current_datetime(),
             expiration_datetime=expiration_datetime)
         if metadata:
@@ -124,7 +126,7 @@ class GenericTokenWithMetadataBaseManager(models.Manager):
         except ValidationError as e:
             if 'token' in e.error_dict and e.error_dict['token'][0].code == 'unique':
                 return self.generate(
-                    app=app, user=user,
+                    app=app, content_object=content_object,
                     expiration_datetime=expiration_datetime, metadata=metadata)
             else:
                 raise
@@ -199,11 +201,33 @@ class GenericTokenWithMetadata(models.Model):
     #: times.
     single_use = models.BooleanField(default=True)
 
-    #: The user that the token is for.
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, default=None)
-
     #: JSON encoded metadata
     metadata_json = models.TextField(null=False, blank=True, default='')
+
+    #: The content-type of the :obj:`~.GenericTokenWithMetadata.content_object`.
+    #: Together with :obj:`~.GenericTokenWithMetadata.object_id` this creates a
+    #: generic foreign key to any Django model.
+    content_type = models.ForeignKey(ContentType)
+
+    #: The object ID of the :obj:`~.GenericTokenWithMetadata.content_object`.
+    #: Together with :obj:`~.GenericTokenWithMetadata.content_type` this creates a
+    #: generic foreign key to any Django model.
+    object_id = models.PositiveIntegerField()
+
+    #: A :class:`django.contrib.contenttypes.fields.GenericForeignKey` to
+    #: the object this token is for.
+    #:
+    #: This generic relationship is used to associate the token
+    #: with a specific object.
+    #:
+    #: Use cases:
+    #:
+    #: - Password reset: Use the content_object to link to a User object when you
+    #:   create password reset tokens.
+    #: - Invites: Use the content_object to link to the object that you
+    #:   are inviting users to. This enables you to filter on the
+    #:   content object to show pending shares.
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def is_expired(self):
         """

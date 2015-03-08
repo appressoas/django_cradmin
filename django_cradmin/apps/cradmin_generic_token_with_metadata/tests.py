@@ -9,13 +9,12 @@ from django_cradmin.tests.helpers import create_user
 
 
 class TestGenericTokenWithMetadata(TestCase):
-    def _create_generic_token_with_metadata(self, created_datetime=None, expiration_datetime=None,
+    def _create_generic_token_with_metadata(self, user, created_datetime=None, expiration_datetime=None,
                                             app='testapp', **kwargs):
         generic_token_with_metadata = GenericTokenWithMetadata.objects.create(
             created_datetime=(created_datetime or timezone.now()),
             expiration_datetime=(expiration_datetime or (timezone.now() + timedelta(days=2))),
-            app=app,
-            **kwargs)
+            app=app, content_object=user, **kwargs)
         return generic_token_with_metadata
 
     def test_generate_token(self):
@@ -25,9 +24,9 @@ class TestGenericTokenWithMetadata(TestCase):
     def test_generate(self):
         testuser = create_user('testuser')
         unique_user_token = GenericTokenWithMetadata.objects.generate(
-            user=testuser, app='testapp',
+            content_object=testuser, app='testapp',
             expiration_datetime=get_expiration_datetime_for_app('testapp'))
-        self.assertEqual(unique_user_token.user, testuser)
+        self.assertEqual(unique_user_token.content_object, testuser)
         self.assertEqual(unique_user_token.app, 'testapp')
         self.assertEqual(len(unique_user_token.token), 73)
 
@@ -36,7 +35,7 @@ class TestGenericTokenWithMetadata(TestCase):
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models.generate_token',
                         iter(['taken', 'free']).next):
             unique_user_token = GenericTokenWithMetadata.objects.generate(
-                user=create_user('testuser2'), app='testapp2',
+                content_object=create_user('testuser2'), app='testapp2',
                 expiration_datetime=get_expiration_datetime_for_app('testapp'))
         self.assertEqual(unique_user_token.token, 'free')
 
@@ -45,10 +44,10 @@ class TestGenericTokenWithMetadata(TestCase):
         self._create_generic_token_with_metadata(user=testuser, app='testapp1', token='test-token1')
         self._create_generic_token_with_metadata(user=testuser, app='testapp2', token='test-token2')
         self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(
-            token='test-token1', app='testapp1').user, testuser)
+            token='test-token1', app='testapp1').content_object, testuser)
         self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
         self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(
-            token='test-token2', app='testapp2').user, testuser)
+            token='test-token2', app='testapp2').content_object, testuser)
         self.assertEquals(GenericTokenWithMetadata.objects.count(), 0)
 
     def test_filter_not_expired(self):
@@ -107,7 +106,8 @@ class TestGenericTokenWithMetadata(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token').user, testuser)
+            self.assertEquals(GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token').content_object,
+                              testuser)
 
     def test_filter_pop_expired(self):
         self._create_generic_token_with_metadata(

@@ -35,16 +35,24 @@ class TestSendActivationEmail(TestCase):
     def setUp(self):
         self.testuser = create_user('testuser', email='testuser@example.com')
 
+        # Any object will work as the target of invites.
+        # We use a user object since we have that easily available
+        self.invite_target = create_user('invitetarget')
+
     def test_generate_generictoken(self):
-        token = InviteUrlMock(request=mock.MagicMock(), metadata={'test': 10}, private=True).generate_generictoken()
-        self.assertEquals(token.metadata, {'test': 10})
+        token = InviteUrlMock(
+            request=mock.MagicMock(),
+            private=True,
+            content_object=self.invite_target,
+        ).generate_generictoken()
+        self.assertEquals(token.content_object, self.invite_target)
 
     def test_send_email(self):
         testrequest = mock.MagicMock()
         testrequest.build_absolute_uri = lambda path: 'http://testserver{}'.format(path)
 
         with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
-            InviteUrlWithStaticTokenMock(request=testrequest, metadata={'test', 10}, private=True)\
+            InviteUrlWithStaticTokenMock(request=testrequest, content_object=self.invite_target, private=True)\
                 .send_email('test@example.com')
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Invitation to Testsite')
@@ -59,7 +67,8 @@ http://testserver/invite/accept/test-token""".strip()
         testrequest.build_absolute_uri = lambda path: 'http://testserver{}'.format(path)
 
         with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
-            inviteurl = InviteUrlWithTokenIteratorMock(request=testrequest, metadata={'test', 10}, private=True)
+            inviteurl = InviteUrlWithTokenIteratorMock(
+                request=testrequest, content_object=self.invite_target, private=True)
             inviteurl.send_email('test1@example.com', 'test2@example.com', 'test3@example.com')
         self.assertIn('token1', mail.outbox[0].body)
         self.assertIn('token2', mail.outbox[1].body)
@@ -70,7 +79,8 @@ http://testserver/invite/accept/test-token""".strip()
         testrequest.build_absolute_uri = lambda path: 'http://testserver{}'.format(path)
 
         with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
-            inviteurl = InviteUrlWithTokenIteratorMock(request=testrequest, metadata={'test', 10}, private=False)
+            inviteurl = InviteUrlWithTokenIteratorMock(
+                request=testrequest, content_object=self.invite_target, private=False)
             inviteurl.send_email('test1@example.com', 'test2@example.com', 'test3@example.com')
         self.assertIn('token1', mail.outbox[0].body)
         self.assertIn('token1', mail.outbox[1].body)
@@ -80,13 +90,15 @@ http://testserver/invite/accept/test-token""".strip()
         testrequest = mock.MagicMock()
         testrequest.build_absolute_uri = lambda path: 'http://testserver{}'.format(path)
         self.assertEqual(
-            InviteUrlWithStaticTokenMock(request=testrequest, metadata={'test', 10}, private=True).get_share_url(),
+            InviteUrlWithStaticTokenMock(
+                request=testrequest, private=True, content_object=self.invite_target).get_share_url(),
             'http://testserver/invite/accept/test-token')
 
     def test_get_share_url_private(self):
         testrequest = mock.MagicMock()
         testrequest.build_absolute_uri = lambda path: 'http://testserver{}'.format(path)
-        inviteurl = InviteUrlWithTokenIteratorMock(request=testrequest, metadata={'test', 10}, private=True)
+        inviteurl = InviteUrlWithTokenIteratorMock(
+            request=testrequest, private=True, content_object=self.invite_target)
         self.assertEqual(inviteurl.get_share_url(), 'http://testserver/invite/accept/token1')
         self.assertEqual(inviteurl.get_share_url(), 'http://testserver/invite/accept/token2')
         self.assertEqual(inviteurl.get_share_url(), 'http://testserver/invite/accept/token3')
@@ -94,7 +106,8 @@ http://testserver/invite/accept/test-token""".strip()
     def test_get_share_url_public(self):
         testrequest = mock.MagicMock()
         testrequest.build_absolute_uri = lambda path: 'http://testserver{}'.format(path)
-        inviteurl = InviteUrlWithTokenIteratorMock(request=testrequest, metadata={'test', 10}, private=False)
+        inviteurl = InviteUrlWithTokenIteratorMock(
+            request=testrequest, private=False, content_object=self.invite_target)
         self.assertEqual(inviteurl.get_share_url(), 'http://testserver/invite/accept/token1')
         self.assertEqual(inviteurl.get_share_url(), 'http://testserver/invite/accept/token1')
         self.assertEqual(inviteurl.get_share_url(), 'http://testserver/invite/accept/token1')

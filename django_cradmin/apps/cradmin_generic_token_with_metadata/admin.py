@@ -6,7 +6,7 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import Gener
 class GenericTokenWithMetadataAdmin(admin.ModelAdmin):
     list_display = (
         'token',
-        'user',
+        'content_object',
         'app',
         'created_datetime',
         'expiration_datetime',
@@ -24,7 +24,10 @@ class GenericTokenWithMetadataAdmin(admin.ModelAdmin):
     )
     readonly_fields = (
         'token',
-        'user',
+        'content_type',
+        'single_use',
+        'metadata_json',
+        'object_id',
         'app',
         'created_datetime',
     )

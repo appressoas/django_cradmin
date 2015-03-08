@@ -71,7 +71,8 @@ class ResetPasswordView(FormView):
             return self.render_to_response(self.get_context_data())
         else:
             raw_password = form.cleaned_data['password1']
-            token.user.set_password(raw_password)
-            token.user.save()
+            user = token.content_object
+            user.set_password(raw_password)
+            user.save()
             messages.success(self.request, self.__get_success_message())
             return super(ResetPasswordView, self).form_valid(form)
