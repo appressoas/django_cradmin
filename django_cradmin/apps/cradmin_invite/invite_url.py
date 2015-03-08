@@ -25,12 +25,12 @@ class InviteUrl(object):
                     })
 
             def myview(request):
-                InviteUrl(request=request, private=True).send_email(
+                InviteUrl(request=request, private=True, content_object=someobject).send_email(
                     'test@example.com', 'test2@example.com')
                 # ... or ...
-                share_url = InviteUrl(request=request, private=False).get_share_url()
+                share_url = InviteUrl(request=request, private=False, content_object=someobject).get_share_url()
                 # ... or ...
-                InviteUrl(request=request, private=False).send_email(
+                InviteUrl(request=request, private=False, content_object=someobject).send_email(
                     'test@example.com', 'test2@example.com', 'test3@example.com')
     """
 
@@ -122,20 +122,29 @@ class InviteUrl(object):
         """
         return get_expiration_datetime_for_app(self.get_appname())
 
-    def _generate_generictoken(self):
+    def _generate_generictoken(self, email=None):
+        metadata = self.metadata
+        if email:
+            if self.metadata is None:
+                metadata = {'email': email}
+            elif isinstance(self.metadata, dict):
+                if 'email' not in self.metadata:
+                    metadata = self.metadata.copy()
+                    metadata['email'] = email
+
         return GenericTokenWithMetadata.objects.generate(
             app=self.get_appname(),
             expiration_datetime=self.get_expiration_datetime(),
             content_object=self.content_object,
-            metadata=self.metadata
+            metadata=metadata
         )
 
-    def generate_generictoken(self):
+    def generate_generictoken(self, email=None):
         if self.private:
             # If private generate unique tokens
-            return self._generate_generictoken()
+            return self._generate_generictoken(email=email)
         else:
-            # If public, re-use the same token
+            # If public, re-use the same token and ignore email argument
             if hasattr(self, '_generictoken'):
                 return self._generictoken
             else:
@@ -150,10 +159,16 @@ class InviteUrl(object):
         If this InviteUrl is private, we generate a new token each
         email recipient, and if it is public, we re-use the same
         token.
+
+        Private tokens are generated as single use tokens, and public tokens
+        are unlimited use tokens.
+
+        Private tokens gets the email automatically added to the metadata
+        if metadata is a dict or None.
         """
         # TODO: Re-use email connection
         for email in emails:
-            generictoken = self.generate_generictoken()
+            generictoken = self.generate_generictoken(email)
             send_mail(
                 subject=self.render_email_subject(generictoken),
                 message=self.render_email_message(generictoken),
@@ -168,6 +183,9 @@ class InviteUrl(object):
         If this InviteUrl is private, we generate a new token each
         time this is called, and if it is public, we re-use the same
         token.
+
+        Private tokens are generated as single use tokens, and public tokens
+        are unlimited use tokens.
         """
         generictoken = self.generate_generictoken()
         return self.__get_absolute_confirm_invite_url(generictoken)

@@ -14,7 +14,7 @@ class InviteUrlMock(InviteUrl):
 
 
 class InviteUrlWithStaticTokenMock(InviteUrlMock):
-    def generate_generictoken(self):
+    def generate_generictoken(self, email=None):
         testtoken = mock.MagicMock()
         testtoken.token = 'test-token'
         return testtoken
@@ -25,7 +25,7 @@ class InviteUrlWithTokenIteratorMock(InviteUrlMock):
         self.tokens = iter(['token1', 'token2', 'token3'])
         super(InviteUrlWithTokenIteratorMock, self).__init__(*args, **kwargs)
 
-    def _generate_generictoken(self):
+    def _generate_generictoken(self, email=None):
         testtoken = mock.MagicMock()
         testtoken.token = self.tokens.next()
         return testtoken
@@ -43,9 +43,36 @@ class TestSendActivationEmail(TestCase):
         token = InviteUrlMock(
             request=mock.MagicMock(),
             private=True,
-            content_object=self.invite_target,
+            content_object=self.invite_target
         ).generate_generictoken()
         self.assertEquals(token.content_object, self.invite_target)
+
+    def test_generate_generictoken_with_email(self):
+        token = InviteUrlMock(
+            request=mock.MagicMock(),
+            private=True,
+            content_object=self.invite_target
+        ).generate_generictoken(email='test@example.com')
+        self.assertEquals(token.metadata['email'], 'test@example.com')
+
+    def test_generate_generictoken_with_email_and_metadata(self):
+        token = InviteUrlMock(
+            request=mock.MagicMock(),
+            private=True,
+            content_object=self.invite_target,
+            metadata={'test': 10}
+        ).generate_generictoken(email='test@example.com')
+        self.assertEquals(token.metadata['email'], 'test@example.com')
+        self.assertEquals(token.metadata['test'], 10)
+
+    def test_generate_generictoken_with_email_and_metadata_with_email(self):
+        token = InviteUrlMock(
+            request=mock.MagicMock(),
+            private=True,
+            content_object=self.invite_target,
+            metadata={'email': 'existing@example.com'}
+        ).generate_generictoken(email='test@example.com')
+        self.assertEquals(token.metadata['email'], 'existing@example.com')
 
     def test_send_email(self):
         testrequest = mock.MagicMock()
