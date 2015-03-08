@@ -1,3 +1,4 @@
+from django.template import defaultfilters
 from django.utils.translation import ugettext_lazy as _
 
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
@@ -5,10 +6,7 @@ from django_cradmin.viewhelpers import objecttable
 
 
 class TokenColumn(objecttable.MultiActionColumn):
-    modelfield = 'token'
-
-    def get_header(self):
-        return _('Url')
+    modelfield = 'created_datetime'
 
     def get_buttons(self, obj):
         return [
@@ -23,14 +21,7 @@ class TokenColumn(objecttable.MultiActionColumn):
         ]
 
     def render_value(self, obj):
-        return obj.token
-
-    def is_sortable(self):
-        return False
-
-
-class CreatedDatetimeColumn(objecttable.DatetimeColumn):
-    modelfield = 'created_datetime'
+        return defaultfilters.date(obj.created_datetime, 'SHORT_DATETIME_FORMAT')
 
     def get_default_order_is_ascending(self):
         return False
@@ -57,7 +48,6 @@ class Overview(objecttable.ObjectTableView):
     model = GenericTokenWithMetadata
     columns = [
         TokenColumn,
-        CreatedDatetimeColumn,
         ExpirationDatetimeColumn,
         DescriptionColumn,
     ]
