@@ -1,4 +1,3 @@
-from django.template import defaultfilters
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.viewhelpers import delete
 
