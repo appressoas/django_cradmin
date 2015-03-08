@@ -3,13 +3,14 @@ from crispy_forms import layout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
+from cradmin_demo.webdemo.crapps.inviteadmins_public.mixins import QuerysetForRoleMixin
 
 from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.viewhelpers.formbase import FormView
 
 
-class CreatePublicInviteUrl(forms.Form):
+class SharableLinkForm(forms.Form):
     message = forms.CharField(
         required=False,
         widget=forms.Textarea,
@@ -33,9 +34,22 @@ class SiteAdminInviteUrl(InviteUrl):
         })
 
 
-class CreatePublicInvite(FormView):
-    form_class = CreatePublicInviteUrl
+class CreateOrEditSharableLinkView(FormView, QuerysetForRoleMixin):
+    form_class = SharableLinkForm
     template_name = 'webdemo/inviteadmins_public/create_public_invite.django.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.generictoken = self.get_queryset_for_role(self.request.cradmin_role).first()
+        return super(CreateOrEditSharableLinkView, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        if self.generictoken:
+            return {
+                'message': self.generictoken.metadata['message'],
+                'expiration_datetime': self.generictoken.expiration_datetime,
+            }
+        else:
+            return {}
 
     def get_field_layout(self):
         return [
@@ -54,10 +68,17 @@ class CreatePublicInvite(FormView):
     def form_valid(self, form):
         expiration_datetime = form.cleaned_data['expiration_datetime']
         message = form.cleaned_data['message']
-        site = self.request.cradmin_role
-        inviteurl = SiteAdminInviteUrl(
-            request=self.request, private=False, content_object=site,
-            expiration_datetime=expiration_datetime,
-            metadata={'message': message})
-        inviteurl.get_share_url()
+        if self.generictoken:
+            metadata = self.generictoken.metadata
+            metadata['message'] = message
+            self.generictoken.metadata = metadata
+            self.generictoken.expiration_datetime = expiration_datetime
+            self.generictoken.save()
+        else:
+            site = self.request.cradmin_role
+            inviteurl = SiteAdminInviteUrl(
+                request=self.request, private=False, content_object=site,
+                expiration_datetime=expiration_datetime,
+                metadata={'message': message})
+            inviteurl.get_share_url()
         return HttpResponseRedirect(self.get_success_url())

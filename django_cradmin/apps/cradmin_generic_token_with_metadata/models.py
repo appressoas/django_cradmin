@@ -225,7 +225,7 @@ class GenericTokenWithMetadata(models.Model):
     #: Datetime when the token expires.
     #: This can be `None`, which means that the token does not expire.
     expiration_datetime = models.DateTimeField(
-        null=True,
+        null=True, default=None, blank=True,
         verbose_name=_('Expires'))
 
     #: Single use?

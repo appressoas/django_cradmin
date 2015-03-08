@@ -40,7 +40,7 @@ class InviteUrl(object):
     #: The email message template.
     email_message_template = 'cradmin_invite/email/message.django.txt'
 
-    def __init__(self, request, private, content_object, metadata=None, expiration_datetime=None):
+    def __init__(self, request, private, content_object, metadata=None, **kwargs):
         """
 
         Parameters:
@@ -53,7 +53,8 @@ class InviteUrl(object):
         self.private = private
         self.content_object = content_object
         self.metadata = metadata
-        self.expiration_datetime = expiration_datetime
+        if 'expiration_datetime' in kwargs:
+            self.expiration_datetime = kwargs['expiration_datetime']
 
     def get_email_subject_template(self):
         return self.email_subject_template
@@ -125,7 +126,7 @@ class InviteUrl(object):
         and falls back to getting the configured expiration datetime for
         the app.
         """
-        if self.expiration_datetime:
+        if hasattr(self, 'expiration_datetime'):
             return self.expiration_datetime
         else:
             return get_expiration_datetime_for_app(self.get_appname())

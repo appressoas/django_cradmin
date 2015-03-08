@@ -27,7 +27,7 @@
 {% block content %}
     <div class="container-fluid django-cradmin-container-fluid-focus">
         {% if generictoken %}
-            <h2>{% trans "Share the link" %}</h2>
+            <h2>{% trans "Share" %}</h2>
             <p>
                 {% trans "Share the link below with anyone you want to make an administrator for this site." %}
                 <input type="text" class="form-control"
@@ -35,10 +35,29 @@
                        django-cradmin-select-text-for-copy-on-focus="{{ url }}">
             </p>
 
-            <h2>{% trans "Disable the link" %}</h2>
+            <h2>{% trans "Details" %}</h2>
+            <dl>
+                <dt>{% trans "Expires" %}</dt>
+                {% if generictoken.expiration_datetime %}
+                    <dd>{{ generictoken.expiration_datetime|date:"DATETIME_FORMAT" }}</dd>
+                {% else %}
+                    <dd class="text-muted">{% trans "Never" %}</dd>
+                {% endif %}
+                <dt>{% trans "Message" %}</dt>
+                {% if generictoken.metadata.message %}
+                    <dd style="white-space: pre-wrap;">{{ generictoken.metadata.message }}</dd>
+                {% else %}
+                    <dd class="text-muted">{% trans "(None)" %}</dd>
+                {% endif %}
+            </dl>
+
+            <h2>{% trans "Edit" %}</h2>
             <p>
+                <a href="{% cradmin_appurl 'edit' %}" class="btn btn-default">
+                    {% trans "Edit" %}
+                </a>
                 <a href="{% cradmin_appurl 'delete' generictoken.pk %}" class="btn btn-danger">
-                    {% trans "Disable the sharable link" %}
+                    {% trans "Disable" %}
                 </a>
             </p>
         {% else %}
@@ -46,7 +65,7 @@
                 Click the button below to create a sharable link that enables anyone with
                 the link to add themselves as administrator on the site.
             </p>
-            <a href="{% cradmin_appurl 'create' %}" class="btn btn-success btn-lg">
+            <a href="{% cradmin_appurl 'edit' %}" class="btn btn-success btn-lg">
                 {% trans "Get sharable link" %}
             </a>
         {% endif %}
