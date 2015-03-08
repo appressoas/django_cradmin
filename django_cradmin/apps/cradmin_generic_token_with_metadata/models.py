@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
 from django.db.models import QuerySet
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 
 def _get_current_datetime():
@@ -118,6 +119,14 @@ class GenericTokenWithMetadataQuerySet(QuerySet):
             object_id=content_object.pk,
             content_type=content_type)
 
+    def filter_usable_by_content_object_in_app(self, content_object, app):
+        """
+        Filters only non-expired tokens with the given ``content_object`` and ``app``.
+        """
+        return self.filter_not_expired()\
+            .filter(app=app)\
+            .filter_by_content_object(content_object)
+
 
 class GenericTokenWithMetadataBaseManager(models.Manager):
     """
@@ -214,7 +223,9 @@ class GenericTokenWithMetadata(models.Model):
 
     #: Datetime when the token expires.
     #: This can be `None`, which means that the token does not expire.
-    expiration_datetime = models.DateTimeField(null=True)
+    expiration_datetime = models.DateTimeField(
+        null=True,
+        verbose_name=_('Expiration time'))
 
     #: Single use?
     #: If this is `False`, the token can be used an unlimited number of

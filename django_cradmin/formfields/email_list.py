@@ -6,6 +6,12 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class EmailListField(forms.Field):
+    """
+    A form field that parses and validates a list of email addresses.
+
+    The input can be a list, tuple or string. If it is a string,
+    we split the email addresses by whitespace or comma.
+    """
     default_error_messages = {
         'invalid': _('Type email-addresses separated by newlines, whitespace or comma.')
     }
@@ -15,8 +21,18 @@ class EmailListField(forms.Field):
     email_validator = EmailValidator()
 
     def __init__(self, *args, **kwargs):
+        """
+        Works just like any other form field.
+
+        Parameters are just like for any other form field, with the
+        addition of the ``extra_help_text`` parameter. The ``extra_help_text``
+        parameter can be used to append help text to the default help text.
+        """
         if 'help_text' not in kwargs:
             kwargs['help_text'] = self.default_help_text
+        extra_help_text = kwargs.pop('extra_help_text', None)
+        if extra_help_text:
+            kwargs['help_text'] = u'{} {}'.format(kwargs['help_text'], extra_help_text)
         super(EmailListField, self).__init__(*args, **kwargs)
 
     def string_to_list(self, value):
