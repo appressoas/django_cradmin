@@ -7,12 +7,14 @@ from django_cradmin.viewhelpers import objecttable
 class EmailColumn(objecttable.MultiActionColumn):
     modelfield = 'id'
 
+    def get_header(self):
+        return _('Email')
+
     def get_buttons(self, obj):
         return [
             objecttable.Button(
                 label=_('Delete'),
-                # url=self.reverse_appurl('delete', args=[obj.id]),
-                url='#',
+                url=self.reverse_appurl('delete', args=[obj.id]),
                 buttonclass="danger"),
         ]
 
@@ -53,5 +55,5 @@ class Overview(objecttable.ObjectTableView):
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Send private invite'), url=app.reverse_appurl('sendprivate')),
+            objecttable.Button(_('Send private invite'), url=app.reverse_appurl('send')),
         ]

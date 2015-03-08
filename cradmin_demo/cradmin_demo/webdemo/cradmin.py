@@ -24,11 +24,12 @@ class Menu(crmenu.Menu):
             label=_('Pages'), url=self.appindex_url('pages'), icon="database",
             active=self.request.cradmin_app.appname == 'pages')
         self.add(
-            label=_('Invite admins'), url=self.appindex_url('inviteadmins'), icon="users",
-            active=self.request.cradmin_app.appname == 'inviteadmins')
-        self.add(
             label=_('Images'), url=self.appindex_url('imagearchive'), icon="image",
             active=self.request.cradmin_app.appname == 'imagearchive')
+
+        self.add_footeritem(
+            label=_('Invite admins'), url=self.appindex_url('inviteadmins'), icon="users",
+            active=self.request.cradmin_app.appname == 'inviteadmins')
 
 
 class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):

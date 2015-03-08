@@ -219,13 +219,14 @@ class GenericTokenWithMetadata(models.Model):
     token = models.CharField(max_length=100, unique=True)
 
     #: Datetime when the token was created.
-    created_datetime = models.DateTimeField()
+    created_datetime = models.DateTimeField(
+        verbose_name=_('Created'))
 
     #: Datetime when the token expires.
     #: This can be `None`, which means that the token does not expire.
     expiration_datetime = models.DateTimeField(
         null=True,
-        verbose_name=_('Expiration time'))
+        verbose_name=_('Expires'))
 
     #: Single use?
     #: If this is `False`, the token can be used an unlimited number of
