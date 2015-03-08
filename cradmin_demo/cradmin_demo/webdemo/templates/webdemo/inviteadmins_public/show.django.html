@@ -1,6 +1,7 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load static %}
 {% load i18n %}
+{% load cradmin_tags %}
 
 
 {% block title %}
@@ -8,21 +9,46 @@
 {% endblock title %}
 
 {% block pageheader-inner %}
-    <h1>
-        {% trans "Public share link" %}
-    </h1>
+    {% if generictoken %}
+        <h1>
+            {% trans "Sharable link" %}
+        </h1>
+        <p>
+            Anyone with the link can add themself as administrator for the site.
+            This is just a demo for a public sharing workflow. You SHOULD NOT use this to invite admins in production!
+        </p>
+    {% else %}
+        <h1>
+            {% trans "Get sharable link" %}
+        </h1>
+    {% endif %}
 {% endblock pageheader-inner %}
 
 {% block content %}
     <div class="container-fluid django-cradmin-container-fluid-focus">
-        <p>{% trans "Share the link below with anyone you want to make an administrator for this site." %}</p>
-        <input type="text" class="form-control"
-               value="{{ url }}"
-               django-cradmin-select-text-for-copy-on-focus="{{ url }}">
+        {% if generictoken %}
+            <h2>{% trans "Share the link" %}</h2>
+            <p>
+                {% trans "Share the link below with anyone you want to make an administrator for this site." %}
+                <input type="text" class="form-control"
+                       value="{{ url }}"
+                       django-cradmin-select-text-for-copy-on-focus="{{ url }}">
+            </p>
 
-{#        {% if generictoken.metadata.description %}#}
-{#            <h2>{% trans "Description" %}</h2>#}
-{#            <p>{{ generictoken.metadata.description }}</p>#}
-{#        {% endif %}#}
+            <h2>{% trans "Disable the link" %}</h2>
+            <p>
+                <a href="{% cradmin_appurl 'delete' generictoken.pk %}" class="btn btn-danger">
+                    {% trans "Disable the sharable link" %}
+                </a>
+            </p>
+        {% else %}
+            <p>
+                Click the button below to create a sharable link that enables anyone with
+                the link to add themselves as administrator on the site.
+            </p>
+            <a href="{% cradmin_appurl 'create' %}" class="btn btn-success btn-lg">
+                {% trans "Get sharable link" %}
+            </a>
+        {% endif %}
     </div>
 {% endblock content %}
