@@ -746,6 +746,40 @@
         scope.element = element;
       }
     };
+  }).directive('djangoCradminSelectTextForCopyOnFocus', function() {
+    /*
+    Select text of an input field or textarea when the field
+    receives focus.
+    
+    Example:
+    ```
+    <p>Copy the url below and share it on social media!</p>
+    <input type="text" value="example.com" django-cradmin-select-text-for-copy-on-focus="http://example.com">
+    ```
+    */
+
+    return {
+      restrict: 'A',
+      scope: {
+        valueToCopy: '@djangoCradminSelectTextForCopyOnFocus'
+      },
+      link: function(scope, element, attrs) {
+        scope.value = attrs['value'];
+        element.on('click', function() {
+          element.val(scope.valueToCopy);
+          return this.select();
+        });
+        scope.resetValue = function() {
+          return element.val(scope.value);
+        };
+        element.on('change', function() {
+          return scope.resetValue();
+        });
+        element.on('blur', function() {
+          return scope.resetValue();
+        });
+      }
+    };
   });
 
 }).call(this);
