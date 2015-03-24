@@ -57,7 +57,7 @@ INSTALLED_APPS = (
     'cradmin_demo.webdemo',
 
     # The demo based on the Django tutorial
-    'cradmin_demo.polls_demo'
+    'cradmin_demo.polls_demo',
 
     # Demo for usermanager
     'cradmin_demo.usermanagerdemo',
