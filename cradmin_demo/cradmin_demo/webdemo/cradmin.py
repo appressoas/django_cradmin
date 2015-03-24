@@ -1,4 +1,3 @@
-from django.template.defaultfilters import truncatechars
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
@@ -10,12 +9,6 @@ from .views import pages
 
 class Menu(crmenu.Menu):
     def build_menu(self):
-        if self.request.cradmin_instance.get_rolequeryset().count() > 1:
-            self.add_headeritem(
-                label=_('Select site'),
-                url=self.roleselectview_url(),
-                icon='chevron-up')
-
         self.add(
             label=_('Dashboard'), url=self.appindex_url('dashboard'), icon="home",
             active=self.request.cradmin_app.appname == 'dashboard')
@@ -57,4 +50,8 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
         Get a short description of the given ``role``.
         Remember that the role is a Site.
         """
-        return truncatechars(role.description, 100)
+        admins = list(role.admins.all())
+        if admins:
+            return u'Admins: {}'.format(', '.join([unicode(user) for user in admins]))
+        else:
+            return u'No admins'

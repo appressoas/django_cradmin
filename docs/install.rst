@@ -2,6 +2,8 @@
 Install and configure
 #####################
 
+.. _installguide:
+
 *******
 Install
 *******

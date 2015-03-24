@@ -47,8 +47,11 @@ INSTALLED_APPS = (
     # Nice for debugging, but not required to use django_cradmin
     'django_extensions',
 
-    # The demo
+    # The advanced demo
     'cradmin_demo.webdemo',
+
+    # The demo based on the Django tutorial
+    'cradmin_demo.polls_demo'
 )
 
 MIDDLEWARE_CLASSES = (

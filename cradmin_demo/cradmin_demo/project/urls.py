@@ -18,5 +18,6 @@ urlpatterns = patterns(
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
     url(r'^$', RedirectView.as_view(url='/cradmin/', permanent=False)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': settings.MEDIA_ROOT})
+        'document_root': settings.MEDIA_ROOT}),
+    url(r'^polls/', include('cradmin_demo.polls_demo.urls'))
 )

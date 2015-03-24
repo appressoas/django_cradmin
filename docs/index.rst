@@ -13,6 +13,7 @@ Getting started
    :maxdepth: 2
 
    install
+   gettingstartedguide
 
 
 Viewhelpers
@@ -50,6 +51,16 @@ Development
    databasedumps
    locale
 
+
+Documentation
+-------------
+.. toctree::
+   :maxdepth: 1
+
+   crapp
+   crinstance
+   crmenu
+   viewhelpers_objecttable
 
 
 Indices and tables
