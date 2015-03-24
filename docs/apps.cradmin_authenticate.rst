@@ -45,6 +45,9 @@ Optional settings:
     DJANGO_CRADMIN_FORGOTPASSWORD_URL
         If this is set, we show a forgot password link on the login page.
 
+    DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND
+        If this is set (``True``), we explicitly use ``email`` to login, not ``USERNAME_FIELD``. This will also work
+        with the standard django user model.
 
 
 ************
@@ -138,3 +141,23 @@ cradmin-authenticate-login
     The view named ``cradmin-authenticate-login`` is used for login.
 cradmin-authenticate-logout
     The view named ``cradmin-authenticate-logout`` is used for logging users out.
+
+
+*************
+Customization
+*************
+The authentication-view is handled by the :class:`django_cradmin.apps.cradmin_authenticate.views.login.LoginView` in
+combination with the various subclasses of :class:`django_cradmin.apps.cradmin_authenticate.views.login.AbstractLoginForm`.
+
+If you want to customize the default behaviour, extend/override the suitable class from these:
+
+
+django_cradmin.apps.cradmin_authenticate.views.login
+----------------------------------------------------
+.. automodule:: django_cradmin.apps.cradmin_authenticate.views.login
+    :members:
+
+django_cradmin.apps.cradmin_authenticate.backends
+-------------------------------------------------
+.. automodule:: django_cradmin.apps.cradmin_authenticate.backends
+    :members:

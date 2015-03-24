@@ -184,3 +184,10 @@ DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
     'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm'
 # DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
 #     'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountForm'
+
+
+DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND = True
+
+AUTHENTICATION_BACKENDS = (
+    'django_cradmin.apps.cradmin_authenticate.backends.EmailAuthBackend',
+)

@@ -79,5 +79,6 @@ class TestEmailLogin(TestCase):
             selector.one('#cradmin_authenticate_login_form').alltext_normalized)
 
 TestEmailLogin = override_settings(
-    AUTH_USER_MODEL='cradmin_authenticate_testapp.EmailUser'
+    AUTH_USER_MODEL='cradmin_authenticate_testapp.EmailUser',
+    DJANGO_CRADMIN_USE_EMAIL_AUTH=True
 )(TestEmailLogin)
