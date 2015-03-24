@@ -6,7 +6,7 @@ from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptIn
 
 
 class AcceptPublicSiteAdminInviteView(AbstractAcceptInviteView):
-    description_template_name = 'myapp/invite_description.django.html'
+    # description_template_name = 'myapp/invite_description.django.html'
 
     def get_appname(self):
         return 'webdemo_sharable_link'
