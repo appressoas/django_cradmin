@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
 from cradmin_demo.project import settings
-from cradmin_demo.webdemo.cradmin import CrAdminInstance
+from cradmin_demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
+from cradmin_demo.webdemo.cradmin import WebdemoCrAdminInstance
 
 from django.contrib import admin
 admin.autodiscover()
@@ -9,14 +10,17 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login',
-        {'template_name': 'webdemo/login.django.html'}),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
-        {'template_name': 'webdemo/logout.django.html'}),
+    url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
+    url(r'^resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
+    url(r'^activate_account/', include('django_cradmin.apps.cradmin_activate_account.urls')),
+    url(r'^register/', include('django_cradmin.apps.cradmin_register_account.urls')),
+
     url(r'^djangoadmin/', include(admin.site.urls)),
-    url(r'^cradmin/', include(CrAdminInstance.urls())),
+    url(r'^webdemoadmin/', include(WebdemoCrAdminInstance.urls())),
+    url(r'^webdemo/', include('cradmin_demo.webdemo.urls')),
+    url(r'^usermanagerdemo/', include(UsermanagerCrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
-    url(r'^$', RedirectView.as_view(url='/cradmin/', permanent=False)),
+    url(r'^$', RedirectView.as_view(url='/webdemoadmin/', permanent=False)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT}),
     url(r'^polls/', include('cradmin_demo.polls_demo.urls'))

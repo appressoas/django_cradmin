@@ -1,0 +1,4 @@
+{% load i18n %}
+{% trans "Click the link below to accept the invite." %}
+
+{{ confirm_invite_url }}

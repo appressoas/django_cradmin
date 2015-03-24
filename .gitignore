@@ -13,6 +13,9 @@
 # Ignore user-specific pycharm settings
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/dataSources.ids
+.idea/dataSources.local.xml
+.idea/dictionaries/
 
 # Files created when running tests and demos
 /django_media_root/

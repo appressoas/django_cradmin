@@ -233,6 +233,39 @@ class TestObjectTableView(TestCase):
         request.cradmin_role = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
 
+    def test_empty(self):
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.none()
+
+        request = self.factory.get('/test')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        # selector.one('#django_cradmin_contentwrapper').prettyprint()
+        self.assertFalse(selector.exists('#objecttableview-table'))
+        self.assertEquals(
+            selector.one('#objecttableview-no-items-message').alltext_normalized,
+            'No some items')
+
+    def test_empty_hide_search(self):
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            searchfields = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.none()
+
+        request = self.factory.get('/test')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+        self.assertFalse(selector.exists('.cradmin-searchform'))
+
     def test_paginate_by_singlepage(self):
         testmodels.SomeItem.objects.bulk_create(
             [testmodels.SomeItem(name=unicode(x)) for x in xrange(4)])

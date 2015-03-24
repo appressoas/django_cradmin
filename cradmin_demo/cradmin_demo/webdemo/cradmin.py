@@ -3,8 +3,10 @@ from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
 
 from .models import Site
-from .views import dashboard
-from .views import pages
+from .crapps import dashboard
+from .crapps import pages
+from .crapps import inviteadmins
+from .crapps import sharable_link
 
 
 class Menu(crmenu.Menu):
@@ -19,8 +21,15 @@ class Menu(crmenu.Menu):
             label=_('Images'), url=self.appindex_url('imagearchive'), icon="image",
             active=self.request.cradmin_app.appname == 'imagearchive')
 
+        self.add_footeritem(
+            label=_('Invite admins'), url=self.appindex_url('inviteadmins'), icon="users",
+            active=self.request.cradmin_app.appname == 'inviteadmins')
+        self.add_footeritem(
+            label=_('Share'), url=self.appindex_url('sharable_link'), icon="link",
+            active=self.request.cradmin_app.appname == 'sharable_link')
 
-class CrAdminInstance(crinstance.BaseCrAdminInstance):
+
+class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'webdemo'
     menuclass = Menu
     roleclass = Site
@@ -30,6 +39,8 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
         ('dashboard', dashboard.App),
         ('pages', pages.App),
         ('imagearchive', imagearchive.App),
+        ('inviteadmins', inviteadmins.App),
+        ('sharable_link', sharable_link.App),
     ]
 
     def get_rolequeryset(self):
@@ -50,8 +61,12 @@ class CrAdminInstance(crinstance.BaseCrAdminInstance):
         Get a short description of the given ``role``.
         Remember that the role is a Site.
         """
-        admins = list(role.admins.all())
-        if admins:
-            return u'Admins: {}'.format(', '.join([unicode(user) for user in admins]))
-        else:
-            return u'No admins'
+        return truncatechars(role.description, 100)
+
+    @classmethod
+    def matches_urlpath(cls, urlpath):
+        """
+        We only need this because we have multiple cradmin UIs
+        in the same project.
+        """
+        return urlpath.startswith('/webdemo')

@@ -41,6 +41,12 @@ INSTALLED_APPS = (
     'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
+    'django_cradmin.apps.cradmin_generic_token_with_metadata',
+    'django_cradmin.apps.cradmin_authenticate',
+    'django_cradmin.apps.cradmin_resetpassword',
+    'django_cradmin.apps.cradmin_activate_account',
+    'django_cradmin.apps.cradmin_register_account',
+    'django_cradmin.apps.cradmin_invite',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
@@ -52,6 +58,9 @@ INSTALLED_APPS = (
 
     # The demo based on the Django tutorial
     'cradmin_demo.polls_demo'
+
+    # Demo for usermanager
+    'cradmin_demo.usermanagerdemo',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -163,4 +172,15 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = '/cradmin/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/authenticate/login'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DJANGO_CRADMIN_SITENAME = 'Cradmin demo'
+DJANGO_CRADMIN_RESETPASSWORD_FINISHED_REDIRECT_URL = LOGIN_REDIRECT_URL
+DJANGO_CRADMIN_FORGOTPASSWORD_URL = '/resetpassword/begin'
+
+DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
+    'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm'
+# DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
+#     'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountForm'

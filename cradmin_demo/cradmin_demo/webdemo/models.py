@@ -7,7 +7,8 @@ from django_cradmin.apps.cradmin_imagearchive import models as imagearchivemodel
 
 class Site(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(
+        null=False, blank=True, default='')
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
 

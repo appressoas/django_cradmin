@@ -70,10 +70,10 @@ The basic example lets anyone with access to the cradmin delete any page. You no
         def __unicode__(self):
             return self.title
 
-We make the Site the roleclass on our ``CrAdminInstance``::
+We make the Site the roleclass on our ``WebdemoCrAdminInstance``::
 
     from django_cradmin import crinstance
-    class CrAdminInstance(crinstance.BaseCrAdminInstance):
+    class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         roleclass = Site
         # Other stuff documented elsewhere
 

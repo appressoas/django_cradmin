@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+    {% block pre_form %}{% endblock pre_form %}
     {% block form %}
         {% crispy form formhelper %}
 
@@ -11,4 +12,5 @@
         {% endcomment %}
         {{ form.media }}
     {% endblock form %}
+    {% block post_form %}{% endblock post_form %}
 {% endblock content %}
