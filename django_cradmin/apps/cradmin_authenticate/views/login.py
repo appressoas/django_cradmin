@@ -73,7 +73,7 @@ class UsernameLoginForm(AbstractLoginForm):
 
 class EmailLoginForm(AbstractLoginForm):
     username_field = 'email'
-    username_field_placeholder = _('Password')
+    username_field_placeholder = _('Email')
     email = forms.CharField(
         label=_('Email'))
     error_message_invalid_login = _("Your email and password didn't match. Please try again.")
@@ -84,10 +84,11 @@ class LoginView(FormView):
 
     def get_form_class(self):
         user_model = get_user_model()
-        if user_model.USERNAME_FIELD == 'username':
-            return UsernameLoginForm
-        elif user_model.USERNAME_FIELD == 'email':
+        if user_model.USERNAME_FIELD == 'email':
             return EmailLoginForm
+        elif user_model.USERNAME_FIELD == 'username':
+            return UsernameLoginForm
+
         else:
             raise ValueError('User.USERNAME_FIELD is not one of "email" or "username".')
 
