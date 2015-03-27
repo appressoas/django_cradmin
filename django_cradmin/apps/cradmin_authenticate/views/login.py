@@ -179,7 +179,9 @@ class LoginView(FormView):
         formhelper.layout = layout.Layout(
             layout.Field(form_class.username_field,
                          placeholder=form_class.username_field_placeholder,
-                         css_class='input-lg'),
+                         css_class='input-lg',
+                         focusonme='focusonme'
+                         ),
             layout.Field('password',
                          placeholder=form_class.password_field_placeholder,
                          css_class='input-lg'),
