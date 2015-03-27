@@ -1,8 +1,0 @@
-{
-  "name": "cradmin_authenticate",
-  "version": "0.0.0",
-  "private": true,
-  "devDependencies": {
-    "angular-resource": "~1.2",
-  }
-}
