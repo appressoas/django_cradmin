@@ -1,3 +1,4 @@
+from builtins import object
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import patterns, url, include
 from django.shortcuts import render

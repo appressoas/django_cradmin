@@ -33,7 +33,7 @@ class TestGenericTokenWithMetadata(TestCase):
     def test_generate_handle_not_unique(self):
         self._create_generic_token_with_metadata(user=create_user('testuser1'), app='testapp1', token='taken')
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models.generate_token',
-                        iter(['taken', 'free']).next):
+                        iter(['taken', 'free']).__next__):
             unique_user_token = GenericTokenWithMetadata.objects.generate(
                 content_object=create_user('testuser2'), app='testapp2',
                 expiration_datetime=get_expiration_datetime_for_app('testapp'))

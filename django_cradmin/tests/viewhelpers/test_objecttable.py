@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import range
 import htmls
 import mock
 from django.test import TestCase, RequestFactory
@@ -268,7 +270,7 @@ class TestObjectTableView(TestCase):
 
     def test_paginate_by_singlepage(self):
         testmodels.SomeItem.objects.bulk_create(
-            [testmodels.SomeItem(name=unicode(x)) for x in xrange(4)])
+            [testmodels.SomeItem(name=str(x)) for x in range(4)])
 
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
@@ -288,7 +290,7 @@ class TestObjectTableView(TestCase):
 
     def test_paginate_by_firstpage(self):
         testmodels.SomeItem.objects.bulk_create(
-            [testmodels.SomeItem(name=unicode(x)) for x in xrange(5)])
+            [testmodels.SomeItem(name=str(x)) for x in range(5)])
 
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
@@ -310,7 +312,7 @@ class TestObjectTableView(TestCase):
 
     def test_paginate_by_lastpage(self):
         testmodels.SomeItem.objects.bulk_create(
-            [testmodels.SomeItem(name=unicode(x)) for x in xrange(5)])
+            [testmodels.SomeItem(name=str(x)) for x in range(5)])
 
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem
@@ -334,7 +336,7 @@ class TestObjectTableView(TestCase):
 
     def test_paginate_by_middlepage(self):
         testmodels.SomeItem.objects.bulk_create(
-            [testmodels.SomeItem(name=unicode(x)) for x in xrange(9)])
+            [testmodels.SomeItem(name=str(x)) for x in range(9)])
 
         class MyObjectTableView(objecttable.ObjectTableView):
             model = testmodels.SomeItem

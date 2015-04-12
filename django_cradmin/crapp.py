@@ -1,3 +1,4 @@
+from builtins import object
 from django.conf.urls import url
 from django.conf.urls import patterns
 from functools import update_wrapper

@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 from collections import OrderedDict
 import json
 import re
@@ -447,7 +449,7 @@ class Button(object):
         return {}
 
     def _iter_attributes(self):
-        for key, value in self.get_attributes().iteritems():
+        for key, value in self.get_attributes().items():
             attrname = u'data-{}'.format(key)
             attrvalue = quoteattr(value)
             yield u'{}={}'.format(attrname, attrvalue)
@@ -526,7 +528,7 @@ class MultiSelectAction(object):
 
     def serialize(self):
         return {
-            'label': unicode(self.label),
+            'label': str(self.label),
             'url': self.url
         }
 
@@ -597,7 +599,7 @@ class OrderingStringParser(object):
         with the given ``columnindex`` removed.
         """
         out = []
-        for index, orderinginfo in self.orderingdict.iteritems():
+        for index, orderinginfo in self.orderingdict.items():
             if index != columnindex:
                 out.append(orderinginfo.to_orderingstringentry())
         return '.'.join(out)
@@ -611,7 +613,7 @@ class OrderingStringParser(object):
         """
         out = []
         found = False
-        for index, orderinginfo in self.orderingdict.iteritems():
+        for index, orderinginfo in self.orderingdict.items():
             if index == columnindex:
                 found = True
                 order_ascending = not orderinginfo.order_ascending
@@ -799,7 +801,7 @@ class ObjectTableView(ListView):
         if not hasattr(self, '__columns'):
             self.__columns = []
             for columnindex, columnclass in enumerate(self.columns):
-                if isinstance(columnclass, basestring):
+                if isinstance(columnclass, str):
                     columnclass = type('SimpleColumn', (PlainTextColumn,), dict(modelfield=columnclass))
                 self.__columns.append(columnclass(view=self, columnindex=columnindex))
         return self.__columns
@@ -828,7 +830,7 @@ class ObjectTableView(ListView):
         return self.model._meta.verbose_name_plural
 
     def _get_search_hidden_fields(self):
-        for key, value in self.request.GET.iteritems():
+        for key, value in self.request.GET.items():
             if key != 'search':
                 yield key, value
 
@@ -842,7 +844,7 @@ class ObjectTableView(ListView):
             return ''
 
     def make_foreignkey_preview_for(self, obj):
-        return unicode(obj)
+        return str(obj)
 
     def _get_use_this_hidden_attribute(self):
         pk = self.request.GET['foreignkey_selected_value']
@@ -922,7 +924,7 @@ class ObjectTableView(ListView):
 
     def __iter_columnobjects_with_orderinginfo(self):
         columnobjects = self._get_columnobjects()
-        for orderinginfo in self.__parse_orderingstring().orderingdict.itervalues():
+        for orderinginfo in self.__parse_orderingstring().orderingdict.values():
             try:
                 columnobject = columnobjects[orderinginfo.columnindex]
             except IndexError:

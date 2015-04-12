@@ -1,3 +1,5 @@
+from builtins import range
+from builtins import object
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -122,5 +124,5 @@ class SortableBase(models.Model):
         validators=[validate_sort_index]
     )
 
-    class Meta:
+    class Meta(object):
         abstract = True

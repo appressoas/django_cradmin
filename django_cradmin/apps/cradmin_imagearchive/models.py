@@ -1,3 +1,4 @@
+from builtins import object
 import os
 import posixpath
 from django.conf import settings
@@ -80,7 +81,7 @@ class ArchiveImage(models.Model):
         auto_now_add=True
     )
 
-    class Meta:
+    class Meta(object):
         verbose_name = _('archive image')
         verbose_name_plural = _('archive images')
 

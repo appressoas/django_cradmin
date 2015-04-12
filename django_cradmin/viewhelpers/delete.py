@@ -1,3 +1,4 @@
+from builtins import str
 from django.contrib import messages
 from django.views.generic import DeleteView as DjangoDeleteView
 from django.utils.translation import ugettext_lazy as _
@@ -42,7 +43,7 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
         delete the current object.
         """
         obj = self.get_object()
-        return unicode(obj)
+        return str(obj)
 
     def get_confirm_message(self):
         """

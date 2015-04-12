@@ -27,7 +27,7 @@ class InviteUrlWithTokenIteratorMock(InviteUrlMock):
 
     def _generate_generictoken(self, email=None):
         testtoken = mock.MagicMock()
-        testtoken.token = self.tokens.next()
+        testtoken.token = next(self.tokens)
         return testtoken
 
 

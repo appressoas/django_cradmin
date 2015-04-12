@@ -1,3 +1,4 @@
+from builtins import object
 import collections
 
 
@@ -63,9 +64,9 @@ class CrAdminInstanceRegistry(object):
             NoCrAdminInstanceFound: If no instance matching ``request.path`` is found.
         """
         if len(self._registry) == 1:
-            return self._registry.values()[0](request)
+            return list(self._registry.values())[0](request)
         else:
-            for instanceclass in self._registry.itervalues():
+            for instanceclass in self._registry.values():
                 if instanceclass.matches_urlpath(request.path):
                     return instanceclass(request)
             raise NoCrAdminInstanceFound('No CrAdminInstance matching {path} found'.format(

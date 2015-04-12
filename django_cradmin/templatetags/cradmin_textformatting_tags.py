@@ -1,3 +1,4 @@
+from builtins import str
 from collections import OrderedDict
 import textwrap
 from django import template
@@ -32,7 +33,7 @@ def parse_templatetag_arguments(parser, token, specification):
     tag_name = split[0]
     bits = split[1:]
 
-    params = specification.keys()
+    params = list(specification.keys())
 
     args, kwargs = parse_bits(parser, bits,
                               params=params,

@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import str
+from past.utils import old_div
 import fnmatch
 import mimetypes
 import os
@@ -45,8 +48,8 @@ def truncate_filename(filename, maxlength, ellipsis='...'):
         return filename[-maxlength:]
     else:
         max_length_noellipsis = maxlength - len(ellipsis)
-        startlength = int(math.floor(max_length_noellipsis/2.0))
-        endlength = int(math.ceil(max_length_noellipsis/2.0))
+        startlength = int(math.floor(old_div(max_length_noellipsis,2.0)))
+        endlength = int(math.ceil(old_div(max_length_noellipsis,2.0)))
         start = filename[0:startlength]
         end = filename[-endlength:]
         return u'{}{}{}'.format(start, ellipsis, end)

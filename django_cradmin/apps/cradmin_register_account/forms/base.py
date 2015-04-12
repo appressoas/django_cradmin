@@ -1,3 +1,4 @@
+from builtins import object
 from crispy_forms import layout
 from crispy_forms.helper import FormHelper
 from django.conf import settings
@@ -21,7 +22,7 @@ class AbstractCreateAccountForm(forms.ModelForm):
     #: See :meth:`.get_form_attributes`.
     form_attributes = {}
 
-    class Meta:
+    class Meta(object):
         model = get_user_model()
         fields = []
 

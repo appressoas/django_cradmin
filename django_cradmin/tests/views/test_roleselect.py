@@ -1,3 +1,4 @@
+from builtins import range
 from django.utils.html import format_html
 import htmls
 import mock
@@ -164,7 +165,7 @@ class TestRoleSelectView(TestCase):
             paginate_by = 3
 
         roles = []
-        for index in xrange(CustomRoleSelectView.paginate_by + 2):
+        for index in range(CustomRoleSelectView.paginate_by + 2):
             role = mock.MagicMock()
             role.id = index
             role.title = 'Role {}'.format(index)
@@ -208,7 +209,7 @@ class TestRoleSelectView(TestCase):
             paginate_by = 3
 
         roles = []
-        for index in xrange(CustomRoleSelectView.paginate_by):
+        for index in range(CustomRoleSelectView.paginate_by):
             role = mock.MagicMock()
             role.id = index
             role.title = 'Role {}'.format(index)

@@ -1,3 +1,4 @@
+from builtins import range
 from django import test
 
 from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import SortableItem

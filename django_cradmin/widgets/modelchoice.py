@@ -1,4 +1,6 @@
-import urllib
+from future import standard_library
+standard_library.install_aliases()
+import urllib.request, urllib.parse, urllib.error
 from django.utils.translation import ugettext_lazy as _
 from django.forms import widgets
 from django.template.loader import render_to_string
@@ -36,7 +38,7 @@ class ModelChoiceWidget(widgets.TextInput):
 
     def __make_selectview_url(self, fieldid, current_value):
         return '{}?{}'.format(
-            self.selectview_url, urllib.urlencode({
+            self.selectview_url, urllib.parse.urlencode({
                 'foreignkey_select_current_value': current_value,
                 'foreignkey_select_fieldid': fieldid,
             }))

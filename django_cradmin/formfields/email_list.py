@@ -49,7 +49,7 @@ class EmailListField(forms.Field):
             return value
         elif isinstance(value, tuple):
             return list(value)
-        elif isinstance(value, basestring):
+        elif isinstance(value, str):
             return self.string_to_list(value)
         else:
             raise TypeError('Invalid type for EmailListField: {}'.format(type(value)))

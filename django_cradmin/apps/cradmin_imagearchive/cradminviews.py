@@ -1,3 +1,4 @@
+from builtins import object
 from django import http
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _

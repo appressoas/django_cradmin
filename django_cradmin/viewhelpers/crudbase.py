@@ -1,4 +1,6 @@
-import urllib
+from future import standard_library
+standard_library.install_aliases()
+import urllib.request, urllib.parse, urllib.error
 from django import forms
 from django import http
 from django.contrib import messages
@@ -71,7 +73,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
                     ]
 
         """
-        fields = forms.fields_for_model(self.model, fields=self.fields).keys()
+        fields = list(forms.fields_for_model(self.model, fields=self.fields).keys())
         if self.roleid_field and self.roleid_field in fields:
             fields.remove(self.roleid_field)
         return [layout.Div(*fields, css_class='cradmin-globalfields')]
@@ -119,7 +121,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         url = self.get_editurl(obj)
         if 'success_url' in self.request.GET:
             url = '{}?{}'.format(
-                url, urllib.urlencode({
+                url, urllib.parse.urlencode({
                     'success_url': self.request.GET['success_url']}))
         return url
 

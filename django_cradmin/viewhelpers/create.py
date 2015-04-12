@@ -1,5 +1,8 @@
-import urllib
-import urlparse
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+import urllib.request, urllib.parse, urllib.error
+import urllib.parse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView as DjangoCreateView
 
@@ -43,13 +46,13 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     def get_default_save_success_url(self):
         url = super(CreateView, self).get_default_save_success_url()
         if self._foreignkey_select_mode():
-            url = urllib.unquote_plus(url)
-            urllist = list(urlparse.urlsplit(url))
+            url = urllib.parse.unquote_plus(url)
+            urllist = list(urllib.parse.urlsplit(url))
             querystring = urllist[3]
-            querydict = urlparse.parse_qs(querystring)
-            querydict['foreignkey_selected_value'] = [unicode(self.object.pk)]
-            urllist[3] = urllib.urlencode(querydict, doseq=True)
-            url = urlparse.urlunsplit(urllist)
+            querydict = urllib.parse.parse_qs(querystring)
+            querydict['foreignkey_selected_value'] = [str(self.object.pk)]
+            urllist[3] = urllib.parse.urlencode(querydict, doseq=True)
+            url = urllib.parse.urlunsplit(urllist)
         return url
 
     def get_formhelper(self):
