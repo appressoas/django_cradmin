@@ -22,6 +22,7 @@ setup(
         'django-crispy-forms',
         'Django',
         'django-multiupload',
+        'Jinja2',
         'pytz'
     ],
     classifiers=[
