@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django_cradmin.apps.cradmin_authenticate.tests.cradmin_authenticate_testapp.models import EmailUser
 from django_cradmin.apps.cradmin_authenticate import backends
 
 from django_cradmin.tests.views.helpers import create_testuser

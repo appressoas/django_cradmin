@@ -78,8 +78,8 @@ class UsernameLoginForm(AbstractLoginForm):
     """
     This form is used for username-based login.
 
-    Using this form in its default state requires the `User`-models ``USERNAME_FIELD`` to be ``username``. This is set in
-    the field ``username_field`` in this class.
+    Using this form in its default state requires the `User`-models ``USERNAME_FIELD`` to be ``username``.
+    This is set in the field ``username_field`` in this class.
     """
     username_field = 'username'
     username_field_placeholder = _('Username')
@@ -101,9 +101,10 @@ class EmailLoginForm(AbstractLoginForm):
 
     This requires adding ``DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND = True`` to your ``settings.py``.
 
-    This will work with the default django ``User``-model, and your own custom ``User`` model, as long as your ``User`` model
-    has the field ``email`` for login. If your ``email`` field is called something else, you will need to override the
-    ``username_field`` attribute of this class.
+    This will work with the default django ``User``-model, and your own custom ``User`` model,
+    as long as your ``User`` model has the field ``email`` for login. If your ``email`` field
+    is called something else, you will need to override the ``username_field`` attribute of
+    this class.
 
     If you want to use this class without the :class:`EmailAuthBackend`, you should rather use the
     :class:`.EmailLoginFormNoSanityCheck`.
@@ -115,15 +116,14 @@ class EmailLoginForm(AbstractLoginForm):
     error_message_invalid_login = _("Your email and password didn't match. Please try again.")
 
     def model_sanity_check(self):
-        user_model = get_user_model()
         if not getattr(settings, 'DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND', False):
             raise ValueError('The DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND must be set to use the EmailLoginForm.')
 
 
 class EmailLoginFormNoSanityCheck(EmailLoginForm):
     """
-    This works exactly like :class:`.EmailLoginForm`, but does not require ``DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND`` to be
-    set.
+    This works exactly like :class:`.EmailLoginForm`, but does not require
+    ``DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND`` to be set.
     """
     def model_sanity_check(self):
         pass
@@ -141,8 +141,8 @@ class LoginView(FormView):
         Determine which subclass of :class:`.AbstractLoginForm` should be used for login.
 
         if ``settings.DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND`` is set, the :class:`.EmailLoginForm` will be used.
-        If not, the ``user_model.USERNAME_FIELD`` will be checked, and :class:`.EmailLoginFormNoSanityCheck` will be used if this
-        is ``email``, and :class:`.UsernameLoginForm` if it is set to `username`.
+        If not, the ``user_model.USERNAME_FIELD`` will be checked, and :class:`.EmailLoginFormNoSanityCheck`
+        will be used if this is ``email``, and :class:`.UsernameLoginForm` if it is set to `username`.
 
         Override this function to add your own login-form.
         """
@@ -191,8 +191,8 @@ class LoginView(FormView):
 
     def get_success_url(self):
         """
-        Returns the redirect-url after login-success. This will either be the ``next`` field in ``request.GET`` if present,
-        or ``settings.LOGIN_REDIRECT_URL`` if not.
+        Returns the redirect-url after login-success. This will either be the ``next`` field in ``request.GET``
+        if present, or ``settings.LOGIN_REDIRECT_URL`` if not.
         """
         if 'next' in self.request.GET:
             return self.request.GET['next']

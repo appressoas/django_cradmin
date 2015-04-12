@@ -1,9 +1,11 @@
 import datetime
+from django.core.urlresolvers import reverse
 
 from django.utils import timezone
 from django.test import TestCase
 
 from cradmin_demo.polls_demo.models import Question
+
 
 class QuestionMethodTests(TestCase):
 
@@ -103,6 +105,7 @@ class QuestionViewTests(TestCase):
             response.context['latest_question_list'],
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
+
 
 class QuestionIndexDetailTests(TestCase):
     def test_detail_view_with_a_future_question(self):
