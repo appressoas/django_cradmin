@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import object
 from crispy_forms import layout
 from django.views.generic import FormView as DjangoFormView

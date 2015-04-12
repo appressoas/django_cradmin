@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import posixpath
 from django import forms
 from django.conf import settings

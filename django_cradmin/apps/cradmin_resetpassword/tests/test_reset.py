@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from datetime import timedelta, datetime
 from django.contrib import messages
 from django.contrib.auth import get_user_model

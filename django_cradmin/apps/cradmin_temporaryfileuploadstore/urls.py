@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.views.temporary_file_upload_api import \

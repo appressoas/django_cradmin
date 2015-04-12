@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import str
 from builtins import object
 from collections import OrderedDict
@@ -449,7 +450,7 @@ class Button(object):
         return {}
 
     def _iter_attributes(self):
-        for key, value in self.get_attributes().items():
+        for key, value in list(self.get_attributes().items()):
             attrname = u'data-{}'.format(key)
             attrvalue = quoteattr(value)
             yield u'{}={}'.format(attrname, attrvalue)
@@ -599,7 +600,7 @@ class OrderingStringParser(object):
         with the given ``columnindex`` removed.
         """
         out = []
-        for index, orderinginfo in self.orderingdict.items():
+        for index, orderinginfo in list(self.orderingdict.items()):
             if index != columnindex:
                 out.append(orderinginfo.to_orderingstringentry())
         return '.'.join(out)
@@ -613,7 +614,7 @@ class OrderingStringParser(object):
         """
         out = []
         found = False
-        for index, orderinginfo in self.orderingdict.items():
+        for index, orderinginfo in list(self.orderingdict.items()):
             if index == columnindex:
                 found = True
                 order_ascending = not orderinginfo.order_ascending
@@ -830,7 +831,7 @@ class ObjectTableView(ListView):
         return self.model._meta.verbose_name_plural
 
     def _get_search_hidden_fields(self):
-        for key, value in self.request.GET.items():
+        for key, value in list(self.request.GET.items()):
             if key != 'search':
                 yield key, value
 
@@ -924,7 +925,7 @@ class ObjectTableView(ListView):
 
     def __iter_columnobjects_with_orderinginfo(self):
         columnobjects = self._get_columnobjects()
-        for orderinginfo in self.__parse_orderingstring().orderingdict.values():
+        for orderinginfo in list(self.__parse_orderingstring().orderingdict.values()):
             try:
                 columnobject = columnobjects[orderinginfo.columnindex]
             except IndexError:

@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import object
 from django.contrib import auth
 from django.contrib.auth import models as auth_models

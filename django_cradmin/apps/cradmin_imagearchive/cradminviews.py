@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import object
 from django import http
 from django.contrib import messages

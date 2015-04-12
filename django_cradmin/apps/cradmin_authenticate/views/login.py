@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from crispy_forms import layout
 from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model

@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import range
 from django.utils.html import format_html
 import htmls

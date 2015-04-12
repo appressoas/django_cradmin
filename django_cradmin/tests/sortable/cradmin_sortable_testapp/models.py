@@ -1,6 +1,7 @@
 """
 An example app using Sortable.
 """
+from __future__ import unicode_literals
 from django.db import models
 from django_cradmin.sortable.models import SortableBase
 from django_cradmin.sortable.models import SortableManagerBase

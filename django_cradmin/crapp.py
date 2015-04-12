@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import object
 from django.conf.urls import url
 from django.conf.urls import patterns

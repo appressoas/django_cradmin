@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django_cradmin.formfields.email_list import EmailListField

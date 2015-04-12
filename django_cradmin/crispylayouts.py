@@ -1,6 +1,7 @@
 """
 Custom django-crispy-forms layouts.
 """
+from __future__ import unicode_literals
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from crispy_forms.utils import flatatt

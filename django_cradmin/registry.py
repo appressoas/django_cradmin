@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import object
 import collections
 
@@ -66,7 +67,7 @@ class CrAdminInstanceRegistry(object):
         if len(self._registry) == 1:
             return list(self._registry.values())[0](request)
         else:
-            for instanceclass in self._registry.values():
+            for instanceclass in list(self._registry.values()):
                 if instanceclass.matches_urlpath(request.path):
                     return instanceclass(request)
             raise NoCrAdminInstanceFound('No CrAdminInstance matching {path} found'.format(

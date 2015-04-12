@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import os
 from sorl.thumbnail import get_thumbnail
 

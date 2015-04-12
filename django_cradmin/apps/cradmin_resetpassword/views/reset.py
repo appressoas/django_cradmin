@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from crispy_forms import layout
 from crispy_forms.helper import FormHelper
 from django.conf import settings

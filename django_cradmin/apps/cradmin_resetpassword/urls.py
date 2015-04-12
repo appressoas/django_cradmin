@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.conf.urls import url, patterns
 from django_cradmin.apps.cradmin_resetpassword.views.begin import BeginPasswordResetView
 from django_cradmin.apps.cradmin_resetpassword.views.email_sent import EmailSentView

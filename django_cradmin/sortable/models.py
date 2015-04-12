@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import range
 from builtins import object
 from django.core.exceptions import ValidationError

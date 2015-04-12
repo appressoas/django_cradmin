@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory

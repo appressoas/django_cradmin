@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from builtins import object
 from crispy_forms import layout
 from crispy_forms.helper import FormHelper
