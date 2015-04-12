@@ -803,7 +803,7 @@ class ObjectTableView(ListView):
             self.__columns = []
             for columnindex, columnclass in enumerate(self.columns):
                 if isinstance(columnclass, str):
-                    columnclass = type('SimpleColumn', (PlainTextColumn,), dict(modelfield=columnclass))
+                    columnclass = type(b'SimpleColumn', (PlainTextColumn,), dict(modelfield=columnclass))
                 self.__columns.append(columnclass(view=self, columnindex=columnindex))
         return self.__columns
 
