@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from builtins import str
+from builtins import str as textstr
 from builtins import object
 from collections import OrderedDict
 import json
@@ -529,7 +529,7 @@ class MultiSelectAction(object):
 
     def serialize(self):
         return {
-            'label': str(self.label),
+            'label': textstr(self.label),
             'url': self.url
         }
 
@@ -802,8 +802,8 @@ class ObjectTableView(ListView):
         if not hasattr(self, '__columns'):
             self.__columns = []
             for columnindex, columnclass in enumerate(self.columns):
-                if isinstance(columnclass, str):
-                    columnclass = type(b'SimpleColumn', (PlainTextColumn,), dict(modelfield=columnclass))
+                if isinstance(columnclass, textstr):
+                    columnclass = type(str('SimpleColumn'), (PlainTextColumn,), dict(modelfield=columnclass))
                 self.__columns.append(columnclass(view=self, columnindex=columnindex))
         return self.__columns
 
@@ -845,7 +845,7 @@ class ObjectTableView(ListView):
             return ''
 
     def make_foreignkey_preview_for(self, obj):
-        return str(obj)
+        return textstr(obj)
 
     def _get_use_this_hidden_attribute(self):
         pk = self.request.GET['foreignkey_selected_value']

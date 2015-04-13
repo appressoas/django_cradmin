@@ -38,7 +38,7 @@ class TestMultiSelectView(TestCase):
         request.cradmin_role = mock.MagicMock()
         response = SimpleMultiSelectView.as_view()(request)
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.content, "OK")
+        self.assertEquals(response.content, b"OK")
 
     def test_object_selection_invalid(self):
         class SimpleMultiSelectView(multiselect.MultiSelectView):
@@ -71,7 +71,7 @@ class TestMultiSelectView(TestCase):
         })
         request.cradmin_role = mock.MagicMock()
         response = SimpleMultiSelectView.as_view()(request)
-        self.assertIn('1 is not one of the available choices.', response.content)
+        self.assertIn(b'1 is not one of the available choices.', response.content)
 
 
 class TestMultiSelectFormView(TestCase):
@@ -167,7 +167,7 @@ class TestMultiSelectFormView(TestCase):
         })
         request.cradmin_role = mock.MagicMock()
         response = SimpleMultiSelectFormView.as_view()(request)
-        self.assertEquals(response.content, 'Submitted: Hello world')
+        self.assertEquals(response.content, b'Submitted: Hello world')
 
     def test_form_valid_success_redirect(self):
         class DemoForm(forms.Form):

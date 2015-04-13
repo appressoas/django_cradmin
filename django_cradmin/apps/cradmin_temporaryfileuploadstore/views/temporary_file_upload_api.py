@@ -185,7 +185,7 @@ class UploadTemporaryFilesView(FormView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            requestdata = json.loads(self.request.body)
+            requestdata = json.loads(self.request.body.decode('utf-8'))
         except ValueError:
             return self.json_response(json.dumps({
                 'errormessage': 'Invalid JSON data in the request body.'

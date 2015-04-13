@@ -3,6 +3,7 @@ import mock
 import htmls
 from django.test import TestCase
 from django.test.client import RequestFactory
+import six
 
 from django_cradmin.viewhelpers import delete
 
@@ -19,7 +20,10 @@ class TestDelete(TestCase):
 
             def get_object(self):
                 obj = mock.MagicMock()
-                obj.__unicode__.return_value = 'Simple Test Item'
+                if six.PY2:
+                    obj.__unicode__.return_value = 'Simple Test Item'
+                else:
+                    obj.__str__.return_value = 'Simple Test Item'
                 obj._meta = mock.MagicMock()
                 obj._meta.verbose_name = 'TestModel'
                 return obj

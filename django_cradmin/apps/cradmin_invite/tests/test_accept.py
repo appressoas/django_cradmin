@@ -139,4 +139,4 @@ class TestAbstractAcceptInviteView(TestCase):
         request.user = create_user('testuser')
         token = self.__create_token()
         response = AcceptInviteView.as_view()(request, token=token.token)
-        self.assertEqual(response.content, 'OK')
+        self.assertEqual(response.content, b'OK')

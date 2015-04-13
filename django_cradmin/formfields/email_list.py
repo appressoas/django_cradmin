@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from future.builtins import str, bytes
 import re
 from django import forms
 from django.core import validators
@@ -50,7 +51,7 @@ class EmailListField(forms.Field):
             return value
         elif isinstance(value, tuple):
             return list(value)
-        elif isinstance(value, (unicode, str)):
+        elif isinstance(value, str):
             return self.string_to_list(value)
         else:
             raise TypeError('Invalid type for EmailListField: {}'.format(type(value)))
