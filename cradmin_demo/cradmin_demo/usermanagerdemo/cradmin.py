@@ -1,3 +1,4 @@
+from builtins import str
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -45,7 +46,7 @@ class UsermanagerCrAdminInstance(crinstance.BaseCrAdminInstance):
         Get a short title briefly describing the given ``role``.
         Remember that the role is a User.
         """
-        return unicode(role)
+        return str(role)
 
     @classmethod
     def matches_urlpath(cls, urlpath):
