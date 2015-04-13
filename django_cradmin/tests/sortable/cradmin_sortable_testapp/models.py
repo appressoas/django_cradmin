@@ -3,10 +3,12 @@ An example app using Sortable.
 """
 from __future__ import unicode_literals
 from django.db import models
+from future.utils import python_2_unicode_compatible
 from django_cradmin.sortable.models import SortableBase
 from django_cradmin.sortable.models import SortableManagerBase
 
 
+@python_2_unicode_compatible
 class ItemContainer(models.Model):
     """
     A test class for being a container for items that should be sorted.
@@ -19,8 +21,8 @@ class ItemContainer(models.Model):
         null=False,
         default='')
 
-    def __unicode__(self):
-        return u'Item container {}, {}'.format(self.id, self.name)
+    def __str__(self):
+        return 'Item container {}, {}'.format(self.id, self.name)
 
 
 class SortableItemManager(SortableManagerBase):
@@ -46,8 +48,8 @@ class SortableItem(SortableBase):
         default='')
     objects = SortableItemManager()
 
-    def __unicode__(self):
-        return u'Id: {}, Sort index: {}, Name: {}, {}'.format(
+    def __str__(self):
+        return 'Id: {}, Sort index: {}, Name: {}, {}'.format(
             self.id,
             self.sort_index,
             self.name,

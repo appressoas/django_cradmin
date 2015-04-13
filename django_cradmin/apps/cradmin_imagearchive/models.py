@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+from future.utils import python_2_unicode_compatible
 
 
 def archiveimage_upload_to(archiveimage, filename):
@@ -28,6 +29,7 @@ class ArchiveImageManager(models.Manager):
             role_content_type=ContentType.objects.get_for_model(role.__class__))
 
 
+@python_2_unicode_compatible
 class ArchiveImage(models.Model):
     objects = ArchiveImageManager()
 
@@ -93,7 +95,7 @@ class ArchiveImage(models.Model):
         if self.name:
             self.file_extension = os.path.splitext(self.name)[1]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def __repr__(self):
