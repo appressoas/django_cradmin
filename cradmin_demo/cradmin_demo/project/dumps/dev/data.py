@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from builtins import str
+from builtins import object
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -101,7 +106,7 @@ class BasicImportHelper(object):
 
 importer = None
 try:
-    import import_helper
+    from . import import_helper
     # We need this so ImportHelper can extend BasicImportHelper, although import_helper.py
     # has no knowlodge of this class
     importer = type("DynamicImportHelper", (import_helper.ImportHelper, BasicImportHelper ) , {} )()

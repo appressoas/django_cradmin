@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from cradmin_demo.webdemo.crapps.sharable_link.mixins import QuerysetForRoleMixin
 from django_cradmin.viewhelpers.detail import DetailView

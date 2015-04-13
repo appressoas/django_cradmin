@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from builtins import object
 from django_cradmin import crapp
 from django_cradmin.viewhelpers import objecttable
 from cradmin_demo.polls_demo import models

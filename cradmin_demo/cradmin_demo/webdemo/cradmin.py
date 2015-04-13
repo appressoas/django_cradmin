@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.template.defaultfilters import truncatechars
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu

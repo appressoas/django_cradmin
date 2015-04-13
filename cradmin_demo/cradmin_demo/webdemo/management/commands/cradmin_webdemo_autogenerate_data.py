@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from builtins import range
 import random
 from django.contrib.auth import get_user_model
 from django.contrib.webdesign import lorem_ipsum
@@ -35,7 +37,7 @@ class Command(BaseCommand):
         demomodels.Page.objects.filter(title__startswith=self.autoprefix).delete()
         site = demomodels.Site.objects.get(name='Demosite')
         pages = []
-        for x in xrange(100):
+        for x in range(100):
             pages.append(demomodels.Page(
                 site=site,
                 title=u'{} {}'.format(self.autoprefix, self._lorem_words(random.randint(1, 4))),
@@ -46,7 +48,7 @@ class Command(BaseCommand):
 
     def _lorem_shortpara(self, count):
         para = []
-        for x in xrange(count):
+        for x in range(count):
             para.append(self._lorem_words(random.randint(9, 15)) + '.')
         return ' '.join(para)
 
@@ -62,7 +64,7 @@ class Command(BaseCommand):
 
     def _create_extra_sites(self):
         sites = []
-        for site in xrange(120):
+        for site in range(120):
             site = demomodels.Site(
                 name=self._lorem_words(random.randint(3, 5)),
                 description=self._lorem_para(1))

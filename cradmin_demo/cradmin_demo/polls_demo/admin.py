@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.contrib import admin
 from cradmin_demo.polls_demo.models import Question, Choice
 

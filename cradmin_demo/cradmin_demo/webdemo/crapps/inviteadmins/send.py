@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django import forms
 from crispy_forms import layout
 from django.core.urlresolvers import reverse

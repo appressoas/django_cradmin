@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from builtins import object
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 
 
