@@ -17,7 +17,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_single_file(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1')
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1')
         })
         request.user = self.testuser
         response = UploadTemporaryFilesView.as_view()(request)
@@ -41,8 +41,8 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_multiple_files(self):
         request = self.factory.post('/test', {
             'file': [
-                SimpleUploadedFile('testfile1.txt', 'Test1'),
-                SimpleUploadedFile('testfile2.txt', 'Test2'),
+                SimpleUploadedFile('testfile1.txt', b'Test1'),
+                SimpleUploadedFile('testfile2.txt', b'Test2'),
             ]
         })
         request.user = self.testuser
@@ -60,7 +60,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_multiple_requests_for_same_collection(self):
         request1 = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1')
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1')
         })
         request1.user = self.testuser
         response1 = UploadTemporaryFilesView.as_view()(request1)
@@ -72,7 +72,7 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEquals(collection.files.count(), 1)
 
         request2 = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile2.txt', 'Test2'),
+            'file': SimpleUploadedFile('testfile2.txt', b'Test2'),
             'collectionid': collectionid
         })
         request2.user = self.testuser
@@ -84,7 +84,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_multiple_files_singlefile_mode(self):
         request1 = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'mode': 'singlefile'
         })
         request1.user = self.testuser
@@ -100,7 +100,7 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertTrue(os.path.exists(uploadedfile1_physical_file_path))
 
         request2 = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile2.txt', 'Test2'),
+            'file': SimpleUploadedFile('testfile2.txt', b'Test2'),
             'collectionid': collectionid,
             'mode': 'singlefile'
         })
@@ -117,7 +117,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_accept_ok(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'accept': 'text/plain,application/pdf'
         })
         request.user = self.testuser
@@ -136,7 +136,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_accept_invalid_single_file(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'accept': 'application/pdf'
         })
         request.user = self.testuser
@@ -157,7 +157,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
         request = self.factory.post('/test', {
             'collectionid': collection.id,
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'accept': 'application/pdf'
         })
         request.user = self.testuser
@@ -174,8 +174,8 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_accept_invalid_multiple_files(self):
         request = self.factory.post('/test', {
             'file': [
-                SimpleUploadedFile('testfile1.pdf', 'Test1'),
-                SimpleUploadedFile('testfile2.txt', 'Test2'),
+                SimpleUploadedFile('testfile1.pdf', b'Test1'),
+                SimpleUploadedFile('testfile2.txt', b'Test2'),
             ],
             'accept': 'application/pdf'
         })
@@ -190,7 +190,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_max_filename_length_not_truncated(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('abc.txt', 'Testcontent'),
+            'file': SimpleUploadedFile('abc.txt', b'Testcontent'),
             'max_filename_length': '7'
         })
         request.user = self.testuser
@@ -205,7 +205,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_max_filename_length_truncated(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('abc.txt', 'Testcontent'),
+            'file': SimpleUploadedFile('abc.txt', b'Testcontent'),
             'max_filename_length': '6'
         })
         request.user = self.testuser
@@ -221,8 +221,8 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_unique_filenames(self):
         request = self.factory.post('/test', {
             'file': [
-                SimpleUploadedFile('abc.txt', 'Testcontent1'),
-                SimpleUploadedFile('abc.txt', 'Testcontent2'),
+                SimpleUploadedFile('abc.txt', b'Testcontent1'),
+                SimpleUploadedFile('abc.txt', b'Testcontent2'),
             ],
             'unique_filenames': True
         })
@@ -247,8 +247,8 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_unique_filenames_and_max_filename_length(self):
         request = self.factory.post('/test', {
             'file': [
-                SimpleUploadedFile('t'*50, 'Testcontent1'),
-                SimpleUploadedFile('t'*50, 'Testcontent2'),
+                SimpleUploadedFile('t'*50, b'Testcontent1'),
+                SimpleUploadedFile('t'*50, b'Testcontent2'),
             ],
             'unique_filenames': True,
             'max_filename_length': 45
@@ -279,7 +279,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_form_invalid_collectionid_not_number(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'collectionid': 'invalid'
         })
         request.user = self.testuser
@@ -290,7 +290,7 @@ class TestUploadTemporaryFilesView(TestCase):
 
     def test_post_form_collectionid_does_not_exist(self):
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'collectionid': '10001'
         })
         request.user = self.testuser
@@ -302,7 +302,7 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_form_collection_not_owned_by_user(self):
         collection = TemporaryFileCollection.objects.create(user=self.testuser)
         request = self.factory.post('/test', {
-            'file': SimpleUploadedFile('testfile1.txt', 'Test1'),
+            'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
             'collectionid': collection.id
         })
         request.user = create_user('otheruser')
