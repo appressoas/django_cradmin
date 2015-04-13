@@ -49,8 +49,8 @@ def truncate_filename(filename, maxlength, ellipsis='...'):
         return filename[-maxlength:]
     else:
         max_length_noellipsis = maxlength - len(ellipsis)
-        startlength = int(math.floor(old_div(max_length_noellipsis,2.0)))
-        endlength = int(math.ceil(old_div(max_length_noellipsis,2.0)))
+        startlength = int(math.floor(old_div(max_length_noellipsis, 2.0)))
+        endlength = int(math.ceil(old_div(max_length_noellipsis, 2.0)))
         start = filename[0:startlength]
         end = filename[-endlength:]
         return u'{}{}{}'.format(start, ellipsis, end)

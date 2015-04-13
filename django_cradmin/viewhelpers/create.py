@@ -2,9 +2,11 @@ from __future__ import unicode_literals
 from future import standard_library
 standard_library.install_aliases()
 from builtins import str
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
 import urllib.parse
+import urllib.error
 from django.utils.translation import ugettext_lazy as _
+
 from django.views.generic import CreateView as DjangoCreateView
 
 from django_cradmin.crispylayouts import PrimarySubmit
