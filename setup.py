@@ -23,7 +23,8 @@ setup(
         'Django',
         'django-multiupload',
         'Jinja2',
-        'pytz'
+        'pytz',
+        'future'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
