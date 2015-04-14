@@ -108,3 +108,27 @@ class ArchiveImage(models.Model):
         return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', {
             'archiveimage': self
         })
+
+
+class ArchiveImageVariant(ArchiveImage):
+    """
+    An :class:`ArchiveImage` is the originally uploaded raw image, while an
+    ArchiveImageVariant is an edit of the image.
+
+    When you create foreign keys to ArchiveImage, you will typically want to create
+    an ArchiveImageVariant if you want to allow your users to edit the original
+    image (crop, apply filters, etc.).
+    """
+    archiveimage = models.ForeignKey(ArchiveImage)
+
+    #: The X coordinate to start the crop at. Defaults to 0.
+    crop_x = models.PositiveIntegerField(default=0)
+
+    #: The Y coordinate to start the crop at. Defaults to 0.
+    crop_y = models.PositiveIntegerField(default=0)
+
+    #: The width to crop the image to. Defaults to None (which means use the width of the original image).
+    crop_width = models.PositiveIntegerField()
+
+    #: The height to crop the image to. Defaults to None (which means use the height of the original image).
+    crop_height = models.PositiveIntegerField()
