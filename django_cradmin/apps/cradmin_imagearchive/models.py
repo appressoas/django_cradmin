@@ -119,7 +119,7 @@ class ArchiveImageVariant(ArchiveImage):
     an ArchiveImageVariant if you want to allow your users to edit the original
     image (crop, apply filters, etc.).
     """
-    archiveimage = models.ForeignKey(ArchiveImage)
+    archiveimage = models.ForeignKey(ArchiveImage, related_name='archiveimagevariant_set')
 
     #: The X coordinate to start the crop at. Defaults to 0.
     crop_x = models.PositiveIntegerField(default=0)
