@@ -9,7 +9,6 @@ class EmailAuthBackend(object):
     Custom Authentication backend for using `email` as your login-field on any ``User``-model. This will also work with
     the default django ``User``-model, as it does not require ``USERNAME_FIELD`` to be ``email``.
     """
-    __user_model = auth.get_user_model()
 
     def authenticate(self, email, password):
         """
@@ -42,8 +41,8 @@ class EmailAuthBackend(object):
         :return: the ``User`` matching the given ``user_id`` if it exists, ``None`` if not.
         """
         try:
-            return self.__user_model.objects.get(pk=user_id)
-        except self.__user_model.DoesNotExist:
+            return auth.get_user_model().objects.get(pk=user_id)
+        except auth.get_user_model().DoesNotExist:
             return None
 
     def __get_user_from_email(self, email):
@@ -55,7 +54,8 @@ class EmailAuthBackend(object):
         :param email: the ``email``-field of a ``User``
         :return: the ``User`` matching the given ``email`` if it exists, ``None`` if not.
         """
+        user_model = auth.get_user_model()
         try:
-            return self.__user_model.objects.get(email=email)
-        except self.__user_model.DoesNotExist:
+            return user_model.objects.get(email=email)
+        except user_model.DoesNotExist:
             return None
