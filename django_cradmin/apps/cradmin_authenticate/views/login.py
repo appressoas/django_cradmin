@@ -53,6 +53,13 @@ class AbstractLoginForm(forms.Form):
         self.model_sanity_check()
         super(AbstractLoginForm, self).__init__(*args, **kwargs)
 
+    def authenticate(self, **kwargs):
+        """
+        Wrapper around ``django.contrib.auth.authenticate`` to make
+        it easy for subclasses to add extra kwargs.
+        """
+        return authenticate(**kwargs)
+
     def clean(self):
         """
         validate the form, and execute :func:`django.contrib.auth.authenticate` to login the user if form is valid.
@@ -60,10 +67,11 @@ class AbstractLoginForm(forms.Form):
         username = self.cleaned_data.get(self.username_field)
         password = self.cleaned_data.get('password')
         if username and password:
-            authenticated_user = authenticate(**{
+            authenticated_user = self.authenticate(**{
                 self.username_field: username,
                 'password': password
             })
+
             if authenticated_user is None:
                 raise forms.ValidationError(self.error_message_invalid_login)
             elif not authenticated_user.is_active:
