@@ -25,7 +25,7 @@ class SortableManagerBase(models.Manager):
         if lastitem:
             return lastitem.sort_index + 1
         else:
-            return 1
+            return 0
 
     def set_newitem_sort_index_to_last(self, item):
         """
@@ -41,6 +41,20 @@ class SortableManagerBase(models.Manager):
                              'item - thus the ValueError.')
         item.sort_index = self._get_last_sortindex_within_parentobject(item)
 
+    def __increase_sort_index_in_range(self, queryset, items, from_index, to_index, distance=1):
+        """
+        Used by sort_before to increase the sort_index of all items in the given range
+        """
+        increase_index_for_items = [itm.id for itm in items[from_index:to_index]]
+        queryset.filter(id__in=increase_index_for_items).update(sort_index=models.F('sort_index') + distance)
+
+    def __decrease_sort_index_in_range(self, queryset, items, from_index, to_index, distance=1):
+        """
+        Used by sort_before to decrease the sort_index of all items in the given range
+        """
+        decrease_index_for_items = [itm.id for itm in items[from_index:to_index]]
+        queryset.filter(id__in=decrease_index_for_items).update(sort_index=models.F('sort_index') - distance)
+
     def sort_before(self, item, sort_before_id):
         """
         Sort a given item before the item with id `sort_before_id`,
@@ -51,50 +65,54 @@ class SortableManagerBase(models.Manager):
         """
         queryset = self._get_siblings_queryset(item)
         items = queryset.all()
-
         # Get the current position for the item to sort before
-        before_item_found_index = 0
-        # Get the current position for the item to move
-        item_current_index = 0
-        # Loop over all items to find `before_item_found_index` and `item_current_index`,
-        # and to set the new value of sort_index on the item we are moving
-        for i in range(0, len(items), 1):
-            cur_item = items[i]
-            # sorting last is a special case
-            if sort_before_id is None and i == len(items) - 1:
-                item.sort_index = cur_item.sort_index
+        sort_before_index = None
+        original_item_index = None
+
+        for index in xrange(0, len(items)):
+            cur_item = items[index]
+            if index < cur_item.sort_index:
+                # Found gap, need to move rest of list <size-of-gap> step(s) down
+                self.__decrease_sort_index_in_range(queryset, items, index, len(items), cur_item.sort_index-index)
+                items = queryset.all()
+            if index > cur_item.sort_index:
+                # Found duplicate sort_index, need to move rest of list one step up
+                self.__increase_sort_index_in_range(queryset, items, index, len(items))
+                items = queryset.all()
+
+            if item.id == cur_item.id:
+                original_item_index = cur_item.sort_index
+
+            elif sort_before_id is not None and cur_item.id == sort_before_id:
+                sort_before_index = cur_item.sort_index
+
+        item.sort_index = None
+        if sort_before_index is None:
+            # Place last.
+            if original_item_index is not None:
+                # fill gap left when moving item to end
+                self.__decrease_sort_index_in_range(queryset, items, original_item_index+1, len(items))
+                item.sort_index = len(items)-1
+            else:
+                item.sort_index = len(items)
+            item.save()
+        else:
+            # Place somewhere not last
+            if original_item_index is None:
+                # new item, move rest of list one step up, and place the new item
+                self.__increase_sort_index_in_range(queryset, items, sort_before_index, len(items))
+                item.sort_index = sort_before_index
                 item.save()
-                before_item_found_index = i + 1
-            # set new sort_order for item
-            elif cur_item.id == sort_before_id:
-                item.sort_index = cur_item.sort_index
+            elif original_item_index < sort_before_index:
+                # Move up, and fill gap left behind by moving items in the gap down
+                self.__decrease_sort_index_in_range(queryset, items, original_item_index+1, sort_before_index)
+                item.sort_index = sort_before_index-1
                 item.save()
-                before_item_found_index = i
-            # set the current item index
-            if cur_item.id == item.id:
-                item_current_index = i
-
-        # first move if item should be last - the special case
-        if sort_before_id is None:
-            add_on_index_for_items = []
-            for itm in items[item_current_index:before_item_found_index]:
-                if itm != item:
-                    add_on_index_for_items.append(itm.id)
-            queryset.filter(id__in=add_on_index_for_items).update(sort_index=models.F('sort_index') - 1)
-
-        elif item_current_index > before_item_found_index:
-            # Moving item up
-            add_on_index_for_items = []
-            for itm in items[before_item_found_index:item_current_index]:
-                add_on_index_for_items.append(itm.id)
-            queryset.filter(id__in=add_on_index_for_items).update(sort_index=models.F('sort_index') + 1)
-
-        elif item_current_index < before_item_found_index:
-            # Moving item down
-            subtract_on_index_for_items = []
-            for itm in items[item_current_index:before_item_found_index]:
-                subtract_on_index_for_items.append(itm.id)
-            queryset.filter(id__in=subtract_on_index_for_items).update(sort_index=models.F('sort_index') - 1)
+            elif original_item_index > sort_before_index:
+                # Move down, and fill/create gap by moving other objects up
+                self.__increase_sort_index_in_range(queryset, items, sort_before_index, original_item_index)
+                item.sort_index = sort_before_index
+                item.save()
 
     def sort_last(self, item):
         """
@@ -106,8 +124,8 @@ class SortableManagerBase(models.Manager):
 
 
 def validate_sort_index(value):
-    if value < 1:
-        raise ValidationError(u'Sort index must be 1 or higher.')
+    if value < 0:
+        raise ValidationError(u'Sort index must be 0 or higher.')
 
 
 class SortableBase(models.Model):
@@ -115,9 +133,10 @@ class SortableBase(models.Model):
     Used with :class:`.SortableManagerBase` to make models sortable.
     """
 
-    #: Sort index - ``1`` or higher.
+    #: Sort index - ``0`` or higher.
     sort_index = models.PositiveIntegerField(
-        blank=False, null=False,
+        blank=True, null=True,
+        default=None,
         verbose_name='index',
         validators=[validate_sort_index]
     )
