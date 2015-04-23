@@ -850,6 +850,7 @@ class ObjectTableView(ListView):
         return unicode(obj)
 
     def _get_use_this_hidden_attribute(self):
+        pk = self.request.GET['foreignkey_selected_value']
         obj = get_object_or_404(self.get_queryset_for_role(self.request.cradmin_role), pk=pk)
         data = json.dumps({
             'value': obj.pk,
