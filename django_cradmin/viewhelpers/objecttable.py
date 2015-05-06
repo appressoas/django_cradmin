@@ -836,10 +836,15 @@ class ObjectTableView(ListView):
                 yield key, value
 
     def _get_pager_extra_querystring(self):
-        querystring = self.request.GET.copy()
-        if 'page' in querystring:
-            del querystring['page']
-        if querystring:
+        querystring_dict = self.request.GET.copy()
+
+        if 'page' in querystring_dict:
+            del querystring_dict['page']
+
+        if querystring_dict:
+            querystring = {}
+            for k, v in querystring_dict.iteritems():
+                querystring[k] = v
             return urlencode(querystring)
         else:
             return ''
