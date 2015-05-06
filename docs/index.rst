@@ -92,6 +92,15 @@ Documentation
    viewhelpers_objecttable
 
 
+************
+Releasenotes
+************
+
+.. toctree::
+    :maxdepth: 1
+
+    releasenoteslisting
+
 ******************
 Indices and tables
 ******************
