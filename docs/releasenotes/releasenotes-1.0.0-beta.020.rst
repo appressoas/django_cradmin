@@ -1,6 +1,12 @@
 ##########################################
-Django cradmin 1.0.0-beta.019 releasenotes
+Django cradmin 1.0.0-beta.020 releasenotes
 ##########################################
+
+
+************
+What is new?
+************
+Python 3.4+ support. We also support Python 2.7.
 
 
 **********
