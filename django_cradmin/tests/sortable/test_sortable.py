@@ -39,37 +39,37 @@ class TestSortableItem(test.TestCase):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_last(i1)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i2.id,i3.id,i4.id,i5.id,i6.id,i1.id])
+        self.assertEquals(reordered, [i2.id, i3.id, i4.id, i5.id, i6.id, i1.id])
 
     def test_sort_item_3_last(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_last(i3)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i1.id,i2.id,i4.id,i5.id,i6.id,i3.id])
+        self.assertEquals(reordered, [i1.id, i2.id, i4.id, i5.id, i6.id, i3.id])
 
     def test_sort_last_item_first(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i6, i1.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i6.id,i1.id,i2.id,i3.id,i4.id,i5.id])
+        self.assertEquals(reordered, [i6.id, i1.id, i2.id, i3.id, i4.id, i5.id])
 
     def test_sort_item_3_first(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i3, i1.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i3.id,i1.id,i2.id,i4.id,i5.id,i6.id])
+        self.assertEquals(reordered, [i3.id, i1.id, i2.id, i4.id, i5.id, i6.id])
 
     def test_sort_item_move_first_before_id_4(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i1, i4.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i2.id,i3.id,i1.id,i4.id,i5.id,i6.id])
+        self.assertEquals(reordered, [i2.id, i3.id, i1.id, i4.id, i5.id, i6.id])
 
     def test_sort_item_move_second_before_id_4(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
         SortableItem.objects.sort_before(i2, i4.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i1.id,i3.id,i2.id,i4.id,i5.id,i6.id])
+        self.assertEquals(reordered, [i1.id, i3.id, i2.id, i4.id, i5.id, i6.id])
 
     def test_sort_item_move_second_before_id_4_in_allready_reordered_list(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
@@ -77,7 +77,7 @@ class TestSortableItem(test.TestCase):
         # now list is [i2,i3,i4,i5,i6,i1]
         SortableItem.objects.sort_before(i2, i4.id)
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
-        self.assertEquals(reordered, [i3.id,i2.id,i4.id,i5.id,i6.id,i1.id])
+        self.assertEquals(reordered, [i3.id, i2.id, i4.id, i5.id, i6.id, i1.id])
 
     def test_set_sort_index_to_last_no_siblings(self):
         container = self._create_container()
@@ -174,6 +174,7 @@ class TestSortableItem(test.TestCase):
 
         for object in SortableItem.objects.all():
             self.assertTrue(object.sort_index >= 0)
+
 
 class TestRepairSortable(test.TestCase):
     def setUp(self):
@@ -279,7 +280,7 @@ class TestRepairSortable(test.TestCase):
         container = self._create_container()
         i1 = self._create_item(container, 0)
         i2 = self._create_item(container, 0)
-        i3 = self._create_item(container, 1)
+        self._create_item(container, 1)
 
         SortableItem.objects.sort_before(i2, i1.id)
         indexes = [si.sort_index for si in SortableItem.objects.all().order_by('sort_index')]
@@ -289,7 +290,7 @@ class TestRepairSortable(test.TestCase):
         container = self._create_container()
         i1 = self._create_item(container, 0)
         i2 = self._create_item(container, 1)
-        i3 = self._create_item(container, 1)
+        self._create_item(container, 1)
 
         SortableItem.objects.sort_before(i2, i1.id)
         indexes = [si.sort_index for si in SortableItem.objects.all().order_by('sort_index')]
