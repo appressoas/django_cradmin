@@ -72,7 +72,7 @@ class SortableManagerBase(models.Manager):
         sort_before_index = None
         original_item_index = None
 
-        for index in xrange(0, len(items)):
+        for index in range(0, len(items)):
             cur_item = items[index]
             if index < cur_item.sort_index:
                 # Found gap, need to move rest of list <size-of-gap> step(s) down

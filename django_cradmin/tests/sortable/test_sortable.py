@@ -187,7 +187,7 @@ class TestRepairSortable(test.TestCase):
     def _create_items(self, num_items, container=None, first_sort_index=0):
         container = container or self._create_container()
         items = []
-        for i in xrange(first_sort_index, num_items):
+        for i in range(first_sort_index, num_items):
             items.append(self._create_item(container, i))
         return items
 
