@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from builtins import str
 from builtins import str as textstr
 from builtins import object
 from collections import OrderedDict
@@ -843,7 +844,7 @@ class ObjectTableView(ListView):
 
         if querystring_dict:
             querystring = {}
-            for k, v in querystring_dict.iteritems():
+            for k, v in querystring_dict.items():
                 querystring[k] = v
             return urlencode(querystring)
         else:
