@@ -171,7 +171,8 @@
                                     </td>
                                 {% endif %}
                                 {% for column, rendered_cell in row.cells %}
-                                    <td class="{{ column.get_normalcell_css_class_string }}">
+                                    <td class="{{ column.get_normalcell_css_class_string }}"
+                                            style="{{ column.get_normalcell_css_style }}">
                                         {{ rendered_cell }}
                                     </td>
                                 {% endfor %}

@@ -141,6 +141,21 @@ class Column(object):
         css_classes = self.get_normalcells_css_classes() + self.get_allcells_css_classes()
         return ' '.join(css_classes)
 
+    def get_normalcell_css_style(self):
+        """
+        Get the css styles of the header cell of the column.
+        Defaults to setting :meth:`.get_column_width` as a css style.
+
+        You normally want to avoid setting styles with this and use
+        :meth:`.get_normalcell_css_class_string` instead, but this is provided for
+        those cases where setting the style attribute is the only decent solution.
+        """
+        column_width = self.get_column_width()
+        if column_width:
+            return 'width: {}'.format(column_width)
+        else:
+            return ''
+
     def get_allcells_css_classes(self):
         """
         Get css classes that should be added to all cells in this
