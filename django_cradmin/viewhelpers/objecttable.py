@@ -5,6 +5,7 @@ from collections import OrderedDict
 import json
 import re
 import logging
+import warnings
 from xml.sax.saxutils import quoteattr
 from django import forms
 from django.shortcuts import get_object_or_404
@@ -241,25 +242,76 @@ class Column(object):
         Determine if the default ordering for the field shown in this column is
         ascending.
 
+        .. deprecated:: 1.0.0-beta.019
+
+            Replaced by :meth:`.get_default_ordering`.
+
         Returns:
             ``True`` if the default ordering is ascending.
             ``False`` if the default ordering is descending.
             ``None`` if no default ordering is configured for this column.
+        """
+        raise NotImplementedError('get_default_order_is_ascending() has been '
+                                  'replaced by get_default_ordering().')
+
+    def get_default_ordering(self):
+        """
+        Get default ordering for this column.
+
+        Tries to determine a sane default using the following algorithm:
+
+        1. Check if :obj:`~.Column.orderingfield` is defined. If it is,
+           check if it is part of ``model._meta.ordering``, and set default
+           ordering accordingly. If it is not in ``model._meta.ordering``,
+           return ``None`` (no default ordering).
+        2. Same as (1), but using :obj:`~.Column.modelfield`.
+        3. Raise NotImplementedError - rarely happens since most column types
+           eighter have overridden this method (if sorting makes not sense),
+           or have at least :obj:`~.Column.modelfield` defined.
+
+        Returns:
+            A string describing the default ordering of this column:
+
+            - ``"asc"``: If the default ordering is ascending.
+            - ``"desc"``: If the default ordering is descending.
+            - ``None``: If we should not apply default ordering.
         """
         orderingfield = self.orderingfield or self.modelfield
         if orderingfield:
             default_ordering = self.view.model._meta.ordering
             descending_orderingfield = '-{}'.format(orderingfield)
             if orderingfield in default_ordering:
-                return True
+                return 'asc'
             elif descending_orderingfield in default_ordering:
-                return False
+                return 'desc'
             else:
                 return None
         else:
             raise NotImplementedError(
                 'You must return False from is_sortable(), override '
-                'get_default_order_is_ascending(), set orderingfield or set modelfield.')
+                'get_default_ordering(), set orderingfield or set modelfield.')
+
+    def get_and_validate_default_ordering(self):
+        """
+        Used internally by the framework. Should not be overridden.
+        """
+        try:
+            default_ordering = self.get_default_ordering()
+            if default_ordering in ('asc', 'desc', None):
+                return default_ordering
+            else:
+                raise ValueError('get_default_ordering() must return one of: "asc", "desc", None.')
+        except NotImplementedError:
+            # Temporary fallback for the deprecated get_default_order_is_ascending() method.
+            warnings.warn("get_default_order_is_ascending() has been replaced by get_default_ordering().",
+                          DeprecationWarning)
+            order_ascending = self.get_default_order_is_ascending()
+            if order_ascending is None:
+                return None
+            elif order_ascending is True:
+                return 'asc'
+            else:
+                return 'desc'
 
 
 class PlainTextColumn(Column):
@@ -894,11 +946,11 @@ class ObjectTableView(ListView):
         orderinglist = []
         for columnindex, columnobject in enumerate(self._get_columnobjects()):
             if columnobject.is_sortable():
-                order_ascending = columnobject.get_default_order_is_ascending()
-                if order_ascending is not None:
+                default_ordering = columnobject.get_and_validate_default_ordering()
+                if default_ordering:
                     orderinglist.append(ColumnOrderingInfo.create_orderingstringentry(
                         columnindex=columnindex,
-                        order_ascending=order_ascending
+                        order_ascending=default_ordering == 'asc'
                     ))
         return '.'.join(orderinglist)
 

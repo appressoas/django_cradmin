@@ -30,8 +30,8 @@ class EmailColumn(objecttable.MultiActionColumn):
 class CreatedDatetimeColumn(objecttable.DatetimeColumn):
     modelfield = 'created_datetime'
 
-    def get_default_order_is_ascending(self):
-        return False
+    def get_default_ordering(self):
+        return None
 
 
 class ExpirationDatetimeColumn(objecttable.DatetimeColumn):
