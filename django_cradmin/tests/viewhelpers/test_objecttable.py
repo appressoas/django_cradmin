@@ -568,3 +568,42 @@ class TestObjectTableView(TestCase):
         self.assertEquals(
             selector.one('#objecttableview-table>tbody>tr>td').alltext_normalized,
             'Item Two')
+
+    def test_show_column_headers(self):
+        testmodels.SomeItem.objects.create(name='Item One')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+
+        self.assertTrue(selector.exists('#objecttableview-table>thead'))
+        self.assertFalse(selector.exists('#objecttableview-table>thead.sr-only'))
+
+    def test_hide_column_headers(self):
+        testmodels.SomeItem.objects.create(name='Item One')
+
+        class MyObjectTableView(objecttable.ObjectTableView):
+            model = testmodels.SomeItem
+            columns = ['name']
+            hide_column_headers = True
+
+            def get_queryset_for_role(self, role):
+                return testmodels.SomeItem.objects.all()
+
+        request = self.factory.get('/')
+        self._mock_request(request)
+        response = MyObjectTableView.as_view()(request)
+        response.render()
+        selector = htmls.S(response.content)
+
+        self.assertTrue(selector.exists('#objecttableview-table>thead'))
+        self.assertTrue(selector.exists('#objecttableview-table>thead.sr-only'))

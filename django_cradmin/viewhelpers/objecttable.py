@@ -749,6 +749,11 @@ class ObjectTableView(ListView):
     #: Enable previews? See :meth:`.get_enable_previews`. Defaults to ``False``.
     enable_previews = False
 
+    #: Hide column headers? Setting this to ``True`` adds the ``sr-only`` class
+    #: to the thead-element, which makes the columns hide, but still available for
+    #: accessibility purposes.
+    hide_column_headers = False
+
     def get_no_items_message(self):
         """
         Get the message to show when there are no items.
@@ -928,6 +933,7 @@ class ObjectTableView(ListView):
         context['enable_search'] = self.enable_search()
         context['enable_previews'] = self.get_enable_previews()
         context['cradmin_hide_menu'] = self.hide_menu
+        context['hide_column_headers'] = self.hide_column_headers
         if self.enable_search():
             context['current_search'] = self.current_search
             context['search_hidden_fields'] = self._get_search_hidden_fields()
