@@ -10,9 +10,9 @@ class SortableModelAdmin(admin.ModelAdmin):
     Used just like ``django.contrib.admin.ModelAdmin``.
     """
 
-    #: If this is ``True`` (the default), we make the ``sort_index`` field
+    #: If this is ``True`` , we make the ``sort_index`` field
     #: read-only. Override this to avoid this magic (typically for debugging).
-    make_sort_index_readonly = True
+    make_sort_index_readonly = False
 
     def save_model(self, request, obj, form, change):
         """
