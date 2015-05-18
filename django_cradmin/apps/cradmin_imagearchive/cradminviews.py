@@ -117,8 +117,8 @@ class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
     roleid_field = 'role'
 
-    def get_form(self, *args, **kwargs):
-        form = super(ArchiveImageCreateUpdateMixin, self).get_form(*args, **kwargs)
+    def get_form(self, form_class=None):
+        form = super(ArchiveImageCreateUpdateMixin, self).get_form(form_class=form_class)
         form.fields['image'].widget = filewidgets.ImageWidget(
             preview_width=300, preview_height=300, clearable=False)
         return form

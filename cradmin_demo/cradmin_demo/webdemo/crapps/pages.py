@@ -110,8 +110,8 @@ class PageCreateUpdateMixin(object):
             layout.Div('body', css_class="cradmin-focusfield"),
         ]
 
-    def get_form(self, *args, **kwargs):
-        form = super(PageCreateUpdateMixin, self).get_form(*args, **kwargs)
+    def get_form(self, form_class=None):
+        form = super(PageCreateUpdateMixin, self).get_form(form_class=form_class)
         # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
         form.fields['body'].widget = AceMarkdownWidget()
         preview = '<p class="text-muted">(No image selected)</p>'
