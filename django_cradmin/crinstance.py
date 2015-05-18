@@ -234,11 +234,13 @@ class BaseCrAdminInstance(object):
         """
         return self.reverse_url(appname, viewname=crapp.INDEXVIEW_NAME, roleid=roleid)
 
-    def rolefrontpage_url(self, roleid):
+    def rolefrontpage_url(self, roleid=None):
         """
         Returns the URL that the user should be redirected to
         after selecting a role.
         """
+        if roleid is None:
+            roleid = self.get_roleid(self.request.cradmin_role)
         return self.appindex_url(self.rolefrontpage_appname, roleid=roleid)
 
     def roleselectview_url(self):
