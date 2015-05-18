@@ -14,19 +14,22 @@ class MenuItem(object):
     """
     template_name = 'django_cradmin/menuitem.django.html'
 
-    def __init__(self, label, url, icon='circle-o', active=False, attributes={}):
+    def __init__(self, label, url, icon='circle-o', active=False, attributes={}, open_new_window=False):
         """
         Parameters:
             label: A label shown in the menu.
             url: The url to go to whem the user clicks the menu item.
             icon: The name of a font-awesome icon (E.g.: "database", "user", ...).
             active: Should be ``True`` if the menuitem should be styled as active.
+            open_new_window: Set this to ``True`` to set the ``target="_blank"``
+                attribute on the menu link.
         """
         self.label = label
         self.url = url
         self.icon = icon
         self.attributes = attributes
         self.active = active
+        self.open_new_window = open_new_window
 
     def render(self):
         return render_to_string(self.template_name, {

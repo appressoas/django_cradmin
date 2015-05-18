@@ -1,5 +1,7 @@
 <li class="{% if menuitem.is_active %}cradmin_menu_activeitem{% endif %}">
-    <a href="{{ menuitem.url }}" title="{{ menuitem.description }}">
+    <a href="{{ menuitem.url }}"
+            title="{{ menuitem.description }}"
+            {% if menuitem.open_new_window %}target="_blank"{% endif %}>
         {% if menuitem.icon %}
             <span class="fa fa-{{ menuitem.icon }}"></span>
         {% else %}
