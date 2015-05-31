@@ -1,16 +1,16 @@
 include README.rst
-recursive-include devilry *.po
-recursive-include devilry *.mo
-recursive-include devilry *.js
-recursive-include devilry *.css
-recursive-include devilry *.html
-recursive-include devilry *.txt
-recursive-include devilry *.png
-recursive-include devilry *.gif
-recursive-include devilry *.json
-recursive-include devilry *.woff
-recursive-include devilry *.woff2
-recursive-include devilry *.svg
-recursive-include devilry *.otf
+recursive-include django_cradmin *.po
+recursive-include django_cradmin *.mo
+recursive-include django_cradmin *.js
+recursive-include django_cradmin *.css
+recursive-include django_cradmin *.html
+recursive-include django_cradmin *.txt
+recursive-include django_cradmin *.png
+recursive-include django_cradmin *.gif
+recursive-include django_cradmin *.json
+recursive-include django_cradmin *.woff
+recursive-include django_cradmin *.woff2
+recursive-include django_cradmin *.svg
+recursive-include django_cradmin *.otf
 prune django_cradmin/static/django_cradmin/node_modules
 prune django_cradmin/static/django_cradmin/bower_components
