@@ -159,6 +159,8 @@ class ArchiveImageUpdateView(ArchiveImagesQuerySetForRoleMixin, ArchiveImageCrea
     """
     View used to create edit existing images.
     """
+    fields = ['image', 'name', 'description']
+
     def get_field_layout(self):
         return [
             layout.Div('image', css_class="cradmin-focusfield"),
