@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django_cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-01 20:08+0000\n"
+"POT-Creation-Date: 2015-06-15 09:24+0000\n"
 "PO-Revision-Date: 2015-02-01 21:10+0100\n"
 "Last-Translator: Espen Angell Kristiansen <post@espenak.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,73 +18,169 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: apps/cradmin_imagearchive/cradminviews.py:26
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:7
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:12
+msgid "Activate account error"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/email/body.django.txt:2
+#, python-format
+msgid "Click the link below to activate your %(sitename)s account, %(user)s."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/email/subject.django.txt:2
+#, python-format
+msgid "Activate your %(sitename)s account"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/messages/activation-link-expired.django.html:2
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "This account activation link has expired."
+msgstr "Denne kontoen er inaktiv."
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/messages/activation-link-invalid.django.html:2
+msgid ""
+"Invalid account activation URL. Are you sure you copied the entire URL from "
+"the email?"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_activate_account/templates/cradmin_activate_account/messages/success.django.html:2
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "Your account is now active."
+msgstr "Denne kontoen er inaktiv."
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:7
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:11
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:197
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/baseviews/accept.py:62
+msgid "Sign in"
+msgstr "Logg inn"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:20
+msgid "Forgot your password?"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/templates/cradmin_authenticate/logout.django.html:5
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/templates/cradmin_authenticate/logout.django.html:9
+msgid "Signed out"
+msgstr "Logget ut"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/templates/cradmin_authenticate/logout.django.html:14
+msgid "Sign back in"
+msgstr "Logg inn igjen"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:36
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:46
+msgid "Password"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:42
+msgid "This account is inactive."
+msgstr "Denne kontoen er inaktiv."
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:94
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:96
+#, fuzzy
+#| msgid "name"
+msgid "Username"
+msgstr "navn"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:97
+#, fuzzy
+#| msgid "Your email and password didn't match. Please try again."
+msgid "Your username and password didn't match. Please try again."
+msgstr "Ugyldig epost/passord. Venligst prøv igjen."
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:122
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:124
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/views/begin.py:47
+msgid "Email"
+msgstr "Epost"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_authenticate/views/login.py:125
+msgid "Your email and password didn't match. Please try again."
+msgstr "Ugyldig epost/passord. Venligst prøv igjen."
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_generic_token_with_metadata/models.py:224
+#, fuzzy
+#| msgid "Create"
+msgid "Created"
+msgstr "Opprett"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_generic_token_with_metadata/models.py:230
+msgid "Expires"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:28
 msgid "Edit"
 msgstr "Rediger"
 
-#: apps/cradmin_imagearchive/cradminviews.py:29
-#: templates/django_cradmin/viewhelpers/delete.django.html:26
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:31
+#: libs/django_cradmin/django_cradmin/viewhelpers/delete.py:21
 msgid "Delete"
 msgstr "Slett"
 
-#: apps/cradmin_imagearchive/cradminviews.py:42
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:44
 msgid "Use this"
 msgstr "Bruk dette"
 
-#: apps/cradmin_imagearchive/cradminviews.py:60 viewhelpers/create.py:40
-#: viewhelpers/update.py:19
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:62
+#: libs/django_cradmin/django_cradmin/viewhelpers/create.py:46
+#: libs/django_cradmin/django_cradmin/viewhelpers/update.py:21
 msgid "Preview"
 msgstr "Forhåndsvis"
 
-#: apps/cradmin_imagearchive/cradminviews.py:85
-#: apps/cradmin_imagearchive/cradminviews.py:108
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:87
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:110
 msgid "Add image"
 msgstr "Legg til bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:86
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:88
 msgid "Bulk upload"
 msgstr "Legg til mange"
 
-#: apps/cradmin_imagearchive/cradminviews.py:131
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:133
 msgid "Upload and select"
 msgstr "Last opp og velg"
 
-#: apps/cradmin_imagearchive/cradminviews.py:132
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:20
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:134
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/filewidgets/imagewidget.django.html:20
 msgid "Upload image"
 msgstr "Last opp bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:133
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:135
 msgid "Upload and continue editing"
 msgstr "Last opp og fortsett redigering"
 
-#: apps/cradmin_imagearchive/cradminviews.py:153
-#: apps/cradmin_imagearchive/cradminviews.py:254
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:155
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:258
 #, python-format
 msgid "Uploaded %(what)s."
 msgstr "Lastet opp %(what)s."
 
-#: apps/cradmin_imagearchive/cradminviews.py:183
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:187
 msgid "Upload images by dragging and dropping them here"
 msgstr "Last opp bilder ved å dra og slippe de her"
 
-#: apps/cradmin_imagearchive/cradminviews.py:184
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:188
 msgid "Invalid filetype. You can only upload images."
 msgstr "Ygyldig filtype. Du kan kun laste opp bilder."
 
-#: apps/cradmin_imagearchive/cradminviews.py:185
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:189
 msgid "... or select images"
 msgstr "... eller velg bilder"
 
-#: apps/cradmin_imagearchive/cradminviews.py:186
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:190
 msgid "Select images ..."
 msgstr "Velg bilder ..."
 
-#: apps/cradmin_imagearchive/cradminviews.py:188
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:192
 msgid "Upload at least one image"
 msgstr "Last opp minst ett bilde"
 
-#: apps/cradmin_imagearchive/cradminviews.py:190
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:194
 msgid ""
 "Upload as many images as you like. You can edit the name and description of "
 "the images after they have been uploaded."
@@ -92,39 +188,39 @@ msgstr ""
 "Last opp så mange bilder som du ønsker. Du kan redigere navn og beskrivelse "
 "etter opplasting."
 
-#: apps/cradmin_imagearchive/cradminviews.py:193
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:197
 msgid "You must upload at least one file."
 msgstr "Du må laste opp minst en fil."
 
-#: apps/cradmin_imagearchive/cradminviews.py:209
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:213
 msgid "Add to the image archive"
 msgstr "Legg til i bildearkivet"
 
-#: apps/cradmin_imagearchive/cradminviews.py:210
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/cradminviews.py:214
 msgid "Uploading images"
 msgstr "Laster opp bilder"
 
-#: apps/cradmin_imagearchive/models.py:34
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:38
 msgid "role"
 msgstr "rolle"
 
-#: apps/cradmin_imagearchive/models.py:35
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:39
 msgid "The role owning this image."
 msgstr "Rollen som eier dette bildet."
 
-#: apps/cradmin_imagearchive/models.py:44
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:48
 msgid "image"
 msgstr "image"
 
-#: apps/cradmin_imagearchive/models.py:45
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:49
 msgid "Select an image to add to the archive."
 msgstr "Velg et bilde som du ønsker å legge til i arkivet."
 
-#: apps/cradmin_imagearchive/models.py:61
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:65
 msgid "name"
 msgstr "navn"
 
-#: apps/cradmin_imagearchive/models.py:63
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:67
 msgid ""
 "Give the image a name (optional). If you leave this blank, the name of the "
 "uploaded image file is used."
@@ -132,11 +228,11 @@ msgstr ""
 "Gi bildet et navn. Dette er valgfritt, hvis du lar feltet stå tomt, bruker "
 "vi navnet på bildefilen."
 
-#: apps/cradmin_imagearchive/models.py:70
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:74
 msgid "description"
 msgstr "beskrivelse"
 
-#: apps/cradmin_imagearchive/models.py:72
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:76
 msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
@@ -145,85 +241,262 @@ msgstr ""
 "En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet "
 "for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
 
-#: apps/cradmin_imagearchive/models.py:84
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:88
 msgid "archive image"
 msgstr "arkivbilde"
 
-#: apps/cradmin_imagearchive/models.py:85
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/models.py:89
 msgid "archive images"
 msgstr "arkivbilder"
 
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:7
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:12
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:7
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:12
 msgid "Bulk upload archive images"
 msgstr "Bulkopplasting av arkivbilder"
 
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:6
+#: libs/django_cradmin/django_cradmin/apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:6
 msgid "Image preview"
 msgstr "Forhåndsvisning av bilde"
 
-#: apps/cradmin_temporaryfileuploadstore/models.py:221
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/baseviews/accept.py:38
+msgid "Accept invite"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/baseviews/accept.py:44
+#, python-format
+msgid "Accept as %(user)s"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/baseviews/accept.py:50
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/forms/base.py:60
+#, python-format
+msgid "Sign up for %(sitename)s"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/baseviews/accept.py:56
+msgid "Sign in as another user"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:7
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:12
+#, fuzzy
+#| msgid "Invalid filetype"
+msgid "Invalid invite"
+msgstr "Ugyldig filtype"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:20
+msgid ""
+"Invalid invite URL. Are you sure you copied the entire URL from the email?"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:28
+msgid "This invite link has expired."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/templates/cradmin_invite/email/body.django.txt:2
+msgid "Click the link below to accept the invite."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_invite/templates/cradmin_invite/email/subject.django.txt:2
+#, python-format
+msgid "Invitation to %(sitename)s"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/forms/auth_user.py:54
+msgid "Account with this email address already exists."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/forms/base.py:190
+msgid "Type your password"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/forms/base.py:195
+msgid "Type your password one more time"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/forms/base.py:230
+msgid "The passwords do not match."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/templates/cradmin_register_account/begin.django.html:6
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/templates/cradmin_register_account/begin.django.html:11
+#, python-format
+msgid "Create your %(sitename)s account"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:7
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:12
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:7
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:12
+msgid "Check your email"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:18
+msgid ""
+"We have sent you an email. Click the link in the email to activate your "
+"account."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:21
+msgid "If you do not see the email, check your junk folder."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/base.django.html:5
+msgid "Reset password"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:6
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:10
+msgid "Find your account"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:11
+msgid "Type in your email-address"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:2
+#, python-format
+msgid ""
+"We received a request to reset the password for your %(sitename)s account, "
+"%(user)s."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:4
+msgid ""
+"If you made this request, click the link below. If you did not make this "
+"request, you can ignore this email."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/subject.django.txt:2
+#, python-format
+msgid "Reset your %(sitename)s password"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:18
+msgid ""
+"We have sent you an email. Click the link in the email to reset your "
+"password."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:21
+#, python-format
+msgid ""
+"If you do not see the email, check your junk folder or try searching for "
+"\"%(email_subject)s\"."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/messages/successmessage.django.html:2
+msgid "Your password has been updated."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:11
+msgid "Reset your password"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:22
+msgid "This password reset link has expired."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:26
+msgid ""
+"Invalid password reset URL. Are you sure you copied the entire URL from the "
+"email?"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/views/begin.py:48
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:48
+msgid "Search"
+msgstr "Søk"
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/views/reset.py:18
+msgid "Type your new password"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/views/reset.py:21
+msgid "Type your new password one more time"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/views/reset.py:31
+msgid "The passwords do not match"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_resetpassword/views/reset.py:45
+msgid "Submit"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/models.py:225
 msgid "Unsupported filetype."
 msgstr "Ugyldig filtype."
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:44
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:44
 msgid "Upload a file by dragging and dropping it here"
 msgstr "Last opp en file ved å dra og slipp den her"
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:46
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:46
 msgid "Upload files by dragging and dropping them here"
 msgstr "Last opp filer ved å dra og slipp de her"
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:56
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:56
 msgid "Invalid filetype"
 msgstr "Ugyldig filtype"
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:78
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:78
 msgid "... or select a file"
 msgstr "... eller velg en file"
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:80
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:80
 msgid "... or select files"
 msgstr "... eller velg filer"
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:102
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:102
 msgid "Select a file ..."
 msgstr "Velg en fil..."
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:104
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:104
 msgid "Select files ..."
 msgstr "Velg filer ..."
 
-#: apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:123
+#: libs/django_cradmin/django_cradmin/apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:124
 #, python-format
 msgid "%(filename)s: Unsupported filetype."
 msgstr "%(filename)s: Ugyldig filetype."
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:10
+#: libs/django_cradmin/django_cradmin/formfields/email_list.py:18
+#: libs/django_cradmin/django_cradmin/formfields/email_list.py:20
+msgid "Type email-addresses separated by newlines, whitespace or comma."
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/formfields/email_list.py:64
+#, python-format
+msgid "Invalid email address: %(email)s"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:10
 msgid "Heading 1"
 msgstr "Overskrift 1"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:15
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:15
 msgid "Heading 2"
 msgstr "Overskrift 2"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:20
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:20
 msgid "Heading 3"
 msgstr "Overskrift 3"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:27
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:27
 msgid "Text here"
 msgstr "Tekst her"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:29
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:29
 msgid "Bold"
 msgstr "Fet"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:34
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:34
 msgid "Italic"
 msgstr "Kursiv"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:38
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:38
 msgid ""
 "Write the URL in the field below. Make sure you include the http:// or "
 "https:// part of the URL."
@@ -231,207 +504,194 @@ msgstr ""
 "Skriv en nettaddresse i feltet nedenfor. Du må passe på å få med http:// "
 "eller https:// delen av nettaddressen."
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:39
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:39
 msgid "Link title here"
 msgstr "Linktittel her"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:41
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:41
 msgid "Link"
 msgstr "Link"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:50
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:50
 msgid "Bulletlist"
 msgstr "Punktliste"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:55
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:55
 msgid "Numbered list"
 msgstr "Nummerert liste"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:63
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:63
 msgid "programminglanguage"
 msgstr "programmeringsspråk"
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:66
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/acemarkdown/widget.django.html:66
 msgid "Code block"
 msgstr "Kodeblokk"
 
-#: templates/django_cradmin/auth/login.django.html:8 views/auth/login.py:22
-msgid "Sign in"
-msgstr "Logg inn"
-
-#: templates/django_cradmin/auth/logout.django.html:6
-msgid "Signed out"
-msgstr "Logget ut"
-
-#: templates/django_cradmin/auth/logout.django.html:9
-msgid "Sign back in"
-msgstr "Logg inn igjen"
-
-#: templates/django_cradmin/error.django.html:10
-#: templates/django_cradmin/include/messages.django.html:30
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/error.django.html:10
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/include/messages.django.html:30
 msgid "Error"
 msgstr "Feil"
 
-#: templates/django_cradmin/filewidgets/filewidget.django.html:15
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/filewidgets/filewidget.django.html:15
 msgid "Remove file"
 msgstr "Fjern fil"
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:18
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/filewidgets/imagewidget.django.html:18
 msgid "Replace image"
 msgstr "Erstatt bilde"
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:27
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/filewidgets/imagewidget.django.html:27
 msgid "Remove image"
 msgstr "Fjern bilde"
 
-#: templates/django_cradmin/include/messages.django.html:25
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/include/messages.django.html:25
 msgid "Close"
 msgstr "Lukk"
 
-#: templates/django_cradmin/include/messages.django.html:32
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/include/messages.django.html:32
 msgid "Warning"
 msgstr "Advarsel"
 
-#: templates/django_cradmin/include/messages.django.html:34
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/include/messages.django.html:34
 msgid "Info"
 msgstr "Info"
 
-#: templates/django_cradmin/include/messages.django.html:36
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/include/messages.django.html:36
 msgid "Success"
 msgstr "Suksess"
 
-#: templates/django_cradmin/invalid_roleid.django.html:6
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/invalid_roleid.django.html:6
 msgid "Invalid role"
 msgstr "Ugyldig rolle"
 
-#: templates/django_cradmin/invalid_roleid.django.html:7
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/invalid_roleid.django.html:7
 msgid "The requested role does not exist."
 msgstr "Den ønskede rollen finnes ikke."
 
-#: templates/django_cradmin/menu.django.html:14
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/menu.django.html:14
 msgid "Toggle navigation"
 msgstr "Vis/sjul navigasjon"
 
-#: templates/django_cradmin/missing_role.django.html:6
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/missing_role.django.html:6
 msgid "Permission denied"
 msgstr "Ingen tilgang"
 
-#: templates/django_cradmin/missing_role.django.html:8
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/missing_role.django.html:8
 #, python-format
 msgid "You do not have permission to administer \"%(what)s\"."
 msgstr ""
 "Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
 
-#: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:22
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:22
 msgid "Close preview"
 msgstr "Lukk forhåndsvisning"
 
-#: templates/django_cradmin/viewhelpers/create.django.html:6
-#: templates/django_cradmin/viewhelpers/create.django.html:16
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/create.django.html:6
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/create.django.html:16
 msgid "CREATE"
 msgstr "OPPRETT"
 
-#: templates/django_cradmin/viewhelpers/delete.django.html:10
-msgid "DELETE"
-msgstr "SLETT"
-
-#: templates/django_cradmin/viewhelpers/delete.django.html:19
-#, python-format
-msgid "Are you sure you want to delete \"%(object_preview)s\"?"
-msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
-
-#: templates/django_cradmin/viewhelpers/delete.django.html:27
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/delete.django.html:27
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/django_cradmin/viewhelpers/includes/pager.django.html:27
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/includes/pager.django.html:27
 msgid "Previous"
 msgstr "Forrige"
 
-#: templates/django_cradmin/viewhelpers/includes/pager.django.html:31
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/includes/pager.django.html:31
 #, python-format
 msgid "Page %(number)s of %(total)s"
 msgstr "Side %(number)s av %(total)s"
 
-#: templates/django_cradmin/viewhelpers/includes/pager.django.html:36
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/includes/pager.django.html:36
 msgid "Next"
 msgstr "Neste"
 
-#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:7
-#: templates/django_cradmin/viewhelpers/update.django.html:5
-#: templates/django_cradmin/viewhelpers/update.django.html:15
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/multiselect/formview.django.html:7
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/update.django.html:5
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/update.django.html:15
 msgid "EDIT"
 msgstr "REDIGER"
 
-#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
-#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
 msgid "(None)"
 msgstr "(Ingen)"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
-#: viewhelpers/objecttable.py:681
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:44
+#: libs/django_cradmin/django_cradmin/viewhelpers/objecttable.py:762
 msgid "Search..."
 msgstr "Søk..."
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:46
-msgid "Search"
-msgstr "Søk"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:123
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:124
 msgid "Ordered ascending - Click to order descending"
 msgstr "Sortert stigende - klikk for å sortere synkende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:125
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:126
 msgid "Ordered descending - Click to order ascending"
 msgstr "Sortert synkende - klikk for å sortere stigende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:132
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:133
 msgid "Do not order by this column"
 msgstr "Ikke sorter etter denne kolonnen"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:137
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:138
 msgid "Ordering priority"
 msgstr "Sorteringsprioritet"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:191
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:193
 msgid "Select an action"
 msgstr "Velg en handling"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:194
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:196
 msgid "Go"
 msgstr "Gå"
 
-#: templates/django_cradmin/widgets/modelchoice.django.html:23
-#: widgets/modelchoice.py:27
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/widgets/modelchoice.django.html:23
+#: libs/django_cradmin/django_cradmin/widgets/modelchoice.py:32
 msgid "Select ..."
 msgstr "Velg ..."
 
-#: templates/django_cradmin/widgets/modelchoice.django.html:33
+#: libs/django_cradmin/django_cradmin/templates/django_cradmin/widgets/modelchoice.django.html:33
 msgid "Close choice window"
 msgstr "Lukk vindu"
 
-#: viewhelpers/create.py:24 viewhelpers/create.py:31
+#: libs/django_cradmin/django_cradmin/viewhelpers/create.py:30
+#: libs/django_cradmin/django_cradmin/viewhelpers/create.py:37
 msgid "Create and select"
 msgstr "Opprett og velg"
 
-#: viewhelpers/create.py:25
+#: libs/django_cradmin/django_cradmin/viewhelpers/create.py:31
 msgid "Create"
 msgstr "Opprett"
 
-#: viewhelpers/create.py:26
+#: libs/django_cradmin/django_cradmin/viewhelpers/create.py:32
 msgid "Create and continue editing"
 msgstr "Opprett og fortsett å redigere"
 
-#: viewhelpers/create.py:69
+#: libs/django_cradmin/django_cradmin/viewhelpers/create.py:75
 #, python-format
 msgid "Created \"%(object)s\"."
 msgstr "Opprettet \"%(object)s\"."
 
-#: viewhelpers/crudbase.py:214
+#: libs/django_cradmin/django_cradmin/viewhelpers/crudbase.py:219
 msgid "Please fix the errors in the form below."
 msgstr "Vennligst fiks feilene i skjemaet nedenfor."
 
-#: viewhelpers/multiselect.py:91
+#: libs/django_cradmin/django_cradmin/viewhelpers/delete.py:53
+#, python-format
+msgid "Are you sure you want to delete \"%(object_preview)s\"?"
+msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
+
+#: libs/django_cradmin/django_cradmin/viewhelpers/delete.py:82
+#, fuzzy, python-format
+#| msgid "Uploaded %(what)s."
+msgid "Deleted \"%(what)s\""
+msgstr "Lastet opp %(what)s."
+
+#: libs/django_cradmin/django_cradmin/viewhelpers/multiselect.py:92
 msgid ""
 "Invalid selection. This is usually caused by someone else changing "
 "permissions while you where selecting items to edit."
@@ -439,34 +699,30 @@ msgstr ""
 "Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet "
 "rettigheter fra din bruker."
 
-#: viewhelpers/update.py:14
+#: libs/django_cradmin/django_cradmin/viewhelpers/objecttable.py:776
+#, python-format
+msgid "No %(modelname_plural)s"
+msgstr ""
+
+#: libs/django_cradmin/django_cradmin/viewhelpers/update.py:16
 msgid "Save"
 msgstr "Lagre"
 
-#: viewhelpers/update.py:15
+#: libs/django_cradmin/django_cradmin/viewhelpers/update.py:17
 msgid "Save and continue editing"
 msgstr "Lagre og fortsett redigering"
 
-#: viewhelpers/update.py:43
+#: libs/django_cradmin/django_cradmin/viewhelpers/update.py:30
 #, python-format
 msgid "Saved \"%(object)s\"."
 msgstr "Lagret \"%(object)s\"."
 
-#: views/auth/login.py:12
-msgid "Email"
-msgstr "Epost"
-
-#: views/auth/login.py:15
-msgid "Your email and password didn't match. Please try again."
-msgstr "Ugyldig epost/passord. Venligst prøv igjen."
-
-#: views/auth/login.py:16
-msgid "This account is inactive."
-msgstr "Denne kontoen er inaktiv."
-
-#: views/roleselect.py:12
+#: libs/django_cradmin/django_cradmin/views/roleselect.py:13
 msgid "What would you like to edit?"
 msgstr "Hva ønsker du å redigere?"
+
+#~ msgid "DELETE"
+#~ msgstr "SLETT"
 
 #~ msgid "NEW"
 #~ msgstr "NY"
