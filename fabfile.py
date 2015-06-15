@@ -4,11 +4,10 @@ from fabric.operations import local
 
 
 @task
-def makemessages(language):
-    """
-    """
+def makemessages():
     with lcd('django_cradmin'):
-        local('python ../manage.py makemessages '
-              '-l {language} '
-              '-i "node_modules/*" '
-              '-i "static/*"'.format(language=language))
+        for language in ['en', 'nb']:
+            local('python ../manage.py makemessages '
+                  '-l {language} '
+                  '-i "node_modules/*" '
+                  '-i "static/*"'.format(language=language))
