@@ -193,3 +193,6 @@ DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND = True
 AUTHENTICATION_BACKENDS = (
     'django_cradmin.apps.cradmin_authenticate.backends.EmailAuthBackend',
 )
+
+
+# DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/dist/css/cradmin_theme_topmenu/theme.css'

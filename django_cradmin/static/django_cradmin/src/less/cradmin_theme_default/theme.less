@@ -1,4 +1,32 @@
 // Styles for the default cradmin theme
 //@import "../thirdparty/font-awesome";
 @import "../cradmin_base/all";
+@import "variables";
 @import "menu";
+
+
+#django_cradmin_contentwrapper {
+  @media (min-width: @screen-md-min) {
+    padding-left: @cradmin-menu-width;
+  }
+}
+
+body.django-cradmin-hide-menu {
+  #django_cradmin_contentwrapper {
+    @media (min-width: @screen-md-min) {
+      padding-left: 0;
+    }
+  }
+}
+
+
+.django_cradmin_submitrow {
+  @media (min-width: @screen-md-min) {
+    left: (@cradmin-menu-width + @cradmin-bodypadding);
+    width: (600px - @cradmin-bodypadding*2);
+    right: auto;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: (800px - @cradmin-bodypadding*2);
+  }
+}

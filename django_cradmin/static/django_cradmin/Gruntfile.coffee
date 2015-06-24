@@ -68,6 +68,7 @@ module.exports = (grunt) ->
           paths: ["less", "bower_components"]
         files:
           "dist/css/cradmin_theme_default/theme.css": "src/less/cradmin_theme_default/theme.less"
+          "dist/css/cradmin_theme_topmenu/theme.css": "src/less/cradmin_theme_topmenu/theme.less"
 
     coffeelint:
       options:

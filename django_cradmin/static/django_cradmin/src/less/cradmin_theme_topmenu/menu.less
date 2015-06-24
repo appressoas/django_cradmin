@@ -1,0 +1,93 @@
+nav#cradmin_menu {
+  background-color: @cradmin-menu-bg;
+
+  .cradmin_menucontent {
+    display: none;
+    &.cradmin_menucontent_display {
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        a {
+          position: relative;
+          display: block;
+          color: @cradmin-menu-color;
+          padding: 0 16px 0 16px;
+          border-color: @cradmin-menu-border;
+          border-style: solid;
+          border-width: 0 0 1px 0;
+          transition: color 0.3s ease;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          &:hover {
+            text-decoration: none;
+            color: @cradmin-menu-hovercolor;
+          }
+        }
+        &.cradmin_menu_activeitem a {
+          color: @cradmin-menu-hovercolor;
+          font-weight: bold;
+        }
+      }
+
+      &.cradmin_menucontent_header {
+        background-color: @cradmin-menu-header-bg;
+      }
+      &.cradmin_menucontent_main {
+      }
+      &.cradmin_menucontent_footer {
+        margin-top: 30px;
+
+      }
+    }
+  }
+
+  .cradmin_menumobileheader {
+    border-bottom: 1px solid @cradmin-menu-border;
+    text-align: right;
+    padding-right: 15px;
+    .cradmin_menutoggle {
+      padding: 3px 14px;
+      .button-variant(#eee, #333, #444);
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: 20px;
+    }
+    @media (min-width: @screen-md-min) {
+      display: none;
+    }
+  }
+
+  @media (min-width: @screen-md-min) {
+    height: @cradmin-menu-height;
+
+    .cradmin_menucontent {
+      display: block;
+      height: @cradmin-menu-height;
+
+      ul {
+        display: inline-block;
+        height: @cradmin-menu-height;
+        li {
+          display: inline-block;
+          height: @cradmin-menu-height;
+          a {
+            border-width: 0 1px 0 0;
+            height: @cradmin-menu-height;
+            line-height: @cradmin-menu-height;
+          }
+        }
+
+        &.cradmin_menucontent_footer {
+          margin: 0;
+          float: right;
+        }
+      }
+    }
+  }
+}
