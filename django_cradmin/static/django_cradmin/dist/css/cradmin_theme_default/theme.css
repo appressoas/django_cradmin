@@ -5257,15 +5257,6 @@ table.table.cradmin-table-fluid tbody tr td {
   color: #777777;
   background-color: transparent;
 }
-.fa-header.fa-django-cradmin-h1 {
-  font-size: 20px;
-}
-.fa-header.fa-django-cradmin-h2 {
-  font-size: 16px;
-}
-.fa-header.fa-django-cradmin-h3 {
-  font-size: 12px;
-}
 .django-cradmin-floating-fullsize-iframe-wrapper {
   position: fixed;
   left: 0;
