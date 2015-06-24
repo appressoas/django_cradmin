@@ -5,7 +5,7 @@
 
 {% block pageheader %}
     <div class="page-header">
-        <div class="container-fluid">
+        <div class="container">
             {% if enable_search %}
                 <div class="row">
                     <div class="col-sm-8 col-md-9">
@@ -202,7 +202,7 @@
         {% endif %}
 
     {% else %}
-        <div class="container-fluid django-cradmin-container-fluid-focus" id="objecttableview-no-items-message">
+        <div class="container django-cradmin-container-focus" id="objecttableview-no-items-message">
             {{ no_items_message }}
         </div>
     {% endif %}
