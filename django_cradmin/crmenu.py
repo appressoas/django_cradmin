@@ -14,7 +14,7 @@ class MenuItem(object):
     """
     template_name = 'django_cradmin/menuitem.django.html'
 
-    def __init__(self, label, url, icon='circle-o', active=False, attributes={}, open_new_window=False):
+    def __init__(self, label, url, active=False, attributes={}, open_new_window=False):
         """
         Parameters:
             label: A label shown in the menu.
@@ -26,7 +26,6 @@ class MenuItem(object):
         """
         self.label = label
         self.url = url
-        self.icon = icon
         self.attributes = attributes
         self.active = active
         self.open_new_window = open_new_window

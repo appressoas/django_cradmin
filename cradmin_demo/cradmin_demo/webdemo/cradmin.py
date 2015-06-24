@@ -14,20 +14,20 @@ from .crapps import sharable_link
 class Menu(crmenu.Menu):
     def build_menu(self):
         self.add(
-            label=_('Dashboard'), url=self.appindex_url('dashboard'), icon="home",
+            label=_('Dashboard'), url=self.appindex_url('dashboard'),
             active=self.request.cradmin_app.appname == 'dashboard')
         self.add(
-            label=_('Pages'), url=self.appindex_url('pages'), icon="database",
+            label=_('Pages'), url=self.appindex_url('pages'),
             active=self.request.cradmin_app.appname == 'pages')
         self.add(
-            label=_('Images'), url=self.appindex_url('imagearchive'), icon="image",
+            label=_('Images'), url=self.appindex_url('imagearchive'),
             active=self.request.cradmin_app.appname == 'imagearchive')
 
         self.add_footeritem(
-            label=_('Invite admins'), url=self.appindex_url('inviteadmins'), icon="users",
+            label=_('Invite admins'), url=self.appindex_url('inviteadmins'),
             active=self.request.cradmin_app.appname == 'inviteadmins')
         self.add_footeritem(
-            label=_('Share'), url=self.appindex_url('sharable_link'), icon="link",
+            label=_('Share'), url=self.appindex_url('sharable_link'),
             active=self.request.cradmin_app.appname == 'sharable_link')
 
 

@@ -17,10 +17,10 @@ class Menu(crmenu.Menu):
                 icon='chevron-up')
 
         self.add(
-            label=_('Account overview'), url=self.appindex_url('overview'), icon="user",
+            label=_('Account overview'), url=self.appindex_url('overview'),
             active=self.request.cradmin_app.appname == 'overview')
         self.add(
-            label=_('Edit profile'), url=self.appindex_url('edit_user'), icon="edit",
+            label=_('Edit profile'), url=self.appindex_url('edit_user'),
             active=self.request.cradmin_app.appname == 'edit_user')
 
 
