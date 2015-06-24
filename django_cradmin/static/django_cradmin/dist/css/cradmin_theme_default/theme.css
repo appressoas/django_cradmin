@@ -4796,22 +4796,13 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   border: none;
   border-bottom: none;
 }
-.page-header .fa.cradmin-page-header-icon,
-.page-header h1 {
-  line-height: 44px;
-  vertical-align: middle;
-}
-.page-header .fa.cradmin-page-header-icon {
-  font-size: 42px;
-  margin-right: 8px;
-  margin-left: -1px;
-}
 .page-header h1 {
   display: inline-block;
   padding: 0;
   margin: 0;
   font-size: 21px;
   font-weight: bold;
+  vertical-align: middle;
   line-height: 31px;
 }
 .page-header p {
