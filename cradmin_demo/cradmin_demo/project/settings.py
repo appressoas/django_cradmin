@@ -82,6 +82,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+    "django_cradmin.context_processors.cradmin",
 )
 
 ROOT_URLCONF = 'cradmin_demo.project.urls'

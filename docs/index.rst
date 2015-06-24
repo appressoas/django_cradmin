@@ -90,6 +90,7 @@ Documentation
    crinstance
    crmenu
    viewhelpers_objecttable
+   settings
 
 
 ************

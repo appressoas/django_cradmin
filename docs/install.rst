@@ -27,7 +27,8 @@ Add ``django_cradmin`` and ``crispy_forms`` to the
     )
     
 
-Add ``django.core.context_processors.request`` to the
+Add ``django.core.context_processors.request`` and
+``django_cradmin.context_processors.cradmin`` to the
 ``TEMPLATE_CONTEXT_PROCESSORS`` setting::
 
     TEMPLATE_CONTEXT_PROCESSORS = (
@@ -39,8 +40,9 @@ Add ``django.core.context_processors.request`` to the
         "django.core.context_processors.tz",
         "django.contrib.messages.context_processors.messages",
         "django.core.context_processors.request",
+        "django_cradmin.context_processors.cradmin",
     )
-    
+
 
 Set the ``CRISPY_TEMPLATE_PACK`` setting to ``bootstrap3``::
 

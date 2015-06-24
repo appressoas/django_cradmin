@@ -15,7 +15,7 @@
         <title>{% block title %}{% endblock title %}</title>
 
         {% block styles %}
-            <link href='{% static "django_cradmin/dist/css/cradmin_theme_default/theme.css" %}' rel="stylesheet">
+            <link href='{% static DJANGO_CRADMIN_THEME_PATH %}' rel="stylesheet">
         {% endblock styles %}
         
         {% block jsimports %}
