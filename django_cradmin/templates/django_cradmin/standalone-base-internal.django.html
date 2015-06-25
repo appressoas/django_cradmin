@@ -17,7 +17,10 @@
         {% block styles %}
             <link href='{% static DJANGO_CRADMIN_THEME_PATH %}' rel="stylesheet">
         {% endblock styles %}
-        
+        {% block iconlibrary %}
+            <link href='{% static DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH %}' rel="stylesheet">
+        {% endblock iconlibrary %}
+
         {% block jsimports %}
             <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>
             <script src="{% static 'django_cradmin/dist/js/cradmin.min.js' %}" type="text/javascript"></script>

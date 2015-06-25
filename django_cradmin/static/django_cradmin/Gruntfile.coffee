@@ -9,11 +9,8 @@ module.exports = (grunt) ->
 
   vendorfiles = {
     fonts: [
-      'bower_components/fontawesome/fonts/FontAwesome.otf'
-      'bower_components/fontawesome/fonts/fontawesome-webfont.eot'
-      'bower_components/fontawesome/fonts/fontawesome-webfont.svg'
-      'bower_components/fontawesome/fonts/fontawesome-webfont.ttf'
-      'bower_components/fontawesome/fonts/fontawesome-webfont.woff'
+      'bower_components/fontawesome/fonts/*'
+      'bower_components/fontawesome/css/*'
     ]
     js: [
       'bower_components/jquery/dist/jquery.js'
@@ -113,9 +110,9 @@ module.exports = (grunt) ->
       vendor:
         files: [{
           expand: true
-          flatten: true
-          src: vendorfiles.fonts
-          dest: 'dist/vendor/fonts/'
+          cwd: 'bower_components/fontawesome/'
+          src: ['css/*', 'fonts/*']
+          dest: 'dist/vendor/fonts/fontawesome/'
 #        }, {
 #          expand: true
 #          flatten: true
