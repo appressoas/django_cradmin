@@ -4790,27 +4790,27 @@ form .alert-block.alert-danger ul {
 form .alert-block.alert-danger ul li {
   margin: 0;
 }
-table.table.cradmin-table {
+table.table.django-cradmin-table {
   margin: 0;
 }
-table.table.cradmin-table thead {
+table.table.django-cradmin-table thead {
   border-bottom: 1px solid #cccccc;
   background: #fafafa;
 }
-table.table.cradmin-table thead tr th {
+table.table.django-cradmin-table thead tr th {
   border: none;
 }
-table.table.cradmin-table tbody {
+table.table.django-cradmin-table tbody {
   background: #ffffff;
   border-bottom: 1px solid #cccccc;
 }
-table.table.cradmin-table tbody tr {
+table.table.django-cradmin-table tbody tr {
   border-top: 1px dashed #d9d9d9;
 }
-table.table.cradmin-table tbody tr:first-child {
+table.table.django-cradmin-table tbody tr:first-child {
   border-top: none;
 }
-table.table.cradmin-table tbody tr td {
+table.table.django-cradmin-table tbody tr td {
   border: none;
   padding-top: 15px;
   padding-bottom: 15px;
