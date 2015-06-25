@@ -1125,10 +1125,10 @@
         }
       });
       element.bind('mouseover', function() {
-        return scope.wrapperelement.addClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover');
+        return scope.wrapperelement.addClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover');
       });
       element.bind('mouseleave', function() {
-        return scope.wrapperelement.removeClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover');
+        return scope.wrapperelement.removeClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover');
       });
     };
     return {

@@ -1,16 +1,16 @@
 {% load i18n %}
 
-<div class="django_cradmin_filewidget{% if clearable %} django_cradmin_filewidget_clearable{% endif %}">
+<div class="django-cradmin-filewidget{% if clearable %} django-cradmin-filewidget-clearable{% endif %}">
     {% if file_path %}
         <a href="{{ MEDIA_URL }}{{ file_path }}" target="_blank"
-                class="django_cradmin_filewidget_fullviewlink">
+                class="django-cradmin-filewidget-fullviewlink">
             {{ file_name }}
             <span class="fa fa_external_link"></span>
         </a>
     {% endif %}
     {{ input_html|safe }}
     {% if clearable %}
-        <label class="django_cradmin_filewidget_clear">
+        <label class="django-cradmin-filewidget-clear">
             <input type="checkbox" name="{{ clear_checkbox_name }}">
             {% trans "Remove file" %}
         </label>

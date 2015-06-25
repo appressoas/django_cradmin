@@ -69,9 +69,9 @@ angular.module('djangoCradmin.imagepreview', [])
         file = evt.target.files[0]
         scope.previewCtrl.previewFile(file)
     element.bind 'mouseover', ->
-      scope.wrapperelement.addClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover')
+      scope.wrapperelement.addClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover')
     element.bind 'mouseleave', ->
-      scope.wrapperelement.removeClass('django_cradmin_filewidget_field_and_overlay_wrapper_hover')
+      scope.wrapperelement.removeClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover')
     return
 
   return {

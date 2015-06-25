@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load cradmin_image_tags %}
 
-<div class="django_cradmin_imagewidget django_cradmin_filewidget {% if clearable %}django_cradmin_filewidget_clearable{% endif %}"
+<div class="django_cradmin_imagewidget django-cradmin-filewidget {% if clearable %}django-cradmin-filewidget-clearable{% endif %}"
         django-cradmin-image-preview>
     {% if image_path %}
         <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format %}"
@@ -10,9 +10,9 @@
         {# Used for the preview - hidden before we have a preview #}
         <img django-cradmin-image-preview-img>
     {% endif %}
-    <div class="django_cradmin_filewidget_field_and_overlay_wrapper" django-cradmin-filefield-overlay>
+    <div class="django-cradmin-filewidget-field-and-overlay-wrapper" django-cradmin-filefield-overlay>
         {{ input_html|safe }}
-        <a class="btn btn-default django_cradmin_filewidget_fieldoverlay" href="#">
+        <a class="btn btn-default django-cradmin-filewidget-fieldoverlay" href="#">
             {% if image_path %}
                 {% trans "Replace image" %}
             {% else %}
@@ -21,7 +21,7 @@
         </a>
     </div>
     {% if clearable %}
-        <label class="django_cradmin_filewidget_clear">
+        <label class="django-cradmin-filewidget-clear">
             <input type="checkbox" name="{{ clear_checkbox_name }}">
             {% trans "Remove image" %}
         </label>
