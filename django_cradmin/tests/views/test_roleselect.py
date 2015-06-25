@@ -73,7 +73,7 @@ class TestRoleSelectView(TestCase):
                 response.render()
                 selector = htmls.S(response.content)
                 self.assertEqual(
-                    selector.one('.django-cradmin-roleselect-pagetitle').alltext_normalized,
+                    selector.one('h1').alltext_normalized,
                     'Test title')
 
     def test_render_list_titles(self):
@@ -158,7 +158,7 @@ class TestRoleSelectView(TestCase):
                 selector = htmls.S(response.content)
 
                 urllist = [element['href']
-                           for element in selector.list('#django_cradmin_roleselect li a')]
+                           for element in selector.list('.django-cradmin-roleselect-list li a')]
                 self.assertEquals(urllist, ['/role/1', '/role/2'])
 
     def test_render_pagination(self):
@@ -232,5 +232,5 @@ class TestRoleSelectView(TestCase):
                 selector = htmls.S(response.content)
 
                 # selector.one('#django_cradmin_roleselect').prettyprint()
-                self.assertEqual(selector.count('#django_cradmin_roleselect li'), 3)
+                self.assertEqual(selector.count('.django-cradmin-roleselect-list li'), 3)
                 self.assertFalse(selector.exists('.pager-container'))
