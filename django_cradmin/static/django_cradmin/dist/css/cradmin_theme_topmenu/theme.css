@@ -5406,6 +5406,7 @@ ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-ch
   background: #fff;
   padding: 24px 30px;
   text-align: left;
+  margin-bottom: 30px;
 }
 .django-cradmin-focusedpage-wrapper .page-header {
   background: none;

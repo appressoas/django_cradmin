@@ -20,7 +20,7 @@
 {% load cradmin_icon_tags %}
 
 {% if is_paginated %}
-    <div class="{% if pager_container_cssclass %}{{ pager_container_cssclass }}{% endif %} pager-container">
+    <div class="pager-container">
         <ul class="pager {{ pager_extraclass }}">
             <li class="previous {% if not page_obj.has_previous %}disabled{% endif %}">
                 <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}&amp;{{ extra_querystring }}">
