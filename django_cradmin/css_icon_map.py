@@ -1,0 +1,14 @@
+
+FONT_AWESOME = {
+    'search': 'fa fa-search',
+    'x': 'fa fa-times',
+    'h1': 'fa fa-header django-cradmin-icon-font-lg',
+    'h2': 'fa fa-header',
+    'h3': 'fa fa-header django-cradmin-icon-font-sm',
+    'bold': 'fa fa-bold',
+    'italic': 'fa fa-italic',
+    'link': 'fa fa-link',
+    'list-ul': 'fa fa-list-ul',
+    'list-ol': 'fa fa-list-ol',
+    'codeblock': 'fa fa-code',
+}

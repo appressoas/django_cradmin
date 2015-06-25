@@ -4848,6 +4848,12 @@ table.table.cradmin-table tbody tr td {
 .btn.btn-cancel:hover {
   color: #24516e;
 }
+.django-cradmin-icon-font-lg {
+  font-size: 20px !important;
+}
+.django-cradmin-icon-font-sm {
+  font-size: 12px !important;
+}
 .django-cradmin-page-header-outer {
   padding: 20px 0 22px 0;
   background: #377ca8;
