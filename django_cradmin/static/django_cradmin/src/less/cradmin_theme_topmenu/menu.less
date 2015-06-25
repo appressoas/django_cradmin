@@ -6,24 +6,38 @@ nav#cradmin_menu {
     &.cradmin-menucontent-display {
       display: block;
     }
+  }
 
+  .cradmin-menumobileheader {
+    border-bottom: 1px solid @cradmin-menu-border;
+    .cradmin-menutoggle {
+      width: 100%;
+      .button-variant(#eee, #333, #444);
+      border: none;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding: 10px 14px;
+      border-radius: 0;
+      background: none;
+    }
+    @media (min-width: @screen-md-min) {
+      display: none;
+    }
+  }
+
+  .cradmin-menucontent {
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
       li {
         a {
-          position: relative;
           display: block;
           color: @cradmin-menu-color;
-          padding: 0 16px 0 16px;
-          border-color: @cradmin-menu-border;
-          border-style: solid;
-          border-width: 0 0 1px 0;
-          transition: color 0.3s ease;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+          padding: 10px 16px 10px 16px;
           &:hover {
             text-decoration: none;
             color: @cradmin-menu-hovercolor;
@@ -34,32 +48,6 @@ nav#cradmin_menu {
           font-weight: bold;
         }
       }
-
-      &.cradmin-menucontent-header {
-        background-color: @cradmin-menu-header-bg;
-      }
-      &.cradmin-menucontent-main {
-      }
-      &.cradmin-menucontent-footer {
-        margin-top: 30px;
-
-      }
-    }
-  }
-
-  .cradmin-menumobileheader {
-    border-bottom: 1px solid @cradmin-menu-border;
-    text-align: right;
-    padding-right: 15px;
-    .cradmin-menutoggle {
-      padding: 3px 14px;
-      .button-variant(#eee, #333, #444);
-      margin-top: 5px;
-      margin-bottom: 5px;
-      font-size: 20px;
-    }
-    @media (min-width: @screen-md-min) {
-      display: none;
     }
   }
 
@@ -77,15 +65,20 @@ nav#cradmin_menu {
           display: inline-block;
           height: @cradmin-menu-height;
           a {
-            border-width: 0 1px 0 0;
             height: @cradmin-menu-height;
             line-height: @cradmin-menu-height;
+            display: block;
+            padding: 0 16px 0 16px;
+            transition: color 0.3s ease;
           }
         }
 
         &.cradmin-menucontent-footer {
           margin: 0;
           float: right;
+        }
+        &.cradmin-menucontent-header {
+          background: @cradmin-menu-header-bg;
         }
       }
     }

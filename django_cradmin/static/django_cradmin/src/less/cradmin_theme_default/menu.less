@@ -13,15 +13,9 @@ nav#cradmin_menu {
       padding: 0;
       li {
         a {
-          position: relative;
           display: block;
           color: @cradmin-menu-color;
-          padding: 12px 16px 12px 16px;
-//          text-transform: uppercase;
-//          font-size: @font-size-small;
-          border-color: @cradmin-menu-border;
-          border-style: solid;
-          border-width: 0 0 1px 0;
+          padding: 10px 16px 10px 16px;
           transition: color 0.3s ease;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -37,22 +31,19 @@ nav#cradmin_menu {
         }
       }
 
-      &.cradmin-menucontent-header {
-        background-color: @cradmin-menu-header-bg;
-      }
-      &.cradmin-menucontent-main {
-      }
+      //&.cradmin-menucontent-header {
+      //  background-color: @cradmin-menu-header-bg;
+      //}
+      //&.cradmin-menucontent-main {
+      //}
       &.cradmin-menucontent-footer {
         margin-top: 30px;
-
       }
     }
   }
 
   .cradmin-menumobileheader {
     border-bottom: 1px solid @cradmin-menu-border;
-    //text-align: right;
-    //padding-right: 15px;
     .cradmin-menutoggle {
       width: 100%;
       .button-variant(#eee, #333, #444);
@@ -62,9 +53,6 @@ nav#cradmin_menu {
       padding: 10px 14px;
       border-radius: 0;
       background: none;
-      //margin-top: 5px;
-      //margin-bottom: 5px;
-      //font-size: 20px;
     }
     @media (min-width: @screen-md-min) {
       display: none;
@@ -82,6 +70,11 @@ nav#cradmin_menu {
 
     .cradmin-menucontent {
       display: block;
+      ul {
+        &.cradmin-menucontent-header {
+          background-color: @cradmin-menu-header-bg;
+        }
+      }
     }
   }
 }
