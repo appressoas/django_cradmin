@@ -4712,6 +4712,8 @@ ul#django_cradmin_messages {
 .django-cradmin-form-wrapper .django-cradmin-form {
   background: #ffffff;
   max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
   padding-bottom: 0;
   /**
       # .cradmin-focusfield-screenheight
@@ -5529,4 +5531,8 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   .container {
     width: 970px;
   }
+}
+.django-cradmin-form-wrapper .django-cradmin-form {
+  margin-left: 0;
+  margin-right: 0;
 }
