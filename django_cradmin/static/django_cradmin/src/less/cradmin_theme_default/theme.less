@@ -30,3 +30,29 @@ body.django-cradmin-hide-menu {
     width: (800px - @cradmin-bodypadding*2);
   }
 }
+
+
+.container {
+  //margin-left: 0;
+  //margin-right: auto;
+  @media (min-width: @screen-sm-min) {
+    width: (@container-sm - @cradmin-menu-width);
+    margin-left: 0;
+    margin-right: auto;
+  }
+  @media (min-width: @screen-md-min) {
+    width: (@container-md - @cradmin-menu-width);
+  }
+  @media (min-width: @screen-lg-min) {
+    width: (@container-lg - @cradmin-menu-width);
+  }
+}
+
+//table.table.cradmin-table {
+//  margin-left: -(@grid-gutter-width / 2);
+//  margin-right: -(@grid-gutter-width / 2);
+//  //margin: 0 -(@grid-gutter-width / 2) 0 -(@grid-gutter-width / 2);
+//}
+.container.cradmin-table-container {
+  padding: 0;
+}

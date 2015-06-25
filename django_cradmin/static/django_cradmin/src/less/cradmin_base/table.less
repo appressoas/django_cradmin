@@ -1,4 +1,4 @@
-table.table.cradmin-table-fluid {
+table.table.cradmin-table {
   margin: 0;
   tbody tr td,
   thead tr th {
@@ -16,17 +16,17 @@ table.table.cradmin-table-fluid {
     }
   }
   thead {
-    border-bottom: 1px solid @cradmin-table-fluid-body-border-color;
-    background-color: @cradmin-table-fluid-header-bg;
+    border-bottom: 1px solid @cradmin-table-body-border-color;
+    background-color: @cradmin-table-header-bg;
     tr th {
       border: none;
     }
   }
   tbody {
-    background-color: @cradmin-table-fluid-body-bg;
-    border-bottom: 1px solid @cradmin-table-fluid-body-border-color;
+    background-color: @cradmin-table-body-bg;
+    border-bottom: 1px solid @cradmin-table-body-border-color;
     tr {
-      border-top: 1px @cradmin-table-fluid-body-rowseparator-style @cradmin-table-fluid-body-rowseparator-color;
+      border-top: 1px @cradmin-table-body-rowseparator-style @cradmin-table-body-rowseparator-color;
       &:first-child {
         border-top: none;
       }
@@ -37,4 +37,17 @@ table.table.cradmin-table-fluid {
       }
     }
   }
+
+  //@media (min-width: @screen-sm-min) {
+  //  width: @container-sm;
+  //  margin-left: auto;
+  //  margin-right: auto;
+  //}
+  //@media (min-width: @screen-md-min) {
+  //  width: @container-md;
+  //}
+  //@media (min-width: @screen-lg-min) {
+  //  width: @container-lg;
+  //}
 }
+

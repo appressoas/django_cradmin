@@ -4963,47 +4963,47 @@ form .alert-block.alert-danger ul {
 form .alert-block.alert-danger ul li {
   margin: 0;
 }
-table.table.cradmin-table-fluid {
+table.table.cradmin-table {
   margin: 0;
 }
-table.table.cradmin-table-fluid tbody tr td:first-child,
-table.table.cradmin-table-fluid thead tr th:first-child {
+table.table.cradmin-table tbody tr td:first-child,
+table.table.cradmin-table thead tr th:first-child {
   padding-left: 15px;
 }
 @media (min-width: 768px) {
-  table.table.cradmin-table-fluid tbody tr td:first-child,
-  table.table.cradmin-table-fluid thead tr th:first-child {
+  table.table.cradmin-table tbody tr td:first-child,
+  table.table.cradmin-table thead tr th:first-child {
     padding-left: 50px;
   }
 }
-table.table.cradmin-table-fluid tbody tr td:last-child,
-table.table.cradmin-table-fluid thead tr th:last-child {
+table.table.cradmin-table tbody tr td:last-child,
+table.table.cradmin-table thead tr th:last-child {
   padding-right: 15px;
 }
 @media (min-width: 768px) {
-  table.table.cradmin-table-fluid tbody tr td:last-child,
-  table.table.cradmin-table-fluid thead tr th:last-child {
+  table.table.cradmin-table tbody tr td:last-child,
+  table.table.cradmin-table thead tr th:last-child {
     padding-right: 50px;
   }
 }
-table.table.cradmin-table-fluid thead {
+table.table.cradmin-table thead {
   border-bottom: 1px solid #cccccc;
   background-color: #fafafa;
 }
-table.table.cradmin-table-fluid thead tr th {
+table.table.cradmin-table thead tr th {
   border: none;
 }
-table.table.cradmin-table-fluid tbody {
+table.table.cradmin-table tbody {
   background-color: #ffffff;
   border-bottom: 1px solid #cccccc;
 }
-table.table.cradmin-table-fluid tbody tr {
+table.table.cradmin-table tbody tr {
   border-top: 1px dashed #d9d9d9;
 }
-table.table.cradmin-table-fluid tbody tr:first-child {
+table.table.cradmin-table tbody tr:first-child {
   border-top: none;
 }
-table.table.cradmin-table-fluid tbody tr td {
+table.table.cradmin-table tbody tr td {
   border: none;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -5716,4 +5716,28 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   .django_cradmin_submitrow {
     width: 700px;
   }
+}
+@media (min-width: 768px) {
+  .container {
+    width: 550px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 770px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 970px;
+  }
+}
+table.table.cradmin-table {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.container.cradmin-table-container {
+  padding: 0;
 }
