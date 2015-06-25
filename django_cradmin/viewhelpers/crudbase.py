@@ -81,7 +81,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
             fields.remove(self.roleid_field)
         return [layout.Div(*fields, css_class='cradmin-globalfields')]
 
-    def get_form(self, form_class):
+    def get_form(self, form_class=None):
         """
         If you set :obj:`.roleid_field`, we will remove that field from
         the form.
