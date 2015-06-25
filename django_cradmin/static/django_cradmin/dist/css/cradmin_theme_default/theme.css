@@ -5553,10 +5553,22 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
     display: block;
   }
 }
+body {
+  background: #e1e1e1;
+}
+#django_cradmin_contentwrapper {
+  background: #e6e6e6;
+  max-width: 1200px;
+  padding-bottom: 15px;
+  min-height: 100%;
+}
 @media (min-width: 992px) {
   #django_cradmin_contentwrapper {
     padding-left: 200px;
   }
+}
+.django-cradmin-focusedpage-body {
+  background: #e6e6e6;
 }
 @media (min-width: 992px) {
   body.django-cradmin-hide-menu #django_cradmin_contentwrapper {

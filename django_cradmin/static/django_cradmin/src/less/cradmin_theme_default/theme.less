@@ -4,10 +4,22 @@
 @import "variables";
 @import "menu";
 
+body {
+  background: darken(@cradmin-bodybg, 2%);
+}
+
 #django_cradmin_contentwrapper {
+  background: @cradmin-bodybg;
+  max-width: @screen-lg-min;
+  padding-bottom: 15px;
+  min-height: 100%;
   @media (min-width: @screen-md-min) {
     padding-left: @cradmin-menu-width;
   }
+}
+
+.django-cradmin-focusedpage-body {
+  background: @cradmin-bodybg;
 }
 
 body.django-cradmin-hide-menu {

@@ -22,6 +22,11 @@
     ```
 {% endcomment %}
 
+{% block bodyclass %}
+    {{ block.super }}
+    django-cradmin-focusedpage-body
+{% endblock bodyclass %}
+
 {% block body %}
     {% block messages %}
         <div id="django_cradmin_messages_standalone_wrapper">
