@@ -31,7 +31,7 @@ class NameColumn(objecttable.MultiActionColumn):
             objecttable.Button(
                 label=_('Delete'),
                 url=self.reverse_appurl('delete', args=[obj.id]),
-                buttonclass="danger"),
+                buttonclass="btn btn-danger btn-sm"),
         ]
 
 

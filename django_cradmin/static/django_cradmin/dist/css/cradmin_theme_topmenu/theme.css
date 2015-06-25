@@ -2112,8 +2112,8 @@ fieldset[disabled] .btn-primary.active {
 }
 .btn-success {
   color: #ffffff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #3cb63f;
+  border-color: #2f9032;
 }
 .btn-success:hover,
 .btn-success:focus,
@@ -2121,8 +2121,8 @@ fieldset[disabled] .btn-primary.active {
 .btn-success.active,
 .open .dropdown-toggle.btn-success {
   color: #ffffff;
-  background-color: #47a447;
-  border-color: #398439;
+  background-color: #329734;
+  border-color: #206222;
 }
 .btn-success:active,
 .btn-success.active,
@@ -2144,11 +2144,11 @@ fieldset[disabled] .btn-success:active,
 .btn-success.disabled.active,
 .btn-success[disabled].active,
 fieldset[disabled] .btn-success.active {
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #3cb63f;
+  border-color: #2f9032;
 }
 .btn-success .badge {
-  color: #5cb85c;
+  color: #3cb63f;
   background-color: #ffffff;
 }
 .btn-info {
@@ -4659,9 +4659,9 @@ a {
 }
 .alert.alert-dismissable button.close,
 .alert .django-cradmin-alert-loadspinner {
-  position: relative;
-  top: -2px;
-  right: -21px;
+  position: absolute;
+  top: 12px;
+  right: 15px;
   color: inherit;
   font-size: 24px;
 }
@@ -4815,6 +4815,18 @@ table.table.django-cradmin-table tbody tr td {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+table.table.django-cradmin-table thead th:first-child,
+table.table.django-cradmin-table tbody th:first-child,
+table.table.django-cradmin-table thead td:first-child,
+table.table.django-cradmin-table tbody td:first-child {
+  padding-left: 15px;
+}
+table.table.django-cradmin-table thead th:last-child,
+table.table.django-cradmin-table tbody th:last-child,
+table.table.django-cradmin-table thead td:last-child,
+table.table.django-cradmin-table tbody td:last-child {
+  padding-right: 15px;
+}
 .btn {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
 }
@@ -4841,6 +4853,11 @@ table.table.django-cradmin-table tbody tr td {
   border-color: #224d68;
   color: #ffffff;
 }
+.btn.btn-success:hover {
+  background: #2f9032;
+  border-color: #2f9032;
+  color: #ffffff;
+}
 .btn.btn-cancel {
   color: #377ca8;
   text-decoration: underline;
@@ -4859,7 +4876,6 @@ table.table.django-cradmin-table tbody tr td {
   background: #377ca8;
   color: #ffffff;
   border: none;
-  border-bottom: none;
   margin-bottom: 15px;
 }
 .django-cradmin-page-header-outer .django-cradmin-page-header-inner h1 {
