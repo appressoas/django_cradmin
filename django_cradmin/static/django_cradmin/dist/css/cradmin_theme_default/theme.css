@@ -5232,46 +5232,46 @@ table.table.cradmin-table tbody tr td {
 .django-cradmin-form .cradmin-focusfield .form-group .controls .cradmin-acemarkdown.cradmin-div-styled-as-textarea.cradmin-focus .ace_editor {
   background: #e1edf4;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list {
+ul.django-cradmin-roleselect-list {
   /**
     ## .django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat
     The roleselect list rendered as a flat list.
     */
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat {
   list-style: none;
   margin: 0;
   padding: 0;
   background: #ffffff;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li {
   margin: 0;
   border-bottom: 1px dashed #d9d9d9;
-  padding: 15px 20px;
+  padding: 15px 0;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a {
   display: block;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a h2.django-cradmin-roleselect-role-title {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a h2.django-cradmin-roleselect-role-title {
   font-size: 20px;
   margin: 0;
   padding: 0;
   font-weight: bold;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a .django-cradmin-roleselect-role-description {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a .django-cradmin-roleselect-role-description {
   color: #999999;
   font-size: 14px;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a .django-cradmin-roleselect-role-description p:last-child {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a .django-cradmin-roleselect-role-description p:last-child {
   margin-bottom: 0;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover {
   text-decoration: none;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover .django-cradmin-roleselect-role-description {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover .django-cradmin-roleselect-role-description {
   color: #808080;
 }
-#django_cradmin_roleselect ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-child {
+ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-child {
   border-bottom: none;
 }
 .django-cradmin-bulkfileupload {
@@ -5409,11 +5409,17 @@ table.table.cradmin-table tbody tr td {
 .django-cradmin-focusedpage-wrapper .page-header {
   background: none;
   color: #333333;
-  padding: 0 0 25px;
+  padding: 0 0 25px 0;
+  border: none;
+  margin: 0;
 }
 .django-cradmin-focusedpage-wrapper .page-header h1 {
   margin: 0 0 5px 0;
   font-size: 26px;
+  font-weight: bold;
+}
+.django-cradmin-focusedpage-wrapper .page-header p:last-child {
+  margin: 0;
 }
 @media (min-width: 768px) {
   .django-cradmin-focusedpage-wrapper {
