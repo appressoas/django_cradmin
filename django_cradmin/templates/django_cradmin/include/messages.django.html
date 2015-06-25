@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load cradmin_icon_tags %}
 
 {% if messages %}
     <div class="container">
@@ -18,12 +19,12 @@
                             The spinner is only here to give the user an indication of change when they
                             get the same error or success message each time they click a subit button.
                         {% endcomment %}
-                        <span class="fa fa-spin fa-spinner pull-right django-cradmin-alert-loadspinner"
+                        <span class="{% cradmin_icon 'loadspinner' %} pull-right django-cradmin-alert-loadspinner"
                               ng-show="loading"></span>
 
                         <button ng-show="!loading" class="close" ng-click="hideMessage({{ forloop.counter0 }})">
                             <span class="sr-only">{% trans "Close" %}</span>
-                            <span class="fa fa-times"></span>
+                            <span class="{% cradmin_icon 'x' %}"></span>
                         </button>
                         <span class="sr-only">
                             {% if message.tags == "error" %}

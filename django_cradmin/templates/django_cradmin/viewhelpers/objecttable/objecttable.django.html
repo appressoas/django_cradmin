@@ -1,5 +1,6 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load i18n %}
+{% load cradmin_icon_tags %}
 
 {% block title %}{{ pagetitle|capfirst }}{% endblock title %}
 
@@ -134,7 +135,7 @@
                                                 <a class="objecttableview-remove-ordering-button"
                                                         href="{{ column.get_remove_ordering_url }}"
                                                         title='{% trans "Do not order by this column" %}'>
-                                                    <span class="fa fa-times"></span>
+                                                    <span class="{% cradmin_icon 'x' %}"></span>
                                                 </a>
                                                 {% if multicolumn_ordering %}
                                                     <span class="objecttableview-orderingindex">
@@ -144,9 +145,9 @@
                                                 {% endif %}
                                                 <span class="objecttableview-orderingdirection">
                                                     {% if column.orderinginfo.order_ascending %}
-                                                        <span class="fa fa-caret-down"></span>
+                                                        <span class="{% cradmin_icon 'caret-down' %}"></span>
                                                     {% else %}
-                                                        <span class="fa fa-caret-up"></span>
+                                                        <span class="{% cradmin_icon 'caret-up' %}"></span>
                                                     {% endif %}
                                                 </span>
                                             </span>

@@ -11,4 +11,7 @@ FONT_AWESOME = {
     'list-ul': 'fa fa-list-ul',
     'list-ol': 'fa fa-list-ol',
     'codeblock': 'fa fa-code',
+    'loadspinner': 'fa fa-spin fa-spinner',
+    'caret-down': 'fa fa-caret-down',
+    'caret-up': 'fa fa-caret-up',
 }
