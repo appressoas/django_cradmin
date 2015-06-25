@@ -4954,9 +4954,6 @@ table.table.cradmin-table tbody tr td {
   width: 100%;
   border: none;
 }
-.django-cradmin-form .django_cradmin_filewidget {
-  padding: 10px 15px;
-}
 .django-cradmin-form .django_cradmin_filewidget img {
   max-width: 300px;
   height: auto;
@@ -5002,22 +4999,6 @@ table.table.cradmin-table tbody tr td {
   padding: 0;
   margin: 10px 0 0 0;
   background-color: #eee;
-}
-.django-cradmin-form .cradmin-focusfield .django_cradmin_filewidget {
-  background-color: #fff;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-@media (min-width: 992px) {
-  .django-cradmin-form .cradmin-focusfield .django_cradmin_filewidget {
-    max-width: 600px;
-    border-right: 1px dashed #ccc;
-  }
-}
-@media (min-width: 1200px) {
-  .django-cradmin-form .cradmin-focusfield .django_cradmin_filewidget {
-    max-width: 800px;
-  }
 }
 #objecttableview-table thead th {
   line-height: 40px;

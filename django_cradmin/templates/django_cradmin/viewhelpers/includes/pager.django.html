@@ -17,6 +17,7 @@
             Extra css class(es) to add to the pager in addition to ``.pager``.
 {% endcomment %}
 {% load i18n %}
+{% load cradmin_icon_tags %}
 
 {% if is_paginated %}
     <div class="{% if pager_container_cssclass %}{{ pager_container_cssclass }}{% else %}container{% endif %} pager-container">
