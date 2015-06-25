@@ -494,7 +494,7 @@ class Button(object):
     """
     template_name = 'django_cradmin/viewhelpers/objecttable/button.django.html'
 
-    def __init__(self, label, url='#', buttonclass='default', icon=None, dom_id=None):
+    def __init__(self, label, url='#', buttonclass='btn btn-default btn-sm', icon=None, dom_id=None):
         """
         Parameters:
             label (unicode): The label of the button.

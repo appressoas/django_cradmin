@@ -33,7 +33,7 @@ class TitleColumn(objecttable.MultiActionColumn):
             objecttable.Button(
                 label='Delete',
                 url=self.reverse_appurl('delete', args=[obj.id]),
-                buttonclass="danger"),
+                buttonclass="btn btn-danger btn-sm"),
         ]
 
 
@@ -76,7 +76,8 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Create'), url=app.reverse_appurl('create')),
+            objecttable.Button(_('Create'), url=app.reverse_appurl('create'),
+                               buttonclass='btn btn-primary'),
         ]
 
     def get_multiselect_actions(self):

@@ -2,7 +2,7 @@
         {% if dom_id %}
             id="{{ dom_id }}"
         {% endif %}
-        class="btn btn-{{ buttonclass }} btn-sm"
+        class="{{ buttonclass }}"
         {% for attribute in attributes %}
             {{ attribute|safe }}
         {% endfor %}
