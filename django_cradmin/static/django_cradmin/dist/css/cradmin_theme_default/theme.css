@@ -5717,15 +5717,10 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
     width: 700px;
   }
 }
-@media (min-width: 768px) {
-  .container {
-    width: 550px;
-    margin-left: 0;
-    margin-right: auto;
-  }
-}
 @media (min-width: 992px) {
   .container {
+    margin-left: 0;
+    margin-right: auto;
     width: 770px;
   }
 }
@@ -5733,11 +5728,4 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
   .container {
     width: 970px;
   }
-}
-table.table.cradmin-table {
-  margin-left: -15px;
-  margin-right: -15px;
-}
-.container.cradmin-table-container {
-  padding: 0;
 }
