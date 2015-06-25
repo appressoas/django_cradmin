@@ -155,7 +155,7 @@ class TestButton(TestCase):
     def test_render_with_icon_and_class(self):
         btn = objecttable.Button(
             label="My Btn", url="www.example.com/mybtnurl",
-            buttonclass="danger",
+            buttonclass="btn btn-danger btn-sm",
             icon="glyphicon glyphicon-shopping-cart")
         expected = [
             '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-danger', 'btn-sm"', '>',
