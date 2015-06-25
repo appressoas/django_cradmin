@@ -98,13 +98,15 @@
       input[type=email],
       input[type=number],
       textarea,
+      .django-cradmin-bulkfileupload,
+      .cradmin-div-styled-as-textarea,
       select {
         border: 1px solid #ddd;
         border-radius: 4px;
         outline: none;
         box-shadow: none;
         padding: 10px 12px;
-        background: #FAFAFA;
+        background: @cradmin-form-inactive-bg;
         &:focus {
           background: @cradmin-form-selected-bg;
         }
@@ -118,6 +120,35 @@
         margin: 0;
         text-align: left;
       }
+
+      //.django-cradmin-bulkfileupload,
+      //.cradmin-div-styled-as-textarea {
+      //  border: none;
+      //  outline: none;
+      //  border-radius: 0;
+      //  box-shadow: none;
+      //  margin: 0;
+      //  .body-side-padding();
+      //  padding-top: 40px;
+      //  padding-bottom: 40px;
+      //  background-color: #fff;
+      //  height: auto;
+      //  text-align: left;
+      //  &:focus {
+      //    background-color: @cradmin-form-selected-bg;
+      //  }
+      //  &.cradmin-focus {
+      //    background-color: @cradmin-form-selected-bg;
+      //  }
+      //
+      //  @media (min-width: @screen-md-min) {
+      //    max-width: 600px;
+      //    border-right: 1px dashed #ccc;
+      //  }
+      //  @media (min-width: @screen-lg-min) {
+      //    max-width: 800px;
+      //  }
+      //}
     }
 
     .cradmin-focusfield {

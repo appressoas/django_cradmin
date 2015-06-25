@@ -1,56 +1,65 @@
 .cradmin-acemarkdown {
+  textarea.cradmin-acemarkdowntextarea {
+    display: none;
+  }
+
+  &.cradmin-acemarkdown-textareavisible {
     textarea.cradmin-acemarkdowntextarea {
-        display: none;
+      display: block;
     }
+  }
 
-    &.cradmin-acemarkdown-textareavisible {
-        textarea.cradmin-acemarkdowntextarea {
-            display: block;
-        }
-    }
+  .btn-toolbar {
+    margin-bottom: 10px;
+  }
 
-    .btn-toolbar {
-        margin-bottom: 10px;
-    }
-
-    .ace_editor {
-        font-size: @font-size-base;
-        height: 400px;
-    }
+  .ace_editor {
+    font-size: @font-size-base;
+    height: 400px;
+    background: @cradmin-form-inactive-bg;
+  }
 }
 
 .django-cradmin-form {
-    .cradmin-focusfield .form-group .controls {
-        .cradmin-acemarkdown.cradmin-div-styled-as-textarea {
-            .btn-toolbar {
-                margin-top: -30px;
-                opacity: 0;
-                transition-duration: 0.3s;
-                transition-property: opacity;
-            }
+  .cradmin-focusfield .form-group .controls {
+    .cradmin-acemarkdown.cradmin-div-styled-as-textarea {
+      //.btn-toolbar {
+      //  opacity: 0;
+      //  transition-duration: 0.3s;
+      //  transition-property: opacity;
+      //}
+      background: @cradmin-form-inactive-bg;
 
-            &.cradmin-focus {
-                .btn-toolbar {
-                    opacity: 1.0;
-                }
-            }
+      .ace_editor {
+        height: 100px;
+        //.ace_content {
+        //  padding: 13px;
+        //}
 
-            .ace_editor {
-                height: 100px;
-
-                @media (min-height: 400px) {
-                    height: 200px;
-                }
-                @media (min-height: 500px) {
-                    height: 300px;
-                }
-                @media (min-height: 600px) {
-                    height: 400px;
-                }
-                @media (min-height: 800px) {
-                    height: 600px;
-                }
-            }
+        @media (min-height: 400px) {
+          height: 200px;
         }
+        @media (min-height: 500px) {
+          height: 300px;
+        }
+        @media (min-height: 600px) {
+          height: 400px;
+        }
+        @media (min-height: 800px) {
+          height: 600px;
+        }
+      }
+
+      &.cradmin-focus {
+        //.btn-toolbar {
+        //  opacity: 1.0;
+        //}
+        background: @cradmin-form-selected-bg;
+        .ace_editor {
+          background: @cradmin-form-selected-bg;
+        }
+      }
+
     }
+  }
 }
