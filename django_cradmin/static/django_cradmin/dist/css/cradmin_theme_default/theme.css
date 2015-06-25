@@ -4666,7 +4666,12 @@ a {
   font-size: 24px;
 }
 ul#django_cradmin_messages {
-  margin: 0;
+  margin: 0 0 10px 0;
+}
+body.django-cradmin-formview-page ul#django_cradmin_messages {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
 }
 #django_cradmin_messages_standalone_wrapper ul#django_cradmin_messages .alert {
   font-size: 20px;

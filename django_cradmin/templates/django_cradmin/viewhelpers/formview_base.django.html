@@ -2,9 +2,10 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block pageheader-outer-extra-class %}
-    django-cradmin-page-header-outer-formview
-{% endblock pageheader-outer-extra-class %}
+{% block bodyclass %}
+    {{ block.super }}
+    django-cradmin-formview-page
+{% endblock %}
 
 {% block content %}
     {% block pre_form %}{% endblock pre_form %}
