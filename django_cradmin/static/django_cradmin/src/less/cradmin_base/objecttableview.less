@@ -58,7 +58,7 @@
   tbody {
     tr {
       &.objecttableview-selected-row {
-        background-color: @cradmin-objecttable-selected-row-bg;
+        background: @cradmin-objecttable-selected-row-bg;
       }
 
       td:first-child,
@@ -111,4 +111,27 @@
 }
 .objecttable-cell-lg {
   font-size: @font-size-large;
+}
+
+.objecttableview-buttons-and-search-box {
+  .clearfix();
+  margin-bottom: 10px;
+  background: @cradmin-table-header-bg;
+  padding: 10px;
+  p.objecttableview-global-buttons {
+    text-align: center;
+  }
+
+  @media (min-width: @screen-sm-min) {
+    p.objecttableview-global-buttons {
+      float: left;
+      margin: 0;
+      text-align: left;
+    }
+
+    .cradmin-searchform {
+      float: right;
+      max-width: 250px;
+    }
+  }
 }

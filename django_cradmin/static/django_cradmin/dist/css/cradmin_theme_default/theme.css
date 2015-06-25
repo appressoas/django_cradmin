@@ -4792,13 +4792,13 @@ table.table.cradmin-table {
 }
 table.table.cradmin-table thead {
   border-bottom: 1px solid #cccccc;
-  background-color: #fafafa;
+  background: #fafafa;
 }
 table.table.cradmin-table thead tr th {
   border: none;
 }
 table.table.cradmin-table tbody {
-  background-color: #ffffff;
+  background: #ffffff;
   border-bottom: 1px solid #cccccc;
 }
 table.table.cradmin-table tbody tr {
@@ -4864,22 +4864,6 @@ table.table.cradmin-table tbody tr td {
 }
 .django-cradmin-page-header-outer .django-cradmin-page-header-inner p {
   margin: 0;
-}
-@media (min-width: 768px) {
-  .django-cradmin-page-header-outer .django-cradmin-page-header-inner .btn.btn-sm {
-    padding: 3px 10px;
-  }
-}
-.django-cradmin-page-header-outer .django-cradmin-page-header-inner .btn.btn-default {
-  background: #377ca8;
-  border-color: #224d68;
-  color: #ffffff;
-  transition: background 0.3s ease;
-}
-.django-cradmin-page-header-outer .django-cradmin-page-header-inner .btn.btn-default:hover {
-  background: #224d68;
-  color: #ffffff;
-  border-color: #224d68;
 }
 .pager-container .pager {
   margin: 0;
@@ -5092,7 +5076,7 @@ table.table.cradmin-table tbody tr td {
   width: 85px;
 }
 #objecttableview-table tbody tr.objecttableview-selected-row {
-  background-color: #ffe2a8;
+  background: #ffe2a8;
 }
 #objecttableview-table tbody tr td:first-child .objecttable-cellvalue,
 #objecttableview-table tbody tr td.objecttableview-multiselectcolumn + td .objecttable-cellvalue {
@@ -5129,6 +5113,41 @@ table.table.cradmin-table tbody tr td {
 }
 .objecttable-cell-lg {
   font-size: 20px;
+}
+.objecttableview-buttons-and-search-box {
+  margin-bottom: 10px;
+  background: #fafafa;
+  padding: 10px;
+}
+.objecttableview-buttons-and-search-box:before,
+.objecttableview-buttons-and-search-box:after {
+  content: " ";
+  display: table;
+}
+.objecttableview-buttons-and-search-box:after {
+  clear: both;
+}
+.objecttableview-buttons-and-search-box:before,
+.objecttableview-buttons-and-search-box:after {
+  content: " ";
+  display: table;
+}
+.objecttableview-buttons-and-search-box:after {
+  clear: both;
+}
+.objecttableview-buttons-and-search-box p.objecttableview-global-buttons {
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .objecttableview-buttons-and-search-box p.objecttableview-global-buttons {
+    float: left;
+    margin: 0;
+    text-align: left;
+  }
+  .objecttableview-buttons-and-search-box .cradmin-searchform {
+    float: right;
+    max-width: 250px;
+  }
 }
 .django_cradmin_submitrow {
   background: #333333;
