@@ -8,9 +8,11 @@
 
     <div id="django_cradmin_contentwrapper">
         {% block pageheader %}
-            <div class="page-header">
+            <div class="django-cradmin-page-header-outer {% block pageheader-outer-extra-class %}{% endblock %}">
                 <div class="container">
-                    {% block pageheader-inner %}{% endblock pageheader-inner %}
+                    <div class="django-cradmin-page-header-inner">
+                        {% block pageheader-inner %}{% endblock pageheader-inner %}
+                    </div>
                 </div>
             </div>
         {% endblock pageheader %}
