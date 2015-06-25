@@ -89,9 +89,9 @@ Documentation
    crapp
    crinstance
    crmenu
-   viewhelpers_objecttable
    settings
    templatetags
+   theme
 
 
 ************
