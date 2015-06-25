@@ -23,7 +23,7 @@
         <ul class="pager {{ pager_extraclass }}">
             <li class="previous {% if not page_obj.has_previous %}disabled{% endif %}">
                 <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}&amp;{{ extra_querystring }}">
-                    <i class="fa fa-chevron-left"></i>
+                    <i class="{% cradmin_icon 'pager-previus-page' %}"></i>
                     <span class="sr-only">{% trans "Previous" %}</span>
                 </a>
             </li>
@@ -32,7 +32,7 @@
             </li>
             <li class="next {% if not page_obj.has_next %}disabled{% endif %}">
                 <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}last{% endif %}&amp;{{ extra_querystring }}">
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="{% cradmin_icon 'pager-next-page' %}"></i>
                     <span class="sr-only">{% trans "Next" %}</span>
                 </a>
             </li>

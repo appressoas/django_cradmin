@@ -14,4 +14,6 @@ FONT_AWESOME = {
     'loadspinner': 'fa fa-spin fa-spinner',
     'caret-down': 'fa fa-caret-down',
     'caret-up': 'fa fa-caret-up',
+    'pager-next-page': 'fa fa-chevron-right',
+    'pager-previus-page': 'fa fa-chevron-left',
 }

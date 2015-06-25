@@ -8,6 +8,7 @@ from django import forms
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.crispylayouts import BulkFileUploadSubmit
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget
+from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -212,7 +213,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
             BulkFileUploadSubmit(
                 'submit', _('Add to the image archive'),
                 uploading_text=_('Uploading images'),
-                uploading_icon_cssclass='fa fa-spinner fa-spin'),
+                uploading_icon_cssclass=cradmin_icon('loadspinner')),
         ]
 
     def get_field_layout(self):
