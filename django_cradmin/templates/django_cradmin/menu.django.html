@@ -8,33 +8,39 @@
     <nav id="cradmin_menu" ng-controller="CradminMenuController">
         {% block pre-menu %}{% endblock pre-menu %}
 
-        <div class="cradmin_menumobileheader">
-            <button type="button" class="btn btn-default cradmin_menutoggle"
-                    ng-click="toggleNavigation()">
-                {% trans "Menu" %}
-            </button>
+        <div class="cradmin-menumobileheader">
+            {% block mobile-header %}
+                {% block mobile-header-pre %}{% endblock mobile-header-pre %}
+                <button type="button" class="btn btn-default cradmin-menutoggle"
+                        ng-click="toggleNavigation()">
+                    {% block mobile-header-menutoggle-content %}
+                        {% trans "Menu" %}
+                    {% endblock mobile-header-menutoggle-content %}
+                </button>
+                {% block mobile-header-post %}{% endblock mobile-header-post %}
+            {% endblock mobile-header %}
         </div>
 
-        <div class="cradmin_menucontent"
-                ng-class="{cradmin_menucontent_display: displayMenu}">
+        <div class="cradmin-menucontent"
+                ng-class="{'cradmin-menucontent-display': displayMenu}">
             {% block menucontent %}
                 {% with menu=request.cradmin_instance.get_menu %}
                     {% if menu.headeritems %}
-                        <ul class="cradmin_menucontent_header">
+                        <ul class="cradmin-menucontent-header">
                             {% for menuitem in menu.headeritems %}
                                 {{ menuitem.render|safe }}
                             {% endfor %}
                         </ul>
                     {% endif %}
                     {% if menu.mainitems %}
-                        <ul class="cradmin_menucontent_main">
+                        <ul class="cradmin-menucontent-main">
                             {% for menuitem in menu.mainitems %}
                                 {{ menuitem.render|safe }}
                             {% endfor %}
                         </ul>
                     {% endif %}
                     {% if menu.footeritems %}
-                        <ul class="cradmin_menucontent_footer">
+                        <ul class="cradmin-menucontent-footer">
                             {% for menuitem in menu.footeritems %}
                                 {{ menuitem.render|safe }}
                             {% endfor %}

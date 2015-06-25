@@ -1,9 +1,9 @@
 nav#cradmin_menu {
   background-color: @cradmin-menu-bg;
 
-  .cradmin_menucontent {
+  .cradmin-menucontent {
     display: none;
-    &.cradmin_menucontent_display {
+    &.cradmin-menucontent-display {
       display: block;
     }
 
@@ -29,29 +29,29 @@ nav#cradmin_menu {
             color: @cradmin-menu-hovercolor;
           }
         }
-        &.cradmin_menu_activeitem a {
+        &.cradmin-menu-activeitem a {
           color: @cradmin-menu-hovercolor;
           font-weight: bold;
         }
       }
 
-      &.cradmin_menucontent_header {
+      &.cradmin-menucontent-header {
         background-color: @cradmin-menu-header-bg;
       }
-      &.cradmin_menucontent_main {
+      &.cradmin-menucontent-main {
       }
-      &.cradmin_menucontent_footer {
+      &.cradmin-menucontent-footer {
         margin-top: 30px;
 
       }
     }
   }
 
-  .cradmin_menumobileheader {
+  .cradmin-menumobileheader {
     border-bottom: 1px solid @cradmin-menu-border;
     text-align: right;
     padding-right: 15px;
-    .cradmin_menutoggle {
+    .cradmin-menutoggle {
       padding: 3px 14px;
       .button-variant(#eee, #333, #444);
       margin-top: 5px;
@@ -66,7 +66,7 @@ nav#cradmin_menu {
   @media (min-width: @screen-md-min) {
     height: @cradmin-menu-height;
 
-    .cradmin_menucontent {
+    .cradmin-menucontent {
       display: block;
       height: @cradmin-menu-height;
 
@@ -83,7 +83,7 @@ nav#cradmin_menu {
           }
         }
 
-        &.cradmin_menucontent_footer {
+        &.cradmin-menucontent-footer {
           margin: 0;
           float: right;
         }

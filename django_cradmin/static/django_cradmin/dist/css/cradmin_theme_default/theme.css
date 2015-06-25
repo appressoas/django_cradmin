@@ -5433,18 +5433,18 @@ ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-ch
 nav#cradmin_menu {
   background-color: #333333;
 }
-nav#cradmin_menu .cradmin_menucontent {
+nav#cradmin_menu .cradmin-menucontent {
   display: none;
 }
-nav#cradmin_menu .cradmin_menucontent.cradmin_menucontent_display {
+nav#cradmin_menu .cradmin-menucontent.cradmin-menucontent-display {
   display: block;
 }
-nav#cradmin_menu .cradmin_menucontent ul {
+nav#cradmin_menu .cradmin-menucontent ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-nav#cradmin_menu .cradmin_menucontent ul li a {
+nav#cradmin_menu .cradmin-menucontent ul li a {
   position: relative;
   display: block;
   color: #aaaaaa;
@@ -5457,72 +5457,73 @@ nav#cradmin_menu .cradmin_menucontent ul li a {
   overflow: hidden;
   white-space: nowrap;
 }
-nav#cradmin_menu .cradmin_menucontent ul li a:hover {
+nav#cradmin_menu .cradmin-menucontent ul li a:hover {
   text-decoration: none;
   color: #eeeeee;
 }
-nav#cradmin_menu .cradmin_menucontent ul li.cradmin_menu_activeitem a {
+nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem a {
   color: #eeeeee;
   font-weight: bold;
 }
-nav#cradmin_menu .cradmin_menucontent ul.cradmin_menucontent_header {
+nav#cradmin_menu .cradmin-menucontent ul.cradmin-menucontent-header {
   background-color: #262626;
 }
-nav#cradmin_menu .cradmin_menucontent ul.cradmin_menucontent_footer {
+nav#cradmin_menu .cradmin-menucontent ul.cradmin-menucontent-footer {
   margin-top: 30px;
 }
-nav#cradmin_menu .cradmin_menumobileheader {
+nav#cradmin_menu .cradmin-menumobileheader {
   border-bottom: 1px solid #444444;
-  text-align: right;
-  padding-right: 15px;
 }
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle {
-  padding: 3px 14px;
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
+  width: 100%;
   color: #eeeeee;
   background-color: #333333;
   border-color: #444444;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  font-size: 20px;
+  border: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px 14px;
+  border-radius: 0;
+  background: none;
 }
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:hover,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:focus,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:active,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.active,
-.open .dropdown-togglenav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle {
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:hover,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:focus,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:active,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.active,
+.open .dropdown-togglenav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
   color: #eeeeee;
   background-color: #1f1f1f;
   border-color: #252525;
 }
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:active,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.active,
-.open .dropdown-togglenav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle {
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:active,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.active,
+.open .dropdown-togglenav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
   background-image: none;
 }
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.disabled,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle[disabled],
-fieldset[disabled] nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.disabled:hover,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle[disabled]:hover,
-fieldset[disabled] nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:hover,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.disabled:focus,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle[disabled]:focus,
-fieldset[disabled] nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:focus,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.disabled:active,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle[disabled]:active,
-fieldset[disabled] nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle:active,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.disabled.active,
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle[disabled].active,
-fieldset[disabled] nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle.active {
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled],
+fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled:hover,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled]:hover,
+fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:hover,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled:focus,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled]:focus,
+fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:focus,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled:active,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled]:active,
+fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:active,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled.active,
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled].active,
+fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.active {
   background-color: #333333;
   border-color: #444444;
 }
-nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
+nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle .badge {
   color: #333333;
   background-color: #eeeeee;
 }
 @media (min-width: 992px) {
-  nav#cradmin_menu .cradmin_menumobileheader {
+  nav#cradmin_menu .cradmin-menumobileheader {
     display: none;
   }
 }
@@ -5536,7 +5537,7 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
     overflow-y: auto;
     overflow-x: hidden;
   }
-  nav#cradmin_menu .cradmin_menucontent {
+  nav#cradmin_menu .cradmin-menucontent {
     display: block;
   }
 }
