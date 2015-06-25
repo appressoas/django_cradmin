@@ -4966,26 +4966,6 @@ form .alert-block.alert-danger ul li {
 table.table.cradmin-table {
   margin: 0;
 }
-table.table.cradmin-table tbody tr td:first-child,
-table.table.cradmin-table thead tr th:first-child {
-  padding-left: 15px;
-}
-@media (min-width: 768px) {
-  table.table.cradmin-table tbody tr td:first-child,
-  table.table.cradmin-table thead tr th:first-child {
-    padding-left: 50px;
-  }
-}
-table.table.cradmin-table tbody tr td:last-child,
-table.table.cradmin-table thead tr th:last-child {
-  padding-right: 15px;
-}
-@media (min-width: 768px) {
-  table.table.cradmin-table tbody tr td:last-child,
-  table.table.cradmin-table thead tr th:last-child {
-    padding-right: 50px;
-  }
-}
 table.table.cradmin-table thead {
   border-bottom: 1px solid #cccccc;
   background-color: #fafafa;
