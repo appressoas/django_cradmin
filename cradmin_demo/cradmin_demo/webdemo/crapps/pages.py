@@ -113,6 +113,11 @@ class PageCreateUpdateMixin(object):
                 'publishing_time',
                 'internal_notes'
             ),
+            # layout.Div(
+            #     'publishing_time',
+            #     'internal_notes',
+            #     css_class='cradmin-globalfields'
+            # ),
         ]
 
     def get_form(self, form_class=None):

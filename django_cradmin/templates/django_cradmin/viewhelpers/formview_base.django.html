@@ -5,7 +5,9 @@
 {% block content %}
     {% block pre_form %}{% endblock pre_form %}
     {% block form %}
-        {% crispy form formhelper %}
+        <div class="container">
+            {% crispy form formhelper %}
+        </div>
 
         {% comment %}
             NOTE: This will probably break when https://github.com/maraujop/django-crispy-forms/issues/263 is fixed
