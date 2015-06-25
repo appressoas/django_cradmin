@@ -108,6 +108,11 @@ class PageCreateUpdateMixin(object):
             ),
             layout.Div('intro', css_class="cradmin-focusfield"),
             layout.Div('body', css_class="cradmin-focusfield"),
+            layout.Fieldset(
+                'Advanced',
+                'publishing_time',
+                'internal_notes'
+            ),
         ]
 
     def get_form(self, form_class=None):

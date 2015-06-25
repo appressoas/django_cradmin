@@ -1,7 +1,9 @@
 from __future__ import unicode_literals
 from builtins import object
+
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from future.utils import python_2_unicode_compatible
 
@@ -25,13 +27,23 @@ class Page(models.Model):
         max_length=100,
         verbose_name=_('Title'))
     intro = models.TextField(
-        verbose_name=_('Intro'))
+        verbose_name=_('Intro'),
+        help_text=_('A short introduction.'))
     image = models.ForeignKey(
         imagearchivemodels.ArchiveImage,
         verbose_name=_('Image'),
         null=True, blank=True)
     body = models.TextField(
         verbose_name=_('Body'))
+    publishing_time = models.DateTimeField(
+        verbose_name=_('Publishing time'),
+        default=timezone.now(),
+        blank=False,
+        help_text=_('The time when this will be visible on the website.'))
+    internal_notes = models.TextField(
+        verbose_name=_('Internal notes'),
+        help_text=_('Put internal notes here. Will not be visible on the website.'),
+        blank=True, null=False, default='')
     # tags = models.ManyToManyField(Tag)
 
     def __str__(self):
