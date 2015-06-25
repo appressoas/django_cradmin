@@ -10,12 +10,19 @@ body {
 
 #django_cradmin_contentwrapper {
   background: @cradmin-bodybg;
-  max-width: @screen-lg-min;
   padding-bottom: 15px;
   min-height: 100%;
   @media (min-width: @screen-md-min) {
     padding-left: @cradmin-menu-width;
   }
+  //max-width: @screen-lg-min;
+  @media (min-width: @screen-md-min) {
+    width: @container-md;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: @container-lg;
+  }
+
 }
 
 .django-cradmin-focusedpage-body {
@@ -43,10 +50,10 @@ body.django-cradmin-hide-menu {
   &.django-cradmin-container-focus {
     @media (min-width: @screen-md-min) {
       margin-left: (@grid-gutter-width/2);
-      width: (@container-md - @cradmin-menu-width - (@grid-gutter-width/2));
+      width: (@container-md - @cradmin-menu-width - @grid-gutter-width);
     }
     @media (min-width: @screen-lg-min) {
-      width: (@container-lg - @cradmin-menu-width - (@grid-gutter-width/2));
+      width: (@container-lg - @cradmin-menu-width - @grid-gutter-width);
     }
   }
 }

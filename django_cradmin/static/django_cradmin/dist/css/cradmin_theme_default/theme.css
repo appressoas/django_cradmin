@@ -5558,13 +5558,22 @@ body {
 }
 #django_cradmin_contentwrapper {
   background: #e6e6e6;
-  max-width: 1200px;
   padding-bottom: 15px;
   min-height: 100%;
 }
 @media (min-width: 992px) {
   #django_cradmin_contentwrapper {
     padding-left: 200px;
+  }
+}
+@media (min-width: 992px) {
+  #django_cradmin_contentwrapper {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  #django_cradmin_contentwrapper {
+    width: 1170px;
   }
 }
 .django-cradmin-focusedpage-body {
@@ -5590,12 +5599,12 @@ body {
 @media (min-width: 992px) {
   .container.django-cradmin-container-focus {
     margin-left: 15px;
-    width: 755px;
+    width: 740px;
   }
 }
 @media (min-width: 1200px) {
   .container.django-cradmin-container-focus {
-    width: 955px;
+    width: 940px;
   }
 }
 .django-cradmin-form-wrapper .django-cradmin-form {
