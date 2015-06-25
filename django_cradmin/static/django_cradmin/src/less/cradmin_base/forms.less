@@ -124,6 +124,16 @@
       .controls {
         padding: 20px @cradmin-form-sidepadding 4px @cradmin-form-sidepadding;
       }
+
+      &.cradmin-focusfield-lg {
+        .form-group {
+          input[type=text],
+          input[type=email],
+          input[type=number] {
+            font-size: ceil(@font-size-base + 8px);
+          }
+        }
+      }
     }
   }
 }
