@@ -27,6 +27,16 @@ body.django-cradmin-hide-menu {
   @media (min-width: @screen-lg-min) {
     width: (@container-lg - @cradmin-menu-width);
   }
+
+  &.django-cradmin-container-focus {
+    @media (min-width: @screen-md-min) {
+      margin-left: (@grid-gutter-width/2);
+      width: (@container-md - @cradmin-menu-width - (@grid-gutter-width/2));
+    }
+    @media (min-width: @screen-lg-min) {
+      width: (@container-lg - @cradmin-menu-width - (@grid-gutter-width/2));
+    }
+  }
 }
 
 
@@ -34,3 +44,4 @@ body.django-cradmin-hide-menu {
   margin-left: 0;
   margin-right: 0;
 }
+

@@ -5575,6 +5575,17 @@ nav#cradmin_menu .cradmin_menumobileheader .cradmin_menutoggle .badge {
     width: 970px;
   }
 }
+@media (min-width: 992px) {
+  .container.django-cradmin-container-focus {
+    margin-left: 15px;
+    width: 755px;
+  }
+}
+@media (min-width: 1200px) {
+  .container.django-cradmin-container-focus {
+    width: 955px;
+  }
+}
 .django-cradmin-form-wrapper .django-cradmin-form {
   margin-left: 0;
   margin-right: 0;
