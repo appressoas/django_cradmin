@@ -1,49 +1,34 @@
 .django_cradmin_submitrow {
-  position: fixed;
-  z-index: 10000;
-  bottom: 0;
-  left: @cradmin-bodypadding-xs;
-  right: @cradmin-bodypadding-xs;
-  background-color: @cradmin-submitrow-bg;
+  background: @cradmin-submitrow-bg;
   padding: @cradmin-submitrow-padding @cradmin-submitrow-padding 0 @cradmin-submitrow-padding;
-  border-radius: 3px 3px 0 0;
 
   &.django_cradmin_submitrow_hidden {
     display: none;
   }
 
   .btn {
-    text-transform: uppercase;
+    text-transform: @cradmin-submitrow-btn-text-transform;
     font-size: ceil(@font-size-base - 2px);
     line-height: (@line-height-computed - 4px);
     padding: 10px 12px;
     margin-bottom: @cradmin-submitrow-padding;
     &.btn-default {
-      background-color: #808080;
-      border-color: #808080;
-      color: #fff;
+      background: @cradmin-submitrow-btn-default-bg;
+      border-color: @cradmin-submitrow-btn-default-border-color;
+      color: @cradmin-submitrow-btn-default-color;
       &:hover {
-        background-color: #666;
-        border-color: #666;
-        color: #fff;
+        background: @cradmin-submitrow-btn-default-hover-bg;
+        border-color: @cradmin-submitrow-btn-default-hover-border-color;
+        color: @cradmin-submitrow-btn-default-hover-color;
       }
     }
     &.btn-cancel {
-      color: @link-color;
+      color: @cradmin-submitrow-cancel-color;
       font-size: @font-size-base;
       text-transform: none;
       &:hover {
-        color: lighten(@link-color, 15%);
+        color: @cradmin-submitrow-cancel-hover-color;
       }
-    }
-  }
-}
-
-
-body.django-cradmin-hide-menu {
-  .django_cradmin_submitrow {
-    @media (min-width: @screen-md-min) {
-      left: @cradmin-bodypadding;
     }
   }
 }

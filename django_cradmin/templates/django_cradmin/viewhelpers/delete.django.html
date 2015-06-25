@@ -22,7 +22,7 @@
 
     {% block delete-form %}
         <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">{% csrf_token %}
-            <div class="django_cradmin_submitrow">
+            <div class="django_cradmin_submitrow container">
                 <button type="submit" class="btn btn-danger">{{ delete_button_label }}</button>
                 <a class="btn btn-cancel" django-cradmin-back>{% trans "Cancel" %}</a>
             </div>
