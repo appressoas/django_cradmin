@@ -17,7 +17,7 @@ class EmailColumn(objecttable.MultiActionColumn):
             objecttable.Button(
                 label=_('Delete'),
                 url=self.reverse_appurl('delete', args=[obj.id]),
-                buttonclass="danger"),
+                buttonclass="btn btn-danger btn-sm"),
         ]
 
     def render_value(self, obj):
