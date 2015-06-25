@@ -1,4 +1,5 @@
 
+#: Font-awesome icon map for the ``cradmin_icon`` template tag.
 FONT_AWESOME = {
     'search': 'fa fa-search',
     'x': 'fa fa-times',

@@ -91,6 +91,7 @@ Documentation
    crmenu
    viewhelpers_objecttable
    settings
+   templatetags
 
 
 ************
