@@ -6,13 +6,13 @@
   -webkit-tap-highlight-color: @cradmin-btn-tap-highlight-color;
 
   &.btn-default {
-    &:hover {
+    &:hover, &:focus {
       .btn-default-hoverstyle-mixin();
     }
   }
 
   &.btn-primary {
-    &:hover {
+    &:hover, &:focus {
       background: @btn-primary-hover-bg;
       border-color: @btn-primary-hover-border;
       color: @btn-primary-hover-color;
@@ -20,18 +20,31 @@
   }
 
   &.btn-success {
-    &:hover {
+    &:hover, &:focus {
       background: @btn-success-hover-bg;
       border-color: @btn-success-hover-border;
       color: @btn-success-hover-color;
     }
   }
 
+  &.btn-danger {
+     &:hover, &:focus {
+       background: @btn-danger-bg;
+       border-color: @btn-danger-border;
+       color: @btn-danger-color;
+       @media (min-width: @screen-sm-min) {
+         background: @cradmin-btn-danger-hover-bg;
+         border-color: @cradmin-btn-danger-hover-border;
+         color: @cradmin-btn-danger-hover-color;
+       }
+     }
+  }
+
   // A django_cradmin extension to the set of bootstrap buttons.
   &.btn-cancel {
     color: @link-color;
     text-decoration: underline;
-    &:hover {
+    &:hover, &:focus {
       color: darken(@link-color, 15%);
     }
   }
