@@ -14,7 +14,7 @@ class MenuItem(object):
     """
     template_name = 'django_cradmin/menuitem.django.html'
 
-    def __init__(self, label, url, active=False, attributes={}, open_new_window=False):
+    def __init__(self, label, url, active=False, attributes={}, open_new_window=False, extra_css_classes=''):
         """
         Parameters:
             label: A label shown in the menu.
@@ -23,12 +23,14 @@ class MenuItem(object):
             active: Should be ``True`` if the menuitem should be styled as active.
             open_new_window: Set this to ``True`` to set the ``target="_blank"``
                 attribute on the menu link.
+            extra_css_classes: String with extra css classes to set on the ``<li>`` element.
         """
         self.label = label
         self.url = url
         self.attributes = attributes
         self.active = active
         self.open_new_window = open_new_window
+        self.extra_css_classes = extra_css_classes
 
     def render(self):
         return render_to_string(self.template_name, {
