@@ -394,7 +394,7 @@ class ImagePreviewColumn(Column):
     preview_width = 100
 
     #: See :meth:`.get_preview_height`
-    preview_height = 70
+    preview_height = 65
 
     def is_sortable(self):
         return False

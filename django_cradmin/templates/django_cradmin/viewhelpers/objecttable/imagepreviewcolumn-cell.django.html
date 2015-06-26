@@ -3,5 +3,5 @@
 {% if image_path == None %}
     <em class="text-muted">{% trans "(None)" %}</em>
 {% else %}
-    <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format %}">
+    <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format scalemethod='cover' %}">
 {% endif %}

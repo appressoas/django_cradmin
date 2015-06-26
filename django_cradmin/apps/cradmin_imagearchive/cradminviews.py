@@ -56,7 +56,7 @@ class DescriptionColumn(objecttable.TruncatecharsPlainTextColumn):
 class ImageColumn(objecttable.ImagePreviewColumn):
     modelfield = 'image'
     preview_width = 100
-    preview_height = 70
+    preview_height = 65
     column_width = '100px'
 
     def get_header(self):
