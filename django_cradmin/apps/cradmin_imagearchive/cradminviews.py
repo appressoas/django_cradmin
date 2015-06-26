@@ -81,6 +81,7 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
         DescriptionColumn,
     ]
     searchfields = ['name', 'description', 'file_extension']
+    hide_column_headers = True
 
     def get_buttons(self):
         app = self.request.cradmin_app
