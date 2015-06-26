@@ -105,6 +105,7 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     searchfields = ['name', 'description', 'file_extension']
     hide_menu = True
     # paginate_by = 10
+    hide_column_headers = True
 
     def make_foreignkey_preview_for(self, obj):
         return obj.get_preview_html()
@@ -114,6 +115,7 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
         return [
             objecttable.ForeignKeySelectButton(
                 _('Add image'),
+                buttonclass='btn btn-primary',
                 request=self.request,
                 url=app.reverse_appurl('create')),
         ]

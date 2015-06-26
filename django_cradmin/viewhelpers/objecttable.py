@@ -553,10 +553,10 @@ class UseThisButton(Button):
     """
     Button for :class:`.UseThisActionColumn`.
     """
-    def __init__(self, view, label, obj, buttonclass='default', icon=None):
+    def __init__(self, view, label, obj, buttonclass='btn btn-default btn-sm'):
         self.view = view
         self.obj = obj
-        super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass, icon=icon)
+        super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass)
 
     def get_attributes(self):
         attributes = {
