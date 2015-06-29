@@ -46,10 +46,14 @@
 @cradmin-form-selected-bg: #E1EDF4;
 @cradmin-form-selected-border: darken(@cradmin-form-selected-bg, 10%);
 @cradmin-form-max-width: @screen-sm-min;
-@cradmin-form-sidepadding: 15px;
+@cradmin-form-sidepadding-left: (@grid-gutter-width/2);
+@cradmin-form-sidepadding-right: (@grid-gutter-width/2);
 
 // Submitrow
-@cradmin-submitrow-padding: 8px;
+@cradmin-submitrow-padding-top: 8px;
+@cradmin-submitrow-padding-right: @cradmin-form-sidepadding-right;
+@cradmin-submitrow-padding-bottom: 8px;
+@cradmin-submitrow-padding-left: @cradmin-form-sidepadding-left;
 @cradmin-submitrow-bg: #333;
 @cradmin-submitrow-btn-text-transform: uppercase;
 @cradmin-submitrow-btn-default-bg: #808080;

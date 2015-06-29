@@ -1,6 +1,8 @@
 .django_cradmin_submitrow {
   background: @cradmin-submitrow-bg;
-  padding: @cradmin-submitrow-padding @cradmin-submitrow-padding 0 @cradmin-submitrow-padding;
+
+  // NOTE: The bottom padding is handled by the bottom margin of .btn.
+  padding: @cradmin-submitrow-padding-top @cradmin-submitrow-padding-right 0 @cradmin-submitrow-padding-left;
 
   &.django_cradmin_submitrow_hidden {
     display: none;
@@ -11,7 +13,7 @@
     font-size: ceil(@font-size-base - 2px);
     line-height: (@line-height-computed - 4px);
     padding: 10px 12px;
-    margin-bottom: @cradmin-submitrow-padding;
+    margin-bottom: @cradmin-submitrow-padding-bottom;
     &.btn-default {
       background: @cradmin-submitrow-btn-default-bg;
       border-color: @cradmin-submitrow-btn-default-border-color;

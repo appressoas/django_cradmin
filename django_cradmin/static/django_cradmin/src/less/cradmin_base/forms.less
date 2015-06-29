@@ -76,7 +76,7 @@
       margin: 0;
       background: rgb(220, 220, 220);
       border: none;
-      padding: 10px @cradmin-form-sidepadding;
+      padding: 10px @cradmin-form-sidepadding-right 10px @cradmin-form-sidepadding-left;
       //    font-weight: normal;
       //text-transform: uppercase;
       font-size: ceil(@font-size-base - 2px);
@@ -87,7 +87,7 @@
     .cradmin-globalfields {
       margin-bottom: 30px;
       .form-group {
-        padding: 20px @cradmin-form-sidepadding 4px @cradmin-form-sidepadding;
+        padding: 20px @cradmin-form-sidepadding-right 4px @cradmin-form-sidepadding-left;
         margin: 0;
         &:last-child {
           padding-bottom: 30px;
@@ -155,7 +155,7 @@
 
     .cradmin-focusfield {
       .controls {
-        padding: 20px @cradmin-form-sidepadding 4px @cradmin-form-sidepadding;
+        padding: 20px @cradmin-form-sidepadding-right 4px @cradmin-form-sidepadding-left;
       }
 
       &.cradmin-focusfield-lg {

@@ -2113,7 +2113,7 @@ fieldset[disabled] .btn-primary.active {
 .btn-success {
   color: #ffffff;
   background-color: #3cb63f;
-  border-color: #2f9032;
+  border-color: #3cb63f;
 }
 .btn-success:hover,
 .btn-success:focus,
@@ -2122,7 +2122,7 @@ fieldset[disabled] .btn-primary.active {
 .open .dropdown-toggle.btn-success {
   color: #ffffff;
   background-color: #329734;
-  border-color: #206222;
+  border-color: #2d882f;
 }
 .btn-success:active,
 .btn-success.active,
@@ -2145,7 +2145,7 @@ fieldset[disabled] .btn-success:active,
 .btn-success[disabled].active,
 fieldset[disabled] .btn-success.active {
   background-color: #3cb63f;
-  border-color: #2f9032;
+  border-color: #3cb63f;
 }
 .btn-success .badge {
   color: #3cb63f;
@@ -4726,7 +4726,7 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   margin: 0;
   background: #dcdcdc;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 15px 10px 15px;
   font-size: 14px;
   line-height: 22px;
 }
@@ -4836,33 +4836,52 @@ table.table.django-cradmin-table tbody td:last-child {
     transition-property: background color border-color;
   }
 }
-.btn.btn-default:hover {
+.btn.btn-default:hover,
+.btn.btn-default:focus {
   background: #ffffff;
   border-color: #d9d9d9;
   color: #377ca8;
 }
 @media (min-width: 768px) {
-  .btn.btn-default:hover {
+  .btn.btn-default:hover,
+  .btn.btn-default:focus {
     background: #377ca8;
     border-color: #377ca8;
     color: #ffffff;
   }
 }
-.btn.btn-primary:hover {
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
   background: #224d68;
   border-color: #224d68;
   color: #ffffff;
 }
-.btn.btn-success:hover {
-  background: #2f9032;
-  border-color: #2f9032;
+.btn.btn-success:hover,
+.btn.btn-success:focus {
+  background: #49c34c;
+  border-color: #49c34c;
   color: #ffffff;
+}
+.btn.btn-danger:hover,
+.btn.btn-danger:focus {
+  background: #d9534f;
+  border-color: #d43f3a;
+  color: #ffffff;
+}
+@media (min-width: 768px) {
+  .btn.btn-danger:hover,
+  .btn.btn-danger:focus {
+    background: #ce312c;
+    border-color: #ce312c;
+    color: #ffffff;
+  }
 }
 .btn.btn-cancel {
   color: #377ca8;
   text-decoration: underline;
 }
-.btn.btn-cancel:hover {
+.btn.btn-cancel:hover,
+.btn.btn-cancel:focus {
   color: #24516e;
 }
 .django-cradmin-icon-font-lg {
@@ -5157,7 +5176,7 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 .django_cradmin_submitrow {
   background: #333333;
-  padding: 8px 8px 0 8px;
+  padding: 8px 15px 0 15px;
 }
 .django_cradmin_submitrow.django_cradmin_submitrow_hidden {
   display: none;
