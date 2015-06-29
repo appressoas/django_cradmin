@@ -23,7 +23,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           $scope.previewElementScope = previewElementScope
 
         @onChangeValueBegin = ->
-          $scope.iframeScope.reset()
+          $scope.iframeScope.beforeShowingIframe()
           $scope.iframeWrapperScope.show()
 
         $scope.onChangeValue = (event) ->
@@ -38,7 +38,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           $scope.fieldScope.setValue(data.value)
           $scope.previewElementScope.setPreviewHtml(data.preview)
           $scope.iframeWrapperScope.hide()
-          $scope.iframeScope.clear()
+          $scope.iframeScope.afterFieldValueChange()
 
         $window.addEventListener('message', $scope.onChangeValue, false)
 
@@ -146,10 +146,14 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
     }
 
     controller: ($scope) ->
-      $scope.clear = ->
-        $scope.element.attr('src', '')
-      $scope.reset = ->
-        $scope.element.attr('src', $scope.src)
+      $scope.afterFieldValueChange = ->
+        # NOTE: Do nothing, but we may want to add an option that clears the view
+        #       after selecting a value.
+        # $scope.element.attr('src', '')
+      $scope.beforeShowingIframe = ->
+        currentSrc = $scope.element.attr('src')
+        if not currentSrc? or currentSrc == ''
+          $scope.element.attr('src', $scope.src)
 
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.element = element

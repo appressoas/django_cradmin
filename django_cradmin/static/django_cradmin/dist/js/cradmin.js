@@ -832,7 +832,7 @@
             return $scope.previewElementScope = previewElementScope;
           };
           this.onChangeValueBegin = function() {
-            $scope.iframeScope.reset();
+            $scope.iframeScope.beforeShowingIframe();
             return $scope.iframeWrapperScope.show();
           };
           $scope.onChangeValue = function(event) {
@@ -848,7 +848,7 @@
             $scope.fieldScope.setValue(data.value);
             $scope.previewElementScope.setPreviewHtml(data.preview);
             $scope.iframeWrapperScope.hide();
-            return $scope.iframeScope.clear();
+            return $scope.iframeScope.afterFieldValueChange();
           };
           $window.addEventListener('message', $scope.onChangeValue, false);
         },
@@ -944,11 +944,13 @@
         src: '@djangoCradminModelChoiceFieldIframe'
       },
       controller: function($scope) {
-        $scope.clear = function() {
-          return $scope.element.attr('src', '');
-        };
-        return $scope.reset = function() {
-          return $scope.element.attr('src', $scope.src);
+        $scope.afterFieldValueChange = function() {};
+        return $scope.beforeShowingIframe = function() {
+          var currentSrc;
+          currentSrc = $scope.element.attr('src');
+          if ((currentSrc == null) || currentSrc === '') {
+            return $scope.element.attr('src', $scope.src);
+          }
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {
