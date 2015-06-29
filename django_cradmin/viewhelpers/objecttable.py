@@ -904,7 +904,7 @@ class ObjectTableView(ListView):
 
     def _get_search_hidden_fields(self):
         for key, value in list(self.request.GET.items()):
-            if key != 'search':
+            if key not in ('search', 'page'):
                 yield key, value
 
     def _get_pager_extra_querystring(self):
