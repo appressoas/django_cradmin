@@ -34,16 +34,14 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     def get_buttons(self):
         if self._foreignkey_select_mode():
             buttons = [
-                PrimarySubmit('submit-use', _('Create and select')),
+                PrimarySubmit('submit-use', self.submit_use_label),
             ]
         else:
             buttons = [
                 PrimarySubmit('submit-save', self.submit_save_label),
                 DefaultSubmit('submit-save-and-continue-editing', self.submit_save_and_continue_edititing_label),
             ]
-        preview_url = self.get_preview_url()
-        if preview_url:
-            buttons.append(DefaultSubmit('submit-preview', _('Preview')))
+        self.add_preview_button_if_configured(buttons)
         return buttons
 
     def get_default_save_success_url(self):
@@ -73,3 +71,33 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
 
     def get_success_message(self, object):
         return _('Created "%(object)s".') % {'object': object}
+
+
+class CreateLikeUpdateView(CreateView):
+    """
+    Create view that looks just like an update view to the
+    user.
+
+    You will want to use this when you have a situation
+    where you want users to edit an item, but you need them
+    to create the item if it does not exist. In that case,
+    use this as the base class of your create view, and
+    override the get-method of your update view to redirect
+    the create view if the item does not exist::
+
+        class UpdateView(update.UpdateView):
+            def get(self, request, *args, **kwargs):
+                try:
+                    return super(UpdateView, self).get(request, *args, **kwargs)
+                except self.model.DoesNotExist:
+                    return HttpResponseRedirect(self.request.cradmin_app.reverse_appurl('create'))
+
+    The user will then be redirected to the create view, but it
+    will behave the same (output the same submit labels, and the same
+    success message)
+    """
+    submit_save_label = _('Save')
+    submit_save_and_continue_edititing_label = _('Save and continue editing')
+
+    def get_success_message(self, object):
+        return _('Saved "%(object)s".') % {'object': object}

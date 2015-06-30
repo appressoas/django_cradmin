@@ -1,5 +1,9 @@
 from __future__ import unicode_literals
+
 from future import standard_library
+
+from django_cradmin.crispylayouts import PrimarySubmit, DefaultSubmit
+
 standard_library.install_aliases()
 import urllib.request
 import urllib.parse
@@ -41,6 +45,11 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     #: The viewname within this app for the edit view.
     #: See :meth:`.get_editurl`.
     editview_appurl_name = 'edit'
+
+    def add_preview_button_if_configured(self, buttons):
+        preview_url = self.get_preview_url()
+        if preview_url:
+            buttons.append(DefaultSubmit('submit-preview', _('Preview')))
 
     def get_field_layout(self):
         """
@@ -295,3 +304,19 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         """
         serialized = request.session.pop(cls.get_preview_sessionkey())
         return cls.deserialize_preview(serialized)
+
+
+class OnlySaveButtonMixin(object):
+    """
+    Mixin class that overrides ``get_buttons()`` to just include
+    the save button (no "Save and continue editing").
+
+    You must mix this in **before** any :class:`.CreateUpdateViewMixin`
+    subclass (like UpdateView or CreateView).
+    """
+    def get_buttons(self):
+        buttons = [
+            PrimarySubmit('submit-save', self.submit_save_label),
+        ]
+        self.add_preview_button_if_configured(buttons)
+        return buttons

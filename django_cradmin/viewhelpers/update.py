@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import UpdateView as DjangoUpdateView
 
@@ -10,15 +12,15 @@ from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
     template_name = 'django_cradmin/viewhelpers/update.django.html'
+    submit_save_label = _('Save')
+    submit_save_and_continue_edititing_label = _('Save and continue editing')
 
     def get_buttons(self):
         buttons = [
-            PrimarySubmit('submit-save', _('Save')),
-            DefaultSubmit('submit-save-and-continue-editing', _('Save and continue editing')),
+            PrimarySubmit('submit-save', self.submit_save_label),
+            DefaultSubmit('submit-save-and-continue-editing', self.submit_save_and_continue_edititing_label),
         ]
-        preview_url = self.get_preview_url()
-        if preview_url:
-            buttons.append(DefaultSubmit('submit-preview', _('Preview')))
+        self.add_preview_button_if_configured(buttons)
         return buttons
 
     def get_formhelper(self):
@@ -44,3 +46,45 @@ class UpdateRoleView(UpdateView):
 
     def get_queryset_for_role(self, role):
         return self.model.objects.filter(pk=role.pk)
+
+
+class RedirectToCreateIfDoesNotExistMixin(object):
+    """
+    An update view mixin that redirects to a create view when the
+    object requested does not exist.
+
+    You will typically use this for objects with a OneToOne relationship
+    to the current role, but that may not exist. Then you would use
+    something like::
+
+        class MyUpdateView(update.UpdateView, update.RedirectToCreateIfDoesNotExistMixin):
+            def get_object(self, queryset=None):
+                return self.get_queryset_for_role(self.request.cradmin_role).get()
+
+            def get_queryset_for_role(self, role):
+                return self.model.objects.filter(someonetooneattr=role)
+
+    And the view will automatically redirect to the create view
+    if the object does not exist.
+    """
+
+    #: The viewname within this app for the create view.
+    #: See :meth:`.get_createurl`. Defaults to ``create``.
+    createview_appurl_name = 'create'
+
+    def get_createurl(self):
+        """
+        Get the URL of the create view that you want to redirect to if
+        the requested object does not exist.
+
+        Defaults to::
+
+            self.request.cradmin_app.reverse_appurl(self.createview_appurl_name)
+        """
+        return self.request.cradmin_app.reverse_appurl(self.createview_appurl_name)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except self.model.DoesNotExist:
+            return HttpResponseRedirect(self.request.cradmin_app.reverse_appurl('create'))
