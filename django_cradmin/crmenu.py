@@ -14,13 +14,19 @@ class MenuItem(object):
     """
     template_name = 'django_cradmin/menuitem.django.html'
 
-    def __init__(self, label, url, active=False, attributes={}, open_new_window=False, extra_css_classes=''):
+    def __init__(self, label, url,
+                 active=False,
+                 expanded=False,
+                 attributes={},
+                 open_new_window=False,
+                 extra_css_classes=''):
         """
         Parameters:
             label: A label shown in the menu.
             url: The url to go to whem the user clicks the menu item.
             icon: The name of a font-awesome icon (E.g.: "database", "user", ...).
             active: Should be ``True`` if the menuitem should be styled as active.
+            expanded: Should be ``True`` if the menuitem should be styled as expanded.
             open_new_window: Set this to ``True`` to set the ``target="_blank"``
                 attribute on the menu link.
             extra_css_classes: String with extra css classes to set on the ``<li>`` element.
@@ -29,16 +35,66 @@ class MenuItem(object):
         self.url = url
         self.attributes = attributes
         self.active = active
+        self.expanded = expanded
         self.open_new_window = open_new_window
         self.extra_css_classes = extra_css_classes
+        self.childitems = []
 
     def render(self):
         return render_to_string(self.template_name, {
             'menuitem': self
         })
 
+    def get_active_item_wrapper_tag(self):
+        """
+        Get the wrapper tag for the active item.
+
+        This defaults to ``None``, which means that we do not
+        wrap the active item in any tag.
+
+        You would typically override this if you hide or do not include
+        the page header, and want the active menu item to be H1::
+
+            class MyMenuItem(crmenu.Item):
+                def get_active_item_wrapper_tag(self):
+                    return "h1"
+        """
+        return None
+
     def is_active(self):
+        """
+        Returns ``True`` if the item is currently active (if ``active=True`` was
+        sent to __init__).
+        """
         return self.active
+
+    def is_expanded(self):
+        """
+        Returns ``True`` if the item is currently expanded (if ``expanded=True`` was
+        sent to __init__), or if the item :meth:`.is_active` and :meth:`.has_childitems`.
+        """
+        return self.expanded or (self.is_active() and self.has_childitems())
+
+    def has_childitems(self):
+        """
+        Returns ``True`` if this item has child items.
+        """
+        return bool(self.childitems)
+
+    def get_childitem_class(self):
+        return self.__class__
+
+    def add_childitem(self, *args, **kwargs):
+        """
+        Add a child of this menuitem.
+
+        The default template will only render child items when this item
+        :meth:`is_active`.
+        """
+        childitem_class = self.get_childitem_class()
+        childitem = childitem_class(*args, **kwargs)
+        self.childitems.append(childitem)
+        return childitem
 
 
 class Menu(object):
@@ -82,9 +138,9 @@ class Menu(object):
         args and kwargs are forwarded to the menu class (see :meth:`.get_menuitem_class`).
         """
         menuitemclass = self.get_menuitem_class()
-        self.mainitems.append(
-            menuitemclass(*args, **kwargs)
-        )
+        menuitem = menuitemclass(*args, **kwargs)
+        self.mainitems.append(menuitem)
+        return menuitem
 
     def get_menuitem_class(self):
         """
@@ -102,9 +158,9 @@ class Menu(object):
         args and kwargs are forwarded to the menu class (see :meth:`.get_headeritem_class`).
         """
         headeritem_class = self.get_headeritem_class()
-        self.headeritems.append(
-            headeritem_class(*args, **kwargs)
-        )
+        menuitem = headeritem_class(*args, **kwargs)
+        self.headeritems.append(menuitem)
+        return menuitem
 
     def get_headeritem_class(self):
         """

@@ -5533,6 +5533,13 @@ nav#cradmin_menu .cradmin-menucontent ul {
   margin: 0;
   padding: 0;
 }
+nav#cradmin_menu .cradmin-menucontent ul li .cradmin-menu-activeitemwrapper {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: 1.42857143;
+}
 nav#cradmin_menu .cradmin-menucontent ul li a {
   display: block;
   color: #aaaaaa;
@@ -5548,6 +5555,9 @@ nav#cradmin_menu .cradmin-menucontent ul li a:hover {
 nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem a {
   color: #eeeeee;
   font-weight: bold;
+}
+nav#cradmin_menu .cradmin-menucontent ul li .cradmin-menu-childitems {
+  display: none;
 }
 @media (min-width: 992px) {
   nav#cradmin_menu {

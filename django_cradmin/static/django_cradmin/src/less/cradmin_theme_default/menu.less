@@ -12,6 +12,14 @@ nav#cradmin_menu {
       margin: 0;
       padding: 0;
       li {
+        .cradmin-menu-activeitemwrapper {
+          font-size: @font-size-base;
+          margin: 0;
+          padding: 0;
+          border: none;
+          line-height: @line-height-base;
+        }
+
         a {
           display: block;
           color: @cradmin-menu-color;
@@ -20,14 +28,25 @@ nav#cradmin_menu {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+          line-height: @line-height-base;
           &:hover {
             text-decoration: none;
             color: @cradmin-menu-hovercolor;
           }
         }
-        &.cradmin-menu-activeitem a {
-          color: @cradmin-menu-hovercolor;
-          font-weight: bold;
+
+        &.cradmin-menu-activeitem {
+          .cradmin-menu-activeitemwrapper > a,
+          & > a {
+            color: @cradmin-menu-hovercolor;
+            font-weight: bold;
+          }
+        }
+
+        &.cradmin-menu-expandeditem {
+          .cradmin-menu-childitems ul {
+            padding-left: 15px;
+          }
         }
       }
 

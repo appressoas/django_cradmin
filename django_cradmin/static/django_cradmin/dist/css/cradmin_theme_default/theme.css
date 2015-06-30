@@ -5480,6 +5480,13 @@ nav#cradmin_menu .cradmin-menucontent ul {
   margin: 0;
   padding: 0;
 }
+nav#cradmin_menu .cradmin-menucontent ul li .cradmin-menu-activeitemwrapper {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: 1.42857143;
+}
 nav#cradmin_menu .cradmin-menucontent ul li a {
   display: block;
   color: #aaaaaa;
@@ -5488,14 +5495,19 @@ nav#cradmin_menu .cradmin-menucontent ul li a {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  line-height: 1.42857143;
 }
 nav#cradmin_menu .cradmin-menucontent ul li a:hover {
   text-decoration: none;
   color: #eeeeee;
 }
-nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem a {
+nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem .cradmin-menu-activeitemwrapper > a,
+nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem > a {
   color: #eeeeee;
   font-weight: bold;
+}
+nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-expandeditem .cradmin-menu-childitems ul {
+  padding-left: 15px;
 }
 nav#cradmin_menu .cradmin-menucontent ul.cradmin-menucontent-footer {
   margin-top: 30px;
