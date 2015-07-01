@@ -483,7 +483,93 @@ class UseThisActionColumn(Column):
         return context
 
 
-class Button(object):
+class AbstractButton(object):
+    """
+    Abstract base class for buttons.
+    """
+
+    #: The django template name/path.
+    template_name = 'django_cradmin/viewhelpers/objecttable/button.django.html'
+
+    #: The HTML element to use for the button.
+    button_element = 'a'
+
+    def __init__(self, label, buttonclass='btn btn-default btn-sm', icon=None, dom_id=None):
+        """
+        Parameters:
+            label (unicode): The label of the button.
+            url (unicode): The url/href attribute of the button.
+            icon (unicode): An icon to show alongside the label. Example: ``fa fa-thumbs-up``.
+            buttonclass (unicode): The css class to use for the button. Defaults to ``btn btn-default btn-sm``.
+            dom_id (unicode): If this is not None, it sets the id-attribute of the dom node for the button element.
+        """
+        self.label = label
+        self.icon = icon
+        self.buttonclass = buttonclass
+        self.dom_id = dom_id
+
+    def get_attributes(self):
+        """
+        Deprectated - use :meth:`.get_data_attributes`.
+        """
+        return self.get_data_attributes()
+
+    def get_data_attributes(self):
+        """
+        Returns a dict of custom data attributes to add to the button.
+        They are automatically escaped and prefixed with ``data-``
+        before they are added to the button.
+
+        Override this, call super, and extend the dict to add your
+        own template context data.
+        """
+        return {}
+
+    def get_html_attributes(self):
+        """
+        Returns a dict of custom HTML attributes to add to the button.
+        They are automatically escaped before they are added to the button.
+
+        Override this, call super, and extend the dict to add your
+        own template context data.
+        """
+        attributes = {}
+        if self.buttonclass:
+            attributes['class'] = self.buttonclass
+        if self.dom_id:
+            attributes['id'] = self.dom_id
+        return attributes
+
+    def __iter_attributes(self):
+        for attrname, value in list(self.get_html_attributes().items()):
+            attrvalue = quoteattr(value)
+            yield u'{}={}'.format(attrname, attrvalue)
+        for key, value in list(self.get_data_attributes().items()):
+            attrname = u'data-{}'.format(key)
+            attrvalue = quoteattr(value)
+            yield u'{}={}'.format(attrname, attrvalue)
+
+    def get_context_data(self):
+        """
+        Get the template context data. Must be overridden in subclasses.
+
+        Override this, call super, and extend the dict to add your
+        own template context data.
+        """
+        return {
+            'label': self.label,
+            'icon': self.icon,
+            'buttonclass': self.buttonclass,
+            'dom_id': self.dom_id,
+            'attributes': self.__iter_attributes(),
+            'button_element': self.button_element,
+        }
+
+    def render(self):
+        return render_to_string(self.template_name, self.get_context_data())
+
+
+class Button(AbstractButton):
     """
     A pythonic interface for creating a HTML link styled as a button.
 
@@ -492,45 +578,21 @@ class Button(object):
     - :meth:`.ObjectTableView.get_buttons`.
     - :meth:`.MultiActionColumn.get_buttons`
     """
-    template_name = 'django_cradmin/viewhelpers/objecttable/button.django.html'
-
-    def __init__(self, label, url='#', buttonclass='btn btn-default btn-sm', icon=None, dom_id=None):
+    def __init__(self, url='#', **kwargs):
         """
         Parameters:
-            label (unicode): The label of the button.
             url (unicode): The url/href attribute of the button.
-            icon (unicode): An icon to show alongside the label. Example: ``fa-thumbs-up``.
-            buttonclass (unicode): The bootstrap css class suffix of the button (default|primany|success|danger).
-            dom_id (unicode): If this is not None, it sets the id-attribute of the dom node for the button element.
+            kwargs: See :class:`.AbstractButton`.
         """
-        self.label = label
         self.url = url
-        self.icon = icon
-        self.buttonclass = buttonclass
-        self.dom_id = dom_id
+        super(Button, self).__init__(**kwargs)
 
-    def get_attributes(self):
-        """
-        Returns a dict of custom attributes to add to the button.
-        They are automatically escaped before they are added to the button.
-        """
-        return {}
-
-    def _iter_attributes(self):
-        for key, value in list(self.get_attributes().items()):
-            attrname = u'data-{}'.format(key)
-            attrvalue = quoteattr(value)
-            yield u'{}={}'.format(attrname, attrvalue)
-
-    def render(self):
-        return render_to_string(self.template_name, {
-            'label': self.label,
-            'url': self.url,
-            'icon': self.icon,
-            'buttonclass': self.buttonclass,
-            'attributes': self._iter_attributes(),
-            'dom_id': self.dom_id
+    def get_html_attributes(self):
+        attributes = super(Button, self).get_html_attributes()
+        attributes.update({
+            'href': self.url,
         })
+        return attributes
 
 
 class PagePreviewButton(Button):
@@ -543,10 +605,43 @@ class PagePreviewButton(Button):
     For this to work, you need to set :obj:`.ObjectTableView.enable_previews` to ``True``
     (or override :meth:`.ObjectTableView.get_enable_previews`).
     """
-    def get_attributes(self):
+    button_element = 'button'
+
+    def get_data_attributes(self):
         return {
             'django-cradmin-page-preview-open-on-click': self.url
         }
+
+
+class PagePreviewsButton(AbstractButton):
+    """
+    A button variant that uses the ``django-cradmin-page-preview-open-on-click``
+    AngularJS directive to open previews in an overlay containing an IFRAME.
+
+    Unlike :class:`.PagePreviewButton`, this supports multiple previews
+    in a single IFRAME. Users can switch between the previews using
+    a navigation bar.
+
+    For this to work, you need to set :obj:`.ObjectTableView.enable_previews` to ``True``
+    (or override :meth:`.ObjectTableView.get_enable_previews`).
+    """
+    def __init__(self, urls, **kwargs):
+        """
+        Parameters:
+            urls (list): A list of ``(label, url)`` tuples. The first url will
+                be shown by default, but the user will be able to switch
+                to the other urls by clicking in a navigation list.
+            kwargs: See :class:`.AbstractButton`.
+        """
+        self.urls = urls
+        super(PagePreviewsButton, self).__init__(**kwargs)
+
+    def get_data_attributes(self):
+        attributes = super(PagePreviewsButton, self).get_data_attributes()
+        attributes.update({
+            'django-cradmin-page-preview-open-on-click': json.dumps(self.urls)
+        })
+        return attributes
 
 
 class UseThisButton(Button):
@@ -558,7 +653,7 @@ class UseThisButton(Button):
         self.obj = obj
         super(UseThisButton, self).__init__(label=label, buttonclass=buttonclass)
 
-    def get_attributes(self):
+    def get_data_attributes(self):
         attributes = {
             'django-cradmin-use-this': json.dumps({
                 'value': self.obj.pk,

@@ -1,8 +1,4 @@
-<a href="{{ url }}"
-        {% if dom_id %}
-            id="{{ dom_id }}"
-        {% endif %}
-        class="{{ buttonclass }}"
+<{{ button_element }}
         {% for attribute in attributes %}
             {{ attribute|safe }}
         {% endfor %}
@@ -11,4 +7,4 @@
         <span class="{{ icon }}"></span>
     {% endif %}
     {{ label }}
-</a>
+</{{ button_element }}>
