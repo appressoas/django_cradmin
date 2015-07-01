@@ -1278,8 +1278,8 @@
           this.setIframe = function(iframeScope) {
             return $scope.iframeScope = iframeScope;
           };
-          this.showPreview = function(url) {
-            $scope.iframeScope.setUrl(url);
+          this.showPreview = function(previewConfig) {
+            $scope.iframeScope.setConfig(previewConfig);
             return $scope.iframeWrapperScope.show();
           };
         },
@@ -1296,10 +1296,10 @@
         require: '^^djangoCradminPagePreviewWrapper',
         restrict: 'A',
         scope: {
-          previewUrl: '@djangoCradminPagePreviewOpenOnPageLoad'
+          previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
         },
         link: function(scope, element, attrs, wrapperCtrl) {
-          wrapperCtrl.showPreview(scope.previewUrl);
+          wrapperCtrl.showPreview(scope.previewConfig);
         }
       };
     }
@@ -1313,12 +1313,12 @@
         require: '^^djangoCradminPagePreviewWrapper',
         restrict: 'A',
         scope: {
-          previewUrl: '@djangoCradminPagePreviewOpenOnClick'
+          previewConfig: '=djangoCradminPagePreviewOpenOnClick'
         },
         link: function(scope, element, attrs, wrapperCtrl) {
           element.on('click', function(e) {
             e.preventDefault();
-            return wrapperCtrl.showPreview(scope.previewUrl);
+            return wrapperCtrl.showPreview(scope.previewConfig);
           });
         }
       };
@@ -1367,7 +1367,9 @@
       restrict: 'A',
       scope: {},
       controller: function($scope) {
-        return $scope.setUrl = function(url) {
+        return $scope.setConfig = function(previewConfig) {
+          var url;
+          url = previewConfig.urls[0][1];
           return $scope.element.attr('src', url);
         };
       },

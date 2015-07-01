@@ -63,8 +63,8 @@ angular.module('djangoCradmin.pagepreview', [])
         @setIframe = (iframeScope) ->
           $scope.iframeScope = iframeScope
 
-        @showPreview = (url) ->
-          $scope.iframeScope.setUrl(url)
+        @showPreview = (previewConfig) ->
+          $scope.iframeScope.setConfig(previewConfig)
           $scope.iframeWrapperScope.show()
 
         return
@@ -84,10 +84,10 @@ angular.module('djangoCradmin.pagepreview', [])
       require: '^^djangoCradminPagePreviewWrapper'
       restrict: 'A'
       scope: {
-        previewUrl: '@djangoCradminPagePreviewOpenOnPageLoad'
+        previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
       }
       link: (scope, element, attrs, wrapperCtrl) ->
-        wrapperCtrl.showPreview(scope.previewUrl)
+        wrapperCtrl.showPreview(scope.previewConfig)
 #        element.on 'click', (e) ->
 #          e.preventDefault()
         return
@@ -105,12 +105,12 @@ angular.module('djangoCradmin.pagepreview', [])
       require: '^^djangoCradminPagePreviewWrapper'
       restrict: 'A'
       scope: {
-        previewUrl: '@djangoCradminPagePreviewOpenOnClick'
+        previewConfig: '=djangoCradminPagePreviewOpenOnClick'
       }
       link: (scope, element, attrs, wrapperCtrl) ->
         element.on 'click', (e) ->
           e.preventDefault()
-          wrapperCtrl.showPreview(scope.previewUrl)
+          wrapperCtrl.showPreview(scope.previewConfig)
         return
 
     }
@@ -164,7 +164,8 @@ angular.module('djangoCradmin.pagepreview', [])
     scope: {}
 
     controller: ($scope) ->
-      $scope.setUrl = (url) ->
+      $scope.setConfig = (previewConfig) ->
+        url = previewConfig.urls[0][1]
         $scope.element.attr('src', url)
 
     link: (scope, element, attrs, wrapperCtrl) ->

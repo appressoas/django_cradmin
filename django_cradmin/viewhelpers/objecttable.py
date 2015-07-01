@@ -639,7 +639,9 @@ class PagePreviewsButton(AbstractButton):
     def get_data_attributes(self):
         attributes = super(PagePreviewsButton, self).get_data_attributes()
         attributes.update({
-            'django-cradmin-page-preview-open-on-click': json.dumps(self.urls)
+            'django-cradmin-page-preview-open-on-click': json.dumps({
+                'urls': self.urls
+            })
         })
         return attributes
 

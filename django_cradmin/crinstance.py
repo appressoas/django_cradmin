@@ -252,6 +252,16 @@ class BaseCrAdminInstance(object):
         """
         return reverse('{}-roleselect'.format(self.id))
 
+    def get_common_http_headers(self):
+        """
+        Override this to set common HTTP headers for all views in the instance.
+
+        Returns:
+            A mapping object mapping HTTP header name to value. Returns
+            empty dict by default.
+        """
+        return {}
+
     @classmethod
     def get_roleselect_view(cls):
         """
