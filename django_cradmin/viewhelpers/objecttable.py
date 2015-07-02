@@ -595,24 +595,6 @@ class Button(AbstractButton):
         return attributes
 
 
-class PagePreviewButton(Button):
-    """
-    A button variant that uses the ``django-cradmin-page-preview-open-on-click``
-    AngularJS directive to open a preview in an overlay containing an IFRAME.
-    Works just like a regular button. The only difference is that the url is
-    opened in the IFRAME in the overlay instead of in the current window.
-
-    For this to work, you need to set :obj:`.ObjectTableView.enable_previews` to ``True``
-    (or override :meth:`.ObjectTableView.get_enable_previews`).
-    """
-    button_element = 'button'
-
-    def get_data_attributes(self):
-        return {
-            'django-cradmin-page-preview-open-on-click': self.url
-        }
-
-
 class PagePreviewsButton(AbstractButton):
     """
     A button variant that uses the ``django-cradmin-page-preview-open-on-click``
@@ -625,6 +607,8 @@ class PagePreviewsButton(AbstractButton):
     For this to work, you need to set :obj:`.ObjectTableView.enable_previews` to ``True``
     (or override :meth:`.ObjectTableView.get_enable_previews`).
     """
+    button_element = 'button'
+
     def __init__(self, urls, **kwargs):
         """
         Parameters:
@@ -653,6 +637,25 @@ class PagePreviewsButton(AbstractButton):
             })
         })
         return attributes
+
+
+class PagePreviewButton(PagePreviewsButton):
+    """
+    A button variant that uses the ``django-cradmin-page-preview-open-on-click``
+    AngularJS directive to open a preview in an overlay containing an IFRAME.
+    Works just like a regular button. The only difference is that the url is
+    opened in the IFRAME in the overlay instead of in the current window.
+
+    For this to work, you need to set :obj:`.ObjectTableView.enable_previews` to ``True``
+    (or override :meth:`.ObjectTableView.get_enable_previews`).
+    """
+
+    def __init__(self, url, **kwargs):
+        self.urls = [{
+            'label': 'Unused',  # Never shown because the navbar is hidden when we only have one URL.
+            'url': url
+        }]
+        super(PagePreviewButton, self).__init__(**kwargs)
 
 
 class UseThisButton(Button):
