@@ -63,8 +63,16 @@ angular.module('djangoCradmin.pagepreview', [])
         @setIframe = (iframeScope) ->
           $scope.iframeScope = iframeScope
 
-        @showPreview = (previewConfig) ->
-          $scope.iframeScope.setConfig(previewConfig)
+        @setNavbar = (navbarScope) ->
+          $scope.navbarScope = navbarScope
+
+        @setUrl = (url) ->
+          $scope.iframeScope.setUrl(url)
+
+        @loadPreview = (previewConfig) ->
+          url = previewConfig.urls[0].url
+          $scope.navbarScope.setConfig(previewConfig)
+          @setUrl(url)
           $scope.iframeWrapperScope.show()
 
         return
@@ -87,7 +95,7 @@ angular.module('djangoCradmin.pagepreview', [])
         previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
       }
       link: (scope, element, attrs, wrapperCtrl) ->
-        wrapperCtrl.showPreview(scope.previewConfig)
+        wrapperCtrl.loadPreview(scope.previewConfig)
 #        element.on 'click', (e) ->
 #          e.preventDefault()
         return
@@ -110,7 +118,7 @@ angular.module('djangoCradmin.pagepreview', [])
       link: (scope, element, attrs, wrapperCtrl) ->
         element.on 'click', (e) ->
           e.preventDefault()
-          wrapperCtrl.showPreview(scope.previewConfig)
+          wrapperCtrl.loadPreview(scope.previewConfig)
         return
 
     }
@@ -157,6 +165,35 @@ angular.module('djangoCradmin.pagepreview', [])
       return
   }
 
+.directive 'djangoCradminPagePreviewNavbar', ->
+  return {
+    require: '^^djangoCradminPagePreviewWrapper'
+    restrict: 'A'
+    scope: {}
+    templateUrl: 'pagepreview/navbar.tpl.html'
+
+    controller: ($scope) ->
+      $scope.setConfig = (previewConfig) ->
+        $scope.previewConfig = previewConfig
+        $scope.$apply()
+
+    link: (scope, element, attrs, wrapperCtrl) ->
+      scope.element = element
+      scope.activeIndex = 0
+      wrapperCtrl.setNavbar(scope)
+
+      scope.setActive = (index) ->
+        scope.activeIndex = index
+      scope.onNavlinkClick = (e, index) ->
+        e.preventDefault()
+        console.log "hei #{index}"
+        scope.setActive(index)
+        wrapperCtrl.setUrl(scope.previewConfig.urls[index].url)
+        return
+
+      return
+  }
+
 .directive 'djangoCradminPagePreviewIframe', ->
   return {
     require: '^^djangoCradminPagePreviewWrapper'
@@ -164,8 +201,8 @@ angular.module('djangoCradmin.pagepreview', [])
     scope: {}
 
     controller: ($scope) ->
-      $scope.setConfig = (previewConfig) ->
-        url = previewConfig.urls[0][1]
+      $scope.setUrl = (url) ->
+        console.log "setUrl #{url}"
         $scope.element.attr('src', url)
 
     link: (scope, element, attrs, wrapperCtrl) ->

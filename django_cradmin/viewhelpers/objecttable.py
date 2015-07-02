@@ -628,9 +628,18 @@ class PagePreviewsButton(AbstractButton):
     def __init__(self, urls, **kwargs):
         """
         Parameters:
-            urls (list): A list of ``(label, url)`` tuples. The first url will
-                be shown by default, but the user will be able to switch
-                to the other urls by clicking in a navigation list.
+            urls (list): A list of dicts.
+                Each dict configures a preview url with the following keys::
+
+                    {
+                        "label": "<THE LABEL IN THE NAVBAR HERE>",
+                        "url": "<THE URL HERE>",
+                        "css_classes": "<OPTIONAL KEY WHERE YOU CAN SPECIFY A CSS CLASS>"
+                    }
+
+                The first item url will be shown by default, but the user
+                will be able to switch to the other urls by clicking in a
+                navigation list.
             kwargs: See :class:`.AbstractButton`.
         """
         self.urls = urls

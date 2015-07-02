@@ -1,0 +1,9 @@
+<ul>
+    <li ng-repeat="urlConfig in previewConfig.urls">
+        <a href="{{ urlConfig.url }}"
+                class="{{urlConfig.css_classes}}"
+                ng-click="onNavlinkClick($event, $index)">
+            {{urlConfig.label}} {{$index}}
+        </a>
+    </li>
+</ul>

@@ -1278,8 +1278,17 @@
           this.setIframe = function(iframeScope) {
             return $scope.iframeScope = iframeScope;
           };
-          this.showPreview = function(previewConfig) {
-            $scope.iframeScope.setConfig(previewConfig);
+          this.setNavbar = function(navbarScope) {
+            return $scope.navbarScope = navbarScope;
+          };
+          this.setUrl = function(url) {
+            return $scope.iframeScope.setUrl(url);
+          };
+          this.loadPreview = function(previewConfig) {
+            var url;
+            url = previewConfig.urls[0].url;
+            $scope.navbarScope.setConfig(previewConfig);
+            this.setUrl(url);
             return $scope.iframeWrapperScope.show();
           };
         },
@@ -1299,7 +1308,7 @@
           previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
         },
         link: function(scope, element, attrs, wrapperCtrl) {
-          wrapperCtrl.showPreview(scope.previewConfig);
+          wrapperCtrl.loadPreview(scope.previewConfig);
         }
       };
     }
@@ -1318,7 +1327,7 @@
         link: function(scope, element, attrs, wrapperCtrl) {
           element.on('click', function(e) {
             e.preventDefault();
-            return wrapperCtrl.showPreview(scope.previewConfig);
+            return wrapperCtrl.loadPreview(scope.previewConfig);
           });
         }
       };
@@ -1361,15 +1370,41 @@
         });
       }
     };
+  }).directive('djangoCradminPagePreviewNavbar', function() {
+    return {
+      require: '^^djangoCradminPagePreviewWrapper',
+      restrict: 'A',
+      scope: {},
+      templateUrl: 'pagepreview/navbar.tpl.html',
+      controller: function($scope) {
+        return $scope.setConfig = function(previewConfig) {
+          $scope.previewConfig = previewConfig;
+          return $scope.$apply();
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.element = element;
+        scope.activeIndex = 0;
+        wrapperCtrl.setNavbar(scope);
+        scope.setActive = function(index) {
+          return scope.activeIndex = index;
+        };
+        scope.onNavlinkClick = function(e, index) {
+          e.preventDefault();
+          console.log("hei " + index);
+          scope.setActive(index);
+          wrapperCtrl.setUrl(scope.previewConfig.urls[index].url);
+        };
+      }
+    };
   }).directive('djangoCradminPagePreviewIframe', function() {
     return {
       require: '^^djangoCradminPagePreviewWrapper',
       restrict: 'A',
       scope: {},
       controller: function($scope) {
-        return $scope.setConfig = function(previewConfig) {
-          var url;
-          url = previewConfig.urls[0][1];
+        return $scope.setUrl = function(url) {
+          console.log("setUrl " + url);
           return $scope.element.attr('src', url);
         };
       },
@@ -1382,7 +1417,7 @@
 
 }).call(this);
 
-angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html', 'bulkfileupload/rejectedfiles.tpl.html']);
+angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html', 'bulkfileupload/rejectedfiles.tpl.html', 'pagepreview/navbar.tpl.html']);
 
 angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("acemarkdown/acemarkdown.tpl.html",
@@ -1465,6 +1500,20 @@ angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache
     "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-errormessage\">{{ rejectedFileErrorMessage }}</span>\n" +
     "    </p>\n" +
     "</div>\n" +
+    "");
+}]);
+
+angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("pagepreview/navbar.tpl.html",
+    "<ul>\n" +
+    "    <li ng-repeat=\"urlConfig in previewConfig.urls\">\n" +
+    "        <a href=\"{{ urlConfig.url }}\"\n" +
+    "                class=\"{{urlConfig.css_classes}}\"\n" +
+    "                ng-click=\"onNavlinkClick($event, $index)\">\n" +
+    "            {{urlConfig.label}} {{$index}}\n" +
+    "        </a>\n" +
+    "    </li>\n" +
+    "</ul>\n" +
     "");
 }]);
 
