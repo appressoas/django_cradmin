@@ -2,8 +2,11 @@
     <li ng-repeat="urlConfig in previewConfig.urls">
         <a href="{{ urlConfig.url }}"
                 class="{{urlConfig.css_classes}}"
+                ng-class="{
+                    active: $index == activeIndex
+                }"
                 ng-click="onNavlinkClick($event, $index)">
-            {{urlConfig.label}} {{$index}}
+            {{urlConfig.label}}
         </a>
     </li>
 </ul>

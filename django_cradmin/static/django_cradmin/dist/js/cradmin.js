@@ -1378,8 +1378,12 @@
       templateUrl: 'pagepreview/navbar.tpl.html',
       controller: function($scope) {
         return $scope.setConfig = function(previewConfig) {
-          $scope.previewConfig = previewConfig;
-          return $scope.$apply();
+          if (previewConfig.urls.length > 1) {
+            $scope.previewConfig = previewConfig;
+            return $scope.$apply();
+          } else {
+            return $scope.element.addClass('ng-hide');
+          }
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {
@@ -1509,8 +1513,11 @@ angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", functio
     "    <li ng-repeat=\"urlConfig in previewConfig.urls\">\n" +
     "        <a href=\"{{ urlConfig.url }}\"\n" +
     "                class=\"{{urlConfig.css_classes}}\"\n" +
+    "                ng-class=\"{\n" +
+    "                    active: $index == activeIndex\n" +
+    "                }\"\n" +
     "                ng-click=\"onNavlinkClick($event, $index)\">\n" +
-    "            {{urlConfig.label}} {{$index}}\n" +
+    "            {{urlConfig.label}}\n" +
     "        </a>\n" +
     "    </li>\n" +
     "</ul>\n" +

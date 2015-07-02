@@ -174,8 +174,11 @@ angular.module('djangoCradmin.pagepreview', [])
 
     controller: ($scope) ->
       $scope.setConfig = (previewConfig) ->
-        $scope.previewConfig = previewConfig
-        $scope.$apply()
+        if previewConfig.urls.length > 1
+          $scope.previewConfig = previewConfig
+          $scope.$apply()
+        else
+          $scope.element.addClass('ng-hide')
 
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.element = element
