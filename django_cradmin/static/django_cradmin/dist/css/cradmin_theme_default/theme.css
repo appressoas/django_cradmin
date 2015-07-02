@@ -4829,12 +4829,26 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 .btn {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  padding: 6px 12px;
 }
 @media (min-width: 768px) {
   .btn {
     transition-duration: 0.3s;
     transition-property: background color border-color;
   }
+}
+.btn.btn-xs {
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+.btn.btn-sm {
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+.btn.btn-lg {
+  border-radius: 3px;
+  padding: 10px 16px;
 }
 .btn.btn-default:hover,
 .btn.btn-default:focus {
@@ -5007,7 +5021,7 @@ table.table.django-cradmin-table tbody td:last-child {
 .django-cradmin-form .django-cradmin-filewidget .django-cradmin-filewidget-field-and-overlay-wrapper a.django-cradmin-filewidget-fieldoverlay {
   width: 300px;
   height: 40px;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 .django-cradmin-form .django-cradmin-filewidget .django-cradmin-filewidget-field-and-overlay-wrapper.django-cradmin-filewidget-field-and-overlay-wrapper-hover a.btn.btn-default {
   background: #ffffff;
@@ -5033,7 +5047,7 @@ table.table.django-cradmin-table tbody td:last-child {
   font-weight: normal;
   padding: 0;
   margin: 10px 0 0 0;
-  background: #eee;
+  background: none;
 }
 #objecttableview-table thead th {
   line-height: 40px;

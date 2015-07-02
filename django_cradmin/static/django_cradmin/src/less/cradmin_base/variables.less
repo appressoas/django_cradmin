@@ -10,12 +10,6 @@
 // Links
 @cradmin-link-tap-highlight-color: rgba(0, 0, 0, 0.5);
 
-// Buttons
-@cradmin-btn-tap-highlight-color: rgba(0, 0, 0, 0.5);
-@cradmin-btn-default-hover-color: #fff;
-@cradmin-btn-default-hover-border: @btn-default-color;
-@cradmin-btn-default-hover-bg: @btn-default-color;
-
 
 // Overall styles
 @cradmin-focus-bg: #fff;
@@ -138,18 +132,41 @@
 @cradmin-bulkfileupload-progresspercent-font-size: @font-size-small;
 
 
-// Bootstrap overrides
-@font-family-sans-serif: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
-@link-color: #377CA8;
-@font-size-base: 16px;
+// Filewidgets
+@cradmin-filewidget-button-height: 40px;
+@cradmin-filewidget-button-width: 300px;
+@cradmin-filewidget-button-border-radius: @cradmin-btn-border-radius-base;
+@cradmin-filewidget-clear-label-background: none;
+@cradmin-filewidget-clear-label-padding: 0;
+@cradmin-filewidget-clear-label-margin: 10px 0 0 0;
+@cradmin-filewidget-clear-label-font-weight: normal;
+
+
+// Buttons radius and padding
+@cradmin-btn-border-radius-base: @border-radius-base;
+@cradmin-btn-padding-base-horizontal: @padding-base-horizontal;
+@cradmin-btn-padding-base-vertical: @padding-base-vertical;
+
+@cradmin-btn-border-radius-xs: @border-radius-small;
+@cradmin-btn-padding-xs-horizontal: @padding-xs-horizontal;
+@cradmin-btn-padding-xs-vertical: @padding-xs-vertical;
+
+@cradmin-btn-border-radius-sm: @border-radius-small;
+@cradmin-btn-padding-sm-horizontal: @padding-small-horizontal;
+@cradmin-btn-padding-sm-vertical: @padding-small-vertical;
+
+@cradmin-btn-border-radius-lg: @border-radius-large;
+@cradmin-btn-padding-lg-horizontal: @padding-large-horizontal;
+@cradmin-btn-padding-lg-vertical: @padding-large-vertical;
 
 @btn-default-color: @link-color;
 @btn-default-bg: #fff;
 @btn-default-border: #D9D9D9;
+@cradmin-btn-tap-highlight-color: rgba(0, 0, 0, 0.5);
+@cradmin-btn-default-hover-color: #fff;
+@cradmin-btn-default-hover-border: @btn-default-color;
+@cradmin-btn-default-hover-bg: @btn-default-color;
 
-//@btn-primary-color: #fff;
-//@btn-primary-bg: @cradmin-page-header-bg;
-//@btn-primary-border: @cradmin-page-header-bg-dark;
 
 @btn-primary-color: #fff;
 @btn-primary-bg: #377CA8;
@@ -169,9 +186,11 @@
 @cradmin-btn-danger-hover-bg: darken(@btn-danger-bg, 9%);
 @cradmin-btn-danger-hover-border: @cradmin-btn-danger-hover-bg;
 
-// @btn-danger-color: #d9534f;
-// @btn-danger-bg: #fff;
-// @btn-danger-border: #d9534f;
+
+// Varius bootstrap overrides
+@font-family-sans-serif: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@link-color: #377CA8;
+@font-size-base: 16px;
 
 @border-radius-base: 2px;
 @border-radius-large: 3px;
