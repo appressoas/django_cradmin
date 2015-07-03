@@ -21,3 +21,38 @@
     color: @cradmin-btn-default-hover-color;
   }
 }
+
+
+.style-scrollbar(@width, @track-bg, @thumb-bg, @thumb-hover-bg) {
+    // IE
+  scrollbar-face-color: @thumb-bg;
+  scrollbar-arrow-color: @thumb-bg;
+  scrollbar-track-color: @track-bg;
+  scrollbar-highlight-color: @thumb-bg;
+  scrollbar-3dlight-color: @track-bg;
+  scrollbar-dark-shadow-color: @track-bg;
+  scrollbar-shadow-color: @track-bg;
+
+  //// The entire scrollbar - this MUST be included (all the other scrollbar settings are ignored without this
+  &::-webkit-scrollbar {
+    width: @width;
+  }
+
+  // The background of track where the scrollbar slides
+  &::-webkit-scrollbar-track {
+    background-color: @track-bg;
+  }
+
+  // The box sliding up and down the track
+  &::-webkit-scrollbar-thumb {
+    background-color: @thumb-bg;
+    &:hover {
+      background-color: @thumb-hover-bg;
+    }
+  }
+
+  // The up/down buttons
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+}

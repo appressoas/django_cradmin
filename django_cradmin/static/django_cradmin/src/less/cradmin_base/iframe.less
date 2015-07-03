@@ -8,11 +8,13 @@
   background: @cradmin-floating-iframe-backdrop-bg;
 
   &.django-cradmin-floating-fullsize-iframe-wrapper-with-navbar {
-    .django-cradmin-floating-fullsize-iframe-navbar {
-      display: block;
-    }
-    .django-cradmin-floating-fullsize-iframe-inner {
-      top: 60px;
+    .django-cradmin-floating-fullsize-content {
+      .django-cradmin-floating-fullsize-iframe-navbar {
+        display: block;
+      }
+      .django-cradmin-floating-fullsize-iframe-inner {
+        top: @cradmin-floating-iframe-navbar-height;
+      }
     }
   }
 
@@ -38,103 +40,89 @@
     }
   }
 
-  .django-cradmin-floating-fullsize-loadspinner {
-    color: #ccc;
-    font-size: 50px;
-    text-align: center;
-    padding-top: 55px;
-  }
-
-  .django-cradmin-floating-fullsize-iframe-navbar  {
-    display: none;
+  .django-cradmin-floating-fullsize-content {
     position: absolute;
-    top: 10px;
+    top: 0;
     left: 0;
-    right: 0;
-    width: 100%;
-    text-align: center;
-    z-index: (@cradmin-floating-iframe-zindex + 1);
+    right: @cradmin-floating-iframe-closebutton-width;
+    bottom: 0;
+    background: @cradmin-floating-iframe-content-bg;
 
-    ul {
-      display: inline-block;
-      height: 50px;
-      list-style: none;
-      box-sizing: border-box;
-      li {
-        box-sizing: border-box;
+    .django-cradmin-floating-fullsize-loadspinner {
+      color: #ccc;
+      font-size: 50px;
+      text-align: center;
+      padding-top: 55px;
+    }
+
+    .django-cradmin-floating-fullsize-iframe-navbar {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: (@cradmin-floating-iframe-zindex + 1);
+      background: @cradmin-floating-iframe-navbar-bg;
+      height: @cradmin-floating-iframe-navbar-height;
+      overflow: hidden;
+
+      ul {
         display: inline-block;
-        height: 100%;
-        a {
+        height: @cradmin-floating-iframe-navbar-height;
+        list-style: none;
+        box-sizing: border-box;
+        li {
           box-sizing: border-box;
-          display: block;
-          padding: @cradmin-floating-iframe-navbar-item-padding;
-          font-weight: @cradmin-floating-iframe-navbar-font-weight;
-          background: @cradmin-floating-iframe-navbar-bg;
-          color: @cradmin-floating-iframe-navbar-color;
-          text-decoration: none;
-
-          &:hover, &:focus, &.active {
-            background: @cradmin-floating-iframe-navbar-hover-bg;
-            color: @cradmin-floating-iframe-navbar-hover-color;
+          display: inline-block;
+          height: @cradmin-floating-iframe-navbar-height;
+          margin: 0;
+          padding: 0;
+          a {
+            box-sizing: border-box;
+            display: block;
+            padding: 0 @cradmin-floating-iframe-navbar-item-padding-horizontal;
+            line-height: @cradmin-floating-iframe-navbar-height;
+            font-weight: @cradmin-floating-iframe-navbar-font-weight;
+            background: @cradmin-floating-iframe-navbar-item-bg;
+            color: @cradmin-floating-iframe-navbar-item-color;
             text-decoration: none;
-          }
 
+            &:hover, &:focus, &.active {
+              background: @cradmin-floating-iframe-navbar-item-hover-bg;
+              color: @cradmin-floating-iframe-navbar-item-hover-color;
+              text-decoration: none;
+            }
+
+          }
         }
       }
     }
-  }
 
-  .django-cradmin-floating-fullsize-iframe-inner {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    position: absolute;
-    top: 20px;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-//    height: 100%;
-//    width: 100%;
-
-
-    // IE
-    scrollbar-face-color: red;
-    scrollbar-base-color: green;
-    //scrollbar-3dlight-color: red;
-    //scrollbar-highlight-color: pink;
-    scrollbar-track-color: rgba(0, 0, 0, 0.2);
-    scrollbar-arrow-color: #fff;
-    scrollbar-shadow-color: red;
-    //scrollbar-dark-shadow-color: red;
-
-
-    &::-webkit-scrollbar {
-      width: 30px;
-    }
-    &::-webkit-scrollbar-track {
-          background-color: rgba(0, 0, 0, 0.2);
-    } /* the new scrollbar will have a flat appearance with the set background color */
-
-    &::-webkit-scrollbar-thumb {
-          background-color: red;
-    } /* this will style the thumb, ignoring the track */
-
-    &::-webkit-scrollbar-button {
-          background-color: #7c2929;
-    } /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
-
-    &::-webkit-scrollbar-corner {
-          background-color: black;
-    }
-
-    iframe {
+    .django-cradmin-floating-fullsize-iframe-inner {
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 100px;
-      width: 100%;
-      border: none;
+
+      .style-scrollbar(@cradmin-floating-iframe-scrollbar-width,
+        @cradmin-floating-iframe-scrollbar-track-bg,
+        @cradmin-floating-iframe-scrollbar-thumb-bg,
+        @cradmin-floating-iframe-scrollbar-thumb-hover-bg);
+
+      iframe {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 90%; // NOTE: This is just the default until the javascript resizes this
+        width: 100%;
+        border: none;
+      }
     }
   }
 }
