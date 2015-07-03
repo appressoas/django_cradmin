@@ -5017,7 +5017,7 @@ table.table.django-cradmin-table tbody td:last-child {
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-navbar ul li a {
   box-sizing: border-box;
   display: block;
-  padding: 9px 40px;
+  padding: 9px 30px;
   font-weight: bold;
   background: #373737;
   color: #e6e6e6;
@@ -5045,7 +5045,7 @@ table.table.django-cradmin-table tbody td:last-child {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100%;
+  height: 100px;
   width: 100%;
   border: none;
 }

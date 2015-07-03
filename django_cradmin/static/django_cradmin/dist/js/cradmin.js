@@ -1217,7 +1217,7 @@
 
 (function() {
   angular.module('djangoCradmin.pagepreview', []).directive('djangoCradminPagePreviewWrapper', [
-    function() {
+    '$window', function($window) {
       /*
       A directive that shows a preview of a page in an iframe.
       value.
@@ -1281,10 +1281,18 @@
           this.setNavbar = function(navbarScope) {
             return $scope.navbarScope = navbarScope;
           };
+          this.setLoadSpinner = function(loadSpinnerScope) {
+            return $scope.loadSpinnerScope = loadSpinnerScope;
+          };
+          this.setIframeWrapperInner = function(iframeInnerScope) {
+            return $scope.iframeInnerScope = iframeInnerScope;
+          };
           this.showNavbar = function() {
             return $scope.iframeWrapperScope.showNavbar();
           };
           this.setUrl = function(url) {
+            $scope.loadSpinnerScope.show();
+            $scope.iframeInnerScope.scrollToTop();
             return $scope.iframeScope.setUrl(url);
           };
           this.loadPreview = function(previewConfig) {
@@ -1294,8 +1302,26 @@
             this.setUrl(url);
             return $scope.iframeWrapperScope.show();
           };
+          this.onIframeLoaded = function() {
+            return $scope.loadSpinnerScope.hide();
+          };
         },
-        link: function(scope, element) {}
+        link: function(scope, element) {
+          var mainWindow;
+          mainWindow = angular.element($window);
+          scope.getWindowDimensions = function() {
+            return {
+              height: mainWindow.height(),
+              width: mainWindow.width()
+            };
+          };
+          scope.$watch(scope.getWindowDimensions, (function(newSize, oldSize) {
+            scope.iframeScope.setIframeSize();
+          }), true);
+          mainWindow.bind('resize', function() {
+            scope.$apply();
+          });
+        }
       };
     }
   ]).directive('djangoCradminPagePreviewOpenOnPageLoad', [
@@ -1354,6 +1380,10 @@
           $scope.showNavbar = function() {
             return $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar');
           };
+          $scope.scrollToTop = function() {
+            console.log('Scroll to top');
+            return $scope.iframeWrapperElement.scrollTop(0);
+          };
           this.closeIframe = function() {
             return $scope.hide();
           };
@@ -1361,6 +1391,24 @@
         link: function(scope, element, attrs, wrapperCtrl) {
           scope.iframeWrapperElement = element;
           wrapperCtrl.setIframeWrapper(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminPagePreviewIframeWrapperInner', [
+    '$window', function($window) {
+      return {
+        require: '^^djangoCradminPagePreviewWrapper',
+        restrict: 'A',
+        scope: {},
+        controller: function($scope) {
+          $scope.scrollToTop = function() {
+            console.log('Scroll to top');
+            return $scope.element.scrollTop(0);
+          };
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          scope.element = element;
+          wrapperCtrl.setIframeWrapperInner(scope);
         }
       };
     }
@@ -1374,6 +1422,24 @@
           e.preventDefault();
           return iframeWrapperCtrl.closeIframe();
         });
+      }
+    };
+  }).directive('djangoCradminPagePreviewLoadSpinner', function() {
+    return {
+      require: '^^djangoCradminPagePreviewWrapper',
+      restrict: 'A',
+      scope: {},
+      controller: function($scope) {
+        $scope.hide = function() {
+          return $scope.element.addClass('ng-hide');
+        };
+        return $scope.show = function() {
+          return $scope.element.removeClass('ng-hide');
+        };
+      },
+      link: function(scope, element, attrs, wrapperCtrl) {
+        scope.element = element;
+        wrapperCtrl.setLoadSpinner(scope);
       }
     };
   }).directive('djangoCradminPagePreviewNavbar', function() {
@@ -1412,13 +1478,28 @@
       restrict: 'A',
       scope: {},
       controller: function($scope) {
-        return $scope.setUrl = function(url) {
-          return $scope.element.attr('src', url);
+        $scope.setUrl = function(url) {
+          $scope.element.attr('src', url);
+          return $scope.setIframeSize();
+        };
+        return $scope.setIframeSize = function() {
+          var iframeBodyHeight, iframeDocument, iframeWindow;
+          iframeWindow = $scope.element.contents();
+          iframeDocument = iframeWindow[0];
+          if (iframeDocument != null) {
+            iframeBodyHeight = iframeDocument.body.offsetHeight;
+            console.log('iframeBodyHeight', iframeBodyHeight);
+            return $scope.element.height(iframeBodyHeight + 10);
+          }
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {
         scope.element = element;
         wrapperCtrl.setIframe(scope);
+        scope.element.on('load', function() {
+          wrapperCtrl.onIframeLoaded();
+          return scope.setIframeSize();
+        });
       }
     };
   });

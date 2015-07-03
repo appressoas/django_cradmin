@@ -1,7 +1,8 @@
 angular.module('djangoCradmin.pagepreview', [])
 
 .directive('djangoCradminPagePreviewWrapper', [
-  ->
+  '$window',
+  ($window) ->
     ###
     A directive that shows a preview of a page in an iframe.
     value.
@@ -66,10 +67,18 @@ angular.module('djangoCradmin.pagepreview', [])
         @setNavbar = (navbarScope) ->
           $scope.navbarScope = navbarScope
 
+        @setLoadSpinner = (loadSpinnerScope) ->
+          $scope.loadSpinnerScope = loadSpinnerScope
+
+        @setIframeWrapperInner = (iframeInnerScope) ->
+          $scope.iframeInnerScope = iframeInnerScope
+
         @showNavbar = ->
           $scope.iframeWrapperScope.showNavbar()
 
         @setUrl = (url) ->
+          $scope.loadSpinnerScope.show()
+          $scope.iframeInnerScope.scrollToTop()
           $scope.iframeScope.setUrl(url)
 
         @loadPreview = (previewConfig) ->
@@ -78,9 +87,29 @@ angular.module('djangoCradmin.pagepreview', [])
           @setUrl(url)
           $scope.iframeWrapperScope.show()
 
+        @onIframeLoaded = ->
+          $scope.loadSpinnerScope.hide()
+
         return
 
       link: (scope, element) ->
+        mainWindow = angular.element($window)
+
+        scope.getWindowDimensions = ->
+          return {
+            height: mainWindow.height()
+            width: mainWindow.width()
+          }
+
+        scope.$watch scope.getWindowDimensions, ((newSize, oldSize) ->
+          scope.iframeScope.setIframeSize()
+          return
+        ), true
+
+        mainWindow.bind 'resize', ->
+          scope.$apply()
+          return
+
         return
     }
 ])
@@ -146,6 +175,9 @@ angular.module('djangoCradmin.pagepreview', [])
           $scope.bodyElement.removeClass('django-cradmin-noscroll')
         $scope.showNavbar = ->
           $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar')
+        $scope.scrollToTop = ->
+          console.log 'Scroll to top'
+          $scope.iframeWrapperElement.scrollTop(0)
 
         @closeIframe = ->
           $scope.hide()
@@ -154,6 +186,28 @@ angular.module('djangoCradmin.pagepreview', [])
       link: (scope, element, attrs, wrapperCtrl) ->
         scope.iframeWrapperElement = element
         wrapperCtrl.setIframeWrapper(scope)
+        return
+    }
+])
+
+
+.directive('djangoCradminPagePreviewIframeWrapperInner', [
+  '$window'
+  ($window) ->
+    return {
+      require: '^^djangoCradminPagePreviewWrapper'
+      restrict: 'A'
+      scope: {}
+
+      controller: ($scope) ->
+        $scope.scrollToTop = ->
+          console.log 'Scroll to top'
+          $scope.element.scrollTop(0)
+        return
+
+      link: (scope, element, attrs, wrapperCtrl) ->
+        scope.element = element
+        wrapperCtrl.setIframeWrapperInner(scope)
         return
     }
 ])
@@ -168,6 +222,24 @@ angular.module('djangoCradmin.pagepreview', [])
       element.on 'click', (e) ->
         e.preventDefault()
         iframeWrapperCtrl.closeIframe()
+      return
+  }
+
+.directive 'djangoCradminPagePreviewLoadSpinner', ->
+  return {
+    require: '^^djangoCradminPagePreviewWrapper'
+    restrict: 'A'
+    scope: {}
+
+    controller: ($scope) ->
+      $scope.hide = ->
+        $scope.element.addClass('ng-hide')
+      $scope.show = ->
+        $scope.element.removeClass('ng-hide')
+
+    link: (scope, element, attrs, wrapperCtrl) ->
+      scope.element = element
+      wrapperCtrl.setLoadSpinner(scope)
       return
   }
 
@@ -211,9 +283,20 @@ angular.module('djangoCradmin.pagepreview', [])
     controller: ($scope) ->
       $scope.setUrl = (url) ->
         $scope.element.attr('src', url)
+        $scope.setIframeSize()
+      $scope.setIframeSize = ->
+        iframeWindow = $scope.element.contents()
+        iframeDocument = iframeWindow[0]
+        if iframeDocument?
+          iframeBodyHeight = iframeDocument.body.offsetHeight
+          console.log 'iframeBodyHeight', iframeBodyHeight
+          $scope.element.height(iframeBodyHeight + 10)
 
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.element = element
       wrapperCtrl.setIframe(scope)
+      scope.element.on 'load', ->
+        wrapperCtrl.onIframeLoaded()
+        scope.setIframeSize()
       return
   }
