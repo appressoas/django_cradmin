@@ -114,7 +114,7 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
         app = self.request.cradmin_app
         return [
             objecttable.ForeignKeySelectButton(
-                _('Add image'),
+                label=_('Add image'),
                 buttonclass='btn btn-primary',
                 request=self.request,
                 url=app.reverse_appurl('create')),

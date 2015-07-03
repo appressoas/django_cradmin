@@ -234,10 +234,8 @@ angular.module('djangoCradmin.pagepreview', [])
           $scope.element.scrollTop(0)
         $scope.show = ->
           $scope.element.removeClass('ng-hide')
-#          $scope.element.addClass('django-cradmin-noscroll')
         $scope.hide = ->
           $scope.element.addClass('ng-hide')
-#          $scope.element.removeClass('django-cradmin-noscroll')
         return
 
       link: (scope, element, attrs, wrapperCtrl) ->

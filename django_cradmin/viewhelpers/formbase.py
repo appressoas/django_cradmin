@@ -27,6 +27,12 @@ class FormViewMixin(object):
     #: The ID to set on the DOM element for the form. See :meth:`.get_form_id`.
     form_id = None
 
+    #: Enable support for modelchoicefield?
+    #: If this is ``False``, you will not be able to use
+    #: :class:`django_cradmin.widgets.modelchoice.ModelChoiceWidget`
+    #: in the form.
+    enable_modelchoicefield_support = False
+
     def get_field_layout(self):
         """
         Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
@@ -170,6 +176,7 @@ class FormViewMixin(object):
     def get_context_data(self, **kwargs):
         context = super(FormViewMixin, self).get_context_data(**kwargs)
         context['formhelper'] = self.get_formhelper()
+        context['enable_modelchoicefield_support'] = self.enable_modelchoicefield_support
         return context
 
     def get_listing_url(self):

@@ -94,6 +94,7 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
 class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
+    enable_modelchoicefield_support = True
 
     def get_preview_url(self):
         return self.request.cradmin_app.reverse_appurl('preview')

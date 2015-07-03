@@ -4567,11 +4567,6 @@ button.close {
     display: none !important;
   }
 }
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
 #django_cradmin_bodycontentwrapper {
   width: 100%;
   height: 100%;

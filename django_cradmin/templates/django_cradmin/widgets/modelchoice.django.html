@@ -2,8 +2,8 @@
 {% load cradmin_icon_tags %}
 
 <div id="id_cradmin_modelchoicefieldwrapper_{{ fieldname }}"
-        class="django-cradmin-modelchoicefield-wrapper"
-        django-cradmin-model-choice-field-wrapper>
+        django-cradmin-model-choice-field-wrapper="{{ selectview_url }}"
+        class="django-cradmin-modelchoicefield-wrapper">
 
     {% block input %}
         <input type="{{ rendered_input_type }}" value="{{ fieldvalue }}"
@@ -20,25 +20,9 @@
     {% endblock preview %}
 
     {% block selectbutton %}
-        <button class="btn btn-default" type="button" django-cradmin-model-choice-field-changebegin-button>
+        <button class="btn btn-default" type="button"
+                django-cradmin-model-choice-field-changebegin-button>
             {% trans "Select ..." %}
         </button>
     {% endblock selectbutton %}
-
-    {% block iframewrapper %}
-        <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper django-cradmin-modelchoicefield-iframe-wrapper"
-                django-cradmin-model-choice-field-iframe-wrapper>
-            <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
-                    django-cradmin-model-choice-field-iframe-closebutton>
-                <span class="{% cradmin_icon 'x' %}"></span>
-                <span class="sr-only">{% trans "Close choice window" %}</span>
-            </a>
-            <div class="django-cradmin-floating-fullsize-loadspinner">
-                <span class="{% cradmin_icon 'loadspinner' %}"></span>
-            </div>
-            <div class="django-cradmin-floating-fullsize-iframe-inner">
-                <iframe django-cradmin-model-choice-field-iframe="{{ selectview_url }}"></iframe>
-            </div>
-        </div>
-    {% endblock iframewrapper %}
 </div>
