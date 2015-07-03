@@ -4961,6 +4961,12 @@ table.table.django-cradmin-table tbody td:last-child {
   z-index: 50000;
   background: rgba(30, 30, 30, 0.8);
 }
+.django-cradmin-floating-fullsize-iframe-wrapper.django-cradmin-floating-fullsize-iframe-wrapper-with-navbar .django-cradmin-floating-fullsize-iframe-navbar {
+  display: block;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper.django-cradmin-floating-fullsize-iframe-wrapper-with-navbar .django-cradmin-floating-fullsize-iframe-inner {
+  top: 60px;
+}
 .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton {
   position: absolute;
   top: 2px;
@@ -4971,22 +4977,26 @@ table.table.django-cradmin-table tbody td:last-child {
   width: 50px;
   line-height: 50px;
   border-radius: 25px;
-  background: #000;
-  color: #ddd;
+  background: #1e1e1e;
+  color: #e6e6e6;
+  text-decoration: none;
 }
-.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:hover {
-  color: #fff;
+.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:hover,
+.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:focus {
+  background: #0a0a0a;
+  color: #f8f8f8;
   text-decoration: none;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-loadspinner {
   color: #ccc;
   font-size: 50px;
   text-align: center;
-  padding-top: 45px;
+  padding-top: 55px;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-navbar {
+  display: none;
   position: absolute;
-  top: 0;
+  top: 10px;
   left: 0;
   right: 0;
   width: 100%;
@@ -5007,13 +5017,18 @@ table.table.django-cradmin-table tbody td:last-child {
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-navbar ul li a {
   box-sizing: border-box;
   display: block;
-  background: #eee;
-  color: #191919;
-  padding: 9px 14px;
+  padding: 9px 40px;
+  font-weight: bold;
+  background: #373737;
+  color: #e6e6e6;
+  text-decoration: none;
 }
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-navbar ul li a:hover,
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-navbar ul li a:focus,
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-navbar ul li a.active {
-  background: #aaa;
-  color: #fff;
+  background: #0a0a0a;
+  color: #f8f8f8;
+  text-decoration: none;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner {
   overflow: auto;

@@ -66,6 +66,9 @@ angular.module('djangoCradmin.pagepreview', [])
         @setNavbar = (navbarScope) ->
           $scope.navbarScope = navbarScope
 
+        @showNavbar = ->
+          $scope.iframeWrapperScope.showNavbar()
+
         @setUrl = (url) ->
           $scope.iframeScope.setUrl(url)
 
@@ -141,6 +144,9 @@ angular.module('djangoCradmin.pagepreview', [])
         $scope.hide = ->
           $scope.iframeWrapperElement.addClass('ng-hide')
           $scope.bodyElement.removeClass('django-cradmin-noscroll')
+        $scope.showNavbar = ->
+          $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar')
+
         @closeIframe = ->
           $scope.hide()
         return
@@ -177,21 +183,20 @@ angular.module('djangoCradmin.pagepreview', [])
         if previewConfig.urls.length > 1
           $scope.previewConfig = previewConfig
           $scope.$apply()
-        else
-          $scope.element.addClass('ng-hide')
+          $scope.wrapperCtrl.showNavbar()
 
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.element = element
+      scope.wrapperCtrl = wrapperCtrl
       scope.activeIndex = 0
-      wrapperCtrl.setNavbar(scope)
+      scope.wrapperCtrl.setNavbar(scope)
 
       scope.setActive = (index) ->
         scope.activeIndex = index
       scope.onNavlinkClick = (e, index) ->
         e.preventDefault()
-        console.log "hei #{index}"
         scope.setActive(index)
-        wrapperCtrl.setUrl(scope.previewConfig.urls[index].url)
+        scope.wrapperCtrl.setUrl(scope.previewConfig.urls[index].url)
         return
 
       return
@@ -205,7 +210,6 @@ angular.module('djangoCradmin.pagepreview', [])
 
     controller: ($scope) ->
       $scope.setUrl = (url) ->
-        console.log "setUrl #{url}"
         $scope.element.attr('src', url)
 
     link: (scope, element, attrs, wrapperCtrl) ->

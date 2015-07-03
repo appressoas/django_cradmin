@@ -7,6 +7,16 @@
   z-index: @cradmin-floating-iframe-zindex;
   background: @cradmin-floating-iframe-backdrop-bg;
 
+  &.django-cradmin-floating-fullsize-iframe-wrapper-with-navbar {
+    .django-cradmin-floating-fullsize-iframe-navbar {
+      display: block;
+    }
+    .django-cradmin-floating-fullsize-iframe-inner {
+      top: 60px;
+    }
+  }
+
+
   a.django-cradmin-floating-fullsize-iframe-closebutton  {
     position: absolute;
     top: 2px;
@@ -17,11 +27,13 @@
     width: 50px;
     line-height: 50px;
     border-radius: 25px;
-    background: #000;
-    color: #ddd;
+    background: @cradmin-floating-iframe-closebutton-bg;
+    color: @cradmin-floating-iframe-closebutton-color;
+    text-decoration: none;
 
-    &:hover {
-      color: #fff;
+    &:hover, &:focus {
+      background: @cradmin-floating-iframe-closebutton-hover-bg;
+      color: @cradmin-floating-iframe-closebutton-hover-color;
       text-decoration: none;
     }
   }
@@ -30,12 +42,13 @@
     color: #ccc;
     font-size: 50px;
     text-align: center;
-    padding-top: 45px;
+    padding-top: 55px;
   }
 
   .django-cradmin-floating-fullsize-iframe-navbar  {
+    display: none;
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 0;
     right: 0;
     width: 100%;
@@ -54,15 +67,25 @@
         a {
           box-sizing: border-box;
           display: block;
-          background: #eee;
-          color: #191919;
-          padding: 9px 14px;
+          padding: 9px @cradmin-floating-iframe-navbar-border-radius;
+          font-weight: @cradmin-floating-iframe-navbar-font-weight;
+          background: @cradmin-floating-iframe-navbar-bg;
+          color: @cradmin-floating-iframe-navbar-color;
+          text-decoration: none;
 
-          &.active {
-            background: #aaa;
-            color: #fff;
+          &:hover, &:focus, &.active {
+            background: @cradmin-floating-iframe-navbar-hover-bg;
+            color: @cradmin-floating-iframe-navbar-hover-color;
+            text-decoration: none;
           }
+
         }
+        //&:first-child a {
+        //  border-bottom-left-radius: @cradmin-floating-iframe-navbar-border-radius;
+        //}
+        //&:last-child a {
+        //  border-bottom-right-radius: @cradmin-floating-iframe-navbar-border-radius;
+        //}
       }
     }
   }

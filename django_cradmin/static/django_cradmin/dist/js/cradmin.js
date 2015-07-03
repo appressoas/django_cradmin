@@ -1281,6 +1281,9 @@
           this.setNavbar = function(navbarScope) {
             return $scope.navbarScope = navbarScope;
           };
+          this.showNavbar = function() {
+            return $scope.iframeWrapperScope.showNavbar();
+          };
           this.setUrl = function(url) {
             return $scope.iframeScope.setUrl(url);
           };
@@ -1348,6 +1351,9 @@
             $scope.iframeWrapperElement.addClass('ng-hide');
             return $scope.bodyElement.removeClass('django-cradmin-noscroll');
           };
+          $scope.showNavbar = function() {
+            return $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar');
+          };
           this.closeIframe = function() {
             return $scope.hide();
           };
@@ -1380,24 +1386,23 @@
         return $scope.setConfig = function(previewConfig) {
           if (previewConfig.urls.length > 1) {
             $scope.previewConfig = previewConfig;
-            return $scope.$apply();
-          } else {
-            return $scope.element.addClass('ng-hide');
+            $scope.$apply();
+            return $scope.wrapperCtrl.showNavbar();
           }
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {
         scope.element = element;
+        scope.wrapperCtrl = wrapperCtrl;
         scope.activeIndex = 0;
-        wrapperCtrl.setNavbar(scope);
+        scope.wrapperCtrl.setNavbar(scope);
         scope.setActive = function(index) {
           return scope.activeIndex = index;
         };
         scope.onNavlinkClick = function(e, index) {
           e.preventDefault();
-          console.log("hei " + index);
           scope.setActive(index);
-          wrapperCtrl.setUrl(scope.previewConfig.urls[index].url);
+          scope.wrapperCtrl.setUrl(scope.previewConfig.urls[index].url);
         };
       }
     };
@@ -1408,7 +1413,6 @@
       scope: {},
       controller: function($scope) {
         return $scope.setUrl = function(url) {
-          console.log("setUrl " + url);
           return $scope.element.attr('src', url);
         };
       },
