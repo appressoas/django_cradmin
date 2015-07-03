@@ -32,14 +32,14 @@ angular.module('djangoCradmin.pagepreview', [])
 
     ```
     <div django-cradmin-page-preview-wrapper>
-        <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
+        <div class="django-cradmin-floating-fullsize-iframe-wrapper"
              django-cradmin-page-preview-iframe-wrapper>
             <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
                django-cradmin-page-preview-iframe-closebutton>
                 <span class="fa fa-close"></span>
                 <span class="sr-only">Close preview</span>
             </a>
-            <div class="django-cradmin-floating-fullsize-loadspinner">
+            <div class="ng-hide django-cradmin-floating-fullsize-loadspinner">
                 <span class="fa fa-spinner fa-spin"></span>
             </div>
             <div class="django-cradmin-floating-fullsize-iframe-inner">
@@ -84,11 +84,13 @@ angular.module('djangoCradmin.pagepreview', [])
         @loadPreview = (previewConfig) ->
           url = previewConfig.urls[0].url
           $scope.navbarScope.setConfig(previewConfig)
-          @setUrl(url)
+          $scope.iframeInnerScope.hide()
           $scope.iframeWrapperScope.show()
+          @setUrl(url)
 
         @onIframeLoaded = ->
           $scope.loadSpinnerScope.hide()
+          $scope.iframeInnerScope.show()
 
         return
 
@@ -168,15 +170,14 @@ angular.module('djangoCradmin.pagepreview', [])
       controller: ($scope) ->
         $scope.bodyElement = angular.element($window.document.body)
         $scope.show = ->
-          $scope.iframeWrapperElement.removeClass('ng-hide')
+          $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
           $scope.bodyElement.addClass('django-cradmin-noscroll')
         $scope.hide = ->
-          $scope.iframeWrapperElement.addClass('ng-hide')
+          $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
           $scope.bodyElement.removeClass('django-cradmin-noscroll')
         $scope.showNavbar = ->
           $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar')
         $scope.scrollToTop = ->
-          console.log 'Scroll to top'
           $scope.iframeWrapperElement.scrollTop(0)
 
         @closeIframe = ->
@@ -201,8 +202,13 @@ angular.module('djangoCradmin.pagepreview', [])
 
       controller: ($scope) ->
         $scope.scrollToTop = ->
-          console.log 'Scroll to top'
           $scope.element.scrollTop(0)
+        $scope.show = ->
+          $scope.element.removeClass('ng-hide')
+#          $scope.element.addClass('django-cradmin-noscroll')
+        $scope.hide = ->
+          $scope.element.addClass('ng-hide')
+#          $scope.element.removeClass('django-cradmin-noscroll')
         return
 
       link: (scope, element, attrs, wrapperCtrl) ->
@@ -253,6 +259,7 @@ angular.module('djangoCradmin.pagepreview', [])
     controller: ($scope) ->
       $scope.setConfig = (previewConfig) ->
         if previewConfig.urls.length > 1
+          $scope.activeIndex = 0
           $scope.previewConfig = previewConfig
           $scope.$apply()
           $scope.wrapperCtrl.showNavbar()
@@ -283,14 +290,15 @@ angular.module('djangoCradmin.pagepreview', [])
     controller: ($scope) ->
       $scope.setUrl = (url) ->
         $scope.element.attr('src', url)
-        $scope.setIframeSize()
+        $scope.resetIframeSize()
       $scope.setIframeSize = ->
         iframeWindow = $scope.element.contents()
         iframeDocument = iframeWindow[0]
         if iframeDocument?
           iframeBodyHeight = iframeDocument.body.offsetHeight
-          console.log 'iframeBodyHeight', iframeBodyHeight
           $scope.element.height(iframeBodyHeight + 10)
+      $scope.resetIframeSize = ->
+        $scope.element.height('90%')
 
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.element = element

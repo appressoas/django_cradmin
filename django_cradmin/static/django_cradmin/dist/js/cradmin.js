@@ -1247,14 +1247,14 @@
       
       ```
       <div django-cradmin-page-preview-wrapper>
-          <div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
+          <div class="django-cradmin-floating-fullsize-iframe-wrapper"
                django-cradmin-page-preview-iframe-wrapper>
               <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
                  django-cradmin-page-preview-iframe-closebutton>
                   <span class="fa fa-close"></span>
                   <span class="sr-only">Close preview</span>
               </a>
-              <div class="django-cradmin-floating-fullsize-loadspinner">
+              <div class="ng-hide django-cradmin-floating-fullsize-loadspinner">
                   <span class="fa fa-spinner fa-spin"></span>
               </div>
               <div class="django-cradmin-floating-fullsize-iframe-inner">
@@ -1299,11 +1299,13 @@
             var url;
             url = previewConfig.urls[0].url;
             $scope.navbarScope.setConfig(previewConfig);
-            this.setUrl(url);
-            return $scope.iframeWrapperScope.show();
+            $scope.iframeInnerScope.hide();
+            $scope.iframeWrapperScope.show();
+            return this.setUrl(url);
           };
           this.onIframeLoaded = function() {
-            return $scope.loadSpinnerScope.hide();
+            $scope.loadSpinnerScope.hide();
+            return $scope.iframeInnerScope.show();
           };
         },
         link: function(scope, element) {
@@ -1370,18 +1372,17 @@
         controller: function($scope) {
           $scope.bodyElement = angular.element($window.document.body);
           $scope.show = function() {
-            $scope.iframeWrapperElement.removeClass('ng-hide');
+            $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
             return $scope.bodyElement.addClass('django-cradmin-noscroll');
           };
           $scope.hide = function() {
-            $scope.iframeWrapperElement.addClass('ng-hide');
+            $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
             return $scope.bodyElement.removeClass('django-cradmin-noscroll');
           };
           $scope.showNavbar = function() {
             return $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar');
           };
           $scope.scrollToTop = function() {
-            console.log('Scroll to top');
             return $scope.iframeWrapperElement.scrollTop(0);
           };
           this.closeIframe = function() {
@@ -1402,8 +1403,13 @@
         scope: {},
         controller: function($scope) {
           $scope.scrollToTop = function() {
-            console.log('Scroll to top');
             return $scope.element.scrollTop(0);
+          };
+          $scope.show = function() {
+            return $scope.element.removeClass('ng-hide');
+          };
+          $scope.hide = function() {
+            return $scope.element.addClass('ng-hide');
           };
         },
         link: function(scope, element, attrs, wrapperCtrl) {
@@ -1451,6 +1457,7 @@
       controller: function($scope) {
         return $scope.setConfig = function(previewConfig) {
           if (previewConfig.urls.length > 1) {
+            $scope.activeIndex = 0;
             $scope.previewConfig = previewConfig;
             $scope.$apply();
             return $scope.wrapperCtrl.showNavbar();
@@ -1480,17 +1487,19 @@
       controller: function($scope) {
         $scope.setUrl = function(url) {
           $scope.element.attr('src', url);
-          return $scope.setIframeSize();
+          return $scope.resetIframeSize();
         };
-        return $scope.setIframeSize = function() {
+        $scope.setIframeSize = function() {
           var iframeBodyHeight, iframeDocument, iframeWindow;
           iframeWindow = $scope.element.contents();
           iframeDocument = iframeWindow[0];
           if (iframeDocument != null) {
             iframeBodyHeight = iframeDocument.body.offsetHeight;
-            console.log('iframeBodyHeight', iframeBodyHeight);
             return $scope.element.height(iframeBodyHeight + 10);
           }
+        };
+        return $scope.resetIframeSize = function() {
+          return $scope.element.height('90%');
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {

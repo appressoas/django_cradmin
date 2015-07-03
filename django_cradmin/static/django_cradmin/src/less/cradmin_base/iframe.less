@@ -6,6 +6,12 @@
   height: 100%;
   z-index: @cradmin-floating-iframe-zindex;
   background: @cradmin-floating-iframe-backdrop-bg;
+  .css3-transition(all @cradmin-floating-iframe-showhide-transition-duration ease-in-out);
+  .css3-transform(translate(-100%, 0));
+
+  &.django-cradmin-floating-fullsize-iframe-wrapper-show {
+    .css3-transform(translate(0, 0));
+  }
 
   &.django-cradmin-floating-fullsize-iframe-wrapper-with-navbar {
     .django-cradmin-floating-fullsize-content {
@@ -21,22 +27,45 @@
 
   a.django-cradmin-floating-fullsize-iframe-closebutton  {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
     text-align: center;
-    font-size: 30px;
     z-index: (@cradmin-floating-iframe-zindex + 2);
-    width: 50px;
-    line-height: 50px;
-    border-radius: 25px;
+    width: @cradmin-floating-iframe-closebutton-width;
     background: @cradmin-floating-iframe-closebutton-bg;
     color: @cradmin-floating-iframe-closebutton-color;
     text-decoration: none;
+    .css3-transition(all @cradmin-floating-iframe-closebutton-transition-duration ease-in-out);
+
+    .django-cradmin-floating-fullsize-iframe-closebutton-defaulttext {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      margin-top: -(@cradmin-floating-iframe-closebutton-defaulttext-font-size/2);
+      font-size: @cradmin-floating-iframe-closebutton-defaulttext-font-size;
+    }
+    .django-cradmin-floating-fullsize-iframe-closebutton-hovertext {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: @grid-gutter-width;
+      font-size: @cradmin-floating-iframe-closebutton-hovertext-font-size;
+      opacity: 0;
+      .css3-transition(all 0.3s ease-in-out);
+    }
 
     &:hover, &:focus {
       background: @cradmin-floating-iframe-closebutton-hover-bg;
       color: @cradmin-floating-iframe-closebutton-hover-color;
       text-decoration: none;
+      .django-cradmin-floating-fullsize-iframe-closebutton-defaulttext {
+      }
+      .django-cradmin-floating-fullsize-iframe-closebutton-hovertext {
+        opacity: 1.0;
+      }
     }
   }
 
@@ -81,7 +110,7 @@
           a {
             box-sizing: border-box;
             display: block;
-            padding: 0 @cradmin-floating-iframe-navbar-item-padding-horizontal;
+              padding: 0 @cradmin-floating-iframe-navbar-item-padding-horizontal;
             line-height: @cradmin-floating-iframe-navbar-height;
             font-weight: @cradmin-floating-iframe-navbar-font-weight;
             background: @cradmin-floating-iframe-navbar-item-bg;

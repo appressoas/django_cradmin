@@ -15,15 +15,20 @@
 
 {% endcomment %}
 
-<div class="ng-hide django-cradmin-floating-fullsize-iframe-wrapper"
+<div class="django-cradmin-floating-fullsize-iframe-wrapper"
      django-cradmin-page-preview-iframe-wrapper>
     <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
        django-cradmin-page-preview-iframe-closebutton>
-        <span class="{% cradmin_icon 'x' %}"></span>
+        <span aria-hidden="true"
+                class="{% cradmin_icon 'close-overlay-right-to-left' %}
+                    django-cradmin-floating-fullsize-iframe-closebutton-defaulttext"></span>
         <span class="sr-only">{% trans "Close preview" %}</span>
+        <span class="django-cradmin-floating-fullsize-iframe-closebutton-hovertext">
+            {% trans "Close preview" %}
+        </span>
     </a>
     <div class="django-cradmin-floating-fullsize-content">
-        <div class="django-cradmin-floating-fullsize-loadspinner"
+        <div class="ng-hide django-cradmin-floating-fullsize-loadspinner"
                 django-cradmin-page-preview-load-spinner>
             <span class="{% cradmin_icon 'loadspinner' %}"></span>
         </div>

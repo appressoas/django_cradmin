@@ -4834,8 +4834,9 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 @media (min-width: 768px) {
   .btn {
-    transition-duration: 0.3s;
-    transition-property: background color border-color;
+    -webkit-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
   }
 }
 .btn.btn-xs {
@@ -4959,7 +4960,18 @@ table.table.django-cradmin-table tbody td:last-child {
   width: 100%;
   height: 100%;
   z-index: 50000;
-  background: rgba(30, 30, 30, 0.8);
+  background: none;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+.django-cradmin-floating-fullsize-iframe-wrapper.django-cradmin-floating-fullsize-iframe-wrapper-show {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  transform: translate(0, 0);
 }
 .django-cradmin-floating-fullsize-iframe-wrapper.django-cradmin-floating-fullsize-iframe-wrapper-with-navbar .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-navbar {
   display: block;
@@ -4969,23 +4981,48 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
   text-align: center;
-  font-size: 30px;
   z-index: 50002;
-  width: 50px;
-  line-height: 50px;
-  border-radius: 25px;
-  background: #1e1e1e;
+  width: 200px;
+  background: rgba(30, 30, 30, 0.8);
   color: #e6e6e6;
   text-decoration: none;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton .django-cradmin-floating-fullsize-iframe-closebutton-defaulttext {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -15px;
+  font-size: 30px;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton .django-cradmin-floating-fullsize-iframe-closebutton-hovertext {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  font-size: 16px;
+  opacity: 0;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:hover,
 .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:focus {
-  background: #0a0a0a;
+  background: rgba(30, 30, 30, 0.7);
   color: #f8f8f8;
   text-decoration: none;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:hover .django-cradmin-floating-fullsize-iframe-closebutton-hovertext,
+.django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:focus .django-cradmin-floating-fullsize-iframe-closebutton-hovertext {
+  opacity: 1.0;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content {
   position: absolute;

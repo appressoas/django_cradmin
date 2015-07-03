@@ -17,4 +17,5 @@ FONT_AWESOME = {
     'caret-up': 'fa fa-caret-up',
     'pager-next-page': 'fa fa-chevron-right',
     'pager-previus-page': 'fa fa-chevron-left',
+    'close-overlay-right-to-left': 'fa fa-chevron-left',
 }
