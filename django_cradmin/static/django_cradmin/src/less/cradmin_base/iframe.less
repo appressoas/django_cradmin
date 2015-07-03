@@ -39,33 +39,19 @@
     text-decoration: none;
     .css3-transition(all @cradmin-floating-iframe-closebutton-transition-duration ease-in-out);
 
-    .django-cradmin-floating-fullsize-iframe-closebutton-defaulttext {
+    .django-cradmin-floating-fullsize-iframe-closebutton-icon {
       position: absolute;
       left: 0;
       right: 0;
       top: 50%;
-      margin-top: -(@cradmin-floating-iframe-closebutton-defaulttext-font-size/2);
-      font-size: @cradmin-floating-iframe-closebutton-defaulttext-font-size;
-    }
-    .django-cradmin-floating-fullsize-iframe-closebutton-hovertext {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: @grid-gutter-width;
-      font-size: @cradmin-floating-iframe-closebutton-hovertext-font-size;
-      opacity: 0;
-      .css3-transition(all 0.3s ease-in-out);
+      margin-top: -(@cradmin-floating-iframe-closebutton-icon-font-size/2);
+      font-size: @cradmin-floating-iframe-closebutton-icon-font-size;
     }
 
     &:hover, &:focus {
       background: @cradmin-floating-iframe-closebutton-hover-bg;
       color: @cradmin-floating-iframe-closebutton-hover-color;
       text-decoration: none;
-      .django-cradmin-floating-fullsize-iframe-closebutton-defaulttext {
-      }
-      .django-cradmin-floating-fullsize-iframe-closebutton-hovertext {
-        opacity: 1.0;
-      }
     }
   }
 
@@ -153,5 +139,12 @@
         border: none;
       }
     }
+  }
+}
+
+#django_cradmin_bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper {
+  .css3-transition(all @cradmin-floating-iframe-showhide-transition-duration ease-in-out);
+  &.django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push {
+    .css3-transform(translate((100%-@cradmin-floating-iframe-closebutton-width), 0));
   }
 }

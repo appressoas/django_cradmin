@@ -69,10 +69,6 @@
     {% endif %}
 
     {% if queryset_contains_items %}
-        {% if enable_previews %}
-            <div django-cradmin-page-preview-wrapper>
-                {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
-        {% endif %}
         <div
             {% if multiselect_actions %}
                 ng-controller="CradminMultiselectObjectTableViewController"
@@ -205,10 +201,6 @@
             </form>
         </div> {# END div with ng-controller="CradminMultiselectObjectTableViewController" #}
 
-        {% if enable_previews %}
-            </div>
-        {% endif %}
-
     {% else %}
         <div class="container django-cradmin-container-focus" id="objecttableview-no-items-message">
             {{ no_items_message }}
@@ -216,3 +208,10 @@
     {% endif %}
 
 {% endblock content %}
+
+{% block outside-bodycontentwrapper %}
+    {% if enable_previews %}
+        <div django-cradmin-page-preview-wrapper>
+            {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
+    {% endif %}
+{% endblock outside-bodycontentwrapper %}

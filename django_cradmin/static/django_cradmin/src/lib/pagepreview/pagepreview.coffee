@@ -1,8 +1,33 @@
 angular.module('djangoCradmin.pagepreview', [])
 
+
+.provider 'djangoCradminPagePreview', ->
+  class PagePreview
+    constructor: ->
+      @pagePreviewWrapper = null
+      @bodyContentWrapperElement = angular.element('#django_cradmin_bodycontentwrapper')
+      @bodyElement = angular.element('body')
+    registerPagePreviewWrapper: (pagePreviewWrapper) ->
+      @pagePreviewWrapper = pagePreviewWrapper
+    loadPreview: (previewConfig) ->
+      @pagePreviewWrapper.loadPreview(previewConfig)
+    addBodyContentWrapperClass: (cssclass) ->
+      @bodyContentWrapperElement.addClass(cssclass)
+    removeBodyContentWrapperClass: (cssclass) ->
+      @bodyContentWrapperElement.removeClass(cssclass)
+    disableBodyScrolling: ->
+      @bodyElement.addClass('django-cradmin-noscroll')
+    enableBodyScrolling: ->
+      @bodyElement.removeClass('django-cradmin-noscroll')
+
+  @$get = ->
+    return new PagePreview()
+  return @
+
+
 .directive('djangoCradminPagePreviewWrapper', [
-  '$window',
-  ($window) ->
+  '$window', 'djangoCradminPagePreview',
+  ($window, djangoCradminPagePreview) ->
     ###
     A directive that shows a preview of a page in an iframe.
     value.
@@ -55,7 +80,8 @@ angular.module('djangoCradmin.pagepreview', [])
       restrict: 'A'
       scope: {}
 
-      controller: ($scope) ->
+      controller: ($scope, djangoCradminPagePreview) ->
+        djangoCradminPagePreview.registerPagePreviewWrapper(this)
         $scope.origin = "#{window.location.protocol}//#{window.location.host}"
 
         @setIframeWrapper = (iframeWrapperScope) ->
@@ -85,8 +111,18 @@ angular.module('djangoCradmin.pagepreview', [])
           url = previewConfig.urls[0].url
           $scope.navbarScope.setConfig(previewConfig)
           $scope.iframeInnerScope.hide()
-          $scope.iframeWrapperScope.show()
+          @showPreview()
           @setUrl(url)
+
+        @showPreview = ->
+          djangoCradminPagePreview.addBodyContentWrapperClass(
+            'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
+          $scope.iframeWrapperScope.show()
+
+        @hidePreview = ->
+          $scope.iframeWrapperScope.hide()
+          djangoCradminPagePreview.removeBodyContentWrapperClass(
+            'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
 
         @onIframeLoaded = ->
           $scope.loadSpinnerScope.hide()
@@ -117,71 +153,32 @@ angular.module('djangoCradmin.pagepreview', [])
 ])
 
 
-.directive('djangoCradminPagePreviewOpenOnPageLoad', [
-  ->
-    ###
-    A directive that opens the given URL in an iframe overlay instantly (on page load).
-    ###
-    return {
-      require: '^^djangoCradminPagePreviewWrapper'
-      restrict: 'A'
-      scope: {
-        previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
-      }
-      link: (scope, element, attrs, wrapperCtrl) ->
-        wrapperCtrl.loadPreview(scope.previewConfig)
-#        element.on 'click', (e) ->
-#          e.preventDefault()
-        return
-
-    }
-])
-
-
-.directive('djangoCradminPagePreviewOpenOnClick', [
-  ->
-    ###
-    A directive that opens the given URL in an iframe overlay on click.
-    ###
-    return {
-      require: '^^djangoCradminPagePreviewWrapper'
-      restrict: 'A'
-      scope: {
-        previewConfig: '=djangoCradminPagePreviewOpenOnClick'
-      }
-      link: (scope, element, attrs, wrapperCtrl) ->
-        element.on 'click', (e) ->
-          e.preventDefault()
-          wrapperCtrl.loadPreview(scope.previewConfig)
-        return
-
-    }
-])
-
-
 .directive('djangoCradminPagePreviewIframeWrapper', [
-  '$window'
-  ($window) ->
+  '$window', 'djangoCradminPagePreview'
+  ($window, djangoCradminPagePreview) ->
     return {
       require: '^^djangoCradminPagePreviewWrapper'
       restrict: 'A'
       scope: {}
 
       controller: ($scope) ->
-        $scope.bodyElement = angular.element($window.document.body)
         $scope.show = ->
           $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
-          $scope.bodyElement.addClass('django-cradmin-noscroll')
+          djangoCradminPagePreview.disableBodyScrolling()
+          djangoCradminPagePreview.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push')
         $scope.hide = ->
           $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
-          $scope.bodyElement.removeClass('django-cradmin-noscroll')
+          djangoCradminPagePreview.enableBodyScrolling()
+          djangoCradminPagePreview.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push')
         $scope.showNavbar = ->
           $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar')
         $scope.scrollToTop = ->
           $scope.iframeWrapperElement.scrollTop(0)
 
-        @closeIframe = ->
+        @hide = ->
           $scope.hide()
+        @show = ->
+          $scope.show()
         return
 
       link: (scope, element, attrs, wrapperCtrl) ->
@@ -220,14 +217,14 @@ angular.module('djangoCradmin.pagepreview', [])
 
 .directive 'djangoCradminPagePreviewIframeClosebutton', ->
   return {
-    require: '^^djangoCradminPagePreviewIframeWrapper'
+    require: '^^djangoCradminPagePreviewWrapper'
     restrict: 'A'
     scope: {}
 
-    link: (scope, element, attrs, iframeWrapperCtrl) ->
+    link: (scope, element, attrs, wrapperCtrl) ->
       element.on 'click', (e) ->
         e.preventDefault()
-        iframeWrapperCtrl.closeIframe()
+        wrapperCtrl.hidePreview()
       return
   }
 
@@ -308,3 +305,51 @@ angular.module('djangoCradmin.pagepreview', [])
         scope.setIframeSize()
       return
   }
+
+
+
+
+#.directive('djangoCradminPagePreviewOpenOnPageLoad', [
+#  ->
+#    ###
+#    A directive that opens the given URL in an iframe overlay instantly (on page load).
+#    ###
+#    return {
+#      require: '^^djangoCradminPagePreviewWrapper'
+#      restrict: 'A'
+#      scope: {
+#        previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
+#      }
+#      link: (scope, element, attrs, wrapperCtrl) ->
+#        wrapperCtrl.loadPreview(scope.previewConfig)
+#        return
+#
+#    }
+#])
+
+
+.directive('djangoCradminPagePreviewOpenOnClick', [
+  'djangoCradminPagePreview'
+  (djangoCradminPagePreview) ->
+    ###
+    A directive that opens the given URL in an iframe overlay on click.
+    ###
+    return {
+      restrict: 'A'
+      scope: {
+        previewConfig: '=djangoCradminPagePreviewOpenOnClick'
+      }
+
+      controller: ($scope, djangoCradminPagePreview) ->
+        $scope.loadPreview = ->
+          djangoCradminPagePreview.loadPreview($scope.previewConfig)
+
+      link: (scope, element, attrs, wrapperCtrl) ->
+        element.on 'click', (e) ->
+          e.preventDefault()
+          scope.loadPreview()
+        return
+
+    }
+])
+

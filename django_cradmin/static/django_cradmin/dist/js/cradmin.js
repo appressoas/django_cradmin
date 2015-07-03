@@ -1216,8 +1216,48 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.pagepreview', []).directive('djangoCradminPagePreviewWrapper', [
-    '$window', function($window) {
+  angular.module('djangoCradmin.pagepreview', []).provider('djangoCradminPagePreview', function() {
+    var PagePreview;
+    PagePreview = (function() {
+      function PagePreview() {
+        this.pagePreviewWrapper = null;
+        this.bodyContentWrapperElement = angular.element('#django_cradmin_bodycontentwrapper');
+        this.bodyElement = angular.element('body');
+      }
+
+      PagePreview.prototype.registerPagePreviewWrapper = function(pagePreviewWrapper) {
+        return this.pagePreviewWrapper = pagePreviewWrapper;
+      };
+
+      PagePreview.prototype.loadPreview = function(previewConfig) {
+        return this.pagePreviewWrapper.loadPreview(previewConfig);
+      };
+
+      PagePreview.prototype.addBodyContentWrapperClass = function(cssclass) {
+        return this.bodyContentWrapperElement.addClass(cssclass);
+      };
+
+      PagePreview.prototype.removeBodyContentWrapperClass = function(cssclass) {
+        return this.bodyContentWrapperElement.removeClass(cssclass);
+      };
+
+      PagePreview.prototype.disableBodyScrolling = function() {
+        return this.bodyElement.addClass('django-cradmin-noscroll');
+      };
+
+      PagePreview.prototype.enableBodyScrolling = function() {
+        return this.bodyElement.removeClass('django-cradmin-noscroll');
+      };
+
+      return PagePreview;
+
+    })();
+    this.$get = function() {
+      return new PagePreview();
+    };
+    return this;
+  }).directive('djangoCradminPagePreviewWrapper', [
+    '$window', 'djangoCradminPagePreview', function($window, djangoCradminPagePreview) {
       /*
       A directive that shows a preview of a page in an iframe.
       value.
@@ -1270,7 +1310,8 @@
       return {
         restrict: 'A',
         scope: {},
-        controller: function($scope) {
+        controller: function($scope, djangoCradminPagePreview) {
+          djangoCradminPagePreview.registerPagePreviewWrapper(this);
           $scope.origin = "" + window.location.protocol + "//" + window.location.host;
           this.setIframeWrapper = function(iframeWrapperScope) {
             return $scope.iframeWrapperScope = iframeWrapperScope;
@@ -1300,8 +1341,16 @@
             url = previewConfig.urls[0].url;
             $scope.navbarScope.setConfig(previewConfig);
             $scope.iframeInnerScope.hide();
-            $scope.iframeWrapperScope.show();
+            this.showPreview();
             return this.setUrl(url);
+          };
+          this.showPreview = function() {
+            djangoCradminPagePreview.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
+            return $scope.iframeWrapperScope.show();
+          };
+          this.hidePreview = function() {
+            $scope.iframeWrapperScope.hide();
+            return djangoCradminPagePreview.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
           };
           this.onIframeLoaded = function() {
             $scope.loadSpinnerScope.hide();
@@ -1326,58 +1375,22 @@
         }
       };
     }
-  ]).directive('djangoCradminPagePreviewOpenOnPageLoad', [
-    function() {
-      /*
-      A directive that opens the given URL in an iframe overlay instantly (on page load).
-      */
-
-      return {
-        require: '^^djangoCradminPagePreviewWrapper',
-        restrict: 'A',
-        scope: {
-          previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
-        },
-        link: function(scope, element, attrs, wrapperCtrl) {
-          wrapperCtrl.loadPreview(scope.previewConfig);
-        }
-      };
-    }
-  ]).directive('djangoCradminPagePreviewOpenOnClick', [
-    function() {
-      /*
-      A directive that opens the given URL in an iframe overlay on click.
-      */
-
-      return {
-        require: '^^djangoCradminPagePreviewWrapper',
-        restrict: 'A',
-        scope: {
-          previewConfig: '=djangoCradminPagePreviewOpenOnClick'
-        },
-        link: function(scope, element, attrs, wrapperCtrl) {
-          element.on('click', function(e) {
-            e.preventDefault();
-            return wrapperCtrl.loadPreview(scope.previewConfig);
-          });
-        }
-      };
-    }
   ]).directive('djangoCradminPagePreviewIframeWrapper', [
-    '$window', function($window) {
+    '$window', 'djangoCradminPagePreview', function($window, djangoCradminPagePreview) {
       return {
         require: '^^djangoCradminPagePreviewWrapper',
         restrict: 'A',
         scope: {},
         controller: function($scope) {
-          $scope.bodyElement = angular.element($window.document.body);
           $scope.show = function() {
             $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
-            return $scope.bodyElement.addClass('django-cradmin-noscroll');
+            djangoCradminPagePreview.disableBodyScrolling();
+            return djangoCradminPagePreview.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
           };
           $scope.hide = function() {
             $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
-            return $scope.bodyElement.removeClass('django-cradmin-noscroll');
+            djangoCradminPagePreview.enableBodyScrolling();
+            return djangoCradminPagePreview.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
           };
           $scope.showNavbar = function() {
             return $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-with-navbar');
@@ -1385,8 +1398,11 @@
           $scope.scrollToTop = function() {
             return $scope.iframeWrapperElement.scrollTop(0);
           };
-          this.closeIframe = function() {
+          this.hide = function() {
             return $scope.hide();
+          };
+          this.show = function() {
+            return $scope.show();
           };
         },
         link: function(scope, element, attrs, wrapperCtrl) {
@@ -1420,13 +1436,13 @@
     }
   ]).directive('djangoCradminPagePreviewIframeClosebutton', function() {
     return {
-      require: '^^djangoCradminPagePreviewIframeWrapper',
+      require: '^^djangoCradminPagePreviewWrapper',
       restrict: 'A',
       scope: {},
-      link: function(scope, element, attrs, iframeWrapperCtrl) {
+      link: function(scope, element, attrs, wrapperCtrl) {
         element.on('click', function(e) {
           e.preventDefault();
-          return iframeWrapperCtrl.closeIframe();
+          return wrapperCtrl.hidePreview();
         });
       }
     };
@@ -1511,7 +1527,31 @@
         });
       }
     };
-  });
+  }).directive('djangoCradminPagePreviewOpenOnClick', [
+    'djangoCradminPagePreview', function(djangoCradminPagePreview) {
+      /*
+      A directive that opens the given URL in an iframe overlay on click.
+      */
+
+      return {
+        restrict: 'A',
+        scope: {
+          previewConfig: '=djangoCradminPagePreviewOpenOnClick'
+        },
+        controller: function($scope, djangoCradminPagePreview) {
+          return $scope.loadPreview = function() {
+            return djangoCradminPagePreview.loadPreview($scope.previewConfig);
+          };
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          element.on('click', function(e) {
+            e.preventDefault();
+            return scope.loadPreview();
+          });
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 
