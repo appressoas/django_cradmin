@@ -210,8 +210,10 @@
 {% endblock content %}
 
 {% block outside-bodycontentwrapper %}
+    {{ block.super }}
     {% if enable_previews %}
         <div django-cradmin-page-preview-wrapper>
             {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
+        </div>
     {% endif %}
 {% endblock outside-bodycontentwrapper %}

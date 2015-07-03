@@ -9,8 +9,8 @@ angular.module('djangoCradmin.pagepreview', [])
       @bodyElement = angular.element('body')
     registerPagePreviewWrapper: (pagePreviewWrapper) ->
       @pagePreviewWrapper = pagePreviewWrapper
-    loadPreview: (previewConfig) ->
-      @pagePreviewWrapper.loadPreview(previewConfig)
+    setPreviewConfig: (previewConfig) ->
+      @pagePreviewWrapper.setPreviewConfig(previewConfig)
     addBodyContentWrapperClass: (cssclass) ->
       @bodyContentWrapperElement.addClass(cssclass)
     removeBodyContentWrapperClass: (cssclass) ->
@@ -83,18 +83,23 @@ angular.module('djangoCradmin.pagepreview', [])
       controller: ($scope, djangoCradminPagePreview) ->
         djangoCradminPagePreview.registerPagePreviewWrapper(this)
         $scope.origin = "#{window.location.protocol}//#{window.location.host}"
+        previewConfigWaitingForStartup = null
 
         @setIframeWrapper = (iframeWrapperScope) ->
           $scope.iframeWrapperScope = iframeWrapperScope
+          @_readyCheck()
 
         @setIframe = (iframeScope) ->
           $scope.iframeScope = iframeScope
+          @_readyCheck()
 
         @setNavbar = (navbarScope) ->
           $scope.navbarScope = navbarScope
+          @_readyCheck()
 
         @setLoadSpinner = (loadSpinnerScope) ->
           $scope.loadSpinnerScope = loadSpinnerScope
+          @_readyCheck()
 
         @setIframeWrapperInner = (iframeInnerScope) ->
           $scope.iframeInnerScope = iframeInnerScope
@@ -107,12 +112,30 @@ angular.module('djangoCradmin.pagepreview', [])
           $scope.iframeInnerScope.scrollToTop()
           $scope.iframeScope.setUrl(url)
 
-        @loadPreview = (previewConfig) ->
-          url = previewConfig.urls[0].url
-          $scope.navbarScope.setConfig(previewConfig)
+        @_readyCheck = ->
+          isReady = $scope.iframeInnerScope? and $scope.loadSpinnerScope? \
+            and $scope.navbarScope? and $scope.iframeScope? and $scope.iframeWrapperScope?
+          if isReady
+            @_onReady()
+
+        @_onReady = ->
+          if previewConfigWaitingForStartup?
+            @_applyPreviewConfig()
+
+        @_applyPreviewConfig = ->
+          url = previewConfigWaitingForStartup.urls[0].url
+          $scope.navbarScope.setConfig(previewConfigWaitingForStartup)
           $scope.iframeInnerScope.hide()
+          previewConfigWaitingForStartup = null
           @showPreview()
           @setUrl(url)
+
+        @setPreviewConfig = (previewConfig) ->
+          ###
+          Called once on startup
+          ###
+          previewConfigWaitingForStartup = previewConfig
+          @_readyCheck()
 
         @showPreview = ->
           djangoCradminPagePreview.addBodyContentWrapperClass(
@@ -309,23 +332,24 @@ angular.module('djangoCradmin.pagepreview', [])
 
 
 
-#.directive('djangoCradminPagePreviewOpenOnPageLoad', [
-#  ->
-#    ###
-#    A directive that opens the given URL in an iframe overlay instantly (on page load).
-#    ###
-#    return {
-#      require: '^^djangoCradminPagePreviewWrapper'
-#      restrict: 'A'
-#      scope: {
-#        previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
-#      }
-#      link: (scope, element, attrs, wrapperCtrl) ->
-#        wrapperCtrl.loadPreview(scope.previewConfig)
-#        return
-#
-#    }
-#])
+.directive('djangoCradminPagePreviewOpenOnPageLoad', [
+  'djangoCradminPagePreview'
+  (djangoCradminPagePreview) ->
+    ###
+    A directive that opens the given URL in an iframe overlay instantly (on page load).
+    ###
+    return {
+      restrict: 'A'
+      scope: {
+        previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
+      }
+
+      link: (scope, element, attrs) ->
+        djangoCradminPagePreview.setPreviewConfig(scope.previewConfig)
+        return
+
+    }
+])
 
 
 .directive('djangoCradminPagePreviewOpenOnClick', [
@@ -340,14 +364,10 @@ angular.module('djangoCradmin.pagepreview', [])
         previewConfig: '=djangoCradminPagePreviewOpenOnClick'
       }
 
-      controller: ($scope, djangoCradminPagePreview) ->
-        $scope.loadPreview = ->
-          djangoCradminPagePreview.loadPreview($scope.previewConfig)
-
-      link: (scope, element, attrs, wrapperCtrl) ->
+      link: (scope, element, attrs) ->
         element.on 'click', (e) ->
           e.preventDefault()
-          scope.loadPreview()
+          djangoCradminPagePreview.setPreviewConfig(scope.previewConfig)
         return
 
     }

@@ -651,11 +651,11 @@ class PagePreviewButton(PagePreviewsButton):
     """
 
     def __init__(self, url, **kwargs):
-        self.urls = [{
+        urls = [{
             'label': 'Unused',  # Never shown because the navbar is hidden when we only have one URL.
             'url': url
         }]
-        super(PagePreviewButton, self).__init__(**kwargs)
+        super(PagePreviewButton, self).__init__(urls=urls, **kwargs)
 
 
 class UseThisButton(Button):

@@ -47,14 +47,13 @@ module.exports = (grunt) ->
       coffeecode:
         files: appfiles.coffeecode
         tasks: [
-          'coffeelint:code', 'coffee:code', 'buildCodeDist',
-          'karma:watchrunner:run']
+          'coffeelint:code', 'coffee:code', 'buildCradminDist']
       coffeetests:
         files: appfiles.coffeetests
-        tasks: ['coffeelint:tests', 'coffee:tests', 'karma:watchrunner:run']
+        tasks: ['coffeelint:tests', 'coffee:tests']
       templates:
         files: appfiles.templates
-        tasks: ['html2js:templates', 'buildCodeDist', 'karma:watchrunner:run']
+        tasks: ['html2js:templates', 'buildCradminDist']
       gruntfile:
         files: 'Gruntfile.coffee'
         tasks: ['coffeelint:gruntfile']
@@ -104,6 +103,8 @@ module.exports = (grunt) ->
       cradmin:
         files:
           'dist/js/cradmin.min.js': ['dist/js/cradmin.js']
+      vendor:
+        files:
           'dist/vendor/cradmin-vendorjs.js': vendorfiles.js
 
     copy:
@@ -204,9 +205,14 @@ module.exports = (grunt) ->
         dest: 'src/lib/templates.js'
   })
 
-  grunt.registerTask('buildCodeDist', [
+  grunt.registerTask('buildCradminDist', [
     'concat:cradmin'
     'uglify:cradmin'
+  ])
+
+  grunt.registerTask('buildVendorDist', [
+    'uglify:vendor'
+    'copy:vendor'
   ])
 
   grunt.registerTask('build', [
@@ -215,9 +221,9 @@ module.exports = (grunt) ->
     'coffee:tests'
     'coffee:code'
     'html2js'
-    'buildCodeDist',
+    'buildCradminDist',
+    'buildVendorDist',
     'karma:singlerun'
-    'copy:vendor'
   ])
 
   grunt.registerTask('dist', [
@@ -229,7 +235,6 @@ module.exports = (grunt) ->
   grunt.renameTask('watch', 'delta')
   grunt.registerTask('watch', [
     'build'
-    'karma:watchrunner:start'
     'delta'
   ])
 

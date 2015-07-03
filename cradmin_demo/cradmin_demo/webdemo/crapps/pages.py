@@ -76,7 +76,8 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Create'), url=app.reverse_appurl('create'),
+            objecttable.Button(label=_('Create'),
+                               url=app.reverse_appurl('create'),
                                buttonclass='btn btn-primary'),
         ]
 

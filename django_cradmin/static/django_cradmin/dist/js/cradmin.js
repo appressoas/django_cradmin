@@ -1229,8 +1229,8 @@
         return this.pagePreviewWrapper = pagePreviewWrapper;
       };
 
-      PagePreview.prototype.loadPreview = function(previewConfig) {
-        return this.pagePreviewWrapper.loadPreview(previewConfig);
+      PagePreview.prototype.setPreviewConfig = function(previewConfig) {
+        return this.pagePreviewWrapper.setPreviewConfig(previewConfig);
       };
 
       PagePreview.prototype.addBodyContentWrapperClass = function(cssclass) {
@@ -1311,19 +1311,25 @@
         restrict: 'A',
         scope: {},
         controller: function($scope, djangoCradminPagePreview) {
+          var previewConfigWaitingForStartup;
           djangoCradminPagePreview.registerPagePreviewWrapper(this);
           $scope.origin = "" + window.location.protocol + "//" + window.location.host;
+          previewConfigWaitingForStartup = null;
           this.setIframeWrapper = function(iframeWrapperScope) {
-            return $scope.iframeWrapperScope = iframeWrapperScope;
+            $scope.iframeWrapperScope = iframeWrapperScope;
+            return this._readyCheck();
           };
           this.setIframe = function(iframeScope) {
-            return $scope.iframeScope = iframeScope;
+            $scope.iframeScope = iframeScope;
+            return this._readyCheck();
           };
           this.setNavbar = function(navbarScope) {
-            return $scope.navbarScope = navbarScope;
+            $scope.navbarScope = navbarScope;
+            return this._readyCheck();
           };
           this.setLoadSpinner = function(loadSpinnerScope) {
-            return $scope.loadSpinnerScope = loadSpinnerScope;
+            $scope.loadSpinnerScope = loadSpinnerScope;
+            return this._readyCheck();
           };
           this.setIframeWrapperInner = function(iframeInnerScope) {
             return $scope.iframeInnerScope = iframeInnerScope;
@@ -1336,13 +1342,34 @@
             $scope.iframeInnerScope.scrollToTop();
             return $scope.iframeScope.setUrl(url);
           };
-          this.loadPreview = function(previewConfig) {
+          this._readyCheck = function() {
+            var isReady;
+            isReady = ($scope.iframeInnerScope != null) && ($scope.loadSpinnerScope != null) && ($scope.navbarScope != null) && ($scope.iframeScope != null) && ($scope.iframeWrapperScope != null);
+            if (isReady) {
+              return this._onReady();
+            }
+          };
+          this._onReady = function() {
+            if (previewConfigWaitingForStartup != null) {
+              return this._applyPreviewConfig();
+            }
+          };
+          this._applyPreviewConfig = function() {
             var url;
-            url = previewConfig.urls[0].url;
-            $scope.navbarScope.setConfig(previewConfig);
+            url = previewConfigWaitingForStartup.urls[0].url;
+            $scope.navbarScope.setConfig(previewConfigWaitingForStartup);
             $scope.iframeInnerScope.hide();
+            previewConfigWaitingForStartup = null;
             this.showPreview();
             return this.setUrl(url);
+          };
+          this.setPreviewConfig = function(previewConfig) {
+            /*
+            Called once on startup
+            */
+
+            previewConfigWaitingForStartup = previewConfig;
+            return this._readyCheck();
           };
           this.showPreview = function() {
             djangoCradminPagePreview.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
@@ -1527,7 +1554,23 @@
         });
       }
     };
-  }).directive('djangoCradminPagePreviewOpenOnClick', [
+  }).directive('djangoCradminPagePreviewOpenOnPageLoad', [
+    'djangoCradminPagePreview', function(djangoCradminPagePreview) {
+      /*
+      A directive that opens the given URL in an iframe overlay instantly (on page load).
+      */
+
+      return {
+        restrict: 'A',
+        scope: {
+          previewConfig: '=djangoCradminPagePreviewOpenOnPageLoad'
+        },
+        link: function(scope, element, attrs) {
+          djangoCradminPagePreview.setPreviewConfig(scope.previewConfig);
+        }
+      };
+    }
+  ]).directive('djangoCradminPagePreviewOpenOnClick', [
     'djangoCradminPagePreview', function(djangoCradminPagePreview) {
       /*
       A directive that opens the given URL in an iframe overlay on click.
@@ -1538,15 +1581,10 @@
         scope: {
           previewConfig: '=djangoCradminPagePreviewOpenOnClick'
         },
-        controller: function($scope, djangoCradminPagePreview) {
-          return $scope.loadPreview = function() {
-            return djangoCradminPagePreview.loadPreview($scope.previewConfig);
-          };
-        },
-        link: function(scope, element, attrs, wrapperCtrl) {
+        link: function(scope, element, attrs) {
           element.on('click', function(e) {
             e.preventDefault();
-            return scope.loadPreview();
+            return djangoCradminPagePreview.setPreviewConfig(scope.previewConfig);
           });
         }
       };
