@@ -1257,7 +1257,7 @@
     };
     return this;
   }).directive('djangoCradminPagePreviewWrapper', [
-    '$window', 'djangoCradminPagePreview', function($window, djangoCradminPagePreview) {
+    '$window', '$timeout', 'djangoCradminPagePreview', function($window, $timeout, djangoCradminPagePreview) {
       /*
       A directive that shows a preview of a page in an iframe.
       value.
@@ -1314,6 +1314,8 @@
           var previewConfigWaitingForStartup;
           djangoCradminPagePreview.registerPagePreviewWrapper(this);
           $scope.origin = "" + window.location.protocol + "//" + window.location.host;
+          $scope.mainWindow = angular.element($window);
+          $scope.windowDimensions = null;
           previewConfigWaitingForStartup = null;
           this.setIframeWrapper = function(iframeWrapperScope) {
             $scope.iframeWrapperScope = iframeWrapperScope;
@@ -1373,33 +1375,36 @@
           };
           this.showPreview = function() {
             djangoCradminPagePreview.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
-            return $scope.iframeWrapperScope.show();
+            $scope.iframeWrapperScope.show();
+            return $scope.mainWindow.bind('resize', $scope.onWindowResize);
           };
           this.hidePreview = function() {
             $scope.iframeWrapperScope.hide();
+            $scope.mainWindow.unbind('resize', $scope.onWindowResize);
             return djangoCradminPagePreview.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
           };
           this.onIframeLoaded = function() {
-            $scope.loadSpinnerScope.hide();
-            return $scope.iframeInnerScope.show();
+            $scope.iframeInnerScope.show();
+            return $scope.loadSpinnerScope.hide();
           };
-        },
-        link: function(scope, element) {
-          var mainWindow;
-          mainWindow = angular.element($window);
-          scope.getWindowDimensions = function() {
+          $scope.getWindowDimensions = function() {
             return {
-              height: mainWindow.height(),
-              width: mainWindow.width()
+              height: $scope.mainWindow.height(),
+              width: $scope.mainWindow.width()
             };
           };
-          scope.$watch(scope.getWindowDimensions, (function(newSize, oldSize) {
-            scope.iframeScope.setIframeSize();
+          $scope.$watch('windowDimensions', (function(newSize, oldSize) {
+            $scope.iframeScope.setIframeSize();
           }), true);
-          mainWindow.bind('resize', function() {
-            scope.$apply();
-          });
-        }
+          $scope.onWindowResize = function() {
+            $timeout.cancel($scope.applyResizeTimer);
+            $scope.applyResizeTimer = $timeout(function() {
+              $scope.windowDimensions = $scope.getWindowDimensions();
+              return $scope.$apply();
+            }, 300);
+          };
+        },
+        link: function(scope, element) {}
       };
     }
   ]).directive('djangoCradminPagePreviewIframeWrapper', [
@@ -1542,7 +1547,7 @@
           }
         };
         return $scope.resetIframeSize = function() {
-          return $scope.element.height('90%');
+          return $scope.element.height('40px');
         };
       },
       link: function(scope, element, attrs, wrapperCtrl) {

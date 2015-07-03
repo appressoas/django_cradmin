@@ -68,6 +68,8 @@
       font-size: 50px;
       text-align: center;
       padding-top: 55px;
+      background: @cradmin-floating-iframe-backdrop-bg;
+      z-index: (@cradmin-floating-iframe-zindex + 1);
     }
 
     .django-cradmin-floating-fullsize-iframe-navbar {
@@ -134,7 +136,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 90%; // NOTE: This is just the default until the javascript resizes this
+        height: 10px; // NOTE: This is just the default until the javascript resizes this
         width: 100%;
         border: none;
       }
@@ -144,7 +146,9 @@
 
 #django_cradmin_bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper {
   .css3-transition(all @cradmin-floating-iframe-showhide-transition-duration ease-in-out);
+  position: relative;
   &.django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push {
     .css3-transform(translate((100%-@cradmin-floating-iframe-closebutton-width), 0));
+    //.css3-transform(translate((60%), 0));
   }
 }

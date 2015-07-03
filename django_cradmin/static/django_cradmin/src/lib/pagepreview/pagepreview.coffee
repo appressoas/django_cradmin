@@ -26,8 +26,8 @@ angular.module('djangoCradmin.pagepreview', [])
 
 
 .directive('djangoCradminPagePreviewWrapper', [
-  '$window', 'djangoCradminPagePreview',
-  ($window, djangoCradminPagePreview) ->
+  '$window', '$timeout', 'djangoCradminPagePreview',
+  ($window, $timeout, djangoCradminPagePreview) ->
     ###
     A directive that shows a preview of a page in an iframe.
     value.
@@ -83,6 +83,8 @@ angular.module('djangoCradmin.pagepreview', [])
       controller: ($scope, djangoCradminPagePreview) ->
         djangoCradminPagePreview.registerPagePreviewWrapper(this)
         $scope.origin = "#{window.location.protocol}//#{window.location.host}"
+        $scope.mainWindow = angular.element($window)
+        $scope.windowDimensions = null
         previewConfigWaitingForStartup = null
 
         @setIframeWrapper = (iframeWrapperScope) ->
@@ -141,35 +143,42 @@ angular.module('djangoCradmin.pagepreview', [])
           djangoCradminPagePreview.addBodyContentWrapperClass(
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
           $scope.iframeWrapperScope.show()
+          $scope.mainWindow.bind 'resize', $scope.onWindowResize
 
         @hidePreview = ->
           $scope.iframeWrapperScope.hide()
+          $scope.mainWindow.unbind 'resize', $scope.onWindowResize
           djangoCradminPagePreview.removeBodyContentWrapperClass(
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
 
         @onIframeLoaded = ->
-          $scope.loadSpinnerScope.hide()
           $scope.iframeInnerScope.show()
+          $scope.loadSpinnerScope.hide()
+
+        $scope.getWindowDimensions = ->
+          return {
+            height: $scope.mainWindow.height()
+            width: $scope.mainWindow.width()
+          }
+
+        $scope.$watch 'windowDimensions', ((newSize, oldSize) ->
+          $scope.iframeScope.setIframeSize()
+          return
+        ), true
+
+        $scope.onWindowResize = ->
+          $timeout.cancel($scope.applyResizeTimer)
+
+          # Use timeout to avoid triggering change for each pixel changed
+          $scope.applyResizeTimer = $timeout ->
+            $scope.windowDimensions = $scope.getWindowDimensions()
+            $scope.$apply()
+          , 300
+          return
 
         return
 
       link: (scope, element) ->
-        mainWindow = angular.element($window)
-
-        scope.getWindowDimensions = ->
-          return {
-            height: mainWindow.height()
-            width: mainWindow.width()
-          }
-
-        scope.$watch scope.getWindowDimensions, ((newSize, oldSize) ->
-          scope.iframeScope.setIframeSize()
-          return
-        ), true
-
-        mainWindow.bind 'resize', ->
-          scope.$apply()
-          return
 
         return
     }
@@ -318,7 +327,7 @@ angular.module('djangoCradmin.pagepreview', [])
           iframeBodyHeight = iframeDocument.body.offsetHeight
           $scope.element.height(iframeBodyHeight + 10)
       $scope.resetIframeSize = ->
-        $scope.element.height('90%')
+        $scope.element.height('40px')
 
     link: (scope, element, attrs, wrapperCtrl) ->
       scope.element = element
@@ -328,8 +337,6 @@ angular.module('djangoCradmin.pagepreview', [])
         scope.setIframeSize()
       return
   }
-
-
 
 
 .directive('djangoCradminPagePreviewOpenOnPageLoad', [
@@ -372,4 +379,3 @@ angular.module('djangoCradmin.pagepreview', [])
 
     }
 ])
-

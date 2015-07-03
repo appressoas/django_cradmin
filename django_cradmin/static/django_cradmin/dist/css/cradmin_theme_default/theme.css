@@ -5027,6 +5027,8 @@ table.table.django-cradmin-table tbody td:last-child {
   font-size: 50px;
   text-align: center;
   padding-top: 55px;
+  background: none;
+  z-index: 50001;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-navbar {
   display: none;
@@ -5107,7 +5109,7 @@ table.table.django-cradmin-table tbody td:last-child {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 90%;
+  height: 10px;
   width: 100%;
   border: none;
 }
@@ -5115,6 +5117,7 @@ table.table.django-cradmin-table tbody td:last-child {
   -webkit-transition: all 0.15s ease-in-out;
   -moz-transition: all 0.15s ease-in-out;
   transition: all 0.15s ease-in-out;
+  position: relative;
 }
 #django_cradmin_bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push {
   -webkit-transform: translate(90%, 0);
