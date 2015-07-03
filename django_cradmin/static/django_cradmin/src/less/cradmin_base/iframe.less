@@ -159,3 +159,38 @@
     //.css3-transform(translate((60%), 0));
   }
 }
+
+
+body.django-cradmin-formview-page {
+  @media (min-width: @screen-sm-min) {
+    .django-cradmin-floating-fullsize-iframe-wrapper {
+      .css3-transform(translate(-100%, 0));
+
+      &.django-cradmin-floating-fullsize-iframe-wrapper-show {
+        .css3-transform(translate(0, 0));
+      }
+
+      a.django-cradmin-floating-fullsize-iframe-closebutton {
+        width: auto;
+        left: (@screen-sm-min - 70px);
+        text-align: left;
+        .django-cradmin-floating-fullsize-iframe-closebutton-icon {
+          padding-left: 20px;
+        }
+      }
+
+      .django-cradmin-floating-fullsize-content {
+        top: 0;
+        left: 0;
+        width: (@screen-sm-min - 70px);
+        right: auto;
+      }
+    }
+
+    #django_cradmin_bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper {
+      &.django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push {
+        .css3-transform(translate((@screen-sm-min - 70px), 0));
+      }
+    }
+  }
+}

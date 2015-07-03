@@ -4989,7 +4989,7 @@ table.table.django-cradmin-table tbody td:last-child {
   z-index: 50002;
   width: 10%;
   background: rgba(30, 30, 30, 0.8);
-  color: #e6e6e6;
+  color: #bebebe;
   text-decoration: none;
   -webkit-transition: all 0.15s ease-in-out;
   -moz-transition: all 0.15s ease-in-out;
@@ -5005,7 +5005,7 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:hover,
 .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton:focus {
-  background: rgba(30, 30, 30, 0.7);
+  background: rgba(30, 30, 30, 0.8);
   color: #f8f8f8;
   text-decoration: none;
 }
@@ -5121,6 +5121,37 @@ table.table.django-cradmin-table tbody td:last-child {
   -webkit-transform: translate(90%, 0);
   -moz-transform: translate(90%, 0);
   transform: translate(90%, 0);
+}
+@media (min-width: 768px) {
+  body.django-cradmin-formview-page .django-cradmin-floating-fullsize-iframe-wrapper {
+    -webkit-transform: translate(-100%, 0);
+    -moz-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
+  }
+  body.django-cradmin-formview-page .django-cradmin-floating-fullsize-iframe-wrapper.django-cradmin-floating-fullsize-iframe-wrapper-show {
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  body.django-cradmin-formview-page .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton {
+    width: auto;
+    left: 698px;
+    text-align: left;
+  }
+  body.django-cradmin-formview-page .django-cradmin-floating-fullsize-iframe-wrapper a.django-cradmin-floating-fullsize-iframe-closebutton .django-cradmin-floating-fullsize-iframe-closebutton-icon {
+    padding-left: 20px;
+  }
+  body.django-cradmin-formview-page .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content {
+    top: 0;
+    left: 0;
+    width: 698px;
+    right: auto;
+  }
+  body.django-cradmin-formview-page #django_cradmin_bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push {
+    -webkit-transform: translate(698px, 0);
+    -moz-transform: translate(698px, 0);
+    transform: translate(698px, 0);
+  }
 }
 .django-cradmin-form .django-cradmin-filewidget img {
   max-width: 300px;
