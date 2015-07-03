@@ -5038,6 +5038,29 @@ table.table.django-cradmin-table tbody td:last-child {
   bottom: 20px;
   left: 20px;
   right: 20px;
+  scrollbar-face-color: red;
+  scrollbar-base-color: green;
+  scrollbar-track-color: rgba(0, 0, 0, 0.2);
+  scrollbar-arrow-color: #fff;
+  scrollbar-shadow-color: red;
+  /* the new scrollbar will have a flat appearance with the set background color */
+  /* this will style the thumb, ignoring the track */
+  /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+}
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar {
+  width: 30px;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-thumb {
+  background-color: red;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-button {
+  background-color: #7c2929;
+}
+.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-corner {
+  background-color: black;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-iframe-inner iframe {
   position: absolute;
