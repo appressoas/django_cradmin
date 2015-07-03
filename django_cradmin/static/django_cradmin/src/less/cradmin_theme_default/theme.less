@@ -3,11 +3,11 @@
 @import "menu";
 
 body {
-  background: darken(@cradmin-bodybg, 2%);
+  background: @cradmin-bodybg;
 }
 
 #django_cradmin_contentwrapper {
-  background: @cradmin-bodybg;
+  background: @cradmin-bodycontent-bg;
   padding-bottom: 15px;
   min-height: 100%;
   @media (min-width: @screen-md-min) {
@@ -24,7 +24,7 @@ body {
 }
 
 .django-cradmin-focusedpage-body {
-  background: @cradmin-bodybg;
+  background: @cradmin-bodycontent-bg;
 }
 
 body.django-cradmin-hide-menu {

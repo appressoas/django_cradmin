@@ -5108,6 +5108,9 @@ table.table.django-cradmin-table tbody td:last-child {
   width: 100%;
   border: none;
 }
+.django-cradmin-floating-fullsize-iframe-wrapper.django-cradmin-modelchoicefield-iframe-wrapper .django-cradmin-floating-fullsize-content {
+  background: #e6e6e6;
+}
 #django_cradmin_bodycontentwrapper.django-cradmin-floating-fullsize-iframe-bodycontentwrapper {
   -webkit-transition: all 0.15s ease-in-out;
   -moz-transition: all 0.15s ease-in-out;
