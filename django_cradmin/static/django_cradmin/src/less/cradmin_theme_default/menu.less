@@ -11,7 +11,16 @@ nav#django_cradmin_mainmenu.django-cradmin-menu {
     .django-cradmin-menu-content {
       ul {
         &.django-cradmin-menu-content-footer {
-          margin-top: 30px;
+          margin-top: @cradmin-default-theme-mainmenu-footer-margin-top;
+          & when (@cradmin-default-theme-mainmenu-footer-stick-to-bottom = true) {
+            @media (min-height: @cradmin-default-theme-mainmenu-footer-stick-to-bottom-min-height) {
+              margin-top: 0;
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+            }
+          }
         }
       }
     }

@@ -5751,6 +5751,15 @@ nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-m
     margin-top: 30px;
   }
 }
+@media (min-width: 992px) and (min-height: 600px) {
+  nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
+    margin-top: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
 body {
   background: #e1e1e1;
 }
