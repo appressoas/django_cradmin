@@ -5,42 +5,46 @@
 {% load i18n %}
 
 {% if not cradmin_hide_menu %}
-    <nav id="cradmin_menu" ng-controller="CradminMenuController">
+    <nav id="django_cradmin_mainmenu" django-cradmin-menu
+            class="django-cradmin-menu">
         {% block pre-menu %}{% endblock pre-menu %}
 
-        <div class="cradmin-menumobileheader">
+        <div class="django-cradmin-menu-mobileheader">
             {% block mobile-header %}
                 {% block mobile-header-pre %}{% endblock mobile-header-pre %}
-                <button type="button" class="btn btn-default cradmin-menutoggle"
-                        ng-click="toggleNavigation()">
-                    {% block mobile-header-menutoggle-content %}
-                        {% trans "Menu" %}
-                    {% endblock mobile-header-menutoggle-content %}
-                </button>
+                    <button type="button" role="button"
+                            class="django-cradmin-menu-mobiletoggle"
+                            ng-click="cradminMenuTogglePressed()"
+                            ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
+                            aria-pressed="{% verbatim %}{{ getAriaPressed() }}{% endverbatim %}">
+                        {% block mobile-header-menutoggle-content %}
+                            {% trans "Menu" %}
+                        {% endblock mobile-header-menutoggle-content %}
+                    </button>
                 {% block mobile-header-post %}{% endblock mobile-header-post %}
             {% endblock mobile-header %}
         </div>
 
-        <div class="cradmin-menucontent"
-                ng-class="{'cradmin-menucontent-display': displayMenu}">
+      <div class="django-cradmin-menu-content"
+                ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
             {% block menucontent %}
                 {% with menu=request.cradmin_instance.get_menu %}
                     {% if menu.headeritems %}
-                        <ul class="cradmin-menucontent-header">
+                        <ul class="django-cradmin-menu-content-header">
                             {% for menuitem in menu.headeritems %}
                                 {{ menuitem.render|safe }}
                             {% endfor %}
                         </ul>
                     {% endif %}
                     {% if menu.mainitems %}
-                        <ul class="cradmin-menucontent-main">
+                        <ul class="django-cradmin-menu-content-main">
                             {% for menuitem in menu.mainitems %}
                                 {{ menuitem.render|safe }}
                             {% endfor %}
                         </ul>
                     {% endif %}
                     {% if menu.footeritems %}
-                        <ul class="cradmin-menucontent-footer">
+                        <ul class="django-cradmin-menu-content-footer">
                             {% for menuitem in menu.footeritems %}
                                 {{ menuitem.render|safe }}
                             {% endfor %}
@@ -52,4 +56,5 @@
 
         {% block post-menu %}{% endblock post-menu %}
     </nav>
+
 {% endif %}

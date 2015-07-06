@@ -1,0 +1,91 @@
+nav.django-cradmin-menu {
+  background: @cradmin-menu-bg;
+
+  .django-cradmin-menu-content {
+    display: none;
+    &.django-cradmin-menu-content-display {
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        .cradmin-menu-activeitemwrapper {
+          font-size: @font-size-base;
+          margin: 0;
+          padding: 0;
+          border: none;
+          line-height: @line-height-base;
+        }
+
+        a {
+          display: block;
+          color: @cradmin-menu-color;
+          padding: 10px 16px 10px 16px;
+          transition: color 0.3s ease;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          line-height: @line-height-base;
+          &:hover {
+            text-decoration: none;
+            color: @cradmin-menu-hovercolor;
+          }
+        }
+
+        &.cradmin-menu-activeitem {
+          .cradmin-menu-activeitemwrapper > a,
+          & > a {
+            color: @cradmin-menu-hovercolor;
+            font-weight: bold;
+          }
+        }
+
+        &.cradmin-menu-expandeditem {
+          .cradmin-menu-childitems ul {
+            padding-left: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .django-cradmin-menu-mobileheader {
+    .django-cradmin-menu-mobiletoggle {
+      width: 100%;
+      .button-variant(#eee, #333, #444);
+      border: none;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding: 10px 14px;
+      border-radius: 0;
+      background: none;
+    }
+  }
+
+  @media (min-width: @screen-md-min) {
+    .django-cradmin-menu-mobileheader {
+      display: none;
+    }
+    .django-cradmin-menu-content {
+      display: block;
+    }
+  }
+}
+
+nav#django_cradmin_mainmenu.django-cradmin-menu {
+  @media (min-width: @screen-md-min) {
+    .django-cradmin-menu-content {
+      ul {
+        &.django-cradmin-menu-content-header {
+          background: @cradmin-mainmenu-header-bg;
+        }
+        &.django-cradmin-menu-content-footer {
+          background: @cradmin-mainmenu-footer-bg;
+        }
+      }
+    }
+  }
+}

@@ -5621,37 +5621,28 @@ ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-ch
     width: 400px;
   }
 }
-#cradmin_authenticate_login_forgotpasswordlink {
-  margin-top: 30px;
-}
-@media (min-width: 768px) {
-  #cradmin_authenticate_login_forgotpasswordlink {
-    float: right;
-    margin-top: -30px;
-  }
-}
-nav#cradmin_menu {
+nav.django-cradmin-menu {
   background: #333333;
 }
-nav#cradmin_menu .cradmin-menucontent {
+nav.django-cradmin-menu .django-cradmin-menu-content {
   display: none;
 }
-nav#cradmin_menu .cradmin-menucontent.cradmin-menucontent-display {
+nav.django-cradmin-menu .django-cradmin-menu-content.django-cradmin-menu-content-display {
   display: block;
 }
-nav#cradmin_menu .cradmin-menucontent ul {
+nav.django-cradmin-menu .django-cradmin-menu-content ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-nav#cradmin_menu .cradmin-menucontent ul li .cradmin-menu-activeitemwrapper {
+nav.django-cradmin-menu .django-cradmin-menu-content ul li .cradmin-menu-activeitemwrapper {
   font-size: 16px;
   margin: 0;
   padding: 0;
   border: none;
   line-height: 1.42857143;
 }
-nav#cradmin_menu .cradmin-menucontent ul li a {
+nav.django-cradmin-menu .django-cradmin-menu-content ul li a {
   display: block;
   color: #aaaaaa;
   padding: 10px 16px 10px 16px;
@@ -5661,22 +5652,19 @@ nav#cradmin_menu .cradmin-menucontent ul li a {
   white-space: nowrap;
   line-height: 1.42857143;
 }
-nav#cradmin_menu .cradmin-menucontent ul li a:hover {
+nav.django-cradmin-menu .django-cradmin-menu-content ul li a:hover {
   text-decoration: none;
   color: #eeeeee;
 }
-nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem .cradmin-menu-activeitemwrapper > a,
-nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-activeitem > a {
+nav.django-cradmin-menu .django-cradmin-menu-content ul li.cradmin-menu-activeitem .cradmin-menu-activeitemwrapper > a,
+nav.django-cradmin-menu .django-cradmin-menu-content ul li.cradmin-menu-activeitem > a {
   color: #eeeeee;
   font-weight: bold;
 }
-nav#cradmin_menu .cradmin-menucontent ul li.cradmin-menu-expandeditem .cradmin-menu-childitems ul {
+nav.django-cradmin-menu .django-cradmin-menu-content ul li.cradmin-menu-expandeditem .cradmin-menu-childitems ul {
   padding-left: 15px;
 }
-nav#cradmin_menu .cradmin-menucontent ul.cradmin-menucontent-footer {
-  margin-top: 30px;
-}
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   width: 100%;
   color: #eeeeee;
   background-color: #333333;
@@ -5688,49 +5676,69 @@ nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
   border-radius: 0;
   background: none;
 }
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:hover,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:focus,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:active,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.active,
-.open .dropdown-togglenav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:hover,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:focus,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:active,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.active,
+.open .dropdown-togglenav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   color: #eeeeee;
   background-color: #1f1f1f;
   border-color: #252525;
 }
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:active,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.active,
-.open .dropdown-togglenav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle {
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:active,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.active,
+.open .dropdown-togglenav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   background-image: none;
 }
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled],
-fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled:hover,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled]:hover,
-fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:hover,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled:focus,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled]:focus,
-fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:focus,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled:active,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled]:active,
-fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle:active,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.disabled.active,
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle[disabled].active,
-fieldset[disabled] nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle.active {
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled],
+fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled:hover,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled]:hover,
+fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:hover,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled:focus,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled]:focus,
+fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:focus,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled:active,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled]:active,
+fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:active,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled.active,
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled].active,
+fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.active {
   background-color: #333333;
   border-color: #444444;
 }
-nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle .badge {
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle .badge {
   color: #333333;
   background-color: #eeeeee;
 }
 @media (min-width: 992px) {
-  nav#cradmin_menu .cradmin-menumobileheader {
+  nav.django-cradmin-menu .django-cradmin-menu-mobileheader {
     display: none;
+  }
+  nav.django-cradmin-menu .django-cradmin-menu-content {
+    display: block;
   }
 }
 @media (min-width: 992px) {
-  nav#cradmin_menu {
+  nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-header {
+    background: #262626;
+  }
+  nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
+    background: #262626;
+  }
+}
+#cradmin_authenticate_login_forgotpasswordlink {
+  margin-top: 30px;
+}
+@media (min-width: 768px) {
+  #cradmin_authenticate_login_forgotpasswordlink {
+    float: right;
+    margin-top: -30px;
+  }
+}
+@media (min-width: 992px) {
+  nav#django_cradmin_mainmenu.django-cradmin-menu {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -5739,11 +5747,8 @@ nav#cradmin_menu .cradmin-menumobileheader .cradmin-menutoggle .badge {
     overflow-y: auto;
     overflow-x: hidden;
   }
-  nav#cradmin_menu .cradmin-menucontent {
-    display: block;
-  }
-  nav#cradmin_menu .cradmin-menucontent ul.cradmin-menucontent-header {
-    background: #262626;
+  nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
+    margin-top: 30px;
   }
 }
 body {

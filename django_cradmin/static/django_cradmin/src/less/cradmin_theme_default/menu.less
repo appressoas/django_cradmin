@@ -1,96 +1,17 @@
-nav#cradmin_menu {
-  background: @cradmin-menu-bg;
-
-  .cradmin-menucontent {
-    display: none;
-    &.cradmin-menucontent-display {
-      display: block;
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      li {
-        .cradmin-menu-activeitemwrapper {
-          font-size: @font-size-base;
-          margin: 0;
-          padding: 0;
-          border: none;
-          line-height: @line-height-base;
-        }
-
-        a {
-          display: block;
-          color: @cradmin-menu-color;
-          padding: 10px 16px 10px 16px;
-          transition: color 0.3s ease;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-          line-height: @line-height-base;
-          &:hover {
-            text-decoration: none;
-            color: @cradmin-menu-hovercolor;
-          }
-        }
-
-        &.cradmin-menu-activeitem {
-          .cradmin-menu-activeitemwrapper > a,
-          & > a {
-            color: @cradmin-menu-hovercolor;
-            font-weight: bold;
-          }
-        }
-
-        &.cradmin-menu-expandeditem {
-          .cradmin-menu-childitems ul {
-            padding-left: 15px;
-          }
-        }
-      }
-
-      //&.cradmin-menucontent-header {
-      //  background: @cradmin-menu-header-bg;
-      //}
-      //&.cradmin-menucontent-main {
-      //}
-      &.cradmin-menucontent-footer {
-        margin-top: 30px;
-      }
-    }
-  }
-
-  .cradmin-menumobileheader {
-    .cradmin-menutoggle {
-      width: 100%;
-      .button-variant(#eee, #333, #444);
-      border: none;
-      text-transform: uppercase;
-      font-weight: bold;
-      padding: 10px 14px;
-      border-radius: 0;
-      background: none;
-    }
-    @media (min-width: @screen-md-min) {
-      display: none;
-    }
-  }
-
+nav#django_cradmin_mainmenu.django-cradmin-menu {
   @media (min-width: @screen-md-min) {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    width: @cradmin-menu-width;
+    width: @cradmin-default-theme-mainmenu-width;
     overflow-y: auto;
     overflow-x: hidden;
 
-    .cradmin-menucontent {
-      display: block;
+    .django-cradmin-menu-content {
       ul {
-        &.cradmin-menucontent-header {
-          background: @cradmin-menu-header-bg;
+        &.django-cradmin-menu-content-footer {
+          margin-top: 30px;
         }
       }
     }

@@ -488,7 +488,7 @@
               file: progressInfo.rawFiles,
               fileFormDataName: 'file',
               headers: {
-                'X-CSRFToken': $cookies.csrftoken,
+                'X-CSRFToken': $cookies.get('csrftoken'),
                 'Content-Type': 'multipart/form-data'
               }
             }).progress(function(evt) {
@@ -591,7 +591,7 @@
               url: $scope.uploadController.getUploadUrl(),
               method: 'DELETE',
               headers: {
-                'X-CSRFToken': $cookies.csrftoken
+                'X-CSRFToken': $cookies.get('csrftoken')
               },
               data: {
                 collectionid: $scope.uploadController.getCollectionId(),
@@ -613,6 +613,7 @@
             var fileInfoList;
             fileInfoList = cradminBulkfileupload.createFileInfoList(options);
             $scope.fileInfoLists.push(fileInfoList);
+            console.log($scope.fileInfoLists);
             return fileInfoList;
           };
         },
@@ -1299,12 +1300,59 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.menu', []).controller('CradminMenuController', function($scope) {
-    $scope.displayMenu = false;
-    return $scope.toggleNavigation = function() {
-      return $scope.displayMenu = !$scope.displayMenu;
-    };
-  });
+  angular.module('djangoCradmin.menu', []).directive('djangoCradminMenu', [
+    function() {
+      /** Menu that collapses automatically on small displays.
+      
+      Example
+      =======
+      
+      ```html
+      <nav django-cradmin-menu class="django-cradmin-menu">
+        <div class="django-cradmin-menu-mobileheader">
+          <button type="button" role="button"
+              class="django-cradmin-menu-mobiletoggle"
+              ng-click="cradminMenuTogglePressed()"
+              ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
+              aria-pressed="{{ getAriaPressed() }}">
+            Menu
+          </button>
+        <div class="django-cradmin-menu-content"
+            ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
+          <ul>
+            <li><a href="#">Menu item 1</a></li>
+            <li><a href="#">Menu item 2</a></li>
+          </ul>
+        </div>
+      </nav>
+      ```
+      
+      Design notes
+      ============
+      
+      The example uses css classes provided by the default cradmin CSS, but
+      you specify all classes yourself, so you can easily provide your own
+      css classes and still use the directive.
+      */
+
+      return {
+        scope: true,
+        controller: function($scope, djangoCradminPagePreview) {
+          $scope.cradminMenuDisplay = false;
+          $scope.cradminMenuTogglePressed = function() {
+            return $scope.cradminMenuDisplay = !$scope.cradminMenuDisplay;
+          };
+          return $scope.getAriaPressed = function() {
+            if ($scope.cradminMenuDisplay) {
+              return 'pressed';
+            } else {
+              return '';
+            }
+          };
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 
