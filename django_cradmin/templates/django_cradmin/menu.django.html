@@ -12,7 +12,7 @@
         <div class="django-cradmin-menu-mobileheader">
             {% block mobile-header %}
                 {% block mobile-header-pre %}{% endblock mobile-header-pre %}
-                    <button type="button" role="button"
+                    <a href="#" role="button"
                             class="django-cradmin-menu-mobiletoggle"
                             ng-click="cradminMenuTogglePressed()"
                             ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
@@ -20,7 +20,7 @@
                         {% block mobile-header-menutoggle-content %}
                             {% trans "Menu" %}
                         {% endblock mobile-header-menutoggle-content %}
-                    </button>
+                    </a>
                 {% block mobile-header-post %}{% endblock mobile-header-post %}
             {% endblock mobile-header %}
         </div>

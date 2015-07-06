@@ -5665,52 +5665,25 @@ nav.django-cradmin-menu .django-cradmin-menu-content ul li.cradmin-menu-expanded
   padding-left: 15px;
 }
 nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
+  display: block;
+  text-align: center;
   width: 100%;
-  color: #eeeeee;
-  background-color: #333333;
-  border-color: #444444;
   border: none;
   text-transform: uppercase;
   font-weight: bold;
-  padding: 10px 14px;
+  padding: 10px 0;
   border-radius: 0;
-  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: #aaaaaa;
+  background-color: #333333;
 }
 nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:hover,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:focus,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:active,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.active,
-.open .dropdown-togglenav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
+nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.django-cradmin-menu-mobile-toggle-button-expanded {
   color: #eeeeee;
-  background-color: #1f1f1f;
-  border-color: #252525;
-}
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:active,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.active,
-.open .dropdown-togglenav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
-  background-image: none;
-}
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled],
-fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled:hover,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled]:hover,
-fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:hover,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled:focus,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled]:focus,
-fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:focus,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled:active,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled]:active,
-fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle:active,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.disabled.active,
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle[disabled].active,
-fieldset[disabled] nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle.active {
-  background-color: #333333;
-  border-color: #444444;
-}
-nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle .badge {
-  color: #333333;
-  background-color: #eeeeee;
+  background-color: #262626;
+  outline: none;
+  text-decoration: none;
 }
 @media (min-width: 992px) {
   nav.django-cradmin-menu .django-cradmin-menu-mobileheader {

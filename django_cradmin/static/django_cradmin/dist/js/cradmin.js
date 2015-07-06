@@ -1310,7 +1310,7 @@
       ```html
       <nav django-cradmin-menu class="django-cradmin-menu">
         <div class="django-cradmin-menu-mobileheader">
-          <button type="button" role="button"
+          <a href="#" role="button"
               class="django-cradmin-menu-mobiletoggle"
               ng-click="cradminMenuTogglePressed()"
               ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"

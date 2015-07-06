@@ -54,14 +54,28 @@ nav.django-cradmin-menu {
 
   .django-cradmin-menu-mobileheader {
     .django-cradmin-menu-mobiletoggle {
+      display: block;
+      text-align: center;
       width: 100%;
-      .button-variant(#eee, #333, #444);
       border: none;
       text-transform: uppercase;
       font-weight: bold;
-      padding: 10px 14px;
+      padding: @cradmin-menu-mobiletoggle-padding;
       border-radius: 0;
-      background: none;
+      cursor: pointer;
+      text-decoration: none;
+      color: @cradmin-menu-mobiletoggle-color;
+      background-color: @cradmin-menu-mobiletoggle-bg;
+
+      &:hover,
+      //&:focus,
+      //&:active,
+      &.django-cradmin-menu-mobile-toggle-button-expanded {
+        color: @cradmin-menu-mobiletoggle-hover-color;
+        background-color: @cradmin-menu-mobiletoggle-hover-bg;
+        outline: none;
+        text-decoration: none;
+      }
     }
   }
 
