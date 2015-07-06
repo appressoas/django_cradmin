@@ -1,11 +1,11 @@
 {% block contentwrapper %}
     <li class="
-            {% if menuitem.is_active %}cradmin-menu-activeitem{% endif %}
-            {% if menuitem.is_expanded %}cradmin-menu-expandeditem{% endif %}
+            {% if menuitem.is_active %}django-cradmin-menu-activeitem{% endif %}
+            {% if menuitem.is_expanded %}django-cradmin-menu-expandeditem{% endif %}
             {% block extraclasses %}{{ menu.extra_css_classes }}{% endblock extraclasses %}">
         {% block list-item-content %}
             {% if menuitem.is_active and menuitem.get_active_item_wrapper_tag %}
-                <{{ menuitem.get_active_item_wrapper_tag }} class="cradmin-menu-activeitemwrapper">
+                <{{ menuitem.get_active_item_wrapper_tag }} class="django-cradmin-menu-activeitemwrapper">
             {% endif %}
             <a href="{{ menuitem.url }}"
                     title="{{ menuitem.description }}"
@@ -20,7 +20,7 @@
         {% endblock list-item-content %}
         {% block child-items-nav %}
             {% if menuitem.has_childitems and menuitem.is_expanded %}
-                <nav class="cradmin-menu-childitems">
+                <nav class="django-cradmin-menu-childitems">
                     <ul>
                         {% for childitem in menuitem.childitems %}
                             {{ childitem.render|safe }}
