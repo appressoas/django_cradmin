@@ -250,7 +250,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             file: progressInfo.rawFiles
             fileFormDataName: 'file'  # The form field name
             headers: {
-              'X-CSRFToken': $cookies.csrftoken
+              'X-CSRFToken': $cookies.get('csrftoken')
               'Content-Type': 'multipart/form-data'
             }
           }).progress((evt) ->
@@ -380,7 +380,7 @@ angular.module('djangoCradmin.bulkfileupload', [
               url: $scope.uploadController.getUploadUrl()
               method: 'DELETE'
               headers:
-                'X-CSRFToken': $cookies.csrftoken
+                'X-CSRFToken': $cookies.get('csrftoken')
               data:
                 collectionid: $scope.uploadController.getCollectionId()
                 temporaryfileid: fileInfo.temporaryfileid
@@ -397,6 +397,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.addFileInfoList = (options) ->
           fileInfoList = cradminBulkfileupload.createFileInfoList(options)
           $scope.fileInfoLists.push(fileInfoList)
+          console.log $scope.fileInfoLists
           return fileInfoList
 
         return
