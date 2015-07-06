@@ -56,5 +56,7 @@ class Overview(QuerysetForRoleMixin, objecttable.ObjectTableView):
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Send private invite'), url=app.reverse_appurl('send')),
+            objecttable.Button(label=_('Send private invite'),
+                               url=app.reverse_appurl('send'),
+                               buttonclass='btn btn-primary'),
         ]
