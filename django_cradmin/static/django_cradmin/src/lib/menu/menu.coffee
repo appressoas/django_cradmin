@@ -17,7 +17,8 @@ angular.module('djangoCradmin.menu', [])
             ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
             aria-pressed="{{ getAriaPressed() }}">
           Menu
-        </button>
+        </a>
+      </div>
       <div class="django-cradmin-menu-content"
           ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
         <ul>

@@ -80,39 +80,11 @@
       right: 0;
       text-align: center;
       z-index: (@cradmin-floating-iframe-zindex + 1);
-      background: @cradmin-floating-iframe-navbar-bg;
-      height: @cradmin-floating-iframe-navbar-height;
-      overflow: hidden;
-
-      ul {
-        display: inline-block;
-        height: @cradmin-floating-iframe-navbar-height;
-        list-style: none;
-        box-sizing: border-box;
-        li {
-          box-sizing: border-box;
-          display: inline-block;
-          height: @cradmin-floating-iframe-navbar-height;
-          margin: 0;
-          padding: 0;
-          a {
-            box-sizing: border-box;
-            display: block;
-              padding: 0 @cradmin-floating-iframe-navbar-item-padding-horizontal;
-            line-height: @cradmin-floating-iframe-navbar-height;
-            font-weight: @cradmin-floating-iframe-navbar-font-weight;
-            background: @cradmin-floating-iframe-navbar-item-bg;
-            color: @cradmin-floating-iframe-navbar-item-color;
-            text-decoration: none;
-
-            &:hover, &:focus, &.active {
-              background: @cradmin-floating-iframe-navbar-item-hover-bg;
-              color: @cradmin-floating-iframe-navbar-item-hover-color;
-              text-decoration: none;
-            }
-
-          }
-        }
+      nav.django-cradmin-menu {
+        .djangoCradminMenuVertical(
+          @cradmin-floating-iframe-navbar-height,
+          @cradmin-menu-vertical-desktop-item-padding,
+          @cradmin-floating-iframe-navbar-height);
       }
     }
 

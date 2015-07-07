@@ -1316,7 +1316,8 @@
               ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
               aria-pressed="{{ getAriaPressed() }}">
             Menu
-          </button>
+          </a>
+        </div>
         <div class="django-cradmin-menu-content"
             ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
           <ul>
@@ -1884,18 +1885,31 @@ angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache
 
 angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("pagepreview/navbar.tpl.html",
-    "<ul>\n" +
-    "    <li ng-repeat=\"urlConfig in previewConfig.urls\">\n" +
-    "        <a href=\"{{ urlConfig.url }}\"\n" +
-    "                class=\"{{urlConfig.css_classes}}\"\n" +
-    "                ng-class=\"{\n" +
-    "                    active: $index == activeIndex\n" +
-    "                }\"\n" +
-    "                ng-click=\"onNavlinkClick($event, $index)\">\n" +
-    "            {{urlConfig.label}}\n" +
+    "<nav django-cradmin-menu class=\"django-cradmin-menu\">\n" +
+    "    <div class=\"django-cradmin-menu-mobileheader\">\n" +
+    "        <a href=\"#\" role=\"button\"\n" +
+    "           class=\"django-cradmin-menu-mobiletoggle\"\n" +
+    "           ng-click=\"cradminMenuTogglePressed()\"\n" +
+    "           ng-class=\"{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}\"\n" +
+    "           aria-pressed=\"{{ getAriaPressed() }}\">\n" +
+    "                Menu\n" +
     "        </a>\n" +
-    "    </li>\n" +
-    "</ul>\n" +
+    "    </div>\n" +
+    "    <div class=\"django-cradmin-menu-content\"\n" +
+    "             ng-class=\"{'django-cradmin-menu-content-display': cradminMenuDisplay}\">\n" +
+    "        <ul>\n" +
+    "            <li ng-repeat=\"urlConfig in previewConfig.urls\" class=\"{{urlConfig.css_classes}}\"\n" +
+    "                    ng-class=\"{\n" +
+    "                        'django-cradmin-menu-activeitem': $index == activeIndex\n" +
+    "                    }\">\n" +
+    "                <a href=\"{{ urlConfig.url }}\"\n" +
+    "                        ng-click=\"onNavlinkClick($event, $index)\">\n" +
+    "                    {{urlConfig.label}}\n" +
+    "                </a>\n" +
+    "            </li>\n" +
+    "        </ul>\n" +
+    "    </div>\n" +
+    "</nav>\n" +
     "");
 }]);
 

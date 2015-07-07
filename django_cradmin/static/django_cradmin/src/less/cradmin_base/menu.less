@@ -3,6 +3,7 @@ nav.django-cradmin-menu {
 
   .django-cradmin-menu-content {
     display: none;
+    background: @cradmin-menu-bg;
     &.django-cradmin-menu-content-display {
       display: block;
     }
@@ -29,6 +30,7 @@ nav.django-cradmin-menu {
           overflow: hidden;
           white-space: nowrap;
           line-height: @line-height-base;
+          text-decoration: none;
           &:hover {
             text-decoration: none;
             color: @cradmin-menu-hovercolor;
@@ -40,6 +42,7 @@ nav.django-cradmin-menu {
           & > a {
             color: @cradmin-menu-hovercolor;
             font-weight: bold;
+            text-decoration: none;
           }
         }
 
@@ -60,7 +63,9 @@ nav.django-cradmin-menu {
       border: none;
       text-transform: uppercase;
       font-weight: bold;
-      padding: @cradmin-menu-mobiletoggle-padding;
+      line-height: @cradmin-menu-mobiletoggle-height;
+      height: @cradmin-menu-mobiletoggle-height;
+
       border-radius: 0;
       cursor: pointer;
       text-decoration: none;
@@ -68,8 +73,6 @@ nav.django-cradmin-menu {
       background-color: @cradmin-menu-mobiletoggle-bg;
 
       &:hover,
-      //&:focus,
-      //&:active,
       &.django-cradmin-menu-mobile-toggle-button-expanded {
         color: @cradmin-menu-mobiletoggle-hover-color;
         background-color: @cradmin-menu-mobiletoggle-hover-bg;
@@ -102,4 +105,56 @@ nav#django_cradmin_mainmenu.django-cradmin-menu {
       }
     }
   }
+}
+
+.djangoCradminMenuVertical (@desktop-height, @desktop-itempadding, @mobiletoggle-height) {
+  .django-cradmin-menu-mobileheader {
+    .django-cradmin-menu-mobiletoggle {
+      line-height: @mobiletoggle-height;
+      height: @mobiletoggle-height;
+    }
+  }
+
+  @media (min-width: @screen-md-min) {
+    height: @desktop-height;
+
+    .django-cradmin-menu-content {
+      display: block;
+      height: @desktop-height;
+
+      ul {
+        display: inline-block;
+        height: @desktop-height;
+        li {
+          display: inline-block;
+          height: @desktop-height;
+          a {
+            height: @desktop-height;
+            line-height: @desktop-height;
+            display: block;
+            padding: @desktop-itempadding;
+            transition: color 0.3s ease;
+          }
+          &.django-cradmin-menu-activeitem {
+            .django-cradmin-menu-activeitemwrapper > a,
+            & > a {
+              font-weight: normal;
+            }
+          }
+        }
+
+        &.django-cradmin-menu-content-footer {
+          margin: 0;
+          float: right;
+        }
+      }
+    }
+  }
+}
+
+nav.django-cradmin-menu.django-cradmin-menu-vertical {
+  .djangoCradminMenuVertical(
+    @cradmin-menu-vertical-desktop-height,
+    @cradmin-menu-vertical-desktop-item-padding,
+    @cradmin-menu-mobiletoggle-height);
 }

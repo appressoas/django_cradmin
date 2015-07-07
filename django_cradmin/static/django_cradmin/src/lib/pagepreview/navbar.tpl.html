@@ -1,12 +1,25 @@
-<ul>
-    <li ng-repeat="urlConfig in previewConfig.urls">
-        <a href="{{ urlConfig.url }}"
-                class="{{urlConfig.css_classes}}"
-                ng-class="{
-                    active: $index == activeIndex
-                }"
-                ng-click="onNavlinkClick($event, $index)">
-            {{urlConfig.label}}
+<nav django-cradmin-menu class="django-cradmin-menu">
+    <div class="django-cradmin-menu-mobileheader">
+        <a href="#" role="button"
+           class="django-cradmin-menu-mobiletoggle"
+           ng-click="cradminMenuTogglePressed()"
+           ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
+           aria-pressed="{{ getAriaPressed() }}">
+                Menu
         </a>
-    </li>
-</ul>
+    </div>
+    <div class="django-cradmin-menu-content"
+             ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
+        <ul>
+            <li ng-repeat="urlConfig in previewConfig.urls" class="{{urlConfig.css_classes}}"
+                    ng-class="{
+                        'django-cradmin-menu-activeitem': $index == activeIndex
+                    }">
+                <a href="{{ urlConfig.url }}"
+                        ng-click="onNavlinkClick($event, $index)">
+                    {{urlConfig.label}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

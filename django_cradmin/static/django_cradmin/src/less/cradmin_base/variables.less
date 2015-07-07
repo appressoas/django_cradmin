@@ -188,6 +188,21 @@
 @cradmin-btn-danger-hover-border: @cradmin-btn-danger-hover-bg;
 
 
+// Menu
+@cradmin-menu-color: #aaa;
+@cradmin-menu-hovercolor: #eee;
+@cradmin-menu-bg: #333;
+@cradmin-mainmenu-header-bg: darken(@cradmin-menu-bg, 5%);
+@cradmin-mainmenu-footer-bg: darken(@cradmin-menu-bg, 5%);
+@cradmin-menu-mobiletoggle-bg: @cradmin-menu-bg;
+@cradmin-menu-mobiletoggle-color: @cradmin-menu-color;
+@cradmin-menu-mobiletoggle-hover-bg: darken(@cradmin-menu-mobiletoggle-bg, 5%);
+@cradmin-menu-mobiletoggle-hover-color: @cradmin-menu-hovercolor;
+@cradmin-menu-mobiletoggle-height: 50px;
+@cradmin-menu-vertical-desktop-height: 50px;
+@cradmin-menu-vertical-desktop-item-padding: 0 16px;
+
+
 // Floating iframe overlay
 @cradmin-floating-iframe-zindex: 50000;
 @cradmin-floating-iframe-backdrop-bg: none;
@@ -202,34 +217,12 @@
 @cradmin-floating-iframe-closebutton-transition-duration: @cradmin-btn-transition-duration;
 
 @cradmin-floating-iframe-content-bg: rgb(30, 30, 30);
-
-@cradmin-floating-iframe-navbar-bg: none;
-@cradmin-floating-iframe-navbar-height: rgb(55, 55, 55);
-@cradmin-floating-iframe-navbar-height: 40px;
-@cradmin-floating-iframe-navbar-item-padding-horizontal: 30px;  // Not vertical padding is adjusted by the height
-@cradmin-floating-iframe-navbar-font-weight: bold;
-@cradmin-floating-iframe-navbar-item-bg: rgb(0, 0, 0);
-@cradmin-floating-iframe-navbar-item-color: rgb(230, 230, 230);
-@cradmin-floating-iframe-navbar-item-hover-color: rgb(248, 248, 248);
-@cradmin-floating-iframe-navbar-item-hover-bg: rgb(55, 55, 55);
+@cradmin-floating-iframe-navbar-height: @cradmin-menu-mobiletoggle-height;
 
 @cradmin-floating-iframe-scrollbar-width: 14px;
 @cradmin-floating-iframe-scrollbar-track-bg: lighten(@cradmin-floating-iframe-content-bg, 5%);
 @cradmin-floating-iframe-scrollbar-thumb-bg: @btn-primary-bg;
 @cradmin-floating-iframe-scrollbar-thumb-hover-bg: lighten(@cradmin-floating-iframe-scrollbar-thumb-bg, 10%);
-
-
-// Menu
-@cradmin-menu-color: #aaa;
-@cradmin-menu-hovercolor: #eee;
-@cradmin-menu-bg: #333;
-@cradmin-mainmenu-header-bg: darken(@cradmin-menu-bg, 5%);
-@cradmin-mainmenu-footer-bg: darken(@cradmin-menu-bg, 5%);
-@cradmin-menu-mobiletoggle-bg: @cradmin-menu-bg;
-@cradmin-menu-mobiletoggle-color: @cradmin-menu-color;
-@cradmin-menu-mobiletoggle-hover-bg: darken(@cradmin-menu-mobiletoggle-bg, 5%);
-@cradmin-menu-mobiletoggle-hover-color: @cradmin-menu-hovercolor;
-@cradmin-menu-mobiletoggle-padding: 10px 0;
 
 
 // Varius bootstrap overrides
