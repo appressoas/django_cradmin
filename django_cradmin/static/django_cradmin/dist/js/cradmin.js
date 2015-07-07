@@ -1879,27 +1879,29 @@
       },
       templateUrl: 'pagepreview/navbar.tpl.html',
       controller: function($scope) {
-        return $scope.setConfig = function(previewConfig) {
+        $scope.activeIndex = 0;
+        $scope.activeUrlConfig = null;
+        $scope.setConfig = function(previewConfig) {
           if (previewConfig.urls.length > 1) {
-            $scope.activeIndex = 0;
             $scope.previewConfig = previewConfig;
+            $scope.setActive(0);
             $scope.$apply();
             return $scope.wrapperCtrl.showNavbar();
           }
         };
-      },
-      link: function(scope, element, attrs, wrapperCtrl) {
-        scope.element = element;
-        scope.wrapperCtrl = wrapperCtrl;
-        scope.activeIndex = 0;
-        scope.wrapperCtrl.setNavbar(scope);
-        scope.setActive = function(index) {
-          return scope.activeIndex = index;
+        return $scope.setActive = function(index) {
+          $scope.activeIndex = index;
+          return $scope.activeUrlConfig = $scope.previewConfig.urls[$scope.activeIndex];
         };
-        scope.onNavlinkClick = function(e, index) {
+      },
+      link: function($scope, element, attrs, wrapperCtrl) {
+        $scope.element = element;
+        $scope.wrapperCtrl = wrapperCtrl;
+        $scope.wrapperCtrl.setNavbar($scope);
+        $scope.onNavlinkClick = function(e, index) {
           e.preventDefault();
-          scope.setActive(index);
-          scope.wrapperCtrl.setUrl(scope.previewConfig.urls[index].url);
+          $scope.setActive(index);
+          $scope.wrapperCtrl.setUrl($scope.previewConfig.urls[index].url);
         };
       }
     };
@@ -2083,6 +2085,13 @@ angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", functio
     "                        django-cradmin-menu-close-on-click\n" +
     "                        ng-click=\"onNavlinkClick($event, $index)\">\n" +
     "                    {{urlConfig.label}}\n" +
+    "                </a>\n" +
+    "            </li>\n" +
+    "        </ul>\n" +
+    "        <ul class=\"django-cradmin-menu-content-footer\">\n" +
+    "            <li>\n" +
+    "                <a href=\"{{ activeUrlConfig.url }}\" target=\"_blank\">\n" +
+    "                    {{ activeUrlConfig.open_label }}\n" +
     "                </a>\n" +
     "            </li>\n" +
     "        </ul>\n" +

@@ -5034,7 +5034,6 @@ table.table.django-cradmin-table tbody td:last-child {
   top: 0;
   left: 0;
   right: 0;
-  text-align: center;
   z-index: 50001;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-navbar nav.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {

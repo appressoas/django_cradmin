@@ -618,6 +618,7 @@ class PagePreviewsButton(AbstractButton):
                     {
                         "label": "<THE LABEL IN THE NAVBAR HERE>",
                         "url": "<THE URL HERE>",
+                        "open_label": "<LABEL FOR OPEN IN NEW WINDOW HERE>",
                         "css_classes": "<OPTIONAL KEY WHERE YOU CAN SPECIFY A CSS CLASS>"
                     }
 

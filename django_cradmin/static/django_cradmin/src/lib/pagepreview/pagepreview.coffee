@@ -286,25 +286,29 @@ angular.module('djangoCradmin.pagepreview', [])
     templateUrl: 'pagepreview/navbar.tpl.html'
 
     controller: ($scope) ->
+      $scope.activeIndex = 0
+      $scope.activeUrlConfig = null
+
       $scope.setConfig = (previewConfig) ->
         if previewConfig.urls.length > 1
-          $scope.activeIndex = 0
           $scope.previewConfig = previewConfig
+          $scope.setActive(0)
           $scope.$apply()
           $scope.wrapperCtrl.showNavbar()
 
-    link: (scope, element, attrs, wrapperCtrl) ->
-      scope.element = element
-      scope.wrapperCtrl = wrapperCtrl
-      scope.activeIndex = 0
-      scope.wrapperCtrl.setNavbar(scope)
+      $scope.setActive = (index) ->
+        $scope.activeIndex = index
+        $scope.activeUrlConfig = $scope.previewConfig.urls[$scope.activeIndex]
 
-      scope.setActive = (index) ->
-        scope.activeIndex = index
-      scope.onNavlinkClick = (e, index) ->
+    link: ($scope, element, attrs, wrapperCtrl) ->
+      $scope.element = element
+      $scope.wrapperCtrl = wrapperCtrl
+      $scope.wrapperCtrl.setNavbar($scope)
+
+      $scope.onNavlinkClick = (e, index) ->
         e.preventDefault()
-        scope.setActive(index)
-        scope.wrapperCtrl.setUrl(scope.previewConfig.urls[index].url)
+        $scope.setActive(index)
+        $scope.wrapperCtrl.setUrl($scope.previewConfig.urls[index].url)
         return
 
       return
