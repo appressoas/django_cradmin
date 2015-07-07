@@ -1146,7 +1146,7 @@
           iframeDocument = iframeWindow[0];
           if (iframeDocument != null) {
             iframeBodyHeight = iframeDocument.body.offsetHeight;
-            return $scope.element.height(iframeBodyHeight + 10);
+            return $scope.element.height(iframeBodyHeight + 60);
           }
         };
         return $scope.resetIframeSize = function() {
@@ -1921,7 +1921,7 @@
           iframeDocument = iframeWindow[0];
           if (iframeDocument != null) {
             iframeBodyHeight = iframeDocument.body.offsetHeight;
-            return $scope.element.height(iframeBodyHeight + 10);
+            return $scope.element.height(iframeBodyHeight + 60);
           }
         };
         return $scope.resetIframeSize = function() {

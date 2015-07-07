@@ -329,7 +329,7 @@ angular.module('djangoCradmin.pagepreview', [])
         iframeDocument = iframeWindow[0]
         if iframeDocument?
           iframeBodyHeight = iframeDocument.body.offsetHeight
-          $scope.element.height(iframeBodyHeight + 10)
+          $scope.element.height(iframeBodyHeight + 60)
       $scope.resetIframeSize = ->
         $scope.element.height('40px')
 
