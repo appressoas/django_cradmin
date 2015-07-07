@@ -1,6 +1,7 @@
 angular.module('djangoCradmin', [
   'djangoCradmin.templates'
   'djangoCradmin.directives'
+  'djangoCradmin.providers'
   'djangoCradmin.messages'
   'djangoCradmin.detectizr'
   'djangoCradmin.menu'
