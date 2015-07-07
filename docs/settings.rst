@@ -13,3 +13,9 @@ DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
     in :obj:`.django_cradmin.css_icon_map.FONT_AWESOME`.
 
     .. seealso:: :ref:`cradmin_icon_tags` and :issue:`43`.
+
+DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
+    Can be used to hide the page header in form views by default.
+
+DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
+    Can be used to hide the page header in listing views by default.

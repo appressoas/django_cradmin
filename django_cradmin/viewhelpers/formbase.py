@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from builtins import object
 from crispy_forms import layout
+from django.conf import settings
 from django.views.generic import FormView as DjangoFormView
 
 from django_cradmin import crapp
@@ -32,6 +33,18 @@ class FormViewMixin(object):
     #: :class:`django_cradmin.widgets.modelchoice.ModelChoiceWidget`
     #: in the form.
     enable_modelchoicefield_support = False
+
+    #: Set this to True to hide the page header. See :meth:`.FormViewMixin.get_hide_page_header`.
+    hide_page_header = False
+
+    def get_hide_page_header(self):
+        """
+        Return ``True`` if we should hide the page header.
+
+        You can override this, or set :obj:`.hide_page_header`, or hide the page header
+        in all form views with the ``DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS`` setting.
+        """
+        return self.hide_page_header or getattr(settings, 'DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS', False)
 
     def get_field_layout(self):
         """
@@ -177,6 +190,7 @@ class FormViewMixin(object):
         context = super(FormViewMixin, self).get_context_data(**kwargs)
         context['formhelper'] = self.get_formhelper()
         context['enable_modelchoicefield_support'] = self.enable_modelchoicefield_support
+        context['hide_pageheader'] = self.get_hide_page_header()
         return context
 
     def get_listing_url(self):

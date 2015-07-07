@@ -8,13 +8,15 @@
 
     <div id="django_cradmin_contentwrapper">
         {% block pageheader %}
-            <div class="django-cradmin-page-header-outer">
-                <div class="container">
-                    <div class="django-cradmin-page-header-inner">
-                        {% block pageheader-inner %}{% endblock pageheader-inner %}
+            {% if not hide_pageheader %}
+                <div class="django-cradmin-page-header-outer">
+                    <div class="container">
+                        <div class="django-cradmin-page-header-inner">
+                            {% block pageheader-inner %}{% endblock pageheader-inner %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         {% endblock pageheader %}
 
         {% block messages %}

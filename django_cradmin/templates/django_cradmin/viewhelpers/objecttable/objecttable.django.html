@@ -4,21 +4,13 @@
 
 {% block title %}{{ pagetitle|capfirst }}{% endblock title %}
 
-{% block pageheader %}
-    <div class="django-cradmin-page-header-outer">
-        <div class="container">
-            <div class="django-cradmin-page-header-inner">
-                {% block pageheader-inner %}
-                    <h1>
-                        {% block heading %}
-                            {{ pagetitle|capfirst }}
-                        {% endblock heading %}
-                    </h1>
-                {% endblock pageheader-inner %}
-            </div>
-        </div>
-    </div>
-{% endblock pageheader %}
+{% block pageheader-inner %}
+    <h1>
+        {% block heading %}
+            {{ pagetitle|capfirst }}
+        {% endblock heading %}
+    </h1>
+{% endblock pageheader-inner %}
 
 {% block content %}
     {% if buttons or enable_search %}

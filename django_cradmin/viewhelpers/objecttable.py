@@ -8,6 +8,7 @@ import logging
 import warnings
 from xml.sax.saxutils import quoteattr
 from django import forms
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.template import defaultfilters
 from django.template.defaultfilters import truncatechars
@@ -879,6 +880,18 @@ class ObjectTableView(ListView):
     #: accessibility purposes.
     hide_column_headers = False
 
+    #: Set this to True to hide the page header. See :meth:`.FormViewMixin.get_hide_page_header`.
+    hide_page_header = False
+
+    def get_hide_page_header(self):
+        """
+        Return ``True`` if we should hide the page header.
+
+        You can override this, or set :obj:`.hide_page_header`, or hide the page header
+        in all listing views with the ``DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS`` setting.
+        """
+        return self.hide_page_header or getattr(settings, 'DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS', False)
+
     def get_no_items_message(self):
         """
         Get the message to show when there are no items.
@@ -1066,6 +1079,7 @@ class ObjectTableView(ListView):
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         context['queryset_contains_items'] = self.queryset_contains_items()
         context['no_items_message'] = self.get_no_items_message()
+        context['hide_pageheader'] = self.get_hide_page_header()
 
         # Handle foreignkey selection
         if 'foreignkey_selected_value' in self.request.GET:
