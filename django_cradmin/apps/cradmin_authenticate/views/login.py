@@ -180,7 +180,7 @@ class LoginView(FormView):
         Defines and returns the ``django_crispy_forms`` layout. Override this if you want to alter the form-layout.
         """
         formhelper = FormHelper()
-        formhelper.form_action = reverse('cradmin-authenticate-login')
+        formhelper.form_action = self.request.get_full_path()
         formhelper.form_id = 'cradmin_authenticate_login_form'
         formhelper.label_class = 'sr-only'
 
