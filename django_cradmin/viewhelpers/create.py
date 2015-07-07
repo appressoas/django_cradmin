@@ -27,9 +27,21 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     #: - adds a ``foreignkey_selected_value=<selected pk>`` to the querystring of the success url.
     allow_foreignkey_select = True
 
+    #: The label of the back button in foreign key select mode.
+    foreignkey_select_mode_backbutton_label = _('Back')
+
     submit_use_label = _('Create and select')
     submit_save_label = _('Create')
     submit_save_and_continue_edititing_label = _('Create and continue editing')
+
+    def __get_foreignkey_select_mode_backbutton_url(self):
+        """
+        Get the URL of the back button in foreign key select mode.
+        """
+        return self.request.GET['success_url']
+
+    def get_foreignkey_select_mode_backbutton_label(self):
+        return self.foreignkey_select_mode_backbutton_label
 
     def get_buttons(self):
         if self._foreignkey_select_mode():
@@ -67,6 +79,9 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)
         context['cradmin_hide_menu'] = self._foreignkey_select_mode()
+        context['is_foreignkey_select_mode'] = self._foreignkey_select_mode()
+        context['foreignkey_select_mode_backbutton_url'] = self.__get_foreignkey_select_mode_backbutton_url()
+        context['foreignkey_select_mode_backbutton_label'] = self.get_foreignkey_select_mode_backbutton_label()
         return context
 
     def get_success_message(self, object):

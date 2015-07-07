@@ -6,6 +6,14 @@
 }
 
 
+.django-cradmin-formsized-wrapper,
+.django-cradmin-form-wrapper .django-cradmin-form {
+  max-width: @cradmin-form-max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 .django-cradmin-form-wrapper {
 
   // Add some padding below the form. This is to avoid that the
@@ -18,9 +26,6 @@
 
   .django-cradmin-form {
     background: @cradmin-form-bg;
-    max-width: @cradmin-form-max-width;
-    margin-left: auto;
-    margin-right: auto;
     padding-bottom: 0;
 
     label {
@@ -188,4 +193,9 @@ form .alert-block.alert-danger {
       margin: 0;
     }
   }
+}
+
+
+.django-cradmin-create-foreignkey-select-mode-buttonbar {
+  margin-bottom: (@grid-gutter-width/2);
 }

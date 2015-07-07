@@ -4683,6 +4683,12 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   padding-bottom: 40px;
   background: #fff;
 }
+.django-cradmin-formsized-wrapper,
+.django-cradmin-form-wrapper .django-cradmin-form {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .django-cradmin-form-wrapper {
   padding-bottom: 150px;
 }
@@ -4693,9 +4699,6 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
 }
 .django-cradmin-form-wrapper .django-cradmin-form {
   background: #ffffff;
-  max-width: 768px;
-  margin-left: auto;
-  margin-right: auto;
   padding-bottom: 0;
   /**
       # .cradmin-focusfield-screenheight
@@ -4792,6 +4795,9 @@ form .alert-block.alert-danger ul {
 }
 form .alert-block.alert-danger ul li {
   margin: 0;
+}
+.django-cradmin-create-foreignkey-select-mode-buttonbar {
+  margin-bottom: 15px;
 }
 table.table.django-cradmin-table {
   margin: 0;
