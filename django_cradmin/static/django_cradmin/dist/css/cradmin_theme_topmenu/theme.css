@@ -5062,7 +5062,6 @@ table.table.django-cradmin-table tbody td:last-child {
     line-height: 50px;
     display: block;
     padding: 0 16px;
-    transition: color 0.3s ease;
   }
   .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-navbar nav.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-activeitem .django-cradmin-menu-activeitemwrapper > a,
   .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-navbar nav.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-activeitem > a {
@@ -5657,7 +5656,7 @@ nav.django-cradmin-menu .django-cradmin-menu-content ul li a {
   display: block;
   color: #aaaaaa;
   padding: 10px 16px 10px 16px;
-  transition: color 0.3s ease;
+  transition: color 0.15s ease;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -5673,6 +5672,9 @@ nav.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-a
   color: #eeeeee;
   font-weight: bold;
   text-decoration: none;
+}
+nav.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-expandeditem > a {
+  color: #eeeeee;
 }
 nav.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-expandeditem .django-cradmin-menu-childitems ul {
   padding-left: 15px;
@@ -5740,7 +5742,6 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     line-height: 50px;
     display: block;
     padding: 0 16px;
-    transition: color 0.3s ease;
   }
   nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-content ul li.django-cradmin-menu-activeitem .django-cradmin-menu-activeitemwrapper > a,
   nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-content ul li.django-cradmin-menu-activeitem > a {
@@ -5785,7 +5786,6 @@ nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-mobileheade
     line-height: 50px;
     display: block;
     padding: 0 16px;
-    transition: color 0.3s ease;
   }
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-activeitem .django-cradmin-menu-activeitemwrapper > a,
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul li.django-cradmin-menu-activeitem > a {

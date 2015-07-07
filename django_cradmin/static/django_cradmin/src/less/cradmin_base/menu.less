@@ -25,7 +25,7 @@ nav.django-cradmin-menu {
           display: block;
           color: @cradmin-menu-color;
           padding: 10px 16px 10px 16px;
-          transition: color 0.3s ease;
+          transition: @cradmin-menu-hover-transition;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
@@ -33,20 +33,24 @@ nav.django-cradmin-menu {
           text-decoration: none;
           &:hover {
             text-decoration: none;
-            color: @cradmin-menu-hovercolor;
+            color: @cradmin-menu-hover-color;
           }
         }
 
         &.django-cradmin-menu-activeitem {
           .django-cradmin-menu-activeitemwrapper > a,
           & > a {
-            color: @cradmin-menu-hovercolor;
+            color: @cradmin-menu-active-color;
             font-weight: bold;
             text-decoration: none;
           }
         }
 
         &.django-cradmin-menu-expandeditem {
+          & > a {
+            color: @cradmin-menu-expandeditem-color;
+          }
+
           .django-cradmin-menu-childitems ul {
             padding-left: 15px;
           }
@@ -133,7 +137,6 @@ nav#django_cradmin_mainmenu.django-cradmin-menu {
             line-height: @desktop-height;
             display: block;
             padding: @desktop-itempadding;
-            transition: color 0.3s ease;
           }
           &.django-cradmin-menu-activeitem {
             .django-cradmin-menu-activeitemwrapper > a,
