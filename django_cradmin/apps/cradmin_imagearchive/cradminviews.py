@@ -24,7 +24,7 @@ class DescriptionColumn(objecttable.MultiActionColumn):
     modelfield = 'description'
 
     def render_value(self, obj):
-        return obj.get_preview_text()
+        return obj.screenreader_text
 
     def get_buttons(self, obj):
         return [
@@ -42,7 +42,7 @@ class DescriptionSelectColumn(objecttable.UseThisActionColumn):
     modelfield = 'description'
 
     def render_value(self, obj):
-        return obj.get_preview_text()
+        return obj.screenreader_text
 
     def get_buttons(self, obj):
         return [

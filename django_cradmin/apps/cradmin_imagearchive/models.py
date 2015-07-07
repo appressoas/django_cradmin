@@ -109,7 +109,8 @@ class ArchiveImage(models.Model):
             'archiveimage': self
         })
 
-    def get_preview_text(self):
+    @property
+    def screenreader_text(self):
         if self.description:
             return self.description
         else:
