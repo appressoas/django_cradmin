@@ -5771,17 +5771,22 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     overflow-y: auto;
     overflow-x: hidden;
   }
-  nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
-    margin-top: 30px;
+  nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content {
+    padding-bottom: 110px;
   }
-}
-@media (min-width: 992px) and (min-height: 600px) {
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
     margin-top: 0;
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
+  }
+  nav#django_cradmin_mainmenu.django-cradmin-menu.django-cradmin-menu-overflow-y .django-cradmin-menu-content {
+    padding-bottom: 0;
+  }
+  nav#django_cradmin_mainmenu.django-cradmin-menu.django-cradmin-menu-overflow-y .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
+    margin-top: 30px;
+    position: static;
   }
 }
 body {

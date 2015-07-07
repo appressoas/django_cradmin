@@ -60,9 +60,43 @@ angular.module('djangoCradmin.menu', [])
 ])
 
 
+.directive('djangoCradminMenuAutodetectOverflowY', [
+  'djangoCradminWindowDimensions'
+  (djangoCradminWindowDimensions) ->
+    ###*
+    ###
+    return {
+      require: '?djangoCradminMenu'
+
+      controller: ($scope) ->
+        $scope.onWindowResize = (newWindowDimensions) ->
+          $scope.setOrUnsetOverflowYClass()
+
+        $scope.setOrUnsetOverflowYClass = ->
+          menuDomElement = $scope.menuElement?[0]
+          if menuDomElement?
+            if menuDomElement.clientHeight < menuDomElement.scrollHeight
+              $scope.menuElement.addClass($scope.overflowYClass)
+            else
+              $scope.menuElement.removeClass($scope.overflowYClass)
+
+        return
+
+      link: ($scope, element, attrs) ->
+        $scope.overflowYClass = attrs.djangoCradminMenuAutodetectOverflowY
+        $scope.menuElement = element
+
+        djangoCradminWindowDimensions.register $scope
+        $scope.$on '$destroy', ->
+          djangoCradminWindowDimensions.unregister $scope
+        return
+    }
+])
+
 .directive('djangoCradminMenuCloseOnClick', [
   ->
-    ###*
+    ###* Directive that you can put on menu links to automatically close the
+    menu on click.
     ###
 
     return {

@@ -5,7 +5,9 @@
 {% load i18n %}
 
 {% if not cradmin_hide_menu %}
-    <nav id="django_cradmin_mainmenu" django-cradmin-menu
+    <nav id="django_cradmin_mainmenu"
+            django-cradmin-menu
+            django-cradmin-menu-autodetect-overflow-y="django-cradmin-menu-overflow-y"
             class="django-cradmin-menu">
         {% block pre-menu %}{% endblock pre-menu %}
 

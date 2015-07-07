@@ -9,18 +9,24 @@ nav#django_cradmin_mainmenu.django-cradmin-menu {
     overflow-x: hidden;
 
     .django-cradmin-menu-content {
+      padding-bottom: @cradmin-default-theme-mainmenu-footer-height;
       ul {
         &.django-cradmin-menu-content-footer {
+          margin-top: 0;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+      }
+    }
+
+    &.django-cradmin-menu-overflow-y {
+      .django-cradmin-menu-content {
+        padding-bottom: 0;
+        ul.django-cradmin-menu-content-footer {
           margin-top: @cradmin-default-theme-mainmenu-footer-margin-top;
-          & when (@cradmin-default-theme-mainmenu-footer-stick-to-bottom = true) {
-            @media (min-height: @cradmin-default-theme-mainmenu-footer-stick-to-bottom-min-height) {
-              margin-top: 0;
-              position: absolute;
-              left: 0;
-              right: 0;
-              bottom: 0;
-            }
-          }
+          position: static;
         }
       }
     }
