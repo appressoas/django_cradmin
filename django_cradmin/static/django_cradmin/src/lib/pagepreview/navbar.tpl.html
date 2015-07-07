@@ -5,7 +5,7 @@
            ng-click="cradminMenuTogglePressed()"
            ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
            aria-pressed="{{ getAriaPressed() }}">
-                Menu
+                {{ mobileMenuHeader }}
         </a>
     </div>
     <div class="django-cradmin-menu-content"
@@ -16,6 +16,7 @@
                         'django-cradmin-menu-activeitem': $index == activeIndex
                     }">
                 <a href="{{ urlConfig.url }}"
+                        django-cradmin-menu-close-on-click
                         ng-click="onNavlinkClick($event, $index)">
                     {{urlConfig.label}}
                 </a>

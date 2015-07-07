@@ -280,7 +280,9 @@ angular.module('djangoCradmin.pagepreview', [])
   return {
     require: '^^djangoCradminPagePreviewWrapper'
     restrict: 'A'
-    scope: {}
+    scope: {
+      mobileMenuHeader: '@djangoCradminPagePreviewNavbarMobileMenuHeader'
+    }
     templateUrl: 'pagepreview/navbar.tpl.html'
 
     controller: ($scope) ->

@@ -1343,13 +1343,31 @@
           $scope.cradminMenuTogglePressed = function() {
             return $scope.cradminMenuDisplay = !$scope.cradminMenuDisplay;
           };
-          return $scope.getAriaPressed = function() {
+          $scope.getAriaPressed = function() {
             if ($scope.cradminMenuDisplay) {
               return 'pressed';
             } else {
               return '';
             }
           };
+          this.close = function() {
+            $scope.cradminMenuDisplay = false;
+            return $scope.$apply();
+          };
+        }
+      };
+    }
+  ]).directive('djangoCradminMenuCloseOnClick', [
+    function() {
+      /**
+      */
+
+      return {
+        require: '^^djangoCradminMenu',
+        link: function(scope, element, attrs, djangoCradminMenuCtrl) {
+          element.on('click', function() {
+            djangoCradminMenuCtrl.close();
+          });
         }
       };
     }
@@ -1699,7 +1717,9 @@
     return {
       require: '^^djangoCradminPagePreviewWrapper',
       restrict: 'A',
-      scope: {},
+      scope: {
+        mobileMenuHeader: '@djangoCradminPagePreviewNavbarMobileMenuHeader'
+      },
       templateUrl: 'pagepreview/navbar.tpl.html',
       controller: function($scope) {
         return $scope.setConfig = function(previewConfig) {
@@ -1892,7 +1912,7 @@ angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", functio
     "           ng-click=\"cradminMenuTogglePressed()\"\n" +
     "           ng-class=\"{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}\"\n" +
     "           aria-pressed=\"{{ getAriaPressed() }}\">\n" +
-    "                Menu\n" +
+    "                {{ mobileMenuHeader }}\n" +
     "        </a>\n" +
     "    </div>\n" +
     "    <div class=\"django-cradmin-menu-content\"\n" +
@@ -1903,6 +1923,7 @@ angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", functio
     "                        'django-cradmin-menu-activeitem': $index == activeIndex\n" +
     "                    }\">\n" +
     "                <a href=\"{{ urlConfig.url }}\"\n" +
+    "                        django-cradmin-menu-close-on-click\n" +
     "                        ng-click=\"onNavlinkClick($event, $index)\">\n" +
     "                    {{urlConfig.label}}\n" +
     "                </a>\n" +

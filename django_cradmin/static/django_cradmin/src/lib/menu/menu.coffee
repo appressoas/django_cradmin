@@ -50,5 +50,28 @@ angular.module('djangoCradmin.menu', [])
             return 'pressed'
           else
             return ''
+
+        @close = ->
+          $scope.cradminMenuDisplay = false
+          $scope.$apply()
+
+        return
+    }
+])
+
+
+.directive('djangoCradminMenuCloseOnClick', [
+  ->
+    ###*
+    ###
+
+    return {
+      require: '^^djangoCradminMenu'
+
+      link: (scope, element, attrs, djangoCradminMenuCtrl) ->
+        element.on 'click', ->
+          djangoCradminMenuCtrl.close()
+          return
+        return
     }
 ])
