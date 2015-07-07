@@ -4774,6 +4774,9 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   margin: 0;
   text-align: left;
 }
+.django-cradmin-form-wrapper .django-cradmin-form .form-group textarea.cradmin-textarea-small {
+  height: 60px;
+}
 .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .controls {
   padding: 20px 15px 4px 15px;
 }

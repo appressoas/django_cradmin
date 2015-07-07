@@ -108,3 +108,9 @@ class ArchiveImage(models.Model):
         return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', {
             'archiveimage': self
         })
+
+    def get_preview_text(self):
+        if self.description:
+            return self.description
+        else:
+            return self.name

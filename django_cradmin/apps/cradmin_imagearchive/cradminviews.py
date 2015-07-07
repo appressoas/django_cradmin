@@ -20,8 +20,11 @@ from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.widgets import filewidgets
 
 
-class NameColumn(objecttable.MultiActionColumn):
-    modelfield = 'name'
+class DescriptionColumn(objecttable.MultiActionColumn):
+    modelfield = 'description'
+
+    def render_value(self, obj):
+        return obj.get_preview_text()
 
     def get_buttons(self, obj):
         return [
@@ -35,8 +38,11 @@ class NameColumn(objecttable.MultiActionColumn):
         ]
 
 
-class NameSelectColumn(objecttable.UseThisActionColumn):
-    modelfield = 'name'
+class DescriptionSelectColumn(objecttable.UseThisActionColumn):
+    modelfield = 'description'
+
+    def render_value(self, obj):
+        return obj.get_preview_text()
 
     def get_buttons(self, obj):
         return [
@@ -45,12 +51,6 @@ class NameSelectColumn(objecttable.UseThisActionColumn):
                 label=_('Use this'),
                 obj=obj)
         ]
-
-
-class DescriptionColumn(objecttable.TruncatecharsPlainTextColumn):
-    modelfield = 'description'
-    maxlength = 80
-    allcells_css_classes = ['hidden-xs']
 
 
 class ImageColumn(objecttable.ImagePreviewColumn):
@@ -70,14 +70,14 @@ class ArchiveImagesQuerySetForRoleMixin(object):
     is available.
     """
     def get_queryset_for_role(self, role):
-        return ArchiveImage.objects.filter_owned_by_role(role)
+        return ArchiveImage.objects.filter_owned_by_role(role)\
+            .order_by('-created_datetime')
 
 
 class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = ArchiveImage
     columns = [
         ImageColumn,
-        NameColumn,
         DescriptionColumn,
     ]
     searchfields = ['name', 'description', 'file_extension']
@@ -99,8 +99,7 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     model = ArchiveImage
     columns = [
         ImageColumn,
-        NameSelectColumn,
-        'description'
+        DescriptionSelectColumn,
     ]
     searchfields = ['name', 'description', 'file_extension']
     hide_menu = True
@@ -136,7 +135,7 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     """
     View used to create new images.
     """
-    fields = ['image', 'name', 'description']
+    fields = ['image', 'description']
 
     submit_use_label = _('Upload and select')
     submit_save_label = _('Upload image')
@@ -145,8 +144,9 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
     def get_field_layout(self):
         return [
             layout.Div('image', css_class="cradmin-focusfield"),
-            layout.Div('name', css_class="cradmin-focusfield cradmin-focusfield-lg"),
-            layout.Div('description', css_class="cradmin-focusfield"),
+            layout.Div(
+                layout.Field('description', css_class='cradmin-textarea-small'),
+                css_class="cradmin-focusfield"),
         ]
 
     def save_object(self, form, commit=True):
@@ -167,13 +167,14 @@ class ArchiveImageUpdateView(ArchiveImagesQuerySetForRoleMixin, ArchiveImageCrea
     """
     View used to create edit existing images.
     """
-    fields = ['image', 'name', 'description']
+    fields = ['image', 'description']
 
     def get_field_layout(self):
         return [
             layout.Div('image', css_class="cradmin-focusfield"),
-            layout.Div('name', css_class="cradmin-focusfield cradmin-focusfield-lg"),
-            layout.Div('description', css_class="cradmin-focusfield"),
+            layout.Div(
+                layout.Field('description', css_class='cradmin-textarea-small'),
+                css_class="cradmin-focusfield"),
         ]
 
 
