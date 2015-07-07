@@ -24,7 +24,12 @@
         width: @cradmin-filewidget-button-width;
         height: @cradmin-filewidget-button-height;
         border-radius: @cradmin-filewidget-button-border-radius;
+        padding: 0;
+        line-height: @cradmin-filewidget-button-height;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
+
       &.django-cradmin-filewidget-field-and-overlay-wrapper-hover {
         a.btn.btn-default {
           .btn-default-hoverstyle-mixin();

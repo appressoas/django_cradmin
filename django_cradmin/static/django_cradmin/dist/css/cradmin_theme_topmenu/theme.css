@@ -5175,9 +5175,13 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 .django-cradmin-form .django-cradmin-filewidget .django-cradmin-filewidget-field-and-overlay-wrapper input[type=file],
 .django-cradmin-form .django-cradmin-filewidget .django-cradmin-filewidget-field-and-overlay-wrapper a.django-cradmin-filewidget-fieldoverlay {
-  width: 300px;
+  width: 220px;
   height: 40px;
   border-radius: 2px;
+  padding: 0;
+  line-height: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .django-cradmin-form .django-cradmin-filewidget .django-cradmin-filewidget-field-and-overlay-wrapper.django-cradmin-filewidget-field-and-overlay-wrapper-hover a.btn.btn-default {
   background: #ffffff;
