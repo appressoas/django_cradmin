@@ -38,7 +38,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         """
         Get the URL of the back button in foreign key select mode.
         """
-        return self.request.GET['success_url']
+        return self.request.GET.get('success_url', '')
 
     def get_foreignkey_select_mode_backbutton_label(self):
         return self.foreignkey_select_mode_backbutton_label
