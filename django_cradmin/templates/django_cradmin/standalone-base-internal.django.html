@@ -12,7 +12,15 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}{% endblock title %}</title>
+
+        {% comment %}
+            The title tag contains two blocks:
+
+            - ``title``: Overridden per page.
+            - ``title-pre`` and ``title-post``: Typically overridden by overriding ``standalone-base.django.html``
+              to provide some common prefix/postfix for the the title tag for the entire site.
+        {% endcomment %}
+        <title>{% block title-pre %}{% endblock %}{% block title %}{% endblock %}{% block title-post %}{% endblock %}</title>
 
         {% block styles %}
             <link href='{% static DJANGO_CRADMIN_THEME_PATH %}' rel="stylesheet">
