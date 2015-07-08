@@ -143,6 +143,21 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         else:
             return self.get_default_save_success_url()
 
+    def set_automatic_attributes(self, obj):
+        """
+        Called by :meth:`.save_object` to set automatic attributes for the
+        object before it is saved.
+
+        This is where we handle :obj:`.roleid_field`, but you can override this
+        to set your own automatic attributes. Just remember to call ``super``
+        if you want to keep the :obj:`.roleid_field` magic.
+
+        Parameters:
+            obj: The object you are about to save.
+        """
+        if self.roleid_field:
+            setattr(obj, self.roleid_field, self.request.cradmin_role)
+
     def save_object(self, form, commit=True):
         """
         Save the object. You can override this to customize how the
@@ -160,8 +175,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
             The saved object.
         """
         obj = form.save(commit=False)
-        if self.roleid_field:
-            setattr(obj, self.roleid_field, self.request.cradmin_role)
+        self.set_automatic_attributes(obj=obj)
         if commit:
             obj.save()
         return obj
