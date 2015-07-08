@@ -15,6 +15,14 @@ class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
     submit_save_label = _('Save')
     submit_save_and_continue_edititing_label = _('Save and continue editing')
 
+    def get_pagetitle(self):
+        """
+        Get the page title (the title tag).
+
+        Defaults to ``Edit <verbose_name model>``.
+        """
+        return _('Edit %(what)s') % {'what': self.model._meta.verbose_name}
+
     def get_buttons(self):
         buttons = [
             PrimarySubmit('submit-save', self.submit_save_label),

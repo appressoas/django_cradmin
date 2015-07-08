@@ -1,20 +1,4 @@
 {% extends "django_cradmin/viewhelpers/create_update_base.django.html" %}
-{% load i18n %}
-{% load crispy_forms_tags %}
-
-{% block title %}
-    {% trans "CREATE" %}
-    {{ model_verbose_name }}
-{% endblock title %}
-
-{% block pageheader-inner %}
-    <h1>
-        {% block heading %}
-            <strong>{% trans "CREATE" %}</strong>
-            {{ model_verbose_name }}
-        {% endblock heading %}
-    </h1>
-{% endblock pageheader-inner %}
 
 {% block pageheader %}
     {{ block.super }}

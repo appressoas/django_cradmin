@@ -2,12 +2,12 @@
 {% load i18n %}
 {% load cradmin_icon_tags %}
 
-{% block title %}{{ pagetitle|capfirst }}{% endblock title %}
+{% block title %}{{ pagetitle }}{% endblock title %}
 
 {% block pageheader-inner %}
     <h1>
         {% block heading %}
-            {{ pagetitle|capfirst }}
+            {{ pageheading }}
         {% endblock heading %}
     </h1>
 {% endblock pageheader-inner %}

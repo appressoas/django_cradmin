@@ -1,11 +1,17 @@
 {% extends "django_cradmin/viewhelpers/formview_base.django.html" %}
-{% load i18n %}
 {% load crispy_forms_tags %}
 
-{% block form %}
-    {{ block.super }}
+{% block title %}
+    {{ pagetitle }}
+{% endblock title %}
 
-{% endblock form %}
+{% block pageheader-inner %}
+    <h1>
+        {% block heading %}
+            {{ pageheading }}
+        {% endblock heading %}
+    </h1>
+{% endblock pageheader-inner %}
 
 {% block outside-bodycontentwrapper %}
     {{ block.super }}

@@ -34,6 +34,14 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     submit_save_label = _('Create')
     submit_save_and_continue_edititing_label = _('Create and continue editing')
 
+    def get_pagetitle(self):
+        """
+        Get the page title (the title tag).
+
+        Defaults to ``Create <verbose_name model>``.
+        """
+        return _('Create %(what)s') % {'what': self.model._meta.verbose_name}
+
     def __get_foreignkey_select_mode_backbutton_url(self):
         """
         Get the URL of the back button in foreign key select mode.

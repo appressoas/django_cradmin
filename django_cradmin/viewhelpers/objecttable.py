@@ -1019,11 +1019,20 @@ class ObjectTableView(ListView):
 
     def get_pagetitle(self):
         """
-        Get the page title/heading.
+        Get the page title (the title tag).
 
-        Defaults to the ``verbose_name_plural`` of the :obj:`.model`.
+        Defaults to the ``verbose_name_plural`` of the :obj:`.model`
+        with the first letter capitalized.
         """
-        return self.model._meta.verbose_name_plural
+        return defaultfilters.capfirst(self.model._meta.verbose_name_plural)
+
+    def get_pageheading(self):
+        """
+        Get the page heading.
+
+        Defaults to :meth:`.get_pagetitle`.
+        """
+        return self.get_pagetitle()
 
     def _get_search_hidden_fields(self):
         for key, value in list(self.request.GET.items()):
@@ -1065,6 +1074,7 @@ class ObjectTableView(ListView):
             context['multiselect_actions'] = json.dumps(
                 [action.serialize() for action in multiselect_actions])
         context['pagetitle'] = self.get_pagetitle()
+        context['pageheading'] = self.get_pageheading()
         context['columns'] = self._get_columnobjects()
         context['table'] = list(self.__iter_table(object_list))
         context['buttons'] = self.get_buttons()
