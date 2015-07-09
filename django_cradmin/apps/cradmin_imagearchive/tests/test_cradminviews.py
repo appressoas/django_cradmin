@@ -108,13 +108,12 @@ class TestUpdateView(TestCase):
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('input[type=text][name=name]'))
         self.assertTrue(selector.exists('input[type=file][name=image]'))
         self.assertTrue(selector.exists('textarea#id_description'))
 
     def test_post_ok(self):
         request = self.factory.post('/test', {
-            'name': 'Updated name'
+            'description': 'Updated description'
         })
         request.cradmin_instance = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
@@ -129,14 +128,12 @@ class TestUpdateView(TestCase):
         self.assertEqual(ArchiveImage.objects.count(), 1)
         update_image = ArchiveImage.objects.first()
         self.assertEqual(update_image.image.read(), self.testimage)
-        self.assertEqual(update_image.name, 'Updated name')
-        self.assertEqual(update_image.description, '')
+        self.assertEqual(update_image.description, 'Updated description')
 
     def test_post_allfields(self):
         testimage = create_image(200, 100)
         request = self.factory.post('/test', {
             'image': SimpleUploadedFile('testname.png', testimage),
-            'name': 'My name',
             'description': 'My description',
         })
         request.cradmin_instance = mock.MagicMock()
@@ -150,7 +147,6 @@ class TestUpdateView(TestCase):
         self.assertEquals(response['Location'], '/success')
         update_image = ArchiveImage.objects.first()
         self.assertEqual(update_image.image.read(), testimage)
-        self.assertEqual(update_image.name, 'My name')
         self.assertEqual(update_image.description, 'My description')
 
     def test_post_noname(self):
