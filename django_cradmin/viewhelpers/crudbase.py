@@ -348,7 +348,7 @@ class OnlySaveButtonMixin(object):
     """
     def get_buttons(self):
         buttons = [
-            PrimarySubmit(self.self.get_submit_save_button_name(), self.get_submit_save_label()),
+            PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
         ]
         self.add_preview_button_if_configured(buttons)
         return buttons
