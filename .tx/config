@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[cradmin.djangopo]
+[cradmin.djangopo-83]
 file_filter = django_cradmin/locale/<lang>/LC_MESSAGES/django.po
 source_file = django_cradmin/locale/en/LC_MESSAGES/django.po
 source_lang = en

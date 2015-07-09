@@ -78,7 +78,7 @@ Development
    :maxdepth: 1
 
    databasedumps
-   locale
+   i18n
 
 *************
 Documentation

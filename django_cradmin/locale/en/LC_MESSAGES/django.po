@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-15 10:16+0000\n"
+"POT-Creation-Date: 2015-07-09 23:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,86 +102,85 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:28
+#: apps/cradmin_imagearchive/cradminviews.py:32
 msgid "Edit"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:31 viewhelpers/delete.py:21
+#: apps/cradmin_imagearchive/cradminviews.py:35 viewhelpers/delete.py:21
 msgid "Delete"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:44
+#: apps/cradmin_imagearchive/cradminviews.py:51
 msgid "Use this"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:62 viewhelpers/create.py:46
-#: viewhelpers/update.py:21
+#: apps/cradmin_imagearchive/cradminviews.py:63 viewhelpers/crudbase.py:68
 msgid "Preview"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:87
-#: apps/cradmin_imagearchive/cradminviews.py:110
+#: apps/cradmin_imagearchive/cradminviews.py:89
+#: apps/cradmin_imagearchive/cradminviews.py:116
 msgid "Add image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:88
+#: apps/cradmin_imagearchive/cradminviews.py:92
 msgid "Bulk upload"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:133
+#: apps/cradmin_imagearchive/cradminviews.py:140
 msgid "Upload and select"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:134
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:20
+#: apps/cradmin_imagearchive/cradminviews.py:141
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:19
 msgid "Upload image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:135
+#: apps/cradmin_imagearchive/cradminviews.py:142
 msgid "Upload and continue editing"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:155
-#: apps/cradmin_imagearchive/cradminviews.py:258
+#: apps/cradmin_imagearchive/cradminviews.py:163
+#: apps/cradmin_imagearchive/cradminviews.py:267
 #, python-format
 msgid "Uploaded %(what)s."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:187
+#: apps/cradmin_imagearchive/cradminviews.py:196
 msgid "Upload images by dragging and dropping them here"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:188
+#: apps/cradmin_imagearchive/cradminviews.py:197
 msgid "Invalid filetype. You can only upload images."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:189
+#: apps/cradmin_imagearchive/cradminviews.py:198
 msgid "... or select images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:190
+#: apps/cradmin_imagearchive/cradminviews.py:199
 msgid "Select images ..."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:192
+#: apps/cradmin_imagearchive/cradminviews.py:201
 msgid "Upload at least one image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:194
+#: apps/cradmin_imagearchive/cradminviews.py:203
 msgid ""
 "Upload as many images as you like. You can edit the name and description of "
 "the images after they have been uploaded."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:197
+#: apps/cradmin_imagearchive/cradminviews.py:206
 msgid "You must upload at least one file."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:213
+#: apps/cradmin_imagearchive/cradminviews.py:222
 msgid "Add to the image archive"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:214
+#: apps/cradmin_imagearchive/cradminviews.py:223
 msgid "Uploading images"
 msgstr ""
 
@@ -384,7 +383,7 @@ msgid ""
 msgstr ""
 
 #: apps/cradmin_resetpassword/views/begin.py:48
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:48
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
 msgid "Search"
 msgstr ""
 
@@ -450,62 +449,62 @@ msgstr ""
 msgid "Invalid email address: %(email)s"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:10
+#: templates/django_cradmin/acemarkdown/widget.django.html:12
 msgid "Heading 1"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:15
+#: templates/django_cradmin/acemarkdown/widget.django.html:17
 msgid "Heading 2"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:20
+#: templates/django_cradmin/acemarkdown/widget.django.html:22
 msgid "Heading 3"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:27
+#: templates/django_cradmin/acemarkdown/widget.django.html:29
 msgid "Text here"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:29
+#: templates/django_cradmin/acemarkdown/widget.django.html:31
 msgid "Bold"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:34
+#: templates/django_cradmin/acemarkdown/widget.django.html:36
 msgid "Italic"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:38
+#: templates/django_cradmin/acemarkdown/widget.django.html:40
 msgid ""
 "Write the URL in the field below. Make sure you include the http:// or "
 "https:// part of the URL."
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:39
+#: templates/django_cradmin/acemarkdown/widget.django.html:41
 msgid "Link title here"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:41
+#: templates/django_cradmin/acemarkdown/widget.django.html:43
 msgid "Link"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:50
+#: templates/django_cradmin/acemarkdown/widget.django.html:52
 msgid "Bulletlist"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:55
+#: templates/django_cradmin/acemarkdown/widget.django.html:57
 msgid "Numbered list"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:63
+#: templates/django_cradmin/acemarkdown/widget.django.html:65
 msgid "programminglanguage"
 msgstr ""
 
-#: templates/django_cradmin/acemarkdown/widget.django.html:66
+#: templates/django_cradmin/acemarkdown/widget.django.html:68
 msgid "Code block"
 msgstr ""
 
 #: templates/django_cradmin/error.django.html:10
-#: templates/django_cradmin/include/messages.django.html:30
+#: templates/django_cradmin/include/messages.django.html:32
 msgid "Error"
 msgstr ""
 
@@ -513,27 +512,27 @@ msgstr ""
 msgid "Remove file"
 msgstr ""
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:18
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:17
 msgid "Replace image"
 msgstr ""
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:27
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:26
 msgid "Remove image"
 msgstr ""
 
-#: templates/django_cradmin/include/messages.django.html:25
+#: templates/django_cradmin/include/messages.django.html:27
 msgid "Close"
 msgstr ""
 
-#: templates/django_cradmin/include/messages.django.html:32
+#: templates/django_cradmin/include/messages.django.html:34
 msgid "Warning"
 msgstr ""
 
-#: templates/django_cradmin/include/messages.django.html:34
+#: templates/django_cradmin/include/messages.django.html:36
 msgid "Info"
 msgstr ""
 
-#: templates/django_cradmin/include/messages.django.html:36
+#: templates/django_cradmin/include/messages.django.html:38
 msgid "Success"
 msgstr ""
 
@@ -545,8 +544,8 @@ msgstr ""
 msgid "The requested role does not exist."
 msgstr ""
 
-#: templates/django_cradmin/menu.django.html:14
-msgid "Toggle navigation"
+#: templates/django_cradmin/menu.django.html:23
+msgid "Menu"
 msgstr ""
 
 #: templates/django_cradmin/missing_role.django.html:6
@@ -558,35 +557,36 @@ msgstr ""
 msgid "You do not have permission to administer \"%(what)s\"."
 msgstr ""
 
-#: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:22
+#: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:25
 msgid "Close preview"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/create.django.html:6
-#: templates/django_cradmin/viewhelpers/create.django.html:16
-msgid "CREATE"
+#: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:34
+msgid "Preview options"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/delete.django.html:27
 msgid "Cancel"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/includes/pager.django.html:27
+#: templates/django_cradmin/viewhelpers/formview_base.django.html:37
+msgid "Close window"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/includes/pager.django.html:28
 msgid "Previous"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/includes/pager.django.html:31
+#: templates/django_cradmin/viewhelpers/includes/pager.django.html:32
 #, python-format
 msgid "Page %(number)s of %(total)s"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/includes/pager.django.html:36
+#: templates/django_cradmin/viewhelpers/includes/pager.django.html:37
 msgid "Next"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:7
-#: templates/django_cradmin/viewhelpers/update.django.html:5
-#: templates/django_cradmin/viewhelpers/update.django.html:15
+#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:6
 msgid "EDIT"
 msgstr ""
 
@@ -595,62 +595,80 @@ msgstr ""
 msgid "(None)"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:44
-#: viewhelpers/objecttable.py:762
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
+#: viewhelpers/objecttable.py:873
 msgid "Search..."
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:124
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:119
 msgid "Ordered ascending - Click to order descending"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:126
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:121
 msgid "Ordered descending - Click to order ascending"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:133
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:128
 msgid "Do not order by this column"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:138
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:133
 msgid "Ordering priority"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:193
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:188
 msgid "Select an action"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:196
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:191
 msgid "Go"
 msgstr ""
 
-#: templates/django_cradmin/widgets/modelchoice.django.html:23
+#: templates/django_cradmin/widgets/modelchoice.django.html:25
 #: widgets/modelchoice.py:32
 msgid "Select ..."
 msgstr ""
 
-#: templates/django_cradmin/widgets/modelchoice.django.html:33
-msgid "Close choice window"
+#: viewhelpers/create.py:31
+msgid "Back"
 msgstr ""
 
-#: viewhelpers/create.py:30 viewhelpers/create.py:37
+#: viewhelpers/create.py:33
 msgid "Create and select"
 msgstr ""
 
-#: viewhelpers/create.py:31
+#: viewhelpers/create.py:34
 msgid "Create"
 msgstr ""
 
-#: viewhelpers/create.py:32
+#: viewhelpers/create.py:35
 msgid "Create and continue editing"
 msgstr ""
 
-#: viewhelpers/create.py:75
+#: viewhelpers/create.py:43
+#, python-format
+msgid "Create %(what)s"
+msgstr ""
+
+#: viewhelpers/create.py:105
 #, python-format
 msgid "Created \"%(object)s\"."
 msgstr ""
 
-#: viewhelpers/crudbase.py:219
+#: viewhelpers/create.py:131 viewhelpers/formbase.py:42
+msgid "Save"
+msgstr ""
+
+#: viewhelpers/create.py:132 viewhelpers/formbase.py:45
+msgid "Save and continue editing"
+msgstr ""
+
+#: viewhelpers/create.py:135 viewhelpers/update.py:39
+#, python-format
+msgid "Saved \"%(object)s\"."
+msgstr ""
+
+#: viewhelpers/crudbase.py:260
 msgid "Please fix the errors in the form below."
 msgstr ""
 
@@ -670,22 +688,14 @@ msgid ""
 "permissions while you where selecting items to edit."
 msgstr ""
 
-#: viewhelpers/objecttable.py:776
+#: viewhelpers/objecttable.py:899
 #, python-format
 msgid "No %(modelname_plural)s"
 msgstr ""
 
-#: viewhelpers/update.py:16
-msgid "Save"
-msgstr ""
-
-#: viewhelpers/update.py:17
-msgid "Save and continue editing"
-msgstr ""
-
-#: viewhelpers/update.py:30
+#: viewhelpers/update.py:22
 #, python-format
-msgid "Saved \"%(object)s\"."
+msgid "Edit %(what)s"
 msgstr ""
 
 #: views/roleselect.py:13
