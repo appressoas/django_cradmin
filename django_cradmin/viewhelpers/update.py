@@ -12,8 +12,6 @@ from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
     template_name = 'django_cradmin/viewhelpers/update.django.html'
-    submit_save_label = _('Save')
-    submit_save_and_continue_edititing_label = _('Save and continue editing')
 
     def get_pagetitle(self):
         """
@@ -25,8 +23,9 @@ class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
 
     def get_buttons(self):
         buttons = [
-            PrimarySubmit('submit-save', self.submit_save_label),
-            DefaultSubmit('submit-save-and-continue-editing', self.submit_save_and_continue_edititing_label),
+            PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
+            DefaultSubmit(self.get_submit_save_and_continue_edititing_button_name(),
+                          self.get_submit_save_and_continue_edititing_label()),
         ]
         self.add_preview_button_if_configured(buttons)
         return buttons

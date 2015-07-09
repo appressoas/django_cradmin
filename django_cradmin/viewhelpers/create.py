@@ -42,6 +42,14 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         """
         return _('Create %(what)s') % {'what': self.model._meta.verbose_name}
 
+    def get_submit_use_label(self):
+        """
+        Get the "Create and select" label.
+
+        Defaults to :obj:`~.FormViewMixin.submit_use_label`.
+        """
+        return self.submit_use_label
+
     def __get_foreignkey_select_mode_backbutton_url(self):
         """
         Get the URL of the back button in foreign key select mode.
@@ -54,12 +62,13 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     def get_buttons(self):
         if self._foreignkey_select_mode():
             buttons = [
-                PrimarySubmit('submit-use', self.submit_use_label),
+                PrimarySubmit('submit-use', self.get_submit_use_label()),
             ]
         else:
             buttons = [
-                PrimarySubmit('submit-save', self.submit_save_label),
-                DefaultSubmit('submit-save-and-continue-editing', self.submit_save_and_continue_edititing_label),
+                PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
+                DefaultSubmit(self.get_submit_save_and_continue_edititing_button_name(),
+                              self.get_submit_save_and_continue_edititing_label()),
             ]
         self.add_preview_button_if_configured(buttons)
         return buttons

@@ -3,6 +3,7 @@ from builtins import object
 from crispy_forms import layout
 from django.conf import settings
 from django.views.generic import FormView as DjangoFormView
+from django.utils.translation import ugettext_lazy as _
 
 from django_cradmin import crapp
 from django_cradmin.crispylayouts import CradminFormHelper
@@ -34,8 +35,56 @@ class FormViewMixin(object):
     #: in the form.
     enable_modelchoicefield_support = False
 
-    #: Set this to True to hide the page header. See :meth:`.FormViewMixin.get_hide_page_header`.
+    #: Set this to True to hide the page header. See :meth:`~.FormViewMixin.get_hide_page_header`.
     hide_page_header = False
+
+    #: The save submit label. See :meth:`~.FormViewMixin.get_submit_save_label`.
+    submit_save_label = _('Save')
+
+    #: The save submit label. See :meth:`~.FormViewMixin.get_submit_save_and_continue_edititing_label`.
+    submit_save_and_continue_edititing_label = _('Save and continue editing')
+
+    #: See :meth:`~.FormViewMixin.get_submit_save_button_name`.
+    submit_save_button_name = 'submit-save'
+
+    #: See :meth:`~.FormViewMixin.get_submit_save_and_continue_edititing_button_name`.
+    submit_save_and_continue_edititing_button_name = 'submit-save-and-continue-editing'
+
+    def get_submit_save_label(self):
+        """
+        Get the save submit label. Not used by this mixin, but you
+        can use this in your own ``get_buttons``-method.
+
+        Defaults to :obj:`~.FormViewMixin.submit_save_label`.
+        """
+        return self.submit_save_label
+
+    def get_submit_save_and_continue_edititing_label(self):
+        """
+        Get the "save and continue editing" submit label. Not used by this mixin, but you
+        can use this in your own ``get_buttons``-method.
+
+        Defaults to :obj:`~.FormViewMixin.submit_save_and_continue_edititing_label`.
+        """
+        return self.submit_save_and_continue_edititing_label
+
+    def get_submit_save_button_name(self):
+        """
+        Get the name of the save submit button. Not used by this mixin, but you
+        can use this in your own ``get_buttons``-method.
+
+        Defaults to :obj:`~.FormViewMixin.submit_save_button_name`.
+        """
+        return self.submit_save_button_name
+
+    def get_submit_save_and_continue_edititing_button_name(self):
+        """
+        Get the "save and continue editing" submit button name.
+        Not used by this mixin, but you can use this in your own ``get_buttons``-method.
+
+        Defaults to :obj:`~.FormViewMixin.submit_save_and_continue_edititing_button_name`.
+        """
+        return self.submit_save_and_continue_edititing_button_name
 
     def get_hide_page_header(self):
         """

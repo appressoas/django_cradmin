@@ -156,7 +156,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         return url
 
     def get_success_url(self):
-        if 'submit-save-and-continue-editing' in self.request.POST:
+        if self.get_submit_save_and_continue_edititing_button_name() in self.request.POST:
             return self._get_full_editurl(self.object)
         else:
             return self.get_default_save_success_url()
@@ -348,7 +348,7 @@ class OnlySaveButtonMixin(object):
     """
     def get_buttons(self):
         buttons = [
-            PrimarySubmit('submit-save', self.submit_save_label),
+            PrimarySubmit(self.self.get_submit_save_button_name(), self.get_submit_save_label()),
         ]
         self.add_preview_button_if_configured(buttons)
         return buttons
