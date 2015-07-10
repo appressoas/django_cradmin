@@ -897,7 +897,7 @@ class ObjectTableView(ListView):
         Get the message to show when there are no items.
         """
         return _('No %(modelname_plural)s') % {
-            'modelname_plural': self.model._meta.verbose_name_plural
+            'modelname_plural': self.model._meta.verbose_name_plural.lower()
         }
 
     def get_search_placeholder_text(self):
