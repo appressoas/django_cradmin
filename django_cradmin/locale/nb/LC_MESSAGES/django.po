@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-09 23:54+0000\n"
-"PO-Revision-Date: 2015-07-09 23:56+0000\n"
+"PO-Revision-Date: 2015-07-10 00:12+0000\n"
 "Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/p/cradmin/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -21,31 +21,31 @@ msgstr ""
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:7
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:12
 msgid "Activate account error"
-msgstr ""
+msgstr "Feil ved kontoaktivering"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/body.django.txt:2
 #, python-format
 msgid "Click the link below to activate your %(sitename)s account, %(user)s."
-msgstr ""
+msgstr "Klikk på linken nedenfor for å aktivere din %(sitename)s konto, %(user)s."
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/subject.django.txt:2
 #, python-format
 msgid "Activate your %(sitename)s account"
-msgstr ""
+msgstr "Aktiver din %(sitename)s konto"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/messages/activation-link-expired.django.html:2
 msgid "This account activation link has expired."
-msgstr ""
+msgstr "Denne kontoaktiverings linken er for gammel."
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/messages/activation-link-invalid.django.html:2
 msgid ""
 "Invalid account activation URL. Are you sure you copied the entire URL from "
 "the email?"
-msgstr ""
+msgstr "Ugyldig kontoaktivering URL. Er du sikker på at du kopierte hele URLen fra eposten?"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/messages/success.django.html:2
 msgid "Your account is now active."
-msgstr ""
+msgstr "Din konto er nå aktiv."
 
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:7
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:11
@@ -56,7 +56,7 @@ msgstr "Logg inn"
 
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:20
 msgid "Forgot your password?"
-msgstr ""
+msgstr "Har du glemt ditt passord?"
 
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/logout.django.html:5
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/logout.django.html:9
@@ -70,7 +70,7 @@ msgstr "Logg inn igjen"
 #: apps/cradmin_authenticate/views/login.py:36
 #: apps/cradmin_authenticate/views/login.py:46
 msgid "Password"
-msgstr ""
+msgstr "Passord"
 
 #: apps/cradmin_authenticate/views/login.py:42
 msgid "This account is inactive."
@@ -79,11 +79,11 @@ msgstr "Denne kontoen er inaktiv."
 #: apps/cradmin_authenticate/views/login.py:94
 #: apps/cradmin_authenticate/views/login.py:96
 msgid "Username"
-msgstr ""
+msgstr "Brukernavn"
 
 #: apps/cradmin_authenticate/views/login.py:97
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
+msgstr "Ugyldig brukernavn og passord kombinasjon. Vennligst prøv igjen."
 
 #: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_authenticate/views/login.py:124
@@ -97,11 +97,11 @@ msgstr "Ugyldig epost/passord. Venligst prøv igjen."
 
 #: apps/cradmin_generic_token_with_metadata/models.py:224
 msgid "Created"
-msgstr ""
+msgstr "Opprettet"
 
 #: apps/cradmin_generic_token_with_metadata/models.py:230
 msgid "Expires"
-msgstr ""
+msgstr "Utgår"
 
 #: apps/cradmin_imagearchive/cradminviews.py:32
 msgid "Edit"
@@ -241,147 +241,147 @@ msgstr "Forhåndsvisning av bilde"
 
 #: apps/cradmin_invite/baseviews/accept.py:38
 msgid "Accept invite"
-msgstr ""
+msgstr "Aksepter invitasjon"
 
 #: apps/cradmin_invite/baseviews/accept.py:44
 #, python-format
 msgid "Accept as %(user)s"
-msgstr ""
+msgstr "Aksepter som %(user)s"
 
 #: apps/cradmin_invite/baseviews/accept.py:50
 #: apps/cradmin_register_account/forms/base.py:60
 #, python-format
 msgid "Sign up for %(sitename)s"
-msgstr ""
+msgstr "Registrer %(sitename)s konto"
 
 #: apps/cradmin_invite/baseviews/accept.py:56
 msgid "Sign in as another user"
-msgstr ""
+msgstr "Logg inn som en annen bruker"
 
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:7
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:12
 msgid "Invalid invite"
-msgstr ""
+msgstr "Ugyldig invitasjon"
 
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:20
 msgid ""
 "Invalid invite URL. Are you sure you copied the entire URL from the email?"
-msgstr ""
+msgstr "Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URLen fra eposten?"
 
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:28
 msgid "This invite link has expired."
-msgstr ""
+msgstr "Denne invitasjonslinken er for gammel."
 
 #: apps/cradmin_invite/templates/cradmin_invite/email/body.django.txt:2
 msgid "Click the link below to accept the invite."
-msgstr ""
+msgstr "Klikk linken nedenfor for å akseptere invitasjonen."
 
 #: apps/cradmin_invite/templates/cradmin_invite/email/subject.django.txt:2
 #, python-format
 msgid "Invitation to %(sitename)s"
-msgstr ""
+msgstr "Invitasjon til %(sitename)s"
 
 #: apps/cradmin_register_account/forms/auth_user.py:54
 msgid "Account with this email address already exists."
-msgstr ""
+msgstr "Konto med denne epost-adressen finnes allerede."
 
 #: apps/cradmin_register_account/forms/base.py:190
 msgid "Type your password"
-msgstr ""
+msgstr "Skriv et passord"
 
 #: apps/cradmin_register_account/forms/base.py:195
 msgid "Type your password one more time"
-msgstr ""
+msgstr "Skriv passordet en gang til"
 
 #: apps/cradmin_register_account/forms/base.py:230
 msgid "The passwords do not match."
-msgstr ""
+msgstr "Passordene er ikke like."
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/begin.django.html:6
 #: apps/cradmin_register_account/templates/cradmin_register_account/begin.django.html:11
 #, python-format
 msgid "Create your %(sitename)s account"
-msgstr ""
+msgstr "Lag din %(sitename)s konto"
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:7
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:12
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:7
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:12
 msgid "Check your email"
-msgstr ""
+msgstr "Sjekk din epost"
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:18
 msgid ""
 "We have sent you an email. Click the link in the email to activate your "
 "account."
-msgstr ""
+msgstr "Vi har sendt deg en epost. Klikk linken i eposten for å aktivere din konto."
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:21
 msgid "If you do not see the email, check your junk folder."
-msgstr ""
+msgstr "Hvis du ikke ser eposten, sjekk din spam-folder."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/base.django.html:5
 msgid "Reset password"
-msgstr ""
+msgstr "Nullstill passord"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:6
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:10
 msgid "Find your account"
-msgstr ""
+msgstr "Finn din konto"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:11
 msgid "Type in your email-address"
-msgstr ""
+msgstr "Skriv inn din epost-adresse"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:2
 #, python-format
 msgid ""
 "We received a request to reset the password for your %(sitename)s account, "
 "%(user)s."
-msgstr ""
+msgstr "Vi mottok en forespørsel om å nullstille passordet for din %(sitename)s konto, %(user)s."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:4
 msgid ""
 "If you made this request, click the link below. If you did not make this "
 "request, you can ignore this email."
-msgstr ""
+msgstr "Hvis du sende denne forespørselen, klikk linken nedenfor. Hvis du ikke sendte denne forespørselen kan du ignorere denne eposten."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/subject.django.txt:2
 #, python-format
 msgid "Reset your %(sitename)s password"
-msgstr ""
+msgstr "Nullstill ditt %(sitename)s passord"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:18
 msgid ""
 "We have sent you an email. Click the link in the email to reset your "
 "password."
-msgstr ""
+msgstr "Vi har send deg en epost. Klikk linken i eposten for å nullstille ditt passord."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:21
 #, python-format
 msgid ""
 "If you do not see the email, check your junk folder or try searching for "
 "\"%(email_subject)s\"."
-msgstr ""
+msgstr "Hvis du ikke ser eposten, sjekk din spam-folder eller prøv å søke etter \"%(email_subject)s\"."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/messages/successmessage.django.html:2
 msgid "Your password has been updated."
-msgstr ""
+msgstr "Ditt passord har blitt oppdatert."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:11
 msgid "Reset your password"
-msgstr ""
+msgstr "Nullstill ditt passord"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:22
 msgid "This password reset link has expired."
-msgstr ""
+msgstr "Denne nullstill passord linken er for gammel."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:26
 msgid ""
 "Invalid password reset URL. Are you sure you copied the entire URL from the "
 "email?"
-msgstr ""
+msgstr "Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen fra eposten."
 
 #: apps/cradmin_resetpassword/views/begin.py:48
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
@@ -390,19 +390,19 @@ msgstr "Søk"
 
 #: apps/cradmin_resetpassword/views/reset.py:18
 msgid "Type your new password"
-msgstr ""
+msgstr "Skriv ditt nye passord"
 
 #: apps/cradmin_resetpassword/views/reset.py:21
 msgid "Type your new password one more time"
-msgstr ""
+msgstr "Skriv ditt nye passord en gang til"
 
 #: apps/cradmin_resetpassword/views/reset.py:31
 msgid "The passwords do not match"
-msgstr ""
+msgstr "Passordene er ikke like"
 
 #: apps/cradmin_resetpassword/views/reset.py:45
 msgid "Submit"
-msgstr ""
+msgstr "Send inn"
 
 #: apps/cradmin_temporaryfileuploadstore/models.py:225
 msgid "Unsupported filetype."
@@ -443,12 +443,12 @@ msgstr "%(filename)s: Ugyldig filetype."
 
 #: formfields/email_list.py:18 formfields/email_list.py:20
 msgid "Type email-addresses separated by newlines, whitespace or comma."
-msgstr ""
+msgstr "Skriv epostadresser separert av linjeskift, mellomrom eller komma."
 
 #: formfields/email_list.py:64
 #, python-format
 msgid "Invalid email address: %(email)s"
-msgstr ""
+msgstr "Ugyldig epostadresse: %(email)s"
 
 #: templates/django_cradmin/acemarkdown/widget.django.html:12
 msgid "Heading 1"
@@ -547,7 +547,7 @@ msgstr "Den ønskede rollen finnes ikke."
 
 #: templates/django_cradmin/menu.django.html:23
 msgid "Menu"
-msgstr ""
+msgstr "Meny"
 
 #: templates/django_cradmin/missing_role.django.html:6
 msgid "Permission denied"
@@ -564,7 +564,7 @@ msgstr "Lukk forhåndsvisning"
 
 #: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:34
 msgid "Preview options"
-msgstr ""
+msgstr "Konfigurer forhåndsvisningen"
 
 #: templates/django_cradmin/viewhelpers/delete.django.html:27
 msgid "Cancel"
@@ -572,7 +572,7 @@ msgstr "Avbryt"
 
 #: templates/django_cradmin/viewhelpers/formview_base.django.html:37
 msgid "Close window"
-msgstr ""
+msgstr "Lukk vindu"
 
 #: templates/django_cradmin/viewhelpers/includes/pager.django.html:28
 msgid "Previous"
@@ -632,7 +632,7 @@ msgstr "Velg ..."
 
 #: viewhelpers/create.py:31
 msgid "Back"
-msgstr ""
+msgstr "Tilbake"
 
 #: viewhelpers/create.py:33
 msgid "Create and select"
@@ -649,7 +649,7 @@ msgstr "Opprett og fortsett å redigere"
 #: viewhelpers/create.py:43
 #, python-format
 msgid "Create %(what)s"
-msgstr ""
+msgstr "Legg til %(what)s"
 
 #: viewhelpers/create.py:105
 #, python-format
@@ -681,7 +681,7 @@ msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
 #: viewhelpers/delete.py:82
 #, python-format
 msgid "Deleted \"%(what)s\""
-msgstr ""
+msgstr "Slettet \"%(what)s\""
 
 #: viewhelpers/multiselect.py:92
 msgid ""
@@ -692,12 +692,12 @@ msgstr "Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet rett
 #: viewhelpers/objecttable.py:899
 #, python-format
 msgid "No %(modelname_plural)s"
-msgstr ""
+msgstr "Ingen %(modelname_plural)s"
 
 #: viewhelpers/update.py:22
 #, python-format
 msgid "Edit %(what)s"
-msgstr ""
+msgstr "Rediger %(what)s"
 
 #: views/roleselect.py:13
 msgid "What would you like to edit?"
