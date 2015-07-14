@@ -8,13 +8,10 @@ module.exports = (grunt) ->
   }
 
   vendorfiles = {
-    fonts: [
-      'bower_components/fontawesome/fonts/*'
-      'bower_components/fontawesome/css/*'
-    ]
     js: [
       'bower_components/jquery/dist/jquery.js'
       'bower_components/angular/angular.js'
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
       'bower_components/angular-cookies/angular-cookies.js'
       'bower_components/ng-file-upload/angular-file-upload.js'
       'bower_components/modernizr/modernizr.js'
@@ -114,11 +111,11 @@ module.exports = (grunt) ->
           cwd: 'bower_components/fontawesome/'
           src: ['css/*', 'fonts/*']
           dest: 'dist/vendor/fonts/fontawesome/'
-#        }, {
-#          expand: true
-#          flatten: true
-#          src: vendorfiles.js
-#          dest: 'dist/vendor/js/'
+        }, {
+          expand: true
+          cwd: 'bower_components/bootstrap/fonts/'
+          src: ['glyphicons-*']
+          dest: 'dist/vendor/fonts/glyphicons/'
         }, {
           expand: true
           flatten: true
@@ -131,7 +128,7 @@ module.exports = (grunt) ->
         # base path that will be used to resolve all patterns
         basePath: ''
 
-        # frameworks to use
+        # frameworks to use¨
         # available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine']
 

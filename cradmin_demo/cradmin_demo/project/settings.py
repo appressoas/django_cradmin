@@ -193,6 +193,9 @@ DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND = True
 AUTHENTICATION_BACKENDS = (
     'django_cradmin.apps.cradmin_authenticate.backends.EmailAuthBackend',
 )
-
+TIME_INPUT_FORMATS = [
+    '%H:%M',        # '14:30'
+    '%H:%M:%S',     # '14:30:59'
+]
 
 # DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/dist/css/cradmin_theme_topmenu/theme.css'
