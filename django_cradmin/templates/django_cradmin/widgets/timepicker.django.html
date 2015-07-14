@@ -1,11 +1,6 @@
 {% load i18n %}
 {% load cradmin_icon_tags %}
 
-<div id="id_cradmin_timefieldwrapper_{{ fieldname }}" ng-controller="CradminTimeFieldController">
-
-    <timepicker ng-model="timevalue" ng-change="timefield_changed()"
-                hour-step="{{ hour_step }}" minute-step="{{ minute_step }}"
-                show-meridian="false" ng-init="set_time_from_string('{{ timevalue|date:"Y-m-d H:i" }}')"></timepicker>
-
-    <input type="hidden" id="{{ fieldid }}" name="{{ fieldname }}" value="{% verbatim %}{{ hiddentimefieldvalue }}{% endverbatim %}">
+<div id="id_cradmin_timefieldwrapper_{{ fieldname }}" class="django-cradmin-timepicker">
+    {{ inputfield|safe }}
 </div>

@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from builtins import object
+
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django import forms
@@ -17,8 +18,6 @@ from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from cradmin_demo.webdemo.models import Page
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
-from django_cradmin.widgets.datetimepicker import DatePickerWidget
-from django_cradmin.widgets.datetimepicker import TimePickerWidget
 from django_cradmin.widgets.datetimepicker import DateTimePickerWidget
 
 

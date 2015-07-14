@@ -4800,14 +4800,33 @@ form .alert-block.alert-danger ul li {
   margin-bottom: 15px;
 }
 .django-cradmin-datetimepicker {
-  max-width: 400px;
+  max-width: 250px;
+}
+.django-cradmin-datetimepicker:before,
+.django-cradmin-datetimepicker:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-datetimepicker:after {
+  clear: both;
+}
+.django-cradmin-datetimepicker:before,
+.django-cradmin-datetimepicker:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-datetimepicker:after {
+  clear: both;
 }
 .django-cradmin-datetimepicker .django-cradmin-datepicker {
   float: left;
-  width: 50%;
+  width: 65%;
+  padding-right: 5px;
 }
-.django-cradmin-datetimepicker .timeinput {
-  width: 50%;
+.django-cradmin-datetimepicker .django-cradmin-timepicker {
+  float: right;
+  width: 35%;
+  padding-left: 5px;
 }
 table.table.django-cradmin-table {
   margin: 0;
