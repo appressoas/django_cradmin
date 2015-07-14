@@ -1,5 +1,5 @@
 """
-Django settings for cradmin_demo project.
+Django settings for cradmin demo project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -11,7 +11,11 @@ from __future__ import unicode_literals
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.dirname(
+                os.path.dirname(__file__)))))
 
 
 # Quick-start development settings - unsuitable for production

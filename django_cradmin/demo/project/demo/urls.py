@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
-from django_cradmin.demo.project import settings
 from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
 from django_cradmin.demo.webdemo.cradmin import WebdemoCrAdminInstance
 

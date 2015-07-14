@@ -5,7 +5,7 @@ from invoke_extras.context_managers import shell_env, cd
 LANGUAGE_CODES = ['en', 'nb']
 SQLITE_DATABASE = 'db.sqlite3'
 DUMPSCRIPT_DATAFILE = os.path.join(
-    'cradmin_demo', 'project', 'dumps', 'dev', 'data.py')
+    'django_cradmin', 'demo', 'project', 'dumps', 'dev', 'data.py')
 
 
 def _manage(args, echo=True, cwd=None, **kwargs):
@@ -67,7 +67,7 @@ def recreate_devdb():
     Recreate the test database.
     """
     resetdb()
-    _manage('runscript cradmin_demo.project.dumps.dev.data')
+    _manage('runscript django_cradmin.demo.project.dumps.dev.data')
 
 
 @task
