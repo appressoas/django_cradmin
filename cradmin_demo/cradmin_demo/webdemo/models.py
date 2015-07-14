@@ -33,6 +33,9 @@ class Page(models.Model):
         imagearchivemodels.ArchiveImage,
         verbose_name=_('Image'),
         null=True, blank=True)
+    attachment = models.FileField(
+        verbose_name=_('Attachment'),
+        null=True, blank=True)
     body = models.TextField(
         verbose_name=_('Body'))
     publishing_time = models.DateTimeField(

@@ -17,6 +17,7 @@ from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from cradmin_demo.webdemo.models import Page
+from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 from django_cradmin.widgets.datetimepicker import DateTimePickerWidget
 
@@ -116,6 +117,7 @@ class PageCreateUpdateMixin(object):
             layout.Fieldset(
                 'Advanced',
                 'publishing_time',
+                'attachment',
                 'internal_notes'
             ),
             # layout.Div(
@@ -138,6 +140,7 @@ class PageCreateUpdateMixin(object):
             selectview_url=self._get_image_selectview_url()
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget()
+        form.fields['attachment'].widget = filewidgets.ImageWidget()
         return form
 
 
