@@ -15,9 +15,7 @@ app.controller 'CradminDateFieldController', ($scope, $filter) ->
   $scope.set_date_from_string = (datestr) ->
     if datestr
       $scope.datevalue = new Date datestr
-    else
-      $scope.datevalue = new Date
-    $scope.datefield_changed()
+      $scope.datefield_changed()
     return
 
   $scope.datefield_changed = ->
