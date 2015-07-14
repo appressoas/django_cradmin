@@ -952,10 +952,8 @@
     $scope.set_date_from_string = function(datestr) {
       if (datestr) {
         $scope.datevalue = new Date(datestr);
-      } else {
-        $scope.datevalue = new Date;
+        $scope.datefield_changed();
       }
-      $scope.datefield_changed();
     };
     $scope.datefield_changed = function() {
       var datestr;
