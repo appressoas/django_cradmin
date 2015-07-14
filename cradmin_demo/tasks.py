@@ -1,6 +1,6 @@
-from __future__ import unicode_literals
-from fabric.api import task, local
 import os
+from invoke import task, run
+from invoke_extras.context_managers import shell_env, cd
 
 
 SQLITE_DATABASE = 'db.sqlite3'
@@ -8,12 +8,18 @@ DUMPSCRIPT_DATAFILE = os.path.join(
     'cradmin_demo', 'project', 'dumps', 'dev', 'data.py')
 
 
-def _manage(args, capture=False):
-    command = 'python manage.py {0} --traceback'.format(args)
-    if capture:
-        return local(command, capture=True)
+def _manage(args, echo=True, cwd=None, **kwargs):
+    management_script = 'manage.py'
+    if cwd:
+        cwd = os.path.abspath(cwd)
+        management_script = os.path.relpath(os.path.abspath(management_script), cwd)
+    command = 'python {} {} --traceback'.format(management_script, args)
+    if cwd:
+        with cd(cwd):
+            result = run(command, echo=echo, **kwargs)
     else:
-        local(command)
+        result = run(command, echo=echo, **kwargs)
+    return result
 
 
 @task
