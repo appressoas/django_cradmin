@@ -14,3 +14,4 @@ recursive-include django_cradmin *.svg
 recursive-include django_cradmin *.otf
 prune django_cradmin/static/django_cradmin/node_modules
 prune django_cradmin/static/django_cradmin/bower_components
+prune django_cradmin/demo

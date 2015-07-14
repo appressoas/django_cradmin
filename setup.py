@@ -13,7 +13,7 @@ setup(
             'ez_setup',
             'django_cradmin_testsettings',
             'django_cradmin_testurls',
-            'fabfile'
+            'tasks'
         ]),
     zip_safe=False,
     include_package_data=True,

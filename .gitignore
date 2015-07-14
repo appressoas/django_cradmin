@@ -24,3 +24,4 @@
 /cradmin_demo/test_django_media_root/
 /cache/
 
+*.sqlite3

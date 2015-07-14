@@ -92,7 +92,7 @@ STATIC_ROOT = 'test_django_static_root'
 # Django crispy forms:
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-ROOT_URLCONF = 'django_cradmin_testurls'
+ROOT_URLCONF = 'django_cradmin.demo.project.test.urls'
 DJANGO_CRADMIN_SITENAME = 'Testsite'
 DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
     'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountForm'
