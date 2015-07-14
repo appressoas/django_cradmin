@@ -43,17 +43,15 @@ class TimePickerWidget(widgets.TimeInput):
         })
 
 
-
 class DateTimePickerWidget(widgets.MultiWidget):
     """
     A Widget using AngularJS ui-bootstrap's `ui.bootstrap.datepicker` for selecting a date and
     `ui.bootstrap.timepicker` for selecting a time, then combining them in a single datetime
     """
-
     def __init__(self, attrs=None):
         _widgets = [
             DatePickerWidget(attrs=attrs),
-            TimeInput(attrs=attrs)
+            TimePickerWidget(attrs=attrs)
         ]
         super(DateTimePickerWidget, self).__init__(_widgets, attrs)
 
@@ -65,14 +63,8 @@ class DateTimePickerWidget(widgets.MultiWidget):
             ''.join(rendered_widgets))
 
     def value_from_datadict(self, data, files, name):
-
-        print(data)
         timevalue = data.get('{}_1'.format(name), '')
         datevalue = data.get('{}_0'.format(name), '')
-
         datetimevalue = '{} {}'.format(datevalue, timevalue)
-        print(datetimevalue)
-
-        # return time.strptime(datetimevalue, "%Y-%m-%d %H:%M")
         return datetimevalue
 
