@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
-from cradmin_demo.project import settings
-from cradmin_demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
-from cradmin_demo.webdemo.cradmin import WebdemoCrAdminInstance
+from django_cradmin.demo.project import settings
+from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
+from django_cradmin.demo.webdemo.cradmin import WebdemoCrAdminInstance
 
 from django.contrib import admin
 admin.autodiscover()
@@ -18,11 +18,11 @@ urlpatterns = patterns(
 
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^webdemoadmin/', include(WebdemoCrAdminInstance.urls())),
-    url(r'^webdemo/', include('cradmin_demo.webdemo.urls')),
+    url(r'^webdemo/', include('django_cradmin.demo.webdemo.urls')),
     url(r'^usermanagerdemo/', include(UsermanagerCrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
     url(r'^$', RedirectView.as_view(url='/webdemoadmin/', permanent=False)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT}),
-    url(r'^polls/', include('cradmin_demo.polls_demo.urls'))
+    url(r'^polls/', include('django_cradmin.demo.polls_demo.urls'))
 )

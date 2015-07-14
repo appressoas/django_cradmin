@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.conf.urls import url, patterns
-from cradmin_demo.webdemo.crapps.inviteadmins.accept import AcceptPrivateSiteAdminInviteView
-from cradmin_demo.webdemo.crapps.sharable_link.accept import AcceptPublicSiteAdminInviteView
+from django_cradmin.demo.webdemo.crapps.inviteadmins.accept import AcceptPrivateSiteAdminInviteView
+from django_cradmin.demo.webdemo.crapps.sharable_link.accept import AcceptPublicSiteAdminInviteView
 
 
 urlpatterns = patterns(

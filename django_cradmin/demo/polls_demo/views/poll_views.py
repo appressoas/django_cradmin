@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
 
-from cradmin_demo.polls_demo.models import Choice, Question
+from django_cradmin.demo.polls_demo.models import Choice, Question
 
 
 class IndexView(generic.ListView):

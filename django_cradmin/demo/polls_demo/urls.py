@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url, include
 
 from .views import poll_views
-from cradmin_demo.polls_demo import cradmin
+from django_cradmin.demo.polls_demo import cradmin
 
 urlpatterns = patterns(
     '',

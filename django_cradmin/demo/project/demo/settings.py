@@ -87,7 +87,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 ROOT_URLCONF = 'django_cradmin.demo.project.demo.urls'
 
-# WSGI_APPLICATION = 'cradmin_demo.wsgi.application'
+# WSGI_APPLICATION = 'django_cradmin.demo.wsgi.application'
 
 
 # Database

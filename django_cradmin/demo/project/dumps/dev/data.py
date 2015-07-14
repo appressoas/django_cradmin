@@ -152,7 +152,7 @@ def import_data():
     auth_user_1 = importer.save_or_locate(auth_user_1)
 
 
-    from cradmin_demo.webdemo.models import Site
+    from django_cradmin.demo.webdemo.models import Site
 
     webdemo_site_1 = Site()
     webdemo_site_1.name = u'Demosite'
@@ -171,7 +171,7 @@ def import_data():
 
     # Processing model: Page
 
-    from cradmin_demo.webdemo.models import Page
+    from django_cradmin.demo.webdemo.models import Page
 
     webdemo_page_1 = Page()
     webdemo_page_1.title = u'My supertest!'

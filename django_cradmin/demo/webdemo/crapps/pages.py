@@ -16,7 +16,7 @@ from django_cradmin import crapp
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
-from cradmin_demo.webdemo.models import Page
+from django_cradmin.demo.webdemo.models import Page
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 from django_cradmin.widgets.datetimepicker import DateTimePickerWidget

@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.contrib import admin
-from cradmin_demo.webdemo.models import Site, Page
+from django_cradmin.demo.webdemo.models import Site, Page
 
 
 class SiteAdmin(admin.ModelAdmin):

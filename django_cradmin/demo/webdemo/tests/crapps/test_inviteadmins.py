@@ -2,9 +2,10 @@ from __future__ import unicode_literals
 from django.test import TestCase, RequestFactory
 from django.core import mail
 import htmls
+import mock
+from django_cradmin.demo.webdemo.crapps.inviteadmins.send import SendInvitesView
 
-from cradmin_demo.webdemo.crapps.inviteadmins import SendPrivateInvites
-from cradmin_demo.webdemo.models import Site
+from django_cradmin.demo.webdemo.models import Site
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 
 
@@ -20,7 +21,7 @@ class TestInviteAdmins(TestCase):
         })
         request.cradmin_role = self.testsite
         self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
-        SendPrivateInvites.as_view()(request)
+        SendInvitesView.as_view()(request)
         self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
         self.assertEqual(len(mail.outbox), 0)
 
@@ -29,7 +30,7 @@ class TestInviteAdmins(TestCase):
             'emails': "invalid"
         })
         request.cradmin_role = self.testsite
-        response = SendPrivateInvites.as_view()(request)
+        response = SendInvitesView.as_view()(request)
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
@@ -43,7 +44,7 @@ class TestInviteAdmins(TestCase):
         })
         request.cradmin_role = self.testsite
         self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
-        SendPrivateInvites.as_view()(request)
+        SendInvitesView.as_view()(request)
         self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
         self.assertEqual(len(mail.outbox), 0)
 
@@ -52,7 +53,7 @@ class TestInviteAdmins(TestCase):
             'emails': "invalid"
         })
         request.cradmin_role = self.testsite
-        response = SendPrivateInvites.as_view()(request)
+        response = SendInvitesView.as_view()(request)
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
@@ -65,8 +66,9 @@ class TestInviteAdmins(TestCase):
             'emails': "test1@example.com, test2@example.com"
         })
         request.cradmin_role = self.testsite
+        request.cradmin_app = mock.MagicMock()
         self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
-        response = SendPrivateInvites.as_view()(request)
+        response = SendInvitesView.as_view()(request)
         self.assertEquals(response.status_code, 302)
         self.assertEqual(GenericTokenWithMetadata.objects.count(), 2)
         self.assertEqual(len(mail.outbox), 2)

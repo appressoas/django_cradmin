@@ -42,6 +42,12 @@ INSTALLED_APPS = (
     # Required by django cradmin
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
+
+    # Demo apps
+    'django_cradmin.demo.webdemo',
+    'django_cradmin.demo.polls_demo',
+    'django_cradmin.demo.usermanagerdemo',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,7 +70,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
-# ROOT_URLCONF = 'cradmin_demo.project.urls'
+# ROOT_URLCONF = 'django_cradmin.demo.project.urls'
 
 # We do not set a name -- the test framework does that.
 DATABASES = {
