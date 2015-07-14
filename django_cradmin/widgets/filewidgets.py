@@ -36,6 +36,7 @@ class ImageWidget(forms.ClearableFileInput):
         if self.accept:
             attrs['accept'] = self.accept
         input_html = forms.FileInput.render(self, name, value, attrs)
+
         output = render_to_string(self.template_name, {
             'input_html': input_html,
             'image_path': getattr(value, 'name', None),
@@ -44,7 +45,8 @@ class ImageWidget(forms.ClearableFileInput):
             'clearable': self.clearable,
             'preview_width': self.preview_width,
             'preview_height': self.preview_height,
-            'preview_format': self.preview_format
+            'preview_format': self.preview_format,
+            'value': value
         })
         return mark_safe(output)
 
@@ -80,6 +82,7 @@ class FileWidget(forms.ClearableFileInput):
             file_name = posixpath.basename(file_path)
         else:
             file_name = None
+
         output = render_to_string(self.template_name, {
             'input_html': input_html,
             'file_path': file_path,
@@ -87,5 +90,6 @@ class FileWidget(forms.ClearableFileInput):
             'MEDIA_URL': settings.MEDIA_URL,
             'clear_checkbox_name': self.clear_checkbox_name(name),
             'clearable': self.clearable,
+            'value': value
         })
         return mark_safe(output)

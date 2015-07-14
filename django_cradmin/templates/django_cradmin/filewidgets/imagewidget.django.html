@@ -20,7 +20,7 @@
             {% endif %}
         </a>
     </div>
-    {% if clearable %}
+    {% if clearable and value %}
         <label class="django-cradmin-filewidget-clear">
             <input type="checkbox" name="{{ clear_checkbox_name }}">
             {% trans "Remove image" %}
