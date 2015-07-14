@@ -35,6 +35,7 @@ class ImageWidget(forms.ClearableFileInput):
         attrs['django-cradmin-image-preview-filefield'] = ''
         if self.accept:
             attrs['accept'] = self.accept
+        attrs['cradmin-filefield-value'] = value or ''
         input_html = forms.FileInput.render(self, name, value, attrs)
 
         output = render_to_string(self.template_name, {
@@ -46,7 +47,6 @@ class ImageWidget(forms.ClearableFileInput):
             'preview_width': self.preview_width,
             'preview_height': self.preview_height,
             'preview_format': self.preview_format,
-            'value': value
         })
         return mark_safe(output)
 
@@ -76,6 +76,7 @@ class FileWidget(forms.ClearableFileInput):
         attrs = attrs or {}
         if self.accept:
             attrs['accept'] = self.accept
+        attrs['cradmin-filefield-value'] = value or ''
         input_html = forms.FileInput.render(self, name, value, attrs)
         file_path = getattr(value, 'name', None)
         if file_path:
@@ -90,6 +91,5 @@ class FileWidget(forms.ClearableFileInput):
             'MEDIA_URL': settings.MEDIA_URL,
             'clear_checkbox_name': self.clear_checkbox_name(name),
             'clearable': self.clearable,
-            'value': value
         })
         return mark_safe(output)

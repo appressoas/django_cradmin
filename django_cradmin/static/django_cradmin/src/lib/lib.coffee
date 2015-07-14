@@ -14,4 +14,5 @@ angular.module('djangoCradmin', [
   'djangoCradmin.forms.modelchoicefield'
   'djangoCradmin.forms.usethisbutton'
   'djangoCradmin.forms.datetimewidget'
+  'djangoCradmin.forms.filewidget'
 ])

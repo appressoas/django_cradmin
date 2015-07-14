@@ -20,13 +20,12 @@ angular.module('djangoCradmin.imagepreview', [])
   ###
   controller = ($scope) ->
     @setImg = (imgscope) ->
-      $scope.img = imgscope
+      $scope.cradminImagePreviewImage = imgscope
     @previewFile = (file) ->
-      $scope.img.previewFile(file)
+      $scope.cradminImagePreviewImage.previewFile(file)
     return
   return {
     restrict: 'A'
-    scope: {}
     controller: controller
   }
 
@@ -44,9 +43,9 @@ angular.module('djangoCradmin.imagepreview', [])
       reader.readAsDataURL(file)
     return
 
-  link = (scope, element, attrs, previewCtrl) ->
-    scope.element = element
-    previewCtrl.setImg(scope)
+  link = ($scope, element, attrs, previewCtrl) ->
+    $scope.element = element
+    previewCtrl.setImg($scope)
     if not element.attr('src')? or element.attr('src') == ''
       element.addClass('ng-hide')
     return
@@ -60,18 +59,18 @@ angular.module('djangoCradmin.imagepreview', [])
   }
 
 .directive 'djangoCradminImagePreviewFilefield', ->
-  link = (scope, element, attrs, previewCtrl) ->
-    scope.previewCtrl = previewCtrl
-    scope.element = element
-    scope.wrapperelement = element.parent()
+  link = ($scope, element, attrs, previewCtrl) ->
+    $scope.previewCtrl = previewCtrl
+    $scope.element = element
+    $scope.wrapperelement = element.parent()
     element.bind 'change', (evt) ->
       if evt.target.files?
         file = evt.target.files[0]
-        scope.previewCtrl.previewFile(file)
+        $scope.previewCtrl.previewFile(file)
     element.bind 'mouseover', ->
-      scope.wrapperelement.addClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover')
+      $scope.wrapperelement.addClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover')
     element.bind 'mouseleave', ->
-      scope.wrapperelement.removeClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover')
+      $scope.wrapperelement.removeClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover')
     return
 
   return {

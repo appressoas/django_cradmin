@@ -141,6 +141,7 @@ class PageCreateUpdateMixin(object):
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget()
         form.fields['attachment'].widget = filewidgets.ImageWidget()
+        # form.fields['attachment'].widget = filewidgets.FileWidget()
         return form
 
 

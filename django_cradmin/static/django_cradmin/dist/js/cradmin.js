@@ -984,6 +984,72 @@
 }).call(this);
 
 (function() {
+  var app;
+
+  app = angular.module('djangoCradmin.forms.filewidget', []);
+
+  app.controller('CradminFileFieldController', function($scope, $filter) {
+    $scope.init = function() {
+      $scope.$watch('cradmin_filefield_has_value', function(newValue) {
+        if (newValue != null) {
+          if (newValue) {
+            return $scope.cradmin_filefield_clearcheckbox_value = '';
+          } else {
+            return $scope.cradmin_filefield_clearcheckbox_value = 'checked';
+          }
+        }
+      });
+    };
+    $scope.cradminClearFileField = function() {
+      return $scope.cradmin_filefield_clear_value = true;
+    };
+    $scope.init();
+  });
+
+  app.directive('cradminFilefieldValue', function() {
+    return {
+      scope: false,
+      link: function($scope, element, attributes) {
+        var fileFieldElement, setupFileFieldChangeListener;
+        $scope.cradmin_filefield_clear_value = false;
+        fileFieldElement = element;
+        if ((attributes.cradminFilefieldValue != null) && attributes.cradminFilefieldValue !== "") {
+          $scope.cradmin_filefield_has_value = true;
+          $scope.cradmin_filefield_has_original_value = true;
+        }
+        setupFileFieldChangeListener = function() {
+          return fileFieldElement.bind('change', function(changeEvent) {
+            var reader;
+            reader = new FileReader;
+            reader.onload = function(loadEvent) {
+              $scope.$apply(function() {
+                $scope.cradmin_filefield_has_value = true;
+                $scope.cradmin_filefield_has_original_value = false;
+              });
+            };
+            reader.readAsDataURL(changeEvent.target.files[0]);
+          });
+        };
+        $scope.$watch('cradmin_filefield_clear_value', function(newValue) {
+          var newFileFieldElement;
+          if (newValue) {
+            $scope.cradmin_filefield_has_value = false;
+            $scope.cradmin_filefield_clear_value = false;
+            $scope.cradmin_filefield_has_original_value = false;
+            newFileFieldElement = fileFieldElement.clone();
+            jQuery(fileFieldElement).replaceWith(newFileFieldElement);
+            fileFieldElement = newFileFieldElement;
+            return setupFileFieldChangeListener();
+          }
+        });
+        setupFileFieldChangeListener();
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.forms.modelchoicefield', []).provider('djangoCradminModelChoiceFieldCoordinator', function() {
     var ModelChoiceFieldOverlay;
     ModelChoiceFieldOverlay = (function() {
@@ -1393,15 +1459,14 @@
     var controller;
     controller = function($scope) {
       this.setImg = function(imgscope) {
-        return $scope.img = imgscope;
+        return $scope.cradminImagePreviewImage = imgscope;
       };
       this.previewFile = function(file) {
-        return $scope.img.previewFile(file);
+        return $scope.cradminImagePreviewImage.previewFile(file);
       };
     };
     return {
       restrict: 'A',
-      scope: {},
       controller: controller
     };
   }).directive('djangoCradminImagePreviewImg', function() {
@@ -1421,9 +1486,9 @@
         return reader.readAsDataURL(file);
       };
     };
-    link = function(scope, element, attrs, previewCtrl) {
-      scope.element = element;
-      previewCtrl.setImg(scope);
+    link = function($scope, element, attrs, previewCtrl) {
+      $scope.element = element;
+      previewCtrl.setImg($scope);
       if ((element.attr('src') == null) || element.attr('src') === '') {
         element.addClass('ng-hide');
       }
@@ -1437,22 +1502,22 @@
     };
   }).directive('djangoCradminImagePreviewFilefield', function() {
     var link;
-    link = function(scope, element, attrs, previewCtrl) {
-      scope.previewCtrl = previewCtrl;
-      scope.element = element;
-      scope.wrapperelement = element.parent();
+    link = function($scope, element, attrs, previewCtrl) {
+      $scope.previewCtrl = previewCtrl;
+      $scope.element = element;
+      $scope.wrapperelement = element.parent();
       element.bind('change', function(evt) {
         var file;
         if (evt.target.files != null) {
           file = evt.target.files[0];
-          return scope.previewCtrl.previewFile(file);
+          return $scope.previewCtrl.previewFile(file);
         }
       });
       element.bind('mouseover', function() {
-        return scope.wrapperelement.addClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover');
+        return $scope.wrapperelement.addClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover');
       });
       element.bind('mouseleave', function() {
-        return scope.wrapperelement.removeClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover');
+        return $scope.wrapperelement.removeClass('django-cradmin-filewidget-field-and-overlay-wrapper-hover');
       });
     };
     return {
@@ -1466,7 +1531,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
 
 }).call(this);
 
