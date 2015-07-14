@@ -5235,11 +5235,19 @@ table.table.django-cradmin-table tbody td:last-child {
   overflow: hidden !important;
   cursor: pointer;
 }
-.django-cradmin-form .django-cradmin-filewidget.django-cradmin-filewidget-clearable label.django-cradmin-filewidget-clear {
-  font-weight: normal;
-  padding: 0;
+.django-cradmin-form .django-cradmin-filewidget.django-cradmin-filewidget-clearable .django-cradmin-filewidget-clear {
   margin: 10px 0 0 0;
-  background: none;
+}
+.django-cradmin-form .django-cradmin-imagewidget.django-cradmin-filewidget.django-cradmin-filewidget-clearable .django-cradmin-imagewidget-preview-and-clear .django-cradmin-imagewidget-preview-and-clear-inner {
+  display: inline-block;
+  position: relative;
+}
+.django-cradmin-form .django-cradmin-imagewidget.django-cradmin-filewidget.django-cradmin-filewidget-clearable .django-cradmin-imagewidget-preview-and-clear .django-cradmin-imagewidget-preview-and-clear-inner .django-cradmin-filewidget-clear {
+  margin: 0;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 #objecttableview-table thead th {
   line-height: 40px;

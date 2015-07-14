@@ -1,17 +1,35 @@
 {% load i18n %}
 {% load cradmin_image_tags %}
+{% load cradmin_icon_tags %}
 
-<div class="django_cradmin_imagewidget django-cradmin-filewidget {% if clearable %}django-cradmin-filewidget-clearable{% endif %}"
+<div class="django-cradmin-imagewidget django-cradmin-filewidget {% if clearable %}django-cradmin-filewidget-clearable{% endif %}"
         django-cradmin-image-preview
         ng-controller="CradminFileFieldController">
-    {% if image_path %}
-        <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format %}"
-             ng-show="cradmin_filefield_has_original_value"
-             django-cradmin-image-preview-img>
-    {% else %}
-        {# Used for the preview - hidden before we have a preview #}
-        <img django-cradmin-image-preview-img ng-show="cradmin_filefield_has_value">
-    {% endif %}
+    <div class="django-cradmin-imagewidget-preview-and-clear"
+            ng-show="cradmin_filefield_has_value">
+        <div class="django-cradmin-imagewidget-preview-and-clear-inner">
+            {% if image_path %}
+                <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format %}"
+                     django-cradmin-image-preview-img>
+            {% else %}
+                {# Used for the preview - hidden before we have a preview #}
+                <img django-cradmin-image-preview-img>
+            {% endif %}
+
+            {% if clearable %}
+                <div class="django-cradmin-filewidget-clear">
+                    <input type="hidden" name="{{ clear_checkbox_name }}"
+                           ng-value="cradmin_filefield_clearcheckbox_value">
+                    <button type="button" class="btn btn-danger btn-sm"
+                            ng-click="cradminClearFileField()">
+                        <span class="sr-only">{% trans "Remove image" %}</span>
+                        <span class="{% cradmin_icon 'x' %}"></span>
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
     <div class="django-cradmin-filewidget-field-and-overlay-wrapper" django-cradmin-filefield-overlay>
         {{ input_html|safe }}
         <a class="btn btn-default django-cradmin-filewidget-fieldoverlay" href="#">
@@ -22,15 +40,4 @@
             {% endif %}
         </a>
     </div>
-    {% if clearable %}
-        <div class="django-cradmin-filewidget-clear"
-               ng-show="cradmin_filefield_has_value">
-            <input type="hidden" name="{{ clear_checkbox_name }}"
-                   ng-value="cradmin_filefield_clearcheckbox_value">
-            <button type="button" class="btn btn-danger btn-sm"
-                    ng-click="cradminClearFileField()">
-                {% trans "Remove file" %}
-            </button>
-        </div>
-    {% endif %}
 </div>

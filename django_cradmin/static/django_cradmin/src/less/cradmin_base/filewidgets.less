@@ -49,11 +49,26 @@
     }
 
     &.django-cradmin-filewidget-clearable {
-      label.django-cradmin-filewidget-clear {
-        font-weight: @cradmin-filewidget-clear-label-font-weight;
-        padding: @cradmin-filewidget-clear-label-padding;
-        margin: @cradmin-filewidget-clear-label-margin;
-        background: @cradmin-filewidget-clear-label-background;
+      .django-cradmin-filewidget-clear {
+        margin: @cradmin-filewidget-clear-margin;
+      }
+    }
+  }
+
+  .django-cradmin-imagewidget.django-cradmin-filewidget {
+    &.django-cradmin-filewidget-clearable {
+      .django-cradmin-imagewidget-preview-and-clear {
+        .django-cradmin-imagewidget-preview-and-clear-inner {
+          display: inline-block;
+          position: relative;
+          .django-cradmin-filewidget-clear {
+            margin: 0;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 0;
+          }
+        }
       }
     }
   }
