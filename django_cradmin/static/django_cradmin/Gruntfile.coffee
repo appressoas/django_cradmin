@@ -15,6 +15,7 @@ module.exports = (grunt) ->
     js: [
       'bower_components/jquery/dist/jquery.js'
       'bower_components/angular/angular.js'
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
       'bower_components/angular-cookies/angular-cookies.js'
       'bower_components/ng-file-upload/angular-file-upload.js'
       'bower_components/modernizr/modernizr.js'

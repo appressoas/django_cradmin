@@ -17,6 +17,9 @@ from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from cradmin_demo.webdemo.models import Page
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
+from django_cradmin.widgets.datetimepicker import DatePickerWidget
+from django_cradmin.widgets.datetimepicker import TimePickerWidget
+from django_cradmin.widgets.datetimepicker import DateTimePickerWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -135,6 +138,7 @@ class PageCreateUpdateMixin(object):
             preview=preview,
             selectview_url=self._get_image_selectview_url()
         )
+        form.fields['publishing_time'].widget = DateTimePickerWidget()
         return form
 
 

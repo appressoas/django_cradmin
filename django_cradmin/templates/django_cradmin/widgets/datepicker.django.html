@@ -1,0 +1,11 @@
+{% load i18n %}
+{% load cradmin_icon_tags %}
+
+<div id="id_cradmin_datefieldwrapper_{{ fieldname }}" ng-controller="CradminDateFieldController">
+    <input type="text" class="form-control" ng-model="datevalue"
+           is-open="datepicker_is_open" close-text="close"
+           datepicker-popup="{{ dateformat }}" ng-click="open_datepicker($event)"
+           ng-init="set_date_from_string('{{ datevalue|date:"Y-m-d" }}')"
+           ng-change="datefield_changed()">
+    <input type="hidden" id="{{ fieldid }}" name="{{ fieldname }}" value="{% verbatim %}{{ hiddendatefieldvalue }}{% endverbatim %}">
+</div>
