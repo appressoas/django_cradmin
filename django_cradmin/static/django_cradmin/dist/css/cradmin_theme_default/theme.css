@@ -4799,6 +4799,16 @@ form .alert-block.alert-danger ul li {
 .django-cradmin-create-foreignkey-select-mode-buttonbar {
   margin-bottom: 15px;
 }
+.django-cradmin-datetimepicker {
+  max-width: 400px;
+}
+.django-cradmin-datetimepicker .django-cradmin-datepicker {
+  float: left;
+  width: 50%;
+}
+.django-cradmin-datetimepicker .timeinput {
+  width: 50%;
+}
 table.table.django-cradmin-table {
   margin: 0;
 }

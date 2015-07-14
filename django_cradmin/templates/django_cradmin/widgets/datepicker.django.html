@@ -1,7 +1,9 @@
 {% load i18n %}
 {% load cradmin_icon_tags %}
 
-<div id="id_cradmin_datefieldwrapper_{{ fieldname }}" ng-controller="CradminDateFieldController">
+<div id="id_cradmin_datefieldwrapper_{{ fieldname }}"
+     class="django-cradmin-datepicker"
+     ng-controller="CradminDateFieldController">
     <input type="text" class="form-control" ng-model="datevalue"
            is-open="datepicker_is_open" close-text="close"
            datepicker-popup="{{ dateformat }}" ng-click="open_datepicker($event)"

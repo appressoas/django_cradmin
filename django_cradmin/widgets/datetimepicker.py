@@ -1,4 +1,4 @@
-from django.forms import widgets
+from django.forms import widgets, TimeInput
 from django.template import loader
 import datetime
 import time
@@ -53,7 +53,7 @@ class DateTimePickerWidget(widgets.MultiWidget):
     def __init__(self, attrs=None):
         _widgets = [
             DatePickerWidget(attrs=attrs),
-            TimePickerWidget(attrs=attrs)
+            TimeInput(attrs=attrs)
         ]
         super(DateTimePickerWidget, self).__init__(_widgets, attrs)
 
@@ -61,7 +61,8 @@ class DateTimePickerWidget(widgets.MultiWidget):
         return [value, value]
 
     def format_output(self, rendered_widgets):
-        return ''.join(rendered_widgets)
+        return '<div class="django-cradmin-datetimepicker">{}</div>'.format(
+            ''.join(rendered_widgets))
 
     def value_from_datadict(self, data, files, name):
 

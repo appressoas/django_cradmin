@@ -128,7 +128,7 @@ module.exports = (grunt) ->
         # base path that will be used to resolve all patterns
         basePath: ''
 
-        # frameworks to use
+        # frameworks to use¨
         # available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine']
 
