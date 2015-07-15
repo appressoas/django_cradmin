@@ -77,6 +77,7 @@ Development
 .. toctree::
    :maxdepth: 1
 
+   develop
    databasedumps
    i18n
 

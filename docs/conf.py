@@ -19,7 +19,7 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.abspath('.'))
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_cradmin_testsettings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_cradmin.demo.project.settingsproxy")
 import django
 django.setup()
 

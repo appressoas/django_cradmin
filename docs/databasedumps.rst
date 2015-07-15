@@ -12,7 +12,7 @@ Importing the test data
 ***********************
 The easiest method of importing the test database is to use the ``recreate_devdb`` Fabric task::
 
-    $ fab recreate_devdb
+    $ inv recreate_devdb
 
 .. warning:: This will destroy your current database.
 
@@ -31,7 +31,7 @@ Users in the test database
 **************************
 After importing the test data, you will have some new users. Login to the Django admin UI (http://localhost:8000/admin/) with::
 
-    user: grandma
+    email: grandma@example.com
     password: test
 
 and select Users to list all users. The password of all users are ``test``.
@@ -49,7 +49,7 @@ To add data manually, you should first run thr ``recreate_devdb`` management
 command to make sure you start out with the current up-to-date dataset. Then you
 can use the web-UI or the Django shell to add data. Finally, run::
 
-    $ fab dump_current_db_to_dumpscript_datafile
+    $ inv dump_current_db_to_dumpscript_datafile
 
 
 Adding data programmatically
