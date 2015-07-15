@@ -108,14 +108,16 @@
       .django-cradmin-bulkfileupload,
       .cradmin-div-styled-as-textarea,
       select {
-        border: 1px solid #ddd;
+        border: 1px solid @cradmin-form-field-inactive-border-color;
         border-radius: 4px;
         outline: none;
         box-shadow: none;
         padding: 10px 12px;
-        background: @cradmin-form-inactive-bg;
+        background: @cradmin-form-field-inactive-bg;
         &:focus {
-          background: @cradmin-form-selected-bg;
+          background: @cradmin-form-field-focus-bg;
+          border-color: @cradmin-form-field-focus-border-color;
+          box-shadow: @cradmin-form-field-focus-box-shadow;
         }
       }
 
@@ -133,35 +135,6 @@
           height: 60px;
         }
       }
-
-      //.django-cradmin-bulkfileupload,
-      //.cradmin-div-styled-as-textarea {
-      //  border: none;
-      //  outline: none;
-      //  border-radius: 0;
-      //  box-shadow: none;
-      //  margin: 0;
-      //  .body-side-padding();
-      //  padding-top: 40px;
-      //  padding-bottom: 40px;
-      //  background: #fff;
-      //  height: auto;
-      //  text-align: left;
-      //  &:focus {
-      //    background: @cradmin-form-selected-bg;
-      //  }
-      //  &.cradmin-focus {
-      //    background: @cradmin-form-selected-bg;
-      //  }
-      //
-      //  @media (min-width: @screen-md-min) {
-      //    max-width: 600px;
-      //    border-right: 1px dashed #ccc;
-      //  }
-      //  @media (min-width: @screen-lg-min) {
-      //    max-width: 800px;
-      //  }
-      //}
     }
 
     .cradmin-focusfield {

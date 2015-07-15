@@ -16,25 +16,17 @@
   .ace_editor {
     font-size: @font-size-base;
     height: 400px;
-    background: @cradmin-form-inactive-bg;
+    background: @cradmin-form-field-inactive-bg;
   }
 }
 
 .django-cradmin-form {
   .cradmin-focusfield .form-group .controls {
     .cradmin-acemarkdown.cradmin-div-styled-as-textarea {
-      //.btn-toolbar {
-      //  opacity: 0;
-      //  transition-duration: 0.3s;
-      //  transition-property: opacity;
-      //}
-      background: @cradmin-form-inactive-bg;
+      background: @cradmin-form-field-inactive-bg;
 
       .ace_editor {
         height: 100px;
-        //.ace_content {
-        //  padding: 13px;
-        //}
 
         @media (min-height: 400px) {
           height: 200px;
@@ -51,12 +43,9 @@
       }
 
       &.cradmin-focus {
-        //.btn-toolbar {
-        //  opacity: 1.0;
-        //}
-        background: @cradmin-form-selected-bg;
+        background: @cradmin-form-field-focus-bg;
         .ace_editor {
-          background: @cradmin-form-selected-bg;
+          background: @cradmin-form-field-focus-bg;
         }
       }
 

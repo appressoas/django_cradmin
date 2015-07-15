@@ -4753,7 +4753,7 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
 .django-cradmin-form-wrapper .django-cradmin-form .form-group .django-cradmin-bulkfileupload,
 .django-cradmin-form-wrapper .django-cradmin-form .form-group .cradmin-div-styled-as-textarea,
 .django-cradmin-form-wrapper .django-cradmin-form .form-group select {
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 4px;
   outline: none;
   box-shadow: none;
@@ -4768,6 +4768,8 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
 .django-cradmin-form-wrapper .django-cradmin-form .form-group .cradmin-div-styled-as-textarea:focus,
 .django-cradmin-form-wrapper .django-cradmin-form .form-group select:focus {
   background: #e1edf4;
+  border-color: #bcd7e6;
+  box-shadow: none;
 }
 .django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=text],
 .django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=email],
