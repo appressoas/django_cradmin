@@ -1,6 +1,7 @@
 import os
+
 from invoke import task, run
-from invoke_extras.context_managers import shell_env, cd
+from invoke_extras.context_managers import cd
 
 LANGUAGE_CODES = ['en', 'nb']
 SQLITE_DATABASE = 'db.sqlite3'
@@ -30,9 +31,11 @@ def makemessages():
                 '-i "static/*"'.format(languagecode),
                 cwd='django_cradmin')
 
+
 @task
 def compilemessages():
     _manage('compilemessages', cwd='django_cradmin')
+
 
 @task
 def syncmigrate():

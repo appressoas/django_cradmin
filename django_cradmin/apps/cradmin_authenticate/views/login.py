@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
+
 from crispy_forms import layout
 from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
