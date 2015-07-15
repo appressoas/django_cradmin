@@ -157,20 +157,18 @@ class TestButton(TestCase):
             label="My Btn", url="www.example.com/mybtnurl",
             buttonclass="btn btn-danger btn-sm",
             icon="glyphicon glyphicon-shopping-cart")
-        expected = [
-            '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-danger', 'btn-sm"', '>',
-            '<span', 'class="glyphicon', 'glyphicon-shopping-cart"></span>', 'My', 'Btn', '</a>'
-        ]
-        result = btn.render().split()
-        self.assertEquals(result, expected)
+        selector = htmls.S(btn.render())
+        self.assertEqual(selector.one('a')['href'], 'www.example.com/mybtnurl')
+        self.assertEqual(selector.one('a')['class'], 'btn btn-danger btn-sm')
+        self.assertEqual(selector.one('a').alltext_normalized, 'My Btn')
+        self.assertEqual(selector.one('a span')['class'], 'glyphicon glyphicon-shopping-cart')
 
     def test_render_simple(self):
         btn = objecttable.Button(label="My Btn", url="www.example.com/mybtnurl")
-        expected = [
-            '<a', 'href="www.example.com/mybtnurl"', 'class="btn', 'btn-default', 'btn-sm"', '>',
-            'My', 'Btn', '</a>']
-        result = btn.render().split()
-        self.assertEquals(result, expected)
+        selector = htmls.S(btn.render())
+        self.assertEqual(selector.one('a')['href'], 'www.example.com/mybtnurl')
+        self.assertEqual(selector.one('a')['class'], 'btn btn-default btn-sm')
+        self.assertEqual(selector.one('a').alltext_normalized, 'My Btn')
 
 
 class TestOrderingStringParser(TestCase):
