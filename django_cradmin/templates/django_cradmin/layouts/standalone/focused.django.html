@@ -28,22 +28,29 @@
 {% endblock bodyclass %}
 
 {% block body %}
-    {% block messages %}
-        <div id="django_cradmin_messages_standalone_wrapper">
-            {% include "django_cradmin/include/messages.django.html" %}
-        </div>
-    {% endblock messages %}
-
     <div id="django_cradmin_focusedlayout_wrapper"
-            class="{% block wrapperclass %}django-cradmin-focusedpage-wrapper{% endblock wrapperclass %}">
-        {% block pageheader %}
-            <div class="page-header">
-                {% block pageheader-inner %}{% endblock pageheader-inner %}
-            </div>
-        {% endblock pageheader %}
+         class="{% block wrapperclass %}django-cradmin-focusedpage-wrapper{% endblock %}">
 
-        <div id="django_cradmin_focusedlayout_content" class="django-cradmin-focusedpage-content">
-            {% block content %}{% endblock content %}
+        {% block messages %}
+            <div id="django_cradmin_messages_standalone_wrapper">
+                {% include "django_cradmin/include/messages.django.html" %}
+            </div>
+        {% endblock messages %}
+
+        {% block innerwrapper_pre %}{% endblock innerwrapper_pre %}
+
+        <div class="django-cradmin-focusedpage-wrapper-inner">
+            {% block pageheader %}
+                <div class="page-header">
+                    {% block pageheader-inner %}{% endblock pageheader-inner %}
+                </div>
+            {% endblock pageheader %}
+
+            <div id="django_cradmin_focusedlayout_content" class="django-cradmin-focusedpage-content">
+                {% block content %}{% endblock content %}
+            </div>
         </div>
+
+        {% block innerwrapper_post %}{% endblock innerwrapper_post %}
     </div>
 {% endblock body %}

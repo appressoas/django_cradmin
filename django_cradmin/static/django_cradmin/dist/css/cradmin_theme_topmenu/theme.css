@@ -5638,25 +5638,6 @@ ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-ch
 .django-cradmin-focusedpage-wrapper {
   width: 100%;
   height: 100%;
-  background: #fff;
-  padding: 24px 30px;
-  text-align: left;
-  margin-bottom: 30px;
-}
-.django-cradmin-focusedpage-wrapper .page-header {
-  background: none;
-  color: #333333;
-  padding: 0 0 25px 0;
-  border: none;
-  margin: 0;
-}
-.django-cradmin-focusedpage-wrapper .page-header h1 {
-  margin: 0 0 5px 0;
-  font-size: 26px;
-  font-weight: bold;
-}
-.django-cradmin-focusedpage-wrapper .page-header p:last-child {
-  margin: 0;
 }
 @media (min-width: 768px) {
   .django-cradmin-focusedpage-wrapper {
@@ -5664,13 +5645,38 @@ ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-ch
     margin-left: auto;
     margin-right: auto;
     height: auto;
-    border: 1px solid #ccc;
     width: 600px;
   }
 }
 @media (min-width: 768px) {
   .django-cradmin-focusedpage-wrapper.django-cradmin-focusedpage-wrapper-narrow {
     width: 400px;
+  }
+}
+.django-cradmin-focusedpage-wrapper .django-cradmin-focusedpage-wrapper-inner {
+  background: #fff;
+  padding: 24px 30px;
+  text-align: left;
+  margin-bottom: 30px;
+}
+.django-cradmin-focusedpage-wrapper .django-cradmin-focusedpage-wrapper-inner .page-header {
+  background: none;
+  color: #333333;
+  padding: 0 0 25px 0;
+  border: none;
+  margin: 0;
+}
+.django-cradmin-focusedpage-wrapper .django-cradmin-focusedpage-wrapper-inner .page-header h1 {
+  margin: 0 0 5px 0;
+  font-size: 26px;
+  font-weight: bold;
+}
+.django-cradmin-focusedpage-wrapper .django-cradmin-focusedpage-wrapper-inner .page-header p:last-child {
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .django-cradmin-focusedpage-wrapper .django-cradmin-focusedpage-wrapper-inner {
+    border: 1px solid #ccc;
   }
 }
 nav.django-cradmin-menu {
