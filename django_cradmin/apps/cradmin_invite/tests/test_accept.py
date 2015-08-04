@@ -92,7 +92,7 @@ class TestAbstractAcceptInviteView(TestCase):
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_as_different_user_button')['href'],
             '/cradmin_authenticate/logout?'
-            'next=%2Fcradmin_authenticate%2Flogin%3Fnext%3Dhttp%253A%252F%252Ftestserver%252Ftest')
+            'next=%2Faccounts%2Flogin%2F%3Fnext%3Dhttp%253A%252F%252Ftestserver%252Ftest')
 
         self.assertEqual(
             selector.one('button#django_cradmin_invite_accept_as_button').alltext_normalized,
@@ -115,7 +115,7 @@ class TestAbstractAcceptInviteView(TestCase):
         selector = htmls.S(response.content)
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_button')['href'],
-            '/cradmin_authenticate/login?next=http%3A%2F%2Ftestserver%2Ftest')
+            '/accounts/login/?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_register_account_button')['href'],
             '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')

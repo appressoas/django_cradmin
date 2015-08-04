@@ -151,9 +151,9 @@ class AbstractAcceptInviteView(TemplateView):
         Should have some way of returning the user to this view after
         login is complete.
 
-        Defaults to the ``cradmin-authenticate-login`` view in ``django_cradmin.apps.cradmin_authenticate``.
+        Defaults to ``settings.LOGIN_URL``.
         """
-        return self.add_next_argument_to_url(reverse('cradmin-authenticate-login'))
+        return self.add_next_argument_to_url(settings.LOGIN_URL)
 
     def get_login_as_different_user_url(self):
         """
