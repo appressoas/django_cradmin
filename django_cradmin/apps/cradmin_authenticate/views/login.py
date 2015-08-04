@@ -175,6 +175,43 @@ class LoginView(FormView):
         else:
             return super(LoginView, self).get(*args, **kwargs)
 
+    def get_initial_email_value(self):
+        """
+        Can be overriden to provide an initial value for the email.
+
+        If this returns anything other than ``None``, it changes
+        the behavior of the form to focus on the password field
+        instead of the email field at page load, and the email field
+        becomes a hidden field instead of an input field.
+        """
+        return None
+
+    def __get_inital_email_value(self):
+        if not hasattr(self, '_inital_email_value'):
+            self._inital_email_value = self.get_initial_email_value()
+        return self._inital_email_value
+
+    def get_field_layout(self):
+        form_class = self.get_form_class()
+        if self.__get_inital_email_value() is not None:
+            return [
+                layout.Hidden(form_class.username_field, self.__get_inital_email_value()),
+                layout.Field('password',
+                             placeholder=form_class.password_field_placeholder,
+                             focusonme='focusonme',
+                             css_class='input-lg'),
+            ]
+        else:
+            return [
+                layout.Field(form_class.username_field,
+                             placeholder=form_class.username_field_placeholder,
+                             css_class='input-lg',
+                             focusonme='focusonme'),
+                layout.Field('password',
+                             placeholder=form_class.password_field_placeholder,
+                             css_class='input-lg'),
+            ]
+
     def get_form_helper(self):
         """
         Defines and returns the ``django_crispy_forms`` layout. Override this if you want to alter the form-layout.
@@ -184,18 +221,8 @@ class LoginView(FormView):
         formhelper.form_id = 'cradmin_authenticate_login_form'
         formhelper.label_class = 'sr-only'
 
-        form_class = self.get_form_class()
-        formhelper.layout = layout.Layout(
-            layout.Field(form_class.username_field,
-                         placeholder=form_class.username_field_placeholder,
-                         css_class='input-lg',
-                         focusonme='focusonme'
-                         ),
-            layout.Field('password',
-                         placeholder=form_class.password_field_placeholder,
-                         css_class='input-lg'),
-            PrimarySubmitLg('login', _('Sign in'))
-        )
+        layoutargs = self.get_field_layout() + [PrimarySubmitLg('login', _('Sign in'))]
+        formhelper.layout = layout.Layout(*layoutargs)
         return formhelper
 
     def get_success_url(self):
