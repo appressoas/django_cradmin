@@ -183,19 +183,38 @@ class LoginView(FormView):
         the behavior of the form to focus on the password field
         instead of the email field at page load, and the email field
         becomes a hidden field instead of an input field.
+
+        .. seealso:: :meth:`.initial_email_value`.
+
+        Returns:
+            The initial email value if we have any. Should
+            return something that evaluates to ``bool(value) == False``
+            if we have no initial email value.
         """
         return None
 
-    def __get_inital_email_value(self):
+    @property
+    def initial_email_value(self):
+        """
+        We use this to retrieve the value of :meth:`.get_initial_email_value`,
+        and you should use it if you need the value in your subclasses.
+
+        This method only retrieves the value returned by
+        :meth:`.get_initial_email_value` once, and cache it internally.
+        This means that the get_initial_email_value method can perform
+        potentially expensive operations, or operations that should
+        only run once (like request.session.pop) without worrying
+        about it.
+        """
         if not hasattr(self, '_inital_email_value'):
             self._inital_email_value = self.get_initial_email_value()
         return self._inital_email_value
 
     def get_field_layout(self):
         form_class = self.get_form_class()
-        if self.__get_inital_email_value() is not None:
+        if self.initial_email_value:
             return [
-                layout.Hidden(form_class.username_field, self.__get_inital_email_value()),
+                layout.Hidden(form_class.username_field, self.initial_email_value),
                 layout.Field('password',
                              placeholder=form_class.password_field_placeholder,
                              focusonme='focusonme',
