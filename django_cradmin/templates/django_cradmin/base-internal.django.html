@@ -20,7 +20,9 @@
         {% endblock pageheader %}
 
         {% block messages %}
-            {% include "django_cradmin/include/messages.django.html" %}
+            <div class="container">
+                {% include "django_cradmin/include/messages.django.html" %}
+            </div>
         {% endblock messages %}
 
         {% block content %}{% endblock content %}
