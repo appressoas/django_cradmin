@@ -34,7 +34,7 @@ class TestBeginPasswordResetView(TestCase):
 
     def test_post_user_found(self):
         create_user('testuser', email='testuser@example.com')
-        with mock.patch.object(BeginPasswordResetView, '_generate_token', lambda s, user: 'test-token'):
+        with mock.patch.object(BeginPasswordResetView, '_generate_token', lambda s, user: 'testtoken'):
             with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
                 response = self.client.post(self.url, {'email': 'testuser@example.com'})
         self.assertRedirects(response, reverse('cradmin-resetpassword-email-sent'))
@@ -46,7 +46,7 @@ class TestBeginPasswordResetView(TestCase):
 --- We received a request to reset the password for your Testsite account,
 testuser. If you made this request, click the button below. If you did not make
 this request, you can ignore this email.
-[Reset your password](http://testserver/cradmin_resetpassword/reset/test-token)""".strip())
+[Reset your password](http://testserver/cradmin_resetpassword/reset/testtoken)""".strip())
         self.assertEqual(htmls.normalize_whitespace(mail.outbox[0].body.strip()),
                          expected_email_body)
 
