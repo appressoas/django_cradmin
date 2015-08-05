@@ -200,7 +200,7 @@ class AbstractEmail(object):
         if template_name:
             return render_to_string(template_name, self.get_context_data()).strip()
         else:
-            return convert_html_to_plaintext(self.render_html_message())
+            return convert_html_to_plaintext(self.__get_rendered_html_message())
 
     def get_default_context_data(self):
         """
@@ -212,7 +212,7 @@ class AbstractEmail(object):
         """
         context_data = {
             'from_email': self.from_email,
-            'DJANGO_CRADMIN_EMAIL_BRANDNAME': getattr(settings, 'DJANGO_CRADMIN_EMAIL_BRANDNAME', ''),
+            'DJANGO_CRADMIN_SITENAME': getattr(settings, 'DJANGO_CRADMIN_SITENAME', ''),
             'DJANGO_CRADMIN_EMAIL_LOGO_HTML': getattr(settings, 'DJANGO_CRADMIN_EMAIL_LOGO_HTML', '')
         }
         if hasattr(settings, 'DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA'):
@@ -229,7 +229,7 @@ class AbstractEmail(object):
         By default this returns:
 
         - ``from_email``.
-        - ``DJANGO_CRADMIN_BRANDNAME`` (if set as a Django setting).
+        - ``DJANGO_CRADMIN_SITENAME`` (if set as a Django setting).
         - anything you send as the ``extra_context_data`` argument to the constructor.
         - Anything in the ``DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA`` setting.
         """
@@ -271,7 +271,7 @@ class AbstractEmail(object):
         return {
             'subject': self.render_subject(),
             'message': self.render_plaintext_message(),
-            'html_message': self.render_html_message(),
+            'html_message': self.__get_rendered_html_message(),
             'from_email': self.get_from_email(),
             'recipient_list': self.get_recipient_list()
         }

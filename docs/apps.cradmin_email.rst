@@ -27,8 +27,8 @@ DJANGO_CRADMIN_EMAIL_LOGO_HTML
     HTML for the logo in HTML emails. Used by the default email header template.
     More documentation below.
 
-DJANGO_CRADMIN_EMAIL_BRANDNAME
-    Use this to specify a brand name that you can use in your email
+DJANGO_CRADMIN_SITENAME
+    Use this to specify a site name that you can use in your email
     templates. Used by the default email header template.
 
 
