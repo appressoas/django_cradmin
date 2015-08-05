@@ -75,6 +75,51 @@ class AbstractEmail(object):
     #: is not set in subclasses, we autoconvert the HTML message to plain text.
     plaintext_message_template = None
 
+    #: Fallback value of the DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA setting
+    #: is not set.
+    DEFAULT_CONTEXT_DATA = {
+        'body_style': 'background-color: #fff;',
+        'common_paragraph_style': 'font-family: Arial, sans-serif; '
+                                  'font-size: 16px; '
+                                  'line-height: 1.42857143; '
+                                  'letter-spacing: 0.5px; ',
+        'header_paragraph_style': '',
+        'logo_style': '',
+        'contents_paragraph_style': '',
+        'footer_paragraph_style': 'border-top: 3px solid #eee; '
+                                  'font-size: 13px; '
+                                  'color: #777; '
+                                  'text-align: center; '
+                                  'padding-top: 20px; '
+                                  'padding-bottom: 20px; ',
+        'footer_link_style': 'color: #777; text-decoration: underline;',
+        'link_style': 'color: #377CA8; text-decoration: underline;',
+        'primary_button_link_style': 'padding-left: 16px; padding-right: 16px; '
+                                     'padding-top: 10px; padding-bottom: 10px; '
+                                     'border-color: #224D68; '
+                                     'border-style: solid; '
+                                     'border-width: 1px; '
+                                     'background-color: #377CA8; '
+                                     'color: #fff; '
+                                     'text-decoration: none; '
+                                     'font-weight: bold; '
+                                     'text-transform: uppercase; '
+                                     'border-radius: 3px; '
+                                     'letter-spacing: 1px; ',
+        'secondary_button_link_style': 'padding-left: 16px; padding-right: 16px; '
+                                       'padding-top: 10px; padding-bottom: 10px; '
+                                       'border-color: #D9D9D9; '
+                                       'border-style: solid; '
+                                       'border-width: 1px; '
+                                       'background-color: #fff; '
+                                       'color: #377CA8; '
+                                       'text-decoration: none; '
+                                       'font-weight: bold; '
+                                       'text-transform: uppercase; '
+                                       'border-radius: 3px; '
+                                       'letter-spacing: 1px; ',
+    }
+
     def get_subject_template(self):
         """
         Alternative way to specify :obj:`.subject_template`.
@@ -172,6 +217,8 @@ class AbstractEmail(object):
         }
         if hasattr(settings, 'DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA'):
             context_data.update(settings.DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA)
+        else:
+            context_data.update(self.DEFAULT_CONTEXT_DATA)
         return context_data
 
     def get_context_data(self):
