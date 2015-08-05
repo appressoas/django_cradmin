@@ -32,7 +32,7 @@ class TestSendActivationEmail(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Activate your Testsite account')
         expected_email_body = """
-Click the button below to activate your Testsite account, testuser.
+--- Click the button below to activate your Testsite account, testuser.
 
 [Activate your account](http://testserver/cradmin_activate_account/activate/test-token)""".strip()
         self.assertEqual(
