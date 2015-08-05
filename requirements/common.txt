@@ -3,6 +3,7 @@ django-crispy-forms==1.4.0
 Pillow==2.8.1
 sorl-thumbnail==12.1c
 pytz==2014.10
+html2text==2015.6.21
 
 # For HTML5 file uploads with the multiple attribute
 django-multiupload==0.3
