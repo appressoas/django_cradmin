@@ -50,6 +50,7 @@ Account-related apps
     apps.cradmin_activate_account
     apps.cradmin_resetpassword
     apps.cradmin_invite
+    apps.cradmin_email
 
 
 ******************************************
