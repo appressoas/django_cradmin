@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from builtins import next
 from django.core import mail
 from django.test import TestCase
+import htmls
 import mock
 from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 from django_cradmin.tests.helpers import create_user
@@ -86,10 +87,11 @@ class TestSendActivationEmail(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Invitation to Testsite')
         expected_email_body = """
-Click the link below to accept the invite.
+--- Click the button below to accept the invite.
 
-http://testserver/invite/accept/test-token""".strip()
-        self.assertEqual(mail.outbox[0].body, expected_email_body)
+[Accept invite](http://testserver/invite/accept/test-token)""".strip()
+        self.assertEqual(htmls.normalize_whitespace(mail.outbox[0].body.strip()),
+                         htmls.normalize_whitespace(expected_email_body))
 
     def test_send_email_private(self):
         testrequest = mock.MagicMock()

@@ -1,11 +1,23 @@
 from __future__ import unicode_literals
 from builtins import object
-from django.conf import settings
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 
+from django.conf import settings
+
+from django_cradmin.apps.cradmin_email import emailutils
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     get_expiration_datetime_for_app
+
+
+class InviteEmail(emailutils.AbstractEmail):
+    subject_template = 'cradmin_invite/email/subject.django.txt'
+    html_message_template = 'cradmin_invite/email/html_message.django.html'
+
+    def get_context_data(self):
+        context = super(InviteEmail, self).get_context_data()
+        context.update({
+            'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME
+        })
+        return context
 
 
 class InviteUrl(object):
@@ -36,12 +48,6 @@ class InviteUrl(object):
                     'test@example.com', 'test2@example.com', 'test3@example.com')
     """
 
-    #: The email subject template.
-    email_subject_template = 'cradmin_invite/email/subject.django.txt'
-
-    #: The email message template.
-    email_message_template = 'cradmin_invite/email/message.django.txt'
-
     def __init__(self, request, private, content_object, metadata=None, **kwargs):
         """
 
@@ -57,12 +63,6 @@ class InviteUrl(object):
         self.metadata = metadata
         if 'expiration_datetime' in kwargs:
             self.expiration_datetime = kwargs['expiration_datetime']
-
-    def get_email_subject_template(self):
-        return self.email_subject_template
-
-    def get_email_message_template(self):
-        return self.email_message_template
 
     def get_appname(self):
         """
@@ -88,27 +88,6 @@ class InviteUrl(object):
 
     def __get_absolute_confirm_invite_url(self, generictoken):
         return self.request.build_absolute_uri(self.get_confirm_invite_url(generictoken))
-
-    def render_email_subject(self, generictoken):
-        return render_to_string(
-            self.get_email_subject_template(),
-            self.get_email_template_context_data(generictoken)
-        ).strip()
-
-    def render_email_message(self, generictoken):
-        return render_to_string(
-            self.get_email_message_template(),
-            self.get_email_template_context_data(generictoken)
-        ).strip()
-
-    def get_email_template_context_data(self, generictoken):
-        """
-        Get the context data of the email templates.
-        """
-        return {
-            'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME,
-            'confirm_invite_url': self.__get_absolute_confirm_invite_url(generictoken)
-        }
 
     def get_from_email(self):
         """
@@ -180,12 +159,13 @@ class InviteUrl(object):
         # TODO: Re-use email connection
         for email in emails:
             generictoken = self.generate_generictoken(email)
-            send_mail(
-                subject=self.render_email_subject(generictoken),
-                message=self.render_email_message(generictoken),
+            InviteEmail(
+                recipient=email,
                 from_email=self.get_from_email(),
-                recipient_list=[email]
-            )
+                extra_context_data={
+                    'confirm_invite_url': self.__get_absolute_confirm_invite_url(generictoken)
+                }
+            ).send()
 
     def get_share_url(self):
         """
@@ -201,5 +181,5 @@ class InviteUrl(object):
         generictoken = self.generate_generictoken()
         return self.__get_absolute_confirm_invite_url(generictoken)
 
-    # def get_tokens_stored_for_app(self):
-    #     return GenericTokenWithMetadata.objects.filter_not_expired().filter(app=self.get_appname())
+        # def get_tokens_stored_for_app(self):
+        #     return GenericTokenWithMetadata.objects.filter_not_expired().filter(app=self.get_appname())

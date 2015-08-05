@@ -1,2 +1,0 @@
-{% include "cradmin_invite/email/body.django.txt" %}
-{% include "cradmin_invite/email/signature.django.txt" %}
