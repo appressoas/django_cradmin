@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Espen Angell Kristiansen <espen@appresso.no>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-09 23:54+0000\n"
-"PO-Revision-Date: 2015-07-10 00:12+0000\n"
+"POT-Creation-Date: 2015-08-05 12:49+0000\n"
+"PO-Revision-Date: 2015-08-04 13:40+0000\n"
 "Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
-"Language-Team: Norwegian Bokmål (http://www.transifex.com/p/cradmin/language/nb/)\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
+"language/nb/)\n"
+"Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:7
@@ -26,7 +27,8 @@ msgstr "Feil ved kontoaktivering"
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/body.django.txt:2
 #, python-format
 msgid "Click the link below to activate your %(sitename)s account, %(user)s."
-msgstr "Klikk på linken nedenfor for å aktivere din %(sitename)s konto, %(user)s."
+msgstr ""
+"Klikk på linken nedenfor for å aktivere din %(sitename)s konto, %(user)s."
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/subject.django.txt:2
 #, python-format
@@ -41,7 +43,9 @@ msgstr "Denne kontoaktiverings linken er for gammel."
 msgid ""
 "Invalid account activation URL. Are you sure you copied the entire URL from "
 "the email?"
-msgstr "Ugyldig kontoaktivering URL. Er du sikker på at du kopierte hele URLen fra eposten?"
+msgstr ""
+"Ugyldig kontoaktivering URL. Er du sikker på at du kopierte hele URLen fra "
+"eposten?"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/messages/success.django.html:2
 msgid "Your account is now active."
@@ -49,7 +53,7 @@ msgstr "Din konto er nå aktiv."
 
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:7
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:11
-#: apps/cradmin_authenticate/views/login.py:197
+#: apps/cradmin_authenticate/views/login.py:243
 #: apps/cradmin_invite/baseviews/accept.py:62
 msgid "Sign in"
 msgstr "Logg inn"
@@ -78,6 +82,7 @@ msgstr "Denne kontoen er inaktiv."
 
 #: apps/cradmin_authenticate/views/login.py:94
 #: apps/cradmin_authenticate/views/login.py:96
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:26
 msgid "Username"
 msgstr "Brukernavn"
 
@@ -88,6 +93,8 @@ msgstr "Ugyldig brukernavn og passord kombinasjon. Vennligst prøv igjen."
 #: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_authenticate/views/login.py:124
 #: apps/cradmin_resetpassword/views/begin.py:47
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:30
+#: demo/webdemo/crapps/inviteadmins/index.py:13
 msgid "Email"
 msgstr "Epost"
 
@@ -100,14 +107,18 @@ msgid "Created"
 msgstr "Opprettet"
 
 #: apps/cradmin_generic_token_with_metadata/models.py:230
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:40
 msgid "Expires"
 msgstr "Utgår"
 
-#: apps/cradmin_imagearchive/cradminviews.py:32
+#: apps/cradmin_imagearchive/cradminviews.py:32 demo/webdemo/crapps/pages.py:91
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:54
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:57
 msgid "Edit"
 msgstr "Rediger"
 
-#: apps/cradmin_imagearchive/cradminviews.py:35 viewhelpers/delete.py:21
+#: apps/cradmin_imagearchive/cradminviews.py:35
+#: demo/webdemo/crapps/inviteadmins/index.py:18 viewhelpers/delete.py:21
 msgid "Delete"
 msgstr "Slett"
 
@@ -133,7 +144,7 @@ msgid "Upload and select"
 msgstr "Last opp og velg"
 
 #: apps/cradmin_imagearchive/cradminviews.py:141
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:19
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:39
 msgid "Upload image"
 msgstr "Last opp bilde"
 
@@ -171,7 +182,9 @@ msgstr "Last opp minst ett bilde"
 msgid ""
 "Upload as many images as you like. You can edit the name and description of "
 "the images after they have been uploaded."
-msgstr "Last opp så mange bilder som du ønsker. Du kan redigere navn og beskrivelse etter opplasting."
+msgstr ""
+"Last opp så mange bilder som du ønsker. Du kan redigere navn og beskrivelse "
+"etter opplasting."
 
 #: apps/cradmin_imagearchive/cradminviews.py:206
 msgid "You must upload at least one file."
@@ -209,7 +222,9 @@ msgstr "navn"
 msgid ""
 "Give the image a name (optional). If you leave this blank, the name of the "
 "uploaded image file is used."
-msgstr "Gi bildet et navn. Dette er valgfritt, hvis du lar feltet stå tomt, bruker vi navnet på bildefilen."
+msgstr ""
+"Gi bildet et navn. Dette er valgfritt, hvis du lar feltet stå tomt, bruker "
+"vi navnet på bildefilen."
 
 #: apps/cradmin_imagearchive/models.py:74
 msgid "description"
@@ -220,7 +235,9 @@ msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
 "information carried in the image (if any)."
-msgstr "En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
+msgstr ""
+"En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet "
+"for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
 
 #: apps/cradmin_imagearchive/models.py:88
 msgid "archive image"
@@ -266,7 +283,9 @@ msgstr "Ugyldig invitasjon"
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:20
 msgid ""
 "Invalid invite URL. Are you sure you copied the entire URL from the email?"
-msgstr "Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URLen fra eposten?"
+msgstr ""
+"Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URLen fra "
+"eposten?"
 
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:28
 msgid "This invite link has expired."
@@ -287,7 +306,7 @@ msgstr "Konto med denne epost-adressen finnes allerede."
 
 #: apps/cradmin_register_account/forms/base.py:190
 msgid "Type your password"
-msgstr "Skriv et passord"
+msgstr "Skriv ditt passord"
 
 #: apps/cradmin_register_account/forms/base.py:195
 msgid "Type your password one more time"
@@ -314,7 +333,8 @@ msgstr "Sjekk din epost"
 msgid ""
 "We have sent you an email. Click the link in the email to activate your "
 "account."
-msgstr "Vi har sendt deg en epost. Klikk linken i eposten for å aktivere din konto."
+msgstr ""
+"Vi har sendt deg en epost. Klikk linken i eposten for å aktivere din konto."
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:21
 msgid "If you do not see the email, check your junk folder."
@@ -338,13 +358,17 @@ msgstr "Skriv inn din epost-adresse"
 msgid ""
 "We received a request to reset the password for your %(sitename)s account, "
 "%(user)s."
-msgstr "Vi mottok en forespørsel om å nullstille passordet for din %(sitename)s konto, %(user)s."
+msgstr ""
+"Vi mottok en forespørsel om å nullstille passordet for din %(sitename)s "
+"konto, %(user)s."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:4
 msgid ""
 "If you made this request, click the link below. If you did not make this "
 "request, you can ignore this email."
-msgstr "Hvis du sende denne forespørselen, klikk linken nedenfor. Hvis du ikke sendte denne forespørselen kan du ignorere denne eposten."
+msgstr ""
+"Hvis du sende denne forespørselen, klikk linken nedenfor. Hvis du ikke "
+"sendte denne forespørselen kan du ignorere denne eposten."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/subject.django.txt:2
 #, python-format
@@ -355,14 +379,18 @@ msgstr "Nullstill ditt %(sitename)s passord"
 msgid ""
 "We have sent you an email. Click the link in the email to reset your "
 "password."
-msgstr "Vi har send deg en epost. Klikk linken i eposten for å nullstille ditt passord."
+msgstr ""
+"Vi har send deg en epost. Klikk linken i eposten for å nullstille ditt "
+"passord."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:21
 #, python-format
 msgid ""
 "If you do not see the email, check your junk folder or try searching for "
 "\"%(email_subject)s\"."
-msgstr "Hvis du ikke ser eposten, sjekk din spam-folder eller prøv å søke etter \"%(email_subject)s\"."
+msgstr ""
+"Hvis du ikke ser eposten, sjekk din spam-folder eller prøv å søke etter "
+"\"%(email_subject)s\"."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/messages/successmessage.django.html:2
 msgid "Your password has been updated."
@@ -381,7 +409,9 @@ msgstr "Denne nullstill passord linken er for gammel."
 msgid ""
 "Invalid password reset URL. Are you sure you copied the entire URL from the "
 "email?"
-msgstr "Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen fra eposten."
+msgstr ""
+"Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen "
+"fra eposten."
 
 #: apps/cradmin_resetpassword/views/begin.py:48
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
@@ -441,6 +471,238 @@ msgstr "Velg filer ..."
 msgid "%(filename)s: Unsupported filetype."
 msgstr "%(filename)s: Ugyldig filetype."
 
+#: demo/usermanagerdemo/cradmin.py:15
+#, fuzzy
+#| msgid "Select ..."
+msgid "Select user"
+msgstr "Velg ..."
+
+#: demo/usermanagerdemo/cradmin.py:20
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:7
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:12
+msgid "Account overview"
+msgstr ""
+
+#: demo/usermanagerdemo/cradmin.py:23
+msgid "Edit profile"
+msgstr ""
+
+#: demo/usermanagerdemo/crapps/edit_user.py:23
+#, fuzzy
+#| msgid "Your account is now active."
+msgid "Updated your account information."
+msgstr "Din konto er nå aktiv."
+
+#: demo/usermanagerdemo/crapps/edit_user.py:37 viewhelpers/create.py:131
+#: viewhelpers/formbase.py:42
+msgid "Save"
+msgstr "Lagre"
+
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:20
+msgid "Personal info"
+msgstr ""
+
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:34
+msgid "First name"
+msgstr ""
+
+#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:38
+#, fuzzy
+#| msgid "name"
+msgid "Last name"
+msgstr "navn"
+
+#: demo/webdemo/cradmin.py:17
+#, fuzzy
+#| msgid "Select files ..."
+msgid "Select role"
+msgstr "Velg filer ..."
+
+#: demo/webdemo/cradmin.py:19
+msgid "Dashboard"
+msgstr ""
+
+#: demo/webdemo/cradmin.py:22 demo/webdemo/models.py:57
+msgid "Pages"
+msgstr ""
+
+#: demo/webdemo/cradmin.py:25
+#, fuzzy
+#| msgid "image"
+msgid "Images"
+msgstr "image"
+
+#: demo/webdemo/cradmin.py:29 demo/webdemo/crapps/inviteadmins/index.py:54
+msgid "Invite admins"
+msgstr ""
+
+#: demo/webdemo/cradmin.py:32
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:30
+msgid "Share"
+msgstr ""
+
+#: demo/webdemo/crapps/inviteadmins/index.py:51
+msgid ""
+"No pending invites. Click the button above to invite new administrators for "
+"the site."
+msgstr ""
+
+#: demo/webdemo/crapps/inviteadmins/index.py:59
+#: demo/webdemo/templates/webdemo/inviteadmins_private/send_private_invite.django.html:6
+#: demo/webdemo/templates/webdemo/inviteadmins_private/send_private_invite.django.html:11
+#, fuzzy
+#| msgid "Accept invite"
+msgid "Send private invite"
+msgstr "Aksepter invitasjon"
+
+#: demo/webdemo/crapps/inviteadmins/send.py:16
+msgid "Email addresses to send invites to"
+msgstr ""
+
+#: demo/webdemo/crapps/inviteadmins/send.py:17
+msgid ""
+"We will send a separate invite to each of the email addresses you provide."
+msgstr ""
+
+#: demo/webdemo/crapps/inviteadmins/send.py:45
+#, fuzzy
+#| msgid "Invalid invite"
+msgid "Send invites"
+msgstr "Ugyldig invitasjon"
+
+#: demo/webdemo/crapps/pages.py:82 viewhelpers/create.py:34
+msgid "Create"
+msgstr "Opprett"
+
+#: demo/webdemo/crapps/pages.py:195
+#, fuzzy
+#| msgid "... or select images"
+msgid "Update text for selected pages"
+msgstr "... eller velg bilder"
+
+#: demo/webdemo/crapps/sharable_link/delete.py:13
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:60
+msgid "Disable"
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/delete.py:16
+#, fuzzy
+#| msgid "Are you sure you want to delete \"%(object_preview)s\"?"
+msgid "Are you sure you want to disable the sharable link?"
+msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
+
+#: demo/webdemo/crapps/sharable_link/delete.py:19
+msgid "sharable link"
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/delete.py:22
+msgid "Disabled the sharable link"
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/edit.py:18
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:46
+msgid "Message"
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/edit.py:19
+msgid ""
+"An optional message that people will see when they visit the sharable link."
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/edit.py:23
+msgid "Expiration time"
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/edit.py:24
+msgid "An optional expiration time for the sharable link."
+msgstr ""
+
+#: demo/webdemo/crapps/sharable_link/edit.py:66
+#: demo/webdemo/templates/webdemo/sharable_link/edit.django.html:6
+#: demo/webdemo/templates/webdemo/sharable_link/edit.django.html:11
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:22
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:69
+msgid "Get sharable link"
+msgstr ""
+
+#: demo/webdemo/models.py:28
+msgid "Title"
+msgstr ""
+
+#: demo/webdemo/models.py:30
+msgid "Intro"
+msgstr ""
+
+#: demo/webdemo/models.py:31
+msgid "A short introduction."
+msgstr ""
+
+#: demo/webdemo/models.py:34
+#, fuzzy
+#| msgid "image"
+msgid "Image"
+msgstr "image"
+
+#: demo/webdemo/models.py:37
+msgid "Attachment"
+msgstr ""
+
+#: demo/webdemo/models.py:40
+msgid "Body"
+msgstr ""
+
+#: demo/webdemo/models.py:42
+msgid "Publishing time"
+msgstr ""
+
+#: demo/webdemo/models.py:45
+msgid "The time when this will be visible on the website."
+msgstr ""
+
+#: demo/webdemo/models.py:47
+msgid "Internal notes"
+msgstr ""
+
+#: demo/webdemo/models.py:48
+msgid "Put internal notes here. Will not be visible on the website."
+msgstr ""
+
+#: demo/webdemo/models.py:56
+msgid "Page"
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/dashboard.django.html:8
+msgid "Demo"
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:8
+msgid "Public share link"
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:14
+msgid "Sharable link"
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:32
+msgid ""
+"Share the link below with anyone you want to make an administrator for this "
+"site."
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:38
+msgid "Details"
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:44
+msgid "Never"
+msgstr ""
+
+#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:50
+#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
+#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
+msgid "(None)"
+msgstr "(Ingen)"
+
 #: formfields/email_list.py:18 formfields/email_list.py:20
 msgid "Type email-addresses separated by newlines, whitespace or comma."
 msgstr "Skriv epostadresser separert av linjeskift, mellomrom eller komma."
@@ -478,7 +740,9 @@ msgstr "Kursiv"
 msgid ""
 "Write the URL in the field below. Make sure you include the http:// or "
 "https:// part of the URL."
-msgstr "Skriv en nettaddresse i feltet nedenfor. Du må passe på å få med http:// eller https:// delen av nettaddressen."
+msgstr ""
+"Skriv en nettaddresse i feltet nedenfor. Du må passe på å få med http:// "
+"eller https:// delen av nettaddressen."
 
 #: templates/django_cradmin/acemarkdown/widget.django.html:41
 msgid "Link title here"
@@ -505,35 +769,35 @@ msgid "Code block"
 msgstr "Kodeblokk"
 
 #: templates/django_cradmin/error.django.html:10
-#: templates/django_cradmin/include/messages.django.html:32
+#: templates/django_cradmin/include/messages.django.html:31
 msgid "Error"
 msgstr "Feil"
 
-#: templates/django_cradmin/filewidgets/filewidget.django.html:15
+#: templates/django_cradmin/filewidgets/filewidget.django.html:21
 msgid "Remove file"
 msgstr "Fjern fil"
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:17
-msgid "Replace image"
-msgstr "Erstatt bilde"
-
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:26
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:25
 msgid "Remove image"
 msgstr "Fjern bilde"
 
-#: templates/django_cradmin/include/messages.django.html:27
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:37
+msgid "Replace image"
+msgstr "Erstatt bilde"
+
+#: templates/django_cradmin/include/messages.django.html:26
 msgid "Close"
 msgstr "Lukk"
 
-#: templates/django_cradmin/include/messages.django.html:34
+#: templates/django_cradmin/include/messages.django.html:33
 msgid "Warning"
 msgstr "Advarsel"
 
-#: templates/django_cradmin/include/messages.django.html:36
+#: templates/django_cradmin/include/messages.django.html:35
 msgid "Info"
 msgstr "Info"
 
-#: templates/django_cradmin/include/messages.django.html:38
+#: templates/django_cradmin/include/messages.django.html:37
 msgid "Success"
 msgstr "Suksess"
 
@@ -556,7 +820,8 @@ msgstr "Ingen tilgang"
 #: templates/django_cradmin/missing_role.django.html:8
 #, python-format
 msgid "You do not have permission to administer \"%(what)s\"."
-msgstr "Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
+msgstr ""
+"Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
 
 #: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:25
 msgid "Close preview"
@@ -590,11 +855,6 @@ msgstr "Neste"
 #: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:6
 msgid "EDIT"
 msgstr "REDIGER"
-
-#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
-#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
-msgid "(None)"
-msgstr "(Ingen)"
 
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
 #: viewhelpers/objecttable.py:873
@@ -638,10 +898,6 @@ msgstr "Tilbake"
 msgid "Create and select"
 msgstr "Opprett og velg"
 
-#: viewhelpers/create.py:34
-msgid "Create"
-msgstr "Opprett"
-
 #: viewhelpers/create.py:35
 msgid "Create and continue editing"
 msgstr "Opprett og fortsett å redigere"
@@ -655,10 +911,6 @@ msgstr "Legg til %(what)s"
 #, python-format
 msgid "Created \"%(object)s\"."
 msgstr "Opprettet \"%(object)s\"."
-
-#: viewhelpers/create.py:131 viewhelpers/formbase.py:42
-msgid "Save"
-msgstr "Lagre"
 
 #: viewhelpers/create.py:132 viewhelpers/formbase.py:45
 msgid "Save and continue editing"
@@ -687,7 +939,9 @@ msgstr "Slettet \"%(what)s\""
 msgid ""
 "Invalid selection. This is usually caused by someone else changing "
 "permissions while you where selecting items to edit."
-msgstr "Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet rettigheter fra din bruker."
+msgstr ""
+"Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet "
+"rettigheter fra din bruker."
 
 #: viewhelpers/objecttable.py:899
 #, python-format
@@ -702,3 +956,11 @@ msgstr "Rediger %(what)s"
 #: views/roleselect.py:13
 msgid "What would you like to edit?"
 msgstr "Hva ønsker du å redigere?"
+
+#: widgets/datetimepicker.py:13 widgets/datetimepicker.py:63
+msgid "yyyy-mm-dd"
+msgstr ""
+
+#: widgets/datetimepicker.py:41 widgets/datetimepicker.py:64
+msgid "hh:mm"
+msgstr ""
