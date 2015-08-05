@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
+
 from django.views.generic import TemplateView
-from django_cradmin.apps.cradmin_resetpassword.views.begin import get_password_reset_email_subject
+
+from django_cradmin.apps.cradmin_resetpassword.views.begin import PasswordResetEmail
 
 
 class EmailSentView(TemplateView):
@@ -8,5 +10,5 @@ class EmailSentView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(EmailSentView, self).get_context_data(**kwargs)
-        context['email_subject'] = get_password_reset_email_subject()
+        context['email_subject'] = PasswordResetEmail().render_subject()
         return context
