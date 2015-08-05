@@ -1,0 +1,4 @@
+{% load i18n %}
+{% blocktrans with sitename=DJANGO_CRADMIN_SITENAME user=user %}Click the button below to activate your {{ sitename }} account, {{ user }}.{% endblocktrans %}
+
+<a href="{{ activate_url }}" style="{{ primary_button_link_style }}">{% trans "Activate your account" %}</a>

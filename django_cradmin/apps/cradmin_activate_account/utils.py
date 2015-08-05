@@ -1,15 +1,15 @@
 from __future__ import unicode_literals
-from builtins import object
-from django.conf import settings
-from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
-from django.template.loader import render_to_string
 
+from django.conf import settings
+
+from django.core.urlresolvers import reverse
+
+from django_cradmin.apps.cradmin_email import emailutils
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     get_expiration_datetime_for_app
 
 
-class ActivationEmail(object):
+class ActivationEmail(emailutils.AbstractEmail):
     """
     Handles account activation. Sends an email with a link that
     the user clicks to activate their account.
@@ -23,11 +23,8 @@ class ActivationEmail(object):
             ActivationEmail(request=request, user=someuser).send()
     """
 
-    #: The email subject template.
-    email_subject_template = 'cradmin_activate_account/email/subject.django.txt'
-
-    #: The email message template.
-    email_message_template = 'cradmin_activate_account/email/message.django.txt'
+    subject_template = 'cradmin_activate_account/email/subject.django.txt'
+    html_message_template = 'cradmin_activate_account/email/html_message.django.html'
 
     #: The name of the app. Used for
     #: :obj:`django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata.app`.
@@ -47,12 +44,8 @@ class ActivationEmail(object):
         self.request = request
         self.next_url = next_url or getattr(
             settings, 'DJANGO_CRADMIN_ACTIVATE_ACCOUNT_DEFAULT_NEXT_URL', settings.LOGIN_URL)
-
-    def get_email_subject_template(self):
-        return self.email_subject_template
-
-    def get_email_message_template(self):
-        return self.email_message_template
+        self.token = self.generate_token()
+        super(ActivationEmail, self).__init__(recipient=self.user.email)
 
     def get_activate_url(self, token):
         """
@@ -62,27 +55,16 @@ class ActivationEmail(object):
             'token': token.token
         })
 
-    def render_email_subject(self, token):
-        return render_to_string(
-            self.get_email_subject_template(),
-            self.get_email_template_context_data(token)
-        ).strip()
-
-    def render_email_message(self, token):
-        return render_to_string(
-            self.get_email_message_template(),
-            self.get_email_template_context_data(token)
-        ).strip()
-
-    def get_email_template_context_data(self, token):
+    def get_context_data(self):
         """
         Get the context data of the email templates.
         """
-        return {
+        context = super(ActivationEmail, self).get_context_data()
+        context.update({
             'user': self.user,
-            'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME,
-            'activate_url': self.request.build_absolute_uri(self.get_activate_url(token))
-        }
+            'activate_url': self.request.build_absolute_uri(self.get_activate_url(self.token))
+        })
+        return context
 
     def get_from_email(self):
         """
@@ -108,13 +90,4 @@ class ActivationEmail(object):
             metadata={
                 'next_url': self.next_url
             }
-        )
-
-    def send(self):
-        token = self.generate_token()
-        send_mail(
-            subject=self.render_email_subject(token),
-            message=self.render_email_message(token),
-            from_email=self.get_from_email(),
-            recipient_list=[self.user.email]
         )

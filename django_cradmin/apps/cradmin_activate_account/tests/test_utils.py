@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.core import mail
 from django.test import TestCase
+import htmls
 import mock
 from django_cradmin.apps.cradmin_activate_account.utils import ActivationEmail
 from django_cradmin.tests.helpers import create_user
@@ -31,7 +32,9 @@ class TestSendActivationEmail(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Activate your Testsite account')
         expected_email_body = """
-Click the link below to activate your Testsite account, testuser.
+Click the button below to activate your Testsite account, testuser.
 
-http://testserver/cradmin_activate_account/activate/test-token""".strip()
-        self.assertEqual(mail.outbox[0].body, expected_email_body)
+[Activate your account](http://testserver/cradmin_activate_account/activate/test-token)""".strip()
+        self.assertEqual(
+            htmls.normalize_whitespace(mail.outbox[0].body),
+            htmls.normalize_whitespace(expected_email_body))
