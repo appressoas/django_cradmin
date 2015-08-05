@@ -144,17 +144,7 @@ cradmin_invite/email/subject.django.txt
     Override this to set the email subject.
 
 cradmin_invite/email/message.django.txt
-    Override this to set the email message.
-    Any whitespace at the beginning of this template is removed automatically.
-
-cradmin_invite/email/signature.django.txt
-    Override this to replace signature of the email.
-    Any whitespace at the end of this template is removed automatically.
-
-cradmin_invite/email/body.django.txt
-    Override this to replace both the message and the signature.
-    Any whitespace at both ends of this template is removed automatically.
-
+    Override this to change the email message.
 
 All of the email templates get the following context variables:
 
