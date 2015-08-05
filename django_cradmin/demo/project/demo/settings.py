@@ -134,8 +134,9 @@ THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.cached_db_kvstore.KVStore'
 THUMBNAIL_PREFIX = 'sorlcache/'
 THUMBNAIL_DEBUG = False
 
-# The root for file fileuploads (relative to where we run runserver)
-MEDIA_ROOT = 'django_media_root'
+# The root for file fileuploads
+MEDIA_ROOT = os.path.join(BASE_DIR, 'django_media_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'django_static_root')
 
 MEDIA_URL = '/media/'
 

@@ -19,6 +19,7 @@
 
 # Files created when running tests and demos
 /django_media_root/
+/django_static_root/
 /test_django_media_root/
 /cradmin_demo/django_media_root/
 /cradmin_demo/test_django_media_root/
