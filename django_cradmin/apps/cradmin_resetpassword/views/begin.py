@@ -63,19 +63,7 @@ class BeginPasswordResetView(FormView):
     def get_success_url(self):
         return reverse('cradmin-resetpassword-email-sent')
 
-    # def __get_email_message(self, user, reset_url):
-    #     return render_to_string('cradmin_resetpassword/email/message.django.txt', {
-    #         'DJANGO_CRADMIN_SITENAME': settings.DJANGO_CRADMIN_SITENAME,
-    #         'user': user,
-    #         'reset_url': reset_url
-    #     }).strip()
-
     def __send_email(self, user, reset_url):
-        # send_mail(
-        #     subject=get_password_reset_email_subject(),
-        #     message=self.__get_email_message(user=user, reset_url=reset_url),
-        #     from_email=getattr(settings, 'DJANGO_CRADMIN_RESETPASSWORD_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL),
-        #     recipient_list=[user.email])
         PasswordResetEmail(
             recipient=user.email,
             from_email=getattr(settings, 'DJANGO_CRADMIN_RESETPASSWORD_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL),
