@@ -140,15 +140,12 @@ class TestMultiActionColumn(TestCase):
             self.column_subclass_incomplete.render_cell_content(self.model_testobject)
 
     def test_render_cell(self):
-        expected = [
-            '<p', 'class="objecttable-cellvalue">test_value</p>',
-            '<p', 'class="objecttable-cellbuttons">',
-            '<a', 'href="www.example.com/btn1"', 'class="btn', 'btn-default', 'btn-sm"', '>', 'Btn1', '</a>',
-            '<a', 'href="www.example.com/btn2"', 'class="btn', 'btn-default', 'btn-sm"', '>', 'Btn2', '</a>',
-            '</p>'
-        ]
-        result = self.column_subclass.render_cell_content(self.model_testobject).split()
-        self.assertEquals(result, expected)
+        result = self.column_subclass.render_cell_content(self.model_testobject)
+        selector = htmls.S(result)
+        self.assertEqual(selector.one('p.objecttable-cellvalue').alltext_normalized,
+                         'test_value')
+        self.assertTrue(selector.exists('p.objecttable-cellbuttons'))
+        self.assertEqual(selector.count('a'), 2)
 
 
 class TestButton(TestCase):
