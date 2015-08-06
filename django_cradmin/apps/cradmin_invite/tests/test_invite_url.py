@@ -86,12 +86,10 @@ class TestSendActivationEmail(TestCase):
                 .send_email('test@example.com')
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Invitation to Testsite')
-        expected_email_body = """
---- Click the button below to accept the invite.
-
-[Accept invite](http://testserver/invite/accept/test-token)""".strip()
-        self.assertEqual(htmls.normalize_whitespace(mail.outbox[0].body.strip()),
-                         htmls.normalize_whitespace(expected_email_body))
+        self.assertIn('http://testserver/invite/accept/test-token',
+                      mail.outbox[0].alternatives[0][0])
+        self.assertIn('Click the button below to accept the invite.',
+                      mail.outbox[0].alternatives[0][0])
 
     def test_send_email_private(self):
         testrequest = mock.MagicMock()
