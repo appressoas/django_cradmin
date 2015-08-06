@@ -184,6 +184,7 @@ Resources
 - http://webdesign.tutsplus.com/articles/build-an-html-email-template-from-scratch--webdesign-12770
 - https://www.campaignmonitor.com/dev-resources/guides/coding/
 - https://www.campaignmonitor.com/css/
+- https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design
 
 ***
 API

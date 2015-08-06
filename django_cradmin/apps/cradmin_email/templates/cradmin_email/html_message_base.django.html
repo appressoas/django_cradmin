@@ -18,31 +18,25 @@
           style="{{ body_style }}">
         <table id="outer_wrapper_table"
                style="{{ outer_wrapper_table_style }}"
-                align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-            <tr>
-                <td style="{{ header_td_style }}">
-                    <p style="{{ common_paragraph_style }}{{ header_paragraph_style }}">
-                        {% block header %}
-                            {% include "cradmin_email/include/html_message_header.django.html" %}
-                        {% endblock header %}
-                    </p>
+               align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+            <tr style="margin: 0;">
+                <td style="{{ common_td_style }}{{ header_td_style }}">
+                    {% block header %}
+                        {% include "cradmin_email/include/html_message_header.django.html" %}
+                    {% endblock header %}
                 </td>
             </tr>
             <tr>
-                <td style="{{ contents_td_style }}">
-                    <p style="{{ common_paragraph_style }}{{ contents_paragraph_style }}">
-                        {# Override this in your html_message_template #}
-                        {% block contents %}{% endblock contents %}
-                    </p>
+                <td style="{{ common_td_style }}{{ contents_td_style }}">
+                    {# Override this in your html_message_template #}
+                    {% block contents %}{% endblock contents %}
                 </td>
             </tr>
             <tr>
-                <td style="{{ footer_td_style }}">
-                    <p style="{{ common_paragraph_style }}{{ footer_paragraph_style }}">
-                        {% block footer %}
-                            {% include "cradmin_email/include/html_message_footer.django.html" %}
-                        {% endblock footer %}
-                    </p>
+                <td style="{{ common_td_style }}{{ footer_td_style }}">
+                    {% block footer %}
+                        {% include "cradmin_email/include/html_message_footer.django.html" %}
+                    {% endblock footer %}
                 </td>
             </tr>
         </table>
