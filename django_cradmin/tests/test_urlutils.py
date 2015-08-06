@@ -47,4 +47,3 @@ class TestUpdateQuerystring(TestCase):
                                         {'next': None}, ignore_none_values=False),
             'http://example.com?next=None'
         )
-
