@@ -47,11 +47,57 @@ class CradminEmailButtonlinkNode(template.Node):
 
 @register.tag
 def cradmin_email_primary_buttonlink(parser, token):
+    """
+    Render a link as a primary button.
+
+    Examples::
+
+        Url as string:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_email_tags %}
+            {% cradmin_email_primary_buttonlink "http://example.com" %}
+                A primary button link
+            {% end_cradmin_email_primary_buttonlink %}
+
+        Url as context variable:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_email_tags %}
+            {% cradmin_email_primary_buttonlink someurl %}
+                A primary button link
+            {% end_cradmin_email_primary_buttonlink %}
+    """
     return _cradmin_email_buttonlink(parser, token,
                                      linkstyle_context_variable='primary_button_link_style')
 
 
 @register.tag
 def cradmin_email_secondary_buttonlink(parser, token):
+    """
+    Render a link as a secondary button.
+
+    Examples::
+
+        Url as string:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_email_tags %}
+            {% cradmin_email_secondary_buttonlink "http://example.com" %}
+                A secondary button link
+            {% end_cradmin_email_secondary_buttonlink %}
+
+        Url as context variable:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_email_tags %}
+            {% cradmin_email_secondary_buttonlink someurl %}
+                A secondary button link
+            {% end_cradmin_email_primary_buttonlink %}
+    """
     return _cradmin_email_buttonlink(parser, token,
                                      linkstyle_context_variable='secondary_button_link_style')

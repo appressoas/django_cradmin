@@ -79,45 +79,54 @@ class AbstractEmail(object):
     #: is not set.
     DEFAULT_CONTEXT_DATA = {
         'body_style': 'background-color: #fff;',
-        'common_paragraph_style': 'font-family: Arial, sans-serif; '
-                                  'font-size: 16px; '
-                                  'line-height: 1.42857143; '
-                                  'letter-spacing: 0.5px; ',
-        'header_paragraph_style': '',
+        'common_td_style': 'font-family: Arial, sans-serif; '
+                           'font-size: 16px; '
+                           'line-height: 1.42857143; '
+                           'margin: 0; '
+                           'letter-spacing: 0.5px; ',
+        'header_td_style': '',
         'logo_style': '',
-        'contents_paragraph_style': '',
-        'footer_paragraph_style': 'border-top: 3px solid #eee; '
-                                  'font-size: 13px; '
-                                  'color: #777; '
-                                  'text-align: center; '
-                                  'padding-top: 20px; '
-                                  'padding-bottom: 20px; ',
+        'contents_td_style': 'padding-top: 20px; padding-bottom: 28px;',
+        'footer_td_style': 'border-top: 3px solid #eee; '
+                           'font-size: 13px; '
+                           'color: #777; '
+                           'text-align: center; '
+                           'padding-top: 20px; '
+                           'padding-bottom: 20px; ',
         'footer_link_style': 'color: #777; text-decoration: underline;',
         'link_style': 'color: #377CA8; text-decoration: underline;',
-        'primary_button_link_style': 'padding-left: 16px; padding-right: 16px; '
-                                     'padding-top: 10px; padding-bottom: 10px; '
-                                     'border-color: #224D68; '
-                                     'border-style: solid; '
-                                     'border-width: 1px; '
-                                     'background-color: #377CA8; '
+        'secondary_button_link_style': 'font-size: 16px; '
+                                       'font-family: Arial, sans-serif; '
+                                       'color: #fff; '
+                                       'text-decoration: none; '
+                                       'font-weight: bold; '
+                                       'text-transform: uppercase; '
+                                       'letter-spacing: 1px; '
+                                       'background-color: #999999; '
+                                       'border-top: 10px solid #999999; '
+                                       'border-bottom: 10px solid #999999; '
+                                       'border-right: 16px solid #999999; '
+                                       'border-left: 16px solid #999999; '
+                                       'border-radius: 3px; '
+                                       '-webkit-border-radius: 3px; '
+                                       '-moz-border-radius: 3px; '
+                                       'display: inline-block;',
+        'primary_button_link_style': 'font-size: 16px; '
+                                     'font-family: Arial, sans-serif; '
                                      'color: #fff; '
                                      'text-decoration: none; '
                                      'font-weight: bold; '
                                      'text-transform: uppercase; '
+                                     'letter-spacing: 1px; '
+                                     'background-color: #377CA8; '
+                                     'border-top: 10px solid #377CA8; '
+                                     'border-bottom: 10px solid #377CA8; '
+                                     'border-right: 16px solid #377CA8; '
+                                     'border-left: 16px solid #377CA8; '
                                      'border-radius: 3px; '
-                                     'letter-spacing: 1px; ',
-        'secondary_button_link_style': 'padding-left: 16px; padding-right: 16px; '
-                                       'padding-top: 10px; padding-bottom: 10px; '
-                                       'border-color: #D9D9D9; '
-                                       'border-style: solid; '
-                                       'border-width: 1px; '
-                                       'background-color: #fff; '
-                                       'color: #377CA8; '
-                                       'text-decoration: none; '
-                                       'font-weight: bold; '
-                                       'text-transform: uppercase; '
-                                       'border-radius: 3px; '
-                                       'letter-spacing: 1px; ',
+                                     '-webkit-border-radius: 3px; '
+                                     '-moz-border-radius: 3px; '
+                                     'display: inline-block;',
     }
 
     def get_subject_template(self):

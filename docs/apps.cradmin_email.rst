@@ -49,10 +49,10 @@ Our solution
 
 To make this easier to handle, we suggest the following:
 
-- For the actual content of your emails, use a single ``<p>``-element styled
-  with a font suitable for your brand. Use ``<br>`` to emulate paragraphs,
+- For the actual content of your emails, use ``<br>`` to emulate paragraphs,
   and keep the formatting to the ``<a>``, ``<strong>``, ``<em>`` and
-  ``<big>`` tags.
+  ``<big>`` tags. For advanced formatting/layout, use ``<table>``,
+  but you should not need that if you use our template tags.
 - Use a common base template that styles the surrounding content for all
   your emails.
 
@@ -75,7 +75,7 @@ You can set the following values:
     outer_table_style
         The CSS styles of the outer table.
 
-    common_paragraph_style
+    common_td_style
         Common styles for header, contents and footer.
         Make sure this ends with ``;``.
         Example::
@@ -87,23 +87,14 @@ You can set the following values:
             padding-left: 10px;
             padding-right: 10px;
 
-    header_paragraph_style
-        The CSS styles of the header block. This is a ``<p>`` element.
-
-    contents_paragraph_style
-        The CSS styles of the contents block. This is a ``<p>`` element.
-
-    footer_paragraph_style
-        The CSS styles of the footer block. This is a ``<p>`` element.
-
     header_td_style
-        The CSS styles of the ``<td>``-element wrapping the header paragraph.
+        The CSS styles of the header block. This is a ``<td>`` element.
 
     contents_td_style
-        The CSS styles of the ``<td>``-element wrapping the contents paragraph.
+        The CSS styles of the contents block. This is a ``<td>`` element.
 
     footer_td_style
-        The CSS styles of the ``<td>``-element wrapping the footer paragraph.
+        The CSS styles of the footer block. This is a ``<td>`` element.
 
     link_style
         This is not used by the base template, but you should use it on all the links
@@ -118,18 +109,14 @@ You can set the following values:
             <a href="http://example.com" style="{{ footer_link_style }}">Go to example.com</a>
 
     primary_button_link_style
-        This is not used by the base template, but you should use it on all the
-        primary button styled links you create to make it easy to style your links.
-        Example::
-
-            <a href="http://example.com" style="{{ primary_button_link_style }}">Go to example.com</a>
+        Styles for the
+        :func:`~django_cradmin.apps.cradmin_email.templatetags.cradmin_email_tags.cradmin_email_primary_buttonlink`
+        template tag.
 
     secondary_button_link_style
-        This is not used by the base template, but you should use it on all the
-        secondary button styled links you create to make it easy to style your links.
-        Example::
-
-            <a href="http://example.com" style="{{ secondary_button_link_style }}">Go to example.com</a>
+        Styles for the
+        :func:`~django_cradmin.apps.cradmin_email.templatetags.cradmin_email_tags.cradmin_email_secondary_buttonlink`
+        template tag.
 
     logo_style
         Style for the logo. This is a ``<span>`` element. This element is
@@ -154,7 +141,7 @@ cradmin_email/include/html_message_header.django.html
 
     The template should not need to be overridden if you can render
     your logo/header using HTML and CSS. You should instead adjust
-    the ``logo_style``, ``header_paragraph_style`` and perhaps
+    the ``logo_style``, ``header_td_style`` and perhaps
     the ``header_td_style`` via the ``DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA``
     setting.
 
@@ -185,6 +172,14 @@ Resources
 - https://www.campaignmonitor.com/dev-resources/guides/coding/
 - https://www.campaignmonitor.com/css/
 - https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design
+
+*************
+Template tags
+*************
+
+.. currentmodule:: django_cradmin.apps.cradmin_email.templatetags.cradmin_email_tags
+.. automodule:: django_cradmin.apps.cradmin_email.templatetags.cradmin_email_tags
+    :members:
 
 ***
 API
