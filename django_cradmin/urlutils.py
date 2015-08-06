@@ -1,8 +1,30 @@
 from django.http import QueryDict
 from future.standard_library import install_aliases
+
 install_aliases()
 
 from urllib.parse import urlsplit, urlunsplit
+
+
+def create_querydict(querystringargs, initial_query_string=None, ignore_none_values=True):
+    """
+    Parameters:
+        querystringargs (dict): The querystring args to add/replace.
+        initial_query_string (str): The initial querystring. Any ovelapping
+            keys between this and ``querystringargs`` is overridden by
+            the value in ``querystringargs``.
+        ignore_none_values (bool): If this is ``True`` (default),
+            we ignore ``None`` values in ``querystringargs``.
+
+    Returns:
+        The created :class:`django.http.request.QueryDict`.
+    """
+    querydict = QueryDict(query_string=initial_query_string, mutable=True)
+    for key, value in querystringargs.items():
+        if ignore_none_values and value is None:
+            continue
+        querydict[key] = value
+    return querydict
 
 
 def update_querystring(url, querystringargs, ignore_none_values=True):
@@ -30,11 +52,9 @@ def update_querystring(url, querystringargs, ignore_none_values=True):
                 {'search': 'updated'})
     """
     parsed_url = urlsplit(url)
-    querydict = QueryDict(parsed_url.query, mutable=True)
-    for key, value in querystringargs.items():
-        if ignore_none_values and value is None:
-            continue
-        querydict[key] = value
+    querydict = create_querydict(querystringargs=querystringargs,
+                                 initial_query_string=parsed_url.query,
+                                 ignore_none_values=ignore_none_values)
     return urlunsplit((
         parsed_url.scheme,
         parsed_url.netloc,
