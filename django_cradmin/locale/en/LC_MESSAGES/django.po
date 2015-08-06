@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 12:49+0000\n"
+"POT-Creation-Date: 2015-08-06 19:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,9 +22,13 @@ msgstr ""
 msgid "Activate account error"
 msgstr ""
 
-#: apps/cradmin_activate_account/templates/cradmin_activate_account/email/body.django.txt:2
+#: apps/cradmin_activate_account/templates/cradmin_activate_account/email/html_message.django.html:5
 #, python-format
-msgid "Click the link below to activate your %(sitename)s account, %(user)s."
+msgid "Click the button below to activate your %(sitename)s account, %(user)s."
+msgstr ""
+
+#: apps/cradmin_activate_account/templates/cradmin_activate_account/email/html_message.django.html:8
+msgid "Activate your account"
 msgstr ""
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/subject.django.txt:2
@@ -87,7 +91,7 @@ msgstr ""
 
 #: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_authenticate/views/login.py:124
-#: apps/cradmin_resetpassword/views/begin.py:47
+#: apps/cradmin_resetpassword/views/begin.py:53
 #: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:30
 #: demo/webdemo/crapps/inviteadmins/index.py:13
 msgid "Email"
@@ -246,6 +250,7 @@ msgid "Image preview"
 msgstr ""
 
 #: apps/cradmin_invite/baseviews/accept.py:38
+#: apps/cradmin_invite/templates/cradmin_invite/email/html_message.django.html:8
 msgid "Accept invite"
 msgstr ""
 
@@ -278,8 +283,8 @@ msgstr ""
 msgid "This invite link has expired."
 msgstr ""
 
-#: apps/cradmin_invite/templates/cradmin_invite/email/body.django.txt:2
-msgid "Click the link below to accept the invite."
+#: apps/cradmin_invite/templates/cradmin_invite/email/html_message.django.html:5
+msgid "Click the button below to accept the invite."
 msgstr ""
 
 #: apps/cradmin_invite/templates/cradmin_invite/email/subject.django.txt:2
@@ -339,17 +344,23 @@ msgstr ""
 msgid "Type in your email-address"
 msgstr ""
 
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:2
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:5
 #, python-format
 msgid ""
 "We received a request to reset the password for your %(sitename)s account, "
 "%(user)s."
 msgstr ""
 
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:4
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:7
 msgid ""
-"If you made this request, click the link below. If you did not make this "
+"If you made this request, click the button below. If you did not make this "
 "request, you can ignore this email."
+msgstr ""
+
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:10
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:11
+msgid "Reset your password"
 msgstr ""
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/subject.django.txt:2
@@ -374,11 +385,6 @@ msgstr ""
 msgid "Your password has been updated."
 msgstr ""
 
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:11
-msgid "Reset your password"
-msgstr ""
-
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:22
 msgid "This password reset link has expired."
 msgstr ""
@@ -389,7 +395,7 @@ msgid ""
 "email?"
 msgstr ""
 
-#: apps/cradmin_resetpassword/views/begin.py:48
+#: apps/cradmin_resetpassword/views/begin.py:54
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
 msgid "Search"
 msgstr ""

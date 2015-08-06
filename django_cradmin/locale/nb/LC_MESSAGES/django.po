@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-05 12:49+0000\n"
-"PO-Revision-Date: 2015-08-04 13:40+0000\n"
+"POT-Creation-Date: 2015-08-06 19:32+0000\n"
+"PO-Revision-Date: 2015-08-05 12:50+0000\n"
 "Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
@@ -24,11 +24,19 @@ msgstr ""
 msgid "Activate account error"
 msgstr "Feil ved kontoaktivering"
 
-#: apps/cradmin_activate_account/templates/cradmin_activate_account/email/body.django.txt:2
-#, python-format
-msgid "Click the link below to activate your %(sitename)s account, %(user)s."
+#: apps/cradmin_activate_account/templates/cradmin_activate_account/email/html_message.django.html:5
+#, fuzzy, python-format
+#| msgid ""
+#| "Click the link below to activate your %(sitename)s account, %(user)s."
+msgid "Click the button below to activate your %(sitename)s account, %(user)s."
 msgstr ""
 "Klikk på linken nedenfor for å aktivere din %(sitename)s konto, %(user)s."
+
+#: apps/cradmin_activate_account/templates/cradmin_activate_account/email/html_message.django.html:8
+#, fuzzy
+#| msgid "Activate your %(sitename)s account"
+msgid "Activate your account"
+msgstr "Aktiver din %(sitename)s konto"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/subject.django.txt:2
 #, python-format
@@ -92,7 +100,7 @@ msgstr "Ugyldig brukernavn og passord kombinasjon. Vennligst prøv igjen."
 
 #: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_authenticate/views/login.py:124
-#: apps/cradmin_resetpassword/views/begin.py:47
+#: apps/cradmin_resetpassword/views/begin.py:53
 #: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:30
 #: demo/webdemo/crapps/inviteadmins/index.py:13
 msgid "Email"
@@ -257,6 +265,7 @@ msgid "Image preview"
 msgstr "Forhåndsvisning av bilde"
 
 #: apps/cradmin_invite/baseviews/accept.py:38
+#: apps/cradmin_invite/templates/cradmin_invite/email/html_message.django.html:8
 msgid "Accept invite"
 msgstr "Aksepter invitasjon"
 
@@ -291,8 +300,10 @@ msgstr ""
 msgid "This invite link has expired."
 msgstr "Denne invitasjonslinken er for gammel."
 
-#: apps/cradmin_invite/templates/cradmin_invite/email/body.django.txt:2
-msgid "Click the link below to accept the invite."
+#: apps/cradmin_invite/templates/cradmin_invite/email/html_message.django.html:5
+#, fuzzy
+#| msgid "Click the link below to accept the invite."
+msgid "Click the button below to accept the invite."
 msgstr "Klikk linken nedenfor for å akseptere invitasjonen."
 
 #: apps/cradmin_invite/templates/cradmin_invite/email/subject.django.txt:2
@@ -353,7 +364,7 @@ msgstr "Finn din konto"
 msgid "Type in your email-address"
 msgstr "Skriv inn din epost-adresse"
 
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:2
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:5
 #, python-format
 msgid ""
 "We received a request to reset the password for your %(sitename)s account, "
@@ -362,13 +373,23 @@ msgstr ""
 "Vi mottok en forespørsel om å nullstille passordet for din %(sitename)s "
 "konto, %(user)s."
 
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/body.django.txt:4
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:7
+#, fuzzy
+#| msgid ""
+#| "If you made this request, click the link below. If you did not make this "
+#| "request, you can ignore this email."
 msgid ""
-"If you made this request, click the link below. If you did not make this "
+"If you made this request, click the button below. If you did not make this "
 "request, you can ignore this email."
 msgstr ""
 "Hvis du sende denne forespørselen, klikk linken nedenfor. Hvis du ikke "
 "sendte denne forespørselen kan du ignorere denne eposten."
+
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:10
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:11
+msgid "Reset your password"
+msgstr "Nullstill ditt passord"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/subject.django.txt:2
 #, python-format
@@ -396,11 +417,6 @@ msgstr ""
 msgid "Your password has been updated."
 msgstr "Ditt passord har blitt oppdatert."
 
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:11
-msgid "Reset your password"
-msgstr "Nullstill ditt passord"
-
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:22
 msgid "This password reset link has expired."
 msgstr "Denne nullstill passord linken er for gammel."
@@ -413,7 +429,7 @@ msgstr ""
 "Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen "
 "fra eposten."
 
-#: apps/cradmin_resetpassword/views/begin.py:48
+#: apps/cradmin_resetpassword/views/begin.py:54
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
 msgid "Search"
 msgstr "Søk"
@@ -472,10 +488,8 @@ msgid "%(filename)s: Unsupported filetype."
 msgstr "%(filename)s: Ugyldig filetype."
 
 #: demo/usermanagerdemo/cradmin.py:15
-#, fuzzy
-#| msgid "Select ..."
 msgid "Select user"
-msgstr "Velg ..."
+msgstr ""
 
 #: demo/usermanagerdemo/cradmin.py:20
 #: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:7
@@ -488,10 +502,8 @@ msgid "Edit profile"
 msgstr ""
 
 #: demo/usermanagerdemo/crapps/edit_user.py:23
-#, fuzzy
-#| msgid "Your account is now active."
 msgid "Updated your account information."
-msgstr "Din konto er nå aktiv."
+msgstr ""
 
 #: demo/usermanagerdemo/crapps/edit_user.py:37 viewhelpers/create.py:131
 #: viewhelpers/formbase.py:42
@@ -507,16 +519,12 @@ msgid "First name"
 msgstr ""
 
 #: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:38
-#, fuzzy
-#| msgid "name"
 msgid "Last name"
-msgstr "navn"
+msgstr ""
 
 #: demo/webdemo/cradmin.py:17
-#, fuzzy
-#| msgid "Select files ..."
 msgid "Select role"
-msgstr "Velg filer ..."
+msgstr ""
 
 #: demo/webdemo/cradmin.py:19
 msgid "Dashboard"
@@ -527,10 +535,8 @@ msgid "Pages"
 msgstr ""
 
 #: demo/webdemo/cradmin.py:25
-#, fuzzy
-#| msgid "image"
 msgid "Images"
-msgstr "image"
+msgstr ""
 
 #: demo/webdemo/cradmin.py:29 demo/webdemo/crapps/inviteadmins/index.py:54
 msgid "Invite admins"
@@ -550,10 +556,8 @@ msgstr ""
 #: demo/webdemo/crapps/inviteadmins/index.py:59
 #: demo/webdemo/templates/webdemo/inviteadmins_private/send_private_invite.django.html:6
 #: demo/webdemo/templates/webdemo/inviteadmins_private/send_private_invite.django.html:11
-#, fuzzy
-#| msgid "Accept invite"
 msgid "Send private invite"
-msgstr "Aksepter invitasjon"
+msgstr ""
 
 #: demo/webdemo/crapps/inviteadmins/send.py:16
 msgid "Email addresses to send invites to"
@@ -565,20 +569,16 @@ msgid ""
 msgstr ""
 
 #: demo/webdemo/crapps/inviteadmins/send.py:45
-#, fuzzy
-#| msgid "Invalid invite"
 msgid "Send invites"
-msgstr "Ugyldig invitasjon"
+msgstr ""
 
 #: demo/webdemo/crapps/pages.py:82 viewhelpers/create.py:34
 msgid "Create"
 msgstr "Opprett"
 
 #: demo/webdemo/crapps/pages.py:195
-#, fuzzy
-#| msgid "... or select images"
 msgid "Update text for selected pages"
-msgstr "... eller velg bilder"
+msgstr ""
 
 #: demo/webdemo/crapps/sharable_link/delete.py:13
 #: demo/webdemo/templates/webdemo/sharable_link/show.django.html:60
@@ -586,10 +586,8 @@ msgid "Disable"
 msgstr ""
 
 #: demo/webdemo/crapps/sharable_link/delete.py:16
-#, fuzzy
-#| msgid "Are you sure you want to delete \"%(object_preview)s\"?"
 msgid "Are you sure you want to disable the sharable link?"
-msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
+msgstr ""
 
 #: demo/webdemo/crapps/sharable_link/delete.py:19
 msgid "sharable link"
@@ -638,10 +636,8 @@ msgid "A short introduction."
 msgstr ""
 
 #: demo/webdemo/models.py:34
-#, fuzzy
-#| msgid "image"
 msgid "Image"
-msgstr "image"
+msgstr ""
 
 #: demo/webdemo/models.py:37
 msgid "Attachment"
