@@ -1002,9 +1002,29 @@ class ObjectTableView(ListView):
                 self.__columns.append(columnclass(view=self, columnindex=columnindex))
         return self.__columns
 
+    def get_row_css_classes_for_object(self, obj):
+        """
+        Get CSS classes for the row rendering the given ``obj``.
+
+        Returns:
+            An empty list by default, but you can override this
+            and return css classes as a list. Typical examples
+            are:
+
+            - Styling of rows disabled objects.
+            - Styling of extra important objects.
+
+            The css classes is applied to the ``<tr>`` element.
+        """
+        return []
+
+    def __get_row_css_classes_string_for_object(self, obj):
+        return ' '.join(self.get_row_css_classes_for_object(obj))
+
     def __create_row(self, obj):
         return {
             'object': obj,
+            'css_classes': self.__get_row_css_classes_string_for_object(obj),
             'cells': [(column, column.render_cell_content(obj)) for column in self._get_columnobjects()]
         }
 
