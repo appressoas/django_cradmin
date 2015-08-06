@@ -62,6 +62,16 @@ Apps that provide utitities for other apps
     apps.cradmin_generic_token_with_metadata
 
 
+*********
+Utilities
+*********
+
+.. toctree::
+    :maxdepth: 1
+
+    urlutils
+
+
 *******
 Widgets
 *******
