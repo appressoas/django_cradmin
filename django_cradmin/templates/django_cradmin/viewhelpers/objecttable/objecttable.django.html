@@ -167,6 +167,7 @@
                                 {% endif %}
                                 {% for column, rendered_cell in row.cells %}
                                     <td class="{{ column.get_normalcell_css_class_string }}"
+                                            data-columntitle="{{ column.get_header|capfirst }}"
                                             style="{{ column.get_normalcell_css_style }}">
                                         {{ rendered_cell }}
                                     </td>
