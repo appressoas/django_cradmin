@@ -191,11 +191,18 @@ class Column(object):
             context[self.context_value_name] = value
         return context
 
+    def get_template_name(self, obj):
+        """
+        Returns the template name to use for the given ``obj``.
+        Defaults to :obj:`~.Column.template_name`.
+        """
+        return self.template_name
+
     def render_cell_content(self, obj):
         """
         Render the cell using the template specifed in :obj:`.template_name`.
         """
-        return render_to_string(self.template_name, self.get_context_data(obj=obj))
+        return render_to_string(self.get_template_name(obj), self.get_context_data(obj=obj))
 
     def get_flip_ordering_url(self):
         """
