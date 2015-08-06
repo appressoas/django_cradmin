@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
+
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 import htmls
 import mock
+
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.apps.cradmin_resetpassword.views.begin import BeginPasswordResetView
 from django_cradmin.tests.helpers import create_user
