@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
+
 from django import template
+
+from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
-
 from django_cradmin.registry import cradmin_instance_registry
-
 
 register = template.Library()
 
@@ -58,6 +59,16 @@ def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
     request = context['request']
     return request.cradmin_instance.reverse_url(
         appname=appname, viewname=viewname, args=args, kwargs=kwargs)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_instanceindex_url(context, appname):
+    """
+    Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.appindex_url`.
+    """
+    request = context['request']
+    return request.cradmin_instance.reverse_url(
+        appname=appname, viewname=crapp.INDEXVIEW_NAME)
 
 
 @register.simple_tag(takes_context=True)
