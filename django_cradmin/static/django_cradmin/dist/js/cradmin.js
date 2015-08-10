@@ -924,10 +924,10 @@
     Detectizr.detect({
       addAllFeaturesAsClass: false,
       detectDevice: true,
-      detectDeviceModel: false,
-      detectScreen: false,
-      detectOS: false,
-      detectBrowser: false,
+      detectDeviceModel: true,
+      detectScreen: true,
+      detectOS: true,
+      detectBrowser: true,
       detectPlugins: false
     });
     return Detectizr;
@@ -1529,7 +1529,45 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
+  angular.module('djangoCradmin.iosaddtohomescreen', []).directive('iosAddToHomeScreen', [
+    '$window', 'cradminDetectize', function($window, cradminDetectize) {
+      return {
+        transclude: true,
+        template: '<div ng-transclude>This is my directive content</div>',
+        link: function($scope, $element, attrs) {
+          if (attrs.forceOs != null) {
+            $scope.os = attrs.forceOs;
+          } else {
+            $scope.os = cradminDetectize.os.name;
+          }
+          if (attrs.forceBrowser != null) {
+            $scope.browser = attrs.forceBrowser;
+          } else {
+            $scope.browser = cradminDetectize.browser.name;
+          }
+          if (attrs.forceDeviceModel != null) {
+            $scope.deviceModel = attrs.forceDeviceModel;
+          } else {
+            $scope.deviceModel = cradminDetectize.device.model;
+          }
+          console.log('Detected os:', $scope.os);
+          console.log('Detected browser:', $scope.browser);
+          console.log('Detected deviceModel:', $scope.deviceModel);
+          console.log($window.navigator.standalone);
+          if ($scope.os === 'ios' && $scope.browser === 'safari') {
+            $element.show();
+          } else {
+            $element.hide();
+          }
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
 
 }).call(this);
 

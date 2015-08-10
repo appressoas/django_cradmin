@@ -8,6 +8,7 @@ angular.module('djangoCradmin', [
   'djangoCradmin.objecttable'
   'djangoCradmin.acemarkdown'
   'djangoCradmin.bulkfileupload'
+  'djangoCradmin.iosaddtohomescreen'
 #  'djangoCradmin.wysihtml'
   'djangoCradmin.imagepreview'
   'djangoCradmin.pagepreview'

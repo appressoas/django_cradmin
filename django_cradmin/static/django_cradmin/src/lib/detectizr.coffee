@@ -8,13 +8,13 @@ angular.module('djangoCradmin.detectizr', [])
     # option for enabling detection of device
     detectDevice: true,
     # option for enabling detection of device model
-    detectDeviceModel: false,
+    detectDeviceModel: true,
     # option for enabling detection of screen size
-    detectScreen: false,
+    detectScreen: true,
     # option for enabling detection of operating system type and version
-    detectOS: false,
+    detectOS: true,
     # option for enabling detection of browser type and version
-    detectBrowser: false,
+    detectBrowser: true,
     # option for enabling detection of common browser plugins
     detectPlugins: false
   })
