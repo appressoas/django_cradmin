@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from builtins import object
 from django.template.loader import render_to_string
+import warnings
 
 
 class MenuItem(object):
@@ -131,7 +132,7 @@ class Menu(object):
         self.footeritems = []
         self.build_menu()
 
-    def add(self, *args, **kwargs):
+    def add_menuitem(self, *args, **kwargs):
         """
         Add menu item.
 
@@ -139,6 +140,20 @@ class Menu(object):
         """
         menuitemclass = self.get_menuitem_class()
         menuitem = menuitemclass(*args, **kwargs)
+        return self.add_menuitem_object(menuitem)
+
+    def add(self, *args, **kwargs):
+        """
+        Deprecated alias for :meth:`.add_menuitem`.
+        """
+        warnings.warn("add() is deprecated, use add_menuitem() instead.", DeprecationWarning)
+        return self.add_menuitem(*args, **kwargs)
+
+    def add_menuitem_object(self, menuitem):
+        """
+        Just like :meth:`.add_footeritem`, but takes a :class:`.MenuItem` instad
+        of arguments for the class.
+        """
         self.mainitems.append(menuitem)
         return menuitem
 
@@ -159,6 +174,13 @@ class Menu(object):
         """
         headeritem_class = self.get_headeritem_class()
         menuitem = headeritem_class(*args, **kwargs)
+        return self.add_headeritem_object(menuitem)
+
+    def add_headeritem_object(self, menuitem):
+        """
+        Just like :meth:`.add_headeritem`, but takes a :class:`.MenuItem` instad
+        of arguments for the class.
+        """
         self.headeritems.append(menuitem)
         return menuitem
 
@@ -178,9 +200,15 @@ class Menu(object):
         args and kwargs are forwarded to the menu class (see :meth:`.get_footeritem_class`).
         """
         footeritem_class = self.get_footeritem_class()
-        self.footeritems.append(
-            footeritem_class(*args, **kwargs)
-        )
+        return self.add_footeritem_object(footeritem_class(*args, **kwargs))
+
+    def add_footeritem_object(self, menuitem):
+        """
+        Just like :meth:`.add_footeritem`, but takes a :class:`.MenuItem` instad
+        of arguments for the class.
+        """
+        self.footeritems.append(menuitem)
+        return menuitem
 
     def get_footeritem_class(self):
         """
