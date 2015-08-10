@@ -18,7 +18,7 @@ class TestDelete(TestCase):
                 queryset = mock.MagicMock()
                 return queryset
 
-            def get_object(self):
+            def get_object(self, queryset=None):
                 obj = mock.MagicMock()
                 if six.PY2:
                     obj.__unicode__.return_value = 'Simple Test Item'
@@ -34,12 +34,13 @@ class TestDelete(TestCase):
         response.render()
         selector = htmls.S(response.content)
 
-        self.assertEquals(selector.one('form')['action'], 'http://testserver/test')
-        self.assertEquals(
+        self.assertEqual(selector.one('form')['action'], 'http://testserver/test')
+        self.assertEqual(
             selector.one('.django-cradmin-page-header-inner h1').alltext_normalized,
-            'DELETE Simple Test Item')
-        self.assertEquals(
-            selector.one('#deleteview-preview ').text_normalized,
+            'Delete Simple Test Item')
+        selector.prettyprint()
+        self.assertEqual(
+            selector.one('#deleteview-preview').alltext_normalized,
             'Are you sure you want to delete "Simple Test Item"?')
 
     def test_post(self):
@@ -50,7 +51,7 @@ class TestDelete(TestCase):
                 queryset = mock.MagicMock()
                 return queryset
 
-            def get_object(self):
+            def get_object(self, queryset=None):
                 return obj
 
         request = self.factory.post('/test')

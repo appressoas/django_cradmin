@@ -11,6 +11,14 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
     #: The name of the template to use.
     template_name = 'django_cradmin/viewhelpers/delete.django.html'
 
+    def get_pagetitle(self):
+        """
+        Get the page title (the title tag).
+
+        Defaults to ``Delete <verbose_name model>``.
+        """
+        return _('Delete %(what)s') % {'what': self.get_object_preview()}
+
     def get_action_label(self):
         """
         The action we are performing.
@@ -27,16 +35,6 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
         Defaults to :meth:`.get_action_label`.
         """
         return self.get_action_label()
-
-    def get_pagetitle(self):
-        """
-        Get the page title/heading.
-
-        Default to ``"<get_action_label().upper()> <get_object_preview()"``.
-        """
-        return u'{} {}'.format(
-            self.get_action_label().upper(),
-            self.get_object_preview())
 
     def get_object_preview(self):
         """
