@@ -14,15 +14,15 @@
 {% endblock pageheader-inner %}
 
 {% block content %}
-    {% block deletequestion %}
-        <div id="deleteview-preview" class="container container-focus">
-            {{ confirm_message }}
-        </div>
-    {% endblock deletequestion %}
 
     {% block delete-form %}
         <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">{% csrf_token %}
-            <div class="django_cradmin_submitrow container">
+            <div class="container">
+                {% block deletequestion %}
+                    <div id="deleteview-preview">
+                        <p>{{ confirm_message }}</p>
+                    </div>
+                {% endblock deletequestion %}
                 <button type="submit" class="btn btn-danger">{{ delete_button_label }}</button>
                 <a class="btn btn-cancel" django-cradmin-back>{% trans "Cancel" %}</a>
             </div>
