@@ -722,6 +722,66 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.collapse', []).directive('djangoCradminCollapse', [
+    function() {
+      /** A box that collapses/expands its content automatically when the header is clicked.
+      
+      Example
+      =======
+      
+      ```html
+      <div django-cradmin-collapse>
+        <button ng-click="toggleContentVisible()" type="button">
+          <span ng-if="contentHidden">Show</span>
+          <span ng-if="!contentHidden">Hide</span>
+        </button>
+        <div ng-class="{'ng-hide': contentHidden}">
+          Something here
+        </div>
+      </div>
+      ```
+      
+      You can make it visible by default using ``initial-state="visible"``:
+      
+      ```html
+      <div django-cradmin-collapse initial-state="visible">
+        ...
+      </div>
+      ```
+      
+      If you want to avoid the initial flicker before the directive
+      hides the content, add the ``ng-hide`` css class to the content div:
+      
+      ```html
+      <div django-cradmin-collapse>
+        <button ng-click="toggleContentVisible()" type="button">
+          ...
+        </button>
+        <div ng-class="{'ng-hide': contentHidden}" ng-class="ng-hide">
+          Something here
+        </div>
+      </div>
+      ```
+      */
+
+      return {
+        scope: true,
+        controller: function($scope) {
+          $scope.contentHidden = true;
+          $scope.toggleContentVisible = function() {
+            return $scope.contentHidden = !$scope.contentHidden;
+          };
+        },
+        link: function($scope, $element, attrs) {
+          return $scope.contentHidden = attrs.initialState !== 'visible';
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.directives', []).directive('djangoCradminBack', function() {
     return {
       restrict: 'A',
@@ -1567,7 +1627,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
 
 }).call(this);
 

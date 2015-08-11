@@ -4682,6 +4682,11 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   margin-left: auto;
   margin-right: auto;
 }
+.django-cradmin-form.django-cradmin-form-fullwidth {
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
 .django-cradmin-form-wrapper {
   padding-bottom: 150px;
 }
@@ -4712,6 +4717,16 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   padding-left: 5px;
   font-size: 18px;
   line-height: 22px;
+}
+.django-cradmin-form-wrapper .django-cradmin-form .django-cradmin-formfield-label-sr-only label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 .django-cradmin-form-wrapper .django-cradmin-form.django-cradmin-form-noasterisk label .asteriskField {
   display: none;

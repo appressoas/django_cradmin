@@ -11,6 +11,7 @@ angular.module('djangoCradmin', [
   'djangoCradmin.iosaddtohomescreen'
 #  'djangoCradmin.wysihtml'
   'djangoCradmin.imagepreview'
+  'djangoCradmin.collapse'
   'djangoCradmin.pagepreview'
   'djangoCradmin.forms.modelchoicefield'
   'djangoCradmin.forms.usethisbutton'
