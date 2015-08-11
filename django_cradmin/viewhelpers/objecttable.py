@@ -858,8 +858,9 @@ class ObjectTableView(ListView):
     hide_menu = False
 
     #: The model class to list objects for. You do not have to specify
-    #: this, but if you do not specify this, you have to override
-    #: :meth:`~.ObjectTableView.get_pagetitle` and :meth:`~.ObjectTableView.get_no_items_message`.
+    #: this, but if you do not specify this or :meth:`~.ObjectTableView.get_model_class`,
+    #: you have to override :meth:`~.ObjectTableView.get_pagetitle` and
+    #: :meth:`~.ObjectTableView.get_no_items_message`.
     model = None
 
     #: Defines the columns in the table. See :meth:`.get_columns`.
@@ -890,6 +891,14 @@ class ObjectTableView(ListView):
     #: Set this to True to hide the page header. See :meth:`.FormViewMixin.get_hide_page_header`.
     hide_page_header = False
 
+    def get_model_class(self):
+        """
+        Get the model class to list objects for.
+
+        Defaults to :obj:`.model`. See :obj:`.model` for more info.
+        """
+        return self.model
+
     def get_hide_page_header(self):
         """
         Return ``True`` if we should hide the page header.
@@ -904,7 +913,7 @@ class ObjectTableView(ListView):
         Get the message to show when there are no items.
         """
         return _('No %(modelname_plural)s') % {
-            'modelname_plural': self.model._meta.verbose_name_plural.lower()
+            'modelname_plural': self.get_model_class()._meta.verbose_name_plural.lower()
         }
 
     def get_search_placeholder_text(self):
@@ -1051,7 +1060,7 @@ class ObjectTableView(ListView):
         Defaults to the ``verbose_name_plural`` of the :obj:`.model`
         with the first letter capitalized.
         """
-        return defaultfilters.capfirst(self.model._meta.verbose_name_plural)
+        return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)
 
     def get_pageheading(self):
         """
