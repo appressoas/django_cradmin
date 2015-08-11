@@ -9,6 +9,12 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import Gener
 
 
 class InviteEmail(emailutils.AbstractEmail):
+    """
+    The default invite email class for :class:`.InviteUrl`.
+
+    You may want to provide your own and override
+    :meth:`.InviteUrl.get_invite_email_class`.
+    """
     subject_template = 'cradmin_invite/email/subject.django.txt'
     html_message_template = 'cradmin_invite/email/html_message.django.html'
 
@@ -141,6 +147,25 @@ class InviteUrl(object):
                 self._generictoken = self._generate_generictoken()
                 return self._generictoken
 
+    def get_invite_email_class(self):
+        """
+        Must return a subclass of :class:`django_cradmin.apps.cradmin_email.emailutils.AbstractEmail`.
+
+        Defaults to :class:`.InviteEmail`.
+        """
+        return InviteEmail
+
+    def get_extra_invite_email_context_data(self, generictoken):
+        """
+        Override this to provide extra context data for the
+        :meth:`.get_invite_email_class`.
+
+        Make sure you call ``super`` and extend the returned dict.
+        """
+        return {
+            'confirm_invite_url': self.__get_absolute_confirm_invite_url(generictoken)
+        }
+
     def send_email(self, *emails):
         """
         Generate a token and send an email containing an absolute invite
@@ -157,14 +182,13 @@ class InviteUrl(object):
         if metadata is a dict or None.
         """
         # TODO: Re-use email connection
+        invite_email_class = self.get_invite_email_class()
         for email in emails:
             generictoken = self.generate_generictoken(email)
-            InviteEmail(
+            invite_email_class(
                 recipient=email,
                 from_email=self.get_from_email(),
-                extra_context_data={
-                    'confirm_invite_url': self.__get_absolute_confirm_invite_url(generictoken)
-                }
+                extra_context_data=self.get_extra_invite_email_context_data(generictoken)
             ).send()
 
     def get_share_url(self):
