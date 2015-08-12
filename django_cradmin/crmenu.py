@@ -20,7 +20,8 @@ class MenuItem(object):
                  expanded=False,
                  attributes={},
                  open_new_window=False,
-                 extra_css_classes=''):
+                 extra_css_classes='',
+                 extra_context_data=None):
         """
         Parameters:
             label: A label shown in the menu.
@@ -39,6 +40,7 @@ class MenuItem(object):
         self.expanded = expanded
         self.open_new_window = open_new_window
         self.extra_css_classes = extra_css_classes
+        self.extra_context_data = extra_context_data
         self.childitems = []
 
     def get_item_css_class(self):
@@ -47,10 +49,21 @@ class MenuItem(object):
     def get_link_css_class(self):
         return ''
 
-    def render(self):
-        return render_to_string(self.template_name, {
+    def get_context_data(self):
+        """
+        Context data for the template.
+
+        If you override this, make sure you call super() to get the defaults.
+        """
+        context_data = {
             'menuitem': self
-        })
+        }
+        if self.extra_context_data:
+            context_data.update(self.extra_context_data)
+        return context_data
+
+    def render(self):
+        return render_to_string(self.template_name, self.get_context_data())
 
     def get_active_item_wrapper_tag(self):
         """
