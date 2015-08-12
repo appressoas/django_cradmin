@@ -1834,6 +1834,7 @@
       return {
         require: '?djangoCradminMenu',
         controller: function($scope) {
+          var disableInitialWatcher;
           $scope.onWindowResize = function(newWindowDimensions) {
             return $scope.setOrUnsetOverflowYClass();
           };
@@ -1848,6 +1849,19 @@
               }
             }
           };
+          disableInitialWatcher = $scope.$watch(function() {
+            var _ref;
+            if (((_ref = $scope.menuElement) != null ? _ref[0] : void 0) != null) {
+              return true;
+            } else {
+              return false;
+            }
+          }, function(newValue) {
+            if (newValue) {
+              $scope.setOrUnsetOverflowYClass();
+              return disableInitialWatcher();
+            }
+          });
         },
         link: function($scope, element, attrs) {
           $scope.overflowYClass = attrs.djangoCradminMenuAutodetectOverflowY;
