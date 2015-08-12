@@ -5880,9 +5880,9 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     width: 200px;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-transition: top 0.12s linear;
-    -moz-transition: top 0.12s linear;
-    transition: top 0.12s linear;
+    -webkit-transition: top 0.12s ease-in-out;
+    -moz-transition: top 0.12s ease-in-out;
+    transition: top 0.12s ease-in-out;
   }
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content {
     padding-bottom: 110px;
