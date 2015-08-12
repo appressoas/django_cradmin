@@ -42,16 +42,50 @@ angular.module('djangoCradmin.scrollfixed', [])
     not want to scroll.
     ###
 
+    isUsingDefaultScroll = true
+    swapClasses = false
+
+    swapCssClasses = ($scope, $element, newWindowTopPosition) ->
+      settings = $scope.djangoCradminScrollTopFixedSettings
+      if newWindowTopPosition >= $scope.djangoCradminScrollTopFixedInitialTopOffset
+        if isUsingDefaultScroll
+          $element.removeClass settings.cssClasses.defaultClass
+          $element.addClass settings.cssClasses.scrollClass
+          isUsingDefaultScroll = false
+      else if newWindowTopPosition < $scope.djangoCradminScrollTopFixedInitialTopOffset
+        if not isUsingDefaultScroll
+          $element.addClass settings.cssClasses.defaultClass
+          $element.removeClass settings.cssClasses.scrollClass
+          isUsingDefaultScroll = true
+
     return {
-      controller: ($scope) ->
+      controller: ($scope, $element, $attrs) ->
+        $scope.djangoCradminScrollTopFixedSettings = $scope.$eval($attrs.djangoCradminScrollTopFixed)
+
+        if $scope.djangoCradminScrollTopFixedSettings.cssClasses?
+          if $scope.djangoCradminScrollTopFixedSettings.cssClasses.defaultClass and
+              $scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollClass
+            swapClasses = true
+
         $scope.onWindowScrollTop = (newWindowTopPosition) ->
-          newTopPosition = newWindowTopPosition + $scope.djangoCradminScrollTopFixedInitialTopOffset
+          if swapClasses
+            swapCssClasses $scope, $element, newWindowTopPosition
+
+          offset = $scope.djangoCradminScrollTopFixedInitialTopOffset
+
+          if $scope.djangoCradminScrollTopFixedSettings.pinToTopOnScroll
+            if newWindowTopPosition > offset
+              offset = 0
+            else
+              offset = offset - newWindowTopPosition
+
+          newTopPosition = newWindowTopPosition + offset
           $scope.djangoCradminScrollTopFixedElement.css('top', "#{newTopPosition}px")
         return
 
       link: ($scope, element, attrs) ->
         $scope.djangoCradminScrollTopFixedElement = element
-        $scope.djangoCradminScrollTopFixedSettings = $scope.$eval(attrs.djangoCradminScrollTopFixed)
+#        $scope.djangoCradminScrollTopFixedSettings = $scope.$eval(attrs.djangoCradminScrollTopFixed)
         $scope.djangoCradminScrollTopFixedInitialTopOffset = parseInt(element.css('top'), 10) || 0
 
         djangoCradminWindowScrollTop.register $scope

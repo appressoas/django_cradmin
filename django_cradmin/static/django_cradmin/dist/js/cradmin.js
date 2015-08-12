@@ -2386,7 +2386,7 @@
 
 (function() {
   angular.module('djangoCradmin.scrollfixed', []).directive('djangoCradminScrollTopFixed', [
-    'djangoCradminWindowScrollTop', 'djangoCradminWindowDimensions', function(djangoCradminWindowScrollTop, djangoCradminWindowDimensions) {
+    'djangoCradminWindowScrollTop', function(djangoCradminWindowScrollTop) {
       /** Keep an item aligned relative to a given top pixel position on the screen when scrolling.
       
       Example
@@ -2425,17 +2425,53 @@
       not want to scroll.
       */
 
+      var isUsingDefaultScroll, swapClasses, swapCssClasses;
+      isUsingDefaultScroll = true;
+      swapClasses = false;
+      swapCssClasses = function($scope, $element, newWindowTopPosition) {
+        var settings;
+        settings = $scope.djangoCradminScrollTopFixedSettings;
+        if (newWindowTopPosition >= $scope.djangoCradminScrollTopFixedInitialTopOffset) {
+          if (isUsingDefaultScroll) {
+            $element.removeClass(settings.cssClasses.defaultClass);
+            $element.addClass(settings.cssClasses.scrollClass);
+            return isUsingDefaultScroll = false;
+          }
+        } else if (newWindowTopPosition < $scope.djangoCradminScrollTopFixedInitialTopOffset) {
+          if (!isUsingDefaultScroll) {
+            $element.addClass(settings.cssClasses.defaultClass);
+            $element.removeClass(settings.cssClasses.scrollClass);
+            return isUsingDefaultScroll = true;
+          }
+        }
+      };
       return {
-        controller: function($scope) {
+        controller: function($scope, $element, $attrs) {
+          $scope.djangoCradminScrollTopFixedSettings = $scope.$eval($attrs.djangoCradminScrollTopFixed);
+          if ($scope.djangoCradminScrollTopFixedSettings.cssClasses != null) {
+            if ($scope.djangoCradminScrollTopFixedSettings.cssClasses.defaultClass && $scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollClass) {
+              swapClasses = true;
+            }
+          }
           $scope.onWindowScrollTop = function(newWindowTopPosition) {
-            var newTopPosition;
-            newTopPosition = newWindowTopPosition + $scope.djangoCradminScrollTopFixedInitialTopOffset;
+            var newTopPosition, offset;
+            if (swapClasses) {
+              swapCssClasses($scope, $element, newWindowTopPosition);
+            }
+            offset = $scope.djangoCradminScrollTopFixedInitialTopOffset;
+            if ($scope.djangoCradminScrollTopFixedSettings.pinToTopOnScroll) {
+              if (newWindowTopPosition > offset) {
+                offset = 0;
+              } else {
+                offset = offset - newWindowTopPosition;
+              }
+            }
+            newTopPosition = newWindowTopPosition + offset;
             return $scope.djangoCradminScrollTopFixedElement.css('top', "" + newTopPosition + "px");
           };
         },
         link: function($scope, element, attrs) {
           $scope.djangoCradminScrollTopFixedElement = element;
-          $scope.djangoCradminScrollTopFixedSettings = $scope.$eval(attrs.djangoCradminScrollTopFixed);
           $scope.djangoCradminScrollTopFixedInitialTopOffset = parseInt(element.css('top'), 10) || 0;
           djangoCradminWindowScrollTop.register($scope);
           $scope.$on('$destroy', function() {
