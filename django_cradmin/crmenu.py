@@ -41,6 +41,12 @@ class MenuItem(object):
         self.extra_css_classes = extra_css_classes
         self.childitems = []
 
+    def get_item_css_class(self):
+        return 'django-cradmin-menu-item'
+
+    def get_link_css_class(self):
+        return ''
+
     def render(self):
         return render_to_string(self.template_name, {
             'menuitem': self
