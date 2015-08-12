@@ -2,8 +2,8 @@ angular.module('djangoCradmin.scrollfixed', [])
 
 
 .directive('djangoCradminScrollTopFixed', [
-  'djangoCradminWindowScrollTop', 'djangoCradminWindowDimensions'
-  (djangoCradminWindowScrollTop, djangoCradminWindowDimensions) ->
+  'djangoCradminWindowScrollTop'
+  (djangoCradminWindowScrollTop) ->
     ###* Keep an item aligned relative to a given top pixel position on the screen when scrolling.
 
     Example
