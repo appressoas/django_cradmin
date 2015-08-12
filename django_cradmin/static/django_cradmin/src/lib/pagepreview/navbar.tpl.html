@@ -11,7 +11,8 @@
     <div class="django-cradmin-menu-content"
              ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
         <ul class="django-cradmin-menu-content-main">
-            <li ng-repeat="urlConfig in previewConfig.urls" class="{{urlConfig.css_classes}}"
+            <li ng-repeat="urlConfig in previewConfig.urls"
+                    class="django-cradmin-menu-item {{urlConfig.css_classes}}"
                     ng-class="{
                         'django-cradmin-menu-activeitem': $index == activeIndex
                     }">
