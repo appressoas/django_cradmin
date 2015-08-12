@@ -1,6 +1,6 @@
 angular.module('djangoCradmin.modal', [])
 
-.directive('djangoCradminModal', [
+.directive('djangoCradminModalWrapper', [
   ->
     ###* Shows a modal window on click.
 
@@ -8,11 +8,11 @@ angular.module('djangoCradmin.modal', [])
     =======
 
     ```html
-    <div django-cradmin-modal>
-      <button ng-click="showModal()" type="button">
+    <div django-cradmin-modal-wrapper>
+      <button ng-click="showModal($event)" type="button">
         Show modal window
       </button>
-      <div class="django-cradmin-modal"
+      <div django-cradmin-modal class="django-cradmin-modal"
               ng-class="{'django-cradmin-modal-visible': modalVisible}">
           <div class="django-cradmin-modal-backdrop" ng-click="hideModal()"></div>
           <div class="django-cradmin-modal-content">
@@ -25,16 +25,36 @@ angular.module('djangoCradmin.modal', [])
     </div>
     ```
     ###
-
     return {
       scope: true
 
       controller: ($scope) ->
         $scope.modalVisible = false
-        $scope.showModal = ->
+        bodyElement = angular.element('body')
+
+        $scope.showModal = (e) ->
+          if e?
+            e.preventDefault()
           $scope.modalVisible = true
+          bodyElement.addClass('django-cradmin-noscroll')
+          return
+
         $scope.hideModal = ->
           $scope.modalVisible = false
+          bodyElement.removeClass('django-cradmin-noscroll')
+          return
+
         return
+    }
+])
+
+.directive('djangoCradminModal', [
+  ->
+    return {
+      require: '^^djangoCradminModalWrapper'
+
+      link: ($scope, element) ->
+        body = angular.element('body')
+        element.appendTo(body)
     }
 ])
