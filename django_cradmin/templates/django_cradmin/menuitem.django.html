@@ -1,9 +1,10 @@
 {% block contentwrapper %}
-    <li class="
-            {% if menuitem.is_active %}django-cradmin-menu-activeitem{% endif %}
-            {% if menuitem.is_expanded %}django-cradmin-menu-expandeditem{% endif %}
-            {{ menuitem.get_item_css_class }}
-            {% block extraclasses %}{{ menu.extra_css_classes }}{% endblock extraclasses %}">
+    <li {% block extra-list-item-attributes %}{% endblock %}
+            class="
+                {% if menuitem.is_active %}django-cradmin-menu-activeitem{% endif %}
+                {% if menuitem.is_expanded %}django-cradmin-menu-expandeditem{% endif %}
+                {{ menuitem.get_item_css_class }}
+                {% block extraclasses %}{{ menu.extra_css_classes }}{% endblock extraclasses %}">
         {% block list-item-content %}
             {% if menuitem.is_active and menuitem.get_active_item_wrapper_tag %}
                 <{{ menuitem.get_active_item_wrapper_tag }} class="django-cradmin-menu-activeitemwrapper">
@@ -11,6 +12,7 @@
             <a href="{{ menuitem.url }}"
                     title="{{ menuitem.description }}"
                     class="{{ menuitem.get_link_css_class }}"
+                    {% block extra-link-attributes %}{% endblock %}
                     {% if menuitem.open_new_window %}target="_blank"{% endif %}>
                 {% block link-label %}
                     {{ menuitem.label }}
