@@ -1834,6 +1834,7 @@
       return {
         require: '?djangoCradminMenu',
         controller: function($scope) {
+          var disableInitialWatcher;
           $scope.onWindowResize = function(newWindowDimensions) {
             return $scope.setOrUnsetOverflowYClass();
           };
@@ -1848,6 +1849,19 @@
               }
             }
           };
+          disableInitialWatcher = $scope.$watch(function() {
+            var _ref;
+            if (((_ref = $scope.menuElement) != null ? _ref[0] : void 0) != null) {
+              return true;
+            } else {
+              return false;
+            }
+          }, function(newValue) {
+            if (newValue) {
+              $scope.setOrUnsetOverflowYClass();
+              return disableInitialWatcher();
+            }
+          });
         },
         link: function($scope, element, attrs) {
           $scope.overflowYClass = attrs.djangoCradminMenuAutodetectOverflowY;
@@ -2585,7 +2599,8 @@ angular.module("pagepreview/navbar.tpl.html", []).run(["$templateCache", functio
     "    <div class=\"django-cradmin-menu-content\"\n" +
     "             ng-class=\"{'django-cradmin-menu-content-display': cradminMenuDisplay}\">\n" +
     "        <ul class=\"django-cradmin-menu-content-main\">\n" +
-    "            <li ng-repeat=\"urlConfig in previewConfig.urls\" class=\"{{urlConfig.css_classes}}\"\n" +
+    "            <li ng-repeat=\"urlConfig in previewConfig.urls\"\n" +
+    "                    class=\"django-cradmin-menu-item {{urlConfig.css_classes}}\"\n" +
     "                    ng-class=\"{\n" +
     "                        'django-cradmin-menu-activeitem': $index == activeIndex\n" +
     "                    }\">\n" +

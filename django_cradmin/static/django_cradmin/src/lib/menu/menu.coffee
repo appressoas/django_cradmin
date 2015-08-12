@@ -80,6 +80,18 @@ angular.module('djangoCradmin.menu', [])
             else
               $scope.menuElement.removeClass($scope.overflowYClass)
 
+        disableInitialWatcher = $scope.$watch(
+          ->
+            if $scope.menuElement?[0]?
+              return true
+            else
+              return false
+          , (newValue) ->
+            if newValue
+              $scope.setOrUnsetOverflowYClass()
+              disableInitialWatcher()
+        )
+
         return
 
       link: ($scope, element, attrs) ->

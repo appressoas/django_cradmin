@@ -86,10 +86,13 @@ class BeginPasswordResetView(FormView):
         })
         return self.request.build_absolute_uri(reset_url)
 
+    def get_user(self, email):
+        user_model = get_user_model()
+        return get_object_or_404(user_model, email=email)
+
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user_model = get_user_model()
-        user = get_object_or_404(user_model, email=email)
+        user = self.get_user(email)
         reset_url = self.__generate_reset_url(user=user)
         self.__send_email(user=user, reset_url=reset_url)
         return super(BeginPasswordResetView, self).form_valid(form)

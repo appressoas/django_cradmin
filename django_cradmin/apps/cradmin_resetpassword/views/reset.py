@@ -40,7 +40,7 @@ class ResetPasswordView(FormView):
         helper.form_action = '#'
         helper.form_id = 'django_cradmin_resetpassword_reset_form'
         helper.layout = layout.Layout(
-            'password1',
+            layout.Field('password1', focusonme='focusonme'),
             'password2',
             PrimarySubmitLg('submit', _('Submit'))
         )

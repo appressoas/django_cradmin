@@ -5814,7 +5814,7 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   }
 }
 .django-cradmin-modal {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
