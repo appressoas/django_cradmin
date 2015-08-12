@@ -3,11 +3,17 @@
     setting the ``cradmin_hide_menu`` context variable to ``True``.
 {% endcomment %}
 {% load i18n %}
+{% load cradmin_tags %}
 
 {% if not cradmin_hide_menu %}
     <nav id="django_cradmin_mainmenu"
             django-cradmin-menu
             django-cradmin-menu-autodetect-overflow-y="django-cradmin-menu-overflow-y"
+            {% block scrollfixed %}
+                {% if DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED %}
+                    django-cradmin-scroll-top-fixed='{{ DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED|cradmin_jsonencode }}'
+                {% endif %}
+            {% endblock scrollfixed %}
             class="django-cradmin-menu">
         {% block pre-menu %}{% endblock pre-menu %}
 

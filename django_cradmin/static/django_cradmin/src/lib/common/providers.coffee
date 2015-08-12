@@ -37,10 +37,18 @@ angular.module('djangoCradmin.providers', [])
   class WindowDimensionsProvider
     constructor: ($window, @timeout) ->
       @mainWindow = angular.element($window)
+      @deviceMinWidths = {
+        tablet: 768  # Bootstrap @screen-sm-min
+        mediumDesktop: 992  # Bootstrap @screen-md-min
+        largeDesktop: 1200  # Boostrap @screen-lg-min
+      }
       @windowDimensions = @_getWindowDimensions()
       @applyResizeTimer = null
       @applyResizeTimerTimeoutMs = 300
       @listeningScopes = []
+
+    triggerResizeEventsForScope: (scope) ->
+      scope.onWindowResize(@windowDimensions)
 
     register: (scope) ->
       scopeIndex = @listeningScopes.indexOf(scope)
@@ -52,7 +60,6 @@ angular.module('djangoCradmin.providers', [])
       if @listeningScopes.length < 1
         @mainWindow.bind 'resize', @_onWindowResize
       @listeningScopes.push(scope)
-      scope.onWindowResize(@windowDimensions)
 
     unregister: (scope) ->
       scopeIndex = @listeningScopes.indexOf(scope)
@@ -70,15 +77,28 @@ angular.module('djangoCradmin.providers', [])
         width: @mainWindow.width()
       }
 
+    getDeviceFromWindowDimensions: (windowDimensions) ->
+      if windowDimensions < @deviceMinWidths.tablet
+        return 'phone'
+      else if windowDimensions < @deviceMinWidths.mediumDesktop
+        return 'tablet'
+      else if windowDimensions < @deviceMinWidths.largeDesktop
+        return 'medium-desktop'
+      else
+        return 'large-desktop'
+
+    _updateWindowDimensions: (newWindowDimensions) ->
+      @windowDimensions = newWindowDimensions
+      @_onWindowDimensionsChange()
+
     _setWindowDimensions: ->
       newWindowDimensions = @_getWindowDimensions()
       if not angular.equals(newWindowDimensions, @windowDimensions)
-        @windowDimensions = newWindowDimensions
-        @_onWindowDimensionsChange()
+        @_updateWindowDimensions(newWindowDimensions)
 
     _onWindowDimensionsChange: ->
       for scope in @listeningScopes
-        scope.onWindowResize(@windowDimensions)
+        @triggerResizeEventsForScope(scope)
 
     _onWindowResize: =>
       @timeout.cancel(@applyResizeTimer)
@@ -90,6 +110,97 @@ angular.module('djangoCradmin.providers', [])
 
   @$get = (['$window', '$timeout', ($window, $timeout) ->
     return new WindowDimensionsProvider($window, $timeout)
+  ])
+
+  return @
+
+
+.provider 'djangoCradminWindowScrollTop', ->
+  ###* Provider that makes it easy to listen for scrolling on the main window.
+
+  How it works
+  ============
+  You register a ``scope`` with the provider. Each time the window
+  is scrolled, the provider will call ``scope.onWindowScrollTop()``.
+  The provider uses a ``5ms`` timeout before it triggers a
+  resize, so your ``onWindowScrollTop`` method will not be flooded
+  with every pixel change.
+
+  Example
+  =======
+
+  ```coffeescript
+  mymodule.directive('myDirective', [
+    'djangoCradminWindowScrollTop'
+    (djangoCradminWindowScrollTop) ->
+      return {
+        controller: ($scope) ->
+          $scope.onWindowScrollTop = (newTopPosition) ->
+            console.log 'Window was scrolled to', newTopPosition
+          return
+
+        link: ($scope, element, attrs) ->
+          djangoCradminWindowScrollTop.register $scope
+          $scope.$on '$destroy', ->
+            djangoCradminWindowScrollTop.unregister $scope
+          return
+      }
+  ])
+  ```
+  ###
+  class WindowScrollProvider
+    constructor: ($window, @timeout) ->
+      @mainWindow = angular.element($window)
+      @scrollTopPosition = @_getScrollTopPosition()
+      @applyScrollTimer = null
+      @applyScrollTimerTimeoutMs = 5
+      @listeningScopes = []
+
+    register: (scope) ->
+      scopeIndex = @listeningScopes.indexOf(scope)
+      if scopeIndex != -1
+        console.error(
+          'Trying to register a scope that is already registered with ' +
+          'djangoCradminWindowScrollTop. Scope:', scope)
+        return
+      if @listeningScopes.length < 1
+        @mainWindow.bind 'scroll', @_onScroll
+      @listeningScopes.push(scope)
+      scope.onWindowScrollTop(@scrollTopPosition)
+
+    unregister: (scope) ->
+      scopeIndex = @listeningScopes.indexOf(scope)
+      if scopeIndex == -1
+        console.error(
+          'Trying to unregister a scope that is not registered with ' +
+          'djangoCradminWindowScrollTop. Scope:', scope)
+      @listeningScopes.splice(scopeIndex, 1)
+      if @listeningScopes.length < 1
+        @mainWindow.unbind 'scroll', @_onScroll
+
+    _getScrollTopPosition: ->
+      return @mainWindow.scrollTop()
+
+    _setScrollTopPosition: ->
+      scrollTopPosition = @_getScrollTopPosition()
+      if scrollTopPosition != @scrollTopPosition
+        @scrollTopPosition = scrollTopPosition
+        @_onScrollTopChange()
+
+    _onScrollTopChange: ->
+      for scope in @listeningScopes
+        scope.onWindowScrollTop(@scrollTopPosition)
+
+    _onScroll: =>
+      @timeout.cancel(@applyScrollTimer)
+
+      # Use timeout to avoid triggering change for each pixel changed
+      @applyScrollTimer = @timeout =>
+        @_setScrollTopPosition()
+      , @applyScrollTimerTimeoutMs
+
+  @$get = (['$window', '$timeout', ($window, $timeout) ->
+    return new WindowScrollProvider($window, $timeout)
   ])
 
   return @

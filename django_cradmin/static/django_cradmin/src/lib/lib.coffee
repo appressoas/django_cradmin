@@ -12,6 +12,8 @@ angular.module('djangoCradmin', [
 #  'djangoCradmin.wysihtml'
   'djangoCradmin.imagepreview'
   'djangoCradmin.collapse'
+  'djangoCradmin.modal'
+  'djangoCradmin.scrollfixed'
   'djangoCradmin.pagepreview'
   'djangoCradmin.forms.modelchoicefield'
   'djangoCradmin.forms.usethisbutton'

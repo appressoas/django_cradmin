@@ -899,11 +899,20 @@
         this.timeout = timeout;
         this._onWindowResize = __bind(this._onWindowResize, this);
         this.mainWindow = angular.element($window);
+        this.deviceMinWidths = {
+          tablet: 768,
+          mediumDesktop: 992,
+          largeDesktop: 1200
+        };
         this.windowDimensions = this._getWindowDimensions();
         this.applyResizeTimer = null;
         this.applyResizeTimerTimeoutMs = 300;
         this.listeningScopes = [];
       }
+
+      WindowDimensionsProvider.prototype.triggerResizeEventsForScope = function(scope) {
+        return scope.onWindowResize(this.windowDimensions);
+      };
 
       WindowDimensionsProvider.prototype.register = function(scope) {
         var scopeIndex;
@@ -915,8 +924,7 @@
         if (this.listeningScopes.length < 1) {
           this.mainWindow.bind('resize', this._onWindowResize);
         }
-        this.listeningScopes.push(scope);
-        return scope.onWindowResize(this.windowDimensions);
+        return this.listeningScopes.push(scope);
       };
 
       WindowDimensionsProvider.prototype.unregister = function(scope) {
@@ -938,12 +946,28 @@
         };
       };
 
+      WindowDimensionsProvider.prototype.getDeviceFromWindowDimensions = function(windowDimensions) {
+        if (windowDimensions < this.deviceMinWidths.tablet) {
+          return 'phone';
+        } else if (windowDimensions < this.deviceMinWidths.mediumDesktop) {
+          return 'tablet';
+        } else if (windowDimensions < this.deviceMinWidths.largeDesktop) {
+          return 'medium-desktop';
+        } else {
+          return 'large-desktop';
+        }
+      };
+
+      WindowDimensionsProvider.prototype._updateWindowDimensions = function(newWindowDimensions) {
+        this.windowDimensions = newWindowDimensions;
+        return this._onWindowDimensionsChange();
+      };
+
       WindowDimensionsProvider.prototype._setWindowDimensions = function() {
         var newWindowDimensions;
         newWindowDimensions = this._getWindowDimensions();
         if (!angular.equals(newWindowDimensions, this.windowDimensions)) {
-          this.windowDimensions = newWindowDimensions;
-          return this._onWindowDimensionsChange();
+          return this._updateWindowDimensions(newWindowDimensions);
         }
       };
 
@@ -953,7 +977,7 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           scope = _ref[_i];
-          _results.push(scope.onWindowResize(this.windowDimensions));
+          _results.push(this.triggerResizeEventsForScope(scope));
         }
         return _results;
       };
@@ -972,6 +996,119 @@
     this.$get = [
       '$window', '$timeout', function($window, $timeout) {
         return new WindowDimensionsProvider($window, $timeout);
+      }
+    ];
+    return this;
+  }).provider('djangoCradminWindowScrollTop', function() {
+    /** Provider that makes it easy to listen for scrolling on the main window.
+    
+    How it works
+    ============
+    You register a ``scope`` with the provider. Each time the window
+    is scrolled, the provider will call ``scope.onWindowScrollTop()``.
+    The provider uses a ``5ms`` timeout before it triggers a
+    resize, so your ``onWindowScrollTop`` method will not be flooded
+    with every pixel change.
+    
+    Example
+    =======
+    
+    ```coffeescript
+    mymodule.directive('myDirective', [
+      'djangoCradminWindowScrollTop'
+      (djangoCradminWindowScrollTop) ->
+        return {
+          controller: ($scope) ->
+            $scope.onWindowScrollTop = (newTopPosition) ->
+              console.log 'Window was scrolled to', newTopPosition
+            return
+    
+          link: ($scope, element, attrs) ->
+            djangoCradminWindowScrollTop.register $scope
+            $scope.$on '$destroy', ->
+              djangoCradminWindowScrollTop.unregister $scope
+            return
+        }
+    ])
+    ```
+    */
+
+    var WindowScrollProvider;
+    WindowScrollProvider = (function() {
+      function WindowScrollProvider($window, timeout) {
+        this.timeout = timeout;
+        this._onScroll = __bind(this._onScroll, this);
+        this.mainWindow = angular.element($window);
+        this.scrollTopPosition = this._getScrollTopPosition();
+        this.applyScrollTimer = null;
+        this.applyScrollTimerTimeoutMs = 5;
+        this.listeningScopes = [];
+      }
+
+      WindowScrollProvider.prototype.register = function(scope) {
+        var scopeIndex;
+        scopeIndex = this.listeningScopes.indexOf(scope);
+        if (scopeIndex !== -1) {
+          console.error('Trying to register a scope that is already registered with ' + 'djangoCradminWindowScrollTop. Scope:', scope);
+          return;
+        }
+        if (this.listeningScopes.length < 1) {
+          this.mainWindow.bind('scroll', this._onScroll);
+        }
+        this.listeningScopes.push(scope);
+        return scope.onWindowScrollTop(this.scrollTopPosition);
+      };
+
+      WindowScrollProvider.prototype.unregister = function(scope) {
+        var scopeIndex;
+        scopeIndex = this.listeningScopes.indexOf(scope);
+        if (scopeIndex === -1) {
+          console.error('Trying to unregister a scope that is not registered with ' + 'djangoCradminWindowScrollTop. Scope:', scope);
+        }
+        this.listeningScopes.splice(scopeIndex, 1);
+        if (this.listeningScopes.length < 1) {
+          return this.mainWindow.unbind('scroll', this._onScroll);
+        }
+      };
+
+      WindowScrollProvider.prototype._getScrollTopPosition = function() {
+        return this.mainWindow.scrollTop();
+      };
+
+      WindowScrollProvider.prototype._setScrollTopPosition = function() {
+        var scrollTopPosition;
+        scrollTopPosition = this._getScrollTopPosition();
+        if (scrollTopPosition !== this.scrollTopPosition) {
+          this.scrollTopPosition = scrollTopPosition;
+          return this._onScrollTopChange();
+        }
+      };
+
+      WindowScrollProvider.prototype._onScrollTopChange = function() {
+        var scope, _i, _len, _ref, _results;
+        _ref = this.listeningScopes;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          scope = _ref[_i];
+          _results.push(scope.onWindowScrollTop(this.scrollTopPosition));
+        }
+        return _results;
+      };
+
+      WindowScrollProvider.prototype._onScroll = function() {
+        var _this = this;
+        this.timeout.cancel(this.applyScrollTimer);
+        return this.applyScrollTimer = this.timeout(function() {
+          return _this._setScrollTopPosition();
+        }, this.applyScrollTimerTimeoutMs);
+      };
+
+      return WindowScrollProvider;
+
+    })();
+    this.$get = [
+      '$window', '$timeout', function($window, $timeout) {
+        return new WindowScrollProvider($window, $timeout);
       }
     ];
     return this;
@@ -1627,7 +1764,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
 
 }).call(this);
 
@@ -1754,6 +1891,50 @@
       };
       $scope.messageIsHidden = function(index) {
         return $scope.messageHidden[index];
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.modal', []).directive('djangoCradminModal', [
+    function() {
+      /** Shows a modal window on click.
+      
+      Example
+      =======
+      
+      ```html
+      <div django-cradmin-modal>
+        <button ng-click="showModal()" type="button">
+          Show modal window
+        </button>
+        <div class="django-cradmin-modal"
+                ng-class="{'django-cradmin-modal-visible': modalVisible}">
+            <div class="django-cradmin-modal-backdrop" ng-click="hideModal()"></div>
+            <div class="django-cradmin-modal-content">
+                <p>Something here</p>
+                <button ng-click="hideModal()" type="button">
+                  Hide modal window
+                </button>
+            </div>
+        </div>
+      </div>
+      ```
+      */
+
+      return {
+        scope: true,
+        controller: function($scope) {
+          $scope.modalVisible = false;
+          $scope.showModal = function() {
+            return $scope.modalVisible = true;
+          };
+          $scope.hideModal = function() {
+            return $scope.modalVisible = false;
+          };
+        }
       };
     }
   ]);
@@ -2177,6 +2358,70 @@
           element.on('click', function(e) {
             e.preventDefault();
             return djangoCradminPagePreview.setPreviewConfig(scope.previewConfig);
+          });
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.scrollfixed', []).directive('djangoCradminScrollTopFixed', [
+    'djangoCradminWindowScrollTop', 'djangoCradminWindowDimensions', function(djangoCradminWindowScrollTop, djangoCradminWindowDimensions) {
+      /** Keep an item aligned relative to a given top pixel position on the screen when scrolling.
+      
+      Example
+      =======
+      
+      ```html
+      <div django-cradmin-scroll-top-fixed>
+        Some content here.
+      </div>
+      ```
+      
+      Make sure you style your element with absolute position. Example:
+      
+      ```
+      position: absolute;
+      top: 0;
+      left: 0;
+      ```
+      
+      Uses the initial top position as the offset. This means that you can style an element
+      with something like this:
+      
+      ```
+      position: absolute;
+      top: 40px;
+      right: 90px;
+      ```
+      
+      And have it stay 40px from the top of the viewarea.
+      
+      Handling mobile devices
+      =======================
+      You may not want to scroll content on small displays. You
+      should solve this with CSS media queries - simply do not
+      use ``position: absolute;`` for the screen sizes you do
+      not want to scroll.
+      */
+
+      return {
+        controller: function($scope) {
+          $scope.onWindowScrollTop = function(newWindowTopPosition) {
+            var newTopPosition;
+            newTopPosition = newWindowTopPosition + $scope.djangoCradminScrollTopFixedInitialTopOffset;
+            return $scope.djangoCradminScrollTopFixedElement.css('top', "" + newTopPosition + "px");
+          };
+        },
+        link: function($scope, element, attrs) {
+          $scope.djangoCradminScrollTopFixedElement = element;
+          $scope.djangoCradminScrollTopFixedSettings = $scope.$eval(attrs.djangoCradminScrollTopFixed);
+          $scope.djangoCradminScrollTopFixedInitialTopOffset = parseInt(element.css('top'), 10) || 0;
+          djangoCradminWindowScrollTop.register($scope);
+          $scope.$on('$destroy', function() {
+            return djangoCradminWindowScrollTop.unregister($scope);
           });
         }
       };

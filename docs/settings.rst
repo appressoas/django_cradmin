@@ -19,3 +19,7 @@ DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
 
 DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
     Can be used to hide the page header in listing views by default.
+
+DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED
+    If this is ``True``, the menu template will add an angularjs directive that
+    automatically scrolls the menu when the window is scrolled.

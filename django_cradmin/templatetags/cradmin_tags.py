@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
 from django import template
+from django.template.defaultfilters import stringfilter
+import json
+from xml.sax import saxutils
 
 from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
@@ -95,3 +98,12 @@ def cradmin_render_menu(context):
     if hasattr(request, 'cradmin_instance'):
         return request.cradmin_instance.get_menu().render(context)
     return ''
+
+
+@register.filter
+def cradmin_jsonencode(json_serializable_pythonobject):
+    """
+    Template filter that converts a json serializable object
+    to a json encoded string.
+    """
+    return json.dumps(json_serializable_pythonobject)
