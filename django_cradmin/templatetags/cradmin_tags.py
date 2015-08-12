@@ -1,9 +1,8 @@
 from __future__ import unicode_literals
 
-from django import template
-from django.template.defaultfilters import stringfilter
 import json
-from xml.sax import saxutils
+
+from django import template
 
 from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
