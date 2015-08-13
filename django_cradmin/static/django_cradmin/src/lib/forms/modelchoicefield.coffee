@@ -199,7 +199,6 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
 
         resizeIfScrollHeightChanges = ->
           newScrollHeight = getIframeScrollHeight()
-          console.log 'newScrollHeight tick', newScrollHeight
           if newScrollHeight != currentScrollHeight
             currentScrollHeight = newScrollHeight
             $scope.setIframeSize()
