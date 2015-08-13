@@ -59,7 +59,6 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           @_setField(fieldWrapperScope.fieldScope)
           @_setPreviewElement(fieldWrapperScope.previewElementScope)
           $scope.iframeScope.beforeShowingIframe(fieldWrapperScope.iframeSrc)
-          djangoCradminWindowDimensions.register $scope
           $scope.show()
 
         @onIframeLoadBegin = ->
@@ -80,7 +79,6 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
             return
           $scope.fieldScope.setValue(data.value)
           $scope.previewElementScope.setPreviewHtml(data.preview)
-          djangoCradminWindowDimensions.unregister $scope
           $scope.hide()
           $scope.iframeScope.afterFieldValueChange()
 
@@ -96,6 +94,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
           djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass(
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push')
+          djangoCradminWindowDimensions.register $scope
 
         $scope.hide = ->
           $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
@@ -104,6 +103,8 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass(
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push')
           djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling()
+          $scope.iframeScope.onHide()
+          djangoCradminWindowDimensions.unregister $scope
 
         @closeIframe = ->
           $scope.hide()
@@ -171,45 +172,86 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
       return
   }
 
-.directive 'djangoCradminModelChoiceFieldIframe', ->
-  return {
-    require: '^djangoCradminModelChoiceFieldIframeWrapper'
-    restrict: 'A'
-    scope: {}
+.directive('djangoCradminModelChoiceFieldIframe', [
+  '$interval'
+  ($interval) ->
+    return {
+      require: '^djangoCradminModelChoiceFieldIframeWrapper'
+      restrict: 'A'
+      scope: {}
 
-    controller: ($scope) ->
-      $scope.afterFieldValueChange = ->
-        # NOTE: Do nothing, but we may want to add an option that clears the view
-        #       after selecting a value.
-        # $scope.element.attr('src', '')
-      $scope.beforeShowingIframe = (iframeSrc) ->
-        currentSrc = $scope.element.attr('src')
-        if not currentSrc? or currentSrc == '' or currentSrc != iframeSrc
-          $scope.loadedSrc = currentSrc
-          $scope.wrapperCtrl.onIframeLoadBegin()
-          $scope.resetIframeSize()
-          $scope.element.attr('src', iframeSrc)
+      controller: ($scope) ->
+        scrollHeightInterval = null
+        currentScrollHeight = 0
 
-      $scope.setIframeSize = ->
-        iframeWindow = $scope.element.contents()
-        iframeDocument = iframeWindow[0]
-        if iframeDocument?
-          iframeBodyHeight = iframeDocument.body.offsetHeight
-          $scope.element.height(iframeBodyHeight + 60)
+        getIframeWindow = ->
+          return $scope.element.contents()
 
-      $scope.resetIframeSize = ->
-        $scope.element.height('40px')
+        getIframeDocument = ->
+          return getIframeWindow()[0]
 
-    link: (scope, element, attrs, wrapperCtrl) ->
-      scope.element = element
-      scope.wrapperCtrl = wrapperCtrl
-      wrapperCtrl.setIframe(scope)
-      scope.element.on 'load', ->
-        wrapperCtrl.onIframeLoaded()
-        scope.setIframeSize()
-      return
-  }
+        getIframeScrollHeight = ->
+          iframeDocument = getIframeDocument()
+          if iframeDocument?.body?
+            return iframeDocument.body.scrollHeight
+          else
+            return 0
 
+        resizeIfScrollHeightChanges = ->
+          newScrollHeight = getIframeScrollHeight()
+          console.log 'newScrollHeight tick', newScrollHeight
+          if newScrollHeight != currentScrollHeight
+            currentScrollHeight = newScrollHeight
+            $scope.setIframeSize()
+
+        startScrollHeightInterval = ->
+          if not scrollHeightInterval?
+            scrollHeightInterval = $interval(resizeIfScrollHeightChanges, 500)
+
+        stopScrollHeightInterval = ->
+          if scrollHeightInterval?
+            $interval.cancel(scrollHeightInterval)
+            scrollHeightInterval = null
+
+        $scope.onHide = ->
+          stopScrollHeightInterval()
+
+        $scope.afterFieldValueChange = ->
+          # NOTE: We may want to add an option that clears the view
+          #       after selecting a value.
+          # $scope.element.attr('src', '')
+          stopScrollHeightInterval()
+
+        $scope.beforeShowingIframe = (iframeSrc) ->
+          currentSrc = $scope.element.attr('src')
+          if not currentSrc? or currentSrc == '' or currentSrc != iframeSrc
+            $scope.loadedSrc = currentSrc
+            $scope.wrapperCtrl.onIframeLoadBegin()
+            $scope.resetIframeSize()
+            $scope.element.attr('src', iframeSrc)
+          startScrollHeightInterval()
+
+        $scope.setIframeSize = ->
+          iframeDocument = getIframeDocument()
+          if iframeDocument?.body?
+            iframeBodyHeight = iframeDocument.body.offsetHeight
+            $scope.element.height(iframeBodyHeight)
+
+        $scope.resetIframeSize = ->
+          $scope.element.height('40px')
+
+        return
+
+      link: (scope, element, attrs, wrapperCtrl) ->
+        scope.element = element
+        scope.wrapperCtrl = wrapperCtrl
+        wrapperCtrl.setIframe(scope)
+        scope.element.on 'load', ->
+          wrapperCtrl.onIframeLoaded()
+          scope.setIframeSize()
+        return
+    }
+])
 
 
 .directive('djangoCradminModelChoiceFieldWrapper', [
