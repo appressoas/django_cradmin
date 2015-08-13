@@ -28,6 +28,7 @@ def makemessages():
     for languagecode in LANGUAGE_CODES:
         _manage('makemessages -l {} '
                 '-i "node_modules/*" '
+                '-i "demo/*" '
                 '-i "static/*"'.format(languagecode),
                 cwd='django_cradmin')
 

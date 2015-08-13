@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-13 01:37+0000\n"
+"POT-Creation-Date: 2015-08-13 01:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,6 @@ msgstr ""
 
 #: apps/cradmin_authenticate/views/login.py:94
 #: apps/cradmin_authenticate/views/login.py:96
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:26
 msgid "Username"
 msgstr ""
 
@@ -92,8 +91,6 @@ msgstr ""
 #: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_authenticate/views/login.py:124
 #: apps/cradmin_resetpassword/views/begin.py:53
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:30
-#: demo/webdemo/crapps/inviteadmins/index.py:13
 msgid "Email"
 msgstr ""
 
@@ -106,18 +103,14 @@ msgid "Created"
 msgstr ""
 
 #: apps/cradmin_generic_token_with_metadata/models.py:230
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:40
 msgid "Expires"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:33 demo/webdemo/crapps/pages.py:91
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:54
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:57
+#: apps/cradmin_imagearchive/cradminviews.py:33
 msgid "Edit"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:36
-#: demo/webdemo/crapps/inviteadmins/index.py:18 viewhelpers/delete.py:29
+#: apps/cradmin_imagearchive/cradminviews.py:36 viewhelpers/delete.py:29
 msgid "Delete"
 msgstr ""
 
@@ -461,218 +454,6 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: demo/usermanagerdemo/cradmin.py:15
-msgid "Select user"
-msgstr ""
-
-#: demo/usermanagerdemo/cradmin.py:20
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:7
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:12
-msgid "Account overview"
-msgstr ""
-
-#: demo/usermanagerdemo/cradmin.py:23
-msgid "Edit profile"
-msgstr ""
-
-#: demo/usermanagerdemo/crapps/edit_user.py:23
-msgid "Updated your account information."
-msgstr ""
-
-#: demo/usermanagerdemo/crapps/edit_user.py:37 viewhelpers/create.py:131
-#: viewhelpers/formbase.py:42
-msgid "Save"
-msgstr ""
-
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:20
-msgid "Personal info"
-msgstr ""
-
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:34
-msgid "First name"
-msgstr ""
-
-#: demo/usermanagerdemo/templates/usermanagerdemo/overview.django.html:38
-msgid "Last name"
-msgstr ""
-
-#: demo/webdemo/cradmin.py:17
-msgid "Select role"
-msgstr ""
-
-#: demo/webdemo/cradmin.py:19
-msgid "Dashboard"
-msgstr ""
-
-#: demo/webdemo/cradmin.py:22 demo/webdemo/models.py:57
-msgid "Pages"
-msgstr ""
-
-#: demo/webdemo/cradmin.py:25
-msgid "Images"
-msgstr ""
-
-#: demo/webdemo/cradmin.py:29 demo/webdemo/crapps/inviteadmins/index.py:54
-msgid "Invite admins"
-msgstr ""
-
-#: demo/webdemo/cradmin.py:32
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:30
-msgid "Share"
-msgstr ""
-
-#: demo/webdemo/crapps/inviteadmins/index.py:51
-msgid ""
-"No pending invites. Click the button above to invite new administrators for "
-"the site."
-msgstr ""
-
-#: demo/webdemo/crapps/inviteadmins/index.py:59
-#: demo/webdemo/templates/webdemo/inviteadmins_private/send_private_invite.django.html:6
-#: demo/webdemo/templates/webdemo/inviteadmins_private/send_private_invite.django.html:11
-msgid "Send private invite"
-msgstr ""
-
-#: demo/webdemo/crapps/inviteadmins/send.py:16
-msgid "Email addresses to send invites to"
-msgstr ""
-
-#: demo/webdemo/crapps/inviteadmins/send.py:17
-msgid ""
-"We will send a separate invite to each of the email addresses you provide."
-msgstr ""
-
-#: demo/webdemo/crapps/inviteadmins/send.py:45
-msgid "Send invites"
-msgstr ""
-
-#: demo/webdemo/crapps/pages.py:82 viewhelpers/create.py:34
-msgid "Create"
-msgstr ""
-
-#: demo/webdemo/crapps/pages.py:195
-msgid "Update text for selected pages"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/delete.py:13
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:60
-msgid "Disable"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/delete.py:16
-msgid "Are you sure you want to disable the sharable link?"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/delete.py:19
-msgid "sharable link"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/delete.py:22
-msgid "Disabled the sharable link"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/edit.py:18
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:46
-msgid "Message"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/edit.py:19
-msgid ""
-"An optional message that people will see when they visit the sharable link."
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/edit.py:23
-msgid "Expiration time"
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/edit.py:24
-msgid "An optional expiration time for the sharable link."
-msgstr ""
-
-#: demo/webdemo/crapps/sharable_link/edit.py:66
-#: demo/webdemo/templates/webdemo/sharable_link/edit.django.html:6
-#: demo/webdemo/templates/webdemo/sharable_link/edit.django.html:11
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:22
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:69
-msgid "Get sharable link"
-msgstr ""
-
-#: demo/webdemo/models.py:28
-msgid "Title"
-msgstr ""
-
-#: demo/webdemo/models.py:30
-msgid "Intro"
-msgstr ""
-
-#: demo/webdemo/models.py:31
-msgid "A short introduction."
-msgstr ""
-
-#: demo/webdemo/models.py:34
-msgid "Image"
-msgstr ""
-
-#: demo/webdemo/models.py:37
-msgid "Attachment"
-msgstr ""
-
-#: demo/webdemo/models.py:40
-msgid "Body"
-msgstr ""
-
-#: demo/webdemo/models.py:42
-msgid "Publishing time"
-msgstr ""
-
-#: demo/webdemo/models.py:45
-msgid "The time when this will be visible on the website."
-msgstr ""
-
-#: demo/webdemo/models.py:47
-msgid "Internal notes"
-msgstr ""
-
-#: demo/webdemo/models.py:48
-msgid "Put internal notes here. Will not be visible on the website."
-msgstr ""
-
-#: demo/webdemo/models.py:56
-msgid "Page"
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/dashboard.django.html:8
-msgid "Demo"
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:8
-msgid "Public share link"
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:14
-msgid "Sharable link"
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:32
-msgid ""
-"Share the link below with anyone you want to make an administrator for this "
-"site."
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:38
-msgid "Details"
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:44
-msgid "Never"
-msgstr ""
-
-#: demo/webdemo/templates/webdemo/sharable_link/show.django.html:50
-#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
-#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
-msgid "(None)"
-msgstr ""
-
 #: formfields/email_list.py:18 formfields/email_list.py:20
 msgid "Type email-addresses separated by newlines, whitespace or comma."
 msgstr ""
@@ -823,6 +604,11 @@ msgstr ""
 msgid "EDIT"
 msgstr ""
 
+#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
+#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
+msgid "(None)"
+msgstr ""
+
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
 #: viewhelpers/objecttable.py:881
 msgid "Search..."
@@ -865,6 +651,10 @@ msgstr ""
 msgid "Create and select"
 msgstr ""
 
+#: viewhelpers/create.py:34
+msgid "Create"
+msgstr ""
+
 #: viewhelpers/create.py:35
 msgid "Create and continue editing"
 msgstr ""
@@ -877,6 +667,10 @@ msgstr ""
 #: viewhelpers/create.py:105
 #, python-format
 msgid "Created \"%(object)s\"."
+msgstr ""
+
+#: viewhelpers/create.py:131 viewhelpers/formbase.py:42
+msgid "Save"
 msgstr ""
 
 #: viewhelpers/create.py:132 viewhelpers/formbase.py:45
