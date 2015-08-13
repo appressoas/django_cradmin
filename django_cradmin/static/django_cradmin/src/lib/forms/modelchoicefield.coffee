@@ -29,17 +29,15 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
 
 
 .directive('djangoCradminModelChoiceFieldIframeWrapper', [
-  '$window', '$timeout', 'djangoCradminModelChoiceFieldCoordinator'
-  ($window, $timeout, djangoCradminModelChoiceFieldCoordinator) ->
+  '$window', '$timeout', 'djangoCradminModelChoiceFieldCoordinator', 'djangoCradminWindowDimensions'
+  ($window, $timeout, djangoCradminModelChoiceFieldCoordinator, djangoCradminWindowDimensions) ->
     return {
       restrict: 'A'
       scope: {}
 
       controller: ($scope) ->
         $scope.origin = "#{window.location.protocol}//#{window.location.host}"
-        $scope.mainWindow = angular.element($window)
         $scope.bodyElement = angular.element($window.document.body)
-        $scope.windowDimensions = null
         djangoCradminModelChoiceFieldCoordinator.registerModeChoiceFieldIframeWrapper(this)
 
         @setIframe = (iframeScope) ->
@@ -61,7 +59,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           @_setField(fieldWrapperScope.fieldScope)
           @_setPreviewElement(fieldWrapperScope.previewElementScope)
           $scope.iframeScope.beforeShowingIframe(fieldWrapperScope.iframeSrc)
-          $scope.mainWindow.bind 'resize', $scope.onWindowResize
+          djangoCradminWindowDimensions.register $scope
           $scope.show()
 
         @onIframeLoadBegin = ->
@@ -82,32 +80,14 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
             return
           $scope.fieldScope.setValue(data.value)
           $scope.previewElementScope.setPreviewHtml(data.preview)
-          $scope.mainWindow.unbind 'resize', $scope.onWindowResize
+          djangoCradminWindowDimensions.unregister $scope
           $scope.hide()
           $scope.iframeScope.afterFieldValueChange()
 
         $window.addEventListener('message', $scope.onChangeValue, false)
 
-        $scope.getWindowDimensions = ->
-          return {
-            height: $scope.mainWindow.height()
-            width: $scope.mainWindow.width()
-          }
-
-        $scope.$watch 'windowDimensions', ((newSize, oldSize) ->
+        $scope.onWindowResize = (newWindowDimensions) ->
           $scope.iframeScope.setIframeSize()
-          return
-        ), true
-
-        $scope.onWindowResize = ->
-          $timeout.cancel($scope.applyResizeTimer)
-
-          # Use timeout to avoid triggering change for each pixel changed
-          $scope.applyResizeTimer = $timeout ->
-            $scope.windowDimensions = $scope.getWindowDimensions()
-            $scope.$apply()
-          , 300
-          return
 
         $scope.show = ->
           $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
