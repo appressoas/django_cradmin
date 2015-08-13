@@ -11,6 +11,7 @@ from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFil
 from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 
 from django_cradmin.viewhelpers import objecttable
+from django_cradmin.viewhelpers import crudbase
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
@@ -131,7 +132,9 @@ class ArchiveImageCreateUpdateMixin(object):
         return form
 
 
-class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
+class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
+                             ArchiveImageCreateUpdateMixin,
+                             create.CreateView):
     """
     View used to create new images.
     """
@@ -163,7 +166,10 @@ class ArchiveImageCreateView(ArchiveImageCreateUpdateMixin, create.CreateView):
         return _(u'Uploaded %(what)s.') % {'what': what}
 
 
-class ArchiveImageUpdateView(ArchiveImagesQuerySetForRoleMixin, ArchiveImageCreateUpdateMixin, update.UpdateView):
+class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
+                             ArchiveImagesQuerySetForRoleMixin,
+                             ArchiveImageCreateUpdateMixin,
+                             update.UpdateView):
     """
     View used to create edit existing images.
     """
