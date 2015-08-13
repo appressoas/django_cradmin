@@ -1294,15 +1294,13 @@
     ];
     return this;
   }).directive('djangoCradminModelChoiceFieldIframeWrapper', [
-    '$window', '$timeout', 'djangoCradminModelChoiceFieldCoordinator', function($window, $timeout, djangoCradminModelChoiceFieldCoordinator) {
+    '$window', '$timeout', 'djangoCradminModelChoiceFieldCoordinator', 'djangoCradminWindowDimensions', function($window, $timeout, djangoCradminModelChoiceFieldCoordinator, djangoCradminWindowDimensions) {
       return {
         restrict: 'A',
         scope: {},
         controller: function($scope) {
           $scope.origin = "" + window.location.protocol + "//" + window.location.host;
-          $scope.mainWindow = angular.element($window);
           $scope.bodyElement = angular.element($window.document.body);
-          $scope.windowDimensions = null;
           djangoCradminModelChoiceFieldCoordinator.registerModeChoiceFieldIframeWrapper(this);
           this.setIframe = function(iframeScope) {
             return $scope.iframeScope = iframeScope;
@@ -1323,7 +1321,6 @@
             this._setField(fieldWrapperScope.fieldScope);
             this._setPreviewElement(fieldWrapperScope.previewElementScope);
             $scope.iframeScope.beforeShowingIframe(fieldWrapperScope.iframeSrc);
-            $scope.mainWindow.bind('resize', $scope.onWindowResize);
             return $scope.show();
           };
           this.onIframeLoadBegin = function() {
@@ -1345,38 +1342,27 @@
             }
             $scope.fieldScope.setValue(data.value);
             $scope.previewElementScope.setPreviewHtml(data.preview);
-            $scope.mainWindow.unbind('resize', $scope.onWindowResize);
             $scope.hide();
             return $scope.iframeScope.afterFieldValueChange();
           };
           $window.addEventListener('message', $scope.onChangeValue, false);
-          $scope.getWindowDimensions = function() {
-            return {
-              height: $scope.mainWindow.height(),
-              width: $scope.mainWindow.width()
-            };
-          };
-          $scope.$watch('windowDimensions', (function(newSize, oldSize) {
-            $scope.iframeScope.setIframeSize();
-          }), true);
-          $scope.onWindowResize = function() {
-            $timeout.cancel($scope.applyResizeTimer);
-            $scope.applyResizeTimer = $timeout(function() {
-              $scope.windowDimensions = $scope.getWindowDimensions();
-              return $scope.$apply();
-            }, 300);
+          $scope.onWindowResize = function(newWindowDimensions) {
+            return $scope.iframeScope.setIframeSize();
           };
           $scope.show = function() {
             $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
             djangoCradminModelChoiceFieldCoordinator.disableBodyScrolling();
             djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
-            return djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
+            djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
+            return djangoCradminWindowDimensions.register($scope);
           };
           $scope.hide = function() {
             $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
             djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
             djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
-            return djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling();
+            djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling();
+            $scope.iframeScope.onHide();
+            return djangoCradminWindowDimensions.unregister($scope);
           };
           this.closeIframe = function() {
             return $scope.hide();
@@ -1440,47 +1426,91 @@
         wrapperCtrl.setLoadSpinner(scope);
       }
     };
-  }).directive('djangoCradminModelChoiceFieldIframe', function() {
-    return {
-      require: '^djangoCradminModelChoiceFieldIframeWrapper',
-      restrict: 'A',
-      scope: {},
-      controller: function($scope) {
-        $scope.afterFieldValueChange = function() {};
-        $scope.beforeShowingIframe = function(iframeSrc) {
-          var currentSrc;
-          currentSrc = $scope.element.attr('src');
-          if ((currentSrc == null) || currentSrc === '' || currentSrc !== iframeSrc) {
-            $scope.loadedSrc = currentSrc;
-            $scope.wrapperCtrl.onIframeLoadBegin();
-            $scope.resetIframeSize();
-            return $scope.element.attr('src', iframeSrc);
-          }
-        };
-        $scope.setIframeSize = function() {
-          var iframeBodyHeight, iframeDocument, iframeWindow;
-          iframeWindow = $scope.element.contents();
-          iframeDocument = iframeWindow[0];
-          if (iframeDocument != null) {
-            iframeBodyHeight = iframeDocument.body.offsetHeight;
-            return $scope.element.height(iframeBodyHeight + 60);
-          }
-        };
-        return $scope.resetIframeSize = function() {
-          return $scope.element.height('40px');
-        };
-      },
-      link: function(scope, element, attrs, wrapperCtrl) {
-        scope.element = element;
-        scope.wrapperCtrl = wrapperCtrl;
-        wrapperCtrl.setIframe(scope);
-        scope.element.on('load', function() {
-          wrapperCtrl.onIframeLoaded();
-          return scope.setIframeSize();
-        });
-      }
-    };
-  }).directive('djangoCradminModelChoiceFieldWrapper', [
+  }).directive('djangoCradminModelChoiceFieldIframe', [
+    '$interval', function($interval) {
+      return {
+        require: '^djangoCradminModelChoiceFieldIframeWrapper',
+        restrict: 'A',
+        scope: {},
+        controller: function($scope) {
+          var currentScrollHeight, getIframeDocument, getIframeScrollHeight, getIframeWindow, resizeIfScrollHeightChanges, scrollHeightInterval, startScrollHeightInterval, stopScrollHeightInterval;
+          scrollHeightInterval = null;
+          currentScrollHeight = 0;
+          getIframeWindow = function() {
+            return $scope.element.contents();
+          };
+          getIframeDocument = function() {
+            return getIframeWindow()[0];
+          };
+          getIframeScrollHeight = function() {
+            var iframeDocument;
+            iframeDocument = getIframeDocument();
+            if ((iframeDocument != null ? iframeDocument.body : void 0) != null) {
+              return iframeDocument.body.scrollHeight;
+            } else {
+              return 0;
+            }
+          };
+          resizeIfScrollHeightChanges = function() {
+            var newScrollHeight;
+            newScrollHeight = getIframeScrollHeight();
+            if (newScrollHeight !== currentScrollHeight) {
+              currentScrollHeight = newScrollHeight;
+              return $scope.setIframeSize();
+            }
+          };
+          startScrollHeightInterval = function() {
+            if (scrollHeightInterval == null) {
+              return scrollHeightInterval = $interval(resizeIfScrollHeightChanges, 500);
+            }
+          };
+          stopScrollHeightInterval = function() {
+            if (scrollHeightInterval != null) {
+              $interval.cancel(scrollHeightInterval);
+              return scrollHeightInterval = null;
+            }
+          };
+          $scope.onHide = function() {
+            return stopScrollHeightInterval();
+          };
+          $scope.afterFieldValueChange = function() {
+            return stopScrollHeightInterval();
+          };
+          $scope.beforeShowingIframe = function(iframeSrc) {
+            var currentSrc;
+            currentSrc = $scope.element.attr('src');
+            if ((currentSrc == null) || currentSrc === '' || currentSrc !== iframeSrc) {
+              $scope.loadedSrc = currentSrc;
+              $scope.wrapperCtrl.onIframeLoadBegin();
+              $scope.resetIframeSize();
+              $scope.element.attr('src', iframeSrc);
+            }
+            return startScrollHeightInterval();
+          };
+          $scope.setIframeSize = function() {
+            var iframeBodyHeight, iframeDocument;
+            iframeDocument = getIframeDocument();
+            if ((iframeDocument != null ? iframeDocument.body : void 0) != null) {
+              iframeBodyHeight = iframeDocument.body.offsetHeight;
+              return $scope.element.height(iframeBodyHeight);
+            }
+          };
+          $scope.resetIframeSize = function() {
+            return $scope.element.height('40px');
+          };
+        },
+        link: function(scope, element, attrs, wrapperCtrl) {
+          scope.element = element;
+          scope.wrapperCtrl = wrapperCtrl;
+          wrapperCtrl.setIframe(scope);
+          scope.element.on('load', function() {
+            wrapperCtrl.onIframeLoaded();
+            return scope.setIframeSize();
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminModelChoiceFieldWrapper', [
     'djangoCradminModelChoiceFieldCoordinator', function(djangoCradminModelChoiceFieldCoordinator) {
       return {
         restrict: 'A',
