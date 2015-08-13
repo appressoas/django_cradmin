@@ -146,10 +146,11 @@ class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
 
     def get_field_layout(self):
         return [
-            layout.Div('image', css_class="cradmin-focusfield"),
             layout.Div(
+                'image',
                 layout.Field('description', css_class='cradmin-textarea-small'),
-                css_class="cradmin-focusfield"),
+                css_class='cradmin-globalfields'
+            )
         ]
 
     def save_object(self, form, commit=True):
@@ -177,10 +178,11 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
 
     def get_field_layout(self):
         return [
-            layout.Div('image', css_class="cradmin-focusfield"),
             layout.Div(
+                'image',
                 layout.Field('description', css_class='cradmin-textarea-small'),
-                css_class="cradmin-focusfield"),
+                css_class='cradmin-globalfields'
+            )
         ]
 
 
