@@ -2,7 +2,7 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
 
 .provider 'djangoCradminModelChoiceFieldCoordinator', ->
   class ModelChoiceFieldOverlay
-    constructor: ->
+    constructor: (@djangoCradminWindowDimensions) ->
       @modelChoiceFieldIframeWrapper = null
       @bodyContentWrapperElement = angular.element('#django_cradmin_bodycontentwrapper')
       @bodyElement = angular.element('body')
@@ -18,10 +18,13 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
       @bodyElement.addClass('django-cradmin-noscroll')
     enableBodyScrolling: ->
       @bodyElement.removeClass('django-cradmin-noscroll')
+      @djangoCradminWindowDimensions.triggerWindowResizeEvent()
 
 
-  @$get = ->
-    return new ModelChoiceFieldOverlay()
+  @$get = (['djangoCradminWindowDimensions', (djangoCradminWindowDimensions) ->
+    return new ModelChoiceFieldOverlay(djangoCradminWindowDimensions)
+  ])
+
   return @
 
 
@@ -57,8 +60,6 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
         @onChangeValueBegin = (fieldWrapperScope) ->
           @_setField(fieldWrapperScope.fieldScope)
           @_setPreviewElement(fieldWrapperScope.previewElementScope)
-          djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass(
-            'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
           $scope.iframeScope.beforeShowingIframe(fieldWrapperScope.iframeSrc)
           $scope.mainWindow.bind 'resize', $scope.onWindowResize
           $scope.show()
@@ -82,8 +83,6 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           $scope.fieldScope.setValue(data.value)
           $scope.previewElementScope.setPreviewHtml(data.preview)
           $scope.mainWindow.unbind 'resize', $scope.onWindowResize
-          djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass(
-            'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
           $scope.hide()
           $scope.iframeScope.afterFieldValueChange()
 
@@ -114,13 +113,17 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
           djangoCradminModelChoiceFieldCoordinator.disableBodyScrolling()
           djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass(
+            'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
+          djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass(
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push')
 
         $scope.hide = ->
           $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show')
-          djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling()
+          djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass(
+            'django-cradmin-floating-fullsize-iframe-bodycontentwrapper')
           djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass(
             'django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push')
+          djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling()
 
         @closeIframe = ->
           $scope.hide()

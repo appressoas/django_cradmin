@@ -47,7 +47,7 @@ angular.module('djangoCradmin.providers', [])
       @applyResizeTimerTimeoutMs = 300
       @listeningScopes = []
 
-    triggerResizeEventsForScope: (scope) ->
+    _triggerResizeEventsForScope: (scope) ->
       scope.onWindowResize(@windowDimensions)
 
     register: (scope) ->
@@ -98,7 +98,10 @@ angular.module('djangoCradmin.providers', [])
 
     _onWindowDimensionsChange: ->
       for scope in @listeningScopes
-        @triggerResizeEventsForScope(scope)
+        @_triggerResizeEventsForScope(scope)
+
+    triggerWindowResizeEvent: ->
+      @_onWindowDimensionsChange()
 
     _onWindowResize: =>
       @timeout.cancel(@applyResizeTimer)
@@ -122,7 +125,7 @@ angular.module('djangoCradmin.providers', [])
   ============
   You register a ``scope`` with the provider. Each time the window
   is scrolled, the provider will call ``scope.onWindowScrollTop()``.
-  The provider uses a ``5ms`` timeout before it triggers a
+  The provider uses a ``100ms`` timeout before it triggers a
   resize, so your ``onWindowScrollTop`` method will not be flooded
   with every pixel change.
 
@@ -153,7 +156,7 @@ angular.module('djangoCradmin.providers', [])
       @mainWindow = angular.element($window)
       @scrollTopPosition = @_getScrollTopPosition()
       @applyScrollTimer = null
-      @applyScrollTimerTimeoutMs = 5
+      @applyScrollTimerTimeoutMs = 100
       @listeningScopes = []
 
     register: (scope) ->

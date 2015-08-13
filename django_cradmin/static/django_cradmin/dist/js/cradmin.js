@@ -910,7 +910,7 @@
         this.listeningScopes = [];
       }
 
-      WindowDimensionsProvider.prototype.triggerResizeEventsForScope = function(scope) {
+      WindowDimensionsProvider.prototype._triggerResizeEventsForScope = function(scope) {
         return scope.onWindowResize(this.windowDimensions);
       };
 
@@ -977,9 +977,13 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           scope = _ref[_i];
-          _results.push(this.triggerResizeEventsForScope(scope));
+          _results.push(this._triggerResizeEventsForScope(scope));
         }
         return _results;
+      };
+
+      WindowDimensionsProvider.prototype.triggerWindowResizeEvent = function() {
+        return this._onWindowDimensionsChange();
       };
 
       WindowDimensionsProvider.prototype._onWindowResize = function() {
@@ -1006,7 +1010,7 @@
     ============
     You register a ``scope`` with the provider. Each time the window
     is scrolled, the provider will call ``scope.onWindowScrollTop()``.
-    The provider uses a ``5ms`` timeout before it triggers a
+    The provider uses a ``100ms`` timeout before it triggers a
     resize, so your ``onWindowScrollTop`` method will not be flooded
     with every pixel change.
     
@@ -1041,7 +1045,7 @@
         this.mainWindow = angular.element($window);
         this.scrollTopPosition = this._getScrollTopPosition();
         this.applyScrollTimer = null;
-        this.applyScrollTimerTimeoutMs = 5;
+        this.applyScrollTimerTimeoutMs = 100;
         this.listeningScopes = [];
       }
 
@@ -1248,7 +1252,8 @@
   angular.module('djangoCradmin.forms.modelchoicefield', []).provider('djangoCradminModelChoiceFieldCoordinator', function() {
     var ModelChoiceFieldOverlay;
     ModelChoiceFieldOverlay = (function() {
-      function ModelChoiceFieldOverlay() {
+      function ModelChoiceFieldOverlay(djangoCradminWindowDimensions) {
+        this.djangoCradminWindowDimensions = djangoCradminWindowDimensions;
         this.modelChoiceFieldIframeWrapper = null;
         this.bodyContentWrapperElement = angular.element('#django_cradmin_bodycontentwrapper');
         this.bodyElement = angular.element('body');
@@ -1275,15 +1280,18 @@
       };
 
       ModelChoiceFieldOverlay.prototype.enableBodyScrolling = function() {
-        return this.bodyElement.removeClass('django-cradmin-noscroll');
+        this.bodyElement.removeClass('django-cradmin-noscroll');
+        return this.djangoCradminWindowDimensions.triggerWindowResizeEvent();
       };
 
       return ModelChoiceFieldOverlay;
 
     })();
-    this.$get = function() {
-      return new ModelChoiceFieldOverlay();
-    };
+    this.$get = [
+      'djangoCradminWindowDimensions', function(djangoCradminWindowDimensions) {
+        return new ModelChoiceFieldOverlay(djangoCradminWindowDimensions);
+      }
+    ];
     return this;
   }).directive('djangoCradminModelChoiceFieldIframeWrapper', [
     '$window', '$timeout', 'djangoCradminModelChoiceFieldCoordinator', function($window, $timeout, djangoCradminModelChoiceFieldCoordinator) {
@@ -1314,7 +1322,6 @@
           this.onChangeValueBegin = function(fieldWrapperScope) {
             this._setField(fieldWrapperScope.fieldScope);
             this._setPreviewElement(fieldWrapperScope.previewElementScope);
-            djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
             $scope.iframeScope.beforeShowingIframe(fieldWrapperScope.iframeSrc);
             $scope.mainWindow.bind('resize', $scope.onWindowResize);
             return $scope.show();
@@ -1339,7 +1346,6 @@
             $scope.fieldScope.setValue(data.value);
             $scope.previewElementScope.setPreviewHtml(data.preview);
             $scope.mainWindow.unbind('resize', $scope.onWindowResize);
-            djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
             $scope.hide();
             return $scope.iframeScope.afterFieldValueChange();
           };
@@ -1363,12 +1369,14 @@
           $scope.show = function() {
             $scope.iframeWrapperElement.addClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
             djangoCradminModelChoiceFieldCoordinator.disableBodyScrolling();
+            djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
             return djangoCradminModelChoiceFieldCoordinator.addBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
           };
           $scope.hide = function() {
             $scope.iframeWrapperElement.removeClass('django-cradmin-floating-fullsize-iframe-wrapper-show');
-            djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling();
-            return djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
+            djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper');
+            djangoCradminModelChoiceFieldCoordinator.removeBodyContentWrapperClass('django-cradmin-floating-fullsize-iframe-bodycontentwrapper-push');
+            return djangoCradminModelChoiceFieldCoordinator.enableBodyScrolling();
           };
           this.closeIframe = function() {
             return $scope.hide();
