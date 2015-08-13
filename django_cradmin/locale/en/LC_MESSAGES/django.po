@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-06 19:32+0000\n"
+"POT-Creation-Date: 2015-08-13 01:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,88 +110,88 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:32 demo/webdemo/crapps/pages.py:91
+#: apps/cradmin_imagearchive/cradminviews.py:33 demo/webdemo/crapps/pages.py:91
 #: demo/webdemo/templates/webdemo/sharable_link/show.django.html:54
 #: demo/webdemo/templates/webdemo/sharable_link/show.django.html:57
 msgid "Edit"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:35
-#: demo/webdemo/crapps/inviteadmins/index.py:18 viewhelpers/delete.py:21
+#: apps/cradmin_imagearchive/cradminviews.py:36
+#: demo/webdemo/crapps/inviteadmins/index.py:18 viewhelpers/delete.py:29
 msgid "Delete"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:51
+#: apps/cradmin_imagearchive/cradminviews.py:52
 msgid "Use this"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:63 viewhelpers/crudbase.py:68
+#: apps/cradmin_imagearchive/cradminviews.py:64 viewhelpers/crudbase.py:68
 msgid "Preview"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:89
-#: apps/cradmin_imagearchive/cradminviews.py:116
+#: apps/cradmin_imagearchive/cradminviews.py:90
+#: apps/cradmin_imagearchive/cradminviews.py:117
 msgid "Add image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:92
+#: apps/cradmin_imagearchive/cradminviews.py:93
 msgid "Bulk upload"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:140
+#: apps/cradmin_imagearchive/cradminviews.py:143
 msgid "Upload and select"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:141
+#: apps/cradmin_imagearchive/cradminviews.py:144
 #: templates/django_cradmin/filewidgets/imagewidget.django.html:39
 msgid "Upload image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:142
+#: apps/cradmin_imagearchive/cradminviews.py:145
 msgid "Upload and continue editing"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:163
-#: apps/cradmin_imagearchive/cradminviews.py:267
+#: apps/cradmin_imagearchive/cradminviews.py:167
+#: apps/cradmin_imagearchive/cradminviews.py:275
 #, python-format
 msgid "Uploaded %(what)s."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:196
+#: apps/cradmin_imagearchive/cradminviews.py:204
 msgid "Upload images by dragging and dropping them here"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:197
+#: apps/cradmin_imagearchive/cradminviews.py:205
 msgid "Invalid filetype. You can only upload images."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:198
+#: apps/cradmin_imagearchive/cradminviews.py:206
 msgid "... or select images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:199
+#: apps/cradmin_imagearchive/cradminviews.py:207
 msgid "Select images ..."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:201
+#: apps/cradmin_imagearchive/cradminviews.py:209
 msgid "Upload at least one image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:203
+#: apps/cradmin_imagearchive/cradminviews.py:211
 msgid ""
 "Upload as many images as you like. You can edit the name and description of "
 "the images after they have been uploaded."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:206
+#: apps/cradmin_imagearchive/cradminviews.py:214
 msgid "You must upload at least one file."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:222
+#: apps/cradmin_imagearchive/cradminviews.py:230
 msgid "Add to the image archive"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:223
+#: apps/cradmin_imagearchive/cradminviews.py:231
 msgid "Uploading images"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 msgid "Bulk upload archive images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:6
+#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:7
 msgid "Image preview"
 msgstr ""
 
@@ -451,6 +451,14 @@ msgstr ""
 #: apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:124
 #, python-format
 msgid "%(filename)s: Unsupported filetype."
+msgstr ""
+
+#: crispylayouts.py:46
+msgid "Show"
+msgstr ""
+
+#: crispylayouts.py:47
+msgid "Hide"
 msgstr ""
 
 #: demo/usermanagerdemo/cradmin.py:15
@@ -769,7 +777,7 @@ msgstr ""
 msgid "The requested role does not exist."
 msgstr ""
 
-#: templates/django_cradmin/menu.django.html:23
+#: templates/django_cradmin/menu.django.html:29
 msgid "Menu"
 msgstr ""
 
@@ -816,7 +824,7 @@ msgid "EDIT"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
-#: viewhelpers/objecttable.py:873
+#: viewhelpers/objecttable.py:881
 msgid "Search..."
 msgstr ""
 
@@ -836,11 +844,11 @@ msgstr ""
 msgid "Ordering priority"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:188
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:189
 msgid "Select an action"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:191
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:192
 msgid "Go"
 msgstr ""
 
@@ -884,12 +892,17 @@ msgstr ""
 msgid "Please fix the errors in the form below."
 msgstr ""
 
-#: viewhelpers/delete.py:53
+#: viewhelpers/delete.py:20
+#, python-format
+msgid "Delete %(what)s"
+msgstr ""
+
+#: viewhelpers/delete.py:51
 #, python-format
 msgid "Are you sure you want to delete \"%(object_preview)s\"?"
 msgstr ""
 
-#: viewhelpers/delete.py:82
+#: viewhelpers/delete.py:80
 #, python-format
 msgid "Deleted \"%(what)s\""
 msgstr ""
@@ -900,7 +913,7 @@ msgid ""
 "permissions while you where selecting items to edit."
 msgstr ""
 
-#: viewhelpers/objecttable.py:899
+#: viewhelpers/objecttable.py:915
 #, python-format
 msgid "No %(modelname_plural)s"
 msgstr ""
