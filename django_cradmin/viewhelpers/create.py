@@ -60,7 +60,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         return self.foreignkey_select_mode_backbutton_label
 
     def get_buttons(self):
-        if self._foreignkey_select_mode():
+        if self.is_in_foreignkey_select_mode():
             buttons = [
                 PrimarySubmit('submit-use', self.get_submit_use_label()),
             ]
@@ -75,7 +75,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
 
     def get_default_save_success_url(self):
         url = super(CreateView, self).get_default_save_success_url()
-        if self._foreignkey_select_mode():
+        if self.is_in_foreignkey_select_mode():
             url = urllib.parse.unquote_plus(url)
             urllist = list(urllib.parse.urlsplit(url))
             querystring = urllist[3]
@@ -90,13 +90,13 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         helper.form_id = 'django_cradmin_createform'
         return helper
 
-    def _foreignkey_select_mode(self):
+    def is_in_foreignkey_select_mode(self):
         return self.allow_foreignkey_select and self.request.GET.get('foreignkey_select_mode') == '1'
 
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)
-        context['cradmin_hide_menu'] = self._foreignkey_select_mode()
-        context['is_foreignkey_select_mode'] = self._foreignkey_select_mode()
+        context['cradmin_hide_menu'] = self.is_in_foreignkey_select_mode()
+        context['is_foreignkey_select_mode'] = self.is_in_foreignkey_select_mode()
         context['foreignkey_select_mode_backbutton_url'] = self.__get_foreignkey_select_mode_backbutton_url()
         context['foreignkey_select_mode_backbutton_label'] = self.get_foreignkey_select_mode_backbutton_label()
         return context

@@ -347,6 +347,8 @@ class OnlySaveButtonMixin(object):
     subclass (like UpdateView or CreateView).
     """
     def get_buttons(self):
+        if hasattr(self, 'is_in_foreignkey_select_mode') and self.is_in_foreignkey_select_mode():
+            return super(OnlySaveButtonMixin, self).get_buttons()
         buttons = [
             PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
         ]
