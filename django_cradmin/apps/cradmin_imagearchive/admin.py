@@ -10,6 +10,12 @@ class ArchiveImageAdmin(admin.ModelAdmin):
         'description',
         'role',
     )
+
+    search_fields = [
+        'name',
+        'description',
+    ]
+
     readonly_fields = [
         'image_width',
         'image_height',
