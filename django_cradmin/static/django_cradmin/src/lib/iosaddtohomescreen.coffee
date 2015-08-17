@@ -21,11 +21,11 @@ angular.module('djangoCradmin.iosaddtohomescreen', [])
       else
         $scope.deviceModel = cradminDetectize.device.model
 
-      console.log 'Detected os:', $scope.os
-      console.log 'Detected browser:', $scope.browser
-      console.log 'Detected deviceModel:', $scope.deviceModel
-
-      console.log $window.navigator.standalone
+#      console.log 'Detected os:', $scope.os
+#      console.log 'Detected browser:', $scope.browser
+#      console.log 'Detected deviceModel:', $scope.deviceModel
+#
+#      console.log $window.navigator.standalone
 
       if $scope.os == 'ios' and $scope.browser == 'safari'
         $element.show()
