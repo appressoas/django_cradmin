@@ -14,7 +14,7 @@
                     django-cradmin-scroll-top-fixed='{{ DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED|cradmin_jsonencode }}'
                 {% endif %}
             {% endblock scrollfixed %}
-            class="django-cradmin-menu">
+            class="{% block css-class %}django-cradmin-menu{% endblock %}">
         {% block pre-menu %}{% endblock pre-menu %}
 
         <div class="django-cradmin-menu-mobileheader">
