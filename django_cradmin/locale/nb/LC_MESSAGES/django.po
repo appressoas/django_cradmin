@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Espen Angell Kristiansen <espen@appresso.no>, 2015
 # espengetz <espen@inrupt.no>, 2015
@@ -9,14 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-13 02:08+0000\n"
-"PO-Revision-Date: 2015-08-14 13:15+0000\n"
+"POT-Creation-Date: 2015-08-17 04:50+0000\n"
+"PO-Revision-Date: 2015-08-16 18:18+0000\n"
 "Last-Translator: espengetz <espen@inrupt.no>\n"
-"Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/language/nb/)\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
+"language/nb/)\n"
+"Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:7
@@ -26,9 +27,9 @@ msgstr "Feil ved kontoaktivering"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/html_message.django.html:5
 #, python-format
-msgid ""
-"Click the button below to activate your %(sitename)s account, %(user)s."
-msgstr "Klikk knappen nedenfor for å aktivere din %(sitename)s konto, %(user)s."
+msgid "Click the button below to activate your %(sitename)s account, %(user)s."
+msgstr ""
+"Klikk knappen nedenfor for å aktivere din %(sitename)s konto, %(user)s."
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/email/html_message.django.html:8
 msgid "Activate your account"
@@ -47,7 +48,9 @@ msgstr "Denne kontoaktiverings linken er for gammel."
 msgid ""
 "Invalid account activation URL. Are you sure you copied the entire URL from "
 "the email?"
-msgstr "Ugyldig kontoaktivering URL. Er du sikker på at du kopierte hele URLen fra eposten?"
+msgstr ""
+"Ugyldig kontoaktivering URL. Er du sikker på at du kopierte hele URLen fra "
+"eposten?"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/messages/success.django.html:2
 msgid "Your account is now active."
@@ -177,7 +180,9 @@ msgstr "Last opp minst ett bilde"
 msgid ""
 "Upload as many images as you like. You can edit the name and description of "
 "the images after they have been uploaded."
-msgstr "Last opp så mange bilder som du ønsker. Du kan redigere navn og beskrivelse etter opplasting."
+msgstr ""
+"Last opp så mange bilder som du ønsker. Du kan redigere navn og beskrivelse "
+"etter opplasting."
 
 #: apps/cradmin_imagearchive/cradminviews.py:214
 msgid "You must upload at least one file."
@@ -215,7 +220,9 @@ msgstr "navn"
 msgid ""
 "Give the image a name (optional). If you leave this blank, the name of the "
 "uploaded image file is used."
-msgstr "Gi bildet et navn. Dette er valgfritt, hvis du lar feltet stå tomt, bruker vi navnet på bildefilen."
+msgstr ""
+"Gi bildet et navn. Dette er valgfritt, hvis du lar feltet stå tomt, bruker "
+"vi navnet på bildefilen."
 
 #: apps/cradmin_imagearchive/models.py:74
 msgid "description"
@@ -226,7 +233,9 @@ msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
 "information carried in the image (if any)."
-msgstr "En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
+msgstr ""
+"En valgfri beskrivelse av bildet. Tenk på dette som en beskrivelse av bildet "
+"for svaksynte. Det betyr at du bør beskrive informasjonen i bildet."
 
 #: apps/cradmin_imagearchive/models.py:88
 msgid "archive image"
@@ -273,7 +282,9 @@ msgstr "Ugyldig invitasjon"
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:20
 msgid ""
 "Invalid invite URL. Are you sure you copied the entire URL from the email?"
-msgstr "Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URLen fra eposten?"
+msgstr ""
+"Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URLen fra "
+"eposten?"
 
 #: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:28
 msgid "This invite link has expired."
@@ -321,7 +332,8 @@ msgstr "Sjekk din epost"
 msgid ""
 "We have sent you an email. Click the link in the email to activate your "
 "account."
-msgstr "Vi har sendt deg en epost. Klikk linken i eposten for å aktivere din konto."
+msgstr ""
+"Vi har sendt deg en epost. Klikk linken i eposten for å aktivere din konto."
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:21
 msgid "If you do not see the email, check your junk folder."
@@ -334,24 +346,28 @@ msgstr "Nullstill passord"
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:6
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:10
 msgid "Find your account"
-msgstr "Finn din konto"
+msgstr "Hei! Hvilken konto ser du etter?"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:11
 msgid "Type in your email-address"
-msgstr "Skriv inn din epost-adresse"
+msgstr "Hvilken epostadresse vil du logge inn med?"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:5
 #, python-format
 msgid ""
 "We received a request to reset the password for your %(sitename)s account, "
 "%(user)s."
-msgstr "Vi mottok en forespørsel om å nullstille passordet for din %(sitename)s konto, %(user)s."
+msgstr ""
+"Vi mottok en forespørsel om å nullstille passordet for din %(sitename)s "
+"konto, %(user)s."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:7
 msgid ""
 "If you made this request, click the button below. If you did not make this "
 "request, you can ignore this email."
-msgstr "Hvis du sendte denne forespørselen, klikk på knappen nedenfor. Hvis du ikke sendte denne forespørselen, kan du ignorere denne eposten."
+msgstr ""
+"Hvis du sendte denne forespørselen, klikk på knappen nedenfor. Hvis du ikke "
+"sendte denne forespørselen, kan du ignorere denne eposten."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:10
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:6
@@ -368,14 +384,18 @@ msgstr "Nullstill ditt %(sitename)s passord"
 msgid ""
 "We have sent you an email. Click the link in the email to reset your "
 "password."
-msgstr "Vi har send deg en epost. Klikk linken i eposten for å nullstille ditt passord."
+msgstr ""
+"Vi har send deg en epost. Klikk linken i eposten for å nullstille ditt "
+"passord."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:21
 #, python-format
 msgid ""
 "If you do not see the email, check your junk folder or try searching for "
 "\"%(email_subject)s\"."
-msgstr "Hvis du ikke ser eposten, sjekk din spam-folder eller prøv å søke etter \"%(email_subject)s\"."
+msgstr ""
+"Hvis du ikke ser eposten, sjekk din spam-folder eller prøv å søke etter "
+"\"%(email_subject)s\"."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/messages/successmessage.django.html:2
 msgid "Your password has been updated."
@@ -389,7 +409,9 @@ msgstr "Denne nullstill passord linken er for gammel."
 msgid ""
 "Invalid password reset URL. Are you sure you copied the entire URL from the "
 "email?"
-msgstr "Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen fra eposten."
+msgstr ""
+"Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen "
+"fra eposten."
 
 #: apps/cradmin_resetpassword/views/begin.py:54
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
@@ -398,7 +420,7 @@ msgstr "Søk"
 
 #: apps/cradmin_resetpassword/views/reset.py:18
 msgid "Type your new password"
-msgstr "Skriv ditt nye passord"
+msgstr "Skriv inn ditt nye passord"
 
 #: apps/cradmin_resetpassword/views/reset.py:21
 msgid "Type your new password one more time"
@@ -430,7 +452,7 @@ msgstr "Ugyldig filtype"
 
 #: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:78
 msgid "... or select a file"
-msgstr "... eller velg en file"
+msgstr "... eller velg en fil"
 
 #: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:80
 msgid "... or select files"
@@ -494,7 +516,9 @@ msgstr "Kursiv"
 msgid ""
 "Write the URL in the field below. Make sure you include the http:// or "
 "https:// part of the URL."
-msgstr "Skriv en nettaddresse i feltet nedenfor. Du må passe på å få med http:// eller https:// delen av nettaddressen."
+msgstr ""
+"Skriv en nettaddresse i feltet nedenfor. Du må passe på å få med http:// "
+"eller https:// delen av nettaddressen."
 
 #: templates/django_cradmin/acemarkdown/widget.django.html:41
 msgid "Link title here"
@@ -572,7 +596,8 @@ msgstr "Ingen tilgang"
 #: templates/django_cradmin/missing_role.django.html:8
 #, python-format
 msgid "You do not have permission to administer \"%(what)s\"."
-msgstr "Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
+msgstr ""
+"Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
 
 #: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:25
 msgid "Close preview"
@@ -708,7 +733,9 @@ msgstr "Slettet \"%(what)s\""
 msgid ""
 "Invalid selection. This is usually caused by someone else changing "
 "permissions while you where selecting items to edit."
-msgstr "Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet rettigheter fra din bruker."
+msgstr ""
+"Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet "
+"rettigheter fra din bruker."
 
 #: viewhelpers/objecttable.py:915
 #, python-format
