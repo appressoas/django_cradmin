@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-17 05:00+0000\n"
-"PO-Revision-Date: 2015-08-16 18:18+0000\n"
-"Last-Translator: espengetz <espen@inrupt.no>\n"
+"POT-Creation-Date: 2015-08-17 17:28+0000\n"
+"PO-Revision-Date: 2015-08-17 17:28+0000\n"
+"Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
 "Language: nb\n"
@@ -350,7 +350,7 @@ msgstr "Hei! Hvilken konto ser du etter?"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:11
 msgid "Type in your email-address"
-msgstr "Hvilken epostadresse vil du logge inn med?"
+msgstr "Skriv inn din epostadresse"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:5
 #, python-format
