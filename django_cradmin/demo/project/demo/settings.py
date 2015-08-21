@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_activate_account',
     'django_cradmin.apps.cradmin_register_account',
     'django_cradmin.apps.cradmin_invite',
+    'django_cradmin.apps.cradmin_email',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
