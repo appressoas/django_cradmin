@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-17 17:28+0000\n"
+"POT-Creation-Date: 2015-08-21 19:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -325,6 +325,7 @@ msgid "If you do not see the email, check your junk folder."
 msgstr ""
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/base.django.html:5
+#: apps/cradmin_resetpassword/views/reset.py:45
 msgid "Reset password"
 msgstr ""
 
@@ -388,6 +389,10 @@ msgid ""
 "email?"
 msgstr ""
 
+#: apps/cradmin_resetpassword/views/begin.py:39
+msgid "No account with this email address found"
+msgstr ""
+
 #: apps/cradmin_resetpassword/views/begin.py:54
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
 msgid "Search"
@@ -403,10 +408,6 @@ msgstr ""
 
 #: apps/cradmin_resetpassword/views/reset.py:31
 msgid "The passwords do not match"
-msgstr ""
-
-#: apps/cradmin_resetpassword/views/reset.py:45
-msgid "Submit"
 msgstr ""
 
 #: apps/cradmin_temporaryfileuploadstore/models.py:225

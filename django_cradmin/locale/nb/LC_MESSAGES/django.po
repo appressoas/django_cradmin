@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-17 17:28+0000\n"
-"PO-Revision-Date: 2015-08-17 17:28+0000\n"
+"POT-Creation-Date: 2015-08-21 19:17+0000\n"
+"PO-Revision-Date: 2015-08-21 19:14+0000\n"
 "Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
@@ -340,6 +340,7 @@ msgid "If you do not see the email, check your junk folder."
 msgstr "Hvis du ikke ser eposten, sjekk din spam-folder."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/base.django.html:5
+#: apps/cradmin_resetpassword/views/reset.py:45
 msgid "Reset password"
 msgstr "Nullstill passord"
 
@@ -413,6 +414,10 @@ msgstr ""
 "Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen "
 "fra eposten."
 
+#: apps/cradmin_resetpassword/views/begin.py:39
+msgid "No account with this email address found"
+msgstr "Vi finner ingen konto med denne epostadressen"
+
 #: apps/cradmin_resetpassword/views/begin.py:54
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
 msgid "Search"
@@ -429,10 +434,6 @@ msgstr "Skriv ditt nye passord en gang til"
 #: apps/cradmin_resetpassword/views/reset.py:31
 msgid "The passwords do not match"
 msgstr "Passordene er ikke like"
-
-#: apps/cradmin_resetpassword/views/reset.py:45
-msgid "Submit"
-msgstr "Send inn"
 
 #: apps/cradmin_temporaryfileuploadstore/models.py:225
 msgid "Unsupported filetype."
