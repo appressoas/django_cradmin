@@ -76,7 +76,15 @@ class DateTimePickerWidget(widgets.MultiWidget):
             u''.join(rendered_widgets))
 
     def value_from_datadict(self, data, files, name):
-        timevalue = data.get('{}_1'.format(name), '')
-        datevalue = data.get('{}_0'.format(name), '')
-        datetimevalue = '{} {}'.format(datevalue, timevalue)
-        return datetimevalue
+        timevalue = data.get('{}_1'.format(name), '').strip()
+        datevalue = data.get('{}_0'.format(name), '').strip()
+        values = []
+        if datevalue:
+            values.append(datevalue)
+        if timevalue:
+            values.append(timevalue)
+        datetimevalue = ' '.join(values)
+        if datetimevalue:
+            return datetimevalue
+        else:
+            return None

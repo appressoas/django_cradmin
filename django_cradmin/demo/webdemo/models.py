@@ -41,8 +41,13 @@ class Page(models.Model):
     publishing_time = models.DateTimeField(
         verbose_name=_('Publishing time'),
         default=timezone.now(),
-        blank=False,
+        blank=False, null=False,
         help_text=_('The time when this will be visible on the website.'))
+    unpublish_time = models.DateTimeField(
+        verbose_name=_('Unpublish time'),
+        default=None,
+        blank=True, null=True,
+        help_text=_('Hide the item on the website after this time.'))
     internal_notes = models.TextField(
         verbose_name=_('Internal notes'),
         help_text=_('Put internal notes here. Will not be visible on the website.'),
