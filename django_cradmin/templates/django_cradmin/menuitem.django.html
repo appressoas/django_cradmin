@@ -4,7 +4,7 @@
                 {% if menuitem.is_active %}django-cradmin-menu-activeitem{% endif %}
                 {% if menuitem.is_expanded %}django-cradmin-menu-expandeditem{% endif %}
                 {{ menuitem.get_item_css_class }}
-                {% block extraclasses %}{{ menu.extra_css_classes }}{% endblock extraclasses %}">
+                {% block extraclasses %}{{ menuitem.extra_css_classes }}{% endblock extraclasses %}">
         {% block list-item-content %}
             {% if menuitem.is_active and menuitem.get_active_item_wrapper_tag %}
                 <{{ menuitem.get_active_item_wrapper_tag }} class="django-cradmin-menu-activeitemwrapper">
