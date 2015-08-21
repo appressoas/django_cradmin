@@ -36,7 +36,7 @@ class EmailForm(forms.Form):
         email = self.cleaned_data['email']
         user_model = get_user_model()
         if not user_model.objects.filter(email=email).exists():
-            raise forms.ValidationError("No account with this email address found")
+            raise forms.ValidationError(_("No account with this email address found"))
         return email
 
 
