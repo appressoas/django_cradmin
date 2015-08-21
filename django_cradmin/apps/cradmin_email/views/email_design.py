@@ -9,7 +9,7 @@ class DemoEmail(emailutils.AbstractEmail):
     html_message_template = 'cradmin_email/cradmin_email_send_testmail/html_message.django.html'
 
     def get_context_data(self):
-        context = super().get_context_data()
+        context = super(DemoEmail, self).get_context_data()
         context['name'] = 'Test Name'
         return context
 
