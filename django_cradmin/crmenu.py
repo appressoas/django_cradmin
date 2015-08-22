@@ -116,6 +116,9 @@ class MenuItem(object):
         self.childitems.append(childitem)
         return childitem
 
+    def get_title(self):
+        return ''
+
 
 class Menu(object):
     """

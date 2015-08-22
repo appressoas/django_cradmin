@@ -10,7 +10,7 @@
                 <{{ menuitem.get_active_item_wrapper_tag }} class="django-cradmin-menu-activeitemwrapper">
             {% endif %}
             <a href="{{ menuitem.url }}"
-                    title="{{ menuitem.description }}"
+                    title="{{ menuitem.get_title }}"
                     class="{{ menuitem.get_link_css_class }}"
                     {% block extra-link-attributes %}{% endblock %}
                     {% if menuitem.open_new_window %}target="_blank"{% endif %}>
