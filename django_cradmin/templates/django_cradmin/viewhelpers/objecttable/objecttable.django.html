@@ -40,7 +40,8 @@
 
                             <input class="form-control" name="search" type="text"
                                    placeholder="{% trans 'Search...' %}"
-                                   value="{{ current_search }}">
+                                   value="{{ current_search }}"
+                                   {% if focus_on_searchfield %}focusonme{% endif %}>
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-default">
                                     <span class="{% cradmin_icon 'search' %}"></span>
@@ -84,6 +85,8 @@
                         {% endcomment %}
                         action="{{ request.build_absolute_uri }}"
                         django-cradmin-form-action="{% verbatim %}selectedAction.url{% endverbatim %}"
+                    {% elif form_action %}
+                        action="{{ form_action }}"
                     {% endif %}>
 
                 {% if multiselect_actions %}

@@ -392,6 +392,32 @@ class SingleActionColumn(Column):
         return context
 
 
+class SingleButtonColumn(Column):
+    """
+    A column where the entire content is a single :class:`.AbstractButton`.
+
+    Usage::
+
+        class MySingleActionColumn(SingleActionColumn):
+            def get_actionurl(self, obj):
+                return reverse('something')
+
+    See also: :class:`.MultiActionColumn`.
+    """
+    template_name = 'django_cradmin/viewhelpers/objecttable/singlebuttoncolumn-cell.django.html'
+
+    def render_value(self, obj):
+        return None
+
+    def get_button(self, obj):
+        raise NotImplementedError()
+
+    def get_context_data(self, obj):
+        context = super(SingleButtonColumn, self).get_context_data(obj=obj)
+        context['button'] = self.get_button(obj).render()
+        return context
+
+
 class ImagePreviewColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html'
 
@@ -601,6 +627,37 @@ class Button(AbstractButton):
             'href': self.url,
         })
         return attributes
+
+
+class NonSubmitButton(AbstractButton):
+    """
+    A pythonic interface for creating a HTML ``<button type="button">``
+    """
+    button_type = 'button'
+    button_element = 'button'
+
+    def __init__(self, value=None, name=None, **kwargs):
+        self.value = value
+        self.name = name
+        super(NonSubmitButton, self).__init__(**kwargs)
+
+    def get_html_attributes(self):
+        attributes = super(NonSubmitButton, self).get_html_attributes()
+        attributes.update({
+            'type': self.button_type,
+        })
+        if self.value is not None:
+            attributes['value'] = self.value
+        if self.name is not None:
+            attributes['name'] = self.name
+        return attributes
+
+
+class SubmitButton(NonSubmitButton):
+    """
+    A pythonic interface for creating a HTML ``<button type="submit">``
+    """
+    button_type = 'submit'
 
 
 class PagePreviewsButton(AbstractButton):
@@ -1105,10 +1162,19 @@ class ObjectTableView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
         object_list = context['object_list']
+
         multiselect_actions = self.get_multiselect_actions()
+        form_action = self.get_form_action()
+        if form_action and multiselect_actions:
+            raise ValueError('You can not configure both a form action '
+                             '(get_form_action) and enable multiselect '
+                             '(via get_multiselect_actions) at the same time.')
         if multiselect_actions:
             context['multiselect_actions'] = json.dumps(
                 [action.serialize() for action in multiselect_actions])
+        if form_action:
+            context['form_action'] = form_action
+
         context['pagetitle'] = self.get_pagetitle()
         context['pageheading'] = self.get_pageheading()
         context['columns'] = self._get_columnobjects()
@@ -1121,6 +1187,7 @@ class ObjectTableView(ListView):
         if self.enable_search():
             context['current_search'] = self.current_search
             context['search_hidden_fields'] = self._get_search_hidden_fields()
+            context['focus_on_searchfield'] = self.focus_on_searchfield()
         context['pager_extra_querystring'] = self._get_pager_extra_querystring()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         context['queryset_contains_items'] = self.queryset_contains_items()
@@ -1214,3 +1281,25 @@ class ObjectTableView(ListView):
                     query = fieldquery
             queryset = queryset.filter(query).distinct()
         return queryset
+
+    def get_form_action(self):
+        """
+        Get the ``action`` attribute of the form wrapping the entire
+        listing.
+
+        You will typically use this if you have buttons with a value attribute
+        within your form and you want to submit that value to a view.
+
+        You can not use this if you enable multiselect
+        (see :meth:`.get_multiselect_actions`).
+        """
+        return None
+
+    def focus_on_searchfield(self):
+        """
+        If this returns ``True`` (the default), the view will set focus to the
+        search field on load (I.E.: Place the cursor in the search field).
+
+        No used if search is not enabled.
+        """
+        return True
