@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from builtins import object
 from django import http
 from django.contrib import messages
+from django.core.files.base import ContentFile
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
@@ -251,7 +252,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
             name=temporaryfile.filename)
         archiveimage.clean()
         archiveimage.save()
-        archiveimage.image.save(temporaryfile.filename, temporaryfile.file)
+        archiveimage.image.save(temporaryfile.filename, ContentFile(temporaryfile.file.read()))
         archiveimage.full_clean()
 
     def upload_files_to_archive(self, temporaryfilecollection):
