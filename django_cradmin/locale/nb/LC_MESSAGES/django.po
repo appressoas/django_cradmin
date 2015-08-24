@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-24 11:48+0000\n"
-"PO-Revision-Date: 2015-08-24 11:47+0000\n"
+"POT-Creation-Date: 2015-08-24 12:03+0000\n"
+"PO-Revision-Date: 2015-08-24 12:03+0000\n"
 "Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
@@ -135,7 +135,7 @@ msgstr "Legg til bilde"
 
 #: apps/cradmin_imagearchive/cradminviews.py:94
 msgid "Bulk upload"
-msgstr "Legg til flere bilder"
+msgstr "Last opp mange bilder"
 
 #: apps/cradmin_imagearchive/cradminviews.py:144
 msgid "Upload and select"
