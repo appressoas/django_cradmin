@@ -56,9 +56,11 @@ class TestCaseMixin(object):
                     mockresponse.selector.prettyprint()
 
                 def test_post(self):
-                    mockresponse = self.mock_postrequest(data={
-                        'name': 'Jane Doe',
-                        'age': 24
+                    mockresponse = self.mock_postrequest(requestkwargs={
+                        'data': {
+                            'name': 'Jane Doe',
+                            'age': 24
+                        }
                     })
                     self.assertEqual(mockresponse.response.status_code, 302)
 
@@ -73,7 +75,7 @@ class TestCaseMixin(object):
                 def test_get_render_form(self):
                     # The kwargs for mock_postrequest, mock_http200_getrequest_htmls
                     # and mock_getrequest are the same, so only showing one for brevity.
-                    mockresponse = self.mock_http200_getrequest_htmls(pk=10)
+                    mockresponse = self.mock_http200_getrequest_htmls(viewkwargs={'pk': 10})
 
         Using a real user object::
 
@@ -103,7 +105,7 @@ class TestCaseMixin(object):
                     }, messagesmock=messagesmock)
                     messagesmock.add.assert_called_once_with(
                         messages.SUCCESS,
-                        'The data was posted successfully!'),
+                        'The data was posted successfully!',
                         '')
 
     """
@@ -117,7 +119,8 @@ class TestCaseMixin(object):
                      requestuser=None,
                      messagesmock=None,
                      sessionmock=None,
-                     **viewkwargs):
+                     requestkwargs=None,
+                     viewkwargs=None):
         """
         Create a mocked request using ``RequestFactory`` and ``mock.MagicMock``.
 
@@ -132,7 +135,13 @@ class TestCaseMixin(object):
         """
         if self.viewclass is None:
             raise NotImplementedError('You must set the viewclass attribute on TestCase classes using TestCaseMixin.')
-        request = getattr(RequestFactory(), method)('/')
+        requestkwargs_full = {
+            'path': '/'
+        }
+        if requestkwargs:
+            requestkwargs_full.update(requestkwargs)
+        viewkwargs = viewkwargs or {}
+        request = getattr(RequestFactory(), method)(**requestkwargs_full)
         request.user = requestuser or mock.MagicMock()
         request.cradmin_role = cradmin_role or mock.MagicMock()
         request.cradmin_app = cradmin_app or mock.MagicMock()
