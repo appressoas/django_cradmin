@@ -28,6 +28,17 @@ Viewhelpers
    viewhelpers_delete
 
 
+*************************
+Helpers for writing tests
+*************************
+
+.. toctree::
+   :maxdepth: 2
+
+   cradmin_testhelpers
+
+
+
 ************
 Modelhelpers
 ************

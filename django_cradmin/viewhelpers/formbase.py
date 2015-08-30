@@ -299,3 +299,4 @@ class FormView(FormViewMixin, DjangoFormView):
                     # ... do something with the form ...
                     return HttpResponseRedirect('/some/view')
     """
+    template_name = 'django_cradmin/viewhelpers/formview_base.django.html'

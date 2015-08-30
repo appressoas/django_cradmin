@@ -24,6 +24,7 @@ setup(
         'pytz',
         'future',
         'html2text',
+        'htmls',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
