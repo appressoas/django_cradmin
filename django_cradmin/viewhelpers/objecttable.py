@@ -908,6 +908,17 @@ class ObjectTableView(ListView):
     #: (django_cradmin/viewhelpers/objecttable/objecttable.django.html).
     template_name = 'django_cradmin/viewhelpers/objecttable/objecttable.django.html'
 
+    #: The template used to render the no items message.
+    #: See :meth:`.get_no_items_message_template_name` and
+    #: :meth:`.get_no_items_message`
+    no_items_message_template_name = 'django_cradmin/viewhelpers/objecttable/no-items-message.django.html'
+
+    #: The template used to render the no searchresults message.
+    #: See :meth:`.get_no_searchresults_message_template_name` and
+    #: :meth:`.get_no_searchresults_message`
+    no_searchresults_message_template_name = 'django_cradmin/viewhelpers/objecttable/' \
+                                             'no-searchresults-message.django.html'
+
     #: Set this to ``True`` to make the template not render the menu.
     #: Very useful when creating foreign-key select views, and other views
     #: where you do not want your users to accidentally click out of the
@@ -965,13 +976,58 @@ class ObjectTableView(ListView):
         """
         return self.hide_page_header or getattr(settings, 'DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS', False)
 
+    def get_no_items_message_template_name(self):
+        """
+        Return the template name to use for the no items message.
+
+        Defaults to :obj:`~.ObjectTableView.no_items_message_template_name`.
+        """
+        return self.no_items_message_template_name
+
+    def get_no_items_message_context_data(self):
+        """
+        Get the context data for :meth:`.get_no_items_message_template_name`.
+        """
+        return {
+            'modelname_plural': self.get_model_class()._meta.verbose_name_plural.lower(),
+            'request': self.request,
+        }
+
     def get_no_items_message(self):
         """
         Get the message to show when there are no items.
+
+        Renders the :meth:`.get_no_items_message_template_name` template with
+        :meth:`.get_no_items_message_context_data` as context data.
         """
-        return _('No %(modelname_plural)s') % {
-            'modelname_plural': self.get_model_class()._meta.verbose_name_plural.lower()
+        return render_to_string(self.get_no_items_message_template_name(),
+                                self.get_no_items_message_context_data())
+
+    def get_no_searchresults_message_template_name(self):
+        """
+        Return the template name to use for the no searchresults message.
+
+        Defaults to :obj:`~.ObjectTableView.no_searchresults_message_template_name`.
+        """
+        return self.no_searchresults_message_template_name
+
+    def get_no_searchresults_message_context_data(self):
+        """
+        Get the context data for :meth:`.get_no_searchresults_message_template_name`.
+        """
+        return {
+            'request': self.request,
         }
+
+    def get_no_searchresults_message(self):
+        """
+        Get the message to show when there are no searchresults.
+
+        Renders the :meth:`.get_no_searchresults_message_template_name` template with
+        :meth:`.get_no_searchresults_message_context_data` as context data.
+        """
+        return render_to_string(self.get_no_searchresults_message_template_name(),
+                                self.get_no_searchresults_message_context_data())
 
     def get_search_placeholder_text(self):
         """
@@ -1049,6 +1105,7 @@ class ObjectTableView(ListView):
         DO NOT override this. Override :meth:`.get_queryset_for_role`
         instead.
         """
+        self.current_search_matchcount = None
         queryset = self.get_queryset_for_role(self.request.cradmin_role)
         orderby = []
         for columnobject, orderinginfo in self.__iter_columnobjects_with_orderinginfo():
@@ -1061,6 +1118,7 @@ class ObjectTableView(ListView):
             if searchform.is_valid():
                 self.current_search = searchform.cleaned_data['search']
                 queryset = self.filter_search(searchstring=self.current_search, queryset=queryset)
+                self.current_search_matchcount = queryset.count()
         return queryset
 
     def _get_columnobjects(self):
@@ -1188,6 +1246,8 @@ class ObjectTableView(ListView):
             context['current_search'] = self.current_search
             context['search_hidden_fields'] = self._get_search_hidden_fields()
             context['focus_on_searchfield'] = self.focus_on_searchfield()
+            context['current_search_matchcount'] = self.current_search_matchcount
+            context['no_searchresults_message'] = self.get_no_searchresults_message()
         context['pager_extra_querystring'] = self._get_pager_extra_querystring()
         context['multicolumn_ordering'] = len(self.__parse_orderingstring()) > 1
         context['queryset_contains_items'] = self.queryset_contains_items()

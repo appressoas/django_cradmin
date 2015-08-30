@@ -199,7 +199,13 @@
 
     {% else %}
         <div class="container django-cradmin-container-focus" id="objecttableview-no-items-message">
-            {{ no_items_message }}
+            {{ no_items_message|safe }}
+        </div>
+    {% endif %}
+
+    {% if current_search_matchcount == 0 %}
+        <div class="container django-cradmin-container-focus" id="objecttableview-no-searchresults-message">
+            {{ no_searchresults_message|safe }}
         </div>
     {% endif %}
 
