@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Django runserver 0.0.0.0:8000" type="Python.DjangoServer" factoryName="Django server">
+  <configuration default="false" name="Django runserver 0.0.0.0:9000" type="Python.DjangoServer" factoryName="Django server">
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
-      <env name="PYTHONUNBUFFERED" value="1" />
       <env name="DJANGO_SETTINGS_MODULE" value="django_cradmin.demo.project.settingsproxy" />
+      <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="" />
@@ -13,7 +13,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="django_cradmin" />
     <option name="launchJavascriptDebuger" value="false" />
-    <option name="port" value="8000" />
+    <option name="port" value="9000" />
     <option name="host" value="0.0.0.0" />
     <option name="additionalOptions" value="" />
     <option name="browserUrl" value="" />

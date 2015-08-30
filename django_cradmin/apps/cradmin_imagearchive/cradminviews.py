@@ -217,13 +217,15 @@ class BulkAddForm(forms.Form):
 
 
 class ArchiveImageBulkAddView(formbase.FormView):
-    template_name = 'django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html'
     form_class = BulkAddForm
     form_attributes = {
         'django-cradmin-bulkfileupload-form': ''
     }
     form_id = 'django_cradmin_imagearchive_bulkadd_form'
     extra_form_css_classes = ['django-cradmin-form-noasterisk']
+
+    def get_pagetitle(self):
+        return _('Bulk upload archive images')
 
     def get_buttons(self):
         return [

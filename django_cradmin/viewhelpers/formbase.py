@@ -53,10 +53,8 @@ class FormViewMixin(object):
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
-
-        Must be overridden in subclasses.
         """
-        raise NotImplementedError()
+        return ''
 
     def get_pageheading(self):
         """
