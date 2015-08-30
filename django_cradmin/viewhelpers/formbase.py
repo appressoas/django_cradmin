@@ -50,6 +50,22 @@ class FormViewMixin(object):
     #: See :meth:`~.FormViewMixin.get_submit_save_and_continue_edititing_button_name`.
     submit_save_and_continue_edititing_button_name = 'submit-save-and-continue-editing'
 
+    def get_pagetitle(self):
+        """
+        Get the page title (the title tag).
+
+        Must be overridden in subclasses.
+        """
+        raise NotImplementedError()
+
+    def get_pageheading(self):
+        """
+        Get the page heading.
+
+        Defaults to :meth:`.get_pagetitle`.
+        """
+        return self.get_pagetitle()
+
     def get_submit_save_label(self):
         """
         Get the save submit label. Not used by this mixin, but you
@@ -243,6 +259,8 @@ class FormViewMixin(object):
         context['formhelper'] = self.get_formhelper()
         context['enable_modelchoicefield_support'] = self.enable_modelchoicefield_support
         context['hide_pageheader'] = self.get_hide_page_header()
+        context['pagetitle'] = self.get_pagetitle()
+        context['pageheading'] = self.get_pageheading()
         return context
 
     def get_listing_url(self):

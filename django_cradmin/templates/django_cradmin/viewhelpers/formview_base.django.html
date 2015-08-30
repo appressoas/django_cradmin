@@ -8,6 +8,18 @@
     django-cradmin-formview-page
 {% endblock %}
 
+{% block title %}
+    {{ pagetitle }}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>
+        {% block heading %}
+            {{ pageheading }}
+        {% endblock heading %}
+    </h1>
+{% endblock pageheader-inner %}
+
 {% block content %}
     {% block pre_form %}{% endblock pre_form %}
     {% block form %}

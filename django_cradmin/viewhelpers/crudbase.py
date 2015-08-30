@@ -46,22 +46,6 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     #: See :meth:`.get_editurl`.
     editview_appurl_name = 'edit'
 
-    def get_pagetitle(self):
-        """
-        Get the page title (the title tag).
-
-        Must be overridden in subclasses.
-        """
-        raise NotImplementedError()
-
-    def get_pageheading(self):
-        """
-        Get the page heading.
-
-        Defaults to :meth:`.get_pagetitle`.
-        """
-        return self.get_pagetitle()
-
     def add_preview_button_if_configured(self, buttons):
         preview_url = self.get_preview_url()
         if preview_url:
@@ -130,8 +114,6 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     def get_context_data(self, **kwargs):
         context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
         context['model_verbose_name'] = self.model._meta.verbose_name
-        context['pagetitle'] = self.get_pagetitle()
-        context['pageheading'] = self.get_pageheading()
         if getattr(self, 'show_preview', False):
             context['preview_url'] = self.get_preview_url()
             context['show_preview'] = True
