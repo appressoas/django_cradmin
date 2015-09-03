@@ -2,8 +2,9 @@ import datetime
 from django.forms import widgets
 from django.forms.utils import flatatt
 from django.template import loader
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from django_cradmin.widgets.selectwidgets import WrappedSelect
 
 
 class DatePickerWidget(widgets.DateInput):
@@ -105,8 +106,10 @@ class SplitTimePickerWidget(widgets.MultiWidget):
         hour_choices = hour_choices or self.get_hour_choices(empty_hour_label)
         minute_choices = minute_choices or self.get_minute_choices(empty_minute_label)
         _widgets = [
-            widgets.Select(attrs=attrs, choices=hour_choices),
-            widgets.Select(attrs=attrs, choices=minute_choices)
+            WrappedSelect(attrs=attrs, choices=hour_choices,
+                          wrapper_css_class='django-cradmin-split-timepicker-hour'),
+            WrappedSelect(attrs=attrs, choices=minute_choices,
+                          wrapper_css_class='django-cradmin-split-timepicker-minute'),
         ]
         super(SplitTimePickerWidget, self).__init__(_widgets, attrs)
 
@@ -179,7 +182,9 @@ class DateSplitTimePickerWidget(widgets.MultiWidget):
     def __init__(self, attrs=None,
                  datewidget_placeholder=_('yyyy-mm-dd'),
                  empty_hour_label=None,
-                 empty_minute_label=None):
+                 empty_minute_label=None,
+                 extra_css_class=None):
+        self.extra_css_class = extra_css_class
         _widgets = [
             self.date_widget_class(attrs=attrs, placeholder=datewidget_placeholder),
             self.time_widget_class(attrs=attrs,
@@ -191,8 +196,15 @@ class DateSplitTimePickerWidget(widgets.MultiWidget):
     def decompress(self, value):
         return [value, value]
 
+    def get_css_class(self):
+        css_classes = ['django-cradmin-datetimepicker-split-time']
+        if self.extra_css_class:
+            css_classes.append(self.extra_css_class)
+        return ' '.join(css_classes)
+
     def format_output(self, rendered_widgets):
-        return u'<div class="django-cradmin-datetimepicker-split-time">{}</div>'.format(
+        return u'<div class="{}">{}</div>'.format(
+            self.get_css_class(),
             u''.join(rendered_widgets))
 
     def value_from_datadict(self, data, files, name):
