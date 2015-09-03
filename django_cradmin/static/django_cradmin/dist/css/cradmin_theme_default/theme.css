@@ -1681,7 +1681,7 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 36px;
+  height: 40px;
   padding: 6px 12px;
   font-size: 16px;
   line-height: 1.42857143;
@@ -1725,7 +1725,7 @@ input[type="search"] {
   -webkit-appearance: none;
 }
 input[type="date"] {
-  line-height: 36px;
+  line-height: 40px;
 }
 .form-group {
   margin-bottom: 15px;
@@ -1817,16 +1817,16 @@ select[multiple].input-lg {
   position: relative;
 }
 .has-feedback .form-control {
-  padding-right: 45px;
+  padding-right: 50px;
 }
 .has-feedback .form-control-feedback {
   position: absolute;
   top: 27px;
   right: 0;
   display: block;
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   text-align: center;
 }
 .has-success .help-block,
@@ -4687,23 +4687,9 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   margin-left: 0;
   margin-right: 0;
 }
-.django-cradmin-form-wrapper {
-  padding-bottom: 150px;
-}
-@media (min-width: 768px) {
-  .django-cradmin-form-wrapper {
-    padding-bottom: 80px;
-  }
-}
 .django-cradmin-form-wrapper .django-cradmin-form {
   background: #ffffff;
   padding-bottom: 0;
-  /**
-      # .cradmin-focusfield-screenheight
-      Scale the field focusfield to the screen height.
-      Uses css media queries just like the bootstrap responsive grid does
-      for the screen width.
-      */
 }
 .django-cradmin-form-wrapper .django-cradmin-form label {
   font-weight: normal;
@@ -4754,45 +4740,6 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
 .django-cradmin-form-wrapper .django-cradmin-form .cradmin-globalfields .form-group:last-child {
   padding-bottom: 30px;
 }
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=text],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=email],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=number],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=url],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group textarea,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group .django-cradmin-bulkfileupload,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group .cradmin-div-styled-as-textarea,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group select {
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  outline: none;
-  box-shadow: none;
-  padding: 10px 12px;
-  background: #fafafa;
-}
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=text]:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=email]:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=number]:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=url]:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group textarea:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group .django-cradmin-bulkfileupload:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group .cradmin-div-styled-as-textarea:focus,
-.django-cradmin-form-wrapper .django-cradmin-form .form-group select:focus {
-  background: #e1edf4;
-  border-color: #bcd7e6;
-  box-shadow: none;
-}
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=text],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=email],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=number],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group input[type=url],
-.django-cradmin-form-wrapper .django-cradmin-form .form-group textarea {
-  height: auto;
-  margin: 0;
-  text-align: left;
-}
-.django-cradmin-form-wrapper .django-cradmin-form .form-group textarea.cradmin-textarea-small {
-  height: 60px;
-}
 .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield .controls {
   padding: 20px 15px 4px 15px;
 }
@@ -4801,6 +4748,8 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
 .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield.cradmin-focusfield-lg .form-group input[type=number],
 .django-cradmin-form-wrapper .django-cradmin-form .cradmin-focusfield.cradmin-focusfield-lg .form-group input[type=url] {
   font-size: 24px;
+  padding: 10px 12px;
+  height: auto;
 }
 form .alert-block.alert-danger ul {
   list-style: none;
@@ -4845,6 +4794,85 @@ form .alert-block.alert-danger ul li {
 .django-cradmin-form-collapsed-section .django-cradmin-form-collapsed-section-header {
   padding-left: 15px;
   padding-right: 15px;
+}
+.django-cradmin-split-timepicker:before,
+.django-cradmin-split-timepicker:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-split-timepicker:after {
+  clear: both;
+}
+.django-cradmin-split-timepicker:before,
+.django-cradmin-split-timepicker:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-split-timepicker:after {
+  clear: both;
+}
+.django-cradmin-split-timepicker .django-cradmin-split-timepicker-hour,
+.django-cradmin-split-timepicker .django-cradmin-split-timepicker-minute {
+  width: 50%;
+  float: left;
+}
+.django-cradmin-split-timepicker .django-cradmin-split-timepicker-hour {
+  padding-right: 5px;
+}
+.django-cradmin-split-timepicker .django-cradmin-split-timepicker-minute {
+  padding-left: 5px;
+}
+.django-cradmin-datetimepicker-split-time {
+  max-width: 270px;
+}
+.django-cradmin-datetimepicker-split-time:before,
+.django-cradmin-datetimepicker-split-time:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-datetimepicker-split-time:after {
+  clear: both;
+}
+.django-cradmin-datetimepicker-split-time:before,
+.django-cradmin-datetimepicker-split-time:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-datetimepicker-split-time:after {
+  clear: both;
+}
+.django-cradmin-datetimepicker-split-time .django-cradmin-datepicker {
+  float: left;
+  width: 50%;
+  padding-right: 5px;
+}
+.django-cradmin-datetimepicker-split-time .django-cradmin-split-timepicker {
+  float: right;
+  width: 50%;
+  padding-left: 5px;
+}
+.django-cradmin-datetimepicker-split-time.django-cradmin-datetimepicker-split-time-fluid {
+  max-width: none;
+}
+.form-control,
+.cradmin-div-styled-as-textarea {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  outline: none;
+  box-shadow: none;
+  background: #fafafa;
+}
+.form-control:focus,
+.cradmin-div-styled-as-textarea:focus {
+  background: #e1edf4;
+  border-color: #bcd7e6;
+  box-shadow: none;
+}
+.cradmin-div-styled-as-textarea {
+  padding: 6px 12px;
+}
+textarea.cradmin-textarea-small {
+  height: 60px;
 }
 table.table.django-cradmin-table {
   margin: 0;
@@ -4978,6 +5006,21 @@ table.table.django-cradmin-table tbody td:last-child {
 }
 .django-cradmin-page-header-outer .django-cradmin-page-header-inner p {
   margin: 0;
+}
+.django-cradmin-page-header-outer.django-cradmin-page-header-outer-secondary {
+  padding: 20px 0 22px 0;
+  background: #377ca8;
+  color: #ffffff;
+  border: none;
+  margin: 30px 0 15px 0;
+}
+.django-cradmin-page-header-outer.django-cradmin-page-header-outer-secondary h2 {
+  padding: 0;
+  margin: 0;
+  font-size: 21px;
+  font-weight: bold;
+  vertical-align: middle;
+  line-height: 31px;
 }
 .pager-container .pager {
   margin: 0;
