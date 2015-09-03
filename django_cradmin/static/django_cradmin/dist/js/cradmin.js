@@ -1141,125 +1141,8 @@
 
   app = angular.module('djangoCradmin.forms.datetimewidget', []);
 
-  app.directive('djangoCradminDatePicker', function() {
-    var CalendarDay, CalendarMonth, CalendarWeek, Month;
-    CalendarDay = (function() {
-      function CalendarDay(momentObject) {
-        this.momentObject = momentObject;
-      }
-
-      return CalendarDay;
-
-    })();
-    CalendarWeek = (function() {
-      function CalendarWeek() {
-        this.days = [];
-      }
-
-      CalendarWeek.prototype.addDay = function(calendarDay) {
-        return this.days.push(calendarDay);
-      };
-
-      CalendarWeek.prototype.getDayCount = function() {
-        return this.days.length;
-      };
-
-      CalendarWeek.prototype.prettyOneLineFormat = function() {
-        var calendarDay, formattedDays, _i, _len, _ref;
-        formattedDays = [];
-        _ref = this.days;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          calendarDay = _ref[_i];
-          formattedDays.push(calendarDay.momentObject.format('DD'));
-        }
-        return formattedDays.join(' ');
-      };
-
-      return CalendarWeek;
-
-    })();
-    CalendarMonth = (function() {
-      function CalendarMonth(month) {
-        this.month = month;
-        this.table = [new CalendarWeek()];
-        this.currentWeekIndex = 0;
-        this.daysPerWeek = 7;
-        this.totalWeeks = 6;
-        this.currentDayCount = 0;
-        this.lastDay = null;
-        this.__build();
-      }
-
-      CalendarMonth.prototype.__buildPrefixedDays = function() {
-        var index, momentObject, _i, _ref, _results;
-        if (this.month.firstDayOfMonth.weekday() > 0) {
-          _results = [];
-          for (index = _i = _ref = this.month.firstDayOfMonth.weekday(); _ref <= 1 ? _i <= 1 : _i >= 1; index = _ref <= 1 ? ++_i : --_i) {
-            momentObject = this.month.firstDayOfMonth.clone().subtract({
-              days: index
-            });
-            _results.push(this.__addMomentObject(momentObject));
-          }
-          return _results;
-        }
-      };
-
-      CalendarMonth.prototype.__buildSuffixedDays = function() {
-        var momentObject, totalDayCount, _results;
-        totalDayCount = this.totalWeeks * this.daysPerWeek;
-        _results = [];
-        while (this.currentDayCount < totalDayCount) {
-          momentObject = this.lastDay.momentObject.clone().add({
-            days: 1
-          });
-          _results.push(this.__addMomentObject(momentObject));
-        }
-        return _results;
-      };
-
-      CalendarMonth.prototype.__buildDaysBelongingInMonth = function() {
-        var dayIndex, _i, _ref, _results;
-        _results = [];
-        for (dayIndex = _i = 1, _ref = this.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; dayIndex = 1 <= _ref ? ++_i : --_i) {
-          _results.push(this.__addMomentObject(this.month.firstDayOfMonth.clone().date(dayIndex)));
-        }
-        return _results;
-      };
-
-      CalendarMonth.prototype.__build = function(momentFirstDayOfMonth) {
-        this.__buildPrefixedDays();
-        this.__buildDaysBelongingInMonth();
-        return this.__buildSuffixedDays();
-      };
-
-      CalendarMonth.prototype.__addMomentObject = function(momentObject) {
-        var calendarDay, week;
-        week = this.table[this.currentWeekIndex];
-        calendarDay = new CalendarDay(momentObject);
-        week.addDay(calendarDay);
-        if (week.getDayCount() >= this.daysPerWeek) {
-          this.table.push(new CalendarWeek());
-          this.currentWeekIndex += 1;
-        }
-        this.currentDayCount += 1;
-        return this.lastDay = calendarDay;
-      };
-
-      CalendarMonth.prototype.prettyprint = function() {
-        var rowFormatted, week, _i, _len, _ref, _results;
-        _ref = this.table;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          week = _ref[_i];
-          rowFormatted = [];
-          _results.push(console.log(week.prettyOneLineFormat()));
-        }
-        return _results;
-      };
-
-      return CalendarMonth;
-
-    })();
+  app.directive('djangoCradminDateSelector', function() {
+    var CalendarData, CalendarDay, CalendarMonth, CalendarWeek, Month, getWeekdaysShortForCurrentLocale;
     Month = (function() {
       function Month(firstDayOfMonth) {
         this.firstDayOfMonth = firstDayOfMonth;
@@ -1275,12 +1158,325 @@
       return Month;
 
     })();
+    CalendarDay = (function() {
+      function CalendarDay(momentObject, isInCurrentMonth) {
+        this.momentObject = momentObject;
+        this.isInCurrentMonth = isInCurrentMonth;
+      }
+
+      CalendarDay.prototype.getNumberInMonth = function() {
+        return this.momentObject.format('D');
+      };
+
+      return CalendarDay;
+
+    })();
+    CalendarWeek = (function() {
+      function CalendarWeek() {
+        this.calendarDays = [];
+      }
+
+      CalendarWeek.prototype.addDay = function(calendarDay) {
+        return this.calendarDays.push(calendarDay);
+      };
+
+      CalendarWeek.prototype.getDayCount = function() {
+        return this.calendarDays.length;
+      };
+
+      CalendarWeek.prototype.prettyOneLineFormat = function() {
+        var calendarDay, formattedDay, formattedDays, _i, _len, _ref;
+        formattedDays = [];
+        _ref = this.calendarDays;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          calendarDay = _ref[_i];
+          formattedDay = calendarDay.momentObject.format('DD');
+          if (calendarDay.isInCurrentMonth) {
+            formattedDay = " " + formattedDay + " ";
+          } else {
+            formattedDay = "(" + formattedDay + ")";
+          }
+          formattedDays.push(formattedDay);
+        }
+        return formattedDays.join(' ');
+      };
+
+      return CalendarWeek;
+
+    })();
+    CalendarMonth = (function() {
+      function CalendarMonth(momentObject) {
+        this.changeMonth(momentObject);
+      }
+
+      CalendarMonth.prototype.changeMonth = function(momentObject) {
+        var firstDayOfMonthMomentObject;
+        firstDayOfMonthMomentObject = momentObject.clone().set({
+          date: 1,
+          hour: 0,
+          minute: 0,
+          second: 0,
+          millisecond: 0
+        });
+        this.month = new Month(firstDayOfMonthMomentObject);
+        this.calendarWeeks = [new CalendarWeek()];
+        this.currentWeekIndex = 0;
+        this.daysPerWeek = 7;
+        this.totalWeeks = 6;
+        this.currentDayCount = 0;
+        this.lastDay = null;
+        return this.__build();
+      };
+
+      CalendarMonth.prototype.__buildPrefixedDays = function() {
+        var index, momentObject, _i, _ref, _results;
+        if (this.month.firstDayOfMonth.weekday() > 0) {
+          _results = [];
+          for (index = _i = _ref = this.month.firstDayOfMonth.weekday(); _ref <= 1 ? _i <= 1 : _i >= 1; index = _ref <= 1 ? ++_i : --_i) {
+            momentObject = this.month.firstDayOfMonth.clone().subtract({
+              days: index
+            });
+            _results.push(this.__addMomentObject(momentObject, false));
+          }
+          return _results;
+        }
+      };
+
+      CalendarMonth.prototype.__buildSuffixedDays = function() {
+        var momentObject, totalDayCount, _results;
+        totalDayCount = this.totalWeeks * this.daysPerWeek;
+        _results = [];
+        while (this.currentDayCount < totalDayCount) {
+          momentObject = this.lastDay.momentObject.clone().add({
+            days: 1
+          });
+          _results.push(this.__addMomentObject(momentObject, false));
+        }
+        return _results;
+      };
+
+      CalendarMonth.prototype.__buildDaysBelongingInMonth = function() {
+        var dayIndex, momentObject, _i, _ref, _results;
+        _results = [];
+        for (dayIndex = _i = 1, _ref = this.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; dayIndex = 1 <= _ref ? ++_i : --_i) {
+          momentObject = this.month.firstDayOfMonth.clone().date(dayIndex);
+          _results.push(this.__addMomentObject(momentObject, true));
+        }
+        return _results;
+      };
+
+      CalendarMonth.prototype.__build = function(momentFirstDayOfMonth) {
+        this.__buildPrefixedDays();
+        this.__buildDaysBelongingInMonth();
+        return this.__buildSuffixedDays();
+      };
+
+      CalendarMonth.prototype.__addMomentObject = function(momentObject, isInCurrentMonth) {
+        var calendarDay, week;
+        week = this.calendarWeeks[this.currentWeekIndex];
+        calendarDay = new CalendarDay(momentObject, isInCurrentMonth);
+        week.addDay(calendarDay);
+        if (week.getDayCount() >= this.daysPerWeek) {
+          this.calendarWeeks.push(new CalendarWeek());
+          this.currentWeekIndex += 1;
+        }
+        this.currentDayCount += 1;
+        return this.lastDay = calendarDay;
+      };
+
+      CalendarMonth.prototype.prettyprint = function() {
+        var rowFormatted, week, _i, _len, _ref, _results;
+        _ref = this.calendarWeeks;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          week = _ref[_i];
+          rowFormatted = [];
+          _results.push(console.log(week.prettyOneLineFormat()));
+        }
+        return _results;
+      };
+
+      return CalendarMonth;
+
+    })();
+    CalendarData = (function() {
+      function CalendarData(selectedDateMomentObject) {
+        var monthToLoadMomentObject;
+        this.selectedDateMomentObject = selectedDateMomentObject;
+        this.__initYears();
+        if (this.selectedDateMomentObject != null) {
+          monthToLoadMomentObject = this.selectedDateMomentObject;
+          this.selectedCalendarDay = new CalendarDay(this.selectedDateMomentObject);
+        } else {
+          monthToLoadMomentObject = moment();
+          this.selectedCalendarDay = null;
+        }
+        this.__initYears();
+        this.__initMonths();
+        this.setDate(monthToLoadMomentObject);
+      }
+
+      CalendarData.prototype.__initYears = function() {
+        var year, yearObject, yearsList, _i, _j, _len, _results, _results1;
+        yearsList = (function() {
+          _results = [];
+          for (_i = 1990; _i <= 2030; _i++){ _results.push(_i); }
+          return _results;
+        }).apply(this);
+        this.years = [];
+        this.__yearsMap = {};
+        _results1 = [];
+        for (_j = 0, _len = yearsList.length; _j < _len; _j++) {
+          year = yearsList[_j];
+          yearObject = {
+            value: year,
+            label: year
+          };
+          this.years.push(yearObject);
+          _results1.push(this.__yearsMap[year] = yearObject);
+        }
+        return _results1;
+      };
+
+      CalendarData.prototype.__initMonths = function() {
+        var monthObject, monthname, monthnumber, _i, _len, _ref, _results;
+        this.months = [];
+        this.__monthsMap = {};
+        monthnumber = 0;
+        _ref = moment.months();
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          monthname = _ref[_i];
+          monthObject = {
+            value: monthnumber,
+            label: monthname
+          };
+          this.months.push(monthObject);
+          this.__monthsMap[monthnumber] = monthObject;
+          _results.push(monthnumber += 1);
+        }
+        return _results;
+      };
+
+      CalendarData.prototype.__setCurrentYear = function() {
+        var currentYearNumber;
+        currentYearNumber = this.calendarMonth.month.firstDayOfMonth.year();
+        this.currentYear = this.__yearsMap[currentYearNumber];
+        if (this.currentYear == null) {
+          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given year, " + currentYearNumber + " is not one of the available choices") : void 0 : void 0;
+        }
+      };
+
+      CalendarData.prototype.__setCurrentMonth = function() {
+        var currentMonthNumber;
+        currentMonthNumber = this.calendarMonth.month.firstDayOfMonth.month();
+        this.currentMonth = this.__monthsMap[currentMonthNumber];
+        if (this.currentMonth == null) {
+          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given month number, " + currentMonthNumber + " is not one of the available choices") : void 0 : void 0;
+        }
+      };
+
+      CalendarData.prototype.setDate = function(momentObject) {
+        this.calendarMonth = new CalendarMonth(momentObject);
+        this.calendarMonth.prettyprint();
+        this.__setCurrentYear();
+        return this.__setCurrentMonth();
+      };
+
+      CalendarData.prototype.onChangeMonth = function() {
+        var newFirstDayOfMonth;
+        newFirstDayOfMonth = this.calendarMonth.month.firstDayOfMonth.clone().set({
+          month: this.currentMonth.value
+        });
+        return this.calendarMonth = new CalendarMonth(newFirstDayOfMonth);
+      };
+
+      CalendarData.prototype.onChangeYear = function() {
+        var newFirstDayOfMonth;
+        newFirstDayOfMonth = this.calendarMonth.month.firstDayOfMonth.clone().set({
+          year: this.currentYear.value
+        });
+        return this.calendarMonth = new CalendarMonth(newFirstDayOfMonth);
+      };
+
+      CalendarData.prototype.onSelectCalendarDay = function(calendarDay) {
+        return this.selectedCalendarDay = calendarDay;
+      };
+
+      CalendarData.prototype.getDestinationFieldValue = function() {
+        return this.selectedCalendarDay.momentObject.format('YYYY-MM-DD');
+      };
+
+      return CalendarData;
+
+    })();
+    getWeekdaysShortForCurrentLocale = function() {
+      var firstDayOfWeek, index, weekday, weekdays, weekdaysWithSundayFirst, _i, _ref;
+      weekdays = [];
+      weekdaysWithSundayFirst = moment.weekdaysShort();
+      firstDayOfWeek = moment.localeData().firstDayOfWeek();
+      for (index = _i = firstDayOfWeek, _ref = firstDayOfWeek + 6; firstDayOfWeek <= _ref ? _i <= _ref : _i >= _ref; index = firstDayOfWeek <= _ref ? ++_i : --_i) {
+        if (index > 6) {
+          index = Math.abs(7 - index);
+        }
+        weekday = weekdaysWithSundayFirst[index];
+        weekdays.push(weekday);
+      }
+      return weekdays;
+    };
     return {
+      scope: {
+        config: "=djangoCradminDateSelector"
+      },
+      templateUrl: 'forms/dateselector.tpl.html',
+      controller: function($scope, $element) {
+        $scope.isVisible = false;
+        $scope.onChangeMonth = function() {
+          $scope.calendarData.onChangeMonth();
+        };
+        $scope.onChangeYear = function() {
+          $scope.calendarData.onChangeYear();
+        };
+        $scope.onSelectCalendarDay = function(calendarDay) {
+          $scope.calendarData.onSelectCalendarDay(calendarDay);
+          $scope.applySelectedValue();
+        };
+        $scope.applySelectedValue = function() {
+          $scope.destinationField.val($scope.calendarData.getDestinationFieldValue());
+          return $scope.hide();
+        };
+        $scope.show = function() {
+          return $scope.isVisible = true;
+        };
+        return $scope.hide = function() {
+          return $scope.isVisible = false;
+        };
+      },
       link: function($scope, $element) {
-        var calendarMonth, month;
-        month = new Month(moment('2015-05-01'));
-        calendarMonth = new CalendarMonth(month);
-        calendarMonth.prettyprint();
+        $scope.weekdays = getWeekdaysShortForCurrentLocale();
+        $scope.calendarData = new CalendarData();
+        if ($scope.config.destinationFieldId != null) {
+          $scope.destinationField = angular.element("#" + $scope.config.destinationFieldId);
+          if ($scope.destinationField.length > 0) {
+            $scope.destinationField.on('focus', function() {
+              $scope.show();
+              $scope.$apply();
+            });
+          } else {
+            if (typeof console !== "undefined" && console !== null) {
+              if (typeof console.error === "function") {
+                console.error("Could not find the destinationField element with ID: " + $scope.config.destinationFieldId);
+              }
+            }
+          }
+        } else {
+          if (typeof console !== "undefined" && console !== null) {
+            if (typeof console.error === "function") {
+              console.error("The destinationField config is required!");
+            }
+          }
+        }
+        console.log($scope.config);
       }
     };
   });
@@ -2637,7 +2833,7 @@
 
 }).call(this);
 
-angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html', 'bulkfileupload/rejectedfiles.tpl.html', 'pagepreview/navbar.tpl.html']);
+angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html', 'bulkfileupload/rejectedfiles.tpl.html', 'forms/dateselector.tpl.html', 'pagepreview/navbar.tpl.html']);
 
 angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("acemarkdown/acemarkdown.tpl.html",
@@ -2719,6 +2915,62 @@ angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache
     "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ rejectedFile.name }}:</span>\n" +
     "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-errormessage\">{{ rejectedFileErrorMessage }}</span>\n" +
     "    </p>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("forms/dateselector.tpl.html",
+    "<div class=\"django-cradmin-date-selector\"\n" +
+    "        ng-class=\"{\n" +
+    "            'django-cradmin-date-selector-show': isVisible\n" +
+    "        }\">\n" +
+    "    <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
+    "        <select class=\"django-cradmin-date-selector-month\" ng-model=\"calendarData.currentMonth\"\n" +
+    "                ng-options=\"month.label for month in calendarData.months track by month.value\"\n" +
+    "                ng-change=\"onChangeMonth()\">\n" +
+    "        </select>\n" +
+    "        <select class=\"django-cradmin-date-selector-year\" ng-model=\"calendarData.currentYear\"\n" +
+    "                ng-options=\"year.label for year in calendarData.years track by year.value\"\n" +
+    "                ng-change=\"onChangeYear()\">\n" +
+    "        </select>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    {{ calendarData.currentMonth.value }}\n" +
+    "    |\n" +
+    "    {{ calendarData.currentYear.value }}\n" +
+    "    |\n" +
+    "    {{ calendarData.selectedCalendarDay.momentObject.format('ll') }}\n" +
+    "\n" +
+    "    <table class=\"table\">\n" +
+    "        <thead>\n" +
+    "            <tr>\n" +
+    "                <td colspan=\"5\">\n" +
+    "                </td>\n" +
+    "                <td colspan=\"3\">\n" +
+    "                </td>\n" +
+    "            </tr>\n" +
+    "            <tr>\n" +
+    "                <th ng-repeat=\"weekday in weekdays\">\n" +
+    "                    {{ weekday }}\n" +
+    "                </th>\n" +
+    "            </tr>\n" +
+    "        </thead>\n" +
+    "        <tbody>\n" +
+    "            <tr ng-repeat=\"calendarWeek in calendarData.calendarMonth.calendarWeeks\">\n" +
+    "                <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\">\n" +
+    "                    <div class=\"django-cradmin-date-selector-day\"\n" +
+    "                            ng-class=\"{\n" +
+    "                                'django-cradmin-date-selector-day-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
+    "                                'django-cradmin-date-selector-day-in-current-month': calendarDay.isInCurrentMonth\n" +
+    "                            }\"\n" +
+    "                            ng-click=\"onSelectCalendarDay(calendarDay)\">\n" +
+    "                        {{ calendarDay.getNumberInMonth() }}\n" +
+    "                    </div>\n" +
+    "                </td>\n" +
+    "            </tr>\n" +
+    "        </tbody>\n" +
+    "    </table>\n" +
     "</div>\n" +
     "");
 }]);

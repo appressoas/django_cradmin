@@ -1,72 +1,60 @@
 app = angular.module 'djangoCradmin.forms.datetimewidget', []
 
-#app.controller 'CradminDateFieldController', ($scope, $filter) ->
-#
-#  $scope.init = ->
-#    $scope.datepicker_is_open = false
-#    return
-#
-#  $scope.open_datepicker = ($event) ->
-#    $event.preventDefault()
-#    $event.stopPropagation()
-#    $scope.datepicker_is_open = true
-#    return
-#
-#  $scope.set_date_from_string = (datestr) ->
-#    if datestr
-#      $scope.datevalue = new Date datestr
-#      $scope.datefield_changed()
-#    return
-#
-#  $scope.datefield_changed = ->
-#    datestr = $filter('date')($scope.datevalue, 'yyyy-MM-dd')
-#    $scope.hiddendatefieldvalue = datestr
-#    return
-#
-#  $scope.init()
-#  return
 
-#app.controller 'CradminTimeFieldController', ($scope, $filter) ->
-#
-#  $scope.set_time_from_string = (timestr) ->
-#    if timestr
-#      $scope.timevalue = new Date timestr
-#    else
-#      $scope.timevalue = new Date()
-#    $scope.timefield_changed()
-#    return
-#
-#  $scope.timefield_changed = ->
-#    timestr = $filter('date')($scope.timevalue, 'HH:mm')
-#    $scope.hiddentimefieldvalue = timestr
-#    return
+app.directive 'djangoCradminDateSelector', ->
+
+  class Month
+    constructor: (@firstDayOfMonth) ->
+      @lastDayOfMonth = @firstDayOfMonth.clone().add({
+        days: @firstDayOfMonth.daysInMonth() - 1
+      })
+
+    getDaysInMonth: ->
+      return @firstDayOfMonth.daysInMonth()
 
 
-app.directive 'djangoCradminDatePicker', ->
   class CalendarDay
-    constructor: (@momentObject) ->
+    constructor: (@momentObject, @isInCurrentMonth) ->
 
+    getNumberInMonth: ->
+      return @momentObject.format('D')
 
   class CalendarWeek
     constructor: ->
-      @days = []
+      @calendarDays = []
 
     addDay: (calendarDay) ->
-      @days.push(calendarDay)
+      @calendarDays.push(calendarDay)
 
     getDayCount: ->
-      return @days.length
+      return @calendarDays.length
 
     prettyOneLineFormat: ->
       formattedDays = []
-      for calendarDay in @days
-        formattedDays.push(calendarDay.momentObject.format('DD'))
+      for calendarDay in @calendarDays
+        formattedDay = calendarDay.momentObject.format('DD')
+        if calendarDay.isInCurrentMonth
+          formattedDay = " #{formattedDay} "
+        else
+          formattedDay = "(#{formattedDay})"
+        formattedDays.push(formattedDay)
       return formattedDays.join(' ')
 
 
   class CalendarMonth
-    constructor: (@month)->
-      @table = [new CalendarWeek()]
+    constructor: (momentObject)->
+      @changeMonth(momentObject)
+
+    changeMonth: (momentObject) ->
+      firstDayOfMonthMomentObject = momentObject.clone().set({
+        date: 1
+        hour: 0
+        minute: 0
+        second: 0
+        millisecond: 0
+      })
+      @month = new Month(firstDayOfMonthMomentObject)
+      @calendarWeeks = [new CalendarWeek()]
       @currentWeekIndex = 0
       @daysPerWeek = 7
       @totalWeeks = 6
@@ -80,7 +68,7 @@ app.directive 'djangoCradminDatePicker', ->
           momentObject = @month.firstDayOfMonth.clone().subtract({
             days: index
           })
-          @__addMomentObject(momentObject)
+          @__addMomentObject(momentObject, false)
 
     __buildSuffixedDays: ->
       totalDayCount = @totalWeeks * @daysPerWeek
@@ -88,47 +76,169 @@ app.directive 'djangoCradminDatePicker', ->
         momentObject = @lastDay.momentObject.clone().add({
           days: 1
         })
-        @__addMomentObject(momentObject)
+        @__addMomentObject(momentObject, false)
 
     __buildDaysBelongingInMonth: ->
       for dayIndex in [1..@month.getDaysInMonth()]
-        @__addMomentObject(@month.firstDayOfMonth.clone().date(dayIndex))
+        momentObject = @month.firstDayOfMonth.clone().date(dayIndex)
+        @__addMomentObject(momentObject, true)
 
     __build: (momentFirstDayOfMonth) ->
       @__buildPrefixedDays()
       @__buildDaysBelongingInMonth()
       @__buildSuffixedDays()
 
-    __addMomentObject: (momentObject) ->
-      week = @table[@currentWeekIndex]
-      calendarDay = new CalendarDay(momentObject)
+    __addMomentObject: (momentObject, isInCurrentMonth) ->
+      week = @calendarWeeks[@currentWeekIndex]
+      calendarDay = new CalendarDay(momentObject, isInCurrentMonth)
       week.addDay(calendarDay)
       if week.getDayCount() >= @daysPerWeek
-        @table.push(new CalendarWeek())
+        @calendarWeeks.push(new CalendarWeek())
         @currentWeekIndex += 1
       @currentDayCount += 1
       @lastDay = calendarDay
 
     prettyprint: ->
-      for week in @table
+      for week in @calendarWeeks
         rowFormatted = []
         console.log week.prettyOneLineFormat()
 
 
-  class Month
-    constructor: (@firstDayOfMonth) ->
-      @lastDayOfMonth = @firstDayOfMonth.clone().add({
-        days: @firstDayOfMonth.daysInMonth() - 1
+  class CalendarData
+    constructor: (@selectedDateMomentObject) ->
+      @__initYears()
+      if @selectedDateMomentObject?
+        monthToLoadMomentObject = @selectedDateMomentObject
+        @selectedCalendarDay = new CalendarDay(@selectedDateMomentObject)
+      else
+        monthToLoadMomentObject = moment()
+        @selectedCalendarDay = null
+      @__initYears()
+      @__initMonths()
+      @setDate(monthToLoadMomentObject)
+
+    __initYears: ->
+      yearsList = [1990..2030]
+      @years = []
+      @__yearsMap = {}
+      for year in yearsList
+        yearObject = {
+          value: year
+          label: year
+        }
+        @years.push(yearObject)
+        @__yearsMap[year] = yearObject
+
+    __initMonths: ->
+      @months = []
+      @__monthsMap = {}
+      monthnumber = 0
+      for monthname in moment.months()
+        monthObject = {
+          value: monthnumber
+          label: monthname
+        }
+        @months.push(monthObject)
+        @__monthsMap[monthnumber] = monthObject
+        monthnumber += 1
+
+    __setCurrentYear: ->
+      currentYearNumber = @calendarMonth.month.firstDayOfMonth.year()
+      @currentYear = @__yearsMap[currentYearNumber]
+      if not @currentYear?
+        console?.error? "The given year, #{currentYearNumber} is not one of the available choices"
+
+    __setCurrentMonth: ->
+      currentMonthNumber = @calendarMonth.month.firstDayOfMonth.month()
+      @currentMonth = @__monthsMap[currentMonthNumber]
+      if not @currentMonth?
+        console?.error? "The given month number, #{currentMonthNumber} is not one of the available choices"
+
+    setDate: (momentObject) ->
+      @calendarMonth = new CalendarMonth(momentObject)
+      @calendarMonth.prettyprint()
+      @__setCurrentYear()
+      @__setCurrentMonth()
+
+    onChangeMonth: ->
+      newFirstDayOfMonth = @calendarMonth.month.firstDayOfMonth.clone().set({
+        month: @currentMonth.value
       })
+      @calendarMonth = new CalendarMonth(newFirstDayOfMonth)
 
-    getDaysInMonth: ->
-      return @firstDayOfMonth.daysInMonth()
+    onChangeYear: ->
+      newFirstDayOfMonth = @calendarMonth.month.firstDayOfMonth.clone().set({
+        year: @currentYear.value
+      })
+      @calendarMonth = new CalendarMonth(newFirstDayOfMonth)
 
+    onSelectCalendarDay: (calendarDay) ->
+      @selectedCalendarDay = calendarDay
+
+    getDestinationFieldValue: ->
+      return @selectedCalendarDay.momentObject.format('YYYY-MM-DD')
+
+
+  getWeekdaysShortForCurrentLocale = ->
+    weekdays = []
+    weekdaysWithSundayFirst = moment.weekdaysShort()
+    firstDayOfWeek = moment.localeData().firstDayOfWeek()
+    for index in [firstDayOfWeek..firstDayOfWeek+6]
+      if index > 6
+        index = Math.abs(7 - index)
+      weekday = weekdaysWithSundayFirst[index]
+      weekdays.push(weekday)
+    return weekdays
 
   return {
+    scope: {
+      config: "=djangoCradminDateSelector"
+    }
+
+    templateUrl: 'forms/dateselector.tpl.html'
+
+    controller: ($scope, $element) ->
+      $scope.isVisible = false
+
+      $scope.onChangeMonth = ->
+        $scope.calendarData.onChangeMonth()
+        return
+
+      $scope.onChangeYear = ->
+        $scope.calendarData.onChangeYear()
+        return
+
+      $scope.onSelectCalendarDay = (calendarDay) ->
+        $scope.calendarData.onSelectCalendarDay(calendarDay)
+        $scope.applySelectedValue()
+        return
+
+      $scope.applySelectedValue = ->
+        $scope.destinationField.val($scope.calendarData.getDestinationFieldValue())
+        $scope.hide()
+
+      $scope.show = ->
+        $scope.isVisible = true
+
+      $scope.hide = ->
+        $scope.isVisible = false
+
     link: ($scope, $element) ->
-      month = new Month(moment('2015-05-01'))
-      calendarMonth = new CalendarMonth(month)
-      calendarMonth.prettyprint()
+
+      $scope.weekdays = getWeekdaysShortForCurrentLocale()
+      $scope.calendarData = new CalendarData()
+
+      if $scope.config.destinationFieldId?
+        $scope.destinationField = angular.element("#" + $scope.config.destinationFieldId)
+        if $scope.destinationField.length > 0
+          $scope.destinationField.on 'focus', ->
+            $scope.show()
+            $scope.$apply()
+            return
+        else
+          console?.error? "Could not find the destinationField element with ID: #{$scope.config.destinationFieldId}"
+      else
+        console?.error? "The destinationField config is required!"
+      console.log $scope.config
       return
   }

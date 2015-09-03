@@ -14,7 +14,9 @@
 <div id="id_cradmin_datefieldwrapper_{{ fieldname }}"
      class="django-cradmin-datepicker">
     <input type="text" class="form-control"
-            django-cradmin-date-picker
             {{ attrs|safe }}>
 {#    <input type="hidden" id="{{ fieldid }}" name="{{ fieldname }}" value="{% verbatim %}{{ hiddendatefieldvalue }}{% endverbatim %}">#}
+    <div django-cradmin-date-selector="{
+        destinationFieldId: '{{ fieldid }}'
+    }"></div>
 </div>

@@ -1,0 +1,51 @@
+<div class="django-cradmin-date-selector"
+        ng-class="{
+            'django-cradmin-date-selector-show': isVisible
+        }">
+    <div class="django-cradmin-date-selector-viewswitchers">
+        <select class="django-cradmin-date-selector-month" ng-model="calendarData.currentMonth"
+                ng-options="month.label for month in calendarData.months track by month.value"
+                ng-change="onChangeMonth()">
+        </select>
+        <select class="django-cradmin-date-selector-year" ng-model="calendarData.currentYear"
+                ng-options="year.label for year in calendarData.years track by year.value"
+                ng-change="onChangeYear()">
+        </select>
+    </div>
+
+    {{ calendarData.currentMonth.value }}
+    |
+    {{ calendarData.currentYear.value }}
+    |
+    {{ calendarData.selectedCalendarDay.momentObject.format('ll') }}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td colspan="5">
+                </td>
+                <td colspan="3">
+                </td>
+            </tr>
+            <tr>
+                <th ng-repeat="weekday in weekdays">
+                    {{ weekday }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="calendarWeek in calendarData.calendarMonth.calendarWeeks">
+                <td ng-repeat="calendarDay in calendarWeek.calendarDays">
+                    <div class="django-cradmin-date-selector-day"
+                            ng-class="{
+                                'django-cradmin-date-selector-day-not-in-current-month': !calendarDay.isInCurrentMonth,
+                                'django-cradmin-date-selector-day-in-current-month': calendarDay.isInCurrentMonth
+                            }"
+                            ng-click="onSelectCalendarDay(calendarDay)">
+                        {{ calendarDay.getNumberInMonth() }}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
