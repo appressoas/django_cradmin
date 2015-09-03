@@ -30,9 +30,25 @@
             <link href='{% static DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH %}' rel="stylesheet">
         {% endblock iconlibrary %}
 
-        {% block jsimports %}
+        {% block vendorjs %}
             <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>
+        {% endblock vendorjs %}
+
+        {% block momentjsconfig %}
+            {% if DJANGO_CRADMIN_MOMENTJS_LOCALE %}
+                <script src="{{ STATIC_URL }}django_cradmin/dist/vendor/momentjs-locale/{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}.js" type="text/javascript"></script>
+                <script>
+                  moment.locale('{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}')
+                </script>
+            {% endif %}
+        {% endblock momentjsconfig %}
+
+        {% block cradminjs %}
             <script src="{% static 'django_cradmin/dist/js/cradmin.min.js' %}" type="text/javascript"></script>
+        {% endblock cradminjs %}
+
+        {% block jsimports %}
+            {# Override this to add js imports in child templates #}
         {% endblock %}
     </head>
     <body class="

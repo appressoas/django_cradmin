@@ -16,6 +16,7 @@ module.exports = (grunt) ->
       'bower_components/ng-file-upload/angular-file-upload.js'
       'bower_components/modernizr/modernizr.js'
       'bower_components/detectizr/dist/detectizr.js'
+      'bower_components/moment/moment.js'
     ]
     ace_editor: [
       'bower_components/ace-builds/src-min-noconflict/ace.js'
@@ -116,6 +117,11 @@ module.exports = (grunt) ->
           cwd: 'bower_components/bootstrap/fonts/'
           src: ['glyphicons-*']
           dest: 'dist/vendor/fonts/glyphicons/'
+        }, {
+          expand: true
+          cwd: 'bower_components/moment/locale/'
+          src: ['*.js']
+          dest: 'dist/vendor/momentjs-locale/'
         }, {
           expand: true
           flatten: true
@@ -220,7 +226,7 @@ module.exports = (grunt) ->
     'html2js'
     'buildCradminDist',
     'buildVendorDist',
-    'karma:singlerun'
+#    'karma:singlerun'
   ])
 
   grunt.registerTask('dist', [

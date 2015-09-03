@@ -1139,44 +1139,149 @@
 (function() {
   var app;
 
-  app = angular.module('djangoCradmin.forms.datetimewidget', ['ui.bootstrap']);
+  app = angular.module('djangoCradmin.forms.datetimewidget', []);
 
-  app.controller('CradminDateFieldController', function($scope, $filter) {
-    $scope.init = function() {
-      $scope.datepicker_is_open = false;
-    };
-    $scope.open_datepicker = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.datepicker_is_open = true;
-    };
-    $scope.set_date_from_string = function(datestr) {
-      if (datestr) {
-        $scope.datevalue = new Date(datestr);
-        $scope.datefield_changed();
+  app.directive('djangoCradminDatePicker', function() {
+    var CalendarDay, CalendarMonth, CalendarWeek, Month;
+    CalendarDay = (function() {
+      function CalendarDay(momentObject) {
+        this.momentObject = momentObject;
       }
-    };
-    $scope.datefield_changed = function() {
-      var datestr;
-      datestr = $filter('date')($scope.datevalue, 'yyyy-MM-dd');
-      $scope.hiddendatefieldvalue = datestr;
-    };
-    $scope.init();
-  });
 
-  app.controller('CradminTimeFieldController', function($scope, $filter) {
-    $scope.set_time_from_string = function(timestr) {
-      if (timestr) {
-        $scope.timevalue = new Date(timestr);
-      } else {
-        $scope.timevalue = new Date();
+      return CalendarDay;
+
+    })();
+    CalendarWeek = (function() {
+      function CalendarWeek() {
+        this.days = [];
       }
-      $scope.timefield_changed();
-    };
-    return $scope.timefield_changed = function() {
-      var timestr;
-      timestr = $filter('date')($scope.timevalue, 'HH:mm');
-      $scope.hiddentimefieldvalue = timestr;
+
+      CalendarWeek.prototype.addDay = function(calendarDay) {
+        return this.days.push(calendarDay);
+      };
+
+      CalendarWeek.prototype.getDayCount = function() {
+        return this.days.length;
+      };
+
+      CalendarWeek.prototype.prettyOneLineFormat = function() {
+        var calendarDay, formattedDays, _i, _len, _ref;
+        formattedDays = [];
+        _ref = this.days;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          calendarDay = _ref[_i];
+          formattedDays.push(calendarDay.momentObject.format('DD'));
+        }
+        return formattedDays.join(' ');
+      };
+
+      return CalendarWeek;
+
+    })();
+    CalendarMonth = (function() {
+      function CalendarMonth(month) {
+        this.month = month;
+        this.table = [new CalendarWeek()];
+        this.currentWeekIndex = 0;
+        this.daysPerWeek = 7;
+        this.totalWeeks = 6;
+        this.currentDayCount = 0;
+        this.lastDay = null;
+        this.__build();
+      }
+
+      CalendarMonth.prototype.__buildPrefixedDays = function() {
+        var index, momentObject, _i, _ref, _results;
+        if (this.month.firstDayOfMonth.weekday() > 0) {
+          _results = [];
+          for (index = _i = _ref = this.month.firstDayOfMonth.weekday(); _ref <= 1 ? _i <= 1 : _i >= 1; index = _ref <= 1 ? ++_i : --_i) {
+            momentObject = this.month.firstDayOfMonth.clone().subtract({
+              days: index
+            });
+            _results.push(this.__addMomentObject(momentObject));
+          }
+          return _results;
+        }
+      };
+
+      CalendarMonth.prototype.__buildSuffixedDays = function() {
+        var momentObject, totalDayCount, _results;
+        totalDayCount = this.totalWeeks * this.daysPerWeek;
+        _results = [];
+        while (this.currentDayCount < totalDayCount) {
+          momentObject = this.lastDay.momentObject.clone().add({
+            days: 1
+          });
+          _results.push(this.__addMomentObject(momentObject));
+        }
+        return _results;
+      };
+
+      CalendarMonth.prototype.__buildDaysBelongingInMonth = function() {
+        var dayIndex, _i, _ref, _results;
+        _results = [];
+        for (dayIndex = _i = 1, _ref = this.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; dayIndex = 1 <= _ref ? ++_i : --_i) {
+          _results.push(this.__addMomentObject(this.month.firstDayOfMonth.clone().date(dayIndex)));
+        }
+        return _results;
+      };
+
+      CalendarMonth.prototype.__build = function(momentFirstDayOfMonth) {
+        this.__buildPrefixedDays();
+        this.__buildDaysBelongingInMonth();
+        return this.__buildSuffixedDays();
+      };
+
+      CalendarMonth.prototype.__addMomentObject = function(momentObject) {
+        var calendarDay, week;
+        week = this.table[this.currentWeekIndex];
+        calendarDay = new CalendarDay(momentObject);
+        week.addDay(calendarDay);
+        if (week.getDayCount() >= this.daysPerWeek) {
+          this.table.push(new CalendarWeek());
+          this.currentWeekIndex += 1;
+        }
+        this.currentDayCount += 1;
+        return this.lastDay = calendarDay;
+      };
+
+      CalendarMonth.prototype.prettyprint = function() {
+        var rowFormatted, week, _i, _len, _ref, _results;
+        _ref = this.table;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          week = _ref[_i];
+          rowFormatted = [];
+          _results.push(console.log(week.prettyOneLineFormat()));
+        }
+        return _results;
+      };
+
+      return CalendarMonth;
+
+    })();
+    Month = (function() {
+      function Month(firstDayOfMonth) {
+        this.firstDayOfMonth = firstDayOfMonth;
+        this.lastDayOfMonth = this.firstDayOfMonth.clone().add({
+          days: this.firstDayOfMonth.daysInMonth() - 1
+        });
+      }
+
+      Month.prototype.getDaysInMonth = function() {
+        return this.firstDayOfMonth.daysInMonth();
+      };
+
+      return Month;
+
+    })();
+    return {
+      link: function($scope, $element) {
+        var calendarMonth, month;
+        month = new Month(moment('2015-05-01'));
+        calendarMonth = new CalendarMonth(month);
+        calendarMonth.prettyprint();
+      }
     };
   });
 

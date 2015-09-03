@@ -206,3 +206,4 @@ TIME_INPUT_FORMATS = [
 
 # DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/dist/css/cradmin_theme_topmenu/theme.css'
 DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED = True
+DJANGO_CRADMIN_MOMENTJS_LOCALE = 'nb'

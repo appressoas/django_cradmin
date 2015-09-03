@@ -141,7 +141,7 @@ class SplitTimePickerWidget(widgets.MultiWidget):
         return number, self.format_minute_label(number)
 
     def get_hour_values(self):
-        return range(0, 25)
+        return range(0, 24)
 
     def get_minute_values(self):
         minutevalues = list(range(0, 60, 5))

@@ -140,7 +140,7 @@ class PageCreateUpdateMixin(object):
             preview=preview,
             selectview_url=self._get_image_selectview_url()
         )
-        form.fields['publishing_time'].widget = DateSplitTimePickerWidget()
+        # form.fields['publishing_time'].widget = DateSplitTimePickerWidget()
         form.fields['unpublish_time'].widget = DateSplitTimePickerWidget(
             empty_hour_label='',
             empty_minute_label='',
