@@ -66,6 +66,11 @@ class DateTimePickerWidget(widgets.MultiWidget):
     def __init__(self, attrs=None,
                  datewidget_placeholder=_('yyyy-mm-dd'),
                  timewidget_placeholder=_('hh:mm')):
+        """
+        Parameters:
+            datewidget_placeholder: The placeholder for the datewidget.
+            timewidget_placeholder: The placeholder for the time widget.
+        """
         _widgets = [
             DatePickerWidget(attrs=attrs, placeholder=datewidget_placeholder),
             TimePickerWidget(attrs=attrs, placeholder=timewidget_placeholder)
@@ -103,6 +108,16 @@ class SplitTimePickerWidget(widgets.MultiWidget):
     def __init__(self, attrs=None,
                  hour_choices=None, minute_choices=None,
                  empty_hour_label=None, empty_minute_label=None):
+        """
+        Parameters:
+            datewidget_placeholder: The placeholder for the datewidget.
+            empty_hour_label: Set this to something other than ``None`` if you
+                want to allow empty values. Adds this text for the ``None`` value
+                as the first option in the select.
+            empty_minute_label: Set this to something other than ``None`` if you
+                want to allow empty values. Adds this text for the ``None`` value
+                as the first option in the select.
+        """
         hour_choices = hour_choices or self.get_hour_choices(empty_hour_label)
         minute_choices = minute_choices or self.get_minute_choices(empty_minute_label)
         _widgets = [
@@ -175,8 +190,19 @@ class DateSplitTimePickerWidget(widgets.MultiWidget):
     A Widget using :class:`.DatePickerWidget`
     for selecting a date and :class:`.SplitTimePickerWidget`
     for selecting time.
+
+    By default, the widget is max 270px wide, but you can make it 100% of
+    its container via the ``extra_css_class`` parameter documented below.
+
+    If you need to customize the date or time widget,
+    override :obj:`~.DateSplitTimePickerWidget.date_widget_class`
+    or :obj:`~.DateSplitTimePickerWidget.time_widget_class`.
     """
+
+    #: The widget class to use for the date picker.
     date_widget_class = DatePickerWidget
+
+    #: The widget class to use for the time picker.
     time_widget_class = SplitTimePickerWidget
 
     def __init__(self, attrs=None,
@@ -184,6 +210,15 @@ class DateSplitTimePickerWidget(widgets.MultiWidget):
                  empty_hour_label=None,
                  empty_minute_label=None,
                  extra_css_class=None):
+        """
+        Parameters:
+            datewidget_placeholder: The placeholder for the datewidget.
+            empty_hour_label: See :class:`.SplitTimePickerWidget`.
+            empty_minute_label: See :class:`.SplitTimePickerWidget`.
+            extra_css_class: Add extra css class for the widget.
+                Set this to ``"django-cradmin-datetimepicker-split-time-fluid"``
+                if you want the widget to use 100% width of its container.
+        """
         self.extra_css_class = extra_css_class
         _widgets = [
             self.date_widget_class(attrs=attrs, placeholder=datewidget_placeholder),
