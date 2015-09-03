@@ -27,7 +27,7 @@ describe 'djangoCradminImagePreviewImg', ->
     scope = {}
     html = """
     <div django-cradmin-image-preview>
-      <img django-cradmin-image-preview-img src="hello.png">
+      <img django-cradmin-image-preview-img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Crystal_Clear_app_tux.png?download">
       <input type="file" name="myfile" django-cradmin-image-preview-filefield>
     </div>
     """
