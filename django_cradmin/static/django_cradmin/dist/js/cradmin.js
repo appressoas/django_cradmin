@@ -1485,7 +1485,7 @@
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
-          $scope.isVisible = true;
+          $scope.isVisible = false;
           $scope.onSelectDayNumber = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange();
           };
