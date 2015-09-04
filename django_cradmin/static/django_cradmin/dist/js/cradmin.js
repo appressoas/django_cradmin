@@ -906,36 +906,29 @@
     })();
     MonthlyCalendarCoordinator = (function() {
       function MonthlyCalendarCoordinator(selectedDateMomentObject) {
-        var monthToLoadMomentObject;
         this.selectedDateMomentObject = selectedDateMomentObject;
-        this.daynumbers = null;
+        this.dayobjects = null;
         this.__initWeekdays();
-        this.__initMonths();
-        this.__initYears();
-        if (this.selectedDateMomentObject != null) {
-          monthToLoadMomentObject = this.selectedDateMomentObject;
-          this.selectedCalendarDay = new CalendarDay(this.selectedDateMomentObject);
-          this.selectedDayNumber = null;
-        } else {
-          monthToLoadMomentObject = moment();
-          this.selectedCalendarDay = null;
-          this.selectedDayNumber = null;
+        this.__initMonthObjects();
+        this.__initYearObject();
+        if (this.selectedDateMomentObject == null) {
+          this.selectedDateMomentObject = moment();
         }
-        this.setDate(monthToLoadMomentObject);
+        this.__changeSelectedDate();
       }
 
       MonthlyCalendarCoordinator.prototype.__initWeekdays = function() {
         return this.shortWeekdays = getWeekdaysShortForCurrentLocale();
       };
 
-      MonthlyCalendarCoordinator.prototype.__initYears = function() {
+      MonthlyCalendarCoordinator.prototype.__initYearObject = function() {
         var year, yearObject, yearsList, _i, _j, _len, _results, _results1;
         yearsList = (function() {
           _results = [];
           for (_i = 1990; _i <= 2030; _i++){ _results.push(_i); }
           return _results;
         }).apply(this);
-        this.years = [];
+        this.yearobjects = [];
         this.__yearsMap = {};
         _results1 = [];
         for (_j = 0, _len = yearsList.length; _j < _len; _j++) {
@@ -944,15 +937,15 @@
             value: year,
             label: year
           };
-          this.years.push(yearObject);
+          this.yearobjects.push(yearObject);
           _results1.push(this.__yearsMap[year] = yearObject);
         }
         return _results1;
       };
 
-      MonthlyCalendarCoordinator.prototype.__initMonths = function() {
+      MonthlyCalendarCoordinator.prototype.__initMonthObjects = function() {
         var monthObject, monthname, monthnumber, _i, _len, _ref, _results;
-        this.months = [];
+        this.monthobjects = [];
         this.__monthsMap = {};
         monthnumber = 0;
         _ref = moment.months();
@@ -963,7 +956,7 @@
             value: monthnumber,
             label: monthname
           };
-          this.months.push(monthObject);
+          this.monthobjects.push(monthObject);
           this.__monthsMap[monthnumber] = monthObject;
           _results.push(monthnumber += 1);
         }
@@ -973,8 +966,8 @@
       MonthlyCalendarCoordinator.prototype.__setCurrentYear = function() {
         var currentYearNumber;
         currentYearNumber = this.calendarMonth.month.firstDayOfMonth.year();
-        this.currentYear = this.__yearsMap[currentYearNumber];
-        if (this.currentYear == null) {
+        this.currentYearObject = this.__yearsMap[currentYearNumber];
+        if (this.currentYearObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given year, " + currentYearNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
@@ -982,70 +975,71 @@
       MonthlyCalendarCoordinator.prototype.__setCurrentMonth = function() {
         var currentMonthNumber;
         currentMonthNumber = this.calendarMonth.month.firstDayOfMonth.month();
-        this.currentMonth = this.__monthsMap[currentMonthNumber];
-        if (this.currentMonth == null) {
+        this.currentMonthObject = this.__monthsMap[currentMonthNumber];
+        if (this.currentMonthObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given month number, " + currentMonthNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
 
-      MonthlyCalendarCoordinator.prototype.__updateDaynumbers = function() {
+      MonthlyCalendarCoordinator.prototype.__updateDayObjects = function() {
         var dayNumberObject, daynumber, _i, _ref, _results;
-        this.daynumbers = [];
+        this.dayobjects = [];
         _results = [];
         for (daynumber = _i = 1, _ref = this.calendarMonth.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; daynumber = 1 <= _ref ? ++_i : --_i) {
           dayNumberObject = {
             value: daynumber,
             label: daynumber
           };
-          _results.push(this.daynumbers.push(dayNumberObject));
+          _results.push(this.dayobjects.push(dayNumberObject));
         }
         return _results;
       };
 
-      MonthlyCalendarCoordinator.prototype.setDate = function(momentObject) {
-        this.calendarMonth = new CalendarMonth(momentObject);
+      /*
+      Change month to the month containing the given momentObject,
+      and select the date.
+      */
+
+
+      MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function() {
+        console.log('__changeSelectedDate', this.selectedDateMomentObject);
+        this.calendarMonth = new CalendarMonth(this.selectedDateMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
-        return this.__updateDaynumbers();
+        this.__updateDayObjects();
+        return this.currentDayObject = this.dayobjects[this.selectedDateMomentObject.date() - 1];
       };
 
-      MonthlyCalendarCoordinator.prototype.onChangeMonth = function() {
-        var newFirstDayOfMonth;
-        newFirstDayOfMonth = this.calendarMonth.month.firstDayOfMonth.clone().set({
-          month: this.currentMonth.value
+      MonthlyCalendarCoordinator.prototype.handleCurrentDayObjectChange = function() {
+        this.selectedDateMomentObject = moment({
+          year: this.currentYearObject.value,
+          month: this.currentMonthObject.value,
+          day: this.currentDayObject.value
         });
-        return this.calendarMonth = new CalendarMonth(newFirstDayOfMonth);
+        return this.__changeSelectedDate();
       };
 
-      MonthlyCalendarCoordinator.prototype.onChangeYear = function() {
-        var newFirstDayOfMonth;
-        newFirstDayOfMonth = this.calendarMonth.month.firstDayOfMonth.clone().set({
-          year: this.currentYear.value
+      MonthlyCalendarCoordinator.prototype.handleCurrentMonthChange = function() {
+        this.selectedDateMomentObject.set({
+          month: this.currentMonthObject.value
         });
-        return this.calendarMonth = new CalendarMonth(newFirstDayOfMonth);
+        return this.__changeSelectedDate();
       };
 
-      MonthlyCalendarCoordinator.prototype.__setSelectedCalendarDay = function(calendarDay) {
-        this.selectedCalendarDay = calendarDay;
-        return this.selectedDayNumber = this.daynumbers[calendarDay.momentObject.date() - 1];
-      };
-
-      MonthlyCalendarCoordinator.prototype.onSelectDayNumber = function(daynumber) {
-        var momentObject;
-        momentObject = moment({
-          year: this.currentYear.value,
-          month: this.currentMonth.value,
-          day: daynumber
+      MonthlyCalendarCoordinator.prototype.handleCurrentYearChange = function() {
+        this.selectedDateMomentObject.set({
+          year: this.currentYearObject.value
         });
-        return this.__setSelectedCalendarDay(new CalendarDay(momentObject));
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.onSelectCalendarDay = function(calendarDay) {
-        return this.__setSelectedCalendarDay(calendarDay);
+        this.selectedDateMomentObject = calendarDay.momentObject;
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.getDestinationFieldValue = function() {
-        return this.selectedCalendarDay.momentObject.format('YYYY-MM-DD');
+        return this.selectedDateMomentObject.format('YYYY-MM-DD');
       };
 
       return MonthlyCalendarCoordinator;
@@ -1491,18 +1485,18 @@
         controller: function($scope, $element) {
           $scope.isVisible = false;
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator();
-          $scope.onChangeMonth = function() {
-            $scope.monthlyCaledarCoordinator.onChangeMonth();
+          $scope.onSelectDayNumber = function() {
+            $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange();
+            $scope.applySelectedValue();
           };
-          $scope.onChangeYear = function() {
-            $scope.monthlyCaledarCoordinator.onChangeYear();
+          $scope.onSelectMonth = function() {
+            $scope.monthlyCaledarCoordinator.handleCurrentMonthChange();
+          };
+          $scope.onSelectYear = function() {
+            $scope.monthlyCaledarCoordinator.handleCurrentYearChange();
           };
           $scope.onSelectCalendarDay = function(calendarDay) {
             $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay);
-            $scope.applySelectedValue();
-          };
-          $scope.onSelectDayNumber = function(dayNumber) {
-            $scope.monthlyCaledarCoordinator.onSelectDayNumber(dayNumber);
             $scope.applySelectedValue();
           };
           $scope.applySelectedValue = function() {
@@ -2989,27 +2983,27 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        }\">\n" +
     "    <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
     "        <select class=\"django-cradmin-date-selector-dayselect\"\n" +
-    "                ng-model=\"monthlyCaledarCoordinator.selectedDayNumber\"\n" +
-    "                ng-options=\"dayselect.label for dayselect in monthlyCaledarCoordinator.daynumbers track by dayselect.value\"\n" +
+    "                ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
+    "                ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
     "                ng-change=\"onSelectDayNumber()\">\n" +
     "        </select>\n" +
     "        <select class=\"django-cradmin-date-selector-monthselect\"\n" +
-    "                ng-model=\"monthlyCaledarCoordinator.currentMonth\"\n" +
-    "                ng-options=\"month.label for month in monthlyCaledarCoordinator.months track by month.value\"\n" +
-    "                ng-change=\"onChangeMonth()\">\n" +
+    "                ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
+    "                ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
+    "                ng-change=\"onSelectMonth()\">\n" +
     "        </select>\n" +
     "        <select class=\"django-cradmin-date-selector-yearselect\"\n" +
-    "                ng-model=\"monthlyCaledarCoordinator.currentYear\"\n" +
-    "                ng-options=\"year.label for year in monthlyCaledarCoordinator.years track by year.value\"\n" +
-    "                ng-change=\"onChangeYear()\">\n" +
+    "                ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
+    "                ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
+    "                ng-change=\"onSelectYear()\">\n" +
     "        </select>\n" +
     "    </div>\n" +
     "\n" +
-    "    {{ monthlyCaledarCoordinator.currentMonth.value }}\n" +
+    "    {{ monthlyCaledarCoordinator.currentMonthObject.value }}\n" +
     "    |\n" +
-    "    {{ monthlyCaledarCoordinator.currentYear.value }}\n" +
+    "    {{ monthlyCaledarCoordinator.currentYearObject.value }}\n" +
     "    |\n" +
-    "    {{ monthlyCaledarCoordinator.selectedCalendarDay.momentObject.format('ll') }}\n" +
+    "    {{ monthlyCaledarCoordinator.selectedDateMomentObject.format('ll') }}\n" +
     "\n" +
     "    <table class=\"table\">\n" +
     "        <thead>\n" +

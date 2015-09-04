@@ -4,27 +4,27 @@
         }">
     <div class="django-cradmin-date-selector-viewswitchers">
         <select class="django-cradmin-date-selector-dayselect"
-                ng-model="monthlyCaledarCoordinator.selectedDayNumber"
-                ng-options="dayselect.label for dayselect in monthlyCaledarCoordinator.daynumbers track by dayselect.value"
+                ng-model="monthlyCaledarCoordinator.currentDayObject"
+                ng-options="dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value"
                 ng-change="onSelectDayNumber()">
         </select>
         <select class="django-cradmin-date-selector-monthselect"
-                ng-model="monthlyCaledarCoordinator.currentMonth"
-                ng-options="month.label for month in monthlyCaledarCoordinator.months track by month.value"
-                ng-change="onChangeMonth()">
+                ng-model="monthlyCaledarCoordinator.currentMonthObject"
+                ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value"
+                ng-change="onSelectMonth()">
         </select>
         <select class="django-cradmin-date-selector-yearselect"
-                ng-model="monthlyCaledarCoordinator.currentYear"
-                ng-options="year.label for year in monthlyCaledarCoordinator.years track by year.value"
-                ng-change="onChangeYear()">
+                ng-model="monthlyCaledarCoordinator.currentYearObject"
+                ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
+                ng-change="onSelectYear()">
         </select>
     </div>
 
-    {{ monthlyCaledarCoordinator.currentMonth.value }}
+    {{ monthlyCaledarCoordinator.currentMonthObject.value }}
     |
-    {{ monthlyCaledarCoordinator.currentYear.value }}
+    {{ monthlyCaledarCoordinator.currentYearObject.value }}
     |
-    {{ monthlyCaledarCoordinator.selectedCalendarDay.momentObject.format('ll') }}
+    {{ monthlyCaledarCoordinator.selectedDateMomentObject.format('ll') }}
 
     <table class="table">
         <thead>

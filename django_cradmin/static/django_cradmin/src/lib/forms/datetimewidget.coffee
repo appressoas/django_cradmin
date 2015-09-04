@@ -16,12 +16,17 @@ app.directive 'djangoCradminDateSelector', [
         $scope.isVisible = false
         $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator()
 
-        $scope.onChangeMonth = ->
-          $scope.monthlyCaledarCoordinator.onChangeMonth()
+        $scope.onSelectDayNumber = ->
+          $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange()
+          $scope.applySelectedValue()
           return
 
-        $scope.onChangeYear = ->
-          $scope.monthlyCaledarCoordinator.onChangeYear()
+        $scope.onSelectMonth = ->
+          $scope.monthlyCaledarCoordinator.handleCurrentMonthChange()
+          return
+
+        $scope.onSelectYear = ->
+          $scope.monthlyCaledarCoordinator.handleCurrentYearChange()
           return
 
         $scope.onSelectCalendarDay = (calendarDay) ->
@@ -29,10 +34,6 @@ app.directive 'djangoCradminDateSelector', [
           $scope.applySelectedValue()
           return
 
-        $scope.onSelectDayNumber = (dayNumber) ->
-          $scope.monthlyCaledarCoordinator.onSelectDayNumber(dayNumber)
-          $scope.applySelectedValue()
-          return
 
         $scope.applySelectedValue = ->
           $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue())

@@ -122,38 +122,32 @@ app.provider 'djangoCradminCalendarApi', ->
 
   class MonthlyCalendarCoordinator
     constructor: (@selectedDateMomentObject) ->
-      @daynumbers = null  # Updated in @setDate()
+      @dayobjects = null  # Updated in @__changeSelectedDate()
       @__initWeekdays()
-      @__initMonths()
-      @__initYears()
+      @__initMonthObjects()
+      @__initYearObject()
 
-      if @selectedDateMomentObject?
-        monthToLoadMomentObject = @selectedDateMomentObject
-        @selectedCalendarDay = new CalendarDay(@selectedDateMomentObject)
-        @selectedDayNumber = null
-      else
-        monthToLoadMomentObject = moment()
-        @selectedCalendarDay = null
-        @selectedDayNumber = null
-      @setDate(monthToLoadMomentObject)
+      if not @selectedDateMomentObject?
+        @selectedDateMomentObject = moment()
+      @__changeSelectedDate()
 
     __initWeekdays: ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
 
-    __initYears: ->
+    __initYearObject: ->
       yearsList = [1990..2030]
-      @years = []
+      @yearobjects = []
       @__yearsMap = {}
       for year in yearsList
         yearObject = {
           value: year
           label: year
         }
-        @years.push(yearObject)
+        @yearobjects.push(yearObject)
         @__yearsMap[year] = yearObject
 
-    __initMonths: ->
-      @months = []
+    __initMonthObjects: ->
+      @monthobjects = []
       @__monthsMap = {}
       monthnumber = 0
       for monthname in moment.months()
@@ -161,66 +155,71 @@ app.provider 'djangoCradminCalendarApi', ->
           value: monthnumber
           label: monthname
         }
-        @months.push(monthObject)
+        @monthobjects.push(monthObject)
         @__monthsMap[monthnumber] = monthObject
         monthnumber += 1
 
     __setCurrentYear: ->
       currentYearNumber = @calendarMonth.month.firstDayOfMonth.year()
-      @currentYear = @__yearsMap[currentYearNumber]
-      if not @currentYear?
+      @currentYearObject = @__yearsMap[currentYearNumber]
+      if not @currentYearObject?
         console?.error? "The given year, #{currentYearNumber} is not one of the available choices"
 
     __setCurrentMonth: ->
       currentMonthNumber = @calendarMonth.month.firstDayOfMonth.month()
-      @currentMonth = @__monthsMap[currentMonthNumber]
-      if not @currentMonth?
+      @currentMonthObject = @__monthsMap[currentMonthNumber]
+      if not @currentMonthObject?
         console?.error? "The given month number, #{currentMonthNumber} is not one of the available choices"
 
-    __updateDaynumbers: ->
-      @daynumbers = []
+    __updateDayObjects: ->
+      @dayobjects = []
       for daynumber in [1..@calendarMonth.month.getDaysInMonth()]
         dayNumberObject = {
           value: daynumber
           label: daynumber
         }
-        @daynumbers.push(dayNumberObject)
+        @dayobjects.push(dayNumberObject)
 
-    setDate: (momentObject) ->
-      @calendarMonth = new CalendarMonth(momentObject)
+    ###
+    Change month to the month containing the given momentObject,
+    and select the date.
+    ###
+    __changeSelectedDate: ->
+      console.log '__changeSelectedDate', @selectedDateMomentObject
+      @calendarMonth = new CalendarMonth(@selectedDateMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()
-      @__updateDaynumbers()
+      @__updateDayObjects()
+      @currentDayObject = @dayobjects[@selectedDateMomentObject.date()-1]
 
-    onChangeMonth: ->
-      newFirstDayOfMonth = @calendarMonth.month.firstDayOfMonth.clone().set({
-        month: @currentMonth.value
+    handleCurrentDayObjectChange: ->
+      @selectedDateMomentObject = moment({
+        year: @currentYearObject.value
+        month: @currentMonthObject.value
+        day: @currentDayObject.value
       })
-      @calendarMonth = new CalendarMonth(newFirstDayOfMonth)
+      @__changeSelectedDate()
 
-    onChangeYear: ->
-      newFirstDayOfMonth = @calendarMonth.month.firstDayOfMonth.clone().set({
-        year: @currentYear.value
+    handleCurrentMonthChange: ->
+      # TODO: Handle day not in the new month/year
+      @selectedDateMomentObject.set({
+        month: @currentMonthObject.value
       })
-      @calendarMonth = new CalendarMonth(newFirstDayOfMonth)
+      @__changeSelectedDate()
 
-    __setSelectedCalendarDay: (calendarDay) ->
-      @selectedCalendarDay = calendarDay
-      @selectedDayNumber = @daynumbers[calendarDay.momentObject.date()-1]
-
-    onSelectDayNumber: (daynumber) ->
-      momentObject = moment({
-        year: @currentYear.value
-        month: @currentMonth.value
-        day: daynumber
+    handleCurrentYearChange: ->
+      # TODO: Handle day not in the new month/year
+      @selectedDateMomentObject.set({
+        year: @currentYearObject.value
       })
-      @__setSelectedCalendarDay(new CalendarDay(momentObject))
+      @__changeSelectedDate()
 
     onSelectCalendarDay: (calendarDay) ->
-      @__setSelectedCalendarDay(calendarDay)
+      @selectedDateMomentObject = calendarDay.momentObject
+      @__changeSelectedDate()
 
     getDestinationFieldValue: ->
-      return @selectedCalendarDay.momentObject.format('YYYY-MM-DD')
+      return @selectedDateMomentObject.format('YYYY-MM-DD')
 
 
   @$get = ->
