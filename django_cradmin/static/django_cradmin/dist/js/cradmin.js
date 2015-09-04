@@ -910,7 +910,9 @@
         this.dayobjects = null;
         this.__initWeekdays();
         this.__initMonthObjects();
-        this.__initYearObject();
+        this.__initYearObjects();
+        this.__initHourObjects();
+        this.__initMinuteObjects();
         if (this.selectedDateMomentObject == null) {
           this.selectedDateMomentObject = moment();
         }
@@ -921,7 +923,7 @@
         return this.shortWeekdays = getWeekdaysShortForCurrentLocale();
       };
 
-      MonthlyCalendarCoordinator.prototype.__initYearObject = function() {
+      MonthlyCalendarCoordinator.prototype.__initYearObjects = function() {
         var year, yearObject, yearsList, _i, _j, _len, _results, _results1;
         yearsList = (function() {
           _results = [];
@@ -963,6 +965,57 @@
         return _results;
       };
 
+      MonthlyCalendarCoordinator.prototype.__initHourObjects = function() {
+        var hour, hourList, hourObject, _i, _j, _len, _results, _results1;
+        hourList = (function() {
+          _results = [];
+          for (_i = 0; _i <= 23; _i++){ _results.push(_i); }
+          return _results;
+        }).apply(this);
+        this.hourobjects = [];
+        this.__hoursMap = {};
+        _results1 = [];
+        for (_j = 0, _len = hourList.length; _j < _len; _j++) {
+          hour = hourList[_j];
+          hourObject = {
+            value: hour,
+            label: hour
+          };
+          this.hourobjects.push(hourObject);
+          _results1.push(this.__hoursMap[hour] = hourObject);
+        }
+        return _results1;
+      };
+
+      MonthlyCalendarCoordinator.prototype.__initMinuteObjects = function() {
+        var minute, minuteList, minuteObject, _i, _len, _results;
+        minuteList = (function() {
+          var _i, _results;
+          _results = [];
+          for (minute = _i = 0; _i <= 55; minute = _i += 5) {
+            _results.push(minute);
+          }
+          return _results;
+        })();
+        minuteList.push(59);
+        if (minuteList.indexOf(this.selectedDateMomentObject.minute()) === -1) {
+          minuteList.push(this.selectedDateMomentObject.minute());
+        }
+        this.minuteobjects = [];
+        this.__minutesMap = {};
+        _results = [];
+        for (_i = 0, _len = minuteList.length; _i < _len; _i++) {
+          minute = minuteList[_i];
+          minuteObject = {
+            value: minute,
+            label: minute
+          };
+          this.minuteobjects.push(minuteObject);
+          _results.push(this.__minutesMap[minute] = minuteObject);
+        }
+        return _results;
+      };
+
       MonthlyCalendarCoordinator.prototype.__setCurrentYear = function() {
         var currentYearNumber;
         currentYearNumber = this.calendarMonth.month.firstDayOfMonth.year();
@@ -978,6 +1031,24 @@
         this.currentMonthObject = this.__monthsMap[currentMonthNumber];
         if (this.currentMonthObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given month number, " + currentMonthNumber + " is not one of the available choices") : void 0 : void 0;
+        }
+      };
+
+      MonthlyCalendarCoordinator.prototype.__setCurrentHour = function() {
+        var currentHourNumber;
+        currentHourNumber = this.selectedDateMomentObject.hour();
+        this.currentHourObject = this.__hoursMap[currentHourNumber];
+        if (this.currentHourObject == null) {
+          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given hour, " + currentHourNumber + " is not one of the available choices") : void 0 : void 0;
+        }
+      };
+
+      MonthlyCalendarCoordinator.prototype.__setCurrentMinute = function() {
+        var currentMinuteNumber;
+        currentMinuteNumber = this.selectedDateMomentObject.minute();
+        this.currentMinuteObject = this.__minutesMap[currentMinuteNumber];
+        if (this.currentMinuteObject == null) {
+          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given minute, " + currentMinuteNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
 
@@ -1008,6 +1079,8 @@
         this.calendarMonth = new CalendarMonth(this.selectedDateMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
+        this.__setCurrentHour();
+        this.__setCurrentMinute();
         this.__updateDayObjects();
         return this.currentDayObject = this.dayobjects[this.selectedDateMomentObject.date() - 1];
       };
@@ -1031,6 +1104,20 @@
       MonthlyCalendarCoordinator.prototype.handleCurrentYearChange = function() {
         this.selectedDateMomentObject.set({
           year: this.currentYearObject.value
+        });
+        return this.__changeSelectedDate();
+      };
+
+      MonthlyCalendarCoordinator.prototype.handleCurrentHourChange = function() {
+        this.selectedDateMomentObject.set({
+          hour: this.currentHourObject.value
+        });
+        return this.__changeSelectedDate();
+      };
+
+      MonthlyCalendarCoordinator.prototype.handleCurrentMinuteChange = function() {
+        this.selectedDateMomentObject.set({
+          minute: this.currentMinuteObject.value
         });
         return this.__changeSelectedDate();
       };
@@ -1477,11 +1564,11 @@
 
   app = angular.module('djangoCradmin.forms.datetimewidget', []);
 
-  app.directive('djangoCradminDateSelector', [
+  app.directive('djangoCradminDatetimeSelector', [
     'djangoCradminCalendarApi', function(djangoCradminCalendarApi) {
       return {
         scope: {
-          config: "=djangoCradminDateSelector"
+          config: "=djangoCradminDatetimeSelector"
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
@@ -1497,6 +1584,22 @@
           };
           $scope.onSelectCalendarDay = function(calendarDay) {
             $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay);
+            $scope.applySelectedValue();
+          };
+          $scope.onSelectHour = function() {
+            $scope.monthlyCaledarCoordinator.handleCurrentHourChange();
+          };
+          $scope.onSelectMinute = function() {
+            $scope.monthlyCaledarCoordinator.handleCurrentMinuteChange();
+          };
+          $scope.onClickUseDate = function() {
+            if ($scope.config.include_time) {
+              console.log('Select time');
+            } else {
+              $scope.applySelectedValue();
+            }
+          };
+          $scope.onClickUseTime = function() {
             $scope.applySelectedValue();
           };
           $scope.applySelectedValue = function() {
@@ -3012,38 +3115,38 @@ angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache
 
 angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("forms/dateselector.tpl.html",
-    "<div class=\"django-cradmin-date-selector\"\n" +
+    "<div class=\"django-cradmin-datetime-selector\"\n" +
     "        ng-class=\"{\n" +
-    "            'django-cradmin-date-selector-show': isVisible\n" +
+    "            'django-cradmin-datetime-selector-show': isVisible\n" +
     "        }\">\n" +
     "\n" +
-    "    <div class=\"django-cradmin-date-selector-backdrop\" ng-click=\"hide()\"></div>\n" +
+    "    <div class=\"django-cradmin-datetime-selector-backdrop\" ng-click=\"hide()\"></div>\n" +
     "\n" +
-    "    <div class=\"django-cradmin-date-selector-content\">\n" +
-    "        <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
-    "            <select class=\"form-control django-cradmin-date-selector-dayselect\"\n" +
+    "    <div class=\"django-cradmin-datetime-selector-dateview\">\n" +
+    "        <div class=\"django-cradmin-datetime-selector-dateselectors\">\n" +
+    "            <select class=\"form-control django-cradmin-datetime-selector-dayselect\"\n" +
     "                    ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
     "                    ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
     "                    ng-change=\"onSelectDayNumber()\">\n" +
     "            </select>\n" +
-    "            <select class=\"form-control django-cradmin-date-selector-monthselect\"\n" +
+    "            <select class=\"form-control django-cradmin-datetime-selector-monthselect\"\n" +
     "                    ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
     "                    ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
     "                    ng-change=\"onSelectMonth()\">\n" +
     "            </select>\n" +
-    "            <select class=\"form-control django-cradmin-date-selector-yearselect\"\n" +
+    "            <select class=\"form-control django-cradmin-datetime-selector-yearselect\"\n" +
     "                    ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
     "                    ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
     "                    ng-change=\"onSelectYear()\">\n" +
     "            </select>\n" +
     "            <button type=\"button\"\n" +
-    "                    class=\"btn btn-primary django-cradmin-date-selector-use-button\"\n" +
-    "                    ng-click=\"applySelectedValue()\">\n" +
+    "                    class=\"btn btn-primary django-cradmin-datetime-selector-use-date-button\"\n" +
+    "                    ng-click=\"onClickUseDate()\">\n" +
     "                Use\n" +
     "            </button>\n" +
     "        </div>\n" +
     "\n" +
-    "        <table class=\"django-cradmin-date-selector-table\">\n" +
+    "        <table class=\"django-cradmin-datetime-selector-table\">\n" +
     "            <thead>\n" +
     "                <tr>\n" +
     "                    <th ng-repeat=\"weekday in monthlyCaledarCoordinator.shortWeekdays\">\n" +
@@ -3056,11 +3159,11 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\"\n" +
     "                            tabindex=\"0\"\n" +
     "                            role=\"button\"\n" +
-    "                            class=\"django-cradmin-date-selector-daybuttoncell\"\n" +
+    "                            class=\"django-cradmin-datetime-selector-daybuttoncell\"\n" +
     "                            ng-class=\"{\n" +
-    "                                'django-cradmin-date-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
-    "                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
-    "                                'django-cradmin-date-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')\n" +
+    "                                'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
+    "                                'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
+    "                                'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')\n" +
     "                            }\"\n" +
     "                            ng-click=\"onSelectCalendarDay(calendarDay)\">\n" +
     "                        {{ calendarDay.getNumberInMonth() }}\n" +
@@ -3069,6 +3172,26 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            </tbody>\n" +
     "        </table>\n" +
     "    </div>\n" +
+    "\n" +
+    "    <div class=\"django-cradmin-datetime-selector-timeview\">\n" +
+    "        <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
+    "            <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
+    "                    ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
+    "                    ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
+    "                    ng-change=\"onSelectHour()\">\n" +
+    "            </select>\n" +
+    "            <select class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
+    "                    ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
+    "                    ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +
+    "                    ng-change=\"onSelectMinute()\">\n" +
+    "            </select>\n" +
+    "            <button type=\"button\"\n" +
+    "                    class=\"btn btn-primary django-cradmin-datetime-selector-use-time-button\"\n" +
+    "                    ng-click=\"onClickUseHour()\">\n" +
+    "                Use\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);

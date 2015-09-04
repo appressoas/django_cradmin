@@ -1,35 +1,35 @@
-<div class="django-cradmin-date-selector"
+<div class="django-cradmin-datetime-selector"
         ng-class="{
-            'django-cradmin-date-selector-show': isVisible
+            'django-cradmin-datetime-selector-show': isVisible
         }">
 
-    <div class="django-cradmin-date-selector-backdrop" ng-click="hide()"></div>
+    <div class="django-cradmin-datetime-selector-backdrop" ng-click="hide()"></div>
 
-    <div class="django-cradmin-date-selector-content">
-        <div class="django-cradmin-date-selector-viewswitchers">
-            <select class="form-control django-cradmin-date-selector-dayselect"
+    <div class="django-cradmin-datetime-selector-dateview">
+        <div class="django-cradmin-datetime-selector-dateselectors">
+            <select class="form-control django-cradmin-datetime-selector-dayselect"
                     ng-model="monthlyCaledarCoordinator.currentDayObject"
                     ng-options="dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value"
                     ng-change="onSelectDayNumber()">
             </select>
-            <select class="form-control django-cradmin-date-selector-monthselect"
+            <select class="form-control django-cradmin-datetime-selector-monthselect"
                     ng-model="monthlyCaledarCoordinator.currentMonthObject"
                     ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value"
                     ng-change="onSelectMonth()">
             </select>
-            <select class="form-control django-cradmin-date-selector-yearselect"
+            <select class="form-control django-cradmin-datetime-selector-yearselect"
                     ng-model="monthlyCaledarCoordinator.currentYearObject"
                     ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
                     ng-change="onSelectYear()">
             </select>
             <button type="button"
-                    class="btn btn-primary django-cradmin-date-selector-use-button"
-                    ng-click="applySelectedValue()">
+                    class="btn btn-primary django-cradmin-datetime-selector-use-date-button"
+                    ng-click="onClickUseDate()">
                 Use
             </button>
         </div>
 
-        <table class="django-cradmin-date-selector-table">
+        <table class="django-cradmin-datetime-selector-table">
             <thead>
                 <tr>
                     <th ng-repeat="weekday in monthlyCaledarCoordinator.shortWeekdays">
@@ -42,11 +42,11 @@
                     <td ng-repeat="calendarDay in calendarWeek.calendarDays"
                             tabindex="0"
                             role="button"
-                            class="django-cradmin-date-selector-daybuttoncell"
+                            class="django-cradmin-datetime-selector-daybuttoncell"
                             ng-class="{
-                                'django-cradmin-date-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
-                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
-                                'django-cradmin-date-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')
+                                'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
+                                'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
+                                'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')
                             }"
                             ng-click="onSelectCalendarDay(calendarDay)">
                         {{ calendarDay.getNumberInMonth() }}
@@ -55,4 +55,24 @@
             </tbody>
         </table>
     </div>
+
+    <div class="django-cradmin-datetime-selector-timeview">
+        <div class="django-cradmin-datetime-selector-timeselectors">
+            <select class="form-control django-cradmin-datetime-selector-hourselect"
+                    ng-model="monthlyCaledarCoordinator.currentHourObject"
+                    ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
+                    ng-change="onSelectHour()">
+            </select>
+            <select class="form-control django-cradmin-datetime-selector-minuteselect"
+                    ng-model="monthlyCaledarCoordinator.currentMinuteObject"
+                    ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
+                    ng-change="onSelectMinute()">
+            </select>
+            <button type="button"
+                    class="btn btn-primary django-cradmin-datetime-selector-use-time-button"
+                    ng-click="onClickUseHour()">
+                Use
+            </button>
+        </div>
+
 </div>

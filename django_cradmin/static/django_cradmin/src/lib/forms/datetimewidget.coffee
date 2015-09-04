@@ -1,13 +1,13 @@
 app = angular.module 'djangoCradmin.forms.datetimewidget', []
 
 
-app.directive 'djangoCradminDateSelector', [
+app.directive 'djangoCradminDatetimeSelector', [
   'djangoCradminCalendarApi'
   (djangoCradminCalendarApi) ->
 
     return {
       scope: {
-        config: "=djangoCradminDateSelector"
+        config: "=djangoCradminDatetimeSelector"
       }
       templateUrl: 'forms/dateselector.tpl.html'
 
@@ -31,6 +31,24 @@ app.directive 'djangoCradminDateSelector', [
           $scope.applySelectedValue()
           return
 
+        $scope.onSelectHour = ->
+          $scope.monthlyCaledarCoordinator.handleCurrentHourChange()
+          return
+
+        $scope.onSelectMinute = ->
+          $scope.monthlyCaledarCoordinator.handleCurrentMinuteChange()
+          return
+
+        $scope.onClickUseDate = ->
+          if $scope.config.include_time
+            console.log 'Select time'
+          else
+            $scope.applySelectedValue()
+          return
+
+        $scope.onClickUseTime = ->
+          $scope.applySelectedValue()
+          return
 
         $scope.applySelectedValue = ->
           $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue())

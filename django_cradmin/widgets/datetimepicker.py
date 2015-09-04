@@ -31,6 +31,7 @@ class DatePickerWidget(widgets.TextInput):
             'no_value_preview_text': str(self.no_value_preview_text),
             'buttonlabel': str(self.buttonlabel),
             'buttonlabel_novalue': str(self.buttonlabel_novalue),
+            'include_time': False
         }
 
     def render(self, name, value, attrs=None):
@@ -59,6 +60,9 @@ class BetterDateTimePickerWidget(DatePickerWidget):
 
     def get_datepicker_config(self, *args, **kwargs):
         config = super(BetterDateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)
+        config.update({
+            'include_time': True
+        })
         return config
 
 
