@@ -12,7 +12,7 @@ app.directive 'djangoCradminDateSelector', [
       templateUrl: 'forms/dateselector.tpl.html'
 
       controller: ($scope, $element) ->
-        $scope.isVisible = false
+        $scope.isVisible = true
 
         $scope.onSelectDayNumber = ->
           $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange()

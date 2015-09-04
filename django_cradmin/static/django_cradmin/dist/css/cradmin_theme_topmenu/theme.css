@@ -5997,7 +5997,8 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   outline-offset: -2px;
 }
 .django-cradmin-date-selector .django-cradmin-date-selector-content table.django-cradmin-date-selector-table tbody tr td.django-cradmin-date-selector-daybuttoncell:hover,
-.django-cradmin-date-selector .django-cradmin-date-selector-content table.django-cradmin-date-selector-table tbody tr td.django-cradmin-date-selector-daybuttoncell:focus {
+.django-cradmin-date-selector .django-cradmin-date-selector-content table.django-cradmin-date-selector-table tbody tr td.django-cradmin-date-selector-daybuttoncell:focus,
+.django-cradmin-date-selector .django-cradmin-date-selector-content table.django-cradmin-date-selector-table tbody tr td.django-cradmin-date-selector-daybuttoncell.django-cradmin-date-selector-daybuttoncell-selected {
   text-decoration: none;
   background: #377ca8;
   color: #ffffff;

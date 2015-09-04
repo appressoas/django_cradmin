@@ -1485,7 +1485,7 @@
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
-          $scope.isVisible = false;
+          $scope.isVisible = true;
           $scope.onSelectDayNumber = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange();
           };
@@ -3016,7 +3016,9 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        ng-class=\"{\n" +
     "            'django-cradmin-date-selector-show': isVisible\n" +
     "        }\">\n" +
+    "\n" +
     "    <div class=\"django-cradmin-date-selector-backdrop\" ng-click=\"hide()\"></div>\n" +
+    "\n" +
     "    <div class=\"django-cradmin-date-selector-content\">\n" +
     "        <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
     "            <select class=\"form-control django-cradmin-date-selector-dayselect\"\n" +
@@ -3041,14 +3043,6 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            </button>\n" +
     "        </div>\n" +
     "\n" +
-    "        <!--\n" +
-    "        {{ monthlyCaledarCoordinator.currentMonthObject.value }}\n" +
-    "        |\n" +
-    "        {{ monthlyCaledarCoordinator.currentYearObject.value }}\n" +
-    "        |\n" +
-    "        {{ monthlyCaledarCoordinator.selectedDateMomentObject.format('ll') }}\n" +
-    "        -->\n" +
-    "\n" +
     "        <table class=\"django-cradmin-date-selector-table\">\n" +
     "            <thead>\n" +
     "                <tr>\n" +
@@ -3065,7 +3059,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                            class=\"django-cradmin-date-selector-daybuttoncell\"\n" +
     "                            ng-class=\"{\n" +
     "                                'django-cradmin-date-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
-    "                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth\n" +
+    "                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
+    "                                'django-cradmin-date-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')\n" +
     "                            }\"\n" +
     "                            ng-click=\"onSelectCalendarDay(calendarDay)\">\n" +
     "                        {{ calendarDay.getNumberInMonth() }}\n" +

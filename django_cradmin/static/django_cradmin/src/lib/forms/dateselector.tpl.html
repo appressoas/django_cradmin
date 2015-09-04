@@ -2,7 +2,9 @@
         ng-class="{
             'django-cradmin-date-selector-show': isVisible
         }">
+
     <div class="django-cradmin-date-selector-backdrop" ng-click="hide()"></div>
+
     <div class="django-cradmin-date-selector-content">
         <div class="django-cradmin-date-selector-viewswitchers">
             <select class="form-control django-cradmin-date-selector-dayselect"
@@ -27,14 +29,6 @@
             </button>
         </div>
 
-        <!--
-        {{ monthlyCaledarCoordinator.currentMonthObject.value }}
-        |
-        {{ monthlyCaledarCoordinator.currentYearObject.value }}
-        |
-        {{ monthlyCaledarCoordinator.selectedDateMomentObject.format('ll') }}
-        -->
-
         <table class="django-cradmin-date-selector-table">
             <thead>
                 <tr>
@@ -51,7 +45,8 @@
                             class="django-cradmin-date-selector-daybuttoncell"
                             ng-class="{
                                 'django-cradmin-date-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
-                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth
+                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
+                                'django-cradmin-date-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')
                             }"
                             ng-click="onSelectCalendarDay(calendarDay)">
                         {{ calendarDay.getNumberInMonth() }}
