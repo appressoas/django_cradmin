@@ -183,9 +183,11 @@ app.provider 'djangoCradminCalendarApi', ->
     ###
     Change month to the month containing the given momentObject,
     and select the date.
+
+    As long as you change ``@selectedDateMomentObject``, this
+    will update everything to mirror the change (selected day, month, year, ...).
     ###
     __changeSelectedDate: ->
-      console.log '__changeSelectedDate', @selectedDateMomentObject
       @calendarMonth = new CalendarMonth(@selectedDateMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()

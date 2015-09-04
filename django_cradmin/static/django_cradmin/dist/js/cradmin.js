@@ -998,11 +998,13 @@
       /*
       Change month to the month containing the given momentObject,
       and select the date.
+      
+      As long as you change ``@selectedDateMomentObject``, this
+      will update everything to mirror the change (selected day, month, year, ...).
       */
 
 
       MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function() {
-        console.log('__changeSelectedDate', this.selectedDateMomentObject);
         this.calendarMonth = new CalendarMonth(this.selectedDateMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
@@ -1491,9 +1493,11 @@
           };
           $scope.onSelectMonth = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentMonthChange();
+            $scope.applySelectedValue();
           };
           $scope.onSelectYear = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentYearChange();
+            $scope.applySelectedValue();
           };
           $scope.onSelectCalendarDay = function(calendarDay) {
             $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay);
