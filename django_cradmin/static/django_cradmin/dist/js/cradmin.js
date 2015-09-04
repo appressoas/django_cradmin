@@ -3000,6 +3000,11 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
     "                    ng-change=\"onSelectYear()\">\n" +
     "            </select>\n" +
+    "            <button type=\"button\"\n" +
+    "                    class=\"btn btn-primary django-cradmin-date-selector-use-button\"\n" +
+    "                    ng-click=\"applySelectedValue()\">\n" +
+    "                Use\n" +
+    "            </button>\n" +
     "        </div>\n" +
     "\n" +
     "        <!--\n" +
@@ -3023,10 +3028,10 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\"\n" +
     "                            tabindex=\"0\"\n" +
     "                            role=\"button\"\n" +
-    "                            class=\"django-cradmin-date-selector-daybutton\"\n" +
+    "                            class=\"django-cradmin-date-selector-daybuttoncell\"\n" +
     "                            ng-class=\"{\n" +
-    "                                'django-cradmin-date-selector-daybutton-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
-    "                                'django-cradmin-date-selector-daybutton-in-current-month': calendarDay.isInCurrentMonth\n" +
+    "                                'django-cradmin-date-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
+    "                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth\n" +
     "                            }\"\n" +
     "                            ng-click=\"onSelectCalendarDay(calendarDay)\">\n" +
     "                        {{ calendarDay.getNumberInMonth() }}\n" +

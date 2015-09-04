@@ -17,17 +17,14 @@ app.directive 'djangoCradminDateSelector', [
 
         $scope.onSelectDayNumber = ->
           $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange()
-#          $scope.applySelectedValue()
           return
 
         $scope.onSelectMonth = ->
           $scope.monthlyCaledarCoordinator.handleCurrentMonthChange()
-#          $scope.applySelectedValue()
           return
 
         $scope.onSelectYear = ->
           $scope.monthlyCaledarCoordinator.handleCurrentYearChange()
-#          $scope.applySelectedValue()
           return
 
         $scope.onSelectCalendarDay = (calendarDay) ->

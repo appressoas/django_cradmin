@@ -20,6 +20,11 @@
                     ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
                     ng-change="onSelectYear()">
             </select>
+            <button type="button"
+                    class="btn btn-primary django-cradmin-date-selector-use-button"
+                    ng-click="applySelectedValue()">
+                Use
+            </button>
         </div>
 
         <!--
@@ -43,10 +48,10 @@
                     <td ng-repeat="calendarDay in calendarWeek.calendarDays"
                             tabindex="0"
                             role="button"
-                            class="django-cradmin-date-selector-daybutton"
+                            class="django-cradmin-date-selector-daybuttoncell"
                             ng-class="{
-                                'django-cradmin-date-selector-daybutton-not-in-current-month': !calendarDay.isInCurrentMonth,
-                                'django-cradmin-date-selector-daybutton-in-current-month': calendarDay.isInCurrentMonth
+                                'django-cradmin-date-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
+                                'django-cradmin-date-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth
                             }"
                             ng-click="onSelectCalendarDay(calendarDay)">
                         {{ calendarDay.getNumberInMonth() }}
