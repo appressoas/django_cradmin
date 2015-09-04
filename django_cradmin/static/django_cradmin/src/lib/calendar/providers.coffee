@@ -2,6 +2,23 @@ app = angular.module 'djangoCradmin.calendar.providers', []
 
 
 app.provider 'djangoCradminCalendarApi', ->
+
+  ###*
+  Get an array of the short names for all the weekdays
+  in the current locale, in the the correct order for the
+  current locale.
+  ###
+  getWeekdaysShortForCurrentLocale = ->
+    weekdays = []
+    weekdaysWithSundayFirst = moment.weekdaysShort()
+    firstDayOfWeek = moment.localeData().firstDayOfWeek()
+    for index in [firstDayOfWeek..firstDayOfWeek+6]
+      if index > 6
+        index = Math.abs(7 - index)
+      weekday = weekdaysWithSundayFirst[index]
+      weekdays.push(weekday)
+    return weekdays
+
   class Month
     constructor: (@firstDayOfMonth) ->
       @lastDayOfMonth = @firstDayOfMonth.clone().add({
@@ -105,16 +122,23 @@ app.provider 'djangoCradminCalendarApi', ->
 
   class MonthlyCalendarCoordinator
     constructor: (@selectedDateMomentObject) ->
+      @daynumbers = null  # Updated in @setDate()
+      @__initWeekdays()
+      @__initMonths()
       @__initYears()
+
       if @selectedDateMomentObject?
         monthToLoadMomentObject = @selectedDateMomentObject
         @selectedCalendarDay = new CalendarDay(@selectedDateMomentObject)
+        @selectedDayNumber = null
       else
         monthToLoadMomentObject = moment()
         @selectedCalendarDay = null
-      @__initYears()
-      @__initMonths()
+        @selectedDayNumber = null
       @setDate(monthToLoadMomentObject)
+
+    __initWeekdays: ->
+      @shortWeekdays = getWeekdaysShortForCurrentLocale()
 
     __initYears: ->
       yearsList = [1990..2030]
@@ -153,11 +177,20 @@ app.provider 'djangoCradminCalendarApi', ->
       if not @currentMonth?
         console?.error? "The given month number, #{currentMonthNumber} is not one of the available choices"
 
+    __updateDaynumbers: ->
+      @daynumbers = []
+      for daynumber in [1..@calendarMonth.month.getDaysInMonth()]
+        dayNumberObject = {
+          value: daynumber
+          label: daynumber
+        }
+        @daynumbers.push(dayNumberObject)
+
     setDate: (momentObject) ->
       @calendarMonth = new CalendarMonth(momentObject)
-      @calendarMonth.prettyprint()
       @__setCurrentYear()
       @__setCurrentMonth()
+      @__updateDaynumbers()
 
     onChangeMonth: ->
       newFirstDayOfMonth = @calendarMonth.month.firstDayOfMonth.clone().set({
@@ -171,27 +204,27 @@ app.provider 'djangoCradminCalendarApi', ->
       })
       @calendarMonth = new CalendarMonth(newFirstDayOfMonth)
 
-    onSelectCalendarDay: (calendarDay) ->
+    __setSelectedCalendarDay: (calendarDay) ->
       @selectedCalendarDay = calendarDay
+      @selectedDayNumber = @daynumbers[calendarDay.momentObject.date()-1]
+
+    onSelectDayNumber: (daynumber) ->
+      momentObject = moment({
+        year: @currentYear.value
+        month: @currentMonth.value
+        day: daynumber
+      })
+      @__setSelectedCalendarDay(new CalendarDay(momentObject))
+
+    onSelectCalendarDay: (calendarDay) ->
+      @__setSelectedCalendarDay(calendarDay)
 
     getDestinationFieldValue: ->
       return @selectedCalendarDay.momentObject.format('YYYY-MM-DD')
 
 
-  getWeekdaysShortForCurrentLocale = ->
-    weekdays = []
-    weekdaysWithSundayFirst = moment.weekdaysShort()
-    firstDayOfWeek = moment.localeData().firstDayOfWeek()
-    for index in [firstDayOfWeek..firstDayOfWeek+6]
-      if index > 6
-        index = Math.abs(7 - index)
-      weekday = weekdaysWithSundayFirst[index]
-      weekdays.push(weekday)
-    return weekdays
-
   @$get = ->
     return {
-      getWeekdaysShortForCurrentLocale: getWeekdaysShortForCurrentLocale
       MonthlyCalendarCoordinator: MonthlyCalendarCoordinator
     }
 

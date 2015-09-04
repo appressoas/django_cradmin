@@ -3,38 +3,39 @@
             'django-cradmin-date-selector-show': isVisible
         }">
     <div class="django-cradmin-date-selector-viewswitchers">
-        <select class="django-cradmin-date-selector-month" ng-model="calendarData.currentMonth"
-                ng-options="month.label for month in calendarData.months track by month.value"
+        <select class="django-cradmin-date-selector-dayselect"
+                ng-model="monthlyCaledarCoordinator.selectedDayNumber"
+                ng-options="dayselect.label for dayselect in monthlyCaledarCoordinator.daynumbers track by dayselect.value"
+                ng-change="onSelectDayNumber()">
+        </select>
+        <select class="django-cradmin-date-selector-monthselect"
+                ng-model="monthlyCaledarCoordinator.currentMonth"
+                ng-options="month.label for month in monthlyCaledarCoordinator.months track by month.value"
                 ng-change="onChangeMonth()">
         </select>
-        <select class="django-cradmin-date-selector-year" ng-model="calendarData.currentYear"
-                ng-options="year.label for year in calendarData.years track by year.value"
+        <select class="django-cradmin-date-selector-yearselect"
+                ng-model="monthlyCaledarCoordinator.currentYear"
+                ng-options="year.label for year in monthlyCaledarCoordinator.years track by year.value"
                 ng-change="onChangeYear()">
         </select>
     </div>
 
-    {{ calendarData.currentMonth.value }}
+    {{ monthlyCaledarCoordinator.currentMonth.value }}
     |
-    {{ calendarData.currentYear.value }}
+    {{ monthlyCaledarCoordinator.currentYear.value }}
     |
-    {{ calendarData.selectedCalendarDay.momentObject.format('ll') }}
+    {{ monthlyCaledarCoordinator.selectedCalendarDay.momentObject.format('ll') }}
 
     <table class="table">
         <thead>
             <tr>
-                <td colspan="5">
-                </td>
-                <td colspan="3">
-                </td>
-            </tr>
-            <tr>
-                <th ng-repeat="weekday in weekdays">
+                <th ng-repeat="weekday in monthlyCaledarCoordinator.shortWeekdays">
                     {{ weekday }}
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="calendarWeek in calendarData.calendarMonth.calendarWeeks">
+            <tr ng-repeat="calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks">
                 <td ng-repeat="calendarDay in calendarWeek.calendarDays">
                     <div class="django-cradmin-date-selector-day"
                             ng-class="{

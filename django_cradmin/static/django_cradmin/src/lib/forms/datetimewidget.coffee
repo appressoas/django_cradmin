@@ -14,22 +14,28 @@ app.directive 'djangoCradminDateSelector', [
 
       controller: ($scope, $element) ->
         $scope.isVisible = false
+        $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator()
 
         $scope.onChangeMonth = ->
-          $scope.calendarData.onChangeMonth()
+          $scope.monthlyCaledarCoordinator.onChangeMonth()
           return
 
         $scope.onChangeYear = ->
-          $scope.calendarData.onChangeYear()
+          $scope.monthlyCaledarCoordinator.onChangeYear()
           return
 
         $scope.onSelectCalendarDay = (calendarDay) ->
-          $scope.calendarData.onSelectCalendarDay(calendarDay)
+          $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay)
+          $scope.applySelectedValue()
+          return
+
+        $scope.onSelectDayNumber = (dayNumber) ->
+          $scope.monthlyCaledarCoordinator.onSelectDayNumber(dayNumber)
           $scope.applySelectedValue()
           return
 
         $scope.applySelectedValue = ->
-          $scope.destinationField.val($scope.calendarData.getDestinationFieldValue())
+          $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue())
           $scope.hide()
 
         $scope.show = ->
@@ -39,9 +45,6 @@ app.directive 'djangoCradminDateSelector', [
           $scope.isVisible = false
 
       link: ($scope, $element) ->
-        $scope.weekdays = djangoCradminCalendarApi.getWeekdaysShortForCurrentLocale()
-        $scope.calendarData = new djangoCradminCalendarApi.MonthlyCalendarCoordinator()
-
         if $scope.config.destinationFieldId?
           $scope.destinationField = angular.element("#" + $scope.config.destinationFieldId)
           if $scope.destinationField.length > 0
@@ -53,7 +56,6 @@ app.directive 'djangoCradminDateSelector', [
             console?.error? "Could not find the destinationField element with ID: #{$scope.config.destinationFieldId}"
         else
           console?.error? "The destinationField config is required!"
-        console.log $scope.config
         return
     }
 ]

@@ -727,7 +727,27 @@
   app = angular.module('djangoCradmin.calendar.providers', []);
 
   app.provider('djangoCradminCalendarApi', function() {
+    /**
+    Get an array of the short names for all the weekdays
+    in the current locale, in the the correct order for the
+    current locale.
+    */
+
     var CalendarDay, CalendarMonth, CalendarWeek, Month, MonthlyCalendarCoordinator, getWeekdaysShortForCurrentLocale;
+    getWeekdaysShortForCurrentLocale = function() {
+      var firstDayOfWeek, index, weekday, weekdays, weekdaysWithSundayFirst, _i, _ref;
+      weekdays = [];
+      weekdaysWithSundayFirst = moment.weekdaysShort();
+      firstDayOfWeek = moment.localeData().firstDayOfWeek();
+      for (index = _i = firstDayOfWeek, _ref = firstDayOfWeek + 6; firstDayOfWeek <= _ref ? _i <= _ref : _i >= _ref; index = firstDayOfWeek <= _ref ? ++_i : --_i) {
+        if (index > 6) {
+          index = Math.abs(7 - index);
+        }
+        weekday = weekdaysWithSundayFirst[index];
+        weekdays.push(weekday);
+      }
+      return weekdays;
+    };
     Month = (function() {
       function Month(firstDayOfMonth) {
         this.firstDayOfMonth = firstDayOfMonth;
@@ -888,18 +908,25 @@
       function MonthlyCalendarCoordinator(selectedDateMomentObject) {
         var monthToLoadMomentObject;
         this.selectedDateMomentObject = selectedDateMomentObject;
+        this.daynumbers = null;
+        this.__initWeekdays();
+        this.__initMonths();
         this.__initYears();
         if (this.selectedDateMomentObject != null) {
           monthToLoadMomentObject = this.selectedDateMomentObject;
           this.selectedCalendarDay = new CalendarDay(this.selectedDateMomentObject);
+          this.selectedDayNumber = null;
         } else {
           monthToLoadMomentObject = moment();
           this.selectedCalendarDay = null;
+          this.selectedDayNumber = null;
         }
-        this.__initYears();
-        this.__initMonths();
         this.setDate(monthToLoadMomentObject);
       }
+
+      MonthlyCalendarCoordinator.prototype.__initWeekdays = function() {
+        return this.shortWeekdays = getWeekdaysShortForCurrentLocale();
+      };
 
       MonthlyCalendarCoordinator.prototype.__initYears = function() {
         var year, yearObject, yearsList, _i, _j, _len, _results, _results1;
@@ -961,11 +988,25 @@
         }
       };
 
+      MonthlyCalendarCoordinator.prototype.__updateDaynumbers = function() {
+        var dayNumberObject, daynumber, _i, _ref, _results;
+        this.daynumbers = [];
+        _results = [];
+        for (daynumber = _i = 1, _ref = this.calendarMonth.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; daynumber = 1 <= _ref ? ++_i : --_i) {
+          dayNumberObject = {
+            value: daynumber,
+            label: daynumber
+          };
+          _results.push(this.daynumbers.push(dayNumberObject));
+        }
+        return _results;
+      };
+
       MonthlyCalendarCoordinator.prototype.setDate = function(momentObject) {
         this.calendarMonth = new CalendarMonth(momentObject);
-        this.calendarMonth.prettyprint();
         this.__setCurrentYear();
-        return this.__setCurrentMonth();
+        this.__setCurrentMonth();
+        return this.__updateDaynumbers();
       };
 
       MonthlyCalendarCoordinator.prototype.onChangeMonth = function() {
@@ -984,8 +1025,23 @@
         return this.calendarMonth = new CalendarMonth(newFirstDayOfMonth);
       };
 
+      MonthlyCalendarCoordinator.prototype.__setSelectedCalendarDay = function(calendarDay) {
+        this.selectedCalendarDay = calendarDay;
+        return this.selectedDayNumber = this.daynumbers[calendarDay.momentObject.date() - 1];
+      };
+
+      MonthlyCalendarCoordinator.prototype.onSelectDayNumber = function(daynumber) {
+        var momentObject;
+        momentObject = moment({
+          year: this.currentYear.value,
+          month: this.currentMonth.value,
+          day: daynumber
+        });
+        return this.__setSelectedCalendarDay(new CalendarDay(momentObject));
+      };
+
       MonthlyCalendarCoordinator.prototype.onSelectCalendarDay = function(calendarDay) {
-        return this.selectedCalendarDay = calendarDay;
+        return this.__setSelectedCalendarDay(calendarDay);
       };
 
       MonthlyCalendarCoordinator.prototype.getDestinationFieldValue = function() {
@@ -995,23 +1051,8 @@
       return MonthlyCalendarCoordinator;
 
     })();
-    getWeekdaysShortForCurrentLocale = function() {
-      var firstDayOfWeek, index, weekday, weekdays, weekdaysWithSundayFirst, _i, _ref;
-      weekdays = [];
-      weekdaysWithSundayFirst = moment.weekdaysShort();
-      firstDayOfWeek = moment.localeData().firstDayOfWeek();
-      for (index = _i = firstDayOfWeek, _ref = firstDayOfWeek + 6; firstDayOfWeek <= _ref ? _i <= _ref : _i >= _ref; index = firstDayOfWeek <= _ref ? ++_i : --_i) {
-        if (index > 6) {
-          index = Math.abs(7 - index);
-        }
-        weekday = weekdaysWithSundayFirst[index];
-        weekdays.push(weekday);
-      }
-      return weekdays;
-    };
     this.$get = function() {
       return {
-        getWeekdaysShortForCurrentLocale: getWeekdaysShortForCurrentLocale,
         MonthlyCalendarCoordinator: MonthlyCalendarCoordinator
       };
     };
@@ -1449,18 +1490,23 @@
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
           $scope.isVisible = false;
+          $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator();
           $scope.onChangeMonth = function() {
-            $scope.calendarData.onChangeMonth();
+            $scope.monthlyCaledarCoordinator.onChangeMonth();
           };
           $scope.onChangeYear = function() {
-            $scope.calendarData.onChangeYear();
+            $scope.monthlyCaledarCoordinator.onChangeYear();
           };
           $scope.onSelectCalendarDay = function(calendarDay) {
-            $scope.calendarData.onSelectCalendarDay(calendarDay);
+            $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay);
+            $scope.applySelectedValue();
+          };
+          $scope.onSelectDayNumber = function(dayNumber) {
+            $scope.monthlyCaledarCoordinator.onSelectDayNumber(dayNumber);
             $scope.applySelectedValue();
           };
           $scope.applySelectedValue = function() {
-            $scope.destinationField.val($scope.calendarData.getDestinationFieldValue());
+            $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue());
             return $scope.hide();
           };
           $scope.show = function() {
@@ -1471,8 +1517,6 @@
           };
         },
         link: function($scope, $element) {
-          $scope.weekdays = djangoCradminCalendarApi.getWeekdaysShortForCurrentLocale();
-          $scope.calendarData = new djangoCradminCalendarApi.MonthlyCalendarCoordinator();
           if ($scope.config.destinationFieldId != null) {
             $scope.destinationField = angular.element("#" + $scope.config.destinationFieldId);
             if ($scope.destinationField.length > 0) {
@@ -1494,7 +1538,6 @@
               }
             }
           }
-          console.log($scope.config);
         }
       };
     }
@@ -2945,38 +2988,39 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            'django-cradmin-date-selector-show': isVisible\n" +
     "        }\">\n" +
     "    <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
-    "        <select class=\"django-cradmin-date-selector-month\" ng-model=\"calendarData.currentMonth\"\n" +
-    "                ng-options=\"month.label for month in calendarData.months track by month.value\"\n" +
+    "        <select class=\"django-cradmin-date-selector-dayselect\"\n" +
+    "                ng-model=\"monthlyCaledarCoordinator.selectedDayNumber\"\n" +
+    "                ng-options=\"dayselect.label for dayselect in monthlyCaledarCoordinator.daynumbers track by dayselect.value\"\n" +
+    "                ng-change=\"onSelectDayNumber()\">\n" +
+    "        </select>\n" +
+    "        <select class=\"django-cradmin-date-selector-monthselect\"\n" +
+    "                ng-model=\"monthlyCaledarCoordinator.currentMonth\"\n" +
+    "                ng-options=\"month.label for month in monthlyCaledarCoordinator.months track by month.value\"\n" +
     "                ng-change=\"onChangeMonth()\">\n" +
     "        </select>\n" +
-    "        <select class=\"django-cradmin-date-selector-year\" ng-model=\"calendarData.currentYear\"\n" +
-    "                ng-options=\"year.label for year in calendarData.years track by year.value\"\n" +
+    "        <select class=\"django-cradmin-date-selector-yearselect\"\n" +
+    "                ng-model=\"monthlyCaledarCoordinator.currentYear\"\n" +
+    "                ng-options=\"year.label for year in monthlyCaledarCoordinator.years track by year.value\"\n" +
     "                ng-change=\"onChangeYear()\">\n" +
     "        </select>\n" +
     "    </div>\n" +
     "\n" +
-    "    {{ calendarData.currentMonth.value }}\n" +
+    "    {{ monthlyCaledarCoordinator.currentMonth.value }}\n" +
     "    |\n" +
-    "    {{ calendarData.currentYear.value }}\n" +
+    "    {{ monthlyCaledarCoordinator.currentYear.value }}\n" +
     "    |\n" +
-    "    {{ calendarData.selectedCalendarDay.momentObject.format('ll') }}\n" +
+    "    {{ monthlyCaledarCoordinator.selectedCalendarDay.momentObject.format('ll') }}\n" +
     "\n" +
     "    <table class=\"table\">\n" +
     "        <thead>\n" +
     "            <tr>\n" +
-    "                <td colspan=\"5\">\n" +
-    "                </td>\n" +
-    "                <td colspan=\"3\">\n" +
-    "                </td>\n" +
-    "            </tr>\n" +
-    "            <tr>\n" +
-    "                <th ng-repeat=\"weekday in weekdays\">\n" +
+    "                <th ng-repeat=\"weekday in monthlyCaledarCoordinator.shortWeekdays\">\n" +
     "                    {{ weekday }}\n" +
     "                </th>\n" +
     "            </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
-    "            <tr ng-repeat=\"calendarWeek in calendarData.calendarMonth.calendarWeeks\">\n" +
+    "            <tr ng-repeat=\"calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks\">\n" +
     "                <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\">\n" +
     "                    <div class=\"django-cradmin-date-selector-day\"\n" +
     "                            ng-class=\"{\n" +
