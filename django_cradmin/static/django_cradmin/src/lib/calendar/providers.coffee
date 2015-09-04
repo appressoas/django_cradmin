@@ -203,14 +203,12 @@ app.provider 'djangoCradminCalendarApi', ->
       @__changeSelectedDate()
 
     handleCurrentMonthChange: ->
-      # TODO: Handle day not in the new month/year
       @selectedDateMomentObject.set({
         month: @currentMonthObject.value
       })
       @__changeSelectedDate()
 
     handleCurrentYearChange: ->
-      # TODO: Handle day not in the new month/year
       @selectedDateMomentObject.set({
         year: @currentYearObject.value
       })

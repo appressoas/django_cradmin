@@ -9,7 +9,6 @@ app.directive 'djangoCradminDateSelector', [
       scope: {
         config: "=djangoCradminDateSelector"
       }
-
       templateUrl: 'forms/dateselector.tpl.html'
 
       controller: ($scope, $element) ->
@@ -18,17 +17,17 @@ app.directive 'djangoCradminDateSelector', [
 
         $scope.onSelectDayNumber = ->
           $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange()
-          $scope.applySelectedValue()
+#          $scope.applySelectedValue()
           return
 
         $scope.onSelectMonth = ->
           $scope.monthlyCaledarCoordinator.handleCurrentMonthChange()
-          $scope.applySelectedValue()
+#          $scope.applySelectedValue()
           return
 
         $scope.onSelectYear = ->
           $scope.monthlyCaledarCoordinator.handleCurrentYearChange()
-          $scope.applySelectedValue()
+#          $scope.applySelectedValue()
           return
 
         $scope.onSelectCalendarDay = (calendarDay) ->
@@ -55,6 +54,13 @@ app.directive 'djangoCradminDateSelector', [
               $scope.show()
               $scope.$apply()
               return
+
+#            $scope.destinationField.on 'keypress', (e) ->
+#              # 9: tab key
+#              # 13: ENTER key
+#              if e.which != 9 and e.which != 13
+#                $scope.applyDestinationFieldValue()
+#              return
           else
             console?.error? "Could not find the destinationField element with ID: #{$scope.config.destinationFieldId}"
         else

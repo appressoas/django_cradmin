@@ -1489,15 +1489,12 @@
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator();
           $scope.onSelectDayNumber = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange();
-            $scope.applySelectedValue();
           };
           $scope.onSelectMonth = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentMonthChange();
-            $scope.applySelectedValue();
           };
           $scope.onSelectYear = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentYearChange();
-            $scope.applySelectedValue();
           };
           $scope.onSelectCalendarDay = function(calendarDay) {
             $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay);
@@ -2985,53 +2982,59 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        ng-class=\"{\n" +
     "            'django-cradmin-date-selector-show': isVisible\n" +
     "        }\">\n" +
-    "    <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
-    "        <select class=\"django-cradmin-date-selector-dayselect\"\n" +
-    "                ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
-    "                ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
-    "                ng-change=\"onSelectDayNumber()\">\n" +
-    "        </select>\n" +
-    "        <select class=\"django-cradmin-date-selector-monthselect\"\n" +
-    "                ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
-    "                ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
-    "                ng-change=\"onSelectMonth()\">\n" +
-    "        </select>\n" +
-    "        <select class=\"django-cradmin-date-selector-yearselect\"\n" +
-    "                ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
-    "                ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
-    "                ng-change=\"onSelectYear()\">\n" +
-    "        </select>\n" +
-    "    </div>\n" +
+    "    <div class=\"django-cradmin-date-selector-backdrop\" ng-click=\"hide()\"></div>\n" +
+    "    <div class=\"django-cradmin-date-selector-content\">\n" +
+    "        <div class=\"django-cradmin-date-selector-viewswitchers\">\n" +
+    "            <select class=\"form-control django-cradmin-date-selector-dayselect\"\n" +
+    "                    ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
+    "                    ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
+    "                    ng-change=\"onSelectDayNumber()\">\n" +
+    "            </select>\n" +
+    "            <select class=\"form-control django-cradmin-date-selector-monthselect\"\n" +
+    "                    ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
+    "                    ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
+    "                    ng-change=\"onSelectMonth()\">\n" +
+    "            </select>\n" +
+    "            <select class=\"form-control django-cradmin-date-selector-yearselect\"\n" +
+    "                    ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
+    "                    ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
+    "                    ng-change=\"onSelectYear()\">\n" +
+    "            </select>\n" +
+    "        </div>\n" +
     "\n" +
-    "    {{ monthlyCaledarCoordinator.currentMonthObject.value }}\n" +
-    "    |\n" +
-    "    {{ monthlyCaledarCoordinator.currentYearObject.value }}\n" +
-    "    |\n" +
-    "    {{ monthlyCaledarCoordinator.selectedDateMomentObject.format('ll') }}\n" +
+    "        <!--\n" +
+    "        {{ monthlyCaledarCoordinator.currentMonthObject.value }}\n" +
+    "        |\n" +
+    "        {{ monthlyCaledarCoordinator.currentYearObject.value }}\n" +
+    "        |\n" +
+    "        {{ monthlyCaledarCoordinator.selectedDateMomentObject.format('ll') }}\n" +
+    "        -->\n" +
     "\n" +
-    "    <table class=\"table\">\n" +
-    "        <thead>\n" +
-    "            <tr>\n" +
-    "                <th ng-repeat=\"weekday in monthlyCaledarCoordinator.shortWeekdays\">\n" +
-    "                    {{ weekday }}\n" +
-    "                </th>\n" +
-    "            </tr>\n" +
-    "        </thead>\n" +
-    "        <tbody>\n" +
-    "            <tr ng-repeat=\"calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks\">\n" +
-    "                <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\">\n" +
-    "                    <div class=\"django-cradmin-date-selector-day\"\n" +
+    "        <table class=\"django-cradmin-date-selector-table\">\n" +
+    "            <thead>\n" +
+    "                <tr>\n" +
+    "                    <th ng-repeat=\"weekday in monthlyCaledarCoordinator.shortWeekdays\">\n" +
+    "                        {{ weekday }}\n" +
+    "                    </th>\n" +
+    "                </tr>\n" +
+    "            </thead>\n" +
+    "            <tbody>\n" +
+    "                <tr ng-repeat=\"calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks\">\n" +
+    "                    <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\"\n" +
+    "                            tabindex=\"0\"\n" +
+    "                            role=\"button\"\n" +
+    "                            class=\"django-cradmin-date-selector-daybutton\"\n" +
     "                            ng-class=\"{\n" +
-    "                                'django-cradmin-date-selector-day-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
-    "                                'django-cradmin-date-selector-day-in-current-month': calendarDay.isInCurrentMonth\n" +
+    "                                'django-cradmin-date-selector-daybutton-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
+    "                                'django-cradmin-date-selector-daybutton-in-current-month': calendarDay.isInCurrentMonth\n" +
     "                            }\"\n" +
     "                            ng-click=\"onSelectCalendarDay(calendarDay)\">\n" +
     "                        {{ calendarDay.getNumberInMonth() }}\n" +
-    "                    </div>\n" +
-    "                </td>\n" +
-    "            </tr>\n" +
-    "        </tbody>\n" +
-    "    </table>\n" +
+    "                    </td>\n" +
+    "                </tr>\n" +
+    "            </tbody>\n" +
+    "        </table>\n" +
+    "    </div>\n" +
     "</div>\n" +
     "");
 }]);
