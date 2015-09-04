@@ -1486,7 +1486,6 @@
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
           $scope.isVisible = false;
-          $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator();
           $scope.onSelectDayNumber = function() {
             $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange();
           };
@@ -1502,27 +1501,35 @@
           };
           $scope.applySelectedValue = function() {
             $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue());
+            $scope.previewElement.html($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format('llll'));
             return $scope.hide();
           };
           $scope.show = function() {
             return $scope.isVisible = true;
           };
-          return $scope.hide = function() {
+          $scope.hide = function() {
             return $scope.isVisible = false;
+          };
+          return $scope.initialize = function() {
+            var currentDateIsoString, currentDateMomentObject;
+            currentDateIsoString = $scope.destinationField.val();
+            if ((currentDateIsoString != null) && currentDateIsoString !== '') {
+              currentDateMomentObject = moment(currentDateIsoString);
+              $scope.triggerButton.html($scope.config.buttonlabel);
+            } else {
+              currentDateMomentObject = moment();
+              $scope.triggerButton.html($scope.config.buttonlabel_novalue);
+            }
+            return $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(currentDateMomentObject);
           };
         },
         link: function($scope, $element) {
-          if ($scope.config.destinationFieldId != null) {
-            $scope.destinationField = angular.element("#" + $scope.config.destinationFieldId);
-            if ($scope.destinationField.length > 0) {
-              $scope.destinationField.on('focus', function() {
-                $scope.show();
-                $scope.$apply();
-              });
-            } else {
+          if ($scope.config.destinationfieldid != null) {
+            $scope.destinationField = angular.element("#" + $scope.config.destinationfieldid);
+            if ($scope.destinationField.length === 0) {
               if (typeof console !== "undefined" && console !== null) {
                 if (typeof console.error === "function") {
-                  console.error("Could not find the destinationField element with ID: " + $scope.config.destinationFieldId);
+                  console.error("Could not find the destinationField element with ID: " + $scope.config.destinationfieldid);
                 }
               }
             }
@@ -1532,7 +1539,34 @@
                 console.error("The destinationField config is required!");
               }
             }
+            return;
           }
+          if ($scope.config.triggerbuttonid != null) {
+            $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid);
+            if ($scope.triggerButton.length > 0) {
+              $scope.triggerButton.on('click', function() {
+                $scope.show();
+                $scope.$apply();
+              });
+            } else {
+              if (typeof console !== "undefined" && console !== null) {
+                if (typeof console.warn === "function") {
+                  console.warn("Could not find the triggerButton element with ID: " + $scope.config.triggerbuttonid);
+                }
+              }
+            }
+          }
+          if ($scope.config.previewid != null) {
+            $scope.previewElement = angular.element("#" + $scope.config.previewid);
+            if ($scope.previewElement.length === 0) {
+              if (typeof console !== "undefined" && console !== null) {
+                if (typeof console.warn === "function") {
+                  console.warn("Could not find the previewElement element with ID: " + $scope.config.previewid);
+                }
+              }
+            }
+          }
+          $scope.initialize();
         }
       };
     }

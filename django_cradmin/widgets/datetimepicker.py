@@ -1,37 +1,65 @@
+from __future__ import unicode_literals
 import datetime
 from django.forms import widgets
-from django.forms.utils import flatatt
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
+import json
+from builtins import str
 
 from django_cradmin.widgets.selectwidgets import WrappedSelect
 
 
-class DatePickerWidget(widgets.DateInput):
+class DatePickerWidget(widgets.TextInput):
     """
-    A Widget using AngularJS ui-bootstrap's `ui.bootstrap.datepicker` for selecting a date
+    A Widget for selecting a date.
     """
     template_name = 'django_cradmin/widgets/datepicker.django.html'
+    default_buttonlabel = _('Change date')
+    default_buttonlabel_novalue = _('Select a date')
 
-    def __init__(self, attrs=None, format=None, placeholder=_('yyyy-mm-dd')):
-        if attrs is None:
-            attrs = {}
-        if placeholder:
-            attrs['placeholder'] = placeholder
-        super(DatePickerWidget, self).__init__(attrs=attrs, format=format)
+    def __init__(self, *args, **kwargs):
+        self.no_value_preview_text = kwargs.pop('no_value_preview_text', '')
+        self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
+        self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
+        super(DatePickerWidget, self).__init__(*args, **kwargs)
+
+    def get_datepicker_config(self, fieldid, triggerbuttonid, previewid):
+        return {
+            'destinationfieldid': fieldid,
+            'previewid': previewid,
+            'triggerbuttonid': triggerbuttonid,
+            'no_value_preview_text': str(self.no_value_preview_text),
+            'buttonlabel': str(self.buttonlabel),
+            'buttonlabel_novalue': str(self.buttonlabel_novalue),
+        }
 
     def render(self, name, value, attrs=None):
-        if value is None:
-            value = ''
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
+        fieldid = attrs.get('id', 'id_{}'.format(name))
+        triggerbuttonid = '{}_triggerbutton'.format(fieldid)
+        previewid = '{}_preview'.format(fieldid)
+
         return loader.render_to_string(self.template_name, {
-            'dateformat': 'yyyy-MM-dd',
-            'datevalue': value,
-            'fieldid': attrs.get('id', 'id_{}'.format(name)),
-            'fieldname': name,
-            'show_date': True,
-            'attrs': flatatt(final_attrs)
+            'field': rendered_field,
+            'datepicker_config': json.dumps(self.get_datepicker_config(
+                fieldid=fieldid,
+                triggerbuttonid=triggerbuttonid,
+                previewid=previewid)),
+            'triggerbuttonid': triggerbuttonid,
+            'previewid': previewid,
         })
+
+
+class BetterDateTimePickerWidget(DatePickerWidget):
+    """
+    A Widget for selecting a date and time.
+    """
+    default_buttonlabel = _('Change date/time')
+    default_buttonlabel_novalue = _('Select a date/time')
+
+    def get_datepicker_config(self, *args, **kwargs):
+        config = super(BetterDateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)
+        return config
 
 
 class TimePickerWidget(widgets.TimeInput):
@@ -72,7 +100,7 @@ class DateTimePickerWidget(widgets.MultiWidget):
             timewidget_placeholder: The placeholder for the time widget.
         """
         _widgets = [
-            DatePickerWidget(attrs=attrs, placeholder=datewidget_placeholder),
+            DatePickerWidget(attrs=attrs),
             TimePickerWidget(attrs=attrs, placeholder=timewidget_placeholder)
         ]
         super(DateTimePickerWidget, self).__init__(_widgets, attrs)
@@ -221,7 +249,7 @@ class DateSplitTimePickerWidget(widgets.MultiWidget):
         """
         self.extra_css_class = extra_css_class
         _widgets = [
-            self.date_widget_class(attrs=attrs, placeholder=datewidget_placeholder),
+            self.date_widget_class(attrs=attrs),
             self.time_widget_class(attrs=attrs,
                                    empty_hour_label=empty_hour_label,
                                    empty_minute_label=empty_minute_label)
