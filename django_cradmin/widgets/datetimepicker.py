@@ -16,11 +16,66 @@ class DatePickerWidget(widgets.TextInput):
     A Widget for selecting a date.
     """
     template_name = 'django_cradmin/widgets/datepicker.django.html'
+
+    #: The momentjs formatting string to use to format the value
+    #: of the hidden field where the actually posted value is
+    #: set.
+    #:
+    #: You normally do not need to override this, since ISO format
+    #: should work for all use cases, and the user will never see
+    #: this value (it is stored in a hidden field).
+    #:
+    #: See the docs for the ``format()`` function in the
+    #: `momentjs docs <http://momentjs.com/>`_ for the possible
+    #: formatting strings.
+    destinationfield_momentjs_format = 'YYYY-MM-DD'
+
+    #: The label of the button used to trigger the date selector
+    #: when the field has a value.
+    #:
+    #: Can be overridden via the ``default_buttonlabel``
+    #: keyword argument for ``__init__``.
     default_buttonlabel = _('Change date')
+
+    #: The label of the button used to trigger the date selector
+    #: when the field has no value.
+    #:
+    #: Can be overridden via the ``buttonlabel_novalue``
+    #: keyword argument for ``__init__``.
     default_buttonlabel_novalue = _('Select a date')
+
+    #: The label for the _Use_ buttons (both in the mobile view and on the
+    #: time picker page on desktop/table).
+    #:
+    #: Can be overridden via the ``usebuttonlabel``
+    #: keyword argument for ``__init__``.
     default_usebuttonlabel = _('Use')
+
+    #: The iconkey for :func:`.django_cradmin.templatetags.cradmin_icon_tags`
+    #: to use for the close button (the X in the top right corner).
+    #:
+    #: Can be overridden via the ``back_close_iconkey``
+    #: keyword argument for ``__init__``.
     default_close_iconkey = 'x'
+
+    #: The iconkey for :func:`.django_cradmin.templatetags.cradmin_icon_tags`
+    #: to use for the back arrow button for navigating from the time select
+    #: page back to the date picker page.
+    #:
+    #: Can be overridden via the ``back_iconkey``
+    #: keyword argument for ``__init__``.
     default_back_iconkey = 'close-overlay-right-to-left'
+
+    #: The momentjs formatting string to use to format the preview of the
+    #: selected date on the second page of the
+    #:
+    #: See the docs for the ``format()`` function in the
+    #: `momentjs docs <http://momentjs.com/>`_ for the possible
+    #: formatting strings.
+    #:
+    #: Can be overridden via the ``timeselector_datepreview_momentjs_format``
+    #: keyword argument for ``__init__``.
+    default_timeselector_datepreview_momentjs_format = 'LL'
 
     #: See :meth:`~.DatePickerWidget.get_preview_angularjs_template`.
     default_preview_angularjs_template = "{{ momentObject.format('LL') }}"
@@ -32,11 +87,26 @@ class DatePickerWidget(widgets.TextInput):
     # default_minute_emptyvalue = _('Minute')
 
     def __init__(self, *args, **kwargs):
+        """
+        Parameters:
+            buttonlabel: See :obj:`.DatePickerWidget.default_buttonlabel`.
+            buttonlabel_novalue: See :obj:`.DatePickerWidget.default_buttonlabel_novalue`.
+            usebuttonlabel: See :obj:`.DatePickerWidget.default_usebuttonlabel`.
+            close_iconkey: See :obj:`.DatePickerWidget.default_close_iconkey`.
+            back_iconkey: See :obj:`.DatePickerWidget.default_back_iconkey`.
+            timeselector_datepreview_momentjs_format: See
+                :obj:`.DatePickerWidget.default_timeselector_datepreview_momentjs_format`.
+            no_value_preview_text: See :obj:`.DatePickerWidget.default_no_value_preview_text`.
+            preview_angularjs_template: See :obj:`.DatePickerWidget.default_preview_angularjs_template`.
+        """
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
         self.usebuttonlabel = kwargs.pop('usebuttonlabel', self.default_usebuttonlabel)
         self.close_iconkey = kwargs.pop('close_iconkey', self.default_close_iconkey)
         self.back_iconkey = kwargs.pop('back_iconkey', self.default_back_iconkey)
+        self.timeselector_datepreview_momentjs_format = kwargs.pop(
+            'timeselector_datepreview_momentjs_format',
+            self.default_timeselector_datepreview_momentjs_format)
         self.no_value_preview_text = kwargs.pop('no_value_preview_text', '')
         self.preview_angularjs_template = kwargs.pop('preview_angularjs_template',
                                                      self.default_preview_angularjs_template)
@@ -49,6 +119,16 @@ class DatePickerWidget(widgets.TextInput):
         super(DatePickerWidget, self).__init__(*args, **kwargs)
 
     def get_datepicker_config(self, fieldid, triggerbuttonid, previewid, previewtemplateid):
+        """
+        Get the configuration for the ``django-cradmin-datetime-selector`` AngularJS directive.
+
+        This is encoded as json, so all values must be JSON-encodable.
+        This means that you need to ensure any lazy translation string is
+        wrapped with ``str`` (or ``unicode`` for python2).
+
+        You should normally not need to override this, since everything is
+        configurable via ``__init__`` kwargs or class attributes.
+        """
         return {
             'destinationfieldid': fieldid,
             'previewid': previewid,
@@ -61,6 +141,8 @@ class DatePickerWidget(widgets.TextInput):
             'include_time': False,
             'close_icon': cradmin_icon(self.close_iconkey),
             'back_icon': cradmin_icon(self.back_iconkey),
+            'destinationfield_momentjs_format': self.destinationfield_momentjs_format,
+            'timeselector_datepreview_momentjs_format': self.timeselector_datepreview_momentjs_format,
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
@@ -145,6 +227,7 @@ class BetterDateTimePickerWidget(DatePickerWidget):
     default_buttonlabel = _('Change date/time')
     default_buttonlabel_novalue = _('Select a date/time')
     default_preview_angularjs_template = "{{ momentObject.format('LLLL') }}"
+    destinationfield_momentjs_format = 'YYYY-MM-DD HH:mm'
 
     def get_datepicker_config(self, *args, **kwargs):
         config = super(BetterDateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)

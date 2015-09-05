@@ -144,7 +144,7 @@ class PageCreateUpdateMixin(object):
         form.fields['publishing_time'].widget = BetterDateTimePickerWidget()
         # form.fields['unpublish_time'].widget = BetterDateTimePickerWidget()
         form.fields['unpublish_time'].widget = DatePickerWidget(
-            no_value_preview_text='No value!')
+            no_value_preview_text='No date selected')
         form.fields['attachment'].widget = filewidgets.ImageWidget()
         # form.fields['attachment'].widget = filewidgets.FileWidget()
         return form

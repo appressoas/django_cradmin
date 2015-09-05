@@ -905,7 +905,7 @@
 
     })();
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(selectedDateMomentObject) {
+      function MonthlyCalendarCoordinator(selectedDateMomentObject, valueWasSetByUser) {
         this.selectedDateMomentObject = selectedDateMomentObject;
         this.dayobjects = null;
         this.valueWasSetByUser = false;
@@ -914,12 +914,7 @@
         this.__initYearObjects();
         this.__initHourObjects();
         this.__initMinuteObjects();
-        if (this.selectedDateMomentObject != null) {
-          this.__changeSelectedDate(true);
-        } else {
-          this.selectedDateMomentObject = moment();
-          this.__changeSelectedDate(false);
-        }
+        this.__changeSelectedDate(valueWasSetByUser);
       }
 
       MonthlyCalendarCoordinator.prototype.__initWeekdays = function() {
@@ -1139,14 +1134,6 @@
           minute: this.currentMinuteObject.value
         });
         return this.__changeSelectedDate(true);
-      };
-
-      MonthlyCalendarCoordinator.prototype.getDestinationFieldValue = function() {
-        return this.selectedDateMomentObject.format('YYYY-MM-DD');
-      };
-
-      MonthlyCalendarCoordinator.prototype.formatSelectedDate = function() {
-        return this.selectedDateMomentObject.format('LL');
       };
 
       return MonthlyCalendarCoordinator;
@@ -1651,6 +1638,13 @@
           $scope.onClickUseTime = function() {
             $scope.applySelectedValue();
           };
+          /*
+          Used to get the preview of the selected date on page2 (above the time selector).
+          */
+
+          $scope.getTimeselectorDatepreview = function() {
+            return $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
+          };
           $scope.__applyPreviewText = function() {
             var preview, templateScope;
             if ($scope.monthlyCaledarCoordinator.valueWasSetByUser) {
@@ -1664,8 +1658,9 @@
             }
           };
           $scope.applySelectedValue = function() {
-            $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue());
+            $scope.destinationField.val($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.destinationfield_momentjs_format));
             $scope.__applyPreviewText();
+            $scope.triggerButton.html($scope.config.buttonlabel);
             return $scope.hide();
           };
           $scope.showPage1 = function() {
@@ -1685,13 +1680,15 @@
             }
           };
           return $scope.initialize = function() {
-            var currentDateIsoString, currentDateMomentObject;
+            var currentDateIsoString, currentDateMomentObject, valueWasSetByUser;
             currentDateIsoString = $scope.destinationField.val();
             if ((currentDateIsoString != null) && currentDateIsoString !== '') {
               currentDateMomentObject = moment(currentDateIsoString);
+              valueWasSetByUser = true;
               $scope.triggerButton.html($scope.config.buttonlabel);
             } else {
               currentDateMomentObject = moment();
+              valueWasSetByUser = false;
               $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             }
             $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(currentDateMomentObject);
@@ -1703,7 +1700,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'close_icon', 'back_icon'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'close_icon', 'back_icon', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -3302,7 +3299,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            <div class=\"django-cradmin-datetime-selector-timeview-body-wrapper\">\n" +
     "                <div class=\"django-cradmin-datetime-selector-timeview-body\">\n" +
     "                    <p class=\"django-cradmin-datetime-selector-datepreview\">\n" +
-    "                        {{ monthlyCaledarCoordinator.formatSelectedDate() }}\n" +
+    "                        {{ getTimeselectorDatepreview() }}\n" +
     "                    </p>\n" +
     "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
     "                        <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +

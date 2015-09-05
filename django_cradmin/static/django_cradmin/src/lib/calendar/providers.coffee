@@ -121,7 +121,7 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class MonthlyCalendarCoordinator
-    constructor: (@selectedDateMomentObject) ->
+    constructor: (@selectedDateMomentObject, valueWasSetByUser) ->
       @dayobjects = null  # Updated in @__changeSelectedDate()
       @valueWasSetByUser = false  # Updated in @__changeSelectedDate()
       @__initWeekdays()
@@ -129,12 +129,7 @@ app.provider 'djangoCradminCalendarApi', ->
       @__initYearObjects()
       @__initHourObjects()
       @__initMinuteObjects()
-
-      if @selectedDateMomentObject?
-        @__changeSelectedDate(true)
-      else
-        @selectedDateMomentObject = moment()
-        @__changeSelectedDate(false)
+      @__changeSelectedDate(valueWasSetByUser)
 
     __initWeekdays: ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
@@ -288,13 +283,6 @@ app.provider 'djangoCradminCalendarApi', ->
         minute: @currentMinuteObject.value
       })
       @__changeSelectedDate(true)
-
-    getDestinationFieldValue: ->
-      return @selectedDateMomentObject.format('YYYY-MM-DD')
-
-    formatSelectedDate: ->
-      return @selectedDateMomentObject.format('LL')
-
 
   @$get = ->
     return {

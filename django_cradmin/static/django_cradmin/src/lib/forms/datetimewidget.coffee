@@ -73,6 +73,14 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.applySelectedValue()
           return
 
+        ###
+        Used to get the preview of the selected date on page2 (above the time selector).
+        ###
+        $scope.getTimeselectorDatepreview = ->
+          return $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
+            $scope.config.timeselector_datepreview_momentjs_format
+          )
+
         $scope.__applyPreviewText = ->
           if $scope.monthlyCaledarCoordinator.valueWasSetByUser
             templateScope = $rootScope.$new(true)  # Create new isolated scope
@@ -84,9 +92,11 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.previewElement.html($scope.config.no_value_preview_text)
 
         $scope.applySelectedValue = ->
-          $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue())
-#          $scope.previewElement.html($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format('llll'))
+          $scope.destinationField.val($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
+            $scope.config.destinationfield_momentjs_format
+          ))
           $scope.__applyPreviewText()
+          $scope.triggerButton.html($scope.config.buttonlabel)
           $scope.hide()
 
         $scope.showPage1 = ->
@@ -113,9 +123,11 @@ app.directive 'djangoCradminDatetimeSelector', [
           currentDateIsoString = $scope.destinationField.val()
           if currentDateIsoString? and currentDateIsoString != ''
             currentDateMomentObject = moment(currentDateIsoString)
+            valueWasSetByUser = true
             $scope.triggerButton.html($scope.config.buttonlabel)
           else
             currentDateMomentObject = moment()  # Fallback to current date
+            valueWasSetByUser = false
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
@@ -134,6 +146,8 @@ app.directive 'djangoCradminDatetimeSelector', [
           'usebuttonlabel'
           'close_icon'
           'back_icon'
+          'destinationfield_momentjs_format'
+          'timeselector_datepreview_momentjs_format'
 #          'year_emptyvalue'
 #          'month_emptyvalue'
 #          'day_emptyvalue'
