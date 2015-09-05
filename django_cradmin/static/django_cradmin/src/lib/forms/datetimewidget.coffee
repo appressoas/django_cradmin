@@ -2,8 +2,8 @@ app = angular.module 'djangoCradmin.forms.datetimewidget', []
 
 
 app.directive 'djangoCradminDatetimeSelector', [
-  '$timeout', '$compile', '$rootScope', '$q', 'djangoCradminCalendarApi'
-  ($timeout, $compile, $rootScope, $q, djangoCradminCalendarApi) ->
+  '$timeout', '$compile', '$rootScope', 'djangoCradminCalendarApi'
+  ($timeout, $compile, $rootScope, djangoCradminCalendarApi) ->
 
     return {
       scope: {
@@ -131,7 +131,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
-            currentDateMomentObject)
+            currentDateMomentObject, valueWasSetByUser)
           $scope.__applyPreviewText()
 
       link: ($scope, $element) ->

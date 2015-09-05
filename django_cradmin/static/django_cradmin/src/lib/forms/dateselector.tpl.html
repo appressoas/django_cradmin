@@ -34,7 +34,7 @@
                         </select>
                     </div>
 
-                    <div class="django-cradmin-datetime-selector-timeselectors">
+                    <div class="django-cradmin-datetime-selector-timeselectors" ng-if="config.include_time">
                         <select class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
                                 ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"

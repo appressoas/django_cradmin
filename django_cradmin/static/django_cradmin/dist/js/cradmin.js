@@ -1570,7 +1570,7 @@
   app = angular.module('djangoCradmin.forms.datetimewidget', []);
 
   app.directive('djangoCradminDatetimeSelector', [
-    '$timeout', '$compile', '$rootScope', '$q', 'djangoCradminCalendarApi', function($timeout, $compile, $rootScope, $q, djangoCradminCalendarApi) {
+    '$timeout', '$compile', '$rootScope', 'djangoCradminCalendarApi', function($timeout, $compile, $rootScope, djangoCradminCalendarApi) {
       return {
         scope: {
           config: "=djangoCradminDatetimeSelector"
@@ -1691,7 +1691,7 @@
               valueWasSetByUser = false;
               $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             }
-            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(currentDateMomentObject);
+            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(currentDateMomentObject, valueWasSetByUser);
             return $scope.__applyPreviewText();
           };
         },
@@ -3233,7 +3233,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </select>\n" +
     "                    </div>\n" +
     "\n" +
-    "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
+    "                    <div class=\"django-cradmin-datetime-selector-timeselectors\" ng-if=\"config.include_time\">\n" +
     "                        <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
     "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
