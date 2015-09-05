@@ -5,6 +5,7 @@ from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 import json
 from builtins import str
+from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 
 from django_cradmin.widgets.selectwidgets import WrappedSelect
 
@@ -16,11 +17,26 @@ class DatePickerWidget(widgets.TextInput):
     template_name = 'django_cradmin/widgets/datepicker.django.html'
     default_buttonlabel = _('Change date')
     default_buttonlabel_novalue = _('Select a date')
+    default_usebuttonlabel = _('Use')
+    default_close_iconkey = 'x'
+    # default_year_emptyvalue = _('Year')
+    # default_month_emptyvalue = _('Month')
+    # default_day_emptyvalue = _('Day')
+    # default_hour_emptyvalue = _('Hour')
+    # default_minute_emptyvalue = _('Minute')
 
     def __init__(self, *args, **kwargs):
         self.no_value_preview_text = kwargs.pop('no_value_preview_text', '')
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
+        self.usebuttonlabel = kwargs.pop('usebuttonlabel', self.default_usebuttonlabel)
+        self.close_iconkey = kwargs.pop('close_iconkey', self.default_close_iconkey)
+        # self.year_emptyvalue = kwargs.pop('year_emptyvalue', self.default_year_emptyvalue)
+        # self.month_emptyvalue = kwargs.pop('month_emptyvalue', self.default_month_emptyvalue)
+        # self.day_emptyvalue = kwargs.pop('day_emptyvalue', self.default_day_emptyvalue)
+        # self.hour_emptyvalue = kwargs.pop('hour_emptyvalue', self.default_hour_emptyvalue)
+        # self.minute_emptyvalue = kwargs.pop('minute_emptyvalue', self.default_minute_emptyvalue)
+
         super(DatePickerWidget, self).__init__(*args, **kwargs)
 
     def get_datepicker_config(self, fieldid, triggerbuttonid, previewid):
@@ -31,7 +47,14 @@ class DatePickerWidget(widgets.TextInput):
             'no_value_preview_text': str(self.no_value_preview_text),
             'buttonlabel': str(self.buttonlabel),
             'buttonlabel_novalue': str(self.buttonlabel_novalue),
-            'include_time': False
+            'usebuttonlabel': str(self.usebuttonlabel),
+            'include_time': False,
+            'close_icon': cradmin_icon(self.close_iconkey),
+            # 'year_emptyvalue': str(self.year_emptyvalue),
+            # 'month_emptyvalue': str(self.month_emptyvalue),
+            # 'day_emptyvalue': str(self.day_emptyvalue),
+            # 'hour_emptyvalue': str(self.hour_emptyvalue),
+            # 'minute_emptyvalue': str(self.minute_emptyvalue),
         }
 
     def render(self, name, value, attrs=None):

@@ -12,7 +12,7 @@
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview">
             <button type="button"
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
-                    ng-click="hide()">x</button>
+                    ng-click="hide()"><span class="{{ config.close_icon }}"></span></button>
 
             <div class="django-cradmin-datetime-selector-selectors-wrapper">
                 <div class="django-cradmin-datetime-selector-selectors">
@@ -35,7 +35,6 @@
                     </div>
 
                     <div class="django-cradmin-datetime-selector-timeselectors">
-                        kl.
                         <select class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
                                 ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
@@ -52,7 +51,7 @@
                     <button type="button"
                             class="btn btn-primary django-cradmin-datetime-selector-use-button"
                             ng-click="onClickUseTime()">
-                        Use
+                        {{ config.usebuttonlabel }}
                     </button>
                 </div>
             </div>
@@ -88,7 +87,7 @@
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview">
             <button type="button"
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
-                    ng-click="hide()">x</button>
+                    ng-click="hide()"><span class="{{ config.close_icon }}"></span></button>
 
             <a
                     class="django-cradmin-datetime-selector-backbutton"
@@ -102,7 +101,6 @@
                         {{ monthlyCaledarCoordinator.formatSelectedDate() }}
                     </p>
                     <div class="django-cradmin-datetime-selector-timeselectors">
-                        kl.
                         <select class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
                                 ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
@@ -117,7 +115,7 @@
                         <button type="button"
                                 class="btn btn-primary django-cradmin-datetime-selector-use-button"
                                 ng-click="onClickUseTime()">
-                            Use
+                            {{ config.usebuttonlabel }}
                         </button>
                     </div>
                 </div>

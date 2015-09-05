@@ -1584,7 +1584,7 @@
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
-          $scope.page = 1;
+          $scope.page = null;
           /*
           Called when a users selects a date using the mobile-only <select>
           menu to select a day.
@@ -1639,10 +1639,6 @@
             $scope.monthlyCaledarCoordinator.handleCurrentMinuteChange();
           };
           /*
-          Called when a user clicks the "Use" button on the date page.
-          */
-
-          /*
           Called when a user clicks the "Use" button on the time page.
           */
 
@@ -1685,45 +1681,48 @@
           };
         },
         link: function($scope, $element) {
-          if ($scope.config.destinationfieldid != null) {
-            $scope.destinationField = angular.element("#" + $scope.config.destinationfieldid);
-            if ($scope.destinationField.length === 0) {
+          var configname, configvalue, required_config_attributes, _i, _len;
+          if ($scope.config.no_value_preview_text == null) {
+            $scope.config.no_value_preview_text = '';
+          }
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'usebuttonlabel', 'close_icon'];
+          for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
+            configname = required_config_attributes[_i];
+            configvalue = $scope.config[configname];
+            if ((configvalue == null) || configvalue === '') {
               if (typeof console !== "undefined" && console !== null) {
                 if (typeof console.error === "function") {
-                  console.error("Could not find the destinationField element with ID: " + $scope.config.destinationfieldid);
+                  console.error("The " + configname + " config is required!");
                 }
               }
             }
-          } else {
+          }
+          $scope.destinationField = angular.element("#" + $scope.config.destinationfieldid);
+          if ($scope.destinationField.length === 0) {
             if (typeof console !== "undefined" && console !== null) {
               if (typeof console.error === "function") {
-                console.error("The destinationField config is required!");
-              }
-            }
-            return;
-          }
-          if ($scope.config.triggerbuttonid != null) {
-            $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid);
-            if ($scope.triggerButton.length > 0) {
-              $scope.triggerButton.on('click', function() {
-                $scope.showPage1();
-                $scope.$apply();
-              });
-            } else {
-              if (typeof console !== "undefined" && console !== null) {
-                if (typeof console.warn === "function") {
-                  console.warn("Could not find the triggerButton element with ID: " + $scope.config.triggerbuttonid);
-                }
+                console.error("Could not find the destinationField element with ID: " + $scope.config.destinationfieldid);
               }
             }
           }
-          if ($scope.config.previewid != null) {
-            $scope.previewElement = angular.element("#" + $scope.config.previewid);
-            if ($scope.previewElement.length === 0) {
-              if (typeof console !== "undefined" && console !== null) {
-                if (typeof console.warn === "function") {
-                  console.warn("Could not find the previewElement element with ID: " + $scope.config.previewid);
-                }
+          $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid);
+          if ($scope.triggerButton.length > 0) {
+            $scope.triggerButton.on('click', function() {
+              $scope.showPage1();
+              $scope.$apply();
+            });
+          } else {
+            if (typeof console !== "undefined" && console !== null) {
+              if (typeof console.warn === "function") {
+                console.warn("Could not find the triggerButton element with ID: " + $scope.config.triggerbuttonid);
+              }
+            }
+          }
+          $scope.previewElement = angular.element("#" + $scope.config.previewid);
+          if ($scope.previewElement.length === 0) {
+            if (typeof console !== "undefined" && console !== null) {
+              if (typeof console.warn === "function") {
+                console.warn("Could not find the previewElement element with ID: " + $scope.config.previewid);
               }
             }
           }
@@ -3187,7 +3186,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview\">\n" +
     "            <button type=\"button\"\n" +
     "                    class=\"btn btn-link django-cradmin-datetime-selector-closebutton\"\n" +
-    "                    ng-click=\"hide()\">x</button>\n" +
+    "                    ng-click=\"hide()\"><span class=\"{{ config.close_icon }}\"></span></button>\n" +
     "\n" +
     "            <div class=\"django-cradmin-datetime-selector-selectors-wrapper\">\n" +
     "                <div class=\"django-cradmin-datetime-selector-selectors\">\n" +
@@ -3210,7 +3209,6 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    </div>\n" +
     "\n" +
     "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
-    "                        kl.\n" +
     "                        <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
     "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
@@ -3227,7 +3225,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    <button type=\"button\"\n" +
     "                            class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
     "                            ng-click=\"onClickUseTime()\">\n" +
-    "                        Use\n" +
+    "                        {{ config.usebuttonlabel }}\n" +
     "                    </button>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -3263,7 +3261,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview\">\n" +
     "            <button type=\"button\"\n" +
     "                    class=\"btn btn-link django-cradmin-datetime-selector-closebutton\"\n" +
-    "                    ng-click=\"hide()\">x</button>\n" +
+    "                    ng-click=\"hide()\"><span class=\"{{ config.close_icon }}\"></span></button>\n" +
     "\n" +
     "            <a\n" +
     "                    class=\"django-cradmin-datetime-selector-backbutton\"\n" +
@@ -3277,7 +3275,6 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        {{ monthlyCaledarCoordinator.formatSelectedDate() }}\n" +
     "                    </p>\n" +
     "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
-    "                        kl.\n" +
     "                        <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
     "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
@@ -3292,7 +3289,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <button type=\"button\"\n" +
     "                                class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
     "                                ng-click=\"onClickUseTime()\">\n" +
-    "                            Use\n" +
+    "                            {{ config.usebuttonlabel }}\n" +
     "                        </button>\n" +
     "                    </div>\n" +
     "                </div>\n" +

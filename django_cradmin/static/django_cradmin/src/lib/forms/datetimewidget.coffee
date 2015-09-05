@@ -12,7 +12,7 @@ app.directive 'djangoCradminDatetimeSelector', [
       templateUrl: 'forms/dateselector.tpl.html'
 
       controller: ($scope, $element) ->
-        $scope.page = 1
+        $scope.page = null
 
         ###
         Called when a users selects a date using the mobile-only <select>
@@ -67,16 +67,6 @@ app.directive 'djangoCradminDatetimeSelector', [
           return
 
         ###
-        Called when a user clicks the "Use" button on the date page.
-        ###
-#        $scope.onClickUseDate = ->
-#          if $scope.config.include_time
-#            console.log 'Select time'
-#          else
-#            $scope.applySelectedValue()
-#          return
-
-        ###
         Called when a user clicks the "Use" button on the time page.
         ###
         $scope.onClickUseTime = ->
@@ -122,28 +112,42 @@ app.directive 'djangoCradminDatetimeSelector', [
             currentDateMomentObject)
 
       link: ($scope, $element) ->
-        if $scope.config.destinationfieldid?
-          $scope.destinationField = angular.element("#" + $scope.config.destinationfieldid)
-          if $scope.destinationField.length == 0
-            console?.error? "Could not find the destinationField element with ID: #{$scope.config.destinationfieldid}"
+        if not $scope.config.no_value_preview_text?
+          $scope.config.no_value_preview_text = ''
+
+        required_config_attributes = [
+          'destinationfieldid'
+          'triggerbuttonid'
+          'previewid'
+          'usebuttonlabel'
+          'close_icon'
+#          'year_emptyvalue'
+#          'month_emptyvalue'
+#          'day_emptyvalue'
+#          'hour_emptyvalue'
+#          'minute_emptyvalue'
+        ]
+        for configname in required_config_attributes
+          configvalue = $scope.config[configname]
+          if not configvalue? or configvalue == ''
+            console?.error? "The #{configname} config is required!"
+
+        $scope.destinationField = angular.element("#" + $scope.config.destinationfieldid)
+        if $scope.destinationField.length == 0
+          console?.error? "Could not find the destinationField element with ID: #{$scope.config.destinationfieldid}"
+
+        $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid)
+        if $scope.triggerButton.length > 0
+          $scope.triggerButton.on 'click', ->
+            $scope.showPage1()
+            $scope.$apply()
+            return
         else
-          console?.error? "The destinationField config is required!"
-          return
+          console?.warn? "Could not find the triggerButton element with ID: #{$scope.config.triggerbuttonid}"
 
-        if $scope.config.triggerbuttonid?
-          $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid)
-          if $scope.triggerButton.length > 0
-            $scope.triggerButton.on 'click', ->
-              $scope.showPage1()
-              $scope.$apply()
-              return
-          else
-            console?.warn? "Could not find the triggerButton element with ID: #{$scope.config.triggerbuttonid}"
-
-        if $scope.config.previewid?
-          $scope.previewElement = angular.element("#" + $scope.config.previewid)
-          if $scope.previewElement.length == 0
-            console?.warn? "Could not find the previewElement element with ID: #{$scope.config.previewid}"
+        $scope.previewElement = angular.element("#" + $scope.config.previewid)
+        if $scope.previewElement.length == 0
+          console?.warn? "Could not find the previewElement element with ID: #{$scope.config.previewid}"
 
         $scope.initialize()
         return
