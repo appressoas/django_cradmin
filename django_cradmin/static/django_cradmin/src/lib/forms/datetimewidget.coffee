@@ -2,8 +2,8 @@ app = angular.module 'djangoCradmin.forms.datetimewidget', []
 
 
 app.directive 'djangoCradminDatetimeSelector', [
-  '$timeout', 'djangoCradminCalendarApi'
-  ($timeout, djangoCradminCalendarApi) ->
+  '$timeout', '$compile', '$rootScope', '$q', 'djangoCradminCalendarApi'
+  ($timeout, $compile, $rootScope, $q, djangoCradminCalendarApi) ->
 
     return {
       scope: {
@@ -71,12 +71,22 @@ app.directive 'djangoCradminDatetimeSelector', [
         ###
         $scope.onClickUseTime = ->
           $scope.applySelectedValue()
-          console.log 'Apply'
           return
+
+        $scope.__applyPreviewText = ->
+          if $scope.monthlyCaledarCoordinator.valueWasSetByUser
+            templateScope = $rootScope.$new(true)  # Create new isolated scope
+            templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject
+            preview = $compile($scope.previewAngularjsTemplate)(templateScope)
+            $scope.previewElement.empty()
+            $scope.previewElement.append(preview)
+          else
+            $scope.previewElement.html($scope.config.no_value_preview_text)
 
         $scope.applySelectedValue = ->
           $scope.destinationField.val($scope.monthlyCaledarCoordinator.getDestinationFieldValue())
-          $scope.previewElement.html($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format('llll'))
+#          $scope.previewElement.html($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format('llll'))
+          $scope.__applyPreviewText()
           $scope.hide()
 
         $scope.showPage1 = ->
@@ -110,6 +120,7 @@ app.directive 'djangoCradminDatetimeSelector', [
 
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
             currentDateMomentObject)
+          $scope.__applyPreviewText()
 
       link: ($scope, $element) ->
         if not $scope.config.no_value_preview_text?
@@ -119,8 +130,10 @@ app.directive 'djangoCradminDatetimeSelector', [
           'destinationfieldid'
           'triggerbuttonid'
           'previewid'
+          'previewtemplateid'
           'usebuttonlabel'
           'close_icon'
+          'back_icon'
 #          'year_emptyvalue'
 #          'month_emptyvalue'
 #          'day_emptyvalue'
@@ -149,7 +162,15 @@ app.directive 'djangoCradminDatetimeSelector', [
         if $scope.previewElement.length == 0
           console?.warn? "Could not find the previewElement element with ID: #{$scope.config.previewid}"
 
+        previewTemplateScriptElement = angular.element("#" + $scope.config.previewtemplateid)
+        if previewTemplateScriptElement.length == 0
+          console?.warn? "Could not find the previewTemplateScriptElement element " +
+              "with ID: #{$scope.config.previewtemplateid}"
+        else
+          $scope.previewAngularjsTemplate = previewTemplateScriptElement.html()
+
         $scope.initialize()
+
         return
     }
 ]

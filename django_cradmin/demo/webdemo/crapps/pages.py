@@ -142,8 +142,9 @@ class PageCreateUpdateMixin(object):
             selectview_url=self._get_image_selectview_url()
         )
         form.fields['publishing_time'].widget = BetterDateTimePickerWidget()
-        form.fields['unpublish_time'].widget = BetterDateTimePickerWidget()
-        # form.fields['unpublish_time'].widget = DatePickerWidget()
+        # form.fields['unpublish_time'].widget = BetterDateTimePickerWidget()
+        form.fields['unpublish_time'].widget = DatePickerWidget(
+            no_value_preview_text='No value!')
         form.fields['attachment'].widget = filewidgets.ImageWidget()
         # form.fields['attachment'].widget = filewidgets.FileWidget()
         return form

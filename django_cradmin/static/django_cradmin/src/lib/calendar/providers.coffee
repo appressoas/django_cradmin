@@ -123,15 +123,18 @@ app.provider 'djangoCradminCalendarApi', ->
   class MonthlyCalendarCoordinator
     constructor: (@selectedDateMomentObject) ->
       @dayobjects = null  # Updated in @__changeSelectedDate()
+      @valueWasSetByUser = false  # Updated in @__changeSelectedDate()
       @__initWeekdays()
       @__initMonthObjects()
       @__initYearObjects()
       @__initHourObjects()
       @__initMinuteObjects()
 
-      if not @selectedDateMomentObject?
+      if @selectedDateMomentObject?
+        @__changeSelectedDate(true)
+      else
         @selectedDateMomentObject = moment()
-      @__changeSelectedDate()
+        @__changeSelectedDate(false)
 
     __initWeekdays: ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
@@ -233,7 +236,7 @@ app.provider 'djangoCradminCalendarApi', ->
     As long as you change ``@selectedDateMomentObject``, this
     will update everything to mirror the change (selected day, month, year, ...).
     ###
-    __changeSelectedDate: ->
+    __changeSelectedDate: (valueWasSetByUser) ->
       @calendarMonth = new CalendarMonth(@selectedDateMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()
@@ -241,13 +244,15 @@ app.provider 'djangoCradminCalendarApi', ->
       @__setCurrentMinute()
       @__updateDayObjects()
       @currentDayObject = @dayobjects[@selectedDateMomentObject.date()-1]
+      if valueWasSetByUser
+        @valueWasSetByUser = true
 
     __handleDayChange: (momentObject) ->
       @selectedDateMomentObject = momentObject.clone().set({
         hour: @currentHourObject.value
         minute: @currentMinuteObject.value
       })
-      @__changeSelectedDate()
+      @__changeSelectedDate(true)
 
     handleCurrentDayObjectChange: ->
       momentObject = moment({
@@ -264,25 +269,25 @@ app.provider 'djangoCradminCalendarApi', ->
       @selectedDateMomentObject.set({
         month: @currentMonthObject.value
       })
-      @__changeSelectedDate()
+      @__changeSelectedDate(true)
 
     handleCurrentYearChange: ->
       @selectedDateMomentObject.set({
         year: @currentYearObject.value
       })
-      @__changeSelectedDate()
+      @__changeSelectedDate(true)
 
     handleCurrentHourChange: ->
       @selectedDateMomentObject.set({
         hour: @currentHourObject.value
       })
-      @__changeSelectedDate()
+      @__changeSelectedDate(true)
 
     handleCurrentMinuteChange: ->
       @selectedDateMomentObject.set({
         minute: @currentMinuteObject.value
       })
-      @__changeSelectedDate()
+      @__changeSelectedDate(true)
 
     getDestinationFieldValue: ->
       return @selectedDateMomentObject.format('YYYY-MM-DD')

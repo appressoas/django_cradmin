@@ -5,6 +5,7 @@ from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 import json
 from builtins import str
+from xml.sax import saxutils
 from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 
 from django_cradmin.widgets.selectwidgets import WrappedSelect
@@ -19,6 +20,11 @@ class DatePickerWidget(widgets.TextInput):
     default_buttonlabel_novalue = _('Select a date')
     default_usebuttonlabel = _('Use')
     default_close_iconkey = 'x'
+    default_back_iconkey = 'close-overlay-right-to-left'
+
+    #: See :meth:`~.DatePickerWidget.get_preview_angularjs_template`.
+    default_preview_angularjs_template = "{{ momentObject.format('LL') }}"
+
     # default_year_emptyvalue = _('Year')
     # default_month_emptyvalue = _('Month')
     # default_day_emptyvalue = _('Day')
@@ -26,11 +32,14 @@ class DatePickerWidget(widgets.TextInput):
     # default_minute_emptyvalue = _('Minute')
 
     def __init__(self, *args, **kwargs):
-        self.no_value_preview_text = kwargs.pop('no_value_preview_text', '')
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
         self.usebuttonlabel = kwargs.pop('usebuttonlabel', self.default_usebuttonlabel)
         self.close_iconkey = kwargs.pop('close_iconkey', self.default_close_iconkey)
+        self.back_iconkey = kwargs.pop('back_iconkey', self.default_back_iconkey)
+        self.no_value_preview_text = kwargs.pop('no_value_preview_text', '')
+        self.preview_angularjs_template = kwargs.pop('preview_angularjs_template',
+                                                     self.default_preview_angularjs_template)
         # self.year_emptyvalue = kwargs.pop('year_emptyvalue', self.default_year_emptyvalue)
         # self.month_emptyvalue = kwargs.pop('month_emptyvalue', self.default_month_emptyvalue)
         # self.day_emptyvalue = kwargs.pop('day_emptyvalue', self.default_day_emptyvalue)
@@ -39,10 +48,11 @@ class DatePickerWidget(widgets.TextInput):
 
         super(DatePickerWidget, self).__init__(*args, **kwargs)
 
-    def get_datepicker_config(self, fieldid, triggerbuttonid, previewid):
+    def get_datepicker_config(self, fieldid, triggerbuttonid, previewid, previewtemplateid):
         return {
             'destinationfieldid': fieldid,
             'previewid': previewid,
+            'previewtemplateid': previewtemplateid,
             'triggerbuttonid': triggerbuttonid,
             'no_value_preview_text': str(self.no_value_preview_text),
             'buttonlabel': str(self.buttonlabel),
@@ -50,6 +60,7 @@ class DatePickerWidget(widgets.TextInput):
             'usebuttonlabel': str(self.usebuttonlabel),
             'include_time': False,
             'close_icon': cradmin_icon(self.close_iconkey),
+            'back_icon': cradmin_icon(self.back_iconkey),
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
@@ -57,20 +68,73 @@ class DatePickerWidget(widgets.TextInput):
             # 'minute_emptyvalue': str(self.minute_emptyvalue),
         }
 
+    def get_preview_angularjs_template(self):
+        """
+        Get the AngularJS template to use to render the preview
+        of the selected date.
+
+        Defaults to the ``preview_angularjs_template`` kwarg to ``__init__``,
+        which defaults to :obj:`~.DatePickerWidget.default_preview_angularjs_template`.
+
+        Must return a string, The string is evaluated by
+        the AngularJS ``$compile`` function with the following scope:
+
+        - ``momentObject``: A momentjs object with the value of the
+           selected date/time. You use ``momentObject.format()`` to
+           format the date. See the examples below and
+           `moment.js docs <http://momentjs.com/docs/#/displaying/>`_.
+
+        Examples:
+
+            The default:
+
+            .. code-block:: html
+
+                {{ momentObject.format('LL') }}
+
+            A more complex example:
+
+            .. code-block:: html
+
+                <span class="start-dayname">{{ momentObject.format('dddd') }}</span>
+                <span class="start-monthname">{{ momentObject.format('MMMM') }}</span>
+                <span class="start-dayinmonth">{{ momentObject.format('Mo') }}</span>
+                <span class="start-year">{{ momentObject.format('YYYY') }}</span>
+
+            Inserting translation strings (remember to use ``u"..."`` if using Python2)::
+
+                return "{label}: {{ momentObject.format('LL') }}".format(
+                    label=_('Selected date'))
+        """
+        return self.preview_angularjs_template
+
+    def __get_preview_angularjs_template(self):
+        """
+        We use this internally instead of using :meth:`.get_preview_angularjs_template`
+        to ensure the returned HTML has a root element (which is required by the
+        angularjs ``$compile``-function).
+        """
+        return '<span>{}</span>'.format(self.get_preview_angularjs_template())
+
     def render(self, name, value, attrs=None):
         rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
         fieldid = attrs.get('id', 'id_{}'.format(name))
         triggerbuttonid = '{}_triggerbutton'.format(fieldid)
         previewid = '{}_preview'.format(fieldid)
+        previewtemplateid = '{}_previewtemplate'.format(fieldid)
 
         return loader.render_to_string(self.template_name, {
             'field': rendered_field,
             'datepicker_config': json.dumps(self.get_datepicker_config(
                 fieldid=fieldid,
                 triggerbuttonid=triggerbuttonid,
-                previewid=previewid)),
+                previewid=previewid,
+                previewtemplateid=previewtemplateid
+            )),
             'triggerbuttonid': triggerbuttonid,
             'previewid': previewid,
+            'previewtemplateid': previewtemplateid,
+            'preview_angularjs_template': self.__get_preview_angularjs_template()
         })
 
 
@@ -80,6 +144,7 @@ class BetterDateTimePickerWidget(DatePickerWidget):
     """
     default_buttonlabel = _('Change date/time')
     default_buttonlabel_novalue = _('Select a date/time')
+    default_preview_angularjs_template = "{{ momentObject.format('LLLL') }}"
 
     def get_datepicker_config(self, *args, **kwargs):
         config = super(BetterDateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)

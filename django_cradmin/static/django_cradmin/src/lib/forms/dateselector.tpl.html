@@ -89,10 +89,12 @@
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
                     ng-click="hide()"><span class="{{ config.close_icon }}"></span></button>
 
-            <a
+            <a role="button"
                     class="django-cradmin-datetime-selector-backbutton"
                     ng-click="showPage1()">
-                <span class="django-cradmin-datetime-selector-backbutton-icon">&lt;</span>
+                <span class="django-cradmin-datetime-selector-backbutton-icon">
+                    <span class="{{ config.back_icon }}"></span>
+                </span>
             </a>
 
             <div class="django-cradmin-datetime-selector-timeview-body-wrapper">
