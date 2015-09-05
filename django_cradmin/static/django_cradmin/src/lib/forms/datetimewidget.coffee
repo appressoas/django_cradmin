@@ -2,8 +2,8 @@ app = angular.module 'djangoCradmin.forms.datetimewidget', []
 
 
 app.directive 'djangoCradminDatetimeSelector', [
-  'djangoCradminCalendarApi'
-  (djangoCradminCalendarApi) ->
+  '$timeout', 'djangoCradminCalendarApi'
+  ($timeout, djangoCradminCalendarApi) ->
 
     return {
       scope: {
@@ -12,7 +12,7 @@ app.directive 'djangoCradminDatetimeSelector', [
       templateUrl: 'forms/dateselector.tpl.html'
 
       controller: ($scope, $element) ->
-        $scope.page = null
+        $scope.page = 1
 
         ###
         Called when a users selects a date using the mobile-only <select>
@@ -69,12 +69,12 @@ app.directive 'djangoCradminDatetimeSelector', [
         ###
         Called when a user clicks the "Use" button on the date page.
         ###
-        $scope.onClickUseDate = ->
-          if $scope.config.include_time
-            console.log 'Select time'
-          else
-            $scope.applySelectedValue()
-          return
+#        $scope.onClickUseDate = ->
+#          if $scope.config.include_time
+#            console.log 'Select time'
+#          else
+#            $scope.applySelectedValue()
+#          return
 
         ###
         Called when a user clicks the "Use" button on the time page.
@@ -96,7 +96,18 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.page = 2
 
         $scope.hide = ->
-          $scope.page = null
+          if $scope.page == 2
+            # We use page3 to make it possible to have a custom animation for hiding
+            # page2 (avoid that it animates sideways back to the starting point).
+            # The timeout just needs to be longer than the css animation, but
+            # shorter than a reasonable time that a user is able to re-open the
+            # date picker.
+            $scope.page = 3
+            $timeout(->
+              $scope.page = null
+            , 400)
+          else
+            $scope.page = null
 
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()

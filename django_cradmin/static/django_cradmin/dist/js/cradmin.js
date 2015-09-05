@@ -1577,14 +1577,14 @@
   app = angular.module('djangoCradmin.forms.datetimewidget', []);
 
   app.directive('djangoCradminDatetimeSelector', [
-    'djangoCradminCalendarApi', function(djangoCradminCalendarApi) {
+    '$timeout', 'djangoCradminCalendarApi', function($timeout, djangoCradminCalendarApi) {
       return {
         scope: {
           config: "=djangoCradminDatetimeSelector"
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
-          $scope.page = null;
+          $scope.page = 1;
           /*
           Called when a users selects a date using the mobile-only <select>
           menu to select a day.
@@ -1642,13 +1642,6 @@
           Called when a user clicks the "Use" button on the date page.
           */
 
-          $scope.onClickUseDate = function() {
-            if ($scope.config.include_time) {
-              console.log('Select time');
-            } else {
-              $scope.applySelectedValue();
-            }
-          };
           /*
           Called when a user clicks the "Use" button on the time page.
           */
@@ -1669,7 +1662,14 @@
             return $scope.page = 2;
           };
           $scope.hide = function() {
-            return $scope.page = null;
+            if ($scope.page === 2) {
+              $scope.page = 3;
+              return $timeout(function() {
+                return $scope.page = null;
+              }, 400);
+            } else {
+              return $scope.page = null;
+            }
           };
           return $scope.initialize = function() {
             var currentDateIsoString, currentDateMomentObject;
@@ -3177,35 +3177,61 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        ng-class=\"{\n" +
     "            'django-cradmin-datetime-selector-show': page != null,\n" +
     "            'django-cradmin-datetime-selector-page1': page == 1,\n" +
-    "            'django-cradmin-datetime-selector-page2': page == 2\n" +
+    "            'django-cradmin-datetime-selector-page2': page == 2,\n" +
+    "            'django-cradmin-datetime-selector-page3': page == 3\n" +
     "        }\">\n" +
     "\n" +
-    "    <div class=\"django-cradmin-datetime-selector-backdrop\" ng-click=\"hide()\"></div>\n" +
+    "    <div class=\"django-cradmin-datetime-selector-backdrop\"></div>\n" +
     "\n" +
     "    <div class=\"django-cradmin-datetime-selector-contentwrapper\">\n" +
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview\">\n" +
-    "            <div class=\"django-cradmin-datetime-selector-dateselectors\">\n" +
-    "                <select class=\"form-control django-cradmin-datetime-selector-dayselect\"\n" +
-    "                        ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
-    "                        ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
-    "                        ng-change=\"onSelectDayNumber()\">\n" +
-    "                </select>\n" +
-    "                <select class=\"form-control django-cradmin-datetime-selector-monthselect\"\n" +
-    "                        ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
-    "                        ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
-    "                        ng-change=\"onSelectMonth()\">\n" +
-    "                </select>\n" +
-    "                <select class=\"form-control django-cradmin-datetime-selector-yearselect\"\n" +
-    "                        ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
-    "                        ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
-    "                        ng-change=\"onSelectYear()\">\n" +
-    "                </select>\n" +
-    "                <button type=\"button\"\n" +
-    "                        class=\"btn btn-primary django-cradmin-datetime-selector-use-date-button\"\n" +
-    "                        ng-click=\"onClickUseDate()\">\n" +
-    "                    Use\n" +
-    "                </button>\n" +
+    "            <button type=\"button\"\n" +
+    "                    class=\"btn btn-link django-cradmin-datetime-selector-closebutton\"\n" +
+    "                    ng-click=\"hide()\">x</button>\n" +
+    "\n" +
+    "            <div class=\"django-cradmin-datetime-selector-selectors-wrapper\">\n" +
+    "                <div class=\"django-cradmin-datetime-selector-selectors\">\n" +
+    "                    <div class=\"django-cradmin-datetime-selector-dateselectors\">\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-dayselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
+    "                                ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
+    "                                ng-change=\"onSelectDayNumber()\">\n" +
+    "                        </select>\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-monthselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
+    "                                ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
+    "                                ng-change=\"onSelectMonth()\">\n" +
+    "                        </select>\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-yearselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
+    "                                ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
+    "                                ng-change=\"onSelectYear()\">\n" +
+    "                        </select>\n" +
+    "                    </div>\n" +
+    "\n" +
+    "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
+    "                        kl.\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
+    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
+    "                                ng-change=\"onSelectHour()\">\n" +
+    "                        </select>\n" +
+    "                        :\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
+    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +
+    "                                ng-change=\"onSelectMinute()\">\n" +
+    "                        </select>\n" +
+    "                    </div>\n" +
+    "\n" +
+    "                    <button type=\"button\"\n" +
+    "                            class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
+    "                            ng-click=\"onClickUseTime()\">\n" +
+    "                        Use\n" +
+    "                    </button>\n" +
+    "                </div>\n" +
     "            </div>\n" +
+    "\n" +
     "\n" +
     "            <table class=\"django-cradmin-datetime-selector-table\">\n" +
     "                <thead>\n" +
@@ -3235,6 +3261,10 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "        </div>\n" +
     "\n" +
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview\">\n" +
+    "            <button type=\"button\"\n" +
+    "                    class=\"btn btn-link django-cradmin-datetime-selector-closebutton\"\n" +
+    "                    ng-click=\"hide()\">x</button>\n" +
+    "\n" +
     "            <a\n" +
     "                    class=\"django-cradmin-datetime-selector-backbutton\"\n" +
     "                    ng-click=\"showPage1()\">\n" +
@@ -3260,7 +3290,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                ng-change=\"onSelectMinute()\">\n" +
     "                        </select>\n" +
     "                        <button type=\"button\"\n" +
-    "                                class=\"btn btn-primary django-cradmin-datetime-selector-use-time-button\"\n" +
+    "                                class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
     "                                ng-click=\"onClickUseTime()\">\n" +
     "                            Use\n" +
     "                        </button>\n" +

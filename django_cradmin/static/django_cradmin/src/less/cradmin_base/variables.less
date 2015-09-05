@@ -240,12 +240,23 @@
 
 // Dateselector
 @cradmin-datetimeselector-page-bg: #fff;
+@cradmin-datetimeselector-page-bottom-xs: 0;
+@cradmin-datetimeselector-page-bottom: 20px;
 @cradmin-datetimeselector-page-height: 480px;
 @cradmin-datetimeselector-page-width: 600px;
 @cradmin-datetimeselector-transition: all .15s ease-in-out;
+@cradmin-datetimeselector-horizontal-spacing: 15px;
 
+@cradmin-datetimeselector-mobile-width-breakpoint: @screen-sm-min;
+@cradmin-datetimeselector-mobile-height-breakpoint: (@cradmin-datetimeselector-page-height + (@cradmin-datetimeselector-page-bottom * 2));
+
+@cradmin-datetimeselector-closebutton-padding: 10px 20px;
+@cradmin-datetimeselector-closebutton-font-size: 20px;
+@cradmin-datetimeselector-closebutton-color: @text-muted;
+@cradmin-datetimeselector-closebutton-hover-color: @link-color;
+
+@cradmin-datetimeselector-dateview-padding-top: 15px;
 @cradmin-datetimeselector-table-height: 400px;
-@cradmin-datetimeselector-page1-header-height: @cradmin-datetimeselector-page-height - @cradmin-datetimeselector-table-height;
 @cradmin-datetimeselector-table-bordercolor: @btn-default-border;
 @cradmin-datetimeselector-table-thead-height: 25px;
 @cradmin-datetimeselector-daybuttoncell-bg: @btn-default-bg;

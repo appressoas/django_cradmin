@@ -2,35 +2,61 @@
         ng-class="{
             'django-cradmin-datetime-selector-show': page != null,
             'django-cradmin-datetime-selector-page1': page == 1,
-            'django-cradmin-datetime-selector-page2': page == 2
+            'django-cradmin-datetime-selector-page2': page == 2,
+            'django-cradmin-datetime-selector-page3': page == 3
         }">
 
-    <div class="django-cradmin-datetime-selector-backdrop" ng-click="hide()"></div>
+    <div class="django-cradmin-datetime-selector-backdrop"></div>
 
     <div class="django-cradmin-datetime-selector-contentwrapper">
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview">
-            <div class="django-cradmin-datetime-selector-dateselectors">
-                <select class="form-control django-cradmin-datetime-selector-dayselect"
-                        ng-model="monthlyCaledarCoordinator.currentDayObject"
-                        ng-options="dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value"
-                        ng-change="onSelectDayNumber()">
-                </select>
-                <select class="form-control django-cradmin-datetime-selector-monthselect"
-                        ng-model="monthlyCaledarCoordinator.currentMonthObject"
-                        ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value"
-                        ng-change="onSelectMonth()">
-                </select>
-                <select class="form-control django-cradmin-datetime-selector-yearselect"
-                        ng-model="monthlyCaledarCoordinator.currentYearObject"
-                        ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
-                        ng-change="onSelectYear()">
-                </select>
-                <button type="button"
-                        class="btn btn-primary django-cradmin-datetime-selector-use-date-button"
-                        ng-click="onClickUseDate()">
-                    Use
-                </button>
+            <button type="button"
+                    class="btn btn-link django-cradmin-datetime-selector-closebutton"
+                    ng-click="hide()">x</button>
+
+            <div class="django-cradmin-datetime-selector-selectors-wrapper">
+                <div class="django-cradmin-datetime-selector-selectors">
+                    <div class="django-cradmin-datetime-selector-dateselectors">
+                        <select class="form-control django-cradmin-datetime-selector-dayselect"
+                                ng-model="monthlyCaledarCoordinator.currentDayObject"
+                                ng-options="dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value"
+                                ng-change="onSelectDayNumber()">
+                        </select>
+                        <select class="form-control django-cradmin-datetime-selector-monthselect"
+                                ng-model="monthlyCaledarCoordinator.currentMonthObject"
+                                ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value"
+                                ng-change="onSelectMonth()">
+                        </select>
+                        <select class="form-control django-cradmin-datetime-selector-yearselect"
+                                ng-model="monthlyCaledarCoordinator.currentYearObject"
+                                ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
+                                ng-change="onSelectYear()">
+                        </select>
+                    </div>
+
+                    <div class="django-cradmin-datetime-selector-timeselectors">
+                        kl.
+                        <select class="form-control django-cradmin-datetime-selector-hourselect"
+                                ng-model="monthlyCaledarCoordinator.currentHourObject"
+                                ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
+                                ng-change="onSelectHour()">
+                        </select>
+                        :
+                        <select class="form-control django-cradmin-datetime-selector-minuteselect"
+                                ng-model="monthlyCaledarCoordinator.currentMinuteObject"
+                                ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
+                                ng-change="onSelectMinute()">
+                        </select>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-primary django-cradmin-datetime-selector-use-button"
+                            ng-click="onClickUseTime()">
+                        Use
+                    </button>
+                </div>
             </div>
+
 
             <table class="django-cradmin-datetime-selector-table">
                 <thead>
@@ -60,6 +86,10 @@
         </div>
 
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview">
+            <button type="button"
+                    class="btn btn-link django-cradmin-datetime-selector-closebutton"
+                    ng-click="hide()">x</button>
+
             <a
                     class="django-cradmin-datetime-selector-backbutton"
                     ng-click="showPage1()">
@@ -85,7 +115,7 @@
                                 ng-change="onSelectMinute()">
                         </select>
                         <button type="button"
-                                class="btn btn-primary django-cradmin-datetime-selector-use-time-button"
+                                class="btn btn-primary django-cradmin-datetime-selector-use-button"
                                 ng-click="onClickUseTime()">
                             Use
                         </button>
