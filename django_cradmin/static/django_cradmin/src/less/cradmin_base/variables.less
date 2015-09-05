@@ -239,8 +239,15 @@
 
 
 // Dateselector
-@cradmin-datetimeselector-table-bordercolor: @btn-default-border;
+@cradmin-datetimeselector-page-bg: #fff;
+@cradmin-datetimeselector-page-height: 480px;
+@cradmin-datetimeselector-page-width: 600px;
 @cradmin-datetimeselector-transition: all .15s ease-in-out;
+
+@cradmin-datetimeselector-table-height: 400px;
+@cradmin-datetimeselector-page1-header-height: @cradmin-datetimeselector-page-height - @cradmin-datetimeselector-table-height;
+@cradmin-datetimeselector-table-bordercolor: @btn-default-border;
+@cradmin-datetimeselector-table-thead-height: 25px;
 @cradmin-datetimeselector-daybuttoncell-bg: @btn-default-bg;
 @cradmin-datetimeselector-daybuttoncell-color: @btn-default-color;
 @cradmin-datetimeselector-daybuttoncell-hover-bg: @cradmin-btn-default-hover-bg;
@@ -250,6 +257,12 @@
 @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-bg: @cradmin-datetimeselector-daybuttoncell-hover-bg;
 @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-color: @cradmin-datetimeselector-daybuttoncell-hover-color;
 
+@cradmin-datetimeselector-backbutton-width: 50px;
+@cradmin-datetimeselector-backbutton-border-right: 1px solid darken(@cradmin-datetimeselector-page-bg, 10%);
+@cradmin-datetimeselector-backbutton-color: @link-color;
+@cradmin-datetimeselector-backbutton-icon-font-size: 25px;
+@cradmin-datetimeselector-backbutton-hover-bg: darken(@cradmin-datetimeselector-page-bg, 5%);
+@cradmin-datetimeselector-backbutton-hover-color: darken(@cradmin-datetimeselector-backbutton-color, 5%);
 
 // Varius bootstrap overrides
 @font-family-sans-serif: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;

@@ -3183,7 +3183,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "    <div class=\"django-cradmin-datetime-selector-backdrop\" ng-click=\"hide()\"></div>\n" +
     "\n" +
     "    <div class=\"django-cradmin-datetime-selector-contentwrapper\">\n" +
-    "        <div class=\"django-cradmin-datetime-selector-dateview\">\n" +
+    "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview\">\n" +
     "            <div class=\"django-cradmin-datetime-selector-dateselectors\">\n" +
     "                <select class=\"form-control django-cradmin-datetime-selector-dayselect\"\n" +
     "                        ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
@@ -3234,36 +3234,38 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            </table>\n" +
     "        </div>\n" +
     "\n" +
-    "        <div class=\"django-cradmin-datetime-selector-timeview\">\n" +
-    "            <button type=\"button\"\n" +
-    "                    class=\"btn django-cradmin-datetime-selector-backbutton\"\n" +
+    "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview\">\n" +
+    "            <a\n" +
+    "                    class=\"django-cradmin-datetime-selector-backbutton\"\n" +
     "                    ng-click=\"showPage1()\">\n" +
-    "                &lt;\n" +
-    "            </button>\n" +
-    "            <div class=\"django-cradmin-datetime-selector-datepreviewbutton-wrapper\">\n" +
-    "                <button type=\"button\"\n" +
-    "                        class=\"django-cradmin-datetime-selector-datepreviewbutton btn btn-default\"\n" +
-    "                        ng-click=\"showPage1()\">\n" +
-    "                    Selected date:\n" +
-    "                    {{ monthlyCaledarCoordinator.formatSelectedDate() }}\n" +
-    "                </button>\n" +
-    "            </div>\n" +
-    "            <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
-    "                <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
-    "                        ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
-    "                        ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
-    "                        ng-change=\"onSelectHour()\">\n" +
-    "                </select>\n" +
-    "                <select class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
-    "                        ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
-    "                        ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +
-    "                        ng-change=\"onSelectMinute()\">\n" +
-    "                </select>\n" +
-    "                <button type=\"button\"\n" +
-    "                        class=\"btn btn-primary django-cradmin-datetime-selector-use-time-button\"\n" +
-    "                        ng-click=\"onClickUseTime()\">\n" +
-    "                    Use\n" +
-    "                </button>\n" +
+    "                <span class=\"django-cradmin-datetime-selector-backbutton-icon\">&lt;</span>\n" +
+    "            </a>\n" +
+    "\n" +
+    "            <div class=\"django-cradmin-datetime-selector-timeview-body-wrapper\">\n" +
+    "                <div class=\"django-cradmin-datetime-selector-timeview-body\">\n" +
+    "                    <p class=\"django-cradmin-datetime-selector-datepreview\">\n" +
+    "                        {{ monthlyCaledarCoordinator.formatSelectedDate() }}\n" +
+    "                    </p>\n" +
+    "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
+    "                        kl.\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
+    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
+    "                                ng-change=\"onSelectHour()\">\n" +
+    "                        </select>\n" +
+    "                        :\n" +
+    "                        <select class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
+    "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
+    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +
+    "                                ng-change=\"onSelectMinute()\">\n" +
+    "                        </select>\n" +
+    "                        <button type=\"button\"\n" +
+    "                                class=\"btn btn-primary django-cradmin-datetime-selector-use-time-button\"\n" +
+    "                                ng-click=\"onClickUseTime()\">\n" +
+    "                            Use\n" +
+    "                        </button>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
