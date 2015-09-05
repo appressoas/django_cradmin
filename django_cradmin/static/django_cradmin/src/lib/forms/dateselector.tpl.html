@@ -12,22 +12,39 @@
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview">
             <button type="button"
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
-                    ng-click="hide()"><span class="{{ config.close_icon }}"></span></button>
+                    ng-click="hide()">
+                        <span class="{{ config.close_icon }}" aria-hidden="true"></span>
+                        <span class="sr-only">{{ config.close_screenreader_text }}</span>
+                    </button>
 
             <div class="django-cradmin-datetime-selector-selectors-wrapper">
                 <div class="django-cradmin-datetime-selector-selectors">
                     <div class="django-cradmin-datetime-selector-dateselectors">
-                        <select class="form-control django-cradmin-datetime-selector-dayselect"
+                        <label for="{{ config.destinationfieldid }}_dayselect" class="sr-only">
+                            {{ config.day_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_dayselect"
+                                class="form-control django-cradmin-datetime-selector-dayselect"
                                 ng-model="monthlyCaledarCoordinator.currentDayObject"
                                 ng-options="dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value"
                                 ng-change="onSelectDayNumber()">
                         </select>
-                        <select class="form-control django-cradmin-datetime-selector-monthselect"
+
+                        <label for="{{ config.destinationfieldid }}_monthselect" class="sr-only">
+                            {{ config.month_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_monthselect"
+                                class="form-control django-cradmin-datetime-selector-monthselect"
                                 ng-model="monthlyCaledarCoordinator.currentMonthObject"
                                 ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value"
                                 ng-change="onSelectMonth()">
                         </select>
-                        <select class="form-control django-cradmin-datetime-selector-yearselect"
+
+                        <label for="{{ config.destinationfieldid }}_yearselect" class="sr-only">
+                            {{ config.year_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_yearselect"
+                                class="form-control django-cradmin-datetime-selector-yearselect"
                                 ng-model="monthlyCaledarCoordinator.currentYearObject"
                                 ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
                                 ng-change="onSelectYear()">
@@ -35,13 +52,21 @@
                     </div>
 
                     <div class="django-cradmin-datetime-selector-timeselectors" ng-if="config.include_time">
-                        <select class="form-control django-cradmin-datetime-selector-hourselect"
+                        <label for="{{ config.destinationfieldid }}_hourselect" class="sr-only">
+                            {{ config.hour_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_hourselect"
+                                class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
                                 ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
                                 ng-change="onSelectHour()">
                         </select>
                         :
-                        <select class="form-control django-cradmin-datetime-selector-minuteselect"
+                        <label for="{{ config.destinationfieldid }}_minuteselect" class="sr-only">
+                            {{ config.minute_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_minuteselect"
+                                class="form-control django-cradmin-datetime-selector-minuteselect"
                                 ng-model="monthlyCaledarCoordinator.currentMinuteObject"
                                 ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
                                 ng-change="onSelectMinute()">
@@ -87,7 +112,10 @@
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview">
             <button type="button"
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
-                    ng-click="hide()"><span class="{{ config.close_icon }}"></span></button>
+                    ng-click="hide()">
+                        <span class="{{ config.close_icon }}" aria-hidden="true"></span>
+                        <span class="sr-only">{{ config.close_screenreader_text }}</span>
+                    </button>
 
             <a role="button"
                     class="django-cradmin-datetime-selector-backbutton"
@@ -103,13 +131,21 @@
                         {{ getTimeselectorDatepreview() }}
                     </p>
                     <div class="django-cradmin-datetime-selector-timeselectors">
-                        <select class="form-control django-cradmin-datetime-selector-hourselect"
+                        <label for="{{ config.destinationfieldid }}_hourselect" class="sr-only">
+                            {{ config.hour_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_hourselect"
+                                class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
                                 ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
                                 ng-change="onSelectHour()">
                         </select>
                         :
-                        <select class="form-control django-cradmin-datetime-selector-minuteselect"
+                        <label for="{{ config.destinationfieldid }}_minuteselect" class="sr-only">
+                            {{ config.minute_screenreader_text }}
+                        </label>
+                        <select id="{{ config.destinationfieldid }}_minuteselect"
+                                class="form-control django-cradmin-datetime-selector-minuteselect"
                                 ng-model="monthlyCaledarCoordinator.currentMinuteObject"
                                 ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
                                 ng-change="onSelectMinute()">

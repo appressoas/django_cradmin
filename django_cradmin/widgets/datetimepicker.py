@@ -80,6 +80,13 @@ class DatePickerWidget(widgets.TextInput):
     #: See :meth:`~.DatePickerWidget.get_preview_angularjs_template`.
     default_preview_angularjs_template = "{{ momentObject.format('LL') }}"
 
+    close_screenreader_text = _('Close date picker without changing the value')
+    year_screenreader_text = _('Select year')
+    month_screenreader_text = _('Select month')
+    day_screenreader_text = _('Select day')
+    hour_screenreader_text = _('Select hour')
+    minute_screenreader_text = _('Select minute')
+
     # default_year_emptyvalue = _('Year')
     # default_month_emptyvalue = _('Month')
     # default_day_emptyvalue = _('Day')
@@ -143,6 +150,11 @@ class DatePickerWidget(widgets.TextInput):
             'back_icon': cradmin_icon(self.back_iconkey),
             'destinationfield_momentjs_format': self.destinationfield_momentjs_format,
             'timeselector_datepreview_momentjs_format': self.timeselector_datepreview_momentjs_format,
+            'year_screenreader_text': str(self.year_screenreader_text),
+            'month_screenreader_text': str(self.month_screenreader_text),
+            'day_screenreader_text': str(self.day_screenreader_text),
+            'hour_screenreader_text': str(self.hour_screenreader_text),
+            'minute_screenreader_text': str(self.minute_screenreader_text),
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
