@@ -12,33 +12,63 @@ app.directive 'djangoCradminDatetimeSelector', [
       templateUrl: 'forms/dateselector.tpl.html'
 
       controller: ($scope, $element) ->
-        $scope.isVisible = false
+        $scope.page = null
 
+        ###
+        Called when a users selects a date using the mobile-only <select>
+        menu to select a day.
+        ###
         $scope.onSelectDayNumber = ->
           $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange()
           return
 
+        ###
+        Called when a user selects a date by clicking on a day
+        in the calendar table.
+        ###
+        $scope.onClickCalendarDay = (calendarDay) ->
+          $scope.monthlyCaledarCoordinator.handleCalendarDayChange(calendarDay)
+          if $scope.config.include_time
+            $scope.showPage2()
+          else
+            $scope.applySelectedValue()
+          return
+
+        ###
+        Called when a users selects a month using the month <select>
+        menu.
+        ###
         $scope.onSelectMonth = ->
           $scope.monthlyCaledarCoordinator.handleCurrentMonthChange()
           return
 
+        ###
+        Called when a users selects a year using the year <select>
+        menu.
+        ###
         $scope.onSelectYear = ->
           $scope.monthlyCaledarCoordinator.handleCurrentYearChange()
           return
 
-        $scope.onSelectCalendarDay = (calendarDay) ->
-          $scope.monthlyCaledarCoordinator.onSelectCalendarDay(calendarDay)
-          $scope.applySelectedValue()
-          return
-
+        ###
+        Called when a users selects an hour using the hour <select>
+        menu.
+        ###
         $scope.onSelectHour = ->
           $scope.monthlyCaledarCoordinator.handleCurrentHourChange()
           return
 
+        ###
+        Called when a users selects a minute using the minute <select>
+        menu.
+        ###
         $scope.onSelectMinute = ->
           $scope.monthlyCaledarCoordinator.handleCurrentMinuteChange()
           return
 
+        ###
+        Called when a user clicks the "Use" button on the date page.
+        ###
         $scope.onClickUseDate = ->
           if $scope.config.include_time
             console.log 'Select time'
@@ -46,8 +76,12 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.applySelectedValue()
           return
 
+        ###
+        Called when a user clicks the "Use" button on the time page.
+        ###
         $scope.onClickUseTime = ->
           $scope.applySelectedValue()
+          console.log 'Apply'
           return
 
         $scope.applySelectedValue = ->
@@ -55,11 +89,14 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.previewElement.html($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format('llll'))
           $scope.hide()
 
-        $scope.show = ->
-          $scope.isVisible = true
+        $scope.showPage1 = ->
+          $scope.page = 1
+
+        $scope.showPage2 = ->
+          $scope.page = 2
 
         $scope.hide = ->
-          $scope.isVisible = false
+          $scope.page = null
 
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()
@@ -86,7 +123,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid)
           if $scope.triggerButton.length > 0
             $scope.triggerButton.on 'click', ->
-              $scope.show()
+              $scope.showPage1()
               $scope.$apply()
               return
           else

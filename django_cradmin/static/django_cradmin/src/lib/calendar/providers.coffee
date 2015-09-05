@@ -242,13 +242,23 @@ app.provider 'djangoCradminCalendarApi', ->
       @__updateDayObjects()
       @currentDayObject = @dayobjects[@selectedDateMomentObject.date()-1]
 
+    __handleDayChange: (momentObject) ->
+      @selectedDateMomentObject = momentObject.clone().set({
+        hour: @currentHourObject.value
+        minute: @currentMinuteObject.value
+      })
+      @__changeSelectedDate()
+
     handleCurrentDayObjectChange: ->
-      @selectedDateMomentObject = moment({
+      momentObject = moment({
         year: @currentYearObject.value
         month: @currentMonthObject.value
         day: @currentDayObject.value
       })
-      @__changeSelectedDate()
+      @__handleDayChange(momentObject)
+
+    handleCalendarDayChange: (calendarDay) ->
+      @__handleDayChange(calendarDay.momentObject)
 
     handleCurrentMonthChange: ->
       @selectedDateMomentObject.set({
@@ -274,12 +284,11 @@ app.provider 'djangoCradminCalendarApi', ->
       })
       @__changeSelectedDate()
 
-    onSelectCalendarDay: (calendarDay) ->
-      @selectedDateMomentObject = calendarDay.momentObject
-      @__changeSelectedDate()
-
     getDestinationFieldValue: ->
       return @selectedDateMomentObject.format('YYYY-MM-DD')
+
+    formatSelectedDate: ->
+      return @selectedDateMomentObject.format('LL')
 
 
   @$get = ->

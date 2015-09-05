@@ -19,7 +19,8 @@ from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.demo.webdemo.models import Page
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
-from django_cradmin.widgets.datetimepicker import DateTimePickerWidget, DateSplitTimePickerWidget
+from django_cradmin.widgets.datetimepicker import DateTimePickerWidget, DateSplitTimePickerWidget, \
+    BetterDateTimePickerWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -140,11 +141,11 @@ class PageCreateUpdateMixin(object):
             preview=preview,
             selectview_url=self._get_image_selectview_url()
         )
-        # form.fields['publishing_time'].widget = DateSplitTimePickerWidget()
+        form.fields['publishing_time'].widget = BetterDateTimePickerWidget()
         form.fields['unpublish_time'].widget = DateSplitTimePickerWidget(
             empty_hour_label='',
             empty_minute_label='',
-            extra_css_class='django-cradmin-datetimepicker-split-time-fluid'
+            # extra_css_class='django-cradmin-datetimepicker-split-time-fluid'
         )
         form.fields['attachment'].widget = filewidgets.ImageWidget()
         # form.fields['attachment'].widget = filewidgets.FileWidget()

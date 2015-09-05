@@ -10,117 +10,135 @@
     display: none;
   }
 
-  .django-cradmin-datetime-selector-dateview {
+  .django-cradmin-datetime-selector-contentwrapper {
     z-index: 100002;
     position: fixed;
+    top: 0;
     bottom: 0;
-    left: 50%;
-    margin-left: -300px;
-    background: #fff;
-    width: 600px;
+    left: 0;
+    right: 0;
     .translate(0, 100%);
-    .transition(@cradmin-datetimeselector-showtransition);
+    .transition(@cradmin-datetimeselector-transition);
 
-    .django-cradmin-datetime-selector-dateselectors {
-      text-align: center;
-      padding: 10px 0 10px 0;
+    .django-cradmin-datetime-selector-dateview {
+      .django-cradmin-datetime-selector-dateselectors {
+        text-align: center;
+        padding: 10px 0 10px 0;
 
-      select.form-control {
-        display: inline-block;
-        width: auto;
+        select.form-control {
+          display: inline-block;
+          width: auto;
 
-        &.django-cradmin-datetime-selector-dayselect {
+          &.django-cradmin-datetime-selector-dayselect {
+            @media (min-width: @screen-sm-min) {
+              display: none;
+            }
+          }
+        }
+        .django-cradmin-datetime-selector-use-date-button {
           @media (min-width: @screen-sm-min) {
             display: none;
           }
         }
       }
-      .django-cradmin-datetime-selector-use-date-button {
+
+      table.django-cradmin-datetime-selector-table {
+        width: 100%;
+        margin-top: 10px;
+        display: none;
+        table-layout: fixed;
+
         @media (min-width: @screen-sm-min) {
-          display: none;
+          display: table;
+        }
+
+        thead {
+          tr {
+            th {
+              padding: 0 0 6px 0;
+              text-align: center;
+              width: (100%/7);
+            }
+          }
+        }
+        tbody {
+          tr {
+            td.django-cradmin-datetime-selector-daybuttoncell {
+              margin: 0;
+              font-weight: bold;
+              text-align: center;
+              vertical-align: middle;
+              cursor: pointer;
+              background-image: none;
+              white-space: nowrap;
+              background: @cradmin-datetimeselector-daybuttoncell-bg;
+              color: @cradmin-datetimeselector-daybuttoncell-color;
+              border: 1px solid @cradmin-datetimeselector-table-bordercolor;
+              height: 60px;
+
+              &,
+              &:active,
+              &.active {
+                &:focus {
+                  // Default
+                  outline: thin dotted;
+                  // WebKit
+                  outline: 5px auto -webkit-focus-ring-color;
+                  outline-offset: -2px;
+                }
+              }
+
+              &:hover,
+              &:focus,
+              &.django-cradmin-datetime-selector-daybuttoncell-selected {
+                text-decoration: none;
+                background: @cradmin-datetimeselector-daybuttoncell-hover-bg;
+                color: @cradmin-datetimeselector-daybuttoncell-hover-color;
+              }
+
+              &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month {
+                background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-bg;
+                color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-color;
+                &:hover,
+                &:focus {
+                  background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-bg;
+                  color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-color;
+                }
+              }
+
+              &:first-child {
+                border-left: none;
+              }
+              &:last-child {
+                border-right: none;
+              }
+            }
+
+            &:last-child {
+              td.django-cradmin-datetime-selector-daybuttoncell {
+                border-bottom: none;
+              }
+            }
+          }
         }
       }
     }
 
-    table.django-cradmin-datetime-selector-table {
-      width: 100%;
-      margin-top: 10px;
-      display: none;
-      table-layout: fixed;
+    .django-cradmin-datetime-selector-dateview,
+    .django-cradmin-datetime-selector-timeview {
+      position: absolute;
+      bottom: 0;
+      background: #fff;
+      margin-left: -300px;
+      width: 600px;
+    }
 
-      @media (min-width: @screen-sm-min) {
-        display: table;
-      }
+    .django-cradmin-datetime-selector-dateview {
+      left: 50%;
+    }
 
-      thead {
-        tr {
-          th {
-            padding: 0 0 6px 0;
-            text-align: center;
-            width: (100%/7);
-          }
-        }
-      }
-      tbody {
-        tr {
-          td.django-cradmin-datetime-selector-daybuttoncell {
-            margin: 0;
-            font-weight: bold;
-            text-align: center;
-            vertical-align: middle;
-            cursor: pointer;
-            background-image: none;
-            white-space: nowrap;
-            background: @cradmin-datetimeselector-daybuttoncell-bg;
-            color: @cradmin-datetimeselector-daybuttoncell-color;
-            border: 1px solid @cradmin-datetimeselector-table-bordercolor;
-            height: 60px;
-
-            &,
-            &:active,
-            &.active {
-              &:focus {
-                // Default
-                outline: thin dotted;
-                // WebKit
-                outline: 5px auto -webkit-focus-ring-color;
-                outline-offset: -2px;
-              }
-            }
-
-            &:hover,
-            &:focus,
-            &.django-cradmin-datetime-selector-daybuttoncell-selected {
-              text-decoration: none;
-              background: @cradmin-datetimeselector-daybuttoncell-hover-bg;
-              color: @cradmin-datetimeselector-daybuttoncell-hover-color;
-            }
-
-            &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month {
-              background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-bg;
-              color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-color;
-              &:hover,
-              &:focus {
-                background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-bg;
-                color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-color;
-              }
-            }
-
-            &:first-child {
-              border-left: none;
-            }
-            &:last-child {
-              border-right: none;
-            }
-          }
-
-          &:last-child {
-            td.django-cradmin-datetime-selector-daybuttoncell {
-              border-bottom: none;
-            }
-          }
-        }
-      }
+    .django-cradmin-datetime-selector-timeview {
+      left: 150%;
     }
   }
 
@@ -129,8 +147,16 @@
     .django-cradmin-datetime-selector-backdrop {
       display: block;
     }
-    .django-cradmin-datetime-selector-dateview {
-      .translate(0, -5%);
+
+    &.django-cradmin-datetime-selector-page1 {
+      .django-cradmin-datetime-selector-contentwrapper {
+        .translate(0, -5%);
+      }
+    }
+    &.django-cradmin-datetime-selector-page2 {
+      .django-cradmin-datetime-selector-contentwrapper {
+        .translate(-100%, -5%);
+      }
     }
   }
 }
