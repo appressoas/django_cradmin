@@ -6,15 +6,17 @@
             'django-cradmin-datetime-selector-page3': page == 3
         }">
 
+    <!-- -->
     <div class="django-cradmin-datetime-selector-backdrop"></div>
 
     <div class="django-cradmin-datetime-selector-contentwrapper">
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview">
+            <button type="button" class="sr-only" ng-focus="onFocusHead()"></button>
             <button type="button"
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
+                    aria-label="{{ config.close_screenreader_text }}"
                     ng-click="hide()">
                         <span class="{{ config.close_icon }}" aria-hidden="true"></span>
-                        <span class="sr-only">{{ config.close_screenreader_text }}</span>
                     </button>
 
             <div class="django-cradmin-datetime-selector-selectors-wrapper">
@@ -75,14 +77,17 @@
 
                     <button type="button"
                             class="btn btn-primary django-cradmin-datetime-selector-use-button"
-                            ng-click="onClickUseTime()">
+                            ng-click="onClickUseTime()"
+                            aria-label="{{ getUseButtonAriaLabel() }}">
                         {{ config.usebuttonlabel }}
                     </button>
                 </div>
             </div>
 
-
             <table class="django-cradmin-datetime-selector-table">
+                <caption class="sr-only">
+                    {{ config.dateselector_table_screenreader_caption }}
+                </caption>
                 <thead>
                     <tr>
                         <th ng-repeat="weekday in monthlyCaledarCoordinator.shortWeekdays">
@@ -92,38 +97,52 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks">
+                        <!--
+                        NOTE: We do not support tabindex based keyboard navigation here because that would
+                        break screenreader support. Instead, we provide the select-based date and time
+                        pickers for screenreaders (just like for mobile).
+                        -->
                         <td ng-repeat="calendarDay in calendarWeek.calendarDays"
-                                tabindex="0"
-                                role="button"
                                 class="django-cradmin-datetime-selector-daybuttoncell"
                                 ng-class="{
                                     'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
                                     'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
                                     'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')
-                                }"
-                                ng-click="onClickCalendarDay(calendarDay)">
-                            {{ calendarDay.getNumberInMonth() }}
+                                }">
+                            <button type="button" class="btn btn-link"
+                                    ng-click="onClickCalendarDay(calendarDay)"
+                                    tabindex="{{ getTabindexForCalendarDay(calendarDay) }}"
+                                    aria-label="{{ calendarDay.momentObject.format('MMMM D') }}">
+                                {{ calendarDay.getNumberInMonth() }}
+                            </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <button type="button" class="sr-only" ng-focus="onFocusTail()"></button>
         </div>
 
         <div class="django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview">
+            <button type="button" class="sr-only" ng-focus="onFocusHead()"></button>
             <button type="button"
                     class="btn btn-link django-cradmin-datetime-selector-closebutton"
+                    aria-label="{{ config.close_screenreader_text }}"
                     ng-click="hide()">
                         <span class="{{ config.close_icon }}" aria-hidden="true"></span>
-                        <span class="sr-only">{{ config.close_screenreader_text }}</span>
                     </button>
 
-            <a role="button"
-                    class="django-cradmin-datetime-selector-backbutton"
+            <button type="button"
+                    class="btn btn-link django-cradmin-datetime-selector-backbutton"
+                    tabindex="0"
+                    aria-label="{{ config.back_to_datepicker_screenreader_text }}"
                     ng-click="showPage1()">
-                <span class="django-cradmin-datetime-selector-backbutton-icon">
-                    <span class="{{ config.back_icon }}"></span>
+                <span class="django-cradmin-datetime-selector-backbutton-icon-outer-wrapper">
+                    <span class="django-cradmin-datetime-selector-backbutton-icon-inner-wrapper">
+                        <span class="django-cradmin-datetime-selector-backbutton-icon {{ config.back_icon }}"></span>
+                    </span>
                 </span>
-            </a>
+            </button>
 
             <div class="django-cradmin-datetime-selector-timeview-body-wrapper">
                 <div class="django-cradmin-datetime-selector-timeview-body">
@@ -152,12 +171,14 @@
                         </select>
                         <button type="button"
                                 class="btn btn-primary django-cradmin-datetime-selector-use-button"
-                                ng-click="onClickUseTime()">
+                                ng-click="onClickUseTime()"
+                                aria-label="{{ getUseButtonAriaLabel() }}">
                             {{ config.usebuttonlabel }}
                         </button>
                     </div>
                 </div>
             </div>
+            <button type="button" class="sr-only" ng-focus="onFocusTail()"></button>
         </div>
     </div>
 </div>

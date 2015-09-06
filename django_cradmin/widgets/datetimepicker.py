@@ -86,6 +86,10 @@ class DatePickerWidget(widgets.TextInput):
     day_screenreader_text = _('Select day')
     hour_screenreader_text = _('Select hour')
     minute_screenreader_text = _('Select minute')
+    usebutton_arialabel_prefix = _('Confirm that you want to select')
+    back_to_datepicker_screenreader_text = _('Return to date picker')
+    dateselector_table_screenreader_caption = _('Select date')
+    usebutton_arialabel_momentjs_format = 'LL'
 
     # default_year_emptyvalue = _('Year')
     # default_month_emptyvalue = _('Month')
@@ -125,7 +129,8 @@ class DatePickerWidget(widgets.TextInput):
 
         super(DatePickerWidget, self).__init__(*args, **kwargs)
 
-    def get_datepicker_config(self, fieldid, triggerbuttonid, previewid, previewtemplateid):
+    def get_datepicker_config(self, fieldid, triggerbuttonid, previewid,
+                              previewtemplateid):
         """
         Get the configuration for the ``django-cradmin-datetime-selector`` AngularJS directive.
 
@@ -150,11 +155,16 @@ class DatePickerWidget(widgets.TextInput):
             'back_icon': cradmin_icon(self.back_iconkey),
             'destinationfield_momentjs_format': self.destinationfield_momentjs_format,
             'timeselector_datepreview_momentjs_format': self.timeselector_datepreview_momentjs_format,
+            'close_screenreader_text': str(self.close_screenreader_text),
             'year_screenreader_text': str(self.year_screenreader_text),
             'month_screenreader_text': str(self.month_screenreader_text),
             'day_screenreader_text': str(self.day_screenreader_text),
             'hour_screenreader_text': str(self.hour_screenreader_text),
             'minute_screenreader_text': str(self.minute_screenreader_text),
+            'usebutton_arialabel_prefix': str(self.usebutton_arialabel_prefix),
+            'usebutton_arialabel_momentjs_format': str(self.usebutton_arialabel_momentjs_format),
+            'back_to_datepicker_screenreader_text': str(self.back_to_datepicker_screenreader_text),
+            'dateselector_table_screenreader_caption': str(self.dateselector_table_screenreader_caption),
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
@@ -223,12 +233,12 @@ class DatePickerWidget(widgets.TextInput):
                 fieldid=fieldid,
                 triggerbuttonid=triggerbuttonid,
                 previewid=previewid,
-                previewtemplateid=previewtemplateid
+                previewtemplateid=previewtemplateid,
             )),
             'triggerbuttonid': triggerbuttonid,
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
-            'preview_angularjs_template': self.__get_preview_angularjs_template()
+            'preview_angularjs_template': self.__get_preview_angularjs_template(),
         })
 
 
@@ -240,6 +250,7 @@ class BetterDateTimePickerWidget(DatePickerWidget):
     default_buttonlabel_novalue = _('Select a date/time')
     default_preview_angularjs_template = "{{ momentObject.format('LLLL') }}"
     destinationfield_momentjs_format = 'YYYY-MM-DD HH:mm'
+    usebutton_arialabel_momentjs_format = 'LLLL'
 
     def get_datepicker_config(self, *args, **kwargs):
         config = super(BetterDateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)

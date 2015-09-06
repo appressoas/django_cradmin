@@ -1577,7 +1577,82 @@
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
+          var __getFirstFocusableItemInCurrentPage, __getFocusItemAfterHide, __getInitialFocusItemForCurrentPage, __getLastFocusableItemInCurrentPage;
           $scope.page = null;
+          /*
+          Returns the item we want to focus on when we tab forward from the last
+          focusable item on the current page.
+          */
+
+          __getFirstFocusableItemInCurrentPage = function() {
+            if ($scope.page === 1) {
+              return $element.find('.django-cradmin-datetime-selector-dateview ' + '.django-cradmin-datetime-selector-closebutton');
+            } else if ($scope.page === 2) {
+              return $element.find('.django-cradmin-datetime-selector-timeview ' + '.django-cradmin-datetime-selector-closebutton');
+            }
+          };
+          /*
+          Returns the item we want to focus on when we tab back from the first
+          focusable item on the current page.
+          */
+
+          __getLastFocusableItemInCurrentPage = function() {
+            var useButton;
+            if ($scope.page === 1) {
+              useButton = $element.find('.django-cradmin-datetime-selector-dateview ' + '.django-cradmin-datetime-selector-use-button');
+              if (useButton.is(":visible")) {
+                return useButton;
+              } else {
+                return $element.find('.django-cradmin-datetime-selector-table ' + 'td.django-cradmin-datetime-selector-daybuttoncell-in-current-month button').last();
+              }
+            } else if ($scope.page === 2) {
+              return $element.find('.django-cradmin-datetime-selector-timeview ' + '.django-cradmin-datetime-selector-use-button');
+            }
+          };
+          /*
+          Get the initial item to focus on when we open/show a page.
+          */
+
+          __getInitialFocusItemForCurrentPage = function() {
+            var dayselectElement;
+            if ($scope.page === 1) {
+              dayselectElement = $element.find('.django-cradmin-datetime-selector-dayselect');
+              if (dayselectElement.is(':visible')) {
+                return dayselectElement;
+              } else {
+                return $element.find('.django-cradmin-datetime-selector-monthselect');
+              }
+            } else if ($scope.page === 2) {
+              return $element.find('.django-cradmin-datetime-selector-timeview ' + '.django-cradmin-datetime-selector-hourselect');
+            }
+          };
+          /*
+          Get the item to focus on when we close the datetime picker.
+          */
+
+          __getFocusItemAfterHide = function() {
+            return $scope.triggerButton;
+          };
+          /*
+          Triggered when the user focuses on the hidden (sr-only) button we have
+          added to the start of the datetime-selector div.
+          */
+
+          $scope.onFocusHead = function() {
+            if ($scope.page !== null) {
+              __getLastFocusableItemInCurrentPage().focus();
+            }
+          };
+          /*
+          Triggered when the user focuses on the hidden (sr-only) button we have
+          added to the end of the datetime-selector div.
+          */
+
+          $scope.onFocusTail = function() {
+            if ($scope.page !== null) {
+              __getFirstFocusableItemInCurrentPage().focus();
+            }
+          };
           /*
           Called when a users selects a date using the mobile-only <select>
           menu to select a day.
@@ -1645,6 +1720,28 @@
           $scope.getTimeselectorDatepreview = function() {
             return $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
           };
+          /*
+          This is used to get the aria-label attribute for the "Use" button.
+          */
+
+          $scope.getUseButtonAriaLabel = function() {
+            var formattedDate;
+            if ($scope.monthlyCaledarCoordinator != null) {
+              formattedDate = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
+              return ("" + $scope.config.usebutton_arialabel_prefix + " ") + ("" + formattedDate);
+            } else {
+
+            }
+            return '';
+          };
+          $scope.getTabindexForCalendarDay = function(calendarDay) {
+            if (calendarDay.isInCurrentMonth) {
+              return "0";
+            } else {
+
+            }
+            return "-1";
+          };
           $scope.__applyPreviewText = function() {
             var preview, templateScope;
             if ($scope.monthlyCaledarCoordinator.valueWasSetByUser) {
@@ -1664,20 +1761,23 @@
             return $scope.hide();
           };
           $scope.showPage1 = function() {
-            return $scope.page = 1;
+            $scope.page = 1;
+            __getInitialFocusItemForCurrentPage().focus();
           };
           $scope.showPage2 = function() {
-            return $scope.page = 2;
+            $scope.page = 2;
+            __getInitialFocusItemForCurrentPage().focus();
           };
           $scope.hide = function() {
             if ($scope.page === 2) {
               $scope.page = 3;
-              return $timeout(function() {
+              $timeout(function() {
                 return $scope.page = null;
               }, 400);
             } else {
-              return $scope.page = null;
+              $scope.page = null;
             }
+            return __getFocusItemAfterHide().focus();
           };
           return $scope.initialize = function() {
             var currentDateIsoString, currentDateMomentObject, valueWasSetByUser;
@@ -1696,11 +1796,11 @@
           };
         },
         link: function($scope, $element) {
-          var configname, configvalue, previewTemplateScriptElement, required_config_attributes, _i, _len;
+          var configname, configvalue, labelElement, previewTemplateScriptElement, required_config_attributes, _i, _len;
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'close_icon', 'back_icon', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -1726,6 +1826,13 @@
               $scope.showPage1();
               $scope.$apply();
             });
+            labelElement = angular.element("label[for=" + $scope.config.destinationfieldid + "]");
+            if (labelElement.length > 0) {
+              if (!labelElement.attr('id')) {
+                labelElement.attr('id', "" + $scope.config.destinationfieldid + "_label");
+              }
+              $scope.triggerButton.attr('aria-labeledby', "" + (labelElement.attr('id')) + " " + $scope.config.previewid);
+            }
           } else {
             if (typeof console !== "undefined" && console !== null) {
               if (typeof console.warn === "function") {
@@ -3205,15 +3312,17 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            'django-cradmin-datetime-selector-page3': page == 3\n" +
     "        }\">\n" +
     "\n" +
+    "    <!-- -->\n" +
     "    <div class=\"django-cradmin-datetime-selector-backdrop\"></div>\n" +
     "\n" +
     "    <div class=\"django-cradmin-datetime-selector-contentwrapper\">\n" +
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview\">\n" +
+    "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusHead()\"></button>\n" +
     "            <button type=\"button\"\n" +
     "                    class=\"btn btn-link django-cradmin-datetime-selector-closebutton\"\n" +
+    "                    aria-label=\"{{ config.close_screenreader_text }}\"\n" +
     "                    ng-click=\"hide()\">\n" +
     "                        <span class=\"{{ config.close_icon }}\" aria-hidden=\"true\"></span>\n" +
-    "                        <span class=\"sr-only\">{{ config.close_screenreader_text }}</span>\n" +
     "                    </button>\n" +
     "\n" +
     "            <div class=\"django-cradmin-datetime-selector-selectors-wrapper\">\n" +
@@ -3274,14 +3383,17 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "\n" +
     "                    <button type=\"button\"\n" +
     "                            class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
-    "                            ng-click=\"onClickUseTime()\">\n" +
+    "                            ng-click=\"onClickUseTime()\"\n" +
+    "                            aria-label=\"{{ getUseButtonAriaLabel() }}\">\n" +
     "                        {{ config.usebuttonlabel }}\n" +
     "                    </button>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "\n" +
-    "\n" +
     "            <table class=\"django-cradmin-datetime-selector-table\">\n" +
+    "                <caption class=\"sr-only\">\n" +
+    "                    {{ config.dateselector_table_screenreader_caption }}\n" +
+    "                </caption>\n" +
     "                <thead>\n" +
     "                    <tr>\n" +
     "                        <th ng-repeat=\"weekday in monthlyCaledarCoordinator.shortWeekdays\">\n" +
@@ -3291,38 +3403,52 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                </thead>\n" +
     "                <tbody>\n" +
     "                    <tr ng-repeat=\"calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks\">\n" +
+    "                        <!--\n" +
+    "                        NOTE: We do not support tabindex based keyboard navigation here because that would\n" +
+    "                        break screenreader support. Instead, we provide the select-based date and time\n" +
+    "                        pickers for screenreaders (just like for mobile).\n" +
+    "                        -->\n" +
     "                        <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\"\n" +
-    "                                tabindex=\"0\"\n" +
-    "                                role=\"button\"\n" +
     "                                class=\"django-cradmin-datetime-selector-daybuttoncell\"\n" +
     "                                ng-class=\"{\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')\n" +
-    "                                }\"\n" +
-    "                                ng-click=\"onClickCalendarDay(calendarDay)\">\n" +
-    "                            {{ calendarDay.getNumberInMonth() }}\n" +
+    "                                }\">\n" +
+    "                            <button type=\"button\" class=\"btn btn-link\"\n" +
+    "                                    ng-click=\"onClickCalendarDay(calendarDay)\"\n" +
+    "                                    tabindex=\"{{ getTabindexForCalendarDay(calendarDay) }}\"\n" +
+    "                                    aria-label=\"{{ calendarDay.momentObject.format('MMMM D') }}\">\n" +
+    "                                {{ calendarDay.getNumberInMonth() }}\n" +
+    "                            </button>\n" +
     "                        </td>\n" +
     "                    </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
+    "\n" +
+    "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusTail()\"></button>\n" +
     "        </div>\n" +
     "\n" +
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-timeview\">\n" +
+    "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusHead()\"></button>\n" +
     "            <button type=\"button\"\n" +
     "                    class=\"btn btn-link django-cradmin-datetime-selector-closebutton\"\n" +
+    "                    aria-label=\"{{ config.close_screenreader_text }}\"\n" +
     "                    ng-click=\"hide()\">\n" +
     "                        <span class=\"{{ config.close_icon }}\" aria-hidden=\"true\"></span>\n" +
-    "                        <span class=\"sr-only\">{{ config.close_screenreader_text }}</span>\n" +
     "                    </button>\n" +
     "\n" +
-    "            <a role=\"button\"\n" +
-    "                    class=\"django-cradmin-datetime-selector-backbutton\"\n" +
+    "            <button type=\"button\"\n" +
+    "                    class=\"btn btn-link django-cradmin-datetime-selector-backbutton\"\n" +
+    "                    tabindex=\"0\"\n" +
+    "                    aria-label=\"{{ config.back_to_datepicker_screenreader_text }}\"\n" +
     "                    ng-click=\"showPage1()\">\n" +
-    "                <span class=\"django-cradmin-datetime-selector-backbutton-icon\">\n" +
-    "                    <span class=\"{{ config.back_icon }}\"></span>\n" +
+    "                <span class=\"django-cradmin-datetime-selector-backbutton-icon-outer-wrapper\">\n" +
+    "                    <span class=\"django-cradmin-datetime-selector-backbutton-icon-inner-wrapper\">\n" +
+    "                        <span class=\"django-cradmin-datetime-selector-backbutton-icon {{ config.back_icon }}\"></span>\n" +
+    "                    </span>\n" +
     "                </span>\n" +
-    "            </a>\n" +
+    "            </button>\n" +
     "\n" +
     "            <div class=\"django-cradmin-datetime-selector-timeview-body-wrapper\">\n" +
     "                <div class=\"django-cradmin-datetime-selector-timeview-body\">\n" +
@@ -3351,12 +3477,14 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </select>\n" +
     "                        <button type=\"button\"\n" +
     "                                class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
-    "                                ng-click=\"onClickUseTime()\">\n" +
+    "                                ng-click=\"onClickUseTime()\"\n" +
+    "                                aria-label=\"{{ getUseButtonAriaLabel() }}\">\n" +
     "                            {{ config.usebuttonlabel }}\n" +
     "                        </button>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
+    "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusTail()\"></button>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +

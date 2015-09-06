@@ -109,6 +109,7 @@
             display: block;
             .django-cradmin-datetime-selector-timeselectors,
             .django-cradmin-datetime-selector-use-button {
+              //.cradmin-sr-only();
               display: none;
             }
           }
@@ -145,38 +146,51 @@
           tr {
             td.django-cradmin-datetime-selector-daybuttoncell {
               margin: 0;
-              font-weight: bold;
-              text-align: center;
-              vertical-align: middle;
-              cursor: pointer;
-              background-image: none;
-              white-space: nowrap;
               background: @cradmin-datetimeselector-daybuttoncell-bg;
               color: @cradmin-datetimeselector-daybuttoncell-color;
               border: 1px solid @cradmin-datetimeselector-table-bordercolor;
               height: ((@cradmin-datetimeselector-table-height - @cradmin-datetimeselector-table-thead-height)/6);
+              position: relative;
 
-              &,
-              &:active,
-              &.active {
-                &:focus {
-                  // Default
-                  outline: thin dotted;
-                  // WebKit
-                  outline: 5px auto -webkit-focus-ring-color;
-                  outline-offset: -2px;
+              button {
+                display: block;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                margin: 0;
+                text-align: center;
+                vertical-align: middle;
+                cursor: pointer;
+                font-weight: bold;
+                white-space: nowrap;
+
+                &,
+                &:active,
+                &.active {
+                  &:focus {
+                    // Default
+                    outline: thin dotted;
+                    // WebKit
+                    outline: 5px auto -webkit-focus-ring-color;
+                    outline-offset: -2px;
+                  }
                 }
               }
 
-              &:hover,
-              &:focus,
-              &.django-cradmin-datetime-selector-daybuttoncell-selected {
+              button:hover,
+              button:focus,
+              &.django-cradmin-datetime-selector-daybuttoncell-selected button {
                 text-decoration: none;
                 background: @cradmin-datetimeselector-daybuttoncell-hover-bg;
                 color: @cradmin-datetimeselector-daybuttoncell-hover-color;
               }
 
-              &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month {
+              &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button {
                 background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-bg;
                 color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-color;
                 &:hover,
@@ -211,6 +225,7 @@
       }
 
       .django-cradmin-datetime-selector-backbutton {
+        display: block;
         position: absolute;
         left: 0;
         top: 0;
@@ -220,7 +235,6 @@
         height: 100%;
         color: @cradmin-datetimeselector-backbutton-color;
         border-radius: 0;
-        display: table;
         margin: 0;
         text-align: center;
         vertical-align: middle;
@@ -228,12 +242,21 @@
         border-right: @cradmin-datetimeselector-backbutton-border-right;
         background: none;
 
-        .django-cradmin-datetime-selector-backbutton-icon {
-          display: table-cell;
-          vertical-align: middle;
-          text-align: center;
+        .django-cradmin-datetime-selector-backbutton-icon-outer-wrapper {
+          display: table;
           width: 100%;
-          font-size: @cradmin-datetimeselector-backbutton-icon-font-size;
+          height: 100%;
+          .django-cradmin-datetime-selector-backbutton-icon-inner-wrapper {
+            display: table-cell;
+            vertical-align: middle;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            .django-cradmin-datetime-selector-backbutton-icon {
+              width: 100%;
+              font-size: @cradmin-datetimeselector-backbutton-icon-font-size;
+            }
+          }
         }
 
         &:hover, &:focus, &:active {

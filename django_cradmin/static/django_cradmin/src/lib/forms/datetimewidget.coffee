@@ -15,6 +15,73 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.page = null
 
         ###
+        Returns the item we want to focus on when we tab forward from the last
+        focusable item on the current page.
+        ###
+        __getFirstFocusableItemInCurrentPage = ->
+          if $scope.page == 1
+            return $element.find('.django-cradmin-datetime-selector-dateview ' +
+                '.django-cradmin-datetime-selector-closebutton')
+          else if $scope.page == 2
+            return $element.find('.django-cradmin-datetime-selector-timeview ' +
+                '.django-cradmin-datetime-selector-closebutton')
+
+        ###
+        Returns the item we want to focus on when we tab back from the first
+        focusable item on the current page.
+        ###
+        __getLastFocusableItemInCurrentPage = ->
+          if $scope.page == 1
+            useButton = $element.find('.django-cradmin-datetime-selector-dateview ' +
+              '.django-cradmin-datetime-selector-use-button')
+            if useButton.is(":visible")
+              return useButton
+            else
+              return $element.find('.django-cradmin-datetime-selector-table ' +
+                  'td.django-cradmin-datetime-selector-daybuttoncell-in-current-month button').last()
+          else if $scope.page == 2
+            return $element.find('.django-cradmin-datetime-selector-timeview ' +
+              '.django-cradmin-datetime-selector-use-button')
+
+        ###
+        Get the initial item to focus on when we open/show a page.
+        ###
+        __getInitialFocusItemForCurrentPage = ->
+          if $scope.page == 1
+            dayselectElement = $element.find('.django-cradmin-datetime-selector-dayselect')
+            if dayselectElement.is(':visible')
+              return dayselectElement
+            else
+              return $element.find('.django-cradmin-datetime-selector-monthselect')
+          else if $scope.page == 2
+            return $element.find('.django-cradmin-datetime-selector-timeview ' +
+                '.django-cradmin-datetime-selector-hourselect')
+
+        ###
+        Get the item to focus on when we close the datetime picker.
+        ###
+        __getFocusItemAfterHide = ->
+          return $scope.triggerButton
+
+        ###
+        Triggered when the user focuses on the hidden (sr-only) button we have
+        added to the start of the datetime-selector div.
+        ###
+        $scope.onFocusHead = ->
+          if $scope.page != null
+            __getLastFocusableItemInCurrentPage().focus()
+          return
+
+        ###
+        Triggered when the user focuses on the hidden (sr-only) button we have
+        added to the end of the datetime-selector div.
+        ###
+        $scope.onFocusTail = ->
+          if $scope.page != null
+            __getFirstFocusableItemInCurrentPage().focus()
+          return
+
+        ###
         Called when a users selects a date using the mobile-only <select>
         menu to select a day.
         ###
@@ -81,6 +148,24 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.config.timeselector_datepreview_momentjs_format
           )
 
+        ###
+        This is used to get the aria-label attribute for the "Use" button.
+        ###
+        $scope.getUseButtonAriaLabel = ->
+          if $scope.monthlyCaledarCoordinator?
+            formattedDate = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
+              $scope.config.usebutton_arialabel_momentjs_format)
+            return "#{$scope.config.usebutton_arialabel_prefix} " +
+              "#{formattedDate}"
+          else
+          return ''
+
+        $scope.getTabindexForCalendarDay = (calendarDay) ->
+          if calendarDay.isInCurrentMonth
+            return "0"
+          else
+          return "-1"
+
         $scope.__applyPreviewText = ->
           if $scope.monthlyCaledarCoordinator.valueWasSetByUser
             templateScope = $rootScope.$new(true)  # Create new isolated scope
@@ -101,9 +186,13 @@ app.directive 'djangoCradminDatetimeSelector', [
 
         $scope.showPage1 = ->
           $scope.page = 1
+          __getInitialFocusItemForCurrentPage().focus()
+          return
 
         $scope.showPage2 = ->
           $scope.page = 2
+          __getInitialFocusItemForCurrentPage().focus()
+          return
 
         $scope.hide = ->
           if $scope.page == 2
@@ -118,6 +207,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             , 400)
           else
             $scope.page = null
+          __getFocusItemAfterHide().focus()
 
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()
@@ -135,6 +225,11 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.__applyPreviewText()
 
       link: ($scope, $element) ->
+
+        #
+        # Validate required config
+        #
+
         if not $scope.config.no_value_preview_text?
           $scope.config.no_value_preview_text = ''
 
@@ -144,8 +239,11 @@ app.directive 'djangoCradminDatetimeSelector', [
           'previewid'
           'previewtemplateid'
           'usebuttonlabel'
+          'usebutton_arialabel_prefix'
+          'usebutton_arialabel_momentjs_format'
           'close_icon'
           'back_icon'
+          'back_to_datepicker_screenreader_text'
           'destinationfield_momentjs_format'
           'timeselector_datepreview_momentjs_format'
           'year_screenreader_text'
@@ -153,6 +251,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           'day_screenreader_text'
           'hour_screenreader_text'
           'minute_screenreader_text'
+          'dateselector_table_screenreader_caption'
 #          'year_emptyvalue'
 #          'month_emptyvalue'
 #          'day_emptyvalue'
@@ -164,6 +263,16 @@ app.directive 'djangoCradminDatetimeSelector', [
           if not configvalue? or configvalue == ''
             console?.error? "The #{configname} config is required!"
 
+
+        #
+        # Find the required elements outside the datepicker:
+        # - The (hidden) destination field
+        # - The button that triggers the widget
+        # - The element where we show the preview of the selected date/datetime
+        # - The <script> tag containing the AngularJS template used to
+        #   create the preview.
+        #
+
         $scope.destinationField = angular.element("#" + $scope.config.destinationfieldid)
         if $scope.destinationField.length == 0
           console?.error? "Could not find the destinationField element with ID: #{$scope.config.destinationfieldid}"
@@ -174,6 +283,11 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.showPage1()
             $scope.$apply()
             return
+          labelElement = angular.element("label[for=#{$scope.config.destinationfieldid}]")
+          if labelElement.length > 0
+            if not labelElement.attr('id')
+              labelElement.attr('id', "#{$scope.config.destinationfieldid}_label")
+            $scope.triggerButton.attr('aria-labeledby', "#{labelElement.attr('id')} #{$scope.config.previewid}")
         else
           console?.warn? "Could not find the triggerButton element with ID: #{$scope.config.triggerbuttonid}"
 
