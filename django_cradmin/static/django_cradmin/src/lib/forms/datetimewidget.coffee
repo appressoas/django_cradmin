@@ -1,9 +1,11 @@
-app = angular.module 'djangoCradmin.forms.datetimewidget', []
+app = angular.module 'djangoCradmin.forms.datetimewidget', ['cfp.hotkeys']
 
+#app.config (hotkeysProvider) ->
+#  hotkeysProvider.includeCheatSheet = false
 
 app.directive 'djangoCradminDatetimeSelector', [
-  '$timeout', '$compile', '$rootScope', 'djangoCradminCalendarApi'
-  ($timeout, $compile, $rootScope, djangoCradminCalendarApi) ->
+  '$timeout', '$compile', '$rootScope', 'hotkeys', 'djangoCradminCalendarApi',
+  ($timeout, $compile, $rootScope, hotkeys, djangoCradminCalendarApi) ->
 
     return {
       scope: {
@@ -13,6 +15,39 @@ app.directive 'djangoCradminDatetimeSelector', [
 
       controller: ($scope, $element) ->
         $scope.page = null
+
+        $scope.__keyboardNavigation = (event, direction) ->
+          activeElement = angular.element(document.activeElement)
+          if activeElement.hasClass('django-cradmin-datetime-selector-daybuttoncell-button')
+            event.preventDefault()
+
+            if direction == 'right'
+              nextSibling = activeElement.parent().next()
+              if nextSibling.length > 0
+                newFocusTd = nextSibling
+            if direction == 'left'
+              previousSibling = activeElement.parent().prev()
+              if previousSibling.length > 0
+                newFocusTd = previousSibling
+            if direction == 'up'
+              previousTr = activeElement.parent().parent().prev()
+              if previousTr.length > 0
+                newFocusTd = angular.element(previousTr.children().get(activeElement.parent().index()))
+            if direction == 'down'
+              nextTr = activeElement.parent().parent().next()
+              if nextTr.length > 0
+                newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()))
+
+            if direction == 'home'
+              newFocusTd = activeElement.parent().parent().parent().children().first().children().first()
+            if direction == 'end'
+              console.log activeElement.parent().parent().parent()
+              console.log activeElement.parent().parent().parent().children().last()
+              console.log activeElement.parent().parent().parent().children().last().children().last()
+              newFocusTd = activeElement.parent().parent().parent().children().last().children().last()
+
+            if newFocusTd? and newFocusTd.length > 0
+              newFocusTd.find('button').focus()
 
         ###
         Returns the item we want to focus on when we tab forward from the last
@@ -184,14 +219,74 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.triggerButton.html($scope.config.buttonlabel)
           $scope.hide()
 
+        __addCommonHotkeys = ->
+          hotkeys.add({
+            combo: 'esc'
+            callback: (event) ->
+              $scope.hide()
+            allowIn: ['BUTTON', 'SELECT', 'INPUT']
+          })
+          hotkeys.add({
+            combo: 'up'
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'up')
+          })
+          hotkeys.add({
+            combo: 'down'
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'down')
+          })
+          hotkeys.add({
+            combo: 'left'
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'left')
+          })
+          hotkeys.add({
+            combo: 'right'
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'right')
+          })
+          hotkeys.add({
+            combo: 'home'
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'home')
+          })
+          hotkeys.add({
+            combo: 'end'
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'end')
+          })
+
+        __addPage1Hotkeys = ->
+
+        __removeHotkeys = ->
+          hotkeys.del('esc')
+          hotkeys.del('up')
+          hotkeys.del('down')
+          hotkeys.del('left')
+          hotkeys.del('right')
+          hotkeys.del('home')
+          hotkeys.del('end')
+
         $scope.showPage1 = ->
           $scope.page = 1
-          __getInitialFocusItemForCurrentPage().focus()
+          # Use a timeout to ensure screenreaders are not stuck on the
+          # last focused element.
+          $timeout(->
+            __getInitialFocusItemForCurrentPage().focus()
+          , 150)
+          __addCommonHotkeys()
+          __addPage1Hotkeys()
           return
 
         $scope.showPage2 = ->
           $scope.page = 2
-          __getInitialFocusItemForCurrentPage().focus()
+          # Use a timeout to ensure screenreaders are not stuck on the
+          # last focused element.
+          $timeout(->
+            __getInitialFocusItemForCurrentPage().focus()
+          , 150)
+          __addCommonHotkeys()
           return
 
         $scope.hide = ->
@@ -207,7 +302,16 @@ app.directive 'djangoCradminDatetimeSelector', [
             , 400)
           else
             $scope.page = null
-          __getFocusItemAfterHide().focus()
+
+          __removeHotkeys()
+
+          # Use a timeout to ensure screenreaders are not stuck on the
+          # last focused element.
+          $timeout(->
+            __getFocusItemAfterHide().focus()
+          , 150)
+
+          return
 
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()
@@ -223,6 +327,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
             currentDateMomentObject, valueWasSetByUser)
           $scope.__applyPreviewText()
+
 
       link: ($scope, $element) ->
 

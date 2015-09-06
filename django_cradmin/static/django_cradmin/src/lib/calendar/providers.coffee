@@ -106,11 +106,12 @@ app.provider 'djangoCradminCalendarApi', ->
 
     __addMomentObject: (momentObject, isInCurrentMonth) ->
       week = @calendarWeeks[@currentWeekIndex]
-      calendarDay = new CalendarDay(momentObject, isInCurrentMonth)
-      week.addDay(calendarDay)
       if week.getDayCount() >= @daysPerWeek
         @calendarWeeks.push(new CalendarWeek())
         @currentWeekIndex += 1
+        week = @calendarWeeks[@currentWeekIndex]
+      calendarDay = new CalendarDay(momentObject, isInCurrentMonth)
+      week.addDay(calendarDay)
       @currentDayCount += 1
       @lastDay = calendarDay
 

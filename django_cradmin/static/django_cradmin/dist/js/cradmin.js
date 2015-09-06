@@ -879,12 +879,13 @@
       CalendarMonth.prototype.__addMomentObject = function(momentObject, isInCurrentMonth) {
         var calendarDay, week;
         week = this.calendarWeeks[this.currentWeekIndex];
-        calendarDay = new CalendarDay(momentObject, isInCurrentMonth);
-        week.addDay(calendarDay);
         if (week.getDayCount() >= this.daysPerWeek) {
           this.calendarWeeks.push(new CalendarWeek());
           this.currentWeekIndex += 1;
+          week = this.calendarWeeks[this.currentWeekIndex];
         }
+        calendarDay = new CalendarDay(momentObject, isInCurrentMonth);
+        week.addDay(calendarDay);
         this.currentDayCount += 1;
         return this.lastDay = calendarDay;
       };
@@ -1567,18 +1568,61 @@
 (function() {
   var app;
 
-  app = angular.module('djangoCradmin.forms.datetimewidget', []);
+  app = angular.module('djangoCradmin.forms.datetimewidget', ['cfp.hotkeys']);
 
   app.directive('djangoCradminDatetimeSelector', [
-    '$timeout', '$compile', '$rootScope', 'djangoCradminCalendarApi', function($timeout, $compile, $rootScope, djangoCradminCalendarApi) {
+    '$timeout', '$compile', '$rootScope', 'hotkeys', 'djangoCradminCalendarApi', function($timeout, $compile, $rootScope, hotkeys, djangoCradminCalendarApi) {
       return {
         scope: {
           config: "=djangoCradminDatetimeSelector"
         },
         templateUrl: 'forms/dateselector.tpl.html',
         controller: function($scope, $element) {
-          var __getFirstFocusableItemInCurrentPage, __getFocusItemAfterHide, __getInitialFocusItemForCurrentPage, __getLastFocusableItemInCurrentPage;
+          var __addCommonHotkeys, __addPage1Hotkeys, __getFirstFocusableItemInCurrentPage, __getFocusItemAfterHide, __getInitialFocusItemForCurrentPage, __getLastFocusableItemInCurrentPage, __removeHotkeys;
           $scope.page = null;
+          $scope.__keyboardNavigation = function(event, direction) {
+            var activeElement, newFocusTd, nextSibling, nextTr, previousSibling, previousTr;
+            activeElement = angular.element(document.activeElement);
+            if (activeElement.hasClass('django-cradmin-datetime-selector-daybuttoncell-button')) {
+              event.preventDefault();
+              if (direction === 'right') {
+                nextSibling = activeElement.parent().next();
+                if (nextSibling.length > 0) {
+                  newFocusTd = nextSibling;
+                }
+              }
+              if (direction === 'left') {
+                previousSibling = activeElement.parent().prev();
+                if (previousSibling.length > 0) {
+                  newFocusTd = previousSibling;
+                }
+              }
+              if (direction === 'up') {
+                previousTr = activeElement.parent().parent().prev();
+                if (previousTr.length > 0) {
+                  newFocusTd = angular.element(previousTr.children().get(activeElement.parent().index()));
+                }
+              }
+              if (direction === 'down') {
+                nextTr = activeElement.parent().parent().next();
+                if (nextTr.length > 0) {
+                  newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()));
+                }
+              }
+              if (direction === 'home') {
+                newFocusTd = activeElement.parent().parent().parent().children().first().children().first();
+              }
+              if (direction === 'end') {
+                console.log(activeElement.parent().parent().parent());
+                console.log(activeElement.parent().parent().parent().children().last());
+                console.log(activeElement.parent().parent().parent().children().last().children().last());
+                newFocusTd = activeElement.parent().parent().parent().children().last().children().last();
+              }
+              if ((newFocusTd != null) && newFocusTd.length > 0) {
+                return newFocusTd.find('button').focus();
+              }
+            }
+          };
           /*
           Returns the item we want to focus on when we tab forward from the last
           focusable item on the current page.
@@ -1760,13 +1804,75 @@
             $scope.triggerButton.html($scope.config.buttonlabel);
             return $scope.hide();
           };
+          __addCommonHotkeys = function() {
+            hotkeys.add({
+              combo: 'esc',
+              callback: function(event) {
+                return $scope.hide();
+              },
+              allowIn: ['BUTTON', 'SELECT', 'INPUT']
+            });
+            hotkeys.add({
+              combo: 'up',
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'up');
+              }
+            });
+            hotkeys.add({
+              combo: 'down',
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'down');
+              }
+            });
+            hotkeys.add({
+              combo: 'left',
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'left');
+              }
+            });
+            hotkeys.add({
+              combo: 'right',
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'right');
+              }
+            });
+            hotkeys.add({
+              combo: 'home',
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'home');
+              }
+            });
+            return hotkeys.add({
+              combo: 'end',
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'end');
+              }
+            });
+          };
+          __addPage1Hotkeys = function() {};
+          __removeHotkeys = function() {
+            hotkeys.del('esc');
+            hotkeys.del('up');
+            hotkeys.del('down');
+            hotkeys.del('left');
+            hotkeys.del('right');
+            hotkeys.del('home');
+            return hotkeys.del('end');
+          };
           $scope.showPage1 = function() {
             $scope.page = 1;
-            __getInitialFocusItemForCurrentPage().focus();
+            $timeout(function() {
+              return __getInitialFocusItemForCurrentPage().focus();
+            }, 150);
+            __addCommonHotkeys();
+            __addPage1Hotkeys();
           };
           $scope.showPage2 = function() {
             $scope.page = 2;
-            __getInitialFocusItemForCurrentPage().focus();
+            $timeout(function() {
+              return __getInitialFocusItemForCurrentPage().focus();
+            }, 150);
+            __addCommonHotkeys();
           };
           $scope.hide = function() {
             if ($scope.page === 2) {
@@ -1777,7 +1883,10 @@
             } else {
               $scope.page = null;
             }
-            return __getFocusItemAfterHide().focus();
+            __removeHotkeys();
+            $timeout(function() {
+              return __getFocusItemAfterHide().focus();
+            }, 150);
           };
           return $scope.initialize = function() {
             var currentDateIsoString, currentDateMomentObject, valueWasSetByUser;
@@ -3403,11 +3512,6 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                </thead>\n" +
     "                <tbody>\n" +
     "                    <tr ng-repeat=\"calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks\">\n" +
-    "                        <!--\n" +
-    "                        NOTE: We do not support tabindex based keyboard navigation here because that would\n" +
-    "                        break screenreader support. Instead, we provide the select-based date and time\n" +
-    "                        pickers for screenreaders (just like for mobile).\n" +
-    "                        -->\n" +
     "                        <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\"\n" +
     "                                class=\"django-cradmin-datetime-selector-daybuttoncell\"\n" +
     "                                ng-class=\"{\n" +
@@ -3415,7 +3519,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')\n" +
     "                                }\">\n" +
-    "                            <button type=\"button\" class=\"btn btn-link\"\n" +
+    "                            <button type=\"button\" class=\"btn btn-link django-cradmin-datetime-selector-daybuttoncell-button\"\n" +
     "                                    ng-click=\"onClickCalendarDay(calendarDay)\"\n" +
     "                                    tabindex=\"{{ getTabindexForCalendarDay(calendarDay) }}\"\n" +
     "                                    aria-label=\"{{ calendarDay.momentObject.format('MMMM D') }}\">\n" +
@@ -3456,20 +3560,20 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        {{ getTimeselectorDatepreview() }}\n" +
     "                    </p>\n" +
     "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
-    "                        <label for=\"{{ config.destinationfieldid }}_hourselect\" class=\"sr-only\">\n" +
+    "                        <label for=\"{{ config.destinationfieldid }}_hourselect_page2\" class=\"sr-only\">\n" +
     "                            {{ config.hour_screenreader_text }}\n" +
     "                        </label>\n" +
-    "                        <select id=\"{{ config.destinationfieldid }}_hourselect\"\n" +
+    "                        <select id=\"{{ config.destinationfieldid }}_hourselect_page2\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
     "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
     "                                ng-change=\"onSelectHour()\">\n" +
     "                        </select>\n" +
     "                        :\n" +
-    "                        <label for=\"{{ config.destinationfieldid }}_minuteselect\" class=\"sr-only\">\n" +
+    "                        <label for=\"{{ config.destinationfieldid }}_minuteselect_page2\" class=\"sr-only\">\n" +
     "                            {{ config.minute_screenreader_text }}\n" +
     "                        </label>\n" +
-    "                        <select id=\"{{ config.destinationfieldid }}_minuteselect\"\n" +
+    "                        <select id=\"{{ config.destinationfieldid }}_minuteselect_page2\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
     "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +

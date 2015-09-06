@@ -17,6 +17,8 @@ module.exports = (grunt) ->
       'bower_components/modernizr/modernizr.js'
       'bower_components/detectizr/dist/detectizr.js'
       'bower_components/moment/moment.js'
+      'bower_components/mousetrap/mousetrap.js'
+      'bower_components/angular-hotkeys/src/hotkeys.js'
     ]
     ace_editor: [
       'bower_components/ace-builds/src-min-noconflict/ace.js'

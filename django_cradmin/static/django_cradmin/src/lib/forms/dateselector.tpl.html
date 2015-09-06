@@ -97,11 +97,6 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks">
-                        <!--
-                        NOTE: We do not support tabindex based keyboard navigation here because that would
-                        break screenreader support. Instead, we provide the select-based date and time
-                        pickers for screenreaders (just like for mobile).
-                        -->
                         <td ng-repeat="calendarDay in calendarWeek.calendarDays"
                                 class="django-cradmin-datetime-selector-daybuttoncell"
                                 ng-class="{
@@ -109,7 +104,7 @@
                                     'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
                                     'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')
                                 }">
-                            <button type="button" class="btn btn-link"
+                            <button type="button" class="btn btn-link django-cradmin-datetime-selector-daybuttoncell-button"
                                     ng-click="onClickCalendarDay(calendarDay)"
                                     tabindex="{{ getTabindexForCalendarDay(calendarDay) }}"
                                     aria-label="{{ calendarDay.momentObject.format('MMMM D') }}">
@@ -150,20 +145,20 @@
                         {{ getTimeselectorDatepreview() }}
                     </p>
                     <div class="django-cradmin-datetime-selector-timeselectors">
-                        <label for="{{ config.destinationfieldid }}_hourselect" class="sr-only">
+                        <label for="{{ config.destinationfieldid }}_hourselect_page2" class="sr-only">
                             {{ config.hour_screenreader_text }}
                         </label>
-                        <select id="{{ config.destinationfieldid }}_hourselect"
+                        <select id="{{ config.destinationfieldid }}_hourselect_page2"
                                 class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
                                 ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
                                 ng-change="onSelectHour()">
                         </select>
                         :
-                        <label for="{{ config.destinationfieldid }}_minuteselect" class="sr-only">
+                        <label for="{{ config.destinationfieldid }}_minuteselect_page2" class="sr-only">
                             {{ config.minute_screenreader_text }}
                         </label>
-                        <select id="{{ config.destinationfieldid }}_minuteselect"
+                        <select id="{{ config.destinationfieldid }}_minuteselect_page2"
                                 class="form-control django-cradmin-datetime-selector-minuteselect"
                                 ng-model="monthlyCaledarCoordinator.currentMinuteObject"
                                 ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
