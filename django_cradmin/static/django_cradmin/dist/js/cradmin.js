@@ -1113,6 +1113,10 @@
         }
       };
 
+      MonthlyCalendarCoordinator.prototype.shownDateIsToday = function() {
+        return this.shownDateMomentObject.isSame(moment(), 'day');
+      };
+
       MonthlyCalendarCoordinator.prototype.setToNow = function() {
         this.shownDateMomentObject = moment();
         return this.__changeSelectedDate(true);
@@ -3796,7 +3800,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                <div class=\"django-cradmin-datetime-selector-shortcuts\">\n" +
     "                    <button type=\"button\"\n" +
     "                            class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
-    "                            ng-click=\"onClickNowButton()\">\n" +
+    "                            ng-click=\"onClickNowButton()\"\n" +
+    "                            ng-if=\"monthlyCaledarCoordinator.shownDateIsToday()\">\n" +
     "                        Now\n" +
     "                    </button>\n" +
     "                </div>\n" +

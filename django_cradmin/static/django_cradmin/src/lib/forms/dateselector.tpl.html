@@ -210,7 +210,8 @@
                 <div class="django-cradmin-datetime-selector-shortcuts">
                     <button type="button"
                             class="btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton"
-                            ng-click="onClickNowButton()">
+                            ng-click="onClickNowButton()"
+                            ng-if="monthlyCaledarCoordinator.shownDateIsToday()">
                         Now
                     </button>
                 </div>

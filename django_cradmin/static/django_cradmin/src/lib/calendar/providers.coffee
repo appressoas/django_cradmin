@@ -287,6 +287,9 @@ app.provider 'djangoCradminCalendarApi', ->
       if valueWasSetByUser
         @valueWasSetByUser = true
 
+    shownDateIsToday: ->
+      return @shownDateMomentObject.isSame(moment(), 'day')
+
     setToNow: ->
       @shownDateMomentObject = moment()
       @__changeSelectedDate(true)
