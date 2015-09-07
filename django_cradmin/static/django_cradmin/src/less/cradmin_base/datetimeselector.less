@@ -1,4 +1,6 @@
 .django-cradmin-datetime-selector {
+  visibility:hidden;
+
   .django-cradmin-datetime-selector-backdrop {
     z-index: 100001;
     position: fixed;
@@ -288,7 +290,7 @@
   }
 
   &.django-cradmin-datetime-selector-show {
-    //display: block;
+    visibility: visible;
     .django-cradmin-datetime-selector-backdrop {
       display: block;
     }

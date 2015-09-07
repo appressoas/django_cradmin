@@ -269,6 +269,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           hotkeys.del('end')
 
         $scope.showPage1 = ->
+          $element.show()
           $scope.page = 1
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
@@ -281,6 +282,7 @@ app.directive 'djangoCradminDatetimeSelector', [
 
         $scope.showPage2 = ->
           $scope.page = 2
+          $element.show()
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
           $timeout(->
@@ -302,6 +304,8 @@ app.directive 'djangoCradminDatetimeSelector', [
             , 400)
           else
             $scope.page = null
+
+
 
           __removeHotkeys()
 

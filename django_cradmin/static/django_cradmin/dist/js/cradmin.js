@@ -1860,6 +1860,7 @@
             return hotkeys.del('end');
           };
           $scope.showPage1 = function() {
+            $element.show();
             $scope.page = 1;
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
@@ -1869,6 +1870,7 @@
           };
           $scope.showPage2 = function() {
             $scope.page = 2;
+            $element.show();
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
             }, 150);

@@ -5918,6 +5918,9 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     margin-top: -30px;
   }
 }
+.django-cradmin-datetime-selector {
+  visibility: hidden;
+}
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-backdrop {
   z-index: 100001;
   position: fixed;
@@ -6170,6 +6173,9 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
 }
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-timeview-body-wrapper .django-cradmin-datetime-selector-timeview-body .django-cradmin-datetime-selector-datepreview {
   margin-bottom: 15px;
+}
+.django-cradmin-datetime-selector.django-cradmin-datetime-selector-show {
+  visibility: visible;
 }
 .django-cradmin-datetime-selector.django-cradmin-datetime-selector-show .django-cradmin-datetime-selector-backdrop {
   display: block;
