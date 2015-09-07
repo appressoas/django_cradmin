@@ -979,11 +979,8 @@
     */
 
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(calendarCoordinator, yearselectConfig, hourselectConfig, minuteselectConfig) {
-        this.calendarCoordinator = calendarCoordinator;
-        this.yearselectConfig = yearselectConfig;
-        this.hourselectConfig = hourselectConfig;
-        this.minuteselectConfig = minuteselectConfig;
+      function MonthlyCalendarCoordinator(_arg) {
+        this.calendarCoordinator = _arg.calendarCoordinator, this.yearselectValues = _arg.yearselectValues, this.hourselectValues = _arg.hourselectValues, this.minuteselectValues = _arg.minuteselectValues, this.yearFormat = _arg.yearFormat, this.dayOfMonthFormat = _arg.dayOfMonthFormat, this.hourFormat = _arg.hourFormat, this.minuteFormat = _arg.minuteFormat;
         this.dayobjects = null;
         this.__initWeekdays();
         this.__initMonthObjects();
@@ -993,20 +990,50 @@
         this.__changeSelectedDate();
       }
 
+      MonthlyCalendarCoordinator.prototype.__sortConfigObjectsByValue = function(configObjects) {
+        var compareFunction;
+        compareFunction = function(a, b) {
+          if (a.value < b.value) {
+            return -1;
+          }
+          if (a.value > b.value) {
+            return 1;
+          }
+          return 0;
+        };
+        return configObjects.sort(compareFunction);
+      };
+
       MonthlyCalendarCoordinator.prototype.__initWeekdays = function() {
         return this.shortWeekdays = getWeekdaysShortForCurrentLocale();
       };
 
       MonthlyCalendarCoordinator.prototype.__initYearObjects = function() {
-        var hasSelectedYearValue, selectedYearValue, yearConfig, _i, _len, _ref;
+        var formatMomentObject, hasSelectedYearValue, label, selectedYearValue, year, yearConfig, _i, _len, _ref;
         selectedYearValue = this.calendarCoordinator.shownMomentObject.year();
         hasSelectedYearValue = false;
+        formatMomentObject = this.calendarCoordinator.shownMomentObject.clone().set({
+          month: 0,
+          date: 0,
+          hour: 0,
+          minute: 0,
+          second: 0
+        });
         this.__yearsMap = {};
-        _ref = this.yearselectConfig;
+        this.yearselectConfig = [];
+        _ref = this.yearselectValues;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          yearConfig = _ref[_i];
-          this.__yearsMap[yearConfig.value] = yearConfig;
-          if (yearConfig.value === selectedYearValue) {
+          year = _ref[_i];
+          label = formatMomentObject.set({
+            year: year
+          }).format(this.yearFormat);
+          yearConfig = {
+            value: year,
+            label: label
+          };
+          this.yearselectConfig.push(yearConfig);
+          this.__yearsMap[year] = yearConfig;
+          if (year === selectedYearValue) {
             hasSelectedYearValue = true;
           }
         }
@@ -1016,7 +1043,8 @@
             label: selectedYearValue
           };
           this.yearselectConfig.push(yearConfig);
-          return this.__yearsMap[yearConfig.value] = yearConfig;
+          this.__yearsMap[yearConfig.value] = yearConfig;
+          return this.__sortConfigObjectsByValue(this.yearselectConfig);
         }
       };
 
@@ -1041,25 +1069,62 @@
       };
 
       MonthlyCalendarCoordinator.prototype.__initHourObjects = function() {
-        var hourConfig, _i, _len, _ref, _results;
+        var formatMomentObject, hasSelectedHourValue, hour, hourConfig, label, selectedHourValue, _i, _len, _ref;
+        selectedHourValue = this.calendarCoordinator.shownMomentObject.hour();
+        hasSelectedHourValue = false;
+        formatMomentObject = this.calendarCoordinator.shownMomentObject.clone().set({
+          minute: 0,
+          second: 0
+        });
         this.__hoursMap = {};
-        _ref = this.hourselectConfig;
-        _results = [];
+        this.hourselectConfig = [];
+        _ref = this.hourselectValues;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          hourConfig = _ref[_i];
-          _results.push(this.__hoursMap[hourConfig.value] = hourConfig);
+          hour = _ref[_i];
+          label = formatMomentObject.set({
+            hour: hour
+          }).format(this.hourFormat);
+          hourConfig = {
+            value: hour,
+            label: label
+          };
+          this.hourselectConfig.push(hourConfig);
+          this.__hoursMap[hourConfig.value] = hourConfig;
+          if (hourConfig.value === selectedHourValue) {
+            hasSelectedHourValue = true;
+          }
         }
-        return _results;
+        if (!hasSelectedHourValue) {
+          hourConfig = {
+            value: selectedHourValue,
+            label: selectedHourValue
+          };
+          this.hourselectConfig.push(hourConfig);
+          this.__hoursMap[hourConfig.value] = hourConfig;
+          return this.__sortConfigObjectsByValue(this.hourselectConfig);
+        }
       };
 
       MonthlyCalendarCoordinator.prototype.__initMinuteObjects = function() {
-        var hasSelectedMinuteValue, minuteConfig, selectedMinuteValue, _i, _len, _ref;
+        var formatMomentObject, hasSelectedMinuteValue, label, minute, minuteConfig, selectedMinuteValue, _i, _len, _ref;
         selectedMinuteValue = this.calendarCoordinator.shownMomentObject.minute();
         hasSelectedMinuteValue = false;
+        formatMomentObject = this.calendarCoordinator.shownMomentObject.clone().set({
+          second: 0
+        });
         this.__minutesMap = {};
-        _ref = this.minuteselectConfig;
+        this.minuteselectConfig = [];
+        _ref = this.minuteselectValues;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          minuteConfig = _ref[_i];
+          minute = _ref[_i];
+          label = formatMomentObject.set({
+            minute: minute
+          }).format(this.minuteFormat);
+          minuteConfig = {
+            value: minute,
+            label: label
+          };
+          this.minuteselectConfig.push(minuteConfig);
           this.__minutesMap[minuteConfig.value] = minuteConfig;
           if (minuteConfig.value === selectedMinuteValue) {
             hasSelectedMinuteValue = true;
@@ -1071,7 +1136,8 @@
             label: selectedMinuteValue
           };
           this.minuteselectConfig.push(minuteConfig);
-          return this.__minutesMap[minuteConfig.value] = minuteConfig;
+          this.__minutesMap[minuteConfig.value] = minuteConfig;
+          return this.__sortConfigObjectsByValue(this.minuteselectConfig);
         }
       };
 
@@ -1112,13 +1178,21 @@
       };
 
       MonthlyCalendarCoordinator.prototype.__updateDayObjects = function() {
-        var dayNumberObject, daynumber, _i, _ref, _results;
+        var dayNumberObject, daynumber, formatMomentObject, label, _i, _ref, _results;
+        formatMomentObject = this.calendarCoordinator.shownMomentObject.clone().set({
+          hour: 0,
+          minute: 0,
+          second: 0
+        });
         this.dayobjects = [];
         _results = [];
         for (daynumber = _i = 1, _ref = this.calendarMonth.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; daynumber = 1 <= _ref ? ++_i : --_i) {
+          label = formatMomentObject.set({
+            date: daynumber
+          }).format(this.dayOfMonthFormat);
           dayNumberObject = {
             value: daynumber,
-            label: daynumber
+            label: label
           };
           _results.push(this.dayobjects.push(dayNumberObject));
         }
@@ -2137,7 +2211,16 @@
               maximumDatetime = moment($scope.config.maximum_datetime);
             }
             $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(selectedMomentObject, minimumDatetime, maximumDatetime);
-            $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
+            $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator({
+              calendarCoordinator: $scope.calendarCoordinator,
+              yearselectValues: $scope.config.yearselect_values,
+              hourselectValues: $scope.config.hourselect_values,
+              minuteselectValues: $scope.config.minuteselect_values,
+              yearFormat: $scope.config.yearselect_momentjs_format,
+              dayOfMonthFormat: $scope.config.dayofmonthselect_momentjs_format,
+              hourFormat: $scope.config.hourselect_momentjs_format,
+              minuteFormat: $scope.config.minuteselect_momentjs_format
+            });
             return $scope.__updatePreviewText();
           };
         },
@@ -2146,7 +2229,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_config', 'hourselect_config', 'minuteselect_config', 'now_button_text', 'today_button_text', 'clear_button_text'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];

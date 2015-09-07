@@ -482,13 +482,17 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(
             selectedMomentObject,
             minimumDatetime, maximumDatetime)
-          $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
-            $scope.calendarCoordinator,
-            $scope.config.yearselect_config,
-            $scope.config.hourselect_config,
-            $scope.config.minuteselect_config)
+          $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator({
+            calendarCoordinator: $scope.calendarCoordinator
+            yearselectValues: $scope.config.yearselect_values
+            hourselectValues: $scope.config.hourselect_values
+            minuteselectValues: $scope.config.minuteselect_values
+            yearFormat: $scope.config.yearselect_momentjs_format
+            dayOfMonthFormat: $scope.config.dayofmonthselect_momentjs_format
+            hourFormat: $scope.config.hourselect_momentjs_format
+            minuteFormat: $scope.config.minuteselect_momentjs_format
+          })
           $scope.__updatePreviewText()
-
 
       link: ($scope, $element) ->
 
@@ -520,17 +524,16 @@ app.directive 'djangoCradminDatetimeSelector', [
           'dateselector_table_screenreader_caption'
           'today_label_text'
           'selected_day_label_text'
-          'yearselect_config'
-          'hourselect_config'
-          'minuteselect_config'
+          'yearselect_values'
+          'hourselect_values'
+          'yearselect_momentjs_format'
+          'dayofmonthselect_momentjs_format'
+          'hourselect_momentjs_format'
+          'minuteselect_momentjs_format'
+          'minuteselect_values'
           'now_button_text'
           'today_button_text'
           'clear_button_text'
-#          'year_emptyvalue'
-#          'month_emptyvalue'
-#          'day_emptyvalue'
-#          'hour_emptyvalue'
-#          'minute_emptyvalue'
         ]
         for configname in required_config_attributes
           configvalue = $scope.config[configname]

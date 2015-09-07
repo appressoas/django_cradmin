@@ -29,13 +29,11 @@ class DatePickerWidget(widgets.TextInput):
     or (to a lesser extent) via parameters to the contructor. The only
     thing that may seem strange that you can not customize is:
 
-    - Day numbers.
     - Weekday names.
     - Month names.
 
-    Day numbers have to be handled by the AngularJS directive since they are
-    dynamic (changes when you change month). Weekday names and month days are
-    formatted with MomentJS (`momentjs docs <http://momentjs.com/>`_).
+    Weekday names and month names are formatted with MomentJS
+    (`momentjs docs <http://momentjs.com/>`_).
 
     MomentJS has their own i18n support. You can override the locale/language
     used by momentjs via the ``DJANGO_CRADMIN_MOMENTJS_LOCALE`` Django setting,
@@ -331,9 +329,16 @@ class DatePickerWidget(widgets.TextInput):
             'today_button_text': str(self.today_button_text),
             'clear_button_text': str(self.clear_button_text),
             'selected_day_label_text': str(self.selected_day_label_text),
-            'yearselect_config': list(self.get_yearselect_config()),
-            'hourselect_config': list(self.get_hourselect_config()),
-            'minuteselect_config': list(self.get_minuteselect_config()),
+
+            'yearselect_values': list(self.get_yearselect_values()),
+            'hourselect_values': list(self.get_hourselect_values()),
+            'minuteselect_values': list(self.get_minuteselect_values()),
+
+            'yearselect_momentjs_format': self.get_yearselect_momentjs_format(),
+            'dayofmonthselect_momentjs_format': self.get_dayofmonthselect_momentjs_format(),
+            'hourselect_momentjs_format': self.get_hourselect_momentjs_format(),
+            'minuteselect_momentjs_format': self.get_minuteselect_momentjs_format(),
+
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
@@ -470,20 +475,14 @@ class DatePickerWidget(widgets.TextInput):
     # Year select config
     #
 
-    def format_yearlabel(self, yearnumber):
+    def get_yearselect_momentjs_format(self):
         """
-        Format the given year (int) like you want it to be shown in
-        the year ``<select>``.
-
-        Returns:
-            The year formatted as a string. Defaults to ``str(yearnumber)``.
-            MUST be a string, so if you use Django ugettext, or something
-            other that is not encodable by ``json.dumps()``, make sure you
-            convert it to a string/unicode.
+        Get the momentjs format to use when creating the
+        label for a year in the year ``<select>``.
         """
-        return str(yearnumber)
+        return 'YYYY'
 
-    def get_selectable_yearnumbers(self):
+    def get_yearselect_values(self):
         """
         Get an iterable of year ints (I.e.: anything that can be converted to a
         list of ints with ``list(value)``).
@@ -491,8 +490,6 @@ class DatePickerWidget(widgets.TextInput):
         The iterable must yield integers.
 
         Defaults to the range of ~130 years in the past and future.
-
-        Used by :meth:`.get_yearselect_config`.
         """
         year_minimum_value = (timezone.now() - timedelta(days=364*130)).year
         year_maximum_value = (timezone.now() + timedelta(days=364*130)).year
@@ -504,44 +501,31 @@ class DatePickerWidget(widgets.TextInput):
             year_minimum_value,
             year_maximum_value)
 
-    def get_yearselect_config(self):
-        """
-        Get an iterable of json encodable dicts with ``value`` and ``label`` keys.
+    #
+    # Day select config
+    #
 
-        The dicts must be json encodable, so ensure you do not include any
-        lazy Django translation strings (convert them to str/unicode).
-
-        Defaults to all the year numbers returned by :meth:`.get_selectable_yearnumbers`
-        as ``value``, with the ``label`` formatted by :meth:`.format_yearlabel`.
-        This means that you most likely should override those methods instead of this
-        method.
+    def get_dayofmonthselect_momentjs_format(self):
         """
-        def format_yearconfig(yearnumber):
-            return {
-                'value': yearnumber,
-                'label': self.format_yearlabel(yearnumber)
-            }
-        return map(format_yearconfig, self.get_selectable_yearnumbers())
+        Get the momentjs format to use when creating the
+        label for a day in the day ``<select>``.
+
+        Not used in the table that we use on the desktop.
+        """
+        return 'DD'
 
     #
     # Hour select config
     #
 
-    def format_hourlabel(self, hournumber):
+    def get_hourselect_momentjs_format(self):
         """
-        Format the given hour (int) like you want it to be shown in
-        the hour ``<select>``.
-
-        Returns:
-            The hour formatted as a string. Defaults to the ``hournumber`` as
-            prefixed with ``0`` if the number is lower than 10.
-            MUST be a string, so if you use Django ``ugettext_lazy``, or something
-            other that is not encodable by ``json.dumps()``, make sure you
-            convert it to a string/unicode.
+        Get the momentjs format to use when creating the
+        label for an hour in the hour ``<select>``.
         """
-        return '{:02}'.format(hournumber)
+        return 'HH'
 
-    def get_selectable_hournumbers(self):
+    def get_hourselect_values(self):
         """
         Get an iterable of hour ints (I.e.: anything that can be converted to a
         list of ints with ``list(value)``).
@@ -549,49 +533,21 @@ class DatePickerWidget(widgets.TextInput):
         The iterable must yield integers.
 
         Defaults to a ``[0, 1, 2, ..., 23]``.
-
-        Used by :meth:`.get_hourselect_config`.
         """
         return range(0, 24)
-
-    def get_hourselect_config(self):
-        """
-        Get an iterable of json encodable dicts with ``value`` and ``label`` keys.
-
-        The dicts must be json encodable, so ensure you do not include any
-        lazy Django translation strings (convert them to str/unicode).
-
-        Defaults to all the hour numbers returned by :meth:`.get_selectable_hournumbers`
-        as ``value``, with the ``label`` formatted by :meth:`.format_hourlabel`.
-        This means that you most likely should override those methods instead of this
-        method.
-        """
-        def format_hourconfig(hournumber):
-            return {
-                'value': hournumber,
-                'label': self.format_hourlabel(hournumber)
-            }
-        return map(format_hourconfig, self.get_selectable_hournumbers())
 
     #
     # Minute select config
     #
 
-    def format_minutelabel(self, minutenumber):
+    def get_minuteselect_momentjs_format(self):
         """
-        Format the given minute (int) like you want it to be shown in
-        the minute ``<select>``.
-
-        Returns:
-            The minute formatted as a string. Defaults to the ``minutenumber`` as
-            prefixed with ``0`` if the number is lower than 10.
-            MUST be a string, so if you use Django ugettext, or something
-            other that is not encodable by ``json.dumps()``, make sure you
-            convert it to a string/unicode.
+        Get the momentjs format to use when creating the
+        label for a minute in the minute ``<select>``.
         """
-        return '{:02}'.format(minutenumber)
+        return 'mm'
 
-    def get_selectable_minutenumbers(self):
+    def get_minuteselect_values(self):
         """
         Get an iterable of minute ints (I.e.: anything that can be converted to a
         list of numbers with ``list(value)``).
@@ -599,31 +555,10 @@ class DatePickerWidget(widgets.TextInput):
         The iterable must yield integers.
 
         Defaults to ``[0, 5, 10, 15, ...55, 59]``.
-
-        Used by :meth:`.get_minuteselect_config`.
         """
         minutevalues = list(range(0, 60, 5))
         minutevalues.append(59)
         return minutevalues
-
-    def get_minuteselect_config(self):
-        """
-        Get an iterable of json encodable dicts with ``value`` and ``label`` keys.
-
-        The dicts must be json encodable, so ensure you do not include any
-        lazy Django translation strings (convert them to str/unicode).
-
-        Defaults to all the minute numbers returned by :meth:`.get_selectable_minutenumbers`
-        as ``value``, with the ``label`` formatted by :meth:`.format_minutelabel`.
-        This means that you most likely should override those methods instead of this
-        method.
-        """
-        def format_minuteconfig(minutenumber):
-            return {
-                'value': minutenumber,
-                'label': self.format_minutelabel(minutenumber)
-            }
-        return map(format_minuteconfig, self.get_selectable_minutenumbers())
 
 
 class DateTimePickerWidget(DatePickerWidget):

@@ -185,10 +185,14 @@ app.provider 'djangoCradminCalendarApi', ->
   Coordinates the common calendar data for a month-view.
   ###
   class MonthlyCalendarCoordinator
-    constructor: (@calendarCoordinator,
-                  @yearselectConfig,
-                  @hourselectConfig,
-                  @minuteselectConfig) ->
+    constructor: ({@calendarCoordinator,
+                   @yearselectValues,
+                   @hourselectValues,
+                   @minuteselectValues,
+                   @yearFormat,
+                   @dayOfMonthFormat,
+                   @hourFormat,
+                   @minuteFormat}) ->
       @dayobjects = null  # Updated in @__changeSelectedDate()
       @__initWeekdays()
       @__initMonthObjects()
@@ -197,6 +201,16 @@ app.provider 'djangoCradminCalendarApi', ->
       @__initMinuteObjects()
       @__changeSelectedDate()
 
+
+    __sortConfigObjectsByValue: (configObjects) ->
+      compareFunction = (a, b) ->
+        if a.value < b.value
+          return -1
+        if a.value > b.value
+          return 1
+        return 0
+      configObjects.sort(compareFunction)
+
     __initWeekdays: ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
 
@@ -204,10 +218,27 @@ app.provider 'djangoCradminCalendarApi', ->
       selectedYearValue = @calendarCoordinator.shownMomentObject.year()
       hasSelectedYearValue = false
 
+      formatMomentObject = @calendarCoordinator.shownMomentObject.clone().set({
+        month: 0
+        date: 0
+        hour: 0
+        minute: 0
+        second: 0
+      })
+
       @__yearsMap = {}
-      for yearConfig in @yearselectConfig
-        @__yearsMap[yearConfig.value] = yearConfig
-        if yearConfig.value == selectedYearValue
+      @yearselectConfig = []
+      for year in @yearselectValues
+        label = formatMomentObject.set({
+          year: year
+        }).format(@yearFormat)
+        yearConfig = {
+          value: year
+          label: label
+        }
+        @yearselectConfig.push(yearConfig)
+        @__yearsMap[year] = yearConfig
+        if year == selectedYearValue
           hasSelectedYearValue = true
 
       if not hasSelectedYearValue
@@ -220,6 +251,10 @@ app.provider 'djangoCradminCalendarApi', ->
         }
         @yearselectConfig.push(yearConfig)
         @__yearsMap[yearConfig.value] = yearConfig
+
+        # Sort the config to put the newly added config in
+        # its natural place.
+        @__sortConfigObjectsByValue(@yearselectConfig)
 
     __initMonthObjects: ->
       @monthselectConfig = []
@@ -235,16 +270,56 @@ app.provider 'djangoCradminCalendarApi', ->
         monthnumber += 1
 
     __initHourObjects: ->
+      selectedHourValue = @calendarCoordinator.shownMomentObject.hour()
+      hasSelectedHourValue = false
+      formatMomentObject = @calendarCoordinator.shownMomentObject.clone().set({
+        minute: 0
+        second: 0
+      })
       @__hoursMap = {}
-      for hourConfig in @hourselectConfig
+      @hourselectConfig = []
+      for hour in @hourselectValues
+        label = formatMomentObject.set({
+          hour: hour
+        }).format(@hourFormat)
+        hourConfig = {
+          value: hour
+          label: label
+        }
+        @hourselectConfig.push(hourConfig)
         @__hoursMap[hourConfig.value] = hourConfig
+        if hourConfig.value == selectedHourValue
+          hasSelectedHourValue = true
+
+      if not hasSelectedHourValue
+        # Since we do not include all hours in the hourList, we need
+        # to handle the case when the given datetimes hour is not in the
+        # list. We handle this by adding it to the end of the list.
+        hourConfig = {
+          value: selectedHourValue,
+          label: selectedHourValue
+        }
+        @hourselectConfig.push(hourConfig)
+        @__hoursMap[hourConfig.value] = hourConfig
+        @__sortConfigObjectsByValue(@hourselectConfig)
 
     __initMinuteObjects: ->
       selectedMinuteValue = @calendarCoordinator.shownMomentObject.minute()
       hasSelectedMinuteValue = false
-
+      formatMomentObject = @calendarCoordinator.shownMomentObject.clone().set({
+        second: 0
+      })
       @__minutesMap = {}
-      for minuteConfig in @minuteselectConfig
+      @minuteselectConfig = []
+      for minute in @minuteselectValues
+        label = formatMomentObject.set({
+          minute: minute
+        }).format(@minuteFormat)
+        minuteConfig = {
+          value: minute
+          label: label
+        }
+        @minuteselectConfig.push(minuteConfig)
         @__minutesMap[minuteConfig.value] = minuteConfig
         if minuteConfig.value == selectedMinuteValue
           hasSelectedMinuteValue = true
@@ -259,6 +334,7 @@ app.provider 'djangoCradminCalendarApi', ->
         }
         @minuteselectConfig.push(minuteConfig)
         @__minutesMap[minuteConfig.value] = minuteConfig
+        @__sortConfigObjectsByValue(@minuteselectConfig)
 
     __setCurrentYear: ->
       currentYearNumber = @calendarMonth.month.firstDayOfMonth.year()
@@ -285,11 +361,19 @@ app.provider 'djangoCradminCalendarApi', ->
         console?.warn? "The given minute, #{currentMinuteNumber} is not one of the available choices"
 
     __updateDayObjects: ->
+      formatMomentObject = @calendarCoordinator.shownMomentObject.clone().set({
+        hour: 0
+        minute: 0
+        second: 0
+      })
       @dayobjects = []
       for daynumber in [1..@calendarMonth.month.getDaysInMonth()]
+        label = formatMomentObject.set({
+          date: daynumber
+        }).format(@dayOfMonthFormat)
         dayNumberObject = {
           value: daynumber
-          label: daynumber
+          label: label
         }
         @dayobjects.push(dayNumberObject)
 
