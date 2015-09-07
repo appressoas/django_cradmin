@@ -231,7 +231,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         Used to get the preview of the selected date on page2 (above the time selector).
         ###
         $scope.getTimeselectorDatepreview = ->
-          return $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
+          return $scope.monthlyCaledarCoordinator.shownDateMomentObject.format(
             $scope.config.timeselector_datepreview_momentjs_format
           )
 
@@ -240,7 +240,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         ###
         $scope.getUseButtonAriaLabel = ->
           if $scope.monthlyCaledarCoordinator?
-            formattedDate = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
+            formattedDate = $scope.monthlyCaledarCoordinator.shownDateMomentObject.format(
               $scope.config.usebutton_arialabel_momentjs_format)
             return "#{$scope.config.usebutton_arialabel_prefix} " +
               "#{formattedDate}"
@@ -260,7 +260,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             # will be reflected in the preview each time we change any value
             # in the date picker, and we only want the value to be applied when
             # the user confirms a value.
-            templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone()
+            templateScope.momentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone()
             preview = $compile($scope.previewAngularjsTemplate)(templateScope)
             $scope.previewElement.empty()
             $scope.previewElement.append(preview)
@@ -268,14 +268,14 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.previewElement.html($scope.config.no_value_preview_text)
 
         $scope.applySelectedValue = ->
-          # We update the originalValueMomentObject because that should
-          # reflect the value selected by the user. E.g. the originalValueMomentObject
+          # We update the selectedValueMomentObject because that should
+          # reflect the value selected by the user. E.g. the selectedValueMomentObject
           # is the value the user last applied.
           # We must clone the value to avoid that it is reflected for each change in the date picker.
-          $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone()
+          $scope.monthlyCaledarCoordinator.selectedValueMomentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone()
 
           # Update the (hidden) destination field
-          $scope.destinationField.val($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
+          $scope.destinationField.val($scope.monthlyCaledarCoordinator.shownDateMomentObject.format(
             $scope.config.destinationfield_momentjs_format
           ))
 
@@ -363,9 +363,9 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.showPage2 = ->
           $scope.page = 2
 
-          # Update "originalValueMomentObject" to reflect the change. This will mark this as
+          # Update "selectedValueMomentObject" to reflect the change. This will mark this as
           # the selected value when we return from to page2.
-          $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone()
+          $scope.monthlyCaledarCoordinator.selectedValueMomentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone()
           $element.show()
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
@@ -402,14 +402,14 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()
           if currentDateIsoString? and currentDateIsoString != ''
-            originalValueMomentObject = moment(currentDateIsoString)
+            selectedValueMomentObject = moment(currentDateIsoString)
             $scope.triggerButton.html($scope.config.buttonlabel)
           else
-            originalValueMomentObject = null
+            selectedValueMomentObject = null
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
-            originalValueMomentObject)
+            selectedValueMomentObject)
           $scope.__applyPreviewText()
 
 

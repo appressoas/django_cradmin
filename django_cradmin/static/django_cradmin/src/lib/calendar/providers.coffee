@@ -125,13 +125,19 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class MonthlyCalendarCoordinator
-    constructor: (@originalValueMomentObject) ->
+    constructor: (@selectedValueMomentObject) ->
+      # We operate with two momentObjects:
+      # - selectedValueMomentObject: This is the actual moment object
+      #   that the user has selected.
+      # - shownDateMomentObject: This reflects the value shown on the screen
+      #   at any given moment (E.g.: It changes each time a user changes
+      #   the day, month, hour, etc).
       @dayobjects = null  # Updated in @__changeSelectedDate()
-      if @originalValueMomentObject?
-        @selectedDateMomentObject = @originalValueMomentObject.clone()
+      if @selectedValueMomentObject?
+        @shownDateMomentObject = @selectedValueMomentObject.clone()
         valueWasSetByUser = true
       else
-        @selectedDateMomentObject = moment()  # We set this to start the date picker in the current month
+        @shownDateMomentObject = moment()  # We set this to start the date picker in the current month
         valueWasSetByUser = false
       @valueWasSetByUser = false  # Updated in @__changeSelectedDate()
       @__initWeekdays()
@@ -188,8 +194,8 @@ app.provider 'djangoCradminCalendarApi', ->
       # Since we do not include all minutes in the minuteList, we need
       # to handle the case when the given datetimes minute is not in the
       # list. We handle this by adding it to the end of the list.
-      if minuteList.indexOf(@selectedDateMomentObject.minute()) == -1
-        minuteList.push(@selectedDateMomentObject.minute())
+      if minuteList.indexOf(@shownDateMomentObject.minute()) == -1
+        minuteList.push(@shownDateMomentObject.minute())
 
       @minuteobjects = []
       @__minutesMap = {}
@@ -214,13 +220,13 @@ app.provider 'djangoCradminCalendarApi', ->
         console?.error? "The given month number, #{currentMonthNumber} is not one of the available choices"
 
     __setCurrentHour: ->
-      currentHourNumber = @selectedDateMomentObject.hour()
+      currentHourNumber = @shownDateMomentObject.hour()
       @currentHourObject = @__hoursMap[currentHourNumber]
       if not @currentHourObject?
         console?.error? "The given hour, #{currentHourNumber} is not one of the available choices"
 
     __setCurrentMinute: ->
-      currentMinuteNumber = @selectedDateMomentObject.minute()
+      currentMinuteNumber = @shownDateMomentObject.minute()
       @currentMinuteObject = @__minutesMap[currentMinuteNumber]
       if not @currentMinuteObject?
         console?.error? "The given minute, #{currentMinuteNumber} is not one of the available choices"
@@ -238,22 +244,22 @@ app.provider 'djangoCradminCalendarApi', ->
     Change month to the month containing the given momentObject,
     and select the date.
 
-    As long as you change ``@selectedDateMomentObject``, this
+    As long as you change ``@shownDateMomentObject``, this
     will update everything to mirror the change (selected day, month, year, ...).
     ###
     __changeSelectedDate: (valueWasSetByUser) ->
-      @calendarMonth = new CalendarMonth(@selectedDateMomentObject)
+      @calendarMonth = new CalendarMonth(@shownDateMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()
       @__setCurrentHour()
       @__setCurrentMinute()
       @__updateDayObjects()
-      @currentDayObject = @dayobjects[@selectedDateMomentObject.date()-1]
+      @currentDayObject = @dayobjects[@shownDateMomentObject.date()-1]
       if valueWasSetByUser
         @valueWasSetByUser = true
 
     __handleDayChange: (momentObject) ->
-      @selectedDateMomentObject = momentObject.clone().set({
+      @shownDateMomentObject = momentObject.clone().set({
         hour: @currentHourObject.value
         minute: @currentMinuteObject.value
       })
@@ -271,25 +277,25 @@ app.provider 'djangoCradminCalendarApi', ->
       @__handleDayChange(calendarDay.momentObject)
 
     handleCurrentMonthChange: ->
-      @selectedDateMomentObject.set({
+      @shownDateMomentObject.set({
         month: @currentMonthObject.value
       })
       @__changeSelectedDate(true)
 
     handleCurrentYearChange: ->
-      @selectedDateMomentObject.set({
+      @shownDateMomentObject.set({
         year: @currentYearObject.value
       })
       @__changeSelectedDate(true)
 
     handleCurrentHourChange: ->
-      @selectedDateMomentObject.set({
+      @shownDateMomentObject.set({
         hour: @currentHourObject.value
       })
       @__changeSelectedDate(true)
 
     handleCurrentMinuteChange: ->
-      @selectedDateMomentObject.set({
+      @shownDateMomentObject.set({
         minute: @currentMinuteObject.value
       })
       @__changeSelectedDate(true)
@@ -301,7 +307,7 @@ app.provider 'djangoCradminCalendarApi', ->
       if @lastFocusedMomentObject?
         return @lastFocusedMomentObject
       else
-        return @selectedDateMomentObject
+        return @shownDateMomentObject
 
   @$get = ->
     return {

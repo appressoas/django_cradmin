@@ -910,15 +910,15 @@
 
     })();
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(originalValueMomentObject) {
+      function MonthlyCalendarCoordinator(selectedValueMomentObject) {
         var valueWasSetByUser;
-        this.originalValueMomentObject = originalValueMomentObject;
+        this.selectedValueMomentObject = selectedValueMomentObject;
         this.dayobjects = null;
-        if (this.originalValueMomentObject != null) {
-          this.selectedDateMomentObject = this.originalValueMomentObject.clone();
+        if (this.selectedValueMomentObject != null) {
+          this.shownDateMomentObject = this.selectedValueMomentObject.clone();
           valueWasSetByUser = true;
         } else {
-          this.selectedDateMomentObject = moment();
+          this.shownDateMomentObject = moment();
           valueWasSetByUser = false;
         }
         this.valueWasSetByUser = false;
@@ -1009,8 +1009,8 @@
           return _results;
         })();
         minuteList.push(59);
-        if (minuteList.indexOf(this.selectedDateMomentObject.minute()) === -1) {
-          minuteList.push(this.selectedDateMomentObject.minute());
+        if (minuteList.indexOf(this.shownDateMomentObject.minute()) === -1) {
+          minuteList.push(this.shownDateMomentObject.minute());
         }
         this.minuteobjects = [];
         this.__minutesMap = {};
@@ -1047,7 +1047,7 @@
 
       MonthlyCalendarCoordinator.prototype.__setCurrentHour = function() {
         var currentHourNumber;
-        currentHourNumber = this.selectedDateMomentObject.hour();
+        currentHourNumber = this.shownDateMomentObject.hour();
         this.currentHourObject = this.__hoursMap[currentHourNumber];
         if (this.currentHourObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given hour, " + currentHourNumber + " is not one of the available choices") : void 0 : void 0;
@@ -1056,7 +1056,7 @@
 
       MonthlyCalendarCoordinator.prototype.__setCurrentMinute = function() {
         var currentMinuteNumber;
-        currentMinuteNumber = this.selectedDateMomentObject.minute();
+        currentMinuteNumber = this.shownDateMomentObject.minute();
         this.currentMinuteObject = this.__minutesMap[currentMinuteNumber];
         if (this.currentMinuteObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given minute, " + currentMinuteNumber + " is not one of the available choices") : void 0 : void 0;
@@ -1081,26 +1081,26 @@
       Change month to the month containing the given momentObject,
       and select the date.
       
-      As long as you change ``@selectedDateMomentObject``, this
+      As long as you change ``@shownDateMomentObject``, this
       will update everything to mirror the change (selected day, month, year, ...).
       */
 
 
       MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function(valueWasSetByUser) {
-        this.calendarMonth = new CalendarMonth(this.selectedDateMomentObject);
+        this.calendarMonth = new CalendarMonth(this.shownDateMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
         this.__setCurrentHour();
         this.__setCurrentMinute();
         this.__updateDayObjects();
-        this.currentDayObject = this.dayobjects[this.selectedDateMomentObject.date() - 1];
+        this.currentDayObject = this.dayobjects[this.shownDateMomentObject.date() - 1];
         if (valueWasSetByUser) {
           return this.valueWasSetByUser = true;
         }
       };
 
       MonthlyCalendarCoordinator.prototype.__handleDayChange = function(momentObject) {
-        this.selectedDateMomentObject = momentObject.clone().set({
+        this.shownDateMomentObject = momentObject.clone().set({
           hour: this.currentHourObject.value,
           minute: this.currentMinuteObject.value
         });
@@ -1122,28 +1122,28 @@
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentMonthChange = function() {
-        this.selectedDateMomentObject.set({
+        this.shownDateMomentObject.set({
           month: this.currentMonthObject.value
         });
         return this.__changeSelectedDate(true);
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentYearChange = function() {
-        this.selectedDateMomentObject.set({
+        this.shownDateMomentObject.set({
           year: this.currentYearObject.value
         });
         return this.__changeSelectedDate(true);
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentHourChange = function() {
-        this.selectedDateMomentObject.set({
+        this.shownDateMomentObject.set({
           hour: this.currentHourObject.value
         });
         return this.__changeSelectedDate(true);
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentMinuteChange = function() {
-        this.selectedDateMomentObject.set({
+        this.shownDateMomentObject.set({
           minute: this.currentMinuteObject.value
         });
         return this.__changeSelectedDate(true);
@@ -1157,7 +1157,7 @@
         if (this.lastFocusedMomentObject != null) {
           return this.lastFocusedMomentObject;
         } else {
-          return this.selectedDateMomentObject;
+          return this.shownDateMomentObject;
         }
       };
 
@@ -1842,7 +1842,7 @@
           */
 
           $scope.getTimeselectorDatepreview = function() {
-            return $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
+            return $scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
           };
           /*
           This is used to get the aria-label attribute for the "Use" button.
@@ -1851,7 +1851,7 @@
           $scope.getUseButtonAriaLabel = function() {
             var formattedDate;
             if ($scope.monthlyCaledarCoordinator != null) {
-              formattedDate = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
+              formattedDate = $scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
               return ("" + $scope.config.usebutton_arialabel_prefix + " ") + ("" + formattedDate);
             } else {
 
@@ -1870,7 +1870,7 @@
             var preview, templateScope;
             if ($scope.monthlyCaledarCoordinator.valueWasSetByUser) {
               templateScope = $rootScope.$new(true);
-              templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone();
+              templateScope.momentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone();
               preview = $compile($scope.previewAngularjsTemplate)(templateScope);
               $scope.previewElement.empty();
               return $scope.previewElement.append(preview);
@@ -1879,8 +1879,8 @@
             }
           };
           $scope.applySelectedValue = function() {
-            $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone();
-            $scope.destinationField.val($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.destinationfield_momentjs_format));
+            $scope.monthlyCaledarCoordinator.selectedValueMomentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone();
+            $scope.destinationField.val($scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.destinationfield_momentjs_format));
             $scope.__applyPreviewText();
             $scope.triggerButton.html($scope.config.buttonlabel);
             return $scope.hide();
@@ -1938,7 +1938,7 @@
             });
             return hotkeys.add({
               combo: 'pageup',
-              allowIn: ['BUTTON', 'SELECT', 'INPUT'],
+              allowIn: ['BUTTON', 'SELECT', 'INPUT', 'BUTTON'],
               callback: function(event) {
                 return $scope.__keyboardNavigation(event, 'pageup');
               }
@@ -1967,7 +1967,7 @@
           };
           $scope.showPage2 = function() {
             $scope.page = 2;
-            $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone();
+            $scope.monthlyCaledarCoordinator.selectedValueMomentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone();
             $element.show();
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
@@ -1989,16 +1989,16 @@
             }, 150);
           };
           return $scope.initialize = function() {
-            var currentDateIsoString, originalValueMomentObject;
+            var currentDateIsoString, selectedValueMomentObject;
             currentDateIsoString = $scope.destinationField.val();
             if ((currentDateIsoString != null) && currentDateIsoString !== '') {
-              originalValueMomentObject = moment(currentDateIsoString);
+              selectedValueMomentObject = moment(currentDateIsoString);
               $scope.triggerButton.html($scope.config.buttonlabel);
             } else {
-              originalValueMomentObject = null;
+              selectedValueMomentObject = null;
               $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             }
-            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(originalValueMomentObject);
+            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(selectedValueMomentObject);
             return $scope.__applyPreviewText();
           };
         },
@@ -3624,7 +3624,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                ng-class=\"{\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
-    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.originalValueMomentObject, 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedValueMomentObject, 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.getLastFocusedMomentObject(), 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday()\n" +
     "                                }\">\n" +
@@ -3639,7 +3639,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                    today\n" +
     "                                </span>\n" +
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
-    "                                        ng-if=\"calendarDay.momentObject.isSame(monthlyCaledarCoordinator.originalValueMomentObject, 'day')\">\n" +
+    "                                        ng-if=\"calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedValueMomentObject, 'day')\">\n" +
     "                                    selected\n" +
     "                                </span>\n" +
     "                            </button>\n" +
