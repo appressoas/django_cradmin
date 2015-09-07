@@ -420,7 +420,11 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
-            selectedValueMomentObject)
+            selectedValueMomentObject,
+            $scope.config.yearselect_config,
+            $scope.config.hourselect_config,
+            $scope.config.minuteselect_config
+          )
           $scope.__applyPreviewText()
 
 
@@ -454,6 +458,9 @@ app.directive 'djangoCradminDatetimeSelector', [
           'dateselector_table_screenreader_caption'
           'today_label_text'
           'selected_day_label_text'
+          'yearselect_config'
+          'hourselect_config'
+          'minuteselect_config'
 #          'year_emptyvalue'
 #          'month_emptyvalue'
 #          'day_emptyvalue'

@@ -125,7 +125,10 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class MonthlyCalendarCoordinator
-    constructor: (@selectedValueMomentObject) ->
+    constructor: (@selectedValueMomentObject,
+                  @yearselectConfig,
+                  @hourselectConfig,
+                  @minuteselectConfig) ->
       # We operate with two momentObjects:
       # - selectedValueMomentObject: This is the actual moment object
       #   that the user has selected.
@@ -151,19 +154,28 @@ app.provider 'djangoCradminCalendarApi', ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
 
     __initYearObjects: ->
-      yearsList = [1990..2030]
-      @yearobjects = []
+      selectedYearValue = @shownDateMomentObject.year()
+      hasSelectedYearValue = false
+
       @__yearsMap = {}
-      for year in yearsList
-        yearObject = {
-          value: year
-          label: year
+      for yearConfig in @yearselectConfig
+        @__yearsMap[yearConfig.value] = yearConfig
+        if yearConfig.value == selectedYearValue
+          hasSelectedYearValue = true
+
+      if not hasSelectedYearValue
+        # Since we do not include all years in the yearList, we need
+        # to handle the case when the given datetimes year is not in the
+        # list. We handle this by adding it to the end of the list.
+        yearConfig = {
+          value: selectedYearValue,
+          label: selectedYearValue
         }
-        @yearobjects.push(yearObject)
-        @__yearsMap[year] = yearObject
+        @yearselectConfig.push(yearConfig)
+        @__yearsMap[yearConfig.value] = yearConfig
 
     __initMonthObjects: ->
-      @monthobjects = []
+      @monthselectConfig = []
       @__monthsMap = {}
       monthnumber = 0
       for monthname in moment.months()
@@ -171,41 +183,35 @@ app.provider 'djangoCradminCalendarApi', ->
           value: monthnumber
           label: monthname
         }
-        @monthobjects.push(monthObject)
+        @monthselectConfig.push(monthObject)
         @__monthsMap[monthnumber] = monthObject
         monthnumber += 1
 
     __initHourObjects: ->
-      hourList = [0..23]
-      @hourobjects = []
       @__hoursMap = {}
-      for hour in hourList
-        hourObject = {
-          value: hour
-          label: hour
-        }
-        @hourobjects.push(hourObject)
-        @__hoursMap[hour] = hourObject
+      for hourConfig in @hourselectConfig
+        @__hoursMap[hourConfig.value] = hourConfig
 
     __initMinuteObjects: ->
-      minuteList = (minute for minute in [0..55] by 5)
-      minuteList.push(59)
+      selectedMinuteValue = @shownDateMomentObject.minute()
+      hasSelectedMinuteValue = false
 
-      # Since we do not include all minutes in the minuteList, we need
-      # to handle the case when the given datetimes minute is not in the
-      # list. We handle this by adding it to the end of the list.
-      if minuteList.indexOf(@shownDateMomentObject.minute()) == -1
-        minuteList.push(@shownDateMomentObject.minute())
-
-      @minuteobjects = []
       @__minutesMap = {}
-      for minute in minuteList
-        minuteObject = {
-          value: minute
-          label: minute
+      for minuteConfig in @minuteselectConfig
+        @__minutesMap[minuteConfig.value] = minuteConfig
+        if minuteConfig.value == selectedMinuteValue
+          hasSelectedMinuteValue = true
+
+      if not hasSelectedMinuteValue
+        # Since we do not include all minutes in the minuteList, we need
+        # to handle the case when the given datetimes minute is not in the
+        # list. We handle this by adding it to the end of the list.
+        minuteConfig = {
+          value: selectedMinuteValue,
+          label: selectedMinuteValue
         }
-        @minuteobjects.push(minuteObject)
-        @__minutesMap[minute] = minuteObject
+        @minuteselectConfig.push(minuteConfig)
+        @__minutesMap[minuteConfig.value] = minuteConfig
 
     __setCurrentYear: ->
       currentYearNumber = @calendarMonth.month.firstDayOfMonth.year()

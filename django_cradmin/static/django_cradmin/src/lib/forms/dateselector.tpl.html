@@ -38,7 +38,7 @@
                         <select id="{{ config.destinationfieldid }}_monthselect"
                                 class="form-control django-cradmin-datetime-selector-monthselect"
                                 ng-model="monthlyCaledarCoordinator.currentMonthObject"
-                                ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value"
+                                ng-options="monthobject.label for monthobject in monthlyCaledarCoordinator.monthselectConfig track by monthobject.value"
                                 ng-change="onSelectMonth()">
                         </select>
 
@@ -48,7 +48,7 @@
                         <select id="{{ config.destinationfieldid }}_yearselect"
                                 class="form-control django-cradmin-datetime-selector-yearselect"
                                 ng-model="monthlyCaledarCoordinator.currentYearObject"
-                                ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value"
+                                ng-options="yearobject.label for yearobject in monthlyCaledarCoordinator.yearselectConfig track by yearobject.value"
                                 ng-change="onSelectYear()">
                         </select>
                     </div>
@@ -60,7 +60,7 @@
                         <select id="{{ config.destinationfieldid }}_hourselect"
                                 class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
-                                ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
+                                ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourselectConfig track by hourobject.value"
                                 ng-change="onSelectHour()">
                         </select>
                         :
@@ -70,7 +70,7 @@
                         <select id="{{ config.destinationfieldid }}_minuteselect"
                                 class="form-control django-cradmin-datetime-selector-minuteselect"
                                 ng-model="monthlyCaledarCoordinator.currentMinuteObject"
-                                ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
+                                ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteselectConfig track by minuteobject.value"
                                 ng-change="onSelectMinute()">
                         </select>
                     </div>
@@ -164,7 +164,7 @@
                         <select id="{{ config.destinationfieldid }}_hourselect_page2"
                                 class="form-control django-cradmin-datetime-selector-hourselect"
                                 ng-model="monthlyCaledarCoordinator.currentHourObject"
-                                ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value"
+                                ng-options="hourobject.label for hourobject in monthlyCaledarCoordinator.hourselectConfig track by hourobject.value"
                                 ng-change="onSelectHour()">
                         </select>
                         :
@@ -174,7 +174,7 @@
                         <select id="{{ config.destinationfieldid }}_minuteselect_page2"
                                 class="form-control django-cradmin-datetime-selector-minuteselect"
                                 ng-model="monthlyCaledarCoordinator.currentMinuteObject"
-                                ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value"
+                                ng-options="minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteselectConfig track by minuteobject.value"
                                 ng-change="onSelectMinute()">
                         </select>
                         <button type="button"

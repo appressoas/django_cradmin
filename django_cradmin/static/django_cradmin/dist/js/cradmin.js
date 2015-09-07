@@ -910,9 +910,12 @@
 
     })();
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(selectedValueMomentObject) {
+      function MonthlyCalendarCoordinator(selectedValueMomentObject, yearselectConfig, hourselectConfig, minuteselectConfig) {
         var valueWasSetByUser;
         this.selectedValueMomentObject = selectedValueMomentObject;
+        this.yearselectConfig = yearselectConfig;
+        this.hourselectConfig = hourselectConfig;
+        this.minuteselectConfig = minuteselectConfig;
         this.dayobjects = null;
         if (this.selectedValueMomentObject != null) {
           this.shownDateMomentObject = this.selectedValueMomentObject.clone();
@@ -935,30 +938,31 @@
       };
 
       MonthlyCalendarCoordinator.prototype.__initYearObjects = function() {
-        var year, yearObject, yearsList, _i, _j, _len, _results, _results1;
-        yearsList = (function() {
-          _results = [];
-          for (_i = 1990; _i <= 2030; _i++){ _results.push(_i); }
-          return _results;
-        }).apply(this);
-        this.yearobjects = [];
+        var hasSelectedYearValue, selectedYearValue, yearConfig, _i, _len, _ref;
+        selectedYearValue = this.shownDateMomentObject.year();
+        hasSelectedYearValue = false;
         this.__yearsMap = {};
-        _results1 = [];
-        for (_j = 0, _len = yearsList.length; _j < _len; _j++) {
-          year = yearsList[_j];
-          yearObject = {
-            value: year,
-            label: year
-          };
-          this.yearobjects.push(yearObject);
-          _results1.push(this.__yearsMap[year] = yearObject);
+        _ref = this.yearselectConfig;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          yearConfig = _ref[_i];
+          this.__yearsMap[yearConfig.value] = yearConfig;
+          if (yearConfig.value === selectedYearValue) {
+            hasSelectedYearValue = true;
+          }
         }
-        return _results1;
+        if (!hasSelectedYearValue) {
+          yearConfig = {
+            value: selectedYearValue,
+            label: selectedYearValue
+          };
+          this.yearselectConfig.push(yearConfig);
+          return this.__yearsMap[yearConfig.value] = yearConfig;
+        }
       };
 
       MonthlyCalendarCoordinator.prototype.__initMonthObjects = function() {
         var monthObject, monthname, monthnumber, _i, _len, _ref, _results;
-        this.monthobjects = [];
+        this.monthselectConfig = [];
         this.__monthsMap = {};
         monthnumber = 0;
         _ref = moment.months();
@@ -969,7 +973,7 @@
             value: monthnumber,
             label: monthname
           };
-          this.monthobjects.push(monthObject);
+          this.monthselectConfig.push(monthObject);
           this.__monthsMap[monthnumber] = monthObject;
           _results.push(monthnumber += 1);
         }
@@ -977,54 +981,38 @@
       };
 
       MonthlyCalendarCoordinator.prototype.__initHourObjects = function() {
-        var hour, hourList, hourObject, _i, _j, _len, _results, _results1;
-        hourList = (function() {
-          _results = [];
-          for (_i = 0; _i <= 23; _i++){ _results.push(_i); }
-          return _results;
-        }).apply(this);
-        this.hourobjects = [];
+        var hourConfig, _i, _len, _ref, _results;
         this.__hoursMap = {};
-        _results1 = [];
-        for (_j = 0, _len = hourList.length; _j < _len; _j++) {
-          hour = hourList[_j];
-          hourObject = {
-            value: hour,
-            label: hour
-          };
-          this.hourobjects.push(hourObject);
-          _results1.push(this.__hoursMap[hour] = hourObject);
+        _ref = this.hourselectConfig;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          hourConfig = _ref[_i];
+          _results.push(this.__hoursMap[hourConfig.value] = hourConfig);
         }
-        return _results1;
+        return _results;
       };
 
       MonthlyCalendarCoordinator.prototype.__initMinuteObjects = function() {
-        var minute, minuteList, minuteObject, _i, _len, _results;
-        minuteList = (function() {
-          var _i, _results;
-          _results = [];
-          for (minute = _i = 0; _i <= 55; minute = _i += 5) {
-            _results.push(minute);
-          }
-          return _results;
-        })();
-        minuteList.push(59);
-        if (minuteList.indexOf(this.shownDateMomentObject.minute()) === -1) {
-          minuteList.push(this.shownDateMomentObject.minute());
-        }
-        this.minuteobjects = [];
+        var hasSelectedMinuteValue, minuteConfig, selectedMinuteValue, _i, _len, _ref;
+        selectedMinuteValue = this.shownDateMomentObject.minute();
+        hasSelectedMinuteValue = false;
         this.__minutesMap = {};
-        _results = [];
-        for (_i = 0, _len = minuteList.length; _i < _len; _i++) {
-          minute = minuteList[_i];
-          minuteObject = {
-            value: minute,
-            label: minute
-          };
-          this.minuteobjects.push(minuteObject);
-          _results.push(this.__minutesMap[minute] = minuteObject);
+        _ref = this.minuteselectConfig;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          minuteConfig = _ref[_i];
+          this.__minutesMap[minuteConfig.value] = minuteConfig;
+          if (minuteConfig.value === selectedMinuteValue) {
+            hasSelectedMinuteValue = true;
+          }
         }
-        return _results;
+        if (!hasSelectedMinuteValue) {
+          minuteConfig = {
+            value: selectedMinuteValue,
+            label: selectedMinuteValue
+          };
+          this.minuteselectConfig.push(minuteConfig);
+          return this.__minutesMap[minuteConfig.value] = minuteConfig;
+        }
       };
 
       MonthlyCalendarCoordinator.prototype.__setCurrentYear = function() {
@@ -2012,7 +2000,7 @@
               selectedValueMomentObject = null;
               $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             }
-            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(selectedValueMomentObject);
+            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(selectedValueMomentObject, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
             return $scope.__applyPreviewText();
           };
         },
@@ -2021,7 +2009,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_config', 'hourselect_config', 'minuteselect_config'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -3574,7 +3562,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <select id=\"{{ config.destinationfieldid }}_monthselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-monthselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
-    "                                ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthobjects track by monthobject.value\"\n" +
+    "                                ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthselectConfig track by monthobject.value\"\n" +
     "                                ng-change=\"onSelectMonth()\">\n" +
     "                        </select>\n" +
     "\n" +
@@ -3584,7 +3572,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <select id=\"{{ config.destinationfieldid }}_yearselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-yearselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
-    "                                ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearobjects track by yearobject.value\"\n" +
+    "                                ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearselectConfig track by yearobject.value\"\n" +
     "                                ng-change=\"onSelectYear()\">\n" +
     "                        </select>\n" +
     "                    </div>\n" +
@@ -3596,7 +3584,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <select id=\"{{ config.destinationfieldid }}_hourselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
-    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
+    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourselectConfig track by hourobject.value\"\n" +
     "                                ng-change=\"onSelectHour()\">\n" +
     "                        </select>\n" +
     "                        :\n" +
@@ -3606,7 +3594,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <select id=\"{{ config.destinationfieldid }}_minuteselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
-    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +
+    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
     "                                ng-change=\"onSelectMinute()\">\n" +
     "                        </select>\n" +
     "                    </div>\n" +
@@ -3700,7 +3688,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <select id=\"{{ config.destinationfieldid }}_hourselect_page2\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
-    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourobjects track by hourobject.value\"\n" +
+    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourselectConfig track by hourobject.value\"\n" +
     "                                ng-change=\"onSelectHour()\">\n" +
     "                        </select>\n" +
     "                        :\n" +
@@ -3710,7 +3698,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        <select id=\"{{ config.destinationfieldid }}_minuteselect_page2\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
     "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
-    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteobjects track by minuteobject.value\"\n" +
+    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
     "                                ng-change=\"onSelectMinute()\">\n" +
     "                        </select>\n" +
     "                        <button type=\"button\"\n" +

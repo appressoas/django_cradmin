@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 import json
 from builtins import str
+from datetime import timedelta, datetime
 
-import datetime
 from django.forms import widgets
 from django.template import loader
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
@@ -282,6 +283,10 @@ class DatePickerWidget(widgets.TextInput):
             'dateselector_table_screenreader_caption': str(self.dateselector_table_screenreader_caption),
             'today_label_text': str(self.today_label_text),
             'selected_day_label_text': str(self.selected_day_label_text),
+            'yearselect_config': list(self.get_yearselect_config()),
+            'hourselect_config': list(self.get_hourselect_config()),
+            'minuteselect_config': list(self.get_minuteselect_config()),
+
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
@@ -357,6 +362,65 @@ class DatePickerWidget(widgets.TextInput):
             'previewtemplateid': previewtemplateid,
             'preview_angularjs_template': self.__get_preview_angularjs_template(),
         })
+
+    #
+    # Year select config
+    #
+
+    def format_yearlabel(self, yearnumber):
+        return str(yearnumber)
+
+    def get_selectable_yearnumbers(self):
+        return range(
+            (timezone.now() - timedelta(days=364*130)).year,
+            (timezone.now() + timedelta(days=364*130)).year)
+
+    def get_yearselect_config(self):
+        def format_yearconfig(yearnumber):
+            return {
+                'value': yearnumber,
+                'label': self.format_yearlabel(yearnumber)
+            }
+        return map(format_yearconfig, self.get_selectable_yearnumbers())
+
+    #
+    # Hour select config
+    #
+
+    def format_hourlabel(self, hournumber):
+        return '{:02}'.format(hournumber)
+
+    def get_selectable_hournumbers(self):
+        return list(range(0, 24))
+
+    def get_hourselect_config(self):
+        def format_hourconfig(hournumber):
+            return {
+                'value': hournumber,
+                'label': self.format_hourlabel(hournumber)
+            }
+        return map(format_hourconfig, self.get_selectable_hournumbers())
+
+
+    #
+    # Minute select config
+    #
+
+    def format_minutelabel(self, minutenumber):
+        return '{:02}'.format(minutenumber)
+
+    def get_selectable_minutenumbers(self):
+        minutevalues = list(range(0, 60, 5))
+        minutevalues.append(59)
+        return minutevalues
+
+    def get_minuteselect_config(self):
+        def format_minuteconfig(minutenumber):
+            return {
+                'value': minutenumber,
+                'label': self.format_minutelabel(minutenumber)
+            }
+        return map(format_minuteconfig, self.get_selectable_minutenumbers())
 
 
 class BetterDateTimePickerWidget(DatePickerWidget):
