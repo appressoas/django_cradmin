@@ -16,38 +16,83 @@ app.directive 'djangoCradminDatetimeSelector', [
       controller: ($scope, $element) ->
         $scope.page = null
 
+        ###
+        Handles keyboard navigation.
+        ###
         $scope.__keyboardNavigation = (event, direction) ->
-          activeElement = angular.element(document.activeElement)
-          if activeElement.hasClass('django-cradmin-datetime-selector-daybuttoncell-button')
+          if direction == 'pageup' or direction == 'pagedown'
             event.preventDefault()
+          if $element.find('.django-cradmin-datetime-selector-table').is(':visible')
+            activeElement = angular.element(document.activeElement)
+            if activeElement.hasClass('django-cradmin-datetime-selector-daybuttoncell-button')
+              event.preventDefault()
 
-            if direction == 'right'
-              nextSibling = activeElement.parent().next()
-              if nextSibling.length > 0
-                newFocusTd = nextSibling
-            if direction == 'left'
-              previousSibling = activeElement.parent().prev()
-              if previousSibling.length > 0
-                newFocusTd = previousSibling
-            if direction == 'up'
-              previousTr = activeElement.parent().parent().prev()
-              if previousTr.length > 0
-                newFocusTd = angular.element(previousTr.children().get(activeElement.parent().index()))
-            if direction == 'down'
-              nextTr = activeElement.parent().parent().next()
-              if nextTr.length > 0
-                newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()))
+              if direction == 'right'
+                nextSibling = activeElement.parent().next()
+                if nextSibling.length > 0
+                  newFocusTd = nextSibling
+              if direction == 'left'
+                previousSibling = activeElement.parent().prev()
+                if previousSibling.length > 0
+                  newFocusTd = previousSibling
+              if direction == 'up'
+                previousTr = activeElement.parent().parent().prev()
+                if previousTr.length > 0
+                  newFocusTd = angular.element(previousTr.children().get(activeElement.parent().index()))
+              if direction == 'down'
+                nextTr = activeElement.parent().parent().next()
+                if nextTr.length > 0
+                  newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()))
 
-            if direction == 'home'
-              newFocusTd = activeElement.parent().parent().parent().children().first().children().first()
-            if direction == 'end'
-              console.log activeElement.parent().parent().parent()
-              console.log activeElement.parent().parent().parent().children().last()
-              console.log activeElement.parent().parent().parent().children().last().children().last()
-              newFocusTd = activeElement.parent().parent().parent().children().last().children().last()
 
-            if newFocusTd? and newFocusTd.length > 0
-              newFocusTd.find('button').focus()
+              if direction == 'home'
+                newFocusTd = activeElement.parent().parent().parent().children().first().children().first()
+              if direction == 'end'
+                console.log activeElement.parent().parent().parent()
+                console.log activeElement.parent().parent().parent().children().last()
+                console.log activeElement.parent().parent().parent().children().last().children().last()
+                newFocusTd = activeElement.parent().parent().parent().children().last().children().last()
+
+              if newFocusTd? and newFocusTd.length > 0
+                newFocusTd.find('button').focus()
+
+              if direction == 'pageup'
+                $element.find('.django-cradmin-datetime-selector-monthselect').focus()
+
+            else if direction == 'pagedown'
+              if activeElement.parent().hasClass('django-cradmin-datetime-selector-dateselectors')
+                lastFocusedElement = $element.find('.django-cradmin-datetime-selector-daybuttoncell-lastfocused button')
+                if lastFocusedElement.is(':visible')
+                  lastFocusedElement.focus()
+                else
+                  angular.element(
+                    $element.find('.django-cradmin-datetime-selector-daybuttoncell-in-current-month button').first()
+                  ).focus()
+
+        ###
+        Called when enter is pressed in any of the select fields.
+
+        If we have a visible use-button, we do the same as if the user
+        pressed that. If we are on page1, on desktop (no use-button),
+        we move the focus into the first day of the current month
+        in the day select table, or to the selected day if that is visible.
+        ###
+        $scope.__onSelectEnterPressed = ->
+          if $scope.page == 1
+            useButton = $element.find('.django-cradmin-datetime-selector-dateview ' +
+              '.django-cradmin-datetime-selector-use-button')
+            if useButton.is(":visible")
+              $scope.onClickUseTime()
+            else
+              tableElement = $element.find('.django-cradmin-datetime-selector-table')
+              selectedButton = tableElement.find('.django-cradmin-datetime-selector-daybuttoncell-selected button')
+              if selectedButton.length > 0
+                selectedButton.focus()
+              else
+                tableElement.find(
+                  '.django-cradmin-datetime-selector-daybuttoncell-in-current-month button').first().focus()
+          else if $scope.page == 2
+            $scope.onClickUseTime()
 
         ###
         Returns the item we want to focus on when we tab forward from the last
@@ -134,6 +179,13 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.showPage2()
           else
             $scope.applySelectedValue()
+          return
+
+        ###
+        Called when a users focuses a date in the calendar table.
+        ###
+        $scope.onFocusCalendayDay = (calendarDay) ->
+          $scope.monthlyCaledarCoordinator.handleFocusOnCalendarDay(calendarDay)
           return
 
         ###
@@ -270,6 +322,18 @@ app.directive 'djangoCradminDatetimeSelector', [
             callback: (event) ->
               $scope.__keyboardNavigation(event, 'end')
           })
+          hotkeys.add({
+            combo: 'pagedown'
+            allowIn: ['BUTTON', 'SELECT', 'INPUT']
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'pagedown')
+          })
+          hotkeys.add({
+            combo: 'pageup'
+            allowIn: ['BUTTON', 'SELECT', 'INPUT', 'BUTTON']
+            callback: (event) ->
+              $scope.__keyboardNavigation(event, 'pageup')
+          })
 
         __addPage1Hotkeys = ->
 
@@ -281,6 +345,8 @@ app.directive 'djangoCradminDatetimeSelector', [
           hotkeys.del('right')
           hotkeys.del('home')
           hotkeys.del('end')
+          hotkeys.del('pagedown')
+          hotkeys.del('pageup')
 
         $scope.showPage1 = ->
           $element.show()
@@ -296,6 +362,10 @@ app.directive 'djangoCradminDatetimeSelector', [
 
         $scope.showPage2 = ->
           $scope.page = 2
+
+          # Update "originalValueMomentObject" to reflect the change. This will mark this as
+          # the selected value when we return from to page2.
+          $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone()
           $element.show()
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
@@ -422,8 +492,21 @@ app.directive 'djangoCradminDatetimeSelector', [
         else
           $scope.previewAngularjsTemplate = previewTemplateScriptElement.html()
 
+
         $scope.initialize()
 
+        # We need this timeout to ensure all the items are rendered.
+        # it seems empty selects are not matched or something like that
+        # The timeout should not matter unless a user somehow manages to open
+        # the datepicker in 100ms (after page load)
+        $timeout(->
+          $element.find('select').on 'keydown', (e) ->
+            if e.which == 13  # 13 is the enter key
+              $scope.__onSelectEnterPressed()
+              # Prevent form submit when hitting enter on any select in the datepicker
+              e.preventDefault()
+            return
+        , 100)
         return
     }
 ]

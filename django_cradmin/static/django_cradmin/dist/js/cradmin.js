@@ -1149,6 +1149,18 @@
         return this.__changeSelectedDate(true);
       };
 
+      MonthlyCalendarCoordinator.prototype.handleFocusOnCalendarDay = function(calendarDay) {
+        return this.lastFocusedMomentObject = calendarDay.momentObject;
+      };
+
+      MonthlyCalendarCoordinator.prototype.getLastFocusedMomentObject = function() {
+        if (this.lastFocusedMomentObject != null) {
+          return this.lastFocusedMomentObject;
+        } else {
+          return this.selectedDateMomentObject;
+        }
+      };
+
       return MonthlyCalendarCoordinator;
 
     })();
@@ -1592,47 +1604,96 @@
         controller: function($scope, $element) {
           var __addCommonHotkeys, __addPage1Hotkeys, __getFirstFocusableItemInCurrentPage, __getFocusItemAfterHide, __getInitialFocusItemForCurrentPage, __getLastFocusableItemInCurrentPage, __removeHotkeys;
           $scope.page = null;
+          /*
+          Handles keyboard navigation.
+          */
+
           $scope.__keyboardNavigation = function(event, direction) {
-            var activeElement, newFocusTd, nextSibling, nextTr, previousSibling, previousTr;
-            activeElement = angular.element(document.activeElement);
-            if (activeElement.hasClass('django-cradmin-datetime-selector-daybuttoncell-button')) {
+            var activeElement, lastFocusedElement, newFocusTd, nextSibling, nextTr, previousSibling, previousTr;
+            if (direction === 'pageup' || direction === 'pagedown') {
               event.preventDefault();
-              if (direction === 'right') {
-                nextSibling = activeElement.parent().next();
-                if (nextSibling.length > 0) {
-                  newFocusTd = nextSibling;
+            }
+            if ($element.find('.django-cradmin-datetime-selector-table').is(':visible')) {
+              activeElement = angular.element(document.activeElement);
+              if (activeElement.hasClass('django-cradmin-datetime-selector-daybuttoncell-button')) {
+                event.preventDefault();
+                if (direction === 'right') {
+                  nextSibling = activeElement.parent().next();
+                  if (nextSibling.length > 0) {
+                    newFocusTd = nextSibling;
+                  }
+                }
+                if (direction === 'left') {
+                  previousSibling = activeElement.parent().prev();
+                  if (previousSibling.length > 0) {
+                    newFocusTd = previousSibling;
+                  }
+                }
+                if (direction === 'up') {
+                  previousTr = activeElement.parent().parent().prev();
+                  if (previousTr.length > 0) {
+                    newFocusTd = angular.element(previousTr.children().get(activeElement.parent().index()));
+                  }
+                }
+                if (direction === 'down') {
+                  nextTr = activeElement.parent().parent().next();
+                  if (nextTr.length > 0) {
+                    newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()));
+                  }
+                }
+                if (direction === 'home') {
+                  newFocusTd = activeElement.parent().parent().parent().children().first().children().first();
+                }
+                if (direction === 'end') {
+                  console.log(activeElement.parent().parent().parent());
+                  console.log(activeElement.parent().parent().parent().children().last());
+                  console.log(activeElement.parent().parent().parent().children().last().children().last());
+                  newFocusTd = activeElement.parent().parent().parent().children().last().children().last();
+                }
+                if ((newFocusTd != null) && newFocusTd.length > 0) {
+                  newFocusTd.find('button').focus();
+                }
+                if (direction === 'pageup') {
+                  return $element.find('.django-cradmin-datetime-selector-monthselect').focus();
+                }
+              } else if (direction === 'pagedown') {
+                if (activeElement.parent().hasClass('django-cradmin-datetime-selector-dateselectors')) {
+                  lastFocusedElement = $element.find('.django-cradmin-datetime-selector-daybuttoncell-lastfocused button');
+                  if (lastFocusedElement.is(':visible')) {
+                    return lastFocusedElement.focus();
+                  } else {
+                    return angular.element($element.find('.django-cradmin-datetime-selector-daybuttoncell-in-current-month button').first()).focus();
+                  }
                 }
               }
-              if (direction === 'left') {
-                previousSibling = activeElement.parent().prev();
-                if (previousSibling.length > 0) {
-                  newFocusTd = previousSibling;
+            }
+          };
+          /*
+          Called when enter is pressed in any of the select fields.
+          
+          If we have a visible use-button, we do the same as if the user
+          pressed that. If we are on page1, on desktop (no use-button),
+          we move the focus into the first day of the current month
+          in the day select table, or to the selected day if that is visible.
+          */
+
+          $scope.__onSelectEnterPressed = function() {
+            var selectedButton, tableElement, useButton;
+            if ($scope.page === 1) {
+              useButton = $element.find('.django-cradmin-datetime-selector-dateview ' + '.django-cradmin-datetime-selector-use-button');
+              if (useButton.is(":visible")) {
+                return $scope.onClickUseTime();
+              } else {
+                tableElement = $element.find('.django-cradmin-datetime-selector-table');
+                selectedButton = tableElement.find('.django-cradmin-datetime-selector-daybuttoncell-selected button');
+                if (selectedButton.length > 0) {
+                  return selectedButton.focus();
+                } else {
+                  return tableElement.find('.django-cradmin-datetime-selector-daybuttoncell-in-current-month button').first().focus();
                 }
               }
-              if (direction === 'up') {
-                previousTr = activeElement.parent().parent().prev();
-                if (previousTr.length > 0) {
-                  newFocusTd = angular.element(previousTr.children().get(activeElement.parent().index()));
-                }
-              }
-              if (direction === 'down') {
-                nextTr = activeElement.parent().parent().next();
-                if (nextTr.length > 0) {
-                  newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()));
-                }
-              }
-              if (direction === 'home') {
-                newFocusTd = activeElement.parent().parent().parent().children().first().children().first();
-              }
-              if (direction === 'end') {
-                console.log(activeElement.parent().parent().parent());
-                console.log(activeElement.parent().parent().parent().children().last());
-                console.log(activeElement.parent().parent().parent().children().last().children().last());
-                newFocusTd = activeElement.parent().parent().parent().children().last().children().last();
-              }
-              if ((newFocusTd != null) && newFocusTd.length > 0) {
-                return newFocusTd.find('button').focus();
-              }
+            } else if ($scope.page === 2) {
+              return $scope.onClickUseTime();
             }
           };
           /*
@@ -1729,6 +1790,13 @@
             } else {
               $scope.applySelectedValue();
             }
+          };
+          /*
+          Called when a users focuses a date in the calendar table.
+          */
+
+          $scope.onFocusCalendayDay = function(calendarDay) {
+            $scope.monthlyCaledarCoordinator.handleFocusOnCalendarDay(calendarDay);
           };
           /*
           Called when a users selects a month using the month <select>
@@ -1855,10 +1923,24 @@
                 return $scope.__keyboardNavigation(event, 'home');
               }
             });
-            return hotkeys.add({
+            hotkeys.add({
               combo: 'end',
               callback: function(event) {
                 return $scope.__keyboardNavigation(event, 'end');
+              }
+            });
+            hotkeys.add({
+              combo: 'pagedown',
+              allowIn: ['BUTTON', 'SELECT', 'INPUT'],
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'pagedown');
+              }
+            });
+            return hotkeys.add({
+              combo: 'pageup',
+              allowIn: ['BUTTON', 'SELECT', 'INPUT'],
+              callback: function(event) {
+                return $scope.__keyboardNavigation(event, 'pageup');
               }
             });
           };
@@ -1870,7 +1952,9 @@
             hotkeys.del('left');
             hotkeys.del('right');
             hotkeys.del('home');
-            return hotkeys.del('end');
+            hotkeys.del('end');
+            hotkeys.del('pagedown');
+            return hotkeys.del('pageup');
           };
           $scope.showPage1 = function() {
             $element.show();
@@ -1883,6 +1967,7 @@
           };
           $scope.showPage2 = function() {
             $scope.page = 2;
+            $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone();
             $element.show();
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
@@ -1982,6 +2067,14 @@
             $scope.previewAngularjsTemplate = previewTemplateScriptElement.html();
           }
           $scope.initialize();
+          $timeout(function() {
+            return $element.find('select').on('keydown', function(e) {
+              if (e.which === 13) {
+                $scope.__onSelectEnterPressed();
+                e.preventDefault();
+              }
+            });
+          }, 100);
         }
       };
     }
@@ -3532,11 +3625,13 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.originalValueMomentObject, 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.getLastFocusedMomentObject(), 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday()\n" +
     "                                }\">\n" +
     "                            <button type=\"button\" class=\"btn btn-link django-cradmin-datetime-selector-daybuttoncell-button\"\n" +
     "                                    ng-click=\"onClickCalendarDay(calendarDay)\"\n" +
     "                                    tabindex=\"{{ getTabindexForCalendarDay(calendarDay) }}\"\n" +
+    "                                    ng-focus=\"onFocusCalendayDay(calendarDay)\"\n" +
     "                                    aria-label=\"{{ calendarDay.momentObject.format('MMMM D') }}\">\n" +
     "                                {{ calendarDay.getNumberInMonth() }}\n" +
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +

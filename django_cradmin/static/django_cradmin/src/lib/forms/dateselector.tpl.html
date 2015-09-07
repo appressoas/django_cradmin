@@ -103,11 +103,13 @@
                                     'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
                                     'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
                                     'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.originalValueMomentObject, 'day'),
+                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.getLastFocusedMomentObject(), 'day'),
                                     'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday()
                                 }">
                             <button type="button" class="btn btn-link django-cradmin-datetime-selector-daybuttoncell-button"
                                     ng-click="onClickCalendarDay(calendarDay)"
                                     tabindex="{{ getTabindexForCalendarDay(calendarDay) }}"
+                                    ng-focus="onFocusCalendayDay(calendarDay)"
                                     aria-label="{{ calendarDay.momentObject.format('MMMM D') }}">
                                 {{ calendarDay.getNumberInMonth() }}
                                 <span class="django-cradmin-datetime-selector-daybuttoncell-label"

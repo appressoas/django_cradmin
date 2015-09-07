@@ -294,6 +294,15 @@ app.provider 'djangoCradminCalendarApi', ->
       })
       @__changeSelectedDate(true)
 
+    handleFocusOnCalendarDay: (calendarDay) ->
+      @lastFocusedMomentObject = calendarDay.momentObject
+
+    getLastFocusedMomentObject: ->
+      if @lastFocusedMomentObject?
+        return @lastFocusedMomentObject
+      else
+        return @selectedDateMomentObject
+
   @$get = ->
     return {
       MonthlyCalendarCoordinator: MonthlyCalendarCoordinator
