@@ -937,6 +937,10 @@
         return this.selectedValueMomentObject = this.shownDateMomentObject.clone();
       };
 
+      CalendarCoordinator.prototype.clearSelectedMomentObject = function() {
+        return this.selectedValueMomentObject = null;
+      };
+
       CalendarCoordinator.prototype.momentObjectIsAllowed = function(momentObject) {
         var isAllowed, maximumDatetimeDateonly, minimumDatetimeDateonly;
         isAllowed = true;
@@ -1827,7 +1831,7 @@
             if ($scope.config.include_time) {
               $scope.showPage2();
             } else {
-              $scope.applySelectedValue();
+              $scope.__useShownValue();
             }
           };
           /*
@@ -1874,7 +1878,7 @@
           */
 
           $scope.onClickUseTime = function() {
-            $scope.applySelectedValue();
+            $scope.__useShownValue();
           };
           /*
           Used to get the preview of the selected date on page2 (above the time selector).
@@ -1921,15 +1925,15 @@
             if ($scope.config.include_time) {
               $scope.showPage2();
             } else {
-              $scope.applySelectedValue();
+              $scope.__useShownValue();
             }
           };
           $scope.onClickNowButton = function() {
             $scope.calendarCoordinator.setToNow();
-            return $scope.applySelectedValue();
+            return $scope.__useShownValue();
           };
           $scope.onClickClearButton = function() {
-            return $scope.clearSelectedValue();
+            return $scope.__clearSelectedValue();
           };
           $scope.getTabindexForCalendarDay = function(calendarDay) {
             if (calendarDay.isInCurrentMonth) {
@@ -1939,7 +1943,11 @@
             }
             return "-1";
           };
-          $scope.__applyPreviewText = function() {
+          /*
+          Update the preview text to reflect the selected value.
+          */
+
+          $scope.__updatePreviewText = function() {
             var preview, templateScope;
             if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
               templateScope = $rootScope.$new(true);
@@ -1951,18 +1959,59 @@
               return $scope.previewElement.html($scope.config.no_value_preview_text);
             }
           };
-          $scope.applySelectedValue = function() {
-            $scope.calendarCoordinator.selectShownValue();
-            $scope.destinationField.val($scope.calendarCoordinator.shownDateMomentObject.format($scope.config.destinationfield_momentjs_format));
-            $scope.__applyPreviewText();
-            $scope.triggerButton.html($scope.config.buttonlabel);
+          /*
+          Update the trigger button label to reflect the selected value.
+          */
+
+          $scope.__updateTriggerButtonLabel = function() {
+            var label;
+            if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
+              label = $scope.config.buttonlabel;
+            } else {
+              label = $scope.config.buttonlabel_novalue;
+            }
+            return $scope.triggerButton.html(label);
+          };
+          /*
+          Update the value of the destination field to reflect the selected value.
+          */
+
+          $scope.__updateDestinationFieldValue = function() {
+            var destinationFieldValue;
+            if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
+              destinationFieldValue = $scope.calendarCoordinator.selectedValueMomentObject.format($scope.config.destinationfield_momentjs_format);
+            } else {
+              destinationFieldValue = '';
+            }
+            return $scope.destinationField.val(destinationFieldValue);
+          };
+          /*
+          Update destination field value, preview text and trigger button label,
+          and hide the datetime selector.
+          */
+
+          $scope.__hideWithSelectedValueApplied = function() {
+            $scope.__updateDestinationFieldValue();
+            $scope.__updatePreviewText();
+            $scope.__updateTriggerButtonLabel();
             return $scope.hide();
           };
-          $scope.clearSelectedValue = function() {
-            $scope.destinationField.val('');
-            $scope.previewElement.html($scope.config.no_value_preview_text);
-            $scope.triggerButton.html($scope.config.buttonlabel_novalue);
-            return $scope.hide();
+          /*
+          Make the shown value the selected value and call
+          ``$scope.__hideWithSelectedValueApplied()``.
+          */
+
+          $scope.__useShownValue = function() {
+            $scope.calendarCoordinator.selectShownValue();
+            return $scope.__hideWithSelectedValueApplied();
+          };
+          /*
+          Clear the selected value and call ``$scope.__hideWithSelectedValueApplied()``.
+          */
+
+          $scope.__clearSelectedValue = function() {
+            $scope.calendarCoordinator.clearSelectedMomentObject();
+            return $scope.__hideWithSelectedValueApplied();
           };
           __addCommonHotkeys = function() {
             hotkeys.add({
@@ -2089,7 +2138,7 @@
             }
             $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(selectedValueMomentObject, minimumDatetime, maximumDatetime);
             $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
-            return $scope.__applyPreviewText();
+            return $scope.__updatePreviewText();
           };
         },
         link: function($scope, $element) {

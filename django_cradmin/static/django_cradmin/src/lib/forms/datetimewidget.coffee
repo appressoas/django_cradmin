@@ -174,7 +174,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           if $scope.config.include_time
             $scope.showPage2()
           else
-            $scope.applySelectedValue()
+            $scope.__useShownValue()
           return
 
         ###
@@ -220,7 +220,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         Called when a user clicks the "Use" button on the time page.
         ###
         $scope.onClickUseTime = ->
-          $scope.applySelectedValue()
+          $scope.__useShownValue()
           return
 
         ###
@@ -263,15 +263,15 @@ app.directive 'djangoCradminDatetimeSelector', [
           if $scope.config.include_time
             $scope.showPage2()
           else
-            $scope.applySelectedValue()
+            $scope.__useShownValue()
           return
 
         $scope.onClickNowButton = ->
           $scope.calendarCoordinator.setToNow()
-          $scope.applySelectedValue()
+          $scope.__useShownValue()
 
         $scope.onClickClearButton = ->
-          $scope.clearSelectedValue()
+          $scope.__clearSelectedValue()
 
         $scope.getTabindexForCalendarDay = (calendarDay) ->
           if calendarDay.isInCurrentMonth
@@ -279,7 +279,10 @@ app.directive 'djangoCradminDatetimeSelector', [
           else
           return "-1"
 
-        $scope.__applyPreviewText = ->
+        ###
+        Update the preview text to reflect the selected value.
+        ###
+        $scope.__updatePreviewText = ->
           if $scope.calendarCoordinator.selectedValueMomentObject?
             templateScope = $rootScope.$new(true)  # Create new isolated scope
             # NOTE: We must clone the object, if we do not clone it, the value
@@ -293,30 +296,52 @@ app.directive 'djangoCradminDatetimeSelector', [
           else
             $scope.previewElement.html($scope.config.no_value_preview_text)
 
-        $scope.applySelectedValue = ->
+        ###
+        Update the trigger button label to reflect the selected value.
+        ###
+        $scope.__updateTriggerButtonLabel = ->
+          if $scope.calendarCoordinator.selectedValueMomentObject?
+            label = $scope.config.buttonlabel
+          else
+            label = $scope.config.buttonlabel_novalue
+          $scope.triggerButton.html(label)
+
+        ###
+        Update the value of the destination field to reflect the selected value.
+        ###
+        $scope.__updateDestinationFieldValue = ->
+          if $scope.calendarCoordinator.selectedValueMomentObject?
+            destinationFieldValue = $scope.calendarCoordinator.selectedValueMomentObject.format(
+              $scope.config.destinationfield_momentjs_format
+            )
+          else
+            destinationFieldValue = ''
+          $scope.destinationField.val(destinationFieldValue)
+
+        ###
+        Update destination field value, preview text and trigger button label,
+        and hide the datetime selector.
+        ###
+        $scope.__hideWithSelectedValueApplied = ->
+          $scope.__updateDestinationFieldValue()
+          $scope.__updatePreviewText()
+          $scope.__updateTriggerButtonLabel()
+          $scope.hide()
+
+        ###
+        Make the shown value the selected value and call
+        ``$scope.__hideWithSelectedValueApplied()``.
+        ###
+        $scope.__useShownValue = ->
           $scope.calendarCoordinator.selectShownValue()
+          $scope.__hideWithSelectedValueApplied()
 
-          # Update the (hidden) destination field
-          $scope.destinationField.val($scope.calendarCoordinator.shownDateMomentObject.format(
-            $scope.config.destinationfield_momentjs_format
-          ))
-
-          # Update the preview text and trigger button label
-          $scope.__applyPreviewText()
-          $scope.triggerButton.html($scope.config.buttonlabel)
-
-          $scope.hide()
-
-        $scope.clearSelectedValue = ->
-          # Update the (hidden) destination field
-          $scope.destinationField.val('')
-
-          # Update the preview text and trigger button label
-          $scope.previewElement.html($scope.config.no_value_preview_text)
-          $scope.triggerButton.html($scope.config.buttonlabel_novalue)
-
-          $scope.hide()
-
+        ###
+        Clear the selected value and call ``$scope.__hideWithSelectedValueApplied()``.
+        ###
+        $scope.__clearSelectedValue = ->
+          $scope.calendarCoordinator.clearSelectedMomentObject()
+          $scope.__hideWithSelectedValueApplied()
 
         __addCommonHotkeys = ->
           hotkeys.add({
@@ -462,7 +487,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.config.yearselect_config,
             $scope.config.hourselect_config,
             $scope.config.minuteselect_config)
-          $scope.__applyPreviewText()
+          $scope.__updatePreviewText()
 
 
       link: ($scope, $element) ->

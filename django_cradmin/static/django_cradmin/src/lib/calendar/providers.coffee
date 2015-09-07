@@ -152,6 +152,9 @@ app.provider 'djangoCradminCalendarApi', ->
     selectShownValue: ->
       @selectedValueMomentObject = @shownDateMomentObject.clone()
 
+    clearSelectedMomentObject: ->
+      @selectedValueMomentObject = null
+
     momentObjectIsAllowed: (momentObject) ->
       isAllowed = true
       if @minimumDatetime?
