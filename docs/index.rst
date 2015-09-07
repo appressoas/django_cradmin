@@ -90,6 +90,7 @@ Widgets
 .. toctree::
    :maxdepth: 1
 
+   datetimepicker
    foreignkeywidgets
 
 

@@ -34,14 +34,14 @@
             <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>
         {% endblock vendorjs %}
 
-        {% block momentjsconfig %}
+        {% block momentjslocale %}
             {% if DJANGO_CRADMIN_MOMENTJS_LOCALE %}
                 <script src="{{ STATIC_URL }}django_cradmin/dist/vendor/momentjs-locale/{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}.js" type="text/javascript"></script>
                 <script>
                   moment.locale('{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}')
                 </script>
             {% endif %}
-        {% endblock momentjsconfig %}
+        {% endblock momentjslocale %}
 
         {% block cradminjs %}
             <script src="{% static 'django_cradmin/dist/js/cradmin.min.js' %}" type="text/javascript"></script>

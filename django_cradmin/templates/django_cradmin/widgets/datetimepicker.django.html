@@ -1,8 +1,8 @@
 {% load i18n %}
 {% load cradmin_icon_tags %}
 
-<div id="id_cradmin_datefieldwrapper_{{ fieldname }}"
-     class="django-cradmin-datepicker">
+<div id="id_cradmin_{{ classname_lower }}_{{ fieldname }}"
+     class="django-cradmin-datepicker {{ extra_css_classes }}">
     {{ field|safe }}
     <p class="django-cradmin-datepicker-preview-and-button-para">
         <span id="{{ previewid }}" class="django-cradmin-datepicker-preview">

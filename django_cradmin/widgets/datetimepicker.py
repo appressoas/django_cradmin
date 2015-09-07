@@ -15,8 +15,43 @@ from django_cradmin.widgets.selectwidgets import WrappedSelect
 class DatePickerWidget(widgets.TextInput):
     """
     A Widget for selecting a date.
+
+    This implements a Django widget using ``django-cradmin-datetime-selector``
+    AngularJS directive, but defaults to values that makes the directive
+    only allows the user to pick a date.
+
+    The widget works for both date and datetime fields. Datetime fields
+    will just get the time, minutes and seconds set to ``0``.
+
+    Also serves as the base class for :class:`.BetterDateTimePickerWidget`.
+
+    You can configure almost everything by extending the class,
+    or (to a lesser extent) via parameters to the contructor. The only
+    thing that may seem strange that you can not customize is:
+
+    - Day numbers.
+    - Weekday names.
+    - Month names.
+
+    Day numbers have to be handled by the AngularJS directive since they are
+    dynamic (changes when you change month). Weekday names and month days are
+    formatted with MomentJS (`momentjs docs <http://momentjs.com/>`_).
+
+    MomentJS has their own i18n support. You can override the locale/language
+    used by momentjs via the ``DJANGO_CRADMIN_MOMENTJS_LOCALE`` Django setting,
+    and Django-cradmin contains all the locale files bundled with MomentJS.
+
+    You can easily provide your own translation files as explained in their docs.
+    If your template inherits from any of the Django-cradmin templates (which
+    all extend from ``django_cradmin/standalone-base-internal.django.html``, you
+    add your momentjs locale by overriding the the ``momentjslocale`` templatate block.
+    Remember that this can be overridden for your entire project by providing a
+    ``django_cradmin/standalone-base.django.html`` that overrides the ``momentjslocale``
+    block.
     """
-    template_name = 'django_cradmin/widgets/datepicker.django.html'
+
+    #: The template used to render the widget.
+    template_name = 'django_cradmin/widgets/datetimepicker.django.html'
 
     #: The momentjs formatting string to use to format the value
     #: of the hidden field where the actually posted value is
@@ -187,7 +222,6 @@ class DatePickerWidget(widgets.TextInput):
                 :obj:`.DatePickerWidget.default_timeselector_datepreview_momentjs_format`.
             no_value_preview_text: See :obj:`.DatePickerWidget.default_no_value_preview_text`.
             preview_angularjs_template: See :obj:`.DatePickerWidget.default_preview_angularjs_template`.
-
             close_screenreader_text: See :obj:`.DatePickerWidget.default_close_screenreader_text`.
             year_screenreader_text: See :obj:`.DatePickerWidget.default_year_screenreader_text`.
             month_screenreader_text: See :obj:`.DatePickerWidget.default_month_screenreader_text`.
@@ -342,14 +376,25 @@ class DatePickerWidget(widgets.TextInput):
         """
         return '<span>{}</span>'.format(self.get_preview_angularjs_template())
 
-    def render(self, name, value, attrs=None):
-        rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
-        fieldid = attrs.get('id', 'id_{}'.format(name))
+    def get_template_name(self):
+        """
+        Get the name of the template used to render the widget.
+
+        Defaults to :obj:`.template_name`.
+        """
+        return self.template_name
+
+    def get_context_data(self, fieldid, rendered_field, fieldname, value):
+        """
+        Get context data for the template used by :meth:`.render` to render the widget.
+
+        The template can be overridden in :meth:`.get_template_name`.
+        """
         triggerbuttonid = '{}_triggerbutton'.format(fieldid)
         previewid = '{}_preview'.format(fieldid)
         previewtemplateid = '{}_previewtemplate'.format(fieldid)
-
-        return loader.render_to_string(self.template_name, {
+        return {
+            'classname_lower': self.__class__.__name__.lower(),
             'field': rendered_field,
             'datepicker_config': json.dumps(self.get_datepicker_config(
                 fieldid=fieldid,
@@ -361,21 +406,68 @@ class DatePickerWidget(widgets.TextInput):
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
             'preview_angularjs_template': self.__get_preview_angularjs_template(),
-        })
+        }
+
+    def render(self, name, value, attrs=None):
+        """
+        Render the widget.
+
+        Uses the template returned by :meth:`.get_template_name` with the
+        context data returned by :meth:`.get_context_data`.
+        """
+        rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
+        fieldid = attrs.get('id', 'id_{}'.format(name))
+        return loader.render_to_string(self.self.get_template_name(), self.get_context_data(
+            fieldid=fieldid,
+            rendered_field=rendered_field,
+            fieldname=name,
+            value=value
+        ))
 
     #
     # Year select config
     #
 
     def format_yearlabel(self, yearnumber):
+        """
+        Format the given year (int) like you want it to be shown in
+        the year ``<select>``.
+
+        Returns:
+            The year formatted as a string. Defaults to ``str(yearnumber)``.
+            MUST be a string, so if you use Django ugettext, or something
+            other that is not encodable by ``json.dumps()``, make sure you
+            convert it to a string/unicode.
+        """
         return str(yearnumber)
 
     def get_selectable_yearnumbers(self):
+        """
+        Get an iterable of year ints (I.e.: anything that can be converted to a
+        list of ints with ``list(value)``).
+
+        The iterable must yield integers.
+
+        Defaults to the range of ~130 years in the past and future.
+
+        Used by :meth:`.get_yearselect_config`.
+        """
         return range(
             (timezone.now() - timedelta(days=364*130)).year,
             (timezone.now() + timedelta(days=364*130)).year)
 
     def get_yearselect_config(self):
+        """
+        Get an iterable of json encodable dicts with ``value`` and ``label`` keys.
+
+        The dicts must be json encodable, so ensure you do not include any
+        lazy Django translation strings (convert them to str/unicode).
+
+        Defaults to all the year numbers returned by :meth:`.get_selectable_yearnumbers`
+        as ``value``, with the ``label`` formatted by :meth:`.format_yearlabel`.
+        This means that you most likely should override those methods instead of this
+        method.
+        """
         def format_yearconfig(yearnumber):
             return {
                 'value': yearnumber,
@@ -388,12 +480,44 @@ class DatePickerWidget(widgets.TextInput):
     #
 
     def format_hourlabel(self, hournumber):
+        """
+        Format the given hour (int) like you want it to be shown in
+        the hour ``<select>``.
+
+        Returns:
+            The hour formatted as a string. Defaults to the ``hournumber`` as
+            prefixed with ``0`` if the number is lower than 10.
+            MUST be a string, so if you use Django ``ugettext_lazy``, or something
+            other that is not encodable by ``json.dumps()``, make sure you
+            convert it to a string/unicode.
+        """
         return '{:02}'.format(hournumber)
 
     def get_selectable_hournumbers(self):
-        return list(range(0, 24))
+        """
+        Get an iterable of hour ints (I.e.: anything that can be converted to a
+        list of ints with ``list(value)``).
+
+        The iterable must yield integers.
+
+        Defaults to a ``[0, 1, 2, ..., 23]``.
+
+        Used by :meth:`.get_hourselect_config`.
+        """
+        return range(0, 24)
 
     def get_hourselect_config(self):
+        """
+        Get an iterable of json encodable dicts with ``value`` and ``label`` keys.
+
+        The dicts must be json encodable, so ensure you do not include any
+        lazy Django translation strings (convert them to str/unicode).
+
+        Defaults to all the hour numbers returned by :meth:`.get_selectable_hournumbers`
+        as ``value``, with the ``label`` formatted by :meth:`.format_hourlabel`.
+        This means that you most likely should override those methods instead of this
+        method.
+        """
         def format_hourconfig(hournumber):
             return {
                 'value': hournumber,
@@ -401,20 +525,51 @@ class DatePickerWidget(widgets.TextInput):
             }
         return map(format_hourconfig, self.get_selectable_hournumbers())
 
-
     #
     # Minute select config
     #
 
     def format_minutelabel(self, minutenumber):
+        """
+        Format the given minute (int) like you want it to be shown in
+        the minute ``<select>``.
+
+        Returns:
+            The minute formatted as a string. Defaults to the ``minutenumber`` as
+            prefixed with ``0`` if the number is lower than 10.
+            MUST be a string, so if you use Django ugettext, or something
+            other that is not encodable by ``json.dumps()``, make sure you
+            convert it to a string/unicode.
+        """
         return '{:02}'.format(minutenumber)
 
     def get_selectable_minutenumbers(self):
+        """
+        Get an iterable of minute ints (I.e.: anything that can be converted to a
+        list of numbers with ``list(value)``).
+
+        The iterable must yield integers.
+
+        Defaults to ``[0, 5, 10, 15, ...55, 59]``.
+
+        Used by :meth:`.get_minuteselect_config`.
+        """
         minutevalues = list(range(0, 60, 5))
         minutevalues.append(59)
         return minutevalues
 
     def get_minuteselect_config(self):
+        """
+        Get an iterable of json encodable dicts with ``value`` and ``label`` keys.
+
+        The dicts must be json encodable, so ensure you do not include any
+        lazy Django translation strings (convert them to str/unicode).
+
+        Defaults to all the minute numbers returned by :meth:`.get_selectable_minutenumbers`
+        as ``value``, with the ``label`` formatted by :meth:`.format_minutelabel`.
+        This means that you most likely should override those methods instead of this
+        method.
+        """
         def format_minuteconfig(minutenumber):
             return {
                 'value': minutenumber,
@@ -423,9 +578,11 @@ class DatePickerWidget(widgets.TextInput):
         return map(format_minuteconfig, self.get_selectable_minutenumbers())
 
 
-class BetterDateTimePickerWidget(DatePickerWidget):
+class DateTimePickerWidget(DatePickerWidget):
     """
     A Widget for selecting a date and time.
+
+    Extends :class:`.DatePickerWidget`.
     """
     default_buttonlabel = _('Change date/time')
     default_buttonlabel_novalue = _('Select a date/time')
@@ -434,7 +591,7 @@ class BetterDateTimePickerWidget(DatePickerWidget):
     usebutton_arialabel_momentjs_format = 'LLLL'
 
     def get_datepicker_config(self, *args, **kwargs):
-        config = super(BetterDateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)
+        config = super(DateTimePickerWidget, self).get_datepicker_config(*args, **kwargs)
         config.update({
             'include_time': True
         })
@@ -463,47 +620,47 @@ class TimePickerWidget(widgets.TimeInput):
         })
 
 
-class DateTimePickerWidget(widgets.MultiWidget):
-    """
-    A Widget using :class:`.DatePickerWidget`
-    for selecting a date and :class:`.TimePickerWidget`
-    for selecting time.
-    """
-
-    def __init__(self, attrs=None,
-                 datewidget_placeholder=_('yyyy-mm-dd'),
-                 timewidget_placeholder=_('hh:mm')):
-        """
-        Parameters:
-            datewidget_placeholder: The placeholder for the datewidget.
-            timewidget_placeholder: The placeholder for the time widget.
-        """
-        _widgets = [
-            DatePickerWidget(attrs=attrs),
-            TimePickerWidget(attrs=attrs, placeholder=timewidget_placeholder)
-        ]
-        super(DateTimePickerWidget, self).__init__(_widgets, attrs)
-
-    def decompress(self, value):
-        return [value, value]
-
-    def format_output(self, rendered_widgets):
-        return u'<div class="django-cradmin-datetimepicker">{}</div>'.format(
-            u''.join(rendered_widgets))
-
-    def value_from_datadict(self, data, files, name):
-        timevalue = data.get('{}_1'.format(name), '').strip()
-        datevalue = data.get('{}_0'.format(name), '').strip()
-        values = []
-        if datevalue:
-            values.append(datevalue)
-        if timevalue:
-            values.append(timevalue)
-        datetimevalue = ' '.join(values)
-        if datetimevalue:
-            return datetimevalue
-        else:
-            return None
+# class DateTimePickerWidget(widgets.MultiWidget):
+#     """
+#     A Widget using :class:`.DatePickerWidget`
+#     for selecting a date and :class:`.TimePickerWidget`
+#     for selecting time.
+#     """
+#
+#     def __init__(self, attrs=None,
+#                  datewidget_placeholder=_('yyyy-mm-dd'),
+#                  timewidget_placeholder=_('hh:mm')):
+#         """
+#         Parameters:
+#             datewidget_placeholder: The placeholder for the datewidget.
+#             timewidget_placeholder: The placeholder for the time widget.
+#         """
+#         _widgets = [
+#             DatePickerWidget(attrs=attrs),
+#             TimePickerWidget(attrs=attrs, placeholder=timewidget_placeholder)
+#         ]
+#         super(DateTimePickerWidget, self).__init__(_widgets, attrs)
+#
+#     def decompress(self, value):
+#         return [value, value]
+#
+#     def format_output(self, rendered_widgets):
+#         return u'<div class="django-cradmin-datetimepicker">{}</div>'.format(
+#             u''.join(rendered_widgets))
+#
+#     def value_from_datadict(self, data, files, name):
+#         timevalue = data.get('{}_1'.format(name), '').strip()
+#         datevalue = data.get('{}_0'.format(name), '').strip()
+#         values = []
+#         if datevalue:
+#             values.append(datevalue)
+#         if timevalue:
+#             values.append(timevalue)
+#         datetimevalue = ' '.join(values)
+#         if datetimevalue:
+#             return datetimevalue
+#         else:
+#             return None
 
 
 class SplitTimePickerWidget(widgets.MultiWidget):

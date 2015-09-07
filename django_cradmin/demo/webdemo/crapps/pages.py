@@ -19,8 +19,7 @@ from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.demo.webdemo.models import Page
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
-from django_cradmin.widgets.datetimepicker import DateTimePickerWidget, DateSplitTimePickerWidget, \
-    BetterDateTimePickerWidget, DatePickerWidget
+from django_cradmin.widgets.datetimepicker import DateTimePickerWidget, DatePickerWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -141,8 +140,7 @@ class PageCreateUpdateMixin(object):
             preview=preview,
             selectview_url=self._get_image_selectview_url()
         )
-        form.fields['publishing_time'].widget = BetterDateTimePickerWidget()
-        # form.fields['unpublish_time'].widget = BetterDateTimePickerWidget()
+        form.fields['publishing_time'].widget = DateTimePickerWidget()
         form.fields['unpublish_time'].widget = DatePickerWidget(
             no_value_preview_text='No date selected')
         form.fields['attachment'].widget = filewidgets.ImageWidget()
