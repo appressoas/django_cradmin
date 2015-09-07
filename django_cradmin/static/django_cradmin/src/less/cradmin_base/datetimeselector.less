@@ -1,3 +1,13 @@
+.django-cradmin-datepicker {
+  .django-cradmin-datepicker-preview {
+    display: inline-block;
+    margin-right: 12px;
+  }
+  .django-cradmin-datepicker-triggerbutton {
+
+  }
+}
+
 .django-cradmin-datetime-selector {
   visibility:hidden;
 
@@ -189,8 +199,7 @@
                 }
 
                 &,
-                &:active,
-                &.active {
+                &:active {
                   &:focus {
                     // Default
                     outline: thin dotted;
@@ -207,6 +216,7 @@
                 color: @cradmin-datetimeselector-daybuttoncell-today-color;
               }
 
+
               &.django-cradmin-datetime-selector-daybuttoncell-selected button {
                 background: @cradmin-datetimeselector-daybuttoncell-selected-bg;
                 color: @cradmin-datetimeselector-daybuttoncell-selected-color;
@@ -215,6 +225,26 @@
               &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button {
                 background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-bg;
                 color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-color;
+              }
+
+              &.django-cradmin-datetime-selector-daybuttoncell-disabled {
+                button {
+                  background: @cradmin-datetimeselector-daybuttoncell-disabled-bg;
+                  color: @cradmin-datetimeselector-daybuttoncell-disabled-color;
+                  &:hover, &:active, &:focus {
+                    cursor: not-allowed;
+                    background: @cradmin-datetimeselector-daybuttoncell-disabled-bg;
+                    color: @cradmin-datetimeselector-daybuttoncell-disabled-color;
+                  }
+                }
+                &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button {
+                  background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-disabled-bg;
+                  color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-disabled-color;
+                  &:hover, &:active, &:focus {
+                    background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-disabled-bg;
+                    color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-disabled-color;
+                  }
+                }
               }
 
               &,

@@ -12,7 +12,7 @@ from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 from django_cradmin.widgets.selectwidgets import WrappedSelect
 
 
-class DatePickerWidget(widgets.HiddenInput):
+class DatePickerWidget(widgets.TextInput):
     """
     A Widget for selecting a date.
 
@@ -235,6 +235,8 @@ class DatePickerWidget(widgets.HiddenInput):
                 :obj:`.DatePickerWidget.default_back_to_datepicker_screenreader_text`.
             dateselector_table_screenreader_caption: See
                 :obj:`.DatePickerWidget.default_dateselector_table_screenreader_caption`.
+            minimum_datetime: The minimum datetime allowed to be select in the widget.
+            maximum_datetime: The minimum datetime allowed to be select in the widget.
         """
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
@@ -270,6 +272,8 @@ class DatePickerWidget(widgets.HiddenInput):
                                                                self.default_back_to_datepicker_screenreader_text)
         self.dateselector_table_screenreader_caption = kwargs.pop('dateselector_table_screenreader_caption',
                                                                   self.default_dateselector_table_screenreader_caption)
+        self.minimum_datetime = kwargs.pop('minimum_datetime', None)
+        self.maximum_datetime = kwargs.pop('maximum_datetime', None)
 
         # self.year_emptyvalue = kwargs.pop('year_emptyvalue', self.default_year_emptyvalue)
         # self.month_emptyvalue = kwargs.pop('month_emptyvalue', self.default_month_emptyvalue)
@@ -291,7 +295,7 @@ class DatePickerWidget(widgets.HiddenInput):
         You should normally not need to override this, since everything is
         configurable via ``__init__`` kwargs or class attributes.
         """
-        return {
+        configdict = {
             'destinationfieldid': fieldid,
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
@@ -320,13 +324,25 @@ class DatePickerWidget(widgets.HiddenInput):
             'yearselect_config': list(self.get_yearselect_config()),
             'hourselect_config': list(self.get_hourselect_config()),
             'minuteselect_config': list(self.get_minuteselect_config()),
-
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
             # 'hour_emptyvalue': str(self.hour_emptyvalue),
             # 'minute_emptyvalue': str(self.minute_emptyvalue),
         }
+
+        if self.minimum_datetime:
+            minimum_datetime = self.minimum_datetime.strftime('%Y-%m-%d %H:%M')
+        else:
+            minimum_datetime = None
+        if self.maximum_datetime:
+            maximum_datetime = self.maximum_datetime.strftime('%Y-%m-%d %H:%M')
+        else:
+            maximum_datetime = None
+        configdict['minimum_datetime'] = minimum_datetime
+        configdict['maximum_datetime'] = maximum_datetime
+
+        return configdict
 
     def get_preview_angularjs_template(self):
         """
@@ -429,6 +445,8 @@ class DatePickerWidget(widgets.HiddenInput):
         Uses the template returned by :meth:`.get_template_name` with the
         context data returned by :meth:`.get_context_data`.
         """
+        attrs = attrs or {}
+        attrs['style'] = 'display: none;'
         rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
         fieldid = attrs.get('id', 'id_{}'.format(name))
         return loader.render_to_string(self.get_template_name(), self.get_context_data(
@@ -466,9 +484,15 @@ class DatePickerWidget(widgets.HiddenInput):
 
         Used by :meth:`.get_yearselect_config`.
         """
+        year_minimum_value = (timezone.now() - timedelta(days=364*130)).year
+        year_maximum_value = (timezone.now() + timedelta(days=364*130)).year
+        if self.minimum_datetime:
+            year_minimum_value = self.minimum_datetime.year
+        if self.maximum_datetime:
+            year_maximum_value = self.maximum_datetime.year
         return range(
-            (timezone.now() - timedelta(days=364*130)).year,
-            (timezone.now() + timedelta(days=364*130)).year)
+            year_minimum_value,
+            year_maximum_value)
 
     def get_yearselect_config(self):
         """

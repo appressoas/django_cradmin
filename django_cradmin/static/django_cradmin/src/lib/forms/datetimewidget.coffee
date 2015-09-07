@@ -43,15 +43,14 @@ app.directive 'djangoCradminDatetimeSelector', [
                 nextTr = activeElement.parent().parent().next()
                 if nextTr.length > 0
                   newFocusTd = angular.element(nextTr.children().get(activeElement.parent().index()))
+              if newFocusTd? and newFocusTd.length > 0
+                newFocusTd.find('button').focus()
 
 
               if direction == 'home'
-                newFocusTd = activeElement.parent().parent().parent().children().first().children().first()
+                activeElement.parent().parent().parent().find('button:enabled').first().focus()
               if direction == 'end'
-                newFocusTd = activeElement.parent().parent().parent().children().last().children().last()
-
-              if newFocusTd? and newFocusTd.length > 0
-                newFocusTd.find('button').focus()
+                activeElement.parent().parent().parent().find('button:enabled').last().focus()
 
               if direction == 'pageup'
                 $element.find('.django-cradmin-datetime-selector-monthselect').focus()
@@ -419,11 +418,20 @@ app.directive 'djangoCradminDatetimeSelector', [
             selectedValueMomentObject = null
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
+          minimumDatetime = null
+          maximumDatetime = null
+          if $scope.config.minimum_datetime?
+            minimumDatetime = moment($scope.config.minimum_datetime)
+          if $scope.config.maximum_datetime?
+            maximumDatetime = moment($scope.config.maximum_datetime)
+
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
             selectedValueMomentObject,
             $scope.config.yearselect_config,
             $scope.config.hourselect_config,
-            $scope.config.minuteselect_config
+            $scope.config.minuteselect_config,
+            minimumDatetime,
+            maximumDatetime,
           )
           $scope.__applyPreviewText()
 

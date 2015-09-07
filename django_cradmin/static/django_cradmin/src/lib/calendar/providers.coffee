@@ -30,13 +30,17 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class CalendarDay
-    constructor: (@momentObject, @isInCurrentMonth) ->
+    constructor: (@momentObject, @isInCurrentMonth, isDisabled) ->
+      @_isDisabled = isDisabled
 
     getNumberInMonth: ->
       return @momentObject.format('D')
 
     isToday: ->
       return @momentObject.isSame(moment(), 'day')
+
+    isDisabled: ->
+      return @_isDisabled
 
   class CalendarWeek
     constructor: ->
@@ -61,7 +65,7 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class CalendarMonth
-    constructor: (momentObject)->
+    constructor: (momentObject, @minimumDatetime, @maximumDatetime)->
       @changeMonth(momentObject)
 
     changeMonth: (momentObject) ->
@@ -113,7 +117,24 @@ app.provider 'djangoCradminCalendarApi', ->
         @calendarWeeks.push(new CalendarWeek())
         @currentWeekIndex += 1
         week = @calendarWeeks[@currentWeekIndex]
-      calendarDay = new CalendarDay(momentObject, isInCurrentMonth)
+      isDisabled = false
+
+      if @minimumDatetime?
+        minimumDatetimeDateonly = @minimumDatetime.clone().set({
+          hour: 0
+          minute: 0
+          second: 0
+        })
+        isDisabled = momentObject.isBefore(minimumDatetimeDateonly)
+      if not isDisabled and @maximumDatetime?
+        maximumDatetimeDateonly = @maximumDatetime.clone().set({
+          hour: 59
+          minute: 59
+          second: 59
+        })
+        isDisabled = momentObject.isAfter(maximumDatetimeDateonly)
+
+      calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled)
       week.addDay(calendarDay)
       @currentDayCount += 1
       @lastDay = calendarDay
@@ -128,7 +149,9 @@ app.provider 'djangoCradminCalendarApi', ->
     constructor: (@selectedValueMomentObject,
                   @yearselectConfig,
                   @hourselectConfig,
-                  @minuteselectConfig) ->
+                  @minuteselectConfig,
+                  @minimumDatetime
+                  @maximumDatetime) ->
       # We operate with two momentObjects:
       # - selectedValueMomentObject: This is the actual moment object
       #   that the user has selected.
@@ -254,7 +277,7 @@ app.provider 'djangoCradminCalendarApi', ->
     will update everything to mirror the change (selected day, month, year, ...).
     ###
     __changeSelectedDate: (valueWasSetByUser) ->
-      @calendarMonth = new CalendarMonth(@shownDateMomentObject)
+      @calendarMonth = new CalendarMonth(@shownDateMomentObject, @minimumDatetime, @maximumDatetime)
       @__setCurrentYear()
       @__setCurrentMonth()
       @__setCurrentHour()

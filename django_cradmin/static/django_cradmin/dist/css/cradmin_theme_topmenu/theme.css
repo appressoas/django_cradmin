@@ -5918,6 +5918,10 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     margin-top: -30px;
   }
 }
+.django-cradmin-datepicker .django-cradmin-datepicker-preview {
+  display: inline-block;
+  margin-right: 12px;
+}
 .django-cradmin-datetime-selector {
   visibility: hidden;
 }
@@ -6094,8 +6098,7 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   text-decoration: none;
 }
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell button:focus,
-.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell button:active:focus,
-.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell button.active:focus {
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell button:active:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
@@ -6111,6 +6114,27 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button {
   background: #ffffff;
   color: #999999;
+}
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled button {
+  background: #e6e6e6;
+  color: #646464;
+}
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled button:hover,
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled button:active,
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled button:focus {
+  cursor: not-allowed;
+  background: #e6e6e6;
+  color: #646464;
+}
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button {
+  background: #cdcdcd;
+  color: #7e7e7e;
+}
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button:hover,
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button:active,
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-disabled.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button:focus {
+  background: #cdcdcd;
+  color: #7e7e7e;
 }
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell button:hover,
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table tbody tr td.django-cradmin-datetime-selector-daybuttoncell.django-cradmin-datetime-selector-daybuttoncell-today button:hover,

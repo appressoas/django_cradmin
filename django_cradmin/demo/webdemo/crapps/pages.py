@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from builtins import object
+from datetime import datetime
 
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
@@ -140,7 +141,10 @@ class PageCreateUpdateMixin(object):
             preview=preview,
             selectview_url=self._get_image_selectview_url()
         )
-        form.fields['publishing_time'].widget = DateTimePickerWidget()
+        form.fields['publishing_time'].widget = DateTimePickerWidget(
+            minimum_datetime=datetime(2015, 6, 3, 12, 30),
+            maximum_datetime=datetime(2015, 7, 2, 21, 40)
+        )
         form.fields['unpublish_time'].widget = DatePickerWidget(
             no_value_preview_text='No date selected')
         form.fields['attachment'].widget = filewidgets.ImageWidget()
