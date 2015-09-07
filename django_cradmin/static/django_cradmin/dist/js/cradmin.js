@@ -1819,7 +1819,7 @@
           */
 
           $scope.onSelectDayNumber = function() {
-            $scope.monthlyCaledarCoordinator.handleCurrentDayObjectChange();
+            $scope.monthlyCalendarCoordinator.handleCurrentDayObjectChange();
           };
           /*
           Called when a user selects a date by clicking on a day
@@ -1827,7 +1827,7 @@
           */
 
           $scope.onClickCalendarDay = function(calendarDay) {
-            $scope.monthlyCaledarCoordinator.handleCalendarDayChange(calendarDay);
+            $scope.monthlyCalendarCoordinator.handleCalendarDayChange(calendarDay);
             if ($scope.config.include_time) {
               $scope.showPage2();
             } else {
@@ -1839,7 +1839,7 @@
           */
 
           $scope.onFocusCalendayDay = function(calendarDay) {
-            $scope.monthlyCaledarCoordinator.handleFocusOnCalendarDay(calendarDay);
+            $scope.monthlyCalendarCoordinator.handleFocusOnCalendarDay(calendarDay);
           };
           /*
           Called when a users selects a month using the month <select>
@@ -1847,7 +1847,7 @@
           */
 
           $scope.onSelectMonth = function() {
-            $scope.monthlyCaledarCoordinator.handleCurrentMonthChange();
+            $scope.monthlyCalendarCoordinator.handleCurrentMonthChange();
           };
           /*
           Called when a users selects a year using the year <select>
@@ -1855,7 +1855,7 @@
           */
 
           $scope.onSelectYear = function() {
-            $scope.monthlyCaledarCoordinator.handleCurrentYearChange();
+            $scope.monthlyCalendarCoordinator.handleCurrentYearChange();
           };
           /*
           Called when a users selects an hour using the hour <select>
@@ -1863,7 +1863,7 @@
           */
 
           $scope.onSelectHour = function() {
-            $scope.monthlyCaledarCoordinator.handleCurrentHourChange();
+            $scope.monthlyCalendarCoordinator.handleCurrentHourChange();
           };
           /*
           Called when a users selects a minute using the minute <select>
@@ -1871,7 +1871,7 @@
           */
 
           $scope.onSelectMinute = function() {
-            $scope.monthlyCaledarCoordinator.handleCurrentMinuteChange();
+            $scope.monthlyCalendarCoordinator.handleCurrentMinuteChange();
           };
           /*
           Called when a user clicks the "Use" button on the time page.
@@ -1885,7 +1885,7 @@
           */
 
           $scope.getTimeselectorDatepreview = function() {
-            return $scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
+            return $scope.monthlyCalendarCoordinator.shownDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
           };
           /*
           This is used to get the aria-label attribute for the "Use" button.
@@ -1893,8 +1893,8 @@
 
           $scope.getUseButtonAriaLabel = function() {
             var formattedDate;
-            if ($scope.monthlyCaledarCoordinator != null) {
-              formattedDate = $scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
+            if ($scope.monthlyCalendarCoordinator != null) {
+              formattedDate = $scope.monthlyCalendarCoordinator.shownDateMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
               return ("" + $scope.config.usebutton_arialabel_prefix + " ") + ("" + formattedDate);
             } else {
 
@@ -1911,7 +1911,7 @@
             if ($scope.config.today_label_text !== '' && calendarDay.isToday()) {
               label = "" + label + " (" + $scope.config.today_label_text + ")";
             } else {
-              isSelected = calendarDay.momentObject.isSame($scope.monthlyCaledarCoordinator.selectedValueMomentObject, 'day');
+              isSelected = calendarDay.momentObject.isSame($scope.monthlyCalendarCoordinator.selectedValueMomentObject, 'day');
               if ($scope.config.selected_day_label_text !== '' && isSelected) {
                 label = "" + label + " (" + $scope.config.selected_day_label_text + ")";
               }
@@ -1921,7 +1921,7 @@
           $scope.onClickTodayButton = function() {
             var momentObject;
             momentObject = moment();
-            $scope.monthlyCaledarCoordinator.handleDayChange(momentObject);
+            $scope.monthlyCalendarCoordinator.handleDayChange(momentObject);
             if ($scope.config.include_time) {
               $scope.showPage2();
             } else {
@@ -1929,7 +1929,7 @@
             }
           };
           $scope.onClickNowButton = function() {
-            $scope.monthlyCaledarCoordinator.setToNow();
+            $scope.monthlyCalendarCoordinator.setToNow();
             return $scope.applySelectedValue();
           };
           $scope.onClickClearButton = function() {
@@ -1945,9 +1945,9 @@
           };
           $scope.__applyPreviewText = function() {
             var preview, templateScope;
-            if ($scope.monthlyCaledarCoordinator.valueWasSetByUser) {
+            if ($scope.monthlyCalendarCoordinator.valueWasSetByUser) {
               templateScope = $rootScope.$new(true);
-              templateScope.momentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone();
+              templateScope.momentObject = $scope.monthlyCalendarCoordinator.shownDateMomentObject.clone();
               preview = $compile($scope.previewAngularjsTemplate)(templateScope);
               $scope.previewElement.empty();
               return $scope.previewElement.append(preview);
@@ -1956,8 +1956,8 @@
             }
           };
           $scope.applySelectedValue = function() {
-            $scope.monthlyCaledarCoordinator.selectedValueMomentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone();
-            $scope.destinationField.val($scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.destinationfield_momentjs_format));
+            $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.monthlyCalendarCoordinator.shownDateMomentObject.clone();
+            $scope.destinationField.val($scope.monthlyCalendarCoordinator.shownDateMomentObject.format($scope.config.destinationfield_momentjs_format));
             $scope.__applyPreviewText();
             $scope.triggerButton.html($scope.config.buttonlabel);
             return $scope.hide();
@@ -2050,7 +2050,7 @@
           };
           $scope.showPage2 = function() {
             $scope.page = 2;
-            $scope.monthlyCaledarCoordinator.selectedValueMomentObject = $scope.monthlyCaledarCoordinator.shownDateMomentObject.clone();
+            $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.monthlyCalendarCoordinator.shownDateMomentObject.clone();
             $element.show();
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
@@ -2090,7 +2090,7 @@
               maximumDatetime = moment($scope.config.maximum_datetime);
             }
             $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(minimumDatetime, maximumDatetime);
-            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, selectedValueMomentObject, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
+            $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, selectedValueMomentObject, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
             return $scope.__applyPreviewText();
           };
         },
@@ -3641,8 +3641,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_dayselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-dayselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentDayObject\"\n" +
-    "                                ng-options=\"dayobject.label for dayobject in monthlyCaledarCoordinator.dayobjects track by dayobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentDayObject\"\n" +
+    "                                ng-options=\"dayobject.label for dayobject in monthlyCalendarCoordinator.dayobjects track by dayobject.value\"\n" +
     "                                ng-change=\"onSelectDayNumber()\">\n" +
     "                        </select>\n" +
     "\n" +
@@ -3651,8 +3651,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_monthselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-monthselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentMonthObject\"\n" +
-    "                                ng-options=\"monthobject.label for monthobject in monthlyCaledarCoordinator.monthselectConfig track by monthobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentMonthObject\"\n" +
+    "                                ng-options=\"monthobject.label for monthobject in monthlyCalendarCoordinator.monthselectConfig track by monthobject.value\"\n" +
     "                                ng-change=\"onSelectMonth()\">\n" +
     "                        </select>\n" +
     "\n" +
@@ -3661,8 +3661,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_yearselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-yearselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentYearObject\"\n" +
-    "                                ng-options=\"yearobject.label for yearobject in monthlyCaledarCoordinator.yearselectConfig track by yearobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentYearObject\"\n" +
+    "                                ng-options=\"yearobject.label for yearobject in monthlyCalendarCoordinator.yearselectConfig track by yearobject.value\"\n" +
     "                                ng-change=\"onSelectYear()\">\n" +
     "                        </select>\n" +
     "                    </div>\n" +
@@ -3673,8 +3673,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_hourselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
-    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourselectConfig track by hourobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentHourObject\"\n" +
+    "                                ng-options=\"hourobject.label for hourobject in monthlyCalendarCoordinator.hourselectConfig track by hourobject.value\"\n" +
     "                                ng-change=\"onSelectHour()\">\n" +
     "                        </select>\n" +
     "                        :\n" +
@@ -3683,8 +3683,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_minuteselect\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
-    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentMinuteObject\"\n" +
+    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCalendarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
     "                                ng-change=\"onSelectMinute()\">\n" +
     "                        </select>\n" +
     "                    </div>\n" +
@@ -3704,20 +3704,20 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                </caption>\n" +
     "                <thead>\n" +
     "                    <tr>\n" +
-    "                        <th ng-repeat=\"weekday in monthlyCaledarCoordinator.shortWeekdays\">\n" +
+    "                        <th ng-repeat=\"weekday in monthlyCalendarCoordinator.shortWeekdays\">\n" +
     "                            {{ weekday }}\n" +
     "                        </th>\n" +
     "                    </tr>\n" +
     "                </thead>\n" +
     "                <tbody>\n" +
-    "                    <tr ng-repeat=\"calendarWeek in monthlyCaledarCoordinator.calendarMonth.calendarWeeks\">\n" +
+    "                    <tr ng-repeat=\"calendarWeek in monthlyCalendarCoordinator.calendarMonth.calendarWeeks\">\n" +
     "                        <td ng-repeat=\"calendarDay in calendarWeek.calendarDays\"\n" +
     "                                class=\"django-cradmin-datetime-selector-daybuttoncell\"\n" +
     "                                ng-class=\"{\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
-    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedValueMomentObject, 'day'),\n" +
-    "                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.getLastFocusedMomentObject(), 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCalendarCoordinator.selectedValueMomentObject, 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCalendarCoordinator.getLastFocusedMomentObject(), 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday(),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-disabled': calendarDay.isDisabled()\n" +
     "                                }\">\n" +
@@ -3735,7 +3735,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
     "                                        ng-if=\"\n" +
     "                                            config.selected_day_label_text &amp;&amp;\n" +
-    "                                            calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedValueMomentObject, 'day')\">\n" +
+    "                                            calendarDay.momentObject.isSame(monthlyCalendarCoordinator.selectedValueMomentObject, 'day')\">\n" +
     "                                    {{ config.selected_day_label_text }}\n" +
     "                                </span>\n" +
     "                            </button>\n" +
@@ -3797,8 +3797,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_hourselect_page2\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentHourObject\"\n" +
-    "                                ng-options=\"hourobject.label for hourobject in monthlyCaledarCoordinator.hourselectConfig track by hourobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentHourObject\"\n" +
+    "                                ng-options=\"hourobject.label for hourobject in monthlyCalendarCoordinator.hourselectConfig track by hourobject.value\"\n" +
     "                                ng-change=\"onSelectHour()\">\n" +
     "                        </select>\n" +
     "                        :\n" +
@@ -3807,8 +3807,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        </label>\n" +
     "                        <select id=\"{{ config.destinationfieldid }}_minuteselect_page2\"\n" +
     "                                class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
-    "                                ng-model=\"monthlyCaledarCoordinator.currentMinuteObject\"\n" +
-    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCaledarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
+    "                                ng-model=\"monthlyCalendarCoordinator.currentMinuteObject\"\n" +
+    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCalendarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
     "                                ng-change=\"onSelectMinute()\">\n" +
     "                        </select>\n" +
     "                        <button type=\"button\"\n" +
@@ -3825,7 +3825,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    <button type=\"button\"\n" +
     "                            class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
     "                            ng-click=\"onClickNowButton()\"\n" +
-    "                            ng-if=\"monthlyCaledarCoordinator.shownDateIsToday()\">\n" +
+    "                            ng-if=\"monthlyCalendarCoordinator.shownDateIsToday()\">\n" +
     "                        {{ config.now_button_text }}\n" +
     "                    </button>\n" +
     "                </div>\n" +
