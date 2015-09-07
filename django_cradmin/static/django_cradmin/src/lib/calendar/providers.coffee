@@ -135,25 +135,25 @@ app.provider 'djangoCradminCalendarApi', ->
   view we present.
   ###
   class CalendarCoordinator
-    constructor: (@selectedValueMomentObject, @minimumDatetime, @maximumDatetime) ->
+    constructor: (@selectedMomentObject, @minimumDatetime, @maximumDatetime) ->
       # We operate with two momentObjects:
-      # - selectedValueMomentObject: This is the actual moment object
+      # - selectedMomentObject: This is the actual moment object
       #   that the user has selected. This can be null if the user
       #   has not selected a value yet.
-      # - shownDateMomentObject: This reflects the value shown on the screen
+      # - shownMomentObject: This reflects the value shown on the screen
       #   at any given moment (E.g.: It changes each time a user changes
       #   the day, month, hour, etc). This is never ``null``.
-      if @selectedValueMomentObject?
-        @shownDateMomentObject = @selectedValueMomentObject.clone()
+      if @selectedMomentObject?
+        @shownMomentObject = @selectedMomentObject.clone()
       else
         # We set this to start the date picker on the current date
-        @shownDateMomentObject = moment()
+        @shownMomentObject = moment()
 
     selectShownValue: ->
-      @selectedValueMomentObject = @shownDateMomentObject.clone()
+      @selectedMomentObject = @shownMomentObject.clone()
 
     clearSelectedMomentObject: ->
-      @selectedValueMomentObject = null
+      @selectedMomentObject = null
 
     momentObjectIsAllowed: (momentObject) ->
       isAllowed = true
@@ -174,10 +174,10 @@ app.provider 'djangoCradminCalendarApi', ->
       return isAllowed
 
     shownDateIsToday: ->
-      return @shownDateMomentObject.isSame(moment(), 'day')
+      return @shownMomentObject.isSame(moment(), 'day')
 
     setToNow: ->
-      @shownDateMomentObject = moment()
+      @shownMomentObject = moment()
 #      @__changeSelectedDate()
 
 
@@ -201,7 +201,7 @@ app.provider 'djangoCradminCalendarApi', ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
 
     __initYearObjects: ->
-      selectedYearValue = @calendarCoordinator.shownDateMomentObject.year()
+      selectedYearValue = @calendarCoordinator.shownMomentObject.year()
       hasSelectedYearValue = false
 
       @__yearsMap = {}
@@ -240,7 +240,7 @@ app.provider 'djangoCradminCalendarApi', ->
         @__hoursMap[hourConfig.value] = hourConfig
 
     __initMinuteObjects: ->
-      selectedMinuteValue = @calendarCoordinator.shownDateMomentObject.minute()
+      selectedMinuteValue = @calendarCoordinator.shownMomentObject.minute()
       hasSelectedMinuteValue = false
 
       @__minutesMap = {}
@@ -273,13 +273,13 @@ app.provider 'djangoCradminCalendarApi', ->
         console?.warn? "The given month number, #{currentMonthNumber} is not one of the available choices"
 
     __setCurrentHour: ->
-      currentHourNumber = @calendarCoordinator.shownDateMomentObject.hour()
+      currentHourNumber = @calendarCoordinator.shownMomentObject.hour()
       @currentHourObject = @__hoursMap[currentHourNumber]
       if not @currentHourObject?
         console?.warn? "The given hour, #{currentHourNumber} is not one of the available choices"
 
     __setCurrentMinute: ->
-      currentMinuteNumber = @calendarCoordinator.shownDateMomentObject.minute()
+      currentMinuteNumber = @calendarCoordinator.shownMomentObject.minute()
       @currentMinuteObject = @__minutesMap[currentMinuteNumber]
       if not @currentMinuteObject?
         console?.warn? "The given minute, #{currentMinuteNumber} is not one of the available choices"
@@ -297,20 +297,20 @@ app.provider 'djangoCradminCalendarApi', ->
     Change month to the month containing the given momentObject,
     and select the date.
 
-    As long as you change ``@calendarCoordinator.shownDateMomentObject``, this
+    As long as you change ``@calendarCoordinator.shownMomentObject``, this
     will update everything to mirror the change (selected day, month, year, ...).
     ###
     __changeSelectedDate: ->
-      @calendarMonth = new CalendarMonth(@calendarCoordinator, @calendarCoordinator.shownDateMomentObject)
+      @calendarMonth = new CalendarMonth(@calendarCoordinator, @calendarCoordinator.shownMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()
       @__setCurrentHour()
       @__setCurrentMinute()
       @__updateDayObjects()
-      @currentDayObject = @dayobjects[@calendarCoordinator.shownDateMomentObject.date()-1]
+      @currentDayObject = @dayobjects[@calendarCoordinator.shownMomentObject.date()-1]
 
     handleDayChange: (momentObject) ->
-      @calendarCoordinator.shownDateMomentObject = momentObject.clone().set({
+      @calendarCoordinator.shownMomentObject = momentObject.clone().set({
         hour: @currentHourObject.value
         minute: @currentMinuteObject.value
       })
@@ -328,25 +328,25 @@ app.provider 'djangoCradminCalendarApi', ->
       @handleDayChange(calendarDay.momentObject)
 
     handleCurrentMonthChange: ->
-      @calendarCoordinator.shownDateMomentObject.set({
+      @calendarCoordinator.shownMomentObject.set({
         month: @currentMonthObject.value
       })
       @__changeSelectedDate()
 
     handleCurrentYearChange: ->
-      @calendarCoordinator.shownDateMomentObject.set({
+      @calendarCoordinator.shownMomentObject.set({
         year: @currentYearObject.value
       })
       @__changeSelectedDate()
 
     handleCurrentHourChange: ->
-      @calendarCoordinator.shownDateMomentObject.set({
+      @calendarCoordinator.shownMomentObject.set({
         hour: @currentHourObject.value
       })
       @__changeSelectedDate()
 
     handleCurrentMinuteChange: ->
-      @calendarCoordinator.shownDateMomentObject.set({
+      @calendarCoordinator.shownMomentObject.set({
         minute: @currentMinuteObject.value
       })
       @__changeSelectedDate()
@@ -358,7 +358,7 @@ app.provider 'djangoCradminCalendarApi', ->
       if @lastFocusedMomentObject?
         return @lastFocusedMomentObject
       else
-        return @calendarCoordinator.shownDateMomentObject
+        return @calendarCoordinator.shownMomentObject
 
 
   @$get = ->

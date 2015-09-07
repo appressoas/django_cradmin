@@ -102,7 +102,7 @@
                                 ng-class="{
                                     'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,
                                     'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,
-                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(calendarCoordinator.selectedValueMomentObject, 'day'),
+                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(calendarCoordinator.selectedMomentObject, 'day'),
                                     'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCalendarCoordinator.getLastFocusedMomentObject(), 'day'),
                                     'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday(),
                                     'django-cradmin-datetime-selector-daybuttoncell-disabled': calendarDay.isDisabled()
@@ -121,7 +121,7 @@
                                 <span class="django-cradmin-datetime-selector-daybuttoncell-label"
                                         ng-if="
                                             config.selected_day_label_text &amp;&amp;
-                                            calendarDay.momentObject.isSame(calendarCoordinator.selectedValueMomentObject, 'day')">
+                                            calendarDay.momentObject.isSame(calendarCoordinator.selectedMomentObject, 'day')">
                                     {{ config.selected_day_label_text }}
                                 </span>
                             </button>

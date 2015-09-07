@@ -922,23 +922,23 @@
     */
 
     CalendarCoordinator = (function() {
-      function CalendarCoordinator(selectedValueMomentObject, minimumDatetime, maximumDatetime) {
-        this.selectedValueMomentObject = selectedValueMomentObject;
+      function CalendarCoordinator(selectedMomentObject, minimumDatetime, maximumDatetime) {
+        this.selectedMomentObject = selectedMomentObject;
         this.minimumDatetime = minimumDatetime;
         this.maximumDatetime = maximumDatetime;
-        if (this.selectedValueMomentObject != null) {
-          this.shownDateMomentObject = this.selectedValueMomentObject.clone();
+        if (this.selectedMomentObject != null) {
+          this.shownMomentObject = this.selectedMomentObject.clone();
         } else {
-          this.shownDateMomentObject = moment();
+          this.shownMomentObject = moment();
         }
       }
 
       CalendarCoordinator.prototype.selectShownValue = function() {
-        return this.selectedValueMomentObject = this.shownDateMomentObject.clone();
+        return this.selectedMomentObject = this.shownMomentObject.clone();
       };
 
       CalendarCoordinator.prototype.clearSelectedMomentObject = function() {
-        return this.selectedValueMomentObject = null;
+        return this.selectedMomentObject = null;
       };
 
       CalendarCoordinator.prototype.momentObjectIsAllowed = function(momentObject) {
@@ -964,11 +964,11 @@
       };
 
       CalendarCoordinator.prototype.shownDateIsToday = function() {
-        return this.shownDateMomentObject.isSame(moment(), 'day');
+        return this.shownMomentObject.isSame(moment(), 'day');
       };
 
       CalendarCoordinator.prototype.setToNow = function() {
-        return this.shownDateMomentObject = moment();
+        return this.shownMomentObject = moment();
       };
 
       return CalendarCoordinator;
@@ -999,7 +999,7 @@
 
       MonthlyCalendarCoordinator.prototype.__initYearObjects = function() {
         var hasSelectedYearValue, selectedYearValue, yearConfig, _i, _len, _ref;
-        selectedYearValue = this.calendarCoordinator.shownDateMomentObject.year();
+        selectedYearValue = this.calendarCoordinator.shownMomentObject.year();
         hasSelectedYearValue = false;
         this.__yearsMap = {};
         _ref = this.yearselectConfig;
@@ -1054,7 +1054,7 @@
 
       MonthlyCalendarCoordinator.prototype.__initMinuteObjects = function() {
         var hasSelectedMinuteValue, minuteConfig, selectedMinuteValue, _i, _len, _ref;
-        selectedMinuteValue = this.calendarCoordinator.shownDateMomentObject.minute();
+        selectedMinuteValue = this.calendarCoordinator.shownMomentObject.minute();
         hasSelectedMinuteValue = false;
         this.__minutesMap = {};
         _ref = this.minuteselectConfig;
@@ -1095,7 +1095,7 @@
 
       MonthlyCalendarCoordinator.prototype.__setCurrentHour = function() {
         var currentHourNumber;
-        currentHourNumber = this.calendarCoordinator.shownDateMomentObject.hour();
+        currentHourNumber = this.calendarCoordinator.shownMomentObject.hour();
         this.currentHourObject = this.__hoursMap[currentHourNumber];
         if (this.currentHourObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn("The given hour, " + currentHourNumber + " is not one of the available choices") : void 0 : void 0;
@@ -1104,7 +1104,7 @@
 
       MonthlyCalendarCoordinator.prototype.__setCurrentMinute = function() {
         var currentMinuteNumber;
-        currentMinuteNumber = this.calendarCoordinator.shownDateMomentObject.minute();
+        currentMinuteNumber = this.calendarCoordinator.shownMomentObject.minute();
         this.currentMinuteObject = this.__minutesMap[currentMinuteNumber];
         if (this.currentMinuteObject == null) {
           return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn("The given minute, " + currentMinuteNumber + " is not one of the available choices") : void 0 : void 0;
@@ -1129,23 +1129,23 @@
       Change month to the month containing the given momentObject,
       and select the date.
       
-      As long as you change ``@calendarCoordinator.shownDateMomentObject``, this
+      As long as you change ``@calendarCoordinator.shownMomentObject``, this
       will update everything to mirror the change (selected day, month, year, ...).
       */
 
 
       MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function() {
-        this.calendarMonth = new CalendarMonth(this.calendarCoordinator, this.calendarCoordinator.shownDateMomentObject);
+        this.calendarMonth = new CalendarMonth(this.calendarCoordinator, this.calendarCoordinator.shownMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
         this.__setCurrentHour();
         this.__setCurrentMinute();
         this.__updateDayObjects();
-        return this.currentDayObject = this.dayobjects[this.calendarCoordinator.shownDateMomentObject.date() - 1];
+        return this.currentDayObject = this.dayobjects[this.calendarCoordinator.shownMomentObject.date() - 1];
       };
 
       MonthlyCalendarCoordinator.prototype.handleDayChange = function(momentObject) {
-        this.calendarCoordinator.shownDateMomentObject = momentObject.clone().set({
+        this.calendarCoordinator.shownMomentObject = momentObject.clone().set({
           hour: this.currentHourObject.value,
           minute: this.currentMinuteObject.value
         });
@@ -1167,28 +1167,28 @@
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentMonthChange = function() {
-        this.calendarCoordinator.shownDateMomentObject.set({
+        this.calendarCoordinator.shownMomentObject.set({
           month: this.currentMonthObject.value
         });
         return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentYearChange = function() {
-        this.calendarCoordinator.shownDateMomentObject.set({
+        this.calendarCoordinator.shownMomentObject.set({
           year: this.currentYearObject.value
         });
         return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentHourChange = function() {
-        this.calendarCoordinator.shownDateMomentObject.set({
+        this.calendarCoordinator.shownMomentObject.set({
           hour: this.currentHourObject.value
         });
         return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentMinuteChange = function() {
-        this.calendarCoordinator.shownDateMomentObject.set({
+        this.calendarCoordinator.shownMomentObject.set({
           minute: this.currentMinuteObject.value
         });
         return this.__changeSelectedDate();
@@ -1202,7 +1202,7 @@
         if (this.lastFocusedMomentObject != null) {
           return this.lastFocusedMomentObject;
         } else {
-          return this.calendarCoordinator.shownDateMomentObject;
+          return this.calendarCoordinator.shownMomentObject;
         }
       };
 
@@ -1885,7 +1885,7 @@
           */
 
           $scope.getTimeselectorDatepreview = function() {
-            return $scope.calendarCoordinator.shownDateMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
+            return $scope.calendarCoordinator.shownMomentObject.format($scope.config.timeselector_datepreview_momentjs_format);
           };
           /*
           This is used to get the aria-label attribute for the "Use" button.
@@ -1894,7 +1894,7 @@
           $scope.getUseButtonAriaLabel = function() {
             var formattedDate;
             if ($scope.monthlyCalendarCoordinator != null) {
-              formattedDate = $scope.calendarCoordinator.shownDateMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
+              formattedDate = $scope.calendarCoordinator.shownMomentObject.format($scope.config.usebutton_arialabel_momentjs_format);
               return ("" + $scope.config.usebutton_arialabel_prefix + " ") + ("" + formattedDate);
             } else {
 
@@ -1911,7 +1911,7 @@
             if ($scope.config.today_label_text !== '' && calendarDay.isToday()) {
               label = "" + label + " (" + $scope.config.today_label_text + ")";
             } else {
-              isSelected = calendarDay.momentObject.isSame($scope.calendarCoordinator.selectedValueMomentObject, 'day');
+              isSelected = calendarDay.momentObject.isSame($scope.calendarCoordinator.selectedMomentObject, 'day');
               if ($scope.config.selected_day_label_text !== '' && isSelected) {
                 label = "" + label + " (" + $scope.config.selected_day_label_text + ")";
               }
@@ -1949,9 +1949,9 @@
 
           $scope.__updatePreviewText = function() {
             var preview, templateScope;
-            if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
+            if ($scope.calendarCoordinator.selectedMomentObject != null) {
               templateScope = $rootScope.$new(true);
-              templateScope.momentObject = $scope.calendarCoordinator.selectedValueMomentObject.clone();
+              templateScope.momentObject = $scope.calendarCoordinator.selectedMomentObject.clone();
               preview = $compile($scope.previewAngularjsTemplate)(templateScope);
               $scope.previewElement.empty();
               return $scope.previewElement.append(preview);
@@ -1965,7 +1965,7 @@
 
           $scope.__updateTriggerButtonLabel = function() {
             var label;
-            if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
+            if ($scope.calendarCoordinator.selectedMomentObject != null) {
               label = $scope.config.buttonlabel;
             } else {
               label = $scope.config.buttonlabel_novalue;
@@ -1978,8 +1978,8 @@
 
           $scope.__updateDestinationFieldValue = function() {
             var destinationFieldValue;
-            if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
-              destinationFieldValue = $scope.calendarCoordinator.selectedValueMomentObject.format($scope.config.destinationfield_momentjs_format);
+            if ($scope.calendarCoordinator.selectedMomentObject != null) {
+              destinationFieldValue = $scope.calendarCoordinator.selectedMomentObject.format($scope.config.destinationfield_momentjs_format);
             } else {
               destinationFieldValue = '';
             }
@@ -2119,13 +2119,13 @@
             }, 150);
           };
           return $scope.initialize = function() {
-            var currentDateIsoString, maximumDatetime, minimumDatetime, selectedValueMomentObject;
+            var currentDateIsoString, maximumDatetime, minimumDatetime, selectedMomentObject;
             currentDateIsoString = $scope.destinationField.val();
             if ((currentDateIsoString != null) && currentDateIsoString !== '') {
-              selectedValueMomentObject = moment(currentDateIsoString);
+              selectedMomentObject = moment(currentDateIsoString);
               $scope.triggerButton.html($scope.config.buttonlabel);
             } else {
-              selectedValueMomentObject = null;
+              selectedMomentObject = null;
               $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             }
             minimumDatetime = null;
@@ -2136,7 +2136,7 @@
             if ($scope.config.maximum_datetime != null) {
               maximumDatetime = moment($scope.config.maximum_datetime);
             }
-            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(selectedValueMomentObject, minimumDatetime, maximumDatetime);
+            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(selectedMomentObject, minimumDatetime, maximumDatetime);
             $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
             return $scope.__updatePreviewText();
           };
@@ -3763,7 +3763,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                ng-class=\"{\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
-    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(calendarCoordinator.selectedValueMomentObject, 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(calendarCoordinator.selectedMomentObject, 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCalendarCoordinator.getLastFocusedMomentObject(), 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday(),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-disabled': calendarDay.isDisabled()\n" +
@@ -3782,7 +3782,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
     "                                        ng-if=\"\n" +
     "                                            config.selected_day_label_text &amp;&amp;\n" +
-    "                                            calendarDay.momentObject.isSame(calendarCoordinator.selectedValueMomentObject, 'day')\">\n" +
+    "                                            calendarDay.momentObject.isSame(calendarCoordinator.selectedMomentObject, 'day')\">\n" +
     "                                    {{ config.selected_day_label_text }}\n" +
     "                                </span>\n" +
     "                            </button>\n" +

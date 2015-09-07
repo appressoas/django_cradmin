@@ -227,7 +227,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         Used to get the preview of the selected date on page2 (above the time selector).
         ###
         $scope.getTimeselectorDatepreview = ->
-          return $scope.calendarCoordinator.shownDateMomentObject.format(
+          return $scope.calendarCoordinator.shownMomentObject.format(
             $scope.config.timeselector_datepreview_momentjs_format
           )
 
@@ -236,7 +236,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         ###
         $scope.getUseButtonAriaLabel = ->
           if $scope.monthlyCalendarCoordinator?
-            formattedDate = $scope.calendarCoordinator.shownDateMomentObject.format(
+            formattedDate = $scope.calendarCoordinator.shownMomentObject.format(
               $scope.config.usebutton_arialabel_momentjs_format)
             return "#{$scope.config.usebutton_arialabel_prefix} " +
               "#{formattedDate}"
@@ -252,7 +252,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             label = "#{label} (#{$scope.config.today_label_text})"
           else
             isSelected = calendarDay.momentObject.isSame(
-              $scope.calendarCoordinator.selectedValueMomentObject, 'day')
+              $scope.calendarCoordinator.selectedMomentObject, 'day')
             if $scope.config.selected_day_label_text != '' and isSelected
               label = "#{label} (#{$scope.config.selected_day_label_text})"
           return label
@@ -283,13 +283,13 @@ app.directive 'djangoCradminDatetimeSelector', [
         Update the preview text to reflect the selected value.
         ###
         $scope.__updatePreviewText = ->
-          if $scope.calendarCoordinator.selectedValueMomentObject?
+          if $scope.calendarCoordinator.selectedMomentObject?
             templateScope = $rootScope.$new(true)  # Create new isolated scope
             # NOTE: We must clone the object, if we do not clone it, the value
             # will be reflected in the preview each time we change any value
             # in the date picker, and we only want the value to be applied when
             # the user confirms a value.
-            templateScope.momentObject = $scope.calendarCoordinator.selectedValueMomentObject.clone()
+            templateScope.momentObject = $scope.calendarCoordinator.selectedMomentObject.clone()
             preview = $compile($scope.previewAngularjsTemplate)(templateScope)
             $scope.previewElement.empty()
             $scope.previewElement.append(preview)
@@ -300,7 +300,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         Update the trigger button label to reflect the selected value.
         ###
         $scope.__updateTriggerButtonLabel = ->
-          if $scope.calendarCoordinator.selectedValueMomentObject?
+          if $scope.calendarCoordinator.selectedMomentObject?
             label = $scope.config.buttonlabel
           else
             label = $scope.config.buttonlabel_novalue
@@ -310,8 +310,8 @@ app.directive 'djangoCradminDatetimeSelector', [
         Update the value of the destination field to reflect the selected value.
         ###
         $scope.__updateDestinationFieldValue = ->
-          if $scope.calendarCoordinator.selectedValueMomentObject?
-            destinationFieldValue = $scope.calendarCoordinator.selectedValueMomentObject.format(
+          if $scope.calendarCoordinator.selectedMomentObject?
+            destinationFieldValue = $scope.calendarCoordinator.selectedMomentObject.format(
               $scope.config.destinationfield_momentjs_format
             )
           else
@@ -424,7 +424,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.showPage2 = ->
           $scope.page = 2
 
-          # Update "selectedValueMomentObject" to reflect the change. This will mark this as
+          # Update "selectedMomentObject" to reflect the change. This will mark this as
           # the selected value when we return from to page2.
           $scope.calendarCoordinator.selectShownValue()
 
@@ -466,10 +466,10 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()
           if currentDateIsoString? and currentDateIsoString != ''
-            selectedValueMomentObject = moment(currentDateIsoString)
+            selectedMomentObject = moment(currentDateIsoString)
             $scope.triggerButton.html($scope.config.buttonlabel)
           else
-            selectedValueMomentObject = null
+            selectedMomentObject = null
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
           minimumDatetime = null
@@ -480,7 +480,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             maximumDatetime = moment($scope.config.maximum_datetime)
 
           $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(
-            selectedValueMomentObject,
+            selectedMomentObject,
             minimumDatetime, maximumDatetime)
           $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
             $scope.calendarCoordinator,
