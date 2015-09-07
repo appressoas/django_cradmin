@@ -384,6 +384,19 @@ class DatePickerWidget(widgets.TextInput):
         """
         return self.template_name
 
+    def get_extra_css_classes(self):
+        """
+        Get extra css classes for the wrapper around the field and widget.
+
+        Use this if you want to customize the look of a specific widget.
+        If you want to customize all datetime widgets, a custom django-cradmin
+        theme is probably a better solution.
+
+        Returns:
+            A string with one or more css classes.
+        """
+        return ''
+
     def get_context_data(self, fieldid, rendered_field, fieldname, value):
         """
         Get context data for the template used by :meth:`.render` to render the widget.
@@ -406,6 +419,7 @@ class DatePickerWidget(widgets.TextInput):
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
             'preview_angularjs_template': self.__get_preview_angularjs_template(),
+            'extra_css_classes': self.get_extra_css_classes(),
         }
 
     def render(self, name, value, attrs=None):
@@ -417,7 +431,7 @@ class DatePickerWidget(widgets.TextInput):
         """
         rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
         fieldid = attrs.get('id', 'id_{}'.format(name))
-        return loader.render_to_string(self.self.get_template_name(), self.get_context_data(
+        return loader.render_to_string(self.get_template_name(), self.get_context_data(
             fieldid=fieldid,
             rendered_field=rendered_field,
             fieldname=name,
