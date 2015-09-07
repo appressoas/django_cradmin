@@ -335,6 +335,7 @@ class DatePickerWidget(widgets.TextInput):
             'minuteselect_values': list(self.get_minuteselect_values()),
 
             'yearselect_momentjs_format': self.get_yearselect_momentjs_format(),
+            'monthselect_momentjs_format': self.get_monthselect_momentjs_format(),
             'dayofmonthselect_momentjs_format': self.get_dayofmonthselect_momentjs_format(),
             'hourselect_momentjs_format': self.get_hourselect_momentjs_format(),
             'minuteselect_momentjs_format': self.get_minuteselect_momentjs_format(),
@@ -500,6 +501,17 @@ class DatePickerWidget(widgets.TextInput):
         return range(
             year_minimum_value,
             year_maximum_value)
+
+    #
+    # Day select config
+    #
+
+    def get_monthselect_momentjs_format(self):
+        """
+        Get the momentjs format to use when creating the
+        label for a month in the month ``<select>``.
+        """
+        return 'MMMM'
 
     #
     # Day select config

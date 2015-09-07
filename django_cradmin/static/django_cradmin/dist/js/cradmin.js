@@ -980,7 +980,7 @@
 
     MonthlyCalendarCoordinator = (function() {
       function MonthlyCalendarCoordinator(_arg) {
-        this.calendarCoordinator = _arg.calendarCoordinator, this.yearselectValues = _arg.yearselectValues, this.hourselectValues = _arg.hourselectValues, this.minuteselectValues = _arg.minuteselectValues, this.yearFormat = _arg.yearFormat, this.dayOfMonthFormat = _arg.dayOfMonthFormat, this.hourFormat = _arg.hourFormat, this.minuteFormat = _arg.minuteFormat;
+        this.calendarCoordinator = _arg.calendarCoordinator, this.yearselectValues = _arg.yearselectValues, this.hourselectValues = _arg.hourselectValues, this.minuteselectValues = _arg.minuteselectValues, this.yearFormat = _arg.yearFormat, this.monthFormat = _arg.monthFormat, this.dayOfMonthFormat = _arg.dayOfMonthFormat, this.hourFormat = _arg.hourFormat, this.minuteFormat = _arg.minuteFormat;
         this.dayobjects = null;
         this.__initWeekdays();
         this.__initMonthObjects();
@@ -1049,21 +1049,27 @@
       };
 
       MonthlyCalendarCoordinator.prototype.__initMonthObjects = function() {
-        var monthObject, monthname, monthnumber, _i, _len, _ref, _results;
+        var formatMomentObject, label, monthObject, monthnumber, _i, _results;
         this.monthselectConfig = [];
         this.__monthsMap = {};
-        monthnumber = 0;
-        _ref = moment.months();
+        formatMomentObject = this.calendarCoordinator.shownMomentObject.clone().set({
+          month: 0,
+          date: 0,
+          hour: 0,
+          minute: 0,
+          second: 0
+        });
         _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          monthname = _ref[_i];
+        for (monthnumber = _i = 0; _i <= 11; monthnumber = ++_i) {
+          label = formatMomentObject.set({
+            month: monthnumber
+          }).format(this.monthFormat);
           monthObject = {
             value: monthnumber,
-            label: monthname
+            label: label
           };
           this.monthselectConfig.push(monthObject);
-          this.__monthsMap[monthnumber] = monthObject;
-          _results.push(monthnumber += 1);
+          _results.push(this.__monthsMap[monthnumber] = monthObject);
         }
         return _results;
       };
@@ -2217,6 +2223,7 @@
               hourselectValues: $scope.config.hourselect_values,
               minuteselectValues: $scope.config.minuteselect_values,
               yearFormat: $scope.config.yearselect_momentjs_format,
+              monthFormat: $scope.config.monthselect_momentjs_format,
               dayOfMonthFormat: $scope.config.dayofmonthselect_momentjs_format,
               hourFormat: $scope.config.hourselect_momentjs_format,
               minuteFormat: $scope.config.minuteselect_momentjs_format
@@ -2229,7 +2236,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];

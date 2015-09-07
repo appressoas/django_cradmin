@@ -190,6 +190,7 @@ app.provider 'djangoCradminCalendarApi', ->
                    @hourselectValues,
                    @minuteselectValues,
                    @yearFormat,
+                   @monthFormat,
                    @dayOfMonthFormat,
                    @hourFormat,
                    @minuteFormat}) ->
@@ -259,15 +260,35 @@ app.provider 'djangoCradminCalendarApi', ->
     __initMonthObjects: ->
       @monthselectConfig = []
       @__monthsMap = {}
-      monthnumber = 0
-      for monthname in moment.months()
+
+#      monthnumber = 0
+#      for monthname in moment.months()
+#        monthObject = {
+#          value: monthnumber
+#          label: monthname
+#        }
+#        @monthselectConfig.push(monthObject)
+#        @__monthsMap[monthnumber] = monthObject
+#        monthnumber += 1
+
+      formatMomentObject = @calendarCoordinator.shownMomentObject.clone().set({
+        month: 0
+        date: 0
+        hour: 0
+        minute: 0
+        second: 0
+      })
+      for monthnumber in [0..11]
+        label = formatMomentObject.set({
+          month: monthnumber
+        }).format(@monthFormat)
         monthObject = {
           value: monthnumber
-          label: monthname
+          label: label
         }
         @monthselectConfig.push(monthObject)
         @__monthsMap[monthnumber] = monthObject
-        monthnumber += 1
+
 
     __initHourObjects: ->
       selectedHourValue = @calendarCoordinator.shownMomentObject.hour()
