@@ -1,13 +1,13 @@
 from __future__ import unicode_literals
+import json
+from builtins import str
+
 import datetime
 from django.forms import widgets
 from django.template import loader
 from django.utils.translation import ugettext_lazy as _
-import json
-from builtins import str
-from xml.sax import saxutils
-from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 
+from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 from django_cradmin.widgets.selectwidgets import WrappedSelect
 
 
@@ -80,29 +80,91 @@ class DatePickerWidget(widgets.TextInput):
     #: The text shown in the date picker table to indicate the selected date.
     #: You can set this to an empty string if you do not want to show this
     #: label.
+    #:
+    #: Can be overridden via the ``selected_day_label_text``
+    #: keyword argument for ``__init__``.
     default_selected_day_label_text = _('selected')
 
     #: The text shown in the date picker table cell for "Today".
     #: You can set this to an empty string if you do not want to show this
     #: label.
+    #:
+    #: Can be overridden via the ``today_label_text``
+    #: keyword argument for ``__init__``.
     default_today_label_text = _('today')
 
     #: See :meth:`~.DatePickerWidget.get_preview_angularjs_template`.
+    #:
+    #: Can be overridden via the ``preview_angularjs_template``
+    #: keyword argument for ``__init__``.
     default_preview_angularjs_template = "{{ momentObject.format('LL') }}"
 
-    #: The
-    close_screenreader_text = _('Close date picker without changing the value')
-    year_screenreader_text = _('Select year')
-    month_screenreader_text = _('Select month')
-    day_screenreader_text = _('Select day')
-    hour_screenreader_text = _('Select hour')
-    minute_screenreader_text = _('Select minute')
-    usebutton_arialabel_prefix = _('Confirm that you want to select')
-    back_to_datepicker_screenreader_text = _('Return to date picker')
-    dateselector_table_screenreader_caption = _('Select date. Navigate with the arrow keys or tab, '
-                                                'jump up to the month selector with the page up key '
-                                                'and back to this table with the page down key.')
-    usebutton_arialabel_momentjs_format = 'LL'
+    #: The aria-label (screenreader only label) for the close button.
+    #:
+    #: Can be overridden via the ``close_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_close_screenreader_text = _('Close date picker without changing the value')
+
+    #: The screenreader only label for the select year ``<select>``.
+    #:
+    #: Can be overridden via the ``year_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_year_screenreader_text = _('Select year')
+
+    #: The screenreader only label for the select month ``<select>``.
+    #:
+    #: Can be overridden via the ``month_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_month_screenreader_text = _('Select month')
+
+    #: The screenreader only label for the select day ``<select>``.
+    #:
+    #: Can be overridden via the ``day_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_day_screenreader_text = _('Select day')
+
+    #: The screenreader only label for the select hour ``<select>``.
+    #:
+    #: Can be overridden via the ``hour_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_hour_screenreader_text = _('Select hour')
+
+    #: The screenreader only label for the select minute ``<select>``.
+    #:
+    #: Can be overridden via the ``minute_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_minute_screenreader_text = _('Select minute')
+
+    #: The screenreader only prefix for the arial-label of the "Use"-button
+    #: The suffix is the formatted value of the selected date, formatted using
+    #: :obj:`~.DatePickerWidget.default_usebutton_arialabel_momentjs_format`.
+    #:
+    #: Can be overridden via the ``usebutton_arialabel_prefix``
+    #: keyword argument for ``__init__``.
+    default_usebutton_arialabel_prefix = _('Confirm that you want to select')
+
+    #: The momentjs format for the screenreader only suffox for the arial-label
+    #: of the "Use"-button. The prefix is configured in
+    #: :obj:`~.DatePickerWidget.default_usebutton_arialabel_prefix`.
+    #:
+    #: Can be overridden via the ``usebutton_arialabel_momentjs_format``
+    #: keyword argument for ``__init__``.
+    default_usebutton_arialabel_momentjs_format = 'LL'
+
+    #: The screenreader only aria-label for the button that takes the user
+    #: back to the datepicker when they are in the time picker (not used on mobile).
+    #:
+    #: Can be overridden via the ``back_to_datepicker_screenreader_text``
+    #: keyword argument for ``__init__``.
+    default_back_to_datepicker_screenreader_text = _('Return to date picker')
+
+    #: The screenreader only date-picker table caption.
+    #:
+    #: Can be overridden via the ``dateselector_table_screenreader_caption``
+    #: keyword argument for ``__init__``.
+    default_dateselector_table_screenreader_caption = _('Select date. Navigate with the arrow keys or tab, '
+                                                        'jump up to the month selector with the page up key '
+                                                        'and back to this table with the page down key.')
 
     # default_year_emptyvalue = _('Year')
     # default_month_emptyvalue = _('Month')
@@ -124,6 +186,20 @@ class DatePickerWidget(widgets.TextInput):
                 :obj:`.DatePickerWidget.default_timeselector_datepreview_momentjs_format`.
             no_value_preview_text: See :obj:`.DatePickerWidget.default_no_value_preview_text`.
             preview_angularjs_template: See :obj:`.DatePickerWidget.default_preview_angularjs_template`.
+
+            close_screenreader_text: See :obj:`.DatePickerWidget.default_close_screenreader_text`.
+            year_screenreader_text: See :obj:`.DatePickerWidget.default_year_screenreader_text`.
+            month_screenreader_text: See :obj:`.DatePickerWidget.default_month_screenreader_text`.
+            day_screenreader_text: See :obj:`.DatePickerWidget.default_day_screenreader_text`.
+            hour_screenreader_text: See :obj:`.DatePickerWidget.default_hour_screenreader_text`.
+            minute_screenreader_text: See :obj:`.DatePickerWidget.default_minute_screenreader_text`.
+            usebutton_arialabel_prefix: See :obj:`.DatePickerWidget.default_usebutton_arialabel_prefix`.
+            usebutton_arialabel_momentjs_format: See
+                :obj:`.DatePickerWidget.default_usebutton_arialabel_momentjs_format`.
+            back_to_datepicker_screenreader_text: See
+                :obj:`.DatePickerWidget.default_back_to_datepicker_screenreader_text`.
+            dateselector_table_screenreader_caption: See
+                :obj:`.DatePickerWidget.default_dateselector_table_screenreader_caption`.
         """
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
@@ -138,6 +214,28 @@ class DatePickerWidget(widgets.TextInput):
         self.no_value_preview_text = kwargs.pop('no_value_preview_text', '')
         self.preview_angularjs_template = kwargs.pop('preview_angularjs_template',
                                                      self.default_preview_angularjs_template)
+
+        self.close_screenreader_text = kwargs.pop('close_screenreader_text',
+                                                  self.default_close_screenreader_text)
+        self.year_screenreader_text = kwargs.pop('year_screenreader_text',
+                                                 self.default_year_screenreader_text)
+        self.month_screenreader_text = kwargs.pop('month_screenreader_text',
+                                                  self.default_month_screenreader_text)
+        self.day_screenreader_text = kwargs.pop('day_screenreader_text',
+                                                self.default_day_screenreader_text)
+        self.hour_screenreader_text = kwargs.pop('hour_screenreader_text',
+                                                 self.default_hour_screenreader_text)
+        self.minute_screenreader_text = kwargs.pop('minute_screenreader_text',
+                                                   self.default_minute_screenreader_text)
+        self.usebutton_arialabel_prefix = kwargs.pop('usebutton_arialabel_prefix',
+                                                     self.default_usebutton_arialabel_prefix)
+        self.usebutton_arialabel_momentjs_format = kwargs.pop('usebutton_arialabel_momentjs_format',
+                                                              self.default_usebutton_arialabel_momentjs_format)
+        self.back_to_datepicker_screenreader_text = kwargs.pop('back_to_datepicker_screenreader_text',
+                                                               self.default_back_to_datepicker_screenreader_text)
+        self.dateselector_table_screenreader_caption = kwargs.pop('dateselector_table_screenreader_caption',
+                                                                  self.default_dateselector_table_screenreader_caption)
+
         # self.year_emptyvalue = kwargs.pop('year_emptyvalue', self.default_year_emptyvalue)
         # self.month_emptyvalue = kwargs.pop('month_emptyvalue', self.default_month_emptyvalue)
         # self.day_emptyvalue = kwargs.pop('day_emptyvalue', self.default_day_emptyvalue)
