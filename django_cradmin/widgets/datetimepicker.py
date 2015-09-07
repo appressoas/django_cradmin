@@ -12,7 +12,7 @@ from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 from django_cradmin.widgets.selectwidgets import WrappedSelect
 
 
-class DatePickerWidget(widgets.TextInput):
+class DatePickerWidget(widgets.HiddenInput):
     """
     A Widget for selecting a date.
 
