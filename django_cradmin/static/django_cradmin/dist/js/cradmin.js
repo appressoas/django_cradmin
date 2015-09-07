@@ -901,7 +901,7 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           week = _ref[_i];
           rowFormatted = [];
-          _results.push(console.log(week.prettyOneLineFormat()));
+          _results.push(typeof console !== "undefined" && console !== null ? typeof console.log === "function" ? console.log(week.prettyOneLineFormat()) : void 0 : void 0);
         }
         return _results;
       };
@@ -1645,9 +1645,6 @@
                   newFocusTd = activeElement.parent().parent().parent().children().first().children().first();
                 }
                 if (direction === 'end') {
-                  console.log(activeElement.parent().parent().parent());
-                  console.log(activeElement.parent().parent().parent().children().last());
-                  console.log(activeElement.parent().parent().parent().children().last().children().last());
                   newFocusTd = activeElement.parent().parent().parent().children().last().children().last();
                 }
                 if ((newFocusTd != null) && newFocusTd.length > 0) {
@@ -1858,6 +1855,23 @@
             }
             return '';
           };
+          /*
+          Get day-button (button in the calendar table) aria-label attribute.
+          */
+
+          $scope.getDaybuttonAriaLabel = function(calendarDay) {
+            var isSelected, label;
+            label = "" + (calendarDay.momentObject.format('MMMM D'));
+            if ($scope.config.today_label_text !== '' && calendarDay.isToday()) {
+              label = "" + label + " (" + $scope.config.today_label_text + ")";
+            } else {
+              isSelected = calendarDay.momentObject.isSame($scope.monthlyCaledarCoordinator.selectedValueMomentObject, 'day');
+              if ($scope.config.selected_day_label_text !== '' && isSelected) {
+                label = "" + label + " (" + $scope.config.selected_day_label_text + ")";
+              }
+            }
+            return label;
+          };
           $scope.getTabindexForCalendarDay = function(calendarDay) {
             if (calendarDay.isInCurrentMonth) {
               return "0";
@@ -2007,7 +2021,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -3632,15 +3646,17 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                    ng-click=\"onClickCalendarDay(calendarDay)\"\n" +
     "                                    tabindex=\"{{ getTabindexForCalendarDay(calendarDay) }}\"\n" +
     "                                    ng-focus=\"onFocusCalendayDay(calendarDay)\"\n" +
-    "                                    aria-label=\"{{ calendarDay.momentObject.format('MMMM D') }}\">\n" +
+    "                                    aria-label=\"{{ getDaybuttonAriaLabel(calendarDay) }}\">\n" +
     "                                {{ calendarDay.getNumberInMonth() }}\n" +
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
-    "                                        ng-if=\"calendarDay.isToday()\">\n" +
-    "                                    today\n" +
+    "                                        ng-if=\"config.today_label_text &amp;&amp; calendarDay.isToday()\">\n" +
+    "                                    {{ config.today_label_text }}\n" +
     "                                </span>\n" +
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
-    "                                        ng-if=\"calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedValueMomentObject, 'day')\">\n" +
-    "                                    selected\n" +
+    "                                        ng-if=\"\n" +
+    "                                            config.selected_day_label_text &amp;&amp;\n" +
+    "                                            calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedValueMomentObject, 'day')\">\n" +
+    "                                    {{ config.selected_day_label_text }}\n" +
     "                                </span>\n" +
     "                            </button>\n" +
     "                        </td>\n" +

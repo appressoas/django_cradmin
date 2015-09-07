@@ -121,7 +121,7 @@ app.provider 'djangoCradminCalendarApi', ->
     prettyprint: ->
       for week in @calendarWeeks
         rowFormatted = []
-        console.log week.prettyOneLineFormat()
+        console?.log? week.prettyOneLineFormat()
 
 
   class MonthlyCalendarCoordinator

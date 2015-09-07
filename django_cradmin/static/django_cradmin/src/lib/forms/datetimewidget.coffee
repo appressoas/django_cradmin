@@ -48,9 +48,6 @@ app.directive 'djangoCradminDatetimeSelector', [
               if direction == 'home'
                 newFocusTd = activeElement.parent().parent().parent().children().first().children().first()
               if direction == 'end'
-                console.log activeElement.parent().parent().parent()
-                console.log activeElement.parent().parent().parent().children().last()
-                console.log activeElement.parent().parent().parent().children().last().children().last()
                 newFocusTd = activeElement.parent().parent().parent().children().last().children().last()
 
               if newFocusTd? and newFocusTd.length > 0
@@ -247,6 +244,20 @@ app.directive 'djangoCradminDatetimeSelector', [
           else
           return ''
 
+        ###
+        Get day-button (button in the calendar table) aria-label attribute.
+        ###
+        $scope.getDaybuttonAriaLabel = (calendarDay) ->
+          label = "#{calendarDay.momentObject.format('MMMM D')}"
+          if $scope.config.today_label_text != '' and calendarDay.isToday()
+            label = "#{label} (#{$scope.config.today_label_text})"
+          else
+            isSelected = calendarDay.momentObject.isSame(
+              $scope.monthlyCaledarCoordinator.selectedValueMomentObject, 'day')
+            if $scope.config.selected_day_label_text != '' and isSelected
+              label = "#{label} (#{$scope.config.selected_day_label_text})"
+          return label
+
         $scope.getTabindexForCalendarDay = (calendarDay) ->
           if calendarDay.isInCurrentMonth
             return "0"
@@ -441,6 +452,8 @@ app.directive 'djangoCradminDatetimeSelector', [
           'hour_screenreader_text'
           'minute_screenreader_text'
           'dateselector_table_screenreader_caption'
+          'today_label_text'
+          'selected_day_label_text'
 #          'year_emptyvalue'
 #          'month_emptyvalue'
 #          'day_emptyvalue'

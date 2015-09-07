@@ -77,9 +77,20 @@ class DatePickerWidget(widgets.TextInput):
     #: keyword argument for ``__init__``.
     default_timeselector_datepreview_momentjs_format = 'LL'
 
+    #: The text shown in the date picker table to indicate the selected date.
+    #: You can set this to an empty string if you do not want to show this
+    #: label.
+    default_selected_day_label_text = _('selected')
+
+    #: The text shown in the date picker table cell for "Today".
+    #: You can set this to an empty string if you do not want to show this
+    #: label.
+    default_today_label_text = _('today')
+
     #: See :meth:`~.DatePickerWidget.get_preview_angularjs_template`.
     default_preview_angularjs_template = "{{ momentObject.format('LL') }}"
 
+    #: The
     close_screenreader_text = _('Close date picker without changing the value')
     year_screenreader_text = _('Select year')
     month_screenreader_text = _('Select month')
@@ -88,7 +99,9 @@ class DatePickerWidget(widgets.TextInput):
     minute_screenreader_text = _('Select minute')
     usebutton_arialabel_prefix = _('Confirm that you want to select')
     back_to_datepicker_screenreader_text = _('Return to date picker')
-    dateselector_table_screenreader_caption = _('Select date')
+    dateselector_table_screenreader_caption = _('Select date. Navigate with the arrow keys or tab, '
+                                                'jump up to the month selector with the page up key '
+                                                'and back to this table with the page down key.')
     usebutton_arialabel_momentjs_format = 'LL'
 
     # default_year_emptyvalue = _('Year')
@@ -105,6 +118,8 @@ class DatePickerWidget(widgets.TextInput):
             usebuttonlabel: See :obj:`.DatePickerWidget.default_usebuttonlabel`.
             close_iconkey: See :obj:`.DatePickerWidget.default_close_iconkey`.
             back_iconkey: See :obj:`.DatePickerWidget.default_back_iconkey`.
+            today_label_text: See :obj:`.DatePickerWidget.default_today_label_text`.
+            selected_day_label_text: See :obj:`.DatePickerWidget.default_selected_day_label_text`.
             timeselector_datepreview_momentjs_format: See
                 :obj:`.DatePickerWidget.default_timeselector_datepreview_momentjs_format`.
             no_value_preview_text: See :obj:`.DatePickerWidget.default_no_value_preview_text`.
@@ -112,6 +127,8 @@ class DatePickerWidget(widgets.TextInput):
         """
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
+        self.today_label_text = kwargs.pop('today_label_text', self.default_today_label_text)
+        self.selected_day_label_text = kwargs.pop('selected_day_label_text', self.default_selected_day_label_text)
         self.usebuttonlabel = kwargs.pop('usebuttonlabel', self.default_usebuttonlabel)
         self.close_iconkey = kwargs.pop('close_iconkey', self.default_close_iconkey)
         self.back_iconkey = kwargs.pop('back_iconkey', self.default_back_iconkey)
@@ -165,6 +182,8 @@ class DatePickerWidget(widgets.TextInput):
             'usebutton_arialabel_momentjs_format': str(self.usebutton_arialabel_momentjs_format),
             'back_to_datepicker_screenreader_text': str(self.back_to_datepicker_screenreader_text),
             'dateselector_table_screenreader_caption': str(self.dateselector_table_screenreader_caption),
+            'today_label_text': str(self.today_label_text),
+            'selected_day_label_text': str(self.selected_day_label_text),
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
