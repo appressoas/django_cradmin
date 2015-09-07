@@ -135,7 +135,22 @@ app.provider 'djangoCradminCalendarApi', ->
   view we present.
   ###
   class CalendarCoordinator
-    constructor: (@minimumDatetime, @maximumDatetime) ->
+    constructor: (@selectedValueMomentObject, @minimumDatetime, @maximumDatetime) ->
+      # We operate with two momentObjects:
+      # - selectedValueMomentObject: This is the actual moment object
+      #   that the user has selected. This can be null if the user
+      #   has not selected a value yet.
+      # - shownDateMomentObject: This reflects the value shown on the screen
+      #   at any given moment (E.g.: It changes each time a user changes
+      #   the day, month, hour, etc). This is never ``null``.
+      if @selectedValueMomentObject?
+        @shownDateMomentObject = @selectedValueMomentObject.clone()
+      else
+        # We set this to start the date picker on the current date
+        @shownDateMomentObject = moment()
+
+    selectShownValue: ->
+      @selectedValueMomentObject = @shownDateMomentObject.clone()
 
     momentObjectIsAllowed: (momentObject) ->
       isAllowed = true
@@ -160,7 +175,7 @@ app.provider 'djangoCradminCalendarApi', ->
 
     setToNow: ->
       @shownDateMomentObject = moment()
-#      @__changeSelectedDate(true)
+#      @__changeSelectedDate()
 
 
   ###*
@@ -168,30 +183,16 @@ app.provider 'djangoCradminCalendarApi', ->
   ###
   class MonthlyCalendarCoordinator
     constructor: (@calendarCoordinator,
-                  @selectedValueMomentObject,
                   @yearselectConfig,
                   @hourselectConfig,
                   @minuteselectConfig) ->
-      # We operate with two momentObjects:
-      # - selectedValueMomentObject: This is the actual moment object
-      #   that the user has selected.
-      # - shownDateMomentObject: This reflects the value shown on the screen
-      #   at any given moment (E.g.: It changes each time a user changes
-      #   the day, month, hour, etc).
-      if @selectedValueMomentObject?
-        @calendarCoordinator.shownDateMomentObject = @selectedValueMomentObject.clone()
-        valueWasSetByUser = true
-      else
-        @calendarCoordinator.shownDateMomentObject = moment()  # We set this to start the date picker in the current month
-        valueWasSetByUser = false
-      @valueWasSetByUser = false  # Updated in @__changeSelectedDate()
       @dayobjects = null  # Updated in @__changeSelectedDate()
       @__initWeekdays()
       @__initMonthObjects()
       @__initYearObjects()
       @__initHourObjects()
       @__initMinuteObjects()
-      @__changeSelectedDate(valueWasSetByUser)
+      @__changeSelectedDate()
 
     __initWeekdays: ->
       @shortWeekdays = getWeekdaysShortForCurrentLocale()
@@ -296,7 +297,7 @@ app.provider 'djangoCradminCalendarApi', ->
     As long as you change ``@calendarCoordinator.shownDateMomentObject``, this
     will update everything to mirror the change (selected day, month, year, ...).
     ###
-    __changeSelectedDate: (valueWasSetByUser) ->
+    __changeSelectedDate: ->
       @calendarMonth = new CalendarMonth(@calendarCoordinator, @calendarCoordinator.shownDateMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()
@@ -304,15 +305,13 @@ app.provider 'djangoCradminCalendarApi', ->
       @__setCurrentMinute()
       @__updateDayObjects()
       @currentDayObject = @dayobjects[@calendarCoordinator.shownDateMomentObject.date()-1]
-      if valueWasSetByUser
-        @valueWasSetByUser = true
 
     handleDayChange: (momentObject) ->
       @calendarCoordinator.shownDateMomentObject = momentObject.clone().set({
         hour: @currentHourObject.value
         minute: @currentMinuteObject.value
       })
-      @__changeSelectedDate(true)
+      @__changeSelectedDate()
 
     handleCurrentDayObjectChange: ->
       momentObject = moment({
@@ -329,25 +328,25 @@ app.provider 'djangoCradminCalendarApi', ->
       @calendarCoordinator.shownDateMomentObject.set({
         month: @currentMonthObject.value
       })
-      @__changeSelectedDate(true)
+      @__changeSelectedDate()
 
     handleCurrentYearChange: ->
       @calendarCoordinator.shownDateMomentObject.set({
         year: @currentYearObject.value
       })
-      @__changeSelectedDate(true)
+      @__changeSelectedDate()
 
     handleCurrentHourChange: ->
       @calendarCoordinator.shownDateMomentObject.set({
         hour: @currentHourObject.value
       })
-      @__changeSelectedDate(true)
+      @__changeSelectedDate()
 
     handleCurrentMinuteChange: ->
       @calendarCoordinator.shownDateMomentObject.set({
         minute: @currentMinuteObject.value
       })
-      @__changeSelectedDate(true)
+      @__changeSelectedDate()
 
     handleFocusOnCalendarDay: (calendarDay) ->
       @lastFocusedMomentObject = calendarDay.momentObject

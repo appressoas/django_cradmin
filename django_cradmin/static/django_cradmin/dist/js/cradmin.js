@@ -922,10 +922,20 @@
     */
 
     CalendarCoordinator = (function() {
-      function CalendarCoordinator(minimumDatetime, maximumDatetime) {
+      function CalendarCoordinator(selectedValueMomentObject, minimumDatetime, maximumDatetime) {
+        this.selectedValueMomentObject = selectedValueMomentObject;
         this.minimumDatetime = minimumDatetime;
         this.maximumDatetime = maximumDatetime;
+        if (this.selectedValueMomentObject != null) {
+          this.shownDateMomentObject = this.selectedValueMomentObject.clone();
+        } else {
+          this.shownDateMomentObject = moment();
+        }
       }
+
+      CalendarCoordinator.prototype.selectShownValue = function() {
+        return this.selectedValueMomentObject = this.shownDateMomentObject.clone();
+      };
 
       CalendarCoordinator.prototype.momentObjectIsAllowed = function(momentObject) {
         var isAllowed, maximumDatetimeDateonly, minimumDatetimeDateonly;
@@ -965,28 +975,18 @@
     */
 
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(calendarCoordinator, selectedValueMomentObject, yearselectConfig, hourselectConfig, minuteselectConfig) {
-        var valueWasSetByUser;
+      function MonthlyCalendarCoordinator(calendarCoordinator, yearselectConfig, hourselectConfig, minuteselectConfig) {
         this.calendarCoordinator = calendarCoordinator;
-        this.selectedValueMomentObject = selectedValueMomentObject;
         this.yearselectConfig = yearselectConfig;
         this.hourselectConfig = hourselectConfig;
         this.minuteselectConfig = minuteselectConfig;
-        if (this.selectedValueMomentObject != null) {
-          this.calendarCoordinator.shownDateMomentObject = this.selectedValueMomentObject.clone();
-          valueWasSetByUser = true;
-        } else {
-          this.calendarCoordinator.shownDateMomentObject = moment();
-          valueWasSetByUser = false;
-        }
-        this.valueWasSetByUser = false;
         this.dayobjects = null;
         this.__initWeekdays();
         this.__initMonthObjects();
         this.__initYearObjects();
         this.__initHourObjects();
         this.__initMinuteObjects();
-        this.__changeSelectedDate(valueWasSetByUser);
+        this.__changeSelectedDate();
       }
 
       MonthlyCalendarCoordinator.prototype.__initWeekdays = function() {
@@ -1130,17 +1130,14 @@
       */
 
 
-      MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function(valueWasSetByUser) {
+      MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function() {
         this.calendarMonth = new CalendarMonth(this.calendarCoordinator, this.calendarCoordinator.shownDateMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
         this.__setCurrentHour();
         this.__setCurrentMinute();
         this.__updateDayObjects();
-        this.currentDayObject = this.dayobjects[this.calendarCoordinator.shownDateMomentObject.date() - 1];
-        if (valueWasSetByUser) {
-          return this.valueWasSetByUser = true;
-        }
+        return this.currentDayObject = this.dayobjects[this.calendarCoordinator.shownDateMomentObject.date() - 1];
       };
 
       MonthlyCalendarCoordinator.prototype.handleDayChange = function(momentObject) {
@@ -1148,7 +1145,7 @@
           hour: this.currentHourObject.value,
           minute: this.currentMinuteObject.value
         });
-        return this.__changeSelectedDate(true);
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentDayObjectChange = function() {
@@ -1169,28 +1166,28 @@
         this.calendarCoordinator.shownDateMomentObject.set({
           month: this.currentMonthObject.value
         });
-        return this.__changeSelectedDate(true);
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentYearChange = function() {
         this.calendarCoordinator.shownDateMomentObject.set({
           year: this.currentYearObject.value
         });
-        return this.__changeSelectedDate(true);
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentHourChange = function() {
         this.calendarCoordinator.shownDateMomentObject.set({
           hour: this.currentHourObject.value
         });
-        return this.__changeSelectedDate(true);
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentMinuteChange = function() {
         this.calendarCoordinator.shownDateMomentObject.set({
           minute: this.currentMinuteObject.value
         });
-        return this.__changeSelectedDate(true);
+        return this.__changeSelectedDate();
       };
 
       MonthlyCalendarCoordinator.prototype.handleFocusOnCalendarDay = function(calendarDay) {
@@ -1910,7 +1907,7 @@
             if ($scope.config.today_label_text !== '' && calendarDay.isToday()) {
               label = "" + label + " (" + $scope.config.today_label_text + ")";
             } else {
-              isSelected = calendarDay.momentObject.isSame($scope.monthlyCalendarCoordinator.selectedValueMomentObject, 'day');
+              isSelected = calendarDay.momentObject.isSame($scope.calendarCoordinator.selectedValueMomentObject, 'day');
               if ($scope.config.selected_day_label_text !== '' && isSelected) {
                 label = "" + label + " (" + $scope.config.selected_day_label_text + ")";
               }
@@ -1944,9 +1941,9 @@
           };
           $scope.__applyPreviewText = function() {
             var preview, templateScope;
-            if ($scope.monthlyCalendarCoordinator.valueWasSetByUser) {
+            if ($scope.calendarCoordinator.selectedValueMomentObject != null) {
               templateScope = $rootScope.$new(true);
-              templateScope.momentObject = $scope.calendarCoordinator.shownDateMomentObject.clone();
+              templateScope.momentObject = $scope.calendarCoordinator.selectedValueMomentObject.clone();
               preview = $compile($scope.previewAngularjsTemplate)(templateScope);
               $scope.previewElement.empty();
               return $scope.previewElement.append(preview);
@@ -1955,7 +1952,7 @@
             }
           };
           $scope.applySelectedValue = function() {
-            $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.calendarCoordinator.shownDateMomentObject.clone();
+            $scope.calendarCoordinator.selectShownValue();
             $scope.destinationField.val($scope.calendarCoordinator.shownDateMomentObject.format($scope.config.destinationfield_momentjs_format));
             $scope.__applyPreviewText();
             $scope.triggerButton.html($scope.config.buttonlabel);
@@ -2039,22 +2036,24 @@
             return hotkeys.del('pageup');
           };
           $scope.showPage1 = function() {
-            $element.show();
             $scope.page = 1;
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
             }, 150);
+            __removeHotkeys();
             __addCommonHotkeys();
             __addPage1Hotkeys();
+            $element.show();
           };
           $scope.showPage2 = function() {
             $scope.page = 2;
-            $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.calendarCoordinator.shownDateMomentObject.clone();
-            $element.show();
+            $scope.calendarCoordinator.selectShownValue();
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
             }, 150);
+            __removeHotkeys();
             __addCommonHotkeys();
+            $element.show();
           };
           $scope.hide = function() {
             if ($scope.page === 2) {
@@ -2088,8 +2087,8 @@
             if ($scope.config.maximum_datetime != null) {
               maximumDatetime = moment($scope.config.maximum_datetime);
             }
-            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(minimumDatetime, maximumDatetime);
-            $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, selectedValueMomentObject, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
+            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(selectedValueMomentObject, minimumDatetime, maximumDatetime);
+            $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
             return $scope.__applyPreviewText();
           };
         },
@@ -3715,7 +3714,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                ng-class=\"{\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
-    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCalendarCoordinator.selectedValueMomentObject, 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(calendarCoordinator.selectedValueMomentObject, 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-lastfocused': calendarDay.momentObject.isSame(monthlyCalendarCoordinator.getLastFocusedMomentObject(), 'day'),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday(),\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-disabled': calendarDay.isDisabled()\n" +
@@ -3734,7 +3733,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
     "                                        ng-if=\"\n" +
     "                                            config.selected_day_label_text &amp;&amp;\n" +
-    "                                            calendarDay.momentObject.isSame(monthlyCalendarCoordinator.selectedValueMomentObject, 'day')\">\n" +
+    "                                            calendarDay.momentObject.isSame(calendarCoordinator.selectedValueMomentObject, 'day')\">\n" +
     "                                    {{ config.selected_day_label_text }}\n" +
     "                                </span>\n" +
     "                            </button>\n" +

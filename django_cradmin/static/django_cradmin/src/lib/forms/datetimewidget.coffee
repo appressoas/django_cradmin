@@ -252,7 +252,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             label = "#{label} (#{$scope.config.today_label_text})"
           else
             isSelected = calendarDay.momentObject.isSame(
-              $scope.monthlyCalendarCoordinator.selectedValueMomentObject, 'day')
+              $scope.calendarCoordinator.selectedValueMomentObject, 'day')
             if $scope.config.selected_day_label_text != '' and isSelected
               label = "#{label} (#{$scope.config.selected_day_label_text})"
           return label
@@ -280,13 +280,13 @@ app.directive 'djangoCradminDatetimeSelector', [
           return "-1"
 
         $scope.__applyPreviewText = ->
-          if $scope.monthlyCalendarCoordinator.valueWasSetByUser
+          if $scope.calendarCoordinator.selectedValueMomentObject?
             templateScope = $rootScope.$new(true)  # Create new isolated scope
             # NOTE: We must clone the object, if we do not clone it, the value
             # will be reflected in the preview each time we change any value
             # in the date picker, and we only want the value to be applied when
             # the user confirms a value.
-            templateScope.momentObject = $scope.calendarCoordinator.shownDateMomentObject.clone()
+            templateScope.momentObject = $scope.calendarCoordinator.selectedValueMomentObject.clone()
             preview = $compile($scope.previewAngularjsTemplate)(templateScope)
             $scope.previewElement.empty()
             $scope.previewElement.append(preview)
@@ -294,11 +294,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.previewElement.html($scope.config.no_value_preview_text)
 
         $scope.applySelectedValue = ->
-          # We update the selectedValueMomentObject because that should
-          # reflect the value selected by the user. E.g. the selectedValueMomentObject
-          # is the value the user last applied.
-          # We must clone the value to avoid that it is reflected for each change in the date picker.
-          $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.calendarCoordinator.shownDateMomentObject.clone()
+          $scope.calendarCoordinator.selectShownValue()
 
           # Update the (hidden) destination field
           $scope.destinationField.val($scope.calendarCoordinator.shownDateMomentObject.format(
@@ -386,15 +382,18 @@ app.directive 'djangoCradminDatetimeSelector', [
           hotkeys.del('pageup')
 
         $scope.showPage1 = ->
-          $element.show()
           $scope.page = 1
+
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
           $timeout(->
             __getInitialFocusItemForCurrentPage().focus()
           , 150)
+
+          __removeHotkeys()
           __addCommonHotkeys()
           __addPage1Hotkeys()
+          $element.show()
           return
 
         $scope.showPage2 = ->
@@ -402,14 +401,17 @@ app.directive 'djangoCradminDatetimeSelector', [
 
           # Update "selectedValueMomentObject" to reflect the change. This will mark this as
           # the selected value when we return from to page2.
-          $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.calendarCoordinator.shownDateMomentObject.clone()
-          $element.show()
+          $scope.calendarCoordinator.selectShownValue()
+
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
           $timeout(->
             __getInitialFocusItemForCurrentPage().focus()
           , 150)
+
+          __removeHotkeys()
           __addCommonHotkeys()
+          $element.show()
           return
 
         $scope.hide = ->
@@ -453,10 +455,10 @@ app.directive 'djangoCradminDatetimeSelector', [
             maximumDatetime = moment($scope.config.maximum_datetime)
 
           $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(
+            selectedValueMomentObject,
             minimumDatetime, maximumDatetime)
           $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
             $scope.calendarCoordinator,
-            selectedValueMomentObject,
             $scope.config.yearselect_config,
             $scope.config.hourselect_config,
             $scope.config.minuteselect_config)
