@@ -74,6 +74,13 @@
         }
       }
 
+      .django-cradmin-datetime-selector-shortcuts {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        bottom: @cradmin-datetimeselector-page1-shortcuts-bottom;
+      }
 
       .django-cradmin-datetime-selector-closebutton {
         position: absolute;
@@ -92,6 +99,21 @@
 
     .django-cradmin-datetime-selector-dateview {
       padding-top: @cradmin-datetimeselector-dateview-padding-top;
+
+      .django-cradmin-datetime-selector-shortcuts {
+        .django-cradmin-datetime-selector-shortcuts-todaybutton {
+          display: none;
+        }
+
+        @media (min-width: @cradmin-datetimeselector-mobile-width-breakpoint) and (min-height: @cradmin-datetimeselector-mobile-height-breakpoint) {
+          .django-cradmin-datetime-selector-shortcuts-todaybutton {
+            display: inline-block;
+          }
+          .django-cradmin-datetime-selector-shortcuts-nowbutton {
+            display: none;
+          }
+        }
+      }
 
       .django-cradmin-datetime-selector-selectors-wrapper {
         display: table;
@@ -134,10 +156,11 @@
         display: none;
         table-layout: fixed;
         position: absolute;
-        bottom: 0;
+        bottom: @cradmin-datetimeselector-table-bottom;
         left: 0;
         right: 0;
         height: @cradmin-datetimeselector-table-height;
+        border-bottom: 1px solid @cradmin-datetimeselector-table-bordercolor;
 
         @media (min-width: @cradmin-datetimeselector-mobile-width-breakpoint) and (min-height: @cradmin-datetimeselector-mobile-height-breakpoint) {
           display: table;
@@ -278,8 +301,10 @@
 
     .django-cradmin-datetime-selector-timeview {
       padding-left: @cradmin-datetimeselector-backbutton-width;
-      .django-cradmin-datetime-selector-body {
+
+      .django-cradmin-datetime-selector-shortcuts {
         left: @cradmin-datetimeselector-backbutton-width;
+        right: 0;
       }
 
       .django-cradmin-datetime-selector-backbutton {

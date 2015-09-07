@@ -143,7 +143,7 @@ class PageCreateUpdateMixin(object):
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget(
             minimum_datetime=datetime(2015, 6, 3, 12, 30),
-            maximum_datetime=datetime(2015, 7, 2, 21, 40)
+            maximum_datetime=datetime(2015, 11, 2, 21, 40)
         )
         form.fields['unpublish_time'].widget = DatePickerWidget(
             no_value_preview_text='No date selected')

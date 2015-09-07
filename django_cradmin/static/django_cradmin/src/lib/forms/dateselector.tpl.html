@@ -130,6 +130,24 @@
                 </tbody>
             </table>
 
+            <div class="django-cradmin-datetime-selector-shortcuts">
+                <button type="button"
+                        class="btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton"
+                        ng-click="onClickTodayButton()">
+                    Today
+                </button>
+                <button type="button"
+                        class="btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton"
+                        ng-click="onClickNowButton()">
+                    Now
+                </button>
+                <button type="button"
+                        class="btn btn-danger django-cradmin-datetime-selector-shortcuts-clearbutton"
+                        ng-click="onClickClearButton()">
+                    Clear
+                </button>
+            </div>
+
             <button type="button" class="sr-only" ng-focus="onFocusTail()"></button>
         </div>
 
@@ -186,8 +204,20 @@
                             {{ config.usebuttonlabel }}
                         </button>
                     </div>
+
                 </div>
+
+                <div class="django-cradmin-datetime-selector-shortcuts">
+                    <button type="button"
+                            class="btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton"
+                            ng-click="onClickNowButton()">
+                        Now
+                    </button>
+                </div>
+
             </div>
+
+
             <button type="button" class="sr-only" ng-focus="onFocusTail()"></button>
         </div>
     </div>

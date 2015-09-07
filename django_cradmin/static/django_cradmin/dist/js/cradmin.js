@@ -1113,7 +1113,12 @@
         }
       };
 
-      MonthlyCalendarCoordinator.prototype.__handleDayChange = function(momentObject) {
+      MonthlyCalendarCoordinator.prototype.setToNow = function() {
+        this.shownDateMomentObject = moment();
+        return this.__changeSelectedDate(true);
+      };
+
+      MonthlyCalendarCoordinator.prototype.handleDayChange = function(momentObject) {
         this.shownDateMomentObject = momentObject.clone().set({
           hour: this.currentHourObject.value,
           minute: this.currentMinuteObject.value
@@ -1128,11 +1133,11 @@
           month: this.currentMonthObject.value,
           day: this.currentDayObject.value
         });
-        return this.__handleDayChange(momentObject);
+        return this.handleDayChange(momentObject);
       };
 
       MonthlyCalendarCoordinator.prototype.handleCalendarDayChange = function(calendarDay) {
-        return this.__handleDayChange(calendarDay.momentObject);
+        return this.handleDayChange(calendarDay.momentObject);
       };
 
       MonthlyCalendarCoordinator.prototype.handleCurrentMonthChange = function() {
@@ -1886,6 +1891,23 @@
             }
             return label;
           };
+          $scope.onClickTodayButton = function() {
+            var momentObject;
+            momentObject = moment();
+            $scope.monthlyCaledarCoordinator.handleDayChange(momentObject);
+            if ($scope.config.include_time) {
+              $scope.showPage2();
+            } else {
+              $scope.applySelectedValue();
+            }
+          };
+          $scope.onClickNowButton = function() {
+            $scope.monthlyCaledarCoordinator.setToNow();
+            return $scope.applySelectedValue();
+          };
+          $scope.onClickClearButton = function() {
+            return $scope.clearSelectedValue();
+          };
           $scope.getTabindexForCalendarDay = function(calendarDay) {
             if (calendarDay.isInCurrentMonth) {
               return "0";
@@ -1911,6 +1933,12 @@
             $scope.destinationField.val($scope.monthlyCaledarCoordinator.shownDateMomentObject.format($scope.config.destinationfield_momentjs_format));
             $scope.__applyPreviewText();
             $scope.triggerButton.html($scope.config.buttonlabel);
+            return $scope.hide();
+          };
+          $scope.clearSelectedValue = function() {
+            $scope.destinationField.val('');
+            $scope.previewElement.html($scope.config.no_value_preview_text);
+            $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             return $scope.hide();
           };
           __addCommonHotkeys = function() {
@@ -3688,6 +3716,24 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                </tbody>\n" +
     "            </table>\n" +
     "\n" +
+    "            <div class=\"django-cradmin-datetime-selector-shortcuts\">\n" +
+    "                <button type=\"button\"\n" +
+    "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton\"\n" +
+    "                        ng-click=\"onClickTodayButton()\">\n" +
+    "                    Today\n" +
+    "                </button>\n" +
+    "                <button type=\"button\"\n" +
+    "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
+    "                        ng-click=\"onClickNowButton()\">\n" +
+    "                    Now\n" +
+    "                </button>\n" +
+    "                <button type=\"button\"\n" +
+    "                        class=\"btn btn-danger django-cradmin-datetime-selector-shortcuts-clearbutton\"\n" +
+    "                        ng-click=\"onClickClearButton()\">\n" +
+    "                    Clear\n" +
+    "                </button>\n" +
+    "            </div>\n" +
+    "\n" +
     "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusTail()\"></button>\n" +
     "        </div>\n" +
     "\n" +
@@ -3744,8 +3790,20 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                            {{ config.usebuttonlabel }}\n" +
     "                        </button>\n" +
     "                    </div>\n" +
+    "\n" +
     "                </div>\n" +
+    "\n" +
+    "                <div class=\"django-cradmin-datetime-selector-shortcuts\">\n" +
+    "                    <button type=\"button\"\n" +
+    "                            class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
+    "                            ng-click=\"onClickNowButton()\">\n" +
+    "                        Now\n" +
+    "                    </button>\n" +
+    "                </div>\n" +
+    "\n" +
     "            </div>\n" +
+    "\n" +
+    "\n" +
     "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusTail()\"></button>\n" +
     "        </div>\n" +
     "    </div>\n" +

@@ -257,6 +257,22 @@ app.directive 'djangoCradminDatetimeSelector', [
               label = "#{label} (#{$scope.config.selected_day_label_text})"
           return label
 
+        $scope.onClickTodayButton = ->
+          momentObject = moment()
+          $scope.monthlyCaledarCoordinator.handleDayChange(momentObject)
+          if $scope.config.include_time
+            $scope.showPage2()
+          else
+            $scope.applySelectedValue()
+          return
+
+        $scope.onClickNowButton = ->
+          $scope.monthlyCaledarCoordinator.setToNow()
+          $scope.applySelectedValue()
+
+        $scope.onClickClearButton = ->
+          $scope.clearSelectedValue()
+
         $scope.getTabindexForCalendarDay = (calendarDay) ->
           if calendarDay.isInCurrentMonth
             return "0"
@@ -294,6 +310,17 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.triggerButton.html($scope.config.buttonlabel)
 
           $scope.hide()
+
+        $scope.clearSelectedValue = ->
+          # Update the (hidden) destination field
+          $scope.destinationField.val('')
+
+          # Update the preview text and trigger button label
+          $scope.previewElement.html($scope.config.no_value_preview_text)
+          $scope.triggerButton.html($scope.config.buttonlabel_novalue)
+
+          $scope.hide()
+
 
         __addCommonHotkeys = ->
           hotkeys.add({

@@ -287,7 +287,15 @@ app.provider 'djangoCradminCalendarApi', ->
       if valueWasSetByUser
         @valueWasSetByUser = true
 
-    __handleDayChange: (momentObject) ->
+    setToNow: ->
+      @shownDateMomentObject = moment()
+      @__changeSelectedDate(true)
+
+#    clear: ->
+#      @shownDateMomentObject = null
+#      @__changeSelectedDate(true)
+
+    handleDayChange: (momentObject) ->
       @shownDateMomentObject = momentObject.clone().set({
         hour: @currentHourObject.value
         minute: @currentMinuteObject.value
@@ -300,10 +308,10 @@ app.provider 'djangoCradminCalendarApi', ->
         month: @currentMonthObject.value
         day: @currentDayObject.value
       })
-      @__handleDayChange(momentObject)
+      @handleDayChange(momentObject)
 
     handleCalendarDayChange: (calendarDay) ->
-      @__handleDayChange(calendarDay.momentObject)
+      @handleDayChange(calendarDay.momentObject)
 
     handleCurrentMonthChange: ->
       @shownDateMomentObject.set({
