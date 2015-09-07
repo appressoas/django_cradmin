@@ -142,8 +142,8 @@ class PageCreateUpdateMixin(object):
             selectview_url=self._get_image_selectview_url()
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget(
-            minimum_datetime=datetime(2015, 6, 3, 12, 30),
-            maximum_datetime=datetime(2015, 11, 2, 21, 40)
+            minimum_datetime=datetime(2015, 9, 5, 12, 30),
+            maximum_datetime=datetime(2015, 10, 5, 21, 40)
         )
         form.fields['unpublish_time'].widget = DatePickerWidget(
             no_value_preview_text='No date selected')

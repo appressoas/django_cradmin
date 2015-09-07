@@ -733,7 +733,7 @@
     current locale.
     */
 
-    var CalendarDay, CalendarMonth, CalendarWeek, Month, MonthlyCalendarCoordinator, getWeekdaysShortForCurrentLocale;
+    var CalendarCoordinator, CalendarDay, CalendarMonth, CalendarWeek, Month, MonthlyCalendarCoordinator, getWeekdaysShortForCurrentLocale;
     getWeekdaysShortForCurrentLocale = function() {
       var firstDayOfWeek, index, weekday, weekdays, weekdaysWithSundayFirst, _i, _ref;
       weekdays = [];
@@ -819,9 +819,8 @@
 
     })();
     CalendarMonth = (function() {
-      function CalendarMonth(momentObject, minimumDatetime, maximumDatetime) {
-        this.minimumDatetime = minimumDatetime;
-        this.maximumDatetime = maximumDatetime;
+      function CalendarMonth(calendarCoordinator, momentObject) {
+        this.calendarCoordinator = calendarCoordinator;
         this.changeMonth(momentObject);
       }
 
@@ -888,30 +887,14 @@
       };
 
       CalendarMonth.prototype.__addMomentObject = function(momentObject, isInCurrentMonth) {
-        var calendarDay, isDisabled, maximumDatetimeDateonly, minimumDatetimeDateonly, week;
+        var calendarDay, isDisabled, week;
         week = this.calendarWeeks[this.currentWeekIndex];
         if (week.getDayCount() >= this.daysPerWeek) {
           this.calendarWeeks.push(new CalendarWeek());
           this.currentWeekIndex += 1;
           week = this.calendarWeeks[this.currentWeekIndex];
         }
-        isDisabled = false;
-        if (this.minimumDatetime != null) {
-          minimumDatetimeDateonly = this.minimumDatetime.clone().set({
-            hour: 0,
-            minute: 0,
-            second: 0
-          });
-          isDisabled = momentObject.isBefore(minimumDatetimeDateonly);
-        }
-        if (!isDisabled && (this.maximumDatetime != null)) {
-          maximumDatetimeDateonly = this.maximumDatetime.clone().set({
-            hour: 59,
-            minute: 59,
-            second: 59
-          });
-          isDisabled = momentObject.isAfter(maximumDatetimeDateonly);
-        }
+        isDisabled = !this.calendarCoordinator.momentObjectIsAllowed(momentObject);
         calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled);
         week.addDay(calendarDay);
         this.currentDayCount += 1;
@@ -933,15 +916,54 @@
       return CalendarMonth;
 
     })();
+    /**
+    Coordinates the common calendar data no matter what kind of
+    view we present.
+    */
+
+    CalendarCoordinator = (function() {
+      function CalendarCoordinator(minimumDatetime, maximumDatetime) {
+        this.minimumDatetime = minimumDatetime;
+        this.maximumDatetime = maximumDatetime;
+      }
+
+      CalendarCoordinator.prototype.momentObjectIsAllowed = function(momentObject) {
+        var isAllowed, maximumDatetimeDateonly, minimumDatetimeDateonly;
+        isAllowed = true;
+        if (this.minimumDatetime != null) {
+          minimumDatetimeDateonly = this.minimumDatetime.clone().set({
+            hour: 0,
+            minute: 0,
+            second: 0
+          });
+          isAllowed = !momentObject.isBefore(minimumDatetimeDateonly);
+        }
+        if (isAllowed && (this.maximumDatetime != null)) {
+          maximumDatetimeDateonly = this.maximumDatetime.clone().set({
+            hour: 59,
+            minute: 59,
+            second: 59
+          });
+          isAllowed = !momentObject.isAfter(maximumDatetimeDateonly);
+        }
+        return isAllowed;
+      };
+
+      return CalendarCoordinator;
+
+    })();
+    /**
+    Coordinates the common calendar data for a month-view.
+    */
+
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(selectedValueMomentObject, yearselectConfig, hourselectConfig, minuteselectConfig, minimumDatetime, maximumDatetime) {
+      function MonthlyCalendarCoordinator(calendarCoordinator, selectedValueMomentObject, yearselectConfig, hourselectConfig, minuteselectConfig) {
         var valueWasSetByUser;
+        this.calendarCoordinator = calendarCoordinator;
         this.selectedValueMomentObject = selectedValueMomentObject;
         this.yearselectConfig = yearselectConfig;
         this.hourselectConfig = hourselectConfig;
         this.minuteselectConfig = minuteselectConfig;
-        this.minimumDatetime = minimumDatetime;
-        this.maximumDatetime = maximumDatetime;
         this.dayobjects = null;
         if (this.selectedValueMomentObject != null) {
           this.shownDateMomentObject = this.selectedValueMomentObject.clone();
@@ -1101,7 +1123,7 @@
 
 
       MonthlyCalendarCoordinator.prototype.__changeSelectedDate = function(valueWasSetByUser) {
-        this.calendarMonth = new CalendarMonth(this.shownDateMomentObject, this.minimumDatetime, this.maximumDatetime);
+        this.calendarMonth = new CalendarMonth(this.calendarCoordinator, this.shownDateMomentObject);
         this.__setCurrentYear();
         this.__setCurrentMonth();
         this.__setCurrentHour();
@@ -1189,7 +1211,8 @@
     })();
     this.$get = function() {
       return {
-        MonthlyCalendarCoordinator: MonthlyCalendarCoordinator
+        MonthlyCalendarCoordinator: MonthlyCalendarCoordinator,
+        CalendarCoordinator: CalendarCoordinator
       };
     };
     return this;
@@ -2066,7 +2089,8 @@
             if ($scope.config.maximum_datetime != null) {
               maximumDatetime = moment($scope.config.maximum_datetime);
             }
-            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(selectedValueMomentObject, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config, minimumDatetime, maximumDatetime);
+            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(minimumDatetime, maximumDatetime);
+            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator($scope.calendarCoordinator, selectedValueMomentObject, $scope.config.yearselect_config, $scope.config.hourselect_config, $scope.config.minuteselect_config);
             return $scope.__applyPreviewText();
           };
         },

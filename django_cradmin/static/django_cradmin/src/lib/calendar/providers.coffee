@@ -65,7 +65,7 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class CalendarMonth
-    constructor: (momentObject, @minimumDatetime, @maximumDatetime)->
+    constructor: (@calendarCoordinator, momentObject)->
       @changeMonth(momentObject)
 
     changeMonth: (momentObject) ->
@@ -117,23 +117,8 @@ app.provider 'djangoCradminCalendarApi', ->
         @calendarWeeks.push(new CalendarWeek())
         @currentWeekIndex += 1
         week = @calendarWeeks[@currentWeekIndex]
-      isDisabled = false
 
-      if @minimumDatetime?
-        minimumDatetimeDateonly = @minimumDatetime.clone().set({
-          hour: 0
-          minute: 0
-          second: 0
-        })
-        isDisabled = momentObject.isBefore(minimumDatetimeDateonly)
-      if not isDisabled and @maximumDatetime?
-        maximumDatetimeDateonly = @maximumDatetime.clone().set({
-          hour: 59
-          minute: 59
-          second: 59
-        })
-        isDisabled = momentObject.isAfter(maximumDatetimeDateonly)
-
+      isDisabled = not @calendarCoordinator.momentObjectIsAllowed(momentObject)
       calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled)
       week.addDay(calendarDay)
       @currentDayCount += 1
@@ -145,13 +130,41 @@ app.provider 'djangoCradminCalendarApi', ->
         console?.log? week.prettyOneLineFormat()
 
 
+  ###*
+  Coordinates the common calendar data no matter what kind of
+  view we present.
+  ###
+  class CalendarCoordinator
+    constructor: (@minimumDatetime, @maximumDatetime) ->
+
+    momentObjectIsAllowed: (momentObject) ->
+      isAllowed = true
+      if @minimumDatetime?
+        minimumDatetimeDateonly = @minimumDatetime.clone().set({
+          hour: 0
+          minute: 0
+          second: 0
+        })
+        isAllowed = not momentObject.isBefore(minimumDatetimeDateonly)
+      if isAllowed and @maximumDatetime?
+        maximumDatetimeDateonly = @maximumDatetime.clone().set({
+          hour: 59
+          minute: 59
+          second: 59
+        })
+        isAllowed = not momentObject.isAfter(maximumDatetimeDateonly)
+      return isAllowed
+
+
+  ###*
+  Coordinates the common calendar data for a month-view.
+  ###
   class MonthlyCalendarCoordinator
-    constructor: (@selectedValueMomentObject,
+    constructor: (@calendarCoordinator,
+                  @selectedValueMomentObject,
                   @yearselectConfig,
                   @hourselectConfig,
-                  @minuteselectConfig,
-                  @minimumDatetime
-                  @maximumDatetime) ->
+                  @minuteselectConfig) ->
       # We operate with two momentObjects:
       # - selectedValueMomentObject: This is the actual moment object
       #   that the user has selected.
@@ -277,7 +290,7 @@ app.provider 'djangoCradminCalendarApi', ->
     will update everything to mirror the change (selected day, month, year, ...).
     ###
     __changeSelectedDate: (valueWasSetByUser) ->
-      @calendarMonth = new CalendarMonth(@shownDateMomentObject, @minimumDatetime, @maximumDatetime)
+      @calendarMonth = new CalendarMonth(@calendarCoordinator, @shownDateMomentObject)
       @__setCurrentYear()
       @__setCurrentMonth()
       @__setCurrentHour()
@@ -293,10 +306,6 @@ app.provider 'djangoCradminCalendarApi', ->
     setToNow: ->
       @shownDateMomentObject = moment()
       @__changeSelectedDate(true)
-
-#    clear: ->
-#      @shownDateMomentObject = null
-#      @__changeSelectedDate(true)
 
     handleDayChange: (momentObject) ->
       @shownDateMomentObject = momentObject.clone().set({
@@ -349,9 +358,11 @@ app.provider 'djangoCradminCalendarApi', ->
       else
         return @shownDateMomentObject
 
+
   @$get = ->
     return {
       MonthlyCalendarCoordinator: MonthlyCalendarCoordinator
+      CalendarCoordinator: CalendarCoordinator
     }
 
   return @
