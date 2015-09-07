@@ -35,6 +35,9 @@ app.provider 'djangoCradminCalendarApi', ->
     getNumberInMonth: ->
       return @momentObject.format('D')
 
+    isToday: ->
+      return @momentObject.isSame(moment(), 'day')
+
   class CalendarWeek
     constructor: ->
       @calendarDays = []
@@ -122,8 +125,14 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class MonthlyCalendarCoordinator
-    constructor: (@selectedDateMomentObject, valueWasSetByUser) ->
+    constructor: (@originalValueMomentObject) ->
       @dayobjects = null  # Updated in @__changeSelectedDate()
+      if @originalValueMomentObject?
+        @selectedDateMomentObject = @originalValueMomentObject.clone()
+        valueWasSetByUser = true
+      else
+        @selectedDateMomentObject = moment()  # We set this to start the date picker in the current month
+        valueWasSetByUser = false
       @valueWasSetByUser = false  # Updated in @__changeSelectedDate()
       @__initWeekdays()
       @__initMonthObjects()

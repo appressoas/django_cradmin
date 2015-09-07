@@ -204,7 +204,11 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.__applyPreviewText = ->
           if $scope.monthlyCaledarCoordinator.valueWasSetByUser
             templateScope = $rootScope.$new(true)  # Create new isolated scope
-            templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject
+            # NOTE: We must clone the object, if we do not clone it, the value
+            # will be reflected in the preview each time we change any value
+            # in the date picker, and we only want the value to be applied when
+            # the user confirms a value.
+            templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone()
             preview = $compile($scope.previewAngularjsTemplate)(templateScope)
             $scope.previewElement.empty()
             $scope.previewElement.append(preview)
@@ -212,11 +216,21 @@ app.directive 'djangoCradminDatetimeSelector', [
             $scope.previewElement.html($scope.config.no_value_preview_text)
 
         $scope.applySelectedValue = ->
+          # We update the originalValueMomentObject because that should
+          # reflect the value selected by the user. E.g. the originalValueMomentObject
+          # is the value the user last applied.
+          # We must clone the value to avoid that it is reflected for each change in the date picker.
+          $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone()
+
+          # Update the (hidden) destination field
           $scope.destinationField.val($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format(
             $scope.config.destinationfield_momentjs_format
           ))
+
+          # Update the preview text and trigger button label
           $scope.__applyPreviewText()
           $scope.triggerButton.html($scope.config.buttonlabel)
+
           $scope.hide()
 
         __addCommonHotkeys = ->
@@ -305,8 +319,6 @@ app.directive 'djangoCradminDatetimeSelector', [
           else
             $scope.page = null
 
-
-
           __removeHotkeys()
 
           # Use a timeout to ensure screenreaders are not stuck on the
@@ -320,16 +332,14 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.initialize = ->
           currentDateIsoString = $scope.destinationField.val()
           if currentDateIsoString? and currentDateIsoString != ''
-            currentDateMomentObject = moment(currentDateIsoString)
-            valueWasSetByUser = true
+            originalValueMomentObject = moment(currentDateIsoString)
             $scope.triggerButton.html($scope.config.buttonlabel)
           else
-            currentDateMomentObject = moment()  # Fallback to current date
-            valueWasSetByUser = false
+            originalValueMomentObject = null
             $scope.triggerButton.html($scope.config.buttonlabel_novalue)
 
           $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(
-            currentDateMomentObject, valueWasSetByUser)
+            originalValueMomentObject)
           $scope.__applyPreviewText()
 
 
@@ -389,6 +399,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid)
         if $scope.triggerButton.length > 0
           $scope.triggerButton.on 'click', ->
+            $scope.initialize()
             $scope.showPage1()
             $scope.$apply()
             return

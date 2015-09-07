@@ -171,6 +171,23 @@
                 font-weight: bold;
                 white-space: nowrap;
 
+                .django-cradmin-datetime-selector-daybuttoncell-label {
+                  display: block;
+                  position: absolute;
+                  top: 3px;
+                  left: 0;
+                  right: 0;
+                  font-size: ceil(@font-size-base * 0.66);
+                  font-weight: normal;
+                }
+
+                &,
+                &:active,
+                &.active,
+                &:hover {
+                  text-decoration: none;
+                }
+
                 &,
                 &:active,
                 &.active {
@@ -184,21 +201,30 @@
                 }
               }
 
-              button:hover,
-              button:focus,
+
+              &.django-cradmin-datetime-selector-daybuttoncell-today button {
+                background: @cradmin-datetimeselector-daybuttoncell-today-bg;
+                color: @cradmin-datetimeselector-daybuttoncell-today-color;
+              }
+
               &.django-cradmin-datetime-selector-daybuttoncell-selected button {
-                text-decoration: none;
-                background: @cradmin-datetimeselector-daybuttoncell-hover-bg;
-                color: @cradmin-datetimeselector-daybuttoncell-hover-color;
+                background: @cradmin-datetimeselector-daybuttoncell-selected-bg;
+                color: @cradmin-datetimeselector-daybuttoncell-selected-color;
               }
 
               &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month button {
                 background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-bg;
                 color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-color;
-                &:hover,
-                &:focus {
-                  background: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-bg;
-                  color: @cradmin-datetimeselector-daybuttoncell-not-in-current-month-hover-color;
+              }
+
+              &,
+              &.django-cradmin-datetime-selector-daybuttoncell-today,
+              &.django-cradmin-datetime-selector-daybuttoncell-selected,
+              &.django-cradmin-datetime-selector-daybuttoncell-not-in-current-month {
+                button:hover,
+                button:focus {
+                  background: @cradmin-datetimeselector-daybuttoncell-hover-bg;
+                  color: @cradmin-datetimeselector-daybuttoncell-hover-color;
                 }
               }
 

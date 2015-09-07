@@ -773,6 +773,10 @@
         return this.momentObject.format('D');
       };
 
+      CalendarDay.prototype.isToday = function() {
+        return this.momentObject.isSame(moment(), 'day');
+      };
+
       return CalendarDay;
 
     })();
@@ -906,9 +910,17 @@
 
     })();
     MonthlyCalendarCoordinator = (function() {
-      function MonthlyCalendarCoordinator(selectedDateMomentObject, valueWasSetByUser) {
-        this.selectedDateMomentObject = selectedDateMomentObject;
+      function MonthlyCalendarCoordinator(originalValueMomentObject) {
+        var valueWasSetByUser;
+        this.originalValueMomentObject = originalValueMomentObject;
         this.dayobjects = null;
+        if (this.originalValueMomentObject != null) {
+          this.selectedDateMomentObject = this.originalValueMomentObject.clone();
+          valueWasSetByUser = true;
+        } else {
+          this.selectedDateMomentObject = moment();
+          valueWasSetByUser = false;
+        }
         this.valueWasSetByUser = false;
         this.__initWeekdays();
         this.__initMonthObjects();
@@ -1790,7 +1802,7 @@
             var preview, templateScope;
             if ($scope.monthlyCaledarCoordinator.valueWasSetByUser) {
               templateScope = $rootScope.$new(true);
-              templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject;
+              templateScope.momentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone();
               preview = $compile($scope.previewAngularjsTemplate)(templateScope);
               $scope.previewElement.empty();
               return $scope.previewElement.append(preview);
@@ -1799,6 +1811,7 @@
             }
           };
           $scope.applySelectedValue = function() {
+            $scope.monthlyCaledarCoordinator.originalValueMomentObject = $scope.monthlyCaledarCoordinator.selectedDateMomentObject.clone();
             $scope.destinationField.val($scope.monthlyCaledarCoordinator.selectedDateMomentObject.format($scope.config.destinationfield_momentjs_format));
             $scope.__applyPreviewText();
             $scope.triggerButton.html($scope.config.buttonlabel);
@@ -1891,18 +1904,16 @@
             }, 150);
           };
           return $scope.initialize = function() {
-            var currentDateIsoString, currentDateMomentObject, valueWasSetByUser;
+            var currentDateIsoString, originalValueMomentObject;
             currentDateIsoString = $scope.destinationField.val();
             if ((currentDateIsoString != null) && currentDateIsoString !== '') {
-              currentDateMomentObject = moment(currentDateIsoString);
-              valueWasSetByUser = true;
+              originalValueMomentObject = moment(currentDateIsoString);
               $scope.triggerButton.html($scope.config.buttonlabel);
             } else {
-              currentDateMomentObject = moment();
-              valueWasSetByUser = false;
+              originalValueMomentObject = null;
               $scope.triggerButton.html($scope.config.buttonlabel_novalue);
             }
-            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(currentDateMomentObject, valueWasSetByUser);
+            $scope.monthlyCaledarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator(originalValueMomentObject);
             return $scope.__applyPreviewText();
           };
         },
@@ -1934,6 +1945,7 @@
           $scope.triggerButton = angular.element("#" + $scope.config.triggerbuttonid);
           if ($scope.triggerButton.length > 0) {
             $scope.triggerButton.on('click', function() {
+              $scope.initialize();
               $scope.showPage1();
               $scope.$apply();
             });
@@ -3519,13 +3531,22 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                ng-class=\"{\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-not-in-current-month': !calendarDay.isInCurrentMonth,\n" +
     "                                    'django-cradmin-datetime-selector-daybuttoncell-in-current-month': calendarDay.isInCurrentMonth,\n" +
-    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.selectedDateMomentObject, 'day')\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-selected': calendarDay.momentObject.isSame(monthlyCaledarCoordinator.originalValueMomentObject, 'day'),\n" +
+    "                                    'django-cradmin-datetime-selector-daybuttoncell-today': calendarDay.isToday()\n" +
     "                                }\">\n" +
     "                            <button type=\"button\" class=\"btn btn-link django-cradmin-datetime-selector-daybuttoncell-button\"\n" +
     "                                    ng-click=\"onClickCalendarDay(calendarDay)\"\n" +
     "                                    tabindex=\"{{ getTabindexForCalendarDay(calendarDay) }}\"\n" +
     "                                    aria-label=\"{{ calendarDay.momentObject.format('MMMM D') }}\">\n" +
     "                                {{ calendarDay.getNumberInMonth() }}\n" +
+    "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
+    "                                        ng-if=\"calendarDay.isToday()\">\n" +
+    "                                    today\n" +
+    "                                </span>\n" +
+    "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
+    "                                        ng-if=\"calendarDay.momentObject.isSame(monthlyCaledarCoordinator.originalValueMomentObject, 'day')\">\n" +
+    "                                    selected\n" +
+    "                                </span>\n" +
     "                            </button>\n" +
     "                        </td>\n" +
     "                    </tr>\n" +
