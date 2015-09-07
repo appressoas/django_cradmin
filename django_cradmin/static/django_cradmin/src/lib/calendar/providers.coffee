@@ -240,25 +240,25 @@ app.provider 'djangoCradminCalendarApi', ->
       currentYearNumber = @calendarMonth.month.firstDayOfMonth.year()
       @currentYearObject = @__yearsMap[currentYearNumber]
       if not @currentYearObject?
-        console?.error? "The given year, #{currentYearNumber} is not one of the available choices"
+        console?.warn? "The given year, #{currentYearNumber} is not one of the available choices"
 
     __setCurrentMonth: ->
       currentMonthNumber = @calendarMonth.month.firstDayOfMonth.month()
       @currentMonthObject = @__monthsMap[currentMonthNumber]
       if not @currentMonthObject?
-        console?.error? "The given month number, #{currentMonthNumber} is not one of the available choices"
+        console?.warn? "The given month number, #{currentMonthNumber} is not one of the available choices"
 
     __setCurrentHour: ->
       currentHourNumber = @shownDateMomentObject.hour()
       @currentHourObject = @__hoursMap[currentHourNumber]
       if not @currentHourObject?
-        console?.error? "The given hour, #{currentHourNumber} is not one of the available choices"
+        console?.warn? "The given hour, #{currentHourNumber} is not one of the available choices"
 
     __setCurrentMinute: ->
       currentMinuteNumber = @shownDateMomentObject.minute()
       @currentMinuteObject = @__minutesMap[currentMinuteNumber]
       if not @currentMinuteObject?
-        console?.error? "The given minute, #{currentMinuteNumber} is not one of the available choices"
+        console?.warn? "The given minute, #{currentMinuteNumber} is not one of the available choices"
 
     __updateDayObjects: ->
       @dayobjects = []

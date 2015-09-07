@@ -1046,7 +1046,7 @@
         currentYearNumber = this.calendarMonth.month.firstDayOfMonth.year();
         this.currentYearObject = this.__yearsMap[currentYearNumber];
         if (this.currentYearObject == null) {
-          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given year, " + currentYearNumber + " is not one of the available choices") : void 0 : void 0;
+          return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn("The given year, " + currentYearNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
 
@@ -1055,7 +1055,7 @@
         currentMonthNumber = this.calendarMonth.month.firstDayOfMonth.month();
         this.currentMonthObject = this.__monthsMap[currentMonthNumber];
         if (this.currentMonthObject == null) {
-          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given month number, " + currentMonthNumber + " is not one of the available choices") : void 0 : void 0;
+          return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn("The given month number, " + currentMonthNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
 
@@ -1064,7 +1064,7 @@
         currentHourNumber = this.shownDateMomentObject.hour();
         this.currentHourObject = this.__hoursMap[currentHourNumber];
         if (this.currentHourObject == null) {
-          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given hour, " + currentHourNumber + " is not one of the available choices") : void 0 : void 0;
+          return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn("The given hour, " + currentHourNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
 
@@ -1073,7 +1073,7 @@
         currentMinuteNumber = this.shownDateMomentObject.minute();
         this.currentMinuteObject = this.__minutesMap[currentMinuteNumber];
         if (this.currentMinuteObject == null) {
-          return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("The given minute, " + currentMinuteNumber + " is not one of the available choices") : void 0 : void 0;
+          return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn("The given minute, " + currentMinuteNumber + " is not one of the available choices") : void 0 : void 0;
         }
       };
 
