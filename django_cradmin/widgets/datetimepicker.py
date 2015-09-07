@@ -202,6 +202,10 @@ class DatePickerWidget(widgets.TextInput):
                                                         'jump up to the month selector with the page up key '
                                                         'and back to this table with the page down key.')
 
+    default_now_button_text = _('Now')
+    default_today_button_text = _('Today')
+    default_clear_button_text = _('Clear')
+
     # default_year_emptyvalue = _('Year')
     # default_month_emptyvalue = _('Month')
     # default_day_emptyvalue = _('Day')
@@ -274,6 +278,9 @@ class DatePickerWidget(widgets.TextInput):
                                                                   self.default_dateselector_table_screenreader_caption)
         self.minimum_datetime = kwargs.pop('minimum_datetime', None)
         self.maximum_datetime = kwargs.pop('maximum_datetime', None)
+        self.now_button_text = kwargs.pop('now_button_text', self.default_now_button_text)
+        self.today_button_text = kwargs.pop('today_button_text', self.default_today_button_text)
+        self.clear_button_text = kwargs.pop('clear_button_text', self.default_clear_button_text)
 
         # self.year_emptyvalue = kwargs.pop('year_emptyvalue', self.default_year_emptyvalue)
         # self.month_emptyvalue = kwargs.pop('month_emptyvalue', self.default_month_emptyvalue)
@@ -320,6 +327,9 @@ class DatePickerWidget(widgets.TextInput):
             'back_to_datepicker_screenreader_text': str(self.back_to_datepicker_screenreader_text),
             'dateselector_table_screenreader_caption': str(self.dateselector_table_screenreader_caption),
             'today_label_text': str(self.today_label_text),
+            'now_button_text': str(self.now_button_text),
+            'today_button_text': str(self.today_button_text),
+            'clear_button_text': str(self.clear_button_text),
             'selected_day_label_text': str(self.selected_day_label_text),
             'yearselect_config': list(self.get_yearselect_config()),
             'hourselect_config': list(self.get_hourselect_config()),

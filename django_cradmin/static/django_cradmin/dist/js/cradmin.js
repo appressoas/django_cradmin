@@ -2075,7 +2075,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_config', 'hourselect_config', 'minuteselect_config'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_config', 'hourselect_config', 'minuteselect_config', 'now_button_text', 'today_button_text', 'clear_button_text'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -3724,17 +3724,17 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton\"\n" +
     "                        ng-click=\"onClickTodayButton()\">\n" +
-    "                    Today\n" +
+    "                    {{ config.today_button_text }}\n" +
     "                </button>\n" +
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
     "                        ng-click=\"onClickNowButton()\">\n" +
-    "                    Now\n" +
+    "                    {{ config.now_button_text }}\n" +
     "                </button>\n" +
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-danger django-cradmin-datetime-selector-shortcuts-clearbutton\"\n" +
     "                        ng-click=\"onClickClearButton()\">\n" +
-    "                    Clear\n" +
+    "                    {{ config.clear_button_text }}\n" +
     "                </button>\n" +
     "            </div>\n" +
     "\n" +
@@ -3802,7 +3802,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                            class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
     "                            ng-click=\"onClickNowButton()\"\n" +
     "                            ng-if=\"monthlyCaledarCoordinator.shownDateIsToday()\">\n" +
-    "                        Now\n" +
+    "                        {{ config.now_button_text }}\n" +
     "                    </button>\n" +
     "                </div>\n" +
     "\n" +

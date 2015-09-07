@@ -134,17 +134,17 @@
                 <button type="button"
                         class="btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton"
                         ng-click="onClickTodayButton()">
-                    Today
+                    {{ config.today_button_text }}
                 </button>
                 <button type="button"
                         class="btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton"
                         ng-click="onClickNowButton()">
-                    Now
+                    {{ config.now_button_text }}
                 </button>
                 <button type="button"
                         class="btn btn-danger django-cradmin-datetime-selector-shortcuts-clearbutton"
                         ng-click="onClickClearButton()">
-                    Clear
+                    {{ config.clear_button_text }}
                 </button>
             </div>
 
@@ -212,7 +212,7 @@
                             class="btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton"
                             ng-click="onClickNowButton()"
                             ng-if="monthlyCaledarCoordinator.shownDateIsToday()">
-                        Now
+                        {{ config.now_button_text }}
                     </button>
                 </div>
 
