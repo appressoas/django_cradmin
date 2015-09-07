@@ -227,7 +227,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         Used to get the preview of the selected date on page2 (above the time selector).
         ###
         $scope.getTimeselectorDatepreview = ->
-          return $scope.monthlyCalendarCoordinator.shownDateMomentObject.format(
+          return $scope.calendarCoordinator.shownDateMomentObject.format(
             $scope.config.timeselector_datepreview_momentjs_format
           )
 
@@ -236,7 +236,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         ###
         $scope.getUseButtonAriaLabel = ->
           if $scope.monthlyCalendarCoordinator?
-            formattedDate = $scope.monthlyCalendarCoordinator.shownDateMomentObject.format(
+            formattedDate = $scope.calendarCoordinator.shownDateMomentObject.format(
               $scope.config.usebutton_arialabel_momentjs_format)
             return "#{$scope.config.usebutton_arialabel_prefix} " +
               "#{formattedDate}"
@@ -267,7 +267,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           return
 
         $scope.onClickNowButton = ->
-          $scope.monthlyCalendarCoordinator.setToNow()
+          $scope.calendarCoordinator.setToNow()
           $scope.applySelectedValue()
 
         $scope.onClickClearButton = ->
@@ -286,7 +286,7 @@ app.directive 'djangoCradminDatetimeSelector', [
             # will be reflected in the preview each time we change any value
             # in the date picker, and we only want the value to be applied when
             # the user confirms a value.
-            templateScope.momentObject = $scope.monthlyCalendarCoordinator.shownDateMomentObject.clone()
+            templateScope.momentObject = $scope.calendarCoordinator.shownDateMomentObject.clone()
             preview = $compile($scope.previewAngularjsTemplate)(templateScope)
             $scope.previewElement.empty()
             $scope.previewElement.append(preview)
@@ -298,10 +298,10 @@ app.directive 'djangoCradminDatetimeSelector', [
           # reflect the value selected by the user. E.g. the selectedValueMomentObject
           # is the value the user last applied.
           # We must clone the value to avoid that it is reflected for each change in the date picker.
-          $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.monthlyCalendarCoordinator.shownDateMomentObject.clone()
+          $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.calendarCoordinator.shownDateMomentObject.clone()
 
           # Update the (hidden) destination field
-          $scope.destinationField.val($scope.monthlyCalendarCoordinator.shownDateMomentObject.format(
+          $scope.destinationField.val($scope.calendarCoordinator.shownDateMomentObject.format(
             $scope.config.destinationfield_momentjs_format
           ))
 
@@ -402,7 +402,7 @@ app.directive 'djangoCradminDatetimeSelector', [
 
           # Update "selectedValueMomentObject" to reflect the change. This will mark this as
           # the selected value when we return from to page2.
-          $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.monthlyCalendarCoordinator.shownDateMomentObject.clone()
+          $scope.monthlyCalendarCoordinator.selectedValueMomentObject = $scope.calendarCoordinator.shownDateMomentObject.clone()
           $element.show()
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
