@@ -23,6 +23,9 @@
             <div class="django-cradmin-datetime-selector-selectors-wrapper">
                 <div class="django-cradmin-datetime-selector-selectors">
                     <div class="django-cradmin-datetime-selector-dateselectors">
+                        <label class="django-cradmin-datetime-selector-date-label" ng-if="config.date_label_text">
+                            {{ config.date_label_text }}
+                        </label>
                         <label for="{{ config.destinationfieldid }}_dayselect" class="sr-only">
                             {{ config.day_screenreader_text }}
                         </label>
@@ -55,6 +58,9 @@
                     </div>
 
                     <div class="django-cradmin-datetime-selector-timeselectors" ng-if="config.include_time">
+                        <label class="django-cradmin-datetime-selector-time-label" ng-if="config.time_label_text">
+                            {{ config.time_label_text }}
+                        </label>
                         <label for="{{ config.destinationfieldid }}_hourselect" class="sr-only">
                             {{ config.hour_screenreader_text }}
                         </label>
@@ -185,6 +191,9 @@
                     </p>
                     <div class="django-cradmin-datetime-selector-timeselectors">
                         <form class="form-inline">
+                            <label class="django-cradmin-datetime-selector-time-label" ng-if="config.time_label_text">
+                                {{ config.time_label_text }}
+                            </label>
                             <label for="{{ config.destinationfieldid }}_hourselect_page2" class="sr-only">
                                 {{ config.hour_screenreader_text }}
                             </label>

@@ -220,11 +220,25 @@ class DatePickerWidget(widgets.TextInput):
     #: keyword argument for ``__init__``.
     default_clear_button_text = _('Clear')
 
-    # default_year_emptyvalue = _('Year')
-    # default_month_emptyvalue = _('Month')
-    # default_day_emptyvalue = _('Day')
-    # default_hour_emptyvalue = _('Hour')
-    # default_minute_emptyvalue = _('Minute')
+    #: Default label to display before the date ``<select>`` boxes.
+    #: You can set this to empty string to disable the label.
+    #:
+    #: Shown in the mobile datetime picker, but not in the date picker for
+    #: desktop/tablet (since it would be strange to show ``date: <month> <year>``).
+    #:
+    #: Can be overridden via the ``date_label_text``
+    #: keyword argument for ``__init__``.
+    default_date_label_text = _('Date')
+
+    #: Default label to display before the time ``<select>`` boxes.
+    #: You can set this to empty string to disable the label.
+    #:
+    #: Shown in the mobile datetime picker, and in the time picker for
+    #: desktop/tablet.
+    #:
+    #: Can be overridden via the ``time_label_text``
+    #: keyword argument for ``__init__``.
+    default_time_label_text = _('Time')
 
     def __init__(self, *args, **kwargs):
         """
@@ -236,6 +250,8 @@ class DatePickerWidget(widgets.TextInput):
             close_iconkey: See :obj:`.DatePickerWidget.default_close_iconkey`.
             back_iconkey: See :obj:`.DatePickerWidget.default_back_iconkey`.
             today_label_text: See :obj:`.DatePickerWidget.default_today_label_text`.
+            date_label_text: See :obj:`.DatePickerWidget.default_date_label_text`.
+            time_label_text: See :obj:`.DatePickerWidget.default_time_label_text`.
             selected_day_label_text: See :obj:`.DatePickerWidget.default_selected_day_label_text`.
             timeselector_datepreview_momentjs_format: See
                 :obj:`.DatePickerWidget.default_timeselector_datepreview_momentjs_format`.
@@ -300,12 +316,8 @@ class DatePickerWidget(widgets.TextInput):
         self.now_button_text = kwargs.pop('now_button_text', self.default_now_button_text)
         self.today_button_text = kwargs.pop('today_button_text', self.default_today_button_text)
         self.clear_button_text = kwargs.pop('clear_button_text', self.default_clear_button_text)
-
-        # self.year_emptyvalue = kwargs.pop('year_emptyvalue', self.default_year_emptyvalue)
-        # self.month_emptyvalue = kwargs.pop('month_emptyvalue', self.default_month_emptyvalue)
-        # self.day_emptyvalue = kwargs.pop('day_emptyvalue', self.default_day_emptyvalue)
-        # self.hour_emptyvalue = kwargs.pop('hour_emptyvalue', self.default_hour_emptyvalue)
-        # self.minute_emptyvalue = kwargs.pop('minute_emptyvalue', self.default_minute_emptyvalue)
+        self.date_label_text = kwargs.pop('date_label_text', self.default_date_label_text)
+        self.time_label_text = kwargs.pop('time_label_text', self.default_time_label_text)
 
         super(DatePickerWidget, self).__init__(*args, **kwargs)
 
@@ -351,6 +363,8 @@ class DatePickerWidget(widgets.TextInput):
             'today_button_text': str(self.today_button_text),
             'clear_button_text': str(self.clear_button_text),
             'selected_day_label_text': str(self.selected_day_label_text),
+            'date_label_text': str(self.date_label_text),
+            'time_label_text': str(self.time_label_text),
 
             'yearselect_values': list(self.get_yearselect_values()),
             'hourselect_values': list(self.get_hourselect_values()),
@@ -534,7 +548,7 @@ class DatePickerWidget(widgets.TextInput):
         Get the momentjs format to use when creating the
         label for a month in the month ``<select>``.
         """
-        return 'MMMM'
+        return 'MMM'
 
     #
     # Day select config
@@ -548,7 +562,7 @@ class DatePickerWidget(widgets.TextInput):
         Not used in the table that we use on the desktop,
         there we use :meth:`.get_dayofmonthtablecell_momentjs_format`.
         """
-        return 'Do'
+        return 'DD'
 
     #
     # Day in table config

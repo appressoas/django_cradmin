@@ -5952,6 +5952,11 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     display: none;
   }
 }
+@media (min-width: 768px) and (min-height: 555px) {
+  .django-cradmin-datetime-selector .django-cradmin-datetime-selector-date-label {
+    display: none;
+  }
+}
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper {
   z-index: 100002;
   position: fixed;

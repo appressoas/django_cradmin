@@ -555,6 +555,8 @@ app.directive 'djangoCradminDatetimeSelector', [
           'now_button_text'
           'today_button_text'
           'clear_button_text'
+          'date_label_text'
+          'time_label_text'
         ]
         for configname in required_config_attributes
           configvalue = $scope.config[configname]
