@@ -5931,17 +5931,22 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   }
 }
 .django-cradmin-datetime-selector {
-  visibility: hidden;
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  overflow: hidden;
 }
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-backdrop {
-  z-index: 100001;
-  position: fixed;
+  z-index: 1;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.6);
-  display: none;
+  display: block;
 }
 .django-cradmin-datetime-selector select.form-control {
   display: inline-block;
@@ -5958,8 +5963,8 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   }
 }
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper {
-  z-index: 100002;
-  position: fixed;
+  z-index: 2;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -6271,9 +6276,6 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   vertical-align: bottom;
 }
 .django-cradmin-datetime-selector.django-cradmin-datetime-selector-show {
-  visibility: visible;
-}
-.django-cradmin-datetime-selector.django-cradmin-datetime-selector-show .django-cradmin-datetime-selector-backdrop {
   display: block;
 }
 .django-cradmin-datetime-selector.django-cradmin-datetime-selector-show.django-cradmin-datetime-selector-page1 .django-cradmin-datetime-selector-contentwrapper {

@@ -422,6 +422,20 @@ app.directive 'djangoCradminDatetimeSelector', [
           hotkeys.del('pagedown')
           hotkeys.del('pageup')
 
+        $scope.__show = ->
+#          angular.element('body').addClass('django-cradmin-noscroll')
+          __removeHotkeys()
+          __addCommonHotkeys()
+          contentWrapperElement = $element.find('.django-cradmin-datetime-selector-contentwrapper')
+          scrollTop = angular.element(window).scrollTop()
+          selectorElement = $element.find('.django-cradmin-datetime-selector')
+          windowHeight = angular.element(window).height()
+          selectorElement.css({
+            top: scrollTop,
+            height: "#{windowHeight}px",
+          })
+
+
         $scope.showPage1 = ->
           $scope.page = 1
 
@@ -431,10 +445,8 @@ app.directive 'djangoCradminDatetimeSelector', [
             __getInitialFocusItemForCurrentPage().focus()
           , 150)
 
-          __removeHotkeys()
-          __addCommonHotkeys()
+          $scope.__show()
           __addPage1Hotkeys()
-          $element.show()
           return
 
         $scope.showPage2 = ->
@@ -450,12 +462,11 @@ app.directive 'djangoCradminDatetimeSelector', [
             __getInitialFocusItemForCurrentPage().focus()
           , 150)
 
-          __removeHotkeys()
-          __addCommonHotkeys()
-          $element.show()
+          $scope.__show()
           return
 
         $scope.hide = ->
+#          angular.element('body').removeClass('django-cradmin-noscroll')
           if $scope.page == 2
             # We use page3 to make it possible to have a custom animation for hiding
             # page2 (avoid that it animates sideways back to the starting point).
@@ -555,8 +566,8 @@ app.directive 'djangoCradminDatetimeSelector', [
           'now_button_text'
           'today_button_text'
           'clear_button_text'
-          'date_label_text'
-          'time_label_text'
+#          'date_label_text'
+#          'time_label_text'
         ]
         for configname in required_config_attributes
           configvalue = $scope.config[configname]
