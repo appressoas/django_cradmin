@@ -1681,7 +1681,7 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 40px;
+  height: 36px;
   padding: 6px 12px;
   font-size: 16px;
   line-height: 1.42857143;
@@ -1725,7 +1725,7 @@ input[type="search"] {
   -webkit-appearance: none;
 }
 input[type="date"] {
-  line-height: 40px;
+  line-height: 36px;
 }
 .form-group {
   margin-bottom: 15px;
@@ -1817,16 +1817,16 @@ select[multiple].input-lg {
   position: relative;
 }
 .has-feedback .form-control {
-  padding-right: 50px;
+  padding-right: 45px;
 }
 .has-feedback .form-control-feedback {
   position: absolute;
   top: 27px;
   right: 0;
   display: block;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
   text-align: center;
 }
 .has-success .help-block,
