@@ -42,7 +42,17 @@
     .translate(0, 100%);
     .transition(@cradmin-datetimeselector-transition);
 
+    .django-cradmin-datetime-selector-closeoverlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+
     .django-cradmin-datetime-selector-page {
+      z-index: 2;
       position: absolute;
       background: @cradmin-datetimeselector-page-bg;
       bottom: @cradmin-datetimeselector-page-bottom-xs;

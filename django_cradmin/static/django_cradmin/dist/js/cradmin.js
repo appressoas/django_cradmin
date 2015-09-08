@@ -3762,10 +3762,10 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            'django-cradmin-datetime-selector-page3': page == 3\n" +
     "        }\">\n" +
     "\n" +
-    "    <!-- -->\n" +
     "    <div class=\"django-cradmin-datetime-selector-backdrop\"></div>\n" +
     "\n" +
     "    <div class=\"django-cradmin-datetime-selector-contentwrapper\">\n" +
+    "        <div class=\"django-cradmin-datetime-selector-closeoverlay\" ng-click=\"hide()\"></div>\n" +
     "        <div class=\"django-cradmin-datetime-selector-page django-cradmin-datetime-selector-dateview\">\n" +
     "            <button type=\"button\" class=\"sr-only\" ng-focus=\"onFocusHead()\"></button>\n" +
     "            <button type=\"button\"\n" +
