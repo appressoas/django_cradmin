@@ -207,11 +207,16 @@
                 .django-cradmin-datetime-selector-daybuttoncell-label {
                   display: block;
                   position: absolute;
-                  top: 3px;
+                  bottom: 3px;
                   left: 0;
                   right: 0;
                   font-size: ceil(@font-size-base * 0.66);
                   font-weight: normal;
+
+                  &.django-cradmin-datetime-selector-daybuttoncell-label-today {
+                    top: 3px;
+                    bottom: auto;
+                  }
                 }
 
                 &,

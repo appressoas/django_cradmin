@@ -3865,11 +3865,13 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                    aria-label=\"{{ getDaybuttonAriaLabel(calendarDay) }}\"\n" +
     "                                    ng-disabled=\"{{ calendarDay.isDisabled() }}\">\n" +
     "                                {{ calendarDay.getNumberInMonth() }}\n" +
-    "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
+    "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\n" +
+    "                                             django-cradmin-datetime-selector-daybuttoncell-label-today\"\n" +
     "                                        ng-if=\"config.today_label_text &amp;&amp; calendarDay.isToday()\">\n" +
     "                                    {{ config.today_label_text }}\n" +
     "                                </span>\n" +
-    "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\"\n" +
+    "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\n" +
+    "                                             django-cradmin-datetime-selector-daybuttoncell-label-selected\"\n" +
     "                                        ng-if=\"\n" +
     "                                            config.selected_day_label_text &amp;&amp;\n" +
     "                                            calendarDay.momentObject.isSame(calendarCoordinator.selectedMomentObject, 'day')\">\n" +
