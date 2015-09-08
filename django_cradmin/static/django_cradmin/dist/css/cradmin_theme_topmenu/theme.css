@@ -6077,7 +6077,6 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   left: 0;
   right: 0;
   height: 400px;
-  border-bottom: 1px solid #d9d9d9;
 }
 @media (min-width: 768px) and (min-height: 555px) {
   .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table {
@@ -6097,7 +6096,7 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   margin: 0;
   background: #ffffff;
   color: #377ca8;
-  border: 1px solid #d9d9d9;
+  border: none;
   height: 62.5px;
   position: relative;
 }
@@ -6110,6 +6109,7 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
   right: 0;
   width: 100%;
   height: 62.5px;
+  border: none;
   border-radius: 0;
   margin: 0;
   text-align: center;
