@@ -26,8 +26,7 @@ class DatePickerWidget(widgets.TextInput):
     Also serves as the base class for :class:`.BetterDateTimePickerWidget`.
 
     You can configure almost everything by extending the class,
-    or (to a lesser extent) via parameters to the contructor. The only
-    thing that may seem strange that you can not customize is:
+    or (to a lesser extent) via parameters to the contructor.
 
     The AngularJS directive uses momentjs.
     MomentJS has their own i18n support which we use to format date and time.
