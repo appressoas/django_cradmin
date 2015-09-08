@@ -181,6 +181,10 @@ app.provider 'djangoCradminCalendarApi', ->
       })
       return @momentObjectIsAllowed(todayMomentObject)
 
+    nowIsValidValue: ->
+      nowMomentObject = moment()
+      return @momentObjectIsAllowed(nowMomentObject)
+
     shownDateIsToday: ->
       return @shownMomentObject.isSame(moment(), 'day')
 

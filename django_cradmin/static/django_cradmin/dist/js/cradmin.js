@@ -973,6 +973,12 @@
         return this.momentObjectIsAllowed(todayMomentObject);
       };
 
+      CalendarCoordinator.prototype.nowIsValidValue = function() {
+        var nowMomentObject;
+        nowMomentObject = moment();
+        return this.momentObjectIsAllowed(nowMomentObject);
+      };
+
       CalendarCoordinator.prototype.shownDateIsToday = function() {
         return this.shownMomentObject.isSame(moment(), 'day');
       };
@@ -3907,6 +3913,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                </button>\n" +
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
+    "                        ng-if=\"calendarCoordinator.nowIsValidValue()\"\n" +
     "                        ng-click=\"onClickNowButton()\">\n" +
     "                    {{ config.now_button_text }}\n" +
     "                </button>\n" +
