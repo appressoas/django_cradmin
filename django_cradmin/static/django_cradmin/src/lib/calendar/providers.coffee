@@ -191,7 +191,8 @@ app.provider 'djangoCradminCalendarApi', ->
                    @minuteselectValues,
                    @yearFormat,
                    @monthFormat,
-                   @dayOfMonthFormat,
+                   @dayOfMonthSelectFormat,
+                   @dayOfMonthTableCellFormat,
                    @hourFormat,
                    @minuteFormat}) ->
       @dayobjects = null  # Updated in @__changeSelectedDate()
@@ -260,16 +261,6 @@ app.provider 'djangoCradminCalendarApi', ->
     __initMonthObjects: ->
       @monthselectConfig = []
       @__monthsMap = {}
-
-#      monthnumber = 0
-#      for monthname in moment.months()
-#        monthObject = {
-#          value: monthnumber
-#          label: monthname
-#        }
-#        @monthselectConfig.push(monthObject)
-#        @__monthsMap[monthnumber] = monthObject
-#        monthnumber += 1
 
       formatMomentObject = @calendarCoordinator.shownMomentObject.clone().set({
         month: 0
@@ -391,7 +382,7 @@ app.provider 'djangoCradminCalendarApi', ->
       for daynumber in [1..@calendarMonth.month.getDaysInMonth()]
         label = formatMomentObject.set({
           date: daynumber
-        }).format(@dayOfMonthFormat)
+        }).format(@dayOfMonthSelectFormat)
         dayNumberObject = {
           value: daynumber
           label: label
@@ -465,6 +456,8 @@ app.provider 'djangoCradminCalendarApi', ->
       else
         return @calendarCoordinator.shownMomentObject
 
+    getDayOfMonthLabelForTableCell: (calendarDay) ->
+      return calendarDay.momentObject.format(@dayOfMonthTableCellFormat)
 
   @$get = ->
     return {

@@ -337,6 +337,7 @@ class DatePickerWidget(widgets.TextInput):
             'yearselect_momentjs_format': self.get_yearselect_momentjs_format(),
             'monthselect_momentjs_format': self.get_monthselect_momentjs_format(),
             'dayofmonthselect_momentjs_format': self.get_dayofmonthselect_momentjs_format(),
+            'dayofmonthtablecell_momentjs_format': self.get_dayofmonthtablecell_momentjs_format(),
             'hourselect_momentjs_format': self.get_hourselect_momentjs_format(),
             'minuteselect_momentjs_format': self.get_minuteselect_momentjs_format(),
 
@@ -522,9 +523,25 @@ class DatePickerWidget(widgets.TextInput):
         Get the momentjs format to use when creating the
         label for a day in the day ``<select>``.
 
-        Not used in the table that we use on the desktop.
+        Not used in the table that we use on the desktop,
+        there we use :meth:`.get_dayofmonthtablecell_momentjs_format`.
         """
-        return 'DD'
+        return 'Do'
+
+    #
+    # Day in table config
+    #
+
+    def get_dayofmonthtablecell_momentjs_format(self):
+        """
+        Get the momentjs format to use when creating the
+        label for a day in the table used to select a
+        day on desktop.
+
+        Not used in the ``<select>`` that we use on the desktop.
+        there we use :meth:`.get_dayofmonthselect_momentjs_format`.
+        """
+        return 'D'
 
     #
     # Hour select config

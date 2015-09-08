@@ -489,7 +489,8 @@ app.directive 'djangoCradminDatetimeSelector', [
             minuteselectValues: $scope.config.minuteselect_values
             yearFormat: $scope.config.yearselect_momentjs_format
             monthFormat: $scope.config.monthselect_momentjs_format
-            dayOfMonthFormat: $scope.config.dayofmonthselect_momentjs_format
+            dayOfMonthSelectFormat: $scope.config.dayofmonthselect_momentjs_format
+            dayOfMonthTableCellFormat: $scope.config.dayofmonthtablecell_momentjs_format
             hourFormat: $scope.config.hourselect_momentjs_format
             minuteFormat: $scope.config.minuteselect_momentjs_format
           })
@@ -530,6 +531,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           'yearselect_momentjs_format'
           'monthselect_momentjs_format'
           'dayofmonthselect_momentjs_format'
+          'dayofmonthtablecell_momentjs_format'
           'hourselect_momentjs_format'
           'minuteselect_momentjs_format'
           'minuteselect_values'

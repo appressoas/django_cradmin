@@ -980,7 +980,7 @@
 
     MonthlyCalendarCoordinator = (function() {
       function MonthlyCalendarCoordinator(_arg) {
-        this.calendarCoordinator = _arg.calendarCoordinator, this.yearselectValues = _arg.yearselectValues, this.hourselectValues = _arg.hourselectValues, this.minuteselectValues = _arg.minuteselectValues, this.yearFormat = _arg.yearFormat, this.monthFormat = _arg.monthFormat, this.dayOfMonthFormat = _arg.dayOfMonthFormat, this.hourFormat = _arg.hourFormat, this.minuteFormat = _arg.minuteFormat;
+        this.calendarCoordinator = _arg.calendarCoordinator, this.yearselectValues = _arg.yearselectValues, this.hourselectValues = _arg.hourselectValues, this.minuteselectValues = _arg.minuteselectValues, this.yearFormat = _arg.yearFormat, this.monthFormat = _arg.monthFormat, this.dayOfMonthSelectFormat = _arg.dayOfMonthSelectFormat, this.dayOfMonthTableCellFormat = _arg.dayOfMonthTableCellFormat, this.hourFormat = _arg.hourFormat, this.minuteFormat = _arg.minuteFormat;
         this.dayobjects = null;
         this.__initWeekdays();
         this.__initMonthObjects();
@@ -1195,7 +1195,7 @@
         for (daynumber = _i = 1, _ref = this.calendarMonth.month.getDaysInMonth(); 1 <= _ref ? _i <= _ref : _i >= _ref; daynumber = 1 <= _ref ? ++_i : --_i) {
           label = formatMomentObject.set({
             date: daynumber
-          }).format(this.dayOfMonthFormat);
+          }).format(this.dayOfMonthSelectFormat);
           dayNumberObject = {
             value: daynumber,
             label: label
@@ -1284,6 +1284,10 @@
         } else {
           return this.calendarCoordinator.shownMomentObject;
         }
+      };
+
+      MonthlyCalendarCoordinator.prototype.getDayOfMonthLabelForTableCell = function(calendarDay) {
+        return calendarDay.momentObject.format(this.dayOfMonthTableCellFormat);
       };
 
       return MonthlyCalendarCoordinator;
@@ -2224,7 +2228,8 @@
               minuteselectValues: $scope.config.minuteselect_values,
               yearFormat: $scope.config.yearselect_momentjs_format,
               monthFormat: $scope.config.monthselect_momentjs_format,
-              dayOfMonthFormat: $scope.config.dayofmonthselect_momentjs_format,
+              dayOfMonthSelectFormat: $scope.config.dayofmonthselect_momentjs_format,
+              dayOfMonthTableCellFormat: $scope.config.dayofmonthtablecell_momentjs_format,
               hourFormat: $scope.config.hourselect_momentjs_format,
               minuteFormat: $scope.config.minuteselect_momentjs_format
             });
@@ -2236,7 +2241,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'dayofmonthtablecell_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -3864,7 +3869,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                                    ng-focus=\"onFocusCalendayDay(calendarDay)\"\n" +
     "                                    aria-label=\"{{ getDaybuttonAriaLabel(calendarDay) }}\"\n" +
     "                                    ng-disabled=\"{{ calendarDay.isDisabled() }}\">\n" +
-    "                                {{ calendarDay.getNumberInMonth() }}\n" +
+    "                                {{ monthlyCalendarCoordinator.getDayOfMonthLabelForTableCell(calendarDay) }}\n" +
     "                                <span class=\"django-cradmin-datetime-selector-daybuttoncell-label\n" +
     "                                             django-cradmin-datetime-selector-daybuttoncell-label-today\"\n" +
     "                                        ng-if=\"config.today_label_text &amp;&amp; calendarDay.isToday()\">\n" +

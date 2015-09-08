@@ -113,7 +113,7 @@
                                     ng-focus="onFocusCalendayDay(calendarDay)"
                                     aria-label="{{ getDaybuttonAriaLabel(calendarDay) }}"
                                     ng-disabled="{{ calendarDay.isDisabled() }}">
-                                {{ calendarDay.getNumberInMonth() }}
+                                {{ monthlyCalendarCoordinator.getDayOfMonthLabelForTableCell(calendarDay) }}
                                 <span class="django-cradmin-datetime-selector-daybuttoncell-label
                                              django-cradmin-datetime-selector-daybuttoncell-label-today"
                                         ng-if="config.today_label_text &amp;&amp; calendarDay.isToday()">
