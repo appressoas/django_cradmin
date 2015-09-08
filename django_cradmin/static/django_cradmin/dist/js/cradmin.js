@@ -3968,31 +3968,33 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                        {{ getTimeselectorDatepreview() }}\n" +
     "                    </p>\n" +
     "                    <div class=\"django-cradmin-datetime-selector-timeselectors\">\n" +
-    "                        <label for=\"{{ config.destinationfieldid }}_hourselect_page2\" class=\"sr-only\">\n" +
-    "                            {{ config.hour_screenreader_text }}\n" +
-    "                        </label>\n" +
-    "                        <select id=\"{{ config.destinationfieldid }}_hourselect_page2\"\n" +
-    "                                class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
-    "                                ng-model=\"monthlyCalendarCoordinator.currentHourObject\"\n" +
-    "                                ng-options=\"hourobject.label for hourobject in monthlyCalendarCoordinator.hourselectConfig track by hourobject.value\"\n" +
-    "                                ng-change=\"onSelectHour()\">\n" +
-    "                        </select>\n" +
-    "                        :\n" +
-    "                        <label for=\"{{ config.destinationfieldid }}_minuteselect_page2\" class=\"sr-only\">\n" +
-    "                            {{ config.minute_screenreader_text }}\n" +
-    "                        </label>\n" +
-    "                        <select id=\"{{ config.destinationfieldid }}_minuteselect_page2\"\n" +
-    "                                class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
-    "                                ng-model=\"monthlyCalendarCoordinator.currentMinuteObject\"\n" +
-    "                                ng-options=\"minuteobject.label for minuteobject in monthlyCalendarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
-    "                                ng-change=\"onSelectMinute()\">\n" +
-    "                        </select>\n" +
-    "                        <button type=\"button\"\n" +
-    "                                class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
-    "                                ng-click=\"onClickUseTime()\"\n" +
-    "                                aria-label=\"{{ getUseButtonAriaLabel() }}\">\n" +
-    "                            {{ config.usebuttonlabel }}\n" +
-    "                        </button>\n" +
+    "                        <form class=\"form-inline\">\n" +
+    "                            <label for=\"{{ config.destinationfieldid }}_hourselect_page2\" class=\"sr-only\">\n" +
+    "                                {{ config.hour_screenreader_text }}\n" +
+    "                            </label>\n" +
+    "                            <select id=\"{{ config.destinationfieldid }}_hourselect_page2\"\n" +
+    "                                    class=\"form-control django-cradmin-datetime-selector-hourselect\"\n" +
+    "                                    ng-model=\"monthlyCalendarCoordinator.currentHourObject\"\n" +
+    "                                    ng-options=\"hourobject.label for hourobject in monthlyCalendarCoordinator.hourselectConfig track by hourobject.value\"\n" +
+    "                                    ng-change=\"onSelectHour()\">\n" +
+    "                            </select>\n" +
+    "                            :\n" +
+    "                            <label for=\"{{ config.destinationfieldid }}_minuteselect_page2\" class=\"sr-only\">\n" +
+    "                                {{ config.minute_screenreader_text }}\n" +
+    "                            </label>\n" +
+    "                            <select id=\"{{ config.destinationfieldid }}_minuteselect_page2\"\n" +
+    "                                    class=\"form-control django-cradmin-datetime-selector-minuteselect\"\n" +
+    "                                    ng-model=\"monthlyCalendarCoordinator.currentMinuteObject\"\n" +
+    "                                    ng-options=\"minuteobject.label for minuteobject in monthlyCalendarCoordinator.minuteselectConfig track by minuteobject.value\"\n" +
+    "                                    ng-change=\"onSelectMinute()\">\n" +
+    "                            </select>\n" +
+    "                            <button type=\"button\"\n" +
+    "                                    class=\"btn btn-primary django-cradmin-datetime-selector-use-button\"\n" +
+    "                                    ng-click=\"onClickUseTime()\"\n" +
+    "                                    aria-label=\"{{ getUseButtonAriaLabel() }}\">\n" +
+    "                                {{ config.usebuttonlabel }}\n" +
+    "                            </button>\n" +
+    "                        </form>\n" +
     "                    </div>\n" +
     "\n" +
     "                </div>\n" +

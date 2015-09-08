@@ -6261,6 +6261,10 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
 .django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-timeview-body-wrapper .django-cradmin-datetime-selector-timeview-body .django-cradmin-datetime-selector-datepreview {
   margin-bottom: 15px;
 }
+.django-cradmin-datetime-selector .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-timeview-body-wrapper .django-cradmin-datetime-selector-timeview-body .django-cradmin-datetime-selector-use-button {
+  margin-left: 5px;
+  vertical-align: bottom;
+}
 .django-cradmin-datetime-selector.django-cradmin-datetime-selector-show {
   visibility: visible;
 }

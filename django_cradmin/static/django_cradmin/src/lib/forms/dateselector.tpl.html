@@ -184,31 +184,33 @@
                         {{ getTimeselectorDatepreview() }}
                     </p>
                     <div class="django-cradmin-datetime-selector-timeselectors">
-                        <label for="{{ config.destinationfieldid }}_hourselect_page2" class="sr-only">
-                            {{ config.hour_screenreader_text }}
-                        </label>
-                        <select id="{{ config.destinationfieldid }}_hourselect_page2"
-                                class="form-control django-cradmin-datetime-selector-hourselect"
-                                ng-model="monthlyCalendarCoordinator.currentHourObject"
-                                ng-options="hourobject.label for hourobject in monthlyCalendarCoordinator.hourselectConfig track by hourobject.value"
-                                ng-change="onSelectHour()">
-                        </select>
-                        :
-                        <label for="{{ config.destinationfieldid }}_minuteselect_page2" class="sr-only">
-                            {{ config.minute_screenreader_text }}
-                        </label>
-                        <select id="{{ config.destinationfieldid }}_minuteselect_page2"
-                                class="form-control django-cradmin-datetime-selector-minuteselect"
-                                ng-model="monthlyCalendarCoordinator.currentMinuteObject"
-                                ng-options="minuteobject.label for minuteobject in monthlyCalendarCoordinator.minuteselectConfig track by minuteobject.value"
-                                ng-change="onSelectMinute()">
-                        </select>
-                        <button type="button"
-                                class="btn btn-primary django-cradmin-datetime-selector-use-button"
-                                ng-click="onClickUseTime()"
-                                aria-label="{{ getUseButtonAriaLabel() }}">
-                            {{ config.usebuttonlabel }}
-                        </button>
+                        <form class="form-inline">
+                            <label for="{{ config.destinationfieldid }}_hourselect_page2" class="sr-only">
+                                {{ config.hour_screenreader_text }}
+                            </label>
+                            <select id="{{ config.destinationfieldid }}_hourselect_page2"
+                                    class="form-control django-cradmin-datetime-selector-hourselect"
+                                    ng-model="monthlyCalendarCoordinator.currentHourObject"
+                                    ng-options="hourobject.label for hourobject in monthlyCalendarCoordinator.hourselectConfig track by hourobject.value"
+                                    ng-change="onSelectHour()">
+                            </select>
+                            :
+                            <label for="{{ config.destinationfieldid }}_minuteselect_page2" class="sr-only">
+                                {{ config.minute_screenreader_text }}
+                            </label>
+                            <select id="{{ config.destinationfieldid }}_minuteselect_page2"
+                                    class="form-control django-cradmin-datetime-selector-minuteselect"
+                                    ng-model="monthlyCalendarCoordinator.currentMinuteObject"
+                                    ng-options="minuteobject.label for minuteobject in monthlyCalendarCoordinator.minuteselectConfig track by minuteobject.value"
+                                    ng-change="onSelectMinute()">
+                            </select>
+                            <button type="button"
+                                    class="btn btn-primary django-cradmin-datetime-selector-use-button"
+                                    ng-click="onClickUseTime()"
+                                    aria-label="{{ getUseButtonAriaLabel() }}">
+                                {{ config.usebuttonlabel }}
+                            </button>
+                        </form>
                     </div>
 
                 </div>
