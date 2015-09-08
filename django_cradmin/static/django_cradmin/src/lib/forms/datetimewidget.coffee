@@ -422,21 +422,25 @@ app.directive 'djangoCradminDatetimeSelector', [
           hotkeys.del('pagedown')
           hotkeys.del('pageup')
 
+        $scope.__onMouseWheel = (e) ->
+          e.preventDefault()
+          e.stopPropagation()
+
         $scope.__show = ->
 #          angular.element('body').addClass('django-cradmin-noscroll')
           __removeHotkeys()
           __addCommonHotkeys()
           contentWrapperElement = $element.find('.django-cradmin-datetime-selector-contentwrapper')
           scrollTop = angular.element(window).scrollTop()
-          selectorElement = $element.find('.django-cradmin-datetime-selector')
+
           windowHeight = angular.element(window).height()
-          selectorElement.css({
+          $scope.datetimeSelectorElement.css({
             top: scrollTop,
             height: "#{windowHeight}px",
           })
 
-
         $scope.showPage1 = ->
+          angular.element('body').on 'mousewheel touchmove', $scope.__onMouseWheel
           $scope.page = 1
 
           # Use a timeout to ensure screenreaders are not stuck on the
@@ -466,6 +470,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           return
 
         $scope.hide = ->
+          angular.element('body').off 'mousewheel touchmove', $scope.__onMouseWheel
 #          angular.element('body').removeClass('django-cradmin-noscroll')
           if $scope.page == 2
             # We use page3 to make it possible to have a custom animation for hiding
@@ -614,7 +619,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         else
           $scope.previewAngularjsTemplate = previewTemplateScriptElement.html()
 
-
+        $scope.datetimeSelectorElement = $element.find('.django-cradmin-datetime-selector')
         $scope.initialize()
 
         # We need this timeout to ensure all the items are rendered.

@@ -2196,20 +2196,24 @@
             hotkeys.del('pagedown');
             return hotkeys.del('pageup');
           };
+          $scope.__onMouseWheel = function(e) {
+            e.preventDefault();
+            return e.stopPropagation();
+          };
           $scope.__show = function() {
-            var contentWrapperElement, scrollTop, selectorElement, windowHeight;
+            var contentWrapperElement, scrollTop, windowHeight;
             __removeHotkeys();
             __addCommonHotkeys();
             contentWrapperElement = $element.find('.django-cradmin-datetime-selector-contentwrapper');
             scrollTop = angular.element(window).scrollTop();
-            selectorElement = $element.find('.django-cradmin-datetime-selector');
             windowHeight = angular.element(window).height();
-            return selectorElement.css({
+            return $scope.datetimeSelectorElement.css({
               top: scrollTop,
               height: "" + windowHeight + "px"
             });
           };
           $scope.showPage1 = function() {
+            angular.element('body').on('mousewheel touchmove', $scope.__onMouseWheel);
             $scope.page = 1;
             $timeout(function() {
               return __getInitialFocusItemForCurrentPage().focus();
@@ -2226,6 +2230,7 @@
             $scope.__show();
           };
           $scope.hide = function() {
+            angular.element('body').off('mousewheel touchmove', $scope.__onMouseWheel);
             if ($scope.page === 2) {
               $scope.page = 3;
               $timeout(function() {
@@ -2337,6 +2342,7 @@
           } else {
             $scope.previewAngularjsTemplate = previewTemplateScriptElement.html();
           }
+          $scope.datetimeSelectorElement = $element.find('.django-cradmin-datetime-selector');
           $scope.initialize();
           $timeout(function() {
             return $element.find('select').on('keydown', function(e) {
