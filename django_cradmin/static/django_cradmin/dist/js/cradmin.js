@@ -930,6 +930,9 @@
           this.shownMomentObject = this.selectedMomentObject.clone();
         } else {
           this.shownMomentObject = moment();
+          if (!this.momentObjectIsAllowed(this.shownMomentObject)) {
+            this.shownMomentObject = this.minimumDatetime.clone();
+          }
         }
       }
 

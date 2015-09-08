@@ -149,6 +149,10 @@ app.provider 'djangoCradminCalendarApi', ->
         # We set this to start the date picker on the current date
         @shownMomentObject = moment()
 
+        # If the current time is not allowed, pick the first allowed value
+        if not @momentObjectIsAllowed(@shownMomentObject)
+          @shownMomentObject = @minimumDatetime.clone()
+
     selectShownValue: ->
       @selectedMomentObject = @shownMomentObject.clone()
 
