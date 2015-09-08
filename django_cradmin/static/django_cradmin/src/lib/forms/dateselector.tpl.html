@@ -3,7 +3,8 @@
             'django-cradmin-datetime-selector-show': page != null,
             'django-cradmin-datetime-selector-page1': page == 1,
             'django-cradmin-datetime-selector-page2': page == 2,
-            'django-cradmin-datetime-selector-page3': page == 3
+            'django-cradmin-datetime-selector-page3': page == 3,
+            'django-cradmin-datetime-selector-has-shortcuts': hasShortcuts()
         }">
 
     <div class="django-cradmin-datetime-selector-backdrop"></div>
@@ -132,10 +133,10 @@
                 </tbody>
             </table>
 
-            <div class="django-cradmin-datetime-selector-shortcuts">
+            <div class="django-cradmin-datetime-selector-shortcuts" ng-if="hasShortcuts()">
                 <button type="button"
                         class="btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton"
-                        ng-if="calendarCoordinator.todayIsValidValue()"
+                        ng-if="calendarCoordinator.nowIsValidValue()"
                         ng-click="onClickTodayButton()">
                     {{ config.today_button_text }}
                 </button>
@@ -212,7 +213,7 @@
 
                 </div>
 
-                <div class="django-cradmin-datetime-selector-shortcuts">
+                <div class="django-cradmin-datetime-selector-shortcuts" ng-if="hasShortcuts()">
                     <button type="button"
                             class="btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton"
                             ng-click="onClickNowButton()"

@@ -166,7 +166,7 @@
         display: none;
         table-layout: fixed;
         position: absolute;
-        bottom: @cradmin-datetimeselector-table-bottom;
+        bottom: 0;
         left: 0;
         right: 0;
         height: @cradmin-datetimeselector-table-height;
@@ -419,6 +419,21 @@
         .translate(0, 100%);
         @media (min-width: @cradmin-datetimeselector-mobile-width-breakpoint) and (min-height: @cradmin-datetimeselector-mobile-height-breakpoint) {
           .translate(-100%, 100%);
+        }
+      }
+    }
+  }
+
+  &.django-cradmin-datetime-selector-has-shortcuts {
+    .django-cradmin-datetime-selector-contentwrapper {
+      .django-cradmin-datetime-selector-page {
+        @media (min-width: @cradmin-datetimeselector-mobile-width-breakpoint) and (min-height: @cradmin-datetimeselector-mobile-height-breakpoint) {
+          height: @cradmin-datetimeselector-page-height + @cradmin-datetimeselector-page1-shortcuts-height;
+        }
+      }
+      .django-cradmin-datetime-selector-dateview {
+        table.django-cradmin-datetime-selector-table {
+          bottom: @cradmin-datetimeselector-page1-shortcuts-height;
         }
       }
     }

@@ -241,14 +241,14 @@
 // Dateselector
 @cradmin-datetimeselector-page-bg: #fff;
 @cradmin-datetimeselector-page-bottom-xs: 0;
-@cradmin-datetimeselector-page-bottom: 20px;
-@cradmin-datetimeselector-page-height: 545px;
+@cradmin-datetimeselector-page-bottom: 10px;
+@cradmin-datetimeselector-page-height: 480px;
 @cradmin-datetimeselector-page-width: 600px;
 @cradmin-datetimeselector-transition: all .15s ease-in-out;
 @cradmin-datetimeselector-horizontal-spacing: 15px;
 
 @cradmin-datetimeselector-mobile-width-breakpoint: @screen-sm-min;
-@cradmin-datetimeselector-mobile-height-breakpoint: (@cradmin-datetimeselector-page-height + (@cradmin-datetimeselector-page-bottom * 2));
+@cradmin-datetimeselector-mobile-height-breakpoint: (@cradmin-datetimeselector-page-height + @cradmin-datetimeselector-page1-shortcuts-height + @cradmin-datetimeselector-page-bottom);
 
 @cradmin-datetimeselector-closebutton-padding: 10px 20px;
 @cradmin-datetimeselector-closebutton-font-size: 20px;
@@ -275,6 +275,7 @@
 @cradmin-datetimeselector-daybuttoncell-not-in-current-month-disabled-bg: darken(@cradmin-datetimeselector-daybuttoncell-disabled-bg, 10%);
 @cradmin-datetimeselector-daybuttoncell-not-in-current-month-disabled-color: lighten(@cradmin-datetimeselector-daybuttoncell-disabled-color, 10%);
 
+@cradmin-datetimeselector-page1-shortcuts-height: 65px; // Height including bottom and top padding
 @cradmin-datetimeselector-page1-shortcuts-bottom: 15px;
 
 @cradmin-datetimeselector-backbutton-width: 50px;

@@ -966,16 +966,6 @@
         return isAllowed;
       };
 
-      CalendarCoordinator.prototype.todayIsValidValue = function() {
-        var todayMomentObject;
-        todayMomentObject = moment().set({
-          hour: 0,
-          minute: 0,
-          second: 0
-        });
-        return this.momentObjectIsAllowed(todayMomentObject);
-      };
-
       CalendarCoordinator.prototype.nowIsValidValue = function() {
         var nowMomentObject;
         nowMomentObject = moment();
@@ -2020,6 +2010,19 @@
               }
             }
             return label;
+          };
+          /*
+          Returns ``true`` if we have any buttons in the buttonrow.
+          */
+
+          $scope.hasShortcuts = function() {
+            if ($scope.calendarCoordinator.nowIsValidValue()) {
+              return true;
+            } else if (!$scope.config.required) {
+              return true;
+            } else {
+              return false;
+            }
           };
           $scope.onClickTodayButton = function() {
             var momentObject;
@@ -3778,7 +3781,8 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            'django-cradmin-datetime-selector-show': page != null,\n" +
     "            'django-cradmin-datetime-selector-page1': page == 1,\n" +
     "            'django-cradmin-datetime-selector-page2': page == 2,\n" +
-    "            'django-cradmin-datetime-selector-page3': page == 3\n" +
+    "            'django-cradmin-datetime-selector-page3': page == 3,\n" +
+    "            'django-cradmin-datetime-selector-has-shortcuts': hasShortcuts()\n" +
     "        }\">\n" +
     "\n" +
     "    <div class=\"django-cradmin-datetime-selector-backdrop\"></div>\n" +
@@ -3907,10 +3911,10 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                </tbody>\n" +
     "            </table>\n" +
     "\n" +
-    "            <div class=\"django-cradmin-datetime-selector-shortcuts\">\n" +
+    "            <div class=\"django-cradmin-datetime-selector-shortcuts\" ng-if=\"hasShortcuts()\">\n" +
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton\"\n" +
-    "                        ng-if=\"calendarCoordinator.todayIsValidValue()\"\n" +
+    "                        ng-if=\"calendarCoordinator.nowIsValidValue()\"\n" +
     "                        ng-click=\"onClickTodayButton()\">\n" +
     "                    {{ config.today_button_text }}\n" +
     "                </button>\n" +
@@ -3987,7 +3991,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "\n" +
     "                </div>\n" +
     "\n" +
-    "                <div class=\"django-cradmin-datetime-selector-shortcuts\">\n" +
+    "                <div class=\"django-cradmin-datetime-selector-shortcuts\" ng-if=\"hasShortcuts()\">\n" +
     "                    <button type=\"button\"\n" +
     "                            class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
     "                            ng-click=\"onClickNowButton()\"\n" +

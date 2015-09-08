@@ -257,6 +257,17 @@ app.directive 'djangoCradminDatetimeSelector', [
               label = "#{label} (#{$scope.config.selected_day_label_text})"
           return label
 
+        ###
+        Returns ``true`` if we have any buttons in the buttonrow.
+        ###
+        $scope.hasShortcuts = ->
+          if $scope.calendarCoordinator.nowIsValidValue()
+            return true
+          else if not $scope.config.required
+            return true
+          else
+            return false
+
         $scope.onClickTodayButton = ->
           momentObject = moment()
           $scope.monthlyCalendarCoordinator.handleDayChange(momentObject)
