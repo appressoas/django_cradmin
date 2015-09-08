@@ -954,13 +954,23 @@
         }
         if (isAllowed && (this.maximumDatetime != null)) {
           maximumDatetimeDateonly = this.maximumDatetime.clone().set({
-            hour: 59,
+            hour: 23,
             minute: 59,
             second: 59
           });
           isAllowed = !momentObject.isAfter(maximumDatetimeDateonly);
         }
         return isAllowed;
+      };
+
+      CalendarCoordinator.prototype.todayIsValidValue = function() {
+        var todayMomentObject;
+        todayMomentObject = moment().set({
+          hour: 0,
+          minute: 0,
+          second: 0
+        });
+        return this.momentObjectIsAllowed(todayMomentObject);
       };
 
       CalendarCoordinator.prototype.shownDateIsToday = function() {
@@ -3891,6 +3901,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            <div class=\"django-cradmin-datetime-selector-shortcuts\">\n" +
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton\"\n" +
+    "                        ng-if=\"calendarCoordinator.todayIsValidValue()\"\n" +
     "                        ng-click=\"onClickTodayButton()\">\n" +
     "                    {{ config.today_button_text }}\n" +
     "                </button>\n" +

@@ -135,6 +135,7 @@
             <div class="django-cradmin-datetime-selector-shortcuts">
                 <button type="button"
                         class="btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton"
+                        ng-if="calendarCoordinator.todayIsValidValue()"
                         ng-click="onClickTodayButton()">
                     {{ config.today_button_text }}
                 </button>

@@ -166,12 +166,20 @@ app.provider 'djangoCradminCalendarApi', ->
         isAllowed = not momentObject.isBefore(minimumDatetimeDateonly)
       if isAllowed and @maximumDatetime?
         maximumDatetimeDateonly = @maximumDatetime.clone().set({
-          hour: 59
+          hour: 23
           minute: 59
           second: 59
         })
         isAllowed = not momentObject.isAfter(maximumDatetimeDateonly)
       return isAllowed
+
+    todayIsValidValue: ->
+      todayMomentObject = moment().set({
+        hour: 0
+        minute: 0
+        second: 0
+      })
+      return @momentObjectIsAllowed(todayMomentObject)
 
     shownDateIsToday: ->
       return @shownMomentObject.isSame(moment(), 'day')
