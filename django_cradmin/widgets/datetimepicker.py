@@ -7,6 +7,7 @@ from django.forms import widgets
 from django.template import loader
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import pgettext_lazy
 
 from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 from django_cradmin.widgets.selectwidgets import WrappedSelect
@@ -71,21 +72,21 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``buttonlabel``
     #: keyword argument for ``__init__``.
-    default_buttonlabel = _('Change date')
+    default_buttonlabel = pgettext_lazy('Has value trigger button text for date widget', 'Change date')
 
     #: The label of the button used to trigger the date selector
     #: when the field has no value.
     #:
     #: Can be overridden via the ``buttonlabel_novalue``
     #: keyword argument for ``__init__``.
-    default_buttonlabel_novalue = _('Select a date')
+    default_buttonlabel_novalue = pgettext_lazy('No value trigger button text for date widget', 'Select a date')
 
     #: The label for the _Use_ buttons (both in the mobile view and on the
     #: time picker page on desktop/table).
     #:
     #: Can be overridden via the ``usebuttonlabel``
     #: keyword argument for ``__init__``.
-    default_usebuttonlabel = _('Use')
+    default_usebuttonlabel = pgettext_lazy('Use button text in datetime widget', 'Use')
 
     #: The iconkey for :func:`.django_cradmin.templatetags.cradmin_icon_tags`
     #: to use for the close button (the X in the top right corner).
@@ -119,7 +120,7 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``selected_day_label_text``
     #: keyword argument for ``__init__``.
-    default_selected_day_label_text = _('selected')
+    default_selected_day_label_text = pgettext_lazy('Selected label in table cell in datetime widget', 'selected')
 
     #: The text shown in the date picker table cell for "Today".
     #: You can set this to an empty string if you do not want to show this
@@ -127,7 +128,7 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``today_label_text``
     #: keyword argument for ``__init__``.
-    default_today_label_text = _('today')
+    default_today_label_text = pgettext_lazy('Today label in table cell in datetime widget', 'today')
 
     #: See :meth:`~.DatePickerWidget.get_preview_angularjs_template`.
     #:
@@ -139,37 +140,38 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``close_screenreader_text``
     #: keyword argument for ``__init__``.
-    default_close_screenreader_text = _('Close date picker without changing the value')
+    default_close_screenreader_text = pgettext_lazy('Datetime widget screenreader',
+                                                    'Close date picker without changing the value')
 
     #: The screenreader only label for the select year ``<select>``.
     #:
     #: Can be overridden via the ``year_screenreader_text``
     #: keyword argument for ``__init__``.
-    default_year_screenreader_text = _('Select year')
+    default_year_screenreader_text = pgettext_lazy('Datetime widget screenreader', 'Select year')
 
     #: The screenreader only label for the select month ``<select>``.
     #:
     #: Can be overridden via the ``month_screenreader_text``
     #: keyword argument for ``__init__``.
-    default_month_screenreader_text = _('Select month')
+    default_month_screenreader_text = pgettext_lazy('Datetime widget screenreader', 'Select month')
 
     #: The screenreader only label for the select day ``<select>``.
     #:
     #: Can be overridden via the ``day_screenreader_text``
     #: keyword argument for ``__init__``.
-    default_day_screenreader_text = _('Select day')
+    default_day_screenreader_text = pgettext_lazy('Datetime widget screenreader', 'Select day')
 
     #: The screenreader only label for the select hour ``<select>``.
     #:
     #: Can be overridden via the ``hour_screenreader_text``
     #: keyword argument for ``__init__``.
-    default_hour_screenreader_text = _('Select hour')
+    default_hour_screenreader_text = pgettext_lazy('Datetime widget screenreader', 'Select hour')
 
     #: The screenreader only label for the select minute ``<select>``.
     #:
     #: Can be overridden via the ``minute_screenreader_text``
     #: keyword argument for ``__init__``.
-    default_minute_screenreader_text = _('Select minute')
+    default_minute_screenreader_text = pgettext_lazy('Datetime widget screenreader', 'Select minute')
 
     #: The screenreader only prefix for the arial-label of the "Use"-button
     #: The suffix is the formatted value of the selected date, formatted using
@@ -177,7 +179,8 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``usebutton_arialabel_prefix``
     #: keyword argument for ``__init__``.
-    default_usebutton_arialabel_prefix = _('Confirm that you want to select')
+    default_usebutton_arialabel_prefix = pgettext_lazy('Datetime widget screenreader',
+                                                       'Confirm that you want to select')
 
     #: The momentjs format for the screenreader only suffox for the arial-label
     #: of the "Use"-button. The prefix is configured in
@@ -198,37 +201,39 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``dateselector_table_screenreader_caption``
     #: keyword argument for ``__init__``.
-    default_dateselector_table_screenreader_caption = _('Select date. Navigate with the arrow keys or tab, '
-                                                        'jump up to the month selector with the page up key '
-                                                        'and back to this table with the page down key.')
+    default_dateselector_table_screenreader_caption = pgettext_lazy(
+        'Datetime widget screenreader',
+        'Select date. Navigate with the arrow keys or tab, '
+        'jump up to the month selector with the page up key '
+        'and back to this table with the page down key.')
 
     #: Default button text for the now button.
     #:
     #: Can be overridden via the ``now_button_text``
     #: keyword argument for ``__init__``.
-    default_now_button_text = _('Now')
+    default_now_button_text = pgettext_lazy('Now button text datetime widget', 'Now')
 
     #: Default button text for the today button.
     #:
     #: Can be overridden via the ``today_button_text``
     #: keyword argument for ``__init__``.
-    default_today_button_text = _('Today')
+    default_today_button_text = pgettext_lazy('Today button text datetime widget', 'Today')
 
     #: Default button text for the clear button.
     #:
     #: Can be overridden via the ``clear_button_text``
     #: keyword argument for ``__init__``.
-    default_clear_button_text = _('Clear')
+    default_clear_button_text = pgettext_lazy('Clear button text datetime widget', 'Clear')
 
     #: Default label to display before the date ``<select>`` boxes.
-    #: You can set this to empty string to disable the label.
+    #: If this is set to empty string (the default), the label is not shown.
     #:
     #: Shown in the mobile datetime picker, but not in the date picker for
     #: desktop/tablet (since it would be strange to show ``date: <month> <year>``).
     #:
     #: Can be overridden via the ``date_label_text``
     #: keyword argument for ``__init__``.
-    default_date_label_text = _('Date')
+    default_date_label_text = ''
 
     #: Default label to display before the time ``<select>`` boxes.
     #: You can set this to empty string to disable the label.
@@ -238,7 +243,7 @@ class DatePickerWidget(widgets.TextInput):
     #:
     #: Can be overridden via the ``time_label_text``
     #: keyword argument for ``__init__``.
-    default_time_label_text = _('Time')
+    default_time_label_text = pgettext_lazy('Time label datetime widget', 'Time')
 
     def __init__(self, *args, **kwargs):
         """
@@ -632,8 +637,9 @@ class DateTimePickerWidget(DatePickerWidget):
 
     Extends :class:`.DatePickerWidget`.
     """
-    default_buttonlabel = _('Change date/time')
-    default_buttonlabel_novalue = _('Select a date/time')
+    default_buttonlabel = pgettext_lazy('Has value trigger button text for date widget', 'Change date/time')
+    default_buttonlabel_novalue = pgettext_lazy('No value trigger button text for date widget', 'Select a date/time')
+
     default_preview_angularjs_template = "{{ momentObject.format('LLLL') }}"
     destinationfield_momentjs_format = 'YYYY-MM-DD HH:mm'
     usebutton_arialabel_momentjs_format = 'LLLL'

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-24 12:03+0000\n"
+"POT-Creation-Date: 2015-09-08 13:30+0000\n"
 "PO-Revision-Date: 2015-08-24 12:03+0000\n"
 "Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
@@ -124,7 +124,7 @@ msgstr "Slett"
 msgid "Use this"
 msgstr "Bruk dette"
 
-#: apps/cradmin_imagearchive/cradminviews.py:65 viewhelpers/crudbase.py:68
+#: apps/cradmin_imagearchive/cradminviews.py:65 viewhelpers/crudbase.py:52
 msgid "Preview"
 msgstr "Forhåndsvis"
 
@@ -150,7 +150,7 @@ msgid "Upload and continue editing"
 msgstr "Last opp og fortsett redigering"
 
 #: apps/cradmin_imagearchive/cradminviews.py:168
-#: apps/cradmin_imagearchive/cradminviews.py:276
+#: apps/cradmin_imagearchive/cradminviews.py:278
 #, python-format
 msgid "Uploaded %(what)s."
 msgstr "Lastet opp %(what)s."
@@ -187,11 +187,15 @@ msgstr ""
 msgid "You must upload at least one file."
 msgstr "Du må laste opp minst en fil."
 
-#: apps/cradmin_imagearchive/cradminviews.py:231
+#: apps/cradmin_imagearchive/cradminviews.py:228
+msgid "Bulk upload archive images"
+msgstr "Bulkopplasting av arkivbilder"
+
+#: apps/cradmin_imagearchive/cradminviews.py:233
 msgid "Add to the image archive"
 msgstr "Legg til i bildearkivet"
 
-#: apps/cradmin_imagearchive/cradminviews.py:232
+#: apps/cradmin_imagearchive/cradminviews.py:234
 msgid "Uploading images"
 msgstr "Laster opp bilder"
 
@@ -243,11 +247,6 @@ msgstr "arkivbilde"
 #: apps/cradmin_imagearchive/models.py:89
 msgid "archive images"
 msgstr "arkivbilder"
-
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:7
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/bulkadd.django.html:12
-msgid "Bulk upload archive images"
-msgstr "Bulkopplasting av arkivbilder"
 
 #: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:7
 msgid "Image preview"
@@ -418,7 +417,7 @@ msgid "No account with this email address found"
 msgstr "Vi finner ingen konto med denne epostadressen"
 
 #: apps/cradmin_resetpassword/views/begin.py:54
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:47
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:48
 msgid "Search"
 msgstr "Søk"
 
@@ -615,7 +614,7 @@ msgstr "Konfigurer forhåndsvisningen"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/django_cradmin/viewhelpers/formview_base.django.html:37
+#: templates/django_cradmin/viewhelpers/formview_base.django.html:49
 msgid "Close window"
 msgstr "Lukk vindu"
 
@@ -641,32 +640,37 @@ msgstr "REDIGER"
 msgid "(None)"
 msgstr "(Ingen)"
 
+#: templates/django_cradmin/viewhelpers/objecttable/no-items-message.django.html:2
+#, python-format
+msgid "No %(modelname_plural)s"
+msgstr "Ingen %(modelname_plural)s"
+
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
-#: viewhelpers/objecttable.py:881
+#: viewhelpers/objecttable.py:949
 msgid "Search..."
 msgstr "Søk..."
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:119
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:122
 msgid "Ordered ascending - Click to order descending"
 msgstr "Sortert stigende - klikk for å sortere synkende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:121
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:124
 msgid "Ordered descending - Click to order ascending"
 msgstr "Sortert synkende - klikk for å sortere stigende"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:128
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:131
 msgid "Do not order by this column"
 msgstr "Ikke sorter etter denne kolonnen"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:133
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:136
 msgid "Ordering priority"
 msgstr "Sorteringsprioritet"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:189
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:192
 msgid "Select an action"
 msgstr "Velg en handling"
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:192
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:195
 msgid "Go"
 msgstr "Gå"
 
@@ -714,7 +718,7 @@ msgstr "Lagre og fortsett redigering"
 msgid "Saved \"%(object)s\"."
 msgstr "Lagret \"%(object)s\"."
 
-#: viewhelpers/crudbase.py:260
+#: viewhelpers/crudbase.py:242
 msgid "Please fix the errors in the form below."
 msgstr "Vennligst fiks feilene i skjemaet nedenfor."
 
@@ -741,11 +745,6 @@ msgstr ""
 "Ugyldig valg. Dette er vanligvis forårsaket av at noen har fjernet "
 "rettigheter fra din bruker."
 
-#: viewhelpers/objecttable.py:915
-#, python-format
-msgid "No %(modelname_plural)s"
-msgstr "Ingen %(modelname_plural)s"
-
 #: viewhelpers/update.py:22
 #, python-format
 msgid "Edit %(what)s"
@@ -755,10 +754,128 @@ msgstr "Rediger %(what)s"
 msgid "What would you like to edit?"
 msgstr "Hva ønsker du å redigere?"
 
-#: widgets/datetimepicker.py:13 widgets/datetimepicker.py:63
-msgid "yyyy-mm-dd"
-msgstr "åååå-mm-dd"
+#: widgets/datetimepicker.py:75
+msgctxt "Has value trigger button text for date widget"
+msgid "Change date"
+msgstr ""
 
-#: widgets/datetimepicker.py:41 widgets/datetimepicker.py:64
+#: widgets/datetimepicker.py:82
+#, fuzzy
+#| msgid "Select an action"
+msgctxt "No value trigger button text for date widget"
+msgid "Select a date"
+msgstr "Velg en handling"
+
+#: widgets/datetimepicker.py:89
+msgctxt "Use button text in datetime widget"
+msgid "Use"
+msgstr ""
+
+#: widgets/datetimepicker.py:123
+#, fuzzy
+#| msgid "Select ..."
+msgctxt "Selected label in table cell in datetime widget"
+msgid "selected"
+msgstr "Velg ..."
+
+#: widgets/datetimepicker.py:131
+msgctxt "Today label in table cell in datetime widget"
+msgid "today"
+msgstr ""
+
+#: widgets/datetimepicker.py:144
+msgctxt "Datetime widget screenreader"
+msgid "Close date picker without changing the value"
+msgstr ""
+
+#: widgets/datetimepicker.py:150
+#, fuzzy
+#| msgid "Select ..."
+msgctxt "Datetime widget screenreader"
+msgid "Select year"
+msgstr "Velg ..."
+
+#: widgets/datetimepicker.py:156
+#, fuzzy
+#| msgid "Select an action"
+msgctxt "Datetime widget screenreader"
+msgid "Select month"
+msgstr "Velg en handling"
+
+#: widgets/datetimepicker.py:162
+#, fuzzy
+#| msgid "Select ..."
+msgctxt "Datetime widget screenreader"
+msgid "Select day"
+msgstr "Velg ..."
+
+#: widgets/datetimepicker.py:168
+#, fuzzy
+#| msgid "Select ..."
+msgctxt "Datetime widget screenreader"
+msgid "Select hour"
+msgstr "Velg ..."
+
+#: widgets/datetimepicker.py:174
+#, fuzzy
+#| msgid "Select files ..."
+msgctxt "Datetime widget screenreader"
+msgid "Select minute"
+msgstr "Velg filer ..."
+
+#: widgets/datetimepicker.py:183
+msgctxt "Datetime widget screenreader"
+msgid "Confirm that you want to select"
+msgstr ""
+
+#: widgets/datetimepicker.py:198
+msgid "Return to date picker"
+msgstr ""
+
+#: widgets/datetimepicker.py:206
+msgctxt "Datetime widget screenreader"
+msgid ""
+"Select date. Navigate with the arrow keys or tab, jump up to the month "
+"selector with the page up key and back to this table with the page down key."
+msgstr ""
+
+#: widgets/datetimepicker.py:214
+msgctxt "Now button text datetime widget"
+msgid "Now"
+msgstr ""
+
+#: widgets/datetimepicker.py:220
+msgctxt "Today button text datetime widget"
+msgid "Today"
+msgstr ""
+
+#: widgets/datetimepicker.py:226
+msgctxt "Clear button text datetime widget"
+msgid "Clear"
+msgstr ""
+
+#: widgets/datetimepicker.py:246
+msgctxt "Time label datetime widget"
+msgid "Time"
+msgstr ""
+
+#: widgets/datetimepicker.py:640
+#, fuzzy
+#| msgid "Select an action"
+msgctxt "Has value trigger button text for date widget"
+msgid "Change date/time"
+msgstr "Velg en handling"
+
+#: widgets/datetimepicker.py:641
+#, fuzzy
+#| msgid "Select an action"
+msgctxt "No value trigger button text for date widget"
+msgid "Select a date/time"
+msgstr "Velg en handling"
+
+#: widgets/datetimepicker.py:662
 msgid "hh:mm"
 msgstr "tt:mm"
+
+#~ msgid "yyyy-mm-dd"
+#~ msgstr "åååå-mm-dd"
