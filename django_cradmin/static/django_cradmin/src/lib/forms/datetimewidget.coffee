@@ -304,8 +304,13 @@ app.directive 'djangoCradminDatetimeSelector', [
             preview = $compile($scope.previewAngularjsTemplate)(templateScope)
             $scope.previewElement.empty()
             $scope.previewElement.append(preview)
+            $scope.previewElement.show()
           else
-            $scope.previewElement.html($scope.config.no_value_preview_text)
+            if $scope.config.no_value_preview_text? and $scope.config.no_value_preview_text != ''
+              $scope.previewElement.html($scope.config.no_value_preview_text)
+              $scope.previewElement.show()
+            else
+              $scope.previewElement.hide()
 
         ###
         Update the trigger button label to reflect the selected value.

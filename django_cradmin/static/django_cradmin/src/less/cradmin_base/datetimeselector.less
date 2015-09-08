@@ -1,10 +1,15 @@
 .django-cradmin-datepicker {
   .django-cradmin-datepicker-preview {
-    display: inline-block;
-    margin-right: 12px;
+    display: block;
+    margin-bottom: 10px;
+    margin-right: 0;
+    @media(min-width: @screen-sm-min) {
+      float: left;
+      margin-right: 12px;
+      padding-top: (@cradmin-btn-padding-base-vertical + 1px);
+    }
   }
   .django-cradmin-datepicker-triggerbutton {
-
   }
 }
 
@@ -438,4 +443,10 @@
       }
     }
   }
+}
+
+
+// Do not apply has-error styles within the selector.
+.has-error .django-cradmin-datetime-selector .form-control {
+  .cradminFormControl();
 }

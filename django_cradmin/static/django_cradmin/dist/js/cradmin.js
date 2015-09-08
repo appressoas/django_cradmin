@@ -2060,9 +2060,15 @@
               templateScope.momentObject = $scope.calendarCoordinator.selectedMomentObject.clone();
               preview = $compile($scope.previewAngularjsTemplate)(templateScope);
               $scope.previewElement.empty();
-              return $scope.previewElement.append(preview);
+              $scope.previewElement.append(preview);
+              return $scope.previewElement.show();
             } else {
-              return $scope.previewElement.html($scope.config.no_value_preview_text);
+              if (($scope.config.no_value_preview_text != null) && $scope.config.no_value_preview_text !== '') {
+                $scope.previewElement.html($scope.config.no_value_preview_text);
+                return $scope.previewElement.show();
+              } else {
+                return $scope.previewElement.hide();
+              }
             }
           };
           /*
