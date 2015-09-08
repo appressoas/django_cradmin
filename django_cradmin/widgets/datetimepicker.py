@@ -29,17 +29,13 @@ class DatePickerWidget(widgets.TextInput):
     or (to a lesser extent) via parameters to the contructor. The only
     thing that may seem strange that you can not customize is:
 
-    - Weekday names.
-    - Month names.
-
-    Weekday names and month names are formatted with MomentJS
-    (`momentjs docs <http://momentjs.com/>`_).
-
-    MomentJS has their own i18n support. You can override the locale/language
-    used by momentjs via the ``DJANGO_CRADMIN_MOMENTJS_LOCALE`` Django setting,
+    The AngularJS directive uses momentjs.
+    MomentJS has their own i18n support which we use to format date and time.
+    You can override the locale/language used by momentjs via the
+    ``DJANGO_CRADMIN_MOMENTJS_LOCALE`` Django setting,
     and Django-cradmin contains all the locale files bundled with MomentJS.
 
-    You can easily provide your own translation files as explained in their docs.
+    You can easily provide your own translation files as explained in the momentjs docs.
     If your template inherits from any of the Django-cradmin templates (which
     all extend from ``django_cradmin/standalone-base-internal.django.html``, you
     add your momentjs locale by overriding the the ``momentjslocale`` templatate block.
