@@ -59,10 +59,17 @@ class DatePickerWidget(widgets.TextInput):
     #: formatting strings.
     destinationfield_momentjs_format = 'YYYY-MM-DD'
 
+    #: Is the field required?
+    #:
+    #: Can be overridden via the ``required``
+    #: keyword argument for ``__init__``, and should
+    #: be set to ``True`` for required fields.
+    default_required = False
+
     #: The label of the button used to trigger the date selector
     #: when the field has a value.
     #:
-    #: Can be overridden via the ``default_buttonlabel``
+    #: Can be overridden via the ``buttonlabel``
     #: keyword argument for ``__init__``.
     default_buttonlabel = _('Change date')
 
@@ -195,8 +202,22 @@ class DatePickerWidget(widgets.TextInput):
                                                         'jump up to the month selector with the page up key '
                                                         'and back to this table with the page down key.')
 
+    #: Default button text for the now button.
+    #:
+    #: Can be overridden via the ``now_button_text``
+    #: keyword argument for ``__init__``.
     default_now_button_text = _('Now')
+
+    #: Default button text for the today button.
+    #:
+    #: Can be overridden via the ``today_button_text``
+    #: keyword argument for ``__init__``.
     default_today_button_text = _('Today')
+
+    #: Default button text for the clear button.
+    #:
+    #: Can be overridden via the ``clear_button_text``
+    #: keyword argument for ``__init__``.
     default_clear_button_text = _('Clear')
 
     # default_year_emptyvalue = _('Year')
@@ -208,6 +229,7 @@ class DatePickerWidget(widgets.TextInput):
     def __init__(self, *args, **kwargs):
         """
         Parameters:
+            required: See :obj:`.DatePickerWidget.default_required`.
             buttonlabel: See :obj:`.DatePickerWidget.default_buttonlabel`.
             buttonlabel_novalue: See :obj:`.DatePickerWidget.default_buttonlabel_novalue`.
             usebuttonlabel: See :obj:`.DatePickerWidget.default_usebuttonlabel`.
@@ -225,6 +247,9 @@ class DatePickerWidget(widgets.TextInput):
             day_screenreader_text: See :obj:`.DatePickerWidget.default_day_screenreader_text`.
             hour_screenreader_text: See :obj:`.DatePickerWidget.default_hour_screenreader_text`.
             minute_screenreader_text: See :obj:`.DatePickerWidget.default_minute_screenreader_text`.
+            clear_button_text: See :obj:`.DatePickerWidget.default_clear_button_text`.
+            now_button_text: See :obj:`.DatePickerWidget.default_now_button_text`.
+            today_button_text: See :obj:`.DatePickerWidget.default_today_button_text`.
             usebutton_arialabel_prefix: See :obj:`.DatePickerWidget.default_usebutton_arialabel_prefix`.
             usebutton_arialabel_momentjs_format: See
                 :obj:`.DatePickerWidget.default_usebutton_arialabel_momentjs_format`.
@@ -235,6 +260,7 @@ class DatePickerWidget(widgets.TextInput):
             minimum_datetime: The minimum datetime allowed to be select in the widget.
             maximum_datetime: The minimum datetime allowed to be select in the widget.
         """
+        self.required = kwargs.pop('required', self.default_required)
         self.buttonlabel = kwargs.pop('buttonlabel', self.default_buttonlabel)
         self.buttonlabel_novalue = kwargs.pop('buttonlabel_novalue', self.default_buttonlabel_novalue)
         self.today_label_text = kwargs.pop('today_label_text', self.default_today_label_text)
@@ -300,6 +326,7 @@ class DatePickerWidget(widgets.TextInput):
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
             'triggerbuttonid': triggerbuttonid,
+            'required': self.required,
             'no_value_preview_text': str(self.no_value_preview_text),
             'buttonlabel': str(self.buttonlabel),
             'buttonlabel_novalue': str(self.buttonlabel_novalue),

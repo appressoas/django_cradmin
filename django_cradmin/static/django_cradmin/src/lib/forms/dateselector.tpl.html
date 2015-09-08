@@ -147,6 +147,7 @@
                 </button>
                 <button type="button"
                         class="btn btn-danger django-cradmin-datetime-selector-shortcuts-clearbutton"
+                        ng-if="!config.required"
                         ng-click="onClickClearButton()">
                     {{ config.clear_button_text }}
                 </button>

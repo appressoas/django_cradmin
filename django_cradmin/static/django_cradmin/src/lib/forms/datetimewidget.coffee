@@ -510,6 +510,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           'triggerbuttonid'
           'previewid'
           'previewtemplateid'
+          'required'
           'usebuttonlabel'
           'usebutton_arialabel_prefix'
           'usebutton_arialabel_momentjs_format'
