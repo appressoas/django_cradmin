@@ -2763,6 +2763,51 @@
 }).call(this);
 
 (function() {
+  var app;
+
+  app = angular.module('djangoCradmin.forms.setfieldvalue', ['cfp.hotkeys']);
+
+  /**
+  Directive for setting the value of a form field to specified value.
+  
+  Example:
+  
+  ```
+    <button type="button"
+            django-cradmin-setfieldvalue="2015-12-24 12:30"
+            django-cradmin-setfieldvalue-field-id="my_datetimefield_id">
+        Set value to 2015-12-24 12:30
+    </button>
+  ```
+  */
+
+
+  app.directive('djangoCradminSetfieldvalue', [
+    function() {
+      return {
+        scope: {
+          value: "@djangoCradminSetfieldvalue",
+          fieldid: "@djangoCradminSetfieldvalueFieldId"
+        },
+        link: function($scope, $element) {
+          var fieldElement;
+          fieldElement = angular.element("#" + $scope.fieldid);
+          if (fieldElement.length === 0) {
+            return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("Could not find a field with the '" + $scope.fieldid + "' ID.") : void 0 : void 0;
+          } else {
+            $element.on('click', function() {
+              console.log('click');
+              return fieldElement.val($scope.value);
+            });
+          }
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.forms.usethisbutton', []).directive('djangoCradminUseThis', [
     '$window', function($window) {
       /*
@@ -2977,7 +3022,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue']);
 
 }).call(this);
 
