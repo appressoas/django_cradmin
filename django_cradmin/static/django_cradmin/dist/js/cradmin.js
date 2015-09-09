@@ -2279,7 +2279,9 @@
           };
         },
         link: function($scope, $element) {
-          var configname, configvalue, labelElement, previewTemplateScriptElement, required_config_attributes, _i, _len;
+          var body, configname, configvalue, labelElement, previewTemplateScriptElement, required_config_attributes, _i, _len;
+          body = angular.element('body');
+          $element.appendTo(body);
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }

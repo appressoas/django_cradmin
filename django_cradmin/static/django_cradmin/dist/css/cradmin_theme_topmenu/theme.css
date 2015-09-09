@@ -6318,18 +6318,6 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
 .django-cradmin-datetime-selector.django-cradmin-datetime-selector-has-shortcuts .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table {
   bottom: 65px;
 }
-.has-error .django-cradmin-datetime-selector .form-control {
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  outline: none;
-  box-shadow: none;
-  background: #fafafa;
-}
-.has-error .django-cradmin-datetime-selector .form-control:focus {
-  background: #e1edf4;
-  border-color: #bcd7e6;
-  box-shadow: none;
-}
 nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   line-height: 50px;
   height: 50px;

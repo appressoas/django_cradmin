@@ -529,6 +529,9 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.__updatePreviewText()
 
       link: ($scope, $element) ->
+        body = angular.element('body')
+        $element.appendTo(body)
+
 
         #
         # Validate required config
