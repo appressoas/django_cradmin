@@ -483,6 +483,7 @@ class DatePickerWidget(widgets.TextInput):
         return {
             'classname_lower': self.__class__.__name__.lower(),
             'field': rendered_field,
+            'fieldid': fieldid,
             'datepicker_config': json.dumps(self.get_datepicker_config(
                 fieldid=fieldid,
                 triggerbuttonid=triggerbuttonid,
@@ -496,6 +497,15 @@ class DatePickerWidget(widgets.TextInput):
             'extra_css_classes': self.get_extra_css_classes(),
         }
 
+    def get_field_attributes(self, attributes):
+        """
+        Get the attributes for the field as a dict.
+
+        We default to setting the style attribute to ``display: none;``.
+        """
+        attributes['style'] = 'display: none;'
+        return attributes
+
     def render(self, name, value, attrs=None):
         """
         Render the widget.
@@ -504,7 +514,7 @@ class DatePickerWidget(widgets.TextInput):
         context data returned by :meth:`.get_context_data`.
         """
         attrs = attrs or {}
-        attrs['style'] = 'display: none;'
+        attrs = self.get_field_attributes(attrs)
         rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
         fieldid = attrs.get('id', 'id_{}'.format(name))
         return loader.render_to_string(self.get_template_name(), self.get_context_data(

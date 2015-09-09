@@ -625,6 +625,10 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.datetimeSelectorElement = $element.find('.django-cradmin-datetime-selector')
         $scope.initialize()
 
+        $scope.destinationField.on 'change', ->
+          $scope.initialize()
+          $scope.$apply()
+
         # We need this timeout to ensure all the items are rendered.
         # it seems empty selects are not matched or something like that
         # The timeout should not matter unless a user somehow manages to open

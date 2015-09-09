@@ -2346,6 +2346,10 @@
           }
           $scope.datetimeSelectorElement = $element.find('.django-cradmin-datetime-selector');
           $scope.initialize();
+          $scope.destinationField.on('change', function() {
+            $scope.initialize();
+            return $scope.$apply();
+          });
           $timeout(function() {
             return $element.find('select').on('keydown', function(e) {
               if (e.which === 13) {
@@ -2796,8 +2800,8 @@
             return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("Could not find a field with the '" + $scope.fieldid + "' ID.") : void 0 : void 0;
           } else {
             $element.on('click', function() {
-              console.log('click');
-              return fieldElement.val($scope.value);
+              fieldElement.val($scope.value);
+              return fieldElement.trigger('change');
             });
           }
         }

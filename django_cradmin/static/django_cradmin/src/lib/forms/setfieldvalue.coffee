@@ -27,8 +27,8 @@ app.directive 'djangoCradminSetfieldvalue', [
           console?.error? "Could not find a field with the '#{$scope.fieldid}' ID."
         else
           $element.on 'click', ->
-            console.log 'click'
             fieldElement.val $scope.value
+            fieldElement.trigger 'change'
           return
     }
 ]
