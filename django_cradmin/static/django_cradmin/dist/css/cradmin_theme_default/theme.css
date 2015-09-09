@@ -5918,6 +5918,14 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     margin-top: -30px;
   }
 }
+@keyframes djangoCradminDatepickerPreviewChangeanimation {
+  from {
+    opacity: 1.0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
 .django-cradmin-datepicker .django-cradmin-datepicker-preview {
   display: block;
   margin-bottom: 10px;
@@ -5929,6 +5937,18 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     margin-right: 12px;
     padding-top: 7px;
   }
+}
+.django-cradmin-datepicker .django-cradmin-datepicker-preview.django-cradmin-datepicker-preview-changeanimate {
+  -webkit-animation-name: djangoCradminDatepickerPreviewChangeanimation;
+  animation-name: djangoCradminDatepickerPreviewChangeanimation;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+  -webkit-animation-iteration-count: 4;
+  animation-iteration-count: 4;
 }
 .django-cradmin-datetime-selector {
   display: none;

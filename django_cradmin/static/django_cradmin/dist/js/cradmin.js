@@ -2072,6 +2072,25 @@
             }
           };
           /*
+          Apply a css animation to indicate that the preview text has
+          changed.
+          
+          The ``delay_milliseconds`` parameter is the number of milliseonds
+          to delay starting the animation.
+          */
+
+          $scope.__animatePreviewText = function(delay_milliseconds) {
+            if ($scope.config.preview_change_animation_cssclass != null) {
+              $scope.previewElement.addClass($scope.config.preview_change_animation_cssclass);
+              return $timeout(function() {
+                return $timeout(function() {
+                  $scope.previewElement.removeClass($scope.config.preview_change_animation_cssclass);
+                  return $scope.previewElement.first().offsetWidth = $scope.previewElement.first().offsetWidth;
+                }, $scope.config.preview_change_animation_duration_milliseconds);
+              }, delay_milliseconds);
+            }
+          };
+          /*
           Update the trigger button label to reflect the selected value.
           */
 
@@ -2235,11 +2254,14 @@
               $scope.page = 3;
               $timeout(function() {
                 return $scope.page = null;
-              }, 400);
+              }, $scope.config.hide_animation_duration_milliseconds);
             } else {
               $scope.page = null;
             }
             __removeHotkeys();
+            $timeout(function() {
+              return $scope.__animatePreviewText();
+            }, $scope.config.hide_animation_duration_milliseconds);
             $timeout(function() {
               return __getFocusItemAfterHide().focus();
             }, 150);
@@ -2285,7 +2307,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'required', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'dayofmonthtablecell_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text'];
+          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'required', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'dayofmonthtablecell_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text', 'hide_animation_duration_milliseconds'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];
@@ -2348,7 +2370,8 @@
           $scope.initialize();
           $scope.destinationField.on('change', function() {
             $scope.initialize();
-            return $scope.$apply();
+            $scope.$apply();
+            return $scope.__animatePreviewText(0);
           });
           $timeout(function() {
             return $element.find('select').on('keydown', function(e) {

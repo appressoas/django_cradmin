@@ -1,3 +1,13 @@
+@keyframes djangoCradminDatepickerPreviewChangeanimation {
+  from {
+    opacity: 1.0;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
 .django-cradmin-datepicker {
   .django-cradmin-datepicker-preview {
     display: block;
@@ -7,6 +17,14 @@
       float: left;
       margin-right: 12px;
       padding-top: (@cradmin-btn-padding-base-vertical + 1px);
+    }
+
+    &.django-cradmin-datepicker-preview-changeanimate {
+      .animation-name(djangoCradminDatepickerPreviewChangeanimation);
+      .animation-duration(.5s);
+      .animation-timing-function(ease-in-out);
+      .animation-direction(alternate);
+      .animation-iteration-count(4);
     }
   }
   .django-cradmin-datepicker-triggerbutton {

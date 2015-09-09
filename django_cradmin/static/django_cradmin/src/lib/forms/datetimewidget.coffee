@@ -313,6 +313,29 @@ app.directive 'djangoCradminDatetimeSelector', [
               $scope.previewElement.hide()
 
         ###
+        Apply a css animation to indicate that the preview text has
+        changed.
+
+        The ``delay_milliseconds`` parameter is the number of milliseonds
+        to delay starting the animation.
+        ###
+        $scope.__animatePreviewText = (delay_milliseconds) ->
+          if $scope.config.preview_change_animation_cssclass?
+            $scope.previewElement.addClass($scope.config.preview_change_animation_cssclass)
+            $timeout(->
+              $timeout(->
+                $scope.previewElement.removeClass($scope.config.preview_change_animation_cssclass)
+
+                # Tricks the browser into restarting the animation
+                # the next time we add the class. Without this,
+                # the animation would just run the first time
+                # we add the class.
+                # See: https://css-tricks.com/restart-css-animation/
+                $scope.previewElement.first().offsetWidth = $scope.previewElement.first().offsetWidth
+              , $scope.config.preview_change_animation_duration_milliseconds)
+            , delay_milliseconds)
+
+        ###
         Update the trigger button label to reflect the selected value.
         ###
         $scope.__updateTriggerButtonLabel = ->
@@ -343,6 +366,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.__updatePreviewText()
           $scope.__updateTriggerButtonLabel()
           $scope.hide()
+#          $scope.__animatePreviewText($scope.config.hide_animation_duration_milliseconds)
 
         ###
         Make the shown value the selected value and call
@@ -436,7 +460,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           windowHeight = angular.element(window).height()
           $scope.datetimeSelectorElement.css({
             top: scrollTop,
-            height: "#{windowHeight}px",
+            height: "#{windowHeight}px"
           })
 
         $scope.showPage1 = ->
@@ -475,17 +499,19 @@ app.directive 'djangoCradminDatetimeSelector', [
           if $scope.page == 2
             # We use page3 to make it possible to have a custom animation for hiding
             # page2 (avoid that it animates sideways back to the starting point).
-            # The timeout just needs to be longer than the css animation, but
-            # shorter than a reasonable time that a user is able to re-open the
-            # date picker.
             $scope.page = 3
             $timeout(->
               $scope.page = null
-            , 400)
+            , $scope.config.hide_animation_duration_milliseconds)
           else
             $scope.page = null
 
           __removeHotkeys()
+
+          # Apply preview animation after the box has been hidden.
+          $timeout(->
+            $scope.__animatePreviewText()
+          , $scope.config.hide_animation_duration_milliseconds)
 
           # Use a timeout to ensure screenreaders are not stuck on the
           # last focused element.
@@ -574,6 +600,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           'now_button_text'
           'today_button_text'
           'clear_button_text'
+          'hide_animation_duration_milliseconds'
 #          'date_label_text'
 #          'time_label_text'
         ]
@@ -628,6 +655,7 @@ app.directive 'djangoCradminDatetimeSelector', [
         $scope.destinationField.on 'change', ->
           $scope.initialize()
           $scope.$apply()
+          $scope.__animatePreviewText(0)
 
         # We need this timeout to ensure all the items are rendered.
         # it seems empty selects are not matched or something like that

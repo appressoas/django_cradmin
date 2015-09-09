@@ -382,6 +382,10 @@ class DatePickerWidget(widgets.TextInput):
             'hourselect_momentjs_format': self.get_hourselect_momentjs_format(),
             'minuteselect_momentjs_format': self.get_minuteselect_momentjs_format(),
 
+            'preview_change_animation_cssclass': self.get_preview_change_animation_cssclass(),
+            'preview_change_animation_duration_milliseconds': self.get_preview_change_animation_duration_milliseconds(),
+            'hide_animation_duration_milliseconds': self.get_hide_animation_duration_milliseconds(),
+
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),
             # 'day_emptyvalue': str(self.day_emptyvalue),
@@ -639,6 +643,41 @@ class DatePickerWidget(widgets.TextInput):
         minutevalues = list(range(0, 60, 5))
         minutevalues.append(59)
         return minutevalues
+
+    def get_preview_change_animation_cssclass(self):
+        """
+        We use a css animation to animate the preview when the value changes.
+
+        You can provide your own animation css class by overriding
+        this.
+
+        To disable the animation, override, and return ``None``.
+
+        If you provide your own animation, you should also override
+        :meth:`.get_preview_change_animation_duration_milliseconds`
+        to ensure the duration of your css animation matches the
+        time when the animation css class is removed from the preview
+        element.
+        """
+        # return 'django-cradmin-datepicker-preview-changeanimate'
+        return None
+
+    def get_preview_change_animation_duration_milliseconds(self):
+        """
+        The duration of the preview change animation in milliseconds.
+
+        See :meth:`.get_preview_change_animation_cssclass`.
+        """
+        return 2000
+
+    def get_hide_animation_duration_milliseconds(self):
+        """
+        The duration of the hide animation in milliseconds.
+
+        If you change your css to apply a different animation
+        on hide, you should also override this.
+        """
+        return 150
 
 
 class DateTimePickerWidget(DatePickerWidget):
