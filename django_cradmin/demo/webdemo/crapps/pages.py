@@ -148,8 +148,8 @@ class PageCreateUpdateMixin(object):
             maximum_datetime=datetime(2030, 12, 5, 21, 40),
             required=False
         )
-        # form.fields['unpublish_time'].widget = DatePickerWidget(
-        #     no_value_preview_text='No date selected')
+        form.fields['unpublish_time'].widget = DatePickerWidget(
+            no_value_preview_text='No date selected')
         # form.fields['unpublish_time'].widget = DateTimePickerWidget(
         #     no_value_preview_text='No date selected')
         form.fields['attachment'].widget = filewidgets.ImageWidget()

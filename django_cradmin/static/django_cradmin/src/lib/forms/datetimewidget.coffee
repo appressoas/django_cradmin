@@ -4,8 +4,8 @@ app = angular.module 'djangoCradmin.forms.datetimewidget', ['cfp.hotkeys']
 #  hotkeysProvider.includeCheatSheet = false
 
 app.directive 'djangoCradminDatetimeSelector', [
-  '$timeout', '$compile', '$rootScope', 'hotkeys', 'djangoCradminCalendarApi',
-  ($timeout, $compile, $rootScope, hotkeys, djangoCradminCalendarApi) ->
+  '$timeout', '$compile', '$rootScope', 'hotkeys', 'djangoCradminCalendarApi', 'djangoCradminWindowDimensions'
+  ($timeout, $compile, $rootScope, hotkeys, djangoCradminCalendarApi, djangoCradminWindowDimensions) ->
 
     return {
       scope: {
@@ -449,18 +449,23 @@ app.directive 'djangoCradminDatetimeSelector', [
           e.preventDefault()
           e.stopPropagation()
 
-        $scope.__show = ->
-#          angular.element('body').addClass('django-cradmin-noscroll')
-          __removeHotkeys()
-          __addCommonHotkeys()
+        $scope.__adjustPosition = ->
           contentWrapperElement = $element.find('.django-cradmin-datetime-selector-contentwrapper')
           scrollTop = angular.element(window).scrollTop()
-
           windowHeight = angular.element(window).height()
           $scope.datetimeSelectorElement.css({
             top: scrollTop,
             height: "#{windowHeight}px"
           })
+
+        $scope.onWindowResize = ->
+          $scope.__adjustPosition()
+
+        $scope.__show = ->
+#          angular.element('body').addClass('django-cradmin-noscroll')
+          __removeHotkeys()
+          __addCommonHotkeys()
+          $scope.__adjustPosition()
 
         $scope.showPage1 = ->
           angular.element('body').on 'mousewheel touchmove', $scope.__onMouseWheel
@@ -559,6 +564,9 @@ app.directive 'djangoCradminDatetimeSelector', [
       link: ($scope, $element) ->
         body = angular.element('body')
         $element.appendTo(body)
+        djangoCradminWindowDimensions.register $scope
+        $scope.$on '$destroy', ->
+          djangoCradminWindowDimensions.unregister $scope
 
 
         #

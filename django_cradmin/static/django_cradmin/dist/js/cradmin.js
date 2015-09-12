@@ -1761,7 +1761,7 @@
   app = angular.module('djangoCradmin.forms.datetimewidget', ['cfp.hotkeys']);
 
   app.directive('djangoCradminDatetimeSelector', [
-    '$timeout', '$compile', '$rootScope', 'hotkeys', 'djangoCradminCalendarApi', function($timeout, $compile, $rootScope, hotkeys, djangoCradminCalendarApi) {
+    '$timeout', '$compile', '$rootScope', 'hotkeys', 'djangoCradminCalendarApi', 'djangoCradminWindowDimensions', function($timeout, $compile, $rootScope, hotkeys, djangoCradminCalendarApi, djangoCradminWindowDimensions) {
       return {
         scope: {
           config: "=djangoCradminDatetimeSelector"
@@ -2244,10 +2244,8 @@
             e.preventDefault();
             return e.stopPropagation();
           };
-          $scope.__show = function() {
+          $scope.__adjustPosition = function() {
             var contentWrapperElement, scrollTop, windowHeight;
-            __removeHotkeys();
-            __addCommonHotkeys();
             contentWrapperElement = $element.find('.django-cradmin-datetime-selector-contentwrapper');
             scrollTop = angular.element(window).scrollTop();
             windowHeight = angular.element(window).height();
@@ -2255,6 +2253,14 @@
               top: scrollTop,
               height: "" + windowHeight + "px"
             });
+          };
+          $scope.onWindowResize = function() {
+            return $scope.__adjustPosition();
+          };
+          $scope.__show = function() {
+            __removeHotkeys();
+            __addCommonHotkeys();
+            return $scope.__adjustPosition();
           };
           $scope.showPage1 = function() {
             angular.element('body').on('mousewheel touchmove', $scope.__onMouseWheel);
@@ -2334,6 +2340,10 @@
           var body, configname, configvalue, labelElement, previewTemplateScriptElement, required_config_attributes, _i, _len;
           body = angular.element('body');
           $element.appendTo(body);
+          djangoCradminWindowDimensions.register($scope);
+          $scope.$on('$destroy', function() {
+            return djangoCradminWindowDimensions.unregister($scope);
+          });
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
