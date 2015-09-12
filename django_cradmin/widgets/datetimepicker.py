@@ -338,8 +338,11 @@ class DatePickerWidget(widgets.TextInput):
         You should normally not need to override this, since everything is
         configurable via ``__init__`` kwargs or class attributes.
         """
+        now = timezone.now()
+        if timezone.is_aware(now):
+            now = timezone.localtime(now)
         configdict = {
-            'now': timezone.localtime(timezone.now()).isoformat(' '),
+            'now': now.isoformat(' '),
             'destinationfieldid': fieldid,
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
