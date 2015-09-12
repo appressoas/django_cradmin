@@ -339,6 +339,7 @@ class DatePickerWidget(widgets.TextInput):
         configurable via ``__init__`` kwargs or class attributes.
         """
         configdict = {
+            'now': timezone.localtime(timezone.now()).isoformat(' '),
             'destinationfieldid': fieldid,
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
@@ -385,6 +386,7 @@ class DatePickerWidget(widgets.TextInput):
             'preview_change_animation_cssclass': self.get_preview_change_animation_cssclass(),
             'preview_change_animation_duration_milliseconds': self.get_preview_change_animation_duration_milliseconds(),
             'hide_animation_duration_milliseconds': self.get_hide_animation_duration_milliseconds(),
+
 
             # 'year_emptyvalue': str(self.year_emptyvalue),
             # 'month_emptyvalue': str(self.month_emptyvalue),

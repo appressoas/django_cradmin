@@ -764,9 +764,10 @@
 
     })();
     CalendarDay = (function() {
-      function CalendarDay(momentObject, isInCurrentMonth, isDisabled) {
+      function CalendarDay(momentObject, isInCurrentMonth, isDisabled, nowMomentObject) {
         this.momentObject = momentObject;
         this.isInCurrentMonth = isInCurrentMonth;
+        this.nowMomentObject = nowMomentObject;
         this._isDisabled = isDisabled;
       }
 
@@ -775,7 +776,7 @@
       };
 
       CalendarDay.prototype.isToday = function() {
-        return this.momentObject.isSame(moment(), 'day');
+        return this.momentObject.isSame(this.nowMomentObject, 'day');
       };
 
       CalendarDay.prototype.isDisabled = function() {
@@ -895,7 +896,7 @@
           week = this.calendarWeeks[this.currentWeekIndex];
         }
         isDisabled = !this.calendarCoordinator.momentObjectIsAllowed(momentObject);
-        calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled);
+        calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled, this.calendarCoordinator.nowMomentObject);
         week.addDay(calendarDay);
         this.currentDayCount += 1;
         return this.lastDay = calendarDay;
@@ -922,14 +923,12 @@
     */
 
     CalendarCoordinator = (function() {
-      function CalendarCoordinator(selectedMomentObject, minimumDatetime, maximumDatetime) {
-        this.selectedMomentObject = selectedMomentObject;
-        this.minimumDatetime = minimumDatetime;
-        this.maximumDatetime = maximumDatetime;
+      function CalendarCoordinator(_arg) {
+        this.selectedMomentObject = _arg.selectedMomentObject, this.minimumDatetime = _arg.minimumDatetime, this.maximumDatetime = _arg.maximumDatetime, this.nowMomentObject = _arg.nowMomentObject;
         if (this.selectedMomentObject != null) {
           this.shownMomentObject = this.selectedMomentObject.clone();
         } else {
-          this.shownMomentObject = moment();
+          this.setToNow();
           if (!this.momentObjectIsAllowed(this.shownMomentObject)) {
             this.shownMomentObject = this.minimumDatetime.clone();
           }
@@ -976,19 +975,15 @@
       };
 
       CalendarCoordinator.prototype.todayIsValidValue = function() {
-        var nowMomentObject;
-        nowMomentObject = moment();
-        return this.momentObjectIsAllowed(nowMomentObject);
+        return this.momentObjectIsAllowed(this.nowMomentObject);
       };
 
       CalendarCoordinator.prototype.nowIsValidValue = function() {
-        var nowMomentObject;
-        nowMomentObject = moment();
-        return this.momentObjectIsAllowed(nowMomentObject, false);
+        return this.momentObjectIsAllowed(this.nowMomentObject, false);
       };
 
       CalendarCoordinator.prototype.shownDateIsToday = function() {
-        return this.shownMomentObject.isSame(moment(), 'day');
+        return this.shownMomentObject.isSame(this.nowMomentObject, 'day');
       };
 
       CalendarCoordinator.prototype.shownDateIsTodayAndNowIsValid = function() {
@@ -996,7 +991,7 @@
       };
 
       CalendarCoordinator.prototype.setToNow = function() {
-        return this.shownMomentObject = moment();
+        return this.shownMomentObject = this.nowMomentObject.clone();
       };
 
       return CalendarCoordinator;
@@ -1325,6 +1320,10 @@
 
       MonthlyCalendarCoordinator.prototype.getDayOfMonthLabelForTableCell = function(calendarDay) {
         return calendarDay.momentObject.format(this.dayOfMonthTableCellFormat);
+      };
+
+      MonthlyCalendarCoordinator.prototype.setToToday = function() {
+        return this.handleDayChange(this.calendarCoordinator.nowMomentObject.clone());
       };
 
       return MonthlyCalendarCoordinator;
@@ -2053,9 +2052,7 @@
             }
           };
           $scope.onClickTodayButton = function() {
-            var momentObject;
-            momentObject = moment();
-            $scope.monthlyCalendarCoordinator.handleDayChange(momentObject);
+            $scope.monthlyCalendarCoordinator.setToToday();
             if ($scope.config.include_time) {
               $scope.showPage2();
             } else {
@@ -2307,13 +2304,17 @@
             minimumDatetime = null;
             maximumDatetime = null;
             if ($scope.config.minimum_datetime != null) {
-              console.log('$scope.config.minimum_datetime', $scope.config.minimum_datetime);
               minimumDatetime = moment($scope.config.minimum_datetime);
             }
             if ($scope.config.maximum_datetime != null) {
               maximumDatetime = moment($scope.config.maximum_datetime);
             }
-            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(selectedMomentObject, minimumDatetime, maximumDatetime);
+            $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator({
+              selectedMomentObject: selectedMomentObject,
+              minimumDatetime: minimumDatetime,
+              maximumDatetime: maximumDatetime,
+              nowMomentObject: moment($scope.config.now)
+            });
             $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator({
               calendarCoordinator: $scope.calendarCoordinator,
               yearselectValues: $scope.config.yearselect_values,
@@ -2336,7 +2337,7 @@
           if ($scope.config.no_value_preview_text == null) {
             $scope.config.no_value_preview_text = '';
           }
-          required_config_attributes = ['destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'required', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'dayofmonthtablecell_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text', 'hide_animation_duration_milliseconds'];
+          required_config_attributes = ['now', 'destinationfieldid', 'triggerbuttonid', 'previewid', 'previewtemplateid', 'required', 'usebuttonlabel', 'usebutton_arialabel_prefix', 'usebutton_arialabel_momentjs_format', 'close_icon', 'back_icon', 'back_to_datepicker_screenreader_text', 'destinationfield_momentjs_format', 'timeselector_datepreview_momentjs_format', 'year_screenreader_text', 'month_screenreader_text', 'day_screenreader_text', 'hour_screenreader_text', 'minute_screenreader_text', 'dateselector_table_screenreader_caption', 'today_label_text', 'selected_day_label_text', 'yearselect_values', 'hourselect_values', 'yearselect_momentjs_format', 'monthselect_momentjs_format', 'dayofmonthselect_momentjs_format', 'dayofmonthtablecell_momentjs_format', 'hourselect_momentjs_format', 'minuteselect_momentjs_format', 'minuteselect_values', 'now_button_text', 'today_button_text', 'clear_button_text', 'hide_animation_duration_milliseconds'];
           for (_i = 0, _len = required_config_attributes.length; _i < _len; _i++) {
             configname = required_config_attributes[_i];
             configvalue = $scope.config[configname];

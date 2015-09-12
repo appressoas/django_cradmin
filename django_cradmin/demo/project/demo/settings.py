@@ -111,7 +111,7 @@ DATABASES = {
 LANGUAGE_CODE = 'en-us'
 # LANGUAGE_CODE = 'nb'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Oslo'
 
 USE_I18N = True
 

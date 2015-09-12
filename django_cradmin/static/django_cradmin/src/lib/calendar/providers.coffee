@@ -30,14 +30,14 @@ app.provider 'djangoCradminCalendarApi', ->
 
 
   class CalendarDay
-    constructor: (@momentObject, @isInCurrentMonth, isDisabled) ->
+    constructor: (@momentObject, @isInCurrentMonth, isDisabled, @nowMomentObject) ->
       @_isDisabled = isDisabled
 
     getNumberInMonth: ->
       return @momentObject.format('D')
 
     isToday: ->
-      return @momentObject.isSame(moment(), 'day')
+      return @momentObject.isSame(@nowMomentObject, 'day')
 
     isDisabled: ->
       return @_isDisabled
@@ -119,7 +119,8 @@ app.provider 'djangoCradminCalendarApi', ->
         week = @calendarWeeks[@currentWeekIndex]
 
       isDisabled = not @calendarCoordinator.momentObjectIsAllowed(momentObject)
-      calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled)
+      calendarDay = new CalendarDay(momentObject, isInCurrentMonth, isDisabled,
+        @calendarCoordinator.nowMomentObject)
       week.addDay(calendarDay)
       @currentDayCount += 1
       @lastDay = calendarDay
@@ -135,7 +136,10 @@ app.provider 'djangoCradminCalendarApi', ->
   view we present.
   ###
   class CalendarCoordinator
-    constructor: (@selectedMomentObject, @minimumDatetime, @maximumDatetime) ->
+    constructor: ({@selectedMomentObject,
+                   @minimumDatetime,
+                   @maximumDatetime,
+                   @nowMomentObject}) ->
       # We operate with two momentObjects:
       # - selectedMomentObject: This is the actual moment object
       #   that the user has selected. This can be null if the user
@@ -147,7 +151,7 @@ app.provider 'djangoCradminCalendarApi', ->
         @shownMomentObject = @selectedMomentObject.clone()
       else
         # We set this to start the date picker on the current date
-        @shownMomentObject = moment()
+        @setToNow()
 
         # If the current time is not allowed, pick the first allowed value
         if not @momentObjectIsAllowed(@shownMomentObject)
@@ -182,21 +186,19 @@ app.provider 'djangoCradminCalendarApi', ->
       return isAllowed
 
     todayIsValidValue: ->
-      nowMomentObject = moment()
-      return @momentObjectIsAllowed(nowMomentObject)
+      return @momentObjectIsAllowed(@nowMomentObject)
 
     nowIsValidValue: ->
-      nowMomentObject = moment()
-      return @momentObjectIsAllowed(nowMomentObject, false)
+      return @momentObjectIsAllowed(@nowMomentObject, false)
 
     shownDateIsToday: ->
-      return @shownMomentObject.isSame(moment(), 'day')
+      return @shownMomentObject.isSame(@nowMomentObject, 'day')
 
     shownDateIsTodayAndNowIsValid: ->
       return @shownDateIsToday() && @nowIsValidValue()
 
     setToNow: ->
-      @shownMomentObject = moment()
+      @shownMomentObject = @nowMomentObject.clone()
 
 
   ###*
@@ -486,8 +488,7 @@ app.provider 'djangoCradminCalendarApi', ->
       return calendarDay.momentObject.format(@dayOfMonthTableCellFormat)
 
     setToToday: ->
-      momentObject = moment()
-      @handleDayChange(momentObject)
+      @handleDayChange(@calendarCoordinator.nowMomentObject.clone())
 
 
   @$get = ->

@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
 from builtins import object
+from datetime import datetime, timedelta
 
-from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from crispy_forms import layout
 from django.views.generic import TemplateView
+from django.utils import timezone
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import create
@@ -20,7 +21,7 @@ from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.demo.webdemo.models import Page
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
-from django_cradmin.widgets.datetimepicker import DateTimePickerWidget
+from django_cradmin.widgets.datetimepicker import DateTimePickerWidget, DatePickerWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -142,8 +143,8 @@ class PageCreateUpdateMixin(object):
             selectview_url=self._get_image_selectview_url()
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget(
-            minimum_datetime=datetime(2014, 8, 14, 12, 30),
-            # minimum_datetime=timezone.now() + timedelta(hours=3),
+            # minimum_datetime=datetime(2014, 8, 14, 12, 30),
+            minimum_datetime=timezone.now() + timedelta(hours=1),
             maximum_datetime=datetime(2030, 12, 5, 21, 40),
             required=False
         )

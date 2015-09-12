@@ -536,9 +536,12 @@ app.directive 'djangoCradminDatetimeSelector', [
           if $scope.config.maximum_datetime?
             maximumDatetime = moment($scope.config.maximum_datetime)
 
-          $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator(
-            selectedMomentObject,
-            minimumDatetime, maximumDatetime)
+          $scope.calendarCoordinator = new djangoCradminCalendarApi.CalendarCoordinator({
+            selectedMomentObject: selectedMomentObject,
+            minimumDatetime: minimumDatetime,
+            maximumDatetime: maximumDatetime,
+            nowMomentObject: moment($scope.config.now)
+          })
           $scope.monthlyCalendarCoordinator = new djangoCradminCalendarApi.MonthlyCalendarCoordinator({
             calendarCoordinator: $scope.calendarCoordinator
             yearselectValues: $scope.config.yearselect_values
@@ -566,6 +569,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           $scope.config.no_value_preview_text = ''
 
         required_config_attributes = [
+          'now'
           'destinationfieldid'
           'triggerbuttonid'
           'previewid'
