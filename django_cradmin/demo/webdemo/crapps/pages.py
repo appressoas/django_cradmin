@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from builtins import object
-from datetime import datetime
 
+from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django import forms
@@ -20,7 +20,7 @@ from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.demo.webdemo.models import Page
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets.modelchoice import ModelChoiceWidget
-from django_cradmin.widgets.datetimepicker import DateTimePickerWidget, DatePickerWidget
+from django_cradmin.widgets.datetimepicker import DateTimePickerWidget
 
 
 class TitleColumn(objecttable.MultiActionColumn):
@@ -142,12 +142,13 @@ class PageCreateUpdateMixin(object):
             selectview_url=self._get_image_selectview_url()
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget(
-            minimum_datetime=datetime(2015, 8, 14, 12, 30),
-            maximum_datetime=datetime(2015, 10, 5, 21, 40),
+            minimum_datetime=datetime(2014, 8, 14, 12, 30),
+            # minimum_datetime=timezone.now() + timedelta(hours=3),
+            maximum_datetime=datetime(2030, 12, 5, 21, 40),
             required=False
         )
-        form.fields['unpublish_time'].widget = DatePickerWidget(
-            no_value_preview_text='No date selected')
+        # form.fields['unpublish_time'].widget = DatePickerWidget(
+        #     no_value_preview_text='No date selected')
         # form.fields['unpublish_time'].widget = DateTimePickerWidget(
         #     no_value_preview_text='No date selected')
         form.fields['attachment'].widget = filewidgets.ImageWidget()

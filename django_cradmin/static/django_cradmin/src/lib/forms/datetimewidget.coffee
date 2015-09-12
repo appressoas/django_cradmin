@@ -533,6 +533,7 @@ app.directive 'djangoCradminDatetimeSelector', [
           minimumDatetime = null
           maximumDatetime = null
           if $scope.config.minimum_datetime?
+            console.log '$scope.config.minimum_datetime', $scope.config.minimum_datetime
             minimumDatetime = moment($scope.config.minimum_datetime)
           if $scope.config.maximum_datetime?
             maximumDatetime = moment($scope.config.maximum_datetime)

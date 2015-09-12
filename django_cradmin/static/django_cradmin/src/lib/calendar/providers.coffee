@@ -159,30 +159,41 @@ app.provider 'djangoCradminCalendarApi', ->
     clearSelectedMomentObject: ->
       @selectedMomentObject = null
 
-    momentObjectIsAllowed: (momentObject) ->
+    momentObjectIsAllowed: (momentObject, ignoreTime=true) ->
       isAllowed = true
       if @minimumDatetime?
-        minimumDatetimeDateonly = @minimumDatetime.clone().set({
-          hour: 0
-          minute: 0
-          second: 0
-        })
-        isAllowed = not momentObject.isBefore(minimumDatetimeDateonly)
+        minimumDatetime = @minimumDatetime
+        if ignoreTime
+          minimumDatetime = minimumDatetime.clone().set({
+            hour: 0
+            minute: 0
+            second: 0
+          })
+        isAllowed = not momentObject.isBefore(minimumDatetime)
       if isAllowed and @maximumDatetime?
-        maximumDatetimeDateonly = @maximumDatetime.clone().set({
-          hour: 23
-          minute: 59
-          second: 59
-        })
-        isAllowed = not momentObject.isAfter(maximumDatetimeDateonly)
+        maximumDatetime = @maximumDatetime
+        if ignoreTime
+          maximumDatetime = maximumDatetime.clone().set({
+            hour: 23
+            minute: 59
+            second: 59
+          })
+        isAllowed = not momentObject.isAfter(maximumDatetime)
       return isAllowed
 
-    nowIsValidValue: ->
+    todayIsValidValue: ->
       nowMomentObject = moment()
       return @momentObjectIsAllowed(nowMomentObject)
 
+    nowIsValidValue: ->
+      nowMomentObject = moment()
+      return @momentObjectIsAllowed(nowMomentObject, false)
+
     shownDateIsToday: ->
       return @shownMomentObject.isSame(moment(), 'day')
+
+    shownDateIsTodayAndNowIsValid: ->
+      return @shownDateIsToday() && @nowIsValidValue()
 
     setToNow: ->
       @shownMomentObject = moment()
@@ -255,9 +266,12 @@ app.provider 'djangoCradminCalendarApi', ->
         # Since we do not include all years in the yearList, we need
         # to handle the case when the given datetimes year is not in the
         # list. We handle this by adding it to the end of the list.
+        label = formatMomentObject.set({
+          year: selectedYearValue
+        }).format(@yearFormat)
         yearConfig = {
           value: selectedYearValue,
-          label: selectedYearValue
+          label: label
         }
         @yearselectConfig.push(yearConfig)
         @__yearsMap[yearConfig.value] = yearConfig
@@ -288,7 +302,6 @@ app.provider 'djangoCradminCalendarApi', ->
         @monthselectConfig.push(monthObject)
         @__monthsMap[monthnumber] = monthObject
 
-
     __initHourObjects: ->
       selectedHourValue = @calendarCoordinator.shownMomentObject.hour()
       hasSelectedHourValue = false
@@ -315,9 +328,12 @@ app.provider 'djangoCradminCalendarApi', ->
         # Since we do not include all hours in the hourList, we need
         # to handle the case when the given datetimes hour is not in the
         # list. We handle this by adding it to the end of the list.
+        label = formatMomentObject.set({
+          hour: selectedHourValue
+        }).format(@hourFormat)
         hourConfig = {
           value: selectedHourValue,
-          label: selectedHourValue
+          label: label
         }
         @hourselectConfig.push(hourConfig)
         @__hoursMap[hourConfig.value] = hourConfig
@@ -348,9 +364,12 @@ app.provider 'djangoCradminCalendarApi', ->
         # Since we do not include all minutes in the minuteList, we need
         # to handle the case when the given datetimes minute is not in the
         # list. We handle this by adding it to the end of the list.
+        label = formatMomentObject.set({
+          minute: selectedMinuteValue
+        }).format(@minuteFormat)
         minuteConfig = {
           value: selectedMinuteValue,
-          label: selectedMinuteValue
+          label: label
         }
         @minuteselectConfig.push(minuteConfig)
         @__minutesMap[minuteConfig.value] = minuteConfig

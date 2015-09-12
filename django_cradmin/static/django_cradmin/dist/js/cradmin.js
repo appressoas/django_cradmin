@@ -944,36 +944,55 @@
         return this.selectedMomentObject = null;
       };
 
-      CalendarCoordinator.prototype.momentObjectIsAllowed = function(momentObject) {
-        var isAllowed, maximumDatetimeDateonly, minimumDatetimeDateonly;
+      CalendarCoordinator.prototype.momentObjectIsAllowed = function(momentObject, ignoreTime) {
+        var isAllowed, maximumDatetime, minimumDatetime;
+        if (ignoreTime == null) {
+          ignoreTime = true;
+        }
         isAllowed = true;
         if (this.minimumDatetime != null) {
-          minimumDatetimeDateonly = this.minimumDatetime.clone().set({
-            hour: 0,
-            minute: 0,
-            second: 0
-          });
-          isAllowed = !momentObject.isBefore(minimumDatetimeDateonly);
+          minimumDatetime = this.minimumDatetime;
+          if (ignoreTime) {
+            minimumDatetime = minimumDatetime.clone().set({
+              hour: 0,
+              minute: 0,
+              second: 0
+            });
+          }
+          isAllowed = !momentObject.isBefore(minimumDatetime);
         }
         if (isAllowed && (this.maximumDatetime != null)) {
-          maximumDatetimeDateonly = this.maximumDatetime.clone().set({
-            hour: 23,
-            minute: 59,
-            second: 59
-          });
-          isAllowed = !momentObject.isAfter(maximumDatetimeDateonly);
+          maximumDatetime = this.maximumDatetime;
+          if (ignoreTime) {
+            maximumDatetime = maximumDatetime.clone().set({
+              hour: 23,
+              minute: 59,
+              second: 59
+            });
+          }
+          isAllowed = !momentObject.isAfter(maximumDatetime);
         }
         return isAllowed;
       };
 
-      CalendarCoordinator.prototype.nowIsValidValue = function() {
+      CalendarCoordinator.prototype.todayIsValidValue = function() {
         var nowMomentObject;
         nowMomentObject = moment();
         return this.momentObjectIsAllowed(nowMomentObject);
       };
 
+      CalendarCoordinator.prototype.nowIsValidValue = function() {
+        var nowMomentObject;
+        nowMomentObject = moment();
+        return this.momentObjectIsAllowed(nowMomentObject, false);
+      };
+
       CalendarCoordinator.prototype.shownDateIsToday = function() {
         return this.shownMomentObject.isSame(moment(), 'day');
+      };
+
+      CalendarCoordinator.prototype.shownDateIsTodayAndNowIsValid = function() {
+        return this.shownDateIsToday() && this.nowIsValidValue();
       };
 
       CalendarCoordinator.prototype.setToNow = function() {
@@ -1047,9 +1066,12 @@
           }
         }
         if (!hasSelectedYearValue) {
+          label = formatMomentObject.set({
+            year: selectedYearValue
+          }).format(this.yearFormat);
           yearConfig = {
             value: selectedYearValue,
-            label: selectedYearValue
+            label: label
           };
           this.yearselectConfig.push(yearConfig);
           this.__yearsMap[yearConfig.value] = yearConfig;
@@ -1110,9 +1132,12 @@
           }
         }
         if (!hasSelectedHourValue) {
+          label = formatMomentObject.set({
+            hour: selectedHourValue
+          }).format(this.hourFormat);
           hourConfig = {
             value: selectedHourValue,
-            label: selectedHourValue
+            label: label
           };
           this.hourselectConfig.push(hourConfig);
           this.__hoursMap[hourConfig.value] = hourConfig;
@@ -1146,9 +1171,12 @@
           }
         }
         if (!hasSelectedMinuteValue) {
+          label = formatMomentObject.set({
+            minute: selectedMinuteValue
+          }).format(this.minuteFormat);
           minuteConfig = {
             value: selectedMinuteValue,
-            label: selectedMinuteValue
+            label: label
           };
           this.minuteselectConfig.push(minuteConfig);
           this.__minutesMap[minuteConfig.value] = minuteConfig;
@@ -2279,6 +2307,7 @@
             minimumDatetime = null;
             maximumDatetime = null;
             if ($scope.config.minimum_datetime != null) {
+              console.log('$scope.config.minimum_datetime', $scope.config.minimum_datetime);
               minimumDatetime = moment($scope.config.minimum_datetime);
             }
             if ($scope.config.maximum_datetime != null) {
@@ -4039,7 +4068,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "            <div class=\"django-cradmin-datetime-selector-shortcuts\" ng-if=\"hasShortcuts()\">\n" +
     "                <button type=\"button\"\n" +
     "                        class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-todaybutton\"\n" +
-    "                        ng-if=\"calendarCoordinator.nowIsValidValue()\"\n" +
+    "                        ng-if=\"calendarCoordinator.todayIsValidValue()\"\n" +
     "                        ng-click=\"onClickTodayButton()\">\n" +
     "                    {{ config.today_button_text }}\n" +
     "                </button>\n" +
@@ -4125,7 +4154,7 @@ angular.module("forms/dateselector.tpl.html", []).run(["$templateCache", functio
     "                    <button type=\"button\"\n" +
     "                            class=\"btn btn-default django-cradmin-datetime-selector-shortcuts-nowbutton\"\n" +
     "                            ng-click=\"onClickNowButton()\"\n" +
-    "                            ng-if=\"calendarCoordinator.shownDateIsToday()\">\n" +
+    "                            ng-if=\"calendarCoordinator.shownDateIsTodayAndNowIsValid()\">\n" +
     "                        {{ config.now_button_text }}\n" +
     "                    </button>\n" +
     "                </div>\n" +
