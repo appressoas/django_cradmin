@@ -197,7 +197,6 @@ app.provider 'djangoCradminCalendarApi', ->
 
     setToNow: ->
       @shownMomentObject = moment()
-#      @__changeSelectedDate()
 
 
   ###*
@@ -485,6 +484,11 @@ app.provider 'djangoCradminCalendarApi', ->
 
     getDayOfMonthLabelForTableCell: (calendarDay) ->
       return calendarDay.momentObject.format(@dayOfMonthTableCellFormat)
+
+    setToToday: ->
+      momentObject = moment()
+      @handleDayChange(momentObject)
+
 
   @$get = ->
     return {
