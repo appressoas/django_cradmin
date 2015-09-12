@@ -342,7 +342,7 @@ class DatePickerWidget(widgets.TextInput):
         if timezone.is_aware(now):
             now = timezone.localtime(now)
         configdict = {
-            'now': now.isoformat(' '),
+            'now': now.isoformat(),
             'destinationfieldid': fieldid,
             'previewid': previewid,
             'previewtemplateid': previewtemplateid,
