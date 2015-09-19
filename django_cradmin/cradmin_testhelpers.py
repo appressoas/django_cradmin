@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.test import RequestFactory
 import htmls
+from model_mommy import mommy
 
 try:
     # Python 3 - use the builtin module
@@ -112,6 +114,9 @@ class TestCaseMixin(object):
     #: The view class - must be set in subclasses
     viewclass = None
 
+    def create_default_user_for_mock_request(self):
+        return mommy.make(settings.AUTH_USER_MODEL)
+
     def mock_request(self, method,
                      cradmin_role=None,
                      cradmin_app=None,
@@ -142,7 +147,7 @@ class TestCaseMixin(object):
             requestkwargs_full.update(requestkwargs)
         viewkwargs = viewkwargs or {}
         request = getattr(RequestFactory(), method)(**requestkwargs_full)
-        request.user = requestuser or mock.MagicMock()
+        request.user = requestuser or self.create_default_user_for_mock_request()
         request.cradmin_role = cradmin_role or mock.MagicMock()
         request.cradmin_app = cradmin_app or mock.MagicMock()
         request.cradmin_instance = cradmin_instance or mock.MagicMock()
