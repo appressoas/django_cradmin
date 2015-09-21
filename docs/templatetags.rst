@@ -40,3 +40,14 @@ views/components.
 
 .. automodule:: django_cradmin.css_icon_map
     :members:
+
+
+******************
+cradmin_image_tags
+******************
+
+.. currentmodule:: django_cradmin.templatetags.cradmin_image_tags
+
+.. automodule:: django_cradmin.templatetags.cradmin_image_tags
+    :members:
+

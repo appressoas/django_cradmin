@@ -116,6 +116,7 @@ Documentation
    settings
    templatetags
    theme
+   imageutils
 
 
 ************
