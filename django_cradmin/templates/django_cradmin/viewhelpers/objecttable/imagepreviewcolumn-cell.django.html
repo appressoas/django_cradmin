@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load cradmin_image_tags %}
-{% if image_path == None %}
+{% if imageurl == None %}
     <em class="text-muted">{% trans "(None)" %}</em>
 {% else %}
-    <img src="{% cradmin_thumbnail image_path width=preview_width height=preview_height image_format=preview_format scalemethod='cover' %}">
+    <img src="{% cradmin_transform_image_using_imagetype imageurl=imageurl imagetype=preview_imagetype fallbackoptions=preview_fallbackoptions %}">
 {% endif %}

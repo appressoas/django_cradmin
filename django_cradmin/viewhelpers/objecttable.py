@@ -7,6 +7,7 @@ import re
 import logging
 import warnings
 from xml.sax.saxutils import quoteattr
+
 from django import forms
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -17,7 +18,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.views.generic import ListView
 from django.db import models
-
 
 logger = logging.getLogger(__name__)
 
@@ -421,56 +421,33 @@ class SingleButtonColumn(Column):
 class ImagePreviewColumn(Column):
     template_name = 'django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html'
 
-    #: See :meth:`.get_preview_format`
-    preview_format = 'auto'
-
-    #: See :meth:`.get_preview_width`
-    preview_width = 100
-
-    #: See :meth:`.get_preview_height`
-    preview_height = 65
+    #: See :meth:`.ImagePreviewColumn.get_preview_imagetype`.
+    preview_imagetype = None
 
     def is_sortable(self):
         return False
 
-    def get_preview_width(self):
+    def get_preview_imagetype(self):
         """
-        Returns the width of the preview thumbnail. Can be overridden.
-        Defaults to :obj:`.preview_width`, so you can just override that
-        class variable instead of this method.
+        Get the ``imagetype`` to use with
+        :func:`~django_cradmin.templatetags.cradmin_image_tags.cradmin_create_archiveimage_tag`.
+        to generate the preview.
         """
-        return self.preview_width
-
-    def get_preview_height(self):
-        """
-        Returns the height of the preview thumbnail. Can be overridden.
-        Defaults to :obj:`.preview_height`, so you can just override that
-        class variable instead of this method.
-        """
-        return self.preview_height
-
-    def get_preview_format(self):
-        """
-        Returns the format of the preview thumbnail. Can be overridden.
-        Defaults to :obj:`.preview_format`, so you can just override that
-        class variable instead of this method.
-        """
-        return self.preview_format
-
-    def get_column_width(self):
-        return u'{}px'.format(self.get_preview_width())
+        return self.preview_imagetype
 
     def get_context_data(self, obj):
         context = super(ImagePreviewColumn, self).get_context_data(obj=obj)
-        image_path = None
+        imageurl = None
         imagefieldfile = self.render_value(obj)
         if imagefieldfile:
-            image_path = imagefieldfile.name
+            imageurl = self.view.request.build_absolute_uri(imagefieldfile.url)
         context.update({
-            'image_path': image_path,
-            'preview_width': self.get_preview_width(),
-            'preview_height': self.get_preview_height(),
-            'preview_format': self.get_preview_format()
+            'imageurl': imageurl,
+            'preview_imagetype': self.get_preview_imagetype(),
+            'preview_fallbackoptions': {
+                'width': 100,
+                'height': 60
+            }
         })
         return context
 

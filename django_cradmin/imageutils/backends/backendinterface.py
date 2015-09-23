@@ -52,16 +52,16 @@ class Interface(object):
     def transform_image_using_imagetype(self, imageurl, imagetype):
         """
         Works just like :meth:`.transform_image`, except that the
-        options is retrieved from the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP`` setting.
+        options is retrieved from the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting.
 
-        Raises :exc:`.ImageTypeMapSettingNotDefined` if the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP``
+        Raises :exc:`.ImageTypeMapSettingNotDefined` if the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP`
         setting is not defined.
 
         Raises :exc:`.InvalidImageType` if the ``imagetype`` key is not defined in
-        the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP`` setting.
+        the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting.
         """
         if not hasattr(settings, 'DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP'):
-            raise ImageTypeMapSettingNotDefined('The DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP is not defined.')
+            raise ImageTypeMapSettingNotDefined('The DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP setting is not defined.')
         try:
             options = settings.DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP[imagetype]
         except KeyError:

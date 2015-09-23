@@ -18,6 +18,7 @@ from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
 from django_cradmin.viewhelpers import formbase
 from django_cradmin import crapp
+from django_cradmin import crsettings
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.widgets import filewidgets
 
@@ -57,9 +58,12 @@ class DescriptionSelectColumn(objecttable.UseThisActionColumn):
 
 class ImageColumn(objecttable.ImagePreviewColumn):
     modelfield = 'image'
-    preview_width = 100
-    preview_height = 65
     column_width = '100px'
+
+    preview_fallbackoptions = {
+        'width': 100,
+        'height': 65,
+    }
 
     def get_header(self):
         return _('Preview')
@@ -126,10 +130,19 @@ class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
     roleid_field = 'role'
 
+    def get_preview_imagetype(self):
+        """
+        Get the ``imagetype`` to use with
+        :func:`~django_cradmin.templatetags.cradmin_image_tags.cradmin_create_archiveimage_tag`.
+        to generate the preview.
+        """
+        return crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE')
+
     def get_form(self, form_class=None):
         form = super(ArchiveImageCreateUpdateMixin, self).get_form(form_class=form_class)
         form.fields['image'].widget = filewidgets.ImageWidget(
-            preview_width=300, preview_height=300, clearable=False)
+            request=self.request,
+            clearable=False, preview_imagetype=self.get_preview_imagetype())
         return form
 
 

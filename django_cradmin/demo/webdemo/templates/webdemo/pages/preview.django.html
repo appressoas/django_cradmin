@@ -9,7 +9,7 @@
         <p class="lead">{{ page.intro }}</p>
         {% if page.image %}
             <p>
-                <img src="{% cradmin_archiveimage_thumbnail page.image width=400 height=300 %}"
+                <img src="{% cradmin_transform_image page.image.image.url width=400 height=300 %}"
                      alt="{{ page.image.description }}" class="img-responsive">
             </p>
         {% endif %}

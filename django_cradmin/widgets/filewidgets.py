@@ -20,15 +20,25 @@ class ImageWidget(forms.ClearableFileInput):
     #: Defaults to ``"image/png,image/jpeg,image/gif"``.
     accept = 'image/*'
 
-    def __init__(self, attrs=None, template_name=None, clearable=True,
-                 preview_width=300, preview_height=200, preview_format='auto'):
+    def __init__(self, request, attrs=None, template_name=None, clearable=True,
+                 preview_imagetype=None):
+        self.request = request
         self.clearable = clearable
         if template_name:
             self.template_name = template_name
-        self.preview_width = preview_width
-        self.preview_height = preview_height
-        self.preview_format = preview_format
+        self.preview_imagetype = preview_imagetype
+        self.preview_fallback_options = {
+            'width': 300,
+            'height': 300
+        }
+
         super(ImageWidget, self).__init__(attrs)
+
+    def build_preview_url(self, imagepath):
+        if imagepath:
+            return self.request.build_absolute_uri(posixpath.join(settings.MEDIA_URL, imagepath))
+        else:
+            return None
 
     def render(self, name, value, attrs=None):
         attrs = attrs or {}
@@ -37,16 +47,16 @@ class ImageWidget(forms.ClearableFileInput):
             attrs['accept'] = self.accept
         attrs['cradmin-filefield-value'] = value or ''
         input_html = forms.FileInput.render(self, name, value, attrs)
+        imagepath = getattr(value, 'name', None)
+        imageurl = self.build_preview_url(imagepath)
 
         output = render_to_string(self.template_name, {
             'input_html': input_html,
-            'image_path': getattr(value, 'name', None),
-            'MEDIA_URL': settings.MEDIA_URL,
+            'imageurl': imageurl,
             'clear_checkbox_name': self.clear_checkbox_name(name),
             'clearable': self.clearable,
-            'preview_width': self.preview_width,
-            'preview_height': self.preview_height,
-            'preview_format': self.preview_format,
+            'preview_imagetype': self.preview_imagetype,
+            'preview_fallback_options': self.preview_fallback_options,
         })
         return mark_safe(output)
 

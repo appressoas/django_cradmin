@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.template import Library
 from django_cradmin import imageutils
 import logging
-
+from django_cradmin.imageutils.backends.backendinterface import ImageTypeMapSettingNotDefined, InvalidImageType
 
 register = Library()
 logger = logging.getLogger(__name__)
@@ -41,33 +41,57 @@ logger = logging.getLogger(__name__)
 @register.simple_tag()
 def cradmin_transform_image(imageurl, **options):
     """
-    Tag wrapper around ``django_cradmin.imageutils.get_backend().transform_image(...)``.
+    Tag wrapper around
+    :meth:`~django_cradmin.imageutils.backends.backendinterface.Interface.transform_image`.
+
+    Parameters:
+
+        imageurl: The URL of the image to transform.
+        options: Image transformation options.
     """
-    return imageutils.get_backend().transform_image(imageurl, **options)[0]
+    if 'options' in options:
+        options = options['options']
+    return imageutils.get_backend().transform_image(imageurl, **options)
 
 
 @register.simple_tag()
-def cradmin_transform_image_using_imagetype(imageurl, imagetype):
+def cradmin_transform_image_using_imagetype(imageurl, imagetype, fallbackoptions=None):
     """
     Tag wrapper around
-    ``django_cradmin.imageutils.get_backend().transform_image_using_imagetype(...)``.
+    :meth:`~django_cradmin.imageutils.backends.backendinterface.Interface.transform_image_using_imagetype`.
+
+    Parameters:
+
+        imageurl: The URL of the image to transform.
+        imagetype: See
+            :meth:`~django_cradmin.imageutils.backends.backendinterface.Interface.transform_image_using_imagetype`.
+        fallbackoptions: An optional dict of options to use if ``imagetype``
+            is not in the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting.
     """
-    return imageutils.get_backend().transform_image_using_imagetype(imageurl, imagetype)[0]
+    try:
+        return imageutils.get_backend().transform_image_using_imagetype(imageurl, imagetype)
+    except (ImageTypeMapSettingNotDefined, InvalidImageType):
+        if fallbackoptions:
+            return imageutils.get_backend().transform_image(imageurl, **fallbackoptions)
+        else:
+            raise
 
 
 @register.inclusion_tag('django_cradmin/imageutils/templatetags/archiveimage-tag.django.html')
-def cradmin_create_archiveimage_tag(archiveimage, imagetype, css_class=''):
+def cradmin_create_archiveimage_tag(archiveimage, imagetype, css_class='', fallbackoptions=None):
     """
     Creates an ``<img>`` tag from the given cradmin archiveimage.
 
     The URL is generated using
-    ``django_cradmin.imageutils.get_backend().transform_image_using_imagetype(...)``.
+    :meth:`.cradmin_transform_image_using_imagetype`.
 
     The alt-tag is generated from ``archiveimage.screenreader_text``.
     """
     return {
         'archiveimage': archiveimage,
-        'url': imageutils.get_backend().transform_image_using_imagetype(
-            archiveimage.image.url, imagetype)[0],
+        'url': cradmin_transform_image_using_imagetype(
+            imageurl=archiveimage.image.url,
+            imagetype=imagetype,
+            fallbackoptions=fallbackoptions),
         'css_class': css_class,
     }

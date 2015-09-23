@@ -1,6 +1,10 @@
+import logging
 import mimetypes
 from sorl.thumbnail import get_thumbnail
 from django_cradmin.imageutils.backends import backendinterface
+
+
+logger = logging.getLogger(__name__)
 
 
 class SorlThumbnail(backendinterface.Interface):
@@ -37,9 +41,14 @@ class SorlThumbnail(backendinterface.Interface):
         else:
             imageformat = 'JPEG'
 
-        return get_thumbnail(
-            imageurl, size,
-            upscale=upscale,
-            quality=quality,
-            crop=sorl_crop,
-            format=imageformat).url
+        try:
+            thumbnail = get_thumbnail(
+                imageurl, size,
+                upscale=upscale,
+                quality=quality,
+                crop=sorl_crop,
+                format=imageformat)
+            return thumbnail.url
+        except Exception as e:
+            logger.exception(e)
+            return ''
