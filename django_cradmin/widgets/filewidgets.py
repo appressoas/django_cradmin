@@ -35,6 +35,18 @@ class ImageWidget(forms.ClearableFileInput):
 
         super(ImageWidget, self).__init__(attrs)
 
+    def get_preview_css_styles(self):
+        if self.preview_imagetype:
+            options = settings.DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP[self.preview_imagetype]
+        else:
+            options = self.preview_fallback_options
+        styles = []
+        if 'width' in options:
+            styles.append('max-width: {}px'.format(options['width']))
+        else:
+            styles.append('max-width: 100%'.format(options['width']))
+        return styles
+
     def build_preview_url(self, imagepath):
         if imagepath:
             return posixpath.join(settings.MEDIA_URL, imagepath)
@@ -49,6 +61,7 @@ class ImageWidget(forms.ClearableFileInput):
             'clearable': self.clearable,
             'preview_imagetype': self.preview_imagetype,
             'preview_fallback_options': self.preview_fallback_options,
+            'preview_css_styles': ';'.join(self.get_preview_css_styles())
         }
 
     def render(self, name, value, attrs=None):

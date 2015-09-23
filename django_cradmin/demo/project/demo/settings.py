@@ -211,19 +211,19 @@ USE_TZ = True
 
 DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
     'cradmin-archiveimage-listing': {
-        'width': 200,
+        'width': 170,
         'height': 100,
         'crop': 'lfill',
         'quality': 70,
     },
     'cradmin-archiveimage-preview': {
-        'width': 800,
-        'height': 800,
+        'width': 330,
+        'height': 400,
         'crop': 'limit',
         'quality': 70,
     },
 }
 
 DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE = 'cradmin-archiveimage-listing'
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH = 200
+DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH = 170
 DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE = 'cradmin-archiveimage-preview'

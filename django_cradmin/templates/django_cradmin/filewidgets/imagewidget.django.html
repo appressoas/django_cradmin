@@ -10,10 +10,12 @@
         <div class="django-cradmin-imagewidget-preview-and-clear-inner">
             {% if imageurl %}
                 <img src="{% cradmin_transform_image_using_imagetype imageurl=imageurl imagetype=preview_imagetype fallbackoptions=preview_fallback_options %}"
-                     django-cradmin-image-preview-img>
+                     django-cradmin-image-preview-img
+                     style="{{ preview_css_styles }}">
             {% else %}
                 {# Used for the preview - hidden before we have a preview #}
-                <img django-cradmin-image-preview-img>
+                <img django-cradmin-image-preview-img
+                     style="{{ preview_css_styles }}">
             {% endif %}
 
             {% if clearable %}
