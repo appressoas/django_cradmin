@@ -22,7 +22,7 @@ The interface defines two central methods:
   directly)
 - :meth:`~django_cradmin.imageutils.backends.backendinterface.Interface.transform_image_using_imagetype`
   --- Works just like ``transform_image``, except that it takes the transformation options
-  as a key in the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP`` setting (a dict) instead of
+  as a key in the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting (a dict) instead of
   specifying options directly. This is much more maintainable in a project since it gives
   a clear overview of all image transformations used in a single place.
 
@@ -34,8 +34,8 @@ To swap out the backend, you need to:
 
 1. Create a custom imageutils class as a subclass of
    :class:`django_cradmin.imageutils.backends.backendinterface.Interface`.
-2. Update the ``DJANGO_CRADMIN_IMAGEUTILS_BACKEND`` with the string path to your
-   custom imageutils backend class.
+2. Update the :setting:`DJANGO_CRADMIN_IMAGEUTILS_BACKEND` setting with the
+   string path to your custom imageutils backend class.
 
 
 ************************************************************
@@ -74,7 +74,7 @@ See the examples below for information about how to use this in code and templat
     Your custom backend can support many more options than
     the default backend, and you can add any options supported by your
     ``django_cradmin.imageutils`` backend to the
-    ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP`` setting.
+    :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting.
 
 
 ********
@@ -84,7 +84,7 @@ Examples
 In Python code
 ==============
 Create an image URL in Python code from an imagetype specified
-in the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP``-setting::
+in the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting::
 
     from django_cradmin import imageutils
     url = imageutils.get_backend().transform_image_using_imagetype(
@@ -102,7 +102,7 @@ In Django templates
 ===================
 
 Create an image URL in a Django template from an imagetype specified
-in the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP``-setting:
+in the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting:
 
 .. code-block:: htmldjango
 
@@ -111,7 +111,7 @@ in the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP``-setting:
     <img src="{% cradmin_transform_image_using_imagetype myimage.url 'imagelisting-same-width' %}">
 
 Create an ``<img>`` tag in a Django template from an imagetype specified
-in the ``DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP``-setting:
+in the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting:
 
 .. code-block:: htmldjango
 

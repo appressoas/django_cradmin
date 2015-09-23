@@ -88,7 +88,7 @@ def get_backend():
     """
     Get the configured imageutils backend, defaulting to and object of
     class:`django_cradmin.imageutils.backends.sorl_thumbnail.SorlThumbnail`
-    if the ``DJANGO_CRADMIN_IMAGEUTILS_BACKEND``-setting is not defined.
+    if the :setting:`DJANGO_CRADMIN_IMAGEUTILS_BACKEND` setting is not defined.
     """
     global _backend
     if not _backend:

@@ -2,24 +2,71 @@
 Settings
 ########
 
+.. setting:: DJANGO_CRADMIN_THEME_PATH
+
 DJANGO_CRADMIN_THEME_PATH
-    The staticfiles path to the theme CSS. If this is not
-    set, we use ``django_cradmin/dist/css/cradmin_theme_default/theme.css``.
+=========================
+
+The staticfiles path to the theme CSS. If this is not
+set, we use ``django_cradmin/dist/css/cradmin_theme_default/theme.css``.
+
+
+.. setting::  DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
 
 DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
-    A dictionary mapping generalized icon names to css classes.
-    It is used by the ``cradmin_icon`` template tag. If you do
-    not set this, you will get font-awesome icons as defined
-    in :obj:`.django_cradmin.css_icon_map.FONT_AWESOME`.
+====================================
 
-    .. seealso:: :ref:`cradmin_icon_tags` and :issue:`43`.
+A dictionary mapping generalized icon names to css classes.
+It is used by the ``cradmin_icon`` template tag. If you do
+not set this, you will get font-awesome icons as defined
+in :obj:`.django_cradmin.css_icon_map.FONT_AWESOME`.
+
+.. seealso:: :ref:`cradmin_icon_tags` and :issue:`43`.
+
+
+.. setting:: DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
 
 DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
-    Can be used to hide the page header in form views by default.
+===========================================
+
+Can be used to hide the page header in form views by default.
+
+
+.. setting:: DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
 
 DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
-    Can be used to hide the page header in listing views by default.
+==============================================
+
+
+Can be used to hide the page header in listing views by default.
+
+
+.. setting:: DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED
 
 DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED
-    If this is ``True``, the menu template will add an angularjs directive that
-    automatically scrolls the menu when the window is scrolled.
+====================================
+
+If this is ``True``, the menu template will add an angularjs directive that
+automatically scrolls the menu when the window is scrolled.
+
+
+.. setting:: DJANGO_CRADMIN_IMAGEUTILS_BACKEND
+
+DJANGO_CRADMIN_IMAGEUTILS_BACKEND
+=================================
+
+The string path of a :doc:`django_cradmin.imageutils <imageutils>` backend.
+Defaults to::
+
+    DJANGO_CRADMIN_IMAGEUTILS_BACKEND = "django_cradmin.imageutils.backends.sorl_thumbnail.SorlThumbnail"
+
+
+.. setting:: DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP
+
+DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP
+=======================================
+
+A map between an *imagetype* (a name you define) and
+options for :meth:`django_cradmin.imageutils.backends.backendinterface.Interface.transform_image`.
+
+See :doc:`imageutils` for more information.

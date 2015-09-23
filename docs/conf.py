@@ -43,6 +43,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.extlinks',
     'sphinxcontrib.napoleon',
+    'appresso_sphinx_extensions.settings',
 ]
 
 extlinks = {

@@ -12,6 +12,7 @@ django-multiupload==0.3
 Sphinx==1.3.1
 sphinxcontrib-napoleon==0.3.3
 sphinx_rtd_theme==0.1.7
+appresso_sphinx_extensions==1.0.0
 
 # For test/CI automation
 flake8==2.4.0
