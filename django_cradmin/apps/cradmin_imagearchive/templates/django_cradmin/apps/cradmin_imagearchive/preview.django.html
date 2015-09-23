@@ -2,7 +2,5 @@
 {% load i18n %}
 
 <p>
-    <img src="{% cradmin_thumbnail archiveimage.image width=300 height=300 %}"
-         class="img-responsive"
-         alt="{% trans 'Image preview' %}">
+    {% cradmin_create_archiveimage_tag archiveimage=archiveimage imagetype=imagetype css_class='img-responsive' fallbackoptions=fallbackoptions %}
 </p>

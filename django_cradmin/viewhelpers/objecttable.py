@@ -11,7 +11,7 @@ from xml.sax.saxutils import quoteattr
 from django import forms
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.template import defaultfilters
+from django.template import defaultfilters, RequestContext
 from django.template.defaultfilters import truncatechars
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
@@ -202,7 +202,8 @@ class Column(object):
         """
         Render the cell using the template specifed in :obj:`.template_name`.
         """
-        return render_to_string(self.get_template_name(obj), self.get_context_data(obj=obj))
+        context = RequestContext(self.view.request, self.get_context_data(obj))
+        return render_to_string(self.get_template_name(obj), context)
 
     def get_flip_ordering_url(self):
         """
@@ -439,8 +440,7 @@ class ImagePreviewColumn(Column):
         context = super(ImagePreviewColumn, self).get_context_data(obj=obj)
         imageurl = None
         imagefieldfile = self.render_value(obj)
-        if imagefieldfile:
-            imageurl = self.view.request.build_absolute_uri(imagefieldfile.url)
+        imageurl = imagefieldfile.url
         context.update({
             'imageurl': imageurl,
             'preview_imagetype': self.get_preview_imagetype(),

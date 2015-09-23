@@ -6,7 +6,6 @@ Settings
 
 DJANGO_CRADMIN_THEME_PATH
 =========================
-
 The staticfiles path to the theme CSS. If this is not
 set, we use ``django_cradmin/dist/css/cradmin_theme_default/theme.css``.
 
@@ -15,7 +14,6 @@ set, we use ``django_cradmin/dist/css/cradmin_theme_default/theme.css``.
 
 DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
 ====================================
-
 A dictionary mapping generalized icon names to css classes.
 It is used by the ``cradmin_icon`` template tag. If you do
 not set this, you will get font-awesome icons as defined
@@ -28,7 +26,6 @@ in :obj:`.django_cradmin.css_icon_map.FONT_AWESOME`.
 
 DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
 ===========================================
-
 Can be used to hide the page header in form views by default.
 
 
@@ -36,8 +33,6 @@ Can be used to hide the page header in form views by default.
 
 DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
 ==============================================
-
-
 Can be used to hide the page header in listing views by default.
 
 
@@ -52,9 +47,13 @@ automatically scrolls the menu when the window is scrolled.
 
 .. setting:: DJANGO_CRADMIN_IMAGEUTILS_BACKEND
 
+
+**********
+imageutils
+**********
+
 DJANGO_CRADMIN_IMAGEUTILS_BACKEND
 =================================
-
 The string path of a :doc:`django_cradmin.imageutils <imageutils>` backend.
 Defaults to::
 
@@ -70,3 +69,17 @@ A map between an *imagetype* (a name you define) and
 options for :meth:`django_cradmin.imageutils.backends.backendinterface.Interface.transform_image`.
 
 See :doc:`imageutils` for more information.
+
+
+********************
+cradmin_imagearchive
+********************
+
+.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE
+
+DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE
+=============================================
+The :doc:`imageutils` imagetype that defines how previews of images
+in cradmin imagearchive is transformed. If this is not defined, we default
+to scaling the image to fit within a 300x300 px box.
+

@@ -38,8 +38,8 @@ logger = logging.getLogger(__name__)
 #         logger.exception('cradmin_thumbnail failed. archiveimage=%r, kwargs=%r', archiveimage, kwargs)
 #         return ''
 
-@register.simple_tag()
-def cradmin_transform_image(imageurl, **options):
+@register.simple_tag(takes_context=True)
+def cradmin_transform_image(context, imageurl, **options):
     """
     Tag wrapper around
     :meth:`~django_cradmin.imageutils.backends.backendinterface.Interface.transform_image`.
@@ -49,13 +49,15 @@ def cradmin_transform_image(imageurl, **options):
         imageurl: The URL of the image to transform.
         options: Image transformation options.
     """
+    request = context['request']
+    imageurl = request.build_absolute_uri(imageurl)
     if 'options' in options:
         options = options['options']
     return imageutils.get_backend().transform_image(imageurl, **options)
 
 
-@register.simple_tag()
-def cradmin_transform_image_using_imagetype(imageurl, imagetype, fallbackoptions=None):
+@register.simple_tag(takes_context=True)
+def cradmin_transform_image_using_imagetype(context, imageurl, imagetype, fallbackoptions=None):
     """
     Tag wrapper around
     :meth:`~django_cradmin.imageutils.backends.backendinterface.Interface.transform_image_using_imagetype`.
@@ -68,6 +70,8 @@ def cradmin_transform_image_using_imagetype(imageurl, imagetype, fallbackoptions
         fallbackoptions: An optional dict of options to use if ``imagetype``
             is not in the :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting.
     """
+    request = context['request']
+    imageurl = request.build_absolute_uri(imageurl)
     try:
         return imageutils.get_backend().transform_image_using_imagetype(imageurl, imagetype)
     except (ImageTypeMapSettingNotDefined, InvalidImageType):
@@ -77,8 +81,9 @@ def cradmin_transform_image_using_imagetype(imageurl, imagetype, fallbackoptions
             raise
 
 
-@register.inclusion_tag('django_cradmin/imageutils/templatetags/archiveimage-tag.django.html')
-def cradmin_create_archiveimage_tag(archiveimage, imagetype, css_class='', fallbackoptions=None):
+@register.inclusion_tag('django_cradmin/imageutils/templatetags/archiveimage-tag.django.html',
+                        takes_context=True)
+def cradmin_create_archiveimage_tag(context, archiveimage, imagetype, css_class='', fallbackoptions=None):
     """
     Creates an ``<img>`` tag from the given cradmin archiveimage.
 
@@ -90,6 +95,7 @@ def cradmin_create_archiveimage_tag(archiveimage, imagetype, css_class='', fallb
     return {
         'archiveimage': archiveimage,
         'url': cradmin_transform_image_using_imagetype(
+            context=context,
             imageurl=archiveimage.image.url,
             imagetype=imagetype,
             fallbackoptions=fallbackoptions),

@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import posixpath
 from django import forms
 from django.conf import settings
+from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
@@ -36,9 +37,19 @@ class ImageWidget(forms.ClearableFileInput):
 
     def build_preview_url(self, imagepath):
         if imagepath:
-            return self.request.build_absolute_uri(posixpath.join(settings.MEDIA_URL, imagepath))
+            return posixpath.join(settings.MEDIA_URL, imagepath)
         else:
             return None
+
+    def get_context_data(self, input_html, imageurl, name):
+        return {
+            'input_html': input_html,
+            'imageurl': imageurl,
+            'clear_checkbox_name': self.clear_checkbox_name(name),
+            'clearable': self.clearable,
+            'preview_imagetype': self.preview_imagetype,
+            'preview_fallback_options': self.preview_fallback_options,
+        }
 
     def render(self, name, value, attrs=None):
         attrs = attrs or {}
@@ -49,15 +60,11 @@ class ImageWidget(forms.ClearableFileInput):
         input_html = forms.FileInput.render(self, name, value, attrs)
         imagepath = getattr(value, 'name', None)
         imageurl = self.build_preview_url(imagepath)
-
-        output = render_to_string(self.template_name, {
-            'input_html': input_html,
-            'imageurl': imageurl,
-            'clear_checkbox_name': self.clear_checkbox_name(name),
-            'clearable': self.clearable,
-            'preview_imagetype': self.preview_imagetype,
-            'preview_fallback_options': self.preview_fallback_options,
-        })
+        context = RequestContext(self.request, self.get_context_data(
+            input_html=input_html,
+            imageurl=imageurl,
+            name=name))
+        output = render_to_string(self.template_name, context)
         return mark_safe(output)
 
 

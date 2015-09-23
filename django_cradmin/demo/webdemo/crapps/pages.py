@@ -136,7 +136,7 @@ class PageCreateUpdateMixin(object):
         form.fields['body'].widget = AceMarkdownWidget()
         preview = '<p class="text-muted">(No image selected)</p>'
         if self.object and self.object.image:
-            preview = self.object.image.get_preview_html()
+            preview = self.object.image.get_preview_html(request=self.request)
         form.fields['image'].widget = ModelChoiceWidget(
             queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role),
             preview=preview,

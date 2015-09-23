@@ -6,9 +6,11 @@ from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericForeignKey
+from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from future.utils import python_2_unicode_compatible
+from django_cradmin import crsettings
 
 
 def archiveimage_upload_to(archiveimage, filename):
@@ -104,10 +106,25 @@ class ArchiveImage(models.Model):
             image_width=self.image_width,
             image_height=self.image_height)
 
-    def get_preview_html(self):
-        return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', {
-            'archiveimage': self
+    def get_preview_html(self, request, imagetype=None):
+        """
+        Get HTML that can be used to show a preview of the image.
+
+        Parameters:
+            request: A HttpRequest object which is used to create an
+                absolute URI for the image.
+        """
+        if not imagetype:
+            imagetype = crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE')
+        context = RequestContext(request, {
+            'archiveimage': self,
+            'imagetype': imagetype,
+            'fallbackoptions': {
+                'width': 300,
+                'height': 300
+            }
         })
+        return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', context)
 
     @property
     def screenreader_text(self):

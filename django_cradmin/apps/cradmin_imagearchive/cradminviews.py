@@ -113,7 +113,8 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
     hide_column_headers = True
 
     def make_foreignkey_preview_for(self, obj):
-        return obj.get_preview_html()
+        archiveimage = obj
+        return archiveimage.get_preview_html(request=self.request)
 
     def get_buttons(self):
         app = self.request.cradmin_app
