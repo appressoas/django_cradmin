@@ -63,7 +63,16 @@ class ArchiveImage(models.Model):
     file_extension = models.CharField(
         max_length=255, blank=False, null=False, editable=False)
 
+    #: The file size in bytes.
+    file_size = models.PositiveIntegerField(blank=True, null=True)
+
     #: The name of the image file.
+    #:
+    #: Can be None. This is both because this was added
+    #: after cradmin was in use in production, and because
+    #: calculating size can be expensive if uploading
+    #: huge amounts of images in bulk. All the cradmin views
+    #: provided by the app sets this.
     name = models.CharField(
         max_length=255, blank=True, null=False,
         verbose_name=_('name'),
@@ -130,6 +139,12 @@ class ArchiveImage(models.Model):
 
     @property
     def screenreader_text(self):
+        """
+        Get screen reader text for the image. Typically added to the "alt"
+        or "aria-label" HTML attributes.
+
+        Defaults to description, but falls back to name.
+        """
         if self.description:
             return self.description
         else:

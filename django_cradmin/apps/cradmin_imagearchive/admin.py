@@ -36,8 +36,12 @@ class ArchiveImageAdmin(admin.ModelAdmin):
             return ArchiveImage.objects.none()
 
     def get_size(self, obj):
-        return defaultfilters.filesizeformat(obj.image.size)
+        if obj.file_size:
+            return defaultfilters.filesizeformat(obj.file_size)
+        else:
+            return None
     get_size.short_description = 'Size'
+    get_size.admin_order_field = 'file_size'
 
     def get_url(self, obj):
         return '<a href="{url}" target="_blank">{label}</a>'.format(
@@ -46,7 +50,6 @@ class ArchiveImageAdmin(admin.ModelAdmin):
         )
     get_url.short_description = 'Open'
     get_url.allow_tags = True
-
 
 
 admin.site.register(ArchiveImage, ArchiveImageAdmin)

@@ -156,6 +156,7 @@ class ArchiveImageCreateUpdateMixin(object):
         archiveimage.image = None
         archiveimage.save()
         archiveimage.image = image
+        archiveimage.file_size = image.size
         archiveimage.save()
         return archiveimage
 
@@ -283,6 +284,7 @@ class ArchiveImageBulkAddView(formbase.FormView):
         archiveimage = ArchiveImage(
             role=self.request.cradmin_role,
             name=temporaryfile.filename)
+        archiveimage.file_size = temporaryfile.file.size
         archiveimage.clean()
         archiveimage.save()
         archiveimage.image.save(temporaryfile.filename, ContentFile(temporaryfile.file.read()))
