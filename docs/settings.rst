@@ -115,11 +115,3 @@ to::
 
 You can change this if you want to store archive images in another directory.
 Any pattern must contain all the variables in the pattern above.
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_SHOW_PREVIEWS_IN_DJANGOADMIN
-
-DJANGO_CRADMIN_IMAGEARCHIVE_SHOW_PREVIEWS_IN_DJANGOADMIN
-========================================================
-If this is ``True`` (the default), we show image previews
-in the cradmin_imagearchive Django admin.
