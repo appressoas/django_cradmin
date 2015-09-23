@@ -200,6 +200,12 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
             )
         ]
 
+    def save_object(self, form, commit=True):
+        # Delete the old image before uploading the new one.
+        old_archiveimage = ArchiveImage.objects.get(id=self.object.id)
+        old_archiveimage.image.delete()
+        return super(ArchiveImageUpdateView, self).save_object(form, commit=commit)
+
 
 class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteView):
     """

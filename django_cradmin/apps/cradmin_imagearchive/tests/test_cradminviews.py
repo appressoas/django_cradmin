@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 import htmls
 import mock
+import os
 
 from django_cradmin.apps.cradmin_imagearchive import cradminviews
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
@@ -163,6 +165,27 @@ class TestUpdateView(TestCase):
         self.assertEquals(response.status_code, 302)
         update_image = ArchiveImage.objects.first()
         self.assertEqual(update_image.name, 'testname')
+
+    def test_post_update_image_removes_old_image(self):
+        old_image_path = os.path.join(settings.MEDIA_ROOT, self.archiveimage.image.name)
+        self.assertTrue(os.path.exists(old_image_path))
+
+        testimage = create_image(200, 100)
+        request = self.factory.post('/test', {
+            'image': SimpleUploadedFile('testname.png', testimage)
+        })
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.cradmin_app.reverse_appurl.return_value = '/success'
+        request.cradmin_role = self.role
+        request._messages = mock.MagicMock()
+
+        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
+        self.assertEquals(response.status_code, 302)
+        updated_image = ArchiveImage.objects.first()
+        self.assertFalse(os.path.exists(old_image_path))
+        new_image_path = os.path.join(settings.MEDIA_ROOT, updated_image.image.name)
+        self.assertTrue(os.path.exists(new_image_path))
 
 
 class TestArchiveImageBulkAddView(TestCase):
