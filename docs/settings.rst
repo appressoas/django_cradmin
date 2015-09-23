@@ -83,3 +83,15 @@ The :doc:`imageutils` imagetype that defines how previews of images
 in cradmin imagearchive is transformed. If this is not defined, we default
 to scaling the image to fit within a 300x300 px box.
 
+
+.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_FILENAMEPATTERN
+
+DJANGO_CRADMIN_IMAGEARCHIVE_FILENAMEPATTERN
+===========================================
+The pattern to use for the filename for ``cradmin_imagearchive`` images. Defaults
+to::
+
+    cradmin_imagearchive_images/{id}-{uuid}{extension}
+
+You can change this if you want to store archive images in another directory.
+Any pattern must contain all the variables in the pattern above.

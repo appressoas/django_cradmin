@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from builtins import object
+import logging
 from django import http
 from django.contrib import messages
 from django.core.files.base import ContentFile
@@ -21,6 +22,9 @@ from django_cradmin import crapp
 from django_cradmin import crsettings
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.widgets import filewidgets
+
+
+logger = logging.getLogger(__name__)
 
 
 class DescriptionColumn(objecttable.MultiActionColumn):
@@ -146,6 +150,15 @@ class ArchiveImageCreateUpdateMixin(object):
             clearable=False, preview_imagetype=self.get_preview_imagetype())
         return form
 
+    def save_object_with_new_imagefile(self, form):
+        archiveimage = super(ArchiveImageCreateUpdateMixin, self).save_object(form, commit=False)
+        image = archiveimage.image
+        archiveimage.image = None
+        archiveimage.save()
+        archiveimage.image = image
+        archiveimage.save()
+        return archiveimage
+
 
 class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
                              ArchiveImageCreateUpdateMixin,
@@ -169,13 +182,7 @@ class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
         ]
 
     def save_object(self, form, commit=True):
-        archiveimage = super(ArchiveImageCreateView, self).save_object(form, commit=False)
-        image = archiveimage.image
-        archiveimage.image = None
-        archiveimage.save()
-        archiveimage.image = image
-        archiveimage.save()
-        return archiveimage
+        return self.save_object_with_new_imagefile(form)
 
     def get_success_message(self, object):
         what = u'"{}"'.format(object)
@@ -203,8 +210,12 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
     def save_object(self, form, commit=True):
         # Delete the old image before uploading the new one.
         old_archiveimage = ArchiveImage.objects.get(id=self.object.id)
-        old_archiveimage.image.delete()
-        return super(ArchiveImageUpdateView, self).save_object(form, commit=commit)
+        image_changed = old_archiveimage.image.name != form.cleaned_data['image'].name
+        if image_changed:
+            old_archiveimage.image.delete()
+            return self.save_object_with_new_imagefile(form)
+        else:
+            return super(ArchiveImageUpdateView, self).save_object(form, commit=commit)
 
 
 class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteView):

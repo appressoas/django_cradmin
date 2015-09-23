@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from builtins import object
 import os
 import posixpath
+import uuid
 from django.conf import settings
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -18,9 +19,10 @@ def archiveimage_upload_to(archiveimage, filename):
         raise ValueError('Can not set image until after the ArchiveImage object has been created.')
     name, extension = os.path.splitext(filename)
     filenamepattern = getattr(settings, 'DJANGO_CRADMIN_IMAGEARCHIVE_FILENAMEPATTERN',
-                              'cradmin_imagearchive_images/{id}{extension}')
+                              'cradmin_imagearchive_images/{id}-{uuid}{extension}')
     return filenamepattern.format(
         id=archiveimage.id,
+        uuid=uuid.uuid1(),
         extension=extension)
 
 

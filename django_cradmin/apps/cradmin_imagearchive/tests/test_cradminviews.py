@@ -187,6 +187,46 @@ class TestUpdateView(TestCase):
         new_image_path = os.path.join(settings.MEDIA_ROOT, updated_image.image.name)
         self.assertTrue(os.path.exists(new_image_path))
 
+    def test_post_update_not_changing_image_does_not_remove_old_image(self):
+        old_image_path = os.path.join(settings.MEDIA_ROOT, self.archiveimage.image.name)
+        self.assertTrue(os.path.exists(old_image_path))
+
+        testimage = create_image(200, 100)
+        request = self.factory.post('/test', {
+            'image': SimpleUploadedFile('testname.png', testimage)
+        })
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.cradmin_app.reverse_appurl.return_value = '/success'
+        request.cradmin_role = self.role
+        request._messages = mock.MagicMock()
+
+        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
+        self.assertEquals(response.status_code, 302)
+        updated_image = ArchiveImage.objects.first()
+        self.assertFalse(os.path.exists(old_image_path))
+        new_image_path = os.path.join(settings.MEDIA_ROOT, updated_image.image.name)
+        self.assertTrue(os.path.exists(new_image_path))
+
+    def test_post_update_image_new_unique_name(self):
+        old_image_name = self.archiveimage.image.name
+
+        testimage = create_image(200, 100)
+        request = self.factory.post('/test', {
+            'image': SimpleUploadedFile('testname.png', testimage)
+        })
+        request.cradmin_instance = mock.MagicMock()
+        request.cradmin_app = mock.MagicMock()
+        request.cradmin_app.reverse_appurl.return_value = '/success'
+        request.cradmin_role = self.role
+        request._messages = mock.MagicMock()
+
+        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
+        self.assertEquals(response.status_code, 302)
+        updated_image = ArchiveImage.objects.first()
+        new_image_name = updated_image.image.name
+        self.assertNotEqual(old_image_name, new_image_name)
+
 
 class TestArchiveImageBulkAddView(TestCase):
     def setUp(self):
