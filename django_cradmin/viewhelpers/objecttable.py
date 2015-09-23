@@ -438,9 +438,10 @@ class ImagePreviewColumn(Column):
 
     def get_context_data(self, obj):
         context = super(ImagePreviewColumn, self).get_context_data(obj=obj)
-        imageurl = None
         imagefieldfile = self.render_value(obj)
-        imageurl = imagefieldfile.url
+        imageurl = None
+        if imagefieldfile:
+            imageurl = imagefieldfile.url
         context.update({
             'imageurl': imageurl,
             'preview_imagetype': self.get_preview_imagetype(),

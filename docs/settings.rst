@@ -45,12 +45,13 @@ If this is ``True``, the menu template will add an angularjs directive that
 automatically scrolls the menu when the window is scrolled.
 
 
-.. setting:: DJANGO_CRADMIN_IMAGEUTILS_BACKEND
 
 
 **********
 imageutils
 **********
+
+.. setting:: DJANGO_CRADMIN_IMAGEUTILS_BACKEND
 
 DJANGO_CRADMIN_IMAGEUTILS_BACKEND
 =================================
@@ -64,7 +65,6 @@ Defaults to::
 
 DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP
 =======================================
-
 A map between an *imagetype* (a name you define) and
 options for :meth:`django_cradmin.imageutils.backends.backendinterface.Interface.transform_image`.
 
