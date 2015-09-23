@@ -62,12 +62,28 @@ class DescriptionSelectColumn(objecttable.UseThisActionColumn):
 
 class ImageColumn(objecttable.ImagePreviewColumn):
     modelfield = 'image'
-    column_width = '100px'
+    column_width = None
 
     preview_fallbackoptions = {
         'width': 100,
         'height': 65,
     }
+
+    def get_column_width(self):
+        if self.column_width:
+            return self.column_width
+        else:
+            width = crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH', 100)
+            return '{}px'.format(width)
+
+    def get_preview_imagetype(self):
+        imagetype_from_settings = crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE')
+        if self.preview_imagetype:
+            return self.preview_imagetype
+        elif imagetype_from_settings:
+            return imagetype_from_settings
+        else:
+            return None
 
     def get_header(self):
         return _('Preview')

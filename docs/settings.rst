@@ -75,6 +75,26 @@ See :doc:`imageutils` for more information.
 cradmin_imagearchive
 ********************
 
+
+.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE
+
+DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE
+=============================================
+The :doc:`imageutils` imagetype that defines how images in the
+cradmin listing of archive images in cradmin imagearchive is transformed.
+If this is not defined, we default to scaling the image to fit within
+a 100x60 px box. If you you change this, you will also want to
+change :setting:`.DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH`
+
+
+.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH
+
+DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH
+==============================================
+The width of the column containing the image preview in the listing
+of archive images in the cradmin view. Defaults to ``100``.
+
+
 .. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE
 
 DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE
@@ -95,3 +115,11 @@ to::
 
 You can change this if you want to store archive images in another directory.
 Any pattern must contain all the variables in the pattern above.
+
+
+.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_SHOW_PREVIEWS_IN_DJANGOADMIN
+
+DJANGO_CRADMIN_IMAGEARCHIVE_SHOW_PREVIEWS_IN_DJANGOADMIN
+========================================================
+If this is ``True`` (the default), we show image previews
+in the cradmin_imagearchive Django admin.
