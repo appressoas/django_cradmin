@@ -45,7 +45,7 @@ class TestColumn(TestCase):
 
     # check that you get an exception when running render_cell_content without overriding with subclass..
     def test_render_cell_not_implemented(self):
-        col = objecttable.Column(view=None, columnindex=0)
+        col = objecttable.Column(view=mock.MagicMock(), columnindex=0)
 
         with self.assertRaises(NotImplementedError):
             col.render_cell_content(None)
