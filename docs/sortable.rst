@@ -1,11 +1,11 @@
-#######################################################################
+#################################################################
 :mod:`django_cradmin.sortable.models` --- Making objects sortable
-#######################################################################
+#################################################################
 
 To make a model sortable, you need the following two additions to your model:
 
 #. You need to inherit from :class:`.SortableBase` (an abstract model) instead of ``django.db.Model``,
-#. You need to add create a subclass of :class:`.SortableManagerBase` and attach that subclass.
+#. You need to create a subclass of :class:`.SortableManagerBase` and attach that subclass
    as a manager for your model.
 
 Example::
