@@ -38,7 +38,6 @@ class TestDelete(TestCase):
         self.assertEqual(
             selector.one('.django-cradmin-page-header-inner h1').alltext_normalized,
             'Delete Simple Test Item')
-        selector.prettyprint()
         self.assertEqual(
             selector.one('#deleteview-preview').alltext_normalized,
             'Are you sure you want to delete "Simple Test Item"?')
