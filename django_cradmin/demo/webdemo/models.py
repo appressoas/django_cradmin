@@ -10,11 +10,15 @@ from future.utils import python_2_unicode_compatible
 from django_cradmin.apps.cradmin_imagearchive import models as imagearchivemodels
 
 
+@python_2_unicode_compatible
 class Site(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(
         null=False, blank=True, default='')
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL)
+
+    def __str__(self):
+        return self.name
 
 
 # class Tag(models.Model):
