@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-18 14:05+0200\n"
+"POT-Creation-Date: 2015-09-24 18:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,138 +106,134 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:34
+#: apps/cradmin_imagearchive/cradminviews.py:39
 msgid "Edit"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:37 viewhelpers/delete.py:29
+#: apps/cradmin_imagearchive/cradminviews.py:42 viewhelpers/delete.py:29
 msgid "Delete"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:53
+#: apps/cradmin_imagearchive/cradminviews.py:58
 msgid "Use this"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:65 viewhelpers/crudbase.py:52
+#: apps/cradmin_imagearchive/cradminviews.py:89 viewhelpers/crudbase.py:52
 msgid "Preview"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:91
-#: apps/cradmin_imagearchive/cradminviews.py:118
+#: apps/cradmin_imagearchive/cradminviews.py:115
+#: apps/cradmin_imagearchive/cradminviews.py:143
 msgid "Add image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:94
+#: apps/cradmin_imagearchive/cradminviews.py:118
 msgid "Bulk upload"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:144
+#: apps/cradmin_imagearchive/cradminviews.py:188
 msgid "Upload and select"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:145
+#: apps/cradmin_imagearchive/cradminviews.py:189
 msgid "Upload image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:146
+#: apps/cradmin_imagearchive/cradminviews.py:190
 msgid "Upload and continue editing"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:168
-#: apps/cradmin_imagearchive/cradminviews.py:278
+#: apps/cradmin_imagearchive/cradminviews.py:206
+#: apps/cradmin_imagearchive/cradminviews.py:327
 #, python-format
 msgid "Uploaded %(what)s."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:205
+#: apps/cradmin_imagearchive/cradminviews.py:253
 msgid "Upload images by dragging and dropping them here"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:206
+#: apps/cradmin_imagearchive/cradminviews.py:254
 msgid "Invalid filetype. You can only upload images."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:207
+#: apps/cradmin_imagearchive/cradminviews.py:255
 msgid "... or select images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:208
+#: apps/cradmin_imagearchive/cradminviews.py:256
 msgid "Select images ..."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:210
+#: apps/cradmin_imagearchive/cradminviews.py:258
 msgid "Upload at least one image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:212
+#: apps/cradmin_imagearchive/cradminviews.py:260
 msgid ""
 "Upload as many images as you like. You can edit the name and description of "
 "the images after they have been uploaded."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:215
+#: apps/cradmin_imagearchive/cradminviews.py:263
 msgid "You must upload at least one file."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:228
+#: apps/cradmin_imagearchive/cradminviews.py:276
 msgid "Bulk upload archive images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:233
+#: apps/cradmin_imagearchive/cradminviews.py:281
 msgid "Add to the image archive"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:234
+#: apps/cradmin_imagearchive/cradminviews.py:282
 msgid "Uploading images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:38
+#: apps/cradmin_imagearchive/models.py:42
 msgid "role"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:39
+#: apps/cradmin_imagearchive/models.py:43
 msgid "The role owning this image."
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:48
+#: apps/cradmin_imagearchive/models.py:52
 msgid "image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:49
+#: apps/cradmin_imagearchive/models.py:53
 msgid "Select an image to add to the archive."
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:65
+#: apps/cradmin_imagearchive/models.py:78
 msgid "name"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:67
+#: apps/cradmin_imagearchive/models.py:80
 msgid ""
 "Give the image a name (optional). If you leave this blank, the name of the "
 "uploaded image file is used."
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:74
+#: apps/cradmin_imagearchive/models.py:87
 msgid "description"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:76
+#: apps/cradmin_imagearchive/models.py:89
 msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
 "information carried in the image (if any)."
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:88
+#: apps/cradmin_imagearchive/models.py:101
 msgid "archive image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:89
+#: apps/cradmin_imagearchive/models.py:102
 msgid "archive images"
-msgstr ""
-
-#: apps/cradmin_imagearchive/templates/django_cradmin/apps/cradmin_imagearchive/preview.django.html:7
-msgid "Image preview"
 msgstr ""
 
 #: apps/cradmin_invite/baseviews/accept.py:38
@@ -525,15 +521,15 @@ msgstr ""
 msgid "Remove file"
 msgstr ""
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:25
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:27
 msgid "Remove image"
 msgstr ""
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:37
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:39
 msgid "Replace image ..."
 msgstr ""
 
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:39
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:41
 msgid "Select an image ..."
 msgstr ""
 
@@ -618,7 +614,7 @@ msgid "No %(modelname_plural)s"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
-#: viewhelpers/objecttable.py:949
+#: viewhelpers/objecttable.py:927
 msgid "Search..."
 msgstr ""
 
