@@ -24,6 +24,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sass-stdlib" level="application" />
   </component>
+  <component name="PyDocumentationSettings">
+    <option name="myDocStringFormat" value="NumPy" />
+  </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
@@ -36,5 +39,8 @@
         <option value="$MODULE_DIR$/django_cradmin/apps/cradmin_email/templates" />
       </list>
     </option>
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
   </component>
 </module>
