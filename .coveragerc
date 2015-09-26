@@ -1,0 +1,16 @@
+[run]
+source = django_cradmin
+
+[report]
+omit =
+    **/settings.py
+    **/migrations/*
+    **/admin.py
+    **/urls.py
+    */project/develop/*
+    */project/default/settings.py
+    */project/default/projectspecific_settings.py
+    */project/default/default_urls.py
+    */project/settingsproxy.py
+    */project/production/wsgi.py
+    django_cradmin/demo/*

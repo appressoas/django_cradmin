@@ -25,4 +25,8 @@
 /cradmin_demo/test_django_media_root/
 /cache/
 
+# coverage.py
+/.coverage
+/htmlcov/
+
 *.sqlite3
