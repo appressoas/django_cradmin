@@ -79,14 +79,26 @@ class AbstractItemRenderer(AbstractRenderable):
     """
     Abstract base class for :class:`.ItemFrameRenderer`
     and :class:`.InnerValueRenderer`.
+
+    You will normally add objects of a class that extends this class
+    to :class:`.List`, but it is not required.
     """
-    def __init__(self, value, valuealias=None):
+
+    #: If this is specified, we will add an attribute with this name
+    #: for the value as an attribute of the object.
+    #:
+    #: I.e.: if ``valuealias = "person"``, you will be able to use ``me.person`` in
+    #: the template, and you will be able to use ``self.person`` in any methods you
+    #: add or override in the class (just remember to call ``super()`` if you override
+    #: ``__init__``).
+    valuealias = None
+
+    def __init__(self, value):
         """
         """
         self.value = value
-        self.valuealias = valuealias
-        if valuealias:
-            setattr(self, valuealias, valuealias)
+        if self.valuealias:
+            setattr(self, self.valuealias, self.valuealias)
 
 
 class ItemFrameRenderer(AbstractItemRenderer):
@@ -117,45 +129,64 @@ class ItemValueRenderer(AbstractItemRenderer):
 
 
 class List(AbstractRenderable):
-
-    #: The default item value renderer class.
-    #: Defaults to :class:`.ItemValueRenderer`.
-    itemvalue_renderer_class = ItemValueRenderer
-
-    #: The default item frame renderer class.
-    #: Defaults to :class:`.ItemFrameRenderer`.
-    itemframe_renderer_class = None
-
     def __init__(self):
         self.renderable_list = []
 
-    def append_object(self, itemvalue, itemvalue_renderer_class=None):
-        if not itemvalue_renderer_class:
-            itemvalue_renderer_class = self.get_itemvalue_renderer(itemvalue)
-        item = itemvalue_renderer_class(itemvalue=itemvalue)
-        self.renderable_list.append(itemvalue)
+    def append(self, renderable):
+        """
+        Appends an item to the list.
 
-    def append_item(self, item):
-        self.renderable_list.append(item)
+        Parameters:
+            renderable: Must implement the :class:`.AbstractRenderable` interface,
+                and it is typically a subclass of :class:`.AbstractItemRenderer`.
+        """
+        self.renderable_list.append(renderable)
 
-    def extend(self, value_iterable, itemvalue_renderer_class=None):
-        for itemvalue in value_iterable:
-            self.append_object(
-                itemvalue=itemvalue,
-                itemvalue_renderer_class=itemvalue_renderer_class)
+    def extend(self, renerable_iterable):
+        """
+        Just like :meth:`.append` except that it takes an iterable
+        of renderables instead of a single renderable.
+        """
+        self.renderable_list.extend(renerable_iterable)
+
+    def extend_with_values(self, value_iterable, value_renderer_class, frame_renderer_class=None):
+        """
+        Extends the list with an iterable of values.
+
+        Parameters:
+            value_iterable: An iterable of values to add to the list.
+            value_renderer_class: A subclass of :class:`.ItemValueRenderer`.
+            frame_renderer_class: A subclass of :class:`.ItemFrameRenderer`.
+
+                If this is ``None``, the object added to the list will be an object of the
+                ``value_renderer_class``.
+
+                If this is specified, the object added to the list will be an object
+                of the ``frame_renderer_class`` with an object of the ``value_renderer_class``
+                as the ``inneritem`` attribute/parameter.
+        """
+        if frame_renderer_class:
+            renderable_iterable = [frame_renderer_class(value=value,
+                                                        inneritem=value_renderer_class(value=value))
+                                   for value in value_iterable]
+        else:
+            renderable_iterable = map(value_renderer_class, value_iterable)
+        self.extend(renderable_iterable)
 
     @classmethod
-    def from_value_iterable(cls, value_iterable,
-                            itemvalue_renderer_class=None, **kwargs):
-        listobject = cls(**kwargs)
-        listobject.extend(value_iterable,
-                          itemvalue_renderer_class=itemvalue_renderer_class)
+    def from_value_iterable(cls, value_iterable, value_renderer_class,
+                            frame_renderer_class=None,
+                            **listkwargs):
+        """
+        A shortcut for creating an object of this class with the given ``**listkwargs``
+        as __init__ arguments, and then calling :meth:`.extend_with_values` with
+        ``value_iterable``, ``value_renderer_class`` and ``frame_renderer_class`` as
+        arguments.
 
-    def get_itemvalue_renderer(self, itemvalue):
-        return self.itemvalue_renderer_class(itemvalue)
-
-    def get_itemframe_renderer(self, itemvalue):
-        if self.itemframe_renderer_class:
-            return self.itemframe_renderer_class(itemvalue)
-        else:
-            return None
+        Returns:
+            An object of this class.
+        """
+        listobject = cls(**listkwargs)
+        listobject.extend_with_values(value_iterable, value_renderer_class,
+                                      frame_renderer_class=frame_renderer_class)
+        return listobject
