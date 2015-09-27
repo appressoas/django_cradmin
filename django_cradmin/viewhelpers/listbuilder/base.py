@@ -103,6 +103,14 @@ class AbstractItemRenderer(AbstractRenderable):
             setattr(self, self.valuealias, self.value)
 
 
+class ItemValueRenderer(AbstractItemRenderer):
+    """
+    The value renderer renders the value of each item in
+    the :class:`.List`.
+    """
+    template_name = 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html'
+
+
 class ItemFrameRenderer(AbstractItemRenderer):
     """
     The outer item renderer provides a frame around the item.
@@ -118,21 +126,36 @@ class ItemFrameRenderer(AbstractItemRenderer):
         The :class:`.List` dors not require a :class:`.ItemFrameRenderer`,
         so lightweight lists without this extra wrapper is possible.
     """
-    def __init__(self, value, inneritem):
-        super(ItemFrameRenderer, self).__init__(value)
+    template_name = 'django_cradmin/viewhelpers/listbuilder/base/itemframe.django.html'
+
+    def __init__(self, inneritem):
+        super(ItemFrameRenderer, self).__init__(inneritem.value)
         self.inneritem = inneritem
 
 
-class ItemValueRenderer(AbstractItemRenderer):
-    """
-    The value renderer renders the value of each item in
-    the :class:`.List`.
-    """
-
-
 class List(AbstractRenderable):
+    """
+    A builder for HTML lists (can be used for other lists as well).
+
+    Each item in the list is a :class:`.AbstractItemRenderer` object, and
+    it is typically:
+
+    - A subclass of :class:`.ItemValueRenderer` for simple lists.
+    - A subclass of :class:`.ItemFrameRenderer` for more complex lists.
+
+    .. note:: Items can be any :class:`.AbstractRenderable`, but that does not
+        work with the shortcut methods:
+
+        - :meth:`.extend_with_values`
+        - :meth:`.from_value_iterable`
+    """
+    template_name = 'django_cradmin/viewhelpers/listbuilder/base/list.django.html'
+
     def __init__(self):
         self.renderable_list = []
+
+    def iter_renderables(self):
+        return iter(self.renderable_list)
 
     def append(self, renderable):
         """
@@ -168,8 +191,7 @@ class List(AbstractRenderable):
                 as the ``inneritem`` attribute/parameter.
         """
         if frame_renderer_class:
-            renderable_iterable = [frame_renderer_class(value=value,
-                                                        inneritem=value_renderer_class(value=value))
+            renderable_iterable = [frame_renderer_class(inneritem=value_renderer_class(value=value))
                                    for value in value_iterable]
         else:
             renderable_iterable = map(value_renderer_class, value_iterable)

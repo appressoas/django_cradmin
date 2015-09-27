@@ -1,0 +1,7 @@
+<ul>
+    {% for renderable in me.iter_renderables %}
+        <li>
+            {{ renderable.render }}
+        </li>
+    {% endfor %}
+</ul>
