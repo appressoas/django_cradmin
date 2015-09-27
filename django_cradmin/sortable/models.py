@@ -58,6 +58,88 @@ class SortableManagerBase(models.Manager):
         decrease_index_for_items = [itm.id for itm in items[from_index:to_index]]
         queryset.filter(id__in=decrease_index_for_items).update(sort_index=models.F('sort_index') - distance)
 
+    def __fix_sort_order(self, item, sort_before_id):
+        """
+        Iterate over all the items and remove any gaps, fix any duplicate
+        sort indexes and find the correct sort index for the item.
+
+        Parameters:
+            item: The item to insert in the list.
+            sort_before_id: ID of the item that you want to insert ``item`` before.
+
+        Returns:
+            A tuple (itemsqueryset, sort_before_index, original_item_index):
+
+            - ``itemsqueryset`` is a queryset with all the items within the
+              :obj:`.parentobject`, sorted by ``sort_index``, without any gaps
+              or duplicate sort indexes.
+            - ``detected_item_sort_index``: The detected new sort index for the item.
+              If this is ``None``, the item should be sorted last.
+            - ``original_item_index``: The sort index of the ``item``. This may not
+              be the same as ``item.sort_index`` if the item has been moved up or
+              down because of gaps or duplicate sort indexes.
+        """
+        itemsqueryset = self._get_siblings_queryset(item)
+        detected_item_sort_index = None
+        original_item_index = None
+        for index in range(0, len(itemsqueryset)):
+            current_item = itemsqueryset[index]
+            if index < current_item.sort_index:
+                # Found gap, need to move rest of list <size-of-gap> step(s) down
+                self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
+                                                    len(itemsqueryset),
+                                                    current_item.sort_index-index)
+                itemsqueryset = self._get_siblings_queryset(item).all()
+            if index > current_item.sort_index:
+                # Found duplicate sort_index, need to move rest of list one step up
+                self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
+                                                    len(itemsqueryset))
+                itemsqueryset = self._get_siblings_queryset(item).all()
+
+            if item.id == current_item.id:
+                original_item_index = current_item.sort_index
+            elif sort_before_id is not None and current_item.id == sort_before_id:
+                detected_item_sort_index = current_item.sort_index
+        return itemsqueryset, detected_item_sort_index, original_item_index
+
+    def __sort_last(self, itemsqueryset, item, original_item_index):
+        if original_item_index is not None:
+            # fill gap left when moving item to end
+            self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset,
+                                                original_item_index+1, len(itemsqueryset))
+            item.sort_index = len(itemsqueryset)-1
+        else:
+            item.sort_index = len(itemsqueryset)
+        item.save()
+
+    def __sort_not_last(self, itemsqueryset, item, detected_item_sort_index, original_item_index):
+        if original_item_index is None:
+            # new item, move rest of list one step up, and place the new item
+            self.__increase_sort_index_in_range(itemsqueryset,
+                                                itemsqueryset,
+                                                detected_item_sort_index,
+                                                len(itemsqueryset))
+            item.sort_index = detected_item_sort_index
+        elif original_item_index < detected_item_sort_index:
+            # Move up, and fill gap left behind by moving items in the gap down
+            self.__decrease_sort_index_in_range(itemsqueryset,
+                                                itemsqueryset,
+                                                original_item_index+1,
+                                                detected_item_sort_index)
+            item.sort_index = detected_item_sort_index-1
+        elif original_item_index > detected_item_sort_index:
+            # Move down, and fill/create gap by moving other objects up
+            self.__increase_sort_index_in_range(itemsqueryset,
+                                                itemsqueryset,
+                                                detected_item_sort_index,
+                                                original_item_index)
+            item.sort_index = detected_item_sort_index
+        else:
+            # Item is already in the correct place
+            # - Return without saving
+            return
+        item.save()
+
     def sort_before(self, item, sort_before_id):
         """
         Sort a given item before the item with id `sort_before_id`,
@@ -66,56 +148,16 @@ class SortableManagerBase(models.Manager):
         Fetches all items in the same container, and makes changes in the ordering.
         Only the required updates are made.
         """
-        queryset = self._get_siblings_queryset(item)
-        items = queryset.all()
-        # Get the current position for the item to sort before
-        sort_before_index = None
-        original_item_index = None
+        itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(item, sort_before_id)
 
-        for index in range(0, len(items)):
-            cur_item = items[index]
-            if index < cur_item.sort_index:
-                # Found gap, need to move rest of list <size-of-gap> step(s) down
-                self.__decrease_sort_index_in_range(queryset, items, index, len(items), cur_item.sort_index-index)
-                items = queryset.all()
-            if index > cur_item.sort_index:
-                # Found duplicate sort_index, need to move rest of list one step up
-                self.__increase_sort_index_in_range(queryset, items, index, len(items))
-                items = queryset.all()
-
-            if item.id == cur_item.id:
-                original_item_index = cur_item.sort_index
-
-            elif sort_before_id is not None and cur_item.id == sort_before_id:
-                sort_before_index = cur_item.sort_index
-
-        item.sort_index = None
-        if sort_before_index is None:
-            # Place last.
-            if original_item_index is not None:
-                # fill gap left when moving item to end
-                self.__decrease_sort_index_in_range(queryset, items, original_item_index+1, len(items))
-                item.sort_index = len(items)-1
-            else:
-                item.sort_index = len(items)
-            item.save()
+        if detected_item_sort_index is None:
+            self.__sort_last(itemsqueryset=itemsqueryset, item=item,
+                             original_item_index=original_item_index)
         else:
-            # Place somewhere not last
-            if original_item_index is None:
-                # new item, move rest of list one step up, and place the new item
-                self.__increase_sort_index_in_range(queryset, items, sort_before_index, len(items))
-                item.sort_index = sort_before_index
-                item.save()
-            elif original_item_index < sort_before_index:
-                # Move up, and fill gap left behind by moving items in the gap down
-                self.__decrease_sort_index_in_range(queryset, items, original_item_index+1, sort_before_index)
-                item.sort_index = sort_before_index-1
-                item.save()
-            elif original_item_index > sort_before_index:
-                # Move down, and fill/create gap by moving other objects up
-                self.__increase_sort_index_in_range(queryset, items, sort_before_index, original_item_index)
-                item.sort_index = sort_before_index
-                item.save()
+            self.__sort_not_last(itemsqueryset=itemsqueryset,
+                                 item=item,
+                                 detected_item_sort_index=detected_item_sort_index,
+                                 original_item_index=original_item_index)
 
     def sort_last(self, item):
         """
