@@ -95,10 +95,12 @@ class AbstractItemRenderer(AbstractRenderable):
 
     def __init__(self, value):
         """
+        Parameters:
+            value: The value to render.
         """
         self.value = value
         if self.valuealias:
-            setattr(self, self.valuealias, self.valuealias)
+            setattr(self, self.valuealias, self.value)
 
 
 class ItemFrameRenderer(AbstractItemRenderer):

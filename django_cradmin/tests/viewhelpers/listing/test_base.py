@@ -32,3 +32,17 @@ class TestAbstractRenderable(TestCase):
 
     def test_render(self):
         self.assertEqual('Test', MinimalRenderable().render().strip())
+
+
+class TestAbstractItemRenderer(TestCase):
+    def test_without_valuealias(self):
+        itemrenderer = listbuilder.base.AbstractItemRenderer(value='test')
+        self.assertEqual('test', itemrenderer.value)
+
+    def test_with_valuealias(self):
+        class MyItemRenderer(listbuilder.base.AbstractItemRenderer):
+            valuealias = 'myvalue'
+
+        itemrenderer = MyItemRenderer(value='test')
+        self.assertEqual('test', itemrenderer.value)
+        self.assertEqual('test', itemrenderer.myvalue)
