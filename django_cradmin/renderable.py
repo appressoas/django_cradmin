@@ -72,4 +72,3 @@ class AbstractRenderable(object):
         return render_to_string(
             self.get_template_name(),
             self.get_template_context_object(request=request))
-
