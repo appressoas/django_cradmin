@@ -7,9 +7,10 @@ from django.core.files.base import ContentFile
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
+import os
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.crispylayouts import BulkFileUploadSubmit
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget, SingleFileUploadWidget
 from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 
 from django_cradmin.viewhelpers import objecttable
@@ -150,6 +151,11 @@ class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttab
 class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
     roleid_field = 'role'
+    form_attributes = {
+        'django-cradmin-bulkfileupload-form': ''
+    }
+    form_id = 'django_cradmin_imagearchive_bulkadd_form'
+    extra_form_css_classes = ['django-cradmin-form-noasterisk']
 
     def get_preview_imagetype(self):
         """
@@ -159,22 +165,65 @@ class ArchiveImageCreateUpdateMixin(object):
         """
         return crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE')
 
+    def get_form_class(self):
+        form_class = super(ArchiveImageCreateUpdateMixin, self).get_form_class()
+
+        class ArchiveImageForm(form_class):
+            filecollectionid = forms.IntegerField(
+                required=False,
+                widget=SingleFileUploadWidget(
+                    accept='image/*',
+                    apiparameters={
+                        'accept': 'image/png,image/jpeg,image/gif'
+                    },
+                    dropbox_text=_('Upload an image by dragging and dropping it here'),
+                    advanced_fileselectbutton_text=_('... or select an image'),
+                    invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
+                    simple_fileselectbutton_text=_('Select an image ...')
+                ),
+                label=_('Upload an image'),
+                error_messages={
+                    'required': _('You must upload an image.')
+                })
+
+            def clean(self):
+                cleaned_data = super(ArchiveImageForm, self).clean()
+                filecollectionid = cleaned_data.get('filecollectionid', None)
+                if filecollectionid is not None:
+                    collection = TemporaryFileCollection.objects.get(id=filecollectionid)
+                    if collection.files.count() < 1:
+                        raise forms.ValidationError({
+                            'filecollectionid': _('You must upload an image.')
+                        })
+
+        return ArchiveImageForm
+
     def get_form(self, form_class=None):
         form = super(ArchiveImageCreateUpdateMixin, self).get_form(form_class=form_class)
-        form.fields['image'].widget = filewidgets.ImageWidget(
-            request=self.request,
-            clearable=False, preview_imagetype=self.get_preview_imagetype())
         return form
 
+    def get_collectionqueryset(self):
+        return TemporaryFileCollection.objects\
+            .filter_for_user(self.request.user)\
+            .prefetch_related('files')
+
     def save_object_with_new_imagefile(self, form):
-        archiveimage = super(ArchiveImageCreateUpdateMixin, self).save_object(form, commit=False)
-        image = archiveimage.image
-        archiveimage.image = None
-        archiveimage.save()
-        archiveimage.image = image
-        archiveimage.file_size = image.size
-        archiveimage.save()
-        return archiveimage
+        collectionid = form.cleaned_data['filecollectionid']
+        try:
+            temporaryfilecollection = self.get_collectionqueryset().get(id=collectionid)
+        except TemporaryFileCollection.DoesNotExist:
+            return http.HttpResponseNotFound()
+        else:
+            temporaryfile = temporaryfilecollection.files.first()
+            archiveimage = super(ArchiveImageCreateUpdateMixin, self).save_object(form, commit=False)
+            archiveimage.file_size = temporaryfile.file.size
+            archiveimage.name = os.path.splitext(temporaryfile.filename)[0]
+            archiveimage.clean()
+            archiveimage.save()
+            archiveimage.image.save(temporaryfile.filename, ContentFile(temporaryfile.file.read()))
+            archiveimage.full_clean()
+            temporaryfilecollection.clear_files_and_delete()
+            return archiveimage
 
 
 class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
@@ -183,7 +232,7 @@ class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
     """
     View used to create new images.
     """
-    fields = ['image', 'description']
+    fields = ['description']
 
     submit_use_label = _('Upload and select')
     submit_save_label = _('Upload image')
@@ -192,11 +241,16 @@ class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
     def get_field_layout(self):
         return [
             layout.Div(
-                'image',
+                'filecollectionid',
                 layout.Field('description', css_class='cradmin-textarea-small'),
                 css_class='cradmin-globalfields'
             )
         ]
+
+    def get_form(self, form_class=None):
+        form = super(ArchiveImageCreateView, self).get_form(form_class=form_class)
+        form.fields['filecollectionid'].required = True
+        return form
 
     def save_object(self, form, commit=True):
         return self.save_object_with_new_imagefile(form)
@@ -213,12 +267,12 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
     """
     View used to create edit existing images.
     """
-    fields = ['image', 'description']
+    fields = ['description']
 
     def get_field_layout(self):
         return [
             layout.Div(
-                'image',
+                'filecollectionid',
                 layout.Field('description', css_class='cradmin-textarea-small'),
                 css_class='cradmin-globalfields'
             )
@@ -227,7 +281,7 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
     def save_object(self, form, commit=True):
         # Delete the old image before uploading the new one.
         old_archiveimage = ArchiveImage.objects.get(id=self.object.id)
-        image_changed = old_archiveimage.image.name != form.cleaned_data['image'].name
+        image_changed = form.cleaned_data['filecollectionid'] is not None
         if image_changed:
             old_archiveimage.image.delete()
             return self.save_object_with_new_imagefile(form)

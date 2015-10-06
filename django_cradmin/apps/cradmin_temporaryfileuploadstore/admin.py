@@ -19,6 +19,7 @@ class TemporaryFileCollectionAdmin(admin.ModelAdmin):
         'minutes_to_live',
     )
     readonly_fields = [
+        'singlemode',
         'user',
         'accept',
         'created_datetime',

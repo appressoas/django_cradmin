@@ -57,7 +57,6 @@ class BulkFileUploadWidget(forms.Widget):
         context['simple_fileselectbutton_text'] = self.simple_fileselectbutton_text
         context['apiparameters'] = quoteattr(json.dumps(self.apiparameters))
         context['apiurl'] = self.get_apiurl()
-        context['singlemode'] = True
         return context
 
     def render(self, name, value, attrs=None):
@@ -66,3 +65,14 @@ class BulkFileUploadWidget(forms.Widget):
         return render_to_string(self.template_name, self.get_template_context_data(
             hiddenfieldname=name,
             fieldvalue=value))
+
+
+class SingleFileUploadWidget(BulkFileUploadWidget):
+    def __init__(self, *args, **kwargs):
+        super(SingleFileUploadWidget, self).__init__(*args, **kwargs)
+        self.apiparameters['singlemode'] = True
+
+    def get_template_context_data(self, **context):
+        context = super(SingleFileUploadWidget, self).get_template_context_data(**context)
+        context['singlemode'] = True
+        return context

@@ -241,6 +241,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope._processFileUploadQueue = () ->
           progressInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
           apidata = angular.extend({}, $scope.apiparameters, {collectionid: $scope.collectionid})
+          console.log apidata
           $scope.formController.addInProgress()
 
           $scope.upload = $upload.upload({
@@ -286,6 +287,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.')
         else
           scope.apiparameters = {}
+        console.log 'apiparameters:', scope.apiparameters
         scope.formController = formController
         return
     }

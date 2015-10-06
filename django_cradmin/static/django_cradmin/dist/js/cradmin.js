@@ -480,6 +480,7 @@
             apidata = angular.extend({}, $scope.apiparameters, {
               collectionid: $scope.collectionid
             });
+            console.log(apidata);
             $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
@@ -528,6 +529,7 @@
           } else {
             scope.apiparameters = {};
           }
+          console.log('apiparameters:', scope.apiparameters);
           scope.formController = formController;
         }
       };
