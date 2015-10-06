@@ -7,13 +7,16 @@
             Name of the hidden field used to submit the collection ID.
         singlemode (optional)
             If this is ``True``, we only allow a single file to be added to
-            the colleciton.
+            the collection.
         accept (optional)
 {% endcomment %}
 {% load i18n %}
 
 <div django-cradmin-bulkfileupload="{{ apiurl }}"
         django-cradmin-bulkfileupload-errormessage503="{% trans 'Server timeout while uploading the file. This may be caused by a poor upload link and/or a too large file.' %}"
+        {% if singlemode %}
+            django-cradmin-bulkfileupload-singlemode="true"
+        {% endif %}
         django-cradmin-bulkfileupload-apiparameters={{ apiparameters|safe }} {# NOTE: The missing quotes are correct - they are added by quoteattr #}
         class="django-cradmin-bulkfileupload">
 

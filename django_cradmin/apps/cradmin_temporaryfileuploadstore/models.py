@@ -157,6 +157,15 @@ class TemporaryFileCollection(models.Model):
                   'algorithm handles max_filename.'
                   'This is validated by the API on upload.')
 
+    #: If this is True, only a single file can be added to the collection.
+    #: This means that the last file added to the collection will be the
+    #: only file in the collection.
+    singlemode = models.BooleanField(
+        null=False, default=False,
+        help_text='If this is True, only a single file can be added to the '
+                  'collection. This means that the last file added to the '
+                  'collection will be the only file in the collection.')
+
     def clear_files(self):
         for temporaryfile in self.files.all():
             temporaryfile.delete_object_and_file()
@@ -223,3 +232,10 @@ class TemporaryFile(models.Model):
                                                   maxlength=self.collection.max_filename_length)
             if not self.collection.is_supported_filetype(self.mimetype, self.filename):
                 raise ValidationError(_('Unsupported filetype.'), code='unsupported_mimetype')
+            if self.collection.singlemode:
+                other_temporaryfiles_queryset = self.collection.files.all()
+                if self.id is not None:
+                    other_temporaryfiles_queryset = other_temporaryfiles_queryset.exclude(id=self.id)
+                for temporaryfile in other_temporaryfiles_queryset:
+                    temporaryfile.file.delete()
+                    temporaryfile.delete()

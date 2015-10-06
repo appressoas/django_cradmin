@@ -57,6 +57,7 @@ class BulkFileUploadWidget(forms.Widget):
         context['simple_fileselectbutton_text'] = self.simple_fileselectbutton_text
         context['apiparameters'] = quoteattr(json.dumps(self.apiparameters))
         context['apiurl'] = self.get_apiurl()
+        context['singlemode'] = True
         return context
 
     def render(self, name, value, attrs=None):

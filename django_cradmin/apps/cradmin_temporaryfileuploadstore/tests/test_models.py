@@ -32,6 +32,53 @@ class TestModels(TestCase):
         self.assertFalse(os.path.exists(physical_file_path))
         self.assertEquals(collection.files.count(), 0)
 
+    def test_singlemode_keeps_only_last_file(self):
+        collection = TemporaryFileCollection.objects.create(
+            user=create_user('testuser'),
+            singlemode=True)
+
+        first_added_temporary_file = TemporaryFile(filename='test1.txt', collection=collection)
+        first_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        first_added_temporary_file.clean()
+        first_added_temporary_file.save()
+
+        last_added_temporary_file = TemporaryFile(filename='test2.txt', collection=collection)
+        last_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        last_added_temporary_file.clean()
+        last_added_temporary_file.save()
+        self.assertEquals(collection.files.count(), 1)
+        self.assertEquals(collection.files.first(), last_added_temporary_file)
+
+    def test_singlemode_keeps_only_last_file_delete_physical_file(self):
+        collection = TemporaryFileCollection.objects.create(
+            user=create_user('testuser'),
+            singlemode=True)
+
+        first_added_temporary_file = TemporaryFile(filename='test1.txt', collection=collection)
+        first_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        first_added_temporary_file.clean()
+        first_added_temporary_file.save()
+        first_added_physical_file_path = first_added_temporary_file.file.path
+        self.assertTrue(os.path.exists(first_added_physical_file_path))
+
+        last_added_temporary_file = TemporaryFile(filename='test2.txt', collection=collection)
+        last_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        last_added_temporary_file.clean()
+        self.assertFalse(os.path.exists(first_added_physical_file_path))
+
+    def test_singlemode_keeps_only_last_file_do_not_delete_last(self):
+        collection = TemporaryFileCollection.objects.create(
+            user=create_user('testuser'),
+            singlemode=True)
+
+        last_added_temporary_file = TemporaryFile(filename='test2.txt', collection=collection)
+        last_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        last_added_temporary_file.clean()
+        last_added_temporary_file.save()
+        last_added_temporary_file.clean()
+        self.assertEquals(collection.files.count(), 1)
+        self.assertEquals(collection.files.first(), last_added_temporary_file)
+
     def test_get_filename_set(self):
         collection = TemporaryFileCollection.objects.create(
             user=create_user('testuser'))
