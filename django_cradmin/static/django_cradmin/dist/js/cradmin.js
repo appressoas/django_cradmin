@@ -222,7 +222,7 @@
       function FileInfo(options) {
         this.file = options.file;
         this.temporaryfileid = options.temporaryfileid;
-        this.name = this.file.name;
+        this.name = options.name;
         this.isRemoving = false;
       }
 
@@ -269,16 +269,18 @@
         return this.percent = percent;
       };
 
-      FileInfoList.prototype.finish = function(temporaryfiles) {
+      FileInfoList.prototype.finish = function(temporaryfiles, singleselect) {
         var index, temporaryfile, _i, _len, _results;
         this.finished = true;
         index = 0;
+        this.files = [];
         _results = [];
         for (_i = 0, _len = temporaryfiles.length; _i < _len; _i++) {
           temporaryfile = temporaryfiles[_i];
-          this.files[index].name = temporaryfile.filename;
-          this.files[index].temporaryfileid = temporaryfile.id;
-          _results.push(index += 1);
+          _results.push(this.files.push(new FileInfo({
+            temporaryfileid: temporaryfile.id,
+            name: temporaryfile.filename
+          })));
         }
         return _results;
       };
@@ -480,7 +482,6 @@
             apidata = angular.extend({}, $scope.apiparameters, {
               collectionid: $scope.collectionid
             });
-            console.log(apidata);
             $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
               url: $scope.uploadUrl,
@@ -495,7 +496,7 @@
             }).progress(function(evt) {
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              progressInfo.finish(data.temporaryfiles);
+              progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singleselect);
               $scope._setCollectionId(data.collectionid);
               return $scope._onFileUploadComplete();
             }).error(function(data, status) {
@@ -529,7 +530,6 @@
           } else {
             scope.apiparameters = {};
           }
-          console.log('apiparameters:', scope.apiparameters);
           scope.formController = formController;
         }
       };

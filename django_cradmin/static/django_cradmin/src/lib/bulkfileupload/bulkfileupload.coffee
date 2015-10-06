@@ -9,7 +9,7 @@ angular.module('djangoCradmin.bulkfileupload', [
     constructor: (options) ->
       @file = options.file
       @temporaryfileid = options.temporaryfileid
-      @name = @file.name
+      @name = options.name
       @isRemoving = false
 
     markAsIsRemoving: ->
@@ -42,15 +42,17 @@ angular.module('djangoCradmin.bulkfileupload', [
     updatePercent: (percent) ->
       @percent = percent
 
-    finish: (temporaryfiles) ->
+    finish: (temporaryfiles, singleselect) ->
       @finished = true
 
       # Update the client provided filenames with the filename from the server
       index = 0
+      @files = []
       for temporaryfile in temporaryfiles
-        @files[index].name = temporaryfile.filename
-        @files[index].temporaryfileid = temporaryfile.id
-        index += 1
+        @files.push(new FileInfo({
+          temporaryfileid: temporaryfile.id
+          name: temporaryfile.filename
+        }))
 
     setErrors: (errors) ->
       @hasErrors = true
@@ -241,7 +243,6 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope._processFileUploadQueue = () ->
           progressInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
           apidata = angular.extend({}, $scope.apiparameters, {collectionid: $scope.collectionid})
-          console.log apidata
           $scope.formController.addInProgress()
 
           $scope.upload = $upload.upload({
@@ -257,7 +258,7 @@ angular.module('djangoCradmin.bulkfileupload', [
           }).progress((evt) ->
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            progressInfo.finish(data.temporaryfiles)
+            progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singleselect)
             $scope._setCollectionId(data.collectionid)
             $scope._onFileUploadComplete()
           ).error((data, status) ->
@@ -287,7 +288,6 @@ angular.module('djangoCradmin.bulkfileupload', [
             throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.')
         else
           scope.apiparameters = {}
-        console.log 'apiparameters:', scope.apiparameters
         scope.formController = formController
         return
     }
