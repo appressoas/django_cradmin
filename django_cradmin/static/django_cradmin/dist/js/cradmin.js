@@ -497,8 +497,18 @@
               progressInfo.finish(data.temporaryfiles);
               $scope._setCollectionId(data.collectionid);
               return $scope._onFileUploadComplete();
-            }).error(function(data) {
-              progressInfo.setErrors(data);
+            }).error(function(data, status) {
+              if (status === 503) {
+                progressInfo.setErrors({
+                  file: [
+                    {
+                      message: $scope.errormessage503
+                    }
+                  ]
+                });
+              } else {
+                progressInfo.setErrors(data);
+              }
               return $scope._onFileUploadComplete();
             });
           };
@@ -507,10 +517,11 @@
             return $scope.fileUploadFieldScope.setCollectionId(collectionid);
           };
         },
-        link: function(scope, element, attr, formController) {
-          scope.uploadUrl = attr.djangoCradminBulkfileupload;
-          if (attr.djangoCradminBulkfileuploadApiparameters != null) {
-            scope.apiparameters = scope.$parent.$eval(attr.djangoCradminBulkfileuploadApiparameters);
+        link: function(scope, element, attributes, formController) {
+          scope.uploadUrl = attributes.djangoCradminBulkfileupload;
+          scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503;
+          if (attributes.djangoCradminBulkfileuploadApiparameters != null) {
+            scope.apiparameters = scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters);
             if (!angular.isObject(scope.apiparameters)) {
               throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.');
             }
@@ -613,7 +624,6 @@
             var fileInfoList;
             fileInfoList = cradminBulkfileupload.createFileInfoList(options);
             $scope.fileInfoLists.push(fileInfoList);
-            console.log($scope.fileInfoLists);
             return fileInfoList;
           };
         },

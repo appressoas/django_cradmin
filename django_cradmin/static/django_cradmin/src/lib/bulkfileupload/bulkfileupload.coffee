@@ -259,8 +259,15 @@ angular.module('djangoCradmin.bulkfileupload', [
             progressInfo.finish(data.temporaryfiles)
             $scope._setCollectionId(data.collectionid)
             $scope._onFileUploadComplete()
-          ).error((data) ->
-            progressInfo.setErrors(data)
+          ).error((data, status) ->
+            if status == 503
+              progressInfo.setErrors({
+                file: [{
+                  message: $scope.errormessage503
+                }]
+              })
+            else
+              progressInfo.setErrors(data)
             $scope._onFileUploadComplete()
           )
 
@@ -270,10 +277,11 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         return
 
-      link: (scope, element, attr, formController) ->
-        scope.uploadUrl = attr.djangoCradminBulkfileupload
-        if attr.djangoCradminBulkfileuploadApiparameters?
-          scope.apiparameters = scope.$parent.$eval(attr.djangoCradminBulkfileuploadApiparameters)
+      link: (scope, element, attributes, formController) ->
+        scope.uploadUrl = attributes.djangoCradminBulkfileupload
+        scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503
+        if attributes.djangoCradminBulkfileuploadApiparameters?
+          scope.apiparameters = scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters)
           if not angular.isObject(scope.apiparameters)
             throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.')
         else
@@ -397,7 +405,6 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.addFileInfoList = (options) ->
           fileInfoList = cradminBulkfileupload.createFileInfoList(options)
           $scope.fileInfoLists.push(fileInfoList)
-          console.log $scope.fileInfoLists
           return fileInfoList
 
         return
