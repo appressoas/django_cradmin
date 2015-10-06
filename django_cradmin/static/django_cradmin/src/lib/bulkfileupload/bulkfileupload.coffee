@@ -42,7 +42,7 @@ angular.module('djangoCradmin.bulkfileupload', [
     updatePercent: (percent) ->
       @percent = percent
 
-    finish: (temporaryfiles, singleselect) ->
+    finish: (temporaryfiles, singlemode) ->
       @finished = true
 
       # Update the client provided filenames with the filename from the server
@@ -217,6 +217,8 @@ angular.module('djangoCradmin.bulkfileupload', [
             $scope.cradminLastFilesSelectedByUser = []
 
         $scope._addFilesToQueue = (files) ->
+          if $scope.apiparameters.singlemode
+            $scope.inProgressOrFinishedScope.clear()
           progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
             percent: 0
             files: files
@@ -258,7 +260,7 @@ angular.module('djangoCradmin.bulkfileupload', [
           }).progress((evt) ->
             progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singleselect)
+            progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singlemode)
             $scope._setCollectionId(data.collectionid)
             $scope._onFileUploadComplete()
           ).error((data, status) ->
@@ -408,6 +410,9 @@ angular.module('djangoCradmin.bulkfileupload', [
           fileInfoList = cradminBulkfileupload.createFileInfoList(options)
           $scope.fileInfoLists.push(fileInfoList)
           return fileInfoList
+
+        $scope.clear = (options) ->
+          $scope.fileInfoLists = []
 
         return
 
