@@ -85,7 +85,7 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_multiple_files_singlefile_mode(self):
         request1 = self.factory.post('/test', {
             'file': SimpleUploadedFile('testfile1.txt', b'Test1'),
-            'mode': 'singlefile'
+            'singlemode': 'true'
         })
         request1.user = self.testuser
         response1 = UploadTemporaryFilesView.as_view()(request1)
@@ -102,7 +102,7 @@ class TestUploadTemporaryFilesView(TestCase):
         request2 = self.factory.post('/test', {
             'file': SimpleUploadedFile('testfile2.txt', b'Test2'),
             'collectionid': collectionid,
-            'mode': 'singlefile'
+            'singlemode': 'true'
         })
         request2.user = self.testuser
         response2 = UploadTemporaryFilesView.as_view()(request2)
