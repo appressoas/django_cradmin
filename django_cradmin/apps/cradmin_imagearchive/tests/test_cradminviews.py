@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
-from django.conf import settings
+
 from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 import htmls
 import mock
-import os
+from model_mommy import mommy
 
+from django_cradmin import cradmin_testhelpers
 from django_cradmin.apps.cradmin_imagearchive import cradminviews
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
@@ -193,7 +193,7 @@ class TestUpdateView(TestCase):
 
     def test_post_ok(self):
         request = self.factory.post('/test', {
-            'name': 'Updated name',
+            # 'name': 'Updated name',
             'description': 'Updated description'
         })
         request.cradmin_instance = mock.MagicMock()
@@ -209,7 +209,7 @@ class TestUpdateView(TestCase):
         self.assertEqual(ArchiveImage.objects.count(), 1)
         updated_image = ArchiveImage.objects.first()
         self.assertEqual(updated_image.image.read(), self.testimage)
-        self.assertEqual(updated_image.name, 'Updated name')
+        # self.assertEqual(updated_image.name, 'Updated name')
         self.assertEqual(updated_image.description, 'Updated description')
 
 
@@ -357,3 +357,71 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEquals(response.status_code, 302)
         created_image = ArchiveImage.objects.first()
         self.assertEqual(len(testimage), created_image.file_size)
+
+
+class TestArchiveImagesListView(TestCase, cradmin_testhelpers.TestCaseMixin):
+    viewclass = cradminviews.ArchiveImagesListView
+
+    def test_no_archive_images(self):
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=mommy.make('django_cradmin_testapp.TstRole'))
+        self.assertEqual(
+            mockresponse.selector.one('#objecttableview-no-items-message').alltext_normalized,
+            'No archive images')
+
+    def test_single_archive_image_sanity(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=testrole)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertFalse(mockresponse.selector.exists('#objecttableview-no-items-message'))
+        self.assertEqual(mockresponse.selector.count('#objecttableview-table tbody tr'), 1)
+
+    def test_only_owned_by_role(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        other_role = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=other_role)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertTrue(mockresponse.selector.exists('#objecttableview-no-items-message'))
+
+    def test_render_single_archive_image_no_description(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=testrole)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .objecttable-cellvalue').alltext_normalized,
+            'Test image')
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .btn-default').alltext_normalized,
+            'Set a description')
+
+    def test_render_single_archive_image_has_description(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='Test description',
+                   role=testrole)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .objecttable-cellvalue').alltext_normalized,
+            'Test description')
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .btn-default').alltext_normalized,
+            'Edit description')

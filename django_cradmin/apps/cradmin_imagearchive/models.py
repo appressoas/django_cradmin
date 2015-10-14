@@ -75,9 +75,9 @@ class ArchiveImage(models.Model):
     #: provided by the app sets this.
     name = models.CharField(
         max_length=255, blank=True, null=False,
-        verbose_name=_('name'),
-        help_text=_('A good name helps search engines find the image, '
-                    'and it helps visually impaired users.')
+        verbose_name=_('name')
+        # help_text=_('A good name helps search engines find the image, '
+        #             'and it helps visually impaired users.')
     )
 
     #: An optional description of the image.

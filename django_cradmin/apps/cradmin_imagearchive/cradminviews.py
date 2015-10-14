@@ -35,9 +35,12 @@ class DescriptionColumn(objecttable.MultiActionColumn):
         return obj.screenreader_text
 
     def get_buttons(self, obj):
+        edit_description_label = _('Set a description')
+        if obj.description:
+            edit_description_label = _('Edit description')
         return [
             objecttable.Button(
-                label=_('Edit'),
+                label=edit_description_label,
                 url=self.reverse_appurl('edit', args=[obj.id])),
             objecttable.Button(
                 label=_('Delete'),
@@ -267,13 +270,12 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
     View used to create edit existing images.
     """
     model = ArchiveImage
-    fields = ['name', 'description']
+    fields = ['description']
     roleid_field = 'role'
 
     def get_field_layout(self):
         return [
             layout.Div(
-                layout.Field('name'),
                 layout.Field('description', css_class='cradmin-textarea-small'),
                 css_class='cradmin-globalfields'
             )
