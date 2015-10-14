@@ -269,7 +269,7 @@
         return this.percent = percent;
       };
 
-      FileInfoList.prototype.finish = function(temporaryfiles, singleselect) {
+      FileInfoList.prototype.finish = function(temporaryfiles, singlemode) {
         var index, temporaryfile, _i, _len, _results;
         this.finished = true;
         index = 0;
@@ -452,6 +452,9 @@
           });
           $scope._addFilesToQueue = function(files) {
             var progressInfo;
+            if ($scope.apiparameters.singlemode) {
+              $scope.inProgressOrFinishedScope.clear();
+            }
             progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
               percent: 0,
               files: files
@@ -496,7 +499,7 @@
             }).progress(function(evt) {
               return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singleselect);
+              progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singlemode);
               $scope._setCollectionId(data.collectionid);
               return $scope._onFileUploadComplete();
             }).error(function(data, status) {
@@ -627,6 +630,9 @@
             fileInfoList = cradminBulkfileupload.createFileInfoList(options);
             $scope.fileInfoLists.push(fileInfoList);
             return fileInfoList;
+          };
+          $scope.clear = function(options) {
+            return $scope.fileInfoLists = [];
           };
         },
         link: function(scope, element, attr, uploadController) {

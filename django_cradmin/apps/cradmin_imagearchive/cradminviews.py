@@ -262,12 +262,13 @@ class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
 
 class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
                              ArchiveImagesQuerySetForRoleMixin,
-                             ArchiveImageCreateUpdateMixin,
                              update.UpdateView):
     """
     View used to create edit existing images.
     """
+    model = ArchiveImage
     fields = ['description']
+    roleid_field = 'role'
 
     def get_field_layout(self):
         return [
@@ -277,16 +278,6 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
                 css_class='cradmin-globalfields'
             )
         ]
-
-    def save_object(self, form, commit=True):
-        # Delete the old image before uploading the new one.
-        old_archiveimage = ArchiveImage.objects.get(id=self.object.id)
-        image_changed = form.cleaned_data['filecollectionid'] is not None
-        if image_changed:
-            old_archiveimage.image.delete()
-            return self.save_object_with_new_imagefile(form)
-        else:
-            return super(ArchiveImageUpdateView, self).save_object(form, commit=commit)
 
 
 class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteView):
