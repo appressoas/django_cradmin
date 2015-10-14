@@ -173,7 +173,9 @@ class TestUpdateView(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.role = TstRole.objects.create()
-        self.archiveimage = ArchiveImage.objects.create(role=self.role)
+        self.archiveimage = ArchiveImage.objects.create(role=self.role,
+                                                        name='Original name',
+                                                        description='Original description')
         self.testimage = create_image(200, 100)
         self.archiveimage.image.save('testimage.png', ContentFile(self.testimage))
         self.testuser = create_user('testuser')
@@ -191,6 +193,7 @@ class TestUpdateView(TestCase):
 
     def test_post_ok(self):
         request = self.factory.post('/test', {
+            'name': 'Updated name',
             'description': 'Updated description'
         })
         request.cradmin_instance = mock.MagicMock()
@@ -206,6 +209,7 @@ class TestUpdateView(TestCase):
         self.assertEqual(ArchiveImage.objects.count(), 1)
         updated_image = ArchiveImage.objects.first()
         self.assertEqual(updated_image.image.read(), self.testimage)
+        self.assertEqual(updated_image.name, 'Updated name')
         self.assertEqual(updated_image.description, 'Updated description')
 
 

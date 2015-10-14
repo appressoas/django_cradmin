@@ -267,13 +267,13 @@ class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
     View used to create edit existing images.
     """
     model = ArchiveImage
-    fields = ['description']
+    fields = ['name', 'description']
     roleid_field = 'role'
 
     def get_field_layout(self):
         return [
             layout.Div(
-                'filecollectionid',
+                layout.Field('name'),
                 layout.Field('description', css_class='cradmin-textarea-small'),
                 css_class='cradmin-globalfields'
             )
