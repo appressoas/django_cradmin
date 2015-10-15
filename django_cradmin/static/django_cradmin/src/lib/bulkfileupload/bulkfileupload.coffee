@@ -4,6 +4,36 @@ angular.module('djangoCradmin.bulkfileupload', [
 ])
 
 
+.provider 'cradminBulkfileuploadCoordinator', ->
+  class FileUploadCoordinator
+    constructor: ($window) ->
+      @hiddenfieldnameToScopeMap = {}
+      @window = $window
+
+    register: (hiddenfieldname, scope) ->
+      existingScope = @hiddenfieldnameToScopeMap[hiddenfieldname]
+      if existingScope?
+        console.error(
+          'Trying to register a fieldname that is already registered with ' +
+          'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname)
+        return
+      @hiddenfieldnameToScopeMap[hiddenfieldname] = scope
+
+    unregister: (hiddenfieldname) ->
+      scope = @hiddenfieldnameToScopeMap[hiddenfieldname]
+      if not scope?
+        console.error(
+          'Trying to unregister a field that is not registered with ' +
+          'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname)
+      @hiddenfieldnameToScopeMap[hiddenfieldname] = undefined
+
+  @$get = (['$window', ($window) ->
+    return new FileUploadCoordinator($window)
+  ])
+
+  return @
+
+
 .factory 'cradminBulkfileupload', ->
   class FileInfo
     constructor: (options) ->
@@ -146,10 +176,9 @@ angular.module('djangoCradmin.bulkfileupload', [
 ])
 
 
-
 .directive('djangoCradminBulkfileupload', [
-  '$upload', '$cookies', 'cradminDetectize'
-  ($upload, $cookies, cradminDetectize) ->
+  '$upload', '$cookies', 'cradminDetectize', 'cradminBulkfileuploadCoordinator'
+  ($upload, $cookies, cradminDetectize, cradminBulkfileuploadCoordinator) ->
     return {
       require: '^djangoCradminBulkfileuploadForm'
       restrict: 'AE'
@@ -177,8 +206,9 @@ angular.module('djangoCradmin.bulkfileupload', [
         @setInProgressOrFinishedScope = (inProgressOrFinishedScope) ->
           $scope.inProgressOrFinishedScope = inProgressOrFinishedScope
 
-        @setFileUploadFieldScope = (fileUploadFieldScope) ->
+        @setFileUploadFieldScope = (fileUploadFieldScope, fieldname) ->
           $scope.fileUploadFieldScope = fileUploadFieldScope
+          cradminBulkfileuploadCoordinator.register(fileUploadFieldScope.fieldname, $scope)
 
         @setSimpleWidgetScope = (simpleWidgetScope) ->
           $scope.simpleWidgetScope = simpleWidgetScope
@@ -281,16 +311,26 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         return
 
-      link: (scope, element, attributes, formController) ->
-        scope.uploadUrl = attributes.djangoCradminBulkfileupload
-        scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503
+      link: ($scope, element, attributes, formController) ->
+        $scope.uploadUrl = attributes.djangoCradminBulkfileupload
+        $scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503
         if attributes.djangoCradminBulkfileuploadApiparameters?
-          scope.apiparameters = scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters)
-          if not angular.isObject(scope.apiparameters)
+          $scope.apiparameters = $scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters)
+          if not angular.isObject($scope.apiparameters)
             throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.')
         else
-          scope.apiparameters = {}
-        scope.formController = formController
+          $scope.apiparameters = {}
+        $scope.formController = formController
+
+        displaystyle = attributes.djangoCradminBulkfileuploadDisplaystyle
+        if displaystyle == 'inline' or displaystyle == 'overlay'
+          $scope.displaystyle = displaystyle
+        else
+          throw new Error('django-cradmin-bulkfileupload-displaystyle must be one of: "inline" or "frame".')
+        $scope.$on '$destroy', ->
+          if $scope.fileUploadFieldScope?
+            cradminBulkfileuploadCoordinator.unregister $scope.fileUploadFieldScope.fieldname
+
         return
     }
 ])
@@ -494,6 +534,7 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       link: (scope, element, attr, uploadController) ->
         scope.element = element
+        scope.fieldname = attr.name
         uploadController.setFileUploadFieldScope(scope)
         return
     }
@@ -530,6 +571,19 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         uploadController.setSimpleWidgetScope(scope)
 
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadShowOverlay', [
+  ->
+    return {
+      restrict: 'AE'
+      scope: {}
+
+      link: (scope, element, attr) ->
+        console.log 'link djangoCradminBulkfileuploadShowOverlay'
         return
     }
 ])

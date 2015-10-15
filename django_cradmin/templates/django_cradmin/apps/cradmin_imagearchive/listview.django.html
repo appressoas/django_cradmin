@@ -1,0 +1,10 @@
+{% extends "django_cradmin/viewhelpers/objecttable/objecttable.django.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="django-cradmin-form-wrapper">
+        {% crispy form formhelper %}
+    </div>
+
+    {{ block.super }}
+{% endblock content %}

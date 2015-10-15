@@ -216,7 +216,43 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).factory('cradminBulkfileupload', function() {
+  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).provider('cradminBulkfileuploadCoordinator', function() {
+    var FileUploadCoordinator;
+    FileUploadCoordinator = (function() {
+      function FileUploadCoordinator($window) {
+        this.hiddenfieldnameToScopeMap = {};
+        this.window = $window;
+      }
+
+      FileUploadCoordinator.prototype.register = function(hiddenfieldname, scope) {
+        var existingScope;
+        existingScope = this.hiddenfieldnameToScopeMap[hiddenfieldname];
+        if (existingScope != null) {
+          console.error('Trying to register a fieldname that is already registered with ' + 'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname);
+          return;
+        }
+        return this.hiddenfieldnameToScopeMap[hiddenfieldname] = scope;
+      };
+
+      FileUploadCoordinator.prototype.unregister = function(hiddenfieldname) {
+        var scope;
+        scope = this.hiddenfieldnameToScopeMap[hiddenfieldname];
+        if (scope == null) {
+          console.error('Trying to unregister a field that is not registered with ' + 'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname);
+        }
+        return this.hiddenfieldnameToScopeMap[hiddenfieldname] = void 0;
+      };
+
+      return FileUploadCoordinator;
+
+    })();
+    this.$get = [
+      '$window', function($window) {
+        return new FileUploadCoordinator($window);
+      }
+    ];
+    return this;
+  }).factory('cradminBulkfileupload', function() {
     var FileInfo, FileInfoList;
     FileInfo = (function() {
       function FileInfo(options) {
@@ -391,7 +427,7 @@
       };
     }
   ]).directive('djangoCradminBulkfileupload', [
-    '$upload', '$cookies', 'cradminDetectize', function($upload, $cookies, cradminDetectize) {
+    '$upload', '$cookies', 'cradminDetectize', 'cradminBulkfileuploadCoordinator', function($upload, $cookies, cradminDetectize, cradminBulkfileuploadCoordinator) {
       return {
         require: '^djangoCradminBulkfileuploadForm',
         restrict: 'AE',
@@ -407,8 +443,9 @@
           this.setInProgressOrFinishedScope = function(inProgressOrFinishedScope) {
             return $scope.inProgressOrFinishedScope = inProgressOrFinishedScope;
           };
-          this.setFileUploadFieldScope = function(fileUploadFieldScope) {
-            return $scope.fileUploadFieldScope = fileUploadFieldScope;
+          this.setFileUploadFieldScope = function(fileUploadFieldScope, fieldname) {
+            $scope.fileUploadFieldScope = fileUploadFieldScope;
+            return cradminBulkfileuploadCoordinator.register(fileUploadFieldScope.fieldname, $scope);
           };
           this.setSimpleWidgetScope = function(simpleWidgetScope) {
             $scope.simpleWidgetScope = simpleWidgetScope;
@@ -522,18 +559,30 @@
             return $scope.fileUploadFieldScope.setCollectionId(collectionid);
           };
         },
-        link: function(scope, element, attributes, formController) {
-          scope.uploadUrl = attributes.djangoCradminBulkfileupload;
-          scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503;
+        link: function($scope, element, attributes, formController) {
+          var displaystyle;
+          $scope.uploadUrl = attributes.djangoCradminBulkfileupload;
+          $scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503;
           if (attributes.djangoCradminBulkfileuploadApiparameters != null) {
-            scope.apiparameters = scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters);
-            if (!angular.isObject(scope.apiparameters)) {
+            $scope.apiparameters = $scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters);
+            if (!angular.isObject($scope.apiparameters)) {
               throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.');
             }
           } else {
-            scope.apiparameters = {};
+            $scope.apiparameters = {};
           }
-          scope.formController = formController;
+          $scope.formController = formController;
+          displaystyle = attributes.djangoCradminBulkfileuploadDisplaystyle;
+          if (displaystyle === 'inline' || displaystyle === 'overlay') {
+            $scope.displaystyle = displaystyle;
+          } else {
+            throw new Error('django-cradmin-bulkfileupload-displaystyle must be one of: "inline" or "frame".');
+          }
+          $scope.$on('$destroy', function() {
+            if ($scope.fileUploadFieldScope != null) {
+              return cradminBulkfileuploadCoordinator.unregister($scope.fileUploadFieldScope.fieldname);
+            }
+          });
         }
       };
     }
@@ -703,6 +752,7 @@
         },
         link: function(scope, element, attr, uploadController) {
           scope.element = element;
+          scope.fieldname = attr.name;
           uploadController.setFileUploadFieldScope(scope);
         }
       };
@@ -732,6 +782,16 @@
             return element.css('display', 'none');
           };
           uploadController.setSimpleWidgetScope(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadShowOverlay', [
+    function() {
+      return {
+        restrict: 'AE',
+        scope: {},
+        link: function(scope, element, attr) {
+          console.log('link djangoCradminBulkfileuploadShowOverlay');
         }
       };
     }
