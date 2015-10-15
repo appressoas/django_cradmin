@@ -243,6 +243,27 @@
         return this.hiddenfieldnameToScopeMap[hiddenfieldname] = void 0;
       };
 
+      FileUploadCoordinator.prototype._getScope = function(hiddenfieldname) {
+        var scope;
+        scope = this.hiddenfieldnameToScopeMap[hiddenfieldname];
+        if (scope == null) {
+          console.error('Trying to get a field that is not registered with ' + 'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname);
+        }
+        return scope;
+      };
+
+      FileUploadCoordinator.prototype.showOverlayForm = function(hiddenfieldname) {
+        var scope;
+        scope = this._getScope(hiddenfieldname);
+        return scope.formController.showOverlay();
+      };
+
+      FileUploadCoordinator.prototype.hideOverlayForm = function(hiddenfieldname) {
+        var scope;
+        scope = this._getScope(hiddenfieldname);
+        return scope.formController.hideOverlay();
+      };
+
       return FileUploadCoordinator;
 
     })();
@@ -393,10 +414,29 @@
           this.addSubmitButtonScope = function(submitButtonScope) {
             return $scope._submitButtonScopes.push(submitButtonScope);
           };
+          this.showOverlay = function() {
+            if ($scope.overlay) {
+              return $scope.element.addClass('django-cradmin-bulkfileupload-form-overlay-show');
+            } else {
+              throw new Error('Can only show the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
+            }
+          };
+          this.hideOverlay = function() {
+            if ($scope.overlay) {
+              return $scope.element.removeClass('django-cradmin-bulkfileupload-form-overlay-show');
+            } else {
+              throw new Error('Can only hide the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
+            }
+          };
         },
-        link: function(scope, element, attr, uploadController) {
+        link: function($scope, element, attr, uploadController) {
+          $scope.overlay = attr.djangoCradminBulkfileuploadFormOverlay === 'true';
+          $scope.element = element;
+          if ($scope.overlay) {
+            element.addClass('django-cradmin-bulkfileupload-form-overlay');
+          }
           element.on('submit', function(evt) {
-            if (scope._inProgressCounter !== 0) {
+            if ($scope._inProgressCounter !== 0) {
               return evt.preventDefault();
             }
           });
@@ -560,7 +600,6 @@
           };
         },
         link: function($scope, element, attributes, formController) {
-          var displaystyle;
           $scope.uploadUrl = attributes.djangoCradminBulkfileupload;
           $scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503;
           if (attributes.djangoCradminBulkfileuploadApiparameters != null) {
@@ -572,12 +611,6 @@
             $scope.apiparameters = {};
           }
           $scope.formController = formController;
-          displaystyle = attributes.djangoCradminBulkfileuploadDisplaystyle;
-          if (displaystyle === 'inline' || displaystyle === 'overlay') {
-            $scope.displaystyle = displaystyle;
-          } else {
-            throw new Error('django-cradmin-bulkfileupload-displaystyle must be one of: "inline" or "frame".');
-          }
           $scope.$on('$destroy', function() {
             if ($scope.fileUploadFieldScope != null) {
               return cradminBulkfileuploadCoordinator.unregister($scope.fileUploadFieldScope.fieldname);
@@ -786,12 +819,32 @@
       };
     }
   ]).directive('djangoCradminBulkfileuploadShowOverlay', [
-    function() {
+    'cradminBulkfileuploadCoordinator', function(cradminBulkfileuploadCoordinator) {
       return {
         restrict: 'AE',
-        scope: {},
-        link: function(scope, element, attr) {
-          console.log('link djangoCradminBulkfileuploadShowOverlay');
+        scope: {
+          hiddenfieldname: '@djangoCradminBulkfileuploadShowOverlay'
+        },
+        link: function($scope, element, attr) {
+          console.log('link djangoCradminBulkfileuploadShowOverlay', $scope.hiddenfieldname);
+          element.on('click', function() {
+            return cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname);
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadHideOverlay', [
+    'cradminBulkfileuploadCoordinator', function(cradminBulkfileuploadCoordinator) {
+      return {
+        restrict: 'AE',
+        scope: {
+          hiddenfieldname: '@djangoCradminBulkfileuploadHideOverlay'
+        },
+        link: function($scope, element, attr) {
+          console.log('link djangoCradminBulkfileuploadHideOverlay', $scope.hiddenfieldname);
+          element.on('click', function() {
+            return cradminBulkfileuploadCoordinator.hideOverlayForm($scope.hiddenfieldname);
+          });
         }
       };
     }

@@ -10,11 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
 from django.views.generic.edit import FormMixin
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.crispylayouts import BulkFileUploadSubmit
 
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import SingleFileUploadWidget, BulkFileUploadWidget
-from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import crudbase
 from django_cradmin.viewhelpers import create
@@ -127,96 +125,11 @@ class BulkAddForm(forms.Form):
         })
 
 
-# class ArchiveImageBulkAddView(formbase.FormView):
-#     form_class = BulkAddForm
-#     form_attributes = {
-#         'django-cradmin-bulkfileupload-form': ''
-#     }
-#     form_id = 'django_cradmin_imagearchive_bulkadd_form'
-#     extra_form_css_classes = ['django-cradmin-form-noasterisk']
-#
-#     def get_pagetitle(self):
-#         return _('Bulk upload archive images')
-#
-#     def get_buttons(self):
-#         return [
-#             BulkFileUploadSubmit(
-#                 'submit', _('Add to the image archive'),
-#                 uploading_text=_('Uploading images'),
-#                 uploading_icon_cssclass=cradmin_icon('loadspinner')),
-#         ]
-#
-#     def get_field_layout(self):
-#         return [
-#             layout.Div(
-#                 'filecollectionid',
-#                 # css_class="cradmin-globalfields"),
-#                 css_class="cradmin-focusfield"),
-#         ]
-#
-#     def get_formhelper(self):
-#         formhelper = super(ArchiveImageBulkAddView, self).get_formhelper()
-#         formhelper.form_show_labels = False
-#         return formhelper
-#
-#     def upload_file_to_archive(self, temporaryfile):
-#         archiveimage = ArchiveImage(
-#             role=self.request.cradmin_role,
-#             name=temporaryfile.filename)
-#         archiveimage.file_size = temporaryfile.file.size
-#         archiveimage.clean()
-#         archiveimage.save()
-#         archiveimage.image.save(temporaryfile.filename, ContentFile(temporaryfile.file.read()))
-#         archiveimage.full_clean()
-#
-#     def upload_files_to_archive(self, temporaryfilecollection):
-#         for temporaryfile in temporaryfilecollection.files.all():
-#             self.upload_file_to_archive(temporaryfile)
-#
-#     def get_collectionqueryset(self):
-#         return TemporaryFileCollection.objects\
-#             .filter_for_user(self.request.user)\
-#             .prefetch_related('files')
-#
-#     def get_success_message(self, temporaryfilecollection):
-#         """
-#         Override this to provide a success message.
-#
-#         The ``temporaryfilecollection`` is the TemporaryFileCollection that was just uploaded.
-#
-#         Used by :meth:`.add_success_messages`.
-#         """
-#         filenames = [u'"{}"'.format(temporaryfile.filename) for temporaryfile in temporaryfilecollection.files.all()]
-#         return _(u'Uploaded %(what)s.') % {
-#             'what': u','.join(filenames)
-#         }
-#
-#     def add_success_messages(self, temporaryfilecollection):
-#         """
-#         Add success messages on successful upload.
-#
-#         The ``temporaryfilecollection`` is the TemporaryFileCollection that was just uploaded.
-#
-#         Defaults to add :meth:`.get_success_message` as a django messages
-#         success message if :meth:`.get_success_message` returns anything.
-#
-#         You can override this to add multiple messages or to show messages in some other way.
-#         """
-#         success_message = self.get_success_message(temporaryfilecollection)
-#         if success_message:
-#             messages.success(self.request, success_message)
-#
-#     def form_valid(self, form):
-#         collectionid = form.cleaned_data['filecollectionid']
-#         try:
-#             temporaryfilecollection = self.get_collectionqueryset().get(id=collectionid)
-#         except TemporaryFileCollection.DoesNotExist:
-#             return http.HttpResponseNotFound()
-#         else:
-#             self.upload_files_to_archive(temporaryfilecollection)
-#             self.add_success_messages(temporaryfilecollection)
-#             temporaryfilecollection.clear_files_and_delete()
-#             return http.HttpResponseRedirect(self.get_success_url())
+class AddImageOverlayButton(objecttable.NonSubmitButton):
+    def get_html_attributes(self):
+        attributes = super(AddImageOverlayButton, self).get_html_attributes()
+        attributes['django-cradmin-bulkfileupload-show-overlay'] = 'filecollectionid'
+        return attributes
 
 
 class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView,
@@ -227,10 +140,11 @@ class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTa
 
     form_class = BulkAddForm
     form_attributes = {
-        'django-cradmin-bulkfileupload-form': ''
+        'django-cradmin-bulkfileupload-form': '',
+        'django-cradmin-bulkfileupload-form-overlay': 'true'
     }
     form_id = 'django_cradmin_imagearchive_bulkadd_form'
-    extra_form_css_classes = ['django-cradmin-form-noasterisk']
+    extra_form_css_classes = ['django-cradmin-form-noasterisk', 'django-cradmin-bulkfileupload-form-overlay']
     template_name = 'django_cradmin/apps/cradmin_imagearchive/listview.django.html'
 
     def get_field_layout(self):
@@ -239,6 +153,11 @@ class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTa
                 'filecollectionid',
                 # css_class="cradmin-globalfields"),
                 css_class="cradmin-focusfield"),
+        ]
+
+    def get_buttons(self):
+        return [
+            AddImageOverlayButton(label=_('Add image'), buttonclass='btn btn-primary')
         ]
 
     def get_button_layout(self):
@@ -336,14 +255,6 @@ class ArchiveImagesListView(BaseImagesListView):
         DescriptionColumn,
     ]
 
-    def get_buttons(self):
-        app = self.request.cradmin_app
-        return [
-            objecttable.Button(label=_('Add image'),
-                               url=app.reverse_appurl('create'),
-                               buttonclass='btn btn-primary')
-        ]
-
 
 class ArchiveImagesSingleSelectView(BaseImagesListView):
     columns = [
@@ -371,7 +282,7 @@ class ArchiveImageCreateUpdateMixin(object):
     model = ArchiveImage
     roleid_field = 'role'
     form_attributes = {
-        'django-cradmin-bulkfileupload-form': ''
+        'django-cradmin-bulkfileupload-form': '',
     }
     form_id = 'django_cradmin_imagearchive_bulkadd_form'
     extra_form_css_classes = ['django-cradmin-form-noasterisk']
@@ -525,10 +436,5 @@ class App(crapp.App):
         crapp.Url(
             r'^delete/(?P<pk>\d+)$',
             ArchiveImageDeleteView.as_view(),
-            name="delete"),
-        # crapp.Url(
-        #     r'bulkadd$',
-        #     ArchiveImageBulkAddView.as_view(),
-        #     name='bulkadd'
-        # )
+            name="delete")
     ]

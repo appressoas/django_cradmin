@@ -11,12 +11,21 @@
         accept (optional)
 {% endcomment %}
 {% load i18n %}
+{% load cradmin_icon_tags %}
+
+<button type="button"
+        django-cradmin-bulkfileupload-hide-overlay="{{ hiddenfieldname }}"
+        class="btn btn-link"
+        aria-label="{% trans 'close file upload window' %}">
+    <span class="{% cradmin_icon 'x' %}"
+          aria-hidden="true"
+          title="{% trans 'close file upload window' %}"></span>
+</button>
 
 <div django-cradmin-bulkfileupload="{{ apiurl }}"
         django-cradmin-bulkfileupload-errormessage503="{% trans 'Server timeout while uploading the file. This may be caused by a poor upload link and/or a too large file.' %}"
         django-cradmin-bulkfileupload-apiparameters={{ apiparameters|safe }} {# NOTE: The missing quotes are correct - they are added by quoteattr #}
-        django-cradmin-bulkfileupload-displaystyle="{{ displaystyle }}"
-        class="django-cradmin-bulkfileupload django-cradmin-bulkfileupload-{{ displaystyle }}">
+        class="django-cradmin-bulkfileupload">
 
     <div django-cradmin-bulkfileupload-progress></div>
     <div django-cradmin-bulkfileupload-rejected-files="{{ invalid_filetype_message }}"></div>
