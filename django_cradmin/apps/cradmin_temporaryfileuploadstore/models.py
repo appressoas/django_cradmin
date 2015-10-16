@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import math
+from django_cradmin.utils import crhumanize
 
 
 class TemporaryFileCollectionQuerySet(models.query.QuerySet):
@@ -157,6 +158,10 @@ class TemporaryFileCollection(models.Model):
                   'algorithm handles max_filename.'
                   'This is validated by the API on upload.')
 
+    #: Max file size in bytes.
+    max_filesize_bytes = models.PositiveIntegerField(
+        null=True, default=None)
+
     #: If this is True, only a single file can be added to the collection.
     #: This means that the last file added to the collection will be the
     #: only file in the collection.
@@ -239,3 +244,11 @@ class TemporaryFile(models.Model):
                 for temporaryfile in other_temporaryfiles_queryset:
                     temporaryfile.file.delete()
                     temporaryfile.delete()
+            if self.collection.max_filesize_bytes and self.file:
+                if self.file.size > self.collection.max_filesize_bytes:
+                    raise ValidationError(_('Files can not be larger than %(max_filesize)s. '
+                                            '%(filename)s is %(filesize)s.') % {
+                        'max_filesize': crhumanize.human_readable_filesize(self.collection.max_filesize_bytes),
+                        'filename': self.filename,
+                        'filesize': self.file.size
+                    })
