@@ -55,17 +55,12 @@ angular.module('djangoCradmin.bulkfileupload', [
     constructor: (options) ->
       @file = options.file
       @temporaryfileid = options.temporaryfileid
-      @name = options.name
+      if @file?
+        @name = @file.name
+      else
+        @name = options.name
       @isRemoving = false
 
-    markAsIsRemoving: ->
-      @isRemoving = true
-
-    markAsIsNotRemoving: ->
-      @isRemoving = false
-
-  class FileInfoList
-    constructor: (options) ->
       @percent = options.percent
       if options.finished
         @finished = true
@@ -75,30 +70,33 @@ angular.module('djangoCradmin.bulkfileupload', [
         @hasErrors = true
       else
         @hasErrors = false
-      @rawFiles = options.files
-      @files = []
-      for file in options.files
-        @files.push(new FileInfo({
-          temporaryfileid: null
-          name: file.name
-          file: file
-        }))
+#      @rawFiles = options.files
+#      @files = []
+#      for file in options.files
+#        @files.push(new FileInfo({
+#          temporaryfileid: null
+#          name: file.name
+#          file: file
+#        }))
       @errors = options.errors
+
+    markAsIsRemoving: ->
+      @isRemoving = true
+
+    markAsIsNotRemoving: ->
+      @isRemoving = false
 
     updatePercent: (percent) ->
       @percent = percent
 
-    finish: (temporaryfiles, singlemode) ->
+    finish: (temporaryfile, singlemode) ->
       @finished = true
 
       # Update the client provided filenames with the filename from the server
       index = 0
-      @files = []
-      for temporaryfile in temporaryfiles
-        @files.push(new FileInfo({
-          temporaryfileid: temporaryfile.id
-          name: temporaryfile.filename
-        }))
+      @file = undefined
+      @temporaryfileid = temporaryfile.id
+      @name = temporaryfile.filename
 
     setErrors: (errors) ->
       @hasErrors = true
@@ -110,9 +108,12 @@ angular.module('djangoCradmin.bulkfileupload', [
     remove: (index) ->
       return @files.splice(index, 1)
 
+#  class FileInfoList
   return {
-    createFileInfoList: (options) ->
-      new FileInfoList(options)
+#    createFileInfoList: (options) ->
+#      new FileInfoList(options)
+    createFileInfo: (options) ->
+      return new FileInfo(options)
   }
 
 
@@ -276,9 +277,6 @@ angular.module('djangoCradmin.bulkfileupload', [
         @getCollectionId = ->
           return $scope.collectionid
 
-        $scope._addFileInfoList = (fileInfoList) ->
-          $scope.inProgressOrFinishedScope.addFileInfoList(fileInfoList)
-
         $scope._showAppropriateWidget = ->
           if $scope.advancedWidgetScope and $scope.simpleWidgetScope
             if cradminDetectize.device.type == 'desktop'
@@ -287,22 +285,30 @@ angular.module('djangoCradmin.bulkfileupload', [
               $scope.advancedWidgetScope.hide()
 
         $scope.filesDropped = (files, evt, rejectedFiles) ->
+          ###
+          Callend when a file is draggen&dropped into the widget.
+          ###
           if rejectedFiles.length > 0
             $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles)
 
         $scope.$watch 'cradminLastFilesSelectedByUser', ->
           if $scope.cradminLastFilesSelectedByUser.length > 0
-            $scope._addFilesToQueue($scope.cradminLastFilesSelectedByUser.slice())
+            for file in $scope.cradminLastFilesSelectedByUser
+              $scope._addFileToQueue(file)
+              if $scope.apiparameters.singlemode
+                # Single mode only allows upload of a single file,
+                # so it makes no sense to process more than one file.
+                break
             $scope.cradminLastFilesSelectedByUser = []
 
-        $scope._addFilesToQueue = (files) ->
+        $scope._addFileToQueue = (file) ->
           if $scope.apiparameters.singlemode
             $scope.inProgressOrFinishedScope.clear()
-          progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
+          progressFileInfo = $scope.inProgressOrFinishedScope.addFileInfo({
             percent: 0
-            files: files
+            file: file
           })
-          $scope.fileUploadQueue.push(progressInfo)
+          $scope.fileUploadQueue.push(progressFileInfo)
           if $scope.firstUploadInProgress
             # If the first upload is in progress, we need to postpone subsequent
             # uploads until we get the response from the first upload containing
@@ -322,7 +328,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             $scope._processFileUploadQueue()
 
         $scope._processFileUploadQueue = () ->
-          progressInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
+          progressFileInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
           apidata = angular.extend({}, $scope.apiparameters, {collectionid: $scope.collectionid})
           $scope.formController.addInProgress()
 
@@ -330,27 +336,27 @@ angular.module('djangoCradmin.bulkfileupload', [
             url: $scope.uploadUrl
             method: 'POST'
             data: apidata
-            file: progressInfo.rawFiles
+            file: progressFileInfo.file
             fileFormDataName: 'file'  # The form field name
             headers: {
               'X-CSRFToken': $cookies.get('csrftoken')
               'Content-Type': 'multipart/form-data'
             }
           }).progress((evt) ->
-            progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
+            progressFileInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            progressInfo.finish(data.temporaryfiles, $scope.apiparameters.singlemode)
+            progressFileInfo.finish(data.temporaryfiles[0], $scope.apiparameters.singlemode)
             $scope._setCollectionId(data.collectionid)
             $scope._onFileUploadComplete()
           ).error((data, status) ->
             if status == 503
-              progressInfo.setErrors({
+              progressFileInfo.setErrors({
                 file: [{
                   message: $scope.errormessage503
                 }]
               })
             else
-              progressInfo.setErrors(data)
+              progressFileInfo.setErrors(data)
             $scope._onFileUploadComplete()
           )
 
@@ -422,46 +428,16 @@ angular.module('djangoCradmin.bulkfileupload', [
       scope: {}
 
       controller: ($scope) ->
-        $scope.fileInfoLists = []
-#        $scope.fileInfoLists = [
-#          new cradminBulkfileupload.createFileInfoList({
-#            percent: 10
-#            files: [{
-#              name: 'test.txt'
-#            }, {
-#              name: 'test2.txt'
-#            }]
-#          }),
-#          new cradminBulkfileupload.createFileInfoList({
-#            percent: 100
-#            finished: true
-#            files: [{
-#              name: 'Some kind of test.txt'
-#            }]
-#          }),
-#          new cradminBulkfileupload.createFileInfoList({
-#            percent: 90
-#            finished: true
-#            files: [{
-#              name: 'mybigfile.txt'
-#            }]
-#            hasErrors: true
-#            errors: {
-#              file: [{
-#                message: 'File is too big'
-#              }]
-#            }
-#          }),
-#        ]
+        $scope.fileInfoArray = []
 
         $scope._findFileInfo = (fileInfo) ->
           if not fileInfo.temporaryfileid?
             throw new Error("Can not remove files without a temporaryfileid")
-          for fileInfoList in $scope.fileInfoLists
-            fileInfoIndex = fileInfoList.indexOf(fileInfo)
+          for fileInfo in $scope.fileInfoArray
+            fileInfoIndex = fileInfoArray.indexOf(fileInfo)
             if fileInfoIndex != -1
               return {
-                fileInfoList: fileInfoList
+                fileInfo: fileInfo
                 index: fileInfoIndex
               }
           throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
@@ -481,7 +457,7 @@ angular.module('djangoCradmin.bulkfileupload', [
                 temporaryfileid: fileInfo.temporaryfileid
             })
             .success((data, status, headers, config) ->
-              fileInfoLocation.fileInfoList.remove(fileInfoLocation.index)
+              fileInfoLocation.fileInfoArray.remove(fileInfoLocation.index)
             ).
             error((data, status, headers, config) ->
               console?.error? 'ERROR', data
@@ -489,13 +465,35 @@ angular.module('djangoCradmin.bulkfileupload', [
               fileInfo.markAsIsNotRemoving()
             )
 
-        $scope.addFileInfoList = (options) ->
-          fileInfoList = cradminBulkfileupload.createFileInfoList(options)
-          $scope.fileInfoLists.push(fileInfoList)
-          return fileInfoList
+        $scope.addFileInfo = (options) ->
+          fileInfo = cradminBulkfileupload.createFileInfo(options)
+          $scope.fileInfoArray.push(fileInfo)
+          return fileInfo
 
         $scope.clear = (options) ->
-          $scope.fileInfoLists = []
+          $scope.fileInfoArray = []
+
+
+#        $scope.addFileInfo({
+#          percent: 10
+#          name: 'test.txt'
+#        })
+#        $scope.addFileInfo({
+#            percent: 100
+#            finished: true
+#            name: 'Some kind of test.txt'
+#        })
+#        $scope.addFileInfo({
+#          percent: 90
+#          finished: true
+#          name: 'mybigfile.txt'
+#          hasErrors: true
+#          errors: {
+#            files: [{
+#              message: 'File is too big'
+#            }]
+#          }
+#        })
 
         return
 
@@ -506,15 +504,19 @@ angular.module('djangoCradmin.bulkfileupload', [
     }
 ])
 
-
-.directive('djangoCradminBulkFileInfoList', [
+.directive('djangoCradminBulkFileInfo', [
   ->
+    ###*
+    Renders a single file info with progress info, errors, etc.
+
+    Used both the djangoCradminBulkfileuploadProgress directive.
+    ###
     return {
       restrict: 'AE'
       scope: {
-        fileInfoList: '=djangoCradminBulkFileInfoList'
+        fileInfo: '=djangoCradminBulkFileInfo'
       }
-      templateUrl: 'bulkfileupload/fileinfolist.tpl.html'
+      templateUrl: 'bulkfileupload/fileinfo.tpl.html'
       transclude: true
 
       controller: ($scope) ->
@@ -533,13 +535,13 @@ angular.module('djangoCradmin.bulkfileupload', [
   ->
     return {
       restrict: 'A'
-      require: '^djangoCradminBulkFileInfoList'
+      require: '^djangoCradminBulkFileInfo'
       scope: {}
 
-      link: (scope, element, attr, fileInfoListController) ->
+      link: (scope, element, attr, fileInfoController) ->
         element.on 'click', (evt) ->
           evt.preventDefault()
-          fileInfoListController.close()
+          fileInfoController.close()
         return
     }
 ])
