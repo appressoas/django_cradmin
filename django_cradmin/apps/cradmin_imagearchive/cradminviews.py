@@ -122,13 +122,13 @@ class BulkAddForm(forms.Form):
             'Upload as many images as you like. '
             'You can edit the name and description of the images after they have been uploaded.'),
         error_messages={
-            'required': _('You must upload at least one file.')
+            'required': _('You must upload at least one image.')
         })
 
 
 class SingleAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
-        required=False,
+        required=True,
         widget=SingleFileUploadWidget(
             accept='image/*',
             apiparameters={
@@ -149,9 +149,14 @@ class SingleAddForm(forms.Form):
         filecollectionid = cleaned_data.get('filecollectionid', None)
         if filecollectionid is not None:
             collection = TemporaryFileCollection.objects.get(id=filecollectionid)
-            if collection.files.count() < 1:
+            filecount = collection.files.count()
+            if filecount < 1:
                 raise forms.ValidationError({
                     'filecollectionid': _('You must upload an image.')
+                })
+            elif filecount > 1:
+                raise forms.ValidationError({
+                    'filecollectionid': _('You must upload exactly one image.')
                 })
 
 
