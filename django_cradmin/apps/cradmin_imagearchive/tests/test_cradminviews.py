@@ -260,7 +260,7 @@ class TestArchiveImagesListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         temporaryfile.file.save('testfile.png', ContentFile(testimage))
 
         testrole = mommy.make('django_cradmin_testapp.TstRole')
-        mockresponse = self.mock_http302_postrequest(
+        self.mock_http302_postrequest(
             requestuser=testuser,
             cradmin_role=testrole,
             requestkwargs={
@@ -411,7 +411,7 @@ class TestArchiveImagesSingleSelectView(TestCase, cradmin_testhelpers.TestCaseMi
         temporaryfile.file.save('testfile.png', ContentFile(testimage))
 
         testrole = mommy.make('django_cradmin_testapp.TstRole')
-        mockresponse = self.mock_http302_postrequest(
+        self.mock_http302_postrequest(
             requestuser=testuser,
             cradmin_role=testrole,
             requestkwargs={

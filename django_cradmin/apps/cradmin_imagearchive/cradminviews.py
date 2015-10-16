@@ -13,7 +13,6 @@ from django.views.generic.edit import FormMixin
 
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget, SingleFileUploadWidget
-from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import crudbase
 from django_cradmin.viewhelpers import update
