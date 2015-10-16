@@ -13,6 +13,7 @@ from django.views.generic.edit import FormMixin
 
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import SingleFileUploadWidget, BulkFileUploadWidget
+from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import crudbase
 from django_cradmin.viewhelpers import create
@@ -161,7 +162,10 @@ class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTa
         ]
 
     def get_button_layout(self):
-        return []
+        return [
+            layout.Div(PrimarySubmit('save', _('Upload images')),
+                       css_class="django_cradmin_submitrow")
+        ]
 
     def get_formhelper(self):
         formhelper = super(BaseImagesListView, self).get_formhelper()

@@ -258,12 +258,6 @@
         return scope.formController.showOverlay();
       };
 
-      FileUploadCoordinator.prototype.hideOverlayForm = function(hiddenfieldname) {
-        var scope;
-        scope = this._getScope(hiddenfieldname);
-        return scope.formController.hideOverlay();
-      };
-
       return FileUploadCoordinator;
 
     })();
@@ -414,26 +408,39 @@
           this.addSubmitButtonScope = function(submitButtonScope) {
             return $scope._submitButtonScopes.push(submitButtonScope);
           };
+          this.addSubmitButtonScope = function(submitButtonScope) {
+            return $scope._submitButtonScopes.push(submitButtonScope);
+          };
+          this.registerOverlayControls = function(overlayControlsScope) {
+            return $scope._overlayControlsScope = overlayControlsScope;
+          };
           this.showOverlay = function() {
             if ($scope.overlay) {
-              return $scope.element.addClass('django-cradmin-bulkfileupload-form-overlay-show');
+              return $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show');
             } else {
               throw new Error('Can only show the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
             }
           };
           this.hideOverlay = function() {
             if ($scope.overlay) {
-              return $scope.element.removeClass('django-cradmin-bulkfileupload-form-overlay-show');
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-show');
             } else {
               throw new Error('Can only hide the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
             }
           };
         },
         link: function($scope, element, attr, uploadController) {
+          var body;
           $scope.overlay = attr.djangoCradminBulkfileuploadFormOverlay === 'true';
           $scope.element = element;
           if ($scope.overlay) {
             element.addClass('django-cradmin-bulkfileupload-form-overlay');
+            body = angular.element('body');
+            $scope.wrapperElement = angular.element('<div></div>');
+            $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper');
+            $scope.wrapperElement.appendTo(body);
+            element.appendTo($scope.wrapperElement);
+            $scope._overlayControlsScope.element.appendTo($scope.wrapperElement);
           }
           element.on('submit', function(evt) {
             if ($scope._inProgressCounter !== 0) {
@@ -826,7 +833,6 @@
           hiddenfieldname: '@djangoCradminBulkfileuploadShowOverlay'
         },
         link: function($scope, element, attr) {
-          console.log('link djangoCradminBulkfileuploadShowOverlay', $scope.hiddenfieldname);
           element.on('click', function() {
             return cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname);
           });
@@ -834,17 +840,29 @@
       };
     }
   ]).directive('djangoCradminBulkfileuploadHideOverlay', [
-    'cradminBulkfileuploadCoordinator', function(cradminBulkfileuploadCoordinator) {
+    function() {
       return {
         restrict: 'AE',
+        require: '^djangoCradminBulkfileuploadForm',
         scope: {
           hiddenfieldname: '@djangoCradminBulkfileuploadHideOverlay'
         },
-        link: function($scope, element, attr) {
-          console.log('link djangoCradminBulkfileuploadHideOverlay', $scope.hiddenfieldname);
+        link: function($scope, element, attr, uploadFormController) {
           element.on('click', function() {
-            return cradminBulkfileuploadCoordinator.hideOverlayForm($scope.hiddenfieldname);
+            return uploadFormController.hideOverlay();
           });
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadOverlayControls', [
+    function() {
+      return {
+        restrict: 'AE',
+        require: '^djangoCradminBulkfileuploadForm',
+        scope: {},
+        link: function($scope, element, attr, uploadFormController) {
+          $scope.element = element;
+          uploadFormController.registerOverlayControls($scope);
         }
       };
     }

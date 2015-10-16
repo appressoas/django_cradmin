@@ -39,9 +39,9 @@ angular.module('djangoCradmin.bulkfileupload', [
       scope = @_getScope(hiddenfieldname)
       scope.formController.showOverlay()
 
-    hideOverlayForm: (hiddenfieldname) ->
-      scope = @_getScope(hiddenfieldname)
-      scope.formController.hideOverlay()
+#    hideOverlayForm: (hiddenfieldname) ->
+#      scope = @_getScope(hiddenfieldname)
+#      scope.formController.hideOverlay()
 
   @$get = (['$window', ($window) ->
     return new FileUploadCoordinator($window)
@@ -155,16 +155,22 @@ angular.module('djangoCradmin.bulkfileupload', [
         @addSubmitButtonScope = (submitButtonScope) ->
           $scope._submitButtonScopes.push(submitButtonScope)
 
+        @addSubmitButtonScope = (submitButtonScope) ->
+          $scope._submitButtonScopes.push(submitButtonScope)
+
+        @registerOverlayControls = (overlayControlsScope) ->
+          $scope._overlayControlsScope = overlayControlsScope
+
         @showOverlay = ->
           if $scope.overlay
-            $scope.element.addClass('django-cradmin-bulkfileupload-form-overlay-show')
+            $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show')
           else
             throw new Error('Can only show the overlay if the form has the ' +
               'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
 
         @hideOverlay = ->
           if $scope.overlay
-            $scope.element.removeClass('django-cradmin-bulkfileupload-form-overlay-show')
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-show')
           else
             throw new Error('Can only hide the overlay if the form has the ' +
               'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
@@ -178,6 +184,13 @@ angular.module('djangoCradmin.bulkfileupload', [
           # NOTE: If you do not want the form to be visible until the angularjs adds this class,
           #       simply add the class to your form.
           element.addClass('django-cradmin-bulkfileupload-form-overlay')
+
+          body = angular.element('body')
+          $scope.wrapperElement = angular.element('<div></div>')
+          $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper')
+          $scope.wrapperElement.appendTo(body)
+          element.appendTo($scope.wrapperElement)
+          $scope._overlayControlsScope.element.appendTo($scope.wrapperElement)
         element.on 'submit', (evt) ->
           if $scope._inProgressCounter != 0
             evt.preventDefault()
@@ -616,7 +629,6 @@ angular.module('djangoCradmin.bulkfileupload', [
       }
 
       link: ($scope, element, attr) ->
-        console.log 'link djangoCradminBulkfileuploadShowOverlay', $scope.hiddenfieldname
         element.on 'click', ->
           cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
         return
@@ -624,18 +636,31 @@ angular.module('djangoCradmin.bulkfileupload', [
 ])
 
 .directive('djangoCradminBulkfileuploadHideOverlay', [
-  'cradminBulkfileuploadCoordinator'
-  (cradminBulkfileuploadCoordinator) ->
+  ->
     return {
       restrict: 'AE'
+      require: '^djangoCradminBulkfileuploadForm'
       scope: {
         hiddenfieldname: '@djangoCradminBulkfileuploadHideOverlay'
       }
 
-      link: ($scope, element, attr) ->
-        console.log 'link djangoCradminBulkfileuploadHideOverlay', $scope.hiddenfieldname
+      link: ($scope, element, attr, uploadFormController) ->
         element.on 'click', ->
-          cradminBulkfileuploadCoordinator.hideOverlayForm($scope.hiddenfieldname)
+          uploadFormController.hideOverlay()
+        return
+    }
+])
+
+.directive('djangoCradminBulkfileuploadOverlayControls', [
+  ->
+    return {
+      restrict: 'AE'
+      require: '^djangoCradminBulkfileuploadForm'
+      scope: {}
+
+      link: ($scope, element, attr, uploadFormController) ->
+        $scope.element = element
+        uploadFormController.registerOverlayControls($scope)
         return
     }
 ])
