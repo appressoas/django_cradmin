@@ -4,6 +4,7 @@ from xml.sax.saxutils import quoteattr
 from django import forms
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
+from django.utils.translation import gettext
 
 
 class BulkFileUploadWidget(forms.Widget):
@@ -43,8 +44,33 @@ class BulkFileUploadWidget(forms.Widget):
         self.simple_fileselectbutton_text = simple_fileselectbutton_text
         super(BulkFileUploadWidget, self).__init__(attrs=None)
 
-    def get_apiurl(self):
+    def get_uploadapiurl(self):
+        """
+        Get the file upload API URL.
+
+        You can override this if you provide your own upload API.
+        """
         return reverse('cradmin_temporary_file_upload_api')
+
+    def get_errormessage503(self):
+        """
+        Get the error message to show on 503 server errors.
+        """
+        return gettext('Server timeout while uploading the file. This may be caused '
+                       'by a poor upload link and/or a too large file.')
+
+    def get_angularjs_directive_options(self):
+        """
+        Get options for the ``django-cradmin-bulkfileupload``
+        angularjs directive.
+
+        Must return a JSON encodable dict.
+        """
+        return {
+            'uploadapiurl': self.get_uploadapiurl(),
+            'apiparameters': self.apiparameters,
+            'errormessage503': self.get_errormessage503(),
+        }
 
     def get_template_context_data(self, **context):
         """
@@ -55,8 +81,8 @@ class BulkFileUploadWidget(forms.Widget):
         context['invalid_filetype_message'] = self.invalid_filetype_message
         context['advanced_fileselectbutton_text'] = self.advanced_fileselectbutton_text
         context['simple_fileselectbutton_text'] = self.simple_fileselectbutton_text
-        context['apiparameters'] = quoteattr(json.dumps(self.apiparameters))
-        context['apiurl'] = self.get_apiurl()
+        context['angularjs_directive_options'] = quoteattr(json.dumps(
+            self.get_angularjs_directive_options()))
         return context
 
     def render(self, name, value, attrs=None):

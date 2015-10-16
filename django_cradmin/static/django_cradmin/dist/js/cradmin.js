@@ -490,7 +490,7 @@
             return $scope.rejectedFilesScope = rejectedFilesScope;
           };
           this.getUploadUrl = function() {
-            return $scope.uploadUrl;
+            return $scope.uploadapiurl;
           };
           this.getCollectionId = function() {
             return $scope.collectionid;
@@ -564,7 +564,7 @@
             });
             $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
-              url: $scope.uploadUrl,
+              url: $scope.uploadapiurl,
               method: 'POST',
               data: apidata,
               file: progressFileInfo.file,
@@ -600,16 +600,11 @@
           };
         },
         link: function($scope, element, attributes, formController) {
-          $scope.uploadUrl = attributes.djangoCradminBulkfileupload;
-          $scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503;
-          if (attributes.djangoCradminBulkfileuploadApiparameters != null) {
-            $scope.apiparameters = $scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters);
-            if (!angular.isObject($scope.apiparameters)) {
-              throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.');
-            }
-          } else {
-            $scope.apiparameters = {};
-          }
+          var options;
+          options = angular.fromJson(attributes.djangoCradminBulkfileupload);
+          $scope.uploadapiurl = options.uploadapiurl;
+          $scope.apiparameters = options.apiparameters;
+          $scope.errormessage503 = options.errormessage503;
           $scope.formController = formController;
           $scope.$on('$destroy', function() {
             if ($scope.fileUploadFieldScope != null) {

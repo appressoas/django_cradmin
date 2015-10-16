@@ -28,9 +28,7 @@
 </div>
 
 
-<div django-cradmin-bulkfileupload="{{ apiurl }}"
-        django-cradmin-bulkfileupload-errormessage503="{% trans 'Server timeout while uploading the file. This may be caused by a poor upload link and/or a too large file.' %}"
-        django-cradmin-bulkfileupload-apiparameters={{ apiparameters|safe }} {# NOTE: The missing quotes are correct - they are added by quoteattr #}
+<div django-cradmin-bulkfileupload={{ angularjs_directive_options|safe }} {# NOTE: The missing quotes are correct - they are added by quoteattr #}
         class="django-cradmin-bulkfileupload">
 
     <div class="django-cradmin-bulkfileupload-content">

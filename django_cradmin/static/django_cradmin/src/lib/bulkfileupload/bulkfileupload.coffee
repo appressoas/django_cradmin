@@ -277,7 +277,7 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.rejectedFilesScope = rejectedFilesScope
 
         @getUploadUrl = ->
-          return $scope.uploadUrl
+          return $scope.uploadapiurl
 
         @getCollectionId = ->
           return $scope.collectionid
@@ -338,7 +338,7 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.formController.addInProgress()
 
           $scope.upload = $upload.upload({
-            url: $scope.uploadUrl
+            url: $scope.uploadapiurl
             method: 'POST'
             data: apidata
             file: progressFileInfo.file
@@ -372,14 +372,10 @@ angular.module('djangoCradmin.bulkfileupload', [
         return
 
       link: ($scope, element, attributes, formController) ->
-        $scope.uploadUrl = attributes.djangoCradminBulkfileupload
-        $scope.errormessage503 = attributes.djangoCradminBulkfileuploadErrormessage503
-        if attributes.djangoCradminBulkfileuploadApiparameters?
-          $scope.apiparameters = $scope.$parent.$eval(attributes.djangoCradminBulkfileuploadApiparameters)
-          if not angular.isObject($scope.apiparameters)
-            throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.')
-        else
-          $scope.apiparameters = {}
+        options = angular.fromJson(attributes.djangoCradminBulkfileupload)
+        $scope.uploadapiurl = options.uploadapiurl
+        $scope.apiparameters = options.apiparameters
+        $scope.errormessage503 = options.errormessage503
         $scope.formController = formController
         $scope.$on '$destroy', ->
           if $scope.fileUploadFieldScope?
