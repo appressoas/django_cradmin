@@ -333,9 +333,8 @@ class ArchiveImagesSingleSelectView(BaseImagesListView):
         return url
 
     # def get_form_attributes(self):
-        # form_attributes = super(ArchiveImagesSingleSelectView, self).get_form_attributes()
-        # form_attributes['django-cradmin-bulkfileupload-form-'] = ''
-        # return form_attributes
+    #     form_attributes = super(ArchiveImagesSingleSelectView, self).get_form_attributes()
+    #     return form_attributes
 
     # def get_buttons(self):
     #     app = self.request.cradmin_app

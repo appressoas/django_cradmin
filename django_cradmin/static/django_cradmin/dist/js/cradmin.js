@@ -392,6 +392,9 @@
           this.registerOverlayControls = function(overlayControlsScope) {
             return $scope._overlayControlsScope = overlayControlsScope;
           };
+          this.submitForm = function() {
+            return $scope.element.submit();
+          };
           $scope._showOverlay = function() {
             if ($scope.overlay) {
               return $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show');
@@ -554,6 +557,8 @@
             $scope.formController.removeInProgress();
             if ($scope.fileUploadQueue.length > 0) {
               return $scope._processFileUploadQueue();
+            } else if ($scope.autosubmit) {
+              return $scope.formController.submitForm();
             }
           };
           $scope._processFileUploadQueue = function() {
@@ -605,6 +610,7 @@
           $scope.uploadapiurl = options.uploadapiurl;
           $scope.apiparameters = options.apiparameters;
           $scope.errormessage503 = options.errormessage503;
+          $scope.autosubmit = options.autosubmit;
           $scope.formController = formController;
           $scope.$on('$destroy', function() {
             if ($scope.fileUploadFieldScope != null) {

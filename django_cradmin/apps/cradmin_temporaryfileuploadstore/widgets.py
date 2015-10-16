@@ -16,7 +16,8 @@ class BulkFileUploadWidget(forms.Widget):
                  dropbox_text=None,
                  invalid_filetype_message=None,
                  advanced_fileselectbutton_text=None,
-                 simple_fileselectbutton_text=None):
+                 simple_fileselectbutton_text=None,
+                 autosubmit=False):
         """
         Parameters:
             accept (str): Comma separated string of filetypes that we should accept.
@@ -35,6 +36,13 @@ class BulkFileUploadWidget(forms.Widget):
                         'accept': 'application/pdf,text/plain,image/*',
                         'unique_filenames': True
                     }
+            autosubmit: If this is ``True``, the form is submitted
+                when the upload is finished. This also makes it impossible
+                to upload more than one batch of files, because the widget
+                hides all the upload widgets as soon as any files is added.
+                It works with multi-file upload, but the user will only
+                be able to upload one batch of files, and they will not
+                be able to remove or upload more files.
         """
         self.accept = accept
         self.apiparameters = apiparameters or {}
@@ -42,6 +50,7 @@ class BulkFileUploadWidget(forms.Widget):
         self.invalid_filetype_message = invalid_filetype_message
         self.advanced_fileselectbutton_text = advanced_fileselectbutton_text
         self.simple_fileselectbutton_text = simple_fileselectbutton_text
+        self.autosubmit = autosubmit
         super(BulkFileUploadWidget, self).__init__(attrs=None)
 
     def get_uploadapiurl(self):
@@ -59,6 +68,22 @@ class BulkFileUploadWidget(forms.Widget):
         return gettext('Server timeout while uploading the file. This may be caused '
                        'by a poor upload link and/or a too large file.')
 
+    def get_use_singlemode(self):
+        """
+        If this returns ``True``, only single file upload is allowed.
+        Defaults to ``False``, but :class:`.SingleFileUploadWidget`
+        overrides this.
+        """
+        return False
+
+    def get_apiparameters(self):
+        """
+        Get parameters for the upload API.
+        """
+        apiparameters = self.apiparameters.copy()
+        apiparameters['singlemode'] = self.get_use_singlemode()
+        return apiparameters
+
     def get_angularjs_directive_options(self):
         """
         Get options for the ``django-cradmin-bulkfileupload``
@@ -68,8 +93,9 @@ class BulkFileUploadWidget(forms.Widget):
         """
         return {
             'uploadapiurl': self.get_uploadapiurl(),
-            'apiparameters': self.apiparameters,
+            'apiparameters': self.get_apiparameters(),
             'errormessage503': self.get_errormessage503(),
+            'autosubmit': str(self.autosubmit).lower()
         }
 
     def get_template_context_data(self, **context):
@@ -83,6 +109,7 @@ class BulkFileUploadWidget(forms.Widget):
         context['simple_fileselectbutton_text'] = self.simple_fileselectbutton_text
         context['angularjs_directive_options'] = quoteattr(json.dumps(
             self.get_angularjs_directive_options()))
+        context['singlemode'] = self.get_use_singlemode()
         return context
 
     def render(self, name, value, attrs=None):
@@ -96,9 +123,10 @@ class BulkFileUploadWidget(forms.Widget):
 class SingleFileUploadWidget(BulkFileUploadWidget):
     def __init__(self, *args, **kwargs):
         super(SingleFileUploadWidget, self).__init__(*args, **kwargs)
-        self.apiparameters['singlemode'] = True
+
+    def get_use_singlemode(self):
+        return True
 
     def get_template_context_data(self, **context):
         context = super(SingleFileUploadWidget, self).get_template_context_data(**context)
-        context['singlemode'] = True
         return context

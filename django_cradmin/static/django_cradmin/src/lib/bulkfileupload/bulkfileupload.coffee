@@ -162,6 +162,9 @@ angular.module('djangoCradmin.bulkfileupload', [
         @registerOverlayControls = (overlayControlsScope) ->
           $scope._overlayControlsScope = overlayControlsScope
 
+        @submitForm = ->
+          $scope.element.submit()
+
         $scope._showOverlay = ->
           if $scope.overlay
             $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show')
@@ -331,6 +334,8 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.formController.removeInProgress()
           if $scope.fileUploadQueue.length > 0
             $scope._processFileUploadQueue()
+          else if $scope.autosubmit
+            $scope.formController.submitForm()
 
         $scope._processFileUploadQueue = () ->
           progressFileInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
@@ -376,6 +381,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.uploadapiurl = options.uploadapiurl
         $scope.apiparameters = options.apiparameters
         $scope.errormessage503 = options.errormessage503
+        $scope.autosubmit = options.autosubmit
         $scope.formController = formController
         $scope.$on '$destroy', ->
           if $scope.fileUploadFieldScope?
