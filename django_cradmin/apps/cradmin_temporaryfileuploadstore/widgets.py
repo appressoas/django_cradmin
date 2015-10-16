@@ -95,7 +95,7 @@ class BulkFileUploadWidget(forms.Widget):
             'uploadapiurl': self.get_uploadapiurl(),
             'apiparameters': self.get_apiparameters(),
             'errormessage503': self.get_errormessage503(),
-            'autosubmit': str(self.autosubmit).lower()
+            'autosubmit': self.autosubmit
         }
 
     def get_template_context_data(self, **context):

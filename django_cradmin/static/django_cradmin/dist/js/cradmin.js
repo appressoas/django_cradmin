@@ -535,6 +535,10 @@
           $scope.$watch('cradminLastFilesSelectedByUser', function() {
             var file, _i, _len, _ref;
             if ($scope.cradminLastFilesSelectedByUser.length > 0) {
+              if ($scope.autosubmit) {
+                $scope.simpleWidgetScope.hide();
+                $scope.advancedWidgetScope.hide();
+              }
               _ref = $scope.cradminLastFilesSelectedByUser;
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 file = _ref[_i];

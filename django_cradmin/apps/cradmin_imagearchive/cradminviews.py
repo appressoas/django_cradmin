@@ -107,6 +107,7 @@ class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
         widget=BulkFileUploadWidget(
+            autosubmit=True,
             accept='image/*',
             # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
             apiparameters={
@@ -130,6 +131,7 @@ class SingleAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
         widget=SingleFileUploadWidget(
+            autosubmit=True,
             accept='image/*',
             apiparameters={
                 'accept': 'image/png,image/jpeg,image/gif'

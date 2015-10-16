@@ -318,6 +318,10 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         $scope.$watch 'cradminLastFilesSelectedByUser', ->
           if $scope.cradminLastFilesSelectedByUser.length > 0
+            if $scope.autosubmit
+              $scope.simpleWidgetScope.hide()
+              $scope.advancedWidgetScope.hide()
+
             for file in $scope.cradminLastFilesSelectedByUser
               $scope._addFileToQueue(file)
               if $scope.apiparameters.singlemode
