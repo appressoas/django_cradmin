@@ -416,6 +416,8 @@
         link: function($scope, element, attr, uploadController) {
           var body;
           $scope.overlay = attr.djangoCradminBulkfileuploadFormOverlay === 'true';
+          $scope.preventWindowDragdrop = attr.djangoCradminBulkfileuploadFormPreventWindowDragdrop !== 'false';
+          $scope.openOverlayOnWindowDragdrop = attr.djangoCradminBulkfileuploadFormOpenOverlayOnWindowDragdrop === 'true';
           $scope.element = element;
           if ($scope.overlay) {
             element.addClass('django-cradmin-bulkfileupload-form-overlay');
@@ -427,6 +429,20 @@
             $scope._overlayControlsScope.element.appendTo($scope.wrapperElement);
             if (element.find('.has-error').length > 0) {
               $scope._showOverlay();
+            }
+            if ($scope.preventWindowDragdrop) {
+              window.addEventListener("dragover", function(e) {
+                return e.preventDefault();
+              }, false);
+              window.addEventListener("drop", function(e) {
+                return e.preventDefault();
+              }, false);
+            }
+            if ($scope.openOverlayOnWindowDragdrop) {
+              window.addEventListener("dragover", function(e) {
+                e.preventDefault();
+                return $scope._showOverlay();
+              }, false);
             }
           }
           element.on('submit', function(evt) {
@@ -509,7 +525,7 @@
           };
           $scope.filesDropped = function(files, evt, rejectedFiles) {
             /*
-            Callend when a file is draggen&dropped into the widget.
+            Called when a file is draggen&dropped into the widget.
             */
 
             if (rejectedFiles.length > 0) {

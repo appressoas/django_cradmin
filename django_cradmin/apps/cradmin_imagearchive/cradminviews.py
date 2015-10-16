@@ -180,7 +180,8 @@ class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTa
     def get_form_attributes(self):
         return {
             'django-cradmin-bulkfileupload-form': '',
-            'django-cradmin-bulkfileupload-form-overlay': 'true'
+            'django-cradmin-bulkfileupload-form-overlay': 'true',
+            'django-cradmin-bulkfileupload-form-open-overlay-on-window-dragdrop': 'true'
         }
 
     def get_field_layout(self):
