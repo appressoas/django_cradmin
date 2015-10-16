@@ -119,9 +119,6 @@ class BulkAddForm(forms.Form):
             simple_fileselectbutton_text=_('Select images ...')
         ),
         label=_('Upload at least one image'),
-        help_text=_(
-            'Upload as many images as you like. '
-            'You can edit the name and description of the images after they have been uploaded.'),
         error_messages={
             'required': _('You must upload at least one image.')
         })
@@ -198,6 +195,11 @@ class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTa
         return [
             AddImageOverlayButton(label=_('Add image'), buttonclass='btn btn-primary')
         ]
+
+    def get_button_layout(self):
+        # Overridden because get_buttons from formbase.FormView and
+        # objecttable.ObjectTableView both use get_buttons().
+        return []
 
     def get_formhelper(self):
         formhelper = super(BaseImagesListView, self).get_formhelper()
@@ -300,11 +302,11 @@ class ArchiveImagesListView(BaseImagesListView):
     ]
     form_class = BulkAddForm
 
-    def get_button_layout(self):
-        return [
-            layout.Div(PrimarySubmit('save', _('Upload images')),
-                       css_class="django_cradmin_submitrow")
-        ]
+    # def get_button_layout(self):
+    #     return [
+    #         layout.Div(PrimarySubmit('save', _('Upload images')),
+    #                    css_class="django_cradmin_submitrow")
+    #     ]
 
 
 class ArchiveImagesSingleSelectView(BaseImagesListView):
@@ -323,31 +325,17 @@ class ArchiveImagesSingleSelectView(BaseImagesListView):
         archiveimage = obj
         return archiveimage.get_preview_html(request=self.request)
 
-    def get_button_layout(self):
-        return [
-            layout.Div(PrimarySubmit('save', _('Upload image')),
-                       css_class="django_cradmin_submitrow")
-        ]
+    # def get_button_layout(self):
+    #     return [
+    #         layout.Div(PrimarySubmit('save', _('Upload image')),
+    #                    css_class="django_cradmin_submitrow")
+    #     ]
 
     def get_success_url(self):
         url = self.request.build_absolute_uri()
         uploaded_archiveimage = self.uploaded_archiveimages[0]
         url = create.CreateView.add_foreignkey_selected_value_to_url_querystring(url, uploaded_archiveimage.pk)
         return url
-
-    # def get_form_attributes(self):
-    #     form_attributes = super(ArchiveImagesSingleSelectView, self).get_form_attributes()
-    #     return form_attributes
-
-    # def get_buttons(self):
-    #     app = self.request.cradmin_app
-    #     return [
-    #         objecttable.ForeignKeySelectButton(
-    #             label=_('Add image'),
-    #             buttonclass='btn btn-primary',
-    #             request=self.request,
-    #             url=app.reverse_appurl('create')),
-    #     ]
 
 
 class ArchiveImageCreateUpdateMixin(object):
