@@ -162,12 +162,15 @@ angular.module('djangoCradmin.bulkfileupload', [
         @registerOverlayControls = (overlayControlsScope) ->
           $scope._overlayControlsScope = overlayControlsScope
 
-        @showOverlay = ->
+        $scope._showOverlay = ->
           if $scope.overlay
             $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show')
           else
             throw new Error('Can only show the overlay if the form has the ' +
               'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
+
+        @showOverlay = ->
+          $scope._showOverlay()
 
         @hideOverlay = ->
           if $scope.overlay
@@ -192,6 +195,8 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.wrapperElement.appendTo(body)
           element.appendTo($scope.wrapperElement)
           $scope._overlayControlsScope.element.appendTo($scope.wrapperElement)
+          if element.find('.has-error').length > 0
+            $scope._showOverlay()
         element.on 'submit', (evt) ->
           if $scope._inProgressCounter != 0
             evt.preventDefault()

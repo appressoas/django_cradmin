@@ -392,12 +392,15 @@
           this.registerOverlayControls = function(overlayControlsScope) {
             return $scope._overlayControlsScope = overlayControlsScope;
           };
-          this.showOverlay = function() {
+          $scope._showOverlay = function() {
             if ($scope.overlay) {
               return $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show');
             } else {
               throw new Error('Can only show the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
             }
+          };
+          this.showOverlay = function() {
+            return $scope._showOverlay();
           };
           this.hideOverlay = function() {
             if ($scope.overlay) {
@@ -419,6 +422,9 @@
             $scope.wrapperElement.appendTo(body);
             element.appendTo($scope.wrapperElement);
             $scope._overlayControlsScope.element.appendTo($scope.wrapperElement);
+            if (element.find('.has-error').length > 0) {
+              $scope._showOverlay();
+            }
           }
           element.on('submit', function(evt) {
             if ($scope._inProgressCounter !== 0) {
