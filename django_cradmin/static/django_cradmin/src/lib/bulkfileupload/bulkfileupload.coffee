@@ -313,25 +313,55 @@ angular.module('djangoCradmin.bulkfileupload', [
           Called when a file is draggen&dropped into the widget.
           ###
           if rejectedFiles.length > 0
-            $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles)
+            $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles, 'invalid_filetype')
+
+#        humanReadableFileSize = (sizeInBytes) ->
+#          if sizeInBytes < 1000
+#              return "#{sizeInBytes}B"
+#          if sizeInBytes < 1000000
+#              return "#{(sizeInBytes/1000).toFixed()}KB"
+#          else if sizeInBytes < 1000000000
+#              return "#{(sizeInBytes/1000000).toFixed(1)}MB"
+#          else
+#              return "#{(sizeInBytes/1000000000).toFixed(2)}GB"
+
+        validateSelectedFiles = ->
+          filesToUpload = []
+          $scope.rejectedFilesScope.clearRejectedFiles()
+          for file in $scope.cradminLastFilesSelectedByUser
+            if $scope.apiparameters.max_filesize_bytes
+              if file.size > $scope.apiparameters.max_filesize_bytes
+                $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded')
+            filesToUpload.push(file)
+          if $scope.rejectedFilesScope.hasRejectedFiles() and $scope.autosubmit
+            # If we use autosubmit mode, we do not allow upload if any
+            # of the files fail validation. So if the user selects one too
+            # big file, and one valid file, we do reject them both, with an
+            # error message for the too big file.
+            return []
+          return filesToUpload
 
         $scope.$watch 'cradminLastFilesSelectedByUser', ->
           if $scope.cradminLastFilesSelectedByUser.length > 0
             # Clear any old errors before we upload new files
             $scope.inProgressOrFinishedScope.clearErrors()
 
-            # If we are in autosubmit mode, we hide the upload widget.
-            # Without this, we would not be able to ensure that we do
-            # not submit in the middle of a drag and drop.
-            if $scope.autosubmit
-              $scope._hideUploadWidget()
+            filesToUpload = validateSelectedFiles()
 
-            for file in $scope.cradminLastFilesSelectedByUser
-              $scope._addFileToQueue(file)
-              if $scope.apiparameters.singlemode
-                # Single mode only allows upload of a single file,
-                # so it makes no sense to process more than one file.
-                break
+            if filesToUpload.length > 0
+              # If we are in autosubmit mode, we hide the upload widget.
+              # Without this, we would not be able to ensure that we do
+              # not submit in the middle of a drag and drop.
+              if $scope.autosubmit
+                $scope._hideUploadWidget()
+
+              for file in filesToUpload
+                $scope._addFileToQueue(file)
+                if $scope.apiparameters.singlemode
+                  # Single mode only allows upload of a single file,
+                  # so it makes no sense to process more than one file.
+                  break
+
             $scope.cradminLastFilesSelectedByUser = []
 
         $scope._addFileToQueue = (file) ->
@@ -435,13 +465,28 @@ angular.module('djangoCradmin.bulkfileupload', [
       templateUrl: 'bulkfileupload/rejectedfiles.tpl.html'
       transclude: true
       scope: {
-        rejectedFileErrorMessage: '@djangoCradminBulkfileuploadRejectedFiles'
+        errorMessageMap: '=djangoCradminBulkfileuploadRejectedFiles'
       }
 
       controller: ($scope) ->
         $scope.rejectedFiles = []
-        $scope.setRejectedFiles = (rejectedFiles) ->
-          $scope.rejectedFiles = rejectedFiles
+
+        $scope.clearRejectedFiles = (rejectedFiles) ->
+          $scope.rejectedFiles = []
+
+        $scope.addRejectedFile = (file, errormessagecode) ->
+          $scope.rejectedFiles.push({
+            file: file
+            message: $scope.errorMessageMap[errormessagecode]
+          })
+
+        $scope.hasRejectedFiles = (file, errormessagecode) ->
+          return $scope.rejectedFiles.length > 0
+
+        $scope.setRejectedFiles = (rejectedFiles, errormessagecode) ->
+          $scope.clearRejectedFiles()
+          for file in rejectedFiles
+            $scope.addRejectedFile(file, errormessagecode)
 
         $scope.closeMessage = (rejectedFile) ->
           index = $scope.rejectedFiles.indexOf(rejectedFile)

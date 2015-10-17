@@ -483,6 +483,7 @@
         restrict: 'AE',
         scope: true,
         controller: function($scope) {
+          var validateSelectedFiles;
           $scope.collectionid = null;
           $scope.cradminLastFilesSelectedByUser = [];
           $scope.fileUploadQueue = [];
@@ -535,22 +536,43 @@
             */
 
             if (rejectedFiles.length > 0) {
-              return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles);
+              return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles, 'invalid_filetype');
             }
           };
+          validateSelectedFiles = function() {
+            var file, filesToUpload, _i, _len, _ref;
+            filesToUpload = [];
+            $scope.rejectedFilesScope.clearRejectedFiles();
+            _ref = $scope.cradminLastFilesSelectedByUser;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              file = _ref[_i];
+              if ($scope.apiparameters.max_filesize_bytes) {
+                if (file.size > $scope.apiparameters.max_filesize_bytes) {
+                  $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded');
+                }
+              }
+              filesToUpload.push(file);
+            }
+            if ($scope.rejectedFilesScope.hasRejectedFiles() && $scope.autosubmit) {
+              return [];
+            }
+            return filesToUpload;
+          };
           $scope.$watch('cradminLastFilesSelectedByUser', function() {
-            var file, _i, _len, _ref;
+            var file, filesToUpload, _i, _len;
             if ($scope.cradminLastFilesSelectedByUser.length > 0) {
               $scope.inProgressOrFinishedScope.clearErrors();
-              if ($scope.autosubmit) {
-                $scope._hideUploadWidget();
-              }
-              _ref = $scope.cradminLastFilesSelectedByUser;
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                file = _ref[_i];
-                $scope._addFileToQueue(file);
-                if ($scope.apiparameters.singlemode) {
-                  break;
+              filesToUpload = validateSelectedFiles();
+              if (filesToUpload.length > 0) {
+                if ($scope.autosubmit) {
+                  $scope._hideUploadWidget();
+                }
+                for (_i = 0, _len = filesToUpload.length; _i < _len; _i++) {
+                  file = filesToUpload[_i];
+                  $scope._addFileToQueue(file);
+                  if ($scope.apiparameters.singlemode) {
+                    break;
+                  }
                 }
               }
               return $scope.cradminLastFilesSelectedByUser = [];
@@ -664,12 +686,31 @@
         templateUrl: 'bulkfileupload/rejectedfiles.tpl.html',
         transclude: true,
         scope: {
-          rejectedFileErrorMessage: '@djangoCradminBulkfileuploadRejectedFiles'
+          errorMessageMap: '=djangoCradminBulkfileuploadRejectedFiles'
         },
         controller: function($scope) {
           $scope.rejectedFiles = [];
-          $scope.setRejectedFiles = function(rejectedFiles) {
-            return $scope.rejectedFiles = rejectedFiles;
+          $scope.clearRejectedFiles = function(rejectedFiles) {
+            return $scope.rejectedFiles = [];
+          };
+          $scope.addRejectedFile = function(file, errormessagecode) {
+            return $scope.rejectedFiles.push({
+              file: file,
+              message: $scope.errorMessageMap[errormessagecode]
+            });
+          };
+          $scope.hasRejectedFiles = function(file, errormessagecode) {
+            return $scope.rejectedFiles.length > 0;
+          };
+          $scope.setRejectedFiles = function(rejectedFiles, errormessagecode) {
+            var file, _i, _len, _results;
+            $scope.clearRejectedFiles();
+            _results = [];
+            for (_i = 0, _len = rejectedFiles.length; _i < _len; _i++) {
+              file = rejectedFiles[_i];
+              _results.push($scope.addRejectedFile(file, errormessagecode));
+            }
+            return _results;
           };
           return $scope.closeMessage = function(rejectedFile) {
             var index;
@@ -4124,8 +4165,8 @@ angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache
     "            <span class=\"fa fa-times\"></span>\n" +
     "            <span class=\"sr-only\">Close</span>\n" +
     "        </button>\n" +
-    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ rejectedFile.name }}:</span>\n" +
-    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-errormessage\">{{ rejectedFileErrorMessage }}</span>\n" +
+    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ rejectedFile.file.name }}:</span>\n" +
+    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-errormessage\">{{ rejectedFile.message }}</span>\n" +
     "    </p>\n" +
     "</div>\n" +
     "");

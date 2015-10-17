@@ -7,7 +7,7 @@
             <span class="fa fa-times"></span>
             <span class="sr-only">Close</span>
         </button>
-        <span class="django-cradmin-bulkfileupload-rejectedfile-filename">{{ rejectedFile.name }}:</span>
-        <span class="django-cradmin-bulkfileupload-rejectedfile-errormessage">{{ rejectedFileErrorMessage }}</span>
+        <span class="django-cradmin-bulkfileupload-rejectedfile-filename">{{ rejectedFile.file.name }}:</span>
+        <span class="django-cradmin-bulkfileupload-rejectedfile-errormessage">{{ rejectedFile.message }}</span>
     </p>
 </div>

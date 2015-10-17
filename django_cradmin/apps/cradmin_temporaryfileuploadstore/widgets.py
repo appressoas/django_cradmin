@@ -5,6 +5,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext
+from django_cradmin.utils import crhumanize
 
 
 class BulkFileUploadWidget(forms.Widget):
@@ -53,6 +54,17 @@ class BulkFileUploadWidget(forms.Widget):
         self.autosubmit = autosubmit
         super(BulkFileUploadWidget, self).__init__(attrs=None)
 
+    def get_max_filesize_bytes(self):
+        max_filesize_bytes = self.apiparameters.get('max_filesize_bytes', None)
+        return max_filesize_bytes
+
+    def get_max_filesize_bytes_exceeded_errormessage(self):
+        max_filesize_bytes = self.get_max_filesize_bytes()
+        if max_filesize_bytes is not None:
+            return gettext('Can not upload files larger than %(max_filesize)s.') % {
+                'max_filesize': crhumanize.human_readable_filesize(max_filesize_bytes)
+            }
+
     def get_uploadapiurl(self):
         """
         Get the file upload API URL.
@@ -98,13 +110,20 @@ class BulkFileUploadWidget(forms.Widget):
             'autosubmit': self.autosubmit
         }
 
+    def __get_rejected_files_errormessage_map(self):
+        return {
+            'invalid_filetype': str(self.invalid_filetype_message),
+            'max_filesize_bytes_exceeded': self.get_max_filesize_bytes_exceeded_errormessage(),
+        }
+
     def get_template_context_data(self, **context):
         """
         Can be overridden to adjust the template context data.
         """
         context['accept'] = self.accept
         context['dropbox_text'] = self.dropbox_text
-        context['invalid_filetype_message'] = self.invalid_filetype_message
+        context['rejected_files_errormessage_map'] = quoteattr(json.dumps(
+            self.__get_rejected_files_errormessage_map()))
         context['advanced_fileselectbutton_text'] = self.advanced_fileselectbutton_text
         context['simple_fileselectbutton_text'] = self.simple_fileselectbutton_text
         context['angularjs_directive_options'] = quoteattr(json.dumps(

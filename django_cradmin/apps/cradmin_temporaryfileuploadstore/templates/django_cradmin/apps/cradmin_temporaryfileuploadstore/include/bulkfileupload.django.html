@@ -34,7 +34,7 @@
     <div class="django-cradmin-bulkfileupload-content">
 
         <div django-cradmin-bulkfileupload-progress></div>
-        <div django-cradmin-bulkfileupload-rejected-files="{{ invalid_filetype_message }}"></div>
+        <div django-cradmin-bulkfileupload-rejected-files={{ rejected_files_errormessage_map|safe }}></div>
 
         <div django-cradmin-bulkfileupload-advanced-widget>
             {% block droparea-advanced %}
