@@ -273,6 +273,7 @@
       function FileInfo(options) {
         this.file = options.file;
         this.autosubmit = options.autosubmit;
+        this.i18nStrings = options.i18nStrings;
         this.temporaryfileid = options.temporaryfileid;
         if (this.file != null) {
           this.name = this.file.name;
@@ -394,7 +395,7 @@
             return $scope._overlayControlsScope = overlayControlsScope;
           };
           this.submitForm = function() {
-            return console.log('Submit!');
+            return $scope.element.submit();
           };
           $scope._showOverlay = function() {
             if ($scope.overlay) {
@@ -587,7 +588,8 @@
             progressFileInfo = $scope.inProgressOrFinishedScope.addFileInfo({
               percent: 0,
               file: file,
-              autosubmit: $scope.autosubmit
+              autosubmit: $scope.autosubmit,
+              i18nStrings: $scope.i18nStrings
             });
             $scope.fileUploadQueue.push(progressFileInfo);
             if ($scope.firstUploadInProgress) {
@@ -665,6 +667,11 @@
           $scope.apiparameters = options.apiparameters;
           $scope.errormessage503 = options.errormessage503;
           $scope.autosubmit = options.autosubmit;
+          $scope.i18nStrings = {
+            close_errormessage_label: options.close_errormessage_label,
+            remove_file_label: options.remove_file_label,
+            removing_file_message: options.removing_file_message
+          };
           $scope.formController = formController;
           $scope.$on('$destroy', function() {
             if ($scope.fileUploadFieldScope != null) {
@@ -4100,7 +4107,7 @@ angular.module("bulkfileupload/fileinfo.tpl.html", []).run(["$templateCache", fu
     "                type=\"button\"\n" +
     "                class=\"btn btn-link django-cradmin-bulkfileupload-error-closebutton\">\n" +
     "            <span class=\"fa fa-times\"></span>\n" +
-    "            <span class=\"sr-only\">Close</span>\n" +
+    "            <span class=\"sr-only\">{{fileInfo.i18nStrings.close_errormessage_label}}</span>\n" +
     "        </button>\n" +
     "        <span ng-repeat=\"(errorfield,errors) in fileInfo.errors\">\n" +
     "            <span ng-repeat=\"error in errors\" class=\"django-cradmin-bulkfileupload-error\">\n" +
@@ -4116,12 +4123,12 @@ angular.module("bulkfileupload/fileinfo.tpl.html", []).run(["$templateCache", fu
     "            <span ng-if=\"!fileInfo.isRemoving &amp;&amp; !fileInfo.autosubmit\"\n" +
     "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isnotremoving\">\n" +
     "                <span class=\"fa fa-times\"></span>\n" +
-    "                <span class=\"sr-only\">Remove</span>\n" +
+    "                <span class=\"sr-only\">{{fileInfo.i18nStrings.remove_file_label}}</span>\n" +
     "            </span>\n" +
     "            <span ng-if=\"fileInfo.isRemoving\"\n" +
     "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isremoving\">\n" +
     "                <span class=\"fa fa-spinner fa-spin\"></span>\n" +
-    "                <span class=\"sr-only\">Removing ...</span>\n" +
+    "                <span class=\"sr-only\">{{fileInfo.i18nStrings.removing_file_message}}</span>\n" +
     "            </span>\n" +
     "        </button>\n" +
     "\n" +

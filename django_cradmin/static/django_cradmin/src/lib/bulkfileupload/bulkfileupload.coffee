@@ -55,6 +55,7 @@ angular.module('djangoCradmin.bulkfileupload', [
     constructor: (options) ->
       @file = options.file
       @autosubmit = options.autosubmit
+      @i18nStrings = options.i18nStrings
       @temporaryfileid = options.temporaryfileid
       if @file?
         @name = @file.name
@@ -157,8 +158,8 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope._overlayControlsScope = overlayControlsScope
 
         @submitForm = ->
-          console.log 'Submit!'
-#          $scope.element.submit()
+#          console.log 'Submit!'
+          $scope.element.submit()
 
         $scope._showOverlay = ->
           if $scope.overlay
@@ -373,6 +374,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             percent: 0
             file: file
             autosubmit: $scope.autosubmit
+            i18nStrings: $scope.i18nStrings
           })
           $scope.fileUploadQueue.push(progressFileInfo)
           if $scope.firstUploadInProgress
@@ -445,6 +447,11 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.apiparameters = options.apiparameters
         $scope.errormessage503 = options.errormessage503
         $scope.autosubmit = options.autosubmit
+        $scope.i18nStrings = {
+          close_errormessage_label: options.close_errormessage_label
+          remove_file_label: options.remove_file_label
+          removing_file_message: options.removing_file_message
+        }
         $scope.formController = formController
         $scope.$on '$destroy', ->
           if $scope.fileUploadFieldScope?

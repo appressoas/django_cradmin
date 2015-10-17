@@ -107,7 +107,10 @@ class BulkFileUploadWidget(forms.Widget):
             'uploadapiurl': self.get_uploadapiurl(),
             'apiparameters': self.get_apiparameters(),
             'errormessage503': self.get_errormessage503(),
-            'autosubmit': self.autosubmit
+            'autosubmit': self.autosubmit,
+            'close_errormessage_label': gettext('Close'),
+            'remove_file_label': gettext('Remove'),
+            'removing_file_message': gettext('Removing ...'),
         }
 
     def __get_rejected_files_errormessage_map(self):
