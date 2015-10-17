@@ -13,6 +13,7 @@ from django.views.generic.edit import FormMixin
 
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget, SingleFileUploadWidget
+from django_cradmin.utils import crhumanize
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import crudbase
 from django_cradmin.viewhelpers import update
@@ -102,6 +103,16 @@ class ArchiveImagesQuerySetForRoleMixin(object):
             .order_by('-created_datetime')
 
 
+def get_bulkupload_apiparameters():
+    apiparameters = {
+        'accept': 'image/png,image/jpeg,image/gif',
+    }
+    max_filesize_bytes = crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE', None)
+    if max_filesize_bytes is not None:
+        apiparameters['max_filesize_bytes'] = crhumanize.dehumanize_readable_filesize(max_filesize_bytes)
+    return apiparameters
+
+
 class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
@@ -109,10 +120,7 @@ class BulkAddForm(forms.Form):
             autosubmit=True,
             accept='image/*',
             # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
-            apiparameters={
-                'accept': 'image/png,image/jpeg,image/gif',
-                'max_filesize_bytes': crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE', None)
-            },
+            apiparameters=get_bulkupload_apiparameters(),
             dropbox_text=_('Upload images by dragging and dropping them here'),
             invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
             advanced_fileselectbutton_text=_('... or select images'),
@@ -130,9 +138,7 @@ class SingleAddForm(forms.Form):
         widget=SingleFileUploadWidget(
             autosubmit=True,
             accept='image/*',
-            apiparameters={
-                'accept': 'image/png,image/jpeg,image/gif'
-            },
+            apiparameters=get_bulkupload_apiparameters(),
             dropbox_text=_('Upload an image by dragging and dropping it here'),
             advanced_fileselectbutton_text=_('... or select an image'),
             invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
