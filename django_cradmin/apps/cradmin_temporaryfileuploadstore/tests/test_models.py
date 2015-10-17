@@ -3,6 +3,7 @@ import os
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.test import TestCase
+from model_mommy import mommy
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile, \
     html_input_accept_match, truncate_filename, make_unique_filename
 from django_cradmin.tests.helpers import create_user
@@ -191,3 +192,25 @@ class TestModels(TestCase):
         self.assertNotEquals(unique_filename, 't'*45)
         self.assertTrue(unique_filename.endswith('-tttttttt'))
         self.assertEquals(len(unique_filename), 45)
+
+    def test_no_max_filesize_bytes(self):
+        collection = mommy.make('cradmin_temporaryfileuploadstore.TemporaryFileCollection')
+        temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
+        temporaryfile.file.save('test.txt', ContentFile('Testdata'))
+        temporaryfile.clean()  # No ValidationError
+
+    def test_max_filesize_bytes_size_below_ok(self):
+        collection = mommy.make('cradmin_temporaryfileuploadstore.TemporaryFileCollection',
+                                max_filesize_bytes=100)
+        temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
+        temporaryfile.file.save('test.txt', ContentFile('Testdata'))
+        temporaryfile.clean()  # No ValidationError
+
+    def test_max_filesize_bytes_size_above_fails(self):
+        collection = mommy.make('cradmin_temporaryfileuploadstore.TemporaryFileCollection',
+                                max_filesize_bytes=1)
+        temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
+        temporaryfile.file.save('test.txt', ContentFile('Testdata'))
+        with self.assertRaisesMessage(ValidationError,
+                                      'Can not upload files larger than 1B. test.txt is 8.'):
+            temporaryfile.clean()

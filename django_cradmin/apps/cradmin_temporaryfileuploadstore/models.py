@@ -246,7 +246,7 @@ class TemporaryFile(models.Model):
                     temporaryfile.delete()
             if self.collection.max_filesize_bytes and self.file:
                 if self.file.size > self.collection.max_filesize_bytes:
-                    raise ValidationError(_('Files can not be larger than %(max_filesize)s. '
+                    raise ValidationError(_('Can not upload files larger than %(max_filesize)s. '
                                             '%(filename)s is %(filesize)s.') % {
                         'max_filesize': crhumanize.human_readable_filesize(self.collection.max_filesize_bytes),
                         'filename': self.filename,
