@@ -272,6 +272,7 @@
     FileInfo = (function() {
       function FileInfo(options) {
         this.file = options.file;
+        this.autosubmit = options.autosubmit;
         this.temporaryfileid = options.temporaryfileid;
         if (this.file != null) {
           this.name = this.file.name;
@@ -393,7 +394,7 @@
             return $scope._overlayControlsScope = overlayControlsScope;
           };
           this.submitForm = function() {
-            return $scope.element.submit();
+            return console.log('Submit!');
           };
           $scope._showOverlay = function() {
             if ($scope.overlay) {
@@ -585,7 +586,8 @@
             }
             progressFileInfo = $scope.inProgressOrFinishedScope.addFileInfo({
               percent: 0,
-              file: file
+              file: file,
+              autosubmit: $scope.autosubmit
             });
             $scope.fileUploadQueue.push(progressFileInfo);
             if ($scope.firstUploadInProgress) {
@@ -4111,7 +4113,7 @@ angular.module("bulkfileupload/fileinfo.tpl.html", []).run(["$templateCache", fu
     "                ng-if=\"fileInfo.finished\"\n" +
     "                type=\"button\"\n" +
     "                class=\"btn btn-link django-cradmin-bulkfileupload-remove-file-button\">\n" +
-    "            <span ng-if=\"!fileInfo.isRemoving\"\n" +
+    "            <span ng-if=\"!fileInfo.isRemoving &amp;&amp; !fileInfo.autosubmit\"\n" +
     "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isnotremoving\">\n" +
     "                <span class=\"fa fa-times\"></span>\n" +
     "                <span class=\"sr-only\">Remove</span>\n" +
