@@ -115,3 +115,15 @@ to::
 
 You can change this if you want to store archive images in another directory.
 Any pattern must contain all the variables in the pattern above.
+
+
+DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE
+=========================================
+Max file size for images uploaded to the image archive as a string
+compatible with :func:`django_cradmin.utils.crhumanize.py.dehumanize_readable_filesize`.
+
+Defaults to ``None``, which means that there is no limit by default. Examples::
+
+    DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE = '500KB'
+    DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE = '10MB'
+    DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE = '2.5GB'

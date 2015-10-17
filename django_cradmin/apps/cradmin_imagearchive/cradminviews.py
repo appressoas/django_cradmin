@@ -110,7 +110,8 @@ class BulkAddForm(forms.Form):
             accept='image/*',
             # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
             apiparameters={
-                'accept': 'image/png,image/jpeg,image/gif'
+                'accept': 'image/png,image/jpeg,image/gif',
+                'max_filesize_bytes': crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILE_SIZE', None)
             },
             dropbox_text=_('Upload images by dragging and dropping them here'),
             invalid_filetype_message=_('Invalid filetype. You can only upload images.'),

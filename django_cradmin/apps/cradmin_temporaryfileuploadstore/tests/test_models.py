@@ -212,5 +212,6 @@ class TestModels(TestCase):
         temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
         temporaryfile.file.save('test.txt', ContentFile('Testdata'))
         with self.assertRaisesMessage(ValidationError,
-                                      'Can not upload files larger than 1B. test.txt is 8.'):
+                                      'Can not upload files larger than 1B. {} is 8B.'.format(
+                                          temporaryfile.file.name)):
             temporaryfile.clean()

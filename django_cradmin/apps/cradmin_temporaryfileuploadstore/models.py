@@ -209,6 +209,16 @@ def temporary_file_upload_to(instance, filename):
         extension=extension)
 
 
+def validate_max_file_size(max_filesize_bytes, fieldfile):
+    if fieldfile.size > max_filesize_bytes:
+        raise ValidationError(_('Can not upload files larger than %(max_filesize)s. '
+                                '%(filename)s is %(filesize)s.') % {
+            'max_filesize': crhumanize.human_readable_filesize(max_filesize_bytes),
+            'filename': fieldfile.name,
+            'filesize': crhumanize.human_readable_filesize(fieldfile.size),
+        }, code='max_filesize_bytes_exceeded')
+
+
 class TemporaryFile(models.Model):
     """
     A temporary file uploaded by a user.
@@ -245,10 +255,5 @@ class TemporaryFile(models.Model):
                     temporaryfile.file.delete()
                     temporaryfile.delete()
             if self.collection.max_filesize_bytes and self.file:
-                if self.file.size > self.collection.max_filesize_bytes:
-                    raise ValidationError(_('Can not upload files larger than %(max_filesize)s. '
-                                            '%(filename)s is %(filesize)s.') % {
-                        'max_filesize': crhumanize.human_readable_filesize(self.collection.max_filesize_bytes),
-                        'filename': self.filename,
-                        'filesize': self.file.size
-                    })
+                validate_max_file_size(max_filesize_bytes=self.collection.max_filesize_bytes,
+                                       fieldfile=self.file)

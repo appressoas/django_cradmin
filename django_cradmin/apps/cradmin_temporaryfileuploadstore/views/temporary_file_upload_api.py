@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from multiupload.fields import MultiFileField
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile, \
-    html_input_accept_match, make_unique_filename
+    html_input_accept_match, make_unique_filename, validate_max_file_size
 
 
 class FileUploadForm(forms.Form):
@@ -25,6 +25,7 @@ class FileUploadForm(forms.Form):
         required=False)
     accept = forms.CharField(required=False)
     max_filename_length = forms.IntegerField(min_value=0, required=False)
+    max_filesize_bytes = forms.IntegerField(min_value=0, required=False)
     unique_filenames = forms.BooleanField(required=False)
 
 
@@ -40,7 +41,9 @@ class UploadTemporaryFilesView(FormView):
     # def dispatch(self, request, *args, **kwargs):
     #     return HttpResponse('', status=503)
 
-    def create_collection(self, minutes_to_live, accept, max_filename_length, unique_filenames, singlemode):
+    def create_collection(self, minutes_to_live, accept,
+                          max_filename_length, max_filesize_bytes,
+                          unique_filenames, singlemode):
         collection = TemporaryFileCollection(
             user=self.request.user)
         if minutes_to_live is not None:
@@ -53,6 +56,8 @@ class UploadTemporaryFilesView(FormView):
             collection.unique_filenames = unique_filenames
         if singlemode:
             collection.singlemode = singlemode
+        if max_filesize_bytes:
+            collection.max_filesize_bytes = max_filesize_bytes
         collection.full_clean()
         collection.save()
         return collection
@@ -61,12 +66,14 @@ class UploadTemporaryFilesView(FormView):
         return TemporaryFileCollection.objects.filter(user=self.request.user).get(id=collectionid)
 
     def create_or_get_collection_id(self, collectionid, minutes_to_live, accept,
-                                    max_filename_length, unique_filenames, singlemode):
+                                    max_filename_length, max_filesize_bytes,
+                                    unique_filenames, singlemode):
         if collectionid is None:
             return self.create_collection(
                 minutes_to_live=minutes_to_live,
                 accept=accept,
                 max_filename_length=max_filename_length,
+                max_filesize_bytes=max_filesize_bytes,
                 unique_filenames=unique_filenames,
                 singlemode=singlemode)
         else:
@@ -109,7 +116,7 @@ class UploadTemporaryFilesView(FormView):
             'temporaryfiles': uploadedfiles_data
         }))
 
-    def validate_all_files(self, accept, form):
+    def __validate_accept(self, accept, form):
         if not accept:
             return
         for formfile in form.cleaned_data['file']:
@@ -121,15 +128,28 @@ class UploadTemporaryFilesView(FormView):
                     _('%(filename)s: Unsupported filetype.') % {'filename': formfile.name},
                     code='unsupported_mimetype')
 
+    def __validate_max_filesize_bytes(self, form, max_filesize_bytes):
+        if max_filesize_bytes is None:
+            return
+        for formfile in form.cleaned_data['file']:
+            validate_max_file_size(max_filesize_bytes=max_filesize_bytes, fieldfile=formfile)
+
+    def validate_all_files(self, accept, form, max_filesize_bytes):
+        self.__validate_accept(accept=accept, form=form)
+        self.__validate_max_filesize_bytes(form=form, max_filesize_bytes=max_filesize_bytes)
+
     def form_valid(self, form):
         collectionid = form.cleaned_data['collectionid']
         minutes_to_live = form.cleaned_data['minutes_to_live']
         accept = form.cleaned_data['accept']
         max_filename_length = form.cleaned_data['max_filename_length']
+        max_filesize_bytes = form.cleaned_data['max_filesize_bytes']
         unique_filenames = form.cleaned_data['unique_filenames']
         singlemode = form.cleaned_data['singlemode']
         try:
-            self.validate_all_files(accept=accept, form=form)
+            # NOTE: We validate all before saving any data to the models to avoid
+            #       creating files in the storage backend before it is needed.
+            self.validate_all_files(accept=accept, form=form, max_filesize_bytes=max_filesize_bytes)
         except ValidationError as e:
             return self.json_response(json.dumps({
                 'file': [
@@ -146,6 +166,7 @@ class UploadTemporaryFilesView(FormView):
                     minutes_to_live=minutes_to_live,
                     accept=accept,
                     max_filename_length=max_filename_length,
+                    max_filesize_bytes=max_filesize_bytes,
                     unique_filenames=unique_filenames,
                     singlemode=singlemode)
             except TemporaryFileCollection.DoesNotExist:

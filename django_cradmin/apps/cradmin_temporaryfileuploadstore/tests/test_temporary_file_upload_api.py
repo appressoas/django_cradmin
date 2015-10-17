@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
 import json
 import os
+
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, TestCase
+
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.views.temporary_file_upload_api import \
     UploadTemporaryFilesView
@@ -269,6 +271,31 @@ class TestUploadTemporaryFilesView(TestCase):
                              'ttttttttttttttttttttt...ttttttttttttttttttttt')
         self.assertTrue(files_by_content[b'Testcontent2'].filename.endswith('-tttttttt'))
 
+    def test_post_max_filesize_bytes_size_below_ok(self):
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testname.txt', b'Testcontent'),
+            'max_filesize_bytes': 100
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 200)
+        responsedata = json.loads(response.content.decode('utf-8'))
+        collectionid = responsedata['collectionid']
+        collection = TemporaryFileCollection.objects.get(id=collectionid)
+        self.assertEqual(collection.files.count(), 1)
+
+    def test_post_max_filesize_bytes_size_above_fails(self):
+        request = self.factory.post('/test', {
+            'file': SimpleUploadedFile('testname.txt', b'Testcontent'),
+            'max_filesize_bytes': 1
+        })
+        request.user = self.testuser
+        response = UploadTemporaryFilesView.as_view()(request)
+        self.assertEquals(response.status_code, 400)
+        responsedata = json.loads(response.content.decode('utf-8'))
+        self.assertEquals('max_filesize_bytes_exceeded', responsedata['file'][0]['code'])
+        self.assertFalse(TemporaryFileCollection.objects.exists())
+
     def test_post_form_invalid_no_file(self):
         request = self.factory.post('/test')
         request.user = self.testuser
@@ -276,6 +303,7 @@ class TestUploadTemporaryFilesView(TestCase):
         self.assertEquals(response.status_code, 400)
         responsedata = json.loads(response.content.decode('utf-8'))
         self.assertEquals(responsedata['file'][0]['code'], 'required')
+        self.assertFalse(TemporaryFileCollection.objects.exists())
 
     def test_post_form_invalid_collectionid_not_number(self):
         request = self.factory.post('/test', {
