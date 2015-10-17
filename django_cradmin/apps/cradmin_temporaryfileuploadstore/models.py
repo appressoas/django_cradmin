@@ -160,7 +160,7 @@ class TemporaryFileCollection(models.Model):
 
     #: Max file size in bytes.
     max_filesize_bytes = models.PositiveIntegerField(
-        null=True, default=None)
+        null=True, default=None, blank=True)
 
     #: If this is True, only a single file can be added to the collection.
     #: This means that the last file added to the collection will be the
