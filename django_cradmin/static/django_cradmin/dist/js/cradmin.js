@@ -514,12 +514,18 @@
           this.getCollectionId = function() {
             return $scope.collectionid;
           };
+          $scope._hideUploadWidget = function() {
+            $scope.simpleWidgetScope.hide();
+            return $scope.advancedWidgetScope.hide();
+          };
           $scope._showAppropriateWidget = function() {
             if ($scope.advancedWidgetScope && $scope.simpleWidgetScope) {
               if (cradminDetectize.device.type === 'desktop') {
-                return $scope.simpleWidgetScope.hide();
+                $scope.simpleWidgetScope.hide();
+                return $scope.advancedWidgetScope.show();
               } else {
-                return $scope.advancedWidgetScope.hide();
+                $scope.advancedWidgetScope.hide();
+                return $scope.simpleWidgetScope.show();
               }
             }
           };
@@ -535,9 +541,9 @@
           $scope.$watch('cradminLastFilesSelectedByUser', function() {
             var file, _i, _len, _ref;
             if ($scope.cradminLastFilesSelectedByUser.length > 0) {
+              $scope.inProgressOrFinishedScope.clearErrors();
               if ($scope.autosubmit) {
-                $scope.simpleWidgetScope.hide();
-                $scope.advancedWidgetScope.hide();
+                $scope._hideUploadWidget();
               }
               _ref = $scope.cradminLastFilesSelectedByUser;
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -568,7 +574,7 @@
             }
             return $scope._processFileUploadQueue();
           };
-          $scope._onFileUploadComplete = function() {
+          $scope._onFileUploadComplete = function(successful) {
             /*
             Called both on file upload success and error
             */
@@ -578,7 +584,11 @@
             if ($scope.fileUploadQueue.length > 0) {
               return $scope._processFileUploadQueue();
             } else if ($scope.autosubmit) {
-              return $scope.formController.submitForm();
+              if (successful) {
+                return $scope.formController.submitForm();
+              } else {
+                return $scope._showAppropriateWidget();
+              }
             }
           };
           $scope._processFileUploadQueue = function() {
@@ -603,7 +613,7 @@
             }).success(function(data, status, headers, config) {
               progressFileInfo.finish(data.temporaryfiles[0], $scope.apiparameters.singlemode);
               $scope._setCollectionId(data.collectionid);
-              return $scope._onFileUploadComplete();
+              return $scope._onFileUploadComplete(true);
             }).error(function(data, status) {
               if (status === 503) {
                 progressFileInfo.setErrors({
@@ -616,7 +626,7 @@
               } else {
                 progressFileInfo.setErrors(data);
               }
-              return $scope._onFileUploadComplete();
+              return $scope._onFileUploadComplete(false);
             });
           };
           $scope._setCollectionId = function(collectionid) {
@@ -737,6 +747,20 @@
           $scope.clear = function(options) {
             return $scope.fileInfoArray = [];
           };
+          $scope.clearErrors = function() {
+            var fileInfo, index, _i, _ref, _results;
+            _results = [];
+            for (index = _i = _ref = $scope.fileInfoArray.length - 1; _i >= 0; index = _i += -1) {
+              fileInfo = $scope.fileInfoArray[index];
+              console.log('fileInfo', fileInfo.name, ':', fileInfo.hasErrors);
+              if (fileInfo.hasErrors) {
+                _results.push($scope.fileInfoArray.splice(index, 1));
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
+          };
         },
         link: function(scope, element, attr, uploadController) {
           scope.uploadController = uploadController;
@@ -827,6 +851,9 @@
           scope.hide = function() {
             return element.css('display', 'none');
           };
+          scope.show = function() {
+            return element.css('display', 'block');
+          };
           uploadController.setAdvancedWidgetScope(scope);
         }
       };
@@ -840,6 +867,9 @@
         link: function(scope, element, attr, uploadController) {
           scope.hide = function() {
             return element.css('display', 'none');
+          };
+          scope.show = function() {
+            return element.css('display', 'block');
           };
           uploadController.setSimpleWidgetScope(scope);
         }
