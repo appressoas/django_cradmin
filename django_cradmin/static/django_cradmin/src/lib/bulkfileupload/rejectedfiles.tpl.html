@@ -1,22 +1,18 @@
 <div class="django-cradmin-bulkfileupload-rejectedfiles">
-    <p ng-repeat="rejectedFile in rejectedFiles"
+    <p ng-repeat="fileInfo in rejectedFiles"
             class="django-cradmin-bulkfileupload-rejectedfile django-cradmin-bulkfileupload-errorparagraph">
-        <button ng-click="closeMessage(rejectedFile)"
+        <button ng-click="closeMessage(fileInfo)"
                 type="button"
                 class="btn btn-link django-cradmin-bulkfileupload-error-closebutton">
             <span class="fa fa-times"></span>
             <span class="sr-only">{{fileInfo.i18nStrings.close_errormessage_label}}</span>
         </button>
 
-        <span class="django-cradmin-bulkfileupload-rejectedfile-filename">{{ rejectedFile.fileInfo.name }}:</span>
-        <span ng-if="rejectedFile.message"
-              class="django-cradmin-bulkfileupload-rejectedfile-errormessage">{{ rejectedFile.message }}</span>
-        <span ng-if="!rejectedFile.message">
-            <span ng-repeat="(errorfield,errors) in rejectedFile.fileInfo.errors">
-                <span ng-repeat="error in errors"
-                      class="django-cradmin-bulkfileupload-error">
-                    {{ error.message }}
-                </span>
+        <span class="django-cradmin-bulkfileupload-rejectedfile-filename">{{ fileInfo.name }}:</span>
+        <span ng-repeat="(errorfield,errors) in fileInfo.errors">
+            <span ng-repeat="error in errors"
+                  class="django-cradmin-bulkfileupload-error">
+                {{ error.message }}
             </span>
         </span>
     </p>

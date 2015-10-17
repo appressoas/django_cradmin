@@ -318,7 +318,8 @@ angular.module('djangoCradmin.bulkfileupload', [
           Called when a file is draggen&dropped into the widget.
           ###
           if rejectedFiles.length > 0
-            $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles, 'invalid_filetype')
+            $scope.rejectedFilesScope.setRejectedFiles(
+              rejectedFiles, 'invalid_filetype',  $scope.i18nStrings)
 
 #        humanReadableFileSize = (sizeInBytes) ->
 #          if sizeInBytes < 1000
@@ -335,7 +336,8 @@ angular.module('djangoCradmin.bulkfileupload', [
           for file in $scope.cradminLastFilesSelectedByUser
             if $scope.apiparameters.max_filesize_bytes
               if file.size > $scope.apiparameters.max_filesize_bytes
-                $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded')
+                $scope.rejectedFilesScope.addRejectedFile(
+                  file, 'max_filesize_bytes_exceeded', $scope.i18nStrings)
             filesToUpload.push(file)
           if $scope.rejectedFilesScope.hasRejectedFiles() and $scope.autosubmit
             # If we use autosubmit mode, we do not allow upload if any
@@ -490,25 +492,33 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.rejectedFiles = []
 
         $scope.addRejectedFileInfo = (fileInfo, errormessagecode) ->
-          $scope.rejectedFiles.push({
-            fileInfo: fileInfo
-            message: $scope.errorMessageMap[errormessagecode]
-          })
+          $scope.rejectedFiles.push(fileInfo)
 
-        $scope.addRejectedFile = (file, errormessagecode) ->
+        $scope.addRejectedFile = (file, errormessagecode, i18nStrings) ->
+          # When we get errors from the browser, we only get a file object,
+          # so we use that to mock a FileInfo object for unified error handling.
           $scope.addRejectedFileInfo(
-            cradminBulkfileupload.createFileInfo({file: file}), errormessagecode)
+            cradminBulkfileupload.createFileInfo({
+              file: file
+              hasErrors: true
+              i18nStrings: i18nStrings
+              errors: {
+                files: [{
+                  message: $scope.errorMessageMap[errormessagecode]
+                }]
+              }
+            }))
 
         $scope.hasRejectedFiles = ->
           return $scope.rejectedFiles.length > 0
 
-        $scope.setRejectedFiles = (rejectedFiles, errormessagecode) ->
+        $scope.setRejectedFiles = (rejectedFiles, errormessagecode, i18nStrings) ->
           $scope.clearRejectedFiles()
           for file in rejectedFiles
-            $scope.addRejectedFile(file, errormessagecode)
+            $scope.addRejectedFile(file, errormessagecode, i18nStrings)
 
-        $scope.closeMessage = (rejectedFile) ->
-          index = $scope.rejectedFiles.indexOf(rejectedFile)
+        $scope.closeMessage = (fileInfo) ->
+          index = $scope.rejectedFiles.indexOf(fileInfo)
           if index != -1
             $scope.rejectedFiles.splice(index, 1)
 

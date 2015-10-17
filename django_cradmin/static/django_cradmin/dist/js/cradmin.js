@@ -540,7 +540,7 @@
             */
 
             if (rejectedFiles.length > 0) {
-              return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles, 'invalid_filetype');
+              return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles, 'invalid_filetype', $scope.i18nStrings);
             }
           };
           validateSelectedFiles = function() {
@@ -551,7 +551,7 @@
               file = _ref[_i];
               if ($scope.apiparameters.max_filesize_bytes) {
                 if (file.size > $scope.apiparameters.max_filesize_bytes) {
-                  $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded');
+                  $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded', $scope.i18nStrings);
                 }
               }
               filesToUpload.push(file);
@@ -706,32 +706,38 @@
             return $scope.rejectedFiles = [];
           };
           $scope.addRejectedFileInfo = function(fileInfo, errormessagecode) {
-            return $scope.rejectedFiles.push({
-              fileInfo: fileInfo,
-              message: $scope.errorMessageMap[errormessagecode]
-            });
+            return $scope.rejectedFiles.push(fileInfo);
           };
-          $scope.addRejectedFile = function(file, errormessagecode) {
+          $scope.addRejectedFile = function(file, errormessagecode, i18nStrings) {
             return $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
-              file: file
-            }), errormessagecode);
+              file: file,
+              hasErrors: true,
+              i18nStrings: i18nStrings,
+              errors: {
+                files: [
+                  {
+                    message: $scope.errorMessageMap[errormessagecode]
+                  }
+                ]
+              }
+            }));
           };
           $scope.hasRejectedFiles = function() {
             return $scope.rejectedFiles.length > 0;
           };
-          $scope.setRejectedFiles = function(rejectedFiles, errormessagecode) {
+          $scope.setRejectedFiles = function(rejectedFiles, errormessagecode, i18nStrings) {
             var file, _i, _len, _results;
             $scope.clearRejectedFiles();
             _results = [];
             for (_i = 0, _len = rejectedFiles.length; _i < _len; _i++) {
               file = rejectedFiles[_i];
-              _results.push($scope.addRejectedFile(file, errormessagecode));
+              _results.push($scope.addRejectedFile(file, errormessagecode, i18nStrings));
             }
             return _results;
           };
-          $scope.closeMessage = function(rejectedFile) {
+          $scope.closeMessage = function(fileInfo) {
             var index;
-            index = $scope.rejectedFiles.indexOf(rejectedFile);
+            index = $scope.rejectedFiles.indexOf(fileInfo);
             if (index !== -1) {
               return $scope.rejectedFiles.splice(index, 1);
             }
@@ -4176,24 +4182,20 @@ angular.module("bulkfileupload/progress.tpl.html", []).run(["$templateCache", fu
 angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/rejectedfiles.tpl.html",
     "<div class=\"django-cradmin-bulkfileupload-rejectedfiles\">\n" +
-    "    <p ng-repeat=\"rejectedFile in rejectedFiles\"\n" +
+    "    <p ng-repeat=\"fileInfo in rejectedFiles\"\n" +
     "            class=\"django-cradmin-bulkfileupload-rejectedfile django-cradmin-bulkfileupload-errorparagraph\">\n" +
-    "        <button ng-click=\"closeMessage(rejectedFile)\"\n" +
+    "        <button ng-click=\"closeMessage(fileInfo)\"\n" +
     "                type=\"button\"\n" +
     "                class=\"btn btn-link django-cradmin-bulkfileupload-error-closebutton\">\n" +
     "            <span class=\"fa fa-times\"></span>\n" +
     "            <span class=\"sr-only\">{{fileInfo.i18nStrings.close_errormessage_label}}</span>\n" +
     "        </button>\n" +
     "\n" +
-    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ rejectedFile.fileInfo.name }}:</span>\n" +
-    "        <span ng-if=\"rejectedFile.message\"\n" +
-    "              class=\"django-cradmin-bulkfileupload-rejectedfile-errormessage\">{{ rejectedFile.message }}</span>\n" +
-    "        <span ng-if=\"!rejectedFile.message\">\n" +
-    "            <span ng-repeat=\"(errorfield,errors) in rejectedFile.fileInfo.errors\">\n" +
-    "                <span ng-repeat=\"error in errors\"\n" +
-    "                      class=\"django-cradmin-bulkfileupload-error\">\n" +
-    "                    {{ error.message }}\n" +
-    "                </span>\n" +
+    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ fileInfo.name }}:</span>\n" +
+    "        <span ng-repeat=\"(errorfield,errors) in fileInfo.errors\">\n" +
+    "            <span ng-repeat=\"error in errors\"\n" +
+    "                  class=\"django-cradmin-bulkfileupload-error\">\n" +
+    "                {{ error.message }}\n" +
     "            </span>\n" +
     "        </span>\n" +
     "    </p>\n" +
