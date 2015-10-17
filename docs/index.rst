@@ -81,6 +81,7 @@ Utilities
     :maxdepth: 1
 
     urlutils
+    crhumanize
 
 
 *******
