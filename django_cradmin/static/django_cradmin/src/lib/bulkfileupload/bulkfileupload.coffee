@@ -512,20 +512,16 @@ angular.module('djangoCradmin.bulkfileupload', [
       controller: ($scope) ->
         $scope.fileInfoArray = []
 
-        $scope._findFileInfo = (fileInfo) ->
-          if not fileInfo.temporaryfileid?
-            throw new Error("Can not remove files without a temporaryfileid")
-          for fileInfo in $scope.fileInfoArray
-            fileInfoIndex = fileInfoArray.indexOf(fileInfo)
-            if fileInfoIndex != -1
-              return {
-                fileInfo: fileInfo
-                index: fileInfoIndex
-              }
-          throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
+        $scope._removeFileInfo = (fileInfo) ->
+          fileInfoIndex = $scope.fileInfoArray.indexOf(fileInfo)
+          if fileInfoIndex != -1
+            $scope.fileInfoArray.splice(fileInfoIndex, 1)
+          else
+            throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
 
         @removeFile = (fileInfo) ->
-          fileInfoLocation = $scope._findFileInfo(fileInfo)
+          if not fileInfo.temporaryfileid?
+            throw new Error("Can not remove files without a temporaryfileid")
           fileInfo.markAsIsRemoving()
           $scope.$apply()
 
@@ -539,7 +535,7 @@ angular.module('djangoCradmin.bulkfileupload', [
                 temporaryfileid: fileInfo.temporaryfileid
             })
             .success((data, status, headers, config) ->
-              fileInfoLocation.fileInfoArray.remove(fileInfoLocation.index)
+              $scope._removeFileInfo(fileInfo)
             ).
             error((data, status, headers, config) ->
               console?.error? 'ERROR', data

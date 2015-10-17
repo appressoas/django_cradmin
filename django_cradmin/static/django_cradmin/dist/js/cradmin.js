@@ -734,27 +734,19 @@
         scope: {},
         controller: function($scope) {
           $scope.fileInfoArray = [];
-          $scope._findFileInfo = function(fileInfo) {
-            var fileInfoIndex, _i, _len, _ref;
+          $scope._removeFileInfo = function(fileInfo) {
+            var fileInfoIndex;
+            fileInfoIndex = $scope.fileInfoArray.indexOf(fileInfo);
+            if (fileInfoIndex !== -1) {
+              return $scope.fileInfoArray.splice(fileInfoIndex, 1);
+            } else {
+              throw new Error("Could not find requested fileInfo with temporaryfileid=" + fileInfo.temporaryfileid + ".");
+            }
+          };
+          this.removeFile = function(fileInfo) {
             if (fileInfo.temporaryfileid == null) {
               throw new Error("Can not remove files without a temporaryfileid");
             }
-            _ref = $scope.fileInfoArray;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              fileInfo = _ref[_i];
-              fileInfoIndex = fileInfoArray.indexOf(fileInfo);
-              if (fileInfoIndex !== -1) {
-                return {
-                  fileInfo: fileInfo,
-                  index: fileInfoIndex
-                };
-              }
-            }
-            throw new Error("Could not find requested fileInfo with temporaryfileid=" + fileInfo.temporaryfileid + ".");
-          };
-          this.removeFile = function(fileInfo) {
-            var fileInfoLocation;
-            fileInfoLocation = $scope._findFileInfo(fileInfo);
             fileInfo.markAsIsRemoving();
             $scope.$apply();
             return $http({
@@ -768,7 +760,7 @@
                 temporaryfileid: fileInfo.temporaryfileid
               }
             }).success(function(data, status, headers, config) {
-              return fileInfoLocation.fileInfoArray.remove(fileInfoLocation.index);
+              return $scope._removeFileInfo(fileInfo);
             }).error(function(data, status, headers, config) {
               if (typeof console !== "undefined" && console !== null) {
                 if (typeof console.error === "function") {
