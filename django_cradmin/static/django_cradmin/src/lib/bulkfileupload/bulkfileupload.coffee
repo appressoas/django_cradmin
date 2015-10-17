@@ -304,7 +304,9 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         $scope._showAppropriateWidget = ->
           if $scope.advancedWidgetScope and $scope.simpleWidgetScope
-            if cradminDetectize.device.type == 'desktop'
+#            deviceType = 'mobile'
+            deviceType = cradminDetectize.device.type
+            if deviceType == 'desktop'
               $scope.simpleWidgetScope.hide()
               $scope.advancedWidgetScope.show()
             else
@@ -330,7 +332,6 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         validateSelectedFiles = ->
           filesToUpload = []
-          $scope.rejectedFilesScope.clearRejectedFiles()
           for file in $scope.cradminLastFilesSelectedByUser
             if $scope.apiparameters.max_filesize_bytes
               if file.size > $scope.apiparameters.max_filesize_bytes
@@ -347,7 +348,7 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.$watch 'cradminLastFilesSelectedByUser', ->
           if $scope.cradminLastFilesSelectedByUser.length > 0
             # Clear any old errors before we upload new files
-            $scope.inProgressOrFinishedScope.clearErrors()
+            $scope.rejectedFilesScope.clearRejectedFiles()
 
             filesToUpload = validateSelectedFiles()
 
@@ -431,7 +432,10 @@ angular.module('djangoCradmin.bulkfileupload', [
                 }]
               })
             else
+              # Set errors, and move the FileInfo object into rejected files.
               progressFileInfo.setErrors(data)
+              $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo)
+              $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo)
             $scope._onFileUploadComplete(false)
           )
 
@@ -463,7 +467,8 @@ angular.module('djangoCradmin.bulkfileupload', [
 
 
 .directive('djangoCradminBulkfileuploadRejectedFiles', [
-  ->
+  'cradminBulkfileupload'
+  (cradminBulkfileupload) ->
     ###
     This directive is used to show files that are rejected on drop because
     of wrong mimetype. Each time a user drops one or more file with invalid
@@ -481,16 +486,20 @@ angular.module('djangoCradmin.bulkfileupload', [
       controller: ($scope) ->
         $scope.rejectedFiles = []
 
-        $scope.clearRejectedFiles = (rejectedFiles) ->
+        $scope.clearRejectedFiles = ->
           $scope.rejectedFiles = []
 
-        $scope.addRejectedFile = (file, errormessagecode) ->
+        $scope.addRejectedFileInfo = (fileInfo, errormessagecode) ->
           $scope.rejectedFiles.push({
-            file: file
+            fileInfo: fileInfo
             message: $scope.errorMessageMap[errormessagecode]
           })
 
-        $scope.hasRejectedFiles = (file, errormessagecode) ->
+        $scope.addRejectedFile = (file, errormessagecode) ->
+          $scope.addRejectedFileInfo(
+            cradminBulkfileupload.createFileInfo({file: file}), errormessagecode)
+
+        $scope.hasRejectedFiles = ->
           return $scope.rejectedFiles.length > 0
 
         $scope.setRejectedFiles = (rejectedFiles, errormessagecode) ->
@@ -502,6 +511,21 @@ angular.module('djangoCradmin.bulkfileupload', [
           index = $scope.rejectedFiles.indexOf(rejectedFile)
           if index != -1
             $scope.rejectedFiles.splice(index, 1)
+
+        $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
+          percent: 90
+          finished: true
+          name: 'mybigfile.txt'
+          hasErrors: true
+          errors: {
+            files: [{
+              message: 'File is too big'
+            }]
+          }
+        }))
+        $scope.addRejectedFile(
+          {name: 'myinvalidfile.txt'},
+          'invalid_filetype')
 
       link: (scope, element, attr, bulkfileuploadController) ->
         bulkfileuploadController.setRejectFilesScope(scope)
@@ -522,7 +546,7 @@ angular.module('djangoCradmin.bulkfileupload', [
       controller: ($scope) ->
         $scope.fileInfoArray = []
 
-        $scope._removeFileInfo = (fileInfo) ->
+        $scope.removeFileInfo = (fileInfo) ->
           fileInfoIndex = $scope.fileInfoArray.indexOf(fileInfo)
           if fileInfoIndex != -1
             $scope.fileInfoArray.splice(fileInfoIndex, 1)
@@ -545,7 +569,7 @@ angular.module('djangoCradmin.bulkfileupload', [
                 temporaryfileid: fileInfo.temporaryfileid
             })
             .success((data, status, headers, config) ->
-              $scope._removeFileInfo(fileInfo)
+              $scope.removeFileInfo(fileInfo)
             ).
             error((data, status, headers, config) ->
               console?.error? 'ERROR', data
@@ -564,30 +588,18 @@ angular.module('djangoCradmin.bulkfileupload', [
         $scope.clearErrors = ->
           for index in [$scope.fileInfoArray.length - 1..0] by -1
             fileInfo = $scope.fileInfoArray[index]
-            console.log 'fileInfo', fileInfo.name, ':', fileInfo.hasErrors
             if fileInfo.hasErrors
               $scope.fileInfoArray.splice(index, 1)
 
-#        $scope.addFileInfo({
-#          percent: 10
-#          name: 'test.txt'
-#        })
-#        $scope.addFileInfo({
-#            percent: 100
-#            finished: true
-#            name: 'Some kind of test.txt'
-#        })
-#        $scope.addFileInfo({
-#          percent: 90
-#          finished: true
-#          name: 'mybigfile.txt'
-#          hasErrors: true
-#          errors: {
-#            files: [{
-#              message: 'File is too big'
-#            }]
-#          }
-#        })
+        $scope.addFileInfo({
+          percent: 10
+          name: 'test.txt'
+        })
+        $scope.addFileInfo({
+            percent: 100
+            finished: true
+            name: 'Some kind of test.txt'
+        })
 
         return
 
@@ -729,6 +741,7 @@ angular.module('djangoCradmin.bulkfileupload', [
       }
 
       link: ($scope, element, attr) ->
+        cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
         element.on 'click', ->
           cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
         return
