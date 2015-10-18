@@ -41,6 +41,9 @@ invoke==0.10.1
 # For model creation in tests
 model_mommy==1.2.5
 
+# For building styles
+vitalstyles==1.1.4
+
 # Pull inn development packages from GIT
 -r develop.gitpackages.txt
 

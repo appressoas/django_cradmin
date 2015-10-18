@@ -40,10 +40,20 @@ module.exports = (grunt) ->
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
 
+#    exec:
+#      vitalstyles: 'custom_vitalstyles_cli.py'
     delta:
       less:
         files: appfiles.less
-        tasks: 'less'
+        tasks: [
+          'less'
+#          'exec:vitalstyles'
+        ]
+#      vitalstyles:
+#        files: ['custom_vitalstyles_cli.py']
+#        tasks: [
+#            'exec:vitalstyles'
+#        ]
       coffeecode:
         files: appfiles.coffeecode
         tasks: [
