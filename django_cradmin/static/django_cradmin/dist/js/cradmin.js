@@ -414,6 +414,11 @@
               throw new Error('Can only hide the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
             }
           };
+          this.onAdvancedWidgetDragLeave = function() {
+            if ($scope.overlay) {
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+            }
+          };
         },
         link: function($scope, element, attr, uploadController) {
           var body;
@@ -440,12 +445,17 @@
                 return e.preventDefault();
               }, false);
             }
-            if ($scope.openOverlayOnWindowDragdrop) {
-              window.addEventListener("dragover", function(e) {
-                e.preventDefault();
+            window.addEventListener("dragover", function(e) {
+              e.preventDefault();
+              $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+              if ($scope.openOverlayOnWindowDragdrop) {
                 return $scope._showOverlay();
-              }, false);
-            }
+              }
+            }, false);
+            window.addEventListener("drop", function(e) {
+              e.preventDefault();
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+            }, false);
           }
           element.on('submit', function(evt) {
             if ($scope._inProgressCounter !== 0) {
@@ -516,6 +526,9 @@
           };
           this.getCollectionId = function() {
             return $scope.collectionid;
+          };
+          this.onAdvancedWidgetDragLeave = function() {
+            return $scope.formController.onAdvancedWidgetDragLeave();
           };
           $scope._hideUploadWidget = function() {
             $scope.simpleWidgetScope.hide();
@@ -735,29 +748,13 @@
             }
             return _results;
           };
-          $scope.closeMessage = function(fileInfo) {
+          return $scope.closeMessage = function(fileInfo) {
             var index;
             index = $scope.rejectedFiles.indexOf(fileInfo);
             if (index !== -1) {
               return $scope.rejectedFiles.splice(index, 1);
             }
           };
-          $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
-            percent: 90,
-            finished: true,
-            name: 'mybigfile.txt',
-            hasErrors: true,
-            errors: {
-              files: [
-                {
-                  message: 'File is too big'
-                }
-              ]
-            }
-          }));
-          return $scope.addRejectedFile({
-            name: 'myinvalidfile.txt'
-          }, 'invalid_filetype');
         },
         link: function(scope, element, attr, bulkfileuploadController) {
           bulkfileuploadController.setRejectFilesScope(scope);
@@ -832,15 +829,6 @@
             }
             return _results;
           };
-          $scope.addFileInfo({
-            percent: 10,
-            name: 'test.txt'
-          });
-          $scope.addFileInfo({
-            percent: 100,
-            finished: true,
-            name: 'Some kind of test.txt'
-          });
         },
         link: function(scope, element, attr, uploadController) {
           scope.uploadController = uploadController;
@@ -935,6 +923,9 @@
             return element.css('display', 'block');
           };
           uploadController.setAdvancedWidgetScope(scope);
+          element[0].addEventListener("dragleave", function(e) {
+            return uploadController.onAdvancedWidgetDragLeave();
+          }, false);
         }
       };
     }
@@ -963,7 +954,6 @@
           hiddenfieldname: '@djangoCradminBulkfileuploadShowOverlay'
         },
         link: function($scope, element, attr) {
-          cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname);
           element.on('click', function() {
             return cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname);
           });

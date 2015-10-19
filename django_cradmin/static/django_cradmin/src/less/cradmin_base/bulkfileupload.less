@@ -1,3 +1,12 @@
+/**
+# Bulk file upload widget styles
+*/
+
+
+/**
+## .django-cradmin-bulkfileupload
+The bulk file upload widget base styles.
+*/
 .django-cradmin-bulkfileupload {
   .django-cradmin-bulkfileupload-overlay-controls {
     display: none;
@@ -128,14 +137,29 @@
   }
 }
 
-.django-cradmin-form .cradmin-focusfield .form-group .controls .django-cradmin-bulkfileupload {
+//.django-cradmin-form .cradmin-focusfield .form-group .controls .django-cradmin-bulkfileupload {
 //  background: @cradmin-bulkfileupload-bg;
-}
+//}
 
+
+/**
+## .django-cradmin-bulkfileupload-form-overlay
+Added automatically to the ``<form>`` by the ``django-cradmin-bulkfileupload-form``
+angularjs directive when the ``django-cradmin-bulkfileupload-form-overlay``
+attribute is ``true``. The css class should also be added to the form in
+python/django code to avoid that the form is visible while the page loads.
+*/
 .django-cradmin-bulkfileupload-form-overlay {
   display: none;
 }
 
+/**
+## .django-cradmin-bulkfileupload-overlaywrapper
+Wrapper around the ``<form>`` added automatically by the
+``django-cradmin-bulkfileupload-form`` angularjs directive. The directive
+also moves the wrapper element from its original place in the DOM to a direct
+child of ``<body>``.
+*/
 .django-cradmin-bulkfileupload-overlaywrapper {
   display: none;
   position: fixed;
@@ -197,4 +221,39 @@
       }
     }
   }
+
+  &.django-cradmin-bulkfileupload-overlaywrapper-window-dragover {
+    .django-cradmin-bulkfileupload-overlay-controls {
+      display: none;
+    }
+    .django-cradmin-bulkfileupload-form-overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin-left: 0;
+      width: 100%;
+      border: none;
+      padding: 0;
+
+      .django-cradmin-bulkfileupload {
+        .django-cradmin-bulkfileupload-content {
+          .django-cradmin-bulkfileupload-progress,
+          .django-cradmin-bulkfileupload-rejectedfiles,
+          .django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
+            display: none;
+          }
+          .django-cradmin-bulkfileupload-dropbox {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
 }

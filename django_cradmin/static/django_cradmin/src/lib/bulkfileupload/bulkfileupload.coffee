@@ -178,6 +178,11 @@ angular.module('djangoCradmin.bulkfileupload', [
             throw new Error('Can only hide the overlay if the form has the ' +
               'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
 
+        @onAdvancedWidgetDragLeave = ->
+          if $scope.overlay
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+
+
         return
 
       link: ($scope, element, attr, uploadController) ->
@@ -206,11 +211,19 @@ angular.module('djangoCradmin.bulkfileupload', [
             window.addEventListener("drop", (e) ->
               e.preventDefault()
             , false)
-          if $scope.openOverlayOnWindowDragdrop
-            window.addEventListener("dragover", (e) ->
-              e.preventDefault()
+
+          window.addEventListener("dragover", (e) ->
+            e.preventDefault()
+            $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+            if $scope.openOverlayOnWindowDragdrop
               $scope._showOverlay()
-            , false)
+          , false)
+
+          window.addEventListener("drop", (e) ->
+            e.preventDefault()
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+          , false)
+
 
         element.on 'submit', (evt) ->
           if $scope._inProgressCounter != 0
@@ -297,6 +310,9 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         @getCollectionId = ->
           return $scope.collectionid
+
+        @onAdvancedWidgetDragLeave = ->
+          $scope.formController.onAdvancedWidgetDragLeave()
 
         $scope._hideUploadWidget = ->
           $scope.simpleWidgetScope.hide()
@@ -522,20 +538,20 @@ angular.module('djangoCradmin.bulkfileupload', [
           if index != -1
             $scope.rejectedFiles.splice(index, 1)
 
-        $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
-          percent: 90
-          finished: true
-          name: 'mybigfile.txt'
-          hasErrors: true
-          errors: {
-            files: [{
-              message: 'File is too big'
-            }]
-          }
-        }))
-        $scope.addRejectedFile(
-          {name: 'myinvalidfile.txt'},
-          'invalid_filetype')
+#        $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
+#          percent: 90
+#          finished: true
+#          name: 'mybigfile.txt'
+#          hasErrors: true
+#          errors: {
+#            files: [{
+#              message: 'File is too big'
+#            }]
+#          }
+#        }))
+#        $scope.addRejectedFile(
+#          {name: 'myinvalidfile.txt'},
+#          'invalid_filetype')
 
       link: (scope, element, attr, bulkfileuploadController) ->
         bulkfileuploadController.setRejectFilesScope(scope)
@@ -601,15 +617,15 @@ angular.module('djangoCradmin.bulkfileupload', [
             if fileInfo.hasErrors
               $scope.fileInfoArray.splice(index, 1)
 
-        $scope.addFileInfo({
-          percent: 10
-          name: 'test.txt'
-        })
-        $scope.addFileInfo({
-            percent: 100
-            finished: true
-            name: 'Some kind of test.txt'
-        })
+#        $scope.addFileInfo({
+#          percent: 10
+#          name: 'test.txt'
+#        })
+#        $scope.addFileInfo({
+#            percent: 100
+#            finished: true
+#            name: 'Some kind of test.txt'
+#        })
 
         return
 
@@ -714,8 +730,12 @@ angular.module('djangoCradmin.bulkfileupload', [
           element.css('display', 'none')
         scope.show = ->
           element.css('display', 'block')
-
         uploadController.setAdvancedWidgetScope(scope)
+
+        element[0].addEventListener("dragleave", (e) ->
+          uploadController.onAdvancedWidgetDragLeave()
+        , false)
+
         return
     }
 ])
@@ -751,7 +771,7 @@ angular.module('djangoCradmin.bulkfileupload', [
       }
 
       link: ($scope, element, attr) ->
-        cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
+#        cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
         element.on 'click', ->
           cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
         return
