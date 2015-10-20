@@ -157,8 +157,12 @@ angular.module('djangoCradmin.bulkfileupload', [
         @registerOverlayControls = (overlayControlsScope) ->
           $scope._overlayControlsScope = overlayControlsScope
 
+        @registerOverlayUploadingmessageScope = (overlayUploadingmessageScope) ->
+          $scope._overlayUploadingmessageScope = overlayUploadingmessageScope
+
         @submitForm = ->
-#          console.log 'Submit!'
+          if $scope.overlay
+            $scope._overlayUploadingmessageScope.onSubmitForm()
           $scope.element.submit()
 
         $scope._showOverlay = ->
@@ -801,6 +805,26 @@ angular.module('djangoCradmin.bulkfileupload', [
       link: ($scope, element, attr, uploadFormController) ->
         $scope.element = element
         uploadFormController.registerOverlayControls($scope)
+        return
+    }
+])
+
+.directive('djangoCradminBulkfileuploadOverlayUploadingmessage', [
+  ->
+    return {
+      restrict: 'AE'
+      require: '^djangoCradminBulkfileuploadForm'
+      scope: {}
+
+      controller: ($scope) ->
+        $scope.onSubmitForm = ->
+          $scope.element.addClass('django-cradmin-bulkfileupload-overlay-uploadingmessage-visible')
+
+        return
+
+      link: ($scope, element, attr, uploadFormController) ->
+        $scope.element = element
+        uploadFormController.registerOverlayUploadingmessageScope($scope)
         return
     }
 ])

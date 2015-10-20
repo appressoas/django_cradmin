@@ -18,7 +18,8 @@ class BulkFileUploadWidget(forms.Widget):
                  invalid_filetype_message=None,
                  advanced_fileselectbutton_text=None,
                  simple_fileselectbutton_text=None,
-                 autosubmit=False):
+                 autosubmit=False,
+                 overlaymode_autosubmit_uploading_message=None):
         """
         Parameters:
             accept (str): Comma separated string of filetypes that we should accept.
@@ -44,6 +45,17 @@ class BulkFileUploadWidget(forms.Widget):
                 It works with multi-file upload, but the user will only
                 be able to upload one batch of files, and they will not
                 be able to remove or upload more files.
+
+            overlaymode_autosubmit_uploading_message
+                The message to show submitting the form when using overlay mode and autosubmit.
+
+                This is just to ensure that the user understands that the
+                request is beeing submitted, and that they should wait and not
+                close the browser window.
+
+                Only used if ``autosubmit`` is ``True``, and the form uses the
+                form uses ``django-cradmin-bulkfileupload-form-overlay="true"``.
+
         """
         self.accept = accept
         self.apiparameters = apiparameters or {}
@@ -52,6 +64,8 @@ class BulkFileUploadWidget(forms.Widget):
         self.advanced_fileselectbutton_text = advanced_fileselectbutton_text
         self.simple_fileselectbutton_text = simple_fileselectbutton_text
         self.autosubmit = autosubmit
+        self.overlaymode_autosubmit_uploading_message = overlaymode_autosubmit_uploading_message
+
         super(BulkFileUploadWidget, self).__init__(attrs=None)
 
     def get_max_filesize_bytes(self):
@@ -132,6 +146,7 @@ class BulkFileUploadWidget(forms.Widget):
         context['angularjs_directive_options'] = quoteattr(json.dumps(
             self.get_angularjs_directive_options()))
         context['singlemode'] = self.get_use_singlemode()
+        context['overlaymode_autosubmit_uploading_message'] = self.overlaymode_autosubmit_uploading_message
         return context
 
     def render(self, name, value, attrs=None):

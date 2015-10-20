@@ -211,6 +211,33 @@ child of ``<body>``.
       cursor: pointer;
       z-index: 50001;
     }
+    .django-cradmin-bulkfileupload-overlay-uploadingmessage {
+      display: none;
+      position: absolute;
+      background: @django-cradmin-bulkfileupload-overlay-uploadingmessage-bg;
+      color: @django-cradmin-bulkfileupload-overlay-uploadingmessage-color;
+      font-size: @django-cradmin-bulkfileupload-overlay-uploadingmessage-font-size;
+      font-weight: @django-cradmin-bulkfileupload-overlay-uploadingmessage-font-weight;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+      z-index: 50005;
+
+      &.django-cradmin-bulkfileupload-overlay-uploadingmessage-visible {
+        display: block;
+      }
+
+      p.django-cradmin-bulkfileupload-overlay-uploadingmessage-text {
+        position: relative;
+        top: 50%;
+        .css3-transform(translateY(-50%));
+        text-align: center;
+        margin: 0;
+        padding: 0 20px 0 20px;
+      }
+    }
   }
 
   .django-cradmin-bulkfileupload-form-overlay {

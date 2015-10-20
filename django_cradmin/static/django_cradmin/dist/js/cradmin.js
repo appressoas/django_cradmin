@@ -394,7 +394,13 @@
           this.registerOverlayControls = function(overlayControlsScope) {
             return $scope._overlayControlsScope = overlayControlsScope;
           };
+          this.registerOverlayUploadingmessageScope = function(overlayUploadingmessageScope) {
+            return $scope._overlayUploadingmessageScope = overlayUploadingmessageScope;
+          };
           this.submitForm = function() {
+            if ($scope.overlay) {
+              $scope._overlayUploadingmessageScope.onSubmitForm();
+            }
             return $scope.element.submit();
           };
           $scope._showOverlay = function() {
@@ -979,6 +985,23 @@
         link: function($scope, element, attr, uploadFormController) {
           $scope.element = element;
           uploadFormController.registerOverlayControls($scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadOverlayUploadingmessage', [
+    function() {
+      return {
+        restrict: 'AE',
+        require: '^djangoCradminBulkfileuploadForm',
+        scope: {},
+        controller: function($scope) {
+          $scope.onSubmitForm = function() {
+            return $scope.element.addClass('django-cradmin-bulkfileupload-overlay-uploadingmessage-visible');
+          };
+        },
+        link: function($scope, element, attr, uploadFormController) {
+          $scope.element = element;
+          uploadFormController.registerOverlayUploadingmessageScope($scope);
         }
       };
     }

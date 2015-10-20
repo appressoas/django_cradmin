@@ -13,7 +13,8 @@
 {% load i18n %}
 {% load cradmin_icon_tags %}
 
-<div django-cradmin-bulkfileupload-overlay-controls class="django-cradmin-bulkfileupload-overlay-controls">
+<div django-cradmin-bulkfileupload-overlay-controls
+     class="django-cradmin-bulkfileupload-overlay-controls">
     <div django-cradmin-bulkfileupload-hide-overlay="{{ hiddenfieldname }}"
             class="django-cradmin-bulkfileupload-backdrop"></div>
 
@@ -25,6 +26,16 @@
               aria-hidden="true"
               title="{% trans 'close file upload window' %}"></span>
     </button>
+    <div django-cradmin-bulkfileupload-overlay-uploadingmessage
+            class="django-cradmin-bulkfileupload-overlay-uploadingmessage">
+        <p class="django-cradmin-bulkfileupload-overlay-uploadingmessage-text">
+            {% if overlaymode_autosubmit_uploading_message %}
+                {{ overlaymode_autosubmit_uploading_message }}
+            {% else %}
+                {% trans "We are uploading your files. Please do not close the browser window." %}
+            {% endif %}
+        </p>
+    </div>
 </div>
 
 
