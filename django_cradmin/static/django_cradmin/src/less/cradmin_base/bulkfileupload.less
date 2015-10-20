@@ -21,6 +21,7 @@ The bulk file upload widget base styles.
       font-weight: @cradmin-bulkfileupload-dropbox-font-weight;
       font-size: @cradmin-bulkfileupload-dropbox-font-size;
       padding: @cradmin-bulkfileupload-dropbox-padding;
+      height: @cradmin-bulkfileupload-dropbox-height;
       text-align: @cradmin-bulkfileupload-dropbox-text-align;
       border-style: @cradmin-bulkfileupload-dropbox-border-style;
       border-color: @cradmin-bulkfileupload-dropbox-border-color;
@@ -28,6 +29,12 @@ The bulk file upload widget base styles.
 
       .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
         display: none;
+      }
+
+      .django-cradmin-bulkfileupload-dropbox-text {
+        position: relative;
+        top: 50%;
+        .css3-transform(translateY(-50%));
       }
 
       &.django-cradmin-bulkfileupload-dropbox-dragover {
@@ -162,11 +169,12 @@ child of ``<body>``.
 */
 .django-cradmin-bulkfileupload-overlaywrapper {
   display: none;
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
+  //height: 100%;
   z-index: 50000;
   &.django-cradmin-bulkfileupload-overlaywrapper-show {
     display: block;
@@ -179,8 +187,12 @@ child of ``<body>``.
       position: absolute;
       top: 0;
       right: 0;
-      font-size: 25px;
       z-index: 50003;
+      font-size: @cradmin-bulkfileupload-hide-overlay-button-font-size;
+      color: @cradmin-bulkfileupload-hide-overlay-button-color;
+      &:hover {
+        color: @cradmin-bulkfileupload-hide-overlay-button-hover-color;
+      }
     }
     .django-cradmin-bulkfileupload-backdrop {
       display: block;
@@ -189,7 +201,7 @@ child of ``<body>``.
       right: 0;
       top: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, .6);
+      background: @cradmin-bulkfileupload-dropbox-backdrop-bg;
       cursor: pointer;
       z-index: 50001;
     }
@@ -198,26 +210,47 @@ child of ``<body>``.
   .django-cradmin-bulkfileupload-form-overlay {
     display: block;
     z-index: 50002;
-    position: absolute;
     background: #fff;
     overflow: auto;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     padding: (@grid-gutter-width/2);
 
-    @media (min-width: @screen-sm-min) {
-      width: 500px;
-      top: 30px;
-      bottom: auto;
-      left: 50%;
-      margin-left: -(500px/2);
-      border: 4px solid #000;
+    width: 90%;
+    top: 60px;
+    bottom: auto;
+    left: 50%;
+    margin-left: -45%;
+    position: absolute;
+
+    .form-group {
+      margin: 0;
     }
 
     .django-cradmin-bulkfileupload {
       .django-cradmin-bulkfileupload-content {
+        .django-cradmin-bulkfileupload-dropbox {
+          height: 200px;
+          //@media (min-height: 400px) {
+          //  height: 180px;
+          //}
+          //@media (min-height: 500px) {
+          //  height: 270px;
+          //}
+          //@media (min-height: 600px) {
+          //  height: 370px;
+          //}
+          //@media (min-height: 700px) {
+          //  height: 470px;
+          //}
+          //@media (min-height: 800px) {
+          //  height: 570px;
+          //}
+          //@media (min-height: 900px) {
+          //  height: 670px;
+          //}
+        }
+        .django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
+          margin: 15px 0 0 0;
+        }
       }
     }
   }
@@ -250,10 +283,21 @@ child of ``<body>``.
             right: 0;
             top: 0;
             bottom: 0;
+            height: 100%;
+
+            .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+              display: none;
+            }
+
+            &.django-cradmin-bulkfileupload-dropbox-dragover {
+              background: @cradmin-bulkfileupload-overlay-dropbox-dragover-bg;
+              color: @cradmin-bulkfileupload-overlay-dropbox-dragover-color;
+              border-style: @cradmin-bulkfileupload-overlay-dropbox-dragover-border-style;
+              border-color: @cradmin-bulkfileupload-overlay-dropbox-dragover-border-color;
+            }
           }
         }
       }
     }
   }
-
 }

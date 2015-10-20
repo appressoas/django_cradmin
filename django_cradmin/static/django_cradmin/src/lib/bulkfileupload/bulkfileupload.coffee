@@ -182,7 +182,6 @@ angular.module('djangoCradmin.bulkfileupload', [
           if $scope.overlay
             $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
 
-
         return
 
       link: ($scope, element, attr, uploadController) ->

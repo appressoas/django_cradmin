@@ -5588,7 +5588,8 @@ The bulk file upload widget base styles.
   color: #666666;
   font-weight: bold;
   font-size: inherit;
-  padding: 45px 30px;
+  padding: 5px 30px 5px 30px;
+  height: 100px;
   text-align: center;
   border-style: dashed;
   border-color: #c7c7c7;
@@ -5596,6 +5597,13 @@ The bulk file upload widget base styles.
 }
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
   display: none;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-text {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
   background: #dff0d8;
@@ -5723,7 +5731,7 @@ child of ``<body>``.
 */
 .django-cradmin-bulkfileupload-overlaywrapper {
   display: none;
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
@@ -5741,8 +5749,12 @@ child of ``<body>``.
   position: absolute;
   top: 0;
   right: 0;
-  font-size: 25px;
   z-index: 50003;
+  font-size: 30px;
+  color: #eeeeee;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-hide-overlay-button:hover {
+  color: #ffffff;
 }
 .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-backdrop {
   display: block;
@@ -5751,31 +5763,31 @@ child of ``<body>``.
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   cursor: pointer;
   z-index: 50001;
 }
 .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay {
   display: block;
   z-index: 50002;
-  position: absolute;
   background: #fff;
   overflow: auto;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
   padding: 15px;
+  width: 90%;
+  top: 60px;
+  bottom: auto;
+  left: 50%;
+  margin-left: -45%;
+  position: absolute;
 }
-@media (min-width: 768px) {
-  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay {
-    width: 500px;
-    top: 30px;
-    bottom: auto;
-    left: 50%;
-    margin-left: -250px;
-    border: 4px solid #000;
-  }
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .form-group {
+  margin: 0;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+  height: 200px;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
+  margin: 15px 0 0 0;
 }
 .django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-overlay-controls {
   display: none;
@@ -5802,6 +5814,16 @@ child of ``<body>``.
   right: 0;
   top: 0;
   bottom: 0;
+  height: 100%;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+  display: none;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
+  background: #d7d7d7;
+  color: #666666;
+  border-style: dashed;
+  border-color: #a4a4a4;
 }
 .django-cradmin-focusedpage-wrapper {
   width: 100%;
