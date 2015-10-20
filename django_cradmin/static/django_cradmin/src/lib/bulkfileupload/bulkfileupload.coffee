@@ -718,7 +718,8 @@ angular.module('djangoCradmin.bulkfileupload', [
 
 
 .directive('djangoCradminBulkfileuploadAdvancedWidget', [
-  ->
+  '$timeout'
+  ($timeout) ->
     return {
       require: '^djangoCradminBulkfileupload'
       restrict: 'AE'
@@ -731,8 +732,24 @@ angular.module('djangoCradmin.bulkfileupload', [
           element.css('display', 'block')
         uploadController.setAdvancedWidgetScope(scope)
 
+        # This variable is used for a timeout that is triggered when
+        # we dragleave the container. We need this because dragleave
+        # triggers even when we over over children of the dropbox,
+        # such as the text. To avoid this problem, we cancel the timeout
+        # when the dragover event is fired from children.
+        hideAdvancedWidgetTimout = null
+
         element[0].addEventListener("dragleave", (e) ->
-          uploadController.onAdvancedWidgetDragLeave()
+          if hideAdvancedWidgetTimout == null
+            hideAdvancedWidgetTimout = $timeout(->
+              uploadController.onAdvancedWidgetDragLeave()
+            , 500)
+        , false)
+
+        dropBoxTextElement = element.find('.django-cradmin-bulkfileupload-dropbox-text')[0]
+        dropBoxTextElement.addEventListener("dragover", (e) ->
+          if hideAdvancedWidgetTimout != null
+            $timeout.cancel(hideAdvancedWidgetTimout)
         , false)
 
         return

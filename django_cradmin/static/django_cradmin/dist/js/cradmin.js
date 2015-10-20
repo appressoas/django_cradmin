@@ -910,12 +910,13 @@
       };
     }
   ]).directive('djangoCradminBulkfileuploadAdvancedWidget', [
-    function() {
+    '$timeout', function($timeout) {
       return {
         require: '^djangoCradminBulkfileupload',
         restrict: 'AE',
         scope: {},
         link: function(scope, element, attr, uploadController) {
+          var dropBoxTextElement, hideAdvancedWidgetTimout;
           scope.hide = function() {
             return element.css('display', 'none');
           };
@@ -923,8 +924,19 @@
             return element.css('display', 'block');
           };
           uploadController.setAdvancedWidgetScope(scope);
+          hideAdvancedWidgetTimout = null;
           element[0].addEventListener("dragleave", function(e) {
-            return uploadController.onAdvancedWidgetDragLeave();
+            if (hideAdvancedWidgetTimout === null) {
+              return hideAdvancedWidgetTimout = $timeout(function() {
+                return uploadController.onAdvancedWidgetDragLeave();
+              }, 500);
+            }
+          }, false);
+          dropBoxTextElement = element.find('.django-cradmin-bulkfileupload-dropbox-text')[0];
+          dropBoxTextElement.addEventListener("dragover", function(e) {
+            if (hideAdvancedWidgetTimout !== null) {
+              return $timeout.cancel(hideAdvancedWidgetTimout);
+            }
           }, false);
         }
       };
