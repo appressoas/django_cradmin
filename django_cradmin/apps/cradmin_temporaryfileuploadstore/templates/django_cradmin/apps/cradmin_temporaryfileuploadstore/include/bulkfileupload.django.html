@@ -32,7 +32,11 @@
             {% if overlaymode_autosubmit_uploading_message %}
                 {{ overlaymode_autosubmit_uploading_message }}
             {% else %}
-                {% trans "We are uploading your files. Please do not close the browser window." %}
+                {% if singlemode %}
+                    {% trans "We are uploading your file. Please do not close the browser window." %}
+                {% else %}
+                    {% trans "We are uploading your files. Please do not close the browser window." %}
+                {% endif %}
             {% endif %}
         </p>
     </div>
