@@ -54,15 +54,17 @@
                     {% block droparea-advanced-content %}
                         <div class="django-cradmin-bulkfileupload-dropbox-text">
                             {% block django-cradmin-bulkfileupload-dropbox-text %}
-                                {% if dropbox_text %}
-                                    {{ dropbox_text }}
-                                {% else %}
-                                    {% if singlemode %}
-                                        {% trans "Upload a file by dragging and dropping it here" %}
+                                <p>
+                                    {% if dropbox_text %}
+                                        {{ dropbox_text }}
                                     {% else %}
-                                        {% trans "Upload files by dragging and dropping them here" %}
+                                        {% if singlemode %}
+                                            {% trans "Upload a file by dragging and dropping it here" %}
+                                        {% else %}
+                                            {% trans "Upload files by dragging and dropping them here" %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
+                                </p>
                             {% endblock django-cradmin-bulkfileupload-dropbox-text %}
                             {% block fileselectbutton-advanced %}
                                 <p class="django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper">
