@@ -358,6 +358,7 @@ angular.module('djangoCradmin.bulkfileupload', [
               if file.size > $scope.apiparameters.max_filesize_bytes
                 $scope.rejectedFilesScope.addRejectedFile(
                   file, 'max_filesize_bytes_exceeded', $scope.i18nStrings)
+                continue
             filesToUpload.push(file)
           if $scope.rejectedFilesScope.hasRejectedFiles() and $scope.autosubmit
             # If we use autosubmit mode, we do not allow upload if any
@@ -447,6 +448,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             $scope._setCollectionId(data.collectionid)
             $scope._onFileUploadComplete(true)
           ).error((data, status) ->
+            console.log data
             if status == 503
               progressFileInfo.setErrors({
                 file: [{
@@ -456,8 +458,8 @@ angular.module('djangoCradmin.bulkfileupload', [
             else
               # Set errors, and move the FileInfo object into rejected files.
               progressFileInfo.setErrors(data)
-              $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo)
-              $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo)
+            $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo)
+            $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo)
             $scope._onFileUploadComplete(false)
           )
 

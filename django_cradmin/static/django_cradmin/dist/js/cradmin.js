@@ -569,6 +569,7 @@
               if ($scope.apiparameters.max_filesize_bytes) {
                 if (file.size > $scope.apiparameters.max_filesize_bytes) {
                   $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded', $scope.i18nStrings);
+                  continue;
                 }
               }
               filesToUpload.push(file);
@@ -659,6 +660,7 @@
               $scope._setCollectionId(data.collectionid);
               return $scope._onFileUploadComplete(true);
             }).error(function(data, status) {
+              console.log(data);
               if (status === 503) {
                 progressFileInfo.setErrors({
                   file: [
@@ -669,9 +671,9 @@
                 });
               } else {
                 progressFileInfo.setErrors(data);
-                $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo);
-                $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo);
               }
+              $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo);
+              $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo);
               return $scope._onFileUploadComplete(false);
             });
           };
