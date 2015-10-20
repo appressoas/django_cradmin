@@ -5167,35 +5167,12 @@ table.table.django-cradmin-table tbody td:last-child {
   }
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  scrollbar-face-color: #377ca8;
-  scrollbar-arrow-color: #377ca8;
-  scrollbar-track-color: #2b2b2b;
-  scrollbar-highlight-color: #377ca8;
-  scrollbar-3dlight-color: #2b2b2b;
-  scrollbar-dark-shadow-color: #2b2b2b;
-  scrollbar-shadow-color: #2b2b2b;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar {
-  width: 14px;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-track {
-  background-color: #2b2b2b;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-thumb {
-  background-color: #377ca8;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-thumb:hover {
-  background-color: #4d96c5;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-button {
-  display: none;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner iframe {
   position: absolute;
@@ -5203,7 +5180,7 @@ table.table.django-cradmin-table tbody td:last-child {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 10px;
+  height: 100%;
   width: 100%;
   border: none;
 }

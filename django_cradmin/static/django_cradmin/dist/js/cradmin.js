@@ -3003,17 +3003,8 @@
             }
             return startScrollHeightInterval();
           };
-          $scope.setIframeSize = function() {
-            var iframeBodyHeight, iframeDocument;
-            iframeDocument = getIframeDocument();
-            if ((iframeDocument != null ? iframeDocument.body : void 0) != null) {
-              iframeBodyHeight = iframeDocument.body.offsetHeight;
-              return $scope.element.height(iframeBodyHeight);
-            }
-          };
-          $scope.resetIframeSize = function() {
-            return $scope.element.height('40px');
-          };
+          $scope.setIframeSize = function() {};
+          $scope.resetIframeSize = function() {};
         },
         link: function(scope, element, attrs, wrapperCtrl) {
           scope.element = element;
