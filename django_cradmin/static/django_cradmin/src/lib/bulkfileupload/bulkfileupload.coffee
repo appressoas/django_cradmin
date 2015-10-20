@@ -178,10 +178,6 @@ angular.module('djangoCradmin.bulkfileupload', [
             throw new Error('Can only hide the overlay if the form has the ' +
               'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
 
-        @onAdvancedWidgetDragLeave = ->
-          if $scope.overlay
-            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
-
         return
 
       link: ($scope, element, attr, uploadController) ->
@@ -222,6 +218,11 @@ angular.module('djangoCradmin.bulkfileupload', [
             e.preventDefault()
             $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
           , false)
+
+          angular.element('body').on 'mouseleave', (e) ->
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+
+
 
 
         element.on 'submit', (evt) ->
@@ -731,26 +732,6 @@ angular.module('djangoCradmin.bulkfileupload', [
         scope.show = ->
           element.css('display', 'block')
         uploadController.setAdvancedWidgetScope(scope)
-
-        # This variable is used for a timeout that is triggered when
-        # we dragleave the container. We need this because dragleave
-        # triggers even when we over over children of the dropbox,
-        # such as the text. To avoid this problem, we cancel the timeout
-        # when the dragover event is fired from children.
-        hideAdvancedWidgetTimout = null
-
-        element[0].addEventListener("dragleave", (e) ->
-          if hideAdvancedWidgetTimout == null
-            hideAdvancedWidgetTimout = $timeout(->
-              uploadController.onAdvancedWidgetDragLeave()
-            , 500)
-        , false)
-
-        dropBoxTextElement = element.find('.django-cradmin-bulkfileupload-dropbox-text')[0]
-        dropBoxTextElement.addEventListener("dragover", (e) ->
-          if hideAdvancedWidgetTimout != null
-            $timeout.cancel(hideAdvancedWidgetTimout)
-        , false)
 
         return
     }

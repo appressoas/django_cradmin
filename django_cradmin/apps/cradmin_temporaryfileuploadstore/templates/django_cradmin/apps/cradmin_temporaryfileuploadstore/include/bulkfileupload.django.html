@@ -64,6 +64,31 @@
                                     {% endif %}
                                 {% endif %}
                             {% endblock django-cradmin-bulkfileupload-dropbox-text %}
+                            {% block fileselectbutton-advanced %}
+                                <p class="django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper">
+                                    <button ng-file-select
+                                            type="button"
+                                            ng-model="cradminLastFilesSelectedByUser"
+                                            multiple="{% if singlemode %}false{% else %}true{% endif %}"
+                                            {% if accept %}
+                                                accept="{{ accept }}"
+                                            {% endif %}
+                                            class="btn-link django-cradmin-bulkfileupload-advanced-fileselectbutton">
+                                        {% block fileselectbutton-advanced-content %}
+                                            {% if advanced_fileselectbutton_text %}
+                                                {{ advanced_fileselectbutton_text }}
+                                            {% else %}
+                                                {% if singlemode %}
+                                                    {% trans "... or select a file" %}
+                                                {% else %}
+                                                    {% trans "... or select files" %}
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endblock fileselectbutton-advanced-content %}
+                                    </button>
+                                </p>
+                            {% endblock fileselectbutton-advanced %}
+
                         </div>
                         <div class="django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage">
                             {% block droparea-advanced-content-invalid-filetype-errormessage %}
@@ -77,30 +102,6 @@
                     {% endblock droparea-advanced-content %}
                 </div>
             {% endblock droparea-advanced %}
-            {% block fileselectbutton-advanced %}
-                <p class="django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper">
-                    <button ng-file-select
-                            type="button"
-                            ng-model="cradminLastFilesSelectedByUser"
-                            multiple="{% if singlemode %}false{% else %}true{% endif %}"
-                            {% if accept %}
-                                accept="{{ accept }}"
-                            {% endif %}
-                            class="btn-link django-cradmin-bulkfileupload-advanced-fileselectbutton">
-                        {% block fileselectbutton-advanced-content %}
-                            {% if advanced_fileselectbutton_text %}
-                                {{ advanced_fileselectbutton_text }}
-                            {% else %}
-                                {% if singlemode %}
-                                    {% trans "... or select a file" %}
-                                {% else %}
-                                    {% trans "... or select files" %}
-                                {% endif %}
-                            {% endif %}
-                        {% endblock fileselectbutton-advanced-content %}
-                    </button>
-                </p>
-            {% endblock fileselectbutton-advanced %}
         </div>
 
         <div django-cradmin-bulkfileupload-simple-widget>

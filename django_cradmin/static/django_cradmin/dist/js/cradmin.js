@@ -414,11 +414,6 @@
               throw new Error('Can only hide the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
             }
           };
-          this.onAdvancedWidgetDragLeave = function() {
-            if ($scope.overlay) {
-              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
-            }
-          };
         },
         link: function($scope, element, attr, uploadController) {
           var body;
@@ -456,6 +451,9 @@
               e.preventDefault();
               return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
             }, false);
+            angular.element('body').on('mouseleave', function(e) {
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+            });
           }
           element.on('submit', function(evt) {
             if ($scope._inProgressCounter !== 0) {
@@ -916,7 +914,6 @@
         restrict: 'AE',
         scope: {},
         link: function(scope, element, attr, uploadController) {
-          var dropBoxTextElement, hideAdvancedWidgetTimout;
           scope.hide = function() {
             return element.css('display', 'none');
           };
@@ -924,20 +921,6 @@
             return element.css('display', 'block');
           };
           uploadController.setAdvancedWidgetScope(scope);
-          hideAdvancedWidgetTimout = null;
-          element[0].addEventListener("dragleave", function(e) {
-            if (hideAdvancedWidgetTimout === null) {
-              return hideAdvancedWidgetTimout = $timeout(function() {
-                return uploadController.onAdvancedWidgetDragLeave();
-              }, 500);
-            }
-          }, false);
-          dropBoxTextElement = element.find('.django-cradmin-bulkfileupload-dropbox-text')[0];
-          dropBoxTextElement.addEventListener("dragover", function(e) {
-            if (hideAdvancedWidgetTimout !== null) {
-              return $timeout.cancel(hideAdvancedWidgetTimout);
-            }
-          }, false);
         }
       };
     }
