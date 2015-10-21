@@ -176,6 +176,7 @@ class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTa
     searchfields = ['name', 'description', 'file_extension']
     hide_column_headers = True
     model = ArchiveImage
+    paginate_by = 15
 
     form_id = 'django_cradmin_imagearchive_bulkadd_form'
     extra_form_css_classes = ['django-cradmin-form-noasterisk', 'django-cradmin-bulkfileupload-form-overlay']
