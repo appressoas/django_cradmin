@@ -5,6 +5,7 @@ from django.conf.urls import patterns, url, include
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
+from django_cradmin.decorators import has_access_to_cradmin_instance
 
 from .registry import cradmin_instance_registry
 from . import crapp
@@ -262,6 +263,15 @@ class BaseCrAdminInstance(object):
         """
         return {}
 
+    def has_access(self):
+        """
+        Check if the given user has access to this cradmin instance.
+
+        Defaults to ``self.request.user.is_authenticated()``, but you
+        can override this.
+        """
+        return self.request.user.is_authenticated()
+
     @classmethod
     def get_roleselect_view(cls):
         """
@@ -282,7 +292,7 @@ class BaseCrAdminInstance(object):
             where ``<cradmin instance id>`` is :obj:`.id`. You can reverse the URL of
             this view with :meth:`.roleselectview_url`.
         """
-        return login_required(roleselect.RoleSelectView.as_view())
+        return has_access_to_cradmin_instance(roleselect.RoleSelectView.as_view())
 
     @classmethod
     def matches_urlpath(cls, urlpath):

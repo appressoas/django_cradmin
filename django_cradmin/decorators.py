@@ -11,7 +11,32 @@ from django.shortcuts import resolve_url
 from django_cradmin.registry import cradmin_instance_registry
 
 
-def cradminview(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
+def has_access_to_cradmin_instance(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
+    """
+    Decorator for django_cradmin views.
+
+    Makes it impossible to access the view unless the
+    :meth:`django_cradmin.crinstance.BaseCrAdminInstance.has_access` method
+    returns ``True``.
+    """
+
+    @wraps(view_function)
+    def wrapper(request, *args, **kwargs):
+        cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+        if cradmin_instance.has_access():
+            return view_function(request, *args, **kwargs)
+        else:
+            # Redirect to login just like login_required()
+            from django.contrib.auth.views import redirect_to_login
+            path = request.build_absolute_uri()
+            resolved_login_url = force_str(
+                resolve_url(login_url or settings.LOGIN_URL))
+            return redirect_to_login(path, resolved_login_url, redirect_field_name)
+
+    return wrapper
+
+
+def cradminview(view_function):
     """
     Decorator for django_cradmin views.
 
@@ -26,33 +51,25 @@ def cradminview(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_ur
 
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated():
-            roleid = kwargs.pop('roleid')
-            cradmin_instance = cradmin_instance_registry.get_current_instance(request)
-            role = cradmin_instance.get_role_from_roleid(roleid)
-            if not role:
-                response = cradmin_instance.invalid_roleid_response(roleid)
-            try:
-                role_from_rolequeryset = cradmin_instance.get_role_from_rolequeryset(role)
-            except ObjectDoesNotExist:
-                response = cradmin_instance.missing_role_response(role)
-            else:
-                request.cradmin_instance = cradmin_instance
-                request.cradmin_role = role_from_rolequeryset
-                response = view_function(request, *args, **kwargs)
-
-            if isinstance(response, HttpResponse):
-                http_headers = cradmin_instance.get_common_http_headers()
-                if http_headers:
-                    for headerattribute, headervalue in http_headers.items():
-                        response[headerattribute] = headervalue
-            return response
+        cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+        roleid = kwargs.pop('roleid')
+        role = cradmin_instance.get_role_from_roleid(roleid)
+        if not role:
+            return cradmin_instance.invalid_roleid_response(roleid)
+        try:
+            role_from_rolequeryset = cradmin_instance.get_role_from_rolequeryset(role)
+        except ObjectDoesNotExist:
+            response = cradmin_instance.missing_role_response(role)
         else:
-            # Redirect to login just like login_required()
-            from django.contrib.auth.views import redirect_to_login
-            path = request.build_absolute_uri()
-            resolved_login_url = force_str(
-                resolve_url(login_url or settings.LOGIN_URL))
-            return redirect_to_login(path, resolved_login_url, redirect_field_name)
+            request.cradmin_instance = cradmin_instance
+            request.cradmin_role = role_from_rolequeryset
+            response = view_function(request, *args, **kwargs)
+
+        if isinstance(response, HttpResponse):
+            http_headers = cradmin_instance.get_common_http_headers()
+            if http_headers:
+                for headerattribute, headervalue in http_headers.items():
+                    response[headerattribute] = headervalue
+        return response
 
     return wrapper
