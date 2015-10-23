@@ -1,10 +1,8 @@
 from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import RedirectView
 
 from django_cradmin import crinstance, crmenu
-from django_cradmin.decorators import has_access_to_cradmin_instance
 from django_cradmin.demo.no_role_demo.views import dashboard
 
 
@@ -13,13 +11,6 @@ class Menu(crmenu.Menu):
         self.add_menuitem(
             label=_('Dashboard'), url=self.appindex_url('dashboard'),
             active=self.request.cradmin_app.appname == 'dashboard')
-
-
-class InstanceFrontpageView(RedirectView):
-    permanent = False
-
-    def get_redirect_url(self, *args, **kwargs):
-        return self.request.cradmin_instance.rolefrontpage_url()
 
 
 class NoRoleCrAdminInstance(crinstance.BaseCrAdminInstance):
@@ -37,10 +28,6 @@ class NoRoleCrAdminInstance(crinstance.BaseCrAdminInstance):
         We give any user access to this instance, including unauthenticated users.
         """
         return True
-
-    @classmethod
-    def get_instance_frontpage_view(cls):
-        return has_access_to_cradmin_instance(InstanceFrontpageView.as_view())
 
     @classmethod
     def matches_urlpath(cls, urlpath):
