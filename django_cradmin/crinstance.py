@@ -71,12 +71,26 @@ class BaseCrAdminInstance(object):
     menuclass = None
 
     #: The class defining the role for this cradmin instance.
+    #: If you do not set this, the role system will not be used,
+    #: which means that you will not get a value in ``request.cradmin_role``.
     roleclass = None
 
     #: The name of the app that the user should be redirected to
     #: after selecting a role. Subclasses MUST eighter specify
     #: this or override :meth:`rolefrontpage_url`.
     rolefrontpage_appname = None
+
+    #: If this is ``True``, we do not prefix the urls of the
+    #: :obj:`~BaseCrAdminInstance.rolefrontpage_appname` with the
+    #: appname. This means that it is hosted on ``/baseurl/<roleid>/``
+    #: instead of ````/baseurl/<roleid>/<appname>/``.
+    #:
+    #: If you couple this with setting :obj:`~.BaseCrAdminInstance.roleclass`
+    #: to ``None``, the frontpage will be hosted directly on ``/baseurl/``.
+    #:
+    #: If you set this to ``True``, you have to be ensure that the urls of any views
+    #: within the rolefrontpage app does crash any urls in any of the other apps.
+    flatten_rolefrontpage_url = False
 
     #: Apps within the instance.
     #: Iterable of ``(appname, appclass)`` tuples where ``appname``
@@ -258,7 +272,10 @@ class BaseCrAdminInstance(object):
         See:
             :meth:`.get_instance_frontpage_url`.
         """
-        return reverse('{}-frontpage'.format(self.id))
+        if self.__class__.__no_role_and_flatten_rolefrontpage_url():
+            return self.rolefrontpage_url()
+        else:
+            return reverse('{}-frontpage'.format(self.id))
 
     def roleselectview_url(self):
         """
@@ -340,12 +357,22 @@ class BaseCrAdminInstance(object):
     @classmethod
     def get_app_url(cls, appname, appclass):
         appurlpatterns = appclass.build_urls(cls.id, appname)
+        flatten = bool(cls.rolefrontpage_appname) and cls.flatten_rolefrontpage_url
         if cls.roleclass:
-            return url(r'^(?P<roleid>{})/{}/'.format(cls.roleid_regex, appname),
-                       include(appurlpatterns))
+            if flatten:
+                return url(r'^(?P<roleid>{})/'.format(cls.roleid_regex),
+                           include(appurlpatterns))
+            else:
+                return url(r'^(?P<roleid>{})/{}/'.format(cls.roleid_regex, appname),
+                           include(appurlpatterns))
+
         else:
-            return url(r'^{}/'.format(appname),
-                       include(appurlpatterns))
+            if flatten:
+                return url(r'^'.format(appname),
+                           include(appurlpatterns))
+            else:
+                return url(r'^{}/'.format(appname),
+                           include(appurlpatterns))
 
     @classmethod
     def _get_app_urls(cls):
@@ -355,13 +382,18 @@ class BaseCrAdminInstance(object):
         return urls
 
     @classmethod
+    def __no_role_and_flatten_rolefrontpage_url(cls):
+        return cls.flatten_rolefrontpage_url and not cls.roleclass
+
+    @classmethod
     def urls(cls):
         """
         Get the url patterns for the cradmin instance.
         """
         cradmin_instance_registry.add(cls)
-        return patterns(
-            '',
-            url('^$', cls.get_instance_frontpage_view(),
-                name='{}-frontpage'.format(cls.id)),
-            *cls._get_app_urls())
+        urls = cls._get_app_urls()
+        if not cls.__no_role_and_flatten_rolefrontpage_url():
+            urls.append(url('^$', cls.get_instance_frontpage_view(),
+                            name='{}-frontpage'.format(cls.id)))
+
+        return patterns('', * urls)

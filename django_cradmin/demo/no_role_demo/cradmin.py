@@ -19,13 +19,14 @@ class InstanceFrontpageView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.request.cradmin_instance.appindex_url('dashboard')
+        return self.request.cradmin_instance.rolefrontpage_url()
 
 
 class NoRoleCrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'no_role_demo'
     menuclass = Menu
     rolefrontpage_appname = 'dashboard'
+    flatten_rolefrontpage_url = True
 
     apps = [
         ('dashboard', dashboard.App),
