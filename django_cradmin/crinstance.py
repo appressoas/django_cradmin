@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
 from builtins import object
-from django.contrib.auth.decorators import login_required
+
 from django.conf.urls import patterns, url, include
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html
-from django_cradmin.decorators import has_access_to_cradmin_instance
 
+from django_cradmin.decorators import has_access_to_cradmin_instance
 from .registry import cradmin_instance_registry
 from . import crapp
 from .views import roleselect
