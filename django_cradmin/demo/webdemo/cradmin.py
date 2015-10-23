@@ -5,23 +5,23 @@ from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
 
 from .models import Site
-from .crapps import dashboard
-from .crapps import pages
-from .crapps import inviteadmins
-from .crapps import sharable_link
+from .views import dashboard
+from .views import pages
+from .views import inviteadmins
+from .views import sharable_link
 
 
 class Menu(crmenu.Menu):
     def build_menu(self):
         self.add_headeritem(
             label=_('Select role'), url=self.cradmin_instance.roleselectview_url())
-        self.add(
+        self.add_menuitem(
             label=_('Dashboard'), url=self.appindex_url('dashboard'),
             active=self.request.cradmin_app.appname == 'dashboard')
-        self.add(
+        self.add_menuitem(
             label=_('Pages'), url=self.appindex_url('pages'),
             active=self.request.cradmin_app.appname == 'pages')
-        self.add(
+        self.add_menuitem(
             label=_('Images'), url=self.appindex_url('imagearchive'),
             active=self.request.cradmin_app.appname == 'imagearchive')
 
