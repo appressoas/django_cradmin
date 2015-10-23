@@ -39,14 +39,6 @@ class LoginNotRequiredCrAdminInstance(crinstance.BaseCrAdminInstance):
         """
         We give any user access to this instance.
         """
-        print()
-        print("*" * 70)
-        print()
-        print('HMMM')
-        print()
-        print("*" * 70)
-        print()
-
         return True
 
     def get_titletext_for_role(self, role):
