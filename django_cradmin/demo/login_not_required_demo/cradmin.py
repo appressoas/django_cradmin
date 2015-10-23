@@ -10,8 +10,6 @@ from django_cradmin.demo.webdemo.models import Site
 
 class Menu(crmenu.Menu):
     def build_menu(self):
-        self.add_headeritem(
-            label=_('Select role'), url=self.cradmin_instance.roleselectview_url())
         self.add_menuitem(
             label=_('Dashboard'), url=self.appindex_url('dashboard'),
             active=self.request.cradmin_app.appname == 'dashboard')

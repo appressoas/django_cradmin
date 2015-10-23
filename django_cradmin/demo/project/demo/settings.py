@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     # The advanced demo
     'django_cradmin.demo.webdemo',
     'django_cradmin.demo.login_not_required_demo',
+    'django_cradmin.demo.no_role_demo',
 
     # The demo based on the Django tutorial
     'django_cradmin.demo.polls_demo',

@@ -12,7 +12,7 @@ from . import crapp
 from .views import roleselect
 
 
-def reverse_cradmin_url(instanceid, appname, roleid,
+def reverse_cradmin_url(instanceid, appname, roleid=None,
                         viewname=crapp.INDEXVIEW_NAME,
                         args=None, kwargs=None):
     """
@@ -35,13 +35,13 @@ def reverse_cradmin_url(instanceid, appname, roleid,
             roleid=site.id,
             viewname='add')
     """
-    if args:
-        args = [roleid] + list(args)
-    else:
-        if not kwargs:
-            kwargs = {}
-        kwargs['roleid'] = roleid
-
+    if roleid:
+        if args:
+            args = [roleid] + list(args)
+        else:
+            if not kwargs:
+                kwargs = {}
+            kwargs['roleid'] = roleid
     urlname = u'{}-{}-{}'.format(instanceid, appname, viewname)
     return reverse(urlname, args=args, kwargs=kwargs)
 
@@ -220,12 +220,18 @@ class BaseCrAdminInstance(object):
         and that the ``roleid`` is automatically added to args or kwargs
         (depending on which one you use to pass arguments to the url).
         """
-        if roleid is None:
-            roleid = self.get_roleid(self.request.cradmin_role)
-        return reverse_cradmin_url(
-            instanceid=self.id,
-            appname=appname, viewname=viewname, roleid=roleid,
-            args=args, kwargs=kwargs)
+        kwargs = {
+            'instanceid': self.id,
+            'appname': appname,
+            'viewname': viewname,
+            'args': args,
+            'kwargs': kwargs
+        }
+        if self.roleclass:
+            if roleid is None:
+                roleid = self.get_roleid(self.request.cradmin_role)
+            kwargs['roleid'] = roleid
+        return reverse_cradmin_url(**kwargs)
 
     def appindex_url(self, appname, roleid=None):
         """
@@ -240,18 +246,25 @@ class BaseCrAdminInstance(object):
         Returns the URL that the user should be redirected to
         after selecting a role.
         """
-        if roleid is None:
-            roleid = self.get_roleid(self.request.cradmin_role)
+        if self.roleclass:
+            if roleid is None:
+                roleid = self.get_roleid(self.request.cradmin_role)
         return self.appindex_url(self.rolefrontpage_appname, roleid=roleid)
+
+    def get_instance_frontpage_url(self):
+        """
+        Return the URL of the instance frontpage view.
+
+        See:
+            :meth:`.get_instance_frontpage_url`.
+        """
+        return reverse('{}-frontpage'.format(self.id))
 
     def roleselectview_url(self):
         """
-        Return the URL of the roleselect view.
-
-        See:
-            :meth:`.get_roleselect_view`.
+        Deprecated, use :meth:`.get_instance_frontpage_url` instead.
         """
-        return reverse('{}-roleselect'.format(self.id))
+        return self.get_instance_frontpage_url()
 
     def get_common_http_headers(self):
         """
@@ -290,9 +303,17 @@ class BaseCrAdminInstance(object):
 
             The name of the URL for this view is ``<cradmin instance id>-roleselect``,
             where ``<cradmin instance id>`` is :obj:`.id`. You can reverse the URL of
-            this view with :meth:`.roleselectview_url`.
+            this view with :meth:`.get_instance_frontpage_url`.
         """
         return has_access_to_cradmin_instance(roleselect.RoleSelectView.as_view())
+
+    @classmethod
+    def get_instance_frontpage_view(cls):
+        if cls.roleclass:
+            return cls.get_roleselect_view()
+        else:
+            raise NotImplementedError('When you do not define a roleclass, you have '
+                                      'to override get_instance_frontpage_view()')
 
     @classmethod
     def matches_urlpath(cls, urlpath):
@@ -317,13 +338,20 @@ class BaseCrAdminInstance(object):
         return cls.apps
 
     @classmethod
+    def get_app_url(cls, appname, appclass):
+        appurlpatterns = appclass.build_urls(cls.id, appname)
+        if cls.roleclass:
+            return url(r'^(?P<roleid>{})/{}/'.format(cls.roleid_regex, appname),
+                       include(appurlpatterns))
+        else:
+            return url(r'^{}/'.format(appname),
+                       include(appurlpatterns))
+
+    @classmethod
     def _get_app_urls(cls):
         urls = []
         for appname, appclass in cls.get_apps():
-            appurlpatterns = appclass.build_urls(cls.id, appname)
-            urls.append(url(r'^(?P<roleid>{})/{}/'.format(
-                cls.roleid_regex, appname),
-                include(appurlpatterns)))
+            urls.append(cls.get_app_url(appname=appname, appclass=appclass))
         return urls
 
     @classmethod
@@ -334,6 +362,6 @@ class BaseCrAdminInstance(object):
         cradmin_instance_registry.add(cls)
         return patterns(
             '',
-            url('^$', cls.get_roleselect_view(),
-                name='{}-roleselect'.format(cls.id)),
+            url('^$', cls.get_instance_frontpage_view(),
+                name='{}-frontpage'.format(cls.id)),
             *cls._get_app_urls())

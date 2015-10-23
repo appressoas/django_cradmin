@@ -18,12 +18,17 @@ def has_access_to_cradmin_instance(view_function, redirect_field_name=REDIRECT_F
     Makes it impossible to access the view unless the
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.has_access` method
     returns ``True``.
+
+    Adds the following variables to the request:
+
+        - ``cradmin_instance``: The detected cradmin instance.
     """
 
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
         cradmin_instance = cradmin_instance_registry.get_current_instance(request)
         if cradmin_instance.has_access():
+            request.cradmin_instance = cradmin_instance
             return view_function(request, *args, **kwargs)
         else:
             # Redirect to login just like login_required()
@@ -45,28 +50,30 @@ def cradminview(view_function):
 
     Adds the following variables to the request:
 
-        - ``cradmin_instance``: The detected cradmin instance.
-        - ``cradmin_role``: The detected cradmin role.
+        - ``cradmin_role``: The detected cradmin role. This is ``None``
+            if the ``roleclass`` attribute of the cradmin instance is ``None``.
     """
 
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
-        cradmin_instance = cradmin_instance_registry.get_current_instance(request)
-        roleid = kwargs.pop('roleid')
-        role = cradmin_instance.get_role_from_roleid(roleid)
-        if not role:
-            return cradmin_instance.invalid_roleid_response(roleid)
-        try:
-            role_from_rolequeryset = cradmin_instance.get_role_from_rolequeryset(role)
-        except ObjectDoesNotExist:
-            response = cradmin_instance.missing_role_response(role)
+        if request.cradmin_instance.roleclass:
+            roleid = kwargs.pop('roleid')
+            role = request.cradmin_instance.get_role_from_roleid(roleid)
+            if not role:
+                return request.cradmin_instance.invalid_roleid_response(roleid)
+            try:
+                role_from_rolequeryset = request.cradmin_instance.get_role_from_rolequeryset(role)
+            except ObjectDoesNotExist:
+                response = request.cradmin_instance.missing_role_response(role)
+            else:
+                request.cradmin_role = role_from_rolequeryset
+                response = view_function(request, *args, **kwargs)
         else:
-            request.cradmin_instance = cradmin_instance
-            request.cradmin_role = role_from_rolequeryset
+            request.cradmin_role = None
             response = view_function(request, *args, **kwargs)
 
         if isinstance(response, HttpResponse):
-            http_headers = cradmin_instance.get_common_http_headers()
+            http_headers = request.cradmin_instance.get_common_http_headers()
             if http_headers:
                 for headerattribute, headervalue in http_headers.items():
                     response[headerattribute] = headervalue

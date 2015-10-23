@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
 from django_cradmin.demo.login_not_required_demo.cradmin import LoginNotRequiredCrAdminInstance
+from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
 from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
 from django_cradmin.demo.webdemo.cradmin import WebdemoCrAdminInstance
 
@@ -20,6 +21,7 @@ urlpatterns = patterns(
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^webdemoadmin/', include(WebdemoCrAdminInstance.urls())),
     url(r'^login_not_required_demo/', include(LoginNotRequiredCrAdminInstance.urls())),
+    url(r'^no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     url(r'^webdemo/', include('django_cradmin.demo.webdemo.urls')),
     url(r'^usermanagerdemo/', include(UsermanagerCrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
