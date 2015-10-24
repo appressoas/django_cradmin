@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-24 18:48+0200\n"
+"POT-Creation-Date: 2015-10-21 03:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,89 +106,84 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:39
-msgid "Edit"
+#: apps/cradmin_imagearchive/cradminviews.py:36
+msgid "Set a description"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:42 viewhelpers/delete.py:29
+#: apps/cradmin_imagearchive/cradminviews.py:38
+msgid "Edit description"
+msgstr ""
+
+#: apps/cradmin_imagearchive/cradminviews.py:44 viewhelpers/delete.py:29
 msgid "Delete"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:58
+#: apps/cradmin_imagearchive/cradminviews.py:60
 msgid "Use this"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:89 viewhelpers/crudbase.py:52
+#: apps/cradmin_imagearchive/cradminviews.py:91 viewhelpers/crudbase.py:52
 msgid "Preview"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:115
-#: apps/cradmin_imagearchive/cradminviews.py:143
-msgid "Add image"
-msgstr ""
-
-#: apps/cradmin_imagearchive/cradminviews.py:118
-msgid "Bulk upload"
-msgstr ""
-
-#: apps/cradmin_imagearchive/cradminviews.py:188
-msgid "Upload and select"
-msgstr ""
-
-#: apps/cradmin_imagearchive/cradminviews.py:189
-msgid "Upload image"
-msgstr ""
-
-#: apps/cradmin_imagearchive/cradminviews.py:190
-msgid "Upload and continue editing"
-msgstr ""
-
-#: apps/cradmin_imagearchive/cradminviews.py:206
-#: apps/cradmin_imagearchive/cradminviews.py:327
-#, python-format
-msgid "Uploaded %(what)s."
-msgstr ""
-
-#: apps/cradmin_imagearchive/cradminviews.py:253
+#: apps/cradmin_imagearchive/cradminviews.py:123
 msgid "Upload images by dragging and dropping them here"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:254
+#: apps/cradmin_imagearchive/cradminviews.py:124
+#: apps/cradmin_imagearchive/cradminviews.py:143
 msgid "Invalid filetype. You can only upload images."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:255
+#: apps/cradmin_imagearchive/cradminviews.py:125
 msgid "... or select images"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:256
+#: apps/cradmin_imagearchive/cradminviews.py:126
 msgid "Select images ..."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:258
+#: apps/cradmin_imagearchive/cradminviews.py:128
 msgid "Upload at least one image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:260
-msgid ""
-"Upload as many images as you like. You can edit the name and description of "
-"the images after they have been uploaded."
+#: apps/cradmin_imagearchive/cradminviews.py:130
+msgid "You must upload at least one image."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:263
-msgid "You must upload at least one file."
+#: apps/cradmin_imagearchive/cradminviews.py:141
+msgid "Upload an image by dragging and dropping it here"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:276
-msgid "Bulk upload archive images"
+#: apps/cradmin_imagearchive/cradminviews.py:142
+msgid "... or select an image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:281
-msgid "Add to the image archive"
+#: apps/cradmin_imagearchive/cradminviews.py:144
+#: templates/django_cradmin/filewidgets/imagewidget.django.html:41
+msgid "Select an image ..."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:282
-msgid "Uploading images"
+#: apps/cradmin_imagearchive/cradminviews.py:146
+msgid "Upload an image"
+msgstr ""
+
+#: apps/cradmin_imagearchive/cradminviews.py:148
+#: apps/cradmin_imagearchive/cradminviews.py:159
+msgid "You must upload an image."
+msgstr ""
+
+#: apps/cradmin_imagearchive/cradminviews.py:163
+msgid "You must upload exactly one image."
+msgstr ""
+
+#: apps/cradmin_imagearchive/cradminviews.py:201
+msgid "Add image"
+msgstr ""
+
+#: apps/cradmin_imagearchive/cradminviews.py:246
+#, python-format
+msgid "Uploaded %(what)s."
 msgstr ""
 
 #: apps/cradmin_imagearchive/models.py:42
@@ -211,21 +206,16 @@ msgstr ""
 msgid "name"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:80
-msgid ""
-"Give the image a name (optional). If you leave this blank, the name of the "
-"uploaded image file is used."
-msgstr ""
-
-#: apps/cradmin_imagearchive/models.py:87
+#: apps/cradmin_imagearchive/models.py:86
 msgid "description"
 msgstr ""
 
-#: apps/cradmin_imagearchive/models.py:89
+#: apps/cradmin_imagearchive/models.py:88
 msgid ""
 "An optional description of the image. Think if this as a description of the "
 "image for visually impaired users. This means that you should describe the "
-"information carried in the image (if any)."
+"information carried in the image (if any). A good description also helps "
+"search engines find the image."
 msgstr ""
 
 #: apps/cradmin_imagearchive/models.py:101
@@ -404,41 +394,79 @@ msgstr ""
 msgid "The passwords do not match"
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/models.py:225
+#: apps/cradmin_temporaryfileuploadstore/models.py:214
+#: apps/cradmin_temporaryfileuploadstore/widgets.py:78
+#, python-format
+msgid "Can not upload files larger than %(max_filesize)s."
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/models.py:246
 msgid "Unsupported filetype."
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:44
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:24
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:27
+msgid "close file upload window"
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:36
+msgid "We are uploading your file. Please do not close the browser window."
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:38
+msgid "We are uploading your files. Please do not close the browser window."
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:77
 msgid "Upload a file by dragging and dropping it here"
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:46
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:79
 msgid "Upload files by dragging and dropping them here"
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:56
-msgid "Invalid filetype"
-msgstr ""
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:78
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:99
 msgid "... or select a file"
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:80
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:101
 msgid "... or select files"
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:102
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:115
+msgid "Invalid filetype"
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:137
 msgid "Select a file ..."
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:104
+#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:139
 msgid "Select files ..."
 msgstr ""
 
-#: apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:124
+#: apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:128
 #, python-format
 msgid "%(filename)s: Unsupported filetype."
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/widgets.py:94
+msgid ""
+"Server timeout while uploading the file. This may be caused by a poor upload "
+"link and/or a too large file."
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/widgets.py:125
+#: templates/django_cradmin/include/messages.django.html:26
+msgid "Close"
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/widgets.py:126
+msgid "Remove"
+msgstr ""
+
+#: apps/cradmin_temporaryfileuploadstore/widgets.py:127
+msgid "Removing ..."
 msgstr ""
 
 #: crispylayouts.py:46
@@ -527,14 +555,6 @@ msgstr ""
 
 #: templates/django_cradmin/filewidgets/imagewidget.django.html:39
 msgid "Replace image ..."
-msgstr ""
-
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:41
-msgid "Select an image ..."
-msgstr ""
-
-#: templates/django_cradmin/include/messages.django.html:26
-msgid "Close"
 msgstr ""
 
 #: templates/django_cradmin/include/messages.django.html:33
@@ -668,20 +688,20 @@ msgstr ""
 msgid "Create %(what)s"
 msgstr ""
 
-#: viewhelpers/create.py:105
+#: viewhelpers/create.py:110
 #, python-format
 msgid "Created \"%(object)s\"."
 msgstr ""
 
-#: viewhelpers/create.py:131 viewhelpers/formbase.py:42
+#: viewhelpers/create.py:136 viewhelpers/formbase.py:42
 msgid "Save"
 msgstr ""
 
-#: viewhelpers/create.py:132 viewhelpers/formbase.py:45
+#: viewhelpers/create.py:137 viewhelpers/formbase.py:45
 msgid "Save and continue editing"
 msgstr ""
 
-#: viewhelpers/create.py:135 viewhelpers/update.py:39
+#: viewhelpers/create.py:140 viewhelpers/update.py:39
 #, python-format
 msgid "Saved \"%(object)s\"."
 msgstr ""

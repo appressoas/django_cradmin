@@ -3,6 +3,7 @@ import os
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.test import TestCase
+from model_mommy import mommy
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile, \
     html_input_accept_match, truncate_filename, make_unique_filename
 from django_cradmin.tests.helpers import create_user
@@ -31,6 +32,53 @@ class TestModels(TestCase):
         collection.clear_files()
         self.assertFalse(os.path.exists(physical_file_path))
         self.assertEquals(collection.files.count(), 0)
+
+    def test_singlemode_keeps_only_last_file(self):
+        collection = TemporaryFileCollection.objects.create(
+            user=create_user('testuser'),
+            singlemode=True)
+
+        first_added_temporary_file = TemporaryFile(filename='test1.txt', collection=collection)
+        first_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        first_added_temporary_file.clean()
+        first_added_temporary_file.save()
+
+        last_added_temporary_file = TemporaryFile(filename='test2.txt', collection=collection)
+        last_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        last_added_temporary_file.clean()
+        last_added_temporary_file.save()
+        self.assertEquals(collection.files.count(), 1)
+        self.assertEquals(collection.files.first(), last_added_temporary_file)
+
+    def test_singlemode_keeps_only_last_file_delete_physical_file(self):
+        collection = TemporaryFileCollection.objects.create(
+            user=create_user('testuser'),
+            singlemode=True)
+
+        first_added_temporary_file = TemporaryFile(filename='test1.txt', collection=collection)
+        first_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        first_added_temporary_file.clean()
+        first_added_temporary_file.save()
+        first_added_physical_file_path = first_added_temporary_file.file.path
+        self.assertTrue(os.path.exists(first_added_physical_file_path))
+
+        last_added_temporary_file = TemporaryFile(filename='test2.txt', collection=collection)
+        last_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        last_added_temporary_file.clean()
+        self.assertFalse(os.path.exists(first_added_physical_file_path))
+
+    def test_singlemode_keeps_only_last_file_do_not_delete_last(self):
+        collection = TemporaryFileCollection.objects.create(
+            user=create_user('testuser'),
+            singlemode=True)
+
+        last_added_temporary_file = TemporaryFile(filename='test2.txt', collection=collection)
+        last_added_temporary_file.file.save('test1.txt', ContentFile('Testdata'), save=False)
+        last_added_temporary_file.clean()
+        last_added_temporary_file.save()
+        last_added_temporary_file.clean()
+        self.assertEquals(collection.files.count(), 1)
+        self.assertEquals(collection.files.first(), last_added_temporary_file)
 
     def test_get_filename_set(self):
         collection = TemporaryFileCollection.objects.create(
@@ -144,3 +192,25 @@ class TestModels(TestCase):
         self.assertNotEquals(unique_filename, 't'*45)
         self.assertTrue(unique_filename.endswith('-tttttttt'))
         self.assertEquals(len(unique_filename), 45)
+
+    def test_no_max_filesize_bytes(self):
+        collection = mommy.make('cradmin_temporaryfileuploadstore.TemporaryFileCollection')
+        temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
+        temporaryfile.file.save('test.txt', ContentFile('Testdata'))
+        temporaryfile.clean()  # No ValidationError
+
+    def test_max_filesize_bytes_size_below_ok(self):
+        collection = mommy.make('cradmin_temporaryfileuploadstore.TemporaryFileCollection',
+                                max_filesize_bytes=100)
+        temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
+        temporaryfile.file.save('test.txt', ContentFile('Testdata'))
+        temporaryfile.clean()  # No ValidationError
+
+    def test_max_filesize_bytes_size_above_fails(self):
+        collection = mommy.make('cradmin_temporaryfileuploadstore.TemporaryFileCollection',
+                                max_filesize_bytes=1)
+        temporaryfile = TemporaryFile(filename='test.txt', collection=collection)
+        temporaryfile.file.save('test.txt', ContentFile('Testdata'))
+        with self.assertRaisesMessage(ValidationError,
+                                      'Can not upload files larger than 1B.'):
+            temporaryfile.clean()

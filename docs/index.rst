@@ -82,6 +82,7 @@ Utilities
 
     urlutils
     abstractrenderable
+    crhumanize
 
 
 *******

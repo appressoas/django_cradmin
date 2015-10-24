@@ -216,30 +216,71 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).factory('cradminBulkfileupload', function() {
-    var FileInfo, FileInfoList;
+  angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).provider('cradminBulkfileuploadCoordinator', function() {
+    var FileUploadCoordinator;
+    FileUploadCoordinator = (function() {
+      function FileUploadCoordinator($window) {
+        this.hiddenfieldnameToScopeMap = {};
+        this.window = $window;
+      }
+
+      FileUploadCoordinator.prototype.register = function(hiddenfieldname, scope) {
+        var existingScope;
+        existingScope = this.hiddenfieldnameToScopeMap[hiddenfieldname];
+        if (existingScope != null) {
+          console.error('Trying to register a fieldname that is already registered with ' + 'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname);
+          return;
+        }
+        return this.hiddenfieldnameToScopeMap[hiddenfieldname] = scope;
+      };
+
+      FileUploadCoordinator.prototype.unregister = function(hiddenfieldname) {
+        var scope;
+        scope = this.hiddenfieldnameToScopeMap[hiddenfieldname];
+        if (scope == null) {
+          console.error('Trying to unregister a field that is not registered with ' + 'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname);
+        }
+        return this.hiddenfieldnameToScopeMap[hiddenfieldname] = void 0;
+      };
+
+      FileUploadCoordinator.prototype._getScope = function(hiddenfieldname) {
+        var scope;
+        scope = this.hiddenfieldnameToScopeMap[hiddenfieldname];
+        if (scope == null) {
+          console.error('Trying to get a field that is not registered with ' + 'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname);
+        }
+        return scope;
+      };
+
+      FileUploadCoordinator.prototype.showOverlayForm = function(hiddenfieldname) {
+        var scope;
+        scope = this._getScope(hiddenfieldname);
+        return scope.formController.showOverlay();
+      };
+
+      return FileUploadCoordinator;
+
+    })();
+    this.$get = [
+      '$window', function($window) {
+        return new FileUploadCoordinator($window);
+      }
+    ];
+    return this;
+  }).factory('cradminBulkfileupload', function() {
+    var FileInfo;
     FileInfo = (function() {
       function FileInfo(options) {
         this.file = options.file;
+        this.autosubmit = options.autosubmit;
+        this.i18nStrings = options.i18nStrings;
         this.temporaryfileid = options.temporaryfileid;
-        this.name = this.file.name;
+        if (this.file != null) {
+          this.name = this.file.name;
+        } else {
+          this.name = options.name;
+        }
         this.isRemoving = false;
-      }
-
-      FileInfo.prototype.markAsIsRemoving = function() {
-        return this.isRemoving = true;
-      };
-
-      FileInfo.prototype.markAsIsNotRemoving = function() {
-        return this.isRemoving = false;
-      };
-
-      return FileInfo;
-
-    })();
-    FileInfoList = (function() {
-      function FileInfoList(options) {
-        var file, _i, _len, _ref;
         this.percent = options.percent;
         if (options.finished) {
           this.finished = true;
@@ -251,57 +292,49 @@
         } else {
           this.hasErrors = false;
         }
-        this.rawFiles = options.files;
-        this.files = [];
-        _ref = options.files;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          file = _ref[_i];
-          this.files.push(new FileInfo({
-            temporaryfileid: null,
-            name: file.name,
-            file: file
-          }));
-        }
         this.errors = options.errors;
       }
 
-      FileInfoList.prototype.updatePercent = function(percent) {
+      FileInfo.prototype.markAsIsRemoving = function() {
+        return this.isRemoving = true;
+      };
+
+      FileInfo.prototype.markAsIsNotRemoving = function() {
+        return this.isRemoving = false;
+      };
+
+      FileInfo.prototype.updatePercent = function(percent) {
         return this.percent = percent;
       };
 
-      FileInfoList.prototype.finish = function(temporaryfiles) {
-        var index, temporaryfile, _i, _len, _results;
+      FileInfo.prototype.finish = function(temporaryfile, singlemode) {
+        var index;
         this.finished = true;
         index = 0;
-        _results = [];
-        for (_i = 0, _len = temporaryfiles.length; _i < _len; _i++) {
-          temporaryfile = temporaryfiles[_i];
-          this.files[index].name = temporaryfile.filename;
-          this.files[index].temporaryfileid = temporaryfile.id;
-          _results.push(index += 1);
-        }
-        return _results;
+        this.file = void 0;
+        this.temporaryfileid = temporaryfile.id;
+        return this.name = temporaryfile.filename;
       };
 
-      FileInfoList.prototype.setErrors = function(errors) {
+      FileInfo.prototype.setErrors = function(errors) {
         this.hasErrors = true;
         return this.errors = errors;
       };
 
-      FileInfoList.prototype.indexOf = function(fileInfo) {
+      FileInfo.prototype.indexOf = function(fileInfo) {
         return this.files.indexOf(fileInfo);
       };
 
-      FileInfoList.prototype.remove = function(index) {
+      FileInfo.prototype.remove = function(index) {
         return this.files.splice(index, 1);
       };
 
-      return FileInfoList;
+      return FileInfo;
 
     })();
     return {
-      createFileInfoList: function(options) {
-        return new FileInfoList(options);
+      createFileInfo: function(options) {
+        return new FileInfo(options);
       }
     };
   }).directive('djangoCradminBulkfileuploadForm', [
@@ -355,10 +388,81 @@
           this.addSubmitButtonScope = function(submitButtonScope) {
             return $scope._submitButtonScopes.push(submitButtonScope);
           };
+          this.addSubmitButtonScope = function(submitButtonScope) {
+            return $scope._submitButtonScopes.push(submitButtonScope);
+          };
+          this.registerOverlayControls = function(overlayControlsScope) {
+            return $scope._overlayControlsScope = overlayControlsScope;
+          };
+          this.registerOverlayUploadingmessageScope = function(overlayUploadingmessageScope) {
+            return $scope._overlayUploadingmessageScope = overlayUploadingmessageScope;
+          };
+          this.submitForm = function() {
+            if ($scope.overlay) {
+              $scope._overlayUploadingmessageScope.onSubmitForm();
+            }
+            return $scope.element.submit();
+          };
+          $scope._showOverlay = function() {
+            if ($scope.overlay) {
+              return $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show');
+            } else {
+              throw new Error('Can only show the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
+            }
+          };
+          this.showOverlay = function() {
+            return $scope._showOverlay();
+          };
+          this.hideOverlay = function() {
+            if ($scope.overlay) {
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-show');
+            } else {
+              throw new Error('Can only hide the overlay if the form has the ' + 'django-cradmin-bulkfileupload-form-overlay="true" attribute.');
+            }
+          };
         },
-        link: function(scope, element, attr, uploadController) {
+        link: function($scope, element, attr, uploadController) {
+          var body;
+          $scope.overlay = attr.djangoCradminBulkfileuploadFormOverlay === 'true';
+          $scope.preventWindowDragdrop = attr.djangoCradminBulkfileuploadFormPreventWindowDragdrop !== 'false';
+          $scope.openOverlayOnWindowDragdrop = attr.djangoCradminBulkfileuploadFormOpenOverlayOnWindowDragdrop === 'true';
+          $scope.element = element;
+          if ($scope.overlay) {
+            element.addClass('django-cradmin-bulkfileupload-form-overlay');
+            body = angular.element('body');
+            $scope.wrapperElement = angular.element('<div></div>');
+            $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper');
+            $scope.wrapperElement.appendTo(body);
+            element.appendTo($scope.wrapperElement);
+            $scope._overlayControlsScope.element.appendTo($scope.wrapperElement);
+            if (element.find('.has-error').length > 0) {
+              $scope._showOverlay();
+            }
+            if ($scope.preventWindowDragdrop) {
+              window.addEventListener("dragover", function(e) {
+                return e.preventDefault();
+              }, false);
+              window.addEventListener("drop", function(e) {
+                return e.preventDefault();
+              }, false);
+            }
+            window.addEventListener("dragover", function(e) {
+              e.preventDefault();
+              $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+              if ($scope.openOverlayOnWindowDragdrop) {
+                return $scope._showOverlay();
+              }
+            }, false);
+            window.addEventListener("drop", function(e) {
+              e.preventDefault();
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+            }, false);
+            angular.element('body').on('mouseleave', function(e) {
+              return $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover');
+            });
+          }
           element.on('submit', function(evt) {
-            if (scope._inProgressCounter !== 0) {
+            if ($scope._inProgressCounter !== 0) {
               return evt.preventDefault();
             }
           });
@@ -389,12 +493,13 @@
       };
     }
   ]).directive('djangoCradminBulkfileupload', [
-    '$upload', '$cookies', 'cradminDetectize', function($upload, $cookies, cradminDetectize) {
+    '$upload', '$cookies', 'cradminDetectize', 'cradminBulkfileuploadCoordinator', function($upload, $cookies, cradminDetectize, cradminBulkfileuploadCoordinator) {
       return {
         require: '^djangoCradminBulkfileuploadForm',
         restrict: 'AE',
         scope: true,
         controller: function($scope) {
+          var validateSelectedFiles;
           $scope.collectionid = null;
           $scope.cradminLastFilesSelectedByUser = [];
           $scope.fileUploadQueue = [];
@@ -405,8 +510,9 @@
           this.setInProgressOrFinishedScope = function(inProgressOrFinishedScope) {
             return $scope.inProgressOrFinishedScope = inProgressOrFinishedScope;
           };
-          this.setFileUploadFieldScope = function(fileUploadFieldScope) {
-            return $scope.fileUploadFieldScope = fileUploadFieldScope;
+          this.setFileUploadFieldScope = function(fileUploadFieldScope, fieldname) {
+            $scope.fileUploadFieldScope = fileUploadFieldScope;
+            return cradminBulkfileuploadCoordinator.register(fileUploadFieldScope.fieldname, $scope);
           };
           this.setSimpleWidgetScope = function(simpleWidgetScope) {
             $scope.simpleWidgetScope = simpleWidgetScope;
@@ -420,41 +526,91 @@
             return $scope.rejectedFilesScope = rejectedFilesScope;
           };
           this.getUploadUrl = function() {
-            return $scope.uploadUrl;
+            return $scope.uploadapiurl;
           };
           this.getCollectionId = function() {
             return $scope.collectionid;
           };
-          $scope._addFileInfoList = function(fileInfoList) {
-            return $scope.inProgressOrFinishedScope.addFileInfoList(fileInfoList);
+          this.onAdvancedWidgetDragLeave = function() {
+            return $scope.formController.onAdvancedWidgetDragLeave();
+          };
+          $scope._hideUploadWidget = function() {
+            $scope.simpleWidgetScope.hide();
+            return $scope.advancedWidgetScope.hide();
           };
           $scope._showAppropriateWidget = function() {
+            var deviceType;
             if ($scope.advancedWidgetScope && $scope.simpleWidgetScope) {
-              if (cradminDetectize.device.type === 'desktop') {
-                return $scope.simpleWidgetScope.hide();
+              deviceType = cradminDetectize.device.type;
+              if (deviceType === 'desktop') {
+                $scope.simpleWidgetScope.hide();
+                return $scope.advancedWidgetScope.show();
               } else {
-                return $scope.advancedWidgetScope.hide();
+                $scope.advancedWidgetScope.hide();
+                return $scope.simpleWidgetScope.show();
               }
             }
           };
           $scope.filesDropped = function(files, evt, rejectedFiles) {
+            /*
+            Called when a file is draggen&dropped into the widget.
+            */
+
             if (rejectedFiles.length > 0) {
-              return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles);
+              return $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles, 'invalid_filetype', $scope.i18nStrings);
             }
           };
+          validateSelectedFiles = function() {
+            var file, filesToUpload, _i, _len, _ref;
+            filesToUpload = [];
+            _ref = $scope.cradminLastFilesSelectedByUser;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              file = _ref[_i];
+              if ($scope.apiparameters.max_filesize_bytes) {
+                if (file.size > $scope.apiparameters.max_filesize_bytes) {
+                  $scope.rejectedFilesScope.addRejectedFile(file, 'max_filesize_bytes_exceeded', $scope.i18nStrings);
+                  continue;
+                }
+              }
+              filesToUpload.push(file);
+            }
+            if ($scope.rejectedFilesScope.hasRejectedFiles() && $scope.autosubmit) {
+              return [];
+            }
+            return filesToUpload;
+          };
           $scope.$watch('cradminLastFilesSelectedByUser', function() {
+            var file, filesToUpload, _i, _len;
             if ($scope.cradminLastFilesSelectedByUser.length > 0) {
-              $scope._addFilesToQueue($scope.cradminLastFilesSelectedByUser.slice());
+              $scope.rejectedFilesScope.clearRejectedFiles();
+              filesToUpload = validateSelectedFiles();
+              if (filesToUpload.length > 0) {
+                if ($scope.autosubmit) {
+                  $scope._hideUploadWidget();
+                }
+                for (_i = 0, _len = filesToUpload.length; _i < _len; _i++) {
+                  file = filesToUpload[_i];
+                  $scope._addFileToQueue(file);
+                  if ($scope.apiparameters.singlemode) {
+                    break;
+                  }
+                }
+              }
               return $scope.cradminLastFilesSelectedByUser = [];
             }
           });
-          $scope._addFilesToQueue = function(files) {
-            var progressInfo;
-            progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
+          $scope._addFileToQueue = function(file) {
+            var progressFileInfo;
+            if ($scope.apiparameters.singlemode) {
+              $scope.inProgressOrFinishedScope.clear();
+            }
+            progressFileInfo = $scope.inProgressOrFinishedScope.addFileInfo({
               percent: 0,
-              files: files
+              file: file,
+              autosubmit: $scope.autosubmit,
+              i18nStrings: $scope.i18nStrings
             });
-            $scope.fileUploadQueue.push(progressInfo);
+            $scope.fileUploadQueue.push(progressFileInfo);
             if ($scope.firstUploadInProgress) {
               return;
             }
@@ -463,7 +619,7 @@
             }
             return $scope._processFileUploadQueue();
           };
-          $scope._onFileUploadComplete = function() {
+          $scope._onFileUploadComplete = function(successful) {
             /*
             Called both on file upload success and error
             */
@@ -472,34 +628,53 @@
             $scope.formController.removeInProgress();
             if ($scope.fileUploadQueue.length > 0) {
               return $scope._processFileUploadQueue();
+            } else if ($scope.autosubmit) {
+              if (successful) {
+                return $scope.formController.submitForm();
+              } else {
+                return $scope._showAppropriateWidget();
+              }
             }
           };
           $scope._processFileUploadQueue = function() {
-            var apidata, progressInfo;
-            progressInfo = $scope.fileUploadQueue.shift();
+            var apidata, progressFileInfo;
+            progressFileInfo = $scope.fileUploadQueue.shift();
             apidata = angular.extend({}, $scope.apiparameters, {
               collectionid: $scope.collectionid
             });
             $scope.formController.addInProgress();
             return $scope.upload = $upload.upload({
-              url: $scope.uploadUrl,
+              url: $scope.uploadapiurl,
               method: 'POST',
               data: apidata,
-              file: progressInfo.rawFiles,
+              file: progressFileInfo.file,
               fileFormDataName: 'file',
               headers: {
                 'X-CSRFToken': $cookies.get('csrftoken'),
                 'Content-Type': 'multipart/form-data'
               }
             }).progress(function(evt) {
-              return progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
+              return progressFileInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
-              progressInfo.finish(data.temporaryfiles);
+              progressFileInfo.finish(data.temporaryfiles[0], $scope.apiparameters.singlemode);
               $scope._setCollectionId(data.collectionid);
-              return $scope._onFileUploadComplete();
-            }).error(function(data) {
-              progressInfo.setErrors(data);
-              return $scope._onFileUploadComplete();
+              return $scope._onFileUploadComplete(true);
+            }).error(function(data, status) {
+              console.log(data);
+              if (status === 503) {
+                progressFileInfo.setErrors({
+                  file: [
+                    {
+                      message: $scope.errormessage503
+                    }
+                  ]
+                });
+              } else {
+                progressFileInfo.setErrors(data);
+              }
+              $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo);
+              $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo);
+              return $scope._onFileUploadComplete(false);
             });
           };
           $scope._setCollectionId = function(collectionid) {
@@ -507,22 +682,29 @@
             return $scope.fileUploadFieldScope.setCollectionId(collectionid);
           };
         },
-        link: function(scope, element, attr, formController) {
-          scope.uploadUrl = attr.djangoCradminBulkfileupload;
-          if (attr.djangoCradminBulkfileuploadApiparameters != null) {
-            scope.apiparameters = scope.$parent.$eval(attr.djangoCradminBulkfileuploadApiparameters);
-            if (!angular.isObject(scope.apiparameters)) {
-              throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.');
+        link: function($scope, element, attributes, formController) {
+          var options;
+          options = angular.fromJson(attributes.djangoCradminBulkfileupload);
+          $scope.uploadapiurl = options.uploadapiurl;
+          $scope.apiparameters = options.apiparameters;
+          $scope.errormessage503 = options.errormessage503;
+          $scope.autosubmit = options.autosubmit;
+          $scope.i18nStrings = {
+            close_errormessage_label: options.close_errormessage_label,
+            remove_file_label: options.remove_file_label,
+            removing_file_message: options.removing_file_message
+          };
+          $scope.formController = formController;
+          $scope.$on('$destroy', function() {
+            if ($scope.fileUploadFieldScope != null) {
+              return cradminBulkfileuploadCoordinator.unregister($scope.fileUploadFieldScope.fieldname);
             }
-          } else {
-            scope.apiparameters = {};
-          }
-          scope.formController = formController;
+          });
         }
       };
     }
   ]).directive('djangoCradminBulkfileuploadRejectedFiles', [
-    function() {
+    'cradminBulkfileupload', function(cradminBulkfileupload) {
       /*
       This directive is used to show files that are rejected on drop because
       of wrong mimetype. Each time a user drops one or more file with invalid
@@ -535,16 +717,46 @@
         templateUrl: 'bulkfileupload/rejectedfiles.tpl.html',
         transclude: true,
         scope: {
-          rejectedFileErrorMessage: '@djangoCradminBulkfileuploadRejectedFiles'
+          errorMessageMap: '=djangoCradminBulkfileuploadRejectedFiles'
         },
         controller: function($scope) {
           $scope.rejectedFiles = [];
-          $scope.setRejectedFiles = function(rejectedFiles) {
-            return $scope.rejectedFiles = rejectedFiles;
+          $scope.clearRejectedFiles = function() {
+            return $scope.rejectedFiles = [];
           };
-          return $scope.closeMessage = function(rejectedFile) {
+          $scope.addRejectedFileInfo = function(fileInfo, errormessagecode) {
+            return $scope.rejectedFiles.push(fileInfo);
+          };
+          $scope.addRejectedFile = function(file, errormessagecode, i18nStrings) {
+            return $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
+              file: file,
+              hasErrors: true,
+              i18nStrings: i18nStrings,
+              errors: {
+                files: [
+                  {
+                    message: $scope.errorMessageMap[errormessagecode]
+                  }
+                ]
+              }
+            }));
+          };
+          $scope.hasRejectedFiles = function() {
+            return $scope.rejectedFiles.length > 0;
+          };
+          $scope.setRejectedFiles = function(rejectedFiles, errormessagecode, i18nStrings) {
+            var file, _i, _len, _results;
+            $scope.clearRejectedFiles();
+            _results = [];
+            for (_i = 0, _len = rejectedFiles.length; _i < _len; _i++) {
+              file = rejectedFiles[_i];
+              _results.push($scope.addRejectedFile(file, errormessagecode, i18nStrings));
+            }
+            return _results;
+          };
+          return $scope.closeMessage = function(fileInfo) {
             var index;
-            index = $scope.rejectedFiles.indexOf(rejectedFile);
+            index = $scope.rejectedFiles.indexOf(fileInfo);
             if (index !== -1) {
               return $scope.rejectedFiles.splice(index, 1);
             }
@@ -563,28 +775,20 @@
         templateUrl: 'bulkfileupload/progress.tpl.html',
         scope: {},
         controller: function($scope) {
-          $scope.fileInfoLists = [];
-          $scope._findFileInfo = function(fileInfo) {
-            var fileInfoIndex, fileInfoList, _i, _len, _ref;
+          $scope.fileInfoArray = [];
+          $scope.removeFileInfo = function(fileInfo) {
+            var fileInfoIndex;
+            fileInfoIndex = $scope.fileInfoArray.indexOf(fileInfo);
+            if (fileInfoIndex !== -1) {
+              return $scope.fileInfoArray.splice(fileInfoIndex, 1);
+            } else {
+              throw new Error("Could not find requested fileInfo with temporaryfileid=" + fileInfo.temporaryfileid + ".");
+            }
+          };
+          this.removeFile = function(fileInfo) {
             if (fileInfo.temporaryfileid == null) {
               throw new Error("Can not remove files without a temporaryfileid");
             }
-            _ref = $scope.fileInfoLists;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              fileInfoList = _ref[_i];
-              fileInfoIndex = fileInfoList.indexOf(fileInfo);
-              if (fileInfoIndex !== -1) {
-                return {
-                  fileInfoList: fileInfoList,
-                  index: fileInfoIndex
-                };
-              }
-            }
-            throw new Error("Could not find requested fileInfo with temporaryfileid=" + fileInfo.temporaryfileid + ".");
-          };
-          this.removeFile = function(fileInfo) {
-            var fileInfoLocation;
-            fileInfoLocation = $scope._findFileInfo(fileInfo);
             fileInfo.markAsIsRemoving();
             $scope.$apply();
             return $http({
@@ -598,7 +802,7 @@
                 temporaryfileid: fileInfo.temporaryfileid
               }
             }).success(function(data, status, headers, config) {
-              return fileInfoLocation.fileInfoList.remove(fileInfoLocation.index);
+              return $scope.removeFileInfo(fileInfo);
             }).error(function(data, status, headers, config) {
               if (typeof console !== "undefined" && console !== null) {
                 if (typeof console.error === "function") {
@@ -609,12 +813,27 @@
               return fileInfo.markAsIsNotRemoving();
             });
           };
-          $scope.addFileInfoList = function(options) {
-            var fileInfoList;
-            fileInfoList = cradminBulkfileupload.createFileInfoList(options);
-            $scope.fileInfoLists.push(fileInfoList);
-            console.log($scope.fileInfoLists);
-            return fileInfoList;
+          $scope.addFileInfo = function(options) {
+            var fileInfo;
+            fileInfo = cradminBulkfileupload.createFileInfo(options);
+            $scope.fileInfoArray.push(fileInfo);
+            return fileInfo;
+          };
+          $scope.clear = function(options) {
+            return $scope.fileInfoArray = [];
+          };
+          $scope.clearErrors = function() {
+            var fileInfo, index, _i, _ref, _results;
+            _results = [];
+            for (index = _i = _ref = $scope.fileInfoArray.length - 1; _i >= 0; index = _i += -1) {
+              fileInfo = $scope.fileInfoArray[index];
+              if (fileInfo.hasErrors) {
+                _results.push($scope.fileInfoArray.splice(index, 1));
+              } else {
+                _results.push(void 0);
+              }
+            }
+            return _results;
           };
         },
         link: function(scope, element, attr, uploadController) {
@@ -623,14 +842,20 @@
         }
       };
     }
-  ]).directive('djangoCradminBulkFileInfoList', [
+  ]).directive('djangoCradminBulkFileInfo', [
     function() {
+      /**
+      Renders a single file info with progress info, errors, etc.
+      
+      Used both the djangoCradminBulkfileuploadProgress directive.
+      */
+
       return {
         restrict: 'AE',
         scope: {
-          fileInfoList: '=djangoCradminBulkFileInfoList'
+          fileInfo: '=djangoCradminBulkFileInfo'
         },
-        templateUrl: 'bulkfileupload/fileinfolist.tpl.html',
+        templateUrl: 'bulkfileupload/fileinfo.tpl.html',
         transclude: true,
         controller: function($scope) {
           this.close = function() {
@@ -646,12 +871,12 @@
     function() {
       return {
         restrict: 'A',
-        require: '^djangoCradminBulkFileInfoList',
+        require: '^djangoCradminBulkFileInfo',
         scope: {},
-        link: function(scope, element, attr, fileInfoListController) {
+        link: function(scope, element, attr, fileInfoController) {
           element.on('click', function(evt) {
             evt.preventDefault();
-            return fileInfoListController.close();
+            return fileInfoController.close();
           });
         }
       };
@@ -685,12 +910,13 @@
         },
         link: function(scope, element, attr, uploadController) {
           scope.element = element;
+          scope.fieldname = attr.name;
           uploadController.setFileUploadFieldScope(scope);
         }
       };
     }
   ]).directive('djangoCradminBulkfileuploadAdvancedWidget', [
-    function() {
+    '$timeout', function($timeout) {
       return {
         require: '^djangoCradminBulkfileupload',
         restrict: 'AE',
@@ -698,6 +924,9 @@
         link: function(scope, element, attr, uploadController) {
           scope.hide = function() {
             return element.css('display', 'none');
+          };
+          scope.show = function() {
+            return element.css('display', 'block');
           };
           uploadController.setAdvancedWidgetScope(scope);
         }
@@ -713,7 +942,68 @@
           scope.hide = function() {
             return element.css('display', 'none');
           };
+          scope.show = function() {
+            return element.css('display', 'block');
+          };
           uploadController.setSimpleWidgetScope(scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadShowOverlay', [
+    'cradminBulkfileuploadCoordinator', function(cradminBulkfileuploadCoordinator) {
+      return {
+        restrict: 'AE',
+        scope: {
+          hiddenfieldname: '@djangoCradminBulkfileuploadShowOverlay'
+        },
+        link: function($scope, element, attr) {
+          element.on('click', function() {
+            return cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname);
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadHideOverlay', [
+    function() {
+      return {
+        restrict: 'AE',
+        require: '^djangoCradminBulkfileuploadForm',
+        scope: {
+          hiddenfieldname: '@djangoCradminBulkfileuploadHideOverlay'
+        },
+        link: function($scope, element, attr, uploadFormController) {
+          element.on('click', function() {
+            return uploadFormController.hideOverlay();
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadOverlayControls', [
+    function() {
+      return {
+        restrict: 'AE',
+        require: '^djangoCradminBulkfileuploadForm',
+        scope: {},
+        link: function($scope, element, attr, uploadFormController) {
+          $scope.element = element;
+          uploadFormController.registerOverlayControls($scope);
+        }
+      };
+    }
+  ]).directive('djangoCradminBulkfileuploadOverlayUploadingmessage', [
+    function() {
+      return {
+        restrict: 'AE',
+        require: '^djangoCradminBulkfileuploadForm',
+        scope: {},
+        controller: function($scope) {
+          $scope.onSubmitForm = function() {
+            return $scope.element.addClass('django-cradmin-bulkfileupload-overlay-uploadingmessage-visible');
+          };
+        },
+        link: function($scope, element, attr, uploadFormController) {
+          $scope.element = element;
+          uploadFormController.registerOverlayUploadingmessageScope($scope);
         }
       };
     }
@@ -2733,17 +3023,8 @@
             }
             return startScrollHeightInterval();
           };
-          $scope.setIframeSize = function() {
-            var iframeBodyHeight, iframeDocument;
-            iframeDocument = getIframeDocument();
-            if ((iframeDocument != null ? iframeDocument.body : void 0) != null) {
-              iframeBodyHeight = iframeDocument.body.offsetHeight;
-              return $scope.element.height(iframeBodyHeight);
-            }
-          };
-          $scope.resetIframeSize = function() {
-            return $scope.element.height('40px');
-          };
+          $scope.setIframeSize = function() {};
+          $scope.resetIframeSize = function() {};
         },
         link: function(scope, element, attrs, wrapperCtrl) {
           scope.element = element;
@@ -3847,59 +4128,43 @@
 
 }).call(this);
 
-angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfolist.tpl.html', 'bulkfileupload/progress.tpl.html', 'bulkfileupload/rejectedfiles.tpl.html', 'forms/dateselector.tpl.html', 'pagepreview/navbar.tpl.html']);
+angular.module('djangoCradmin.templates', ['acemarkdown/acemarkdown.tpl.html', 'bulkfileupload/fileinfo.tpl.html', 'bulkfileupload/progress.tpl.html', 'bulkfileupload/rejectedfiles.tpl.html', 'forms/dateselector.tpl.html', 'pagepreview/navbar.tpl.html']);
 
 angular.module("acemarkdown/acemarkdown.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("acemarkdown/acemarkdown.tpl.html",
     "<div ng-transclude></div>");
 }]);
 
-angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("bulkfileupload/fileinfolist.tpl.html",
-    "<p ng-repeat=\"fileInfo in fileInfoList.files\"\n" +
-    "        class=\"django-cradmin-bulkfileupload-progress-item\"\n" +
+angular.module("bulkfileupload/fileinfo.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("bulkfileupload/fileinfo.tpl.html",
+    "<p class=\"django-cradmin-bulkfileupload-progress-item\"\n" +
     "        ng-class=\"{\n" +
-    "            'django-cradmin-bulkfileupload-progress-item-finished': fileInfoList.finished,\n" +
-    "            'django-cradmin-bulkfileupload-progress-item-error django-cradmin-bulkfileupload-errorparagraph': fileInfoList.hasErrors\n" +
+    "            'django-cradmin-bulkfileupload-progress-item-finished': fileInfo.finished,\n" +
+    "            'django-cradmin-bulkfileupload-progress-item-error django-cradmin-bulkfileupload-errorparagraph': fileInfo.hasErrors\n" +
     "        }\">\n" +
-    "    <span ng-if=\"fileInfoList.hasErrors\">\n" +
-    "        <button django-cradmin-bulkfileupload-error-close-button\n" +
-    "                type=\"button\"\n" +
-    "                class=\"btn btn-link django-cradmin-bulkfileupload-error-closebutton\">\n" +
+    "    <button django-cradmin-bulkfileupload-remove-file-button=\"fileInfo\"\n" +
+    "            ng-if=\"fileInfo.finished\"\n" +
+    "            type=\"button\"\n" +
+    "            class=\"btn btn-link django-cradmin-bulkfileupload-remove-file-button\">\n" +
+    "        <span ng-if=\"!fileInfo.isRemoving &amp;&amp; !fileInfo.autosubmit\"\n" +
+    "              class=\"django-cradmin-bulkfileupload-remove-file-button-isnotremoving\">\n" +
     "            <span class=\"fa fa-times\"></span>\n" +
-    "            <span class=\"sr-only\">Close</span>\n" +
-    "        </button>\n" +
-    "        <span ng-repeat=\"(errorfield,errors) in fileInfoList.errors\">\n" +
-    "            <span ng-repeat=\"error in errors\" class=\"django-cradmin-bulkfileupload-error\">\n" +
-    "                {{ error.message }}\n" +
-    "            </span>\n" +
+    "            <span class=\"sr-only\">{{fileInfo.i18nStrings.remove_file_label}}</span>\n" +
     "        </span>\n" +
-    "    </span>\n" +
-    "    <span ng-if=\"!fileInfoList.hasErrors\">\n" +
-    "        <button django-cradmin-bulkfileupload-remove-file-button=\"fileInfo\"\n" +
-    "                ng-if=\"fileInfoList.finished\"\n" +
-    "                type=\"button\"\n" +
-    "                class=\"btn btn-link django-cradmin-bulkfileupload-remove-file-button\">\n" +
-    "            <span ng-if=\"!fileInfo.isRemoving\"\n" +
-    "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isnotremoving\">\n" +
-    "                <span class=\"fa fa-times\"></span>\n" +
-    "                <span class=\"sr-only\">Remove</span>\n" +
-    "            </span>\n" +
-    "            <span ng-if=\"fileInfo.isRemoving\"\n" +
-    "                  class=\"django-cradmin-bulkfileupload-remove-file-button-isremoving\">\n" +
-    "                <span class=\"fa fa-spinner fa-spin\"></span>\n" +
-    "                <span class=\"sr-only\">Removing ...</span>\n" +
-    "            </span>\n" +
-    "        </button>\n" +
+    "        <span ng-if=\"fileInfo.isRemoving\"\n" +
+    "              class=\"django-cradmin-bulkfileupload-remove-file-button-isremoving\">\n" +
+    "            <span class=\"fa fa-spinner fa-spin\"></span>\n" +
+    "            <span class=\"sr-only\">{{fileInfo.i18nStrings.removing_file_message}}</span>\n" +
+    "        </span>\n" +
+    "    </button>\n" +
     "\n" +
-    "        <span class=\"django-cradmin-progressbar\">\n" +
-    "            <span class=\"django-cradmin-progressbar-progress\" ng-style=\"{'width': fileInfoList.percent+'%'}\">&nbsp;</span>\n" +
-    "            <span class=\"django-cradmin-progresspercent\">\n" +
-    "                <span class=\"django-cradmin-progresspercent-number\">{{ fileInfoList.percent }}</span>%\n" +
-    "            </span>\n" +
+    "    <span class=\"django-cradmin-progressbar\">\n" +
+    "        <span class=\"django-cradmin-progressbar-progress\" ng-style=\"{'width': fileInfo.percent+'%'}\">&nbsp;</span>\n" +
+    "        <span class=\"django-cradmin-progresspercent\">\n" +
+    "            <span class=\"django-cradmin-progresspercent-number\">{{ fileInfo.percent }}</span>%\n" +
     "        </span>\n" +
-    "        <span class=\"django-cradmin-filename\">{{fileInfo.name}}</span>\n" +
     "    </span>\n" +
+    "    <span class=\"django-cradmin-filename\">{{fileInfo.name}}</span>\n" +
     "</p>\n" +
     "");
 }]);
@@ -3907,9 +4172,9 @@ angular.module("bulkfileupload/fileinfolist.tpl.html", []).run(["$templateCache"
 angular.module("bulkfileupload/progress.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/progress.tpl.html",
     "<div class=\"django-cradmin-bulkfileupload-progress\">\n" +
-    "    <div ng-repeat=\"fileInfoList in fileInfoLists\">\n" +
-    "        <div django-cradmin-bulk-file-info-list=\"fileInfoList\"\n" +
-    "             class=\"django-cradmin-bulkfileupload-progress-fileinfolist\"></div>\n" +
+    "    <div ng-repeat=\"fileInfo in fileInfoArray\">\n" +
+    "        <div django-cradmin-bulk-file-info=\"fileInfo\"\n" +
+    "             class=\"django-cradmin-bulkfileupload-progress-file\"></div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "");
@@ -3918,16 +4183,22 @@ angular.module("bulkfileupload/progress.tpl.html", []).run(["$templateCache", fu
 angular.module("bulkfileupload/rejectedfiles.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("bulkfileupload/rejectedfiles.tpl.html",
     "<div class=\"django-cradmin-bulkfileupload-rejectedfiles\">\n" +
-    "    <p ng-repeat=\"rejectedFile in rejectedFiles\"\n" +
+    "    <p ng-repeat=\"fileInfo in rejectedFiles\"\n" +
     "            class=\"django-cradmin-bulkfileupload-rejectedfile django-cradmin-bulkfileupload-errorparagraph\">\n" +
-    "        <button ng-click=\"closeMessage(rejectedFile)\"\n" +
+    "        <button ng-click=\"closeMessage(fileInfo)\"\n" +
     "                type=\"button\"\n" +
     "                class=\"btn btn-link django-cradmin-bulkfileupload-error-closebutton\">\n" +
     "            <span class=\"fa fa-times\"></span>\n" +
-    "            <span class=\"sr-only\">Close</span>\n" +
+    "            <span class=\"sr-only\">{{fileInfo.i18nStrings.close_errormessage_label}}</span>\n" +
     "        </button>\n" +
-    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ rejectedFile.name }}:</span>\n" +
-    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-errormessage\">{{ rejectedFileErrorMessage }}</span>\n" +
+    "\n" +
+    "        <span class=\"django-cradmin-bulkfileupload-rejectedfile-filename\">{{ fileInfo.name }}:</span>\n" +
+    "        <span ng-repeat=\"(errorfield,errors) in fileInfo.errors\">\n" +
+    "            <span ng-repeat=\"error in errors\"\n" +
+    "                  class=\"django-cradmin-bulkfileupload-error\">\n" +
+    "                {{ error.message }}\n" +
+    "            </span>\n" +
+    "        </span>\n" +
     "    </p>\n" +
     "</div>\n" +
     "");

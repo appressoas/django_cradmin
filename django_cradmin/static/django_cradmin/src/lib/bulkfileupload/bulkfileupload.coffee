@@ -4,13 +4,76 @@ angular.module('djangoCradmin.bulkfileupload', [
 ])
 
 
+.provider 'cradminBulkfileuploadCoordinator', ->
+  class FileUploadCoordinator
+    constructor: ($window) ->
+      @hiddenfieldnameToScopeMap = {}
+      @window = $window
+
+    register: (hiddenfieldname, scope) ->
+      existingScope = @hiddenfieldnameToScopeMap[hiddenfieldname]
+      if existingScope?
+        console.error(
+          'Trying to register a fieldname that is already registered with ' +
+          'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname)
+        return
+      @hiddenfieldnameToScopeMap[hiddenfieldname] = scope
+
+    unregister: (hiddenfieldname) ->
+      scope = @hiddenfieldnameToScopeMap[hiddenfieldname]
+      if not scope?
+        console.error(
+          'Trying to unregister a field that is not registered with ' +
+          'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname)
+      @hiddenfieldnameToScopeMap[hiddenfieldname] = undefined
+
+    _getScope: (hiddenfieldname) ->
+      scope = @hiddenfieldnameToScopeMap[hiddenfieldname]
+      if not scope?
+        console.error(
+          'Trying to get a field that is not registered with ' +
+          'cradminBulkfileuploadCoordinator. Fieldname:', hiddenfieldname)
+      return scope
+
+    showOverlayForm: (hiddenfieldname) ->
+      scope = @_getScope(hiddenfieldname)
+      scope.formController.showOverlay()
+
+#    hideOverlayForm: (hiddenfieldname) ->
+#      scope = @_getScope(hiddenfieldname)
+#      scope.formController.hideOverlay()
+
+  @$get = (['$window', ($window) ->
+    return new FileUploadCoordinator($window)
+  ])
+
+  return @
+
+
 .factory 'cradminBulkfileupload', ->
   class FileInfo
     constructor: (options) ->
       @file = options.file
+      @autosubmit = options.autosubmit
+      @i18nStrings = options.i18nStrings
       @temporaryfileid = options.temporaryfileid
-      @name = @file.name
+      if @file?
+        @name = @file.name
+      else
+        @name = options.name
       @isRemoving = false
+
+      @percent = options.percent
+      if options.finished
+        @finished = true
+      else
+        @finished = false
+
+      if options.hasErrors
+        @hasErrors = true
+      else
+        @hasErrors = false
+      @errors = options.errors
 
     markAsIsRemoving: ->
       @isRemoving = true
@@ -18,39 +81,17 @@ angular.module('djangoCradmin.bulkfileupload', [
     markAsIsNotRemoving: ->
       @isRemoving = false
 
-  class FileInfoList
-    constructor: (options) ->
-      @percent = options.percent
-      if options.finished
-        @finished = true
-      else
-        @finished = false
-      if options.hasErrors
-        @hasErrors = true
-      else
-        @hasErrors = false
-      @rawFiles = options.files
-      @files = []
-      for file in options.files
-        @files.push(new FileInfo({
-          temporaryfileid: null
-          name: file.name
-          file: file
-        }))
-      @errors = options.errors
-
     updatePercent: (percent) ->
       @percent = percent
 
-    finish: (temporaryfiles) ->
+    finish: (temporaryfile, singlemode) ->
       @finished = true
 
       # Update the client provided filenames with the filename from the server
       index = 0
-      for temporaryfile in temporaryfiles
-        @files[index].name = temporaryfile.filename
-        @files[index].temporaryfileid = temporaryfile.id
-        index += 1
+      @file = undefined
+      @temporaryfileid = temporaryfile.id
+      @name = temporaryfile.filename
 
     setErrors: (errors) ->
       @hasErrors = true
@@ -62,9 +103,12 @@ angular.module('djangoCradmin.bulkfileupload', [
     remove: (index) ->
       return @files.splice(index, 1)
 
+#  class FileInfoList
   return {
-    createFileInfoList: (options) ->
-      new FileInfoList(options)
+#    createFileInfoList: (options) ->
+#      new FileInfoList(options)
+    createFileInfo: (options) ->
+      return new FileInfo(options)
   }
 
 
@@ -107,12 +151,88 @@ angular.module('djangoCradmin.bulkfileupload', [
         @addSubmitButtonScope = (submitButtonScope) ->
           $scope._submitButtonScopes.push(submitButtonScope)
 
+        @addSubmitButtonScope = (submitButtonScope) ->
+          $scope._submitButtonScopes.push(submitButtonScope)
+
+        @registerOverlayControls = (overlayControlsScope) ->
+          $scope._overlayControlsScope = overlayControlsScope
+
+        @registerOverlayUploadingmessageScope = (overlayUploadingmessageScope) ->
+          $scope._overlayUploadingmessageScope = overlayUploadingmessageScope
+
+        @submitForm = ->
+          if $scope.overlay
+            $scope._overlayUploadingmessageScope.onSubmitForm()
+          $scope.element.submit()
+
+        $scope._showOverlay = ->
+          if $scope.overlay
+            $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-show')
+          else
+            throw new Error('Can only show the overlay if the form has the ' +
+              'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
+
+        @showOverlay = ->
+          $scope._showOverlay()
+
+        @hideOverlay = ->
+          if $scope.overlay
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-show')
+          else
+            throw new Error('Can only hide the overlay if the form has the ' +
+              'django-cradmin-bulkfileupload-form-overlay="true" attribute.')
+
         return
 
-      link: (scope, element, attr, uploadController) ->
+      link: ($scope, element, attr, uploadController) ->
+        $scope.overlay = attr.djangoCradminBulkfileuploadFormOverlay == 'true'
+        $scope.preventWindowDragdrop = attr.djangoCradminBulkfileuploadFormPreventWindowDragdrop != 'false'
+        $scope.openOverlayOnWindowDragdrop = attr.djangoCradminBulkfileuploadFormOpenOverlayOnWindowDragdrop == 'true'
+        $scope.element = element
+        if $scope.overlay
+          # NOTE: If you do not want the form to be visible until the angularjs adds this class,
+          #       simply add the class to your form.
+          element.addClass('django-cradmin-bulkfileupload-form-overlay')
+
+          body = angular.element('body')
+          $scope.wrapperElement = angular.element('<div></div>')
+          $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper')
+          $scope.wrapperElement.appendTo(body)
+          element.appendTo($scope.wrapperElement)
+          $scope._overlayControlsScope.element.appendTo($scope.wrapperElement)
+          if element.find('.has-error').length > 0
+            $scope._showOverlay()
+
+          if $scope.preventWindowDragdrop
+            window.addEventListener("dragover", (e) ->
+              e.preventDefault()
+            , false)
+            window.addEventListener("drop", (e) ->
+              e.preventDefault()
+            , false)
+
+          window.addEventListener("dragover", (e) ->
+            e.preventDefault()
+            $scope.wrapperElement.addClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+            if $scope.openOverlayOnWindowDragdrop
+              $scope._showOverlay()
+          , false)
+
+          window.addEventListener("drop", (e) ->
+            e.preventDefault()
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+          , false)
+
+          angular.element('body').on 'mouseleave', (e) ->
+            $scope.wrapperElement.removeClass('django-cradmin-bulkfileupload-overlaywrapper-window-dragover')
+
+
+
+
         element.on 'submit', (evt) ->
-          if scope._inProgressCounter != 0
+          if $scope._inProgressCounter != 0
             evt.preventDefault()
+
         return
     }
 ])
@@ -144,10 +264,9 @@ angular.module('djangoCradmin.bulkfileupload', [
 ])
 
 
-
 .directive('djangoCradminBulkfileupload', [
-  '$upload', '$cookies', 'cradminDetectize'
-  ($upload, $cookies, cradminDetectize) ->
+  '$upload', '$cookies', 'cradminDetectize', 'cradminBulkfileuploadCoordinator'
+  ($upload, $cookies, cradminDetectize, cradminBulkfileuploadCoordinator) ->
     return {
       require: '^djangoCradminBulkfileuploadForm'
       restrict: 'AE'
@@ -175,8 +294,9 @@ angular.module('djangoCradmin.bulkfileupload', [
         @setInProgressOrFinishedScope = (inProgressOrFinishedScope) ->
           $scope.inProgressOrFinishedScope = inProgressOrFinishedScope
 
-        @setFileUploadFieldScope = (fileUploadFieldScope) ->
+        @setFileUploadFieldScope = (fileUploadFieldScope, fieldname) ->
           $scope.fileUploadFieldScope = fileUploadFieldScope
+          cradminBulkfileuploadCoordinator.register(fileUploadFieldScope.fieldname, $scope)
 
         @setSimpleWidgetScope = (simpleWidgetScope) ->
           $scope.simpleWidgetScope = simpleWidgetScope
@@ -190,36 +310,97 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.rejectedFilesScope = rejectedFilesScope
 
         @getUploadUrl = ->
-          return $scope.uploadUrl
+          return $scope.uploadapiurl
 
         @getCollectionId = ->
           return $scope.collectionid
 
-        $scope._addFileInfoList = (fileInfoList) ->
-          $scope.inProgressOrFinishedScope.addFileInfoList(fileInfoList)
+        @onAdvancedWidgetDragLeave = ->
+          $scope.formController.onAdvancedWidgetDragLeave()
+
+        $scope._hideUploadWidget = ->
+          $scope.simpleWidgetScope.hide()
+          $scope.advancedWidgetScope.hide()
 
         $scope._showAppropriateWidget = ->
           if $scope.advancedWidgetScope and $scope.simpleWidgetScope
-            if cradminDetectize.device.type == 'desktop'
+#            deviceType = 'mobile'
+            deviceType = cradminDetectize.device.type
+            if deviceType == 'desktop'
               $scope.simpleWidgetScope.hide()
+              $scope.advancedWidgetScope.show()
             else
               $scope.advancedWidgetScope.hide()
+              $scope.simpleWidgetScope.show()
 
         $scope.filesDropped = (files, evt, rejectedFiles) ->
+          ###
+          Called when a file is draggen&dropped into the widget.
+          ###
           if rejectedFiles.length > 0
-            $scope.rejectedFilesScope.setRejectedFiles(rejectedFiles)
+            $scope.rejectedFilesScope.setRejectedFiles(
+              rejectedFiles, 'invalid_filetype',  $scope.i18nStrings)
+
+#        humanReadableFileSize = (sizeInBytes) ->
+#          if sizeInBytes < 1000
+#              return "#{sizeInBytes}B"
+#          if sizeInBytes < 1000000
+#              return "#{(sizeInBytes/1000).toFixed()}KB"
+#          else if sizeInBytes < 1000000000
+#              return "#{(sizeInBytes/1000000).toFixed(1)}MB"
+#          else
+#              return "#{(sizeInBytes/1000000000).toFixed(2)}GB"
+
+        validateSelectedFiles = ->
+          filesToUpload = []
+          for file in $scope.cradminLastFilesSelectedByUser
+            if $scope.apiparameters.max_filesize_bytes
+              if file.size > $scope.apiparameters.max_filesize_bytes
+                $scope.rejectedFilesScope.addRejectedFile(
+                  file, 'max_filesize_bytes_exceeded', $scope.i18nStrings)
+                continue
+            filesToUpload.push(file)
+          if $scope.rejectedFilesScope.hasRejectedFiles() and $scope.autosubmit
+            # If we use autosubmit mode, we do not allow upload if any
+            # of the files fail validation. So if the user selects one too
+            # big file, and one valid file, we do reject them both, with an
+            # error message for the too big file.
+            return []
+          return filesToUpload
 
         $scope.$watch 'cradminLastFilesSelectedByUser', ->
           if $scope.cradminLastFilesSelectedByUser.length > 0
-            $scope._addFilesToQueue($scope.cradminLastFilesSelectedByUser.slice())
+            # Clear any old errors before we upload new files
+            $scope.rejectedFilesScope.clearRejectedFiles()
+
+            filesToUpload = validateSelectedFiles()
+
+            if filesToUpload.length > 0
+              # If we are in autosubmit mode, we hide the upload widget.
+              # Without this, we would not be able to ensure that we do
+              # not submit in the middle of a drag and drop.
+              if $scope.autosubmit
+                $scope._hideUploadWidget()
+
+              for file in filesToUpload
+                $scope._addFileToQueue(file)
+                if $scope.apiparameters.singlemode
+                  # Single mode only allows upload of a single file,
+                  # so it makes no sense to process more than one file.
+                  break
+
             $scope.cradminLastFilesSelectedByUser = []
 
-        $scope._addFilesToQueue = (files) ->
-          progressInfo = $scope.inProgressOrFinishedScope.addFileInfoList({
+        $scope._addFileToQueue = (file) ->
+          if $scope.apiparameters.singlemode
+            $scope.inProgressOrFinishedScope.clear()
+          progressFileInfo = $scope.inProgressOrFinishedScope.addFileInfo({
             percent: 0
-            files: files
+            file: file
+            autosubmit: $scope.autosubmit
+            i18nStrings: $scope.i18nStrings
           })
-          $scope.fileUploadQueue.push(progressInfo)
+          $scope.fileUploadQueue.push(progressFileInfo)
           if $scope.firstUploadInProgress
             # If the first upload is in progress, we need to postpone subsequent
             # uploads until we get the response from the first upload containing
@@ -229,7 +410,7 @@ angular.module('djangoCradmin.bulkfileupload', [
             $scope.firstUploadInProgress = true
           $scope._processFileUploadQueue()
 
-        $scope._onFileUploadComplete = ->
+        $scope._onFileUploadComplete = (successful) ->
           ###
           Called both on file upload success and error
           ###
@@ -237,31 +418,49 @@ angular.module('djangoCradmin.bulkfileupload', [
           $scope.formController.removeInProgress()
           if $scope.fileUploadQueue.length > 0
             $scope._processFileUploadQueue()
+          else if $scope.autosubmit
+            if successful
+              $scope.formController.submitForm()
+            else
+              # We hide the widget when the upload starts in autosubmit mode,
+              # so we need to show it again after an error.
+              $scope._showAppropriateWidget()
 
         $scope._processFileUploadQueue = () ->
-          progressInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
+          progressFileInfo = $scope.fileUploadQueue.shift()  # Pop the first element from the queue
           apidata = angular.extend({}, $scope.apiparameters, {collectionid: $scope.collectionid})
           $scope.formController.addInProgress()
 
           $scope.upload = $upload.upload({
-            url: $scope.uploadUrl
+            url: $scope.uploadapiurl
             method: 'POST'
             data: apidata
-            file: progressInfo.rawFiles
+            file: progressFileInfo.file
             fileFormDataName: 'file'  # The form field name
             headers: {
               'X-CSRFToken': $cookies.get('csrftoken')
               'Content-Type': 'multipart/form-data'
             }
           }).progress((evt) ->
-            progressInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
+            progressFileInfo.updatePercent(parseInt(100.0 * evt.loaded / evt.total))
           ).success((data, status, headers, config) ->
-            progressInfo.finish(data.temporaryfiles)
+            progressFileInfo.finish(data.temporaryfiles[0], $scope.apiparameters.singlemode)
             $scope._setCollectionId(data.collectionid)
-            $scope._onFileUploadComplete()
-          ).error((data) ->
-            progressInfo.setErrors(data)
-            $scope._onFileUploadComplete()
+            $scope._onFileUploadComplete(true)
+          ).error((data, status) ->
+            console.log data
+            if status == 503
+              progressFileInfo.setErrors({
+                file: [{
+                  message: $scope.errormessage503
+                }]
+              })
+            else
+              # Set errors, and move the FileInfo object into rejected files.
+              progressFileInfo.setErrors(data)
+            $scope.inProgressOrFinishedScope.removeFileInfo(progressFileInfo)
+            $scope.rejectedFilesScope.addRejectedFileInfo(progressFileInfo)
+            $scope._onFileUploadComplete(false)
           )
 
         $scope._setCollectionId = (collectionid) ->
@@ -270,22 +469,30 @@ angular.module('djangoCradmin.bulkfileupload', [
 
         return
 
-      link: (scope, element, attr, formController) ->
-        scope.uploadUrl = attr.djangoCradminBulkfileupload
-        if attr.djangoCradminBulkfileuploadApiparameters?
-          scope.apiparameters = scope.$parent.$eval(attr.djangoCradminBulkfileuploadApiparameters)
-          if not angular.isObject(scope.apiparameters)
-            throw new Error('django-cradmin-bulkfileupload-apiparameters must be a javascript object.')
-        else
-          scope.apiparameters = {}
-        scope.formController = formController
+      link: ($scope, element, attributes, formController) ->
+        options = angular.fromJson(attributes.djangoCradminBulkfileupload)
+        $scope.uploadapiurl = options.uploadapiurl
+        $scope.apiparameters = options.apiparameters
+        $scope.errormessage503 = options.errormessage503
+        $scope.autosubmit = options.autosubmit
+        $scope.i18nStrings = {
+          close_errormessage_label: options.close_errormessage_label
+          remove_file_label: options.remove_file_label
+          removing_file_message: options.removing_file_message
+        }
+        $scope.formController = formController
+        $scope.$on '$destroy', ->
+          if $scope.fileUploadFieldScope?
+            cradminBulkfileuploadCoordinator.unregister $scope.fileUploadFieldScope.fieldname
+
         return
     }
 ])
 
 
 .directive('djangoCradminBulkfileuploadRejectedFiles', [
-  ->
+  'cradminBulkfileupload'
+  (cradminBulkfileupload) ->
     ###
     This directive is used to show files that are rejected on drop because
     of wrong mimetype. Each time a user drops one or more file with invalid
@@ -297,18 +504,60 @@ angular.module('djangoCradmin.bulkfileupload', [
       templateUrl: 'bulkfileupload/rejectedfiles.tpl.html'
       transclude: true
       scope: {
-        rejectedFileErrorMessage: '@djangoCradminBulkfileuploadRejectedFiles'
+        errorMessageMap: '=djangoCradminBulkfileuploadRejectedFiles'
       }
 
       controller: ($scope) ->
         $scope.rejectedFiles = []
-        $scope.setRejectedFiles = (rejectedFiles) ->
-          $scope.rejectedFiles = rejectedFiles
 
-        $scope.closeMessage = (rejectedFile) ->
-          index = $scope.rejectedFiles.indexOf(rejectedFile)
+        $scope.clearRejectedFiles = ->
+          $scope.rejectedFiles = []
+
+        $scope.addRejectedFileInfo = (fileInfo, errormessagecode) ->
+          $scope.rejectedFiles.push(fileInfo)
+
+        $scope.addRejectedFile = (file, errormessagecode, i18nStrings) ->
+          # When we get errors from the browser, we only get a file object,
+          # so we use that to mock a FileInfo object for unified error handling.
+          $scope.addRejectedFileInfo(
+            cradminBulkfileupload.createFileInfo({
+              file: file
+              hasErrors: true
+              i18nStrings: i18nStrings
+              errors: {
+                files: [{
+                  message: $scope.errorMessageMap[errormessagecode]
+                }]
+              }
+            }))
+
+        $scope.hasRejectedFiles = ->
+          return $scope.rejectedFiles.length > 0
+
+        $scope.setRejectedFiles = (rejectedFiles, errormessagecode, i18nStrings) ->
+          $scope.clearRejectedFiles()
+          for file in rejectedFiles
+            $scope.addRejectedFile(file, errormessagecode, i18nStrings)
+
+        $scope.closeMessage = (fileInfo) ->
+          index = $scope.rejectedFiles.indexOf(fileInfo)
           if index != -1
             $scope.rejectedFiles.splice(index, 1)
+
+#        $scope.addRejectedFileInfo(cradminBulkfileupload.createFileInfo({
+#          percent: 90
+#          finished: true
+#          name: 'mybigfile.txt'
+#          hasErrors: true
+#          errors: {
+#            files: [{
+#              message: 'File is too big'
+#            }]
+#          }
+#        }))
+#        $scope.addRejectedFile(
+#          {name: 'myinvalidfile.txt'},
+#          'invalid_filetype')
 
       link: (scope, element, attr, bulkfileuploadController) ->
         bulkfileuploadController.setRejectFilesScope(scope)
@@ -327,52 +576,18 @@ angular.module('djangoCradmin.bulkfileupload', [
       scope: {}
 
       controller: ($scope) ->
-        $scope.fileInfoLists = []
-#        $scope.fileInfoLists = [
-#          new cradminBulkfileupload.createFileInfoList({
-#            percent: 10
-#            files: [{
-#              name: 'test.txt'
-#            }, {
-#              name: 'test2.txt'
-#            }]
-#          }),
-#          new cradminBulkfileupload.createFileInfoList({
-#            percent: 100
-#            finished: true
-#            files: [{
-#              name: 'Some kind of test.txt'
-#            }]
-#          }),
-#          new cradminBulkfileupload.createFileInfoList({
-#            percent: 90
-#            finished: true
-#            files: [{
-#              name: 'mybigfile.txt'
-#            }]
-#            hasErrors: true
-#            errors: {
-#              file: [{
-#                message: 'File is too big'
-#              }]
-#            }
-#          }),
-#        ]
+        $scope.fileInfoArray = []
 
-        $scope._findFileInfo = (fileInfo) ->
-          if not fileInfo.temporaryfileid?
-            throw new Error("Can not remove files without a temporaryfileid")
-          for fileInfoList in $scope.fileInfoLists
-            fileInfoIndex = fileInfoList.indexOf(fileInfo)
-            if fileInfoIndex != -1
-              return {
-                fileInfoList: fileInfoList
-                index: fileInfoIndex
-              }
-          throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
+        $scope.removeFileInfo = (fileInfo) ->
+          fileInfoIndex = $scope.fileInfoArray.indexOf(fileInfo)
+          if fileInfoIndex != -1
+            $scope.fileInfoArray.splice(fileInfoIndex, 1)
+          else
+            throw new Error("Could not find requested fileInfo with temporaryfileid=#{fileInfo.temporaryfileid}.")
 
         @removeFile = (fileInfo) ->
-          fileInfoLocation = $scope._findFileInfo(fileInfo)
+          if not fileInfo.temporaryfileid?
+            throw new Error("Can not remove files without a temporaryfileid")
           fileInfo.markAsIsRemoving()
           $scope.$apply()
 
@@ -386,7 +601,7 @@ angular.module('djangoCradmin.bulkfileupload', [
                 temporaryfileid: fileInfo.temporaryfileid
             })
             .success((data, status, headers, config) ->
-              fileInfoLocation.fileInfoList.remove(fileInfoLocation.index)
+              $scope.removeFileInfo(fileInfo)
             ).
             error((data, status, headers, config) ->
               console?.error? 'ERROR', data
@@ -394,11 +609,29 @@ angular.module('djangoCradmin.bulkfileupload', [
               fileInfo.markAsIsNotRemoving()
             )
 
-        $scope.addFileInfoList = (options) ->
-          fileInfoList = cradminBulkfileupload.createFileInfoList(options)
-          $scope.fileInfoLists.push(fileInfoList)
-          console.log $scope.fileInfoLists
-          return fileInfoList
+        $scope.addFileInfo = (options) ->
+          fileInfo = cradminBulkfileupload.createFileInfo(options)
+          $scope.fileInfoArray.push(fileInfo)
+          return fileInfo
+
+        $scope.clear = (options) ->
+          $scope.fileInfoArray = []
+
+        $scope.clearErrors = ->
+          for index in [$scope.fileInfoArray.length - 1..0] by -1
+            fileInfo = $scope.fileInfoArray[index]
+            if fileInfo.hasErrors
+              $scope.fileInfoArray.splice(index, 1)
+
+#        $scope.addFileInfo({
+#          percent: 10
+#          name: 'test.txt'
+#        })
+#        $scope.addFileInfo({
+#            percent: 100
+#            finished: true
+#            name: 'Some kind of test.txt'
+#        })
 
         return
 
@@ -409,15 +642,19 @@ angular.module('djangoCradmin.bulkfileupload', [
     }
 ])
 
-
-.directive('djangoCradminBulkFileInfoList', [
+.directive('djangoCradminBulkFileInfo', [
   ->
+    ###*
+    Renders a single file info with progress info, errors, etc.
+
+    Used both the djangoCradminBulkfileuploadProgress directive.
+    ###
     return {
       restrict: 'AE'
       scope: {
-        fileInfoList: '=djangoCradminBulkFileInfoList'
+        fileInfo: '=djangoCradminBulkFileInfo'
       }
-      templateUrl: 'bulkfileupload/fileinfolist.tpl.html'
+      templateUrl: 'bulkfileupload/fileinfo.tpl.html'
       transclude: true
 
       controller: ($scope) ->
@@ -436,13 +673,13 @@ angular.module('djangoCradmin.bulkfileupload', [
   ->
     return {
       restrict: 'A'
-      require: '^djangoCradminBulkFileInfoList'
+      require: '^djangoCradminBulkFileInfo'
       scope: {}
 
-      link: (scope, element, attr, fileInfoListController) ->
+      link: (scope, element, attr, fileInfoController) ->
         element.on 'click', (evt) ->
           evt.preventDefault()
-          fileInfoListController.close()
+          fileInfoController.close()
         return
     }
 ])
@@ -480,6 +717,7 @@ angular.module('djangoCradmin.bulkfileupload', [
 
       link: (scope, element, attr, uploadController) ->
         scope.element = element
+        scope.fieldname = attr.name
         uploadController.setFileUploadFieldScope(scope)
         return
     }
@@ -487,7 +725,8 @@ angular.module('djangoCradmin.bulkfileupload', [
 
 
 .directive('djangoCradminBulkfileuploadAdvancedWidget', [
-  ->
+  '$timeout'
+  ($timeout) ->
     return {
       require: '^djangoCradminBulkfileupload'
       restrict: 'AE'
@@ -496,8 +735,10 @@ angular.module('djangoCradmin.bulkfileupload', [
       link: (scope, element, attr, uploadController) ->
         scope.hide = ->
           element.css('display', 'none')
-
+        scope.show = ->
+          element.css('display', 'block')
         uploadController.setAdvancedWidgetScope(scope)
+
         return
     }
 ])
@@ -513,9 +754,79 @@ angular.module('djangoCradmin.bulkfileupload', [
       link: (scope, element, attr, uploadController) ->
         scope.hide = ->
           element.css('display', 'none')
+        scope.show = ->
+          element.css('display', 'block')
 
         uploadController.setSimpleWidgetScope(scope)
 
+        return
+    }
+])
+
+
+.directive('djangoCradminBulkfileuploadShowOverlay', [
+  'cradminBulkfileuploadCoordinator'
+  (cradminBulkfileuploadCoordinator) ->
+    return {
+      restrict: 'AE'
+      scope: {
+        hiddenfieldname: '@djangoCradminBulkfileuploadShowOverlay'
+      }
+
+      link: ($scope, element, attr) ->
+#        cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
+        element.on 'click', ->
+          cradminBulkfileuploadCoordinator.showOverlayForm($scope.hiddenfieldname)
+        return
+    }
+])
+
+.directive('djangoCradminBulkfileuploadHideOverlay', [
+  ->
+    return {
+      restrict: 'AE'
+      require: '^djangoCradminBulkfileuploadForm'
+      scope: {
+        hiddenfieldname: '@djangoCradminBulkfileuploadHideOverlay'
+      }
+
+      link: ($scope, element, attr, uploadFormController) ->
+        element.on 'click', ->
+          uploadFormController.hideOverlay()
+        return
+    }
+])
+
+.directive('djangoCradminBulkfileuploadOverlayControls', [
+  ->
+    return {
+      restrict: 'AE'
+      require: '^djangoCradminBulkfileuploadForm'
+      scope: {}
+
+      link: ($scope, element, attr, uploadFormController) ->
+        $scope.element = element
+        uploadFormController.registerOverlayControls($scope)
+        return
+    }
+])
+
+.directive('djangoCradminBulkfileuploadOverlayUploadingmessage', [
+  ->
+    return {
+      restrict: 'AE'
+      require: '^djangoCradminBulkfileuploadForm'
+      scope: {}
+
+      controller: ($scope) ->
+        $scope.onSubmitForm = ->
+          $scope.element.addClass('django-cradmin-bulkfileupload-overlay-uploadingmessage-visible')
+
+        return
+
+      link: ($scope, element, attr, uploadFormController) ->
+        $scope.element = element
+        uploadFormController.registerOverlayUploadingmessageScope($scope)
         return
     }
 ])

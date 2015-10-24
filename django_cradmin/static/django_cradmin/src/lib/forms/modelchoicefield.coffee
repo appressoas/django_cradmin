@@ -231,13 +231,13 @@ angular.module('djangoCradmin.forms.modelchoicefield', [])
           startScrollHeightInterval()
 
         $scope.setIframeSize = ->
-          iframeDocument = getIframeDocument()
-          if iframeDocument?.body?
-            iframeBodyHeight = iframeDocument.body.offsetHeight
-            $scope.element.height(iframeBodyHeight)
+#          iframeDocument = getIframeDocument()
+#          if iframeDocument?.body?
+#            iframeBodyHeight = iframeDocument.body.offsetHeight
+#            $scope.element.height(iframeBodyHeight)
 
         $scope.resetIframeSize = ->
-          $scope.element.height('40px')
+#          $scope.element.height('40px')
 
         return
 

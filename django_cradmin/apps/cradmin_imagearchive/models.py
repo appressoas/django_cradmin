@@ -75,10 +75,9 @@ class ArchiveImage(models.Model):
     #: provided by the app sets this.
     name = models.CharField(
         max_length=255, blank=True, null=False,
-        verbose_name=_('name'),
-        help_text=_(
-            'Give the image a name (optional). If you leave this blank, the name of the uploaded image file is used.'
-        )
+        verbose_name=_('name')
+        # help_text=_('A good name helps search engines find the image, '
+        #             'and it helps visually impaired users.')
     )
 
     #: An optional description of the image.
@@ -88,7 +87,8 @@ class ArchiveImage(models.Model):
         help_text=_(
             'An optional description of the image. Think if this as a description '
             'of the image for visually impaired users. This means that you should describe '
-            'the information carried in the image (if any).'),
+            'the information carried in the image (if any). A good description also helps '
+            'search engines find the image.'),
     )
 
     #: Create datetime.

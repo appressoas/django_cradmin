@@ -4,7 +4,7 @@ from django.conf.urls import url
 from django.conf.urls import patterns
 from functools import update_wrapper
 
-from .decorators import cradminview
+from .decorators import cradminview, has_access_to_cradmin_instance
 
 
 #: The name of the app index view (the landing page for the app).
@@ -57,7 +57,7 @@ class App(object):
     def _wrap_view(cls, appname, view):
         def viewwrapper(request, *args, **kwargs):
             request.cradmin_app = cls(appname, request)
-            return cradminview(view)(request, *args, **kwargs)
+            return has_access_to_cradmin_instance(cradminview(view))(request, *args, **kwargs)
 
         # Take name and docstring from view
         update_wrapper(viewwrapper, view, updated=())

@@ -43,6 +43,8 @@ model_mommy==1.2.5
 
 coverage==4.0
 
+# For building styles
+vitalstyles==1.1.4
 
 # Pull inn development packages from GIT
 -r develop.gitpackages.txt

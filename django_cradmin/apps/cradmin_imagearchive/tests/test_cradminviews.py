@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
-from django.conf import settings
+
 from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, RequestFactory
 import htmls
 import mock
-import os
+from model_mommy import mommy
 
+from django_cradmin import cradmin_testhelpers
 from django_cradmin.apps.cradmin_imagearchive import cradminviews
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
 from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection, TemporaryFile
@@ -15,107 +15,29 @@ from django_cradmin.tests.helpers import create_user
 from .helpers import create_image
 
 
-class TestCreateView(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
-
-    def test_get_render(self):
-        request = self.factory.get('/test')
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_instance.__getitem__.return_value = None  # This avoids rendering the menu
-        request.cradmin_role = None
-
-        response = cradminviews.ArchiveImageCreateView.as_view()(request)
-        self.assertEquals(response.status_code, 200)
-        response.render()
-        selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('input[type=file][name=image]'))
-        self.assertTrue(selector.exists('textarea#id_description'))
-
-    def test_post_ok(self):
+def _create_single_file_temporaryfilecollection(user, filename='testfile.png', image=None):
+    if image:
+        testimage = image
+    else:
         testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage),
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
-
-        self.assertEqual(ArchiveImage.objects.count(), 0)
-        response = cradminviews.ArchiveImageCreateView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['Location'], '/success')
-        self.assertEqual(ArchiveImage.objects.count(), 1)
-        created_image = ArchiveImage.objects.first()
-        self.assertEqual(created_image.image.read(), testimage)
-        self.assertEqual(created_image.name, 'testname')
-        self.assertEqual(created_image.description, '')
-
-    def test_post_sets_file_size(self):
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage),
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
-
-        response = cradminviews.ArchiveImageCreateView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
-        created_image = ArchiveImage.objects.first()
-        self.assertEqual(len(testimage), created_image.file_size)
-
-    def test_post_allfields(self):
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage),
-            'name': 'My name',
-            'description': 'My description',
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
-
-        self.assertEqual(ArchiveImage.objects.count(), 0)
-        response = cradminviews.ArchiveImageCreateView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['Location'], '/success')
-        self.assertEqual(ArchiveImage.objects.count(), 1)
-        created_image = ArchiveImage.objects.first()
-        self.assertEqual(created_image.image.read(), testimage)
-        self.assertEqual(created_image.description, 'My description')
-
-    def test_post_nofile(self):
-        request = self.factory.post('/test', {})
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
-
-        self.assertEqual(ArchiveImage.objects.count(), 0)
-        response = cradminviews.ArchiveImageCreateView.as_view()(request)
-        self.assertEquals(response.status_code, 200)
-        self.assertEqual(ArchiveImage.objects.count(), 0)
-        response.render()
-        selector = htmls.S(response.content)
-        self.assertIn(
-            'This field is required',
-            selector.one('#django_cradmin_contentwrapper #div_id_image').alltext_normalized)
+    collection = TemporaryFileCollection.objects.create(user=user)
+    temporaryfile = TemporaryFile(
+        collection=collection,
+        filename=filename)
+    temporaryfile.file.save(filename, ContentFile(testimage))
+    return collection
 
 
 class TestUpdateView(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.role = TstRole.objects.create()
-        self.archiveimage = ArchiveImage.objects.create(role=self.role)
+        self.archiveimage = ArchiveImage.objects.create(role=self.role,
+                                                        name='Original name',
+                                                        description='Original description')
         self.testimage = create_image(200, 100)
         self.archiveimage.image.save('testimage.png', ContentFile(self.testimage))
+        self.testuser = create_user('testuser')
 
     def test_get_render(self):
         request = self.factory.get('/test')
@@ -126,11 +48,11 @@ class TestUpdateView(TestCase):
         self.assertEquals(response.status_code, 200)
         response.render()
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('input[type=file][name=image]'))
         self.assertTrue(selector.exists('textarea#id_description'))
 
     def test_post_ok(self):
         request = self.factory.post('/test', {
+            # 'name': 'Updated name',
             'description': 'Updated description'
         })
         request.cradmin_instance = mock.MagicMock()
@@ -146,208 +68,153 @@ class TestUpdateView(TestCase):
         self.assertEqual(ArchiveImage.objects.count(), 1)
         updated_image = ArchiveImage.objects.first()
         self.assertEqual(updated_image.image.read(), self.testimage)
+        # self.assertEqual(updated_image.name, 'Updated name')
         self.assertEqual(updated_image.description, 'Updated description')
 
-    def test_post_allfields(self):
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage),
-            'description': 'My description',
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = self.role
-        request._messages = mock.MagicMock()
 
-        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['Location'], '/success')
-        updated_image = ArchiveImage.objects.first()
-        self.assertEqual(updated_image.image.read(), testimage)
-        self.assertEqual(updated_image.description, 'My description')
+class TestArchiveImagesListView(TestCase, cradmin_testhelpers.TestCaseMixin):
+    viewclass = cradminviews.ArchiveImagesListView
 
-    def test_post_sets_file_size(self):
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage),
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = self.role
-        request._messages = mock.MagicMock()
+    def test_no_archive_images(self):
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=mommy.make('django_cradmin_testapp.TstRole'))
+        self.assertEqual(
+            mockresponse.selector.one('#objecttableview-no-items-message').alltext_normalized,
+            'No archive images')
 
-        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 302)
-        updated_image = ArchiveImage.objects.first()
-        self.assertEqual(len(testimage), updated_image.file_size)
+    def test_single_archive_image_sanity(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=testrole)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertFalse(mockresponse.selector.exists('#objecttableview-no-items-message'))
+        self.assertEqual(mockresponse.selector.count('#objecttableview-table tbody tr'), 1)
 
-    def test_post_noname(self):
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage),
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_role = self.role
-        request._messages = mock.MagicMock()
+    def test_only_owned_by_role(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        other_role = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=other_role)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertTrue(mockresponse.selector.exists('#objecttableview-no-items-message'))
 
-        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 302)
-        updated_image = ArchiveImage.objects.first()
-        self.assertEqual(updated_image.name, 'testname')
+    def test_render_single_archive_image_no_description(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=testrole)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .objecttable-cellvalue').alltext_normalized,
+            'Test image')
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .btn-default').alltext_normalized,
+            'Set a description')
 
-    def test_post_update_image_removes_old_image(self):
-        old_image_path = os.path.join(settings.MEDIA_ROOT, self.archiveimage.image.name)
-        self.assertTrue(os.path.exists(old_image_path))
+    def test_render_single_archive_image_has_description(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='Test description',
+                   role=testrole)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .objecttable-cellvalue').alltext_normalized,
+            'Test description')
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .btn-default').alltext_normalized,
+            'Edit description')
 
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage)
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = self.role
-        request._messages = mock.MagicMock()
+    def test_uploadform_get_render(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertEquals(mockresponse.response.status_code, 200)
+        self.assertTrue(mockresponse.selector.exists('#django_cradmin_imagearchive_bulkadd_form'))
+        self.assertTrue(mockresponse.selector.exists('input[type=hidden][name=filecollectionid]'))
+        self.assertTrue(mockresponse.selector.exists('#div_id_filecollectionid'))
 
-        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 302)
-        updated_image = ArchiveImage.objects.first()
-        self.assertFalse(os.path.exists(old_image_path))
-        new_image_path = os.path.join(settings.MEDIA_ROOT, updated_image.image.name)
-        self.assertTrue(os.path.exists(new_image_path))
-
-    def test_post_update_not_changing_image_does_not_remove_old_image(self):
-        old_image_path = os.path.join(settings.MEDIA_ROOT, self.archiveimage.image.name)
-        self.assertTrue(os.path.exists(old_image_path))
-
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage)
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = self.role
-        request._messages = mock.MagicMock()
-
-        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 302)
-        updated_image = ArchiveImage.objects.first()
-        self.assertFalse(os.path.exists(old_image_path))
-        new_image_path = os.path.join(settings.MEDIA_ROOT, updated_image.image.name)
-        self.assertTrue(os.path.exists(new_image_path))
-
-    def test_post_update_image_new_unique_name(self):
-        old_image_name = self.archiveimage.image.name
-
-        testimage = create_image(200, 100)
-        request = self.factory.post('/test', {
-            'image': SimpleUploadedFile('testname.png', testimage)
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = self.role
-        request._messages = mock.MagicMock()
-
-        response = cradminviews.ArchiveImageUpdateView.as_view()(request, pk=self.archiveimage.pk)
-        self.assertEquals(response.status_code, 302)
-        updated_image = ArchiveImage.objects.first()
-        new_image_name = updated_image.image.name
-        self.assertNotEqual(old_image_name, new_image_name)
-
-
-class TestArchiveImageBulkAddView(TestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
-        self.testuser = create_user('testuser')
-
-    def test_get_render(self):
-        request = self.factory.get('/test')
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_instance.__getitem__.return_value = None  # This avoids rendering the menu
-        request.cradmin_role = None
-
-        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-        self.assertEquals(response.status_code, 200)
-        response.render()
-        selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('#django_cradmin_imagearchive_bulkadd_form'))
-        self.assertTrue(selector.exists('input[type=hidden][name=filecollectionid]'))
-        self.assertTrue(selector.exists('#div_id_filecollectionid'))
-
-    def test_post_no_filecollectionid(self):
-        request = self.factory.post('/test', {})
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_role = TstRole.objects.create()
-
+    def test_uploadform_post_no_filecollectionid(self):
         self.assertEqual(ArchiveImage.objects.count(), 0)
-        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-        response.render()
-        selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('#div_id_filecollectionid.has-error'))
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mockresponse = self.mock_http200_postrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertTrue(mockresponse.selector.exists('#div_id_filecollectionid.has-error'))
         self.assertIn(
-            'You must upload at least one file.',
-            selector.one('#div_id_filecollectionid').alltext_normalized)
+            'You must upload at least one image.',
+            mockresponse.selector.one('#div_id_filecollectionid').alltext_normalized)
 
-    def test_post_single_image(self):
+    def test_uploadform_post_single_image(self):
+        testuser = create_user('testuser')
         testimage = create_image(200, 100)
-        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
         temporaryfile = TemporaryFile(
             collection=collection,
             filename='testfile.png')
         temporaryfile.file.save('testfile.png', ContentFile(testimage))
 
-        request = self.factory.post('/test', {
-            'filecollectionid': collection.id
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.user = self.testuser
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
-
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        cradmin_app = mock.MagicMock()
+        cradmin_app.reverse_appurl.return_value = '/success'
         self.assertEqual(ArchiveImage.objects.count(), 0)
-        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['Location'], '/success')
+        mockresponse = self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            cradmin_app=cradmin_app,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
+
+        self.assertEquals(mockresponse.response['Location'], '/success')
         self.assertEqual(ArchiveImage.objects.count(), 1)
         created_image = ArchiveImage.objects.first()
         self.assertEqual(created_image.image.read(), testimage)
         self.assertEqual(created_image.name, 'testfile.png')
         self.assertEqual(created_image.description, '')
 
-    def test_post_deletes_collection(self):
+    def test_uploadform_post_deletes_collection(self):
+        testuser = create_user('testuser')
         testimage = create_image(200, 100)
-        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
         temporaryfile = TemporaryFile(
             collection=collection,
             filename='testfile.png')
         temporaryfile.file.save('testfile.png', ContentFile(testimage))
 
-        request = self.factory.post('/test', {
-            'filecollectionid': collection.id
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.user = self.testuser
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
-
-        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
         self.assertFalse(TemporaryFileCollection.objects.filter(id=collection.id).exists())
 
-    def test_post_multiple_images(self):
+    def test_uploadform_post_multiple_images(self):
+        testuser = create_user('testuser')
         testimage1 = create_image(200, 100)
         testimage2 = create_image(100, 100)
-        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
         temporaryfile = TemporaryFile(
             collection=collection,
             filename='testfile1.png')
@@ -357,20 +224,21 @@ class TestArchiveImageBulkAddView(TestCase):
             filename='testfile2.png')
         temporaryfile.file.save('testfile2.png', ContentFile(testimage2))
 
-        request = self.factory.post('/test', {
-            'filecollectionid': collection.id
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request.user = self.testuser
-        request._messages = mock.MagicMock()
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        cradmin_app = mock.MagicMock()
+        cradmin_app.reverse_appurl.return_value = '/success'
 
         self.assertEqual(ArchiveImage.objects.count(), 0)
-        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['Location'], '/success')
+        mockresponse = self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            cradmin_app=cradmin_app,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
+        self.assertEquals(mockresponse.response['Location'], '/success')
         self.assertEqual(ArchiveImage.objects.count(), 2)
         created_images = ArchiveImage.objects.order_by('name')
 
@@ -382,25 +250,229 @@ class TestArchiveImageBulkAddView(TestCase):
         self.assertEqual(created_images[1].name, 'testfile2.png')
         self.assertEqual(created_images[1].description, '')
 
-    def test_post_sets_file_size(self):
+    def test_uploadform_post_sets_file_size(self):
+        testuser = create_user('testuser')
         testimage = create_image(200, 100)
-        collection = TemporaryFileCollection.objects.create(user=self.testuser)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
         temporaryfile = TemporaryFile(
             collection=collection,
             filename='testfile.png')
         temporaryfile.file.save('testfile.png', ContentFile(testimage))
 
-        request = self.factory.post('/test', {
-            'filecollectionid': collection.id
-        })
-        request.cradmin_instance = mock.MagicMock()
-        request.cradmin_app = mock.MagicMock()
-        request.user = self.testuser
-        request.cradmin_app.reverse_appurl.return_value = '/success'
-        request.cradmin_role = TstRole.objects.create()
-        request._messages = mock.MagicMock()
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
+        created_image = ArchiveImage.objects.first()
+        self.assertEqual(len(testimage), created_image.file_size)
 
-        response = cradminviews.ArchiveImageBulkAddView.as_view()(request)
-        self.assertEquals(response.status_code, 302)
+
+class TestArchiveImagesSingleSelectView(TestCase, cradmin_testhelpers.TestCaseMixin):
+    viewclass = cradminviews.ArchiveImagesSingleSelectView
+
+    def test_no_archive_images(self):
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=mommy.make('django_cradmin_testapp.TstRole'))
+        self.assertEqual(
+            mockresponse.selector.one('#objecttableview-no-items-message').alltext_normalized,
+            'No archive images')
+
+    def test_single_archive_image_sanity(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        archiveimage = mommy.make('cradmin_imagearchive.ArchiveImage',
+                                  role=testrole)
+        archiveimage.image.save('testimage.png', ContentFile(create_image(200, 100)))
+
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {'foreignkey_select_fieldid': 'testfield'}
+            })
+        self.assertFalse(mockresponse.selector.exists('#objecttableview-no-items-message'))
+        self.assertEqual(mockresponse.selector.count('#objecttableview-table tbody tr'), 1)
+
+    def test_only_owned_by_role(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        other_role = mommy.make('django_cradmin_testapp.TstRole')
+        mommy.make('cradmin_imagearchive.ArchiveImage',
+                   name='Test image', description='',
+                   role=other_role)
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertTrue(mockresponse.selector.exists('#objecttableview-no-items-message'))
+
+    def test_render_single_archive_image_no_description(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        archiveimage = mommy.make('cradmin_imagearchive.ArchiveImage',
+                                  name='Test image', description='',
+                                  role=testrole)
+        archiveimage.image.save('testimage.png', ContentFile(create_image(200, 100)))
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {'foreignkey_select_fieldid': 'testfield'}
+            })
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .objecttable-cellvalue').alltext_normalized,
+            'Test image')
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .btn-default').alltext_normalized,
+            'Use this')
+
+    def test_render_single_archive_image_has_description(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        archiveimage = mommy.make('cradmin_imagearchive.ArchiveImage',
+                                  name='Test image', description='Test description',
+                                  role=testrole)
+        archiveimage.image.save('testimage.png', ContentFile(create_image(200, 100)))
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {'foreignkey_select_fieldid': 'testfield'}
+            })
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .objecttable-cellvalue').alltext_normalized,
+            'Test description')
+        self.assertEqual(
+            mockresponse.selector.one(
+                '#objecttableview-table tbody tr td:last-child .btn-default').alltext_normalized,
+            'Use this')
+
+    def test_uploadform_get_render(self):
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mockresponse = self.mock_http200_getrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertTrue(mockresponse.selector.exists('#django_cradmin_imagearchive_bulkadd_form'))
+        self.assertTrue(mockresponse.selector.exists('input[type=hidden][name=filecollectionid]'))
+        self.assertTrue(mockresponse.selector.exists('#div_id_filecollectionid'))
+
+    def test_uploadform_post_no_filecollectionid(self):
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        mockresponse = self.mock_http200_postrequest_htmls(
+            requestuser=create_user('testuser'),
+            cradmin_role=testrole)
+        self.assertTrue(mockresponse.selector.exists('#div_id_filecollectionid.has-error'))
+        self.assertIn(
+            'You must upload an image.',
+            mockresponse.selector.one('#div_id_filecollectionid').alltext_normalized)
+
+    def test_uploadform_post_single_image(self):
+        testuser = create_user('testuser')
+        testimage = create_image(200, 100)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.png')
+        temporaryfile.file.save('testfile.png', ContentFile(testimage))
+
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        cradmin_app = mock.MagicMock()
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        mockresponse = self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            cradmin_app=cradmin_app,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
+
+        self.assertEqual(ArchiveImage.objects.count(), 1)
+        created_image = ArchiveImage.objects.first()
+        self.assertTrue(mockresponse.response['Location'].endswith(
+            '?foreignkey_selected_value={}'.format(created_image.pk)))
+        self.assertEqual(created_image.image.read(), testimage)
+        self.assertEqual(created_image.name, 'testfile.png')
+        self.assertEqual(created_image.description, '')
+
+    def test_uploadform_post_deletes_collection(self):
+        testuser = create_user('testuser')
+        testimage = create_image(200, 100)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.png')
+        temporaryfile.file.save('testfile.png', ContentFile(testimage))
+
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
+
+        self.assertFalse(TemporaryFileCollection.objects.filter(id=collection.id).exists())
+
+    def test_uploadform_post_multiple_images_fails(self):
+        testuser = create_user('testuser')
+        testimage1 = create_image(200, 100)
+        testimage2 = create_image(100, 100)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile1.png')
+        temporaryfile.file.save('testfile1.png', ContentFile(testimage1))
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile2.png')
+        temporaryfile.file.save('testfile2.png', ContentFile(testimage2))
+
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        cradmin_app = mock.MagicMock()
+        cradmin_app.reverse_appurl.return_value = '/success'
+
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        mockresponse = self.mock_http200_postrequest_htmls(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            cradmin_app=cradmin_app,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
+        self.assertEqual(ArchiveImage.objects.count(), 0)
+        self.assertTrue(mockresponse.selector.exists('#div_id_filecollectionid.has-error'))
+        self.assertIn(
+            'You must upload exactly one image.',
+            mockresponse.selector.one('#div_id_filecollectionid').alltext_normalized)
+
+    def test_uploadform_post_sets_file_size(self):
+        testuser = create_user('testuser')
+        testimage = create_image(200, 100)
+        collection = TemporaryFileCollection.objects.create(user=testuser)
+        temporaryfile = TemporaryFile(
+            collection=collection,
+            filename='testfile.png')
+        temporaryfile.file.save('testfile.png', ContentFile(testimage))
+
+        testrole = mommy.make('django_cradmin_testapp.TstRole')
+        self.mock_http302_postrequest(
+            requestuser=testuser,
+            cradmin_role=testrole,
+            requestkwargs={
+                'data': {
+                    'filecollectionid': collection.id
+                }
+            })
         created_image = ArchiveImage.objects.first()
         self.assertEqual(len(testimage), created_image.file_size)

@@ -61,6 +61,8 @@ INSTALLED_APPS = (
 
     # The advanced demo
     'django_cradmin.demo.webdemo',
+    'django_cradmin.demo.login_not_required_demo',
+    'django_cradmin.demo.no_role_demo',
 
     # The demo based on the Django tutorial
     'django_cradmin.demo.polls_demo',
@@ -227,3 +229,4 @@ DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
 DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE = 'cradmin-archiveimage-listing'
 DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH = 170
 DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE = 'cradmin-archiveimage-preview'
+# DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '100KB'

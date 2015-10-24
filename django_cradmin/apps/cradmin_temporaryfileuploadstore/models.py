@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import math
+from django_cradmin.utils import crhumanize
 
 
 class TemporaryFileCollectionQuerySet(models.query.QuerySet):
@@ -157,6 +158,19 @@ class TemporaryFileCollection(models.Model):
                   'algorithm handles max_filename.'
                   'This is validated by the API on upload.')
 
+    #: Max file size in bytes.
+    max_filesize_bytes = models.PositiveIntegerField(
+        null=True, default=None, blank=True)
+
+    #: If this is True, only a single file can be added to the collection.
+    #: This means that the last file added to the collection will be the
+    #: only file in the collection.
+    singlemode = models.BooleanField(
+        null=False, default=False,
+        help_text='If this is True, only a single file can be added to the '
+                  'collection. This means that the last file added to the '
+                  'collection will be the only file in the collection.')
+
     def clear_files(self):
         for temporaryfile in self.files.all():
             temporaryfile.delete_object_and_file()
@@ -195,6 +209,13 @@ def temporary_file_upload_to(instance, filename):
         extension=extension)
 
 
+def validate_max_file_size(max_filesize_bytes, fieldfile):
+    if fieldfile.size > max_filesize_bytes:
+        raise ValidationError(_('Can not upload files larger than %(max_filesize)s.') % {
+            'max_filesize': crhumanize.human_readable_filesize(max_filesize_bytes),
+        }, code='max_filesize_bytes_exceeded')
+
+
 class TemporaryFile(models.Model):
     """
     A temporary file uploaded by a user.
@@ -223,3 +244,13 @@ class TemporaryFile(models.Model):
                                                   maxlength=self.collection.max_filename_length)
             if not self.collection.is_supported_filetype(self.mimetype, self.filename):
                 raise ValidationError(_('Unsupported filetype.'), code='unsupported_mimetype')
+            if self.collection.singlemode:
+                other_temporaryfiles_queryset = self.collection.files.all()
+                if self.id is not None:
+                    other_temporaryfiles_queryset = other_temporaryfiles_queryset.exclude(id=self.id)
+                for temporaryfile in other_temporaryfiles_queryset:
+                    temporaryfile.file.delete()
+                    temporaryfile.delete()
+            if self.collection.max_filesize_bytes and self.file:
+                validate_max_file_size(max_filesize_bytes=self.collection.max_filesize_bytes,
+                                       fieldfile=self.file)

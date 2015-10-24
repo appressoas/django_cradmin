@@ -1,28 +1,27 @@
 from __future__ import unicode_literals
 from builtins import object
 import logging
+
 from django import http
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms import layout
 from django import forms
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.crispylayouts import BulkFileUploadSubmit
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
-from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget
-from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
+from django.views.generic.edit import FormMixin
 
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.models import TemporaryFileCollection
+from django_cradmin.apps.cradmin_temporaryfileuploadstore.widgets import BulkFileUploadWidget, SingleFileUploadWidget
+from django_cradmin.utils import crhumanize
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import crudbase
-from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
+from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import delete
 from django_cradmin.viewhelpers import formbase
 from django_cradmin import crapp
 from django_cradmin import crsettings
 from django_cradmin.apps.cradmin_imagearchive.models import ArchiveImage
-from django_cradmin.widgets import filewidgets
-
 
 logger = logging.getLogger(__name__)
 
@@ -34,9 +33,12 @@ class DescriptionColumn(objecttable.MultiActionColumn):
         return obj.screenreader_text
 
     def get_buttons(self, obj):
+        edit_description_label = _('Set a description')
+        if obj.description:
+            edit_description_label = _('Edit description')
         return [
             objecttable.Button(
-                label=_('Edit'),
+                label=edit_description_label,
                 url=self.reverse_appurl('edit', args=[obj.id])),
             objecttable.Button(
                 label=_('Delete'),
@@ -100,188 +102,92 @@ class ArchiveImagesQuerySetForRoleMixin(object):
             .order_by('-created_datetime')
 
 
-class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView):
-    model = ArchiveImage
-    columns = [
-        ImageColumn,
-        DescriptionColumn,
-    ]
-    searchfields = ['name', 'description', 'file_extension']
-    hide_column_headers = True
-
-    def get_buttons(self):
-        app = self.request.cradmin_app
-        return [
-            objecttable.Button(label=_('Add image'),
-                               url=app.reverse_appurl('create'),
-                               buttonclass='btn btn-primary'),
-            objecttable.Button(label=_('Bulk upload'),
-                               url=app.reverse_appurl('bulkadd'),
-                               buttonclass='btn btn-default'),
-        ]
-
-
-class ArchiveImagesSingleSelectView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView):
-    model = ArchiveImage
-    columns = [
-        ImageColumn,
-        DescriptionSelectColumn,
-    ]
-    searchfields = ['name', 'description', 'file_extension']
-    hide_menu = True
-    # paginate_by = 10
-    hide_column_headers = True
-
-    def make_foreignkey_preview_for(self, obj):
-        archiveimage = obj
-        return archiveimage.get_preview_html(request=self.request)
-
-    def get_buttons(self):
-        app = self.request.cradmin_app
-        return [
-            objecttable.ForeignKeySelectButton(
-                label=_('Add image'),
-                buttonclass='btn btn-primary',
-                request=self.request,
-                url=app.reverse_appurl('create')),
-        ]
-
-
-class ArchiveImageCreateUpdateMixin(object):
-    model = ArchiveImage
-    roleid_field = 'role'
-
-    def get_preview_imagetype(self):
-        """
-        Get the ``imagetype`` to use with
-        :func:`~django_cradmin.templatetags.cradmin_image_tags.cradmin_create_archiveimage_tag`.
-        to generate the preview.
-        """
-        return crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE')
-
-    def get_form(self, form_class=None):
-        form = super(ArchiveImageCreateUpdateMixin, self).get_form(form_class=form_class)
-        form.fields['image'].widget = filewidgets.ImageWidget(
-            request=self.request,
-            clearable=False, preview_imagetype=self.get_preview_imagetype())
-        return form
-
-    def save_object_with_new_imagefile(self, form):
-        archiveimage = super(ArchiveImageCreateUpdateMixin, self).save_object(form, commit=False)
-        image = archiveimage.image
-        archiveimage.image = None
-        archiveimage.save()
-        archiveimage.image = image
-        archiveimage.file_size = image.size
-        archiveimage.save()
-        return archiveimage
-
-
-class ArchiveImageCreateView(crudbase.OnlySaveButtonMixin,
-                             ArchiveImageCreateUpdateMixin,
-                             create.CreateView):
-    """
-    View used to create new images.
-    """
-    fields = ['image', 'description']
-
-    submit_use_label = _('Upload and select')
-    submit_save_label = _('Upload image')
-    submit_save_and_continue_edititing_label = _('Upload and continue editing')
-
-    def get_field_layout(self):
-        return [
-            layout.Div(
-                'image',
-                layout.Field('description', css_class='cradmin-textarea-small'),
-                css_class='cradmin-globalfields'
-            )
-        ]
-
-    def save_object(self, form, commit=True):
-        return self.save_object_with_new_imagefile(form)
-
-    def get_success_message(self, object):
-        what = u'"{}"'.format(object)
-        return _(u'Uploaded %(what)s.') % {'what': what}
-
-
-class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
-                             ArchiveImagesQuerySetForRoleMixin,
-                             ArchiveImageCreateUpdateMixin,
-                             update.UpdateView):
-    """
-    View used to create edit existing images.
-    """
-    fields = ['image', 'description']
-
-    def get_field_layout(self):
-        return [
-            layout.Div(
-                'image',
-                layout.Field('description', css_class='cradmin-textarea-small'),
-                css_class='cradmin-globalfields'
-            )
-        ]
-
-    def save_object(self, form, commit=True):
-        # Delete the old image before uploading the new one.
-        old_archiveimage = ArchiveImage.objects.get(id=self.object.id)
-        image_changed = old_archiveimage.image.name != form.cleaned_data['image'].name
-        if image_changed:
-            old_archiveimage.image.delete()
-            return self.save_object_with_new_imagefile(form)
-        else:
-            return super(ArchiveImageUpdateView, self).save_object(form, commit=commit)
-
-
-class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteView):
-    """
-    View used to delete existing images.
-    """
+def get_bulkupload_apiparameters():
+    apiparameters = {
+        'accept': 'image/png,image/jpeg,image/gif',
+    }
+    max_filesize_bytes = crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE', None)
+    if max_filesize_bytes is not None:
+        apiparameters['max_filesize_bytes'] = crhumanize.dehumanize_readable_filesize(max_filesize_bytes)
+    return apiparameters
 
 
 class BulkAddForm(forms.Form):
     filecollectionid = forms.IntegerField(
         required=True,
         widget=BulkFileUploadWidget(
+            autosubmit=True,
             accept='image/*',
             # accept='image/png,image/jpeg,image/gif',  # NOTE: Does not work with the fileselector in firefox
-            apiparameters={
-                'accept': 'image/png,image/jpeg,image/gif'
-            },
+            apiparameters=get_bulkupload_apiparameters(),
             dropbox_text=_('Upload images by dragging and dropping them here'),
             invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
             advanced_fileselectbutton_text=_('... or select images'),
             simple_fileselectbutton_text=_('Select images ...')
         ),
         label=_('Upload at least one image'),
-        help_text=_(
-            'Upload as many images as you like. '
-            'You can edit the name and description of the images after they have been uploaded.'),
         error_messages={
-            'required': _('You must upload at least one file.')
+            'required': _('You must upload at least one image.')
         })
 
 
-class ArchiveImageBulkAddView(formbase.FormView):
-    form_class = BulkAddForm
-    form_attributes = {
-        'django-cradmin-bulkfileupload-form': ''
-    }
+class SingleAddForm(forms.Form):
+    filecollectionid = forms.IntegerField(
+        required=True,
+        widget=SingleFileUploadWidget(
+            autosubmit=True,
+            accept='image/*',
+            apiparameters=get_bulkupload_apiparameters(),
+            dropbox_text=_('Upload an image by dragging and dropping it here'),
+            advanced_fileselectbutton_text=_('... or select an image'),
+            invalid_filetype_message=_('Invalid filetype. You can only upload images.'),
+            simple_fileselectbutton_text=_('Select an image ...')
+        ),
+        label=_('Upload an image'),
+        error_messages={
+            'required': _('You must upload an image.')
+        })
+
+    def clean(self):
+        cleaned_data = super(SingleAddForm, self).clean()
+        filecollectionid = cleaned_data.get('filecollectionid', None)
+        if filecollectionid is not None:
+            collection = TemporaryFileCollection.objects.get(id=filecollectionid)
+            filecount = collection.files.count()
+            if filecount < 1:
+                raise forms.ValidationError({
+                    'filecollectionid': _('You must upload an image.')
+                })
+            elif filecount > 1:
+                raise forms.ValidationError({
+                    'filecollectionid': _('You must upload exactly one image.')
+                })
+
+
+class AddImageOverlayButton(objecttable.NonSubmitButton):
+    def get_html_attributes(self):
+        attributes = super(AddImageOverlayButton, self).get_html_attributes()
+        attributes['django-cradmin-bulkfileupload-show-overlay'] = 'filecollectionid'
+        return attributes
+
+
+class BaseImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.ObjectTableView,
+                         formbase.FormViewMixin, FormMixin):
+    searchfields = ['name', 'description', 'file_extension']
+    hide_column_headers = True
+    model = ArchiveImage
+    paginate_by = 15
+
     form_id = 'django_cradmin_imagearchive_bulkadd_form'
-    extra_form_css_classes = ['django-cradmin-form-noasterisk']
+    extra_form_css_classes = ['django-cradmin-form-noasterisk', 'django-cradmin-bulkfileupload-form-overlay']
+    template_name = 'django_cradmin/apps/cradmin_imagearchive/listview.django.html'
 
-    def get_pagetitle(self):
-        return _('Bulk upload archive images')
-
-    def get_buttons(self):
-        return [
-            BulkFileUploadSubmit(
-                'submit', _('Add to the image archive'),
-                uploading_text=_('Uploading images'),
-                uploading_icon_cssclass=cradmin_icon('loadspinner')),
-        ]
+    def get_form_attributes(self):
+        return {
+            'django-cradmin-bulkfileupload-form': '',
+            'django-cradmin-bulkfileupload-form-overlay': 'true',
+            'django-cradmin-bulkfileupload-form-open-overlay-on-window-dragdrop': 'true'
+        }
 
     def get_field_layout(self):
         return [
@@ -291,8 +197,18 @@ class ArchiveImageBulkAddView(formbase.FormView):
                 css_class="cradmin-focusfield"),
         ]
 
+    def get_buttons(self):
+        return [
+            AddImageOverlayButton(label=_('Add image'), buttonclass='btn btn-primary')
+        ]
+
+    def get_button_layout(self):
+        # Overridden because get_buttons from formbase.FormView and
+        # objecttable.ObjectTableView both use get_buttons().
+        return []
+
     def get_formhelper(self):
-        formhelper = super(ArchiveImageBulkAddView, self).get_formhelper()
+        formhelper = super(BaseImagesListView, self).get_formhelper()
         formhelper.form_show_labels = False
         return formhelper
 
@@ -305,10 +221,14 @@ class ArchiveImageBulkAddView(formbase.FormView):
         archiveimage.save()
         archiveimage.image.save(temporaryfile.filename, ContentFile(temporaryfile.file.read()))
         archiveimage.full_clean()
+        return archiveimage
 
     def upload_files_to_archive(self, temporaryfilecollection):
+        uploaded_archiveimages = []
         for temporaryfile in temporaryfilecollection.files.all():
-            self.upload_file_to_archive(temporaryfile)
+            uploaded_archiveimage = self.upload_file_to_archive(temporaryfile)
+            uploaded_archiveimages.append(uploaded_archiveimage)
+        return uploaded_archiveimages
 
     def get_collectionqueryset(self):
         return TemporaryFileCollection.objects\
@@ -350,10 +270,103 @@ class ArchiveImageBulkAddView(formbase.FormView):
         except TemporaryFileCollection.DoesNotExist:
             return http.HttpResponseNotFound()
         else:
-            self.upload_files_to_archive(temporaryfilecollection)
+            # We use ``uploaded_archiveimages`` in :meth:`.ArchiveImagesSingleSelectView.get_success_url`
+            self.uploaded_archiveimages = self.upload_files_to_archive(temporaryfilecollection)
             self.add_success_messages(temporaryfilecollection)
             temporaryfilecollection.clear_files_and_delete()
             return http.HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        self.object_list = self.get_queryset()
+        return super(BaseImagesListView, self).form_invalid(form)
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(BaseImagesListView, self).get_context_data(**kwargs)
+        self.add_context_data(context)
+        if 'form' not in context:
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+            context['form'] = form
+        return context
+
+
+class ArchiveImagesListView(BaseImagesListView):
+    """
+    The list view in the image achive app.
+    """
+    columns = [
+        ImageColumn,
+        DescriptionColumn,
+    ]
+    form_class = BulkAddForm
+
+    # def get_button_layout(self):
+    #     return [
+    #         layout.Div(PrimarySubmit('save', _('Upload images')),
+    #                    css_class="django_cradmin_submitrow")
+    #     ]
+
+
+class ArchiveImagesSingleSelectView(BaseImagesListView):
+    """
+    Used when selecting a single archive image as a foreign key.
+    """
+    columns = [
+        ImageColumn,
+        DescriptionSelectColumn,
+    ]
+    hide_menu = True
+    form_class = SingleAddForm
+    listing_viewname = 'singleselect'
+
+    def make_foreignkey_preview_for(self, obj):
+        archiveimage = obj
+        return archiveimage.get_preview_html(request=self.request)
+
+    # def get_button_layout(self):
+    #     return [
+    #         layout.Div(PrimarySubmit('save', _('Upload image')),
+    #                    css_class="django_cradmin_submitrow")
+    #     ]
+
+    def get_success_url(self):
+        url = self.request.build_absolute_uri()
+        uploaded_archiveimage = self.uploaded_archiveimages[0]
+        url = create.CreateView.add_foreignkey_selected_value_to_url_querystring(url, uploaded_archiveimage.pk)
+        return url
+
+
+class ArchiveImageUpdateView(crudbase.OnlySaveButtonMixin,
+                             ArchiveImagesQuerySetForRoleMixin,
+                             update.UpdateView):
+    """
+    View used to create edit existing images.
+    """
+    model = ArchiveImage
+    fields = ['description']
+    roleid_field = 'role'
+
+    def get_field_layout(self):
+        return [
+            layout.Div(
+                layout.Field('description', css_class='cradmin-textarea-small'),
+                css_class='cradmin-globalfields'
+            )
+        ]
+
+
+class ArchiveImageDeleteView(ArchiveImagesQuerySetForRoleMixin, delete.DeleteView):
+    """
+    View used to delete existing images.
+    """
 
 
 class App(crapp.App):
@@ -367,20 +380,11 @@ class App(crapp.App):
             ArchiveImagesSingleSelectView.as_view(),
             name='singleselect'),
         crapp.Url(
-            r'^create$',
-            ArchiveImageCreateView.as_view(),
-            name="create"),
-        crapp.Url(
             r'^edit/(?P<pk>\d+)$',
             ArchiveImageUpdateView.as_view(),
             name="edit"),
         crapp.Url(
             r'^delete/(?P<pk>\d+)$',
             ArchiveImageDeleteView.as_view(),
-            name="delete"),
-        crapp.Url(
-            r'bulkadd$',
-            ArchiveImageBulkAddView.as_view(),
-            name='bulkadd'
-        )
+            name="delete")
     ]

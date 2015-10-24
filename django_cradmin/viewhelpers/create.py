@@ -73,16 +73,21 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         self.add_preview_button_if_configured(buttons)
         return buttons
 
+    @classmethod
+    def add_foreignkey_selected_value_to_url_querystring(cls, url, object_pk):
+        url = urllib.parse.unquote_plus(url)
+        urllist = list(urllib.parse.urlsplit(url))
+        querystring = urllist[3]
+        querydict = urllib.parse.parse_qs(querystring)
+        querydict['foreignkey_selected_value'] = [str(object_pk)]
+        urllist[3] = urllib.parse.urlencode(querydict, doseq=True)
+        url = urllib.parse.urlunsplit(urllist)
+        return url
+
     def get_default_save_success_url(self):
         url = super(CreateView, self).get_default_save_success_url()
         if self.is_in_foreignkey_select_mode():
-            url = urllib.parse.unquote_plus(url)
-            urllist = list(urllib.parse.urlsplit(url))
-            querystring = urllist[3]
-            querydict = urllib.parse.parse_qs(querystring)
-            querydict['foreignkey_selected_value'] = [str(self.object.pk)]
-            urllist[3] = urllib.parse.urlencode(querydict, doseq=True)
-            url = urllib.parse.urlunsplit(urllist)
+            url = self.__class__.add_foreignkey_selected_value_to_url_querystring(url, self.object.pk)
         return url
 
     def get_formhelper(self):

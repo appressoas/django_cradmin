@@ -5167,35 +5167,12 @@ table.table.django-cradmin-table tbody td:last-child {
   }
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  scrollbar-face-color: #377ca8;
-  scrollbar-arrow-color: #377ca8;
-  scrollbar-track-color: #2b2b2b;
-  scrollbar-highlight-color: #377ca8;
-  scrollbar-3dlight-color: #2b2b2b;
-  scrollbar-dark-shadow-color: #2b2b2b;
-  scrollbar-shadow-color: #2b2b2b;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar {
-  width: 14px;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-track {
-  background-color: #2b2b2b;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-thumb {
-  background-color: #377ca8;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-thumb:hover {
-  background-color: #4d96c5;
-}
-.django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner::-webkit-scrollbar-button {
-  display: none;
 }
 .django-cradmin-floating-fullsize-iframe-wrapper .django-cradmin-floating-fullsize-content .django-cradmin-floating-fullsize-iframe-inner iframe {
   position: absolute;
@@ -5203,7 +5180,7 @@ table.table.django-cradmin-table tbody td:last-child {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 10px;
+  height: 100%;
   width: 100%;
   border: none;
 }
@@ -5569,130 +5546,326 @@ ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li a:hover
 ul.django-cradmin-roleselect-list.django-cradmin-roleselect-list-flat li:last-child {
   border-bottom: none;
 }
-.django-cradmin-bulkfileupload {
+/**
+# Bulk file upload widget styles
+*/
+/**
+## .django-cradmin-bulkfileupload
+The bulk file upload widget base styles.
+*/
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-overlay-controls {
+  display: none;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content {
   padding: 0;
   background: #ffffff;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox {
-  background: #d2d2d2;
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+  background: #f0f0f0;
   color: #666666;
   font-weight: bold;
   font-size: inherit;
-  padding: 45px 30px;
+  padding: 5px 30px 5px 30px;
+  height: 100px;
   text-align: center;
   border-style: dashed;
-  border-color: #c2c2c2;
-  border-width: 6px;
+  border-color: #d2d2d2;
+  border-width: 2px;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
   display: none;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-text {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-text p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
+  text-align: center;
+  margin-bottom: 0;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-text p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton {
+  display: inline-block;
+  color: #377ca8;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-text p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton:hover {
+  color: #24516e;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
   background: #dff0d8;
   color: #3c763d;
   border-style: solid;
   border-color: #d6e9c6;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover .django-cradmin-bulkfileupload-dropbox-text p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
+  display: none;
+}
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error {
   background: #f2dede;
   color: #a94442;
   border-style: solid;
   border-color: #ebccd1;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
   display: block;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error .django-cradmin-bulkfileupload-dropbox-text {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover-error .django-cradmin-bulkfileupload-dropbox-text {
   display: none;
 }
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
-  text-align: center;
-}
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton {
-  display: inline-block;
-  color: #377ca8;
-}
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper .django-cradmin-bulkfileupload-advanced-fileselectbutton:hover {
-  color: #24516e;
-}
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-simple-button-wrapper {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content p.django-cradmin-bulkfileupload-simple-button-wrapper {
   padding: 10px 15px;
   margin: 0;
 }
-.django-cradmin-bulkfileupload p.django-cradmin-bulkfileupload-simple-button-wrapper .btn.django-cradmin-bulkfileupload-simple-button {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content p.django-cradmin-bulkfileupload-simple-button-wrapper .btn.django-cradmin-bulkfileupload-simple-button {
   padding: 10px 16px;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile {
   font-weight: normal;
   font-size: 16px;
   margin: 0;
   padding: 20px 15px;
 }
 @media (min-width: 992px) {
-  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item,
-  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item,
-  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile,
-  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile {
+  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item,
+  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item,
+  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile,
+  .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile {
     padding: 10px 15px;
   }
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph {
   background: #f2dede;
   color: #a94442;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton {
   float: right;
   margin-top: -7px;
   margin-right: -7px;
   color: #a94442;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover,
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-progress-item.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover,
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles p.django-cradmin-bulkfileupload-rejectedfile.django-cradmin-bulkfileupload-errorparagraph .django-cradmin-bulkfileupload-error-closebutton:hover {
   color: #7d3231;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress {
   background: #ffffff;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item {
   color: #666666;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar {
   display: inline-block;
   background: #333333;
   width: 100px;
   position: relative;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar .django-cradmin-progressbar-progress {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar .django-cradmin-progressbar-progress {
   display: inline-block;
   height: 100%;
   background: #377ca8;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar .django-cradmin-progresspercent {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-progressbar .django-cradmin-progresspercent {
   position: absolute;
   top: 1px;
   left: 5px;
   font-size: 14px;
   color: #ffffff;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-bulkfileupload-remove-file-button {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-bulkfileupload-remove-file-button {
   float: right;
   margin-top: -7px;
   margin-right: -7px;
   color: #a94442;
 }
-.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-bulkfileupload-remove-file-button:hover {
+.django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress p.django-cradmin-bulkfileupload-progress-item .django-cradmin-bulkfileupload-remove-file-button:hover {
   color: #7d3231;
+}
+/**
+## .django-cradmin-bulkfileupload-form-overlay
+Added automatically to the ``<form>`` by the ``django-cradmin-bulkfileupload-form``
+angularjs directive when the ``django-cradmin-bulkfileupload-form-overlay``
+attribute is ``true``. The css class should also be added to the form in
+python/django code to avoid that the form is visible while the page loads.
+*/
+.django-cradmin-bulkfileupload-form-overlay {
+  display: none;
+}
+/**
+## .django-cradmin-bulkfileupload-overlaywrapper
+Wrapper around the ``<form>`` added automatically by the
+``django-cradmin-bulkfileupload-form`` angularjs directive. The directive
+also moves the wrapper element from its original place in the DOM to a direct
+child of ``<body>``.
+*/
+.django-cradmin-bulkfileupload-overlaywrapper {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 50000;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-show {
+  display: block;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls {
+  display: block;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-hide-overlay-button {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 50003;
+  font-size: 30px;
+  color: #eeeeee;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-hide-overlay-button:hover {
+  color: #ffffff;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-backdrop {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  z-index: 50001;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-overlay-uploadingmessage {
+  display: none;
+  position: absolute;
+  background: #ffffff;
+  color: #333333;
+  font-size: 16px;
+  font-weight: bold;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 50005;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-overlay-uploadingmessage.django-cradmin-bulkfileupload-overlay-uploadingmessage-visible {
+  display: block;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-overlay-controls .django-cradmin-bulkfileupload-overlay-uploadingmessage p.django-cradmin-bulkfileupload-overlay-uploadingmessage-text {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-align: center;
+  margin: 0;
+  padding: 0 20px 0 20px;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay {
+  display: block;
+  z-index: 50002;
+  background: #fff;
+  overflow: auto;
+  padding: 0;
+  width: 90%;
+  bottom: auto;
+  left: 50%;
+  margin-left: -45%;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .form-group {
+  margin: 0;
+}
+.django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+  height: 200px;
+}
+@media (min-height: 400px) {
+  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+    height: 180px;
+  }
+}
+@media (min-height: 500px) {
+  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+    height: 270px;
+  }
+}
+@media (min-height: 600px) {
+  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+    height: 370px;
+  }
+}
+@media (min-height: 700px) {
+  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+    height: 470px;
+  }
+}
+@media (min-height: 800px) {
+  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+    height: 570px;
+  }
+}
+@media (min-height: 900px) {
+  .django-cradmin-bulkfileupload-overlaywrapper .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+    height: 670px;
+  }
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-overlay-controls {
+  display: none;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin-left: 0;
+  width: 100%;
+  border: none;
+  padding: 0;
+  -webkit-transform: none;
+  -moz-transform: none;
+  transform: none;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-progress,
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-rejectedfiles,
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-advanced-fileselectbutton-wrapper {
+  display: none;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox .django-cradmin-bulkfileupload-dropbox-invalid-filetype-errormessage {
+  display: none;
+}
+.django-cradmin-bulkfileupload-overlaywrapper.django-cradmin-bulkfileupload-overlaywrapper-window-dragover .django-cradmin-bulkfileupload-form-overlay .django-cradmin-bulkfileupload .django-cradmin-bulkfileupload-content .django-cradmin-bulkfileupload-dropbox.django-cradmin-bulkfileupload-dropbox-dragover {
+  background: #dff0d8;
+  color: #3c763d;
+  border-style: solid;
+  border-color: #d6e9c6;
 }
 .django-cradmin-focusedpage-wrapper {
   width: 100%;

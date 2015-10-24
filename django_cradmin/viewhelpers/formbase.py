@@ -249,16 +249,38 @@ class FormViewMixin(object):
         form_id = self.get_form_id()
         if form_id:
             helper.form_id = form_id
+
         helper.attrs = self.get_form_attributes()
         return helper
 
-    def get_context_data(self, **kwargs):
-        context = super(FormViewMixin, self).get_context_data(**kwargs)
+    def add_context_data(self, context):
+        """
+        Used by :meth:`.get_context_data` to add the context data required to
+        render the form view.
+
+        You will usually only use this when you create a view that inherits
+        ``get_context_data()`` from two different superclasses (I.E.: A list view
+        that also contains a form). In that case, you can use something like::
+
+            def get_context_data(self, **kwargs):
+                context = super(MyView, self).get_context_data(**kwargs)
+                self.add_context_data(context)
+                return context
+
+        to add the context data required for the form.
+        """
         context['formhelper'] = self.get_formhelper()
         context['enable_modelchoicefield_support'] = self.enable_modelchoicefield_support
         context['hide_pageheader'] = self.get_hide_page_header()
         context['pagetitle'] = self.get_pagetitle()
         context['pageheading'] = self.get_pageheading()
+
+    def get_context_data(self, **kwargs):
+        """
+        Get the context data required to render the form view.
+        """
+        context = super(FormViewMixin, self).get_context_data(**kwargs)
+        self.add_context_data(context)
         return context
 
     def get_listing_url(self):

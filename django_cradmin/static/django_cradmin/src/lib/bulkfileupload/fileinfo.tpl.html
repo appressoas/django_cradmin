@@ -1,0 +1,29 @@
+<p class="django-cradmin-bulkfileupload-progress-item"
+        ng-class="{
+            'django-cradmin-bulkfileupload-progress-item-finished': fileInfo.finished,
+            'django-cradmin-bulkfileupload-progress-item-error django-cradmin-bulkfileupload-errorparagraph': fileInfo.hasErrors
+        }">
+    <button django-cradmin-bulkfileupload-remove-file-button="fileInfo"
+            ng-if="fileInfo.finished"
+            type="button"
+            class="btn btn-link django-cradmin-bulkfileupload-remove-file-button">
+        <span ng-if="!fileInfo.isRemoving &amp;&amp; !fileInfo.autosubmit"
+              class="django-cradmin-bulkfileupload-remove-file-button-isnotremoving">
+            <span class="fa fa-times"></span>
+            <span class="sr-only">{{fileInfo.i18nStrings.remove_file_label}}</span>
+        </span>
+        <span ng-if="fileInfo.isRemoving"
+              class="django-cradmin-bulkfileupload-remove-file-button-isremoving">
+            <span class="fa fa-spinner fa-spin"></span>
+            <span class="sr-only">{{fileInfo.i18nStrings.removing_file_message}}</span>
+        </span>
+    </button>
+
+    <span class="django-cradmin-progressbar">
+        <span class="django-cradmin-progressbar-progress" ng-style="{'width': fileInfo.percent+'%'}">&nbsp;</span>
+        <span class="django-cradmin-progresspercent">
+            <span class="django-cradmin-progresspercent-number">{{ fileInfo.percent }}</span>%
+        </span>
+    </span>
+    <span class="django-cradmin-filename">{{fileInfo.name}}</span>
+</p>
