@@ -78,14 +78,18 @@ class List(AbstractRenderable):
     """
     template_name = 'django_cradmin/viewhelpers/listbuilder/base/list.django.html'
 
-    def __init__(self):
+    def __init__(self, extra_css_classes=None):
         self.renderable_list = []
+        self.extra_css_classes = extra_css_classes
 
     def iter_renderables(self):
         return iter(self.renderable_list)
 
     def get_css_classes(self):
-        return 'django-cradmin-listbuilder-list'
+        css_classes = 'django-cradmin-listbuilder-list'
+        if self.extra_css_classes:
+            css_classes += ' ' + self.extra_css_classes
+        return css_classes
 
     def append(self, renderable):
         """
