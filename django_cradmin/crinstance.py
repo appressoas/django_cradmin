@@ -357,7 +357,7 @@ class BaseCrAdminInstance(object):
     @classmethod
     def get_app_url(cls, appname, appclass):
         appurlpatterns = appclass.build_urls(cls.id, appname)
-        flatten = bool(cls.rolefrontpage_appname) and cls.flatten_rolefrontpage_url
+        flatten = cls.rolefrontpage_appname == appname and cls.flatten_rolefrontpage_url
         if cls.roleclass:
             if flatten:
                 return url(r'^(?P<roleid>{})/'.format(cls.roleid_regex),
@@ -368,8 +368,7 @@ class BaseCrAdminInstance(object):
 
         else:
             if flatten:
-                return url(r'^'.format(appname),
-                           include(appurlpatterns))
+                return url(r'^', include(appurlpatterns))
             else:
                 return url(r'^{}/'.format(appname),
                            include(appurlpatterns))
