@@ -107,6 +107,9 @@ class BaseCrAdminInstance(object):
         """
         self.request = request
 
+    def get_cradmin_theme_path(self):
+        return None
+
     def get_rolequeryset(self):
         """
         Get the roles for the authenticated user.
