@@ -3,6 +3,7 @@ from django.template.defaultfilters import truncatechars
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
+from django_cradmin.demo.webdemo.views import pages_listbuilder
 
 from .models import Site
 from .views import dashboard
@@ -21,6 +22,9 @@ class Menu(crmenu.Menu):
         self.add_menuitem(
             label=_('Pages'), url=self.appindex_url('pages'),
             active=self.request.cradmin_app.appname == 'pages')
+        self.add_menuitem(
+            label=_('Pages (listbuilder)'), url=self.appindex_url('pages_listbuilder'),
+            active=self.request.cradmin_app.appname == 'pages_listbuilder')
         self.add_menuitem(
             label=_('Images'), url=self.appindex_url('imagearchive'),
             active=self.request.cradmin_app.appname == 'imagearchive')
@@ -42,6 +46,7 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     apps = [
         ('dashboard', dashboard.App),
         ('pages', pages.App),
+        ('pages_listbuilder', pages_listbuilder.App),
         ('imagearchive', imagearchive.App),
         ('inviteadmins', inviteadmins.App),
         ('sharable_link', sharable_link.App),
