@@ -40,11 +40,18 @@ Can be used to hide the page header in listing views by default.
 
 DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED
 ====================================
-
 If this is ``True``, the menu template will add an angularjs directive that
 automatically scrolls the menu when the window is scrolled.
 
 
+.. setting:: DJANGO_CRADMIN_HIDE_PAGE_HEADER
+
+DJANGO_CRADMIN_HIDE_PAGE_HEADER
+===============================
+If this is ``True``, we do not render the page header. This only affects views
+that use templates inheriting from the ``django_cradmin/standalone-base.django.html``
+template. This means all the views in ``django_cradmin.viewhelpers``, but not the login
+views, or other standalone (non-crapp.App views).
 
 
 **********
