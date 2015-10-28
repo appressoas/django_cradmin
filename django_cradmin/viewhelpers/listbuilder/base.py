@@ -84,6 +84,9 @@ class List(AbstractRenderable):
     def iter_renderables(self):
         return iter(self.renderable_list)
 
+    def get_css_classes(self):
+        return 'django-cradmin-listbuilder-list'
+
     def append(self, renderable):
         """
         Appends an item to the list.

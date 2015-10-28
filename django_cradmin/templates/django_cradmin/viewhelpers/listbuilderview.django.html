@@ -1,0 +1,34 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load cradmin_icon_tags %}
+
+{% block bodyclass %}
+    {{ block.super }}
+    django-cradmin-listbuilderview-page
+{% endblock %}
+
+{% block title %}
+    {{ pagetitle }}
+{% endblock title %}
+
+{% block pageheader-inner %}
+    <h1>
+        {% block heading %}
+            {{ pageheading }}
+        {% endblock heading %}
+    </h1>
+{% endblock pageheader-inner %}
+
+{% block content %}
+    <div class="container">
+        {% if object_list %}
+            {{ listbuilder_list.render }}
+            {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
+        {% else %}
+            <p class="django-cradmin-listbuilderview-no-items-message">
+                {{ no_items_message }}
+            </p>
+        {% endif %}
+    </div>
+{% endblock content %}

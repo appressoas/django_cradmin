@@ -1,7 +1,7 @@
-<ul>
+<ol class="{{ me.get_css_classes }}">
     {% for renderable in me.iter_renderables %}
         <li>
             {{ renderable.render }}
         </li>
     {% endfor %}
-</ul>
+</ol>
