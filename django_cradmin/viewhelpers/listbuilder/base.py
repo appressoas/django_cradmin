@@ -86,6 +86,9 @@ class List(AbstractRenderable):
         return iter(self.renderable_list)
 
     def get_css_classes(self):
+        """
+        Override this to set your own css classes.
+        """
         css_classes = 'django-cradmin-listbuilder-list'
         if self.extra_css_classes:
             css_classes += ' ' + self.extra_css_classes

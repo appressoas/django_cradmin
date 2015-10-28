@@ -18,7 +18,7 @@ class View(ListView):
                     return MyModel.objects.all()
 
     """
-    listbuilder_class = listbuilder.base.List
+    listbuilder_class = listbuilder.list.RowList
     value_renderer_class = listbuilder.base.ItemValueRenderer
     frame_renderer_class = None
     template_name = 'django_cradmin/viewhelpers/listbuilderview.django.html'

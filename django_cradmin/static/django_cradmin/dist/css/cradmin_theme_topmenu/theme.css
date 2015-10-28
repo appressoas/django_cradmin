@@ -6511,6 +6511,46 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
 .django-cradmin-datetime-selector.django-cradmin-datetime-selector-has-shortcuts .django-cradmin-datetime-selector-contentwrapper .django-cradmin-datetime-selector-dateview table.django-cradmin-datetime-selector-table {
   bottom: 65px;
 }
+/*
+Resets the style of the listbuilder list.
+
+Use other css classes to apply styles.
+*/
+.django-cradmin-listbuilder-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.django-cradmin-listbuilder-list li {
+  margin: 0;
+  padding: 0;
+}
+/*
+Styles for the RowList.
+
+Note that the RowList also uses the ``django-cradmin-listbuilder-list`` class.
+*/
+/*
+Styles for the FloatGridList.
+
+Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` class.
+*/
+.django-cradmin-listbuilder-floatgridlist:before,
+.django-cradmin-listbuilder-floatgridlist:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-listbuilder-floatgridlist:after {
+  clear: both;
+}
+.django-cradmin-listbuilder-floatgridlist:before,
+.django-cradmin-listbuilder-floatgridlist:after {
+  content: " ";
+  display: table;
+}
+.django-cradmin-listbuilder-floatgridlist:after {
+  clear: both;
+}
 nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   line-height: 50px;
   height: 50px;
