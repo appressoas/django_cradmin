@@ -108,6 +108,10 @@ class BaseCrAdminInstance(object):
         self.request = request
 
     def get_cradmin_theme_path(self):
+        """
+        Return a path to a theme in the same format as :setting:`DJANGO_CRADMIN_THEME_PATH`,
+        to use a custom theme for this instance.
+        """
         return None
 
     def get_rolequeryset(self):

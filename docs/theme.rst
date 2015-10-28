@@ -58,4 +58,4 @@ can be adjusted by just changing a couple of bootstrap and cradmin LESS variable
 
 How you build the theme is up to you, but you need to build ``yourtheme/theme.less``
 and update the ``DJANGO_CRADMIN_THEME_PATH``-setting to point to your theme
-(see :doc:`settings`).
+(see :setting:`DJANGO_CRADMIN_THEME_PATH`).
