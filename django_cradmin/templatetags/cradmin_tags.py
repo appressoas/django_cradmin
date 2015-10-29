@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 import json
 
 from django import template
+from django.conf import settings
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
@@ -106,3 +108,22 @@ def cradmin_jsonencode(json_serializable_pythonobject):
     to a json encoded string.
     """
     return json.dumps(json_serializable_pythonobject)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_theme_staticpath(context):
+    """
+    """
+    if 'request' in context:
+        request = context['request']
+        if hasattr(request, 'cradmin_instance'):
+            theme_path = request.cradmin_instance.get_cradmin_theme_path()
+            if theme_path:
+                theme_path = str(theme_path)
+            else:
+                theme_path = getattr(settings,
+                                     'DJANGO_CRADMIN_THEME_PATH',
+                                     'django_cradmin/dist/css/cradmin_theme_default/theme.css')
+            return static(theme_path)
+    else:
+        return ''

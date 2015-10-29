@@ -6,6 +6,7 @@
     you should extend ``base.django.html`` instead.
 {% endcomment %}{% spaceless %}
     {% load static %}
+    {% load cradmin_tags %}
 {% endspaceless %}<!DOCTYPE html>
 <html lang="en" ng-app="djangoCradminUi" class="{% block html-element-class %}{% endblock %}">
     <head>
@@ -24,9 +25,8 @@
         <title>{% block title-pre %}{% endblock %}{% block title %}{% endblock %}{% block title-post %}{% endblock %}</title>
 
         {% block styles %}
-            {% with crinstance_theme_path=request.cradmin_instance.get_cradmin_theme_path %}
-                <link href='{% if crinstance_theme_path %}{% static crinstance_theme_path %}{% else %}{% static DJANGO_CRADMIN_THEME_PATH %}{% endif %}' rel="stylesheet">
-            {% endwith %}
+{#            <link href='{% if crinstance_theme_path %}{% static crinstance_theme_path %}{% else %}{% static DJANGO_CRADMIN_THEME_PATH %}{% endif %}' rel="stylesheet">#}
+            <link href='{% cradmin_theme_staticpath %}' rel="stylesheet">
         {% endblock styles %}
         {% block iconlibrary %}
             <link href='{% static DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH %}' rel="stylesheet">
