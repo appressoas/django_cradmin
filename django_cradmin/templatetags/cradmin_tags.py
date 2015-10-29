@@ -116,14 +116,15 @@ def cradmin_theme_staticpath(context):
     """
     if 'request' in context:
         request = context['request']
+        theme_path = None
         if hasattr(request, 'cradmin_instance'):
             theme_path = request.cradmin_instance.get_cradmin_theme_path()
             if theme_path:
                 theme_path = str(theme_path)
-            else:
-                theme_path = getattr(settings,
-                                     'DJANGO_CRADMIN_THEME_PATH',
-                                     'django_cradmin/dist/css/cradmin_theme_default/theme.css')
-            return static(theme_path)
+        if not theme_path:
+            theme_path = getattr(settings,
+                                 'DJANGO_CRADMIN_THEME_PATH',
+                                 'django_cradmin/dist/css/cradmin_theme_default/theme.css')
+        return static(theme_path)
     else:
         return ''
