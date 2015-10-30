@@ -15,11 +15,30 @@ class ViewMixin(object):
 
     For a ready to use view that extends this to work with Django model objects,
     see :class:`.View`.
+
+    The ViewMixin works much like :class:`.View`, but you must override/implement:
+
+    - :meth:`.get_pagetitle`
+    - :meth:`.get_listbuilder_list_data`
+    - :meth:`.get_no_items_message`
+
+    Examples:
+
+        Minimal example with data from a list::
+
+            class
+
     """
-    listbuilder_class = listbuilder.list.RowList
-    value_renderer_class = listbuilder.base.ItemValueRenderer
-    frame_renderer_class = None
     template_name = 'django_cradmin/viewhelpers/listbuilderview.django.html'
+
+    #: See :meth:`~ViewMixin.get_listbuilder_class`.
+    listbuilder_class = listbuilder.list.RowList
+
+    #: See :meth:`~ViewMixin.get_value_renderer_class`.
+    value_renderer_class = listbuilder.base.ItemValueRenderer
+
+    #: See :meth:`~ViewMixin.get_frame_renderer_class`.
+    frame_renderer_class = None
 
     #: Set this to True to hide the page header. See :meth:`~.FormViewMixin.get_hide_page_header`.
     hide_page_header = False
@@ -50,24 +69,66 @@ class ViewMixin(object):
         return self.hide_page_header or getattr(settings, 'DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTVIEWS', False)
 
     def get_listbuilder_class(self):
+        """
+        Get a subclass of :class:`django_cradmin.viewhelpers.listbuilder.base.List`.
+
+        Defaults to :obj:`.ViewMixin.listbuilder_class`.
+        """
         return self.listbuilder_class
 
     def get_listbuilder_list_kwargs(self):
+        """
+        Get kwargs for :meth:`.get_listbuilder_class`.
+        """
         return {}
 
     def get_value_renderer_class(self):
+        """
+        Get a subclass of :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer`.
+
+        Defaults to :obj:`.ViewMixin.value_renderer_class`.
+        """
         return self.value_renderer_class
 
     def get_frame_renderer_class(self):
+        """
+        Get a subclass of :class:`django_cradmin.viewhelpers.listbuilder.base.ItemFrameRenderer`.
+
+        Defaults to :obj:`.ViewMixin.frame_renderer_class`.
+        """
         return self.frame_renderer_class
+
+    def get_listbuilder_list_value_iterable(self, context):
+        """
+        Get the value_iterable for the listbuilder list.
+
+        Must be overridden in subclasses.
+
+        Parameters:
+            context: The Django template context.
+        """
+        raise NotImplementedError()
 
     def get_listbuilder_list(self, context):
         """
         Get the listbuilder List object.
 
-        Must be overridden in subclasses.
+        You normally do not have to override this, but instead you should
+        override:
+
+        - :meth:`.get_listbuilder_list_value_iterable`
+        - :meth:`.get_value_renderer_class`
+        - :meth:`.get_frame_renderer_class`
+        - :meth:`.get_listbuilder_list_kwargs`
+
+        Parameters:
+            context: The Django template context.
         """
-        raise NotImplementedError()
+        return self.get_listbuilder_class().from_value_iterable(
+            value_iterable=self.get_listbuilder_list_value_iterable(context),
+            value_renderer_class=self.get_value_renderer_class(),
+            frame_renderer_class=self.get_frame_renderer_class(),
+            **self.get_listbuilder_list_kwargs())
 
     def get_no_items_message(self):
         """
@@ -127,13 +188,8 @@ class View(ViewMixin, ListView):
         """
         return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)
 
-    def get_listbuilder_list(self, context):
-        items = context['object_list']
-        return self.get_listbuilder_class().from_value_iterable(
-            value_iterable=items,
-            value_renderer_class=self.get_value_renderer_class(),
-            frame_renderer_class=self.get_frame_renderer_class(),
-            **self.get_listbuilder_list_kwargs())
+    def get_listbuilder_list_value_iterable(self, context):
+        return context['object_list']
 
     def get_queryset_for_role(self, role):
         """
