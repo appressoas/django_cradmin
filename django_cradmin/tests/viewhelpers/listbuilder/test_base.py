@@ -51,16 +51,20 @@ class TestAbstractItemRenderer(TestCase):
 
 class TestItemValueRenderer(TestCase):
     def test_render(self):
-        self.assertEqual(
-            'testvalue',
-            listbuilder.base.ItemValueRenderer(value='testvalue').render().strip())
+        rendered = listbuilder.base.ItemValueRenderer(value='testvalue').render()
+        selector = htmls.S(rendered)
+        self.assertEqual('testvalue',
+                         selector.one('.django-cradmin-listbuilder-itemvalue').alltext_normalized)
 
 
 class TestItemFrameRenderer(TestCase):
     def test_render(self):
         rendered = listbuilder.base.ItemFrameRenderer(
             inneritem=listbuilder.base.ItemValueRenderer(value='testvalue')).render()
-        self.assertEqual('testvalue', rendered.strip())
+        selector = htmls.S(rendered)
+        self.assertTrue(selector.exists('.django-cradmin-listbuilder-itemframe'))
+        self.assertEqual('testvalue',
+                         selector.one('.django-cradmin-listbuilder-itemvalue').alltext_normalized)
 
 
 class TestList(TestCase):

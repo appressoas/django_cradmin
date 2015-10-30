@@ -126,13 +126,26 @@ class List(AbstractRenderable):
         """
         self.renderable_list.extend(renerable_iterable)
 
-    def extend_with_values(self, value_iterable, value_renderer_class, frame_renderer_class=None):
+    def get_default_value_renderer_class(self):
+        """
+        The default ``value_renderer_class`` for :meth:`.extend_with_values`.
+        """
+        return ItemValueRenderer
+
+    def get_default_frame_renderer_class(self):
+        """
+        The default ``frame_renderer_class`` for :meth:`.extend_with_values`.
+        """
+        return None
+
+    def extend_with_values(self, value_iterable, value_renderer_class=None, frame_renderer_class=None):
         """
         Extends the list with an iterable of values.
 
         Parameters:
             value_iterable: An iterable of values to add to the list.
             value_renderer_class: A subclass of :class:`.ItemValueRenderer`.
+                Defaults to :meth:`.get_default_value_renderer_class`.
             frame_renderer_class: A subclass of :class:`.ItemFrameRenderer`.
 
                 If this is ``None``, the object added to the list will be an object of the
@@ -141,6 +154,8 @@ class List(AbstractRenderable):
                 If this is specified, the object added to the list will be an object
                 of the ``frame_renderer_class`` with an object of the ``value_renderer_class``
                 as the ``inneritem`` attribute/parameter.
+
+                Defaults to :meth:`.get_default_frame_renderer_class`.
         """
         if frame_renderer_class:
             renderable_iterable = [frame_renderer_class(inneritem=value_renderer_class(value=value))
@@ -150,7 +165,8 @@ class List(AbstractRenderable):
         self.extend(renderable_iterable)
 
     @classmethod
-    def from_value_iterable(cls, value_iterable, value_renderer_class,
+    def from_value_iterable(cls, value_iterable,
+                            value_renderer_class=None,
                             frame_renderer_class=None,
                             **listkwargs):
         """
