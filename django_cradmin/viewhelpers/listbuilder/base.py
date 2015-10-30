@@ -157,6 +157,8 @@ class List(AbstractRenderable):
 
                 Defaults to :meth:`.get_default_frame_renderer_class`.
         """
+        value_renderer_class = value_renderer_class or self.get_default_value_renderer_class()
+        frame_renderer_class = frame_renderer_class or self.get_default_frame_renderer_class()
         if frame_renderer_class:
             renderable_iterable = [frame_renderer_class(inneritem=value_renderer_class(value=value))
                                    for value in value_iterable]
