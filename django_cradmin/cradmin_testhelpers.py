@@ -149,7 +149,7 @@ class TestCaseMixin(object):
         viewkwargs = viewkwargs or {}
         request = getattr(RequestFactory(), method)(**requestkwargs_full)
         if requestattributes:
-            for key, value in iter(requestattributes.items()):
+            for key, value in requestattributes.items():
                 setattr(request, key, value)
         request.user = requestuser or self.create_default_user_for_mock_request()
         request.cradmin_role = cradmin_role or mock.MagicMock()
