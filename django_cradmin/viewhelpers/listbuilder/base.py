@@ -37,6 +37,12 @@ class ItemValueRenderer(AbstractItemRenderer):
     """
     template_name = 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html'
 
+    def get_css_classes(self):
+        """
+        Override this to set your own css classes.
+        """
+        return 'django-cradmin-listbuilder-itemvalue'
+
 
 class ItemFrameRenderer(AbstractItemRenderer):
     """
@@ -58,6 +64,12 @@ class ItemFrameRenderer(AbstractItemRenderer):
     def __init__(self, inneritem):
         super(ItemFrameRenderer, self).__init__(inneritem.value)
         self.inneritem = inneritem
+
+    def get_css_classes(self):
+        """
+        Override this to set your own css classes.
+        """
+        return 'django-cradmin-listbuilder-itemframe'
 
 
 class List(AbstractRenderable):
