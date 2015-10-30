@@ -5,18 +5,16 @@ from django_cradmin.viewhelpers import listbuilder
 from django.utils.translation import ugettext_lazy as _
 
 
-class View(ListView):
+class ViewMixin(object):
     """
-    View using the :doc:`viewhelpers_listbuilder`.
+    Listbuilder view mixin. Must be mixin in before any Django View subclass.
 
-    Examples:
+    This is typically used with a Django ListView or TemplateView.
+    The mixin is not dependent on any specific backend, so it works
+    no matter where you get your data from (database, mongodb, elasticsearch, ...).
 
-        Minimal::
-
-            class MyView(listbuilderview.View):
-                def get_queryset(self):
-                    return MyModel.objects.all()
-
+    For a ready to use view that extends this to work with Django model objects,
+    see :class:`.View`.
     """
     listbuilder_class = listbuilder.list.RowList
     value_renderer_class = listbuilder.base.ItemValueRenderer
@@ -26,28 +24,13 @@ class View(ListView):
     #: Set this to True to hide the page header. See :meth:`~.FormViewMixin.get_hide_page_header`.
     hide_page_header = False
 
-    #: The model class to list objects for. You do not have to specify
-    #: this, but if you do not specify this or :meth:`~.ObjectTableView.get_model_class`,
-    #: you have to override :meth:`~.ObjectTableView.get_pagetitle` and
-    #: :meth:`~.ObjectTableView.get_no_items_message`.
-    model = None
-
-    def get_model_class(self):
-        """
-        Get the model class to list objects for.
-
-        Defaults to :obj:`.model`. See :obj:`.model` for more info.
-        """
-        return self.model
-
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
 
-        Defaults to the ``verbose_name_plural`` of the :obj:`.model`
-        with the first letter capitalized.
+        Must be implemented in subclasses.
         """
-        return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)
+        raise NotImplementedError()
 
     def get_pageheading(self):
         """
@@ -79,6 +62,72 @@ class View(ListView):
         return self.frame_renderer_class
 
     def get_listbuilder_list(self, context):
+        """
+        Get the listbuilder List object.
+
+        Must be overridden in subclasses.
+        """
+        raise NotImplementedError()
+
+    def get_no_items_message(self):
+        """
+        Get the message to show when there are no items.
+
+        Must be overridden in subclasses.
+        """
+        raise NotImplementedError()
+
+    def add_listview_context_data(self, context):
+        context['listbuilder_list'] = self.get_listbuilder_list(context)
+        context['pagetitle'] = self.get_pagetitle()
+        context['hide_pageheader'] = self.get_hide_page_header()
+        context['pageheading'] = self.get_pageheading()
+        context['no_items_message'] = self.get_no_items_message()
+
+    def get_context_data(self, **kwargs):
+        context = super(ViewMixin, self).get_context_data(**kwargs)
+        self.add_listview_context_data(context)
+        return context
+
+
+class View(ViewMixin, ListView):
+    """
+    View using the :doc:`viewhelpers_listbuilder`.
+
+    Examples:
+
+        Minimal::
+
+            class MyView(listbuilderview.View):
+                def get_queryset(self):
+                    return MyModel.objects.all()
+
+    """
+
+    #: The model class to list objects for. You do not have to specify
+    #: this, but if you do not specify this or :meth:`~.ObjectTableView.get_model_class`,
+    #: you have to override :meth:`~.ObjectTableView.get_pagetitle` and
+    #: :meth:`~.ObjectTableView.get_no_items_message`.
+    model = None
+
+    def get_model_class(self):
+        """
+        Get the model class to list objects for.
+
+        Defaults to :obj:`.model`. See :obj:`.model` for more info.
+        """
+        return self.model
+
+    def get_pagetitle(self):
+        """
+        Get the page title (the title tag).
+
+        Defaults to the ``verbose_name_plural`` of the :obj:`.model`
+        with the first letter capitalized.
+        """
+        return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)
+
+    def get_listbuilder_list(self, context):
         items = context['object_list']
         return self.get_listbuilder_class().from_value_iterable(
             value_iterable=items,
@@ -108,12 +157,3 @@ class View(ListView):
         return _('No %(modelname_plural)s') % {
             'modelname_plural': self.get_model_class()._meta.verbose_name_plural.lower(),
         }
-
-    def get_context_data(self, **kwargs):
-        context = super(View, self).get_context_data(**kwargs)
-        context['listbuilder_list'] = self.get_listbuilder_list(context)
-        context['pagetitle'] = self.get_pagetitle()
-        context['hide_pageheader'] = self.get_hide_page_header()
-        context['pageheading'] = self.get_pageheading()
-        context['no_items_message'] = self.get_no_items_message()
-        return context
