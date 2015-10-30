@@ -85,6 +85,9 @@ class List(AbstractRenderable):
     def iter_renderables(self):
         return iter(self.renderable_list)
 
+    def has_items(self):
+        return len(self.renderable_list) > 0
+
     def get_css_classes(self):
         """
         Override this to set your own css classes.
