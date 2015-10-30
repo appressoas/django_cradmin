@@ -101,11 +101,9 @@ class TestCaseMixin(object):
 
                 def test_post(self):
                     messagesmock = mock.MagicMock()
-                    mockresponse = self.mock_postrequest(requestkwargs={
-                        'data': {
-                            'name': 'Jane Doe',
-                            'age': 24
-                        }
+                    mockresponse = self.mock_postrequest(data={
+                        'name': 'Jane Doe',
+                        'age': 24
                     }, messagesmock=messagesmock)
                     messagesmock.add.assert_called_once_with(
                         messages.SUCCESS,
@@ -126,6 +124,7 @@ class TestCaseMixin(object):
                      requestuser=None,
                      messagesmock=None,
                      sessionmock=None,
+                     requestattributes={},
                      requestkwargs=None,
                      viewkwargs=None):
         """
@@ -149,6 +148,9 @@ class TestCaseMixin(object):
             requestkwargs_full.update(requestkwargs)
         viewkwargs = viewkwargs or {}
         request = getattr(RequestFactory(), method)(**requestkwargs_full)
+        if requestattributes:
+            for key, value in requestattributes.iteritems():
+                setattr(request, key, value)
         request.user = requestuser or self.create_default_user_for_mock_request()
         request.cradmin_role = cradmin_role or mock.MagicMock()
         request.cradmin_app = cradmin_app or mock.MagicMock()
