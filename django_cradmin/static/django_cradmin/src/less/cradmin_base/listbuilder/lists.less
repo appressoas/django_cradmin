@@ -30,4 +30,51 @@ Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` cl
 */
 .django-cradmin-listbuilder-floatgridlist {
   .clearfix();
+  &>li {
+    display: block;
+  }
+
+  &.django-cradmin-listbuilder-floatgridlist-md {
+    &>li {
+      float: left;
+
+      @media (max-width: @screen-xs-max) {
+        width: (100%/2);
+        &:nth-child(2n+3) {
+          clear: left;
+        }
+      }
+      @media (min-width: @screen-sm-min) and (max-width: @screen-md-max) {
+        width: (100%/4);
+        &:nth-child(4n+5) {
+          clear: left;
+        }
+      }
+      @media (min-width: @screen-lg-min) {
+        width: (100%/5);
+        &:nth-child(5n+6) {
+          clear: left;
+        }
+      }
+    }
+  }
+
+  &.django-cradmin-listbuilder-floatgridlist-lg {
+    &>li {
+      @media (min-width: @screen-sm-min) and (max-width: @screen-md-max) {
+        float: left;
+        width: (100%/2);
+        &:nth-child(2n+3) {
+          clear: left;
+        }
+      }
+      @media (min-width: @screen-lg-min) {
+        float: left;
+        width: (100%/3);
+        &:nth-child(3n+4) {
+          clear: left;
+        }
+      }
+    }
+  }
 }

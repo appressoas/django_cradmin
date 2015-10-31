@@ -6551,6 +6551,54 @@ Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` cl
 .django-cradmin-listbuilder-floatgridlist:after {
   clear: both;
 }
+.django-cradmin-listbuilder-floatgridlist > li {
+  display: block;
+}
+.django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li {
+  float: left;
+}
+@media (max-width: 767px) {
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li {
+    width: 50%;
+  }
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li:nth-child(2n+3) {
+    clear: left;
+  }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li {
+    width: 25%;
+  }
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li:nth-child(4n+5) {
+    clear: left;
+  }
+}
+@media (min-width: 1200px) {
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li {
+    width: 20%;
+  }
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-md > li:nth-child(5n+6) {
+    clear: left;
+  }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-lg > li {
+    float: left;
+    width: 50%;
+  }
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-lg > li:nth-child(2n+3) {
+    clear: left;
+  }
+}
+@media (min-width: 1200px) {
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-lg > li {
+    float: left;
+    width: 33.33333333%;
+  }
+  .django-cradmin-listbuilder-floatgridlist.django-cradmin-listbuilder-floatgridlist-lg > li:nth-child(3n+4) {
+    clear: left;
+  }
+}
 nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   line-height: 50px;
   height: 50px;
