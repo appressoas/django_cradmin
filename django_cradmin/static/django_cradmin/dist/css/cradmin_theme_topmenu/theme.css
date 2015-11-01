@@ -6535,6 +6535,9 @@ Styles for the FloatGridList.
 
 Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` class.
 */
+.django-cradmin-listbuilder-floatgridlist {
+  clear: both;
+}
 .django-cradmin-listbuilder-floatgridlist:before,
 .django-cradmin-listbuilder-floatgridlist:after {
   content: " ";
