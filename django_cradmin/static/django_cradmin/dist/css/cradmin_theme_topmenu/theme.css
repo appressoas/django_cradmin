@@ -4676,6 +4676,10 @@ body.django-cradmin-formview-page ul#django_cradmin_messages {
   padding-bottom: 40px;
   background: #fff;
 }
+.django-cradmin-hide-menu #django_cradmin_contentwrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
 .django-cradmin-formsized-wrapper,
 .django-cradmin-form-wrapper .django-cradmin-form {
   max-width: none;
