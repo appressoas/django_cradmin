@@ -84,8 +84,7 @@ class ArchiveImagesListView(ArchiveImagesQuerySetForRoleMixin, objecttable.Objec
     def get_buttons(self):
         app = self.request.cradmin_app
         return [
-            objecttable.Button(_('Add image'), url=app.reverse_appurl('create')),
-            objecttable.Button(_('Bulk upload'), url=app.reverse_appurl('bulkadd')),
+            objecttable.Button(_('Add image'), url=app.reverse_appurl('create'))
         ]
 
 
