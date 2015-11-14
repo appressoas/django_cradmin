@@ -109,7 +109,14 @@
             {% block initialize_angular %}
                 <script>
                     angular.module('djangoCradminUi', [
-                        'djangoCradmin'{% if cradmin_extra_angular_libraries %}{% for library in cradmin_extra_angular_libraries %}, '{{ library }}'{% endfor %}{% endif %}
+                        'djangoCradmin'
+                        {% block extra_angular_libraries %}
+                            {% if cradmin_extra_angular_libraries %}
+                                {% for library in cradmin_extra_angular_libraries %}
+                                    , '{{ library }}'
+                                {% endfor %}
+                            {% endif %}
+                        {% endblock %}
                     ]);
                 </script>
             {% endblock %}
