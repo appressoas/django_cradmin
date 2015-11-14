@@ -52,6 +52,16 @@
         {% block jsimports %}
             {# Override this to add js imports in child templates #}
         {% endblock %}
+
+        {% comment %}
+            Send in cradmin_javascript_library_urls as context data to render
+            them as script tags.
+        {% endcomment %}
+        {% if cradmin_javascript_library_urls %}
+            {% for cradmin_javascript_library_url in cradmin_javascript_library_urls %}
+                <script type="text/javascript" src="{{ cradmin_javascript_library_url }}"></script>
+            {% endfor %}
+        {% endif %}
     </head>
     <body class="
             {% block bodyclass %}
@@ -83,9 +93,24 @@
                 {% endcomment %}
             {% endblock global-post-body %}
 
+            {% comment %}
+                To customize the angularjs libraries available in your views,
+                you can do one of the following:
+
+                - Send in a list/iterable of angularJS libraries to load via the
+                  ``cradmin_extra_angular_libraries`` context variable.
+                - Override the ``initialize_angular`` block. This is hard to maintain
+                  because you override everything inherited from parent views.
+
+                In both cases, you also have to load the library javascript code
+                via the ``cradmin_javascript_library_urls`` template context
+                variable (documented above), or by overriding the ``jsimports`` block.
+            {% endcomment %}
             {% block initialize_angular %}
                 <script>
-                    angular.module('djangoCradminUi', ['djangoCradmin']);
+                    angular.module('djangoCradminUi', [
+                        'djangoCradmin'{% if cradmin_extra_angular_libraries %}{% for library in cradmin_extra_angular_libraries %}, '{{ library }}'{% endfor %}{% endif %}
+                    ]);
                 </script>
             {% endblock %}
         </div>
