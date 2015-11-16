@@ -14,7 +14,7 @@
                 - Set the DJANGO_CRADMIN_HIDE_PAGE_HEADER setting.
             {% endcomment %}
             {% if not hide_pageheader and not DJANGO_CRADMIN_HIDE_PAGE_HEADER %}
-                <div class="django-cradmin-page-header-outer">
+                <div class="django-cradmin-page-header-outer {% block pageheader_outer_extraclasses %}{% endblock %}">
                     <div class="container">
                         <div class="django-cradmin-page-header-inner">
                             {% block pageheader-inner %}{% endblock pageheader-inner %}
