@@ -163,6 +163,11 @@ class TestCaseMixin(object):
     def mock_getrequest(self, **kwargs):
         return self.mock_request(method='get', **kwargs)
 
+    def mock_http302_getrequest(self, **kwargs):
+        mockresponse = self.mock_request(method='get', **kwargs)
+        self.assertEqual(mockresponse.response.status_code, 302)
+        return mockresponse
+
     def mock_http200_getrequest_htmls(self, **kwargs):
         mockresponse = self.mock_getrequest(**kwargs)
         self.assertEqual(mockresponse.response.status_code, 200)
