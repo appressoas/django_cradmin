@@ -72,3 +72,51 @@ class AbstractRenderable(object):
         return render_to_string(
             self.get_template_name(),
             self.get_template_context_object(request=request))
+
+
+class AbstractRenderableWithCss(AbstractRenderable):
+    """
+    Extends :class:`.AbstractRenderable` with a unified
+    API for setting CSS classes.
+    """
+
+    def get_extra_css_classes_list(self):
+        """
+        Override this to set your own css classes. Must return a list
+        of css classes.
+
+        This is reserved for setting css classes when extending a
+        reusable component.
+
+        See :meth:`.get_css_classes_string`.
+        """
+        return []
+
+    def get_base_css_classes_list(self):
+        """
+        If you are creating a reusable component, use this to
+        define css classes that should always be present on
+        the component. When developers extend your re-usable
+        component, they should override :meth:`.get_extra_css_classes`.
+
+        Must return a list of css classes.
+
+        See :meth:`.get_css_classes_string`.
+        """
+        return []
+
+    def get_css_classes_string(self):
+        """
+        Get css classes.
+
+        Joins :meth:`.get_base_css_classes` with :meth:`.get_extra_css_classes` into a string.
+
+        You should not override this:
+
+        - Override :meth:`.get_extra_css_classes` if you are extending a reusable component.
+        - Override :meth:`.get_base_css_classes` if you are creating a reusable component.
+        """
+        css_classes = []
+        css_classes.extend(self.get_base_css_classes_list())
+        css_classes.extend(self.get_extra_css_classes_list())
+        return ' '.join(css_classes)
