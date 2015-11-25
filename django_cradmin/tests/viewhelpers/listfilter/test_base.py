@@ -194,7 +194,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.FilterList(
+        filterlist = listfilter.base.AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -208,7 +208,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.FilterList(
+        filterlist = listfilter.base.AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -222,7 +222,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.FilterList(
+        filterlist = listfilter.base.AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -236,7 +236,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.FilterList(
+        filterlist = listfilter.base.AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -248,21 +248,21 @@ class TestAbstractFilter(TestCase):
 
 class TestAbstractFilterGroup(TestCase):
     def test_append(self):
-        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
+        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
         testchild = MinimalFilterGroupChild()
         filterlist.append(testchild)
         self.assertEqual([testchild], filterlist.children)
         self.assertEqual(filterlist, testchild.filterlist)
 
     def test_render(self):
-        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
+        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(MinimalFilterGroupChild())
         filterlist.append(MinimalFilterGroupChild())
         selector = htmls.S(filterlist.render())
         self.assertEqual(2, selector.count('li'))
 
     def test_set_filters_string_invalid_slug(self):
-        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
+        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
         stringfilter = MinimalStringFilter()
         filterlist.append(stringfilter)
         with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
@@ -270,7 +270,7 @@ class TestAbstractFilterGroup(TestCase):
             filterlist.set_filters_string('x-10')
 
     def test_set_filters_string(self):
-        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
+        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
         intfilter = MinimalIntFilter()
         stringfilter = MinimalStringFilter()
         filterlist.append(intfilter)

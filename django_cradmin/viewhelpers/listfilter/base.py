@@ -11,7 +11,7 @@ standard_library.install_aliases()
 class AbstractGroupChild(AbstractRenderableWithCss):
     """
     Base class for anything that can be added as a child of
-    :class:`.FilterList`.
+    :class:`.AbstractFilterList`.
     """
     def __init__(self):
         self.filterlist = None
@@ -24,9 +24,14 @@ class AbstractFilter(AbstractGroupChild):
     """
     Defines a filter.
     """
-    def __init__(self):
+    def __init__(self, slug=None):
+        """
+        Parameters:
+            slug: You can send the slug as a parameter, or override :meth:`.get_slug`.
+        """
         super(AbstractFilter, self).__init__()
         self.values = []
+        self.slug = slug
 
     def copy(self):
         """
@@ -46,7 +51,10 @@ class AbstractFilter(AbstractGroupChild):
         make an URL unusable by a user with a different language
         (if a user shares an URL with another user).
         """
-        raise NotImplementedError()
+        if self.slug:
+            return self.slug
+        else:
+            raise NotImplementedError('You must override get_slug(), or send a slug to __init__().')
 
     def set_values(self, values):
         """
@@ -175,6 +183,19 @@ class AbstractFilter(AbstractGroupChild):
         """
 
 
+class AbstractSingleValueFilter(AbstractFilter):
+    def get_clean_value(self):
+        """
+        Returns the first value returned by :meth:`.AbstractFilter.get_clean_values`,
+        or ``None`` if there is no values.
+        """
+        clean_values = self.get_clean_values()
+        if len(clean_values) > 0:
+            return clean_values[0]
+        else:
+            return None
+
+
 # listfilter.single.selectinput.Text
 # listfilter.single.selectinput.Int
 # listfilter.multi.selectinput.Text
@@ -188,7 +209,7 @@ class InvalidFiltersStringError(Exception):
 
 class FiltersHandler(object):
     """
-    Parser of the ``filters_string``. See :meth:`.FilterList.parse_filters_string`.
+    Parser of the ``filters_string``. See :meth:`.AbstractFilterList.parse_filters_string`.
     """
 
     #: The string separating filters in the filters string. Defaults to ``"/"``.
@@ -285,9 +306,17 @@ class FiltersHandler(object):
         return self.urlbuilder(filters_string=urllib.parse.quote(filters_string))
 
 
-class FilterList(AbstractRenderableWithCss):
+class AbstractFilterList(AbstractRenderableWithCss):
     """
     Defines a set of :class:`.AbstractFilter` objects.
+
+    .. note:: This is not really an abstract class - it works on it own,
+       but it should never be used directly. We provide subclasses that
+       provide basis for rendereing, and if you want something totally different,
+       you should not use this directly, but create a subclass and override
+       :meth:`~django_cradmin.renderable.AbstractRenderableWithCss.get_base_css_classes_list`
+       or :meth:`~django_cradmin.renderable.AbstractRenderableWithCss.get_extra_css_classes_list`
+       (see their docs for their intended use cases).
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/base/filterlist.django.html'
 
@@ -296,7 +325,7 @@ class FilterList(AbstractRenderableWithCss):
         Parameters:
             urlbuilder: See :class:`.FiltersHandler`.
         """
-        super(FilterList, self).__init__()
+        super(AbstractFilterList, self).__init__()
         self.children = []
         self.set_filters_string_called = False
         self.filtershandler = self.get_filters_handler_class()(urlbuilder=urlbuilder)
