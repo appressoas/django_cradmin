@@ -1,6 +1,6 @@
-#################################################################
-:mod:`django_cradmin.sortable.models` --- Making objects sortable
-#################################################################
+######################################
+`sortable` --- Making objects sortable
+######################################
 
 To make a model sortable, you need the following two additions to your model:
 

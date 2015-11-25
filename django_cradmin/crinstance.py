@@ -83,7 +83,7 @@ class BaseCrAdminInstance(object):
     #: If this is ``True``, we do not prefix the urls of the
     #: :obj:`~BaseCrAdminInstance.rolefrontpage_appname` with the
     #: appname. This means that it is hosted on ``/baseurl/<roleid>/``
-    #: instead of ````/baseurl/<roleid>/<appname>/``.
+    #: instead of ``/baseurl/<roleid>/<appname>/``.
     #:
     #: If you couple this with setting :obj:`~.BaseCrAdminInstance.roleclass`
     #: to ``None``, the frontpage will be hosted directly on ``/baseurl/``.

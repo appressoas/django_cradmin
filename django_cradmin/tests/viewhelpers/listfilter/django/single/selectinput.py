@@ -13,7 +13,7 @@ standard_library.install_aliases()
 
 class TestBase(TestCase):
     def test_render_sanity(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('', 'Do not apply'),
@@ -30,7 +30,7 @@ class TestBase(TestCase):
         self.assertEqual(3, selector.count('option'))
 
     def test_render_option_value_empty(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('', 'Do not apply'),
@@ -44,7 +44,7 @@ class TestBase(TestCase):
         self.assertEqual('/test/', selector.one('option')['value'])
 
     def test_render_option_value_nonempty(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('somevalue', 'Test'),
@@ -58,7 +58,7 @@ class TestBase(TestCase):
         self.assertEqual('/test/test-somevalue', selector.one('option')['value'])
 
     def test_render_option_label(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('somevalue', 'Test'),
@@ -71,7 +71,7 @@ class TestBase(TestCase):
         self.assertEqual('Test', selector.one('option').alltext_normalized)
 
     def test_render_option_selected(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('', 'Do not apply'),
@@ -89,7 +89,7 @@ class TestBase(TestCase):
             selector.one('option[selected]').alltext_normalized)
 
     def test_render_option_no_value_select_first(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('', 'Do not apply'),
@@ -107,7 +107,7 @@ class TestBase(TestCase):
             selector.one('option[selected]').alltext_normalized)
 
     def test_render_label_no_title(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('unused', 'unused'),
@@ -120,7 +120,7 @@ class TestBase(TestCase):
         self.assertFalse(selector.exists('label'))
 
     def test_render_label_has_title(self):
-        class MySelectFilter(listfilter.django.single.selectinput.Base):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
             def get_choices(self):
                 return [
                     ('unused', 'unused'),

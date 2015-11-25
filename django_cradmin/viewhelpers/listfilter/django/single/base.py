@@ -2,6 +2,10 @@ from django_cradmin.viewhelpers.listfilter.base import AbstractFilter
 
 
 class AbstractDjangoOrmSingleFilter(AbstractFilter):
+    """
+    Abstract base class for Django ORM single value filters.
+    """
+
     def get_modelfield(self):
         """
         Get the name of the model field to filter on.

@@ -27,6 +27,7 @@ Viewhelpers
 
    viewhelpers_delete
    viewhelpers_listbuilder
+   viewhelpers_listfilter
 
 
 *************************
@@ -82,7 +83,7 @@ Utilities
     :maxdepth: 1
 
     urlutils
-    abstractrenderable
+    renderable
     crhumanize
 
 
