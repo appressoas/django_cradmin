@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 import htmls
+import mock
 
 from django_cradmin.viewhelpers import listfilter
 
@@ -31,33 +32,33 @@ class MinimalStringFilter(listfilter.base.AbstractFilter):
 
 class TestFiltersStringParser(TestCase):
     def test_invalid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
                                       '"x" does not contain "-".'):
             filtershandler.parse('x')
 
     def test_invalid_filter_slug(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
                                       '"x" is not a valid filter slug.'):
             filtershandler.parse('x-10')
 
     def test_parse_empty_string(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.parse('')
         self.assertEqual(
             {},
             filtershandler.filtermap)
 
     def test_parse_none(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.parse(None)
         self.assertEqual(
             {},
             filtershandler.filtermap)
 
     def test_parse_simple_valid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('s-test')
         self.assertEqual(
@@ -65,7 +66,7 @@ class TestFiltersStringParser(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_multivalue_valid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('s-a,b,c')
         self.assertEqual(
@@ -73,7 +74,7 @@ class TestFiltersStringParser(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_simple_valid_filter_string_trailing_slash(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('s-test/')
         self.assertEqual(
@@ -81,7 +82,7 @@ class TestFiltersStringParser(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_simple_valid_filter_string_leading_slash(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('/s-test')
         self.assertEqual(
@@ -89,7 +90,7 @@ class TestFiltersStringParser(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_complex_valid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler()
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.add_filter(MinimalIntFilter())
         filtershandler.parse('/i-10/s-jane,joe/')
@@ -101,38 +102,179 @@ class TestFiltersStringParser(TestCase):
             ['jane', 'joe'],
             filtershandler.filtermap['s'].values)
 
+    def test_build_filters_string(self):
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        intfilter = MinimalIntFilter()
+        intfilter.set_values(values=['10'])
+        stringfilter = MinimalStringFilter()
+        stringfilter.set_values(values=['jane', 'joe'])
+        filtershandler.add_filter(intfilter)
+        filtershandler.add_filter(stringfilter)
+
+        new_stringfilter = stringfilter.copy()
+        new_stringfilter.set_values(values=['jack', 'peter'])
+        self.assertEqual(
+            'i-10/s-jack,peter',
+            filtershandler.build_filters_string(changed_filterobject=new_stringfilter))
+
+    def test_build_filter_url(self):
+        def urlbuilder(filters_string):
+            return '/the/prefix/{}?a=querystring'.format(filters_string)
+
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=urlbuilder)
+        intfilter = MinimalIntFilter()
+        intfilter.set_values(values=['10'])
+        stringfilter = MinimalStringFilter()
+        stringfilter.set_values(values=['jane', 'joe'])
+        filtershandler.add_filter(intfilter)
+        filtershandler.add_filter(stringfilter)
+
+        new_stringfilter = stringfilter.copy()
+        new_stringfilter.set_values(values=['jack', 'peter'])
+        self.assertEqual(
+            '/the/prefix/i-10/s-jack%2Cpeter?a=querystring',
+            filtershandler.build_filter_url(changed_filterobject=new_stringfilter))
+
+
+class TestAbstractFilter(TestCase):
+    def test_copy(self):
+        testfilter = MinimalStringFilter()
+        testfilter.set_values(values=['a', 'b'])
+        self.assertEqual(['a', 'b'], testfilter.copy().values)
+
+    def test_copy_does_not_affect_original(self):
+        testfilter = MinimalStringFilter()
+        testfilter.set_values(values=['a', 'b'])
+        copyfilter = testfilter.copy()
+        copyfilter.values[0] = 'x'
+        self.assertEqual(['a', 'b'], testfilter.values)
+        self.assertEqual(['x', 'b'], copyfilter.values)
+
+    def test_set_values(self):
+        testfilter = MinimalStringFilter()
+        self.assertEqual([], testfilter.values)
+        testfilter.set_values(values=['a', 'b'])
+        self.assertEqual(['a', 'b'], testfilter.values)
+
+    def test_clear_values(self):
+        testfilter = MinimalStringFilter()
+        testfilter.values = ['a']
+        testfilter.clear_values()
+        self.assertEqual([], testfilter.values)
+
+    def test_add_values(self):
+        testfilter = MinimalStringFilter()
+        testfilter.values = ['a', 'b']
+        testfilter.add_values(values=['c', 'd'])
+        self.assertEqual(['a', 'b', 'c', 'd'], testfilter.values)
+
+    def test_remove_values(self):
+        testfilter = MinimalStringFilter()
+        testfilter.values = ['a', 'b', 'c', 'd']
+        testfilter.remove_values(values=['a', 'd'])
+        self.assertEqual(['b', 'c'], testfilter.values)
+
+    def test_remove_values_ignores_nonexisting_values(self):
+        testfilter = MinimalStringFilter()
+        testfilter.values = ['a', 'b']
+        testfilter.remove_values(values=['doesnotexist', 'b'])
+        self.assertEqual(['a'], testfilter.values)
+
+    def test_get_clean_values(self):
+        class SimpleFilter(listfilter.base.AbstractFilter):
+            def clean_value(self, value):
+                return 'cleaned-' + value
+
+        testfilter = SimpleFilter()
+        testfilter.values = ['a', 'b']
+        self.assertEqual(['cleaned-a', 'cleaned-b'], testfilter.get_clean_values())
+
+    def test_build_add_values_url(self):
+        stringfilter = MinimalStringFilter()
+        stringfilter.set_values(values=['a', 'b'])
+        intfilter = MinimalIntFilter()
+        intfilter.set_values(values=['10'])
+        filterlist = listfilter.base.FilterList(
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+        filterlist.append(stringfilter)
+        filterlist.append(intfilter)
+        stringfilter.set_filterlist(filterlist)
+        self.assertEqual(
+            '/test/s-a%2Cb%2Cc/i-10',
+            stringfilter.build_add_values_url(values=['c']))
+
+    def test_build_clear_values_url(self):
+        stringfilter = MinimalStringFilter()
+        stringfilter.set_values(values=['a', 'b'])
+        intfilter = MinimalIntFilter()
+        intfilter.set_values(values=['10'])
+        filterlist = listfilter.base.FilterList(
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+        filterlist.append(stringfilter)
+        filterlist.append(intfilter)
+        stringfilter.set_filterlist(filterlist)
+        self.assertEqual(
+            '/test/i-10',
+            stringfilter.build_clear_values_url())
+
+    def test_build_set_values_url(self):
+        stringfilter = MinimalStringFilter()
+        stringfilter.set_values(values=['a', 'b'])
+        intfilter = MinimalIntFilter()
+        intfilter.set_values(values=['10'])
+        filterlist = listfilter.base.FilterList(
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+        filterlist.append(stringfilter)
+        filterlist.append(intfilter)
+        stringfilter.set_filterlist(filterlist)
+        self.assertEqual(
+            '/test/s-c/i-10',
+            stringfilter.build_set_values_url(values=['c']))
+
+    def test_build_remove_values_url(self):
+        stringfilter = MinimalStringFilter()
+        stringfilter.set_values(values=['a', 'b'])
+        intfilter = MinimalIntFilter()
+        intfilter.set_values(values=['10'])
+        filterlist = listfilter.base.FilterList(
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+        filterlist.append(stringfilter)
+        filterlist.append(intfilter)
+        stringfilter.set_filterlist(filterlist)
+        self.assertEqual(
+            '/test/s-b/i-10',
+            stringfilter.build_remove_values_url(values=['a']))
+
 
 class TestAbstractFilterGroup(TestCase):
     def test_append(self):
-        testgroup = listfilter.base.Group()
+        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
         testchild = MinimalFilterGroupChild()
-        testgroup.append(testchild)
-        self.assertEqual([testchild], testgroup.children)
-        self.assertEqual(testgroup, testchild.parentgroup)
+        filterlist.append(testchild)
+        self.assertEqual([testchild], filterlist.children)
+        self.assertEqual(filterlist, testchild.filterlist)
 
     def test_render(self):
-        testgroup = listfilter.base.Group()
-        testgroup.append(MinimalFilterGroupChild())
-        testgroup.append(MinimalFilterGroupChild())
-        selector = htmls.S(testgroup.render())
+        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
+        filterlist.append(MinimalFilterGroupChild())
+        filterlist.append(MinimalFilterGroupChild())
+        selector = htmls.S(filterlist.render())
         self.assertEqual(2, selector.count('li'))
 
     def test_set_filters_string_invalid_slug(self):
-        testgroup = listfilter.base.Group()
+        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
         stringfilter = MinimalStringFilter()
-        testgroup.append(stringfilter)
+        filterlist.append(stringfilter)
         with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
                                       '"x" is not a valid filter slug.'):
-            testgroup.set_filters_string('x-10')
+            filterlist.set_filters_string('x-10')
 
     def test_set_filters_string(self):
-        testgroup = listfilter.base.Group()
+        filterlist = listfilter.base.FilterList(urlbuilder=mock.MagicMock())
         intfilter = MinimalIntFilter()
         stringfilter = MinimalStringFilter()
-        testgroup.append(intfilter)
-        testgroup.append(stringfilter)
-        testgroup.set_filters_string('i-10/s-test')
+        filterlist.append(intfilter)
+        filterlist.append(stringfilter)
+        filterlist.set_filters_string('i-10/s-test')
         self.assertEqual(['10'], intfilter.values)
-        self.assertEqual([10], intfilter.cleaned_values)
         self.assertEqual(['test'], stringfilter.values)
-        self.assertEqual(['test'], stringfilter.cleaned_values)

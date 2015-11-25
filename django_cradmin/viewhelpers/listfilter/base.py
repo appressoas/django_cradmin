@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from collections import OrderedDict
+import posixpath
 import urllib
 from django_cradmin.renderable import AbstractRenderableWithCss
 
@@ -10,23 +11,30 @@ standard_library.install_aliases()
 class AbstractGroupChild(AbstractRenderableWithCss):
     """
     Base class for anything that can be added as a child of
-    :class:`.Group`.
+    :class:`.FilterList`.
     """
     def __init__(self):
-        self.parentgroup = None
+        self.filterlist = None
 
-    def set_parentfiltergroup(self, parentgroup):
-        self.parentgroup = parentgroup
+    def set_filterlist(self, filterlist):
+        self.filterlist = filterlist
 
 
 class AbstractFilter(AbstractGroupChild):
     """
     Defines a filter.
     """
-    def __init__(self, *args, **kwargs):
-        super(AbstractFilter, self).__init__(*args, **kwargs)
-        self.values = None
-        self.cleaned_values = None
+    def __init__(self):
+        super(AbstractFilter, self).__init__()
+        self.values = []
+
+    def copy(self):
+        """
+        Returns a copy of this filter.
+        """
+        copy = self.__class__()
+        copy.set_values(list(self.values))
+        return copy
 
     def get_slug(self):
         """
@@ -40,64 +48,36 @@ class AbstractFilter(AbstractGroupChild):
         """
         raise NotImplementedError()
 
-    def build_set_values_url(self, values):
-        """
-        Get the URL that adds this filter with the given values to the current url.
-
-        You should not need to override this, but you will use it in your
-        template context to render urls for choices if your filter
-        is a single select filter.
-        """
-        return self.parentgroup.build_filter_url(filterobject=self,
-                                                 mode='set', values=values)
-
-    def build_clear_values_url(self):
-        """
-        Get the URL that clears this filter from the current url.
-
-        You should not need to override this, but you will use it in your
-        template context to render urls for choices if your filter
-        supports "clear".
-        """
-        return self.parentgroup.build_filter_url(filterobject=self,
-                                                 mode='clear')
-
-    def build_add_values_url(self, values):
-        """
-        Get the URL that adds the given values for this filter to the current url.
-
-        This is not the same as :meth:`.build_set_values_url`. This method is for
-        multiselect filters where the user can add valuess to the filter
-        (typically via checkboxes).
-
-        You should not need to override this, but you will use it in your
-        template context to render urls for choices if your filter
-        uses multiselect.
-        """
-        return self.parentgroup.build_filter_url(filterobject=self,
-                                                 mode='add', values=values)
-
-    def build_remove_values_url(self, values):
-        """
-        Get the URL that removes the given values for this filter to the current url.
-
-        This is not the same as :meth:`.build_clear_values_url`. This method is for
-        multiselect filters where the user can add/remove valuess to the filter
-        (typically via checkboxes).
-
-        You should not need to override this, but you will use it in your
-        template context to render urls for choices if your filter
-        uses multiselect.
-        """
-        return self.parentgroup.build_filter_url(filterobject=self,
-                                                 mode='remove', values=values)
-
-    def get_base_css_classes(self):
-        return 'django-cradmin-listfilter-filter'
-
     def set_values(self, values):
-        self.cleaned_values = self.clean_values(values)
+        """
+        Change the current values stored in the filter to the given ``values``.
+        """
         self.values = values
+
+    def clear_values(self):
+        """
+        Clear the current values stored in the filter.
+        """
+        self.values = []
+
+    def add_values(self, values):
+        """
+        Add the given list of ``values`` to the values currently stored
+        in the filter.
+        """
+        self.values += values
+
+    def remove_values(self, values):
+        """
+        Remove the given list of ``values`` from the values currently stored
+        in the filter.
+        """
+        new_values = list(self.values)
+        values_to_remove = values
+        for value in new_values:
+            if value in values_to_remove:
+                new_values.remove(value)
+        self.values = new_values
 
     def clean_value(self, value):
         """
@@ -105,7 +85,7 @@ class AbstractFilter(AbstractGroupChild):
         """
         return value
 
-    def clean_values(self, values):
+    def get_clean_values(self):
         """
         Clean the values, to prepare them for usage in :meth:`.add_to_queryobject`.
 
@@ -119,7 +99,66 @@ class AbstractFilter(AbstractGroupChild):
         rendering the filter (and most likely not add anything
         to the queryobject in :meth:`.add_to_queryobject`).
         """
-        return [self.clean_value(value) for value in values]
+        return [self.clean_value(value) for value in self.values]
+
+    def build_set_values_url(self, values):
+        """
+        Get the URL that adds this filter with the given values to the current url.
+
+        You should not need to override this, but you will use it in your
+        template context to render urls for choices if your filter
+        is a single select filter.
+        """
+        copy = self.copy()
+        copy.set_values(values)
+        return self.filterlist.filtershandler.build_filter_url(changed_filterobject=copy)
+
+    def build_clear_values_url(self):
+        """
+        Get the URL that clears this filter from the current url.
+
+        You should not need to override this, but you will use it in your
+        template context to render urls for choices if your filter
+        supports "clear".
+        """
+        copy = self.copy()
+        copy.clear_values()
+        return self.filterlist.filtershandler.build_filter_url(changed_filterobject=copy)
+
+    def build_add_values_url(self, values):
+        """
+        Get the URL that adds the given values for this filter to the current url.
+
+        This is not the same as :meth:`.build_set_values_url`. This method is for
+        multiselect filters where the user can add valuess to the filter
+        (typically via checkboxes).
+
+        You should not need to override this, but you will use it in your
+        template context to render urls for choices if your filter
+        uses multiselect.
+        """
+        copy = self.copy()
+        copy.add_values(values)
+        return self.filterlist.filtershandler.build_filter_url(changed_filterobject=copy)
+
+    def build_remove_values_url(self, values):
+        """
+        Get the URL that removes the given values for this filter to the current url.
+
+        This is not the same as :meth:`.build_clear_values_url`. This method is for
+        multiselect filters where the user can add/remove valuess to the filter
+        (typically via checkboxes).
+
+        You should not need to override this, but you will use it in your
+        template context to render urls for choices if your filter
+        uses multiselect.
+        """
+        copy = self.copy()
+        copy.remove_values(values)
+        return self.filterlist.filtershandler.build_filter_url(changed_filterobject=copy)
+
+    def get_base_css_classes(self):
+        return 'django-cradmin-listfilter-filter'
 
     def add_to_queryobject(self, queryobject):
         """
@@ -149,7 +188,7 @@ class InvalidFiltersStringError(Exception):
 
 class FiltersHandler(object):
     """
-    Parser of the ``filters_string``. See :meth:`.Group.parse_filters_string`.
+    Parser of the ``filters_string``. See :meth:`.FilterList.parse_filters_string`.
     """
 
     #: The string separating filters in the filters string. Defaults to ``"/"``.
@@ -168,8 +207,16 @@ class FiltersHandler(object):
     #: Defaults to ``","``.
     multivalue_separator = ','
 
-    def __init__(self):
+    def __init__(self, urlbuilder):
+        """
+        Parameters:
+            urlbuilder: A method that takes a single argument, ``filters_string``,
+                and returns an absolute URL with that string injected as the
+                filters string. The filters_string is urlencoded, so you should
+                be able to just forward it to ``reverse`` for your view.
+        """
         self.filtermap = OrderedDict()
+        self.urlbuilder = urlbuilder
         self._parse_called = False
 
     def parse_filter_value(self, value):
@@ -198,53 +245,61 @@ class FiltersHandler(object):
                 raise InvalidFiltersStringError('"{}" is not a valid filter slug.'.format(slug))
             self.filtermap[slug].set_values(values)
 
-    def to_valuesdict(self):
-        valuesdict = {}
-        for slug, filterobject in self.filtermap.items():
-            if filterobject.values:
-                valuesdict[slug] = self.multivalue_separator.join(filterobject.values)
-        return valuesdict
-
     def add_filter(self, filterobject):
-        self.filtermap[filterobject.get_slug()] = filterobject
+        """
+        Add a :class:`.AbstractFilter`.
+        """
+        slug = filterobject.get_slug()
+        if self.slug_and_value_separator in slug:
+            raise ValueError('Invalid filter slug: "{}". Slugs can not contain "{}".'.format(
+                slug, self.slug_and_value_separator))
+        self.filtermap[slug] = filterobject
 
-    def build_values_based_on_mode(self, filterobject, mode, values):
-        if mode == 'set':
-            return values
-        elif mode == 'clear':
-            return []
-        elif mode == 'add':
-            return filterobject.values + values
-        elif mode == 'remove':
-            new_values = list(filterobject.values)
-            values_to_remove = values
-            for value in new_values:
-                if value in values_to_remove:
-                    new_values.remove(value)
-            return new_values
-        else:
-            raise ValueError('Invalid mode: {}'.format(mode))
+    def build_filter_string(self, slug, values):
+        """
+        Build a filter string suitable for an URL from the given
+        ``slug`` and ``values``.
 
-    def build_filter_url(self, filterobject, mode, values=None):
-        for filterslug, current_filterobject in self.filtermap.items():
-            if current_filterobject == filterobject:
-                values = self.build_values_based_on_mode(
-                    filterobject=filterobject, mode=mode, values=values)
+        Parameters:
+            slug: See :meth:`.AbstractFilter.get_slug`.
+            value: A list of values. All items in the list must be strings.
+        """
+        return '{slug}{separator}{values}'.format(
+            slug=slug,
+            separator=self.slug_and_value_separator,
+            values=self.multivalue_separator.join(values))
+
+    def build_filters_string(self, changed_filterobject):
+        filters_strings = []
+        for slug, filterobject in self.filtermap.items():
+            if filterobject.get_slug() == changed_filterobject.get_slug():
+                values = changed_filterobject.values
             else:
-                values = current_filterobject.values
+                values = filterobject.values
+            if values:
+                filters_strings.append(self.build_filter_string(slug=slug, values=values))
+        return self.filter_separator.join(filters_strings)
+
+    def build_filter_url(self, changed_filterobject):
+        filters_string = self.build_filters_string(changed_filterobject=changed_filterobject)
+        return self.urlbuilder(filters_string=urllib.parse.quote(filters_string))
 
 
-class Group(AbstractGroupChild):
+class FilterList(AbstractRenderableWithCss):
     """
-    Defines a group of :class:`.AbstractFilter` objects.
+    Defines a set of :class:`.AbstractFilter` objects.
     """
-    template_name = 'django_cradmin/viewhelpers/listfilter/base/group.django.html'
+    template_name = 'django_cradmin/viewhelpers/listfilter/base/filterlist.django.html'
 
-    def __init__(self, *args, **kwargs):
-        super(Group, self).__init__(*args, **kwargs)
+    def __init__(self, urlbuilder):
+        """
+        Parameters:
+            urlbuilder: See :class:`.FiltersHandler`.
+        """
+        super(FilterList, self).__init__()
         self.children = []
         self.set_filters_string_called = False
-        self.filtershandler = self.get_filters_handler_class()()
+        self.filtershandler = self.get_filters_handler_class()(urlbuilder=urlbuilder)
 
     def get_filters_handler_class(self):
         return FiltersHandler
@@ -259,8 +314,8 @@ class Group(AbstractGroupChild):
 
     def get_dom_id(self):
         """
-        Get the DOM id of this group. We use this to generate
-        URLs that scroll back to the group after reloading the
+        Get the DOM id of this filterlist. We use this to generate
+        URLs that scroll back to the filterlist after reloading the
         page when applying a filter.
 
         Must be overridden in subclasses.
@@ -270,22 +325,25 @@ class Group(AbstractGroupChild):
     def append(self, child):
         """
         Add subclass of :class:`django_cradmin.renderable.AbstractGroupChild`
-        to the group.
+        to the filterlist.
 
         You will normally add subclasses of :class:`.AbstractFilter`
-        or :class:`.Group`, but if you want to spice up
-        the filter "box" with additional HTML, you can create a subclass of
-        :class:`.AbstractGroupChild` and add an object of that class.
+        but if you want to spice up the filter "box" with additional HTML,
+        you can create a subclass of :class:`.AbstractGroupChild` and
+        add an object of that class.
         """
-        child.set_parentfiltergroup(self)
+        child.set_filterlist(self)
         self.children.append(child)
         if isinstance(child, AbstractFilter):
             self.filtershandler.add_filter(child)
 
     def get_base_css_classes_list(self):
-        return ['django-cradmin-listfilter-group']
+        return ['django-cradmin-listfilter-filterlist']
 
     def iter_renderables(self):
+        """
+        Iterate over all the renderables (children) of the filterlist.
+        """
         return iter(self.children)
 
     def set_filters_string(self, filters_string):
@@ -293,7 +351,7 @@ class Group(AbstractGroupChild):
         Set the current value of the filters.
 
         If you use nested groups, you will only call this once on the
-        toplevel group.
+        toplevel filterlist.
 
         Parameters:
             filter_string: The part of the URL that defines the filters.
