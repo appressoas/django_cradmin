@@ -137,18 +137,26 @@ class TestFiltersStringParser(TestCase):
 
 
 class TestAbstractFilter(TestCase):
-    def test_copy(self):
+    def test_copy_include_values(self):
         testfilter = MinimalStringFilter()
         testfilter.set_values(values=['a', 'b'])
         self.assertEqual(['a', 'b'], testfilter.copy().values)
 
-    def test_copy_does_not_affect_original(self):
+    def test_copy_include_values_does_not_affect_original(self):
         testfilter = MinimalStringFilter()
         testfilter.set_values(values=['a', 'b'])
         copyfilter = testfilter.copy()
         copyfilter.values[0] = 'x'
         self.assertEqual(['a', 'b'], testfilter.values)
         self.assertEqual(['x', 'b'], copyfilter.values)
+
+    def test_copy_include_slug(self):
+        testfilter = MinimalStringFilter(slug='testslug')
+        self.assertEqual('testslug', testfilter.copy().slug)
+
+    def test_copy_include_title(self):
+        testfilter = MinimalStringFilter(title='testtitle')
+        self.assertEqual('testtitle', testfilter.copy().title)
 
     def test_set_values(self):
         testfilter = MinimalStringFilter()
@@ -180,14 +188,14 @@ class TestAbstractFilter(TestCase):
         testfilter.remove_values(values=['doesnotexist', 'b'])
         self.assertEqual(['a'], testfilter.values)
 
-    def test_get_clean_values(self):
+    def test_get_cleaned_values(self):
         class SimpleFilter(listfilter.base.AbstractFilter):
             def clean_value(self, value):
                 return 'cleaned-' + value
 
         testfilter = SimpleFilter()
         testfilter.values = ['a', 'b']
-        self.assertEqual(['cleaned-a', 'cleaned-b'], testfilter.get_clean_values())
+        self.assertEqual(['cleaned-a', 'cleaned-b'], testfilter.get_cleaned_values())
 
     def test_build_add_values_url(self):
         stringfilter = MinimalStringFilter()
@@ -244,6 +252,11 @@ class TestAbstractFilter(TestCase):
         self.assertEqual(
             '/test/s-b/i-10',
             stringfilter.build_remove_values_url(values=['a']))
+
+    def test_render(self):
+        stringfilter = listfilter.base.AbstractFilter()
+        selector = htmls.S(stringfilter.render())
+        self.assertTrue(selector.exists('.django-cradmin-listfilter-filter'))
 
 
 class TestAbstractFilterGroup(TestCase):

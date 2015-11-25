@@ -24,14 +24,17 @@ class AbstractFilter(AbstractGroupChild):
     """
     Defines a filter.
     """
-    def __init__(self, slug=None):
+    template_name = 'django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html'
+
+    def __init__(self, slug=None, title=None):
         """
         Parameters:
             slug: You can send the slug as a parameter, or override :meth:`.get_slug`.
         """
-        super(AbstractFilter, self).__init__()
         self.values = []
         self.slug = slug
+        self.title = title
+        super(AbstractFilter, self).__init__()
 
     def copy(self):
         """
@@ -39,6 +42,8 @@ class AbstractFilter(AbstractGroupChild):
         """
         copy = self.__class__()
         copy.set_values(list(self.values))
+        copy.slug = self.slug
+        copy.title = self.title
         return copy
 
     def get_slug(self):
@@ -55,6 +60,13 @@ class AbstractFilter(AbstractGroupChild):
             return self.slug
         else:
             raise NotImplementedError('You must override get_slug(), or send a slug to __init__().')
+
+    def get_title(self):
+        """
+        Get the title of the filter. This is typically set as the
+        ``<label>`` for the filter input field.
+        """
+        return self.title
 
     def set_values(self, values):
         """
@@ -93,7 +105,7 @@ class AbstractFilter(AbstractGroupChild):
         """
         return value
 
-    def get_clean_values(self):
+    def get_cleaned_values(self):
         """
         Clean the values, to prepare them for usage in :meth:`.add_to_queryobject`.
 
@@ -108,6 +120,18 @@ class AbstractFilter(AbstractGroupChild):
         to the queryobject in :meth:`.add_to_queryobject`).
         """
         return [self.clean_value(value) for value in self.values]
+
+    def get_cleaned_value(self):
+        """
+        Returns the first value returned by :meth:`.get_cleaned_values`,
+        or ``None`` if there is no values. Use this in
+        :meth:`.add_to_queryobject` if you expect a single value.
+        """
+        clean_values = self.get_cleaned_values()
+        if len(clean_values) > 0:
+            return clean_values[0]
+        else:
+            return None
 
     def build_set_values_url(self, values):
         """
@@ -165,8 +189,8 @@ class AbstractFilter(AbstractGroupChild):
         copy.remove_values(values)
         return self.filterlist.filtershandler.build_filter_url(changed_filterobject=copy)
 
-    def get_base_css_classes(self):
-        return 'django-cradmin-listfilter-filter'
+    def get_base_css_classes_list(self):
+        return ['django-cradmin-listfilter-filter']
 
     def add_to_queryobject(self, queryobject):
         """
@@ -181,24 +205,15 @@ class AbstractFilter(AbstractGroupChild):
         as ElasticSearch, MongoDB, etc. this can be something
         completely different such as a dict.
         """
+        raise NotImplementedError()
 
-
-class AbstractSingleValueFilter(AbstractFilter):
-    def get_clean_value(self):
+    def get_dom_id(self):
         """
-        Returns the first value returned by :meth:`.AbstractFilter.get_clean_values`,
-        or ``None`` if there is no values.
+        Get the DOM ID of this filter. The base template adds this to the wrapping DIV,
+        but you can also use this if you need DOM IDs for components of a filter
+        (E.g.: Field ID to attach a labels to a form field).
         """
-        clean_values = self.get_clean_values()
-        if len(clean_values) > 0:
-            return clean_values[0]
-        else:
-            return None
-
-
-# listfilter.single.selectinput.Text
-# listfilter.single.selectinput.Int
-# listfilter.multi.selectinput.Text
+        return '{}-{}'.format(self.filterlist.get_dom_id_prefix(), self.get_slug())
 
 
 class InvalidFiltersStringError(Exception):
@@ -276,6 +291,9 @@ class FiltersHandler(object):
                 slug, self.slug_and_value_separator))
         self.filtermap[slug] = filterobject
 
+    def normalize_values(self, values):
+        return [value for value in values if value]
+
     def build_filter_string(self, slug, values):
         """
         Build a filter string suitable for an URL from the given
@@ -297,6 +315,7 @@ class FiltersHandler(object):
                 values = changed_filterobject.values
             else:
                 values = filterobject.values
+            values = self.normalize_values(values)
             if values:
                 filters_strings.append(self.build_filter_string(slug=slug, values=values))
         return self.filter_separator.join(filters_strings)
@@ -341,15 +360,17 @@ class AbstractFilterList(AbstractRenderableWithCss):
         """
         return None
 
-    def get_dom_id(self):
+    def get_dom_id_prefix(self):
         """
-        Get the DOM id of this filterlist. We use this to generate
-        URLs that scroll back to the filterlist after reloading the
-        page when applying a filter.
+        The prefix for all DOM IDs created by the filter. This is used by filters
+        to generate unique DOM IDs.
 
-        Must be overridden in subclasses.
+        You should not need to override this unless you have multiple filterlists
+        in a single page.
+
+        Defaults to ``django-cradmin-listfilter-``.
         """
-        raise NotImplementedError()
+        return 'django-cradmin-listfilter'
 
     def append(self, child):
         """

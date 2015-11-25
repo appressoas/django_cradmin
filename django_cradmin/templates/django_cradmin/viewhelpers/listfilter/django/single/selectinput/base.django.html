@@ -1,0 +1,19 @@
+{% extends "django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html" %}
+
+{% block content %}
+    {% if me.get_title %}
+        <label for="{{ me.get_select_dom_id }}">
+            {{ me.get_title }}
+        </label>
+    {% endif %}
+    <select id="{{ me.get_select_dom_id }}"
+            class="form-control"
+            django-cradmin-open-url-stored-in-selected-option>
+        {% for choicedata in choicesdata %}
+            <option value="{{ choicedata.url }}"
+                    {% if choicedata.is_selected %}selected{% endif %}>
+                {{ choicedata.label }}
+            </option>
+        {% endfor %}
+    </select>
+{% endblock content %}
