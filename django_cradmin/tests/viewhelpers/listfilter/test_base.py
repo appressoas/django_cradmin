@@ -32,7 +32,7 @@ class MinimalStringFilter(listfilter.base.AbstractFilter):
         return 's'
 
 
-class TestFiltersStringParser(TestCase):
+class TestFiltersHandler(TestCase):
     def test_invalid_filter_string(self):
         filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
@@ -136,6 +136,29 @@ class TestFiltersStringParser(TestCase):
         self.assertEqual(
             '/the/prefix/i-10/s-jack%2Cpeter?a=querystring',
             filtershandler.build_filter_url(changed_filterobject=new_stringfilter))
+
+    def test_filter(self):
+        class FilterOne(listfilter.base.AbstractFilter):
+            def filter(self, queryobject):
+                return queryobject.filter(mycharfield='test')
+
+        class FilterTwo(listfilter.base.AbstractFilter):
+            def filter(self, queryobject):
+                return queryobject.filter(mybooleanfield=True)
+
+        match = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                           mycharfield='test', mybooleanfield=True)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mycharfield='no match', mybooleanfield=True)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mycharfield='test', mybooleanfield=False)
+
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler.add_filter(FilterOne(slug='filterone'))
+        filtershandler.add_filter(FilterTwo(slug='filtertwo'))
+        queryset = filtershandler.filter(FilterTestModel.objects.all())
+        self.assertEqual({match},
+                         set(queryset))
 
 
 class TestAbstractFilter(TestCase):
@@ -262,7 +285,7 @@ class TestAbstractFilter(TestCase):
         self.assertTrue(selector.exists('.django-cradmin-listfilter-filter'))
 
 
-class TestAbstractFilterGroup(TestCase):
+class TestAbstractFilterList(TestCase):
     def test_append(self):
         filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
         testchild = MinimalFilterGroupChild()
