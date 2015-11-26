@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from django.test import TestCase
 import htmls
 import mock
+from model_mommy import mommy
+from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 
 from django_cradmin.viewhelpers import listfilter
 
@@ -291,3 +293,26 @@ class TestAbstractFilterGroup(TestCase):
         filterlist.set_filters_string('i-10/s-test')
         self.assertEqual(['10'], intfilter.values)
         self.assertEqual(['test'], stringfilter.values)
+
+    def test_filter(self):
+        class FilterOne(listfilter.base.AbstractFilter):
+            def add_to_queryobject(self, queryobject):
+                return queryobject.filter(mycharfield='test')
+
+        class FilterTwo(listfilter.base.AbstractFilter):
+            def add_to_queryobject(self, queryobject):
+                return queryobject.filter(mybooleanfield=True)
+
+        match = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                           mycharfield='test', mybooleanfield=True)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mycharfield='no match', mybooleanfield=True)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mycharfield='test', mybooleanfield=False)
+
+        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist.append(FilterOne(slug='filterone'))
+        filterlist.append(FilterTwo(slug='filtertwo'))
+        queryset = filterlist.filter(FilterTestModel.objects.all())
+        self.assertEqual({match},
+                         set(queryset))

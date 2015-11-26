@@ -22,13 +22,15 @@
 
 {% block content %}
     <div class="container">
-        {% if listbuilder_list.has_items %}
-            {{ listbuilder_list.render }}
-            {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
-        {% else %}
-            <p class="django-cradmin-listbuilderview-no-items-message">
-                {{ no_items_message }}
-            </p>
-        {% endif %}
+        {% block list %}
+            {% if listbuilder_list.has_items %}
+                {{ listbuilder_list.render }}
+                {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
+            {% else %}
+                <p class="django-cradmin-listbuilderview-no-items-message">
+                    {{ no_items_message }}
+                </p>
+            {% endif %}
+        {% endblock list %}
     </div>
 {% endblock content %}

@@ -3,13 +3,14 @@ from django.template.defaultfilters import truncatechars
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
 from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
-from django_cradmin.demo.webdemo.views import pages_listbuilder
 
-from .models import Site
-from .views import dashboard
-from .views import pages
-from .views import inviteadmins
-from .views import sharable_link
+from django_cradmin.demo.webdemo.models import Site
+from django_cradmin.demo.webdemo.views import pages_listbuilder
+from django_cradmin.demo.webdemo.views import pages_listbuilder_filters
+from django_cradmin.demo.webdemo.views import dashboard
+from django_cradmin.demo.webdemo.views import pages
+from django_cradmin.demo.webdemo.views import inviteadmins
+from django_cradmin.demo.webdemo.views import sharable_link
 
 
 class Menu(crmenu.Menu):
@@ -25,6 +26,10 @@ class Menu(crmenu.Menu):
         self.add_menuitem(
             label=_('Pages (listbuilder)'), url=self.appindex_url('pages_listbuilder'),
             active=self.request.cradmin_app.appname == 'pages_listbuilder')
+        self.add_menuitem(
+            label=_('Pages (listbuilder filter)'),
+            url=self.appindex_url('pages_listbuilder_filters'),
+            active=self.request.cradmin_app.appname == 'pages_listbuilder_filters')
         self.add_menuitem(
             label=_('Images'), url=self.appindex_url('imagearchive'),
             active=self.request.cradmin_app.appname == 'imagearchive')
@@ -47,6 +52,7 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         ('dashboard', dashboard.App),
         ('pages', pages.App),
         ('pages_listbuilder', pages_listbuilder.App),
+        ('pages_listbuilder_filters', pages_listbuilder_filters.App),
         ('imagearchive', imagearchive.App),
         ('inviteadmins', inviteadmins.App),
         ('sharable_link', sharable_link.App),
