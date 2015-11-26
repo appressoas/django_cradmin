@@ -33,6 +33,18 @@ class MinimalStringFilter(listfilter.base.AbstractFilter):
 
 
 class TestFiltersHandler(TestCase):
+    def test_split_raw_filter_values(self):
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        self.assertEqual(
+            ['a/b', 'c,d'],
+            filtershandler.split_raw_filter_values('a%252Fb%2Cc%252Cd'))
+
+    def test_join_filter_values(self):
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        self.assertEqual(
+            'a%252Fb%2Cc%252Cd',
+            filtershandler.join_filter_values(['a/b', 'c,d']))
+
     def test_invalid_filter_string(self):
         filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
@@ -129,7 +141,7 @@ class TestFiltersHandler(TestCase):
         new_stringfilter = stringfilter.copy()
         new_stringfilter.set_values(values=['jack', 'peter'])
         self.assertEqual(
-            'i-10/s-jack,peter',
+            'i-10/s-jack%2Cpeter',
             filtershandler.build_filters_string(changed_filterobject=new_stringfilter))
 
     def test_build_filter_url(self):

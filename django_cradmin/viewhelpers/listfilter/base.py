@@ -258,7 +258,7 @@ class FiltersHandler(object):
         self.urlbuilder = urlbuilder
         self._parse_called = False
 
-    def split_raw_filter_value(self, value):
+    def split_raw_filter_values(self, raw_values):
         """
         Parse the given ``value``, splitting it into a list of values.
 
@@ -267,15 +267,21 @@ class FiltersHandler(object):
 
         If you override this, you will also have ot override :meth:`.join_filter_values`.
         """
-        value = urllib.parse.unquote(value)
-        return value.split(self.multivalue_separator)
+        values = urllib.parse.unquote_plus(raw_values)
+        return [urllib.parse.unquote_plus(value)
+                for value in values.split(self.multivalue_separator)]
 
     def join_filter_values(self, values):
         """
-        The reverse of :meth:`.split_raw_filter_value`. Joins
+        The reverse of :meth:`.split_raw_filter_values`. Joins
         the given ``values`` list into a string.
         """
-        return self.multivalue_separator.join(values)
+        # We quote each value, and then we quote the entire string. This
+        # ensures that we do not get any problems when a value contains
+        # ``multivalue_separator``.
+        raw_values = [urllib.parse.quote_plus(value) for value in values]
+        raw_values = self.multivalue_separator.join(raw_values)
+        return urllib.parse.quote_plus(raw_values)
 
     def parse_filter_string(self, filter_string):
         """
@@ -288,7 +294,7 @@ class FiltersHandler(object):
             raise InvalidFiltersStringError('"{}" does not contain "{}".'.format(
                 filter_string, self.slug_and_value_separator))
         slug, value = filter_string.split(self.slug_and_value_separator, 1)
-        return slug, self.split_raw_filter_value(value)
+        return slug, self.split_raw_filter_values(value)
 
     def parse(self, filters_string):
         """
@@ -371,7 +377,7 @@ class FiltersHandler(object):
             changed_filterobject: A :class:`.AbstractFilter` object.
         """
         filters_string = self.build_filters_string(changed_filterobject=changed_filterobject)
-        return self.urlbuilder(filters_string=urllib.parse.quote(filters_string))
+        return self.urlbuilder(filters_string=filters_string)
 
     def filter(self, queryobject):
         """
