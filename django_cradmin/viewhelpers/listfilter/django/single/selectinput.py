@@ -77,7 +77,7 @@ class AbstractSelectFilter(AbstractDjangoOrmSingleFilter):
 
 class Boolean(AbstractSelectFilter):
     """
-    A boolean filter that works on any bool(true) values
+    A boolean filter that works on any BooleanField and CharField.
     (False, None and ``""`` is considered ``False``).
     """
     def get_do_not_apply_label(self):
@@ -96,14 +96,27 @@ class Boolean(AbstractSelectFilter):
             ('false', self.get_false_label()),
         ]
 
+    def get_query(self, modelfield):
+        return (models.Q(**{modelfield: False}) |
+                models.Q(**{modelfield: ''}) |
+                models.Q(**{'{}__isnull'.format(modelfield): True}))
+
     def filter(self, queryobject):
         modelfield = self.get_modelfield()
         cleaned_value = self.get_cleaned_value()
-        query = (models.Q(**{modelfield: False}) |
-                 models.Q(**{modelfield: ''}) |
-                 models.Q(**{'{}__isnull'.format(modelfield): True}))
+        query = self.get_query(modelfield)
         if cleaned_value == 'true':
             queryobject = queryobject.exclude(query)
         elif cleaned_value == 'false':
             queryobject = queryobject.filter(query)
         return queryobject
+
+
+class IsNotNull(Boolean):
+    """
+    A subclass of :class:`.Boolean` that works with
+    foreign keys and other fields where ``None`` means no
+    value and anything else means that it has a value.
+    """
+    def get_query(self, modelfield):
+        return models.Q(**{'{}__isnull'.format(modelfield): True})

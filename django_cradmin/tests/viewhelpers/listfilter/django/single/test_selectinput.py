@@ -208,3 +208,38 @@ class TestBoolean(TestCase):
         self.assertEqual(
             {truevalue},
             set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+
+class TestIsNotNull(TestCase):
+    def test_false(self):
+        testfilter = listfilter.django.single.selectinput.IsNotNull(slug='myintnullfield')
+        testfilter.set_values(values=['false'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   myintnullfield=10)
+        nullvalue = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               myintnullfield=None)
+        self.assertEqual(
+            {nullvalue},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_true(self):
+        testfilter = listfilter.django.single.selectinput.IsNotNull(slug='myintnullfield')
+        testfilter.set_values(values=['true'])
+        withvalue = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               myintnullfield=10)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   myintnullfield=None)
+        self.assertEqual(
+            {withvalue},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_true_zero(self):
+        testfilter = listfilter.django.single.selectinput.IsNotNull(slug='myintnullfield')
+        testfilter.set_values(values=['true'])
+        withvalue = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               myintnullfield=0)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   myintnullfield=None)
+        self.assertEqual(
+            {withvalue},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))

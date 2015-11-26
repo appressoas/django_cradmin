@@ -47,7 +47,7 @@ class ViewMixin(object):
     def get_filters_string(self):
         return self.kwargs['filters_string'] or ''
 
-    def get_filterlist(self):
+    def build_filterlist(self):
         """
         Override this to add filtering with :doc:`listbuilder <viewhelpers_listbuilder>`.
 
@@ -55,6 +55,18 @@ class ViewMixin(object):
         :class:`django_cradmin.viewhelpers.listfilter.base.AbstractFilterList`.
         """
         raise NotImplementedError()
+
+    def get_filterlist(self):
+        """
+        Returns the result of :meth:`.build_filterlist`, but
+        ensures the method is only called once for a request.
+
+        This means that you should override :meth:`.build_filterlist`,
+        but when you need to use it, you should call this method instead.
+        """
+        if not hasattr(self, '_filterlist'):
+            self._filterlist = self.build_filterlist()
+        return self._filterlist
 
     def get_filterlist_position(self):
         """

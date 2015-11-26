@@ -7,17 +7,21 @@ from django_cradmin import crapp
 
 
 class PagesListFilterView(listbuilderview.FilterListMixin, PagesListBuilderView):
-    paginate_by = 2
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appindexurl(kwargs={
             'filters_string': filters_string})
 
-    def get_filterlist(self):
+    def build_filterlist(self):
         filterlist = listfilter.base.AbstractFilterList(urlbuilder=self.filterlist_urlbuilder)
-        filterlist.append(listfilter.django.single.selectinput.Boolean(
+        filterlist.append(listfilter.django.single.selectinput.IsNotNull(
             slug='image', title='Has image?'))
         filterlist.set_filters_string(filters_string=self.get_filters_string())
         return filterlist
+
+    def get_queryset_for_role(self, site):
+        queryset = super(PagesListFilterView, self).get_queryset_for_role(site=site)
+        queryset = self.get_filterlist().filter(queryset)
+        return queryset
 
 
 class App(crapp.App):
