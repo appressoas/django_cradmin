@@ -45,6 +45,19 @@ class TestFiltersHandler(TestCase):
                                       '"x" is not a valid filter slug.'):
             filtershandler.parse('x-10')
 
+    def test_add_filter_duplicate_filter_slug(self):
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler.add_filter(listfilter.base.AbstractFilter(slug='x'))
+        with self.assertRaisesMessage(ValueError,
+                                      'Duplicate slug: "x".'):
+            filtershandler.add_filter(listfilter.base.AbstractFilter(slug='x'))
+
+    def test_add_filter_invalid_filter_slug(self):
+        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        with self.assertRaisesMessage(ValueError,
+                                      'Invalid filter slug: "x-y". Slugs can not contain "-".'):
+            filtershandler.add_filter(listfilter.base.AbstractFilter(slug='x-y'))
+
     def test_parse_empty_string(self):
         filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.parse('')

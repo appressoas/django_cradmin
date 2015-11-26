@@ -316,6 +316,8 @@ class FiltersHandler(object):
         Add a :class:`.AbstractFilter` to the handler.
         """
         slug = filterobject.get_slug()
+        if slug in self.filtermap:
+            raise ValueError('Duplicate slug: "{}".'.format(slug))
         if self.slug_and_value_separator in slug:
             raise ValueError('Invalid filter slug: "{}". Slugs can not contain "{}".'.format(
                 slug, self.slug_and_value_separator))
