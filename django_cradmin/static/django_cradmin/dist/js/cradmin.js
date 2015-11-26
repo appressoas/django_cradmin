@@ -3111,6 +3111,26 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.forms.select', []).directive('djangoCradminOpenUrlStoredInSelectedOption', function() {
+    return {
+      restrict: 'A',
+      link: function($scope, $element) {
+        var getValue;
+        getValue = function() {
+          return $element.find("option:selected").attr('value');
+        };
+        return $element.on('change', function() {
+          var value;
+          value = getValue();
+          return window.location = value;
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
   var app;
 
   app = angular.module('djangoCradmin.forms.setfieldvalue', ['cfp.hotkeys']);
@@ -3394,7 +3414,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select']);
 
 }).call(this);
 

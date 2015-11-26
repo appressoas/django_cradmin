@@ -21,4 +21,5 @@ angular.module('djangoCradmin', [
   'djangoCradmin.forms.datetimewidget'
   'djangoCradmin.forms.filewidget'
   'djangoCradmin.forms.setfieldvalue'
+  'djangoCradmin.forms.select'
 ])
