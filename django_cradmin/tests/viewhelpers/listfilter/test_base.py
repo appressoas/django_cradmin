@@ -256,7 +256,8 @@ class TestAbstractFilter(TestCase):
             stringfilter.build_remove_values_url(values=['a']))
 
     def test_render(self):
-        stringfilter = listfilter.base.AbstractFilter()
+        stringfilter = listfilter.base.AbstractFilter(slug='test')
+        stringfilter.set_filterlist(mock.MagicMock())
         selector = htmls.S(stringfilter.render())
         self.assertTrue(selector.exists('.django-cradmin-listfilter-filter'))
 
