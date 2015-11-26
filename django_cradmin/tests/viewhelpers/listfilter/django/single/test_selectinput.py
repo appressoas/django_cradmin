@@ -133,6 +133,23 @@ class TestBase(TestCase):
         self.assertEqual('A title', selector.one('label').alltext_normalized)
         self.assertEqual('django-cradmin-listfilter-test-select', selector.one('label')['for'])
 
+    def test_render_label_get_label_is_screenreader_only_true(self):
+        class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):
+            def get_choices(self):
+                return [
+                    ('unused', 'unused'),
+                ]
+
+            def get_label_is_screenreader_only(self):
+                return True
+
+        testfilter = MySelectFilter(slug='test', title='A title')
+        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist.append(testfilter)
+        selector = htmls.S(testfilter.render())
+        self.assertTrue(selector.exists('label'))
+        self.assertTrue(selector.one('label').hasclass('sr-only'))
+
 
 class TestBoolean(TestCase):
     def test_no_value(self):

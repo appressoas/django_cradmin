@@ -17,6 +17,16 @@ class AbstractSelectFilter(AbstractDjangoOrmSingleFilter):
         """
         raise NotImplementedError()
 
+    def get_label_is_screenreader_only(self):
+        """
+        If this returns ``True``, the label will be styled to
+        only make it visible to screenreaders.
+
+        This is recommended over simply not setting a title
+        since that would break accessibility.
+        """
+        return False
+
     def get_select_dom_id(self):
         return '{}-select'.format(self.get_dom_id())
 

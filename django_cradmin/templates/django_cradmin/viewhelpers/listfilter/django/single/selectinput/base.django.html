@@ -2,7 +2,8 @@
 
 {% block content %}
     {% if me.get_title %}
-        <label for="{{ me.get_select_dom_id }}">
+        <label for="{{ me.get_select_dom_id }}"
+               {% if me.get_label_is_screenreader_only %}class="sr-only"{% endif %}>
             {{ me.get_title }}
         </label>
     {% endif %}
