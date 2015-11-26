@@ -96,7 +96,7 @@ class Boolean(AbstractSelectFilter):
             ('false', self.get_false_label()),
         ]
 
-    def add_to_queryobject(self, queryobject):
+    def filter(self, queryobject):
         modelfield = self.get_modelfield()
         cleaned_value = self.get_cleaned_value()
         query = (models.Q(**{modelfield: False}) |

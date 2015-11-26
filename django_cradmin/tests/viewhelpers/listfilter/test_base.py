@@ -296,11 +296,11 @@ class TestAbstractFilterGroup(TestCase):
 
     def test_filter(self):
         class FilterOne(listfilter.base.AbstractFilter):
-            def add_to_queryobject(self, queryobject):
+            def filter(self, queryobject):
                 return queryobject.filter(mycharfield='test')
 
         class FilterTwo(listfilter.base.AbstractFilter):
-            def add_to_queryobject(self, queryobject):
+            def filter(self, queryobject):
                 return queryobject.filter(mybooleanfield=True)
 
         match = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',

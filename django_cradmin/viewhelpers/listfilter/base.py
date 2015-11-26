@@ -107,17 +107,17 @@ class AbstractFilter(AbstractGroupChild):
 
     def get_cleaned_values(self):
         """
-        Clean the values, to prepare them for usage in :meth:`.add_to_queryobject`.
+        Clean the values, to prepare them for usage in :meth:`.filter`.
 
         Defaults to returning the values unchanged, but you will typically
         want to override this if your filter allows the user to type in a
         values, or if you want to convert the values from a string into
-        something that makes sense for your :meth:`.add_to_queryobject`.
+        something that makes sense for your :meth:`.filter`.
 
         If you want validation, you should handle that by setting some
         attribute on ``self``, and handle the error in the template
         rendering the filter (and most likely not add anything
-        to the queryobject in :meth:`.add_to_queryobject`).
+        to the queryobject in :meth:`.filter`).
         """
         return [self.clean_value(value) for value in self.values]
 
@@ -125,7 +125,7 @@ class AbstractFilter(AbstractGroupChild):
         """
         Returns the first value returned by :meth:`.get_cleaned_values`,
         or ``None`` if there is no values. Use this in
-        :meth:`.add_to_queryobject` if you expect a single value.
+        :meth:`.filter` if you expect a single value.
         """
         clean_values = self.get_cleaned_values()
         if len(clean_values) > 0:
@@ -192,7 +192,7 @@ class AbstractFilter(AbstractGroupChild):
     def get_base_css_classes_list(self):
         return ['django-cradmin-listfilter-filter']
 
-    def add_to_queryobject(self, queryobject):
+    def filter(self, queryobject):
         """
         Add the current values to the given ``queryobject``.
 
@@ -377,13 +377,13 @@ class FiltersHandler(object):
         Apply the filters to the given ``queryobject``.
 
         Loops through all the registered filters (the filters added with :meth:`.add_filter`),
-        and run :meth:`.AbstractFilter.add_to_queryobject`.
+        and run :meth:`.AbstractFilter.filter`.
 
         Parameters:
-            queryobject: See :meth:`.AbstractFilter.add_to_queryobject`.
+            queryobject: See :meth:`.AbstractFilter.filter`.
         """
         for filterobject in self.filtermap.values():
-            queryobject = filterobject.add_to_queryobject(queryobject=queryobject)
+            queryobject = filterobject.filter(queryobject=queryobject)
         return queryobject
 
 

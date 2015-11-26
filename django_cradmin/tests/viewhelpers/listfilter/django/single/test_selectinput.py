@@ -146,7 +146,7 @@ class TestBoolean(TestCase):
                                mycharfield=None)
         self.assertEqual(
             {withvalue, emptyvalue, nullvalue},
-            set(testfilter.add_to_queryobject(queryobject=FilterTestModel.objects.all())))
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_invalid_value(self):
         testfilter = listfilter.django.single.selectinput.Boolean(slug='mycharfield')
@@ -159,7 +159,7 @@ class TestBoolean(TestCase):
                                mycharfield=None)
         self.assertEqual(
             {withvalue, emptyvalue, nullvalue},
-            set(testfilter.add_to_queryobject(queryobject=FilterTestModel.objects.all())))
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_false_charfield(self):
         testfilter = listfilter.django.single.selectinput.Boolean(slug='mycharfield')
@@ -172,7 +172,7 @@ class TestBoolean(TestCase):
                                mycharfield=None)
         self.assertEqual(
             {emptyvalue, nullvalue},
-            set(testfilter.add_to_queryobject(queryobject=FilterTestModel.objects.all())))
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_true_charfield(self):
         testfilter = listfilter.django.single.selectinput.Boolean(slug='mycharfield')
@@ -185,7 +185,7 @@ class TestBoolean(TestCase):
                    mycharfield=None)
         self.assertEqual(
             {withvalue},
-            set(testfilter.add_to_queryobject(queryobject=FilterTestModel.objects.all())))
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_false_booleanfield(self):
         testfilter = listfilter.django.single.selectinput.Boolean(slug='mybooleanfield')
@@ -196,7 +196,7 @@ class TestBoolean(TestCase):
                                 mybooleanfield=False)
         self.assertEqual(
             {falsevalue},
-            set(testfilter.add_to_queryobject(queryobject=FilterTestModel.objects.all())))
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_true_booleanfield(self):
         testfilter = listfilter.django.single.selectinput.Boolean(slug='mybooleanfield')
@@ -207,4 +207,4 @@ class TestBoolean(TestCase):
                    mybooleanfield=False)
         self.assertEqual(
             {truevalue},
-            set(testfilter.add_to_queryobject(queryobject=FilterTestModel.objects.all())))
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
