@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 from collections import OrderedDict
-import posixpath
 import urllib
 from django_cradmin.renderable import AbstractRenderableWithCss
 
