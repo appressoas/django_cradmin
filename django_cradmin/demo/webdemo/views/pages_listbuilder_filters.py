@@ -1,15 +1,13 @@
 from __future__ import unicode_literals
+from django_cradmin.demo.webdemo.views.pages_listbuilder import PagesListBuilderView
 
-from django_cradmin.demo.webdemo.views.pages import PagesQuerySetForRoleMixin
 from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin import crapp
-from django_cradmin.demo.webdemo.models import Page
 
 
-class PagesListFilterView(PagesQuerySetForRoleMixin, listbuilderview.View):
-    model = Page
-
+class PagesListFilterView(listbuilderview.FilterListMixin, PagesListBuilderView):
+    paginate_by = 2
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appindexurl(kwargs={
             'filters_string': filters_string})

@@ -7,7 +7,7 @@ from django_cradmin import crapp
 from django_cradmin.demo.webdemo.models import Page
 
 
-class PagesListView(PagesQuerySetForRoleMixin, listbuilderview.View):
+class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.View):
     model = Page
 
 
@@ -15,7 +15,7 @@ class App(crapp.App):
     appurls = [
         crapp.Url(
             r'^$',
-            PagesListView.as_view(),
+            PagesListBuilderView.as_view(),
             name=crapp.INDEXVIEW_NAME),
         crapp.Url(
             r'^create$',
