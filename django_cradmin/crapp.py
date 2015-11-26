@@ -44,14 +44,13 @@ class App(object):
             appname=self.appname, viewname=viewname,
             args=args, kwargs=kwargs)
 
-    def reverse_appindexurl(self):
+    def reverse_appindexurl(self, args=None, kwargs=None):
         """
         Shortcut for::
 
-            from django_cradmin import crapp
-            cradmin_app.reverse_appurl(crapp.INDEXVIEW_NAME)
+            reverse_appurl(crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs)
         """
-        return self.reverse_appurl(viewname=INDEXVIEW_NAME)
+        return self.reverse_appurl(viewname=INDEXVIEW_NAME, args=args, kwargs=kwargs)
 
     @classmethod
     def _wrap_view(cls, appname, view):
