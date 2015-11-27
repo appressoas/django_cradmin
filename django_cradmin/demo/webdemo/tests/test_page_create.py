@@ -1,0 +1,39 @@
+from django import test
+from model_mommy import mommy
+
+from django_cradmin.demo.webdemo.views import pages
+from django_cradmin import cradmin_testhelpers
+
+
+class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
+    """
+    Testing PageCreateView
+
+    .. attribute:: viewclass
+
+        The viewclass to be tested.
+
+    """
+    viewclass = pages.PageCreateView
+
+    def test_get_view_title(self):
+        """
+        Test the view title ('Create Page').
+        """
+        site = mommy.make('webdemo.Site')
+        page = mommy.make('webdemo.Page', site=site)
+        mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
+        view_title = mockresponse.selector.one('.django-cradmin-page-header-inner').alltext_normalized
+
+        self.assertEquals('Create Page', view_title)
+
+    def test_get_create_button_text(self):
+        """
+        Test the button text for creating a page in view ('Create').
+        """
+        site = mommy.make('webdemo.Site', name='Demosite')
+        page = mommy.make('webdemo.Page', title='Webpage2' ,site=site)
+        mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
+        button_text = mockresponse.selector.one('.btn-primary').alltext_normalized
+
+        self.assertEquals('Create', button_text)
