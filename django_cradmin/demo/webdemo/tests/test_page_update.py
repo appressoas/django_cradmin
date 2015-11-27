@@ -7,7 +7,7 @@ from django_cradmin import cradmin_testhelpers
 
 class TestPageUpdateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
     """
-    Testing PageCreateView
+    Testing PageUpdateView
 
     .. attribute:: viewclass
 
