@@ -144,7 +144,7 @@ class PageCreateUpdateMixin(object):
         )
         form.fields['publishing_time'].widget = DateTimePickerWidget(
             # minimum_datetime=datetime(2014, 8, 14, 12, 30),
-            minimum_datetime=timezone.now() + timedelta(hours=1),
+            minimum_datetime=timezone.now(),
             maximum_datetime=datetime(2030, 12, 5, 21, 40),
             required=False
         )
