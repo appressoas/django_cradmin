@@ -1,8 +1,18 @@
+from unittest import mock
 from django import test
 from model_mommy import mommy
 
 from django_cradmin.demo.webdemo.views import pages
 from django_cradmin import cradmin_testhelpers
+
+
+try:
+    # Python 3 - use the builtin module
+    from unittest import mock
+except ImportError:
+    # Python 2 via the mock library.
+    # Requires users to ``pip install mock``.
+    import mock
 
 
 class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
@@ -37,3 +47,20 @@ class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         button_text = mockresponse.selector.one('.btn-primary').alltext_normalized
 
         self.assertEquals('Create', button_text)
+
+    def test_post_create_all_required_fields_filled(self):
+        """
+        Gets 302 Found redirect.
+        """
+        site = mommy.make('webdemo.Site')
+        mockresponse = self.mock_http302_postrequest(
+            cradmin_role=site,
+            requestkwargs={
+                'data': {
+                    'title': 'Title text',
+                    'intro': 'Intro text',
+                    'body': 'Body text',
+                    'publishing_time': '2000-09-09 13:37',
+                }
+            })
+        self.assertEquals(302, mockresponse.response.status_code)
