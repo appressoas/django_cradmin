@@ -6,6 +6,14 @@ from django_cradmin import cradmin_testhelpers
 
 
 class TestPageUpdateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
+    """
+    Testing PageCreateView
+
+    .. attribute:: viewclass
+
+        The viewclass to be tested.
+
+    """
     viewclass = pages.PageUpdateView
 
     def test_get_view_title(self):
