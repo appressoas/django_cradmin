@@ -1,13 +1,16 @@
 from __future__ import unicode_literals
 
+from unittest import mock
+
 from django.test import TestCase
 from future import standard_library
 import htmls
 from model_mommy import mommy
-from unittest import mock
-from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
+from django_cradmin import datetimeutils
 
+from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 from django_cradmin.viewhelpers import listfilter
+
 standard_library.install_aliases()
 
 
@@ -260,3 +263,163 @@ class TestIsNotNull(TestCase):
         self.assertEqual(
             {withvalue},
             set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+
+class TestDateTime(TestCase):
+    def test_no_value(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=[])
+        testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel')
+        self.assertEqual(
+            {testitem},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_invalid_value(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['invalidstuff'])
+        testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel')
+        self.assertEqual(
+            {testitem},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_today_nomatch(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['today'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 1))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 1, 2)):
+            self.assertFalse(
+                testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
+
+    def test_today_match(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['today'])
+        testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                              mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 1))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 1, 1, 12, 30)):
+            self.assertEqual(
+                {testitem},
+                set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_yesterday_nomatch(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['yesterday'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 10))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 1, 12)):
+            self.assertFalse(
+                testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
+
+    def test_yesterday_match(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['yesterday'])
+        testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                              mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 10))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 1, 11, 12, 30)):
+            self.assertEqual(
+                {testitem},
+                set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_last_seven_days_nomatch(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['last_seven_days'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 2))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 1, 10, 12, 30)):
+            self.assertFalse(
+                testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
+
+    def test_last_seven_days_match(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['last_seven_days'])
+        testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                              mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 3))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 1, 10, 12, 30)):
+            self.assertEqual(
+                {testitem},
+                set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_this_week_nomatch(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['this_week'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 11, 29))
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 7))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 12, 1, 12, 30)):
+            self.assertFalse(
+                testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
+
+    def test_this_week_match(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['this_week'])
+        start_of_week = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 11, 30))
+        end_of_week = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                 mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 6, 23))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 12, 1, 12, 30)):
+            self.assertEqual(
+                {start_of_week, end_of_week},
+                set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_this_month_nomatch(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['this_month'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 11, 29))
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2016, 1, 1))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 12, 7, 12, 30)):
+            self.assertFalse(
+                testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
+
+    def test_this_month_match(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['this_month'])
+        start_of_month = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 1))
+        middle_of_month = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                     mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 24))
+        end_of_month = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                  mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 31, 23))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 12, 7, 12, 30)):
+            self.assertEqual(
+                {start_of_month, middle_of_month, end_of_month},
+                set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_this_year_nomatch(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['this_year'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2014, 12, 31))
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mydatetimefield=datetimeutils.default_timezone_datetime(2016, 1, 1))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 12, 24)):
+            self.assertFalse(
+                testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
+
+    def test_this_year_match(self):
+        testfilter = listfilter.django.single.selectinput.DateTime(slug='mydatetimefield')
+        testfilter.set_values(values=['this_year'])
+        start_of_year = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 1))
+        middle_of_year = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 6, 1))
+        end_of_year = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                                 mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 31, 23))
+        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.selectinput.timezone.now',
+                        lambda: datetimeutils.default_timezone_datetime(2015, 12, 24)):
+            self.assertEqual(
+                {start_of_year, middle_of_year, end_of_year},
+                set(testfilter.filter(queryobject=FilterTestModel.objects.all())))

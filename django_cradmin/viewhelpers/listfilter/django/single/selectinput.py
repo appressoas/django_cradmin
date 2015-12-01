@@ -1,6 +1,10 @@
+import calendar
+import datetime
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy
 from .base import AbstractDjangoOrmSingleFilter
+from django_cradmin import datetimeutils
 
 
 class AbstractSelectFilter(AbstractDjangoOrmSingleFilter):
@@ -13,7 +17,7 @@ class AbstractSelectFilter(AbstractDjangoOrmSingleFilter):
 
     def get_choices(self):
         """
-        Get choices as an iterable of ``(value, label)``.
+        Get choices as a list of of ``(value, label)`` pairs.
         """
         raise NotImplementedError()
 
@@ -91,12 +95,22 @@ class Boolean(AbstractSelectFilter):
     (False, None and ``""`` is considered ``False``).
     """
     def get_do_not_apply_label(self):
+        """
+        Returns the label for the default "do not apply this filter"
+        option. Defaults to empty string.
+        """
         return ''
 
     def get_true_label(self):
+        """
+        Get the label for the ``True`` option. Defaults to ``Yes`` (translatable).
+        """
         return ugettext_lazy('Yes')
 
     def get_false_label(self):
+        """
+        Get the label for the ``False`` option. Defaults to ``No`` (translatable).
+        """
         return ugettext_lazy('No')
 
     def get_choices(self):
@@ -130,3 +144,149 @@ class IsNotNull(Boolean):
     """
     def get_query(self, modelfield):
         return models.Q(**{'{}__isnull'.format(modelfield): True})
+
+
+class DateTime(AbstractSelectFilter):
+    """
+    A datetime filter that works with Django DateTimeField.
+    """
+    def get_do_not_apply_label(self):
+        """
+        Returns the label for the default "do not apply this filter"
+        option. Defaults to empty string.
+        """
+        return ''
+
+    def get_today_label(self):
+        """
+        Get the label for the "today" option.
+
+        Defaults to ``Today`` (translatable).
+        """
+        return ugettext_lazy('Today')
+
+    def get_yesterday_label(self):
+        """
+        Get the label for the "today" option.
+
+        Defaults to ``Today`` (translatable).
+        """
+        return ugettext_lazy('Yesterday')
+
+    def get_last_seven_days_label(self):
+        """
+        Get the label for the "today" option.
+
+        Defaults to ``Today`` (translatable).
+        """
+        return ugettext_lazy('Last seven days')
+
+    def get_this_week_label(self):
+        """
+        Get the label for the "today" option.
+
+        Defaults to ``Today`` (translatable).
+        """
+        return ugettext_lazy('This week')
+
+    def get_this_month_days_label(self):
+        """
+        Get the label for the "today" option.
+
+        Defaults to ``Today`` (translatable).
+        """
+        return ugettext_lazy('This month')
+
+    def get_choices(self):
+        return [
+            ('', self.get_do_not_apply_label()),
+            ('today', self.get_today_label()),
+            ('yesterday', self.get_yesterday_label()),
+            ('last_seven_days', self.get_last_seven_days_label()),
+            ('this_week', self.get_this_week_label()),
+            ('this_month', self.get_this_week_label()),
+            ('this_year', self.get_this_week_label()),
+        ]
+
+    def filter_datetime_range(self, queryobject, start_datetime, end_datetime):
+        modelfield = self.get_modelfield()
+        start_datetime = datetimeutils.make_aware_in_default_timezone(start_datetime)
+        end_datetime = datetimeutils.make_aware_in_default_timezone(end_datetime)
+        return queryobject.filter(**{
+            '{}__gte'.format(modelfield): start_datetime,
+            '{}__lt'.format(modelfield): end_datetime,
+        })
+
+    def filter_within_date(self, queryobject, dateobject):
+        next_day_dateobject = dateobject + datetime.timedelta(days=1)
+        day_start = datetime.datetime.combine(dateobject, datetime.time())
+        day_end = datetime.datetime.combine(next_day_dateobject, datetime.time())
+        return self.filter_datetime_range(queryobject=queryobject,
+                                          start_datetime=day_start,
+                                          end_datetime=day_end)
+
+    def filter_today(self, queryobject):
+        today = timezone.now().date()
+        return self.filter_within_date(queryobject=queryobject,
+                                       dateobject=today)
+
+    def filter_yesterday(self, queryobject):
+        yesterday = timezone.now().date() - datetime.timedelta(days=1)
+        return self.filter_within_date(queryobject=queryobject,
+                                       dateobject=yesterday)
+
+    def filter_last_seven_days(self, queryobject):
+        now = timezone.now()
+        today = now.date()
+        seven_days_ago = today - datetime.timedelta(days=7)
+        seven_days_ago_day_start = datetime.datetime.combine(seven_days_ago, datetime.time())
+        return self.filter_datetime_range(queryobject=queryobject,
+                                          start_datetime=seven_days_ago_day_start,
+                                          end_datetime=now)
+
+    def filter_this_week(self, queryobject):
+        today = timezone.now().date()
+        first_date_of_week = today - datetime.timedelta(days=today.weekday())
+        first_date_of_next_of_week = first_date_of_week + datetime.timedelta(days=7)
+        start_of_week = datetime.datetime.combine(first_date_of_week, datetime.time())
+        end_of_week = datetime.datetime.combine(first_date_of_next_of_week, datetime.time())
+        return self.filter_datetime_range(queryobject=queryobject,
+                                          start_datetime=start_of_week,
+                                          end_datetime=end_of_week)
+
+    def filter_this_month(self, queryobject):
+        today = timezone.now().date()
+        first_date_of_month = today.replace(day=1)
+        days_in_month = calendar.monthrange(today.year, today.month)[1]
+        first_date_of_next_month = first_date_of_month + datetime.timedelta(days=days_in_month)
+        start_of_month = datetime.datetime.combine(first_date_of_month, datetime.time())
+        end_of_month = datetime.datetime.combine(first_date_of_next_month, datetime.time())
+        return self.filter_datetime_range(queryobject=queryobject,
+                                          start_datetime=start_of_month,
+                                          end_datetime=end_of_month)
+
+    def filter_this_year(self, queryobject):
+        today = timezone.now().date()
+        first_date_of_year = today.replace(month=1, day=1)
+        first_date_of_next_year = first_date_of_year.replace(year=today.year + 1)
+        start_of_year = datetime.datetime.combine(first_date_of_year, datetime.time())
+        end_of_year = datetime.datetime.combine(first_date_of_next_year, datetime.time())
+        return self.filter_datetime_range(queryobject=queryobject,
+                                          start_datetime=start_of_year,
+                                          end_datetime=end_of_year)
+
+    def filter(self, queryobject):
+        cleaned_value = self.get_cleaned_value()
+        if cleaned_value == 'today':
+            return self.filter_today(queryobject=queryobject)
+        elif cleaned_value == 'yesterday':
+            return self.filter_yesterday(queryobject=queryobject)
+        elif cleaned_value == 'last_seven_days':
+            return self.filter_last_seven_days(queryobject=queryobject)
+        elif cleaned_value == 'this_week':
+            return self.filter_this_week(queryobject=queryobject)
+        elif cleaned_value == 'this_month':
+            return self.filter_this_month(queryobject=queryobject)
+        elif cleaned_value == 'this_year':
+            return self.filter_this_year(queryobject=queryobject)
+        return queryobject
