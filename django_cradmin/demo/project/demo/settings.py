@@ -59,6 +59,9 @@ INSTALLED_APPS = (
     # Nice for debugging, but not required to use django_cradmin
     'django_extensions',
 
+    # Just here to get the demo overview view.
+    'django_cradmin.demo.project.demo',
+
     # The advanced demo
     'django_cradmin.demo.webdemo',
     'django_cradmin.demo.login_not_required_demo',

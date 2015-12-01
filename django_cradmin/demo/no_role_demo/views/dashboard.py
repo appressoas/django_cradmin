@@ -5,7 +5,7 @@ from django_cradmin import crapp
 
 
 class DashboardView(TemplateView):
-    template_name = 'tilgards_portal/dashboard.django.html'
+    template_name = 'no_role_demo/dashboard.django.html'
 
 
 class App(crapp.App):

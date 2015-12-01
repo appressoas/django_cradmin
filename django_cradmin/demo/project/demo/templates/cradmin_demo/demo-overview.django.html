@@ -1,0 +1,59 @@
+{% extends "django_cradmin/layouts/standalone/focused.django.html" %}
+
+
+{% block pageheader-inner %}
+    <h1>Django-cradmin demos</h1>
+    <p>
+        The sourcecode for the demos is in
+        <a href="{{ github_base_url }}">
+            django_cradmin/demo/
+        </a>
+    </p>
+{% endblock pageheader-inner %}
+
+
+{% block content %}
+    <h2><a href="/webdemo/">webdemo</a></h2>
+    <p class="text-muted">
+        A fairly full featured demo.
+    </p>
+    <p>
+        <a class="text-muted" href="{{ github_base_url }}/webdemo/">django_cradmin/demo/webdemo/</a>
+    </p>
+    <hr>
+
+    <h2><a href="/login_not_required_demo/">login_not_required_demo</a></h2>
+    <p class="text-muted">
+        Shows how to create a cradmin instance that does not require login.
+    </p>
+    <p>
+        <a class="text-muted" href="{{ github_base_url }}/login_not_required_demo/">django_cradmin/demo/login_not_required_demo/</a>
+    </p>
+    <hr>
+
+    <h2><a href="/no_role_demo/">no_role_demo</a></h2>
+    <p class="text-muted">
+        Shows how to create a cradmin instance without a role (for regular websites).
+    </p>
+    <p>
+        <a class="text-muted" href="{{ github_base_url }}/no_role_demo/">django_cradmin/demo/no_role_demo/</a>
+    </p>
+    <hr>
+
+    <h2><a href="/usermanagerdemo/">usermanagerdemo</a></h2>
+    <p class="text-muted">
+        A starting point for an account management dashboard.
+    </p>
+    <p>
+        <a class="text-muted" href="{{ github_base_url }}/usermanagerdemo/">django_cradmin/demo/usermanagerdemo/</a>
+    </p>
+    <hr>
+{% endblock content %}
+
+{% block innerwrapper_post %}
+    <p class="text-center">
+        <a href="/djangoadmin/">
+            Django admin UI
+        </a>
+    </p>
+{% endblock innerwrapper_post %}
