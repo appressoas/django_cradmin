@@ -216,7 +216,7 @@ class AbstractFilter(AbstractGroupChild):
         but you can also use this if you need DOM IDs for components of a filter
         (E.g.: Field ID to attach a labels to a form field).
         """
-        return '{}-{}'.format(self.filterlist.get_dom_id_prefix(), self.get_slug())
+        return '{}_{}'.format(self.filterlist.get_dom_id_prefix(), self.get_slug())
 
 
 class InvalidFiltersStringError(Exception):
@@ -439,7 +439,7 @@ class AbstractFilterList(AbstractRenderableWithCss):
 
         Defaults to ``django-cradmin-listfilter-``.
         """
-        return 'django-cradmin-listfilter'
+        return 'django_cradmin_listfilter'
 
     def append(self, child):
         """

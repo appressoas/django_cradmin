@@ -28,8 +28,8 @@ class TestBase(TestCase):
         filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
-        self.assertTrue(selector.exists('#django-cradmin-listfilter-test.django-cradmin-listfilter-filter'))
-        self.assertTrue(selector.exists('select#django-cradmin-listfilter-test-select'))
+        self.assertTrue(selector.exists('#django_cradmin_listfilter_test.django-cradmin-listfilter-filter'))
+        self.assertTrue(selector.exists('select#django_cradmin_listfilter_test_select'))
         self.assertEqual(3, selector.count('option'))
 
     def test_render_option_value_empty(self):
@@ -134,7 +134,7 @@ class TestBase(TestCase):
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('A title', selector.one('label').alltext_normalized)
-        self.assertEqual('django-cradmin-listfilter-test-select', selector.one('label')['for'])
+        self.assertEqual('django_cradmin_listfilter_test_select', selector.one('label')['for'])
 
     def test_render_label_get_label_is_screenreader_only_true(self):
         class MySelectFilter(listfilter.django.single.selectinput.AbstractSelectFilter):

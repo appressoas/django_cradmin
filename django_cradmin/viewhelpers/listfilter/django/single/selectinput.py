@@ -32,7 +32,7 @@ class AbstractSelectFilter(AbstractDjangoOrmSingleFilter):
         return False
 
     def get_select_dom_id(self):
-        return '{}-select'.format(self.get_dom_id())
+        return '{}_select'.format(self.get_dom_id())
 
     def set_default_is_selected(self, choicesdata):
         """
