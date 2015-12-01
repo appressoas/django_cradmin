@@ -183,19 +183,27 @@ class DateTime(AbstractSelectFilter):
 
     def get_this_week_label(self):
         """
-        Get the label for the "today" option.
+        Get the label for the "this_week" option.
 
-        Defaults to ``Today`` (translatable).
+        Defaults to ``This week`` (translatable).
         """
         return ugettext_lazy('This week')
 
-    def get_this_month_days_label(self):
+    def get_this_month_label(self):
         """
-        Get the label for the "today" option.
+        Get the label for the "this_month" option.
 
-        Defaults to ``Today`` (translatable).
+        Defaults to ``This month`` (translatable).
         """
         return ugettext_lazy('This month')
+
+    def get_this_year_label(self):
+        """
+        Get the label for the "this_year" option.
+
+        Defaults to ``This year`` (translatable).
+        """
+        return ugettext_lazy('This year')
 
     def get_choices(self):
         return [
@@ -204,8 +212,8 @@ class DateTime(AbstractSelectFilter):
             ('yesterday', self.get_yesterday_label()),
             ('last_seven_days', self.get_last_seven_days_label()),
             ('this_week', self.get_this_week_label()),
-            ('this_month', self.get_this_week_label()),
-            ('this_year', self.get_this_week_label()),
+            ('this_month', self.get_this_month_label()),
+            ('this_year', self.get_this_year_label()),
         ]
 
     def filter_datetime_range(self, queryobject, start_datetime, end_datetime):

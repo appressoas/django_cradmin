@@ -15,6 +15,8 @@ class PagesListFilterView(listbuilderview.FilterListMixin, PagesListBuilderView)
         filterlist = listfilter.base.AbstractFilterList(urlbuilder=self.filterlist_urlbuilder)
         filterlist.append(listfilter.django.single.selectinput.IsNotNull(
             slug='image', title='Has image?'))
+        filterlist.append(listfilter.django.single.selectinput.DateTime(
+            slug='publishing_time', title='Publishing time'))
         filterlist.set_filters_string(filters_string=self.get_filters_string())
         return filterlist
 
