@@ -12,7 +12,7 @@ class PagesListFilterView(listbuilderview.FilterListMixin, PagesListBuilderView)
             'filters_string': filters_string})
 
     def build_filterlist(self):
-        filterlist = listfilter.list.Vertical(urlbuilder=self.filterlist_urlbuilder)
+        filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         filterlist.append(listfilter.django.single.selectinput.IsNotNull(
             slug='image', title='Has image?'))
         filterlist.append(listfilter.django.single.selectinput.DateTime(
