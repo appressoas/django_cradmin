@@ -6606,6 +6606,21 @@ Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` cl
     clear: left;
   }
 }
+ol.django-cradmin-listfilter-filterlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ol.django-cradmin-listfilter-filterlist li {
+  margin: 0;
+  padding: 0;
+}
+ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-vertical li {
+  margin-top: 18px;
+}
+ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-vertical li:first-child {
+  margin-top: 0;
+}
 @media (min-width: 992px) {
   nav#django_cradmin_mainmenu.django-cradmin-menu {
     position: absolute;
