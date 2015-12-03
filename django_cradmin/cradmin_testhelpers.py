@@ -87,9 +87,7 @@ class TestCaseMixin(object):
                 viewclass = MyView
 
                 def test_post(self):
-                    # You should most likely use a model_mommy recipe or similar for
-                    # creating the user.
-                    requestuser = get_user_model().objects.create(username='test')
+                    requestuser = mommy.make(settings.AUTH_USER_MODEL)
                     mockresponse = self.mock_http200_getrequest_htmls(requestuser=requestuser)
 
         Mocking Django messages framework messages::
