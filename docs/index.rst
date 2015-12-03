@@ -30,14 +30,15 @@ Viewhelpers
    viewhelpers_listfilter
 
 
-*************************
-Helpers for writing tests
-*************************
+*************
+Writing tests
+*************
 
 .. toctree::
    :maxdepth: 2
 
    cradmin_testhelpers
+
 
 
 

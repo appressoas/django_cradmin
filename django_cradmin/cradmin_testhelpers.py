@@ -79,6 +79,22 @@ class TestCaseMixin(object):
                     # and mock_getrequest are the same, so only showing one for brevity.
                     mockresponse = self.mock_http200_getrequest_htmls(viewkwargs={'pk': 10})
 
+        Views that use a querystring (GET)::
+
+            from django_cradmin import cradmin_testhelpers
+
+            class TestMyView(TestCase, cradmin_testhelpers.TestCaseMixin):
+                viewclass = MyView
+
+                def test_get_render_form(self):
+                    mockresponse = self.mock_http200_getrequest_htmls(
+                        requestkwargs={
+                            'data': {
+                                'orderby': 'name'
+                            }
+                        }
+                    )
+
         Using a real user object::
 
             from django_cradmin import cradmin_testhelpers
@@ -87,9 +103,7 @@ class TestCaseMixin(object):
                 viewclass = MyView
 
                 def test_post(self):
-                    # You should most likely use a model_mommy recipe or similar for
-                    # creating the user.
-                    requestuser = get_user_model().objects.create(username='test')
+                    requestuser = mommy.make(settings.AUTH_USER_MODEL)
                     mockresponse = self.mock_http200_getrequest_htmls(requestuser=requestuser)
 
         Mocking Django messages framework messages::
