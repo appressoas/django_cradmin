@@ -29,14 +29,15 @@ Viewhelpers
    viewhelpers_listbuilder
 
 
-*************************
-Helpers for writing tests
-*************************
+*************
+Writing tests
+*************
 
 .. toctree::
    :maxdepth: 2
 
    cradmin_testhelpers
+
 
 
 

@@ -49,6 +49,8 @@ extensions = [
 extlinks = {
     'issue': ('https://github.com/appressoas/django_cradmin/issues/%s', 'issue '),
     'wikipage': ('https://github.com/appressoas/django_cradmin/wiki/%s', 'Wiki page: '),
+    'github_folder': ('https://github.com/appressoas/django_cradmin/tree/master/%s', 'git folder '),
+    'github_file': ('https://github.com/appressoas/django_cradmin/blob/master/%s', 'git file ')
 }
 
 # Add any paths that contain templates here, relative to this directory.
