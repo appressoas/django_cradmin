@@ -79,6 +79,22 @@ class TestCaseMixin(object):
                     # and mock_getrequest are the same, so only showing one for brevity.
                     mockresponse = self.mock_http200_getrequest_htmls(viewkwargs={'pk': 10})
 
+        Views that use a querystring (GET)::
+
+            from django_cradmin import cradmin_testhelpers
+
+            class TestMyView(TestCase, cradmin_testhelpers.TestCaseMixin):
+                viewclass = MyView
+
+                def test_get_render_form(self):
+                    mockresponse = self.mock_http200_getrequest_htmls(
+                        requestkwargs={
+                            'data': {
+                                'orderby': 'name'
+                            }
+                        }
+                    )
+
         Using a real user object::
 
             from django_cradmin import cradmin_testhelpers
