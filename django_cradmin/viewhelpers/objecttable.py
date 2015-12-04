@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.views.generic import ListView
 from django.db import models
+from django_cradmin.viewhelpers.listfilter import listfilter_viewmixin
 
 logger = logging.getLogger(__name__)
 
@@ -1341,3 +1342,46 @@ class ObjectTableView(ListView):
         No used if search is not enabled.
         """
         return True
+
+
+class FilterListMixin(listfilter_viewmixin.ViewMixin):
+    """
+    Mixin for adding filtering with :doc:`filterlist <filterlist>` to an
+    objecttable view.
+
+    Must be mixed in before :class:`.ObjectTableView`.
+    """
+    def get_filterlist_position(self):
+        """
+        Get the position where you want to place the filterlist.
+
+        Supported values are:
+
+        - left
+        - right (the default)
+        - top
+        """
+        return 'right'
+
+    def get_filterlist_template_name(self):
+        """
+        Get the template to use based on what :meth:`.get_filterlist_position`.
+
+        You will want to call this from the ``get_template_names`` method.
+        This is just the interface, refer to the mixins implemented in
+        various modules (such as :class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`)
+        for details on how to use this method.
+        """
+        position = self.get_filterlist_position()
+        template_name = 'django_cradmin/viewhelpers/objecttable/objecttable-filterlist-{}.django.html'.format(position)
+        return template_name
+
+    def get_filter_unprotected_querystring_arguments(self):
+        """
+        This returns ``{'page'}``, which ensures we go back to
+        page 1 when changing a filter.
+
+        See :class:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin`
+        for more details.
+        """
+        return {'page'}

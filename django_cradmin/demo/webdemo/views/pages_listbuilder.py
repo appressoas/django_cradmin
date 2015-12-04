@@ -32,6 +32,10 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
         filterlist.set_filters_string(filters_string=self.get_filters_string())
         return filterlist
 
+    def get_queryset_for_role(self, site):
+        queryset = super(PagesListBuilderView, self).get_queryset_for_role(site=site)
+        queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
+        return queryset
 
 class App(crapp.App):
     appurls = [

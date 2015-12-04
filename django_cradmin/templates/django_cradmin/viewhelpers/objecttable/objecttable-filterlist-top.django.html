@@ -1,0 +1,12 @@
+{% extends "django_cradmin/viewhelpers/objecttable/objecttable.django.html" %}
+
+{% block bodyclass %}
+    {{ block.super }}
+    django-cradmin-objecttable-filterlist-top-page
+{% endblock %}
+
+
+{% block tablewrapper %}
+    {{ filterlist.render }}
+    {{ block.super }}
+{% endblock tablewrapper %}

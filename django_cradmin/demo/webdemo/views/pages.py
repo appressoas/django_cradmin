@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 from django.utils import timezone
 
 from django_cradmin.viewhelpers import objecttable
+from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import create
 from django_cradmin.viewhelpers import update
 from django_cradmin.viewhelpers import delete
@@ -68,7 +69,7 @@ class IntroColumn(objecttable.TruncatecharsPlainTextColumn):
     allcells_css_classes = ['hidden-xs']
 
 
-class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
+class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, objecttable.ObjectTableView):
     model = Page
     enable_previews = True
     columns = [
@@ -94,6 +95,36 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
                 url=app.reverse_appurl('multiedit')
             ),
         ]
+
+    # def get_filterlist_position(self):
+    #     return 'left'
+    #     return 'top'  # If you use this, you should use listfilter.lists.Horizontal in build_filterlist()
+
+    def get_filterlist_url(self, filters_string):
+        """
+        We override this to give the listfilter a way to create
+        URLs.
+        """
+        return self.request.cradmin_app.reverse_appurl(
+            'filter', kwargs={'filters_string': filters_string})
+
+    def build_filterlist(self):
+        filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
+        # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
+        filterlist.append(listfilter.django.single.selectinput.IsNotNull(
+            slug='image', title='Has image?'))
+        filterlist.append(listfilter.django.single.selectinput.DateTime(
+            slug='publishing_time', title='Publishing time'))
+        filterlist.set_filters_string(filters_string=self.get_filters_string())
+        return filterlist
+
+    def get_queryset_for_role(self, site):
+        """
+        We override this to add filters from the listfilter.
+        """
+        queryset = super(PagesListView, self).get_queryset_for_role(site=site)
+        queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
+        return queryset
 
 
 class PageCreateUpdateMixin(object):
@@ -228,6 +259,10 @@ class App(crapp.App):
             r'^$',
             PagesListView.as_view(),
             name=crapp.INDEXVIEW_NAME),
+        crapp.Url(
+            r'^filter/(?P<filters_string>.+)?$',
+            PagesListView.as_view(),
+            name='filter'),
         crapp.Url(
             r'^create$',
             PageCreateView.as_view(),

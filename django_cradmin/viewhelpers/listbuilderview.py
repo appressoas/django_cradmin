@@ -223,10 +223,6 @@ class FilterListMixin(listfilter_viewmixin.ViewMixin):
     listbuilder view.
 
     Must be mixed in before any TemplateView subclass.
-
-    Examples:
-
-        TODO
     """
     def get_filterlist_position(self):
         """

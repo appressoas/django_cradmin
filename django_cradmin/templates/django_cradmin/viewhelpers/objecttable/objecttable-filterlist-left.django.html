@@ -1,18 +1,18 @@
-{% extends "django_cradmin/viewhelpers/listbuilderview/default.django.html" %}
+{% extends "django_cradmin/viewhelpers/objecttable/objecttable.django.html" %}
 
 {% block bodyclass %}
     {{ block.super }}
-    django-cradmin-listbuilderview-filterlist-left-page
+    django-cradmin-objecttable-filterlist-left-page
 {% endblock %}
 
 
-{% block list %}
+{% block tablewrapper %}
     <div class="row">
         <div class="{% block filterlist-column-classes %}col-sm-4 col-lg-3{% endblock %}">
             {{ filterlist.render }}
         </div>
-        <div class="{% block list-column-classes %}col-sm-8 col-lg-9{% endblock %}">
+        <div class="{% block tablewrapper-column-classes %}col-sm-8 col-lg-9{% endblock %}">
             {{ block.super }}
         </div>
     </div>
-{% endblock list %}
+{% endblock tablewrapper %}
