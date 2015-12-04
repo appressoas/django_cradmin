@@ -1,4 +1,4 @@
-<ol class="{{ me.get_css_classes }}">
+<ol class="{{ me.get_css_classes_string }}">
     {% for renderable in me.iter_renderables %}
         <li>
             {{ renderable.render }}

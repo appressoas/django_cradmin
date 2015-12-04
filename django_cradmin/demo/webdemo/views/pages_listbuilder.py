@@ -37,6 +37,7 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
         queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
         return queryset
 
+
 class App(crapp.App):
     appurls = [
         crapp.Url(
