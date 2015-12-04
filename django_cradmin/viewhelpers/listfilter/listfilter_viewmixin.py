@@ -44,7 +44,7 @@ class ViewMixin(object):
         return url
 
     def get_filters_string(self):
-        return self.kwargs['filters_string'] or ''
+        return self.kwargs.get('filters_string', '')
 
     def build_filterlist(self):
         """

@@ -6621,6 +6621,18 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-ver
 ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-vertical li:first-child {
   margin-top: 0;
 }
+ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-horizontal {
+  margin-bottom: 10px;
+  text-align: center;
+}
+ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-horizontal li {
+  display: inline-block;
+  margin-right: 10px;
+  text-align: left;
+}
+ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-horizontal li:last-child {
+  margin-right: 0;
+}
 nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   line-height: 50px;
   height: 50px;

@@ -1,0 +1,12 @@
+{% extends "django_cradmin/viewhelpers/listbuilderview/default.django.html" %}
+
+{% block bodyclass %}
+    {{ block.super }}
+    django-cradmin-listbuilderview-filterlist-right-page
+{% endblock %}
+
+
+{% block list %}
+    {{ filterlist.render }}
+    {{ block.super }}
+{% endblock list %}
