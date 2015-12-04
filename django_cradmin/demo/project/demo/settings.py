@@ -215,6 +215,12 @@ USE_TZ = True
 
 
 DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
+    'cradmin-webdemo-pages-listing': {
+        'width': 300,
+        'height': 200,
+        'crop': 'lfill',
+        'quality': 70,
+    },
     'cradmin-archiveimage-listing': {
         'width': 170,
         'height': 100,

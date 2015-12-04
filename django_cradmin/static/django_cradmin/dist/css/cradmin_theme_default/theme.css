@@ -6606,6 +6606,47 @@ Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` cl
     clear: left;
   }
 }
+ol.django-cradmin-listbuilder-list h2,
+ol.django-cradmin-listbuilder-list h3 {
+  font-size: 19px;
+}
+ol.django-cradmin-listbuilder-list h2:first-child,
+ol.django-cradmin-listbuilder-list h3:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+ol.django-cradmin-listbuilder-list p:last-child,
+ol.django-cradmin-listbuilder-list pre:last-child,
+ol.django-cradmin-listbuilder-list table:last-child,
+ol.django-cradmin-listbuilder-list form:last-child,
+ol.django-cradmin-listbuilder-list h2:last-child,
+ol.django-cradmin-listbuilder-list h3:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li:first-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+  margin-top: 0;
+}
+ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li:last-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+  margin-bottom: 0;
+}
+ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-floatgridlist li .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+@media (min-width: 768px) {
+  ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-floatgridlist li .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+    margin: 5px;
+  }
+}
+ol.django-cradmin-listbuilder-list li .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox {
+  background: #ffffff;
+  padding: 15px 15px;
+}
 ol.django-cradmin-listfilter-filterlist {
   list-style: none;
   margin: 0;

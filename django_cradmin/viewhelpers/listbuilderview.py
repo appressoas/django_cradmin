@@ -37,13 +37,16 @@ class ViewMixin(object):
     listbuilder_class = listbuilder.list.RowList
 
     #: See :meth:`~ViewMixin.get_value_renderer_class`.
-    value_renderer_class = listbuilder.base.ItemValueRenderer
+    value_renderer_class = listbuilder.itemvalue.FocusBox
 
     #: See :meth:`~ViewMixin.get_frame_renderer_class`.
-    frame_renderer_class = None
+    frame_renderer_class = listbuilder.itemframe.DefaultSpacingItemFrame
 
     #: Set this to True to hide the page header. See :meth:`~.FormViewMixin.get_hide_page_header`.
     hide_page_header = False
+
+    #: Enable previews? See :meth:`.get_enable_previews`. Defaults to ``False``.
+    enable_previews = False
 
     def get_pagetitle(self):
         """
@@ -69,6 +72,17 @@ class ViewMixin(object):
         in all form views with the ``DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTVIEWS`` setting.
         """
         return self.hide_page_header or getattr(settings, 'DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTVIEWS', False)
+
+    def get_enable_previews(self):
+        """
+        If this returns ``True``, we enable previews.
+
+        This is required for the ``django-cradmin-page-preview-open-on-click``
+        angularJS directive to work.
+
+        Defaults to :obj:`.enable_previews`.
+        """
+        return self.enable_previews
 
     def get_listbuilder_class(self):
         """
@@ -146,6 +160,7 @@ class ViewMixin(object):
         context['hide_pageheader'] = self.get_hide_page_header()
         context['pageheading'] = self.get_pageheading()
         context['no_items_message'] = self.get_no_items_message()
+        context['enable_previews'] = self.get_enable_previews()
 
     def get_context_data(self, **kwargs):
         context = super(ViewMixin, self).get_context_data(**kwargs)

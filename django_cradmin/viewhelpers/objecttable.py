@@ -924,7 +924,7 @@ class ObjectTableView(ListView):
     #: when searching the given :obj:`.searchfields`.
     search_comparator = 'icontains'
 
-    #: The search placeholder text. See :meth:`.get_enable_previews`. Defaults to "Search...".
+    #: The search placeholder text. See :meth:`.get_search_placeholder_text`. Defaults to "Search...".
     search_placeholder_text = _('Search...')
 
     #: Enable previews? See :meth:`.get_enable_previews`. Defaults to ``False``.

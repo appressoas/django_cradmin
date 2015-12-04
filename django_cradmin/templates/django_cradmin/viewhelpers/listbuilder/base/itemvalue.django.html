@@ -1,3 +1,5 @@
 <div class="{{ me.get_css_classes_string }}">
-    {{ me.value }}
+    {% block content %}
+        {{ me.value }}
+    {% endblock content %}
 </div>

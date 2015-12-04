@@ -10,3 +10,8 @@ class FocusBox(base.ItemValueRenderer):
     :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer`
     subclass for more than the most simple use cases.
     """
+
+    def get_base_css_classes_list(self):
+        css_classes = super(FocusBox, self).get_base_css_classes_list()
+        css_classes.append('django-cradmin-listbuilder-itemvalue-focusbox')
+        return css_classes

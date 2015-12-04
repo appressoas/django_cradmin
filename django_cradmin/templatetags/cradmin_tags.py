@@ -128,3 +128,22 @@ def cradmin_theme_staticpath(context):
         return static(theme_path)
     else:
         return ''
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_render_renderable(context, renderable):
+    """
+    Render a :class:`django_cradmin.renderable.AbstractRenderable`.
+
+    Unlike just using ``{{ renderable.render }}``, this
+    sends the ``request`` into render (so this is the same
+    as calling ``renderable.render(request=context['request'])``.
+
+    Example::
+
+        {% load cradmin_tags %}
+
+        {% cradmin_render_renderable renderable %}
+    """
+    request = context['request']
+    return renderable.render(request=request)
