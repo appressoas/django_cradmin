@@ -27,7 +27,7 @@
                 {{ listbuilder_list.render }}
                 {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
             {% else %}
-                <p class="django-cradmin-listbuilderview-no-items-message">
+                <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
                     {{ no_items_message }}
                 </p>
             {% endif %}

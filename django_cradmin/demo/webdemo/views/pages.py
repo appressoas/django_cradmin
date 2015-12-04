@@ -77,7 +77,6 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
         TitleColumn,
         IntroColumn,
     ]
-    searchfields = ['title', 'intro']
 
     def get_buttons(self):
         app = self.request.cradmin_app
