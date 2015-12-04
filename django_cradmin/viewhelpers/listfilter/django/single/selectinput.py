@@ -1,4 +1,5 @@
 import calendar
+from collections import OrderedDict
 import datetime
 from django.db import models
 from django.utils import timezone
@@ -297,4 +298,62 @@ class DateTime(AbstractSelectFilter):
             return self.filter_this_month(queryobject=queryobject)
         elif cleaned_value == 'this_year':
             return self.filter_this_year(queryobject=queryobject)
+        return queryobject
+
+
+class AbstractOrderBy(AbstractSelectFilter):
+    """
+    A "filter" that lets the user select how the list should be ordered.
+    """
+    def __init__(self, *args, **kwargs):
+        super(AbstractOrderBy, self).__init__(*args, **kwargs)
+        self.__ordering_options = self.get_ordering_options()
+        self.__ordering_options_dict = dict(self.__ordering_options)
+
+    def get_ordering_options(self):
+        """
+        Get the ordering options - must be overridden in subclasses.
+
+        You must override this instead of ``get_choices()``.
+
+        Should return a list of ``(value, options)`` pairs where
+        ``value`` is the same as in :meth:`.AbstractSelectFilter.get_choices`
+        and ``options`` is a dict with:
+
+        - ``label``: The label for the ordering option (shown to the user).
+        - ``order_by``: A list with the same format as ``*args`` for
+            ``QuerySet.order_by()``.
+
+        Examples:
+
+            Lets say we have something with ``title`` and ``publishing_time``,
+            and we want to order by ``publishing_time`` descending by default::
+
+                def get_ordering_options(self):
+                    return [
+                        ('', {
+                            'label': 'Publishing time (newest first)',
+                            'order_by': ['-publishing_time'],
+                        }),
+                        ('publishing_time_asc', {
+                            'label': 'Publishing time (oldest first)',
+                            'order_by': ['publishing_time'],
+                        }),
+                        ('title', {
+                            'label': 'Title',
+                            'order_by': ['title'],
+                        }),
+                    ]
+
+        """
+        raise NotImplementedError()
+
+    def get_choices(self):
+        return [(value, option['label']) for value, option in self.__ordering_options]
+
+    def filter(self, queryobject):
+        cleaned_value = self.get_cleaned_value() or ''
+        if cleaned_value in self.__ordering_options_dict:
+            order_by = self.__ordering_options_dict[cleaned_value]['order_by']
+            queryobject = queryobject.order_by(*order_by)
         return queryobject

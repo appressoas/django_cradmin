@@ -423,3 +423,61 @@ class TestDateTime(TestCase):
             self.assertEqual(
                 {start_of_year, middle_of_year, end_of_year},
                 set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+
+class TestOrderBy(TestCase):
+    def test_invalid_value(self):
+        class OrderByFilter(listfilter.django.single.selectinput.AbstractOrderBy):
+            def get_ordering_options(self):
+                return []
+
+        testfilter = OrderByFilter(slug='orderby')
+        testfilter.set_values(values=['invalidstuff'])
+        testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel')
+        self.assertEqual(
+            {testitem},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_no_value_defaults_to_the_empty_value(self):
+        class OrderByFilter(listfilter.django.single.selectinput.AbstractOrderBy):
+            def get_ordering_options(self):
+                return [
+                        ('', {
+                            'label': 'mylabel',
+                            'order_by': ['mydatetimefield'],
+                        }),
+                ]
+
+        testfilter = OrderByFilter(slug='orderby')
+        testfilter.set_values(values=[])
+        testitem2 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               mydatetimefield=datetimeutils.default_timezone_datetime(2016, 1, 2))
+        testitem1 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 2))
+        self.assertEqual(
+            [testitem1, testitem2],
+            list(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_nondefault_value(self):
+        class OrderByFilter(listfilter.django.single.selectinput.AbstractOrderBy):
+            def get_ordering_options(self):
+                return [
+                        ('', {
+                            'label': 'asc',
+                            'order_by': ['mydatetimefield'],
+                        }),
+                        ('desc', {
+                            'label': 'desc',
+                            'order_by': ['-mydatetimefield'],
+                        }),
+                ]
+
+        testfilter = OrderByFilter(slug='orderby')
+        testfilter.set_values(values=['desc'])
+        testitem2 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               mydatetimefield=datetimeutils.default_timezone_datetime(2016, 1, 2))
+        testitem1 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 2))
+        self.assertEqual(
+            [testitem2, testitem1],
+            list(testfilter.filter(queryobject=FilterTestModel.objects.all())))

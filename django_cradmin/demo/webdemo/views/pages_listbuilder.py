@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from collections import OrderedDict
 
 from django_cradmin.demo.webdemo.views.pages import PagesQuerySetForRoleMixin, PageCreateView, PageUpdateView, \
     PageDeleteView, PreviewPageView
@@ -12,6 +13,24 @@ from django_cradmin.demo.webdemo.models import Page
 class PageListItemValue(listbuilder.itemvalue.FocusBox):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.htm'
     valuealias = 'page'
+
+
+class OrderPagesFilter(listfilter.django.single.selectinput.AbstractOrderBy):
+    def get_ordering_options(self):
+        return [
+            ('', {
+                'label': 'Publishing time (newest first)',
+                'order_by': ['-publishing_time'],
+            }),
+            ('publishing_time_asc', {
+                'label': 'Publishing time (oldest first)',
+                'order_by': ['publishing_time'],
+            }),
+            ('title', {
+                'label': 'Title',
+                'order_by': ['title'],
+            }),
+        ]
 
 
 class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterListMixin, listbuilderview.View):
@@ -34,6 +53,8 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
     def build_filterlist(self):
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
+        filterlist.append(OrderPagesFilter(
+            slug='orderby', title='Order by'))
         filterlist.append(listfilter.django.single.selectinput.IsNotNull(
             slug='image', title='Has image?'))
         filterlist.append(listfilter.django.single.selectinput.DateTime(
