@@ -46,6 +46,25 @@ This is much easier to understand when you know the following:
   to have a different slug in the URL than the model field name.
 
 
+Code structure
+==============
+The code is organized into these sub-modules of ``django_cradmin.viewhelpers.listfilter``:
+
+    base
+        Base classes. Very rarely used directly except when creating completely custom
+        components for the framework.
+    lists
+        Re-usable subclasses of
+        :class:`~django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList`.
+    basefilters
+        Re-usable data store agnostic abstract filter classes.
+    django
+        Re-usable Django ORM specific subclasses of
+        :class:`~django_cradmin.viewhelpers.listfilter.base.abstractfilter.AbstractFilter`.
+        These are mostly fairly small extensions of classes in ``basefilters`` that just
+        add the Django ORM specific stuff.
+
+
 ************
 How it works
 ************

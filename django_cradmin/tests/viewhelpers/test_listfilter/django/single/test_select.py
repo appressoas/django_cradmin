@@ -4,155 +4,13 @@ from unittest import mock
 
 from django.test import TestCase
 from future import standard_library
-import htmls
 from model_mommy import mommy
-from django_cradmin import datetimeutils
 
+from django_cradmin import datetimeutils
 from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 from django_cradmin.viewhelpers import listfilter
-from django_cradmin.viewhelpers.listfilter.base.abstractfilterlist import AbstractFilterList
 
 standard_library.install_aliases()
-
-
-class TestBase(TestCase):
-    def test_render_sanity(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('', 'Do not apply'),
-                    ('first', 'First choice'),
-                    ('second', 'Second choice'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertTrue(selector.exists('#django_cradmin_listfilter_test.django-cradmin-listfilter-filter'))
-        self.assertTrue(selector.exists('select#django_cradmin_listfilter_test_input'))
-        self.assertEqual(3, selector.count('option'))
-
-    def test_render_option_value_empty(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('', 'Do not apply'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertEqual('/test/', selector.one('option')['value'])
-
-    def test_render_option_value_nonempty(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('somevalue', 'Test'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertEqual('/test/test-somevalue', selector.one('option')['value'])
-
-    def test_render_option_label(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('somevalue', 'Test'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertEqual('Test', selector.one('option').alltext_normalized)
-
-    def test_render_option_selected(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('', 'Do not apply'),
-                    ('first', 'First choice'),
-                    ('second', 'Second choice'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        testfilter.set_values(values=['first'])
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertEqual(
-            'First choice',
-            selector.one('option[selected]').alltext_normalized)
-
-    def test_render_option_no_value_select_first(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('', 'Do not apply'),
-                    ('first', 'First choice'),
-                    ('second', 'Second choice'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        testfilter.set_values(values=[])
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertEqual(
-            'Do not apply',
-            selector.one('option[selected]').alltext_normalized)
-
-    def test_render_label_no_label(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('unused', 'unused'),
-                ]
-
-        testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertFalse(selector.exists('label'))
-
-    def test_render_label_has_label(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('unused', 'unused'),
-                ]
-
-        testfilter = MySelectFilter(slug='test', label='A label')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertEqual('A label', selector.one('label').alltext_normalized)
-        self.assertEqual('django_cradmin_listfilter_test_input', selector.one('label')['for'])
-
-    def test_render_label_get_label_is_screenreader_only_true(self):
-        class MySelectFilter(listfilter.django.single.select.AbstractSelectFilter):
-            def get_choices(self):
-                return [
-                    ('unused', 'unused'),
-                ]
-
-            def get_label_is_screenreader_only(self):
-                return True
-
-        testfilter = MySelectFilter(slug='test', label='A label')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
-        filterlist.append(testfilter)
-        selector = htmls.S(testfilter.render())
-        self.assertTrue(selector.exists('label'))
-        self.assertTrue(selector.one('label').hasclass('sr-only'))
 
 
 class TestBoolean(TestCase):
@@ -288,7 +146,7 @@ class TestDateTime(TestCase):
         testfilter.set_values(values=['today'])
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 1))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 1, 2)):
             self.assertFalse(
                 testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
@@ -298,7 +156,7 @@ class TestDateTime(TestCase):
         testfilter.set_values(values=['today'])
         testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                               mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 1))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 1, 1, 12, 30)):
             self.assertEqual(
                 {testitem},
@@ -309,7 +167,7 @@ class TestDateTime(TestCase):
         testfilter.set_values(values=['yesterday'])
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 10))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 1, 12)):
             self.assertFalse(
                 testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
@@ -319,7 +177,7 @@ class TestDateTime(TestCase):
         testfilter.set_values(values=['yesterday'])
         testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                               mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 10))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 1, 11, 12, 30)):
             self.assertEqual(
                 {testitem},
@@ -330,7 +188,7 @@ class TestDateTime(TestCase):
         testfilter.set_values(values=['last_seven_days'])
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 2))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 1, 10, 12, 30)):
             self.assertFalse(
                 testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
@@ -340,7 +198,7 @@ class TestDateTime(TestCase):
         testfilter.set_values(values=['last_seven_days'])
         testitem = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                               mydatetimefield=datetimeutils.default_timezone_datetime(2015, 1, 3))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 1, 10, 12, 30)):
             self.assertEqual(
                 {testitem},
@@ -353,7 +211,7 @@ class TestDateTime(TestCase):
                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 11, 29))
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 7))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 12, 1, 12, 30)):
             self.assertFalse(
                 testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
@@ -365,7 +223,7 @@ class TestDateTime(TestCase):
                                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 11, 30))
         end_of_week = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                                  mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 6, 23))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 12, 1, 12, 30)):
             self.assertEqual(
                 {start_of_week, end_of_week},
@@ -378,7 +236,7 @@ class TestDateTime(TestCase):
                    mydatetimefield=datetimeutils.default_timezone_datetime(2015, 11, 29))
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mydatetimefield=datetimeutils.default_timezone_datetime(2016, 1, 1))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 12, 7, 12, 30)):
             self.assertFalse(
                 testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
@@ -392,7 +250,7 @@ class TestDateTime(TestCase):
                                      mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 24))
         end_of_month = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                                   mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 31, 23))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 12, 7, 12, 30)):
             self.assertEqual(
                 {start_of_month, middle_of_month, end_of_month},
@@ -405,7 +263,7 @@ class TestDateTime(TestCase):
                    mydatetimefield=datetimeutils.default_timezone_datetime(2014, 12, 31))
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mydatetimefield=datetimeutils.default_timezone_datetime(2016, 1, 1))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 12, 24)):
             self.assertFalse(
                 testfilter.filter(queryobject=FilterTestModel.objects.all()).exists())
@@ -419,7 +277,7 @@ class TestDateTime(TestCase):
                                     mydatetimefield=datetimeutils.default_timezone_datetime(2015, 6, 1))
         end_of_year = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                                  mydatetimefield=datetimeutils.default_timezone_datetime(2015, 12, 31, 23))
-        with mock.patch('django_cradmin.viewhelpers.listfilter.django.single.select.timezone.now',
+        with mock.patch('django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.timezone.now',
                         lambda: datetimeutils.default_timezone_datetime(2015, 12, 24)):
             self.assertEqual(
                 {start_of_year, middle_of_year, end_of_year},
