@@ -20,10 +20,10 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
     loadUrlAndExtractRemoteElementHtml: (options, onSuccess) ->
       @http(options.parameters).then((response) ->
         html = response.data
-        htmldocument = angular.element(html)
-        remoteElement = htmldocument.find(options.remoteElementSelector)
+        $remoteHtmlDocument = angular.element(html)
+        remoteElement = $remoteHtmlDocument.find(options.remoteElementSelector)
         remoteElementInnerHtml = remoteElement.html()
-        onSuccess(remoteElementInnerHtml)
+        onSuccess(remoteElementInnerHtml, $remoteHtmlDocument)
       , (response) ->
         if options.onHttpError?
           options.onHttpError(response)
@@ -33,20 +33,22 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
           options.onFinish()
       )
 
-    load: (options) ->
+    updateTargetElement: (options, remoteElementInnerHtml, $remoteHtmlDocument) =>
       $compile = @compile
+      linkingFunction = $compile(remoteElementInnerHtml)
+      loadedElement = linkingFunction(options.$scope)
+      if options.replace
+        options.targetElement.empty()
+      options.targetElement.append(loadedElement)
+      if options.onSuccess
+        options.onSuccess($remoteHtmlDocument)
+      if options.onFinish?
+        options.onFinish()
 
-      @loadUrlAndExtractRemoteElementHtml options, (remoteElementInnerHtml) ->
-        linkingFunction = $compile(remoteElementInnerHtml)
-        loadedElement = linkingFunction(options.$scope)
-        if options.replace
-          options.targetElement.empty()
-        options.targetElement.append(loadedElement)
-        if options.onSuccess
-          options.onSuccess()
-        if options.onFinish?
-          options.onFinish()
-
+    load: (options) ->
+      me = @
+      @loadUrlAndExtractRemoteElementHtml options, (remoteElementInnerHtml, $remoteHtmlDocument) ->
+        me.updateTargetElement(options, remoteElementInnerHtml, $remoteHtmlDocument)
 
   @$get = (['$http', '$compile', ($http, $compile) ->
     return new BgReplace($http, $compile)

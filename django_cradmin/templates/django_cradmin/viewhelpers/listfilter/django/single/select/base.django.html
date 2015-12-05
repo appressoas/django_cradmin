@@ -3,8 +3,7 @@
 {% block inputfield %}
     <select id="{{ me.get_inputfield_dom_id }}"
             class="form-control"
-            django-cradmin-open-url-stored-in-selected-option
-            django-cradmin-backgroundreplace-element-selector="#django_cradmin_listbuilderview_list_and_pager">
+            django-cradmin-listfilter-select>
         {% for choicedata in choicesdata %}
             <option value="{{ choicedata.url }}"
                     {% if choicedata.is_selected %}selected{% endif %}>

@@ -223,7 +223,6 @@
         controller: function($scope, $element) {},
         link: function($scope, $element, attributes) {
           var remoteElementSelector, remoteUrl;
-          console.log('YO');
           remoteElementSelector = attributes.djangoCradminRemoteElementSelector;
           remoteUrl = attributes.djangoCradminRemoteUrl;
           if (remoteElementSelector == null) {
@@ -270,6 +269,8 @@
 }).call(this);
 
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   angular.module('djangoCradmin.backgroundreplace_element.providers', []).provider('djangoCradminBgReplaceElement', function() {
     /*
     Makes a request to a an URL, and replaces or extends a DOM element
@@ -285,18 +286,19 @@
     var BgReplace;
     BgReplace = (function() {
       function BgReplace($http, $compile) {
+        this.updateTargetElement = __bind(this.updateTargetElement, this);
         this.http = $http;
         this.compile = $compile;
       }
 
       BgReplace.prototype.loadUrlAndExtractRemoteElementHtml = function(options, onSuccess) {
         return this.http(options.parameters).then(function(response) {
-          var html, htmldocument, remoteElement, remoteElementInnerHtml;
+          var $remoteHtmlDocument, html, remoteElement, remoteElementInnerHtml;
           html = response.data;
-          htmldocument = angular.element(html);
-          remoteElement = htmldocument.find(options.remoteElementSelector);
+          $remoteHtmlDocument = angular.element(html);
+          remoteElement = $remoteHtmlDocument.find(options.remoteElementSelector);
           remoteElementInnerHtml = remoteElement.html();
-          return onSuccess(remoteElementInnerHtml);
+          return onSuccess(remoteElementInnerHtml, $remoteHtmlDocument);
         }, function(response) {
           if (options.onHttpError != null) {
             options.onHttpError(response);
@@ -313,23 +315,28 @@
         });
       };
 
-      BgReplace.prototype.load = function(options) {
-        var $compile;
+      BgReplace.prototype.updateTargetElement = function(options, remoteElementInnerHtml, $remoteHtmlDocument) {
+        var $compile, linkingFunction, loadedElement;
         $compile = this.compile;
-        return this.loadUrlAndExtractRemoteElementHtml(options, function(remoteElementInnerHtml) {
-          var linkingFunction, loadedElement;
-          linkingFunction = $compile(remoteElementInnerHtml);
-          loadedElement = linkingFunction(options.$scope);
-          if (options.replace) {
-            options.targetElement.empty();
-          }
-          options.targetElement.append(loadedElement);
-          if (options.onSuccess) {
-            options.onSuccess();
-          }
-          if (options.onFinish != null) {
-            return options.onFinish();
-          }
+        linkingFunction = $compile(remoteElementInnerHtml);
+        loadedElement = linkingFunction(options.$scope);
+        if (options.replace) {
+          options.targetElement.empty();
+        }
+        options.targetElement.append(loadedElement);
+        if (options.onSuccess) {
+          options.onSuccess($remoteHtmlDocument);
+        }
+        if (options.onFinish != null) {
+          return options.onFinish();
+        }
+      };
+
+      BgReplace.prototype.load = function(options) {
+        var me;
+        me = this;
+        return this.loadUrlAndExtractRemoteElementHtml(options, function(remoteElementInnerHtml, $remoteHtmlDocument) {
+          return me.updateTargetElement(options, remoteElementInnerHtml, $remoteHtmlDocument);
         });
       };
 
@@ -3572,7 +3579,94 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives']);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.listfilter.directives', []).directive('djangoCradminListfilter', [
+    '$window', 'djangoCradminBgReplaceElement', function($window, djangoCradminBgReplaceElement) {
+      return {
+        restrict: 'A',
+        scope: {},
+        controller: function($scope, $element) {
+          var filterListDomId, filterScopes;
+          filterListDomId = $element.attr('id');
+          filterScopes = [];
+          this.onLoadSuccess = function($remoteHtmlDocument) {
+            var $remoteFilterList, filterScope, _i, _len, _results;
+            console.log('Success!', $remoteHtmlDocument);
+            $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId);
+            _results = [];
+            for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
+              filterScope = filterScopes[_i];
+              _results.push(filterScope.syncWithRemoteFilterList($remoteFilterList));
+            }
+            return _results;
+          };
+          this.load = function(options) {
+            console.log('Load', options);
+            return djangoCradminBgReplaceElement.load({
+              parameters: {
+                method: 'GET',
+                url: options.remoteUrl
+              },
+              remoteElementSelector: $scope.remoteElementSelector,
+              targetElement: $scope.targetElement,
+              $scope: $scope,
+              replace: true,
+              onHttpError: function(response) {
+                return console.log('ERROR', response);
+              },
+              onSuccess: this.onLoadSuccess
+            });
+          };
+          this.addFilterScope = function(filterScope) {
+            return filterScopes.push(filterScope);
+          };
+        },
+        link: function($scope, $element, attributes) {
+          $scope.remoteElementSelector = attributes.djangoCradminListfilter;
+          $scope.targetElement = angular.element($scope.remoteElementSelector);
+        }
+      };
+    }
+  ]).directive('djangoCradminListfilterSelect', [
+    function() {
+      return {
+        restrict: 'A',
+        require: '^?djangoCradminListfilter',
+        scope: {},
+        controller: function($scope, $element) {
+          /*
+          Replace all <option>-elements with new <option>-elements from the server.
+          */
+
+          $scope.syncWithRemoteFilterList = function($remoteFilterList) {
+            var $remoteElement, domId;
+            domId = $element.attr('id');
+            $remoteElement = $remoteFilterList.find('#' + domId);
+            $element.empty();
+            return $element.append(angular.element($remoteElement.html()));
+          };
+        },
+        link: function($scope, $element, attributes, listfilterCtrl) {
+          var getValue;
+          listfilterCtrl.addFilterScope($scope);
+          getValue = function() {
+            return $element.find("option:selected").attr('value');
+          };
+          $element.on('change', function() {
+            var remoteUrl;
+            remoteUrl = getValue();
+            return listfilterCtrl.load({
+              remoteUrl: remoteUrl
+            });
+          });
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 

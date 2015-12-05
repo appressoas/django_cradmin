@@ -24,4 +24,5 @@ angular.module('djangoCradmin', [
   'djangoCradmin.forms.select'
   'djangoCradmin.backgroundreplace_element.providers'
   'djangoCradmin.backgroundreplace_element.directives'
+  'djangoCradmin.listfilter.directives'
 ])

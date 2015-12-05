@@ -1,7 +1,10 @@
-<ol class="{{ me.get_css_classes_string }}">
-    {% for renderable in me.iter_renderables %}
-        <li>
-            {{ renderable.render }}
-        </li>
-    {% endfor %}
-</ol>
+<div id="{{ me.get_dom_id_prefix }}"
+     django-cradmin-listfilter="#django_cradmin_listbuilderview_list_and_pager">
+    <ol class="{{ me.get_css_classes_string }}">
+        {% for renderable in me.iter_renderables %}
+            <li>
+                {{ renderable.render }}
+            </li>
+        {% endfor %}
+    </ol>
+</div>

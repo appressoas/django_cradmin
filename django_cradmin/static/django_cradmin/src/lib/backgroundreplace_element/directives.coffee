@@ -12,7 +12,6 @@ angular.module('djangoCradmin.backgroundreplace_element.directives', [])
 
       link: ($scope, $element, attributes) ->
 #        domId = $element.attr('id')
-        console.log 'YO'
         remoteElementSelector = attributes.djangoCradminRemoteElementSelector
         remoteUrl = attributes.djangoCradminRemoteUrl
         if not remoteElementSelector?
