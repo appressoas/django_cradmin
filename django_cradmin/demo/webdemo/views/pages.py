@@ -110,10 +110,10 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
     def build_filterlist(self):
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
-        filterlist.append(listfilter.django.single.selectinput.IsNotNull(
-            slug='image', title='Has image?'))
-        filterlist.append(listfilter.django.single.selectinput.DateTime(
-            slug='publishing_time', title='Publishing time'))
+        filterlist.append(listfilter.django.single.select.IsNotNull(
+            slug='image', label='Has image?'))
+        filterlist.append(listfilter.django.single.select.DateTime(
+            slug='publishing_time', label='Publishing time'))
         filterlist.set_filters_string(filters_string=self.get_filters_string())
         return filterlist
 

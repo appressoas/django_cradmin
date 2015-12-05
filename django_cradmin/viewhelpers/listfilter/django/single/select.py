@@ -1,39 +1,27 @@
 import calendar
-from collections import OrderedDict
+
 import datetime
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy
-from .base import AbstractDjangoOrmSingleFilter
+
 from django_cradmin import datetimeutils
+from django_cradmin.viewhelpers.listfilter.django.base import AbstractDjangoOrmFilter
 
 
-class AbstractSelectFilter(AbstractDjangoOrmSingleFilter):
+class AbstractSelectFilter(AbstractDjangoOrmFilter):
     """
     Abstract base class for any select filter.
 
     You only have to override :meth:`~AbstractSelectFilter.get_choices`.
     """
-    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/selectinput/base.django.html'
+    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/select/base.django.html'
 
     def get_choices(self):
         """
         Get choices as a list of of ``(value, label)`` pairs.
         """
         raise NotImplementedError()
-
-    def get_label_is_screenreader_only(self):
-        """
-        If this returns ``True``, the label will be styled to
-        only make it visible to screenreaders.
-
-        This is recommended over simply not setting a title
-        since that would break accessibility.
-        """
-        return False
-
-    def get_select_dom_id(self):
-        return '{}_select'.format(self.get_dom_id())
 
     def set_default_is_selected(self, choicesdata):
         """

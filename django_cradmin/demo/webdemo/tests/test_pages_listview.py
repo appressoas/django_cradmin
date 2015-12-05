@@ -4,8 +4,8 @@ from model_mommy import mommy
 from django_cradmin.demo.webdemo.views import pages_listbuilder
 from django_cradmin import cradmin_testhelpers
 
-class TestPagesListView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
-    viewclass = pages_listbuilder.PagesListView
+class TesPagesListBuilderView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
+    viewclass = pages_listbuilder.PagesListBuilderView
 
     def test_get(self):
         site = mommy.make('webdemo.Site')
@@ -13,7 +13,8 @@ class TestPagesListView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
         # mockresponse.selector.prettyprint()
 
-        self.assertEquals('Test title', mockresponse.selector.one('.django-cradmin-listbuilder-itemvalue').alltext_normalized)
+        self.assertEquals('Test title',
+                          mockresponse.selector.one('.django-cradmin-listbuilder-itemvalue h2').alltext_normalized)
 
     def test_get_multiple(self):
         """

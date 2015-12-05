@@ -21,18 +21,22 @@ class AbstractGroupChild(AbstractRenderableWithCss):
 
 class AbstractFilter(AbstractGroupChild):
     """
-    Defines a filter.
+    Abstract base class for all filters.
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html'
 
-    def __init__(self, slug=None, title=None):
+    def __init__(self, slug=None, label=None, label_is_screenreader_only=False):
         """
         Parameters:
             slug: You can send the slug as a parameter, or override :meth:`.get_slug`.
+            label: You can send the label as a parameter, or override :meth:`.get_label`.
+            label_is_screenreader_only: You canset this as a parameter,
+                or override :meth:`.get_label_is_screenreader_only`.
         """
         self.values = []
         self.slug = slug
-        self.title = title
+        self.label = label
+        self.label_is_screenreader_only = label_is_screenreader_only
         super(AbstractFilter, self).__init__()
 
     def copy(self):
@@ -42,7 +46,7 @@ class AbstractFilter(AbstractGroupChild):
         copy = self.__class__()
         copy.set_values(list(self.values))
         copy.slug = self.slug
-        copy.title = self.title
+        copy.label = self.label
         return copy
 
     def get_slug(self):
@@ -60,12 +64,30 @@ class AbstractFilter(AbstractGroupChild):
         else:
             raise NotImplementedError('You must override get_slug(), or send a slug to __init__().')
 
-    def get_title(self):
+    def get_label(self):
         """
-        Get the title of the filter. This is typically set as the
+        Get the label of the filter. This is typically set as the
         ``<label>`` for the filter input field.
+
+        A label is optional, but highly recommended. Even if you do not
+        want to show the label, you should specify one, and hide it
+        from everyone except for screenreaders with
+        :meth:`.get_label_is_screenreader_only`.
         """
-        return self.title
+        return self.label
+
+    def get_label_is_screenreader_only(self):
+        """
+        If this returns ``True``, the label will be styled to
+        only make it visible to screenreaders.
+
+        This is recommended over simply not setting a label
+        since that would break accessibility.
+
+        Defaults to the value of the ``label_is_screenreader_only`` parameter
+        (see :class:`.AbstractFilter`).
+        """
+        return self.label_is_screenreader_only
 
     def set_values(self, values):
         """
@@ -217,6 +239,14 @@ class AbstractFilter(AbstractGroupChild):
         (E.g.: Field ID to attach a labels to a form field).
         """
         return '{}_{}'.format(self.filterlist.get_dom_id_prefix(), self.get_slug())
+
+    def get_inputfield_dom_id(self):
+        """
+        Get the DOM id of the input field. If the filter uses multiple input fields,
+        this will most likely not be used, or it may be used as the ID of the
+        first field to make the label focus on the first field when it is clicked.
+        """
+        return '{}_input'.format(self.get_dom_id())
 
 
 class InvalidFiltersStringError(Exception):
@@ -420,14 +450,6 @@ class AbstractFilterList(AbstractRenderableWithCss):
 
     def get_filters_handler_class(self):
         return FiltersHandler
-
-    def get_title(self):
-        """
-        Get the title for the filtergroup.
-
-        This is optional - it defaults to ``None``.
-        """
-        return None
 
     def get_dom_id_prefix(self):
         """

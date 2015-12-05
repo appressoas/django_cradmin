@@ -204,9 +204,9 @@ class TestAbstractFilter(TestCase):
         testfilter = MinimalStringFilter(slug='testslug')
         self.assertEqual('testslug', testfilter.copy().slug)
 
-    def test_copy_include_title(self):
-        testfilter = MinimalStringFilter(title='testtitle')
-        self.assertEqual('testtitle', testfilter.copy().title)
+    def test_copy_include_label(self):
+        testfilter = MinimalStringFilter(label='testlabel')
+        self.assertEqual('testlabel', testfilter.copy().label)
 
     def test_set_values(self):
         testfilter = MinimalStringFilter()

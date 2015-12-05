@@ -1,3 +1,3 @@
-from . import selectinput  # noqa
+from . import select  # noqa
 
-__all__ = ['selectinput']
+__all__ = ['select.py']

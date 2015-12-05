@@ -15,7 +15,7 @@ class PageListItemValue(listbuilder.itemvalue.FocusBox):
     valuealias = 'page'
 
 
-class OrderPagesFilter(listfilter.django.single.selectinput.AbstractOrderBy):
+class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
     def get_ordering_options(self):
         return [
             ('', {
@@ -54,11 +54,12 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
         filterlist.append(OrderPagesFilter(
-            slug='orderby', title='Order by'))
-        filterlist.append(listfilter.django.single.selectinput.IsNotNull(
-            slug='image', title='Has image?'))
-        filterlist.append(listfilter.django.single.selectinput.DateTime(
-            slug='publishing_time', title='Publishing time'))
+            slug='orderby', label='Order by'))
+        filterlist.append(listfilter.django.single.select.IsNotNull(
+            slug='image', label='Has image?'))
+        filterlist.append(listfilter.django.single.select.DateTime(
+            slug='publishing_time', label='Publishing time'))
+
         filterlist.set_filters_string(filters_string=self.get_filters_string())
         return filterlist
 

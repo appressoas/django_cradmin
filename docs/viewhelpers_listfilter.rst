@@ -25,6 +25,27 @@ Tips and tricks
   filters need.
 
 
+**********************
+Design --- why and how
+**********************
+The listfilter module is designed to be data store agnostic. This
+means that we use general purpose terms and logic that does not
+bind the framework to a specific data storage backend.
+
+The most obvious of these strange terms when working with the filters in
+``django_cradmin.viewshelpers.listbuilder.django`` is that you
+send the model field into the filter via the ``slug`` parameter.
+This is much easier to understand when you know the following:
+
+- Each filter has a slug. The slug is the thing added to the URL,
+  and reversed to extract the filter values from the URL.
+- The base class for all Django filters,
+  :class:`~django_cradmin.viewhelpers.listfilter.django.base.AbstractDjangoOrmFilter`,
+  defines :meth:`~django_cradmin.viewhelpers.listfilter.django.base.AbstractDjangoOrmFilter.get_modelfield`,
+  which simply defalts to returning the slug of the filter. You can override this if you want
+  to have a different slug in the URL than the model field name.
+
+
 ************
 How it works
 ************
