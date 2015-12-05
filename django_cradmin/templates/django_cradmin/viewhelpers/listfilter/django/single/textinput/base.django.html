@@ -1,9 +1,9 @@
 {% extends "django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html" %}
 
 {% block inputfield %}
-    <form method="GET">
-        <input id="{{ me.get_inputfield_dom_id }}"
-                class="form-control" placeholder="{{ me.get_placeholder }}"
-                value="{{ me.get_inputfield_value }}">
-    </form>
+    <input id="{{ me.get_inputfield_dom_id }}"
+            class="form-control" placeholder="{{ me.get_placeholder }}"
+            value="{{ me.get_inputfield_value }}"
+            django-cradmin-listfilter-urlpattern="{{ me.get_urlpattern }}"
+            django-cradmin-listfilter-textinput>
 {% endblock inputfield %}

@@ -32,6 +32,9 @@ class AbstractInputFilter(AbstractFilter):
     def get_inputfield_value(self):
         return self.get_cleaned_value() or ''
 
+    def get_urlpattern(self):
+        return self.build_set_values_url(values=['_-_TEXTINPUT_-_VALUE_-_'])
+
 
 class AbstractSearch(AbstractInputFilter):
     """
@@ -42,7 +45,6 @@ class AbstractSearch(AbstractInputFilter):
 
     See :class:`django_cradmin.viewhelpers.listfilter.django.single.input.Search`
     for a Django ORM implementation.
-
     """
     def get_base_css_classes_list(self):
         css_classes = super(AbstractSearch, self).get_base_css_classes_list()

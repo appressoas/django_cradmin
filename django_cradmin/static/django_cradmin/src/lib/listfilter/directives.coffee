@@ -11,6 +11,10 @@ angular.module('djangoCradmin.listfilter.directives', [])
       controller: ($scope, $element) ->
         filterListDomId = $element.attr('id')
         filterScopes = []
+        loadInProgress = false
+
+        @loadIsInProgress = ->
+          return loadInProgress
 
         @onLoadSuccess = ($remoteHtmlDocument, remoteUrl) =>
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
@@ -20,6 +24,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
             filterScope.syncWithRemoteFilterList($remoteFilterList)
 
         @load = (options) ->
+          loadInProgress = true
           me = @
           djangoCradminBgReplaceElement.load({
             parameters: {
@@ -34,7 +39,10 @@ angular.module('djangoCradmin.listfilter.directives', [])
               console.log 'ERROR', response
             onSuccess: ($remoteHtmlDocument) ->
               me.onLoadSuccess($remoteHtmlDocument, options.remoteUrl)
-#            onFinish: ->
+              if options.onLoadSuccess?
+                options.onLoadSuccess(options.onLoadSuccessData)
+            onFinish: ->
+              loadInProgress = false
 #              console.log 'Finish!'
           })
 
@@ -55,7 +63,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
   ->
     return {
       restrict: 'A',
-      require: '^?djangoCradminListfilter'
+      require: '^djangoCradminListfilter'
       scope: {}
 
       controller: ($scope, $element) ->
@@ -82,6 +90,89 @@ angular.module('djangoCradmin.listfilter.directives', [])
           listfilterCtrl.load({
             remoteUrl: remoteUrl
           })
+        return
+    }
+])
+
+
+.directive('djangoCradminListfilterTextinput', [
+  '$timeout'
+  ($timeout) ->
+    urlpatternAttribute = 'django-cradmin-listfilter-urlpattern'
+    urlpatternReplaceText = '_-_TEXTINPUT_-_VALUE_-_'
+
+    return {
+      restrict: 'A',
+      require: '^djangoCradminListfilter'
+      scope: {}
+
+      controller: ($scope, $element) ->
+
+        ###
+        Update the "django-cradmin-listfilter-urlpattern"-attribute with
+        the one from the server.
+        ###
+        $scope.syncWithRemoteFilterList = ($remoteFilterList) ->
+          console.log 'SYNC textinput'
+          domId = $element.attr('id')
+          $remoteElement = $remoteFilterList.find('#' + domId)
+          $element.attr(urlpatternAttribute,
+            $remoteElement.attr(urlpatternAttribute))
+
+        return
+
+      link: ($scope, $element, attributes, listfilterCtrl) ->
+        listfilterCtrl.addFilterScope($scope)
+        applySearchTimer = null
+        loadedValue = $element.val()
+        searchTimeoutMilliseconds = 500
+
+        buildUrl = (value) ->
+          urlpattern = $element.attr(urlpatternAttribute)
+          return urlpattern.replace(urlpatternReplaceText, value)
+
+        onLoadSearchSuccess = (data) ->
+          currentValue = $element.val()
+          if data.value != currentValue
+            onValueChange(true)
+          loadedValue = currentValue
+
+        loadSearch = ->
+          if listfilterCtrl.loadIsInProgress()
+            return
+
+          value = $element.val()
+          if loadedValue == value
+            return
+
+          remoteUrl = buildUrl(value)
+          loadedValue = value
+          listfilterCtrl.load({
+            remoteUrl: remoteUrl
+            onLoadSuccess: onLoadSearchSuccess
+            onLoadSuccessData: {
+              value: value
+            }
+          })
+
+        onValueChange = (useTimeout) ->
+          if applySearchTimer?
+            $timeout.cancel(applySearchTimer)
+          if not listfilterCtrl.loadIsInProgress()
+            if useTimeout
+              applySearchTimer = $timeout(loadSearch, searchTimeoutMilliseconds)
+            else
+              loadSearch()
+
+        $element.on 'change', ->
+          onValueChange(false)
+
+        $element.on 'keydown', (e) ->
+          if e.which == 13
+            # ENTER/RETURN was pressed, load search instantly
+            onValueChange(false)
+          else
+            onValueChange(true)
         return
     }
 ])

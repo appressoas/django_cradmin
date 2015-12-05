@@ -25,12 +25,12 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
         remoteElementInnerHtml = remoteElement.html()
         onSuccess(remoteElementInnerHtml, $remoteHtmlDocument)
       , (response) ->
+        if options.onFinish?
+          options.onFinish()
         if options.onHttpError?
           options.onHttpError(response)
         else
           console?.error? "Failed to load", options.parameters
-        if options.onFinish?
-          options.onFinish()
       )
 
     updateTargetElement: (options, remoteElementInnerHtml, $remoteHtmlDocument) =>
@@ -40,10 +40,10 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
       if options.replace
         options.targetElement.empty()
       options.targetElement.append(loadedElement)
-      if options.onSuccess
-        options.onSuccess($remoteHtmlDocument)
       if options.onFinish?
         options.onFinish()
+      if options.onSuccess
+        options.onSuccess($remoteHtmlDocument)
 
     load: (options) ->
       me = @

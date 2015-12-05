@@ -300,17 +300,13 @@
           remoteElementInnerHtml = remoteElement.html();
           return onSuccess(remoteElementInnerHtml, $remoteHtmlDocument);
         }, function(response) {
-          if (options.onHttpError != null) {
-            options.onHttpError(response);
-          } else {
-            if (typeof console !== "undefined" && console !== null) {
-              if (typeof console.error === "function") {
-                console.error("Failed to load", options.parameters);
-              }
-            }
-          }
           if (options.onFinish != null) {
-            return options.onFinish();
+            options.onFinish();
+          }
+          if (options.onHttpError != null) {
+            return options.onHttpError(response);
+          } else {
+            return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error("Failed to load", options.parameters) : void 0 : void 0;
           }
         });
       };
@@ -324,11 +320,11 @@
           options.targetElement.empty();
         }
         options.targetElement.append(loadedElement);
-        if (options.onSuccess) {
-          options.onSuccess($remoteHtmlDocument);
-        }
         if (options.onFinish != null) {
-          return options.onFinish();
+          options.onFinish();
+        }
+        if (options.onSuccess) {
+          return options.onSuccess($remoteHtmlDocument);
         }
       };
 
@@ -3590,10 +3586,14 @@
         restrict: 'A',
         scope: {},
         controller: function($scope, $element) {
-          var filterListDomId, filterScopes,
+          var filterListDomId, filterScopes, loadInProgress,
             _this = this;
           filterListDomId = $element.attr('id');
           filterScopes = [];
+          loadInProgress = false;
+          this.loadIsInProgress = function() {
+            return loadInProgress;
+          };
           this.onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
             var $remoteFilterList, filterScope, title, _i, _len, _results;
             $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId);
@@ -3608,6 +3608,7 @@
           };
           this.load = function(options) {
             var me;
+            loadInProgress = true;
             me = this;
             return djangoCradminBgReplaceElement.load({
               parameters: {
@@ -3622,7 +3623,13 @@
                 return console.log('ERROR', response);
               },
               onSuccess: function($remoteHtmlDocument) {
-                return me.onLoadSuccess($remoteHtmlDocument, options.remoteUrl);
+                me.onLoadSuccess($remoteHtmlDocument, options.remoteUrl);
+                if (options.onLoadSuccess != null) {
+                  return options.onLoadSuccess(options.onLoadSuccessData);
+                }
+              },
+              onFinish: function() {
+                return loadInProgress = false;
               }
             });
           };
@@ -3640,7 +3647,7 @@
     function() {
       return {
         restrict: 'A',
-        require: '^?djangoCradminListfilter',
+        require: '^djangoCradminListfilter',
         scope: {},
         controller: function($scope, $element) {
           /*
@@ -3667,6 +3674,92 @@
             return listfilterCtrl.load({
               remoteUrl: remoteUrl
             });
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminListfilterTextinput', [
+    '$timeout', function($timeout) {
+      var urlpatternAttribute, urlpatternReplaceText;
+      urlpatternAttribute = 'django-cradmin-listfilter-urlpattern';
+      urlpatternReplaceText = '_-_TEXTINPUT_-_VALUE_-_';
+      return {
+        restrict: 'A',
+        require: '^djangoCradminListfilter',
+        scope: {},
+        controller: function($scope, $element) {
+          /*
+          Update the "django-cradmin-listfilter-urlpattern"-attribute with
+          the one from the server.
+          */
+
+          $scope.syncWithRemoteFilterList = function($remoteFilterList) {
+            var $remoteElement, domId;
+            console.log('SYNC textinput');
+            domId = $element.attr('id');
+            $remoteElement = $remoteFilterList.find('#' + domId);
+            return $element.attr(urlpatternAttribute, $remoteElement.attr(urlpatternAttribute));
+          };
+        },
+        link: function($scope, $element, attributes, listfilterCtrl) {
+          var applySearchTimer, buildUrl, loadSearch, loadedValue, onLoadSearchSuccess, onValueChange, searchTimeoutMilliseconds;
+          listfilterCtrl.addFilterScope($scope);
+          applySearchTimer = null;
+          loadedValue = $element.val();
+          searchTimeoutMilliseconds = 500;
+          buildUrl = function(value) {
+            var urlpattern;
+            urlpattern = $element.attr(urlpatternAttribute);
+            return urlpattern.replace(urlpatternReplaceText, value);
+          };
+          onLoadSearchSuccess = function(data) {
+            var currentValue;
+            currentValue = $element.val();
+            if (data.value !== currentValue) {
+              onValueChange(true);
+            }
+            return loadedValue = currentValue;
+          };
+          loadSearch = function() {
+            var remoteUrl, value;
+            if (listfilterCtrl.loadIsInProgress()) {
+              return;
+            }
+            value = $element.val();
+            if (loadedValue === value) {
+              return;
+            }
+            remoteUrl = buildUrl(value);
+            loadedValue = value;
+            return listfilterCtrl.load({
+              remoteUrl: remoteUrl,
+              onLoadSuccess: onLoadSearchSuccess,
+              onLoadSuccessData: {
+                value: value
+              }
+            });
+          };
+          onValueChange = function(useTimeout) {
+            if (applySearchTimer != null) {
+              $timeout.cancel(applySearchTimer);
+            }
+            if (!listfilterCtrl.loadIsInProgress()) {
+              if (useTimeout) {
+                return applySearchTimer = $timeout(loadSearch, searchTimeoutMilliseconds);
+              } else {
+                return loadSearch();
+              }
+            }
+          };
+          $element.on('change', function() {
+            return onValueChange(false);
+          });
+          $element.on('keydown', function(e) {
+            if (e.which === 13) {
+              return onValueChange(false);
+            } else {
+              return onValueChange(true);
+            }
           });
         }
       };
