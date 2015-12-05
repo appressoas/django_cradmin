@@ -22,4 +22,6 @@ angular.module('djangoCradmin', [
   'djangoCradmin.forms.filewidget'
   'djangoCradmin.forms.setfieldvalue'
   'djangoCradmin.forms.select'
+  'djangoCradmin.backgroundreplace_element.providers'
+  'djangoCradmin.backgroundreplace_element.directives'
 ])

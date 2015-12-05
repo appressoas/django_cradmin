@@ -216,6 +216,137 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.backgroundreplace_element.directives', []).directive('djangoCradminBgReplaceElementOnPageLoad', [
+    '$window', 'djangoCradminBgReplaceElement', function($window, djangoCradminBgReplaceElement) {
+      return {
+        restrict: 'A',
+        controller: function($scope, $element) {},
+        link: function($scope, $element, attributes) {
+          var remoteElementSelector, remoteUrl;
+          console.log('YO');
+          remoteElementSelector = attributes.djangoCradminRemoteElementSelector;
+          remoteUrl = attributes.djangoCradminRemoteUrl;
+          if (remoteElementSelector == null) {
+            if (typeof console !== "undefined" && console !== null) {
+              if (typeof console.error === "function") {
+                console.error("You must include the 'django-cradmin-remote-element-id' attribute.");
+              }
+            }
+          }
+          if (remoteUrl == null) {
+            if (typeof console !== "undefined" && console !== null) {
+              if (typeof console.error === "function") {
+                console.error("You must include the 'django-cradmin-remote-url' attribute.");
+              }
+            }
+          }
+          angular.element(document).ready(function() {
+            console.log('load', remoteUrl, remoteElementSelector);
+            return djangoCradminBgReplaceElement.load({
+              parameters: {
+                method: 'GET',
+                url: remoteUrl
+              },
+              remoteElementSelector: remoteElementSelector,
+              targetElement: $element,
+              $scope: $scope,
+              replace: true,
+              onHttpError: function(response) {
+                return console.log('ERROR', response);
+              },
+              onSuccess: function() {
+                return console.log('Success!');
+              },
+              onFinish: function() {
+                return console.log('Finish!');
+              }
+            });
+          });
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.backgroundreplace_element.providers', []).provider('djangoCradminBgReplaceElement', function() {
+    /*
+    Makes a request to a an URL, and replaces or extends a DOM element
+    on the current page with the same DOM element within
+    the requested URL.
+    
+    Can be used for many things, such as:
+    
+    - Infinite scroll (append content from ``?page=<pagenumber>``).
+    - Live filtering (replace the filtered list when a filter changes).
+    */
+
+    var BgReplace;
+    BgReplace = (function() {
+      function BgReplace($http, $compile) {
+        this.http = $http;
+        this.compile = $compile;
+      }
+
+      BgReplace.prototype.loadUrlAndExtractRemoteElementHtml = function(options, onSuccess) {
+        return this.http(options.parameters).then(function(response) {
+          var html, htmldocument, remoteElement, remoteElementInnerHtml;
+          html = response.data;
+          htmldocument = angular.element(html);
+          remoteElement = htmldocument.find(options.remoteElementSelector);
+          remoteElementInnerHtml = remoteElement.html();
+          return onSuccess(remoteElementInnerHtml);
+        }, function(response) {
+          if (options.onHttpError != null) {
+            options.onHttpError(response);
+          } else {
+            if (typeof console !== "undefined" && console !== null) {
+              if (typeof console.error === "function") {
+                console.error("Failed to load", options.parameters);
+              }
+            }
+          }
+          if (options.onFinish != null) {
+            return options.onFinish();
+          }
+        });
+      };
+
+      BgReplace.prototype.load = function(options) {
+        var $compile;
+        $compile = this.compile;
+        return this.loadUrlAndExtractRemoteElementHtml(options, function(remoteElementInnerHtml) {
+          var linkingFunction, loadedElement;
+          linkingFunction = $compile(remoteElementInnerHtml);
+          loadedElement = linkingFunction(options.$scope);
+          if (options.replace) {
+            options.targetElement.empty();
+          }
+          options.targetElement.append(loadedElement);
+          if (options.onSuccess) {
+            options.onSuccess();
+          }
+          if (options.onFinish != null) {
+            return options.onFinish();
+          }
+        });
+      };
+
+      return BgReplace;
+
+    })();
+    this.$get = [
+      '$http', '$compile', function($http, $compile) {
+        return new BgReplace($http, $compile);
+      }
+    ];
+    return this;
+  });
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.bulkfileupload', ['angularFileUpload', 'ngCookies']).provider('cradminBulkfileuploadCoordinator', function() {
     var FileUploadCoordinator;
     FileUploadCoordinator = (function() {
@@ -3111,22 +3242,49 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.forms.select', []).directive('djangoCradminOpenUrlStoredInSelectedOption', function() {
-    return {
-      restrict: 'A',
-      link: function($scope, $element) {
-        var getValue;
-        getValue = function() {
-          return $element.find("option:selected").attr('value');
-        };
-        return $element.on('change', function() {
-          var value;
-          value = getValue();
-          return window.location = value;
-        });
-      }
-    };
-  });
+  angular.module('djangoCradmin.forms.select', []).directive('djangoCradminOpenUrlStoredInSelectedOption', [
+    'djangoCradminBgReplaceElement', function(djangoCradminBgReplaceElement) {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, attributes) {
+          var backgroundreplaceElementSelector, getValue;
+          backgroundreplaceElementSelector = attributes.djangoCradminBackgroundreplaceElementSelector;
+          getValue = function() {
+            return $element.find("option:selected").attr('value');
+          };
+          return $element.on('change', function() {
+            var remoteUrl, targetElement;
+            remoteUrl = getValue();
+            targetElement = angular.element(backgroundreplaceElementSelector);
+            if (backgroundreplaceElementSelector != null) {
+              console.log('Background', remoteUrl);
+              return djangoCradminBgReplaceElement.load({
+                parameters: {
+                  method: 'GET',
+                  url: remoteUrl
+                },
+                remoteElementSelector: backgroundreplaceElementSelector,
+                targetElement: targetElement,
+                $scope: $scope,
+                replace: true,
+                onHttpError: function(response) {
+                  return console.log('ERROR', response);
+                },
+                onSuccess: function() {
+                  return console.log('Success!');
+                },
+                onFinish: function() {
+                  return console.log('Finish!');
+                }
+              });
+            } else {
+              return window.location = value;
+            }
+          });
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 
@@ -3414,7 +3572,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives']);
 
 }).call(this);
 

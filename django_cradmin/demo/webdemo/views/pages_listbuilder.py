@@ -45,10 +45,12 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
     # def get_filterlist_position(self):
     #     return 'left'
     #     return 'top'
-
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
             'filter', kwargs={'filters_string': filters_string})
+
+    def get_post_include_template(self):
+        return 'webdemo/pages_listbuilder/pagelist-post-include.django.html'
 
     def build_filterlist(self):
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
