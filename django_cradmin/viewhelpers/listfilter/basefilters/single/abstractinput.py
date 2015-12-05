@@ -29,6 +29,9 @@ class AbstractInputFilter(AbstractFilter):
         """
         return ''
 
+    def get_inputfield_value(self):
+        return self.get_cleaned_value() or ''
+
 
 class AbstractSearch(AbstractInputFilter):
     """

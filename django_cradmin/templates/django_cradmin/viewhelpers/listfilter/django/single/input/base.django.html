@@ -3,6 +3,7 @@
 {% block inputfield %}
     <form method="GET">
         <input id="{{ me.get_inputfield_dom_id }}"
-                class="form-control" placeholder="{{ me.get_placeholder }}">
+                class="form-control" placeholder="{{ me.get_placeholder }}"
+                value="{{ me.get_inputfield_value }}">
     </form>
 {% endblock inputfield %}
