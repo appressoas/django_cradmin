@@ -69,6 +69,24 @@ class IntroColumn(objecttable.TruncatecharsPlainTextColumn):
     allcells_css_classes = ['hidden-xs']
 
 
+class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
+    def get_ordering_options(self):
+        return [
+            ('', {
+                'label': 'Publishing time (newest first)',
+                'order_by': ['-publishing_time'],
+            }),
+            ('publishing_time_asc', {
+                'label': 'Publishing time (oldest first)',
+                'order_by': ['publishing_time'],
+            }),
+            ('title', {
+                'label': 'Title',
+                'order_by': ['title'],
+            }),
+        ]
+
+
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, objecttable.ObjectTableView):
     model = Page
     enable_previews = True
@@ -110,6 +128,10 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
     def build_filterlist(self):
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
+        filterlist.append(listfilter.django.single.textinput.Search(
+            slug='search', label='Search', modelfields=['title']))
+        filterlist.append(OrderPagesFilter(
+            slug='orderby', label='Order by'))
         filterlist.append(listfilter.django.single.select.IsNotNull(
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(

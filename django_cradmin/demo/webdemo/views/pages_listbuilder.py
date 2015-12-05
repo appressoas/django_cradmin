@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from collections import OrderedDict
 
 from django_cradmin.demo.webdemo.views.pages import PagesQuerySetForRoleMixin, PageCreateView, PageUpdateView, \
-    PageDeleteView, PreviewPageView
+    PageDeleteView, PreviewPageView, OrderPagesFilter
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilder
@@ -13,24 +13,6 @@ from django_cradmin.demo.webdemo.models import Page
 class PageListItemValue(listbuilder.itemvalue.FocusBox):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.htm'
     valuealias = 'page'
-
-
-class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
-    def get_ordering_options(self):
-        return [
-            ('', {
-                'label': 'Publishing time (newest first)',
-                'order_by': ['-publishing_time'],
-            }),
-            ('publishing_time_asc', {
-                'label': 'Publishing time (oldest first)',
-                'order_by': ['publishing_time'],
-            }),
-            ('title', {
-                'label': 'Title',
-                'order_by': ['title'],
-            }),
-        ]
 
 
 class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterListMixin, listbuilderview.View):
@@ -55,14 +37,14 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
     def build_filterlist(self):
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
+        filterlist.append(listfilter.django.single.textinput.Search(
+            slug='search', label='Search', modelfields=['title']))
         filterlist.append(OrderPagesFilter(
             slug='orderby', label='Order by'))
         filterlist.append(listfilter.django.single.select.IsNotNull(
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
-        filterlist.append(listfilter.django.single.textinput.Search(
-            slug='search', label='Search', modelfields=['title']))
 
         filterlist.set_filters_string(filters_string=self.get_filters_string())
         return filterlist

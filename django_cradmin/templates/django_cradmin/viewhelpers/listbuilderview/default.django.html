@@ -27,7 +27,7 @@
     {% endblock listbuilderview_pre %}
     <div class="container">
         {% block list %}
-            <div id="django_cradmin_listbuilderview_list_and_pager" class="django-cradmin-listfilter-target">
+            <div class="django-cradmin-listfilter-target">
                 {% if listbuilder_list.has_items %}
                     {% cradmin_render_renderable listbuilder_list %}
                     {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
