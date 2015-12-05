@@ -1,3 +1,4 @@
+import json
 from django.utils.translation import ugettext_lazy
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
@@ -34,6 +35,25 @@ class AbstractInputFilter(AbstractFilter):
 
     def get_urlpattern(self):
         return self.build_set_values_url(values=['_-_TEXTINPUT_-_VALUE_-_'])
+
+    def get_timeout_milliseconds(self):
+        """
+        Get the number of milliseconds to wait until applying the change
+        when users modify the input field.
+
+        When users hit enter or focus away from the field, search is
+        done instantly, so this is only the delay to wait while
+        users are typing (live search).
+        """
+        return 500
+
+    def get_angularjs_options_dict(self):
+        return {
+            'timeout_milliseconds': self.get_timeout_milliseconds()
+        }
+
+    def get_angularjs_options_json(self):
+        return json.dumps(self.get_angularjs_options_dict())
 
 
 class AbstractSearch(AbstractInputFilter):

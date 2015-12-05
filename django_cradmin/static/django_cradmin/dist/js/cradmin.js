@@ -3686,7 +3686,9 @@
       return {
         restrict: 'A',
         require: '^djangoCradminListfilter',
-        scope: {},
+        scope: {
+          options: '=djangoCradminListfilterTextinput'
+        },
         controller: function($scope, $element) {
           /*
           Update the "django-cradmin-listfilter-urlpattern"-attribute with
@@ -3695,18 +3697,20 @@
 
           $scope.syncWithRemoteFilterList = function($remoteFilterList) {
             var $remoteElement, domId;
-            console.log('SYNC textinput');
             domId = $element.attr('id');
             $remoteElement = $remoteFilterList.find('#' + domId);
             return $element.attr(urlpatternAttribute, $remoteElement.attr(urlpatternAttribute));
           };
         },
         link: function($scope, $element, attributes, listfilterCtrl) {
-          var applySearchTimer, buildUrl, loadSearch, loadedValue, onLoadSearchSuccess, onValueChange, searchTimeoutMilliseconds;
+          var applySearchTimer, buildUrl, loadSearch, loadedValue, onLoadSearchSuccess, onValueChange, timeoutMilliseconds;
           listfilterCtrl.addFilterScope($scope);
           applySearchTimer = null;
           loadedValue = $element.val();
-          searchTimeoutMilliseconds = 500;
+          timeoutMilliseconds = $scope.options.timeout_milliseconds;
+          if (timeoutMilliseconds == null) {
+            timeoutMilliseconds = 500;
+          }
           buildUrl = function(value) {
             var urlpattern;
             urlpattern = $element.attr(urlpatternAttribute);
@@ -3718,7 +3722,7 @@
             if (data.value !== currentValue) {
               onValueChange(true);
             }
-            return loadedValue = currentValue;
+            return loadedValue = data.value;
           };
           loadSearch = function() {
             var remoteUrl, value;
@@ -3745,7 +3749,7 @@
             }
             if (!listfilterCtrl.loadIsInProgress()) {
               if (useTimeout) {
-                return applySearchTimer = $timeout(loadSearch, searchTimeoutMilliseconds);
+                return applySearchTimer = $timeout(loadSearch, timeoutMilliseconds);
               } else {
                 return loadSearch();
               }

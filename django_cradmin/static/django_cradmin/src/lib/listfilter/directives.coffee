@@ -104,7 +104,9 @@ angular.module('djangoCradmin.listfilter.directives', [])
     return {
       restrict: 'A',
       require: '^djangoCradminListfilter'
-      scope: {}
+      scope: {
+        options: '=djangoCradminListfilterTextinput'
+      }
 
       controller: ($scope, $element) ->
 
@@ -113,7 +115,6 @@ angular.module('djangoCradmin.listfilter.directives', [])
         the one from the server.
         ###
         $scope.syncWithRemoteFilterList = ($remoteFilterList) ->
-          console.log 'SYNC textinput'
           domId = $element.attr('id')
           $remoteElement = $remoteFilterList.find('#' + domId)
           $element.attr(urlpatternAttribute,
@@ -125,7 +126,9 @@ angular.module('djangoCradmin.listfilter.directives', [])
         listfilterCtrl.addFilterScope($scope)
         applySearchTimer = null
         loadedValue = $element.val()
-        searchTimeoutMilliseconds = 500
+        timeoutMilliseconds = $scope.options.timeout_milliseconds
+        if not timeoutMilliseconds?
+          timeoutMilliseconds = 500
 
         buildUrl = (value) ->
           urlpattern = $element.attr(urlpatternAttribute)
@@ -135,7 +138,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
           currentValue = $element.val()
           if data.value != currentValue
             onValueChange(true)
-          loadedValue = currentValue
+          loadedValue = data.value
 
         loadSearch = ->
           if listfilterCtrl.loadIsInProgress()
@@ -145,6 +148,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
           if loadedValue == value
             return
 
+#          console.log 'Search for', value
           remoteUrl = buildUrl(value)
           loadedValue = value
           listfilterCtrl.load({
@@ -160,7 +164,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
             $timeout.cancel(applySearchTimer)
           if not listfilterCtrl.loadIsInProgress()
             if useTimeout
-              applySearchTimer = $timeout(loadSearch, searchTimeoutMilliseconds)
+              applySearchTimer = $timeout(loadSearch, timeoutMilliseconds)
             else
               loadSearch()
 

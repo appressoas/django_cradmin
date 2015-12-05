@@ -5,5 +5,5 @@
             class="form-control" placeholder="{{ me.get_placeholder }}"
             value="{{ me.get_inputfield_value }}"
             django-cradmin-listfilter-urlpattern="{{ me.get_urlpattern }}"
-            django-cradmin-listfilter-textinput>
+            django-cradmin-listfilter-textinput='{{ me.get_angularjs_options_json|safe }}'>
 {% endblock inputfield %}
