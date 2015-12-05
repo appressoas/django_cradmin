@@ -1,13 +1,11 @@
 from django.db import models
 
-from django.utils.translation import ugettext_lazy
-
-from django_cradmin.viewhelpers.listfilter.basefilters.single import abstractinput
+from django_cradmin.viewhelpers.listfilter.basefilters.single import abstracttextinput
 
 from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMixin
 
 
-class Search(abstractinput.AbstractSearch, DjangoOrmFilterMixin):
+class Search(abstracttextinput.AbstractSearch, DjangoOrmFilterMixin):
     def __init__(self, *args, **kwargs):
         """
         Parameters are the same as for

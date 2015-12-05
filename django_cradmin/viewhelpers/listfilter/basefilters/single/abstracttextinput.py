@@ -6,7 +6,7 @@ class AbstractInputFilter(AbstractFilter):
     """
     Abstract base class for any filter that uses a single text input field.
     """
-    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/input/base.django.html'
+    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html'
 
     def get_input_html_element_type(self):
         """

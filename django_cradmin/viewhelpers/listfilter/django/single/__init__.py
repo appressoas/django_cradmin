@@ -1,4 +1,4 @@
 from . import select  # noqa
-from . import input  # noqa
+from . import textinput  # noqa
 
-__all__ = ['select', 'input']
+__all__ = ['select', 'textinput']

@@ -12,7 +12,7 @@ standard_library.install_aliases()
 
 class TestSearch(TestCase):
     def test_no_value(self):
-        testfilter = listfilter.django.single.input.Search(
+        testfilter = listfilter.django.single.textinput.Search(
             slug='mycharfield',
             modelfields=['mycharfield', 'mytextfield'])
         testfilter.set_values(values=[])
@@ -29,7 +29,7 @@ class TestSearch(TestCase):
             set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_matching_single(self):
-        testfilter = listfilter.django.single.input.Search(
+        testfilter = listfilter.django.single.textinput.Search(
             slug='mycharfield',
             modelfields=['mycharfield', 'mytextfield'])
         testfilter.set_values(values=['Another'])
@@ -46,7 +46,7 @@ class TestSearch(TestCase):
             set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
     def test_matching_multiple(self):
-        testfilter = listfilter.django.single.input.Search(
+        testfilter = listfilter.django.single.textinput.Search(
             slug='mycharfield',
             modelfields=['mycharfield', 'mytextfield'])
         testfilter.set_values(values=['testvalue'])
