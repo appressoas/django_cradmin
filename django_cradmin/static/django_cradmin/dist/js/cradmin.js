@@ -3590,13 +3590,15 @@
         restrict: 'A',
         scope: {},
         controller: function($scope, $element) {
-          var filterListDomId, filterScopes;
+          var filterListDomId, filterScopes,
+            _this = this;
           filterListDomId = $element.attr('id');
           filterScopes = [];
-          this.onLoadSuccess = function($remoteHtmlDocument) {
-            var $remoteFilterList, filterScope, _i, _len, _results;
-            console.log('Success!', $remoteHtmlDocument);
+          this.onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
+            var $remoteFilterList, filterScope, title, _i, _len, _results;
             $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId);
+            title = $window.document.title;
+            $window.history.pushState("list filter change", title, remoteUrl);
             _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];
@@ -3605,7 +3607,8 @@
             return _results;
           };
           this.load = function(options) {
-            console.log('Load', options);
+            var me;
+            me = this;
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
@@ -3618,7 +3621,9 @@
               onHttpError: function(response) {
                 return console.log('ERROR', response);
               },
-              onSuccess: this.onLoadSuccess
+              onSuccess: function($remoteHtmlDocument) {
+                return me.onLoadSuccess($remoteHtmlDocument, options.remoteUrl);
+              }
             });
           };
           this.addFilterScope = function(filterScope) {

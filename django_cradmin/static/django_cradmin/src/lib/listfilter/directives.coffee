@@ -12,14 +12,15 @@ angular.module('djangoCradmin.listfilter.directives', [])
         filterListDomId = $element.attr('id')
         filterScopes = []
 
-        @onLoadSuccess = ($remoteHtmlDocument) ->
-          console.log 'Success!', $remoteHtmlDocument
+        @onLoadSuccess = ($remoteHtmlDocument, remoteUrl) =>
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
+          title = $window.document.title
+          $window.history.pushState("list filter change", title, remoteUrl)
           for filterScope in filterScopes
             filterScope.syncWithRemoteFilterList($remoteFilterList)
 
         @load = (options) ->
-          console.log 'Load', options
+          me = @
           djangoCradminBgReplaceElement.load({
             parameters: {
               method: 'GET'
@@ -31,7 +32,8 @@ angular.module('djangoCradmin.listfilter.directives', [])
             replace: true
             onHttpError: (response) ->
               console.log 'ERROR', response
-            onSuccess: @onLoadSuccess
+            onSuccess: ($remoteHtmlDocument) ->
+              me.onLoadSuccess($remoteHtmlDocument, options.remoteUrl)
 #            onFinish: ->
 #              console.log 'Finish!'
           })
