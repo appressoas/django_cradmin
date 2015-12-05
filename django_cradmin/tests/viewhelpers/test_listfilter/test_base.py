@@ -8,14 +8,20 @@ from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import 
 from django_cradmin.viewhelpers import listfilter
 
 from future import standard_library
+from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
+from django_cradmin.viewhelpers.listfilter.base.abstractfilterlist import AbstractFilterList
+from django_cradmin.viewhelpers.listfilter.base.abstractgroupchild import AbstractGroupChild
+from django_cradmin.viewhelpers.listfilter.base.exceptions import InvalidFiltersStringError
+from django_cradmin.viewhelpers.listfilter.base.filtershandler import FiltersHandler
+
 standard_library.install_aliases()
 
 
-class MinimalFilterGroupChild(listfilter.base.AbstractGroupChild):
+class MinimalFilterGroupChild(AbstractGroupChild):
     template_name = 'cradmin_viewhelpers_testapp/listfilter/minimal-filtergroupchild.django.html'
 
 
-class MinimalIntFilter(listfilter.base.AbstractFilter):
+class MinimalIntFilter(AbstractFilter):
     template_name = 'cradmin_viewhelpers_testapp/listfilter/minimal-filtergroupchild.django.html'
 
     def get_slug(self):
@@ -25,7 +31,7 @@ class MinimalIntFilter(listfilter.base.AbstractFilter):
         return int(value)
 
 
-class MinimalStringFilter(listfilter.base.AbstractFilter):
+class MinimalStringFilter(AbstractFilter):
     template_name = 'cradmin_viewhelpers_testapp/listfilter/minimal-filtergroupchild.django.html'
 
     def get_slug(self):
@@ -34,58 +40,58 @@ class MinimalStringFilter(listfilter.base.AbstractFilter):
 
 class TestFiltersHandler(TestCase):
     def test_split_raw_filter_values(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         self.assertEqual(
             ['a/b', 'c,d'],
             filtershandler.split_raw_filter_values('a%252Fb%2Cc%252Cd'))
 
     def test_join_filter_values(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         self.assertEqual(
             'a%252Fb%2Cc%252Cd',
             filtershandler.join_filter_values(['a/b', 'c,d']))
 
     def test_invalid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
-        with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
+        with self.assertRaisesMessage(InvalidFiltersStringError,
                                       '"x" does not contain "-".'):
             filtershandler.parse('x')
 
     def test_invalid_filter_slug(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
-        with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
+        with self.assertRaisesMessage(InvalidFiltersStringError,
                                       '"x" is not a valid filter slug.'):
             filtershandler.parse('x-10')
 
     def test_add_filter_duplicate_filter_slug(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
-        filtershandler.add_filter(listfilter.base.AbstractFilter(slug='x'))
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler.add_filter(AbstractFilter(slug='x'))
         with self.assertRaisesMessage(ValueError,
                                       'Duplicate slug: "x".'):
-            filtershandler.add_filter(listfilter.base.AbstractFilter(slug='x'))
+            filtershandler.add_filter(AbstractFilter(slug='x'))
 
     def test_add_filter_invalid_filter_slug(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         with self.assertRaisesMessage(ValueError,
                                       'Invalid filter slug: "x-y". Slugs can not contain "-".'):
-            filtershandler.add_filter(listfilter.base.AbstractFilter(slug='x-y'))
+            filtershandler.add_filter(AbstractFilter(slug='x-y'))
 
     def test_parse_empty_string(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.parse('')
         self.assertEqual(
             {},
             filtershandler.filtermap)
 
     def test_parse_none(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.parse(None)
         self.assertEqual(
             {},
             filtershandler.filtermap)
 
     def test_parse_simple_valid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('s-test')
         self.assertEqual(
@@ -93,7 +99,7 @@ class TestFiltersHandler(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_multivalue_valid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('s-a,b,c')
         self.assertEqual(
@@ -101,7 +107,7 @@ class TestFiltersHandler(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_simple_valid_filter_string_trailing_slash(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('s-test/')
         self.assertEqual(
@@ -109,7 +115,7 @@ class TestFiltersHandler(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_simple_valid_filter_string_leading_slash(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.parse('/s-test')
         self.assertEqual(
@@ -117,7 +123,7 @@ class TestFiltersHandler(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_parse_complex_valid_filter_string(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(MinimalStringFilter())
         filtershandler.add_filter(MinimalIntFilter())
         filtershandler.parse('/i-10/s-jane,joe/')
@@ -130,7 +136,7 @@ class TestFiltersHandler(TestCase):
             filtershandler.filtermap['s'].values)
 
     def test_build_filters_string(self):
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
         stringfilter = MinimalStringFilter()
@@ -148,7 +154,7 @@ class TestFiltersHandler(TestCase):
         def urlbuilder(filters_string):
             return '/the/prefix/{}?a=querystring'.format(filters_string)
 
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=urlbuilder)
+        filtershandler = FiltersHandler(urlbuilder=urlbuilder)
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
         stringfilter = MinimalStringFilter()
@@ -163,11 +169,11 @@ class TestFiltersHandler(TestCase):
             filtershandler.build_filter_url(changed_filterobject=new_stringfilter))
 
     def test_filter(self):
-        class FilterOne(listfilter.base.AbstractFilter):
+        class FilterOne(AbstractFilter):
             def filter(self, queryobject):
                 return queryobject.filter(mycharfield='test')
 
-        class FilterTwo(listfilter.base.AbstractFilter):
+        class FilterTwo(AbstractFilter):
             def filter(self, queryobject):
                 return queryobject.filter(mybooleanfield=True)
 
@@ -178,7 +184,7 @@ class TestFiltersHandler(TestCase):
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mycharfield='test', mybooleanfield=False)
 
-        filtershandler = listfilter.base.FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
         filtershandler.add_filter(FilterOne(slug='filterone'))
         filtershandler.add_filter(FilterTwo(slug='filtertwo'))
         queryset = filtershandler.filter(FilterTestModel.objects.all())
@@ -239,7 +245,7 @@ class TestAbstractFilter(TestCase):
         self.assertEqual(['a'], testfilter.values)
 
     def test_get_cleaned_values(self):
-        class SimpleFilter(listfilter.base.AbstractFilter):
+        class SimpleFilter(AbstractFilter):
             def clean_value(self, value):
                 return 'cleaned-' + value
 
@@ -252,7 +258,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.AbstractFilterList(
+        filterlist = AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -266,7 +272,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.AbstractFilterList(
+        filterlist = AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -280,7 +286,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.AbstractFilterList(
+        filterlist = AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -294,7 +300,7 @@ class TestAbstractFilter(TestCase):
         stringfilter.set_values(values=['a', 'b'])
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
-        filterlist = listfilter.base.AbstractFilterList(
+        filterlist = AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
@@ -304,7 +310,7 @@ class TestAbstractFilter(TestCase):
             stringfilter.build_remove_values_url(values=['a']))
 
     def test_render(self):
-        stringfilter = listfilter.base.AbstractFilter(slug='test')
+        stringfilter = AbstractFilter(slug='test')
         stringfilter.set_filterlist(mock.MagicMock())
         selector = htmls.S(stringfilter.render())
         self.assertTrue(selector.exists('.django-cradmin-listfilter-filter'))
@@ -312,29 +318,29 @@ class TestAbstractFilter(TestCase):
 
 class TestAbstractFilterList(TestCase):
     def test_append(self):
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         testchild = MinimalFilterGroupChild()
         filterlist.append(testchild)
         self.assertEqual([testchild], filterlist.children)
         self.assertEqual(filterlist, testchild.filterlist)
 
     def test_render(self):
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(MinimalFilterGroupChild())
         filterlist.append(MinimalFilterGroupChild())
         selector = htmls.S(filterlist.render())
         self.assertEqual(2, selector.count('li'))
 
     def test_set_filters_string_invalid_slug(self):
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         stringfilter = MinimalStringFilter()
         filterlist.append(stringfilter)
-        with self.assertRaisesMessage(listfilter.base.InvalidFiltersStringError,
+        with self.assertRaisesMessage(InvalidFiltersStringError,
                                       '"x" is not a valid filter slug.'):
             filterlist.set_filters_string('x-10')
 
     def test_set_filters_string(self):
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         intfilter = MinimalIntFilter()
         stringfilter = MinimalStringFilter()
         filterlist.append(intfilter)
@@ -344,11 +350,11 @@ class TestAbstractFilterList(TestCase):
         self.assertEqual(['test'], stringfilter.values)
 
     def test_filter(self):
-        class FilterOne(listfilter.base.AbstractFilter):
+        class FilterOne(AbstractFilter):
             def filter(self, queryobject):
                 return queryobject.filter(mycharfield='test')
 
-        class FilterTwo(listfilter.base.AbstractFilter):
+        class FilterTwo(AbstractFilter):
             def filter(self, queryobject):
                 return queryobject.filter(mybooleanfield=True)
 
@@ -359,7 +365,7 @@ class TestAbstractFilterList(TestCase):
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mycharfield='test', mybooleanfield=False)
 
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(FilterOne(slug='filterone'))
         filterlist.append(FilterTwo(slug='filtertwo'))
         queryset = filterlist.filter(FilterTestModel.objects.all())

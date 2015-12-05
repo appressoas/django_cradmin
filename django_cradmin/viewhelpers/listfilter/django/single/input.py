@@ -1,8 +1,10 @@
 from django.utils.translation import ugettext_lazy
-from django_cradmin.viewhelpers.listfilter.django.base import AbstractDjangoOrmFilter
+
+from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
+from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMixin
 
 
-class AbstractInputFilter(AbstractDjangoOrmFilter):
+class AbstractInputFilter(AbstractFilter, DjangoOrmFilterMixin):
     """
     Abstract base class for any filter that uses a single text input field.
     """

@@ -10,6 +10,7 @@ from django_cradmin import datetimeutils
 
 from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 from django_cradmin.viewhelpers import listfilter
+from django_cradmin.viewhelpers.listfilter.base.abstractfilterlist import AbstractFilterList
 
 standard_library.install_aliases()
 
@@ -25,7 +26,7 @@ class TestBase(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertTrue(selector.exists('#django_cradmin_listfilter_test.django-cradmin-listfilter-filter'))
@@ -40,7 +41,7 @@ class TestBase(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = listfilter.base.AbstractFilterList(
+        filterlist = AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
@@ -54,7 +55,7 @@ class TestBase(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = listfilter.base.AbstractFilterList(
+        filterlist = AbstractFilterList(
             urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
@@ -68,7 +69,7 @@ class TestBase(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('Test', selector.one('option').alltext_normalized)
@@ -84,7 +85,7 @@ class TestBase(TestCase):
 
         testfilter = MySelectFilter(slug='test')
         testfilter.set_values(values=['first'])
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual(
@@ -102,7 +103,7 @@ class TestBase(TestCase):
 
         testfilter = MySelectFilter(slug='test')
         testfilter.set_values(values=[])
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual(
@@ -117,7 +118,7 @@ class TestBase(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertFalse(selector.exists('label'))
@@ -130,7 +131,7 @@ class TestBase(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test', label='A label')
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('A label', selector.one('label').alltext_normalized)
@@ -147,7 +148,7 @@ class TestBase(TestCase):
                 return True
 
         testfilter = MySelectFilter(slug='test', label='A label')
-        filterlist = listfilter.base.AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertTrue(selector.exists('label'))

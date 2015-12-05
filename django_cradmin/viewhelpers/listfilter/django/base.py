@@ -1,9 +1,6 @@
-from django_cradmin.viewhelpers.listfilter.base import AbstractFilter
-
-
-class AbstractDjangoOrmFilter(AbstractFilter):
+class DjangoOrmFilterMixin(object):
     """
-    Abstract base class for Django ORM filters.
+    Mixin class for Django ORM filters.
     """
 
     def get_modelfield(self):

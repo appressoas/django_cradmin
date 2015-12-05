@@ -3,13 +3,15 @@ import calendar
 import datetime
 from django.db import models
 from django.utils import timezone
+
 from django.utils.translation import ugettext_lazy
 
 from django_cradmin import datetimeutils
-from django_cradmin.viewhelpers.listfilter.django.base import AbstractDjangoOrmFilter
+from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
+from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMixin
 
 
-class AbstractSelectFilter(AbstractDjangoOrmFilter):
+class AbstractSelectFilter(AbstractFilter):
     """
     Abstract base class for any select filter.
 
@@ -78,7 +80,7 @@ class AbstractSelectFilter(AbstractDjangoOrmFilter):
         return context
 
 
-class Boolean(AbstractSelectFilter):
+class Boolean(AbstractSelectFilter, DjangoOrmFilterMixin):
     """
     A boolean filter that works on any BooleanField and CharField.
     (False, None and ``""`` is considered ``False``).
@@ -125,7 +127,7 @@ class Boolean(AbstractSelectFilter):
         return queryobject
 
 
-class IsNotNull(Boolean):
+class IsNotNull(Boolean, DjangoOrmFilterMixin):
     """
     A subclass of :class:`.Boolean` that works with
     foreign keys and other fields where ``None`` means no
@@ -135,7 +137,7 @@ class IsNotNull(Boolean):
         return models.Q(**{'{}__isnull'.format(modelfield): True})
 
 
-class DateTime(AbstractSelectFilter):
+class DateTime(AbstractSelectFilter, DjangoOrmFilterMixin):
     """
     A datetime filter that works with Django DateTimeField.
     """
@@ -289,7 +291,7 @@ class DateTime(AbstractSelectFilter):
         return queryobject
 
 
-class AbstractOrderBy(AbstractSelectFilter):
+class AbstractOrderBy(AbstractSelectFilter, DjangoOrmFilterMixin):
     """
     A "filter" that lets the user select how the list should be ordered.
     """

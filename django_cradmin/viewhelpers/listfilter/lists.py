@@ -1,4 +1,4 @@
-from django_cradmin.viewhelpers.listfilter.base import AbstractFilterList
+from django_cradmin.viewhelpers.listfilter.base.abstractfilterlist import AbstractFilterList
 
 
 class Vertical(AbstractFilterList):
