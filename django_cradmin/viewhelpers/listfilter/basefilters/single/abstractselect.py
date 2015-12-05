@@ -2,7 +2,7 @@ import calendar
 
 import datetime
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext_lazy, pgettext_lazy, pgettext
 
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
@@ -21,8 +21,10 @@ class AbstractSelectFilter(AbstractFilter):
         """
         raise NotImplementedError()
 
-    def set_default_is_selected(self, choicesdata):
+    def get_default_is_selected_index(self, choicesdata):
         """
+        Get the index of the default selected item in choicesdata.
+
         Called by :meth:`.get_choicesdata` when no choice matches
         the current cleaned value.
 
@@ -32,7 +34,8 @@ class AbstractSelectFilter(AbstractFilter):
         Parameters:
             choicesdata (list): Same format as the list returned by :meth:`.get_choicesdata`.
         """
-        choicesdata[0]['is_selected'] = True
+
+        return 0
 
     def get_choicesdata(self):
         """
@@ -48,26 +51,27 @@ class AbstractSelectFilter(AbstractFilter):
         - ``label``: The label to show (taken directly from :meth:`.get_choices`.
         - ``is_selected`` (boolean): If the current value matches the value of a choice,
           that choice will be selected. If none of them matches, the first choice is selected.
-          You can change this behavior by overriding :meth:`.set_default_is_selected`.
+          You can change this behavior by overriding :meth:`.get_default_is_selected_index`.
 
         Returns:
-            The list of dicts described above.
+            A tuple with the list of dicts described above and the selected label.
         """
         selected_value = self.get_cleaned_value()
         choicesdata = []
-        selected_found = False
+        selected_index = None
         for value, label in self.get_choices():
             is_selected = value == selected_value
             if is_selected:
-                selected_found = True
+                selected_index = True
             url = self.build_set_values_url(values=[value])
             choicesdata.append({
                 'url': url,
                 'label': label,
                 'is_selected': is_selected
             })
-        if not selected_found and len(choicesdata) > 0:
-            self.set_default_is_selected(choicesdata=choicesdata)
+        if selected_index is None and len(choicesdata) > 0:
+            selected_index = self.get_default_is_selected_index(choicesdata=choicesdata)
+            choicesdata[selected_index]['is_selected'] = True
         return choicesdata
 
     def get_context_data(self):

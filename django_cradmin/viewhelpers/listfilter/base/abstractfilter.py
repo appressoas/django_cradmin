@@ -1,4 +1,7 @@
 from __future__ import unicode_literals
+import json
+from xml.sax.saxutils import quoteattr
+from django.utils.translation import pgettext
 from django_cradmin.viewhelpers.listfilter.base.abstractgroupchild import AbstractGroupChild
 
 
@@ -230,3 +233,14 @@ class AbstractFilter(AbstractGroupChild):
         first field to make the label focus on the first field when it is clicked.
         """
         return '{}_input'.format(self.get_dom_id())
+
+    def get_loadingmessage(self):
+        return pgettext('listfilter loading message', 'Loading')
+
+    def get_angularjs_options_dict(self):
+        return {
+            'loadingmessage': self.get_loadingmessage()
+        }
+
+    def get_angularjs_options_json(self):
+        return quoteattr(json.dumps(self.get_angularjs_options_dict()))

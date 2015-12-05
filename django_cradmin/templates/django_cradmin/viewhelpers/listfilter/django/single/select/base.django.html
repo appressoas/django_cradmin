@@ -3,7 +3,7 @@
 {% block inputfield %}
     <select id="{{ me.get_inputfield_dom_id }}"
             class="form-control"
-            django-cradmin-listfilter-select>
+            django-cradmin-listfilter-select={{ me.get_angularjs_options_json|safe }}>
         {% for choicedata in choicesdata %}
             <option value="{{ choicedata.url }}"
                     {% if choicedata.is_selected %}selected{% endif %}>

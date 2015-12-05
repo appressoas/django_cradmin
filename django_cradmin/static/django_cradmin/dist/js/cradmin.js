@@ -3578,22 +3578,27 @@
 
 (function() {
   angular.module('djangoCradmin.listfilter.directives', []).directive('djangoCradminListfilter', [
-    '$window', 'djangoCradminBgReplaceElement', function($window, djangoCradminBgReplaceElement) {
+    '$window', '$timeout', 'djangoCradminBgReplaceElement', function($window, $timeout, djangoCradminBgReplaceElement) {
       return {
         restrict: 'A',
-        scope: {},
+        scope: {
+          options: '=djangoCradminListfilter'
+        },
         controller: function($scope, $element) {
-          var filterListDomId, filterScopes, loadInProgress, setLoadFinished, setLoadInProgress,
+          var $messageElement, filterListDomId, filterScopes, hideMessage, loadInProgress, onLoadSuccess, queueMessage, setLoadFinished, setLoadInProgress, showMessage, showMessageTimer,
             _this = this;
           filterListDomId = $element.attr('id');
           filterScopes = [];
           loadInProgress = false;
+          $messageElement = null;
+          showMessageTimer = null;
           this.loadIsInProgress = function() {
             return loadInProgress;
           };
           setLoadInProgress = function(options) {
             var filterScope, _i, _len, _results;
             loadInProgress = true;
+            $scope.targetElement.addClass('django-cradmin-listfilter-target-loading');
             _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];
@@ -3604,6 +3609,7 @@
           setLoadFinished = function(options) {
             var filterScope, _i, _len, _results;
             loadInProgress = false;
+            $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading');
             _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];
@@ -3611,7 +3617,7 @@
             }
             return _results;
           };
-          this.onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
+          onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
             var $remoteFilterList, filterScope, title, _i, _len, _results;
             $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId);
             title = $window.document.title;
@@ -3623,30 +3629,64 @@
             }
             return _results;
           };
+          showMessage = function(variant, message) {
+            var loadspinner;
+            console.log("" + variant + ": " + message);
+            hideMessage();
+            loadspinner = "";
+            if ($scope.options.loadspinner_css_class != null) {
+              loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "'></span>");
+            }
+            $messageElement = angular.element(("<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("" + message + "</div>"));
+            return $messageElement.prependTo($scope.targetElement);
+          };
+          queueMessage = function(variant, message) {
+            if (showMessageTimer != null) {
+              $timeout.cancel(showMessageTimer);
+            }
+            return showMessageTimer = $timeout(function() {
+              return showMessage(variant, message);
+            }, $scope.options.loadingmessage_delay_milliseconds);
+          };
+          hideMessage = function() {
+            console.log("HIDE MESSAGE");
+            if (showMessageTimer != null) {
+              $timeout.cancel(showMessageTimer);
+            }
+            if ($messageElement) {
+              $messageElement.remove();
+              return $messageElement = null;
+            }
+          };
           this.load = function(options) {
-            var me;
             setLoadInProgress(options);
-            me = this;
+            queueMessage('loading', options.loadingmessage);
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
                 url: options.remoteUrl
               },
-              remoteElementSelector: $scope.remoteElementSelector,
+              remoteElementSelector: $scope.options.target_css_selector,
               targetElement: $scope.targetElement,
               $scope: $scope,
               replace: true,
               onHttpError: function(response) {
-                return console.log('ERROR', response);
+                if (typeof console !== "undefined" && console !== null) {
+                  if (typeof console.error === "function") {
+                    console.error('Error while filtering', response);
+                  }
+                }
+                return showMessage('error', $scope.options.loaderror_message);
               },
               onSuccess: function($remoteHtmlDocument) {
-                me.onLoadSuccess($remoteHtmlDocument, options.remoteUrl);
+                onLoadSuccess($remoteHtmlDocument, options.remoteUrl);
                 if (options.onLoadSuccess != null) {
                   return options.onLoadSuccess(options.onLoadSuccessData);
                 }
               },
               onFinish: function() {
-                return setLoadFinished(options);
+                setLoadFinished(options);
+                return hideMessage();
               }
             });
           };
@@ -3655,8 +3695,7 @@
           };
         },
         link: function($scope, $element, attributes) {
-          $scope.remoteElementSelector = attributes.djangoCradminListfilter;
-          $scope.targetElement = angular.element($scope.remoteElementSelector);
+          $scope.targetElement = angular.element($scope.options.target_css_selector);
         }
       };
     }
@@ -3665,7 +3704,9 @@
       return {
         restrict: 'A',
         require: '^djangoCradminListfilter',
-        scope: {},
+        scope: {
+          options: '=djangoCradminListfilterSelect'
+        },
         controller: function($scope, $element) {
           /*
           Replace all <option>-elements with new <option>-elements from the server.
@@ -3696,7 +3737,8 @@
             remoteUrl = getValue();
             return listfilterCtrl.load({
               remoteUrl: remoteUrl,
-              filterDomId: $element.attr('id')
+              filterDomId: $element.attr('id'),
+              loadingmessage: $scope.options.loadingmessage
             });
           });
         }
@@ -3771,6 +3813,7 @@
               remoteUrl: remoteUrl,
               onLoadSuccess: onLoadSearchSuccess,
               filterDomId: $element.attr('id'),
+              loadingmessage: $scope.options.loadingmessage,
               onLoadSuccessData: {
                 value: value
               }

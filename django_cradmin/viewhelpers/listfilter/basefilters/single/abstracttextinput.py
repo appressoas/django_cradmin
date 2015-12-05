@@ -48,12 +48,9 @@ class AbstractInputFilter(AbstractFilter):
         return 500
 
     def get_angularjs_options_dict(self):
-        return {
-            'timeout_milliseconds': self.get_timeout_milliseconds()
-        }
-
-    def get_angularjs_options_json(self):
-        return json.dumps(self.get_angularjs_options_dict())
+        options_dict = super(AbstractInputFilter, self).get_angularjs_options_dict()
+        options_dict['timeout_milliseconds'] = self.get_timeout_milliseconds()
+        return options_dict
 
 
 class AbstractSearch(AbstractInputFilter):
