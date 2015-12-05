@@ -1,42 +1,50 @@
+from django.db import models
+
 from django.utils.translation import ugettext_lazy
 
-from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
+from django_cradmin.viewhelpers.listfilter.basefilters.single import abstractinput
+
 from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMixin
 
 
-class AbstractInputFilter(AbstractFilter, DjangoOrmFilterMixin):
-    """
-    Abstract base class for any filter that uses a single text input field.
-    """
-    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/input/base.django.html'
-
-    def get_input_html_element_type(self):
+class Search(abstractinput.AbstractSearch, DjangoOrmFilterMixin):
+    def __init__(self, *args, **kwargs):
         """
-        Get the ``type``-attribute of the input HTML element.
+        Parameters are the same as for
+        :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilter.AbstractFilter`,
+        but you can specify one extra parameter:
 
-        Defaults to ``"text"``.
+            - modelfields: List of model fields to search on.
         """
-        return 'text'
+        self.modelfields = kwargs.pop('modelfields', None)
+        super(Search, self).__init__(*args, **kwargs)
 
-    def get_base_css_classes_list(self):
-        css_classes = super(AbstractInputFilter, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listfilter-filter-single-input')
-        return css_classes
-
-    def get_placeholder(self):
+    def get_modelfields(self):
         """
-        Get the placeholder text for the input element.
+        Returns a list of the model fields you want to search on.
 
-        Defaults to empty string.
+        Defaults to the ``modelfields`` parameter for :class:`.Search`.
         """
-        return ''
+        if self.modelfields:
+            return self.modelfields
+        else:
+            raise NotImplementedError('You must override get_modelfields() or use the modelfields parameter.')
 
+    def build_query(self, modelfields, cleaned_value):
+        full_query = None
+        for modelfield in modelfields:
+            kwargs = {'{}__icontains'.format(modelfield): cleaned_value}
+            query = models.Q(**kwargs)
+            if full_query:
+                full_query |= query
+            else:
+                full_query = query
+        return full_query
 
-class Search(AbstractInputFilter):
-    def get_base_css_classes_list(self):
-        css_classes = super(Search, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listfilter-filter-single-input-search')
-        return css_classes
-
-    def get_placeholder(self):
-        return ugettext_lazy('Search ...')
+    def filter(self, queryobject):
+        modelfields = self.get_modelfields()
+        cleaned_value = self.get_cleaned_value()
+        if cleaned_value:
+            queryobject = queryobject.filter(self.build_query(
+                modelfields=modelfields, cleaned_value=cleaned_value))
+        return queryobject

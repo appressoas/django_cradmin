@@ -120,7 +120,7 @@ class AbstractDateTime(AbstractSelectFilter):
     Subclasses should only need to implement
     :meth:`~.DateTime.filter_datetime_range`.
 
-    See :class:`django_cradmin.viewhelpers.listfilter.django.single.select.Boolean`
+    See :class:`django_cradmin.viewhelpers.listfilter.django.single.select.DateTime`
     for a Django ORM implementation.
     """
     def get_do_not_apply_label(self):
