@@ -87,6 +87,7 @@ Utilities
     renderable
     crhumanize
     delay_middleware
+    messages_debug_middleware
 
 
 *******
