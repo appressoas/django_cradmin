@@ -16,6 +16,16 @@ angular.module('djangoCradmin.listfilter.directives', [])
         @loadIsInProgress = ->
           return loadInProgress
 
+        setLoadInProgress = (options) ->
+          loadInProgress = true
+          for filterScope in filterScopes
+            filterScope.onLoadInProgress(options.filterDomId)
+
+        setLoadFinished = (options) ->
+          loadInProgress = false
+          for filterScope in filterScopes
+            filterScope.onLoadFinished(options.filterDomId)
+
         @onLoadSuccess = ($remoteHtmlDocument, remoteUrl) =>
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
           title = $window.document.title
@@ -24,7 +34,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
             filterScope.syncWithRemoteFilterList($remoteFilterList)
 
         @load = (options) ->
-          loadInProgress = true
+          setLoadInProgress(options)
           me = @
           djangoCradminBgReplaceElement.load({
             parameters: {
@@ -42,7 +52,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
               if options.onLoadSuccess?
                 options.onLoadSuccess(options.onLoadSuccessData)
             onFinish: ->
-              loadInProgress = false
+              setLoadFinished(options)
 #              console.log 'Finish!'
           })
 
@@ -77,6 +87,12 @@ angular.module('djangoCradmin.listfilter.directives', [])
           $element.empty()
           $element.append(angular.element($remoteElement.html()))
 
+        $scope.onLoadInProgress = (filterDomId) ->
+          $element.prop('disabled', true)
+
+        $scope.onLoadFinished = (filterDomId) ->
+          $element.prop('disabled', false)
+
         return
 
       link: ($scope, $element, attributes, listfilterCtrl) ->
@@ -89,6 +105,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
           remoteUrl = getValue()
           listfilterCtrl.load({
             remoteUrl: remoteUrl
+            filterDomId: $element.attr('id')
           })
         return
     }
@@ -119,6 +136,13 @@ angular.module('djangoCradmin.listfilter.directives', [])
           $remoteElement = $remoteFilterList.find('#' + domId)
           $element.attr(urlpatternAttribute,
             $remoteElement.attr(urlpatternAttribute))
+
+        $scope.onLoadInProgress = (filterDomId) ->
+          if filterDomId != $element.attr('id')
+            $element.prop('disabled', true)
+
+        $scope.onLoadFinished = (filterDomId) ->
+          $element.prop('disabled', false)
 
         return
 
@@ -154,6 +178,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
           listfilterCtrl.load({
             remoteUrl: remoteUrl
             onLoadSuccess: onLoadSearchSuccess
+            filterDomId: $element.attr('id')
             onLoadSuccessData: {
               value: value
             }
@@ -180,3 +205,5 @@ angular.module('djangoCradmin.listfilter.directives', [])
         return
     }
 ])
+
+

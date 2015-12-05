@@ -22,6 +22,7 @@ angular.module('djangoCradmin', [
   'djangoCradmin.forms.filewidget'
   'djangoCradmin.forms.setfieldvalue'
   'djangoCradmin.forms.select'
+  'djangoCradmin.forms.clearvalue'
   'djangoCradmin.backgroundreplace_element.providers'
   'djangoCradmin.backgroundreplace_element.directives'
   'djangoCradmin.listfilter.directives'

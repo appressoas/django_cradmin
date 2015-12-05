@@ -2180,6 +2180,28 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.forms.clearvalue', []).directive('djangoCradminClearValue', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, attributes) {
+          var $target, targetElementSelector;
+          targetElementSelector = attributes.djangoCradminClearValue;
+          $target = angular.element(targetElementSelector);
+          return $element.on('click', function(e) {
+            e.preventDefault();
+            $target.val('');
+            $target.focus();
+            return $target.change();
+          });
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   var app;
 
   app = angular.module('djangoCradmin.forms.datetimewidget', ['cfp.hotkeys']);
@@ -3246,43 +3268,18 @@
 
 (function() {
   angular.module('djangoCradmin.forms.select', []).directive('djangoCradminOpenUrlStoredInSelectedOption', [
-    'djangoCradminBgReplaceElement', function(djangoCradminBgReplaceElement) {
+    function() {
       return {
         restrict: 'A',
         link: function($scope, $element, attributes) {
-          var backgroundreplaceElementSelector, getValue;
-          backgroundreplaceElementSelector = attributes.djangoCradminBackgroundreplaceElementSelector;
+          var getValue;
           getValue = function() {
             return $element.find("option:selected").attr('value');
           };
           return $element.on('change', function() {
-            var remoteUrl, targetElement;
+            var remoteUrl;
             remoteUrl = getValue();
-            targetElement = angular.element(backgroundreplaceElementSelector);
-            if (backgroundreplaceElementSelector != null) {
-              console.log('Background', remoteUrl);
-              return djangoCradminBgReplaceElement.load({
-                parameters: {
-                  method: 'GET',
-                  url: remoteUrl
-                },
-                remoteElementSelector: backgroundreplaceElementSelector,
-                targetElement: targetElement,
-                $scope: $scope,
-                replace: true,
-                onHttpError: function(response) {
-                  return console.log('ERROR', response);
-                },
-                onSuccess: function() {
-                  return console.log('Success!');
-                },
-                onFinish: function() {
-                  return console.log('Finish!');
-                }
-              });
-            } else {
-              return window.location = value;
-            }
+            return window.location = value;
           });
         }
       };
@@ -3575,7 +3572,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearvalue', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives']);
 
 }).call(this);
 
@@ -3586,13 +3583,33 @@
         restrict: 'A',
         scope: {},
         controller: function($scope, $element) {
-          var filterListDomId, filterScopes, loadInProgress,
+          var filterListDomId, filterScopes, loadInProgress, setLoadFinished, setLoadInProgress,
             _this = this;
           filterListDomId = $element.attr('id');
           filterScopes = [];
           loadInProgress = false;
           this.loadIsInProgress = function() {
             return loadInProgress;
+          };
+          setLoadInProgress = function(options) {
+            var filterScope, _i, _len, _results;
+            loadInProgress = true;
+            _results = [];
+            for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
+              filterScope = filterScopes[_i];
+              _results.push(filterScope.onLoadInProgress(options.filterDomId));
+            }
+            return _results;
+          };
+          setLoadFinished = function(options) {
+            var filterScope, _i, _len, _results;
+            loadInProgress = false;
+            _results = [];
+            for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
+              filterScope = filterScopes[_i];
+              _results.push(filterScope.onLoadFinished(options.filterDomId));
+            }
+            return _results;
           };
           this.onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
             var $remoteFilterList, filterScope, title, _i, _len, _results;
@@ -3608,7 +3625,7 @@
           };
           this.load = function(options) {
             var me;
-            loadInProgress = true;
+            setLoadInProgress(options);
             me = this;
             return djangoCradminBgReplaceElement.load({
               parameters: {
@@ -3629,7 +3646,7 @@
                 }
               },
               onFinish: function() {
-                return loadInProgress = false;
+                return setLoadFinished(options);
               }
             });
           };
@@ -3661,6 +3678,12 @@
             $element.empty();
             return $element.append(angular.element($remoteElement.html()));
           };
+          $scope.onLoadInProgress = function(filterDomId) {
+            return $element.prop('disabled', true);
+          };
+          $scope.onLoadFinished = function(filterDomId) {
+            return $element.prop('disabled', false);
+          };
         },
         link: function($scope, $element, attributes, listfilterCtrl) {
           var getValue;
@@ -3672,7 +3695,8 @@
             var remoteUrl;
             remoteUrl = getValue();
             return listfilterCtrl.load({
-              remoteUrl: remoteUrl
+              remoteUrl: remoteUrl,
+              filterDomId: $element.attr('id')
             });
           });
         }
@@ -3700,6 +3724,14 @@
             domId = $element.attr('id');
             $remoteElement = $remoteFilterList.find('#' + domId);
             return $element.attr(urlpatternAttribute, $remoteElement.attr(urlpatternAttribute));
+          };
+          $scope.onLoadInProgress = function(filterDomId) {
+            if (filterDomId !== $element.attr('id')) {
+              return $element.prop('disabled', true);
+            }
+          };
+          $scope.onLoadFinished = function(filterDomId) {
+            return $element.prop('disabled', false);
           };
         },
         link: function($scope, $element, attributes, listfilterCtrl) {
@@ -3738,6 +3770,7 @@
             return listfilterCtrl.load({
               remoteUrl: remoteUrl,
               onLoadSuccess: onLoadSearchSuccess,
+              filterDomId: $element.attr('id'),
               onLoadSuccessData: {
                 value: value
               }

@@ -1,4 +1,6 @@
 {% extends "django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html" %}
+{% load i18n %}
+{% load cradmin_icon_tags %}
 
 {% block inputfield %}
     <input id="{{ me.get_inputfield_dom_id }}"
@@ -6,4 +8,17 @@
             value="{{ me.get_inputfield_value }}"
             django-cradmin-listfilter-urlpattern="{{ me.get_urlpattern }}"
             django-cradmin-listfilter-textinput='{{ me.get_angularjs_options_json|safe }}'>
+    <button type="button" class="btn btn-link"
+            django-cradmin-clear-value="#{{ me.get_inputfield_dom_id }}"
+            aria-label="
+                {% if me.get_label %}
+                    {% blocktrans trimmed with label=me.get_label %}
+                        Clear {{ label }}
+                    {% endblocktrans %}
+                {% else %}
+                    {% trans "Clear" %}
+                {% endif %}
+            ">
+        <span class="{% cradmin_icon "x" %}"></span>
+    </button>
 {% endblock inputfield %}
