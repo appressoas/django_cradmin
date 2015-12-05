@@ -61,7 +61,7 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
-        filterlist.append(listfilter.django.single.input.Search(
+        filterlist.append(listfilter.django.single.textinput.Search(
             slug='search', label='Search', modelfields=['title']))
 
         filterlist.set_filters_string(filters_string=self.get_filters_string())
