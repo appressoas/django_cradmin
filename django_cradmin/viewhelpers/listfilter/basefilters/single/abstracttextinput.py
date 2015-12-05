@@ -1,5 +1,5 @@
 import json
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext_lazy, pgettext
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
 
@@ -70,3 +70,6 @@ class AbstractSearch(AbstractInputFilter):
 
     def get_placeholder(self):
         return ugettext_lazy('Search ...')
+
+    def get_loadingmessage(self):
+        return pgettext('listfilter loading message', 'Searching ...')
