@@ -72,4 +72,4 @@ class AbstractSearch(AbstractInputFilter):
         return ugettext_lazy('Search ...')
 
     def get_loadingmessage(self):
-        return pgettext('listfilter loading message', 'Searching ...')
+        return pgettext('listfilter loading message', 'Searching')

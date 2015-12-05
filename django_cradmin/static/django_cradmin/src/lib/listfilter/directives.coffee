@@ -49,7 +49,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
           $messageElement = angular.element(
             "<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-#{variant}'>" +
             "#{loadspinner}" +
-            "#{message}</div>")
+            "<span class='django-cradmin-listfilter-message-text'>#{message}</span></div>")
           $messageElement.prependTo($scope.targetElement)
 
         queueMessage = (variant, message) ->

@@ -3637,7 +3637,7 @@
             if ($scope.options.loadspinner_css_class != null) {
               loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "'></span>");
             }
-            $messageElement = angular.element(("<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("" + message + "</div>"));
+            $messageElement = angular.element(("<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("<span class='django-cradmin-listfilter-message-text'>" + message + "</span></div>"));
             return $messageElement.prependTo($scope.targetElement);
           };
           queueMessage = function(variant, message) {

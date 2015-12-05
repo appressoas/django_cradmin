@@ -235,7 +235,7 @@ class AbstractFilter(AbstractGroupChild):
         return '{}_input'.format(self.get_dom_id())
 
     def get_loadingmessage(self):
-        return pgettext('listfilter loading message', 'Loading ...')
+        return pgettext('listfilter loading message', 'Loading')
 
     def get_angularjs_options_dict(self):
         return {
