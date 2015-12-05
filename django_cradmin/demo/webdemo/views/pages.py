@@ -129,7 +129,10 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
         filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
         # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
         filterlist.append(listfilter.django.single.textinput.Search(
-            slug='search', label='Search', modelfields=['title']))
+            slug='search',
+            label='Search',
+            label_is_screenreader_only=True,
+            modelfields=['title']))
         filterlist.append(OrderPagesFilter(
             slug='orderby', label='Order by'))
         filterlist.append(listfilter.django.single.select.IsNotNull(

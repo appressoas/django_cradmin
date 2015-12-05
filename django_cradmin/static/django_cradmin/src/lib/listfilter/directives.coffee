@@ -40,12 +40,11 @@ angular.module('djangoCradmin.listfilter.directives', [])
             filterScope.syncWithRemoteFilterList($remoteFilterList)
 
         showMessage = (variant, message) ->
-          console.log "#{variant}: #{message}"
           hideMessage()
           loadspinner = ""
           if $scope.options.loadspinner_css_class?
             loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " +
-              "#{$scope.options.loadspinner_css_class}'></span>"
+              "#{$scope.options.loadspinner_css_class}' aria-hidden='true'></span>"
           $messageElement = angular.element(
             "<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-#{variant}'>" +
             "#{loadspinner}" +
@@ -60,7 +59,6 @@ angular.module('djangoCradmin.listfilter.directives', [])
           , $scope.options.loadingmessage_delay_milliseconds)
 
         hideMessage = ->
-          console.log "HIDE MESSAGE"
           if showMessageTimer?
             $timeout.cancel(showMessageTimer)
           if $messageElement

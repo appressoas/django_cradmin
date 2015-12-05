@@ -4878,6 +4878,22 @@ form .alert-block.alert-danger ul li {
 textarea.cradmin-textarea-small {
   height: 60px;
 }
+.django-cradmin-clearable-textinput {
+  position: relative;
+}
+.django-cradmin-clearable-textinput .django-cradmin-clearable-textinput-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  color: #999999;
+}
+.django-cradmin-clearable-textinput .django-cradmin-clearable-textinput-button:hover {
+  color: #377ca8;
+}
+.django-cradmin-clearable-textinput .django-cradmin-clearable-textinput-button.django-cradmin-clearable-textinput-button-visible {
+  display: inline-block;
+}
 table.table.django-cradmin-table {
   margin: 0;
 }

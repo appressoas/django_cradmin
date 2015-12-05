@@ -2180,6 +2180,42 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.forms.clearabletextinput', []).directive('djangoCradminClearableTextinput', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, attributes) {
+          var $target, onTargetValueChange, targetElementSelector;
+          targetElementSelector = attributes.djangoCradminClearableTextinput;
+          $target = angular.element(targetElementSelector);
+          onTargetValueChange = function() {
+            if ($target.val() === '') {
+              return $element.removeClass('django-cradmin-clearable-textinput-button-visible');
+            } else {
+              return $element.addClass('django-cradmin-clearable-textinput-button-visible');
+            }
+          };
+          $element.on('click', function(e) {
+            e.preventDefault();
+            $target.val('');
+            $target.focus();
+            return $target.change();
+          });
+          $target.on('change', function() {
+            return onTargetValueChange();
+          });
+          $target.on('keydown', function(e) {
+            return onTargetValueChange();
+          });
+          return onTargetValueChange();
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.forms.clearvalue', []).directive('djangoCradminClearValue', [
     function() {
       return {
@@ -3572,7 +3608,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearvalue', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearabletextinput', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives']);
 
 }).call(this);
 
@@ -3631,11 +3667,10 @@
           };
           showMessage = function(variant, message) {
             var loadspinner;
-            console.log("" + variant + ": " + message);
             hideMessage();
             loadspinner = "";
             if ($scope.options.loadspinner_css_class != null) {
-              loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "'></span>");
+              loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "' aria-hidden='true'></span>");
             }
             $messageElement = angular.element(("<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("<span class='django-cradmin-listfilter-message-text'>" + message + "</span></div>"));
             return $messageElement.prependTo($scope.targetElement);
@@ -3649,7 +3684,6 @@
             }, $scope.options.loadingmessage_delay_milliseconds);
           };
           hideMessage = function() {
-            console.log("HIDE MESSAGE");
             if (showMessageTimer != null) {
               $timeout.cancel(showMessageTimer);
             }
