@@ -1,11 +1,9 @@
 import calendar
 
 import datetime
-from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy
 
-from django_cradmin import datetimeutils
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
 
