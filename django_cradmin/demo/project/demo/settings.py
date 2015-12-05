@@ -81,7 +81,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django_cradmin.delay_middleware.DelayMiddleware',
 )
+# DJANGO_CRADMIN_DELAY_MIDDLEWARE_MILLISECONDS = 2000
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",

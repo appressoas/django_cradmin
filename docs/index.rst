@@ -86,6 +86,7 @@ Utilities
     urlutils
     renderable
     crhumanize
+    delay_middleware
 
 
 *******
