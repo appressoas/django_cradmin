@@ -141,6 +141,8 @@ angular.module('djangoCradmin.listfilter.directives', [])
             remoteUrl: remoteUrl
             filterDomId: $element.attr('id')
             loadingmessage: $scope.options.loadingmessage
+            onLoadSuccess: ->
+              $element.focus()
           })
         return
     }
@@ -213,11 +215,11 @@ angular.module('djangoCradmin.listfilter.directives', [])
           listfilterCtrl.load({
             remoteUrl: remoteUrl
             onLoadSuccess: onLoadSearchSuccess
-            filterDomId: $element.attr('id')
-            loadingmessage: $scope.options.loadingmessage
             onLoadSuccessData: {
               value: value
             }
+            filterDomId: $element.attr('id')
+            loadingmessage: $scope.options.loadingmessage
           })
 
         onValueChange = (useTimeout) ->

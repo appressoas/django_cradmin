@@ -3772,7 +3772,10 @@
             return listfilterCtrl.load({
               remoteUrl: remoteUrl,
               filterDomId: $element.attr('id'),
-              loadingmessage: $scope.options.loadingmessage
+              loadingmessage: $scope.options.loadingmessage,
+              onLoadSuccess: function() {
+                return $element.focus();
+              }
             });
           });
         }
@@ -3846,11 +3849,11 @@
             return listfilterCtrl.load({
               remoteUrl: remoteUrl,
               onLoadSuccess: onLoadSearchSuccess,
-              filterDomId: $element.attr('id'),
-              loadingmessage: $scope.options.loadingmessage,
               onLoadSuccessData: {
                 value: value
-              }
+              },
+              filterDomId: $element.attr('id'),
+              loadingmessage: $scope.options.loadingmessage
             });
           };
           onValueChange = function(useTimeout) {
