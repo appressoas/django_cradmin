@@ -20,18 +20,30 @@
 {% endblock pageheader-inner %}
 
 {% block content %}
+    {% block listbuilderview_pre %}
+        {% if pre_include_template %}
+            {% include pre_include_template %}
+        {% endif %}
+    {% endblock listbuilderview_pre %}
     <div class="container">
         {% block list %}
-            {% if listbuilder_list.has_items %}
-                {% cradmin_render_renderable listbuilder_list %}
-                {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
-            {% else %}
-                <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
-                    {{ no_items_message }}
-                </p>
-            {% endif %}
+            <div id="django_cradmin_listbuilderview_list_and_pager">
+                {% if listbuilder_list.has_items %}
+                    {% cradmin_render_renderable listbuilder_list %}
+                    {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
+                {% else %}
+                    <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
+                        {{ no_items_message }}
+                    </p>
+                {% endif %}
+            </div>
         {% endblock list %}
     </div>
+    {% block listbuilderview_post %}
+        {% if post_include_template %}
+            {% include post_include_template %}
+        {% endif %}
+    {% endblock listbuilderview_post %}
 {% endblock content %}
 
 {% block outside-bodycontentwrapper %}

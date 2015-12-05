@@ -161,6 +161,20 @@ class ViewMixin(object):
         context['pageheading'] = self.get_pageheading()
         context['no_items_message'] = self.get_no_items_message()
         context['enable_previews'] = self.get_enable_previews()
+        context['pre_include_template'] = self.get_pre_include_template()
+        context['post_include_template'] = self.get_post_include_template()
+
+    def get_pre_include_template(self):
+        """
+        You can return a template to include before the listbuilder list here.
+        """
+        return None
+
+    def get_post_include_template(self):
+        """
+        You can return a template to include after the listbuilder list here.
+        """
+        return None
 
     def get_context_data(self, **kwargs):
         context = super(ViewMixin, self).get_context_data(**kwargs)
