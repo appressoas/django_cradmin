@@ -17,18 +17,21 @@
         </p>
     {% endif %}
     <p>
-        <a href="{% cradmin_appurl "edit" me.page.id %}" class="btn btn-default">
+        <a href="{% cradmin_appurl "edit" me.page.id %}" class="btn btn-default"
+                aria-label='Edit "{{ me.page.title }}"'>
             Edit
         </a>
         <button class="btn btn-default"
                 django-cradmin-page-preview-open-on-click='{
                     "urls": [
                         {"label": "Unused", "url": "{% cradmin_appurl "preview" me.page.id %}"}
-                    ]}'>
+                    ]}'
+                aria-label='View "{{ me.page.title }}"'>
 
             View
         </button>
-        <a href="{% cradmin_appurl "delete" me.page.id %}" class="btn btn-danger">
+        <a href="{% cradmin_appurl "delete" me.page.id %}" class="btn btn-danger"
+                aria-label='Delete "{{ me.page.title }}"'>
             Delete
         </a>
     </p>
