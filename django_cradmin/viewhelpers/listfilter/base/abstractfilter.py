@@ -11,7 +11,7 @@ class AbstractFilter(AbstractGroupChild):
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html'
 
-    def __init__(self, slug=None, label=None, label_is_screenreader_only=False):
+    def __init__(self, slug=None, label=None, label_is_screenreader_only=None):
         """
         Parameters:
             slug: You can send the slug as a parameter, or override :meth:`.get_slug`.
@@ -71,9 +71,15 @@ class AbstractFilter(AbstractGroupChild):
         since that would break accessibility.
 
         Defaults to the value of the ``label_is_screenreader_only`` parameter
-        (see :class:`.AbstractFilter`).
+        (see :class:`.AbstractFilter`). If ``label_is_screenreader_only`` is ``None``,
+        this defaults to the return value of the ``get_label_is_screenreader_only_by_default()``
+        method of
+        :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList`.
         """
-        return self.label_is_screenreader_only
+        if self.label_is_screenreader_only is None:
+            return self.filterlist.get_label_is_screenreader_only_by_default()
+        else:
+            return self.label_is_screenreader_only
 
     def set_values(self, values):
         """

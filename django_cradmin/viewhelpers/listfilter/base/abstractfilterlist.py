@@ -24,21 +24,52 @@ class AbstractFilterList(AbstractRenderableWithCss):
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/base/filterlist.django.html'
 
-    def __init__(self, urlbuilder, target_dom_id):
+    def __init__(self, urlbuilder, target_dom_id, label_is_screenreader_only_by_default=False):
         """
         Parameters:
             urlbuilder: See :class:`.FiltersHandler`.
             target_dom_id: The DOM id of the element to replace when
                 filters change value.
+            label_is_screenreader_only_by_default: Defines the default value for
+                ``label_is_screenreader_only`` for all filters within the list.
+                See :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilter.AbstractFilter`
         """
         super(AbstractFilterList, self).__init__()
         self.children = []
         self.set_filters_string_called = False
         self.filtershandler = self.get_filters_handler_class()(urlbuilder=urlbuilder)
         self.target_dom_id = target_dom_id
+        self.label_is_screenreader_only_by_default = label_is_screenreader_only_by_default
 
     def get_target_dom_id(self):
+        """
+        Get the DOM ID of the target element changed when the filters are changed.
+
+        This element is dynamically updated by making a http request
+        via javascript, looking up the target element
+        (the element with the ID returned by this method) in the requested page,
+        and replacing the current contents of the target element with the
+        contents in the element returned dynamically.
+
+        This means that the target element should be a wrapper around:
+
+        - The content beeing filtered.
+        - Anything that changes along with the filtered content (such as the pager)
+          and any "no items message", "invalid input message" etc.
+
+        Returns the ``target_dom_id`` parameter for this class.
+        """
         return self.target_dom_id
+
+    def get_label_is_screenreader_only_by_default(self):
+        """
+        Returns the value of the ``label_is_screenreader_only_by_default``
+        parameter.
+
+        You can override this --- all code checking for the value of
+        the parameter uses this method, not the parameter directly.
+        """
+        return self.label_is_screenreader_only_by_default
 
     def get_loadspinner_css_class(self):
         """

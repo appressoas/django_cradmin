@@ -99,6 +99,43 @@ class ViewMixin(object):
         """
         return self.filterlist_class
 
+    def get_label_is_screenreader_only_by_default(self):
+        """
+        Defines the default value of
+        :meth:`.django_cradmin.viewhelpers.listfilter.base.abstractfilter.AbstractFilter.get_label_is_screenreader_only`
+        for all filters in the filterlist.
+
+        This is mostly useful if you want to not show labels in your filterlist.
+
+        Defaults to ``False``.
+        """
+        return False
+
+    def get_filterlist_kwargs(self):
+        """
+        Get kwargs for the :meth:`.get_filterlist_class`.
+
+        Uses:
+        - :meth:`.filterlist_urlbuilder` as the ``urlbuilder``-argument for the filterlist.
+        - :meth:`.get_filterlist_target_dom_id` as the ``target_dom_id``-argument for the filterlist.
+        - :meth:`.
+
+        You should not need to override this unless you create
+        a filterlist with extra parameters, since we have methods
+        for overriding all the parameters for
+        :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList`.
+        Override the methods listed above instead.
+
+        Note that :meth:`.filterlist_urlbuilder` should
+        not be overridden directly, but you should instead override
+        :meth:`.get_filterlist_url` as documented in :meth:`.filterlist_urlbuilder`.
+        """
+        return {
+            'urlbuilder': self.filterlist_urlbuilder,
+            'target_dom_id': self.get_filterlist_target_dom_id(),
+            'label_is_screenreader_only_by_default': self.get_label_is_screenreader_only_by_default()
+        }
+
     def make_empty_filterlist(self):
         """
         Creates an empty filterlist.
@@ -106,17 +143,13 @@ class ViewMixin(object):
         Uses:
 
         - :meth:`.get_filterlist_class` as the filterlist class.
-        - :meth:`.filterlist_urlbuilder` as the ``urlbuilder``-argument for the filterlist.
-        - :meth:`.get_filterlist_target_dom_id` as the ``target_dom_id``-argument for the filterlist.
+        - :meth:`.get_filterlist_kwargs` as parameters when inializing the filterlist.
 
         You should not override this method, but instead override the
-        methods above. Note that :meth:`.filterlist_urlbuilder` should
-        not be overridden directly, but you should instead override
-        :meth:`.get_filterlist_url` as documented in :meth:`.filterlist_urlbuilder`.
+        methods above.
         """
         filterlist_class = self.get_filterlist_class()
-        return filterlist_class(urlbuilder=self.filterlist_urlbuilder,
-                                target_dom_id=self.get_filterlist_target_dom_id())
+        return filterlist_class(**self.get_filterlist_kwargs())
 
     def add_filterlist_items(self, filterlist):
         """
