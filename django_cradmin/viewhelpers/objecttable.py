@@ -1367,7 +1367,7 @@ class FilterListMixin(listfilter_viewmixin.ViewMixin):
         otherwise ``"right"``.
         """
         filterlist_class = self.get_filterlist_class()
-        if isinstance(filterlist_class, listfilter.lists.Horizontal):
+        if issubclass(filterlist_class, listfilter.lists.Horizontal):
             return 'top'
         else:
             return 'right'

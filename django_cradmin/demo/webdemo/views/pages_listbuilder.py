@@ -23,14 +23,17 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
     enable_previews = True
     # listbuilder_class = listbuilder.list.FloatGridList
     value_renderer_class = PageListItemValue
-    filterlist_class = listfilter.lists.Horizontal
+    # filterlist_class = listfilter.lists.Horizontal
 
     # def get_filterlist_position(self):
     #     return 'left'
+    # def get_label_is_screenreader_only_by_default(self):
+    #     return True
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
             'filter', kwargs={'filters_string': filters_string})
+
 
     def get_post_include_template(self):
         return 'webdemo/pages_listbuilder/pagelist-post-include.django.html'

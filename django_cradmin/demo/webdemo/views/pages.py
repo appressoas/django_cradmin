@@ -116,6 +116,8 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
 
     # def get_filterlist_position(self):
     #     return 'left'
+    # def get_label_is_screenreader_only_by_default(self):
+    #     return True
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
