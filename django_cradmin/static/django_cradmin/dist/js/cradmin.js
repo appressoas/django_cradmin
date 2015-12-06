@@ -3643,15 +3643,14 @@
             return _results;
           };
           setLoadFinished = function(options) {
-            var filterScope, _i, _len, _results;
+            var filterScope, _i, _len;
             loadInProgress = false;
             $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading');
-            _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];
-              _results.push(filterScope.onLoadFinished(options.filterDomId));
+              filterScope.onLoadFinished(options.filterDomId);
             }
-            return _results;
+            return $scope.targetElement.attr('aria-busy', 'false');
           };
           onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
             var $remoteFilterList, filterScope, title, _i, _len, _results;
@@ -3672,8 +3671,9 @@
             if ($scope.options.loadspinner_css_class != null) {
               loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "' aria-hidden='true'></span>");
             }
-            $messageElement = angular.element(("<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("<span class='django-cradmin-listfilter-message-text'>" + message + "</span></div>"));
-            return $messageElement.prependTo($scope.targetElement);
+            $messageElement = angular.element("<div aria-role='progressbar' " + ("class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("<span class='django-cradmin-listfilter-message-text'>" + message + "</span></div>"));
+            $messageElement.prependTo($scope.targetElement);
+            return $scope.targetElement.attr('aria-busy', 'true');
           };
           queueMessage = function(variant, message) {
             if (showMessageTimer != null) {
@@ -3700,7 +3700,7 @@
                 method: 'GET',
                 url: options.remoteUrl
               },
-              remoteElementSelector: $scope.options.target_css_selector,
+              remoteElementSelector: '#' + $scope.options.target_dom_id,
               targetElement: $scope.targetElement,
               $scope: $scope,
               replace: true,
@@ -3729,7 +3729,7 @@
           };
         },
         link: function($scope, $element, attributes) {
-          $scope.targetElement = angular.element($scope.options.target_css_selector);
+          $scope.targetElement = angular.element('#' + $scope.options.target_dom_id);
         }
       };
     }

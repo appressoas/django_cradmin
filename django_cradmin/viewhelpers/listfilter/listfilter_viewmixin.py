@@ -1,7 +1,20 @@
 from __future__ import unicode_literals
+from django_cradmin.viewhelpers import listfilter
 
 
 class ViewMixin(object):
+    """
+    Mixin class for views using filterlist.
+
+    See :class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`
+    and :class:`django_cradmin.viewhelpers.objecttable.FilterListMixin`
+    for implementation examples.
+    """
+    #: The :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList`
+    #: subclass to use.
+    #: Defaults to :class:`django_cradmin.viewhelpers.listfilter.lists.Vertical`.
+    filterlist_class = listfilter.lists.Vertical
+
     def get_filterlist_url(self, filters_string):
         """
         Get the URL for the given ``filters_string``.
@@ -44,16 +57,92 @@ class ViewMixin(object):
         return url
 
     def get_filters_string(self):
+        """
+        Get the ``filters_string`` for
+        :meth:`~django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList.set_filters_string`.
+
+        Defaults to ``kwargs.get('filters_string', '')``, which means that this just
+        works as long as you use an URL pattern that looks something like this::
+
+            r'^filter/(?P<filters_string>.+)?$'
+        """
         return self.kwargs.get('filters_string', '')
+
+    def get_filterlist_target_dom_id(self):
+        """
+        Get the DOM ID of the target element changed when the filters are changed.
+
+        This element is dynamically updated by making a http request
+        via javascript, looking up the target element
+        (the element with the ID returned by this method) in the requested page,
+        and replacing the current contents of the target element with the
+        contents in the element returned dynamically.
+
+        This means that the target element should be a wrapper around:
+
+        - The content beeing filtered.
+        - Anything that changes along with the filtered content (such as the pager)
+          and any "no items message", "invalid input message" etc.
+
+        Must be overridden in subclasses.
+        """
+        raise NotImplementedError()
+
+    def get_filterlist_class(self):
+        """
+        Get the filterlist class.
+
+        Should return a subclass of
+        :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList`.
+
+        Defaults to :obj:`.ViewMixin.filterlist_class`.
+        """
+        return self.filterlist_class
+
+    def make_empty_filterlist(self):
+        """
+        Creates an empty filterlist.
+
+        Uses:
+
+        - :meth:`.get_filterlist_class` as the filterlist class.
+        - :meth:`.filterlist_urlbuilder` as the ``urlbuilder``-argument for the filterlist.
+        - :meth:`.get_filterlist_target_dom_id` as the ``target_dom_id``-argument for the filterlist.
+
+        You should not override this method, but instead override the
+        methods above. Note that :meth:`.filterlist_urlbuilder` should
+        not be overridden directly, but you should instead override
+        :meth:`.get_filterlist_url` as documented in :meth:`.filterlist_urlbuilder`.
+        """
+        filterlist_class = self.get_filterlist_class()
+        return filterlist_class(urlbuilder=self.filterlist_urlbuilder,
+                                target_dom_id=self.get_filterlist_target_dom_id())
+
+    def add_filterlist_items(self, filterlist):
+        """
+        Add items to the given ``filterlist``.
+
+        The ``filterlist`` is created by :meth:`.make_empty_filterlist`
+        by :meth:`.build_filterlist`.
+
+        Parameters:
+            filterlist: An object of a subclass of
+                :class:`django_cradmin.viewhelpers.listfilter.base.AbstractFilterList`.
+        """
+        raise NotImplementedError()
 
     def build_filterlist(self):
         """
-        Override this to add filtering with :doc:`listbuilder <viewhelpers_listbuilder>`.
+        Build the filterlist.
 
-        Should return an instance of a subclass of
-        :class:`django_cradmin.viewhelpers.listfilter.base.AbstractFilterList`.
+        Creates an empty filterlist with :meth:`.make_empty_filterlist`,
+        then adds filters and other items with :meth:`.add_filterlist_items`,
+        and sets the filters string using :meth:`.get_filters_string`.
         """
-        raise NotImplementedError()
+        filterlist = self.make_empty_filterlist()
+        self.add_filterlist_items(filterlist=filterlist)
+        filterlist.set_filters_string(filters_string=self.get_filters_string())
+        return filterlist
 
     def get_filterlist(self):
         """
@@ -89,6 +178,10 @@ class ViewMixin(object):
         raise NotImplementedError()
 
     def get_template_names(self):
+        """
+        You should not override this - override :meth:`.get_filterlist_template_name`
+        instead.
+        """
         return [self.get_filterlist_template_name()]
 
     def add_filterlist_to_context_data(self, context_data):
@@ -104,3 +197,4 @@ class ViewMixin(object):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         context['filterlist'] = self.get_filterlist()
         return context
+

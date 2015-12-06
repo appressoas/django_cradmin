@@ -16,7 +16,7 @@ class AbstractFilter(AbstractGroupChild):
         Parameters:
             slug: You can send the slug as a parameter, or override :meth:`.get_slug`.
             label: You can send the label as a parameter, or override :meth:`.get_label`.
-            label_is_screenreader_only: You canset this as a parameter,
+            label_is_screenreader_only: You can set this as a parameter,
                 or override :meth:`.get_label_is_screenreader_only`.
         """
         self.values = []
@@ -234,13 +234,43 @@ class AbstractFilter(AbstractGroupChild):
         """
         return '{}_input'.format(self.get_dom_id())
 
+    def get_target_dom_id(self):
+        """
+        Get the DOM id of the target of the filter.
+        This is just a shortcut to access
+        :meth:`django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList.get_target_dom_id`.
+        """
+        return self.filterlist.get_target_dom_id()
+
     def get_loadingmessage(self):
+        """
+        Get the loading message to show when the filter loads
+        the updated target element content.
+        """
         return pgettext('listfilter loading message', 'Loading')
 
     def get_angularjs_options_dict(self):
+        """
+        Get angularjs directive options dict.
+
+        You can override this in your filters, but you should
+        call ``super`` to get the default options.
+        """
         return {
             'loadingmessage': self.get_loadingmessage()
         }
 
     def get_angularjs_options_json(self):
+        """
+        Returns a json encoded and HTML attribute quoted version
+        of :meth:`.get_angularjs_options_dict`.
+
+        You use this with the angularjs directive for the filter
+        to send options into the directive::
+
+            <someelement my-filter-directive={{ me.get_angularjs_options_json|safe }}>
+
+        Notice that we do not include any ``"`` or ``'`` around the directives
+        HTML attribute - that is included by this method.
+        """
         return quoteattr(json.dumps(self.get_angularjs_options_dict()))

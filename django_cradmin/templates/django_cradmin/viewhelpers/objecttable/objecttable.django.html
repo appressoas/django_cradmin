@@ -63,7 +63,9 @@
 
     <div class="container">
         {% block tablewrapper %}
-            <div class="django-cradmin-listfilter-target">
+            <div class="django-cradmin-listfilter-target"
+                 id="django_cradmin_objecttableview_tablewrapper"
+                 aria-live="polite">
                 {% if queryset_contains_items %}
                     <div
                         {% if multiselect_actions %}

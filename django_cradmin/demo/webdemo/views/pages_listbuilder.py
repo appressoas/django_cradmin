@@ -11,7 +11,7 @@ from django_cradmin.demo.webdemo.models import Page
 
 
 class PageListItemValue(listbuilder.itemvalue.FocusBox):
-    template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.htm'
+    template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
     valuealias = 'page'
 
 
@@ -23,10 +23,11 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
     enable_previews = True
     # listbuilder_class = listbuilder.list.FloatGridList
     value_renderer_class = PageListItemValue
+    filterlist_class = listfilter.lists.Horizontal
 
     # def get_filterlist_position(self):
     #     return 'left'
-    #     return 'top'
+
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
             'filter', kwargs={'filters_string': filters_string})
@@ -34,9 +35,7 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
     def get_post_include_template(self):
         return 'webdemo/pages_listbuilder/pagelist-post-include.django.html'
 
-    def build_filterlist(self):
-        filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
-        # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
+    def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(
             slug='search',
             label='Search',
@@ -48,9 +47,6 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
-
-        filterlist.set_filters_string(filters_string=self.get_filters_string())
-        return filterlist
 
     def get_queryset_for_role(self, site):
         queryset = super(PagesListBuilderView, self).get_queryset_for_role(site=site)

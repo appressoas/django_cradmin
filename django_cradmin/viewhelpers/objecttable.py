@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.views.generic import ListView
 from django.db import models
+from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers.listfilter import listfilter_viewmixin
 
 logger = logging.getLogger(__name__)
@@ -1360,8 +1361,16 @@ class FilterListMixin(listfilter_viewmixin.ViewMixin):
         - left
         - right (the default)
         - top
+
+        Defaults to ``"top"`` if :meth:`.get_filterlist_class` returns
+        :class:`django_cradmin.viewhelpers.listfilter.lists.Horizontal` or a subclass of it,
+        otherwise ``"right"``.
         """
-        return 'right'
+        filterlist_class = self.get_filterlist_class()
+        if isinstance(filterlist_class, listfilter.lists.Horizontal):
+            return 'top'
+        else:
+            return 'right'
 
     def get_filterlist_template_name(self):
         """
@@ -1385,3 +1394,14 @@ class FilterListMixin(listfilter_viewmixin.ViewMixin):
         for more details.
         """
         return {'page'}
+
+    def get_filterlist_target_dom_id(self):
+        """
+        Overrides
+        :meth:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin.get_filterlist_target_dom_id`
+        with a default of ``"django_cradmin_objecttableview_tablewrapper"``.
+
+        You should not need to override this unless you create a completely custom
+        template for your view.
+        """
+        return 'django_cradmin_objecttableview_tablewrapper'

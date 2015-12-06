@@ -31,6 +31,8 @@ angular.module('djangoCradmin.listfilter.directives', [])
           $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading')
           for filterScope in filterScopes
             filterScope.onLoadFinished(options.filterDomId)
+#          $scope.targetElement.removeAttr('aria-describedby', 'myprogress')
+          $scope.targetElement.attr('aria-busy', 'false')
 
         onLoadSuccess = ($remoteHtmlDocument, remoteUrl) =>
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
@@ -46,10 +48,12 @@ angular.module('djangoCradmin.listfilter.directives', [])
             loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " +
               "#{$scope.options.loadspinner_css_class}' aria-hidden='true'></span>"
           $messageElement = angular.element(
-            "<div class='django-cradmin-listfilter-message django-cradmin-listfilter-message-#{variant}'>" +
+            "<div aria-role='progressbar' " +
+            "class='django-cradmin-listfilter-message django-cradmin-listfilter-message-#{variant}'>" +
             "#{loadspinner}" +
             "<span class='django-cradmin-listfilter-message-text'>#{message}</span></div>")
           $messageElement.prependTo($scope.targetElement)
+          $scope.targetElement.attr('aria-busy', 'true')
 
         queueMessage = (variant, message) ->
           if showMessageTimer?
@@ -73,7 +77,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
               method: 'GET'
               url: options.remoteUrl
             },
-            remoteElementSelector: $scope.options.target_css_selector
+            remoteElementSelector: '#' + $scope.options.target_dom_id
             targetElement: $scope.targetElement
             $scope: $scope
             replace: true
@@ -95,7 +99,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
         return
 
       link: ($scope, $element, attributes) ->
-        $scope.targetElement = angular.element($scope.options.target_css_selector)
+        $scope.targetElement = angular.element('#' + $scope.options.target_dom_id)
         return
     }
 ])

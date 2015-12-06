@@ -24,21 +24,21 @@ class AbstractFilterList(AbstractRenderableWithCss):
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/base/filterlist.django.html'
 
-    def __init__(self, urlbuilder, target_css_selector='.django-cradmin-listfilter-target'):
+    def __init__(self, urlbuilder, target_dom_id):
         """
         Parameters:
             urlbuilder: See :class:`.FiltersHandler`.
-            target_css_selector: The css selector of the element to replace when
+            target_dom_id: The DOM id of the element to replace when
                 filters change value.
         """
         super(AbstractFilterList, self).__init__()
         self.children = []
         self.set_filters_string_called = False
         self.filtershandler = self.get_filters_handler_class()(urlbuilder=urlbuilder)
-        self.target_css_selector = target_css_selector
+        self.target_dom_id = target_dom_id
 
-    def get_target_css_selector(self):
-        return self.target_css_selector
+    def get_target_dom_id(self):
+        return self.target_dom_id
 
     def get_loadspinner_css_class(self):
         """
@@ -70,7 +70,7 @@ class AbstractFilterList(AbstractRenderableWithCss):
     def get_angularjs_options_dict(self):
         return {
             'loadspinner_css_class': self.get_loadspinner_css_class(),
-            'target_css_selector': self.get_target_css_selector(),
+            'target_dom_id': self.get_target_dom_id(),
             'loaderror_message': self.get_loaderror_message(),
             'loadingmessage_delay_milliseconds': self.get_loadingmessage_delay_milliseconds(),
         }

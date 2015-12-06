@@ -95,6 +95,7 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
         TitleColumn,
         IntroColumn,
     ]
+    # filterlist_class = listfilter.lists.Horizontal
 
     def get_buttons(self):
         app = self.request.cradmin_app
@@ -115,32 +116,21 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
 
     # def get_filterlist_position(self):
     #     return 'left'
-    #     return 'top'  # If you use this, you should use listfilter.lists.Horizontal in build_filterlist()
 
     def get_filterlist_url(self, filters_string):
-        """
-        We override this to give the listfilter a way to create
-        URLs.
-        """
         return self.request.cradmin_app.reverse_appurl(
             'filter', kwargs={'filters_string': filters_string})
 
-    def build_filterlist(self):
-        filterlist = listfilter.lists.Vertical(urlbuilder=self.filterlist_urlbuilder)
-        # filterlist = listfilter.lists.Horizontal(urlbuilder=self.filterlist_urlbuilder)
+    def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(
             slug='search',
             label='Search',
             label_is_screenreader_only=True,
             modelfields=['title']))
-        filterlist.append(OrderPagesFilter(
-            slug='orderby', label='Order by'))
         filterlist.append(listfilter.django.single.select.IsNotNull(
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
-        filterlist.set_filters_string(filters_string=self.get_filters_string())
-        return filterlist
 
     def get_queryset_for_role(self, site):
         """
