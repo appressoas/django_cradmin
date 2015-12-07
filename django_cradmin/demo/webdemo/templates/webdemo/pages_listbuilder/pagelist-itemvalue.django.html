@@ -17,6 +17,16 @@
         </p>
     {% endif %}
     <p>
+        <em>
+            Tags:
+            {% for pagetag in me.page.pagetag_set.all %}
+                {{ pagetag.tag }}{% if not forloop.last %},{% endif %}
+            {% empty %}
+                <small class="text-muted">(no tags)</small>
+            {% endfor %}
+        </em>
+    </p>
+    <p>
         <a href="{% cradmin_appurl "edit" me.page.id %}" class="btn btn-default"
                 aria-label='Edit "{{ me.page.title }}"'>
             Edit

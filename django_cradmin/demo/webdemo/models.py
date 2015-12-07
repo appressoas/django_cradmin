@@ -21,9 +21,6 @@ class Site(models.Model):
         return self.name
 
 
-# class Tag(models.Model):
-    # tag = models.SlugField()
-
 @python_2_unicode_compatible
 class Page(models.Model):
     site = models.ForeignKey(Site)
@@ -56,7 +53,6 @@ class Page(models.Model):
         verbose_name=_('Internal notes'),
         help_text=_('Put internal notes here. Will not be visible on the website.'),
         blank=True, null=False, default='')
-    # tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.title
@@ -65,3 +61,12 @@ class Page(models.Model):
         verbose_name = _('Page')
         verbose_name_plural = _('Pages')
         ordering = ('title', 'intro')
+
+
+@python_2_unicode_compatible
+class PageTag(models.Model):
+    page = models.ForeignKey(Page)
+    tag = models.SlugField()
+
+    def __str__(self):
+        return self.tag

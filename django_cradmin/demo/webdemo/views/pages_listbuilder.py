@@ -52,7 +52,9 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
             slug='publishing_time', label='Publishing time'))
 
     def get_queryset_for_role(self, site):
-        queryset = super(PagesListBuilderView, self).get_queryset_for_role(site=site)
+        queryset = super(PagesListBuilderView, self)\
+            .get_queryset_for_role(site=site)\
+            .prefetch_related('pagetag_set')
         queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
         return queryset
 
