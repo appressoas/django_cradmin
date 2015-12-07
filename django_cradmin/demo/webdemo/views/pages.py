@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from builtins import object
-from datetime import datetime, timedelta
 
+from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django import forms
@@ -67,24 +67,6 @@ class IntroColumn(objecttable.TruncatecharsPlainTextColumn):
     modelfield = 'intro'
     maxlength = 40
     allcells_css_classes = ['hidden-xs']
-
-
-class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
-    def get_ordering_options(self):
-        return [
-            ('', {
-                'label': 'Publishing time (newest first)',
-                'order_by': ['-publishing_time'],
-            }),
-            ('publishing_time_asc', {
-                'label': 'Publishing time (oldest first)',
-                'order_by': ['publishing_time'],
-            }),
-            ('title', {
-                'label': 'Title',
-                'order_by': ['title'],
-            }),
-        ]
 
 
 class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, objecttable.ObjectTableView):

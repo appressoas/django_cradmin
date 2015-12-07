@@ -232,6 +232,12 @@ class AbstractFilter(AbstractGroupChild):
         """
         return '{}_{}'.format(self.filterlist.get_dom_id_prefix(), self.get_slug())
 
+    def get_label_dom_id(self):
+        """
+        Get the DOM ID of the label for this filter.
+        """
+        return '{}_label'.format(self.get_dom_id())
+
     def get_inputfield_dom_id(self):
         """
         Get the DOM id of the input field. If the filter uses multiple input fields,

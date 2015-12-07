@@ -1,15 +1,10 @@
-from django.db import models
-
-from django_cradmin import datetimeutils
-from django_cradmin.viewhelpers.listfilter.basefilters.single import abstractselect
+from django_cradmin.viewhelpers.listfilter.basefilters.multi import abstractcheckbox
 from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMixin
 
 
-class RelatedModel(abstractselect.AbstractBoolean, DjangoOrmFilterMixin):
+class RelatedModel(abstractcheckbox.AbstractCheckboxFilter, DjangoOrmFilterMixin):
     """
     Filter on values from a related model (one-to-many or many-to-many).
-
-
     """
 
     def filter(self, queryobject):

@@ -1,3 +1,4 @@
+from . import multi  # noqa
 from . import single  # noqa
 
-__all__ = ['single']
+__all__ = ['multi', 'single']

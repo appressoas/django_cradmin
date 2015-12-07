@@ -1,18 +1,43 @@
 from __future__ import unicode_literals
-from collections import OrderedDict
 
 from django_cradmin.demo.webdemo.views.pages import PagesQuerySetForRoleMixin, PageCreateView, PageUpdateView, \
-    PageDeleteView, PreviewPageView, OrderPagesFilter
+    PageDeleteView, PreviewPageView
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
-from django_cradmin.demo.webdemo.models import Page
+from django_cradmin.demo.webdemo.models import Page, PageTag
 
 
 class PageListItemValue(listbuilder.itemvalue.FocusBox):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
     valuealias = 'page'
+
+
+class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
+    def get_ordering_options(self):
+        return [
+            ('', {
+                'label': 'Publishing time (newest first)',
+                'order_by': ['-publishing_time'],
+            }),
+            ('publishing_time_asc', {
+                'label': 'Publishing time (oldest first)',
+                'order_by': ['publishing_time'],
+            }),
+            ('title', {
+                'label': 'Title',
+                'order_by': ['title'],
+            }),
+        ]
+
+
+class PageTagFilter(listfilter.django.multi.checkbox.RelatedModel):
+    def get_choices(self):
+        return [
+            (tag, tag)
+            for tag in PageTag.objects.values_list('tag', flat=True).distinct()
+        ]
 
 
 class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterListMixin, listbuilderview.View):
@@ -49,6 +74,8 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
+        filterlist.append(PageTagFilter(
+            slug='tag', label='Tag'))
 
     def get_queryset_for_role(self, site):
         queryset = super(PagesListBuilderView, self)\

@@ -4,15 +4,23 @@
 
 {% block inputfield %}
     <div id="{{ me.get_inputfield_dom_id }}"
-            django-cradmin-listfilter-select={{ me.get_angularjs_options_json|safe }}>
+            django-cradmin-listfilter-checkbox={{ me.get_angularjs_options_json|safe }}>
         {% for choicedata in choicesdata %}
             <div class="checkbox" id="{{ choicedata.dom_id }}_wrapper">
-                <label>
+                {% comment %}
+                    We use aria-labeledby to make screenreaders read the main label
+                    and the checkbox label (without this we have no context for the
+                    value). Some browsers will read the value twice with this, while
+                    others will only read the main label if we only have the main
+                    label in aria-labeledby.
+                {% endcomment %}
+                <label id="{{ choicedata.dom_id }}_label">
                     <input type="checkbox"
                            id="{{ choicedata.dom_id }}"
                            data-url="{{ choicedata.url }}"
+                           aria-labeledby="{{ me.get_label_dom_id }} {{ choicedata.dom_id }}_label"
                            {% if choicedata.is_selected %}checked{% endif %}>
-                        {{ choicedata.label }}
+                    {{ choicedata.label }}
                 </label>
             </div>
         {% endfor %}
