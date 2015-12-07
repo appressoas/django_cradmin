@@ -4,7 +4,8 @@
         {% block label-outer %}
             {% if me.get_label %}
                 {% block label-inner %}
-                    <label for="{{ me.get_inputfield_dom_id }}"
+                    <label{% block label-for %} for="{{ me.get_inputfield_dom_id }}"{% endblock %}
+                           id="{{ me.get_dom_id }}_label"
                            {% if me.get_label_is_screenreader_only %}class="sr-only"{% endif %}>
                         {{ me.get_label }}
                     </label>

@@ -1,0 +1,20 @@
+{% extends "django_cradmin/viewhelpers/listfilter/base/abstractfilter.django.html" %}
+
+{% block label-for %}{% endblock label-for %}
+
+{% block inputfield %}
+    <div id="{{ me.get_inputfield_dom_id }}"
+            django-cradmin-listfilter-select={{ me.get_angularjs_options_json|safe }}>
+        {% for choicedata in choicesdata %}
+            <div class="checkbox" id="{{ choicedata.dom_id }}_wrapper">
+                <label>
+                    <input type="checkbox"
+                           id="{{ choicedata.dom_id }}"
+                           data-url="{{ choicedata.url }}"
+                           {% if choicedata.is_selected %}checked{% endif %}>
+                        {{ choicedata.label }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock inputfield %}
