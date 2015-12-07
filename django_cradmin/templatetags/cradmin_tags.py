@@ -58,7 +58,7 @@ def cradmin_appurl(context, viewname, *args, **kwargs):
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_appurl "edit" %}'>Edit</a>
 
@@ -66,7 +66,7 @@ def cradmin_appurl(context, viewname, *args, **kwargs):
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_appurl "list" mode="advanced" orderby="name" %}'>
                 Show advanced listing ordered by name
@@ -87,7 +87,7 @@ def cradmin_appindex_url(context, appname):
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_appindex_url appname="pages" viewname="edit" %}'>
                 Go to pages-app
@@ -115,7 +115,7 @@ def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_instance_url appname="pages" viewname="edit" %}'>
                 Edit
@@ -125,7 +125,7 @@ def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_instance_url appname="pages" viewname="list" mode="advanced" orderby="name" %}'>
                 Show advanced pages listing ordered by name
@@ -148,7 +148,7 @@ def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs)
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_instance_url instanceid="my_cradmin_instance" appname="pages"
             roleid=10 viewname="edit" %}'>
@@ -159,7 +159,7 @@ def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs)
 
         .. code-block:: htmldjango
 
-            {% load "cradmin_tags" %}
+            {% load cradmin_tags %}
 
             <a href='{% cradmin_instance_url instanceid="my_cradmin_instance" appname="pages"
             roleid=10 viewname="list" mode="advanced" orderby="name" %}'>
