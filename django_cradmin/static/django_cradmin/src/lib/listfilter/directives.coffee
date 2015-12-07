@@ -214,7 +214,6 @@ angular.module('djangoCradmin.listfilter.directives', [])
           if value == ''
             return $element.attr(emptyvalueUrlAttribute)
           else
-            console.log 'Yo', $scope.options.urlpattern_replace_text
             urlpattern = $element.attr(urlpatternAttribute)
             return urlpattern.replace($scope.options.urlpattern_replace_text, value)
 
