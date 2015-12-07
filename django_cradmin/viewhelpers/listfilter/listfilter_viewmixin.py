@@ -116,9 +116,11 @@ class ViewMixin(object):
         Get kwargs for the :meth:`.get_filterlist_class`.
 
         Uses:
+
         - :meth:`.filterlist_urlbuilder` as the ``urlbuilder``-argument for the filterlist.
         - :meth:`.get_filterlist_target_dom_id` as the ``target_dom_id``-argument for the filterlist.
-        - :meth:`.
+        - :meth:`.get_label_is_screenreader_only_by_default` as the
+          ``label_is_screenreader_only_by_default`` argument for the filterlist.
 
         You should not need to override this unless you create
         a filterlist with extra parameters, since we have methods

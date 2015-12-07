@@ -94,10 +94,21 @@ Works just like the listbuilder example above, but you use
 Advanced topics
 ***************
 
+Hide labels
+===========
+You have two options:
+
+- Override :meth:`~django_cradmin.viewhelpers.listfilter.base.abstractfilter.AbstractFilter.get_label_is_screenreader_only`
+  on the filters you want to hide the values for.
+- Override :meth:`~django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList.get_label_is_screenreader_only_by_default`.
+  In views inheriting from :class:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin`
+  (like the getting started example above), you can override
+  :meth:`~django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin.get_label_is_screenreader_only_by_default`
+  to achive the same effect.
+
 Test filtering with slow requests
 =================================
 To test how the filters behave with slow requests, use :doc:`delay_middleware`.
-
 
 
 Share data between your filters
@@ -250,6 +261,28 @@ Filter lists
 
 .. currentmodule:: django_cradmin.viewhelpers.listfilter.lists
 .. automodule:: django_cradmin.viewhelpers.listfilter.lists
+
+
+***********
+View mixins
+***********
+
+For listbuilder views
+=====================
+:class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`
+
+For ObjectTableView
+===================
+:class:`django_cradmin.viewhelpers.objecttable.FilterListMixin`
+
+
+Custom views
+============
+If you are not using objecttable or listbuilder, you can use
+:class:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin`.
+
+.. currentmodule:: django_cradmin.viewhelpers.listfilter.listfilter_viewmixin
+.. automodule:: django_cradmin.viewhelpers.listfilter.listfilter_viewmixin
 
 
 ********

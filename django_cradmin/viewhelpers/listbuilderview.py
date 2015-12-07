@@ -249,8 +249,8 @@ class View(ViewMixin, ListView):
 
 class FilterListMixin(listfilter_viewmixin.ViewMixin):
     """
-    Mixin for adding filtering with :doc:`filterlist <filterlist>` to a
-    listbuilder view.
+    Mixin for adding filtering with :doc:`viewhelpers.listfilter <viewhelpers_listfilter>` to
+    :class:`listbuilder View <.View>`.
 
     Must be mixed in before any TemplateView subclass.
     """

@@ -1053,14 +1053,16 @@ class ObjectTableView(ListView):
         """
         Override this to add some buttons/global actions for this table.
 
-        Example::
+        Examples:
 
-            def get_buttons(self):
-                app = self.request.cradmin_app
-                return [
-                    objecttable.Button('Create', url=app.reverse_appurl('create')),
-                    objecttable.Button('Delete all', url=app.reverse_appurl('deleteall')),
-                ]
+            Simple example::
+
+                def get_buttons(self):
+                    app = self.request.cradmin_app
+                    return [
+                        objecttable.Button('Create', url=app.reverse_appurl('create')),
+                        objecttable.Button('Delete all', url=app.reverse_appurl('deleteall')),
+                    ]
         """
         return []
 
@@ -1347,8 +1349,8 @@ class ObjectTableView(ListView):
 
 class FilterListMixin(listfilter_viewmixin.ViewMixin):
     """
-    Mixin for adding filtering with :doc:`filterlist <filterlist>` to an
-    objecttable view.
+    Mixin for adding filtering with :doc:`viewhelpers.listfilter <viewhelpers_listfilter>` to
+    :class:`.ObjectTableView`.
 
     Must be mixed in before :class:`.ObjectTableView`.
     """

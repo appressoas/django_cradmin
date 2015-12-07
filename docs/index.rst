@@ -26,6 +26,7 @@ Viewhelpers
    :maxdepth: 1
 
    viewhelpers_delete
+   viewhelpers_objecttable
    viewhelpers_listbuilder
    viewhelpers_listfilter
 
