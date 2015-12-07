@@ -79,7 +79,7 @@ You will have to use the shell to create at least one ``Site`` and one ``Person`
 
 Full source code
 ================
-.. See :github_folder:``
+See :github_folder:`django_cradmin/demo/listfilterdemo`.
 
 
 ************************************
