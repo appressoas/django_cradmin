@@ -7,7 +7,7 @@ from django_cradmin.viewhelpers import listfilter
 class OrderPersonsFilter(listfilter.django.single.select.AbstractOrderBy):
     def get_ordering_options(self):
         return [
-            ('name', {
+            ('', {  # This will be the default sort order
                 'label': 'Name',
                 'order_by': ['name'],
             }),
