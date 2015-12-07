@@ -118,7 +118,6 @@ class NullDateTime(DateTime):
         })
 
 
-
 class AbstractOrderBy(abstractselect.AbstractOrderBy, DjangoOrmFilterMixin):
     """
     A "filter" that lets the user select how the queryobject should be ordered.
