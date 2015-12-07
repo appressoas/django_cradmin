@@ -5,7 +5,8 @@ class AbstractCheckboxFilter(AbstractFilter):
     """
     Abstract base class for any checkbox based multiselect filter.
 
-    You only have to override :meth:`~AbstractCheckboxFilter.get_choices`.
+    You only have to override :meth:`~AbstractCheckboxFilter.get_choices` and
+    :meth:`~AbstractCheckboxFilter.filter`.
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/django/multi/checkbox/base.django.html'
 
@@ -14,6 +15,11 @@ class AbstractCheckboxFilter(AbstractFilter):
         Get choices as a list of of ``(value, label)`` pairs.
         """
         raise NotImplementedError()
+
+    def get_choices_cached(self):
+        if not hasattr(self, '_choices'):
+            self._choices = self.get_choices()
+        return self._choices
 
     def get_choicesdata(self):
         """
@@ -37,7 +43,7 @@ class AbstractCheckboxFilter(AbstractFilter):
         """
         selected_values = set(self.get_cleaned_values())
         choicesdata = []
-        for value, label in self.get_choices():
+        for value, label in self.get_choices_cached():
             is_selected = value in selected_values
             if is_selected:
                 url = self.build_remove_values_url(values=[value])
@@ -55,3 +61,8 @@ class AbstractCheckboxFilter(AbstractFilter):
         context = super(AbstractCheckboxFilter, self).get_context_data()
         context['choicesdata'] = self.get_choicesdata()
         return context
+
+    def get_cleaned_values(self):
+        cleaned_values = super(AbstractCheckboxFilter, self).get_cleaned_values()
+        choices = set(value for value, label in self.get_choices_cached())
+        return [value for value in cleaned_values if value in choices]

@@ -1,5 +1,8 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth import get_user_model
+from future import standard_library
+
 from django_cradmin.demo.webdemo.views.pages import PagesQuerySetForRoleMixin, PageCreateView, PageUpdateView, \
     PageDeleteView, PreviewPageView
 from django_cradmin.viewhelpers import listbuilderview
@@ -7,6 +10,9 @@ from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
 from django_cradmin.demo.webdemo.models import Page, PageTag
+standard_library.install_aliases()
+
+from builtins import str
 
 
 class PageListItemValue(listbuilder.itemvalue.FocusBox):
@@ -32,12 +38,26 @@ class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
         ]
 
 
-class PageTagFilter(listfilter.django.multi.checkbox.RelatedModel):
+class PageTagFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter):
     def get_choices(self):
         return [
             (tag, tag)
             for tag in PageTag.objects.values_list('tag', flat=True).distinct()
         ]
+
+    def get_filter_attribute(self):
+        return 'tags__tag'
+
+
+class PageSubscriberFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter):
+    def get_choices(self):
+        return [
+            (user.username, str(user))
+            for user in get_user_model().objects.all()
+        ]
+
+    def get_filter_attribute(self):
+        return 'subscribers__username'
 
 
 class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterListMixin, listbuilderview.View):
@@ -75,12 +95,14 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
         filterlist.append(PageTagFilter(
-            slug='tag', label='Tag'))
+            slug='tags', label='Tag'))
+        filterlist.append(PageSubscriberFilter(
+            slug='subscribers', label='Subscribers'))
 
     def get_queryset_for_role(self, site):
         queryset = super(PagesListBuilderView, self)\
             .get_queryset_for_role(site=site)\
-            .prefetch_related('pagetag_set')
+            .prefetch_related('tags')
         queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
         return queryset
 

@@ -41,7 +41,7 @@ class Page(models.Model):
         verbose_name=_('Body'))
     publishing_time = models.DateTimeField(
         verbose_name=_('Publishing time'),
-        default=timezone.now(),
+        default=timezone.now,
         blank=False, null=False,
         help_text=_('The time when this will be visible on the website.'))
     unpublish_time = models.DateTimeField(
@@ -53,6 +53,9 @@ class Page(models.Model):
         verbose_name=_('Internal notes'),
         help_text=_('Put internal notes here. Will not be visible on the website.'),
         blank=True, null=False, default='')
+    subscribers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('Subscribed users'))
 
     def __str__(self):
         return self.title
@@ -65,7 +68,7 @@ class Page(models.Model):
 
 @python_2_unicode_compatible
 class PageTag(models.Model):
-    page = models.ForeignKey(Page)
+    page = models.ForeignKey(Page, related_name='tags')
     tag = models.SlugField()
 
     def __str__(self):

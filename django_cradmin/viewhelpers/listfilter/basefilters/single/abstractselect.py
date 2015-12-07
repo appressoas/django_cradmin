@@ -11,7 +11,8 @@ class AbstractSelectFilter(AbstractFilter):
     """
     Abstract base class for any select filter.
 
-    You only have to override :meth:`~AbstractSelectFilter.get_choices`.
+    You only have to override :meth:`~AbstractSelectFilter.get_choices` and
+    :meth:`~AbstractCheckboxFilter.filter`.
     """
     template_name = 'django_cradmin/viewhelpers/listfilter/django/single/select/base.django.html'
 
