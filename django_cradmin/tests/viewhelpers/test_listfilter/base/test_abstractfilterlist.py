@@ -38,21 +38,21 @@ class MinimalStringFilter(AbstractFilter):
 
 class TestAbstractFilterList(TestCase):
     def test_append(self):
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         testchild = MinimalFilterGroupChild()
         filterlist.append(testchild)
         self.assertEqual([testchild], filterlist.children)
         self.assertEqual(filterlist, testchild.filterlist)
 
     def test_render(self):
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(MinimalFilterGroupChild())
         filterlist.append(MinimalFilterGroupChild())
         selector = htmls.S(filterlist.render())
         self.assertEqual(2, selector.count('li'))
 
     def test_set_filters_string_invalid_slug(self):
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         stringfilter = MinimalStringFilter()
         filterlist.append(stringfilter)
         with self.assertRaisesMessage(InvalidFiltersStringError,
@@ -60,7 +60,7 @@ class TestAbstractFilterList(TestCase):
             filterlist.set_filters_string('x-10')
 
     def test_set_filters_string(self):
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         intfilter = MinimalIntFilter()
         stringfilter = MinimalStringFilter()
         filterlist.append(intfilter)
@@ -85,7 +85,7 @@ class TestAbstractFilterList(TestCase):
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                    mycharfield='test', mybooleanfield=False)
 
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(FilterOne(slug='filterone'))
         filterlist.append(FilterTwo(slug='filtertwo'))
         queryset = filterlist.filter(FilterTestModel.objects.all())

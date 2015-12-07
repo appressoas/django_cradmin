@@ -23,7 +23,7 @@ class TestAbstractSelectFilter(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertTrue(selector.exists('#django_cradmin_listfilter_test.django-cradmin-listfilter-filter'))
@@ -39,7 +39,8 @@ class TestAbstractSelectFilter(TestCase):
 
         testfilter = MySelectFilter(slug='test')
         filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string),
+            target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('/test/', selector.one('option')['value'])
@@ -53,7 +54,8 @@ class TestAbstractSelectFilter(TestCase):
 
         testfilter = MySelectFilter(slug='test')
         filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string),
+            target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('/test/test-somevalue', selector.one('option')['value'])
@@ -66,7 +68,7 @@ class TestAbstractSelectFilter(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('Test', selector.one('option').alltext_normalized)
@@ -82,7 +84,7 @@ class TestAbstractSelectFilter(TestCase):
 
         testfilter = MySelectFilter(slug='test')
         testfilter.set_values(values=['first'])
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual(
@@ -100,7 +102,7 @@ class TestAbstractSelectFilter(TestCase):
 
         testfilter = MySelectFilter(slug='test')
         testfilter.set_values(values=[])
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual(
@@ -115,7 +117,7 @@ class TestAbstractSelectFilter(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertFalse(selector.exists('label'))
@@ -128,7 +130,7 @@ class TestAbstractSelectFilter(TestCase):
                 ]
 
         testfilter = MySelectFilter(slug='test', label='A label')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertEqual('A label', selector.one('label').alltext_normalized)
@@ -145,7 +147,7 @@ class TestAbstractSelectFilter(TestCase):
                 return True
 
         testfilter = MySelectFilter(slug='test', label='A label')
-        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock())
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertTrue(selector.exists('label'))

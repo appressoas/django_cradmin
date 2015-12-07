@@ -95,7 +95,8 @@ class TestAbstractFilter(TestCase):
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
         filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string),
+            target_dom_id='testdomid')
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
         stringfilter.set_filterlist(filterlist)
@@ -109,7 +110,8 @@ class TestAbstractFilter(TestCase):
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
         filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string),
+            target_dom_id='testdomid')
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
         stringfilter.set_filterlist(filterlist)
@@ -123,7 +125,8 @@ class TestAbstractFilter(TestCase):
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
         filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string),
+            target_dom_id='testdomid')
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
         stringfilter.set_filterlist(filterlist)
@@ -137,7 +140,8 @@ class TestAbstractFilter(TestCase):
         intfilter = MinimalIntFilter()
         intfilter.set_values(values=['10'])
         filterlist = AbstractFilterList(
-            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string))
+            urlbuilder=lambda filters_string: '/test/{}'.format(filters_string),
+            target_dom_id='testdomid')
         filterlist.append(stringfilter)
         filterlist.append(intfilter)
         stringfilter.set_filterlist(filterlist)
