@@ -57,10 +57,10 @@ class AbstractSearch(AbstractInputFilter):
     """
     Abstract search filter.
 
-    Subclasses should only need to implement
-    :meth:`django_cradmin.viewhelpers.listfilter.basefilters.single.select.AbstractSelectFilter.filter`.
+    Subclasses only need to implement
+    :meth:`django_cradmin.viewhelpers.listfilter.base.abstractfilter.AbstractFilter.filter`.
 
-    See :class:`django_cradmin.viewhelpers.listfilter.django.single.input.Search`
+    See :class:`django_cradmin.viewhelpers.listfilter.django.single.textinput.Search`
     for a Django ORM implementation.
     """
     def get_base_css_classes_list(self):

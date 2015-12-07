@@ -72,6 +72,9 @@ INSTALLED_APPS = (
 
     # Demo for usermanager
     'django_cradmin.demo.usermanagerdemo',
+
+    # Demo for listfilter
+    'django_cradmin.demo.listfilterdemo',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -7,22 +7,108 @@ easy to add filters to your listviews. It works with any view that
 lists items (from the database or other sources).
 
 
+********************************
+Getting started with listbuilder
+********************************
+In this example we will create a full example using :doc:`listbuilder <viewhelpers_listbuilder>`.
+We will skip all the role-related stuff.
+
+
+Create the models
+=================
+Create the following model in your models.py:
+
+.. literalinclude:: /../django_cradmin/demo/listfilterdemo/models.py
+
+.. note::
+
+    The ``@python_2_unicode_compatible`` is just there to make the model
+    compatible with both python 2 and 3.
+
+
+Create the view
+===============
+
+Create a ``views`` module in your app, and add ``views/personlist.py``
+with the following code (adjust the imports for your app):
+
+.. literalinclude:: /../django_cradmin/demo/listfilterdemo/views/personlist.py
+
+We add the filters in the ``add_filterlist_items()``-method.
+We add three filters:
+
+- Search by ``name``.
+  Uses :class:`~django_cradmin.viewhelpers.listfilter.django.single.textinput.Search`.
+- Filter by ``banned_datetime``.
+  Uses :class:`~django_cradmin.viewhelpers.listfilter.django.single.select.DateTime`.
+- Order by name (descending and ascending). This is defined
+  using a class. Some of the provided base classes for filters
+  work like this because they need something that can not be
+  easily/cleanly defined using parameters.
+  Uses :class:`~django_cradmin.viewhelpers.listfilter.django.single.select.AbstractOrderBy`.
+
+The ``get_filterlist_url()``-method is required. Refer to
+:meth:`~django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin.get_filterlist_url`
+for more details on this method.
+
+The ``get_queryset_for_role``-method is just like it would be for
+any listbuildeview except that we add a single line to allow
+the filterlist to filter the queryset.
+
+
+Create a cradmin instance
+=========================
+Add a ``cradmin.py`` to your app with the following code (adjust the imports for your app):
+
+.. literalinclude:: /../django_cradmin/demo/listfilterdemo/cradmin.py
+
+
+Add to urls.py
+==============
+Add something like this to you ``urls.py``::
+
+    url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
+
+
+Try it out
+==========
+Start up your django development server, and visit the app at the URL you added to your ``urls.py``.
+
+You will have to use the shell to create at least one ``Site`` and one ``Person``.
+
+
+Full source code
+================
+.. See :github_folder:``
+
+
+************************************
+Gettign started with ObjectTableView
+************************************
+Works just like the listbuilder example above, but you use
+``objecttable.FilterListMixin, objecttable.ObjectTableView`` instead of
+``listbuilderview.FilterListMixin, listbuilderview.View`` in the view.
+
+
 ***************
-Getting started
+Advanced topics
 ***************
+
+Test filtering with slow requests
+=================================
+To test how the filters behave with slow requests, use :doc:`delay_middleware`.
 
 
 
-***************
-Tips and tricks
-***************
-- If you want to send a queryset to all your filters,
-  you can override one of the AbstractFilterList subclasses
-  and send the queryset into ``__init__()``. All of the
-  filters (and other :class:`~django_cradmin.viewhelpers.listfilter.base.abstractfilterlistchild.AbstractFilterListChild`)
-  has access to the filterlist via their ``filterlist`` attribute.
-  This can of course be used to share any kind of information that your
-  filters need.
+Share data between your filters
+===============================
+If you want to share data between all of your filtes (such as aqueryset),
+you can override one of the AbstractFilterList subclasses
+and send the queryset into ``__init__()``. All of the
+filters (and other :class:`~django_cradmin.viewhelpers.listfilter.base.abstractfilterlistchild.AbstractFilterListChild`)
+has access to the filterlist via their ``filterlist`` attribute.
+This can of course be used to share any kind of information that your
+filters need.
 
 
 **********************
@@ -155,6 +241,15 @@ subclasses.
 .. currentmodule:: django_cradmin.viewhelpers.listfilter.basefilters.multi.abstractcheckbox
 .. automodule:: django_cradmin.viewhelpers.listfilter.basefilters.multi.abstractcheckbox
 
+
+.. _listfilter_lists:
+
+************
+Filter lists
+************
+
+.. currentmodule:: django_cradmin.viewhelpers.listfilter.lists
+.. automodule:: django_cradmin.viewhelpers.listfilter.lists
 
 
 ********

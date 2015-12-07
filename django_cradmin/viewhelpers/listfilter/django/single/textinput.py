@@ -6,6 +6,23 @@ from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMix
 
 
 class Search(abstracttextinput.AbstractSearch, DjangoOrmFilterMixin):
+    """
+    A "filter" that lets the user search the queryset.
+
+    Examples:
+
+        A model for this example::
+
+            class MyModel(models.Model):
+                name = models.CharField(max_length=255)
+                title = models.TextField()
+
+        Create the filter::
+
+            listfilter.django.single.textinput.Search(
+                slug='search', label='Search',
+                modelfields=['name', 'title'])
+    """
     def __init__(self, *args, **kwargs):
         """
         Parameters are the same as for

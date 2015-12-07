@@ -9,6 +9,18 @@ class Boolean(abstractselect.AbstractBoolean, DjangoOrmFilterMixin):
     """
     A boolean filter that works on any BooleanField and CharField.
     (False, None and ``""`` is considered ``False``).
+
+    Examples:
+
+        A model for this example::
+
+            class MyModel(models.Model):
+                is_active = models.BooleanField(default=True)
+
+        Create the filter::
+
+            listfilter.django.single.select.Boolean(
+                slug='is_active', label='Is active?')
     """
     def get_query(self, modelfield):
         return (models.Q(**{modelfield: False}) |
@@ -31,6 +43,18 @@ class IsNotNull(Boolean, DjangoOrmFilterMixin):
     A subclass of :class:`.Boolean` that works with
     foreign keys and other fields where ``None`` means no
     value and anything else means that it has a value.
+
+    Examples:
+
+        A model for this example::
+
+            class MyModel(models.Model):
+                owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+
+        Create the filter::
+
+            listfilter.django.single.select.IsNotNull(
+                slug='owner', label='Has owner?')
     """
     def get_query(self, modelfield):
         return models.Q(**{'{}__isnull'.format(modelfield): True})
@@ -39,6 +63,18 @@ class IsNotNull(Boolean, DjangoOrmFilterMixin):
 class DateTime(abstractselect.AbstractDateTime, DjangoOrmFilterMixin):
     """
     A datetime filter that works with Django DateTimeField.
+
+    Examples:
+
+        A model for this example::
+
+            class MyModel(models.Model):
+                created_datetime = models.DateTimeField(auto_now_add=True)
+
+        Create the filter::
+
+            listfilter.django.single.select.DateTime(
+                slug='created_datetime', label='Created time')
     """
     def filter_datetime_range(self, queryobject, start_datetime, end_datetime):
         modelfield = self.get_modelfield()
@@ -56,6 +92,32 @@ class AbstractOrderBy(abstractselect.AbstractOrderBy, DjangoOrmFilterMixin):
 
     You only have to override the ``get_ordering_options()``-method from
     :meth:`~django_cradmin.viewhelpers.listfilter.basefilters.single.abstractselect.AbstractOrderBy`.
+
+    Examples:
+
+        A model for this example::
+
+            class Person(models.Model):
+                name = models.CharField(max_length=255)
+
+        Create a subclass of AbstractOrderBy::
+
+            class OrderPersonsFilter(listfilter.django.single.select.AbstractOrderBy):
+                def get_ordering_options(self):
+                    return [
+                        ('name', {
+                            'label': 'Name',
+                            'order_by': ['name'],
+                        }),
+                        ('name (descending)', {
+                            'label': 'Name (descending)',
+                            'order_by': ['-name'],
+                        }),
+                    ]
+
+        And create the filter::
+
+            OrderPersonsFilter(slug='orderby', label='Order by')
     """
     def filter(self, queryobject):
         cleaned_value = self.get_cleaned_value() or ''
