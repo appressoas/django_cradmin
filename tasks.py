@@ -88,6 +88,6 @@ def dump_current_db_to_dumpscript_datafile():
     """
     Dump current db to the dumpscript dataset.
     """
-    dump = _manage('dumpscript auth.User webdemo', capture=True)
+    result = _manage('dumpscript auth.User webdemo listfilterdemo')
     with open(DUMPSCRIPT_DATAFILE, 'wb') as outfile:
-        outfile.write(dump + '\n')
+        outfile.write(result.stdout.encode('utf-8') + b'\n')
