@@ -7,7 +7,12 @@ class AbstractInputFilter(AbstractFilter):
     """
     Abstract base class for any filter that uses a single text input field.
     """
-    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html'
+    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/extinput/base.django.html'
+
+    #: The text used in URLs as placeholder for the value of this filter.
+    #: The AngularJS directive replaces this with the actual value.
+    #: You should not have to override this.
+    urlpattern_replace_text = '_-_TEXTINPUT_-_VALUE_-_'
 
     def get_input_html_element_type(self):
         """
@@ -34,7 +39,20 @@ class AbstractInputFilter(AbstractFilter):
         return self.get_cleaned_value() or ''
 
     def get_urlpattern(self):
-        return self.build_set_values_url(values=['_-_TEXTINPUT_-_VALUE_-_'])
+        """
+        Get the URL pattern to use when the input value is a non-empty string.
+
+        You should not need to override this.
+        """
+        return self.build_set_values_url(values=[self.urlpattern_replace_text])
+
+    def get_emptyvalue_url(self):
+        """
+        Get the URL to use when the input value is an empty string.
+
+        You should not need to override this.
+        """
+        return self.build_clear_values_url()
 
     def get_timeout_milliseconds(self):
         """
@@ -50,6 +68,7 @@ class AbstractInputFilter(AbstractFilter):
     def get_angularjs_options_dict(self):
         options_dict = super(AbstractInputFilter, self).get_angularjs_options_dict()
         options_dict['timeout_milliseconds'] = self.get_timeout_milliseconds()
+        options_dict['urlpattern_replace_text'] = self.urlpattern_replace_text
         return options_dict
 
 

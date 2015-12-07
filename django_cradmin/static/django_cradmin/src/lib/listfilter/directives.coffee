@@ -168,6 +168,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
   '$timeout'
   ($timeout) ->
     urlpatternAttribute = 'django-cradmin-listfilter-urlpattern'
+    emptyvalueUrlAttribute = 'django-cradmin-listfilter-emptyvalue-url'
     urlpatternReplaceText = '_-_TEXTINPUT_-_VALUE_-_'
 
     return {
@@ -188,6 +189,8 @@ angular.module('djangoCradmin.listfilter.directives', [])
           $remoteElement = $remoteFilterList.find('#' + domId)
           $element.attr(urlpatternAttribute,
             $remoteElement.attr(urlpatternAttribute))
+          $element.attr(emptyvalueUrlAttribute,
+            $remoteElement.attr(emptyvalueUrlAttribute))
 
         $scope.onLoadInProgress = (filterDomId) ->
           if filterDomId != $element.attr('id')
@@ -207,8 +210,13 @@ angular.module('djangoCradmin.listfilter.directives', [])
           timeoutMilliseconds = 500
 
         buildUrl = (value) ->
-          urlpattern = $element.attr(urlpatternAttribute)
-          return urlpattern.replace(urlpatternReplaceText, value)
+          value = value.trim()
+          if value == ''
+            return $element.attr(emptyvalueUrlAttribute)
+          else
+            console.log 'Yo', $scope.options.urlpattern_replace_text
+            urlpattern = $element.attr(urlpatternAttribute)
+            return urlpattern.replace($scope.options.urlpattern_replace_text, value)
 
         onLoadSearchSuccess = (data) ->
           currentValue = $element.val()

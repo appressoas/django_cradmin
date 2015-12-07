@@ -3793,8 +3793,9 @@
     }
   ]).directive('djangoCradminListfilterTextinput', [
     '$timeout', function($timeout) {
-      var urlpatternAttribute, urlpatternReplaceText;
+      var emptyvalueUrlAttribute, urlpatternAttribute, urlpatternReplaceText;
       urlpatternAttribute = 'django-cradmin-listfilter-urlpattern';
+      emptyvalueUrlAttribute = 'django-cradmin-listfilter-emptyvalue-url';
       urlpatternReplaceText = '_-_TEXTINPUT_-_VALUE_-_';
       return {
         restrict: 'A',
@@ -3812,7 +3813,8 @@
             var $remoteElement, domId;
             domId = $element.attr('id');
             $remoteElement = $remoteFilterList.find('#' + domId);
-            return $element.attr(urlpatternAttribute, $remoteElement.attr(urlpatternAttribute));
+            $element.attr(urlpatternAttribute, $remoteElement.attr(urlpatternAttribute));
+            return $element.attr(emptyvalueUrlAttribute, $remoteElement.attr(emptyvalueUrlAttribute));
           };
           $scope.onLoadInProgress = function(filterDomId) {
             if (filterDomId !== $element.attr('id')) {
@@ -3834,8 +3836,14 @@
           }
           buildUrl = function(value) {
             var urlpattern;
-            urlpattern = $element.attr(urlpatternAttribute);
-            return urlpattern.replace(urlpatternReplaceText, value);
+            value = value.trim();
+            if (value === '') {
+              return $element.attr(emptyvalueUrlAttribute);
+            } else {
+              console.log('Yo', $scope.options.urlpattern_replace_text);
+              urlpattern = $element.attr(urlpatternAttribute);
+              return urlpattern.replace($scope.options.urlpattern_replace_text, value);
+            }
           };
           onLoadSearchSuccess = function(data) {
             var currentValue;

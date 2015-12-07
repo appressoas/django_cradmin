@@ -9,6 +9,7 @@
                 value="{{ me.get_inputfield_value }}"
                 aria-controls="{{ me.get_target_dom_id }}"
                 django-cradmin-listfilter-urlpattern="{{ me.get_urlpattern }}"
+                django-cradmin-listfilter-emptyvalue-url="{{ me.get_emptyvalue_url }}"
                 django-cradmin-listfilter-textinput={{ me.get_angularjs_options_json|safe }}>
         <button type="button" class="btn btn-link django-cradmin-clearable-textinput-button"
                 django-cradmin-clearable-textinput="#{{ me.get_inputfield_dom_id }}"
