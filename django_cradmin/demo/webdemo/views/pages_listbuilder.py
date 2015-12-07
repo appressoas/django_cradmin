@@ -104,7 +104,7 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterList
             .get_queryset_for_role(site=site)\
             .prefetch_related('tags')
         queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
-        return queryset
+        return queryset.distinct()
 
 
 class App(crapp.App):
