@@ -111,6 +111,10 @@ angular.module('djangoCradmin.listfilter.directives', [])
 
       link: ($scope, $element, attributes) ->
         $scope.targetElement = angular.element('#' + $scope.options.target_dom_id)
+        angular.element($window).on 'popstate', (e) ->
+          state = e.originalEvent.state
+          if state
+            $window.location.reload()
         return
     }
 ])

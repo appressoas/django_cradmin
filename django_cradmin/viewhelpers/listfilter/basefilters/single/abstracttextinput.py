@@ -7,7 +7,7 @@ class AbstractInputFilter(AbstractFilter):
     """
     Abstract base class for any filter that uses a single text input field.
     """
-    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/extinput/base.django.html'
+    template_name = 'django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html'
 
     #: The text used in URLs as placeholder for the value of this filter.
     #: The AngularJS directive replaces this with the actual value.
