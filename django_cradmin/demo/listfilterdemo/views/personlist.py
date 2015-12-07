@@ -11,7 +11,7 @@ class OrderPersonsFilter(listfilter.django.single.select.AbstractOrderBy):
                 'label': 'Name',
                 'order_by': ['name'],
             }),
-            ('name (descending)', {
+            ('name_descending', {
                 'label': 'Name (descending)',
                 'order_by': ['-name'],
             }),
