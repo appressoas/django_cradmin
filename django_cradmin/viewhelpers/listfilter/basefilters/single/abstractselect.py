@@ -2,7 +2,7 @@ import calendar
 
 import datetime
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import ugettext_lazy, pgettext_lazy
 
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
@@ -183,8 +183,34 @@ class AbstractDateTime(AbstractSelectFilter):
         """
         return ugettext_lazy('This year')
 
+    def null_enabled(self):
+        """
+        Override this if you want ``null`` to be a valid option.
+        """
+        return False
+
+    def get_is_null_label(self):
+        """
+        Get the label for the ``null`` option.
+
+        Only used if :meth:`.null_enabled` is overridden to return ``True``.
+
+        Defaults to ``Has no value`` (translatable).
+        """
+        return pgettext_lazy('listfilter AbstractDateTime', 'Has no value')
+
+    def get_is_not_null_label(self):
+        """
+        Get the label for the ``not null`` option.
+
+        Only used if :meth:`.null_enabled` is overridden to return ``True``.
+
+        Defaults to ``Has value`` (translatable).
+        """
+        return pgettext_lazy('listfilter AbstractDateTime', 'Has value')
+
     def get_choices(self):
-        return [
+        choices = [
             ('', self.get_do_not_apply_label()),
             ('today', self.get_today_label()),
             ('yesterday', self.get_yesterday_label()),
@@ -193,6 +219,10 @@ class AbstractDateTime(AbstractSelectFilter):
             ('this_month', self.get_this_month_label()),
             ('this_year', self.get_this_year_label()),
         ]
+        if self.null_enabled():
+            choices.insert(1, ('is_not_null', self.get_is_not_null_label()))
+            choices.insert(1, ('is_null', self.get_is_null_label()))
+        return choices
 
     def filter_datetime_range(self, queryobject, start_datetime, end_datetime):
         """
@@ -263,6 +293,22 @@ class AbstractDateTime(AbstractSelectFilter):
                                           start_datetime=start_of_year,
                                           end_datetime=end_of_year)
 
+    def filter_is_null(self, queryobject):
+        """
+        Filter so that only values that are NULL is included.
+
+        Must be overridden in subclasses.
+        """
+        raise NotImplementedError()
+
+    def filter_is_not_null(self, queryobject):
+        """
+        Filter so that only values that are not NULL is included.
+
+        Must be overridden in subclasses.
+        """
+        raise NotImplementedError()
+
     def filter(self, queryobject):
         cleaned_value = self.get_cleaned_value()
         if cleaned_value == 'today':
@@ -277,6 +323,10 @@ class AbstractDateTime(AbstractSelectFilter):
             return self.filter_this_month(queryobject=queryobject)
         elif cleaned_value == 'this_year':
             return self.filter_this_year(queryobject=queryobject)
+        elif cleaned_value == 'is_null' and self.null_enabled():
+            return self.filter_is_null(queryobject=queryobject)
+        elif cleaned_value == 'is_not_null' and self.null_enabled():
+            return self.filter_is_not_null(queryobject=queryobject)
         return queryobject
 
 

@@ -13,6 +13,7 @@ class FilterTestModel(models.Model):
     mytextfield = models.TextField(null=False, blank=False, default='')
     myintnullfield = models.IntegerField(default=None, null=True, blank=True)
     mydatetimefield = models.DateTimeField(default=timezone.now)
+    mynulldatetimefield = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
         return 'FilterTestModel(mycharfield={!r}, mybooleanfield={})'.format(

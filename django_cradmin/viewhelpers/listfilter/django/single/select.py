@@ -86,6 +86,39 @@ class DateTime(abstractselect.AbstractDateTime, DjangoOrmFilterMixin):
         })
 
 
+class NullDateTime(DateTime):
+    """
+    Just like :class:`.DateTime`, but adds an option for ``None``-values.
+
+    Examples:
+
+        A model for this example::
+
+            class MyModel(models.Model):
+                banned_datetime = models.DateTimeField(null=True, blank=True, default=None)
+
+        Create the filter::
+
+            listfilter.django.single.select.NullDateTime(
+                slug='banned_datetime', label='Banned time')
+    """
+    def null_enabled(self):
+        return True
+
+    def filter_is_null(self, queryobject):
+        modelfield = self.get_modelfield()
+        return queryobject.filter(**{
+            '{}__isnull'.format(modelfield): True
+        })
+
+    def filter_is_not_null(self, queryobject):
+        modelfield = self.get_modelfield()
+        return queryobject.filter(**{
+            '{}__isnull'.format(modelfield): False
+        })
+
+
+
 class AbstractOrderBy(abstractselect.AbstractOrderBy, DjangoOrmFilterMixin):
     """
     A "filter" that lets the user select how the queryobject should be ordered.

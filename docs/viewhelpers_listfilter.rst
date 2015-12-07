@@ -40,7 +40,7 @@ We add three filters:
 - Search by ``name``.
   Uses :class:`~django_cradmin.viewhelpers.listfilter.django.single.textinput.Search`.
 - Filter by ``banned_datetime``.
-  Uses :class:`~django_cradmin.viewhelpers.listfilter.django.single.select.DateTime`.
+  Uses :class:`~django_cradmin.viewhelpers.listfilter.django.single.select.NullDateTime`.
 - Order by name (descending and ascending). This is defined
   using a class. Some of the provided base classes for filters
   work like this because they need something that can not be

@@ -284,6 +284,30 @@ class TestDateTime(TestCase):
                 set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
 
+class TestNullDateTime(TestCase):
+    def test_is_null(self):
+        testfilter = listfilter.django.single.select.NullDateTime(slug='mynulldatetimefield')
+        testfilter.set_values(values=['is_null'])
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mynulldatetimefield=datetimeutils.default_timezone_datetime(2014, 12, 31))
+        isnull = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                            mynulldatetimefield=None)
+        self.assertEqual(
+            {isnull},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+    def test_is_not_null(self):
+        testfilter = listfilter.django.single.select.NullDateTime(slug='mynulldatetimefield')
+        testfilter.set_values(values=['is_not_null'])
+        isnotnull = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                               mynulldatetimefield=datetimeutils.default_timezone_datetime(2014, 12, 31))
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mynulldatetimefield=None)
+        self.assertEqual(
+            {isnotnull},
+            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
+
+
 class TestOrderBy(TestCase):
     def test_invalid_value(self):
         class OrderByFilter(listfilter.django.single.select.AbstractOrderBy):

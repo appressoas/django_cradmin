@@ -32,7 +32,7 @@ class PersonListView(listbuilderview.FilterListMixin, listbuilderview.View):
             modelfields=['name']))
         filterlist.append(OrderPersonsFilter(
             slug='orderby', label='Order by'))
-        filterlist.append(listfilter.django.single.select.DateTime(
+        filterlist.append(listfilter.django.single.select.NullDateTime(
             slug='banned_datetime', label='Banned time'))
 
     def get_filterlist_url(self, filters_string):
