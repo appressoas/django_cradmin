@@ -3,13 +3,7 @@ from django.test import RequestFactory
 import htmls
 from model_mommy import mommy
 
-try:
-    # Python 3 - use the builtin module
-    from unittest import mock
-except ImportError:
-    # Python 2 via the mock library.
-    # Requires users to ``pip install mock``.
-    import mock
+from django_cradmin.python2_compatibility import mock
 
 
 class MockRequestResponse(object):

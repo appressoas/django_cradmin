@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.core import mail
 
 from django.test import TestCase
-import mock
+from django_cradmin.python2_compatibility import mock
 
 from django_cradmin.apps.cradmin_activate_account.utils import ActivationEmail
 from django_cradmin.tests.helpers import create_user

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from builtins import str
 from builtins import range
 import htmls
-import mock
+from django_cradmin.python2_compatibility import mock
 from django.test import TestCase, RequestFactory
 
 from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import TestModel

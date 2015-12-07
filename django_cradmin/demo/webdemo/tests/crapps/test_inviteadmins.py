@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.test import TestCase, RequestFactory
 from django.core import mail
 import htmls
-import mock
+from django_cradmin.python2_compatibility import mock
 from django_cradmin.demo.webdemo.views.inviteadmins.send import SendInvitesView
 
 from django_cradmin.demo.webdemo.models import Site

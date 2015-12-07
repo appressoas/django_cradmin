@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.test import TestCase
-import mock
+from django_cradmin.python2_compatibility import mock
 from model_mommy import mommy
 from future import standard_library
 

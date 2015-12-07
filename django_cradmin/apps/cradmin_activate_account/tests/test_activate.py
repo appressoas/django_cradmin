@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
-import mock
+from django_cradmin.python2_compatibility import mock
 from django_cradmin.apps.cradmin_activate_account.views.activate import ActivateAccountView
 
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata

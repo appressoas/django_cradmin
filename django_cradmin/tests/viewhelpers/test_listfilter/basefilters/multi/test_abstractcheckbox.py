@@ -1,11 +1,10 @@
 from __future__ import unicode_literals
 
-from unittest import mock
-
 from django.test import TestCase
 from future import standard_library
 import htmls
 
+from django_cradmin.python2_compatibility import mock
 from django_cradmin.viewhelpers.listfilter.base.abstractfilterlist import AbstractFilterList
 from django_cradmin.viewhelpers.listfilter.basefilters.multi.abstractcheckbox import AbstractCheckboxFilter
 

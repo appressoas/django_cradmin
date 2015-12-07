@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.test import TestCase
 import htmls
-import mock
+from django_cradmin.python2_compatibility import mock
 from future import standard_library
 
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter

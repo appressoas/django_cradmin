@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
 import htmls
-import mock
+from django_cradmin.python2_compatibility import mock
 
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView

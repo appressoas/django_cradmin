@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.core.management import call_command
 from django.test import TestCase
 from django.utils import timezone
-import mock
+from django_cradmin.python2_compatibility import mock
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, generate_token, \
     get_expiration_datetime_for_app
 from django_cradmin.tests.helpers import create_user
