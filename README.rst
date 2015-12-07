@@ -14,6 +14,11 @@ Django cradmin is in BETA. The system is fairly stable, but:
     :target: https://travis-ci.org/appressoas/django_cradmin
 
 
+Docs
+====
+http://django-cradmin.readthedocs.org
+
+
 License
 =======
 3-clause BSD license. See the LICENSE file in the same directory as this readme file.
