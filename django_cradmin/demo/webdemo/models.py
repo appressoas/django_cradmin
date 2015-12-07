@@ -55,6 +55,7 @@ class Page(models.Model):
         blank=True, null=False, default='')
     subscribers = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
+        blank=True,
         verbose_name=_('Subscribed users'))
 
     def __str__(self):
