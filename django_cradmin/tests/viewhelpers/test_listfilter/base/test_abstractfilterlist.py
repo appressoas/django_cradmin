@@ -9,13 +9,13 @@ from future import standard_library
 from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 from django_cradmin.viewhelpers.listfilter.base.abstractfilterlist import AbstractFilterList
-from django_cradmin.viewhelpers.listfilter.base.abstractgroupchild import AbstractGroupChild
+from django_cradmin.viewhelpers.listfilter.base.abstractfilterlistchild import AbstractFilterListChild
 from django_cradmin.viewhelpers.listfilter.base.exceptions import InvalidFiltersStringError
 
 standard_library.install_aliases()
 
 
-class MinimalFilterGroupChild(AbstractGroupChild):
+class MinimalFilterGroupChild(AbstractFilterListChild):
     template_name = 'cradmin_viewhelpers_testapp/listfilter/minimal-filtergroupchild.django.html'
 
 

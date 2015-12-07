@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django_cradmin.renderable import AbstractRenderableWithCss
 
 
-class AbstractGroupChild(AbstractRenderableWithCss):
+class AbstractFilterListChild(AbstractRenderableWithCss):
     """
     Base class for anything that can be added as a child of
     :class:`.AbstractFilterList`.

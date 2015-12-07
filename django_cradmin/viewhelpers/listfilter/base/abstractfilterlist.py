@@ -126,12 +126,12 @@ class AbstractFilterList(AbstractRenderableWithCss):
 
     def append(self, child):
         """
-        Add subclass of :class:`django_cradmin.renderable.AbstractGroupChild`
+        Add subclass of :class:`django_cradmin.renderable.AbstractFilterListChild`
         to the filterlist.
 
         You will normally add subclasses of :class:`.AbstractFilter`
         but if you want to spice up the filter "box" with additional HTML,
-        you can create a subclass of :class:`.AbstractGroupChild` and
+        you can create a subclass of :class:`.AbstractFilterListChild` and
         add an object of that class.
         """
         child.set_filterlist(self)

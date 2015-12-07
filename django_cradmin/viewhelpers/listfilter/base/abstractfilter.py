@@ -2,10 +2,10 @@ from __future__ import unicode_literals
 import json
 from xml.sax.saxutils import quoteattr
 from django.utils.translation import pgettext
-from django_cradmin.viewhelpers.listfilter.base.abstractgroupchild import AbstractGroupChild
+from django_cradmin.viewhelpers.listfilter.base.abstractfilterlistchild import AbstractFilterListChild
 
 
-class AbstractFilter(AbstractGroupChild):
+class AbstractFilter(AbstractFilterListChild):
     """
     Abstract base class for all filters.
     """
