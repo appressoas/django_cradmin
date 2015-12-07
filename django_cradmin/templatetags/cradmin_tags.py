@@ -77,7 +77,39 @@ def cradmin_appurl(context, viewname, *args, **kwargs):
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_appindex_url(context, appname):
+def cradmin_appindex_url(context, *args, **kwargs):
+    """
+    Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.appindex_url`.
+
+    Examples:
+
+        Reverse index (frontpage) of current app:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_tags %}
+
+            <a href='{% cradmin_appindex_url %}'>
+                Go to pages-app
+            </a>
+
+        Reverse a view with keyword arguments:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_tags %}
+
+            <a href='{% cradmin_appindex_url mode="advanced" orderby="name" %}'>
+                Show advanced listing ordered by name
+            </a>
+    """
+    request = context['request']
+    return request.cradmin_app.reverse_appurl(
+        viewname=crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_instance_appindex_url(context, appname, *args, **kwargs):
     """
     Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.appindex_url`.
 
@@ -89,18 +121,29 @@ def cradmin_appindex_url(context, appname):
 
             {% load cradmin_tags %}
 
-            <a href='{% cradmin_appindex_url appname="pages" viewname="edit" %}'>
+            <a href='{% cradmin_instance_appindex_url appname="pages" %}'>
                 Go to pages-app
+            </a>
+
+        Reverse a view with keyword arguments:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_tags %}
+
+            <a href='{% cradmin_instance_appindex_url appname="pages" mode="advanced" orderby="name" %}'>
+                Show advanced listing ordered by name
             </a>
     """
     request = context['request']
     return request.cradmin_instance.reverse_url(
-        appname=appname, viewname=crapp.INDEXVIEW_NAME)
+        appname=appname, viewname=crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs)
 
 
 @register.simple_tag(takes_context=True)
 def cradmin_instanceindex_url(context, appname):
-    warnings.warn("cradmin_instanceindex_url is deprecated. Use cradmin_appindex_url instead.", DeprecationWarning)
+    warnings.warn("cradmin_instanceindex_url is deprecated. Use cradmin_instance_appindex_url instead.",
+                  DeprecationWarning)
     return cradmin_appindex_url(context, appname)
 
 
