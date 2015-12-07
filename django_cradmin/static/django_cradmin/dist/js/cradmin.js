@@ -3621,8 +3621,7 @@
           options: '=djangoCradminListfilter'
         },
         controller: function($scope, $element) {
-          var $messageElement, filterListDomId, filterScopes, hideMessage, loadInProgress, onLoadSuccess, queueMessage, setLoadFinished, setLoadInProgress, showMessage, showMessageTimer,
-            _this = this;
+          var $messageElement, filterListDomId, filterScopes, hideMessage, loadInProgress, onLoadSuccess, queueMessage, setLoadFinished, setLoadInProgress, showMessage, showMessageTimer;
           filterListDomId = $element.attr('id');
           filterScopes = [];
           loadInProgress = false;
@@ -3934,22 +3933,26 @@
           };
         },
         link: function($scope, $element, attributes, listfilterCtrl) {
-          var getUrl;
+          var getUrl, onLoadSuccess;
           listfilterCtrl.addFilterScope($scope);
           getUrl = function($inputElement) {
             return $inputElement.attr('data-url');
           };
+          onLoadSuccess = function(data) {
+            return $element.find('#' + data.checkboxId).focus();
+          };
           $scope.onCheckboxChange = function(e) {
-            var remoteUrl;
-            console.log('Change');
+            var checkboxId, remoteUrl;
             remoteUrl = getUrl(angular.element(e.target));
+            checkboxId = angular.element(e.target).attr('id');
             return listfilterCtrl.load({
               remoteUrl: remoteUrl,
               filterDomId: $element.attr('id'),
-              loadingmessage: $scope.options.loadingmessage,
-              onLoadSuccess: function() {
-                return $element.focus();
-              }
+              onLoadSuccess: onLoadSuccess,
+              onLoadSuccessData: {
+                checkboxId: checkboxId
+              },
+              loadingmessage: $scope.options.loadingmessage
             });
           };
           $scope.registerCheckboxChangeListeners = function(removeFirst) {

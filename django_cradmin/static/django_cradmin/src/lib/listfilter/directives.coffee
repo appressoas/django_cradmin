@@ -33,7 +33,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
 #          $scope.targetElement.removeAttr('aria-describedby', 'myprogress')
           $scope.targetElement.attr('aria-busy', 'false')
 
-        onLoadSuccess = ($remoteHtmlDocument, remoteUrl) =>
+        onLoadSuccess = ($remoteHtmlDocument, remoteUrl) ->
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
           title = $window.document.title
           $window.history.pushState("list filter change", title, remoteUrl)
@@ -306,15 +306,20 @@ angular.module('djangoCradmin.listfilter.directives', [])
         getUrl = ($inputElement) ->
           $inputElement.attr('data-url')
 
+        onLoadSuccess = (data) ->
+          $element.find('#' + data.checkboxId).focus()
+
         $scope.onCheckboxChange = (e) ->
-          console.log 'Change'
           remoteUrl = getUrl(angular.element(e.target))
+          checkboxId = angular.element(e.target).attr('id')
           listfilterCtrl.load({
             remoteUrl: remoteUrl
             filterDomId: $element.attr('id')
+            onLoadSuccess: onLoadSuccess
+            onLoadSuccessData: {
+              checkboxId: checkboxId
+            }
             loadingmessage: $scope.options.loadingmessage
-            onLoadSuccess: ->
-              $element.focus()
           })
 
         $scope.registerCheckboxChangeListeners = (removeFirst) ->
