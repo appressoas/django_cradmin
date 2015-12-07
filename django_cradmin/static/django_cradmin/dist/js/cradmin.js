@@ -3634,7 +3634,7 @@
           setLoadInProgress = function(options) {
             var filterScope, _i, _len, _results;
             loadInProgress = true;
-            $scope.targetElement.addClass('django-cradmin-listfilter-target-loading');
+            $scope.targetElement.attr('aria-busy', 'true');
             _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];
@@ -3645,7 +3645,6 @@
           setLoadFinished = function(options) {
             var filterScope, _i, _len;
             loadInProgress = false;
-            $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading');
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];
               filterScope.onLoadFinished(options.filterDomId);
@@ -3665,15 +3664,25 @@
             return _results;
           };
           showMessage = function(variant, message) {
-            var loadspinner;
+            var aria_role, loadspinner;
             hideMessage();
+            $scope.targetElement.removeClass('django-cradmin-listfilter-target-loaderror');
             loadspinner = "";
-            if ($scope.options.loadspinner_css_class != null) {
-              loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "' aria-hidden='true'></span>");
+            aria_role = 'alert';
+            if (variant === 'error') {
+              $scope.targetElement.addClass('django-cradmin-listfilter-target-loaderror');
+              aria_role = 'alert';
+            } else if (variant === 'loading') {
+              $scope.targetElement.addClass('django-cradmin-listfilter-target-loading');
+              aria_role = 'progressbar';
+              if ($scope.options.loadspinner_css_class != null) {
+                loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " + ("" + $scope.options.loadspinner_css_class + "' aria-hidden='true'></span>");
+              }
+            } else {
+              throw new Error("Invalid message variant: " + variant);
             }
-            $messageElement = angular.element("<div aria-role='progressbar' " + ("class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("<span class='django-cradmin-listfilter-message-text'>" + message + "</span></div>"));
-            $messageElement.prependTo($scope.targetElement);
-            return $scope.targetElement.attr('aria-busy', 'true');
+            $messageElement = angular.element(("<div aria-role='" + aria_role + "' ") + ("class='django-cradmin-listfilter-message django-cradmin-listfilter-message-" + variant + "'>") + ("" + loadspinner) + ("<span class='django-cradmin-listfilter-message-text'>" + message + "</span></div>"));
+            return $messageElement.prependTo($scope.targetElement);
           };
           queueMessage = function(variant, message) {
             if (showMessageTimer != null) {
@@ -3689,8 +3698,9 @@
             }
             if ($messageElement) {
               $messageElement.remove();
-              return $messageElement = null;
+              $messageElement = null;
             }
+            return $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading');
           };
           this.load = function(options) {
             setLoadInProgress(options);

@@ -22,13 +22,12 @@ angular.module('djangoCradmin.listfilter.directives', [])
 
         setLoadInProgress = (options) ->
           loadInProgress = true
-          $scope.targetElement.addClass('django-cradmin-listfilter-target-loading')
+          $scope.targetElement.attr('aria-busy', 'true')
           for filterScope in filterScopes
             filterScope.onLoadInProgress(options.filterDomId)
 
         setLoadFinished = (options) ->
           loadInProgress = false
-          $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading')
           for filterScope in filterScopes
             filterScope.onLoadFinished(options.filterDomId)
 #          $scope.targetElement.removeAttr('aria-describedby', 'myprogress')
@@ -43,17 +42,28 @@ angular.module('djangoCradmin.listfilter.directives', [])
 
         showMessage = (variant, message) ->
           hideMessage()
+          $scope.targetElement.removeClass('django-cradmin-listfilter-target-loaderror')
           loadspinner = ""
-          if $scope.options.loadspinner_css_class?
-            loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " +
-              "#{$scope.options.loadspinner_css_class}' aria-hidden='true'></span>"
+
+          aria_role = 'alert'
+          if variant == 'error'
+            $scope.targetElement.addClass('django-cradmin-listfilter-target-loaderror')
+            aria_role = 'alert'
+          else if variant == 'loading'
+            $scope.targetElement.addClass('django-cradmin-listfilter-target-loading')
+            aria_role = 'progressbar'
+            if $scope.options.loadspinner_css_class?
+              loadspinner = "<span class='django-cradmin-listfilter-message-loadspinner " +
+                "#{$scope.options.loadspinner_css_class}' aria-hidden='true'></span>"
+          else
+            throw new Error("Invalid message variant: #{variant}")
+
           $messageElement = angular.element(
-            "<div aria-role='progressbar' " +
+            "<div aria-role='#{aria_role}' " +
             "class='django-cradmin-listfilter-message django-cradmin-listfilter-message-#{variant}'>" +
             "#{loadspinner}" +
             "<span class='django-cradmin-listfilter-message-text'>#{message}</span></div>")
           $messageElement.prependTo($scope.targetElement)
-          $scope.targetElement.attr('aria-busy', 'true')
 
         queueMessage = (variant, message) ->
           if showMessageTimer?
@@ -68,6 +78,7 @@ angular.module('djangoCradmin.listfilter.directives', [])
           if $messageElement
             $messageElement.remove()
             $messageElement = null
+          $scope.targetElement.removeClass('django-cradmin-listfilter-target-loading')
 
         @load = (options) ->
           setLoadInProgress(options)
