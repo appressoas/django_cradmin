@@ -54,7 +54,6 @@ class TestPageUpdateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertTrue(mockresponse.selector.exists('#div_id_title'))
         self.assertTrue(mockresponse.selector.exists('.has-error'))
         self.assertEquals('This field is required.', mockresponse.selector.one('#error_1_id_title').alltext_normalized)
-        # self.assertIn('This field is required.', mockresponse.selector.one('#div_id_title .has-error #error_1_id_title').alltext_normalized)
 
     def test_post_without_required_field_intro(self):
         """
@@ -117,7 +116,8 @@ class TestPageUpdateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
             })
         self.assertTrue(mockresponse.selector.exists('#div_id_publishing_time'))
         self.assertTrue(mockresponse.selector.exists('.has-error'))
-        self.assertEquals('This field is required.', mockresponse.selector.one('#error_1_id_publishing_time').alltext_normalized)
+        self.assertEquals('This field is required.',
+                          mockresponse.selector.one('#error_1_id_publishing_time').alltext_normalized)
 
     def test_post_all_required_fields_filled(self):
         """

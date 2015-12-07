@@ -1,18 +1,8 @@
-from unittest import mock
 from django import test
 from model_mommy import mommy
 
 from django_cradmin.demo.webdemo.views import pages
 from django_cradmin import cradmin_testhelpers
-
-
-try:
-    # Python 3 - use the builtin module
-    from unittest import mock
-except ImportError:
-    # Python 2 via the mock library.
-    # Requires users to ``pip install mock``.
-    import mock
 
 
 class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
@@ -31,7 +21,7 @@ class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         Test the view title ('Create Page').
         """
         site = mommy.make('webdemo.Site')
-        page = mommy.make('webdemo.Page', site=site)
+        mommy.make('webdemo.Page', site=site)
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
         view_title = mockresponse.selector.one('.django-cradmin-page-header-inner').alltext_normalized
 
@@ -42,7 +32,7 @@ class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         Test the button text for creating a page in view ('Create').
         """
         site = mommy.make('webdemo.Site', name='Demosite')
-        page = mommy.make('webdemo.Page', title='Webpage2' ,site=site)
+        mommy.make('webdemo.Page', title='Webpage2', site=site)
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
         button_text = mockresponse.selector.one('.btn-primary').alltext_normalized
 

@@ -2,7 +2,7 @@ import calendar
 
 import datetime
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy, pgettext_lazy, pgettext
+from django.utils.translation import ugettext_lazy
 
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 

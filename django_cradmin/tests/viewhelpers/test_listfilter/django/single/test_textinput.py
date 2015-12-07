@@ -33,8 +33,8 @@ class TestSearch(TestCase):
             slug='mycharfield',
             modelfields=['mycharfield', 'mytextfield'])
         testfilter.set_values(values=['Another'])
-        withvalue1 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                                mycharfield='A testvalue')
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mycharfield='A testvalue')
         withvalue2 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
                                 mytextfield='Another testvalue')
         mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',

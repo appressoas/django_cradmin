@@ -1,5 +1,5 @@
-import json
 from django.utils.translation import ugettext_lazy, pgettext
+
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
 

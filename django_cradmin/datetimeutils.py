@@ -19,5 +19,3 @@ def default_timezone_datetime(*args, **kwargs):
     """
     return make_aware_in_default_timezone(
         datetime.datetime(*args, **kwargs))
-
-

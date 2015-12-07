@@ -230,4 +230,3 @@ class ViewMixin(object):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         context['filterlist'] = self.get_filterlist()
         return context
-

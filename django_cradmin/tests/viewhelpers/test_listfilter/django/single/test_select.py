@@ -301,10 +301,10 @@ class TestOrderBy(TestCase):
         class OrderByFilter(listfilter.django.single.select.AbstractOrderBy):
             def get_ordering_options(self):
                 return [
-                        ('', {
-                            'label': 'mylabel',
-                            'order_by': ['mydatetimefield'],
-                        }),
+                    ('', {
+                        'label': 'mylabel',
+                        'order_by': ['mydatetimefield'],
+                    }),
                 ]
 
         testfilter = OrderByFilter(slug='orderby')
@@ -321,14 +321,14 @@ class TestOrderBy(TestCase):
         class OrderByFilter(listfilter.django.single.select.AbstractOrderBy):
             def get_ordering_options(self):
                 return [
-                        ('', {
-                            'label': 'asc',
-                            'order_by': ['mydatetimefield'],
-                        }),
-                        ('desc', {
-                            'label': 'desc',
-                            'order_by': ['-mydatetimefield'],
-                        }),
+                    ('', {
+                        'label': 'asc',
+                        'order_by': ['mydatetimefield'],
+                    }),
+                    ('desc', {
+                        'label': 'desc',
+                        'order_by': ['-mydatetimefield'],
+                    }),
                 ]
 
         testfilter = OrderByFilter(slug='orderby')
