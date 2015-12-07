@@ -4,7 +4,8 @@
 
 {% block inputfield %}
     <div id="{{ me.get_inputfield_dom_id }}"
-            django-cradmin-listfilter-checkbox={{ me.get_angularjs_options_json|safe }}>
+            class="django-cradmin-listfilter-checkboxlist"
+            django-cradmin-listfilter-checkboxlist={{ me.get_angularjs_options_json|safe }}>
         {% for choicedata in choicesdata %}
             <div class="checkbox" id="{{ choicedata.dom_id }}_wrapper">
                 {% comment %}

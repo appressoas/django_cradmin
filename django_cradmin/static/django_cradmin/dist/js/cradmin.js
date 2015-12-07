@@ -3881,6 +3881,63 @@
         }
       };
     }
+  ]).directive('djangoCradminListfilterCheckboxlist', [
+    function() {
+      return {
+        restrict: 'A',
+        require: '^djangoCradminListfilter',
+        scope: {
+          options: '=djangoCradminListfilterCheckboxlist'
+        },
+        controller: function($scope, $element) {
+          /*
+          Replace all contents with new elements from the server.
+          */
+
+          $scope.syncWithRemoteFilterList = function($remoteFilterList) {
+            var $remoteElement, domId;
+            domId = $element.attr('id');
+            $remoteElement = $remoteFilterList.find('#' + domId);
+            $element.empty();
+            $element.append(angular.element($remoteElement.html()));
+            return $scope.registerCheckboxChangeListeners(true);
+          };
+          $scope.onLoadInProgress = function(filterDomId) {
+            return $element.find('input').prop('disabled', true);
+          };
+          $scope.onLoadFinished = function(filterDomId) {
+            return $element.find('input').prop('disabled', false);
+          };
+        },
+        link: function($scope, $element, attributes, listfilterCtrl) {
+          var getUrl;
+          listfilterCtrl.addFilterScope($scope);
+          getUrl = function($inputElement) {
+            return $inputElement.attr('data-url');
+          };
+          $scope.onCheckboxChange = function(e) {
+            var remoteUrl;
+            console.log('Change');
+            remoteUrl = getUrl(angular.element(e.target));
+            return listfilterCtrl.load({
+              remoteUrl: remoteUrl,
+              filterDomId: $element.attr('id'),
+              loadingmessage: $scope.options.loadingmessage,
+              onLoadSuccess: function() {
+                return $element.focus();
+              }
+            });
+          };
+          $scope.registerCheckboxChangeListeners = function(removeFirst) {
+            if (removeFirst) {
+              $element.find('input').off('change', $scope.onCheckboxChange);
+            }
+            return $element.find('input').on('change', $scope.onCheckboxChange);
+          };
+          $scope.registerCheckboxChangeListeners(false);
+        }
+      };
+    }
   ]);
 
 }).call(this);
