@@ -5,6 +5,7 @@ import json
 from django import template
 from django.conf import settings
 from django.contrib.staticfiles.templatetags.staticfiles import static
+import warnings
 
 from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
@@ -50,25 +51,47 @@ def cradmin_rolefrontpage_url(context, role):
 def cradmin_appurl(context, viewname, *args, **kwargs):
     """
     Template tag implementation of :meth:`django_cradmin.crapp.App.reverse_appurl`.
+
+    Examples:
+
+        Reverse the view named ``"edit"`` within the current app:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_appurl "edit" %}'>Edit</a>
+
+        Reverse a view with keyword arguments:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_appurl "list" mode="advanced" orderby="name" %}'>
+                Show advanced listing ordered by name
+            </a>
     """
     request = context['request']
     return request.cradmin_app.reverse_appurl(viewname, args=args, kwargs=kwargs)
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
-    """
-    Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.reverse_url`.
-    """
-    request = context['request']
-    return request.cradmin_instance.reverse_url(
-        appname=appname, viewname=viewname, args=args, kwargs=kwargs)
-
-
-@register.simple_tag(takes_context=True)
-def cradmin_instanceindex_url(context, appname):
+def cradmin_appindex_url(context, appname):
     """
     Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.appindex_url`.
+
+    Examples:
+
+        Reverse index (frontpage) of the ``"pages"`` app:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_appindex_url appname="pages" viewname="edit" %}'>
+                Go to pages-app
+            </a>
     """
     request = context['request']
     return request.cradmin_instance.reverse_url(
@@ -76,9 +99,72 @@ def cradmin_instanceindex_url(context, appname):
 
 
 @register.simple_tag(takes_context=True)
+def cradmin_instanceindex_url(context, appname):
+    warnings.warn("cradmin_instanceindex_url is deprecated. Use cradmin_appindex_url instead.", DeprecationWarning)
+    return cradmin_appindex_url(context, appname)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
+    """
+    Template tag implementation of :meth:`django_cradmin.crinstance.BaseCrAdminInstance.reverse_url`.
+
+    Examples:
+
+        Reverse the view named ``"edit"`` within the app named ``"pages"``:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_instance_url appname="pages" viewname="edit" %}'>
+                Edit
+            </a>
+
+        Reverse a view with keyword arguments:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_instance_url appname="pages" viewname="list" mode="advanced" orderby="name" %}'>
+                Show advanced pages listing ordered by name
+            </a>
+    """
+    request = context['request']
+    return request.cradmin_instance.reverse_url(
+        appname=appname, viewname=viewname, args=args, kwargs=kwargs)
+
+
+@register.simple_tag(takes_context=True)
 def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs):
     """
     Template tag implementation of :meth:`django_cradmin.crinstance.reverse_cradmin_url`.
+
+    Examples:
+
+        Reverse the view named ``"edit"`` within the app named ``"pages"`` in the
+        cradmin-instance with id ``"my_cradmin_instance"`` using roleid ``10``:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_instance_url instanceid="my_cradmin_instance" appname="pages"
+            roleid=10 viewname="edit" %}'>
+                Edit
+            </a>
+
+        Reverse a view with keyword arguments:
+
+        .. code-block:: htmldjango
+
+            {% load "cradmin_tags" %}
+
+            <a href='{% cradmin_instance_url instanceid="my_cradmin_instance" appname="pages"
+            roleid=10 viewname="list" mode="advanced" orderby="name" %}'>
+                Show advanced pages listing ordered by name
+            </a>
     """
     return reverse_cradmin_url(
         instanceid=instanceid,
@@ -139,11 +225,15 @@ def cradmin_render_renderable(context, renderable):
     sends the ``request`` into render (so this is the same
     as calling ``renderable.render(request=context['request'])``.
 
-    Example::
+    Examples:
 
-        {% load cradmin_tags %}
+        Render a renderable named ``renderable`` in the current template context:
 
-        {% cradmin_render_renderable renderable %}
+        .. code-block:: htmldjango
+
+            {% load cradmin_tags %}
+
+            {% cradmin_render_renderable renderable %}
     """
     request = context['request']
     return renderable.render(request=request)

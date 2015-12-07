@@ -3,6 +3,14 @@ Template tags
 #############
 
 
+************
+cradmin_tags
+************
+
+.. currentmodule:: django_cradmin.templatetags.cradmin_tags
+.. automodule:: django_cradmin.templatetags.cradmin_tags
+
+
 .. _cradmin_icon_tags:
 
 *****************
@@ -37,9 +45,7 @@ views/components.
 
 
 .. currentmodule:: django_cradmin.css_icon_map
-
 .. automodule:: django_cradmin.css_icon_map
-    :members:
 
 
 ******************
@@ -48,6 +54,10 @@ cradmin_image_tags
 See :doc:`imageutils` for examples.and details.
 
 .. currentmodule:: django_cradmin.templatetags.cradmin_image_tags
-
 .. automodule:: django_cradmin.templatetags.cradmin_image_tags
-    :members:
+
+
+******************
+cradmin_email_tags
+******************
+See :doc:`apps.cradmin_email`.
