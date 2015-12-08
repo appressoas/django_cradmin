@@ -1,0 +1,34 @@
+{% extends "django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html" %}
+{% load cradmin_tags %}
+{% load cradmin_image_tags %}
+
+{% block content %}
+    <h2>{{ me.product.name }}</h2>
+    {% if me.product.description %}
+        <p>
+            {{ me.product.description|truncatechars:"200" }}
+        </p>
+    {% endif %}
+    <p>
+        <button class="btn btn-default"
+                type="button"
+                django-cradmin-multiselect-select='{
+                    "preview_container_css_selector": ".django-cradmin-listbuilder-itemvalue",
+                    "preview_css_selector": ".django-cradmin-multiselect-preview",
+                    "target_dom_id": "django_cradmin_multiselectdemo_select_target"
+                }'
+                aria-label='Select "{{ me.product.title }}"'>
+            Select
+        </button>
+    </p>
+
+    <div class="django-cradmin-multiselect-preview">
+        <h3>{{ me.product.name }}</h3>
+        <input type="hidden" name="selected_products" value="{{ me.product.id }}">
+        <button type="button"
+                class="btn btn-danger"
+                aria-label='Deselect "{{ me.product.title }}"'>
+            Deselect
+        </button>
+    </div>
+{% endblock content %}
