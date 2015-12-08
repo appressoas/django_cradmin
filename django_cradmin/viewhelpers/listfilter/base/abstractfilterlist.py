@@ -166,10 +166,10 @@ class AbstractFilterList(AbstractRenderableWithCss):
         """
         self.filtershandler.parse(filters_string=filters_string)
 
-    def filter(self, queryobject):
+    def filter(self, queryobject, exclude=None):
         """
         Apply the filters to the given ``queryobject``.
 
         See :meth:`.FiltersHandler.filter` for more details.
         """
-        return self.filtershandler.filter(queryobject=queryobject)
+        return self.filtershandler.filter(queryobject=queryobject, exclude=exclude)

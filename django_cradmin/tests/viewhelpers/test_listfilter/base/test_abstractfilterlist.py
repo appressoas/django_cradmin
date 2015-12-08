@@ -91,3 +91,26 @@ class TestAbstractFilterList(TestCase):
         queryset = filterlist.filter(FilterTestModel.objects.all())
         self.assertEqual({match},
                          set(queryset))
+
+    def test_filter_exclude(self):
+        class FilterOne(AbstractFilter):
+            def filter(self, queryobject):
+                return queryobject.filter(mycharfield='test')
+
+        class FilterTwo(AbstractFilter):
+            def filter(self, queryobject):
+                return queryobject.filter(mybooleanfield=True)
+
+        match1 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                            mycharfield='test', mybooleanfield=True)
+        match2 = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                            mycharfield='no match', mybooleanfield=True)
+        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
+                   mycharfield='test', mybooleanfield=False)
+
+        filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
+        filterlist.append(FilterOne(slug='filterone'))
+        filterlist.append(FilterTwo(slug='filtertwo'))
+        queryset = filterlist.filter(FilterTestModel.objects.all(), exclude={'filterone'})
+        self.assertEqual({match1, match2},
+                         set(queryset))
