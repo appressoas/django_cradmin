@@ -1,0 +1,37 @@
+from django_cradmin import crapp
+from django_cradmin.demo.multiselectdemo.models import Product
+from django_cradmin.viewhelpers import listbuilderview
+from django_cradmin.viewhelpers import listfilter
+
+
+class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
+    model = Product
+
+    def add_filterlist_items(self, filterlist):
+        filterlist.append(listfilter.django.single.textinput.Search(
+            slug='search',
+            label='Search',
+            label_is_screenreader_only=True,
+            modelfields=['name', 'description']))
+
+    def get_filterlist_url(self, filters_string):
+        return self.request.cradmin_app.reverse_appurl(
+            'filter', kwargs={'filters_string': filters_string})
+
+    def get_queryset_for_role(self, role):
+        queryset = Product.objects.all().order_by('name')
+        queryset = self.get_filterlist().filter(queryset)
+        return queryset
+
+
+class App(crapp.App):
+    appurls = [
+        crapp.Url(
+            r'^$',
+            ProductListView.as_view(),
+            name=crapp.INDEXVIEW_NAME),
+        crapp.Url(
+            r'^filter/(?P<filters_string>.+)?$',
+            ProductListView.as_view(),
+            name='filter'),
+    ]

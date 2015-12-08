@@ -2,8 +2,10 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import models
+from future.utils import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Site(models.Model):
     name = models.CharField(max_length=100)
     admins = models.ManyToManyField(
@@ -11,6 +13,7 @@ class Site(models.Model):
         related_name='listfilterdemo_admins')
 
 
+@python_2_unicode_compatible
 class Person(models.Model):
     site = models.ForeignKey(Site)
     name = models.CharField(max_length=255)
