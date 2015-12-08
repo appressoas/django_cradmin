@@ -163,11 +163,21 @@ class ViewMixin(object):
         context['no_items_message'] = self.get_no_items_message()
         context['enable_previews'] = self.get_enable_previews()
         context['pre_include_template'] = self.get_pre_include_template()
+        context['buttons_include_template'] = self.get_buttons_include_template()
         context['post_include_template'] = self.get_post_include_template()
 
     def get_pre_include_template(self):
         """
         You can return a template to include before the listbuilder list here.
+        """
+        return None
+
+    def get_buttons_include_template(self):
+        """
+        You can return a template to include buttons above the
+        listbuilder list here. If you include this template,
+        we will create a ``<p>`` with ``django-cradmin-listbuilderview-buttons``
+        as css class, and include your template within that ``<p>``.
         """
         return None
 
@@ -181,6 +191,16 @@ class ViewMixin(object):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         self.add_listview_context_data(context)
         return context
+
+
+class ViewCreateButtonMixin(object):
+    """
+    Mixin class that overrides :meth:`.View.get_buttons_include_template`
+    with a template that renders a create button that assumes the
+    create view is named ``"create"``.
+    """
+    def get_buttons_include_template(self):
+        return "django_cradmin/viewhelpers/listbuilderview/includes/create-button.django.html"
 
 
 class View(ViewMixin, ListView):
