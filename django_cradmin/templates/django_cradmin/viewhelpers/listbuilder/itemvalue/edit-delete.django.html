@@ -28,7 +28,7 @@
     {% block buttons %}
         <p class="django-cradmin-listbuilder-itemvalue-editdelete-buttons">
             {% block editbutton %}
-                <a href="{% block editbutton-url %}{% cradmin_appurl me.get_edit_viewname me.page.id %}{% endblock %}"
+                <a href="{% block editbutton-url %}{% cradmin_appurl me.get_edit_viewname me.value.id %}{% endblock %}"
                         class="btn btn-default django-cradmin-listbuilder-itemvalue-editdelete-editbutton"
                         aria-label='{% block editbutton-arialabel %}Edit "{{ me.get_title }}"{% endblock %}'>
                     {% block editbutton-content %}
@@ -43,7 +43,7 @@
                                 django-cradmin-page-preview-open-on-click='{
                                     "urls": [{
                                         "label": "Unused",
-                                        "url": "{% block previewbutton-url %}{% cradmin_appurl me.get_preview_viewname me.page.id %}{% endblock %}"
+                                        "url": "{% block previewbutton-url %}{% cradmin_appurl me.get_preview_viewname me.value.id %}{% endblock %}"
                                     }]}'
                             {% endblock previewbutton-angularjs-directive %}
                             aria-label='{% block previewbutton-arialabel %}View "{{ me.get_title }}"{% endblock %}'>
@@ -54,7 +54,7 @@
                 {% endif %}
             {% endblock previewbutton %}
             {% block deletebutton %}
-                <a href="{% block deletebutton-url %}{% cradmin_appurl me.get_delete_viewname me.page.id %}{% endblock %}"
+                <a href="{% block deletebutton-url %}{% cradmin_appurl me.get_delete_viewname me.value.id %}{% endblock %}"
                         class="btn btn-danger django-cradmin-listbuilder-itemvalue-editdelete-deletebutton"
                         aria-label='{% block deletebutton-arialabel %}Delete "{{ me.get_title }}"{% endblock %}'>
                     {% block deletebutton-content %}
