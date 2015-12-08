@@ -144,7 +144,7 @@ def cradmin_instance_appindex_url(context, appname, *args, **kwargs):
 def cradmin_instanceindex_url(context, appname):
     warnings.warn("cradmin_instanceindex_url is deprecated. Use cradmin_instance_appindex_url instead.",
                   DeprecationWarning)
-    return cradmin_appindex_url(context, appname)
+    return cradmin_instance_appindex_url(context, appname)
 
 
 @register.simple_tag(takes_context=True)
