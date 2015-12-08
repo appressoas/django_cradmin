@@ -15,9 +15,15 @@ standard_library.install_aliases()
 from builtins import str
 
 
-class PageListItemValue(listbuilder.itemvalue.FocusBox):
+class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImageAndView):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
     valuealias = 'page'
+
+    def get_archiveimage(self):
+        return self.page.image
+
+    def get_description(self):
+        return self.page.intro
 
 
 class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
@@ -126,9 +132,9 @@ class App(crapp.App):
             PageUpdateView.as_view(),
             name="edit"),
         crapp.Url(
-            r'^preview/(?P<pk>\d+)?$',
+            r'^view/(?P<pk>\d+)?$',
             PreviewPageView.as_view(),
-            name="preview"),
+            name="view"),
         crapp.Url(
             r'^delete/(?P<pk>\d+)$',
             PageDeleteView.as_view(),

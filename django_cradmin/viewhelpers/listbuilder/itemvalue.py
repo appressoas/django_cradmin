@@ -38,7 +38,7 @@ class EditDelete(FocusBox):
         Adds the ``django-cradmin-listbuilder-itemvalue-titleeditdelete`` css class
         in addition to the classes added by the superclasses.
         """
-        css_classes = super(FocusBox, self).get_base_css_classes_list()
+        css_classes = super(EditDelete, self).get_base_css_classes_list()
         css_classes.append('django-cradmin-listbuilder-itemvalue-editdelete')
         return css_classes
 

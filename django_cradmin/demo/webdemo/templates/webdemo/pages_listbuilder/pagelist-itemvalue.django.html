@@ -1,21 +1,14 @@
-{% extends "django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html" %}
+{% extends "django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete-with-archive-image.django.html" %}
 {% load cradmin_tags %}
 {% load cradmin_image_tags %}
 
-{% block content %}
-    <h2>{{ me.page.title }}</h2>
-    {% if me.page.image %}
-        <p style="max-width: 300px;">
-            {% cradmin_create_archiveimage_tag me.page.image "cradmin-webdemo-pages-listing" css_class="img-responsive" %}
-        </p>
-    {% endif %}
-    {% if me.page.intro %}
-        <p>
-            {{ me.page.intro|truncatechars:"100" }}
-            &mdash;
-            Published {{ me.page.publishing_time|date:"DATETIME_FORMAT" }}
-        </p>
-    {% endif %}
+{% block description-content %}
+    {{ me.get_description|truncatechars:"100" }}
+    &mdash;
+    Published {{ me.page.publishing_time|date:"DATETIME_FORMAT" }}
+{% endblock description-content %}
+
+{% block below-description %}
     <p>
         <em>
             Tags:
@@ -36,23 +29,4 @@
             {% endfor %}
         </em>
     </p>
-    <p>
-        <a href="{% cradmin_appurl "edit" me.page.id %}" class="btn btn-default"
-                aria-label='Edit "{{ me.page.title }}"'>
-            Edit
-        </a>
-        <button class="btn btn-default"
-                django-cradmin-page-preview-open-on-click='{
-                    "urls": [
-                        {"label": "Unused", "url": "{% cradmin_appurl "preview" me.page.id %}"}
-                    ]}'
-                aria-label='View "{{ me.page.title }}"'>
-
-            View
-        </button>
-        <a href="{% cradmin_appurl "delete" me.page.id %}" class="btn btn-danger"
-                aria-label='Delete "{{ me.page.title }}"'>
-            Delete
-        </a>
-    </p>
-{% endblock content %}
+{% endblock below-description %}
