@@ -122,6 +122,29 @@ This can of course be used to share any kind of information that your
 filters need.
 
 
+Use an existing AbstractRenderableWithCss
+=========================================
+If you have an :class:`~django_cradmin.renderable.AbstractRenderableWithCss`
+that you want to use in a filterlist, you can just mix in the
+:class:`~django_cradmin.viewhelpers.listfilter.base.abstractfilterlistchild.FilterListChildMixin`
+class. Example::
+
+    from django_cradmin import renderable
+    from django_cradmin.viewhelpers import listfilter
+    from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
+
+    class MyRendereable(renderable.AbstractRenderableWithCss):
+        """
+        ...
+        """
+
+    class MyRenderableFilterListChild(MyRendereable,
+                                      abstractfilterlistchild.FilterListChildMixin):
+        pass
+
+    filterlist = listfilter.lists.Vertical(...)
+    filterlist.append(MyRenderableFilterListChild())
+
 **********************
 Design --- why and how
 **********************
