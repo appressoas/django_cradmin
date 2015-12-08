@@ -66,5 +66,5 @@ class Interface(object):
             options = settings.DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP[imagetype]
         except KeyError:
             raise InvalidImageType('The requested imagetype, {}, is not specified in the '
-                                   'DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP setting.')
+                                   'DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP setting.'.format(imagetype))
         return self.transform_image(imageurl, **options)
