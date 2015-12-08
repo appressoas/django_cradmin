@@ -36,23 +36,23 @@
                     {% endblock editbutton-content %}
                 </a>
             {% endblock editbutton %}
-            {% block viewbutton %}
-                {% if me.get_view_viewname %}
-                    <button class="btn btn-default django-cradmin-listbuilder-itemvalue-editdelete-viewbutton"
-                            {% block viewbutton-angularjs-directive %}
+            {% block previewbutton %}
+                {% if me.get_preview_viewname %}
+                    <button class="btn btn-default django-cradmin-listbuilder-itemvalue-editdelete-previewbutton"
+                            {% block previewbutton-angularjs-directive %}
                                 django-cradmin-page-preview-open-on-click='{
                                     "urls": [{
                                         "label": "Unused",
-                                        "url": "{% block viewbutton-url %}{% cradmin_appurl me.get_view_viewname me.page.id %}{% endblock %}"
+                                        "url": "{% block previewbutton-url %}{% cradmin_appurl me.get_preview_viewname me.page.id %}{% endblock %}"
                                     }]}'
-                            {% endblock viewbutton-angularjs-directive %}
-                            aria-label='{% block viewbutton-arialabel %}View "{{ me.get_title }}"{% endblock %}'>
-                        {% block viewbutton-content %}
+                            {% endblock previewbutton-angularjs-directive %}
+                            aria-label='{% block previewbutton-arialabel %}View "{{ me.get_title }}"{% endblock %}'>
+                        {% block previewbutton-content %}
                             {% trans "View" %}
-                        {% endblock viewbutton-content %}
+                        {% endblock previewbutton-content %}
                     </button>
                 {% endif %}
-            {% endblock viewbutton %}
+            {% endblock previewbutton %}
             {% block deletebutton %}
                 <a href="{% block deletebutton-url %}{% cradmin_appurl me.get_delete_viewname me.page.id %}{% endblock %}"
                         class="btn btn-danger django-cradmin-listbuilder-itemvalue-editdelete-deletebutton"

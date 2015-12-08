@@ -15,7 +15,7 @@ standard_library.install_aliases()
 from builtins import str
 
 
-class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImageAndView):
+class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
     valuealias = 'page'
 
@@ -132,9 +132,9 @@ class App(crapp.App):
             PageUpdateView.as_view(),
             name="edit"),
         crapp.Url(
-            r'^view/(?P<pk>\d+)?$',
+            r'^preview/(?P<pk>\d+)?$',
             PreviewPageView.as_view(),
-            name="view"),
+            name="preview"),
         crapp.Url(
             r'^delete/(?P<pk>\d+)$',
             PageDeleteView.as_view(),

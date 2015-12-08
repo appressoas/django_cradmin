@@ -85,48 +85,50 @@ class EditDelete(FocusBox):
         """
         return 'delete'
 
-    def get_view_viewname(self):
+    def get_preview_viewname(self):
         """
         Get the viewname within the current :class:`django_cradmin.crapp.App`
         to go to when viewing. The view is called with ``self.value.id`` as
         argument. If you want to change this behavior, override the
         ``viewbutton-url`` template block.
 
-        This returns ``None`` by default, and we recommend that you
-        name the view for viewing items this to keep things uniformly
-        structured.
+        This returns ``None`` by default, which means that the button
+        is not shown.
+
+        See :class:`.EditDeleteWithPreview`.
         """
         return None
 
 
-class EditDeleteWithViewMixin(object):
+class EditDeleteWithPreviewMixin(object):
     """
     Mixin class for :class:`.EditDelete` that adds a view button that
-    shows a preview via the view named ``"view"`` in the current app
-    (the viewname can be overridden in :meth:`.EditDeleteWithViewMixin.get_viewname`).
+    shows a preview via the view named ``"preview"`` in the current app
+    (the viewname can be overridden in
+    :meth:`.EditDeleteWithPreviewMixin.get_preview_viewname`).
 
     Examples:
 
         Add a view button to :class:`.EditDelete`::
 
-            class EditDeleteWithView(EditDeleteWithViewMixin, EditDelete):
+            class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
                 pass
 
         .. note::
 
-            The example above is the same as using :class:`.EditDeleteWithViewMixin`.
+            The example above is the same as using :class:`.EditDeleteWithPreviewMixin`.
     """
-    def get_view_viewname(self):
+    def get_preview_viewname(self):
         """
-        Overrides :meth:`.EditDelete.get_view_viewname` to make it return
-        ``"view"`` by default instead of ``None``.
+        Overrides :meth:`.EditDelete.get_preview_viewname` to make it return
+        ``"preview"`` by default instead of ``None``.
         """
-        return 'view'
+        return 'preview'
 
 
-class EditDeleteWithView(EditDeleteWithViewMixin, EditDelete):
+class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
     """
-    Shortcut for subclassing :class:`EditDeleteWithViewMixin`
+    Shortcut for subclassing :class:`EditDeleteWithPreviewMixin`
     and :class:`.EditDelete`.
     """
 
@@ -187,8 +189,8 @@ class EditDeleteWithArchiveImage(EditDelete):
         }
 
 
-class EditDeleteWithArchiveImageAndView(EditDeleteWithViewMixin, EditDeleteWithArchiveImage):
+class EditDeleteWithArchiveImageAndPreview(EditDeleteWithPreviewMixin, EditDeleteWithArchiveImage):
     """
-    Shortcut for subclassing :class:`EditDeleteWithViewMixin`
+    Shortcut for subclassing :class:`EditDeleteWithPreviewMixin`
     and :class:`.EditDeleteWithArchiveImage`.
     """

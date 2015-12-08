@@ -75,26 +75,26 @@ class TestEditDelete(test.TestCase):
             selector.exists('.django-cradmin-listbuilder-itemvalue-editdelete-viewbutton'))
 
 
-class TestEditDeleteWithView(test.TestCase):
-    def test_view_label(self):
+class TestEditDeleteWithPreview(test.TestCase):
+    def test_preview_label(self):
         mockrequest = mock.MagicMock()
-        mockrequest.cradmin_app.reverse_appurl.return_value = '/view'
-        rendered = listbuilder.itemvalue.EditDeleteWithView(value='testvalue')\
+        mockrequest.cradmin_app.reverse_appurl.return_value = '/preview'
+        rendered = listbuilder.itemvalue.EditDeleteWithPreview(value='testvalue')\
             .render(request=mockrequest)
         selector = htmls.S(rendered)
         self.assertEqual(
             'View',
-            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-viewbutton').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-previewbutton').alltext_normalized)
 
-    def test_view_aria_label(self):
+    def test_preview_aria_label(self):
         mockrequest = mock.MagicMock()
-        mockrequest.cradmin_app.reverse_appurl.return_value = '/view'
-        rendered = listbuilder.itemvalue.EditDeleteWithView(value='testvalue')\
+        mockrequest.cradmin_app.reverse_appurl.return_value = '/preview'
+        rendered = listbuilder.itemvalue.EditDeleteWithPreview(value='testvalue')\
             .render(request=mockrequest)
         selector = htmls.S(rendered)
         self.assertEqual(
             'View "testvalue"',
-            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-viewbutton')['aria-label'])
+            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-previewbutton')['aria-label'])
 
 
 class TestEditDeleteWithArchiveImage(test.TestCase):
@@ -125,28 +125,34 @@ class TestEditDeleteWithArchiveImage(test.TestCase):
 
 
 class TestEditDeleteWithArchiveImageAndView(test.TestCase):
-    def test_view_label(self):
+    def test_preview_label(self):
+        class MyEditDeleteWithArchiveImageAndView(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
+            def get_archiveimage(self):
+                return None
         mockrequest = mock.MagicMock()
-        mockrequest.cradmin_app.reverse_appurl.return_value = '/view'
-        rendered = listbuilder.itemvalue.EditDeleteWithView(value='testvalue')\
+        mockrequest.cradmin_app.reverse_appurl.return_value = '/preview'
+        rendered = MyEditDeleteWithArchiveImageAndView(value='testvalue')\
             .render(request=mockrequest)
         selector = htmls.S(rendered)
         self.assertEqual(
             'View',
-            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-viewbutton').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-previewbutton').alltext_normalized)
 
-    def test_view_aria_label(self):
+    def test_preview_aria_label(self):
+        class MyEditDeleteWithArchiveImageAndView(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
+            def get_archiveimage(self):
+                return None
         mockrequest = mock.MagicMock()
-        mockrequest.cradmin_app.reverse_appurl.return_value = '/view'
-        rendered = listbuilder.itemvalue.EditDeleteWithView(value='testvalue')\
+        mockrequest.cradmin_app.reverse_appurl.return_value = '/preview'
+        rendered = MyEditDeleteWithArchiveImageAndView(value='testvalue')\
             .render(request=mockrequest)
         selector = htmls.S(rendered)
         self.assertEqual(
             'View "testvalue"',
-            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-viewbutton')['aria-label'])
+            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-previewbutton')['aria-label'])
 
     def test_without_archiveimage(self):
-        class MyEditDeleteWithArchiveImageAndView(listbuilder.itemvalue.EditDeleteWithArchiveImageAndView):
+        class MyEditDeleteWithArchiveImageAndView(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
             def get_archiveimage(self):
                 return None
         rendered = MyEditDeleteWithArchiveImageAndView(value='testvalue')\
@@ -156,7 +162,7 @@ class TestEditDeleteWithArchiveImageAndView(test.TestCase):
             selector.exists('.django-cradmin-listbuilder-itemvalue-editdelete-imagewrapper'))
 
     def test_with_archiveimage(self):
-        class MyEditDeleteWithArchiveImageAndView(listbuilder.itemvalue.EditDeleteWithArchiveImageAndView):
+        class MyEditDeleteWithArchiveImageAndView(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
             def get_archiveimage(self):
                 archiveimage = mommy.make('cradmin_imagearchive.ArchiveImage')
                 archiveimage.image.save('testimage.png', ContentFile(create_image(200, 100)))
