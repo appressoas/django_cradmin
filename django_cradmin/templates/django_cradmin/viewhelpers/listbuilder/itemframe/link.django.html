@@ -1,5 +1,6 @@
-<a href="{{ me.get_url }}" class="{{ me.get_css_classes }}">
-    {% block inneritem %}
-        {{ me.inneritem.render }}
-    {% endblock inneritem %}
-</a>
+{% extends "django_cradmin/viewhelpers/listbuilder/base/itemframe.django.html" %}
+{% block content %}
+    <a href="{{ me.get_url }}" class="{{ me.get_css_classes }}">
+        {{ block.super }}
+    </a>
+{% endblock content %}
