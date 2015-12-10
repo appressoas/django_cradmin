@@ -75,7 +75,7 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin,
     """
     model = Page
     enable_previews = True
-    # listbuilder_class = listbuilder.list.FloatGridList
+    # listbuilder_class = listbuilder.lists.FloatGridList
     value_renderer_class = PageListItemValue
     # filterlist_class = listfilter.lists.Horizontal
 

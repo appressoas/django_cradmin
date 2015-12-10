@@ -35,7 +35,7 @@ class ViewMixin(object):
     template_name = 'django_cradmin/viewhelpers/listbuilderview/default.django.html'
 
     #: See :meth:`~ViewMixin.get_listbuilder_class`.
-    listbuilder_class = listbuilder.list.RowList
+    listbuilder_class = listbuilder.lists.RowList
 
     #: See :meth:`~ViewMixin.get_value_renderer_class`.
     value_renderer_class = listbuilder.itemvalue.FocusBox
