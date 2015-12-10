@@ -1,9 +1,8 @@
-{% extends "django_cradmin/viewhelpers/listbuilder/base/itemframe.django.html" %}
 {% load cradmin_tags %}
 
-{% block content %}
-    <a href="{% block linkurl %}{{ me.get_url }}{% endblock %}"
-            class="{{ me.get_css_classes_string }}">
+<a href="{% block linkurl %}{{ me.get_url }}{% endblock %}"
+        class="{{ me.get_css_classes_string }}">
+    {% block content %}
         {% cradmin_render_renderable me.inneritem %}
-    </a>
-{% endblock content %}
+    {% endblock content %}
+</a>
