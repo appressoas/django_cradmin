@@ -26,6 +26,14 @@
         {% endif %}
     {% endblock listbuilderview_pre %}
     <div class="container">
+        {% block listbuilderview_buttons %}
+            {% if buttons_include_template %}
+                <p class="django-cradmin-listbuilderview-buttons">
+                    {% include buttons_include_template %}
+                </p>
+            {% endif %}
+        {% endblock listbuilderview_buttons %}
+
         {% block list %}
             <div class="django-cradmin-listfilter-target"
                  id="django_cradmin_listbuilderview_listwrapper"

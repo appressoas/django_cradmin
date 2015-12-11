@@ -15,9 +15,15 @@ standard_library.install_aliases()
 from builtins import str
 
 
-class PageListItemValue(listbuilder.itemvalue.FocusBox):
+class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
     valuealias = 'page'
+
+    def get_archiveimage(self):
+        return self.page.image
+
+    def get_description(self):
+        return self.page.intro
 
 
 class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
@@ -60,13 +66,16 @@ class PageSubscriberFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter
         return 'subscribers__username'
 
 
-class PagesListBuilderView(PagesQuerySetForRoleMixin, listbuilderview.FilterListMixin, listbuilderview.View):
+class PagesListBuilderView(PagesQuerySetForRoleMixin,
+                           listbuilderview.FilterListMixin,
+                           listbuilderview.ViewCreateButtonMixin,
+                           listbuilderview.View):
     """
     Shows how to use listbuilderview with listfilter.
     """
     model = Page
     enable_previews = True
-    # listbuilder_class = listbuilder.list.FloatGridList
+    # listbuilder_class = listbuilder.lists.FloatGridList
     value_renderer_class = PageListItemValue
     # filterlist_class = listfilter.lists.Horizontal
 

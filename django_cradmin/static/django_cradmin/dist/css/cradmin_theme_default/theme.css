@@ -6659,6 +6659,9 @@ ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-floatgridlist li .
     margin: 5px;
   }
 }
+ol.django-cradmin-listbuilder-list li a.django-cradmin-listbuilder-itemframe-link {
+  display: block;
+}
 ol.django-cradmin-listbuilder-list li .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox {
   background: #ffffff;
   padding: 15px 15px;

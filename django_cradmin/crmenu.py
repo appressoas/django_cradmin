@@ -26,7 +26,6 @@ class MenuItem(object):
         Parameters:
             label: A label shown in the menu.
             url: The url to go to whem the user clicks the menu item.
-            icon: The name of a font-awesome icon (E.g.: "database", "user", ...).
             active: Should be ``True`` if the menuitem should be styled as active.
             expanded: Should be ``True`` if the menuitem should be styled as expanded.
             open_new_window: Set this to ``True`` to set the ``target="_blank"``

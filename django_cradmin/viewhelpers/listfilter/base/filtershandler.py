@@ -161,7 +161,7 @@ class FiltersHandler(object):
         filters_string = self.build_filters_string(changed_filterobject=changed_filterobject)
         return self.urlbuilder(filters_string=filters_string)
 
-    def filter(self, queryobject):
+    def filter(self, queryobject, exclude=None):
         """
         Apply the filters to the given ``queryobject``.
 
@@ -170,7 +170,11 @@ class FiltersHandler(object):
 
         Parameters:
             queryobject: See :meth:`.AbstractFilter.filter`.
+            exclude: Set with the slugs of filters to ignore/exclude when filtering.
+                Defaults to ``None``, which means that all filters are applied.
         """
         for filterobject in self.filtermap.values():
+            if exclude and filterobject.get_slug() in exclude:
+                continue
             queryobject = filterobject.filter(queryobject=queryobject)
         return queryobject
