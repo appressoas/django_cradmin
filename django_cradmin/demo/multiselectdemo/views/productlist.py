@@ -11,11 +11,6 @@ class ProductListItemValue(listbuilder.itemvalue.FocusBox):
     template_name = 'webdemo/multiselect/productlist-itemvalue.django.html'
     valuealias = 'product'
 
-    def is_selected(self):
-        # This should only be set when posting something that results in an error
-        # - it is used to re-select the previously selected choices
-        return self.product.id == 2
-
 
 class ProductListSelectTarget(renderable.AbstractRenderableWithCss,
                               abstractfilterlistchild.FilterListChildMixin):

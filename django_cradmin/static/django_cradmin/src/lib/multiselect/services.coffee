@@ -24,7 +24,7 @@ angular.module('djangoCradmin.multiselect.services', [])
 
     deselect: (selectButtonDomId) ->
       $selectElement = angular.element('#' + selectButtonDomId)
-      if $selectedElement?
+      if $selectElement?
         selectScope = $selectElement.isolateScope()
         selectScope.onDeselect()
       else

@@ -1,14 +1,16 @@
 <form method="post" action="{{ request.get_full_path }}"
       id="django_cradmin_multiselectdemo_select_target"
+      class="django-cradmin-multiselect-target"
       django-cradmin-multiselect-target>
     {% csrf_token %}
 
     <div class="django-cradmin-multiselect-header-with-items"
          django-cradmin-multiselect-header-with-items>
-        <h2>Selected products</h2>
+        <h2 class="django-cradmin-multiselect-header-heading">Selected products</h2>
     </div>
 
-    <div django-cradmin-multiselect-target-selected-items>
+    <div django-cradmin-multiselect-target-selected-items
+            class="django-cradmin-multiselect-target-selected-items">
         {% comment %}
             The django-cradmin-multiselect-select directive in
             the ``productlist-itemvalue.django.html`` template will
@@ -16,8 +18,10 @@
         {% endcomment %}
     </div>
 
-    <button type="submit" class="btn btn-primary"
-            django-cradmin-multiselect-submit-button>
-        Clear description
-    </button>
+    <div class="django-cradmin-multiselect-target-footer">
+        <button type="submit" class="btn btn-primary"
+                django-cradmin-multiselect-submit-button>
+            Clear description
+        </button>
+    </div>
 </form>

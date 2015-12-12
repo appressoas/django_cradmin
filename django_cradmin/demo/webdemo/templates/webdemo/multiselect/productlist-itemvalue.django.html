@@ -16,8 +16,7 @@
                 django-cradmin-multiselect-select='{
                     "preview_container_css_selector": ".django-cradmin-listbuilder-itemvalue",
                     "preview_css_selector": ".django-cradmin-multiselect-preview",
-                    "is_selected": {% if me.is_selected %}true{% else %}false{% endif %},
-                    "listelement_css_selector": "li",
+                    "item_wrapper_css_selector": "li",
                     "target_dom_id": "django_cradmin_multiselectdemo_select_target"
                 }'
                 aria-label='Select "{{ me.product.title }}"'>
@@ -26,7 +25,7 @@
     </p>
 
     <div class="django-cradmin-multiselect-preview">
-        <h3>{{ me.product.name }}</h3>
+        <h3 class="django-cradmin-multiselect-target-selected-item-heading">{{ me.product.name }}</h3>
         <input type="hidden" name="selected_products" value="{{ me.product.id }}">
         <button type="button"
                 class="btn btn-danger"
