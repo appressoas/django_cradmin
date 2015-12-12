@@ -83,7 +83,7 @@ See :github_folder:`django_cradmin/demo/listfilterdemo`.
 
 
 ************************************
-Gettign started with ObjectTableView
+Getting started with ObjectTableView
 ************************************
 Works just like the listbuilder example above, but you use
 ``objecttable.FilterListMixin, objecttable.ObjectTableView`` instead of

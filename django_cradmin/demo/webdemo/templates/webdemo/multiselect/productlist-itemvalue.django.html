@@ -27,7 +27,8 @@
         <input type="hidden" name="selected_products" value="{{ me.product.id }}">
         <button type="button"
                 class="btn btn-danger"
-                aria-label='Deselect "{{ me.product.title }}"'>
+                aria-label='Deselect "{{ me.product.title }}"'
+                ng-click="unselectItem()">
             Deselect
         </button>
     </div>

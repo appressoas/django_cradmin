@@ -38,22 +38,47 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
 
 .directive('djangoCradminMultiselectTargetSelectedItems', [
-  'djangoCradminMultiselectCoordinator',
-  (djangoCradminMultiselectCoordinator) ->
+  '$compile', 'djangoCradminMultiselectCoordinator',
+  ($compile, djangoCradminMultiselectCoordinator) ->
     return {
       restrict: 'A'
       require: '^djangoCradminMultiselectTarget'
 
       controller: ($scope, $element) ->
+
         $scope.append = (selectScope) ->
           previewHtml = selectScope.getPreviewHtml()
-          console.log previewHtml
-          angular.element(previewHtml).appendTo($element)
+          html = "<div django-cradmin-multiselect-target-selected-item>#{previewHtml}</div>"
+          linkingFunction = $compile(html)
+          loadedElement = linkingFunction($scope)
+#          $wrapperElement = angular.element('')
+#          angular.element(loadedElement).appendTo($wrapperElement)
+#          angular.element($wrapperElement).appendTo($element)
+          angular.element(loadedElement).appendTo($element)
 
         return
 
       link: ($scope, $element, attributes, targetCtrl) ->
         targetCtrl.setSelectedItemsScope($scope)
+        return
+    }
+])
+
+
+.directive('djangoCradminMultiselectTargetSelectedItem', [
+  ->
+    return {
+      restrict: 'A'
+      scope: true
+
+      controller: ($scope, $element) ->
+        $scope.unselectItem = ->
+          $element.remove()
+          return
+
+        return
+
+      link: ($scope, $element, attributes) ->
         return
     }
 ])
@@ -79,10 +104,9 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
         return
 
-      link: ($scope, $element, attributes, listfilterCtrl) ->
+      link: ($scope, $element, attributes) ->
         $element.on 'click', (e) ->
           e.preventDefault()
-          console.log 'SELECT', $scope.options
           targetDomId = $scope.options.target_dom_id
           djangoCradminMultiselectCoordinator.select(targetDomId, $scope)
         return
