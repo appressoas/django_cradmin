@@ -48,7 +48,8 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
         $scope.append = (selectScope) ->
           previewHtml = selectScope.getPreviewHtml()
-          html = "<div django-cradmin-multiselect-target-selected-item>#{previewHtml}</div>"
+          selectButtonDomId = selectScope.getDomId()
+          html = "<div django-cradmin-multiselect-target-selected-item='#{selectButtonDomId}'>#{previewHtml}</div>"
           linkingFunction = $compile(html)
           loadedElement = linkingFunction($scope)
 #          $wrapperElement = angular.element('')
@@ -66,7 +67,8 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
 
 .directive('djangoCradminMultiselectTargetSelectedItem', [
-  ->
+  'djangoCradminMultiselectCoordinator',
+  (djangoCradminMultiselectCoordinator) ->
     return {
       restrict: 'A'
       scope: true
@@ -74,11 +76,13 @@ angular.module('djangoCradmin.multiselect.directives', [])
       controller: ($scope, $element) ->
         $scope.unselectItem = ->
           $element.remove()
+          djangoCradminMultiselectCoordinator.deselect($scope.selectButtonDomId)
           return
 
         return
 
       link: ($scope, $element, attributes) ->
+        $scope.selectButtonDomId = attributes.djangoCradminMultiselectTargetSelectedItem
         return
     }
 ])
@@ -94,21 +98,35 @@ angular.module('djangoCradmin.multiselect.directives', [])
       }
 
       controller: ($scope, $element) ->
-#        console.log 'djangoCradminMultiselectSelect', $scope.options
         $scope.getPreviewHtml = ->
           $containerElement = $element.parents($scope.options.preview_container_css_selector)
-          console.log 'Container', $containerElement
           $previewElement = $containerElement.find($scope.options.preview_css_selector)
-          console.log 'Preview', $previewElement
           return $previewElement.html()
+
+        $scope.getDomId = ->
+          return $element.attr('id')
+
+        $scope.getListElementCssSelector = ->
+          return $scope.options.listelement_css_selector
+
+        $scope.onDeselect = ->
+          console.log 'Deselected', $scope.getDomId()
 
         return
 
       link: ($scope, $element, attributes) ->
-        $element.on 'click', (e) ->
-          e.preventDefault()
+        select = ->
           targetDomId = $scope.options.target_dom_id
           djangoCradminMultiselectCoordinator.select(targetDomId, $scope)
+          console.log 'Selected', $scope.getDomId()
+
+        $element.on 'click', (e) ->
+          e.preventDefault()
+          select()
+
+        if $scope.options.is_selected
+          select()
+
         return
     }
 ])

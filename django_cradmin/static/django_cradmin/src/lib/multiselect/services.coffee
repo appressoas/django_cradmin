@@ -22,7 +22,12 @@ angular.module('djangoCradmin.multiselect.services', [])
         throw Error("No target with ID '#{targetDomId}' registered with djangoCradminMultiselectCoordinator.")
       targetScope.select(selectScope)
 
+    deselect: (selectButtonDomId) ->
+      $selectElement = angular.element('#' + selectButtonDomId)
+      if $selectedElement?
+        selectScope = $selectElement.isolateScope()
+        selectScope.onDeselect()
+      else
+        console.log "Element ##{selectButtonDomId} is not in the DOM"
+
   return new Coordinator()
-
-
-

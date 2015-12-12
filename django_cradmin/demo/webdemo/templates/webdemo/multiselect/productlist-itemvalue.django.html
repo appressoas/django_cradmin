@@ -12,9 +12,12 @@
     <p>
         <button class="btn btn-default"
                 type="button"
+                id="productlist_selectbutton_{{ me.product.id }}"
                 django-cradmin-multiselect-select='{
                     "preview_container_css_selector": ".django-cradmin-listbuilder-itemvalue",
                     "preview_css_selector": ".django-cradmin-multiselect-preview",
+                    "is_selected": {% if me.is_selected %}true{% else %}false{% endif %},
+                    "listelement_css_selector": "li",
                     "target_dom_id": "django_cradmin_multiselectdemo_select_target"
                 }'
                 aria-label='Select "{{ me.product.title }}"'>
