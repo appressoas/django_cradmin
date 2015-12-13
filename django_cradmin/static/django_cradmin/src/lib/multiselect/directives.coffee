@@ -25,6 +25,13 @@ angular.module('djangoCradmin.multiselect.directives', [])
           ###
           $scope.selectedItemsScope.append(selectScope)
 
+        $scope.isSelected = (selectScope) ->
+          ###
+          Called by djangoCradminMultiselectSelect via
+          djangoCradminMultiselectCoordinator to check if the item is selected.
+          ###
+          $scope.selectedItemsScope.isSelected(selectScope)
+
         @setSelectedItemsScope = (selectedItemsScope) ->
           $scope.selectedItemsScope = selectedItemsScope
 
@@ -49,13 +56,17 @@ angular.module('djangoCradmin.multiselect.directives', [])
         $scope.append = (selectScope) ->
           previewHtml = selectScope.getPreviewHtml()
           selectButtonDomId = selectScope.getDomId()
-          html = "<div " +
+          html = "<div id='#{selectButtonDomId}_selected_item'" +
             "django-cradmin-multiselect-target-selected-item='#{selectButtonDomId}' " +
             "class='django-cradmin-multiselect-target-selected-item'>" +
             "#{previewHtml}</div>"
           linkingFunction = $compile(html)
           loadedElement = linkingFunction($scope)
           angular.element(loadedElement).appendTo($element)
+
+        $scope.isSelected = (selectScope) ->
+          selectButtonDomId = selectScope.getDomId()
+          return $element.find("##{selectButtonDomId}_selected_item").length > 0
 
         return
 
@@ -89,8 +100,8 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
 
 .directive('djangoCradminMultiselectSelect', [
-  'djangoCradminMultiselectCoordinator',
-  (djangoCradminMultiselectCoordinator) ->
+  '$rootScope', 'djangoCradminMultiselectCoordinator',
+  ($rootScope, djangoCradminMultiselectCoordinator) ->
 
     itemWrapperSelectedCssClass = 'django-cradmin-multiselect-item-wrapper-selected'
 
@@ -124,6 +135,15 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
         $scope.getItemWrapperElement = ->
           return $element.closest($scope.options.item_wrapper_css_selector)
+
+        unregisterBgReplaceEventHandler = $scope.$on 'djangoCradminBgReplaceElementEvent', (event) ->
+#          console.log 'bgreplace', $element.closest('.django-cradmin-listbuilder-itemvalue').find('h2').html()
+          targetDomId = $scope.options.target_dom_id
+          if djangoCradminMultiselectCoordinator.isSelected(targetDomId, $scope)
+            $scope.markAsSelected()
+
+        $scope.$on '$destroy', ->
+          unregisterBgReplaceEventHandler()
 
         return
 

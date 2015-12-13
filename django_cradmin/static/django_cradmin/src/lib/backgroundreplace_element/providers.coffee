@@ -13,9 +13,10 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
   - Live filtering (replace the filtered list when a filter changes).
   ###
   class BgReplace
-    constructor: ($http, $compile) ->
+    constructor: ($http, $compile, $rootScope) ->
       @http = $http
       @compile = $compile
+      @rootScope = $rootScope
 
     loadUrlAndExtractRemoteElementHtml: (options, onSuccess) ->
       @http(options.parameters).then((response) ->
@@ -33,25 +34,51 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
           console?.error? "Failed to load", options.parameters
       )
 
+    __removeElement: ($element) ->
+      for childDomElement in $element.children()
+        $childElement = angular.element(childDomElement)
+        @__removeElement($childElement)
+      isolatedScope = $element.isolateScope()
+      if isolatedScope?
+        isolatedScope.$destroy()
+      $element.remove()
+
+    __removeAllChildren: ($element) ->
+      # We can not just use $element.empty() because that does not call
+      # $destroy() on the isolated scopes, so we remove the elements with
+      # a recursive method and removes the deepest children first while
+      # calling $destroy() on all the isolated scopes we find.
+      for childDomElement in $element.children()
+        $childElement = angular.element(childDomElement)
+        @__removeElement($childElement)
+
     updateTargetElement: (options, remoteElementInnerHtml, $remoteHtmlDocument) =>
       $compile = @compile
       linkingFunction = $compile(remoteElementInnerHtml)
       loadedElement = linkingFunction(options.$scope)
       if options.replace
-        options.targetElement.empty()
+        @__removeAllChildren(options.targetElement)
+
       options.targetElement.append(loadedElement)
       if options.onFinish?
         options.onFinish()
       if options.onSuccess
         options.onSuccess($remoteHtmlDocument)
 
+      # Broadcast an event on the $rootScope, to allow code that need
+      # to do something when changes to the DOM occur. The event handlers
+      # get ``options`` as input, and they will typically be interested in
+      # checking if the DOM elements they control are children of ``options.targetElement``,
+      # and they may want to consider ``options.replace``.
+      @rootScope.$broadcast 'djangoCradminBgReplaceElementEvent', options
+
     load: (options) ->
       me = @
       @loadUrlAndExtractRemoteElementHtml options, (remoteElementInnerHtml, $remoteHtmlDocument) ->
         me.updateTargetElement(options, remoteElementInnerHtml, $remoteHtmlDocument)
 
-  @$get = (['$http', '$compile', ($http, $compile) ->
-    return new BgReplace($http, $compile)
+  @$get = (['$http', '$compile', '$rootScope', ($http, $compile, $rootScope) ->
+    return new BgReplace($http, $compile, $rootScope)
   ])
 
   return @
