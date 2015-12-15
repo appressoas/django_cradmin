@@ -20,6 +20,7 @@ class ProductListSelectTarget(renderable.AbstractRenderableWithCss,
 class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
     model = Product
     value_renderer_class = ProductListItemValue
+    paginate_by = 10
 
     def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(

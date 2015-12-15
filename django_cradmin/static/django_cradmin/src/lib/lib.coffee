@@ -28,4 +28,5 @@ angular.module('djangoCradmin', [
   'djangoCradmin.listfilter.directives'
   'djangoCradmin.multiselect.services'
   'djangoCradmin.multiselect.directives'
+  'djangoCradmin.loadmorepager.directives'
 ])
