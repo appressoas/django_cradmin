@@ -40,7 +40,9 @@
                  aria-live="polite">
                 {% if listbuilder_list.has_items %}
                     {% cradmin_render_renderable listbuilder_list %}
-                    {% include "django_cradmin/viewhelpers/includes/pager.django.html" with extra_querystring=pager_extra_querystring %}
+                    {% block pager %}
+                        {% include "django_cradmin/viewhelpers/listbuilderview/includes/loadmorepager.django.html" %}
+                    {% endblock pager %}
                 {% else %}
                     <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
                         {{ no_items_message }}

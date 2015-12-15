@@ -165,10 +165,12 @@ angular.module('djangoCradmin.multiselect.directives', [])
         $scope.getTargetDomId = ->
           return $scope.options.target_dom_id
 
-        unregisterBgReplaceEventHandler = $scope.$on 'djangoCradminBgReplaceElementEvent', (event) ->
-          targetDomId = $scope.options.target_dom_id
-          if djangoCradminMultiselectCoordinator.isSelected(targetDomId, $scope)
-            $scope.markAsSelected()
+        unregisterBgReplaceEventHandler = $scope.$on 'djangoCradminBgReplaceElementEvent', (event, options) ->
+          # We only care about this if the replaced element in one of our parent elements
+          if $element.closest(options.remoteElementSelector).length > 0
+            targetDomId = $scope.options.target_dom_id
+            if djangoCradminMultiselectCoordinator.isSelected(targetDomId, $scope)
+              $scope.markAsSelected()
 
         $scope.$on '$destroy', ->
           unregisterBgReplaceEventHandler()
