@@ -8,13 +8,13 @@ from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
 
 
 class ProductListItemValue(listbuilder.itemvalue.FocusBox):
-    template_name = 'webdemo/multiselect/productlist-itemvalue.django.html'
+    template_name = 'multiselectdemo/productlist-itemvalue.django.html'
     valuealias = 'product'
 
 
 class ProductListSelectTarget(renderable.AbstractRenderableWithCss,
                               abstractfilterlistchild.FilterListChildMixin):
-    template_name = 'webdemo/multiselect/productlist-select-target.django.html'
+    template_name = 'multiselectdemo/productlist-select-target.django.html'
 
 
 class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
