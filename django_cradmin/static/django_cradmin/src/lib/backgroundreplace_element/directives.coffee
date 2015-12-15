@@ -4,6 +4,9 @@ angular.module('djangoCradmin.backgroundreplace_element.directives', [])
 .directive('djangoCradminBgReplaceElementOnPageLoad', [
   '$window', 'djangoCradminBgReplaceElement',
   ($window, djangoCradminBgReplaceElement) ->
+    ###
+    This is just an example/debugging directive for djangoCradminBgReplaceElement.
+    ###
     return {
       restrict: 'A'
 

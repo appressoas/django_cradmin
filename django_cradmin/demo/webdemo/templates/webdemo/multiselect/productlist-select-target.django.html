@@ -1,27 +1,28 @@
 <form method="post" action="{{ request.get_full_path }}"
       id="django_cradmin_multiselectdemo_select_target"
       class="django-cradmin-multiselect-target"
+      ng-class="{'django-cradmin-multiselect-target-with-items': hasItems()}"
       django-cradmin-multiselect-target>
     {% csrf_token %}
 
-    <div class="django-cradmin-multiselect-header-with-items"
-         django-cradmin-multiselect-header-with-items>
-        <h2 class="django-cradmin-multiselect-header-heading">Selected products</h2>
+    <div class="django-cradmin-multiselect-target-with-items-content">
+        <h2 class="django-cradmin-multiselect-heading">Selected products</h2>
+        <div django-cradmin-multiselect-target-selected-items
+                class="django-cradmin-multiselect-target-selected-items">
+            {% comment %}
+                The django-cradmin-multiselect-select directive in
+                the ``productlist-itemvalue.django.html`` template will
+                add items to this element.
+            {% endcomment %}
+        </div>
+        <div class="django-cradmin-multiselect-target-footer">
+            <button type="submit" class="btn btn-primary"
+                    django-cradmin-multiselect-submit-button>
+                Clear description
+            </button>
+        </div>
     </div>
-
-    <div django-cradmin-multiselect-target-selected-items
-            class="django-cradmin-multiselect-target-selected-items">
-        {% comment %}
-            The django-cradmin-multiselect-select directive in
-            the ``productlist-itemvalue.django.html`` template will
-            add items to this element.
-        {% endcomment %}
-    </div>
-
-    <div class="django-cradmin-multiselect-target-footer">
-        <button type="submit" class="btn btn-primary"
-                django-cradmin-multiselect-submit-button>
-            Clear description
-        </button>
+    <div class="django-cradmin-multiselect-target-without-items-content">
+        Please select the products you want to clear the description for.
     </div>
 </form>

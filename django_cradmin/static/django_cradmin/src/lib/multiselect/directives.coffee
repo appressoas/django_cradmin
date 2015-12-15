@@ -6,6 +6,7 @@ angular.module('djangoCradmin.multiselect.directives', [])
   (djangoCradminMultiselectCoordinator) ->
     return {
       restrict: 'A'
+      scope: true
 
       controller: ($scope, $element) ->
         domId = $element.attr('id')
@@ -22,8 +23,19 @@ angular.module('djangoCradmin.multiselect.directives', [])
           ###
           Called by djangoCradminMultiselectSelect via
           djangoCradminMultiselectCoordinator when an item is selected.
+
+          Calls ``djangoCradminMultiselectTargetSelectedItems.select()``.
           ###
-          $scope.selectedItemsScope.append(selectScope)
+          $scope.selectedItemsScope.select(selectScope)
+          $scope.$apply()
+
+        $scope.onDeselect = (selectScope) ->
+          ###
+          Called by djangoCradminMultiselectCoordinator when an item is deselected.
+
+          Calls ``djangoCradminMultiselectTargetSelectedItems.onDeselect()``.
+          ###
+          $scope.selectedItemsScope.onDeselect(selectScope)
 
         $scope.isSelected = (selectScope) ->
           ###
@@ -31,6 +43,9 @@ angular.module('djangoCradmin.multiselect.directives', [])
           djangoCradminMultiselectCoordinator to check if the item is selected.
           ###
           $scope.selectedItemsScope.isSelected(selectScope)
+
+        $scope.hasItems = ->
+          return $scope.selectedItemsScope?.hasItems()
 
         @setSelectedItemsScope = (selectedItemsScope) ->
           $scope.selectedItemsScope = selectedItemsScope
@@ -47,26 +62,38 @@ angular.module('djangoCradmin.multiselect.directives', [])
 .directive('djangoCradminMultiselectTargetSelectedItems', [
   '$compile', 'djangoCradminMultiselectCoordinator',
   ($compile, djangoCradminMultiselectCoordinator) ->
+
+    selectedItemCssClass = 'django-cradmin-multiselect-target-selected-item'
+
     return {
       restrict: 'A'
       require: '^djangoCradminMultiselectTarget'
+      scope: true
 
       controller: ($scope, $element) ->
+        $scope.selectedItemsCount = 0
 
-        $scope.append = (selectScope) ->
+        $scope.select = (selectScope) ->
           previewHtml = selectScope.getPreviewHtml()
           selectButtonDomId = selectScope.getDomId()
           html = "<div id='#{selectButtonDomId}_selected_item'" +
             "django-cradmin-multiselect-target-selected-item='#{selectButtonDomId}' " +
-            "class='django-cradmin-multiselect-target-selected-item'>" +
+            "class='#{selectedItemCssClass}'>" +
             "#{previewHtml}</div>"
           linkingFunction = $compile(html)
           loadedElement = linkingFunction($scope)
           angular.element(loadedElement).appendTo($element)
+          $scope.selectedItemsCount += 1
+
+        $scope.onDeselect = (selectScope) ->
+          $scope.selectedItemsCount -= 1
 
         $scope.isSelected = (selectScope) ->
           selectButtonDomId = selectScope.getDomId()
           return $element.find("##{selectButtonDomId}_selected_item").length > 0
+
+        $scope.hasItems = ->
+          return $scope.selectedItemsCount > 0
 
         return
 
@@ -85,9 +112,9 @@ angular.module('djangoCradmin.multiselect.directives', [])
       scope: true
 
       controller: ($scope, $element) ->
-        $scope.unselectItem = ->
+        $scope.deselect = ->
           $element.remove()
-          djangoCradminMultiselectCoordinator.deselect($scope.selectButtonDomId)
+          djangoCradminMultiselectCoordinator.onDeselect($scope.selectButtonDomId)
           return
 
         return
@@ -136,6 +163,9 @@ angular.module('djangoCradmin.multiselect.directives', [])
         $scope.getItemWrapperElement = ->
           return $element.closest($scope.options.item_wrapper_css_selector)
 
+        $scope.getTargetDomId = ->
+          return $scope.options.target_dom_id
+
         unregisterBgReplaceEventHandler = $scope.$on 'djangoCradminBgReplaceElementEvent', (event) ->
 #          console.log 'bgreplace', $element.closest('.django-cradmin-listbuilder-itemvalue').find('h2').html()
           targetDomId = $scope.options.target_dom_id
@@ -149,8 +179,7 @@ angular.module('djangoCradmin.multiselect.directives', [])
 
       link: ($scope, $element, attributes) ->
         select = ->
-          targetDomId = $scope.options.target_dom_id
-          djangoCradminMultiselectCoordinator.select(targetDomId, $scope)
+          djangoCradminMultiselectCoordinator.select($scope)
           $scope.markAsSelected()
 
         $element.on 'click', (e) ->
