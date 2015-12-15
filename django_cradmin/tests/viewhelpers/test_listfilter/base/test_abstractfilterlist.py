@@ -48,7 +48,7 @@ class TestAbstractFilterList(TestCase):
         filterlist = AbstractFilterList(urlbuilder=mock.MagicMock(), target_dom_id='testdomid')
         filterlist.append(MinimalFilterGroupChild())
         filterlist.append(MinimalFilterGroupChild())
-        selector = htmls.S(filterlist.render())
+        selector = htmls.S(filterlist.render(request=mock.MagicMock()))
         self.assertEqual(2, selector.count('li'))
 
     def test_set_filters_string_invalid_slug(self):

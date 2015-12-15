@@ -1,4 +1,5 @@
 {% extends "django_cradmin/viewhelpers/listbuilderview/default.django.html" %}
+{% load cradmin_tags %}
 
 {% block bodyclass %}
     {{ block.super }}
@@ -7,6 +8,6 @@
 
 
 {% block list %}
-    {{ filterlist.render }}
+    {% cradmin_render_renderable filterlist %}
     {{ block.super }}
 {% endblock list %}
