@@ -11,14 +11,18 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
       controller: ($scope, $element) ->
         console.log 'djangoCradminLoadMorePager'
         $scope.isLoading = false
+        $scope.lastPage = 1
 
         $scope.loadMore = ->
           $scope.isLoading = true
-          console.log 'loadMore'
+          nextPageUrl = new Url()
+          nextPageUrl.query.page = $scope.lastPage + 1
+          console.log 'loading', nextPageUrl.toString()
+
           djangoCradminBgReplaceElement.load({
             parameters: {
               method: 'GET'
-              url: 'http://cradmin.dev:9000/multiselectdemo/filter/?page=2'
+              url: nextPageUrl.toString()
             },
             remoteElementSelector: '.django-cradmin-listbuilder-list'
             targetElement: angular.element('.django-cradmin-listbuilder-list')
@@ -28,8 +32,10 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
               console.log 'ERROR', response
             onSuccess: ->
               console.log 'Success!'
+              $scope.lastPage += 1
             onFinish: ->
               console.log 'Finish!'
+              $scope.isLoading = false
           })
 
         return

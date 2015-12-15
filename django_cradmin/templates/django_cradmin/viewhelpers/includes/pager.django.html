@@ -20,30 +20,39 @@
 {% load cradmin_icon_tags %}
 
 {% if is_paginated %}
-    <div class="pager-container">
-        <ul class="pager {{ pager_extraclass }}">
-            <li class="previous {% if not page_obj.has_previous %}disabled{% endif %}">
-                <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}&amp;{{ extra_querystring }}">
-                    <i class="{% cradmin_icon 'pager-previus-page' %}"></i>
-                    <span class="sr-only">{% trans "Previous" %}</span>
-                </a>
-            </li>
-            <li class="pager-counter">
-                {% blocktrans with number=page_obj.number total=page_obj.paginator.num_pages %}Page {{ number }} of {{ total }}{% endblocktrans %}
-            </li>
-            <li class="next {% if not page_obj.has_next %}disabled{% endif %}">
-                <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}last{% endif %}&amp;{{ extra_querystring }}">
-                    <i class="{% cradmin_icon 'pager-next-page' %}"></i>
-                    <span class="sr-only">{% trans "Next" %}</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+{#    <div class="pager-container">#}
+{#        <ul class="pager {{ pager_extraclass }}">#}
+{#            <li class="previous {% if not page_obj.has_previous %}disabled{% endif %}">#}
+{#                <a href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}&amp;{{ extra_querystring }}">#}
+{#                    <i class="{% cradmin_icon 'pager-previus-page' %}"></i>#}
+{#                    <span class="sr-only">{% trans "Previous" %}</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="pager-counter">#}
+{#                {% blocktrans with number=page_obj.number total=page_obj.paginator.num_pages %}Page {{ number }} of {{ total }}{% endblocktrans %}#}
+{#            </li>#}
+{#            <li class="next {% if not page_obj.has_next %}disabled{% endif %}">#}
+{#                <a href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}last{% endif %}&amp;{{ extra_querystring }}">#}
+{#                    <i class="{% cradmin_icon 'pager-next-page' %}"></i>#}
+{#                    <span class="sr-only">{% trans "Next" %}</span>#}
+{#                </a>#}
+{#            </li>#}
+{#        </ul>#}
+{#    </div>#}
 
-    <div class="django-cradmin-loadmorepager" django-cradmin-load-more-pager>
+    <div class="django-cradmin-loadmorepager"
+            ng-class="{'django-cradmin-loadmorepager-loading': isLoading}"
+            django-cradmin-load-more-pager>
         <button type="button" class="btn btn-default"
-                ng-click="loadMore()">
-            {% trans "Load more" %}
+                ng-click="loadMore()"
+                ng-disabled="isLoading">
+            <span class="{% cradmin_icon "loadspinner" %}" ng-if="isLoading" aria-hidden="true"></span>
+            <span class="django-cradmin-loadmorepager-loadingtext" ng-if="isLoading">
+                {% trans "Loading ..." %}
+            </span>
+            <span class="django-cradmin-loadmorepager-not-loadingtext" ng-if="!isLoading">
+                {% trans "Load more" %}
+            </span>
         </button>
     </div>
 {% endif %}

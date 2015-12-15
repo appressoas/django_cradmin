@@ -17,6 +17,7 @@
     "angular-bootstrap": "~0.13.0",
     "moment": "~2.10.6",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.5.0",
-    "mousetrap": "~1.5.3"
+    "mousetrap": "~1.5.3",
+    "jsurl": "*"
   }
 }
