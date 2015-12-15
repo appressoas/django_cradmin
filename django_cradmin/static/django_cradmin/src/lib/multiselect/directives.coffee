@@ -154,7 +154,6 @@ angular.module('djangoCradmin.multiselect.directives', [])
           ###
           Called by djangoCradminMultiselectCoordinator when the item is deselected.
           ###
-          console.log 'Deselected', $scope.getDomId()
           $scope.getItemWrapperElement().removeClass(itemWrapperSelectedCssClass)
 
         $scope.markAsSelected = ->
@@ -167,7 +166,6 @@ angular.module('djangoCradmin.multiselect.directives', [])
           return $scope.options.target_dom_id
 
         unregisterBgReplaceEventHandler = $scope.$on 'djangoCradminBgReplaceElementEvent', (event) ->
-#          console.log 'bgreplace', $element.closest('.django-cradmin-listbuilder-itemvalue').find('h2').html()
           targetDomId = $scope.options.target_dom_id
           if djangoCradminMultiselectCoordinator.isSelected(targetDomId, $scope)
             $scope.markAsSelected()
