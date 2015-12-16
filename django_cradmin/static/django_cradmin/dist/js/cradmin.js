@@ -4020,7 +4020,6 @@
             $scope.loadmorePagerIsLoading = true;
             nextPageUrl = new Url();
             nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
-            console.log('loading', nextPageUrl.toString());
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
@@ -4031,14 +4030,12 @@
               $scope: $scope,
               replace: false,
               onHttpError: function(response) {
-                return console.log('ERROR', response);
+                return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error('ERROR loading page', response) : void 0 : void 0;
               },
               onSuccess: function($remoteHtmlDocument) {
-                console.log('Success!');
                 return $element.addClass('django-cradmin-loadmorepager-hidden');
               },
               onFinish: function() {
-                console.log('Finish!');
                 return $scope.loadmorePagerIsLoading = false;
               }
             });
@@ -4052,7 +4049,6 @@
           if ((attributes.djangoCradminLoadMorePager != null) && attributes.djangoCradminLoadMorePager !== '') {
             angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager));
           }
-          console.log($scope.loadmorePagerOptions);
           if ($scope.loadmorePagerOptions.targetElementCssSelector == null) {
             throw Error('Missing required option: targetElementCssSelector');
           }

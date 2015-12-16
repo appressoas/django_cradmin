@@ -21,7 +21,7 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
           $scope.loadmorePagerIsLoading = true
           nextPageUrl = new Url()
           nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber()
-          console.log 'loading', nextPageUrl.toString()
+#          console.log 'loading', nextPageUrl.toString()
 
           djangoCradminBgReplaceElement.load({
             parameters: {
@@ -33,14 +33,12 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
             $scope: $scope
             replace: false
             onHttpError: (response) ->
-              console.log 'ERROR', response
+              console?.error? 'ERROR loading page', response
             onSuccess: ($remoteHtmlDocument) ->
-              console.log 'Success!'
 #              console.log 'Success!', $remoteHtmlDocument
 #              if $remoteHtmlDocument
               $element.addClass('django-cradmin-loadmorepager-hidden')
             onFinish: ->
-              console.log 'Finish!'
               $scope.loadmorePagerIsLoading = false
           })
 
@@ -52,7 +50,6 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
         }
         if attributes.djangoCradminLoadMorePager? and attributes.djangoCradminLoadMorePager != ''
           angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager))
-        console.log $scope.loadmorePagerOptions
 
         if not $scope.loadmorePagerOptions.targetElementCssSelector?
           throw Error('Missing required option: targetElementCssSelector')
