@@ -218,6 +218,10 @@
 (function() {
   angular.module('djangoCradmin.backgroundreplace_element.directives', []).directive('djangoCradminBgReplaceElementOnPageLoad', [
     '$window', 'djangoCradminBgReplaceElement', function($window, djangoCradminBgReplaceElement) {
+      /*
+      This is just an example/debugging directive for djangoCradminBgReplaceElement.
+      */
+
       return {
         restrict: 'A',
         controller: function($scope, $element) {},
@@ -285,10 +289,11 @@
 
     var BgReplace;
     BgReplace = (function() {
-      function BgReplace($http, $compile) {
+      function BgReplace($http, $compile, $rootScope) {
         this.updateTargetElement = __bind(this.updateTargetElement, this);
         this.http = $http;
         this.compile = $compile;
+        this.rootScope = $rootScope;
       }
 
       BgReplace.prototype.loadUrlAndExtractRemoteElementHtml = function(options, onSuccess) {
@@ -311,21 +316,49 @@
         });
       };
 
+      BgReplace.prototype.__removeElement = function($element) {
+        var $childElement, childDomElement, isolatedScope, _i, _len, _ref;
+        _ref = $element.children();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          childDomElement = _ref[_i];
+          $childElement = angular.element(childDomElement);
+          this.__removeElement($childElement);
+        }
+        isolatedScope = $element.isolateScope();
+        if (isolatedScope != null) {
+          isolatedScope.$destroy();
+        }
+        return $element.remove();
+      };
+
+      BgReplace.prototype.__removeAllChildren = function($element) {
+        var $childElement, childDomElement, _i, _len, _ref, _results;
+        _ref = $element.children();
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          childDomElement = _ref[_i];
+          $childElement = angular.element(childDomElement);
+          _results.push(this.__removeElement($childElement));
+        }
+        return _results;
+      };
+
       BgReplace.prototype.updateTargetElement = function(options, remoteElementInnerHtml, $remoteHtmlDocument) {
         var $compile, linkingFunction, loadedElement;
         $compile = this.compile;
         linkingFunction = $compile(remoteElementInnerHtml);
         loadedElement = linkingFunction(options.$scope);
         if (options.replace) {
-          options.targetElement.empty();
+          this.__removeAllChildren(options.targetElement);
         }
         options.targetElement.append(loadedElement);
         if (options.onFinish != null) {
           options.onFinish();
         }
         if (options.onSuccess) {
-          return options.onSuccess($remoteHtmlDocument);
+          options.onSuccess($remoteHtmlDocument);
         }
+        return this.rootScope.$broadcast('djangoCradminBgReplaceElementEvent', options);
       };
 
       BgReplace.prototype.load = function(options) {
@@ -340,8 +373,8 @@
 
     })();
     this.$get = [
-      '$http', '$compile', function($http, $compile) {
-        return new BgReplace($http, $compile);
+      '$http', '$compile', '$rootScope', function($http, $compile, $rootScope) {
+        return new BgReplace($http, $compile, $rootScope);
       }
     ];
     return this;
@@ -3608,7 +3641,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearabletextinput', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearabletextinput', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives', 'djangoCradmin.multiselect.services', 'djangoCradmin.multiselect.directives', 'djangoCradmin.loadmorepager.services', 'djangoCradmin.loadmorepager.directives']);
 
 }).call(this);
 
@@ -3970,6 +4003,116 @@
 }).call(this);
 
 (function() {
+  angular.module('djangoCradmin.loadmorepager.directives', []).directive('djangoCradminLoadMorePager', [
+    'djangoCradminBgReplaceElement', 'djangoCradminLoadmorepagerCoordinator', function(djangoCradminBgReplaceElement, djangoCradminLoadmorepagerCoordinator) {
+      var pagerWrapperCssSelector;
+      pagerWrapperCssSelector = '.django-cradmin-loadmorepager';
+      return {
+        restrict: 'A',
+        scope: true,
+        controller: function($scope, $element) {
+          $scope.loadmorePagerIsLoading = false;
+          $scope.getNextPageNumber = function() {
+            return $scope.loadmorePagerOptions.nextPageNumber;
+          };
+          $scope.loadMore = function() {
+            var nextPageUrl;
+            $scope.loadmorePagerIsLoading = true;
+            nextPageUrl = new Url();
+            nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
+            console.log('loading', nextPageUrl.toString());
+            return djangoCradminBgReplaceElement.load({
+              parameters: {
+                method: 'GET',
+                url: nextPageUrl.toString()
+              },
+              remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector,
+              targetElement: angular.element($scope.loadmorePagerOptions.targetElementCssSelector),
+              $scope: $scope,
+              replace: false,
+              onHttpError: function(response) {
+                return console.log('ERROR', response);
+              },
+              onSuccess: function($remoteHtmlDocument) {
+                console.log('Success!');
+                return $element.addClass('django-cradmin-loadmorepager-hidden');
+              },
+              onFinish: function() {
+                console.log('Finish!');
+                return $scope.loadmorePagerIsLoading = false;
+              }
+            });
+          };
+        },
+        link: function($scope, $element, attributes) {
+          var domId;
+          $scope.loadmorePagerOptions = {
+            pageQueryStringAttribute: "page"
+          };
+          if ((attributes.djangoCradminLoadMorePager != null) && attributes.djangoCradminLoadMorePager !== '') {
+            angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager));
+          }
+          console.log($scope.loadmorePagerOptions);
+          if ($scope.loadmorePagerOptions.targetElementCssSelector == null) {
+            throw Error('Missing required option: targetElementCssSelector');
+          }
+          domId = $element.attr('id');
+          djangoCradminLoadmorepagerCoordinator.registerPager(domId, $scope);
+          $scope.$on("$destroy", function() {
+            return djangoCradminLoadmorepagerCoordinator.unregisterPager(domId, $scope);
+          });
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('djangoCradmin.loadmorepager.services', []).factory('djangoCradminLoadmorepagerCoordinator', function() {
+    /*
+    Coordinates between djangoCradminLoadMorePager directives.
+    */
+
+    var Coordinator;
+    Coordinator = (function() {
+      function Coordinator() {
+        this.targets = {};
+      }
+
+      Coordinator.prototype.registerPager = function(targetDomId, pagerScope) {
+        if (this.targets[targetDomId] == null) {
+          this.targets[targetDomId] = {};
+        }
+        return this.targets[targetDomId][pagerScope.getNextPageNumber()] = pagerScope;
+      };
+
+      Coordinator.prototype.unregisterPager = function(targetDomId, pagerScope) {
+        return del(this.targets[targetDomId][pagerScope.getNextPageNumber()]);
+      };
+
+      Coordinator.prototype.__getPagerScope = function(targetDomId, nextPageNumber) {
+        var pagerScope, target;
+        target = this.targets[targetDomId];
+        if (target == null) {
+          throw Error("No target with ID '" + targetDomId + "' registered with djangoCradminLoadmorepagerCoordinator.");
+        }
+        pagerScope = target[nextPageNumber];
+        if (pagerScope == null) {
+          throw Error(("No pagerScope for targetDomId='" + targetDomId + "' and nextPageNumber=" + nextPageNumber + " ") + "registered with djangoCradminLoadmorepagerCoordinator.");
+        }
+        return pagerScope;
+      };
+
+      return Coordinator;
+
+    })();
+    return new Coordinator();
+  });
+
+}).call(this);
+
+(function() {
   angular.module('djangoCradmin.menu', []).directive('djangoCradminMenu', [
     function() {
       /** Menu that collapses automatically on small displays.
@@ -4179,6 +4322,7 @@
     'djangoCradminMultiselectCoordinator', function(djangoCradminMultiselectCoordinator) {
       return {
         restrict: 'A',
+        scope: true,
         controller: function($scope, $element) {
           var domId;
           domId = $element.attr('id');
@@ -4194,9 +4338,33 @@
             /*
             Called by djangoCradminMultiselectSelect via
             djangoCradminMultiselectCoordinator when an item is selected.
+            
+            Calls ``djangoCradminMultiselectTargetSelectedItems.select()``.
             */
 
-            return $scope.selectedItemsScope.append(selectScope);
+            $scope.selectedItemsScope.select(selectScope);
+            return $scope.$apply();
+          };
+          $scope.onDeselect = function(selectScope) {
+            /*
+            Called by djangoCradminMultiselectCoordinator when an item is deselected.
+            
+            Calls ``djangoCradminMultiselectTargetSelectedItems.onDeselect()``.
+            */
+
+            return $scope.selectedItemsScope.onDeselect(selectScope);
+          };
+          $scope.isSelected = function(selectScope) {
+            /*
+            Called by djangoCradminMultiselectSelect via
+            djangoCradminMultiselectCoordinator to check if the item is selected.
+            */
+
+            return $scope.selectedItemsScope.isSelected(selectScope);
+          };
+          $scope.hasItems = function() {
+            var _ref;
+            return (_ref = $scope.selectedItemsScope) != null ? _ref.hasItems() : void 0;
           };
           this.setSelectedItemsScope = function(selectedItemsScope) {
             return $scope.selectedItemsScope = selectedItemsScope;
@@ -4206,16 +4374,35 @@
       };
     }
   ]).directive('djangoCradminMultiselectTargetSelectedItems', [
-    'djangoCradminMultiselectCoordinator', function(djangoCradminMultiselectCoordinator) {
+    '$compile', 'djangoCradminMultiselectCoordinator', function($compile, djangoCradminMultiselectCoordinator) {
+      var selectedItemCssClass;
+      selectedItemCssClass = 'django-cradmin-multiselect-target-selected-item';
       return {
         restrict: 'A',
         require: '^djangoCradminMultiselectTarget',
+        scope: true,
         controller: function($scope, $element) {
-          $scope.append = function(selectScope) {
-            var previewHtml;
+          $scope.selectedItemsCount = 0;
+          $scope.select = function(selectScope) {
+            var html, linkingFunction, loadedElement, previewHtml, selectButtonDomId;
             previewHtml = selectScope.getPreviewHtml();
-            console.log(previewHtml);
-            return angular.element(previewHtml).appendTo($element);
+            selectButtonDomId = selectScope.getDomId();
+            html = ("<div id='" + selectButtonDomId + "_selected_item'") + ("django-cradmin-multiselect-target-selected-item='" + selectButtonDomId + "' ") + ("class='" + selectedItemCssClass + "'>") + ("" + previewHtml + "</div>");
+            linkingFunction = $compile(html);
+            loadedElement = linkingFunction($scope);
+            angular.element(loadedElement).appendTo($element);
+            return $scope.selectedItemsCount += 1;
+          };
+          $scope.onDeselect = function(selectScope) {
+            return $scope.selectedItemsCount -= 1;
+          };
+          $scope.isSelected = function(selectScope) {
+            var selectButtonDomId;
+            selectButtonDomId = selectScope.getDomId();
+            return $element.find("#" + selectButtonDomId + "_selected_item").length > 0;
+          };
+          $scope.hasItems = function() {
+            return $scope.selectedItemsCount > 0;
           };
         },
         link: function($scope, $element, attributes, targetCtrl) {
@@ -4223,30 +4410,83 @@
         }
       };
     }
-  ]).directive('djangoCradminMultiselectSelect', [
+  ]).directive('djangoCradminMultiselectTargetSelectedItem', [
     'djangoCradminMultiselectCoordinator', function(djangoCradminMultiselectCoordinator) {
+      return {
+        restrict: 'A',
+        scope: true,
+        controller: function($scope, $element) {
+          $scope.deselect = function() {
+            $element.remove();
+            djangoCradminMultiselectCoordinator.onDeselect($scope.selectButtonDomId);
+          };
+        },
+        link: function($scope, $element, attributes) {
+          $scope.selectButtonDomId = attributes.djangoCradminMultiselectTargetSelectedItem;
+        }
+      };
+    }
+  ]).directive('djangoCradminMultiselectSelect', [
+    '$rootScope', 'djangoCradminMultiselectCoordinator', function($rootScope, djangoCradminMultiselectCoordinator) {
+      var itemWrapperSelectedCssClass;
+      itemWrapperSelectedCssClass = 'django-cradmin-multiselect-item-wrapper-selected';
       return {
         restrict: 'A',
         scope: {
           options: '=djangoCradminMultiselectSelect'
         },
         controller: function($scope, $element) {
+          var unregisterBgReplaceEventHandler;
           $scope.getPreviewHtml = function() {
             var $containerElement, $previewElement;
             $containerElement = $element.parents($scope.options.preview_container_css_selector);
-            console.log('Container', $containerElement);
             $previewElement = $containerElement.find($scope.options.preview_css_selector);
-            console.log('Preview', $previewElement);
             return $previewElement.html();
           };
-        },
-        link: function($scope, $element, attributes, listfilterCtrl) {
-          $element.on('click', function(e) {
+          $scope.getDomId = function() {
+            return $element.attr('id');
+          };
+          $scope.getListElementCssSelector = function() {
+            return $scope.options.listelement_css_selector;
+          };
+          $scope.onDeselect = function() {
+            /*
+            Called by djangoCradminMultiselectCoordinator when the item is deselected.
+            */
+
+            return $scope.getItemWrapperElement().removeClass(itemWrapperSelectedCssClass);
+          };
+          $scope.markAsSelected = function() {
+            return $scope.getItemWrapperElement().addClass(itemWrapperSelectedCssClass);
+          };
+          $scope.getItemWrapperElement = function() {
+            return $element.closest($scope.options.item_wrapper_css_selector);
+          };
+          $scope.getTargetDomId = function() {
+            return $scope.options.target_dom_id;
+          };
+          unregisterBgReplaceEventHandler = $scope.$on('djangoCradminBgReplaceElementEvent', function(event, options) {
             var targetDomId;
+            if ($element.closest(options.remoteElementSelector).length > 0) {
+              targetDomId = $scope.options.target_dom_id;
+              if (djangoCradminMultiselectCoordinator.isSelected(targetDomId, $scope)) {
+                return $scope.markAsSelected();
+              }
+            }
+          });
+          $scope.$on('$destroy', function() {
+            return unregisterBgReplaceEventHandler();
+          });
+        },
+        link: function($scope, $element, attributes) {
+          var select;
+          select = function() {
+            djangoCradminMultiselectCoordinator.select($scope);
+            return $scope.markAsSelected();
+          };
+          $element.on('click', function(e) {
             e.preventDefault();
-            console.log('SELECT', $scope.options);
-            targetDomId = $scope.options.target_dom_id;
-            return djangoCradminMultiselectCoordinator.select(targetDomId, $scope);
+            return select();
           });
         }
       };
@@ -4276,13 +4516,38 @@
         return del(this.targets[targetDomId]);
       };
 
-      Coordinator.prototype.select = function(targetDomId, selectScope) {
+      Coordinator.prototype.__getTargetScope = function(targetDomId) {
         var targetScope;
         targetScope = this.targets[targetDomId];
         if (targetScope == null) {
           throw Error("No target with ID '" + targetDomId + "' registered with djangoCradminMultiselectCoordinator.");
         }
+        return targetScope;
+      };
+
+      Coordinator.prototype.select = function(selectScope) {
+        var targetScope;
+        targetScope = this.__getTargetScope(selectScope.getTargetDomId());
         return targetScope.select(selectScope);
+      };
+
+      Coordinator.prototype.onDeselect = function(selectButtonDomId) {
+        var $selectElement, selectScope, targetScope;
+        $selectElement = angular.element('#' + selectButtonDomId);
+        if ($selectElement != null) {
+          selectScope = $selectElement.isolateScope();
+          selectScope.onDeselect();
+          targetScope = this.__getTargetScope(selectScope.getTargetDomId());
+          return targetScope.onDeselect(selectScope);
+        } else {
+          return console.log("Element #" + selectButtonDomId + " is not in the DOM");
+        }
+      };
+
+      Coordinator.prototype.isSelected = function(targetDomId, selectScope) {
+        var targetScope;
+        targetScope = this.__getTargetScope(targetDomId);
+        return targetScope.isSelected(selectScope);
       };
 
       return Coordinator;

@@ -21,7 +21,7 @@ class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
     model = Product
     value_renderer_class = ProductListItemValue
     # listbuilder_class = listbuilder.lists.FloatGridList
-    paginate_by = 10
+    paginate_by = 20
 
     def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(

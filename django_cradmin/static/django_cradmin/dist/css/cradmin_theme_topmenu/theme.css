@@ -6645,7 +6645,7 @@ ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li .django
   margin-bottom: 5px;
 }
 ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li:first-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
-  margin-top: 0;
+  margin-top: 5px;
 }
 ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li:last-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
   margin-bottom: 0;
@@ -6658,6 +6658,9 @@ ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-floatgridlist li .
   ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-floatgridlist li .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
     margin: 5px;
   }
+}
+ol.django-cradmin-listbuilder-list:first-child.django-cradmin-listbuilder-rowlist li:first-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+  margin-top: 0;
 }
 ol.django-cradmin-listbuilder-list li a.django-cradmin-listbuilder-itemframe-link {
   display: block;
@@ -6744,6 +6747,50 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
   background: #f2dede;
   border: 1px solid #ebccd1;
   color: #a94442;
+}
+.django-cradmin-multiselect-preview {
+  display: none;
+}
+.django-cradmin-multiselect-item-wrapper-selected {
+  display: none;
+}
+.django-cradmin-multiselect-target .django-cradmin-multiselect-heading {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 20px 0 0 0;
+  padding: 0 0 5px 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+.django-cradmin-multiselect-target .django-cradmin-multiselect-target-selected-items {
+  background: #ffffff;
+  padding: 10px;
+}
+.django-cradmin-multiselect-target .django-cradmin-multiselect-target-selected-items .django-cradmin-multiselect-target-selected-item .django-cradmin-multiselect-target-selected-item-heading {
+  font-size: 16px;
+  margin-top: 10px;
+}
+.django-cradmin-multiselect-target .django-cradmin-multiselect-target-footer {
+  margin-top: 10px;
+}
+.django-cradmin-multiselect-target .django-cradmin-multiselect-target-with-items-content {
+  display: none;
+}
+.django-cradmin-multiselect-target .django-cradmin-multiselect-target-without-items-content {
+  display: block;
+}
+.django-cradmin-multiselect-target.django-cradmin-multiselect-target-with-items .django-cradmin-multiselect-target-with-items-content {
+  display: block;
+}
+.django-cradmin-multiselect-target.django-cradmin-multiselect-target-with-items .django-cradmin-multiselect-target-without-items-content {
+  display: none;
+}
+.django-cradmin-loadmorepager {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.django-cradmin-loadmorepager.django-cradmin-loadmorepager-hidden {
+  display: none;
 }
 nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-mobileheader .django-cradmin-menu-mobiletoggle {
   line-height: 50px;
