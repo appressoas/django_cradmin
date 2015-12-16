@@ -22,11 +22,14 @@
 {% load cradmin_icon_tags %}
 
 {% if is_paginated and page_obj.has_next %}
-    <div class="{% block wrapper-element-css-classes %}django-cradmin-loadmorepager{% endblock %}"
+    <div class="django-cradmin-loadmorepager {% block wrapper-element-extra-css-classes %}{% endblock %}"
             ng-class="{'django-cradmin-loadmorepager-loading': loadmorePagerIsLoading}"
-            django-cradmin-load-more-pager='{% block load-more-pager-options %}{% endblock %}'>
+            django-cradmin-load-more-pager='{% block load-more-pager-options %}{
+                "targetElementCssSelector": "{% block load-more-pager-targetElementCssSelector %}{% endblock %}",
+                "nextPageNumber": {{ page_obj.next_page_number }}
+            }{% endblock %}'>
         <button type="button"
-                class="{% block load-more-button-css-classes %}btn btn-default{% endblock %}"
+                class="django-cradmin-loadmorepager-button {% block load-more-button-extra-css-classes %}btn btn-default{% endblock %}"
                 ng-click="loadMore()"
                 ng-disabled="loadmorePagerIsLoading">
             <span class="{% cradmin_icon "loadspinner" %}"

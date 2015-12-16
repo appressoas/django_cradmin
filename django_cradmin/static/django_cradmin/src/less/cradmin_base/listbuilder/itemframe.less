@@ -35,7 +35,7 @@ ol.django-cradmin-listbuilder-list {
       }
       &:first-child {
         .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
-          margin-top: 0;
+          margin-top: 5px;
         }
       }
       &:last-child {
@@ -57,13 +57,23 @@ ol.django-cradmin-listbuilder-list {
       }
     }
   }
-}
 
+  &:first-child {
+    &.django-cradmin-listbuilder-rowlist {
+      li {
+        &:first-child {
+          .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
 
-ol.django-cradmin-listbuilder-list {
   li {
     a.django-cradmin-listbuilder-itemframe-link {
       display: block;
     }
   }
+
 }

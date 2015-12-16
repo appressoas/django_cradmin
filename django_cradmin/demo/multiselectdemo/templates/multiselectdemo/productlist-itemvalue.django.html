@@ -3,7 +3,7 @@
 {% load cradmin_image_tags %}
 
 {% block content %}
-    <h2>{{ me.product.name }}</h2>
+    <h2>#{{ me.product.id }} - {{ me.product.name }}</h2>
     {% if me.product.description %}
         <p>
             {{ me.product.description|truncatechars:"200" }}
