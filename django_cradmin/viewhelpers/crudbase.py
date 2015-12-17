@@ -29,7 +29,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     model = None
 
     #: List of field names.
-    #: See :meth:`.get_field_layout`.
+    #: See :meth:`.get_model_fields` and :meth:`.get_field_layout`.
     fields = None
 
     #: The name of the submit button used for preview.
@@ -54,16 +54,43 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         """
         return self.model
 
+    def make_default_form_class(self):
+        """
+        Make a ModelForm class with the model set to
+        :meth:`.get_model_class` and the fields set to
+        :meth:`.get_model_fields`.
+        """
+        me = self
+
+        class Form(forms.ModelForm):
+            class Meta:
+                model = me.get_model_class()
+                fields = me.get_model_fields()
+
+        return Form
+
+    def get_form_class(self):
+        if self.form_class:
+            return self.form_class
+        else:
+            return self.make_default_form_class()
+
     def add_preview_button_if_configured(self, buttons):
         preview_url = self.get_preview_url()
         if preview_url:
             buttons.append(DefaultSubmit('submit-preview', _('Preview')))
 
     def get_model_fields(self):
-        fields = list(forms.fields_for_model(self.get_model_class(), fields=self.fields).keys())
-        if self.roleid_field and self.roleid_field in fields:
-            fields.remove(self.roleid_field)
-        return fields
+        """
+        Get model fields. Defaults to :obj:`.fields`.
+        """
+        if self.fields:
+            return self.fields
+        else:
+            fields = list(forms.fields_for_model(self.get_model_class(), fields=self.fields).keys())
+            if self.roleid_field and self.roleid_field in fields:
+                fields.remove(self.roleid_field)
+            return fields
 
     def get_field_layout(self):
         """
