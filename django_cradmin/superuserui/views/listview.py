@@ -1,37 +1,49 @@
+from django.db import models
+from django.utils.translation import ugettext_lazy
+
 from django_cradmin.superuserui.views import mixins
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilder
 
 
-class View(mixins.QuerySetForRoleMixin,
-           # listbuilderview.FilterListMixin,
+class View(listbuilderview.FilterListMixin,
+           mixins.QuerySetForRoleMixin,
            listbuilderview.ViewCreateButtonMixin,
            listbuilderview.View):
 
     paginate_by = 50
     value_renderer_class = listbuilder.itemvalue.EditDelete
 
-    # def get_filterlist_url(self, filters_string):
-    #     return self.request.cradmin_app.reverse_appurl(
-    #         'filter', kwargs={'filters_string': filters_string})
+    def get_filterlist_url(self, filters_string):
+        return self.request.cradmin_app.reverse_appurl(
+            'filter', kwargs={'filters_string': filters_string})
 
-    def get_post_include_template(self):
-        return 'webdemo/pages_listbuilder/pagelist-post-include.django.html'
 
-    # def add_filterlist_items(self, filterlist):
-    #     filterlist.append(listfilter.django.single.textinput.Search(
-    #         slug='search',
-    #         label='Search',
-    #         label_is_screenreader_only=True,
-    #         modelfields=['title']))
-    #     filterlist.append(OrderPagesFilter(
-    #         slug='orderby', label='Order by'))
-    #     filterlist.append(listfilter.django.single.select.IsNotNull(
-    #         slug='image', label='Has image?'))
-    #     filterlist.append(listfilter.django.single.select.DateTime(
-    #         slug='publishing_time', label='Publishing time'))
-    #     filterlist.append(PageTagFilter(
-    #         slug='tags', label='Tag'))
-    #     filterlist.append(PageSubscriberFilter(
-    #         slug='subscribers', label='Subscribers'))
+    def get_search_fields(self):
+        """
+        Get a list with the names of the fields to use while searching.
+
+        Defaults to the ``id`` field and all CharField and TextField on the model.
+        """
+        model_class = self.get_model_class()
+        fields = ['id']
+        for field in model_class._meta.get_fields():
+            if isinstance(field, (models.CharField, models.TextField)):
+                fields.append(field.name)
+        return fields
+
+    def add_filterlist_items(self, filterlist):
+        search_fields = self.get_search_fields()
+        if search_fields:
+            filterlist.append(listfilter.django.single.textinput.Search(
+                slug='search',
+                label=ugettext_lazy('Search'),
+                label_is_screenreader_only=True,
+                modelfields=search_fields))
+
+    def get_queryset_for_role(self, role=None):
+        queryset = super(View, self)\
+            .get_queryset_for_role(role=role)
+        queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
+        return queryset.distinct()
