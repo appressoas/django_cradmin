@@ -40,7 +40,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
 
         Defaults to ``Create <verbose_name model>``.
         """
-        return _('Create %(what)s') % {'what': self.model._meta.verbose_name}
+        return _('Create %(what)s') % {'what': self.get_model_class()._meta.verbose_name}
 
     def get_submit_use_label(self):
         """
@@ -126,7 +126,7 @@ class CreateLikeUpdateView(CreateView):
             def get(self, request, *args, **kwargs):
                 try:
                     return super(UpdateView, self).get(request, *args, **kwargs)
-                except self.model.DoesNotExist:
+                except self.get_model_class().DoesNotExist:
                     return HttpResponseRedirect(self.request.cradmin_app.reverse_appurl('create'))
 
     The user will then be redirected to the create view, but it
