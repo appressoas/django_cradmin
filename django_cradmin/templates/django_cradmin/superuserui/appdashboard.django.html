@@ -6,7 +6,7 @@
 
 {% block pageheader-inner %}
     <h1>
-        {% trans "Superuser UI" %}
+        {{ djangoappconfig.get_menulabel }}
     </h1>
 {% endblock pageheader-inner %}
 

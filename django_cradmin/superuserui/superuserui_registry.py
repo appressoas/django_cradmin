@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy
 from future.utils import python_2_unicode_compatible
 
 from django_cradmin import crinstance
@@ -72,6 +73,11 @@ class DjangoAppConfig(object):
             raise NotImplementedError('You must override get_appname() or provide the '
                                       '``appname`` parameter for __init__().')
 
+    def get_index_url(self):
+        return reverse_cradmin_url(
+            instanceid=self.registry.id,
+            appname=self.get_appname())
+
     def get_menulabel(self):
         if self.menulabel:
             return self.menulabel
@@ -106,10 +112,16 @@ class Registry(object):
     def __init__(self, id, urlpath_regex=r'^/superuser/.*$'):
         self.id = id
         self.urlpath_regex = urlpath_regex
-        self.appconfigs = []
+        self._djangoappconfigs = []
+
+    def get_title(self):
+        return ugettext_lazy('Superuser UI')
+
+    def iter_djangoappconfigs(self):
+        return iter(self._djangoappconfigs)
 
     def add_djangoapp(self, djangoappconfig):
-        self.appconfigs.append(djangoappconfig)
+        self._djangoappconfigs.append(djangoappconfig)
         djangoappconfig.registry = self
         return djangoappconfig
 
@@ -130,13 +142,13 @@ class Registry(object):
                     childappnames.add(modelconfig.get_unique_identifier())
                 appmenuitem = self.add_menuitem(
                     label=appconfig.get_menulabel(),
-                    url=self.appindex_url(appconfig.get_appname()),
+                    url=appconfig.get_index_url(),
                     active=self.request.cradmin_app.appname == appconfig.get_appname(),
                     expanded=self.request.cradmin_app.appname in childappnames)
                 self.add_modelconfigs(appconfig=appconfig, appmenuitem=appmenuitem)
 
             def build_menu(self):
-                for appconfig in me.appconfigs:
+                for appconfig in me.iter_djangoappconfigs():
                     self.add_appconfig(appconfig=appconfig)
 
         return Menu
@@ -154,10 +166,13 @@ class Registry(object):
             def has_access(self):
                 return self.request.user.is_superuser
 
+            def get_superuserui_registry(self):
+                return me
+
             @classmethod
             def get_apps(cls):
                 apps = []
-                for appconfig in me.appconfigs:
+                for appconfig in me.iter_djangoappconfigs():
                     apps.append((appconfig.get_appname(),
                                  appconfig.make_crapp_class()))
                     for modelconfig in appconfig.iter_modelconfigs():

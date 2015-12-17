@@ -1,16 +1,21 @@
-{% extends "django_cradmin/standalone-base.django.html" %}
+{% extends "django_cradmin/layouts/standalone/focused.django.html" %}
 {% load i18n %}
 {% load static %}
+{% load cradmin_tags %}
 
+{% block title %}
+    {{ pagetitle }}
+{% endblock title %}
 
 {% block pageheader-inner %}
     <h1>
-        {% trans "Superuser UI" %}
+        {{ pagetitle }}
     </h1>
+    <p>
+        {% trans "Please select what you would like to edit" %}
+    </p>
 {% endblock pageheader-inner %}
 
-{% block body %}
-    <div class="container">
-        TODO
-    </div>
-{% endblock body %}
+{% block content %}
+    {% cradmin_render_renderable djangoapps_list %}
+{% endblock content %}

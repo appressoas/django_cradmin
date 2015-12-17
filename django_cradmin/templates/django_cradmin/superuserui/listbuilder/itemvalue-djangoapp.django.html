@@ -1,0 +1,5 @@
+{% extends "django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html" %}
+
+{% block content %}
+    {{ me.djangoappconfig.get_menulabel }}
+{% endblock content %}
