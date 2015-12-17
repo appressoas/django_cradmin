@@ -129,6 +129,16 @@ class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
     enable_modelchoicefield_support = True
+    fields = [
+        'title',
+        'intro',
+        'body',
+        'image',
+        'publishing_time',
+        'unpublish_time',
+        'attachment',
+        'internal_notes'
+    ]
 
     def get_preview_url(self):
         return self.request.cradmin_app.reverse_appurl('preview')

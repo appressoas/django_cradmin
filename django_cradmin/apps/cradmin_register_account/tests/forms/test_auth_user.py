@@ -67,7 +67,7 @@ class TestAuthUserCreateAccountForm(TestCase):
         })
         self.assertFalse(form.is_valid())
         self.assertEquals(form.errors, {
-            'username': [u'User with this Username already exists.']
+            'username': [u'A user with that username already exists.']
         })
 
 
@@ -138,5 +138,5 @@ class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
             'email': 'a.very.long.testuser@example.com'
         })
         self.assertTrue(form.is_valid())
-        with self.assertRaisesMessage(ValidationError, 'User with this Username already exists.'):
+        with self.assertRaisesMessage(ValidationError, 'A user with that username already exists.'):
             form.save()

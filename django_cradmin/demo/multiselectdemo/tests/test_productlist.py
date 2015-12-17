@@ -20,19 +20,19 @@ class TestProductListView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertTrue(mockresponse.selector.exists('.django-cradmin-listbuilder-list'))
 
     def test_default_ordering(self):
-        mommy.make('multiselectdemo.Product', name='A')
-        mommy.make('multiselectdemo.Product', name='B')
-        mommy.make('multiselectdemo.Product', name='C')
+        a = mommy.make('multiselectdemo.Product', name='A')
+        b = mommy.make('multiselectdemo.Product', name='B')
+        c = mommy.make('multiselectdemo.Product', name='C')
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertEqual(
-            'A',
+            '#{} - A'.format(a.id),
             mockresponse.selector.one(
                 '.django-cradmin-listbuilder-list li:nth-child(1) h2').alltext_normalized)
         self.assertEqual(
-            'B',
+            '#{} - B'.format(b.id),
             mockresponse.selector.one(
                 '.django-cradmin-listbuilder-list li:nth-child(2) h2').alltext_normalized)
         self.assertEqual(
-            'C',
+            '#{} - C'.format(c.id),
             mockresponse.selector.one(
                 '.django-cradmin-listbuilder-list li:nth-child(3) h2').alltext_normalized)
