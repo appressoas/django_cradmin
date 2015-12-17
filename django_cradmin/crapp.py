@@ -53,6 +53,10 @@ class App(object):
         return self.reverse_appurl(viewname=INDEXVIEW_NAME, args=args, kwargs=kwargs)
 
     @classmethod
+    def get_appurls(cls):
+        return cls.appurls
+
+    @classmethod
     def _wrap_view(cls, appname, view):
         def viewwrapper(request, *args, **kwargs):
             request.cradmin_app = cls(appname, request)
@@ -70,7 +74,7 @@ class App(object):
         to build urls for all views in the app.
         """
         urls = []
-        for pattern in cls.appurls:
+        for pattern in cls.get_appurls():
             urls.append(
                 url(
                     pattern.regex, cls._wrap_view(appname, pattern.view),

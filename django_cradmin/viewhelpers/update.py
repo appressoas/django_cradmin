@@ -19,7 +19,7 @@ class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
 
         Defaults to ``Edit <verbose_name model>``.
         """
-        return _('Edit %(what)s') % {'what': self.model._meta.verbose_name}
+        return _('Edit %(what)s') % {'what': self.get_model_class()._meta.verbose_name}
 
     def get_buttons(self):
         buttons = [
@@ -52,7 +52,7 @@ class UpdateRoleView(UpdateView):
         return self.get_queryset_for_role(self.request.cradmin_role).get()
 
     def get_queryset_for_role(self, role):
-        return self.model.objects.filter(pk=role.pk)
+        return self.get_model_class().objects.filter(pk=role.pk)
 
 
 class RedirectToCreateIfDoesNotExistMixin(object):
@@ -69,7 +69,7 @@ class RedirectToCreateIfDoesNotExistMixin(object):
                 return self.get_queryset_for_role(self.request.cradmin_role).get()
 
             def get_queryset_for_role(self, role):
-                return self.model.objects.filter(someonetooneattr=role)
+                return self.get_model_class().objects.filter(someonetooneattr=role)
 
     And the view will automatically redirect to the create view
     if the object does not exist.
@@ -93,5 +93,5 @@ class RedirectToCreateIfDoesNotExistMixin(object):
     def get(self, request, *args, **kwargs):
         try:
             return super().get(request, *args, **kwargs)
-        except self.model.DoesNotExist:
+        except self.get_model_class().DoesNotExist:
             return HttpResponseRedirect(self.request.cradmin_app.reverse_appurl('create'))

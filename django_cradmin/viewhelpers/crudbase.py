@@ -46,10 +46,24 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     #: See :meth:`.get_editurl`.
     editview_appurl_name = 'edit'
 
+    def get_model_class(self):
+        """
+        Get the model class.
+
+        Defaults to :obj:`.model`.
+        """
+        return self.model
+
     def add_preview_button_if_configured(self, buttons):
         preview_url = self.get_preview_url()
         if preview_url:
             buttons.append(DefaultSubmit('submit-preview', _('Preview')))
+
+    def get_model_fields(self):
+        fields = list(forms.fields_for_model(self.get_model_class(), fields=self.fields).keys())
+        if self.roleid_field and self.roleid_field in fields:
+            fields.remove(self.roleid_field)
+        return fields
 
     def get_field_layout(self):
         """
@@ -85,9 +99,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
                     ]
 
         """
-        fields = list(forms.fields_for_model(self.model, fields=self.fields).keys())
-        if self.roleid_field and self.roleid_field in fields:
-            fields.remove(self.roleid_field)
+        fields = self.get_model_fields()
         return [layout.Div(*fields, css_class='cradmin-globalfields')]
 
     def get_form(self, form_class=None):
@@ -101,7 +113,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         """
         form = super(CreateUpdateViewMixin, self).get_form(form_class)
         if self.roleid_field:
-            roleid_fieldobject = getattr(self.model, self.roleid_field, None)
+            roleid_fieldobject = getattr(self.get_model_class(), self.roleid_field, None)
             if isinstance(roleid_fieldobject, GenericForeignKey):
                 for fieldname in roleid_fieldobject.fk_field, roleid_fieldobject.ct_field:
                     if fieldname in form.fields:
@@ -113,7 +125,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
 
     def get_context_data(self, **kwargs):
         context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
-        context['model_verbose_name'] = self.model._meta.verbose_name
+        context['model_verbose_name'] = self.get_model_class()._meta.verbose_name
         if getattr(self, 'show_preview', False):
             context['preview_url'] = self.get_preview_url()
             context['show_preview'] = True
