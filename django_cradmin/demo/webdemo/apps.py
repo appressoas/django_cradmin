@@ -7,7 +7,8 @@ class WebdemoConfig(AppConfig):
     verbose_name = "Webdemo"
 
     def ready(self):
-        page_model = self.get_model('Page')
         appconfig = superuserui_registry.default.add_djangoapp(
-                superuserui_registry.DjangoAppConfig(appname='webdemo'))
-        appconfig.add_model(superuserui_registry.ModelConfig(model_class=page_model))
+                superuserui_registry.DjangoAppConfig(app_label='webdemo'))
+        # page_model = self.get_model('Page')
+        # appconfig.add_model(superuserui_registry.ModelConfig(model_class=page_model))
+        appconfig.add_all_models()

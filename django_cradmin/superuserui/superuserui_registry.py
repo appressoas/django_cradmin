@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.utils.translation import ugettext_lazy
 from future.utils import python_2_unicode_compatible
 
@@ -59,36 +60,47 @@ class ModelConfig(object):
 
 
 class DjangoAppConfig(object):
-    def __init__(self, appname=None, menulabel=None, crapp_class=None):
-        self.appname = appname
+    def __init__(self, app_label=None, menulabel=None, crapp_class=None):
+        self.app_label = app_label
         self.menulabel = menulabel
         self.crapp_class = crapp_class
         self._modelconfigs = []
         self.registry = None  # This is set in Registry.add_djangoapp()
 
-    def get_appname(self):
-        if self.appname:
-            return self.appname
+    def get_app_label(self):
+        if self.app_label:
+            return self.app_label
         else:
-            raise NotImplementedError('You must override get_appname() or provide the '
-                                      '``appname`` parameter for __init__().')
+            raise NotImplementedError('You must override get_app_label() or provide the '
+                                      '``app_label`` parameter for __init__().')
 
     def get_index_url(self):
         return reverse_cradmin_url(
             instanceid=self.registry.id,
-            appname=self.get_appname())
+            appname=self.get_app_label())
 
     def get_menulabel(self):
         if self.menulabel:
             return self.menulabel
         else:
-            return self.get_appname()
+            return self.get_app_label()
             # raise NotImplementedError('You must override get_menulabel() or provide the '
             #                           '``menulabel`` parameter for __init__().')
 
     def add_model(self, modelconfig):
         self._modelconfigs.append(modelconfig)
         modelconfig.djangoappconfig = self
+
+    def get_app_config(self):
+        return apps.get_app_config(self.get_app_label())
+
+    def add_all_models(self):
+        def get_model_verbose_name_plural(model_class):
+            return model_class._meta.verbose_name_plural
+
+        for model_class in sorted(self.get_app_config().get_models(),
+                                  key=get_model_verbose_name_plural):
+            self.add_model(ModelConfig(model_class=model_class))
 
     def iter_modelconfigs(self):
         return iter(self._modelconfigs)
@@ -143,7 +155,7 @@ class Registry(object):
                 appmenuitem = self.add_menuitem(
                     label=appconfig.get_menulabel(),
                     url=appconfig.get_index_url(),
-                    active=self.request.cradmin_app.appname == appconfig.get_appname(),
+                    active=self.request.cradmin_app.appname == appconfig.get_app_label(),
                     expanded=self.request.cradmin_app.appname in childappnames)
                 self.add_modelconfigs(appconfig=appconfig, appmenuitem=appmenuitem)
 
@@ -173,7 +185,7 @@ class Registry(object):
             def get_apps(cls):
                 apps = []
                 for appconfig in me.iter_djangoappconfigs():
-                    apps.append((appconfig.get_appname(),
+                    apps.append((appconfig.get_app_label(),
                                  appconfig.make_crapp_class()))
                     for modelconfig in appconfig.iter_modelconfigs():
                         apps.append((modelconfig.get_unique_identifier(),

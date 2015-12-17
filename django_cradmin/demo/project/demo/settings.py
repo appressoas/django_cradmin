@@ -77,7 +77,7 @@ INSTALLED_APPS = (
     'django_cradmin.demo.listfilterdemo',
 
     # Demo for multiselect
-    'django_cradmin.demo.multiselectdemo',
+    'django_cradmin.demo.multiselectdemo.apps.MultiselectdemoConfig',
 )
 
 MIDDLEWARE_CLASSES = (
