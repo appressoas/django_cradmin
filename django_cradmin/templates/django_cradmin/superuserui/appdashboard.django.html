@@ -1,0 +1,17 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load i18n %}
+{% load static %}
+{% load cradmin_tags %}
+
+
+{% block pageheader-inner %}
+    <h1>
+        {% trans "Superuser UI" %}
+    </h1>
+{% endblock pageheader-inner %}
+
+{% block content %}
+    <div class="container">
+        {% cradmin_render_renderable models_list %}
+    </div>
+{% endblock content %}

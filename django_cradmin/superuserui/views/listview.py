@@ -4,13 +4,13 @@ from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilder
 
 
-class View(mixins.QuerySetForRoleMixin, listbuilderview.View):
-    # listbuilderview.FilterListMixin,
-    # listbuilderview.ViewCreateButtonMixin,
+class View(mixins.QuerySetForRoleMixin,
+           # listbuilderview.FilterListMixin,
+           listbuilderview.ViewCreateButtonMixin,
+           listbuilderview.View):
 
     paginate_by = 50
     value_renderer_class = listbuilder.itemvalue.EditDelete
-    modelconfig = None
 
     # def get_filterlist_url(self, filters_string):
     #     return self.request.cradmin_app.reverse_appurl(

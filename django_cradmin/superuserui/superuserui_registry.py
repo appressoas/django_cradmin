@@ -1,87 +1,15 @@
-import re
+from future.utils import python_2_unicode_compatible
 
 from django_cradmin import crinstance
 from django_cradmin import crmenu
-from django_cradmin import crapp
+from django_cradmin.crinstance import reverse_cradmin_url
 from django_cradmin.decorators import has_access_to_cradmin_instance
+from django_cradmin.superuserui.crapps import djangomodel
+from django_cradmin.superuserui.crapps import djangoapp
 from django_cradmin.superuserui.views import dashboardview
-from django_cradmin.superuserui.views import listview
-from django_cradmin.superuserui.views import editview
-from django_cradmin.superuserui.views import deleteview
 
 
-class SuperuserUiCrApp(crapp.App):
-    modelconfig = None
-
-    @classmethod
-    def get_listview_class(cls):
-        return listview.View
-
-    @classmethod
-    def get_editview_class(cls):
-        return editview.View
-
-    @classmethod
-    def get_deleteview_class(cls):
-        return deleteview.View
-
-    @classmethod
-    def get_appurls(cls):
-        appurls = []
-        listview_class = cls.get_listview_class()
-        if listview_class:
-            appurls.append(crapp.Url(
-                r'^$',
-                listview_class.as_view(modelconfig=cls.modelconfig),
-                name=crapp.INDEXVIEW_NAME))
-        else:
-            raise NotImplementedError('You must return a view class from get_listview_class(). '
-                                      'Note that it can be something other than a list view, '
-                                      'such as an overview of with information/stats for the model.')
-
-        editview_class = cls.get_editview_class()
-        if editview_class:
-            appurls.append(crapp.Url(
-                r'^edit/(?P<pk>\d+)$',
-                editview_class.as_view(),
-                name="edit"))
-
-        deleteview_class = cls.get_deleteview_class()
-        if deleteview_class:
-            appurls.append(crapp.Url(
-                r'^delete/(?P<pk>\d+)$',
-                deleteview_class.as_view(),
-                name="delete"))
-
-        # return [
-            # crapp.Url(
-            #     r'^$',
-            #     listview.View.as_view(),
-            #     name=crapp.INDEXVIEW_NAME),
-            # crapp.Url(
-            #     r'^filter/(?P<filters_string>.+)?$',
-            #     PagesListBuilderView.as_view(),
-            #     name='filter'),
-            # crapp.Url(
-            #     r'^create$',
-            #     PageCreateView.as_view(),
-            #     name="create"),
-            # crapp.Url(
-            #     r'^edit/(?P<pk>\d+)$',
-            #     PageUpdateView.as_view(),
-            #     name="edit"),
-            # crapp.Url(
-            #     r'^preview/(?P<pk>\d+)?$',
-            #     PreviewPageView.as_view(),
-            #     name="preview"),
-            # crapp.Url(
-            #     r'^delete/(?P<pk>\d+)$',
-            #     PageDeleteView.as_view(),
-            #     name="delete"),
-        # ]
-        return appurls
-
-
+@python_2_unicode_compatible
 class ModelConfig(object):
     def __init__(self, model_class=None, menulabel=None, crapp_class=None):
         self.model_class = model_class
@@ -102,6 +30,11 @@ class ModelConfig(object):
         else:
             return self.get_model_class()._meta.verbose_name_plural
 
+    def get_index_url(self):
+        return reverse_cradmin_url(
+            instanceid=self.djangoappconfig.registry.id,
+            appname=self.get_unique_identifier())
+
     def get_unique_identifier(self):
         return '{}_{}'.format(self.model_class._meta.app_label,
                               self.model_class._meta.model_name)
@@ -110,7 +43,7 @@ class ModelConfig(object):
         if self.crapp_class:
             return self.crapp_class
         else:
-            return SuperuserUiCrApp
+            return djangomodel.DjangoModelCrApp
 
     def make_crapp_class(self):
         me = self
@@ -120,12 +53,16 @@ class ModelConfig(object):
 
         return App
 
+    def __str__(self):
+        return self.get_menulabel()
+
 
 class DjangoAppConfig(object):
-    def __init__(self, appname=None, menulabel=None):
+    def __init__(self, appname=None, menulabel=None, crapp_class=None):
         self.appname = appname
         self.menulabel = menulabel
-        self.modelconfigs = []
+        self.crapp_class = crapp_class
+        self._modelconfigs = []
         self.registry = None  # This is set in Registry.add_djangoapp()
 
     def get_appname(self):
@@ -144,8 +81,25 @@ class DjangoAppConfig(object):
             #                           '``menulabel`` parameter for __init__().')
 
     def add_model(self, modelconfig):
-        self.modelconfigs.append(modelconfig)
+        self._modelconfigs.append(modelconfig)
         modelconfig.djangoappconfig = self
+
+    def iter_modelconfigs(self):
+        return iter(self._modelconfigs)
+
+    def get_crapp_class(self):
+        if self.crapp_class:
+            return self.crapp_class
+        else:
+            return djangoapp.DjangoAppCrApp
+
+    def make_crapp_class(self):
+        me = self
+
+        class App(self.get_crapp_class()):
+            djangoappconfig = me
+
+        return App
 
 
 class Registry(object):
@@ -163,18 +117,27 @@ class Registry(object):
         me = self
 
         class Menu(crmenu.Menu):
+            def add_modelconfigs(self, appconfig, appmenuitem):
+                for modelconfig in appconfig.iter_modelconfigs():
+                    appmenuitem.add_childitem(
+                        label=modelconfig.get_menulabel(),
+                        url=self.appindex_url(modelconfig.get_unique_identifier()),
+                        active=self.request.cradmin_app.appname == modelconfig.get_unique_identifier())
+
+            def add_appconfig(self, appconfig):
+                childappnames = set()
+                for modelconfig in appconfig.iter_modelconfigs():
+                    childappnames.add(modelconfig.get_unique_identifier())
+                appmenuitem = self.add_menuitem(
+                    label=appconfig.get_menulabel(),
+                    url=self.appindex_url(appconfig.get_appname()),
+                    active=self.request.cradmin_app.appname == appconfig.get_appname(),
+                    expanded=self.request.cradmin_app.appname in childappnames)
+                self.add_modelconfigs(appconfig=appconfig, appmenuitem=appmenuitem)
+
             def build_menu(self):
                 for appconfig in me.appconfigs:
-                    appmenuitem = self.add_menuitem(
-                        label=appconfig.get_menulabel(),
-                        # url=self.appindex_url(appconfig.get_appname()),
-                        url='#',
-                        active=self.request.cradmin_app.appname == appconfig.get_appname())
-                    for modelconfig in appconfig.modelconfigs:
-                        appmenuitem.add_childitem(
-                            label=modelconfig.get_menulabel(),
-                            url=self.appindex_url(modelconfig.get_unique_identifier()),
-                            active=self.request.cradmin_app.appname == modelconfig.get_unique_identifier())
+                    self.add_appconfig(appconfig=appconfig)
 
         return Menu
 
@@ -195,7 +158,9 @@ class Registry(object):
             def get_apps(cls):
                 apps = []
                 for appconfig in me.appconfigs:
-                    for modelconfig in appconfig.modelconfigs:
+                    apps.append((appconfig.get_appname(),
+                                 appconfig.make_crapp_class()))
+                    for modelconfig in appconfig.iter_modelconfigs():
                         apps.append((modelconfig.get_unique_identifier(),
                                      modelconfig.make_crapp_class()))
                 return apps
