@@ -1,4 +1,4 @@
-angular.module('djangoCradmin.multiselect.services', [])
+angular.module('djangoCradmin.multiselect2.services', [])
 
 
 .factory 'djangoCradminMultiselectCoordinator', ->

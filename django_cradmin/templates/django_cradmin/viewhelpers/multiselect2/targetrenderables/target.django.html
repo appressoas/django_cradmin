@@ -1,0 +1,45 @@
+<form method="post" action="{{ form_action }}"
+      id="{{ me.get_dom_id }}"
+      class="django-cradmin-multiselect-target"
+      ng-class="{'django-cradmin-multiselect-target-with-items': hasItems()}"
+      django-cradmin-multiselect-target>
+    {% csrf_token %}
+
+    <div class="django-cradmin-multiselect-target-with-items-content">
+        {% block with-items-content %}
+            {% block with-items-title %}
+                <h2 class="django-cradmin-multiselect-title">
+                    {{ me.get_with_items_title }}
+                </h2>
+            {% endblock with-items-title %}
+            {% block selected-items %}
+                <div django-cradmin-multiselect-target-selected-items
+                        class="django-cradmin-multiselect-target-selected-items">
+                    {% comment %}
+                        The django-cradmin-multiselect-select directive in
+                        the ``productlist-itemvalue.django.html`` template will
+                        add items to this element.
+                    {% endcomment %}
+                </div>
+            {% endblock selected-items %}
+            {% block with-items-footer %}
+                <div class="django-cradmin-multiselect-target-footer">
+                    {% block submit-button %}
+                        <button type="submit"
+                                class="{% block submit-button-css-classes %}btn btn-primary btn-block{% endblock %}"
+                                django-cradmin-multiselect-submit-button>
+                            {% block submit-button-content %}
+                                {{ me.get_submit_button_text }}
+                            {% endblock submit-button-content %}
+                        </button>
+                    {% endblock submit-button %}
+                </div>
+            {% endblock with-items-footer %}
+        {% endblock with-items-content %}
+    </div>
+    <div class="django-cradmin-multiselect-target-without-items-content">
+        {% block without-items-content %}
+            {{ me.get_without_items_text }}
+        {% endblock without-items-content %}
+    </div>
+</form>

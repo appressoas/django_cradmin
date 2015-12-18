@@ -35,7 +35,7 @@ class UseThis(FocusBox):
 
     def get_base_css_classes_list(self):
         """
-        Adds the ``django-cradmin-listbuilder-itemvalue-titleeditdelete`` css class
+        Adds the ``django-cradmin-listbuilder-itemvalue-usethis`` css class
         in addition to the classes added by the superclasses.
         """
         css_classes = super(UseThis, self).get_base_css_classes_list()

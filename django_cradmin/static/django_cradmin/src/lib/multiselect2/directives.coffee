@@ -1,4 +1,4 @@
-angular.module('djangoCradmin.multiselect.directives', [])
+angular.module('djangoCradmin.multiselect2.directives', [])
 
 
 .directive('djangoCradminMultiselectTarget', [

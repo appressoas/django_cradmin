@@ -6754,7 +6754,7 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 .django-cradmin-multiselect-item-wrapper-selected {
   display: none;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-heading {
+.django-cradmin-multiselect-target .django-cradmin-multiselect-title {
   font-size: 16px;
   font-weight: bold;
   margin: 20px 0 0 0;
@@ -6765,7 +6765,7 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
   background: #ffffff;
   padding: 10px;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-target-selected-items .django-cradmin-multiselect-target-selected-item .django-cradmin-multiselect-target-selected-item-heading {
+.django-cradmin-multiselect-target .django-cradmin-multiselect-target-selected-items .django-cradmin-multiselect-target-selected-item .django-cradmin-multiselect-target-selected-item-title {
   font-size: 16px;
   margin-top: 10px;
 }

@@ -1,26 +1,18 @@
 from django_cradmin import crapp
 from django_cradmin.demo.multiselectdemo.models import Product
-from django_cradmin import renderable
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
-from django_cradmin.viewhelpers import listbuilder
-from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
+from django_cradmin.viewhelpers import multiselect2
 
 
-class ProductListItemValue(listbuilder.itemvalue.FocusBox):
-    template_name = 'multiselectdemo/productlist-itemvalue.django.html'
-    valuealias = 'product'
-
-
-class ProductListSelectTarget(renderable.AbstractRenderableWithCss,
-                              abstractfilterlistchild.FilterListChildMixin):
-    template_name = 'multiselectdemo/productlist-select-target.django.html'
+class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
+    def get_inputfield_name(self):
+        return 'selected_products'
 
 
 class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
     model = Product
     value_renderer_class = ProductListItemValue
-    # listbuilder_class = listbuilder.lists.FloatGridList
     paginate_by = 20
 
     def add_filterlist_items(self, filterlist):
@@ -29,7 +21,7 @@ class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
             label='Search',
             label_is_screenreader_only=True,
             modelfields=['name', 'description']))
-        filterlist.append(ProductListSelectTarget())
+        filterlist.append(multiselect2.targetrenderables.Target())
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(

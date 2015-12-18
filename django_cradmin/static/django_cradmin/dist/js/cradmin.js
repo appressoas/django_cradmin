@@ -3641,7 +3641,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearabletextinput', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives', 'djangoCradmin.multiselect.services', 'djangoCradmin.multiselect.directives', 'djangoCradmin.loadmorepager.services', 'djangoCradmin.loadmorepager.directives']);
+  angular.module('djangoCradmin', ['djangoCradmin.templates', 'djangoCradmin.directives', 'djangoCradmin.providers', 'djangoCradmin.calendar.providers', 'djangoCradmin.messages', 'djangoCradmin.detectizr', 'djangoCradmin.menu', 'djangoCradmin.objecttable', 'djangoCradmin.acemarkdown', 'djangoCradmin.bulkfileupload', 'djangoCradmin.iosaddtohomescreen', 'djangoCradmin.imagepreview', 'djangoCradmin.collapse', 'djangoCradmin.modal', 'djangoCradmin.scrollfixed', 'djangoCradmin.pagepreview', 'djangoCradmin.forms.modelchoicefield', 'djangoCradmin.forms.usethisbutton', 'djangoCradmin.forms.datetimewidget', 'djangoCradmin.forms.filewidget', 'djangoCradmin.forms.setfieldvalue', 'djangoCradmin.forms.select', 'djangoCradmin.forms.clearabletextinput', 'djangoCradmin.backgroundreplace_element.providers', 'djangoCradmin.backgroundreplace_element.directives', 'djangoCradmin.listfilter.directives', 'djangoCradmin.multiselect2.services', 'djangoCradmin.multiselect2.directives', 'djangoCradmin.loadmorepager.services', 'djangoCradmin.loadmorepager.directives']);
 
 }).call(this);
 
@@ -4314,7 +4314,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.multiselect.directives', []).directive('djangoCradminMultiselectTarget', [
+  angular.module('djangoCradmin.multiselect2.directives', []).directive('djangoCradminMultiselectTarget', [
     'djangoCradminMultiselectCoordinator', function(djangoCradminMultiselectCoordinator) {
       return {
         restrict: 'A',
@@ -4492,7 +4492,7 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.multiselect.services', []).factory('djangoCradminMultiselectCoordinator', function() {
+  angular.module('djangoCradmin.multiselect2.services', []).factory('djangoCradminMultiselectCoordinator', function() {
     /*
     Coordinates between djangoCradminMultiselectSelect
     and djangoCradminMultiselectTarget.

@@ -26,8 +26,8 @@ angular.module('djangoCradmin', [
   'djangoCradmin.backgroundreplace_element.providers'
   'djangoCradmin.backgroundreplace_element.directives'
   'djangoCradmin.listfilter.directives'
-  'djangoCradmin.multiselect.services'
-  'djangoCradmin.multiselect.directives'
+  'djangoCradmin.multiselect2.services'
+  'djangoCradmin.multiselect2.directives'
   'djangoCradmin.loadmorepager.services'
   'djangoCradmin.loadmorepager.directives'
 ])
