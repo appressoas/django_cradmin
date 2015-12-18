@@ -51,7 +51,7 @@ INSTALLED_APPS = (
     'django_cradmin.demo.polls_demo',
     'django_cradmin.demo.usermanagerdemo',
     'django_cradmin.demo.listfilterdemo',
-    'django_cradmin.demo.multiselectdemo',
+    'django_cradmin.demo.multiselect2demo',
 )
 
 MIDDLEWARE_CLASSES = (

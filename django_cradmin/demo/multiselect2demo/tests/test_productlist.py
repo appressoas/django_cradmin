@@ -2,7 +2,7 @@ from django import test
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.multiselectdemo.views import productlist
+from django_cradmin.demo.multiselect2demo.views import productlist
 
 
 class TestProductListView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
@@ -14,15 +14,15 @@ class TestProductListView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertFalse(mockresponse.selector.exists('.django-cradmin-listbuilder-list'))
 
     def test_nonempty_list(self):
-        mommy.make('multiselectdemo.Product')
+        mommy.make('multiselect2demo.Product')
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertFalse(mockresponse.selector.exists('.django-cradmin-listing-no-items-message'))
         self.assertTrue(mockresponse.selector.exists('.django-cradmin-listbuilder-list'))
 
     def test_default_ordering(self):
-        a = mommy.make('multiselectdemo.Product', name='A')
-        b = mommy.make('multiselectdemo.Product', name='B')
-        c = mommy.make('multiselectdemo.Product', name='C')
+        a = mommy.make('multiselect2demo.Product', name='A')
+        b = mommy.make('multiselect2demo.Product', name='B')
+        c = mommy.make('multiselect2demo.Product', name='C')
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertEqual(
             'A',

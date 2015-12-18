@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django_cradmin import crinstance, crmenu
-from django_cradmin.demo.multiselectdemo.views import productlist
+from django_cradmin.demo.multiselect2demo.views import productlist
 
 
 class Menu(crmenu.Menu):
@@ -12,7 +12,7 @@ class Menu(crmenu.Menu):
 
 
 class MultiselectDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
-    id = 'multiselectdemo'
+    id = 'multiselect2demo'
     menuclass = Menu
     rolefrontpage_appname = 'productlist'
     flatten_rolefrontpage_url = True
@@ -33,4 +33,4 @@ class MultiselectDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         We only need this because we have multiple cradmin UIs
         in the demo project.
         """
-        return urlpath.startswith('/multiselectdemo')
+        return urlpath.startswith('/multiselect2demo')

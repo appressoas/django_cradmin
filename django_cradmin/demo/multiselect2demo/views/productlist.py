@@ -1,5 +1,5 @@
 from django_cradmin import crapp
-from django_cradmin.demo.multiselectdemo.models import Product
+from django_cradmin.demo.multiselect2demo.models import Product
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import multiselect2
