@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from future import standard_library
 
+from django_cradmin import automodelform
 from django_cradmin.crispylayouts import PrimarySubmit, DefaultSubmit
 
 standard_library.install_aliases()
@@ -62,7 +63,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         """
         me = self
 
-        class Form(forms.ModelForm):
+        class Form(automodelform.ModelForm):
             class Meta:
                 model = me.get_model_class()
                 fields = me.get_model_fields()
