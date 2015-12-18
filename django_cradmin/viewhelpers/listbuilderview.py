@@ -223,6 +223,12 @@ class View(ViewMixin, ListView):
     #: :meth:`~.ObjectTableView.get_no_items_message`.
     model = None
 
+    #: Set this to ``True`` to make the template not render the menu.
+    #: Very useful when creating foreign-key select views, and other views
+    #: where you do not want your users to accidentally click out of the
+    #: current view.
+    hide_menu = False
+
     def get_model_class(self):
         """
         Get the model class to list objects for.
@@ -265,6 +271,11 @@ class View(ViewMixin, ListView):
         return _('No %(modelname_plural)s') % {
             'modelname_plural': self.get_model_class()._meta.verbose_name_plural.lower(),
         }
+
+    def get_context_data(self, **kwargs):
+        context = super(View, self).get_context_data(**kwargs)
+        context['cradmin_hide_menu'] = self.hide_menu
+        return context
 
 
 class FilterListMixin(listfilter_viewmixin.ViewMixin):

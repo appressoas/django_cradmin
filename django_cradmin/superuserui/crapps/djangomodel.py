@@ -22,6 +22,10 @@ class DjangoModelCrApp(crapp.App):
         return listview.View
 
     @classmethod
+    def get_foreignkeyselectview_class(cls):
+        return listview.ForeignKeySelectView
+
+    @classmethod
     def get_editview_class(cls):
         return editview.View
 
@@ -50,6 +54,17 @@ class DjangoModelCrApp(crapp.App):
             raise NotImplementedError('You must return a view class from get_listview_class(). '
                                       'Note that it can be something other than a list view, '
                                       'such as an overview of with information/stats for the model.')
+
+        foreignkeyselectview_class = cls.get_foreignkeyselectview_class()
+        if foreignkeyselectview_class:
+            appurls.append(crapp.Url(
+                r'^foreignkeyselect$',
+                foreignkeyselectview_class.as_view(),
+                name='foreignkeyselect'))
+            appurls.append(crapp.Url(
+                r'^foreignkeyselect/filter/(?P<filters_string>.+)?$',
+                foreignkeyselectview_class.as_view(),
+                name='foreignkeyselect-filter'))
 
         createview_class = cls.get_createview_class()
         if createview_class:

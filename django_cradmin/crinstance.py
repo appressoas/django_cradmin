@@ -309,6 +309,21 @@ class BaseCrAdminInstance(object):
         """
         return self.request.user.is_authenticated()
 
+    def get_foreignkeyselectview_url(self, model_class):
+        """
+        Get foreign key select view URL for the given model class.
+
+        This can be used by foreign key select widgets to lookup a view
+        for this model within the current instance.
+
+        By default this returns ``None``, so you have to override this
+        if you want to use it.
+
+        Parameters:
+            model_class: A ``django.db.models.Model`` subclass.
+        """
+        return None
+
     @classmethod
     def get_roleselect_view(cls):
         """

@@ -1,9 +1,12 @@
+from collections import OrderedDict
+
 from django.apps import apps
 from django.utils.translation import ugettext_lazy
 from future.utils import python_2_unicode_compatible
 
 from django_cradmin import crinstance
 from django_cradmin import crmenu
+from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
 from django_cradmin.decorators import has_access_to_cradmin_instance
 from django_cradmin.superuserui.crapps import djangomodel
@@ -32,10 +35,19 @@ class ModelConfig(object):
         else:
             return self.get_model_class()._meta.verbose_name_plural
 
-    def get_index_url(self):
+    def get_view_url(self, viewname, args=None, kwargs=None):
         return reverse_cradmin_url(
             instanceid=self.djangoappconfig.registry.id,
-            appname=self.get_unique_identifier())
+            appname=self.get_unique_identifier(),
+            viewname=viewname,
+            args=args,
+            kwargs=kwargs)
+
+    def get_indexview_url(self):
+        return self.get_view_url(viewname=crapp.INDEXVIEW_NAME)
+
+    def get_foreignkeyselectview_url(self):
+        return self.get_view_url(viewname='foreignkeyselect')
 
     def get_unique_identifier(self):
         return '{}_{}'.format(self.model_class._meta.app_label,
@@ -64,7 +76,7 @@ class DjangoAppConfig(object):
         self.app_label = app_label
         self.menulabel = menulabel
         self.crapp_class = crapp_class
-        self._modelconfigs = []
+        self._modelconfigs = OrderedDict()
         self.registry = None  # This is set in Registry.add_djangoapp()
 
     def get_app_label(self):
@@ -74,7 +86,7 @@ class DjangoAppConfig(object):
             raise NotImplementedError('You must override get_app_label() or provide the '
                                       '``app_label`` parameter for __init__().')
 
-    def get_index_url(self):
+    def get_indexview_url(self):
         return reverse_cradmin_url(
             instanceid=self.registry.id,
             appname=self.get_app_label())
@@ -88,8 +100,11 @@ class DjangoAppConfig(object):
             #                           '``menulabel`` parameter for __init__().')
 
     def add_model(self, modelconfig):
-        self._modelconfigs.append(modelconfig)
+        self._modelconfigs[modelconfig.get_model_class()] = modelconfig
         modelconfig.djangoappconfig = self
+
+    def get_modelconfig_for_model_class(self, model_class):
+        return self._modelconfigs.get(model_class, None)
 
     def get_app_config(self):
         return apps.get_app_config(self.get_app_label())
@@ -103,7 +118,7 @@ class DjangoAppConfig(object):
             self.add_model(ModelConfig(model_class=model_class))
 
     def iter_modelconfigs(self):
-        return iter(self._modelconfigs)
+        return iter(self._modelconfigs.values())
 
     def get_crapp_class(self):
         if self.crapp_class:
@@ -124,16 +139,16 @@ class Registry(object):
     def __init__(self, id, urlpath_regex=r'^/superuser/.*$'):
         self.id = id
         self.urlpath_regex = urlpath_regex
-        self._djangoappconfigs = []
+        self._djangoappconfigs = OrderedDict()
 
     def get_title(self):
         return ugettext_lazy('Superuser UI')
 
     def iter_djangoappconfigs(self):
-        return iter(self._djangoappconfigs)
+        return iter(self._djangoappconfigs.values())
 
     def add_djangoapp(self, djangoappconfig):
-        self._djangoappconfigs.append(djangoappconfig)
+        self._djangoappconfigs[djangoappconfig.get_app_label()] = djangoappconfig
         djangoappconfig.registry = self
         return djangoappconfig
 
@@ -154,7 +169,7 @@ class Registry(object):
                     childappnames.add(modelconfig.get_unique_identifier())
                 appmenuitem = self.add_menuitem(
                     label=appconfig.get_menulabel(),
-                    url=appconfig.get_index_url(),
+                    url=appconfig.get_indexview_url(),
                     active=self.request.cradmin_app.appname == appconfig.get_app_label(),
                     expanded=self.request.cradmin_app.appname in childappnames)
                 self.add_modelconfigs(appconfig=appconfig, appmenuitem=appmenuitem)
@@ -168,6 +183,15 @@ class Registry(object):
     def get_dashboardview_class(self):
         return dashboardview.View
 
+    def get_djangoappconfig_for_model_class(self, model_class):
+        return self._djangoappconfigs.get(model_class._meta.app_label, None)
+
+    def get_modelconfig_for_model_class(self, model_class):
+        djangoappconfig = self.get_djangoappconfig_for_model_class(model_class=model_class)
+        if djangoappconfig:
+            return djangoappconfig.get_modelconfig_for_model_class(model_class=model_class)
+        return None
+
     def make_cradmin_instance_class(self):
         me = self
 
@@ -180,6 +204,13 @@ class Registry(object):
 
             def get_superuserui_registry(self):
                 return me
+
+            def get_foreignkeyselectview_url(self, model_class):
+                modelconfig = me.get_modelconfig_for_model_class(model_class=model_class)
+                if modelconfig:
+                    return modelconfig.get_foreignkeyselectview_url()
+                else:
+                    return None
 
             @classmethod
             def get_apps(cls):

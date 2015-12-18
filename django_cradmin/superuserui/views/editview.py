@@ -3,4 +3,4 @@ from django_cradmin.viewhelpers import update
 
 
 class View(mixins.QuerySetForRoleMixin, update.UpdateView):
-    pass
+    enable_modelchoicefield_support = True

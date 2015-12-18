@@ -1,7 +1,12 @@
+from __future__ import unicode_literals
+
+from builtins import str
+
 from django import forms
 
 from django_cradmin.widgets import datetimepicker
 from django_cradmin.widgets import filewidgets
+from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 
 
 class ModelForm(forms.ModelForm):
@@ -61,7 +66,7 @@ class ModelForm(forms.ModelForm):
 
         Sets up :class:`django_cradmin.widgets.filewidgets.ImageWidget`
         as the widget if the ``view``-argument is provided to the constructor
-        of this form.
+        of this form, falls back to :meth:`.setup_file_field` if not.
 
         Parameters:
             fieldname: The name of the field.
@@ -74,6 +79,35 @@ class ModelForm(forms.ModelForm):
             )
         else:
             self.setup_file_field(fieldname=fieldname, formfield=formfield)
+
+    def setup_modelchoice_field(self, fieldname, formfield):
+        """
+        Called by :meth:`.setup_field` if the ``formfield`` is a ModelChoiceField.
+
+        Sets up :class:`django_cradmin.widgets.modelchoice.ModelChoiceWidget`
+        as the widget if the ``view``-argument is provided to the constructor
+        of this form, and if ``view.request.cradmin_instance.get_foreignkeyselectview_url`
+        returns a view URL for the model in the ModelChoiceField.
+
+        Parameters:
+            fieldname: The name of the field.
+            formfield: The form field object.
+        """
+        if not self.view or not hasattr(self.view.request, 'cradmin_instance'):
+            return
+        model_class = formfield.queryset.model
+        cradmin_instance = self.view.request.cradmin_instance
+        foreignkeyselectview_url = cradmin_instance.get_foreignkeyselectview_url(model_class=model_class)
+        if not foreignkeyselectview_url:
+            return
+
+        preview = ''
+        if self.instance:
+            preview = str(getattr(self.instance, fieldname))
+        self.fields[fieldname].widget = ModelChoiceWidget(
+            queryset=formfield.queryset,
+            preview=preview,
+            selectview_url=foreignkeyselectview_url)
 
     def setup_field(self, fieldname, formfield):
         """
@@ -100,6 +134,10 @@ class ModelForm(forms.ModelForm):
             self.setup_image_field(fieldname=fieldname, formfield=formfield)
         elif isinstance(formfield, forms.FileField):
             self.setup_file_field(fieldname=fieldname, formfield=formfield)
+        elif isinstance(formfield, forms.ModelMultipleChoiceField):
+            pass
+        elif isinstance(formfield, forms.ModelChoiceField):
+            self.setup_modelchoice_field(fieldname=fieldname, formfield=formfield)
 
     def autosetup_fields(self):
         """
