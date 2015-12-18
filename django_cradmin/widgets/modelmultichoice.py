@@ -11,13 +11,13 @@ from django.forms import widgets
 from django.template.loader import render_to_string
 
 
-class ModelChoiceWidget(widgets.TextInput):
+class ModelMultiChoiceWidget(widgets.TextInput):
     """
-    Model choice widget that uses an iframe popup to enable users
-    to select their foreign key value.
+    Model multi choice widget that uses an iframe popup to enable users
+    to select values for many-to-many and one-to-many fields.
     """
     #: The template used to render the widget.
-    template_name = 'django_cradmin/widgets/modelchoice.django.html'
+    template_name = 'django_cradmin/widgets/modelmultichoice.django.html'
 
     #: Do not override this (if you set this to hidden, the widget is not rendered correctly).
     input_type = 'text'
@@ -26,7 +26,7 @@ class ModelChoiceWidget(widgets.TextInput):
     #: Setting this to ``True``, makes the ``type`` of the actually
     #: submitted input field to ``text`` instead of ``hidden``.
     #: Probably only useful for debugging.
-    input_field_visible = False
+    input_field_visible = True
 
     #: The default select-button text. You can override this in a subclass,
     #: or use the ``selectbutton_text``-argument for the constructor to
@@ -39,7 +39,7 @@ class ModelChoiceWidget(widgets.TextInput):
         self.preview = preview
         self.selectview_url = selectview_url
         self.selectbutton_text = selectbutton_text or self.default_selectbutton_text
-        super(ModelChoiceWidget, self).__init__()
+        super(ModelMultiChoiceWidget, self).__init__()
 
     def __make_selectview_url(self, fieldid, current_value):
         return '{}?{}'.format(

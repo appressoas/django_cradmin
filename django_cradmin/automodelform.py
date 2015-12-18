@@ -7,7 +7,8 @@ from django.utils.translation import pgettext
 
 from django_cradmin.widgets import datetimepicker
 from django_cradmin.widgets import filewidgets
-from django_cradmin.widgets.modelchoice import ModelChoiceWidget
+from django_cradmin.widgets import modelchoice
+from django_cradmin.widgets import modelmultichoice
 
 
 class ModelForm(forms.ModelForm):
@@ -144,10 +145,55 @@ class ModelForm(forms.ModelForm):
                                                            formfield=formfield,
                                                            relatedobject=relatedobject)
 
-        self.fields[fieldname].widget = ModelChoiceWidget(
+        self.fields[fieldname].widget = modelchoice.ModelChoiceWidget(
             queryset=formfield.queryset,
             preview=preview,
             selectview_url=foreignkeyselectview_url)
+
+    def setup_modelmultichoice_field(self, fieldname, formfield):
+        """
+        Called by :meth:`.setup_field` if the ``formfield`` is a ModelMultiChoiceField.
+
+        Sets up :class:`django_cradmin.widgets.modelmultichoice.ModelMultiChoiceWidget`
+        as the widget if the ``view``-argument is provided to the constructor
+        of this form, and if ``view.request.cradmin_instance.get_foreignkeyselectview_url`
+        returns a view URL for the model in the ModelChoiceField.
+
+        Parameters:
+            fieldname: The name of the field.
+            formfield: The form field object.
+        """
+        if not self.view or not hasattr(self.view.request, 'cradmin_instance'):
+            return
+        model_class = formfield.queryset.model
+        cradmin_instance = self.view.request.cradmin_instance
+        manytomanyselectview_url = cradmin_instance.get_manytomanyselectview_url(model_class=model_class)
+        print()
+        print("*" * 70)
+        print()
+        print(fieldname, manytomanyselectview_url)
+        print()
+        print("*" * 70)
+        print()
+
+        if not manytomanyselectview_url:
+            return
+
+        preview = 'TODO: preview'
+        # if self.instance:
+        #     try:
+        #         relatedobject = getattr(self.instance, fieldname)
+        #     except model_class.DoesNotExist:
+        #         pass
+        #     else:
+        #         preview = self.make_related_object_preview(fieldname=fieldname,
+        #                                                    formfield=formfield,
+        #                                                    relatedobject=relatedobject)
+
+        self.fields[fieldname].widget = modelmultichoice.ModelMultiChoiceWidget(
+            queryset=formfield.queryset,
+            preview=preview,
+            selectview_url=manytomanyselectview_url)
 
     def setup_field(self, fieldname, formfield):
         """
@@ -175,7 +221,7 @@ class ModelForm(forms.ModelForm):
         elif isinstance(formfield, forms.FileField):
             self.setup_file_field(fieldname=fieldname, formfield=formfield)
         elif isinstance(formfield, forms.ModelMultipleChoiceField):
-            pass
+            self.setup_modelmultichoice_field(fieldname=fieldname, formfield=formfield)
         elif isinstance(formfield, forms.ModelChoiceField):
             self.setup_modelchoice_field(fieldname=fieldname, formfield=formfield)
 

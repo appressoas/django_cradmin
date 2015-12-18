@@ -5,6 +5,7 @@ from django_cradmin.superuserui.views import mixins
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
+from django_cradmin.viewhelpers import multiselect2
 
 
 class BaseView(listbuilderview.FilterListMixin,
@@ -74,3 +75,24 @@ class ForeignKeySelectView(BaseView):
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
             'foreignkeyselect-filter', kwargs={'filters_string': filters_string})
+
+
+class ManyToManySelectView(BaseView):
+    hide_menu = True
+
+    def get_value_renderer_class(self):
+        class MultiSelectItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
+            def get_inputfield_name(self):
+                return 'selected_products'
+        return MultiSelectItemValue
+
+    def get_filterlist_position(self):
+        return 'top'
+
+    def get_filterlist_url(self, filters_string):
+        return self.request.cradmin_app.reverse_appurl(
+            'manytomanyselect-filter', kwargs={'filters_string': filters_string})
+
+    def add_filterlist_items(self, filterlist):
+        super(ManyToManySelectView, self).add_filterlist_items(filterlist=filterlist)
+        filterlist.append(multiselect2.targetrenderables.Target())

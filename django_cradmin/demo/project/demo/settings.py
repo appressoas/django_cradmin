@@ -71,7 +71,7 @@ INSTALLED_APPS = (
     'django_cradmin.demo.polls_demo',
 
     # Demo for usermanager
-    'django_cradmin.demo.usermanagerdemo',
+    'django_cradmin.demo.usermanagerdemo.apps.UsermanagerdemoConfig',
 
     # Demo for listfilter
     'django_cradmin.demo.listfilterdemo',
