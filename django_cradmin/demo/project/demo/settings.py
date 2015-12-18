@@ -44,7 +44,7 @@ INSTALLED_APPS = (
 
     # Required by django cradmin
     'django_cradmin',
-    'django_cradmin.apps.cradmin_imagearchive',
+    'django_cradmin.apps.cradmin_imagearchive.apps.ImageArchiveConfig',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
