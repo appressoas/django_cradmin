@@ -1,4 +1,8 @@
 from __future__ import unicode_literals
+
+import json
+from xml.sax.saxutils import quoteattr
+
 from django_cradmin.viewhelpers.listbuilder import base
 from builtins import str
 
@@ -17,6 +21,58 @@ class FocusBox(base.ItemValueRenderer):
         css_classes = super(FocusBox, self).get_base_css_classes_list()
         css_classes.append('django-cradmin-listbuilder-itemvalue-focusbox')
         return css_classes
+
+
+class UseThis(FocusBox):
+    """
+    Renders a value item with a *Use this* button that uses
+    the ``django-cradmin-use-this`` directive.
+    """
+
+    #: The template used to render this itemvalue.
+    #: The template has lots of blocks that you can override.
+    template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/use-this.django.html'
+
+    def get_base_css_classes_list(self):
+        """
+        Adds the ``django-cradmin-listbuilder-itemvalue-titleeditdelete`` css class
+        in addition to the classes added by the superclasses.
+        """
+        css_classes = super(UseThis, self).get_base_css_classes_list()
+        css_classes.append('django-cradmin-listbuilder-itemvalue-usethis')
+        return css_classes
+
+    def get_title(self):
+        """
+        Get the title of the box.
+
+        Defaults to ``str(self.value)``.
+        """
+        return str(self.value)
+
+    def get_description(self):
+        """
+        Get the description (shown below the title).
+
+        Defaults to ``None``, which means that no description
+        is rendered.
+        """
+        return None
+
+    def get_use_this_directive_options_dict(self, request):
+        return {
+            'value': self.value.pk,
+            'fieldid': request.GET['foreignkey_select_fieldid'],
+            'preview': self.get_title()
+        }
+
+    def get_use_this_directive_options_json(self, request):
+        return quoteattr(json.dumps(self.get_use_this_directive_options_dict(request=request)))
+
+    def get_context_data(self, request=None):
+        context = super(UseThis, self).get_context_data(request=request)
+        context['use_this_directive_options_json'] = self.get_use_this_directive_options_json(request=request)
+        return context
 
 
 class EditDelete(FocusBox):
