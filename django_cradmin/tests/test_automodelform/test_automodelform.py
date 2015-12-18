@@ -2,11 +2,14 @@ import datetime
 
 import htmls
 from django import test
+from django.core.files.base import ContentFile
 from model_mommy import mommy
 
 from django_cradmin import automodelform
+from django_cradmin.apps.cradmin_imagearchive.tests.helpers import create_image
 from django_cradmin.tests.test_automodelform.cradmin_automodelform_testapp.models import AutoFormTestModel
 from django_cradmin import datetimeutils
+from django_cradmin.python2_compatibility import mock
 
 
 class TestModelForm(test.TestCase):
@@ -140,3 +143,33 @@ class TestModelForm(test.TestCase):
         selector = htmls.S(MyModelForm(instance=autoformtestmodelobject).as_ul())
         self.assertTrue(selector.exists('input[type="file"][name="filefield"]'))
         self.assertTrue(selector.exists('.django-cradmin-filewidget'))
+
+    def test_image_field_without_default_no_instance(self):
+        class MyModelForm(automodelform.ModelForm):
+            class Meta:
+                model = AutoFormTestModel
+                fields = ['imagefield']
+
+        selector = htmls.S(MyModelForm(view=mock.MagicMock()).as_ul())
+        self.assertTrue(selector.exists('input[type="file"][name="imagefield"]'))
+        self.assertTrue(selector.exists('.django-cradmin-imagewidget'))
+
+    def test_image_field_without_default_with_instance(self):
+        class MyModelForm(automodelform.ModelForm):
+            class Meta:
+                model = AutoFormTestModel
+                fields = ['imagefield']
+
+        autoformtestmodelobject = mommy.make(
+                'cradmin_automodelform_testapp.AutoFormTestModel')
+        testimage = create_image(200, 100)
+        autoformtestmodelobject.imagefield.save('testimage.png', ContentFile(testimage))
+
+        mockview = mock.MagicMock()
+        mockview.request.build_absolute_uri.return_value = 'testimage.png'
+
+        with self.settings(DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP={}):
+            selector = htmls.S(MyModelForm(view=mockview,
+                                           instance=autoformtestmodelobject).as_ul())
+        self.assertTrue(selector.exists('input[type="file"][name="imagefield"]'))
+        self.assertTrue(selector.exists('.django-cradmin-imagewidget'))

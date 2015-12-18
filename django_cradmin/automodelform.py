@@ -6,6 +6,7 @@ from django_cradmin.widgets import filewidgets
 
 class ModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        self.view = kwargs.pop('view', None)
         super(ModelForm, self).__init__(*args, **kwargs)
         self.autosetup_fields()
 
@@ -54,6 +55,26 @@ class ModelForm(forms.ModelForm):
             clearable=not formfield.required
         )
 
+    def setup_image_field(self, fieldname, formfield):
+        """
+        Called by :meth:`.setup_field` if the ``formfield`` is an ImageField.
+
+        Sets up :class:`django_cradmin.widgets.filewidgets.ImageWidget`
+        as the widget if the ``view``-argument is provided to the constructor
+        of this form.
+
+        Parameters:
+            fieldname: The name of the field.
+            formfield: The form field object.
+        """
+        if self.view:
+            self.fields[fieldname].widget = filewidgets.ImageWidget(
+                request=self.view.request,
+                clearable=not formfield.required,
+            )
+        else:
+            self.setup_file_field(fieldname=fieldname, formfield=formfield)
+
     def setup_field(self, fieldname, formfield):
         """
         Setup widgets and other properties from the given field.
@@ -75,6 +96,8 @@ class ModelForm(forms.ModelForm):
             self.setup_date_field(fieldname=fieldname, formfield=formfield)
         elif isinstance(formfield, forms.DateTimeField):
             self.setup_datetime_field(fieldname=fieldname, formfield=formfield)
+        elif isinstance(formfield, forms.ImageField):
+            self.setup_image_field(fieldname=fieldname, formfield=formfield)
         elif isinstance(formfield, forms.FileField):
             self.setup_file_field(fieldname=fieldname, formfield=formfield)
 

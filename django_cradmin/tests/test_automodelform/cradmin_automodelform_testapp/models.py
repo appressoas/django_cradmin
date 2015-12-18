@@ -12,6 +12,7 @@ class AutoFormTestModel(models.Model):
     datefield_with_default = models.DateTimeField(default=datetime.date.today)
     datefield_without_default = models.DateTimeField()
     filefield = models.FileField()
+    imagefield = models.ImageField()
 
     def __str__(self):
         return 'MyModel#{}'.format(self.id)

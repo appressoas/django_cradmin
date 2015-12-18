@@ -76,6 +76,13 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         else:
             return self.make_default_form_class()
 
+    def get_form_kwargs(self):
+        kwargs = super(CreateUpdateViewMixin, self).get_form_kwargs()
+        form_class = self.get_form_class()
+        if issubclass(form_class, automodelform.ModelForm):
+            kwargs['view'] = self
+        return kwargs
+
     def add_preview_button_if_configured(self, buttons):
         preview_url = self.get_preview_url()
         if preview_url:
