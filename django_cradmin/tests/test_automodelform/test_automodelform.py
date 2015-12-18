@@ -117,3 +117,26 @@ class TestModelForm(test.TestCase):
             '2015-12-24',
             selector.one('input[type="text"][name="datefield_with_default"]')['value'])
         self.assertTrue(selector.exists('.django-cradmin-datepicker-triggerbutton'))
+
+    def test_file_field_without_default_no_instance(self):
+        class MyModelForm(automodelform.ModelForm):
+            class Meta:
+                model = AutoFormTestModel
+                fields = ['filefield']
+
+        selector = htmls.S(MyModelForm().as_ul())
+        self.assertTrue(selector.exists('input[type="file"][name="filefield"]'))
+        self.assertTrue(selector.exists('.django-cradmin-filewidget'))
+
+    def test_file_field_without_default_with_instance(self):
+        class MyModelForm(automodelform.ModelForm):
+            class Meta:
+                model = AutoFormTestModel
+                fields = ['filefield']
+
+        autoformtestmodelobject = mommy.make(
+                'cradmin_automodelform_testapp.AutoFormTestModel',
+                filefield='test.txt')
+        selector = htmls.S(MyModelForm(instance=autoformtestmodelobject).as_ul())
+        self.assertTrue(selector.exists('input[type="file"][name="filefield"]'))
+        self.assertTrue(selector.exists('.django-cradmin-filewidget'))
