@@ -25,14 +25,14 @@ class TestProductListView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         c = mommy.make('multiselectdemo.Product', name='C')
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertEqual(
-            '#{} - A'.format(a.id),
+            'A',
             mockresponse.selector.one(
                 '.django-cradmin-listbuilder-list li:nth-child(1) h2').alltext_normalized)
         self.assertEqual(
-            '#{} - B'.format(b.id),
+            'B',
             mockresponse.selector.one(
                 '.django-cradmin-listbuilder-list li:nth-child(2) h2').alltext_normalized)
         self.assertEqual(
-            '#{} - C'.format(c.id),
+            'C',
             mockresponse.selector.one(
                 '.django-cradmin-listbuilder-list li:nth-child(3) h2').alltext_normalized)
