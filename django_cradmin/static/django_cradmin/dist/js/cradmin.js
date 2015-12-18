@@ -4314,8 +4314,8 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.multiselect2.directives', []).directive('djangoCradminMultiselectTarget', [
-    'djangoCradminMultiselectCoordinator', function(djangoCradminMultiselectCoordinator) {
+  angular.module('djangoCradmin.multiselect2.directives', []).directive('djangoCradminMultiselect2Target', [
+    'djangoCradminMultiselect2Coordinator', function(djangoCradminMultiselect2Coordinator) {
       return {
         restrict: 'A',
         scope: true,
@@ -4324,18 +4324,18 @@
           domId = $element.attr('id');
           $scope.selectedItemsScope = null;
           if (domId == null) {
-            throw Error('Elements using django-cradmin-multiselect-target must have an id.');
+            throw Error('Elements using django-cradmin-multiselect2-target must have an id.');
           }
-          djangoCradminMultiselectCoordinator.registerTarget(domId, $scope);
+          djangoCradminMultiselect2Coordinator.registerTarget(domId, $scope);
           $scope.$on("$destroy", function() {
-            return djangoCradminMultiselectCoordinator.unregisterTarget(domId);
+            return djangoCradminMultiselect2Coordinator.unregisterTarget(domId);
           });
           $scope.select = function(selectScope) {
             /*
-            Called by djangoCradminMultiselectSelect via
-            djangoCradminMultiselectCoordinator when an item is selected.
+            Called by djangoCradminMultiselect2Select via
+            djangoCradminMultiselect2Coordinator when an item is selected.
             
-            Calls ``djangoCradminMultiselectTargetSelectedItems.select()``.
+            Calls ``djangoCradminMultiselect2TargetSelectedItems.select()``.
             */
 
             $scope.selectedItemsScope.select(selectScope);
@@ -4343,17 +4343,17 @@
           };
           $scope.onDeselect = function(selectScope) {
             /*
-            Called by djangoCradminMultiselectCoordinator when an item is deselected.
+            Called by djangoCradminMultiselect2Coordinator when an item is deselected.
             
-            Calls ``djangoCradminMultiselectTargetSelectedItems.onDeselect()``.
+            Calls ``djangoCradminMultiselect2TargetSelectedItems.onDeselect()``.
             */
 
             return $scope.selectedItemsScope.onDeselect(selectScope);
           };
           $scope.isSelected = function(selectScope) {
             /*
-            Called by djangoCradminMultiselectSelect via
-            djangoCradminMultiselectCoordinator to check if the item is selected.
+            Called by djangoCradminMultiselect2Select via
+            djangoCradminMultiselect2Coordinator to check if the item is selected.
             */
 
             return $scope.selectedItemsScope.isSelected(selectScope);
@@ -4369,13 +4369,13 @@
         link: function($scope, $element, attributes) {}
       };
     }
-  ]).directive('djangoCradminMultiselectTargetSelectedItems', [
-    '$compile', 'djangoCradminMultiselectCoordinator', function($compile, djangoCradminMultiselectCoordinator) {
+  ]).directive('djangoCradminMultiselect2TargetSelectedItems', [
+    '$compile', 'djangoCradminMultiselect2Coordinator', function($compile, djangoCradminMultiselect2Coordinator) {
       var selectedItemCssClass;
-      selectedItemCssClass = 'django-cradmin-multiselect-target-selected-item';
+      selectedItemCssClass = 'django-cradmin-multiselect2-target-selected-item';
       return {
         restrict: 'A',
-        require: '^djangoCradminMultiselectTarget',
+        require: '^djangoCradminMultiselect2Target',
         scope: true,
         controller: function($scope, $element) {
           $scope.selectedItemsCount = 0;
@@ -4383,7 +4383,7 @@
             var html, linkingFunction, loadedElement, previewHtml, selectButtonDomId;
             previewHtml = selectScope.getPreviewHtml();
             selectButtonDomId = selectScope.getDomId();
-            html = ("<div id='" + selectButtonDomId + "_selected_item'") + ("django-cradmin-multiselect-target-selected-item='" + selectButtonDomId + "' ") + ("class='" + selectedItemCssClass + "'>") + ("" + previewHtml + "</div>");
+            html = ("<div id='" + selectButtonDomId + "_selected_item'") + ("django-cradmin-multiselect2-target-selected-item='" + selectButtonDomId + "' ") + ("class='" + selectedItemCssClass + "'>") + ("" + previewHtml + "</div>");
             linkingFunction = $compile(html);
             loadedElement = linkingFunction($scope);
             angular.element(loadedElement).appendTo($element);
@@ -4406,30 +4406,30 @@
         }
       };
     }
-  ]).directive('djangoCradminMultiselectTargetSelectedItem', [
-    'djangoCradminMultiselectCoordinator', function(djangoCradminMultiselectCoordinator) {
+  ]).directive('djangoCradminMultiselect2TargetSelectedItem', [
+    'djangoCradminMultiselect2Coordinator', function(djangoCradminMultiselect2Coordinator) {
       return {
         restrict: 'A',
         scope: true,
         controller: function($scope, $element) {
           $scope.deselect = function() {
             $element.remove();
-            djangoCradminMultiselectCoordinator.onDeselect($scope.selectButtonDomId);
+            djangoCradminMultiselect2Coordinator.onDeselect($scope.selectButtonDomId);
           };
         },
         link: function($scope, $element, attributes) {
-          $scope.selectButtonDomId = attributes.djangoCradminMultiselectTargetSelectedItem;
+          $scope.selectButtonDomId = attributes.djangoCradminMultiselect2TargetSelectedItem;
         }
       };
     }
-  ]).directive('djangoCradminMultiselectSelect', [
-    '$rootScope', 'djangoCradminMultiselectCoordinator', function($rootScope, djangoCradminMultiselectCoordinator) {
+  ]).directive('djangoCradminMultiselect2Select', [
+    '$rootScope', 'djangoCradminMultiselect2Coordinator', function($rootScope, djangoCradminMultiselect2Coordinator) {
       var itemWrapperSelectedCssClass;
-      itemWrapperSelectedCssClass = 'django-cradmin-multiselect-item-wrapper-selected';
+      itemWrapperSelectedCssClass = 'django-cradmin-multiselect2-item-wrapper-selected';
       return {
         restrict: 'A',
         scope: {
-          options: '=djangoCradminMultiselectSelect'
+          options: '=djangoCradminMultiselect2Select'
         },
         controller: function($scope, $element) {
           var unregisterBgReplaceEventHandler;
@@ -4447,7 +4447,7 @@
           };
           $scope.onDeselect = function() {
             /*
-            Called by djangoCradminMultiselectCoordinator when the item is deselected.
+            Called by djangoCradminMultiselect2Coordinator when the item is deselected.
             */
 
             return $scope.getItemWrapperElement().removeClass(itemWrapperSelectedCssClass);
@@ -4465,7 +4465,7 @@
             var targetDomId;
             if ($element.closest(options.remoteElementSelector).length > 0) {
               targetDomId = $scope.options.target_dom_id;
-              if (djangoCradminMultiselectCoordinator.isSelected(targetDomId, $scope)) {
+              if (djangoCradminMultiselect2Coordinator.isSelected(targetDomId, $scope)) {
                 return $scope.markAsSelected();
               }
             }
@@ -4477,7 +4477,7 @@
         link: function($scope, $element, attributes) {
           var select;
           select = function() {
-            djangoCradminMultiselectCoordinator.select($scope);
+            djangoCradminMultiselect2Coordinator.select($scope);
             return $scope.markAsSelected();
           };
           $element.on('click', function(e) {
@@ -4492,10 +4492,10 @@
 }).call(this);
 
 (function() {
-  angular.module('djangoCradmin.multiselect2.services', []).factory('djangoCradminMultiselectCoordinator', function() {
+  angular.module('djangoCradmin.multiselect2.services', []).factory('djangoCradminMultiselect2Coordinator', function() {
     /*
-    Coordinates between djangoCradminMultiselectSelect
-    and djangoCradminMultiselectTarget.
+    Coordinates between djangoCradminMultiselect2Select
+    and djangoCradminMultiselect2Target.
     */
 
     var Coordinator;
@@ -4516,7 +4516,7 @@
         var targetScope;
         targetScope = this.targets[targetDomId];
         if (targetScope == null) {
-          throw Error("No target with ID '" + targetDomId + "' registered with djangoCradminMultiselectCoordinator.");
+          throw Error("No target with ID '" + targetDomId + "' registered with djangoCradminMultiselect2Coordinator.");
         }
         return targetScope;
       };

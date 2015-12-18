@@ -1,10 +1,10 @@
 angular.module('djangoCradmin.multiselect2.services', [])
 
 
-.factory 'djangoCradminMultiselectCoordinator', ->
+.factory 'djangoCradminMultiselect2Coordinator', ->
   ###
-  Coordinates between djangoCradminMultiselectSelect
-  and djangoCradminMultiselectTarget.
+  Coordinates between djangoCradminMultiselect2Select
+  and djangoCradminMultiselect2Target.
   ###
   class Coordinator
     constructor: ->
@@ -19,7 +19,7 @@ angular.module('djangoCradmin.multiselect2.services', [])
     __getTargetScope: (targetDomId) ->
       targetScope = @targets[targetDomId]
       if not targetScope?
-        throw Error("No target with ID '#{targetDomId}' registered with djangoCradminMultiselectCoordinator.")
+        throw Error("No target with ID '#{targetDomId}' registered with djangoCradminMultiselect2Coordinator.")
       return targetScope
 
     select: (selectScope) ->

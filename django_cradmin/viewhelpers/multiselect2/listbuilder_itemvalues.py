@@ -102,7 +102,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     def get_select_directive_dict(self, request):
         return {
             "preview_container_css_selector": ".django-cradmin-multiselect2-itemvalue",
-            "preview_css_selector": ".django-cradmin-multiselect-preview",
+            "preview_css_selector": ".django-cradmin-multiselect2-preview",
             "item_wrapper_css_selector": "li",
             "target_dom_id": self.get_target_dom_id(),
         }

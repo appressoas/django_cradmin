@@ -6748,40 +6748,40 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
   border: 1px solid #ebccd1;
   color: #a94442;
 }
-.django-cradmin-multiselect-preview {
+.django-cradmin-multiselect2-preview {
   display: none;
 }
-.django-cradmin-multiselect-item-wrapper-selected {
+.django-cradmin-multiselect2-item-wrapper-selected {
   display: none;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-title {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-title {
   font-size: 16px;
   font-weight: bold;
   margin: 20px 0 0 0;
   padding: 0 0 5px 0;
   border-bottom: 1px solid #e6e6e6;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-target-selected-items {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-selected-items {
   background: #ffffff;
   padding: 10px;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-target-selected-items .django-cradmin-multiselect-target-selected-item .django-cradmin-multiselect-target-selected-item-title {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-selected-items .django-cradmin-multiselect2-target-selected-item .django-cradmin-multiselect2-target-selected-item-title {
   font-size: 16px;
   margin-top: 10px;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-target-footer {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-footer {
   margin-top: 10px;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-target-with-items-content {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-with-items-content {
   display: none;
 }
-.django-cradmin-multiselect-target .django-cradmin-multiselect-target-without-items-content {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-without-items-content {
   display: block;
 }
-.django-cradmin-multiselect-target.django-cradmin-multiselect-target-with-items .django-cradmin-multiselect-target-with-items-content {
+.django-cradmin-multiselect2-target.django-cradmin-multiselect2-target-with-items .django-cradmin-multiselect2-target-with-items-content {
   display: block;
 }
-.django-cradmin-multiselect-target.django-cradmin-multiselect-target-with-items .django-cradmin-multiselect-target-without-items-content {
+.django-cradmin-multiselect2-target.django-cradmin-multiselect2-target-with-items .django-cradmin-multiselect2-target-without-items-content {
   display: none;
 }
 .django-cradmin-loadmorepager {
