@@ -324,6 +324,22 @@ class BaseCrAdminInstance(object):
         """
         return None
 
+    def get_manytomanyselectview_url(self, model_class):
+        """
+        Get many-to-many select view URL for the given model class.
+
+        This can be used by many-to-many widgets,
+        like :class:`django_cradmin.widgets.modelmultichoice.ModelMultiChoiceWidget`,
+        to lookup a view for this model within the current instance.
+
+        By default this returns ``None``, so you have to override this
+        if you want to use it.
+
+        Parameters:
+            model_class: A ``django.db.models.Model`` subclass.
+        """
+        return None
+
     @classmethod
     def get_roleselect_view(cls):
         """

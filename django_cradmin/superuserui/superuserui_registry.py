@@ -49,6 +49,9 @@ class ModelConfig(object):
     def get_foreignkeyselectview_url(self):
         return self.get_view_url(viewname='foreignkeyselect')
 
+    def get_manytomanyselectview_url(self):
+        return self.get_view_url(viewname='manytomanyselect')
+
     def get_unique_identifier(self):
         return '{}_{}'.format(self.model_class._meta.app_label,
                               self.model_class._meta.model_name)
@@ -102,9 +105,7 @@ class DjangoAppConfig(object):
     def add_model(self, modelconfig):
         self._modelconfigs[modelconfig.get_model_class()] = modelconfig
         modelconfig.djangoappconfig = self
-
-    def get_modelconfig_for_model_class(self, model_class):
-        return self._modelconfigs.get(model_class, None)
+        self.registry._register_modelconfig(modelconfig=modelconfig)
 
     def get_app_config(self):
         return apps.get_app_config(self.get_app_label())
@@ -140,6 +141,7 @@ class Registry(object):
         self.id = id
         self.urlpath_regex = urlpath_regex
         self._djangoappconfigs = OrderedDict()
+        self._modelconfigmap = {}
 
     def get_title(self):
         return ugettext_lazy('Superuser UI')
@@ -151,6 +153,12 @@ class Registry(object):
         self._djangoappconfigs[djangoappconfig.get_app_label()] = djangoappconfig
         djangoappconfig.registry = self
         return djangoappconfig
+
+    def _register_modelconfig(self, modelconfig):
+        """
+        Called by :meth:`.DjangoAppConfig.add_model`.
+        """
+        self._modelconfigmap[modelconfig.get_model_class()] = modelconfig
 
     def make_menu_class(self):
         me = self
@@ -183,14 +191,8 @@ class Registry(object):
     def get_dashboardview_class(self):
         return dashboardview.View
 
-    def get_djangoappconfig_for_model_class(self, model_class):
-        return self._djangoappconfigs.get(model_class._meta.app_label, None)
-
     def get_modelconfig_for_model_class(self, model_class):
-        djangoappconfig = self.get_djangoappconfig_for_model_class(model_class=model_class)
-        if djangoappconfig:
-            return djangoappconfig.get_modelconfig_for_model_class(model_class=model_class)
-        return None
+        return self._modelconfigmap.get(model_class, None)
 
     def make_cradmin_instance_class(self):
         me = self
@@ -209,6 +211,13 @@ class Registry(object):
                 modelconfig = me.get_modelconfig_for_model_class(model_class=model_class)
                 if modelconfig:
                     return modelconfig.get_foreignkeyselectview_url()
+                else:
+                    return None
+
+            def get_manytomanyselectview_url(self, model_class):
+                modelconfig = me.get_modelconfig_for_model_class(model_class=model_class)
+                if modelconfig:
+                    return modelconfig.get_manytomanyselectview_url()
                 else:
                     return None
 
