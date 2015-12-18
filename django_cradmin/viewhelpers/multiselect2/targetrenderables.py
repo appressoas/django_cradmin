@@ -49,3 +49,7 @@ class Target(renderable.AbstractRenderableWithCss,
         context = super(Target, self).get_context_data(request=request)
         context['form_action'] = self.get_form_action(request=request)
         return context
+
+
+class ManyToManySelectTarget(Target):
+    template_name = 'django_cradmin/viewhelpers/multiselect2/targetrenderables/manytomanyselect-target.django.html'

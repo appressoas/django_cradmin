@@ -50,6 +50,9 @@ angular.module('djangoCradmin.multiselect2.directives', [])
         @setSelectedItemsScope = (selectedItemsScope) ->
           $scope.selectedItemsScope = selectedItemsScope
 
+        @getSelectedItemsScope = ->
+          return $scope.selectedItemsScope
+
         return
 
       link: ($scope, $element, attributes) ->
@@ -94,6 +97,13 @@ angular.module('djangoCradmin.multiselect2.directives', [])
 
         $scope.hasItems = ->
           return $scope.selectedItemsCount > 0
+
+        $scope.getItemsDataList = ->
+          return [
+            {value: 1, preview: '<p>Value #1</p>'},
+            {value: 2, preview: '<p>Value #2</p>'},
+            {value: 3, preview: '<p>Value #3</p>'},
+          ]
 
         return
 
@@ -185,6 +195,84 @@ angular.module('djangoCradmin.multiselect2.directives', [])
         $element.on 'click', (e) ->
           e.preventDefault()
           select()
+
+        return
+    }
+])
+
+
+
+.directive('djangoCradminMultiselect2UseThis', [
+  '$window'
+  ($window) ->
+    ###
+    The ``django-cradmin-multiselect2-use-this`` directive is used to select elements for
+    the ``django-cradmin-model-choice-field`` directive. You add this directive
+    to a button or a-element within an iframe, and this directive will use
+    ``window.postMessage`` to send the needed information to the
+    ``django-cradmin-model-choice-field-wrapper``.
+
+    You may also use this if you create your own custom iframe communication
+    receiver directive where a "use this" button within an iframe is needed.
+
+    Example
+    =======
+    ```
+      <button type="button"
+              class="btn btn-default"
+              django-cradmin-multiselect2-use-this='{"fieldid": "id_name"}'>
+          Use this
+      </button>
+    ```
+
+    How it works
+    ============
+    When the user clicks an element with this directive, the click
+    is captured, the default action is prevented, and we decode the
+    given JSON encoded value and add ``postmessageid='django-cradmin-use-this'``
+    to the object making it look something like this::
+
+      ```
+      {
+        postmessageid: 'django-cradmin-use-this',
+        value: '<JSON encoded data for the selected items>',
+        preview: '<preview HTML for the selected items>'
+        <all options provided to the directive>
+      }
+      ```
+
+    We assume there is a event listener listening for the ``message`` event on
+    the message in the parent of the iframe where this was clicked, but no checks
+    ensuring this is made.
+    ###
+    return {
+      restrict: 'A'
+      require: '^djangoCradminMultiselect2Target'
+      scope: {
+        data: '@djangoCradminMultiselect2UseThis'
+      }
+
+      link: ($scope, $element, attributes, targetCtrl) ->
+        getSelectedItemsData = ->
+          allData = {
+            values: []
+            preview: ""
+          }
+          for itemData in targetCtrl.getSelectedItemsScope().getItemsDataList()
+            allData.values.push(itemData.value)
+            allData.preview += itemData.preview
+          return allData
+
+        $element.on 'click', (e) ->
+          e.preventDefault()
+          data = angular.fromJson($scope.data)
+          data.postmessageid = 'django-cradmin-use-this'
+          selectedItemsData = getSelectedItemsData()
+          data.value = selectedItemsData.values
+          data.preview = selectedItemsData.preview
+          $window.parent.postMessage(
+            angular.toJson(data),
+            window.parent.location.href)
 
         return
     }

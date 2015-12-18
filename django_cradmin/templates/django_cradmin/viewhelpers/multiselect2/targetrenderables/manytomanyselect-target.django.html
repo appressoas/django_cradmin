@@ -1,0 +1,12 @@
+{% extends "django_cradmin/viewhelpers/multiselect2/targetrenderables/target.django.html" %}
+
+
+{% block submit-button %}
+    <button type="button"
+            class="{% block submit-button-css-classes %}btn btn-primary btn-block{% endblock %}"
+            django-cradmin-multiselect2-use-this='{"fieldid": "id_subscribers"}'>
+        {% block submit-button-content %}
+            {{ me.get_submit_button_text }}
+        {% endblock submit-button-content %}
+    </button>
+{% endblock submit-button %}

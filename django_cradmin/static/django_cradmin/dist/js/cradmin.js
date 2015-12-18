@@ -4365,6 +4365,9 @@
           this.setSelectedItemsScope = function(selectedItemsScope) {
             return $scope.selectedItemsScope = selectedItemsScope;
           };
+          this.getSelectedItemsScope = function() {
+            return $scope.selectedItemsScope;
+          };
         },
         link: function($scope, $element, attributes) {}
       };
@@ -4399,6 +4402,20 @@
           };
           $scope.hasItems = function() {
             return $scope.selectedItemsCount > 0;
+          };
+          $scope.getItemsDataList = function() {
+            return [
+              {
+                value: 1,
+                preview: '<p>Value #1</p>'
+              }, {
+                value: 2,
+                preview: '<p>Value #2</p>'
+              }, {
+                value: 3,
+                preview: '<p>Value #3</p>'
+              }
+            ];
           };
         },
         link: function($scope, $element, attributes, targetCtrl) {
@@ -4483,6 +4500,84 @@
           $element.on('click', function(e) {
             e.preventDefault();
             return select();
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminMultiselect2UseThis', [
+    '$window', function($window) {
+      /*
+      The ``django-cradmin-multiselect2-use-this`` directive is used to select elements for
+      the ``django-cradmin-model-choice-field`` directive. You add this directive
+      to a button or a-element within an iframe, and this directive will use
+      ``window.postMessage`` to send the needed information to the
+      ``django-cradmin-model-choice-field-wrapper``.
+      
+      You may also use this if you create your own custom iframe communication
+      receiver directive where a "use this" button within an iframe is needed.
+      
+      Example
+      =======
+      ```
+        <button type="button"
+                class="btn btn-default"
+                django-cradmin-multiselect2-use-this='{"fieldid": "id_name"}'>
+            Use this
+        </button>
+      ```
+      
+      How it works
+      ============
+      When the user clicks an element with this directive, the click
+      is captured, the default action is prevented, and we decode the
+      given JSON encoded value and add ``postmessageid='django-cradmin-use-this'``
+      to the object making it look something like this::
+      
+        ```
+        {
+          postmessageid: 'django-cradmin-use-this',
+          value: '<JSON encoded data for the selected items>',
+          preview: '<preview HTML for the selected items>'
+          <all options provided to the directive>
+        }
+        ```
+      
+      We assume there is a event listener listening for the ``message`` event on
+      the message in the parent of the iframe where this was clicked, but no checks
+      ensuring this is made.
+      */
+
+      return {
+        restrict: 'A',
+        require: '^djangoCradminMultiselect2Target',
+        scope: {
+          data: '@djangoCradminMultiselect2UseThis'
+        },
+        link: function($scope, $element, attributes, targetCtrl) {
+          var getSelectedItemsData;
+          getSelectedItemsData = function() {
+            var allData, itemData, _i, _len, _ref;
+            allData = {
+              values: [],
+              preview: ""
+            };
+            _ref = targetCtrl.getSelectedItemsScope().getItemsDataList();
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              itemData = _ref[_i];
+              allData.values.push(itemData.value);
+              allData.preview += itemData.preview;
+            }
+            return allData;
+          };
+          $element.on('click', function(e) {
+            var data, selectedItemsData;
+            e.preventDefault();
+            data = angular.fromJson($scope.data);
+            data.postmessageid = 'django-cradmin-use-this';
+            selectedItemsData = getSelectedItemsData();
+            data.value = selectedItemsData.values;
+            data.preview = selectedItemsData.preview;
+            return $window.parent.postMessage(angular.toJson(data), window.parent.location.href);
           });
         }
       };

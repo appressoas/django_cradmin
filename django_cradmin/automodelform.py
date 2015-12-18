@@ -168,14 +168,6 @@ class ModelForm(forms.ModelForm):
         model_class = formfield.queryset.model
         cradmin_instance = self.view.request.cradmin_instance
         manytomanyselectview_url = cradmin_instance.get_manytomanyselectview_url(model_class=model_class)
-        print()
-        print("*" * 70)
-        print()
-        print(fieldname, manytomanyselectview_url)
-        print()
-        print("*" * 70)
-        print()
-
         if not manytomanyselectview_url:
             return
 
