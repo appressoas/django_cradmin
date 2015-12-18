@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from builtins import str
 
 from django import forms
+from django.utils.translation import pgettext
 
 from django_cradmin.widgets import datetimepicker
 from django_cradmin.widgets import filewidgets
@@ -10,7 +11,18 @@ from django_cradmin.widgets.modelchoice import ModelChoiceWidget
 
 
 class ModelForm(forms.ModelForm):
+    """
+    A subclass of :class:`django.form.ModelForm` that automatically sets
+    up good default widgets and other things for the fields.
+    """
     def __init__(self, *args, **kwargs):
+        """
+        Parameters:
+            view: The View object where this form is used. If this is
+                provided, we are able to setup more widgets because
+                some widgets depend on data from the view (such
+                as ``view.request``).
+        """
         self.view = kwargs.pop('view', None)
         super(ModelForm, self).__init__(*args, **kwargs)
         self.autosetup_fields()
@@ -80,6 +92,26 @@ class ModelForm(forms.ModelForm):
         else:
             self.setup_file_field(fieldname=fieldname, formfield=formfield)
 
+    def make_related_object_preview(self, fieldname, formfield, relatedobject):
+        """
+        Make preview for related object.
+
+        Used by :meth:`.setup_modelchoice_field` to generate the preview for an
+        object.
+
+        Defaults to ``str(relatedobject)`` with fallback to ``(Not selected)`` (translatable)
+        if ``relatedobject`` is ``None``.
+
+        Parameters:
+            fieldname: The name of the field.
+            formfield: The form field object.
+            relatedobject: The related model object.
+        """
+        if relatedobject is None:
+            return pgettext('automodelform modelchoice_field no value', '(Not selected)')
+        else:
+            return str(relatedobject)
+
     def setup_modelchoice_field(self, fieldname, formfield):
         """
         Called by :meth:`.setup_field` if the ``formfield`` is a ModelChoiceField.
@@ -104,9 +136,14 @@ class ModelForm(forms.ModelForm):
         preview = ''
         if self.instance:
             try:
-                preview = str(getattr(self.instance, fieldname))
+                relatedobject = getattr(self.instance, fieldname)
             except model_class.DoesNotExist:
                 pass
+            else:
+                preview = self.make_related_object_preview(fieldname=fieldname,
+                                                           formfield=formfield,
+                                                           relatedobject=relatedobject)
+
         self.fields[fieldname].widget = ModelChoiceWidget(
             queryset=formfield.queryset,
             preview=preview,
