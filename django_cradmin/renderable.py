@@ -29,7 +29,7 @@ class AbstractRenderable(object):
             raise NotImplementedError('You must set template_name or override '
                                       'get_template_name().')
 
-    def get_context_data(self):
+    def get_context_data(self, request=None):
         """
         Get context data for :meth:`.render`.
 
@@ -51,7 +51,7 @@ class AbstractRenderable(object):
         See the docs for the ``request`` parameter for
         :meth:`.render` for more details.
         """
-        context = self.get_context_data()
+        context = self.get_context_data(request=request)
         if request:
             context = RequestContext(request, context)
         return context

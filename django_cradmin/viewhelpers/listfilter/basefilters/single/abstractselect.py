@@ -75,8 +75,8 @@ class AbstractSelectFilter(AbstractFilter):
             choicesdata[selected_index]['is_selected'] = True
         return choicesdata
 
-    def get_context_data(self):
-        context = super(AbstractSelectFilter, self).get_context_data()
+    def get_context_data(self, request=None):
+        context = super(AbstractSelectFilter, self).get_context_data(request=None)
         context['choicesdata'] = self.get_choicesdata()
         return context
 
