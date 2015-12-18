@@ -7,7 +7,7 @@ class ItemFrameModel(listbuilder.itemframe.Link):
     valuealias = 'modelconfig'
 
     def get_url(self):
-        return self.modelconfig.get_index_url()
+        return self.modelconfig.get_indexview_url()
 
 
 class ItemValueModel(listbuilder.itemvalue.FocusBox):

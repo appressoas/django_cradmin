@@ -7,7 +7,7 @@ class ItemFrameDjangoApp(listbuilder.itemframe.Link):
     valuealias = 'djangoappconfig'
 
     def get_url(self):
-        return self.djangoappconfig.get_index_url()
+        return self.djangoappconfig.get_indexview_url()
 
 
 class ItemValueDjangoApp(listbuilder.itemvalue.FocusBox):
