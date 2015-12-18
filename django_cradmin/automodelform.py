@@ -103,7 +103,10 @@ class ModelForm(forms.ModelForm):
 
         preview = ''
         if self.instance:
-            preview = str(getattr(self.instance, fieldname))
+            try:
+                preview = str(getattr(self.instance, fieldname))
+            except model_class.DoesNotExist:
+                pass
         self.fields[fieldname].widget = ModelChoiceWidget(
             queryset=formfield.queryset,
             preview=preview,
