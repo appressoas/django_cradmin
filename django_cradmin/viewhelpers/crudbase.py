@@ -224,7 +224,19 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         obj = form.save(commit=False)
         self.set_automatic_attributes(obj=obj)
         if commit:
-            obj.save()
+            if obj.pk is None:
+                fail_message = 'created'
+            else:
+                fail_message = 'changed'
+            forms.save_instance(
+                form=form,
+                instance=obj,
+                fields=form._meta.fields,
+                fail_message=fail_message,
+                commit=True,
+                exclude=form._meta.exclude,
+                construct=False
+            )
         return obj
 
     def form_valid(self, form):
