@@ -75,6 +75,7 @@ angular.module('djangoCradmin.multiselect2.directives', [])
 
       controller: ($scope, $element) ->
         $scope.selectedItemsCount = 0
+        $scope.selectedItemsData = {}
 
         $scope.select = (selectScope) ->
           previewHtml = selectScope.getPreviewHtml()
@@ -87,9 +88,11 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           loadedElement = linkingFunction($scope)
           angular.element(loadedElement).appendTo($element)
           $scope.selectedItemsCount += 1
+          $scope.selectedItemsData[selectButtonDomId] = selectScope.getCustomData()
 
         $scope.onDeselect = (selectScope) ->
           $scope.selectedItemsCount -= 1
+          del $scope.selectedItemsData[selectScope.getDomId()]
 
         $scope.isSelected = (selectScope) ->
           selectButtonDomId = selectScope.getDomId()
@@ -98,12 +101,16 @@ angular.module('djangoCradmin.multiselect2.directives', [])
         $scope.hasItems = ->
           return $scope.selectedItemsCount > 0
 
-        $scope.getItemsDataList = ->
-          return [
-            {value: 1, preview: '<p>Value #1</p>'},
-            {value: 2, preview: '<p>Value #2</p>'},
-            {value: 3, preview: '<p>Value #3</p>'},
-          ]
+        $scope.getItemsCustomDataList = ->
+          customDataList = []
+          for selectButtonDomId, customData of $scope.selectedItemsData
+            customDataList.push(customData)
+          return customDataList
+#          return [
+#            {value: 1, preview: '<p>Value #1</p>'},
+#            {value: 2, preview: '<p>Value #2</p>'},
+#            {value: 3, preview: '<p>Value #3</p>'},
+#          ]
 
         return
 
@@ -174,6 +181,12 @@ angular.module('djangoCradmin.multiselect2.directives', [])
 
         $scope.getTargetDomId = ->
           return $scope.options.target_dom_id
+
+        $scope.getCustomData = ->
+          if $scope.options.custom_data?
+            return $scope.options.custom_data
+          else
+            return {}
 
         unregisterBgReplaceEventHandler = $scope.$on 'djangoCradminBgReplaceElementEvent', (event, options) ->
           # We only care about this if the replaced element in one of our parent elements
@@ -258,7 +271,7 @@ angular.module('djangoCradmin.multiselect2.directives', [])
             values: []
             preview: ""
           }
-          for itemData in targetCtrl.getSelectedItemsScope().getItemsDataList()
+          for itemData in targetCtrl.getSelectedItemsScope().getItemsCustomDataList()
             allData.values.push(itemData.value)
             allData.preview += itemData.preview
           return allData
@@ -268,7 +281,7 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           data = angular.fromJson($scope.data)
           data.postmessageid = 'django-cradmin-use-this'
           selectedItemsData = getSelectedItemsData()
-          data.value = selectedItemsData.values
+          data.value = angular.toJson(selectedItemsData.values)
           data.preview = selectedItemsData.preview
           $window.parent.postMessage(
             angular.toJson(data),

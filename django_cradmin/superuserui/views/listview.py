@@ -79,7 +79,7 @@ class ForeignKeySelectView(BaseView):
 
 class ManyToManySelectView(BaseView):
     hide_menu = True
-    value_renderer_class = multiselect2.listbuilder_itemvalues.ItemValue
+    value_renderer_class = multiselect2.listbuilder_itemvalues.ManyToManySelect
 
     # def get_value_renderer_class(self):
     #     class MultiSelectItemValue(multiselect2.listbuilder_itemvalues.ItemValue):

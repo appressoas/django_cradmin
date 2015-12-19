@@ -156,8 +156,8 @@ class ModelForm(forms.ModelForm):
 
         Sets up :class:`django_cradmin.widgets.modelmultichoice.ModelMultiChoiceWidget`
         as the widget if the ``view``-argument is provided to the constructor
-        of this form, and if ``view.request.cradmin_instance.get_foreignkeyselectview_url`
-        returns a view URL for the model in the ModelChoiceField.
+        of this form, and if ``view.request.cradmin_instance.get_manytomanyselectview_url`
+        returns a view URL for the model in the ModelMultiChoiceField.
 
         Parameters:
             fieldname: The name of the field.

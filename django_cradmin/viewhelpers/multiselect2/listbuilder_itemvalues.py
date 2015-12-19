@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import json
 from xml.sax.saxutils import quoteattr
 
@@ -165,14 +167,22 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     def get_inputfield_value(self):
         """
         Returns:
-            str: The value to put in the ``value`` attribute of the input field.
+            str or int: The value to put in the ``value`` attribute of the input field.
         """
-        return str(self.value.id)
+        return self.value.id
 
     def get_preview_title(self):
+        """
+        Returns:
+            str: The title of the preview.
+                This is used to render the preview in the column
+        """
         return self.get_title()
 
     def get_preview_description(self):
+        return None
+
+    def get_custom_data(self):
         return None
 
     def get_select_directive_dict(self, request):
@@ -181,6 +191,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
             "preview_css_selector": ".django-cradmin-multiselect2-preview",
             "item_wrapper_css_selector": "li",
             "target_dom_id": self.get_target_dom_id(),
+            "custom_data": self.get_custom_data()
         }
 
     def get_select_directive_json(self, request):
@@ -190,3 +201,14 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         context = super(ItemValue, self).get_context_data(request=request)
         context['select_directive_json'] = self.get_select_directive_json(request=request)
         return context
+
+
+class ManyToManySelect(ItemValue):
+    def get_manytomanyfield_preview_html(self):
+        return '<p>PREVIEW: {}</p>'.format(self.get_preview_title())
+
+    def get_custom_data(self):
+        return {
+            'value': self.get_inputfield_value(),
+            'preview': self.get_manytomanyfield_preview_html()
+        }

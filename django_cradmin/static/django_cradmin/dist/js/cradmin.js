@@ -4382,6 +4382,7 @@
         scope: true,
         controller: function($scope, $element) {
           $scope.selectedItemsCount = 0;
+          $scope.selectedItemsData = {};
           $scope.select = function(selectScope) {
             var html, linkingFunction, loadedElement, previewHtml, selectButtonDomId;
             previewHtml = selectScope.getPreviewHtml();
@@ -4390,10 +4391,12 @@
             linkingFunction = $compile(html);
             loadedElement = linkingFunction($scope);
             angular.element(loadedElement).appendTo($element);
-            return $scope.selectedItemsCount += 1;
+            $scope.selectedItemsCount += 1;
+            return $scope.selectedItemsData[selectButtonDomId] = selectScope.getCustomData();
           };
           $scope.onDeselect = function(selectScope) {
-            return $scope.selectedItemsCount -= 1;
+            $scope.selectedItemsCount -= 1;
+            return del($scope.selectedItemsData[selectScope.getDomId()]);
           };
           $scope.isSelected = function(selectScope) {
             var selectButtonDomId;
@@ -4403,19 +4406,15 @@
           $scope.hasItems = function() {
             return $scope.selectedItemsCount > 0;
           };
-          $scope.getItemsDataList = function() {
-            return [
-              {
-                value: 1,
-                preview: '<p>Value #1</p>'
-              }, {
-                value: 2,
-                preview: '<p>Value #2</p>'
-              }, {
-                value: 3,
-                preview: '<p>Value #3</p>'
-              }
-            ];
+          $scope.getItemsCustomDataList = function() {
+            var customData, customDataList, selectButtonDomId, _ref;
+            customDataList = [];
+            _ref = $scope.selectedItemsData;
+            for (selectButtonDomId in _ref) {
+              customData = _ref[selectButtonDomId];
+              customDataList.push(customData);
+            }
+            return customDataList;
           };
         },
         link: function($scope, $element, attributes, targetCtrl) {
@@ -4477,6 +4476,13 @@
           };
           $scope.getTargetDomId = function() {
             return $scope.options.target_dom_id;
+          };
+          $scope.getCustomData = function() {
+            if ($scope.options.custom_data != null) {
+              return $scope.options.custom_data;
+            } else {
+              return {};
+            }
           };
           unregisterBgReplaceEventHandler = $scope.$on('djangoCradminBgReplaceElementEvent', function(event, options) {
             var targetDomId;
@@ -4561,7 +4567,7 @@
               values: [],
               preview: ""
             };
-            _ref = targetCtrl.getSelectedItemsScope().getItemsDataList();
+            _ref = targetCtrl.getSelectedItemsScope().getItemsCustomDataList();
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               itemData = _ref[_i];
               allData.values.push(itemData.value);
@@ -4575,7 +4581,7 @@
             data = angular.fromJson($scope.data);
             data.postmessageid = 'django-cradmin-use-this';
             selectedItemsData = getSelectedItemsData();
-            data.value = selectedItemsData.values;
+            data.value = angular.toJson(selectedItemsData.values);
             data.preview = selectedItemsData.preview;
             return $window.parent.postMessage(angular.toJson(data), window.parent.location.href);
           });
