@@ -173,28 +173,3 @@ class TestModelForm(test.TestCase):
                                            instance=autoformtestmodelobject).as_ul())
         self.assertTrue(selector.exists('input[type="file"][name="imagefield"]'))
         self.assertTrue(selector.exists('.django-cradmin-imagewidget'))
-
-    # def test_save_many_to_many(self):
-    #     class MyModelForm(automodelform.ModelForm):
-    #         class Meta:
-    #             model = AutoFormTestModel
-    #             fields = ['members']
-    #
-    #     oldmember = mommy.make('cradmin_automodelform_testapp.Member')
-    #     newmember = mommy.make('cradmin_automodelform_testapp.Member')
-    #     autoformtestmodelobject = mommy.make(
-    #         'cradmin_automodelform_testapp.AutoFormTestModel',
-    #         members=[oldmember]
-    #     )
-    #
-    #     form = MyModelForm(
-    #         instance=autoformtestmodelobject,
-    #         data={
-    #             'members': [newmember.id, oldmember.id]
-    #         })
-    #     form.is_valid()
-    #     form.save()
-    #     autoformtestmodelobject = AutoFormTestModel.objects.first()
-    #     self.assertEqual(
-    #         {oldmember, newmember},
-    #         set(autoformtestmodelobject.members.all()))
