@@ -72,8 +72,10 @@ class ModelMultiChoiceWidget(widgets.TextInput):
             return data.get(name, None)
 
     def render(self, name, value, attrs=None):
-        if value is None:
+        if value is None or value == '':
             value = ''
+        else:
+            value = json.dumps(value)
         fieldid = attrs['id']
         return render_to_string(self.template_name, {
             'preview': self.preview,
