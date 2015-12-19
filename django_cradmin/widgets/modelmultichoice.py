@@ -1,5 +1,8 @@
 from __future__ import unicode_literals
 
+import json
+
+from django.utils.datastructures import MultiValueDict, MergeDict
 from future import standard_library
 
 standard_library.install_aliases()
@@ -9,6 +12,8 @@ import urllib.error
 from django.utils.translation import ugettext_lazy as _
 from django.forms import widgets
 from django.template.loader import render_to_string
+from builtins import str
+from past.builtins import basestring
 
 
 class ModelMultiChoiceWidget(widgets.TextInput):
@@ -53,6 +58,18 @@ class ModelMultiChoiceWidget(widgets.TextInput):
             return 'text'
         else:
             return 'hidden'
+
+    def value_from_datadict(self, data, files, name):
+        value = data.get(name, None)
+        if isinstance(value, basestring):
+            # This handles the data we get from this widget,
+            # the other stuff below is just if we get data
+            # from tests and other sources where it is not JSON encoded.
+            return json.loads(value)
+        elif isinstance(data, (MultiValueDict, MergeDict)):
+            return data.getlist(name)
+        else:
+            return data.get(name, None)
 
     def render(self, name, value, attrs=None):
         if value is None:

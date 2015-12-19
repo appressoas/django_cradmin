@@ -92,7 +92,7 @@ angular.module('djangoCradmin.multiselect2.directives', [])
 
         $scope.onDeselect = (selectScope) ->
           $scope.selectedItemsCount -= 1
-          del $scope.selectedItemsData[selectScope.getDomId()]
+          delete $scope.selectedItemsData[selectScope.getDomId()]
 
         $scope.isSelected = (selectScope) ->
           selectButtonDomId = selectScope.getDomId()
@@ -106,11 +106,6 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           for selectButtonDomId, customData of $scope.selectedItemsData
             customDataList.push(customData)
           return customDataList
-#          return [
-#            {value: 1, preview: '<p>Value #1</p>'},
-#            {value: 2, preview: '<p>Value #2</p>'},
-#            {value: 3, preview: '<p>Value #3</p>'},
-#          ]
 
         return
 

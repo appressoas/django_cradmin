@@ -4396,7 +4396,7 @@
           };
           $scope.onDeselect = function(selectScope) {
             $scope.selectedItemsCount -= 1;
-            return del($scope.selectedItemsData[selectScope.getDomId()]);
+            return delete $scope.selectedItemsData[selectScope.getDomId()];
           };
           $scope.isSelected = function(selectScope) {
             var selectButtonDomId;
