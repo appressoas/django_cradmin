@@ -6,6 +6,7 @@ from xml.sax.saxutils import quoteattr
 from django.utils.translation import pgettext_lazy
 
 from django_cradmin.viewhelpers import listbuilder
+from django_cradmin.viewhelpers.multiselect2 import widget_preview_renderer
 from django_cradmin.viewhelpers.multiselect2.targetrenderables import Target
 
 
@@ -204,8 +205,12 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
 
 
 class ManyToManySelect(ItemValue):
+    def get_manytomanyfield_preview_renderer_class(self):
+        return widget_preview_renderer.Value
+
     def get_manytomanyfield_preview_html(self):
-        return '<p>PREVIEW: {}</p>'.format(self.get_preview_title())
+        renderer_class = self.get_manytomanyfield_preview_renderer_class()
+        return renderer_class(value=self.value).render()
 
     def get_custom_data(self):
         return {

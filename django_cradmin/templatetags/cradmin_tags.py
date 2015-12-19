@@ -278,5 +278,5 @@ def cradmin_render_renderable(context, renderable):
 
             {% cradmin_render_renderable renderable %}
     """
-    request = context['request']
+    request = context.get('request', None)
     return renderable.render(request=request)

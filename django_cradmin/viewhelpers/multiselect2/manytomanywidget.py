@@ -5,6 +5,8 @@ import json
 from django.utils.datastructures import MultiValueDict, MergeDict
 from future import standard_library
 
+from django_cradmin.viewhelpers.multiselect2 import widget_preview_renderer
+
 standard_library.install_aliases()
 import urllib.request
 import urllib.parse
@@ -12,17 +14,16 @@ import urllib.error
 from django.utils.translation import ugettext_lazy as _
 from django.forms import widgets
 from django.template.loader import render_to_string
-from builtins import str
 from past.builtins import basestring
 
 
-class ModelMultiChoiceWidget(widgets.TextInput):
+class Widget(widgets.TextInput):
     """
     Model multi choice widget that uses an iframe popup to enable users
     to select values for many-to-many and one-to-many fields.
     """
     #: The template used to render the widget.
-    template_name = 'django_cradmin/widgets/modelmultichoice.django.html'
+    template_name = 'django_cradmin/viewhelpers/multiselect2/manytomanywidget.django.html'
 
     #: Do not override this (if you set this to hidden, the widget is not rendered correctly).
     input_type = 'text'
@@ -38,13 +39,12 @@ class ModelMultiChoiceWidget(widgets.TextInput):
     #: change the button text.
     default_selectbutton_text = _('Select ...')
 
-    def __init__(self, queryset, selectview_url, preview='',
+    def __init__(self, queryset, selectview_url,
                  selectbutton_text=None):
         self.queryset = queryset
-        self.preview = preview
         self.selectview_url = selectview_url
         self.selectbutton_text = selectbutton_text or self.default_selectbutton_text
-        super(ModelMultiChoiceWidget, self).__init__()
+        super(Widget, self).__init__()
 
     def __make_selectview_url(self, fieldid, current_value):
         return '{}?{}'.format(
@@ -71,17 +71,25 @@ class ModelMultiChoiceWidget(widgets.TextInput):
         else:
             return data.get(name, None)
 
+    def get_selected_values_queryset(self, values):
+        return self.queryset.filter(pk__in=values)
+
+    def get_preview_list(self, values):
+        return widget_preview_renderer.List\
+            .from_value_iterable(
+                value_iterable=self.get_selected_values_queryset(values=values))
+
     def render(self, name, value, attrs=None):
         if value is None or value == '':
-            value = ''
+            fieldvalue = ''
         else:
-            value = json.dumps(value)
+            fieldvalue = json.dumps(value)
         fieldid = attrs['id']
         return render_to_string(self.template_name, {
-            'preview': self.preview,
+            'preview': self.get_preview_list(values=value).render(),
             'fieldname': name,
             'fieldid': fieldid,
-            'fieldvalue': value,
+            'fieldvalue': fieldvalue,
             'selectview_url': self.__make_selectview_url(fieldid, value),
             'selectbutton_text': self.selectbutton_text,
             'input_type': self.input_type,

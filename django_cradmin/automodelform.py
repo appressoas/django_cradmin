@@ -5,10 +5,10 @@ from builtins import str
 from django import forms
 from django.utils.translation import pgettext
 
+from django_cradmin.viewhelpers.multiselect2 import manytomanywidget
 from django_cradmin.widgets import datetimepicker
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets import modelchoice
-from django_cradmin.widgets import modelmultichoice
 
 
 class ModelForm(forms.ModelForm):
@@ -154,7 +154,7 @@ class ModelForm(forms.ModelForm):
         """
         Called by :meth:`.setup_field` if the ``formfield`` is a ModelMultiChoiceField.
 
-        Sets up :class:`django_cradmin.widgets.modelmultichoice.ModelMultiChoiceWidget`
+        Sets up :class:`django_cradmin.viewhelpers.multiselect2.manytomanywidget.Widget`
         as the widget if the ``view``-argument is provided to the constructor
         of this form, and if ``view.request.cradmin_instance.get_manytomanyselectview_url`
         returns a view URL for the model in the ModelMultiChoiceField.
@@ -171,7 +171,6 @@ class ModelForm(forms.ModelForm):
         if not manytomanyselectview_url:
             return
 
-        preview = 'TODO: preview'
         # if self.instance:
         #     try:
         #         relatedobject = getattr(self.instance, fieldname)
@@ -182,9 +181,8 @@ class ModelForm(forms.ModelForm):
         #                                                    formfield=formfield,
         #                                                    relatedobject=relatedobject)
 
-        self.fields[fieldname].widget = modelmultichoice.ModelMultiChoiceWidget(
+        self.fields[fieldname].widget = manytomanywidget.Widget(
             queryset=formfield.queryset,
-            preview=preview,
             selectview_url=manytomanyselectview_url)
 
     def setup_field(self, fieldname, formfield):
