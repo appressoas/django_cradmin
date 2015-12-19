@@ -22,18 +22,22 @@ def reverse_cradmin_url(instanceid, appname, roleid=None,
     but you specify the cradmin instance, appname, roleid and viewname
     instead of the url-name
 
-    Examples::
+    Examples:
 
-        myapp_index_url = reverse_cradmin_url(
-            instanceid='siteadmin',
-            appname='myapp',
-            roleid=site.id)
+        Reverse the frontpage on an app::
 
-        myapp_add_url = reverse_cradmin_url(
-            instanceid='siteadmin',
-            appname='myapp',
-            roleid=site.id,
-            viewname='add')
+            myapp_index_url = reverse_cradmin_url(
+                instanceid='siteadmin',
+                appname='myapp',
+                roleid=site.id)
+
+        Reverse a specific view within an app::
+
+            myapp_add_url = reverse_cradmin_url(
+                instanceid='siteadmin',
+                appname='myapp',
+                roleid=site.id,
+                viewname='add')
     """
     if roleid:
         if args:
@@ -224,11 +228,11 @@ class BaseCrAdminInstance(object):
             user (Django User): The user requesting the menu.
 
         Returns:
-            An instance of :obj:`.menuclass` by default, but you can
+            django_cradmin.crmenu.Menu: An instance of :obj:`~.BaseCrAdminInstance.menuclass` by default, but you can
             override this method to determine/create the menu dynamically.
 
         See Also:
-            :class:`django_cradmin.menu.BaseCrAdminMenu`.
+            :class:`django_cradmin.crmenu.Menu`.
         """
         return self._get_menu()
 

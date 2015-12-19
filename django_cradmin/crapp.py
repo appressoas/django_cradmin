@@ -19,6 +19,15 @@ class Url(object):
     You use Url to add urls to an app.
     """
     def __init__(self, regex, view, kwargs=None, name=None):
+        """
+        Args:
+            regex: The URL regex.
+            view: The view (E.g.: ``MyView.as_view()``).
+            kwargs: Keyword arguments for the view.
+            name: The name of the view. This just have to be unique within
+                the :class:`.App` - the actual URL name is generated
+                based on the app name and the :obj:`django_cradmin.crinstance.BaseCrAdminInstance.id`.
+        """
         self.regex = regex
         self.view = view
         self.kwargs = kwargs
@@ -26,6 +35,13 @@ class Url(object):
 
 
 class App(object):
+    """
+    A cradmin App.
+
+    Added to a :class:`django_cradmin.crinstance.BaseCrAdminInstance`
+    with :obj:`django_cradmin.crinstance.BaseCrAdminInstance.apps`.
+    """
+    #: See :meth:`~.App.get_appurls`.
     appurls = []
 
     def __init__(self, appname, request):
@@ -54,6 +70,12 @@ class App(object):
 
     @classmethod
     def get_appurls(cls):
+        """
+        Get app URLs. Defaults to :obj:`~.App.appurls`.
+
+        Returns:
+            A list of :class:`.Url` objects.
+        """
         return cls.appurls
 
     @classmethod

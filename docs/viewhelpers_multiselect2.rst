@@ -38,6 +38,8 @@ How it works
 API
 ***
 
-..
-    .. currentmodule:: django_cradmin.viewhelpers.multiselect2
-    .. automodule:: django_cradmin.viewhelpers.multiselect2
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues
+.. automodule:: django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues
+
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.targetrenderables
+.. automodule:: django_cradmin.viewhelpers.multiselect2.targetrenderables
