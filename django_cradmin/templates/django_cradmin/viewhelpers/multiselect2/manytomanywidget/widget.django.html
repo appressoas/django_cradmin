@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load cradmin_icon_tags %}
+{% load cradmin_tags %}
 
 <div id="id_cradmin_modelmultichoicefieldwrapper_{{ fieldname }}"
         django-cradmin-model-choice-field-wrapper="{{ selectview_url }}"
@@ -12,11 +12,7 @@
     {% endblock input %}
 
     {% block preview %}
-        <div django-cradmin-model-choice-field-preview class="django-cradmin-modelmultichoicefield-preview">
-            {% if preview %}
-                {{ preview|safe }}
-            {% endif %}
-        </div>
+        {% cradmin_render_renderable preview_list %}
     {% endblock preview %}
 
     {% block selectbutton %}

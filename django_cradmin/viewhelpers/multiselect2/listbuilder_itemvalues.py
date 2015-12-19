@@ -210,7 +210,7 @@ class ManyToManySelect(ItemValue):
 
     def get_manytomanyfield_preview_html(self):
         renderer_class = self.get_manytomanyfield_preview_renderer_class()
-        return renderer_class(value=self.value).render()
+        return renderer_class(value=self.value, wrap_in_li_element=True).render()
 
     def get_custom_data(self):
         return {

@@ -23,7 +23,7 @@ class Widget(widgets.TextInput):
     to select values for many-to-many and one-to-many fields.
     """
     #: The template used to render the widget.
-    template_name = 'django_cradmin/viewhelpers/multiselect2/manytomanywidget.django.html'
+    template_name = 'django_cradmin/viewhelpers/multiselect2/manytomanywidget/widget.django.html'
 
     #: Do not override this (if you set this to hidden, the widget is not rendered correctly).
     input_type = 'text'
@@ -86,7 +86,7 @@ class Widget(widgets.TextInput):
             fieldvalue = json.dumps(value)
         fieldid = attrs['id']
         return render_to_string(self.template_name, {
-            'preview': self.get_preview_list(values=value).render(),
+            'preview_list': self.get_preview_list(values=value),
             'fieldname': name,
             'fieldid': fieldid,
             'fieldvalue': fieldvalue,
