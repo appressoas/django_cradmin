@@ -14,7 +14,7 @@ class SelectedItem(renderable.AbstractRenderableWithCss):
     """
 
     #: The template used to render this selected item.
-    template_name = 'django_cradmin/viewhelpers/multiselect2/selecteditemrenderables/default.django.html'
+    template_name = 'django_cradmin/viewhelpers/multiselect2/selected_item_renderer/selected-item.django.html'
 
     def __init__(self, value):
         """

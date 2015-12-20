@@ -4339,7 +4339,9 @@
             */
 
             $scope.selectedItemsScope.select(selectScope);
-            return $scope.$apply();
+            if (!$scope.$$phase) {
+              return $scope.$apply();
+            }
           };
           $scope.onDeselect = function(selectScope) {
             /*
@@ -4503,6 +4505,9 @@
             djangoCradminMultiselect2Coordinator.select($scope);
             return $scope.markAsSelected();
           };
+          if ($scope.options.is_selected) {
+            select();
+          }
           $element.on('click', function(e) {
             e.preventDefault();
             return select();

@@ -46,11 +46,11 @@ class Widget(widgets.TextInput):
         self.selectbutton_text = selectbutton_text or self.default_selectbutton_text
         super(Widget, self).__init__()
 
-    def __make_selectview_url(self, fieldid, current_value):
+    def __make_selectview_url(self, fieldid, fieldvalue):
         return '{}?{}'.format(
             self.selectview_url, urllib.parse.urlencode({
-                'foreignkey_select_current_value': current_value,
-                'foreignkey_select_fieldid': fieldid,
+                'manytomany_select_current_value': fieldvalue,
+                'manytomany_select_fieldid': fieldid,
             }))
 
     def get_rendered_input_type(self):
@@ -90,7 +90,7 @@ class Widget(widgets.TextInput):
             'fieldname': name,
             'fieldid': fieldid,
             'fieldvalue': fieldvalue,
-            'selectview_url': self.__make_selectview_url(fieldid, value),
+            'selectview_url': self.__make_selectview_url(fieldid, fieldvalue),
             'selectbutton_text': self.selectbutton_text,
             'input_type': self.input_type,
             'rendered_input_type': self.get_rendered_input_type()

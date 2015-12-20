@@ -142,11 +142,12 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
 
     def get_select_directive_dict(self, request):
         return {
-            "preview_container_css_selector": ".django-cradmin-multiselect2-itemvalue",
-            "preview_css_selector": ".django-cradmin-multiselect2-selected-item",
-            "item_wrapper_css_selector": "li",
-            "target_dom_id": self.get_target_dom_id(),
-            "custom_data": self.get_custom_data()
+            'preview_container_css_selector': '.django-cradmin-multiselect2-itemvalue',
+            'preview_css_selector': '.django-cradmin-multiselect2-selected-item',
+            'item_wrapper_css_selector': 'li',
+            'target_dom_id': self.get_target_dom_id(),
+            'custom_data': self.get_custom_data(),
+            'is_selected': self.kwargs.get('is_selected', False),
         }
 
     def get_select_directive_json(self, request):
@@ -170,7 +171,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         """
         Returns:
             django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem: An instance
-            of the selected item renderer.
+            of :meth:`.get_selected_item_renderer_class`.
 
             This is called in ``__init__`` and the return value is stored in ``self.selected_item_renderer``.
         """

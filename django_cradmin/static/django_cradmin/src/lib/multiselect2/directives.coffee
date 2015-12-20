@@ -27,7 +27,8 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           Calls ``djangoCradminMultiselect2TargetSelectedItems.select()``.
           ###
           $scope.selectedItemsScope.select(selectScope)
-          $scope.$apply()
+          if not $scope.$$phase
+            $scope.$apply()
 
         $scope.onDeselect = (selectScope) ->
           ###
@@ -199,6 +200,9 @@ angular.module('djangoCradmin.multiselect2.directives', [])
         select = ->
           djangoCradminMultiselect2Coordinator.select($scope)
           $scope.markAsSelected()
+
+        if $scope.options.is_selected
+          select()
 
         $element.on 'click', (e) ->
           e.preventDefault()
