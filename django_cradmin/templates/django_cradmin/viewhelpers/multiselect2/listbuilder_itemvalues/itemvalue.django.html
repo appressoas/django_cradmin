@@ -42,40 +42,6 @@
     {% endblock buttons %}
 
     {% block preview-wrapper %}
-        <div class="django-cradmin-multiselect2-preview">
-            {% block preview-title %}
-                <h3 class="django-cradmin-multiselect2-target-selected-item-title">
-                    {{ me.get_preview_title }}
-                </h3>
-            {% endblock preview-title %}
-            {% block below-preview-title %}{% endblock below-preview-title %}
-
-            {% block preview-description %}
-                {% if me.get_description %}
-                    <p class="django-cradmin-multiselect2-target-selected-item-description">
-                        {% block preview-description-content %}
-                            {{ me.get_description }}
-                        {% endblock preview-description-content %}
-                    </p>
-                {% endif %}
-            {% endblock preview-description %}
-            {% block below-preview-description %}{% endblock below-preview-description %}
-
-            {% block input-field %}
-                <input type="hidden" name="{{ me.get_inputfield_name }}"
-                       value="{{ me.get_inputfield_value }}">
-            {% endblock input-field %}
-
-            {% block deselect-button %}
-                <button type="button"
-                        class="btn btn-danger"
-                        aria-label='{{ me.get_deselectbutton_aria_label }}'
-                        ng-click="deselect()">
-                    {% block deselect-button-content %}
-                        {{ me.get_deselectbutton_text }}
-                    {% endblock deselect-button-content %}
-                </button>
-            {% endblock deselect-button %}
-        </div>
+        {% cradmin_render_renderable me.selecteditem_renderer %}
     {% endblock preview-wrapper %}
 {% endblock content %}

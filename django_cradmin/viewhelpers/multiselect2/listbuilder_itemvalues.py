@@ -1,13 +1,15 @@
 from __future__ import unicode_literals
 
 import json
+from builtins import str
 from xml.sax.saxutils import quoteattr
 
 from django.utils.translation import pgettext_lazy
 
 from django_cradmin.viewhelpers import listbuilder
+from django_cradmin.viewhelpers.multiselect2 import selected_item_renderer
+from django_cradmin.viewhelpers.multiselect2 import targetrenderables
 from django_cradmin.viewhelpers.multiselect2 import widget_preview_renderer
-from django_cradmin.viewhelpers.multiselect2.targetrenderables import Target
 
 
 class ItemValue(listbuilder.itemvalue.FocusBox):
@@ -28,7 +30,12 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
 
     See :doc:`viewhelpers_listbuilder` for more information about listbuilder.
     """
+
+    #: The template used to render this renderable.
     template_name = 'django_cradmin/viewhelpers/multiselect2/listbuilder_itemvalues/itemvalue.django.html'
+
+    #: Selected item rendrerer class.
+    selecteditem_renderer_class = selected_item_renderer.Default
 
     def __init__(self, *args, **kwargs):
         """
@@ -46,9 +53,10 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
                                                  'django_cradmin_multiselect2_selectbutton')
         self.selectbutton_text = kwargs.pop('selectbutton_text', None)
         self.selectbutton_aria_label = kwargs.pop('selectbutton_aria_label', None)
-        self.deselectbutton_text = kwargs.pop('deselectbutton_text', None)
-        self.deselectbutton_aria_label = kwargs.pop('deselectbutton_aria_label', None)
+        # self.deselectbutton_text = kwargs.pop('deselectbutton_text', None)
+        # self.deselectbutton_aria_label = kwargs.pop('deselectbutton_aria_label', None)
         super(ItemValue, self).__init__(*args, **kwargs)
+        self.selecteditem_renderer = self.make_selecteditem_renderer()
 
     def get_target_dom_id(self):
         """
@@ -61,7 +69,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         if self.target_dom_id:
             return self.target_dom_id
         else:
-            return Target.default_target_dom_id
+            return targetrenderables.Target.default_target_dom_id
 
     def get_selectbutton_dom_id(self):
         """
@@ -128,61 +136,6 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
             'title': self.get_title()
         }
 
-    def get_deselectbutton_text(self):
-        """
-        Returns:
-            str: The text for the deselect button.
-
-            Defaults to the ``deselectbutton_text`` parameter for ``__init__``,
-            falling back on ``"Deselect"`` (translatable).
-        """
-        if self.deselectbutton_text:
-            return self.deselectbutton_text
-        else:
-            return pgettext_lazy('multiselect2 deselect button', 'Deselect')
-
-    def get_deselectbutton_aria_label(self):
-        """
-        Returns:
-            str: The text for the aria-label of the deselect button.
-
-            Defaults to ``"Deselect <self.get_title()>"`` (translatable).
-        """
-        return pgettext_lazy('multiselect2 deselect button', 'Deselect "%(title)s"') % {
-            'title': self.get_title()
-        }
-
-    def get_inputfield_name(self):
-        """
-        Returns:
-            str: The name of the input field.
-
-            Defaults to the ``inputfield_name`` parameter for ``__init__``, falling
-            back on ``selected_items``.
-        """
-        if self.inputfield_name:
-            return self.inputfield_name
-        else:
-            return 'selected_items'
-
-    def get_inputfield_value(self):
-        """
-        Returns:
-            str or int: The value to put in the ``value`` attribute of the input field.
-        """
-        return self.value.id
-
-    def get_preview_title(self):
-        """
-        Returns:
-            str: The title of the preview.
-                This is used to render the preview in the column
-        """
-        return self.get_title()
-
-    def get_preview_description(self):
-        return None
-
     def get_custom_data(self):
         return None
 
@@ -197,6 +150,12 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
 
     def get_select_directive_json(self, request):
         return quoteattr(json.dumps(self.get_select_directive_dict(request=request)))
+
+    def get_selecteditem_renderer_class(self):
+        return self.selecteditem_renderer_class
+
+    def make_selecteditem_renderer(self):
+        return self.get_selecteditem_renderer_class()(value=self.value)
 
     def get_context_data(self, request=None):
         context = super(ItemValue, self).get_context_data(request=request)
@@ -214,6 +173,6 @@ class ManyToManySelect(ItemValue):
 
     def get_custom_data(self):
         return {
-            'value': self.get_inputfield_value(),
+            'value': self.selecteditem_renderer.get_inputfield_value(),
             'preview': self.get_manytomanyfield_preview_html()
         }
