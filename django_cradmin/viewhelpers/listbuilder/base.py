@@ -20,12 +20,13 @@ class AbstractItemRenderer(AbstractRenderableWithCss):
     #: ``__init__``).
     valuealias = None
 
-    def __init__(self, value):
+    def __init__(self, value, **kwargs):
         """
         Parameters:
             value: The value to render.
         """
         self.value = value
+        self.kwargs = kwargs
         if self.valuealias:
             setattr(self, self.valuealias, self.value)
 
@@ -61,8 +62,8 @@ class ItemFrameRenderer(AbstractItemRenderer):
     """
     template_name = 'django_cradmin/viewhelpers/listbuilder/base/itemframe.django.html'
 
-    def __init__(self, inneritem):
-        super(ItemFrameRenderer, self).__init__(inneritem.value)
+    def __init__(self, inneritem, **kwargs):
+        super(ItemFrameRenderer, self).__init__(inneritem.value, **kwargs)
         self.inneritem = inneritem
 
     def get_base_css_classes_list(self):
@@ -131,7 +132,10 @@ class List(AbstractRenderableWithCss):
         """
         return None
 
-    def extend_with_values(self, value_iterable, value_renderer_class=None, frame_renderer_class=None):
+    def extend_with_values(self, value_iterable,
+                           value_renderer_class=None,
+                           frame_renderer_class=None,
+                           value_and_frame_renderer_kwargs=None):
         """
         Extends the list with an iterable of values.
 
@@ -149,20 +153,28 @@ class List(AbstractRenderableWithCss):
                 as the ``inneritem`` attribute/parameter.
 
                 Defaults to :meth:`.get_default_frame_renderer_class`.
+            value_and_frame_renderer_kwargs (dict): Keyword arguments to send to all
+                the constructor of all the value and frame renderers.
         """
         value_renderer_class = value_renderer_class or self.get_default_value_renderer_class()
         frame_renderer_class = frame_renderer_class or self.get_default_frame_renderer_class()
+        value_and_frame_renderer_kwargs = value_and_frame_renderer_kwargs or {}
         if frame_renderer_class:
-            renderable_iterable = [frame_renderer_class(inneritem=value_renderer_class(value=value))
-                                   for value in value_iterable]
+            renderable_iterable = [
+                frame_renderer_class(inneritem=value_renderer_class(value=value,
+                                                                    **value_and_frame_renderer_kwargs),
+                                     **value_and_frame_renderer_kwargs)
+                for value in value_iterable]
         else:
-            renderable_iterable = map(value_renderer_class, value_iterable)
+            renderable_iterable = [value_renderer_class(value=value, **value_and_frame_renderer_kwargs)
+                                   for value in value_iterable]
         self.extend(renderable_iterable)
 
     @classmethod
     def from_value_iterable(cls, value_iterable,
                             value_renderer_class=None,
                             frame_renderer_class=None,
+                            value_and_frame_renderer_kwargs=None,
                             **listkwargs):
         """
         A shortcut for creating an object of this class with the given ``**listkwargs``
@@ -174,6 +186,8 @@ class List(AbstractRenderableWithCss):
             An object of this class.
         """
         listobject = cls(**listkwargs)
-        listobject.extend_with_values(value_iterable, value_renderer_class,
-                                      frame_renderer_class=frame_renderer_class)
+        listobject.extend_with_values(value_iterable=value_iterable,
+                                      value_renderer_class=value_renderer_class,
+                                      frame_renderer_class=frame_renderer_class,
+                                      value_and_frame_renderer_kwargs=value_and_frame_renderer_kwargs)
         return listobject
