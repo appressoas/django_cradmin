@@ -35,7 +35,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     template_name = 'django_cradmin/viewhelpers/multiselect2/listbuilder_itemvalues/itemvalue.django.html'
 
     #: Selected item rendrerer class.
-    selecteditem_renderer_class = selected_item_renderer.Default
+    selecteditem_renderer_class = selected_item_renderer.SelectedItem
 
     def __init__(self, *args, **kwargs):
         """

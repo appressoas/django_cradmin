@@ -5,7 +5,7 @@ from django.utils.translation import pgettext_lazy
 from django_cradmin import renderable
 
 
-class Default(renderable.AbstractRenderableWithCss):
+class SelectedItem(renderable.AbstractRenderableWithCss):
     """
     Renders a selected item. This is rendered by
     :class:`django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`,
