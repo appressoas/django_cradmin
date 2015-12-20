@@ -6748,7 +6748,7 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
   border: 1px solid #ebccd1;
   color: #a94442;
 }
-.django-cradmin-multiselect2-preview {
+.django-cradmin-multiselect2-selected-item {
   display: none;
 }
 .django-cradmin-multiselect2-item-wrapper-selected {

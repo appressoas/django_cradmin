@@ -25,7 +25,7 @@ class SelectedItem(renderable.AbstractRenderableWithCss):
         self.value = value
 
     def get_base_css_classes_list(self):
-        return ['django-cradmin-multiselect2-preview']
+        return ['django-cradmin-multiselect2-selected-item']
 
     def get_title(self):
         """
