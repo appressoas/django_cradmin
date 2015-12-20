@@ -22,7 +22,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     If you have multiple lists with multiselect2 on the same page,
     you have to ensure the DOM IDs are unique by overriding:
 
-    - :meth:`get_selectbutton_dom_id` (or use the ``selectbutton_id_prefix`` parameter).
+    - :meth:`get_selectbutton_dom_id`.
     - :meth:`get_target_dom_id` (or use the ``target_dom_id`` parameter). Make sure you
       set :meth:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target.get_target_dom_id`
       on your corresponding Target renderer to reflect the new ID.
@@ -42,20 +42,9 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         """
         Args:
             target_dom_id: See :meth:`.get_target_dom_id`.
-            inputfield_name: See :meth:`.get_inputfield_name`.
-            selectbutton_id_prefix: See :meth:`.get_selectbutton_dom_id`.
-                Defaults to ``django_cradmin_multiselect2_selectbutton``.
-            selectbutton_text: See :meth:`.get_selectbutton_text`.
-            deselectbutton_text: See :meth:`.get_deselectbutton_text`.
+            is_selected: Mark the item as selected on load.
         """
         self.target_dom_id = kwargs.pop('target_dom_id', None)
-        self.inputfield_name = kwargs.pop('inputfield_name', None)
-        self.selectbutton_id_prefix = kwargs.pop('selectbutton_id_prefix',
-                                                 'django_cradmin_multiselect2_selectbutton')
-        self.selectbutton_text = kwargs.pop('selectbutton_text', None)
-        self.selectbutton_aria_label = kwargs.pop('selectbutton_aria_label', None)
-        # self.deselectbutton_text = kwargs.pop('deselectbutton_text', None)
-        # self.deselectbutton_aria_label = kwargs.pop('deselectbutton_aria_label', None)
         super(ItemValue, self).__init__(*args, **kwargs)
         self.selected_item_renderer = self.make_selected_item_renderer()
 
@@ -77,13 +66,12 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         Returns:
             str: Get the DOM id of the select button.
 
-            Defaults to ``<selectbutton_id_prefix>_<self.value.id>``, where
-            ``selectbutton_id_prefix`` is the ``selectbutton_id_prefix`` parameter.
+            Defaults to ``django_cradmin_multiselect2_selectbutton_<self.value.pk>``.
 
             If you have multiple lists with multiselect2 on the same page, you must
             make sure this is unique.
         """
-        return '{}_{}'.format(self.selectbutton_id_prefix, self.value.id)
+        return 'django_cradmin_multiselect2_selectbutton_{}'.format(self.value.pk)
 
     def get_base_css_classes_list(self):
         """
@@ -118,13 +106,9 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         Returns:
             str: The text for the select button.
 
-            Defaults to the ``selectbutton_text`` parameter for ``__init__``,
-            falling back on ``"Select"`` (translatable).
+            Defaults to ``"Select"`` (translatable).
         """
-        if self.selectbutton_text:
-            return self.selectbutton_text
-        else:
-            return pgettext_lazy('multiselect2 select button', 'Select')
+        return pgettext_lazy('multiselect2 select button', 'Select')
 
     def get_selectbutton_aria_label(self):
         """
@@ -138,9 +122,25 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         }
 
     def get_custom_data(self):
+        """
+        Returns:
+            dict: Custom data for the ``custom_data``-attribute for the angularjs directive.
+
+            Used by :meth:`.get_select_directive_dict`.
+        """
         return None
 
     def get_select_directive_dict(self, request):
+        """
+        Get options for the ``django-cradmin-multiselect2-select`` angularjs
+        directive.
+
+        Args:
+            request: A Django HttpRequest object.
+
+        Returns:
+            dict: With options for the directive.
+        """
         return {
             'preview_container_css_selector': '.django-cradmin-multiselect2-itemvalue',
             'preview_css_selector': '.django-cradmin-multiselect2-selected-item',
@@ -151,6 +151,14 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         }
 
     def get_select_directive_json(self, request):
+        """
+        Args:
+            request: A Django HttpRequest object.
+
+        Returns:
+            str: The return value of :meth:`.get_select_directive_dict`
+            as a json encoded and xml attribute encoded string.
+        """
         return quoteattr(json.dumps(self.get_select_directive_dict(request=request)))
 
     def get_selected_item_renderer_class(self):
@@ -184,14 +192,41 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
 
 
 class ManyToManySelect(ItemValue):
+    """
+    Many-to-many select item value.
+
+    Extends :class:`.ItemValue` with the data needed for
+    :class:`django_cradmin.viewhelpers.multiselect2.manytomanywidget.Widget`.
+    """
     def get_manytomanyfield_preview_renderer_class(self):
+        """
+        Returns:
+            django_cradmin.viewhelpers.multiselect2.widget_preview_renderer.Value: The class
+            used to render the preview html (see :meth:`.get_manytomanyfield_preview_html`).
+        """
         return widget_preview_renderer.Value
 
     def get_manytomanyfield_preview_html(self):
+        """
+        Returns:
+            str: Preview HTML added as the ``preview`` key in :meth:`.get_custom_data`.
+            This is added to the preview list rendered by
+            :class:`django_cradmin.viewhelpers.multiselect2.manytomanywidget.Widget`
+            when the selection is confirmed.
+        """
         renderer_class = self.get_manytomanyfield_preview_renderer_class()
         return renderer_class(value=self.value, wrap_in_li_element=True).render()
 
     def get_custom_data(self):
+        """
+        Returns:
+            dict: A dict with:
+
+            - ``value``: Taken from the ``get_inputfield_value`` method
+              of :meth:`.ItemValue.make_selected_item_renderer`. See
+              :meth:`~django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem.get_inputfield_value`.
+            - ``preview``: Preview HTML returned by :meth:`.get_manytomanyfield_preview_html`.
+        """
         return {
             'value': self.selected_item_renderer.get_inputfield_value(),
             'preview': self.get_manytomanyfield_preview_html()

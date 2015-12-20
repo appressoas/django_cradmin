@@ -24,13 +24,12 @@
     {% endblock description %}
     {% block below-description %}{% endblock below-description %}
 
-
     {% block buttons %}
         <p class="django-cradmin-multiselect2-itemvalue-buttons">
             {% block select-button %}
                 <button type="button"
                         id="{{ me.get_selectbutton_dom_id }}"
-                        class="btn btn-default django-cradmin-multiselect2-itemvalue-default-button"
+                        class="btn btn-default django-cradmin-multiselect2-itemvalue-button"
                         django-cradmin-multiselect2-select={{ select_directive_json|safe }}
                         aria-label='{{ me.get_selectbutton_aria_label }}'>
                     {% block usethis-button-content %}
