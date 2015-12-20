@@ -21,7 +21,7 @@ class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
             label='Search',
             label_is_screenreader_only=True,
             modelfields=['name', 'description']))
-        filterlist.append(multiselect2.targetrenderables.Target())
+        filterlist.append(multiselect2.target_renderer.Target())
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(

@@ -14,7 +14,7 @@ class Target(renderable.AbstractRenderableWithCss,
     """
 
     #: The template used to render this renderable.
-    template_name = 'django_cradmin/viewhelpers/multiselect2/targetrenderables/target.django.html'
+    template_name = 'django_cradmin/viewhelpers/multiselect2/target_renderer/target.django.html'
 
     #: The default for :meth:`.~Target.get_dom_id`.
     default_target_dom_id = 'django_cradmin_multiselect2_select_target'
@@ -104,4 +104,4 @@ class Target(renderable.AbstractRenderableWithCss,
 
 
 class ManyToManySelectTarget(Target):
-    template_name = 'django_cradmin/viewhelpers/multiselect2/targetrenderables/manytomanyselect-target.django.html'
+    template_name = 'django_cradmin/viewhelpers/multiselect2/target_renderer/manytomanyselect-target.django.html'

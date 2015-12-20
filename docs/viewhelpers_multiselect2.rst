@@ -41,5 +41,8 @@ API
 .. currentmodule:: django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues
 .. automodule:: django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues
 
-.. currentmodule:: django_cradmin.viewhelpers.multiselect2.targetrenderables
-.. automodule:: django_cradmin.viewhelpers.multiselect2.targetrenderables
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.selected_item_renderer
+.. automodule:: django_cradmin.viewhelpers.multiselect2.selected_item_renderer
+
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.target_renderer
+.. automodule:: django_cradmin.viewhelpers.multiselect2.target_renderer

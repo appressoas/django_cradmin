@@ -9,7 +9,7 @@ class Default(renderable.AbstractRenderableWithCss):
     """
     Renders a selected item. This is rendered by
     :class:`django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`,
-    and added to a :class:`django_cradmin.viewhelpers.multiselect2.targetrenderables.Target`
+    and added to a :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`
     when the "select"-button in the ItemValue is clicked.
     """
 

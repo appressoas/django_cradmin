@@ -96,4 +96,4 @@ class ManyToManySelectView(BaseView):
 
     def add_filterlist_items(self, filterlist):
         super(ManyToManySelectView, self).add_filterlist_items(filterlist=filterlist)
-        filterlist.append(multiselect2.targetrenderables.ManyToManySelectTarget())
+        filterlist.append(multiselect2.target_renderer.ManyToManySelectTarget())

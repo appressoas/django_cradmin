@@ -8,7 +8,7 @@ from django.utils.translation import pgettext_lazy
 
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin.viewhelpers.multiselect2 import selected_item_renderer
-from django_cradmin.viewhelpers.multiselect2 import targetrenderables
+from django_cradmin.viewhelpers.multiselect2 import target_renderer
 from django_cradmin.viewhelpers.multiselect2 import widget_preview_renderer
 
 
@@ -16,7 +16,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     """
     Listbuilder itemvalue renderable that renders some information
     and a "Select" buttonn that works out of the box with
-    :class:`django_cradmin.viewhelpers.multiselect2.targetrenderables.Target`
+    :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`
     to enable multiselect.
 
     If you have multiple lists with multiselect2 on the same page,
@@ -24,7 +24,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
 
     - :meth:`get_selectbutton_dom_id` (or use the ``selectbutton_id_prefix`` parameter).
     - :meth:`get_target_dom_id` (or use the ``target_dom_id`` parameter). Make sure you
-      set :meth:`django_cradmin.viewhelpers.multiselect2.targetrenderables.Target.get_target_dom_id`
+      set :meth:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target.get_target_dom_id`
       on your corresponding Target renderer to reflect the new ID.
     - :meth:`.get_inputfield_name` (or use the ``inputfield_name`` parameter).
 
@@ -61,15 +61,15 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     def get_target_dom_id(self):
         """
         Returns:
-            str: The ``dom_id`` of the :class:`django_cradmin.viewhelpers.multiselect2.targetrenderables.Target`.
+            str: The ``dom_id`` of the :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`.
 
             Defaults to the ``target_dom_id`` parameter falling back on
-            :obj:`django_cradmin.viewhelpers.multiselect2.targetrenderables.Target.default_target_dom_id`.
+            :obj:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target.default_target_dom_id`.
         """
         if self.target_dom_id:
             return self.target_dom_id
         else:
-            return targetrenderables.Target.default_target_dom_id
+            return target_renderer.Target.default_target_dom_id
 
     def get_selectbutton_dom_id(self):
         """
