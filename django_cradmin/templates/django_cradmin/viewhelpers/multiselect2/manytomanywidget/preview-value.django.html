@@ -2,7 +2,11 @@
 
 
 {% block outer-wrapper %}
-    <li>
+    {% if me.wrap_in_li_element %}
+        <li>
+    {% endif %}
         {{ block.super }}
-    </li>
+    {% if me.wrap_in_li_element %}
+        </li>
+    {% endif %}
 {% endblock outer-wrapper %}
