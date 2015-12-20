@@ -104,10 +104,9 @@ class ManyToManySelectView(BaseView):
         return self.target_renderer_class
 
     def get_target_renderer_kwargs(self):
-        return {}
-        # return {
-        #     'selected_values_iterable': self.get_selected_values_iterable(),
-        # }
+        return {
+            'target_formfield_id': self.request.GET['manytomany_select_fieldid']
+        }
 
     def should_include_previously_selected(self):
         if hasattr(self, 'get_filters_string') and self.get_filters_string():

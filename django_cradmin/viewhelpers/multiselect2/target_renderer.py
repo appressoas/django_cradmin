@@ -1,3 +1,6 @@
+import json
+from xml.sax.saxutils import quoteattr
+
 from django.utils.translation import ugettext_lazy
 
 from django_cradmin import renderable
@@ -119,3 +122,20 @@ class Target(renderable.AbstractRenderableWithCss,
 
 class ManyToManySelectTarget(Target):
     template_name = 'django_cradmin/viewhelpers/multiselect2/target_renderer/manytomanyselect-target.django.html'
+
+    def __init__(self, target_formfield_id, *args, **kwargs):
+        self.target_formfield_id = target_formfield_id
+        super(ManyToManySelectTarget, self).__init__(*args, **kwargs)
+
+    def get_usethis_directive_dict(self, request):
+        return {
+            'fieldid': self.target_formfield_id
+        }
+
+    def get_usethis_directive_json(self, request):
+        return quoteattr(json.dumps(self.get_usethis_directive_dict(request=request)))
+
+    def get_context_data(self, request=None):
+        context = super(ManyToManySelectTarget, self).get_context_data(request=request)
+        context['usethis_directive_json'] = self.get_usethis_directive_json(request=request)
+        return context
