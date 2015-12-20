@@ -26,7 +26,8 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     - :meth:`get_target_dom_id` (or use the ``target_dom_id`` parameter). Make sure you
       set :meth:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target.get_target_dom_id`
       on your corresponding Target renderer to reflect the new ID.
-    - :meth:`.get_inputfield_name` (or use the ``inputfield_name`` parameter).
+    - :meth:`django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem.get_inputfield_name`
+      of the :meth:`~.ItemValue.get_selected_item_renderer_class`.
 
     See :doc:`viewhelpers_listbuilder` for more information about listbuilder.
     """
@@ -35,7 +36,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     template_name = 'django_cradmin/viewhelpers/multiselect2/listbuilder_itemvalues/itemvalue.django.html'
 
     #: Selected item rendrerer class.
-    selecteditem_renderer_class = selected_item_renderer.SelectedItem
+    selected_item_renderer_class = selected_item_renderer.SelectedItem
 
     def __init__(self, *args, **kwargs):
         """
@@ -56,7 +57,7 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         # self.deselectbutton_text = kwargs.pop('deselectbutton_text', None)
         # self.deselectbutton_aria_label = kwargs.pop('deselectbutton_aria_label', None)
         super(ItemValue, self).__init__(*args, **kwargs)
-        self.selecteditem_renderer = self.make_selecteditem_renderer()
+        self.selected_item_renderer = self.make_selected_item_renderer()
 
     def get_target_dom_id(self):
         """
@@ -151,11 +152,29 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
     def get_select_directive_json(self, request):
         return quoteattr(json.dumps(self.get_select_directive_dict(request=request)))
 
-    def get_selecteditem_renderer_class(self):
-        return self.selecteditem_renderer_class
+    def get_selected_item_renderer_class(self):
+        """
+        Returns:
+            SelectedItem class: The renderable class to use
+            to render the selected item in the corresponding
+            :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`.
 
-    def make_selecteditem_renderer(self):
-        return self.get_selecteditem_renderer_class()(value=self.value)
+            Must be :class:`django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem`
+            or a subclass.
+
+            Defaults to :obj:`.selected_item_renderer_class`.
+        """
+        return self.selected_item_renderer_class
+
+    def make_selected_item_renderer(self):
+        """
+        Returns:
+            django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem: An instance
+            of the selected item renderer.
+
+            This is called in ``__init__`` and the return value is stored in ``self.selected_item_renderer``.
+        """
+        return self.get_selected_item_renderer_class()(value=self.value)
 
     def get_context_data(self, request=None):
         context = super(ItemValue, self).get_context_data(request=request)
@@ -173,6 +192,6 @@ class ManyToManySelect(ItemValue):
 
     def get_custom_data(self):
         return {
-            'value': self.selecteditem_renderer.get_inputfield_value(),
+            'value': self.selected_item_renderer.get_inputfield_value(),
             'preview': self.get_manytomanyfield_preview_html()
         }
