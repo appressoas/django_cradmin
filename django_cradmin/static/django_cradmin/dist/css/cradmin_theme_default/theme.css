@@ -6754,7 +6754,7 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 .django-cradmin-multiselect2-item-wrapper-selected {
   display: none;
 }
-.django-cradmin-multiselect2-target .django-cradmin-multiselect2-title {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-title {
   font-size: 16px;
   font-weight: bold;
   margin: 20px 0 0 0;

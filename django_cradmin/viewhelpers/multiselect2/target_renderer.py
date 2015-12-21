@@ -26,13 +26,26 @@ class Target(renderable.AbstractRenderableWithCss,
     #: Selected item rendrerer class.
     selected_item_renderer_class = selected_item_renderer.SelectedItem
 
-    def __init__(self, dom_id=None, selected_values_iterable=None):
+    def __init__(self, dom_id=None,
+                 selected_values_iterable=None,
+                 without_items_text=None,
+                 with_items_title=None,
+                 submit_button_text=None,
+                 form_action=None):
         """
         Args:
             dom_id: See :meth:`.get_dom_id`.
+            without_items_text: See :meth:`.get_without_items_text`.
+            with_items_title: See :meth:`.get_with_items_title`.
+            submit_button_text: See :meth:`.get_submit_button_text`.
+            form_action: See :meth:`.get_form_action`.
         """
         self.dom_id = dom_id
+        self.without_items_text = without_items_text
+        self.with_items_title = with_items_title
         self.selected_values_iterable = selected_values_iterable or []
+        self.submit_button_text = submit_button_text
+        self.form_action = form_action
 
     def get_dom_id(self):
         """
@@ -51,24 +64,40 @@ class Target(renderable.AbstractRenderableWithCss,
         """
         Returns:
             str: The title of the box when there are items selected.
+
+            Defaults to the ``with_items_title`` parameter for ``__init__``,
+            falling back on ``"Selected items"`` (translatable).
         """
-        return ugettext_lazy('Selected items')
+        if self.with_items_title:
+            return self.with_items_title
+        else:
+            return ugettext_lazy('Selected items')
 
     def get_submit_button_text(self):
         """
         Returns:
             str: The submit button text.
+
+            Defaults to the ``submit_button_text`` parameter for ``__init__``,
+            falling back on ``"Submit selection"`` (translatable).
         """
-        return ugettext_lazy('Submit selection')
+        if self.submit_button_text:
+            return self.submit_button_text
+        else:
+            return ugettext_lazy('Submit selection')
 
     def get_without_items_text(self):
         """
         Returns:
             str: The text to show when there are no items selected.
 
-            Defaults to empty string.
+            Defaults to the ``without_items_text`` parameter for ``__init__``,
+            falling back on empty string.
         """
-        return ''
+        if self.without_items_text:
+            return self.without_items_text
+        else:
+            return ''
 
     def get_form_action(self, request):
         """
@@ -76,9 +105,15 @@ class Target(renderable.AbstractRenderableWithCss,
             request: An HttpRequest object.
 
         Returns:
-            str: ``request.get_full_path()`` by default.
+            str: The ``<form>`` action attribute value.
+
+            Defaults to the ``form_action`` parameter for ``__init__``,
+            falling back on ``request.get_full_path()``.
         """
-        return request.get_full_path()
+        if self.form_action:
+            return self.form_action
+        else:
+            return request.get_full_path()
 
     def get_selected_item_renderer_class(self):
         """
@@ -121,9 +156,17 @@ class Target(renderable.AbstractRenderableWithCss,
 
 
 class ManyToManySelectTarget(Target):
+    """
+    Renders a multiselect target form for
+    :class:`django_cradmin.viewhelpers.multiselect2.manytomanywidget.Widget`.
+    """
     template_name = 'django_cradmin/viewhelpers/multiselect2/target_renderer/manytomanyselect-target.django.html'
 
     def __init__(self, target_formfield_id, *args, **kwargs):
+        """
+        Args:
+            target_formfield_id: The DOM ID of the target form field.
+        """
         self.target_formfield_id = target_formfield_id
         super(ManyToManySelectTarget, self).__init__(*args, **kwargs)
 
