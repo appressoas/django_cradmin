@@ -59,6 +59,11 @@ class ItemFrameRenderer(AbstractItemRenderer):
 
         The :class:`.List` dors not require a :class:`.ItemFrameRenderer`,
         so lightweight lists without this extra wrapper is possible.
+
+    .. attribute:: inneritem
+
+        The renderable this frame wraps - an object of
+        :class:`.ItemValueRenderer` or a subclass.
     """
     template_name = 'django_cradmin/viewhelpers/listbuilder/base/itemframe.django.html'
 
@@ -95,12 +100,22 @@ class List(AbstractRenderableWithCss):
         self.renderable_list = []
 
     def iter_renderables(self):
+        """
+        Get an iterator over the items in the list.
+        """
         return iter(self.renderable_list)
 
     def has_items(self):
+        """
+        Returns:
+            bool: ``True`` if the list has any items, and ``False`` otherwise.
+        """
         return len(self.renderable_list) > 0
 
     def get_base_css_classes_list(self):
+        """
+        Sets ``django-cradmin-listbuilder-list`` as css class for the list.
+        """
         return ['django-cradmin-listbuilder-list']
 
     def append(self, renderable):
