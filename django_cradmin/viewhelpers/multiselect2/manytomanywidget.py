@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import json
 
 from django.utils.datastructures import MultiValueDict, MergeDict
+from django.utils.translation import pgettext_lazy
 from future import standard_library
 
 from django_cradmin.viewhelpers.multiselect2 import widget_preview_renderer
@@ -11,7 +12,6 @@ standard_library.install_aliases()
 import urllib.request
 import urllib.parse
 import urllib.error
-from django.utils.translation import ugettext_lazy as _
 from django.forms import widgets
 from django.template.loader import render_to_string
 from past.builtins import basestring
@@ -37,7 +37,7 @@ class Widget(widgets.TextInput):
     #: The default select-button text. You can override this in a subclass,
     #: or use the ``selectbutton_text``-argument for the constructor to
     #: change the button text.
-    default_selectbutton_text = _('Select ...')
+    default_selectbutton_text = pgettext_lazy('multiselect2 manytomanywidget', 'Select ...')
 
     def __init__(self, queryset, selectview_url,
                  selectbutton_text=None):

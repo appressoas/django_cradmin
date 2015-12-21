@@ -1,11 +1,10 @@
 import json
 from xml.sax.saxutils import quoteattr
 
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import pgettext_lazy
 
 from django_cradmin import renderable
 from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
-from django_cradmin.viewhelpers.multiselect2 import selected_item_renderer
 
 
 class Target(renderable.AbstractRenderableWithCss,
@@ -66,7 +65,7 @@ class Target(renderable.AbstractRenderableWithCss,
         if self.with_items_title:
             return self.with_items_title
         else:
-            return ugettext_lazy('Selected items')
+            return pgettext_lazy('multiselect2 target renderer', 'Selected items')
 
     def get_submit_button_text(self):
         """
@@ -79,7 +78,7 @@ class Target(renderable.AbstractRenderableWithCss,
         if self.submit_button_text:
             return self.submit_button_text
         else:
-            return ugettext_lazy('Submit selection')
+            return pgettext_lazy('multiselect2 target renderer', 'Submit selection')
 
     def get_without_items_text(self):
         """
