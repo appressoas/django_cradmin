@@ -66,8 +66,8 @@ class PageSubscriberFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter
         return 'subscribers__username'
 
 
-class PagesListBuilderView(PagesQuerySetForRoleMixin,
-                           listbuilderview.FilterListMixin,
+class PagesListBuilderView(listbuilderview.FilterListMixin,
+                           PagesQuerySetForRoleMixin,
                            listbuilderview.ViewCreateButtonMixin,
                            listbuilderview.View):
     """
