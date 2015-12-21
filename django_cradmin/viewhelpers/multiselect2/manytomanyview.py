@@ -25,6 +25,12 @@ class ViewMixin(object):
 
     def get_selected_objects(self):
         """
+        Make a queryset from :meth:`.get_selected_values_list`.
+
+        Supports :class:`.django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin`
+        out of the box, so if a ``get_unfiltered_queryset_for_role()``-method is available
+        on the class, we use that instead of ``get_queryset_for_role()``.
+
         Returns:
             django.db.QuerySet: A queryset with the model objects matching
             :meth:`.get_selected_values_list`. Defaults to filtering
@@ -124,9 +130,9 @@ class ListBuilderViewMixin(ViewMixin):
 
     def get_listbuilder_list(self, context):
         listbuilder_list = super(ListBuilderViewMixin, self).get_listbuilder_list(context=context)
-        value_renderer_class = self.get_value_renderer_class()
-        frame_renderer_class = self.get_frame_renderer_class()
         if self.should_include_previously_selected():
+            value_renderer_class = self.get_value_renderer_class()
+            frame_renderer_class = self.get_frame_renderer_class()
             listbuilder_list.extend_with_values(
                 value_iterable=self.get_selected_objects(),
                 value_renderer_class=value_renderer_class,
