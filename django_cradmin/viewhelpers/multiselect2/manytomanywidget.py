@@ -32,7 +32,7 @@ class Widget(widgets.TextInput):
     #: Setting this to ``True``, makes the ``type`` of the actually
     #: submitted input field to ``text`` instead of ``hidden``.
     #: Probably only useful for debugging.
-    input_field_visible = True
+    input_field_visible = False
 
     #: The default select-button text. You can override this in a subclass,
     #: or use the ``selectbutton_text``-argument for the constructor to
@@ -41,6 +41,13 @@ class Widget(widgets.TextInput):
 
     def __init__(self, queryset, selectview_url,
                  selectbutton_text=None):
+        """
+        Args:
+            queryset: A :class:`django.db.models.QuerySet`.
+            selectview_url: The URL of the view used to select items.
+            selectbutton_text: Select button text.
+                Defaults to :obj:`~.Widget.selectbutton_text`.
+        """
         self.queryset = queryset
         self.selectview_url = selectview_url
         self.selectbutton_text = selectbutton_text or self.default_selectbutton_text
@@ -72,21 +79,70 @@ class Widget(widgets.TextInput):
             return data.get(name, None)
 
     def get_selected_values_queryset(self, values):
+        """
+        Get a queryset with the objects matching the selected values.
+
+
+        Args:
+            values (list): The list of selected values.
+                This is the ``value``-attribute sent to :meth:`.render`,
+                cooerced into a list even if the value is ``None``
+                or empty string (in which case it will be an empty list).
+
+        Returns:
+            A queryset containing the selected values. Defaults
+            to ``self.queryset.filter(pk__in=values)``.
+        """
         return self.queryset.filter(pk__in=values)
 
+    def get_preview_renderer_list_class(self):
+        """
+        Returns:
+            django_cradmin.viewhelpers.multiselect2.widget_preview_renderer.List: The listbuilder
+            list class used to render the previews.
+        """
+        return widget_preview_renderer.List
+
     def get_preview_list(self, values):
-        return widget_preview_renderer.List\
+        """
+        Uses :class:`.get_preview_renderer_list_class` with :meth:`.get_selected_values_queryset`
+        as ``value_iterable`` to create an object of the preview listbuilder list.
+
+        Args:
+            values: See :meth:`.get_selected_values_queryset`.
+
+        Returns:
+            django_cradmin.viewhelpers.multiselect2.widget_preview_renderer.List: An object
+            of the :meth:`.get_preview_renderer_list_class` class.
+        """
+        return self.get_preview_renderer_list_class()\
             .from_value_iterable(
                 value_iterable=self.get_selected_values_queryset(values=values))
 
     def render(self, name, value, attrs=None):
+        """
+        Render the widget using :obj:`.template_name`.
+
+        Args:
+            name: The field name.
+            value: The field value. Assumed to be a list, ``None`` or empty string.
+                It can be a list of any kind of value, but :meth:`.get_selected_values_queryset`
+                assumes it to be a list of primary keys, so you need to override that
+                method if you send some other value to filter on.
+            attrs: Attributes for the input field. Must contain the
+                id of the field in the ``id`` key.
+
+        Returns:
+            str: The rendered widget HTML.
+        """
         if value is None or value == '':
-            fieldvalue = ''
+            values = []
         else:
-            fieldvalue = json.dumps(value)
+            values = value
+        fieldvalue = json.dumps(values)
         fieldid = attrs['id']
         return render_to_string(self.template_name, {
-            'preview_list': self.get_preview_list(values=value),
+            'preview_list': self.get_preview_list(values=values),
             'fieldname': name,
             'fieldid': fieldid,
             'fieldvalue': fieldvalue,
