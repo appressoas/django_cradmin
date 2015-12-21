@@ -64,14 +64,11 @@ class ForeignKeySelectView(BaseView):
     value_renderer_class = listbuilder.itemvalue.UseThis
     hide_menu = True
 
-    def get_filterlist_position(self):
-        return 'top'
-
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
             'foreignkeyselect-filter', kwargs={'filters_string': filters_string})
 
 
-class ManyToManySelectView(multiselect2.view.ListBuilderFilterListViewMixin,
+class ManyToManySelectView(multiselect2.manytomanyview.ListBuilderFilterListViewMixin,
                            BaseView):
     pass

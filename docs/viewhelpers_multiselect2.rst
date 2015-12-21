@@ -9,13 +9,6 @@ Getting started with listbuilder
 TODO
 
 
-
-************************************
-Gettign started with ObjectTableView
-************************************
-TODO
-
-
 ***************
 Advanced topics
 ***************
@@ -31,7 +24,7 @@ TODO
 ************
 How it works
 ************
-
+TODO
 
 
 ***
@@ -46,3 +39,12 @@ API
 
 .. currentmodule:: django_cradmin.viewhelpers.multiselect2.target_renderer
 .. automodule:: django_cradmin.viewhelpers.multiselect2.target_renderer
+
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.widget_preview_renderer
+.. automodule:: django_cradmin.viewhelpers.multiselect2.widget_preview_renderer
+
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.manytomanywidget
+.. automodule:: django_cradmin.viewhelpers.multiselect2.manytomanywidget
+
+.. currentmodule:: django_cradmin.viewhelpers.multiselect2.manytomanyview
+.. automodule:: django_cradmin.viewhelpers.multiselect2.manytomanyview
