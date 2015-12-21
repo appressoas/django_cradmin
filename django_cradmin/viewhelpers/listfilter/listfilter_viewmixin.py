@@ -164,7 +164,7 @@ class ViewMixin(object):
             filterlist: An object of a subclass of
                 :class:`django_cradmin.viewhelpers.listfilter.base.AbstractFilterList`.
         """
-        raise NotImplementedError()
+        pass
 
     def build_filterlist(self):
         """
