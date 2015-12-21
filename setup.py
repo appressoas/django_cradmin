@@ -18,7 +18,7 @@ setup(
     install_requires=[
         'setuptools',
         'django-crispy-forms',
-        'Django',
+        'Django>=1.8,<1.9',
         'django-multiupload',
         'Jinja2',
         'pytz',
