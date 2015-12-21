@@ -57,8 +57,8 @@ class AbstractCheckboxFilter(AbstractFilter):
             })
         return choicesdata
 
-    def get_context_data(self):
-        context = super(AbstractCheckboxFilter, self).get_context_data()
+    def get_context_data(self, request=None):
+        context = super(AbstractCheckboxFilter, self).get_context_data(request=None)
         context['choicesdata'] = self.get_choicesdata()
         return context
 
