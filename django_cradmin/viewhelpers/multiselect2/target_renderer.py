@@ -23,11 +23,7 @@ class Target(renderable.AbstractRenderableWithCss,
     #: The default for :meth:`.~Target.get_dom_id`.
     default_target_dom_id = 'django_cradmin_multiselect2_select_target'
 
-    #: Selected item rendrerer class.
-    selected_item_renderer_class = selected_item_renderer.SelectedItem
-
     def __init__(self, dom_id=None,
-                 selected_values_iterable=None,
                  without_items_text=None,
                  with_items_title=None,
                  submit_button_text=None,
@@ -43,7 +39,6 @@ class Target(renderable.AbstractRenderableWithCss,
         self.dom_id = dom_id
         self.without_items_text = without_items_text
         self.with_items_title = with_items_title
-        self.selected_values_iterable = selected_values_iterable or []
         self.submit_button_text = submit_button_text
         self.form_action = form_action
 
@@ -114,40 +109,6 @@ class Target(renderable.AbstractRenderableWithCss,
             return self.form_action
         else:
             return request.get_full_path()
-
-    def get_selected_item_renderer_class(self):
-        """
-        Returns:
-            SelectedItem class: The renderable class to use
-            to render the values in the ``selected_values_iterable`` parameter
-            for ``__init__``.
-
-            Must be :class:`django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem`
-            or a subclass.
-
-            Defaults to :obj:`.selected_item_renderer_class`.
-        """
-        return self.selected_item_renderer_class
-
-    def make_selected_item_renderer(self, **kwargs):
-        """
-        Args:
-            kwargs: The kwargs to send to the constructor of :meth:`.get_selected_item_renderer_class`.
-
-        Returns:
-            django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem: An instance
-            of :meth:`.get_selected_item_renderer_class`.
-        """
-        return self.get_selected_item_renderer_class()(**kwargs)
-
-    def get_selected_item_renderer_iterable(self):
-        """
-        Returns:
-            iterable: An iterable that yields :meth:`.make_selected_item_renderer` for
-            all the objects in the ``selected_item_renderer`` parameter for ``__init__``.
-        """
-        for value in self.selected_values_iterable:
-            yield self.make_selected_item_renderer(value=value)
 
     def get_context_data(self, request=None):
         context = super(Target, self).get_context_data(request=request)
