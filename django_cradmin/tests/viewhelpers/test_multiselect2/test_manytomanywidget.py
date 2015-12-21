@@ -6,7 +6,7 @@ from django_cradmin.python2_compatibility import mock
 from django_cradmin.viewhelpers.multiselect2 import manytomanywidget
 
 
-class TestWiget(test.TestCase):
+class TestWidget(test.TestCase):
     def test_wrapper_div_id(self):
         mockqueryset = mock.MagicMock()
         selector = htmls.S(manytomanywidget.Widget(
