@@ -24,13 +24,6 @@ class ViewMixin(object):
     - :meth:`.get_pagetitle`
     - :meth:`.get_listbuilder_list_data`
     - :meth:`.get_no_items_message`
-
-    Examples:
-
-        Minimal example with data from a list::
-
-            class
-
     """
     template_name = 'django_cradmin/viewhelpers/listbuilderview/default.django.html'
 
@@ -210,6 +203,8 @@ class View(ViewMixin, ListView):
     Examples:
 
         Minimal::
+
+            from django_cradmin.viewhelpers import listbuilderview
 
             class MyView(listbuilderview.View):
                 def get_queryset(self):
