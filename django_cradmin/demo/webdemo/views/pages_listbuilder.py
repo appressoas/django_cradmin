@@ -108,12 +108,9 @@ class PagesListBuilderView(PagesQuerySetForRoleMixin,
         filterlist.append(PageSubscriberFilter(
             slug='subscribers', label='Subscribers'))
 
-    def get_queryset_for_role(self, site):
-        queryset = super(PagesListBuilderView, self)\
-            .get_queryset_for_role(site=site)\
+    def get_unfiltered_queryset_for_role(self, site):
+        return PagesQuerySetForRoleMixin.get_queryset_for_role(self, site=site)\
             .prefetch_related('tags')
-        queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
-        return queryset.distinct()
 
 
 class App(crapp.App):

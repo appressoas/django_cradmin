@@ -69,7 +69,7 @@ class IntroColumn(objecttable.TruncatecharsPlainTextColumn):
     allcells_css_classes = ['hidden-xs']
 
 
-class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, objecttable.ObjectTableView):
+class PagesListView(objecttable.FilterListMixin, PagesQuerySetForRoleMixin, objecttable.ObjectTableView):
     model = Page
     enable_previews = True
     columns = [
@@ -116,13 +116,8 @@ class PagesListView(PagesQuerySetForRoleMixin, objecttable.FilterListMixin, obje
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
 
-    def get_queryset_for_role(self, site):
-        """
-        We override this to add filters from the listfilter.
-        """
-        queryset = super(PagesListView, self).get_queryset_for_role(site=site)
-        queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
-        return queryset
+    def get_unfiltered_queryset_for_role(self, site):
+        return PagesQuerySetForRoleMixin.get_queryset_for_role(self, site=site)
 
 
 class PageCreateUpdateMixin(object):

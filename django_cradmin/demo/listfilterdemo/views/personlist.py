@@ -42,13 +42,11 @@ class PersonListView(listbuilderview.FilterListMixin, listbuilderview.View):
         return self.request.cradmin_app.reverse_appurl(
             'filter', kwargs={'filters_string': filters_string})
 
-    def get_queryset_for_role(self, site):
+    def get_unfiltered_queryset_for_role(self, site):
         """
         Create the queryset, and apply the filters from the filterlist.
         """
-        queryset = Person.objects.filter(site=site)
-        queryset = self.get_filterlist().filter(queryset)  # Filter by the filter list
-        return queryset
+        return Person.objects.filter(site=site)
 
 
 class App(crapp.App):
