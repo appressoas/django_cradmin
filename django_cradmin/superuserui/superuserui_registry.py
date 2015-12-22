@@ -1,3 +1,4 @@
+import re
 from collections import OrderedDict
 
 from django.apps import apps
@@ -137,7 +138,7 @@ class DjangoAppConfig(object):
 
 
 class Registry(object):
-    def __init__(self, id, urlpath_regex=r'^/superuser/.*$'):
+    def __init__(self, id, urlpath_regex=r'^/superuser.*$'):
         self.id = id
         self.urlpath_regex = urlpath_regex
         self._djangoappconfigs = OrderedDict()
@@ -234,7 +235,7 @@ class Registry(object):
 
             @classmethod
             def matches_urlpath(cls, urlpath):
-                return urlpath.startswith('/superuser')  #re.match(me.urlpath_regex, urlpath)
+                return re.match(me.urlpath_regex, urlpath)
 
             @classmethod
             def get_instance_frontpage_view(cls):
