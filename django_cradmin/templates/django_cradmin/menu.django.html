@@ -6,6 +6,7 @@
 {% load cradmin_tags %}
 
 {% if not cradmin_hide_menu %}
+    <div id="django_cradmin_mainmenu_backdrop"></div>
     {% block pre-menunav %}{% endblock pre-menunav %}
     <nav id="django_cradmin_mainmenu"
             django-cradmin-menu
@@ -66,5 +67,4 @@
         {% block post-menu %}{% endblock post-menu %}
     </nav>
     {% block post-menunav %}{% endblock post-menunav %}
-
 {% endif %}

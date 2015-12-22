@@ -6045,6 +6045,9 @@ nav.django-cradmin-menu.django-cradmin-menu-vertical .django-cradmin-menu-mobile
     float: right;
   }
 }
+#django_cradmin_mainmenu_backdrop {
+  display: none;
+}
 .django-cradmin-modal {
   position: fixed;
   left: 0;
@@ -6796,8 +6799,10 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
     -webkit-transition: top 0.12s ease-in-out;
     -moz-transition: top 0.12s ease-in-out;
     transition: top 0.12s ease-in-out;
+    background: none;
   }
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content {
+    background: none;
     padding-bottom: 110px;
   }
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
@@ -6813,6 +6818,18 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
   nav#django_cradmin_mainmenu.django-cradmin-menu.django-cradmin-menu-overflow-y .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
     margin-top: 30px;
     position: static;
+  }
+}
+@media (min-width: 992px) {
+  #django_cradmin_mainmenu_backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    width: 200px;
+    background: #333333;
   }
 }
 body {
