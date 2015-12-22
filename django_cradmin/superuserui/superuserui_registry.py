@@ -34,7 +34,7 @@ class ModelConfig(object):
         if self.menulabel:
             return self.menulabel
         else:
-            return self.get_model_class()._meta.verbose_name_plural
+            return self.get_model_class()._meta.verbose_name_plural.capitalize()
 
     def get_view_url(self, viewname, args=None, kwargs=None):
         return reverse_cradmin_url(
@@ -99,9 +99,7 @@ class DjangoAppConfig(object):
         if self.menulabel:
             return self.menulabel
         else:
-            return self.get_app_label()
-            # raise NotImplementedError('You must override get_menulabel() or provide the '
-            #                           '``menulabel`` parameter for __init__().')
+            return self.get_app_config().verbose_name.capitalize()
 
     def add_model(self, modelconfig):
         self._modelconfigs[modelconfig.get_model_class()] = modelconfig
