@@ -6796,10 +6796,11 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
     width: 200px;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-transition: top 0.12s ease-in-out;
-    -moz-transition: top 0.12s ease-in-out;
-    transition: top 0.12s ease-in-out;
     background: none;
+    opacity: 1.0;
+    -webkit-transition: all 0.12s ease-in-out;
+    -moz-transition: all 0.12s ease-in-out;
+    transition: all 0.12s ease-in-out;
   }
   nav#django_cradmin_mainmenu.django-cradmin-menu .django-cradmin-menu-content {
     background: none;
@@ -6818,6 +6819,9 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
   nav#django_cradmin_mainmenu.django-cradmin-menu.django-cradmin-menu-overflow-y .django-cradmin-menu-content ul.django-cradmin-menu-content-footer {
     margin-top: 30px;
     position: static;
+  }
+  nav#django_cradmin_mainmenu.django-cradmin-menu.django-cradmin-menu-scrolling {
+    opacity: 0.5;
   }
 }
 @media (min-width: 992px) {

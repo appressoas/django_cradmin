@@ -156,8 +156,9 @@ angular.module('djangoCradmin.providers', [])
       @mainWindow = angular.element($window)
       @scrollTopPosition = @_getScrollTopPosition()
       @applyScrollTimer = null
-      @applyScrollTimerTimeoutMs = 100
+      @applyScrollTimerTimeoutMs = 50
       @listeningScopes = []
+      @isScrolling = false
 
     register: (scope) ->
       scopeIndex = @listeningScopes.indexOf(scope)
@@ -169,7 +170,7 @@ angular.module('djangoCradmin.providers', [])
       if @listeningScopes.length < 1
         @mainWindow.bind 'scroll', @_onScroll
       @listeningScopes.push(scope)
-      scope.onWindowScrollTop(@scrollTopPosition)
+      scope.onWindowScrollTop(@scrollTopPosition, true)
 
     unregister: (scope) ->
       scopeIndex = @listeningScopes.indexOf(scope)
@@ -194,12 +195,23 @@ angular.module('djangoCradmin.providers', [])
       for scope in @listeningScopes
         scope.onWindowScrollTop(@scrollTopPosition)
 
+    _notifyScrollStarted: ->
+      scrollTopPosition = @_getScrollTopPosition()
+      if scrollTopPosition != @scrollTopPosition
+        for scope in @listeningScopes
+          if scope.onWindowScrollTopStart?
+            scope.onWindowScrollTopStart()
+
     _onScroll: =>
       @timeout.cancel(@applyScrollTimer)
+      if not @isScrolling
+        @_notifyScrollStarted()
+      @isScrolling = true
 
       # Use timeout to avoid triggering change for each pixel changed
       @applyScrollTimer = @timeout =>
         @_setScrollTopPosition()
+        @isScrolling = false
       , @applyScrollTimerTimeoutMs
 
   @$get = (['$window', '$timeout', ($window, $timeout) ->

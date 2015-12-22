@@ -2121,8 +2121,9 @@
         this.mainWindow = angular.element($window);
         this.scrollTopPosition = this._getScrollTopPosition();
         this.applyScrollTimer = null;
-        this.applyScrollTimerTimeoutMs = 100;
+        this.applyScrollTimerTimeoutMs = 50;
         this.listeningScopes = [];
+        this.isScrolling = false;
       }
 
       WindowScrollProvider.prototype.register = function(scope) {
@@ -2136,7 +2137,7 @@
           this.mainWindow.bind('scroll', this._onScroll);
         }
         this.listeningScopes.push(scope);
-        return scope.onWindowScrollTop(this.scrollTopPosition);
+        return scope.onWindowScrollTop(this.scrollTopPosition, true);
       };
 
       WindowScrollProvider.prototype.unregister = function(scope) {
@@ -2175,11 +2176,34 @@
         return _results;
       };
 
+      WindowScrollProvider.prototype._notifyScrollStarted = function() {
+        var scope, scrollTopPosition, _i, _len, _ref, _results;
+        scrollTopPosition = this._getScrollTopPosition();
+        if (scrollTopPosition !== this.scrollTopPosition) {
+          _ref = this.listeningScopes;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            scope = _ref[_i];
+            if (scope.onWindowScrollTopStart != null) {
+              _results.push(scope.onWindowScrollTopStart());
+            } else {
+              _results.push(void 0);
+            }
+          }
+          return _results;
+        }
+      };
+
       WindowScrollProvider.prototype._onScroll = function() {
         var _this = this;
         this.timeout.cancel(this.applyScrollTimer);
+        if (!this.isScrolling) {
+          this._notifyScrollStarted();
+        }
+        this.isScrolling = true;
         return this.applyScrollTimer = this.timeout(function() {
-          return _this._setScrollTopPosition();
+          _this._setScrollTopPosition();
+          return _this.isScrolling = false;
         }, this.applyScrollTimerTimeoutMs);
       };
 
@@ -5154,8 +5178,14 @@
               swapClasses = true;
             }
           }
-          $scope.onWindowScrollTop = function(newWindowTopPosition) {
-            var newTopPosition, offset;
+          $scope.onWindowScrollTopStart = function() {
+            var _ref;
+            if (((_ref = $scope.djangoCradminScrollTopFixedSettings.cssClasses) != null ? _ref.scrollingClass : void 0) != null) {
+              return $element.addClass($scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollingClass);
+            }
+          };
+          $scope.onWindowScrollTop = function(newWindowTopPosition, initialScrollTrigger) {
+            var newTopPosition, offset, _ref;
             if (swapClasses) {
               swapCssClasses($scope, $element, newWindowTopPosition);
             }
@@ -5168,7 +5198,10 @@
               }
             }
             newTopPosition = newWindowTopPosition + offset;
-            return $scope.djangoCradminScrollTopFixedElement.css('top', "" + newTopPosition + "px");
+            $scope.djangoCradminScrollTopFixedElement.css('top', "" + newTopPosition + "px");
+            if (((_ref = $scope.djangoCradminScrollTopFixedSettings.cssClasses) != null ? _ref.scrollingClass : void 0) != null) {
+              return $element.removeClass($scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollingClass);
+            }
           };
         },
         link: function($scope, element, attrs) {

@@ -7,8 +7,9 @@ nav#django_cradmin_mainmenu.django-cradmin-menu {
     width: @cradmin-default-theme-mainmenu-width;
     overflow-y: auto;
     overflow-x: hidden;
-    .css3-transition(top @cradmin-default-theme-mainmenu-top-transition-duration ease-in-out);
     background: none;
+    opacity: 1.0;
+    .css3-transition(all @cradmin-default-theme-mainmenu-top-transition-duration ease-in-out);
 
     .django-cradmin-menu-content {
       background: none;
@@ -32,6 +33,10 @@ nav#django_cradmin_mainmenu.django-cradmin-menu {
           position: static;
         }
       }
+    }
+
+    &.django-cradmin-menu-scrolling {
+      opacity: 0.5;
     }
   }
 }

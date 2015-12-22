@@ -61,13 +61,16 @@ angular.module('djangoCradmin.scrollfixed', [])
     return {
       controller: ($scope, $element, $attrs) ->
         $scope.djangoCradminScrollTopFixedSettings = $scope.$eval($attrs.djangoCradminScrollTopFixed)
-
         if $scope.djangoCradminScrollTopFixedSettings.cssClasses?
           if $scope.djangoCradminScrollTopFixedSettings.cssClasses.defaultClass and
               $scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollClass
             swapClasses = true
 
-        $scope.onWindowScrollTop = (newWindowTopPosition) ->
+        $scope.onWindowScrollTopStart = ->
+          if $scope.djangoCradminScrollTopFixedSettings.cssClasses?.scrollingClass?
+            $element.addClass($scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollingClass)
+
+        $scope.onWindowScrollTop = (newWindowTopPosition, initialScrollTrigger) ->
           if swapClasses
             swapCssClasses $scope, $element, newWindowTopPosition
 
@@ -81,6 +84,8 @@ angular.module('djangoCradmin.scrollfixed', [])
 
           newTopPosition = newWindowTopPosition + offset
           $scope.djangoCradminScrollTopFixedElement.css('top', "#{newTopPosition}px")
+          if $scope.djangoCradminScrollTopFixedSettings.cssClasses?.scrollingClass?
+            $element.removeClass($scope.djangoCradminScrollTopFixedSettings.cssClasses.scrollingClass)
         return
 
       link: ($scope, element, attrs) ->
