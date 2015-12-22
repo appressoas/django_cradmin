@@ -1,8 +1,12 @@
 {% load cradmin_tags %}
 <form method="post" action="{{ form_action }}"
       id="{{ me.get_dom_id }}"
-      class="django-cradmin-multiselect2-target"
-      ng-class="{'django-cradmin-multiselect2-target-with-items': hasItems()}"
+      class="
+        django-cradmin-multiselect2-target
+        {% if me.get_empty_selection_allowed %}
+            django-cradmin-multiselect2-target-empty-selection-allowed
+        {% endif %}"
+    ng-class="{'django-cradmin-multiselect2-target-with-items': hasItems()}"
       django-cradmin-multiselect2-target>
     {% csrf_token %}
 
@@ -21,6 +25,11 @@
                         the ``productlist-itemvalue.django.html`` template will
                         add items to this element.
                     {% endcomment %}
+                </div>
+                <div class="django-cradmin-multiselect2-target-no-items-selected">
+                    {% block no-items-selected-content %}
+                        {{ me.get_no_items_selected_text }}
+                    {% endblock no-items-selected-content %}
                 </div>
             {% endblock selected-items %}
             {% block with-items-footer %}

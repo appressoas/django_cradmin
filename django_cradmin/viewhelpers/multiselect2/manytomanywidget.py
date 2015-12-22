@@ -40,17 +40,19 @@ class Widget(widgets.TextInput):
     default_selectbutton_text = pgettext_lazy('multiselect2 manytomanywidget', 'Select ...')
 
     def __init__(self, queryset, selectview_url,
-                 selectbutton_text=None):
+                 selectbutton_text=None, required=True):
         """
         Args:
             queryset: A :class:`django.db.models.QuerySet`.
             selectview_url: The URL of the view used to select items.
             selectbutton_text: Select button text.
                 Defaults to :obj:`~.Widget.selectbutton_text`.
+            required: If this is ``False``, empty selection is allowed.
         """
         self.queryset = queryset
         self.selectview_url = selectview_url
         self.selectbutton_text = selectbutton_text or self.default_selectbutton_text
+        self.required = required
         super(Widget, self).__init__()
 
     def __make_selectview_url(self, fieldid, fieldvalue):
@@ -58,6 +60,7 @@ class Widget(widgets.TextInput):
             self.selectview_url, urllib.parse.urlencode({
                 'manytomany_select_current_value': fieldvalue,
                 'manytomany_select_fieldid': fieldid,
+                'manytomany_select_required': str(self.required)
             }))
 
     def get_rendered_input_type(self):

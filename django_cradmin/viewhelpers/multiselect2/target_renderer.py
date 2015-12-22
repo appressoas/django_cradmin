@@ -1,7 +1,7 @@
 import json
 from xml.sax.saxutils import quoteattr
 
-from django.utils.translation import pgettext_lazy
+from django.utils.translation import pgettext_lazy, ugettext_lazy
 
 from django_cradmin import renderable
 from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
@@ -25,12 +25,15 @@ class Target(renderable.AbstractRenderableWithCss,
     def __init__(self, dom_id=None,
                  without_items_text=None,
                  with_items_title=None,
+                 no_items_selected_text=None,
                  submit_button_text=None,
-                 form_action=None):
+                 form_action=None,
+                 empty_selection_allowed=False):
         """
         Args:
             dom_id: See :meth:`.get_dom_id`.
             without_items_text: See :meth:`.get_without_items_text`.
+            no_items_selected_text: See :meth:`.get_no_items_selected_text`.
             with_items_title: See :meth:`.get_with_items_title`.
             submit_button_text: See :meth:`.get_submit_button_text`.
             form_action: See :meth:`.get_form_action`.
@@ -38,8 +41,10 @@ class Target(renderable.AbstractRenderableWithCss,
         self.dom_id = dom_id
         self.without_items_text = without_items_text
         self.with_items_title = with_items_title
+        self.no_items_selected_text = no_items_selected_text
         self.submit_button_text = submit_button_text
         self.form_action = form_action
+        self.empty_selection_allowed = empty_selection_allowed
 
     def get_dom_id(self):
         """
@@ -83,7 +88,8 @@ class Target(renderable.AbstractRenderableWithCss,
     def get_without_items_text(self):
         """
         Returns:
-            str: The text to show when there are no items selected.
+            str: The text to show when there are no items selected and :meth:`.get_empty_selection_allowed`
+            returns ``False``.
 
             Defaults to the ``without_items_text`` parameter for ``__init__``,
             falling back on empty string.
@@ -92,6 +98,29 @@ class Target(renderable.AbstractRenderableWithCss,
             return self.without_items_text
         else:
             return ''
+
+    def get_empty_selection_allowed(self):
+        """
+        Returns:
+            bool: If no selected items is allowed, this should return ``True``.
+            Returns the value of the ``empty_selection_allowed`` parameter
+            for ``__init__`` by default.
+        """
+        return self.empty_selection_allowed
+
+    def get_no_items_selected_text(self):
+        """
+        Returns:
+            str: The text to show when there are no items selected and :meth:`.get_empty_selection_allowed`
+            returns ``True``.
+
+            Defaults to the ``no_items_selected_text`` parameter for ``__init__``,
+            falling back on ``"(None)"``.
+        """
+        if self.no_items_selected_text:
+            return self.no_items_selected_text
+        else:
+            return pgettext_lazy('multiselect2 target renderer', '(None)')
 
     def get_form_action(self, request):
         """

@@ -171,19 +171,10 @@ class ModelForm(forms.ModelForm):
         if not manytomanyselectview_url:
             return
 
-        # if self.instance:
-        #     try:
-        #         relatedobject = getattr(self.instance, fieldname)
-        #     except model_class.DoesNotExist:
-        #         pass
-        #     else:
-        #         preview = self.make_related_object_preview(fieldname=fieldname,
-        #                                                    formfield=formfield,
-        #                                                    relatedobject=relatedobject)
-
         self.fields[fieldname].widget = manytomanywidget.Widget(
             queryset=formfield.queryset,
-            selectview_url=manytomanyselectview_url)
+            selectview_url=manytomanyselectview_url,
+            required=formfield.required)
 
     def setup_field(self, fieldname, formfield):
         """

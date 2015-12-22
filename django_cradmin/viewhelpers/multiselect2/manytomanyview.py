@@ -85,7 +85,8 @@ class ViewMixin(object):
             dict: Keyword arguments for the constructor of :meth:`.get_target_renderer_class`.
         """
         return {
-            'target_formfield_id': self.request.GET['manytomany_select_fieldid']
+            'target_formfield_id': self.request.GET['manytomany_select_fieldid'],
+            'empty_selection_allowed': self.request.GET['manytomany_select_required'] != 'True',
         }
 
     def get_target_renderer(self):
