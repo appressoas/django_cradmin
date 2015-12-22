@@ -9,6 +9,7 @@ from django_cradmin import crinstance
 from django_cradmin import crmenu
 from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
+from django_cradmin.crsettings import get_setting
 from django_cradmin.decorators import has_access_to_cradmin_instance
 from django_cradmin.superuserui.crapps import djangomodel
 from django_cradmin.superuserui.crapps import djangoapp
@@ -202,6 +203,9 @@ class Registry(object):
 
             def has_access(self):
                 return self.request.user.is_superuser
+
+            def get_cradmin_theme_path(self):
+                return get_setting('DJANGO_CRADMIN_SUPERUSERUI_THEME_PATH', None)
 
             def get_superuserui_registry(self):
                 return me

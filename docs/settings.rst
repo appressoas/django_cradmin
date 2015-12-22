@@ -124,6 +124,8 @@ You can change this if you want to store archive images in another directory.
 Any pattern must contain all the variables in the pattern above.
 
 
+.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE
+
 DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE
 ========================================
 Max file size for images uploaded to the image archive as a string
@@ -134,3 +136,11 @@ Defaults to ``None``, which means that there is no limit by default. Examples::
     DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '500KB'
     DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '10MB'
     DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '2.5GB'
+
+
+.. setting:: DJANGO_CRADMIN_SUPERUSERUI_THEME_PATH
+
+DJANGO_CRADMIN_SUPERUSERUI_THEME_PATH
+=====================================
+The theme path to use by default for ``django_cradmin.superuserui``.
+Defaults to ``None``, which means that we use :setting:`DJANGO_CRADMIN_THEME_PATH`.
