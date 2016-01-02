@@ -44,9 +44,13 @@
                         {% include "django_cradmin/viewhelpers/listbuilderview/includes/loadmorepager.django.html" %}
                     {% endblock pager %}
                 {% else %}
-                    <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
-                        {{ no_items_message }}
-                    </p>
+                    {% block no-items-wrapper %}
+                        <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
+                            {% block no-items-paragraph-contents %}
+                                {{ no_items_message }}
+                            {% endblock no-items-paragraph-contents %}
+                        </p>
+                    {% endblock no-items-wrapper %}
                 {% endif %}
             </div>
         {% endblock list %}
