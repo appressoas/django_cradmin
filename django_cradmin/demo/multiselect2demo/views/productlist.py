@@ -27,10 +27,8 @@ class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
         return self.request.cradmin_app.reverse_appurl(
             'filter', kwargs={'filters_string': filters_string})
 
-    def get_queryset_for_role(self, role):
-        queryset = Product.objects.all().order_by('name')
-        queryset = self.get_filterlist().filter(queryset)
-        return queryset
+    def get_unfiltered_queryset_for_role(self, role):
+        return Product.objects.all().order_by('name')
 
 
 class App(crapp.App):
