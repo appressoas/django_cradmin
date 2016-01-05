@@ -4623,21 +4623,6 @@ a {
   color: inherit;
   text-decoration: underline;
 }
-@media (min-width: 768px) {
-  .django-cradmin-container-focus {
-    width: 720px;
-  }
-}
-@media (min-width: 992px) {
-  .django-cradmin-container-focus {
-    width: 940px;
-  }
-}
-@media (min-width: 1200px) {
-  .django-cradmin-container-focus {
-    width: 1140px;
-  }
-}
 .alert {
   position: relative;
 }
