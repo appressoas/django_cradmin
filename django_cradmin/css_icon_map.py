@@ -18,4 +18,6 @@ FONT_AWESOME = {
     'pager-next-page': 'fa fa-chevron-right',
     'pager-previus-page': 'fa fa-chevron-left',
     'close-overlay-right-to-left': 'fa fa-chevron-left',
+    'select-left': 'fa fa-angle-right',
+    'select-right': 'fa fa-angle-left',
 }

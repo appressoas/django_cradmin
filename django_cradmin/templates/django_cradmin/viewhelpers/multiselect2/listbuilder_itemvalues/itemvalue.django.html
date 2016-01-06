@@ -1,5 +1,6 @@
 {% extends "django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html" %}
 {% load cradmin_tags %}
+{% load cradmin_icon_tags %}
 
 {% block content %}
     {% block start-of-content %}{% endblock start-of-content %}
@@ -34,6 +35,9 @@
                         aria-label='{{ me.get_selectbutton_aria_label }}'>
                     {% block usethis-button-content %}
                         {{ me.get_selectbutton_text }}
+                        {% block usethis-button-icon %}
+                            <span class="{% cradmin_icon 'select-left' %} hidden-xs"></span>
+                        {% endblock usethis-button-icon %}
                     {% endblock usethis-button-content %}
                 </button>
             {% endblock select-button %}
