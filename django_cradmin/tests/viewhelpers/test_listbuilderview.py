@@ -51,35 +51,23 @@ class TestListBuilderPaginationView(TestCase, TestCaseMixin):
         mommy.make('django_cradmin_testapp.SomeItem', _quantity=3)
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertEqual(3, mockresponse.selector.count('.django-cradmin-listbuilder-list li'))
-        self.assertFalse(mockresponse.selector.exists('#django_cradmin_contentwrapper .pager'))
+        self.assertFalse(mockresponse.selector.exists('#django_cradmin_contentwrapper .django-cradmin-loadmorepager'))
 
     def test_paginate_by_firstpage(self):
         mommy.make('django_cradmin_testapp.SomeItem', _quantity=8)
         mockresponse = self.mock_http200_getrequest_htmls()
         # mockresponse.selector.one('#django_cradmin_contentwrapper').prettyprint()
         self.assertEqual(3, mockresponse.selector.count('.django-cradmin-listbuilder-list li'))
-        self.assertTrue(mockresponse.selector.exists('#django_cradmin_contentwrapper .pager'))
-        self.assertTrue(mockresponse.selector.one(
-            '#django_cradmin_contentwrapper .pager .previous').hasclass('disabled'))
-        self.assertFalse(mockresponse.selector.one(
-            '#django_cradmin_contentwrapper .pager .next').hasclass('disabled'))
+        self.assertTrue(mockresponse.selector.exists('#django_cradmin_contentwrapper .django-cradmin-loadmorepager'))
 
     def test_paginate_by_middlepage(self):
         mommy.make('django_cradmin_testapp.SomeItem', _quantity=8)
         mockresponse = self.mock_http200_getrequest_htmls(requestkwargs={'data': {'page': 2}})
         self.assertEqual(3, mockresponse.selector.count('.django-cradmin-listbuilder-list li'))
-        self.assertTrue(mockresponse.selector.exists('#django_cradmin_contentwrapper .pager'))
-        self.assertFalse(mockresponse.selector.one(
-            '#django_cradmin_contentwrapper .pager .previous').hasclass('disabled'))
-        self.assertFalse(mockresponse.selector.one(
-            '#django_cradmin_contentwrapper .pager .next').hasclass('disabled'))
+        self.assertTrue(mockresponse.selector.exists('#django_cradmin_contentwrapper .django-cradmin-loadmorepager'))
 
     def test_paginate_by_lastpage(self):
         mommy.make('django_cradmin_testapp.SomeItem', _quantity=8)
         mockresponse = self.mock_http200_getrequest_htmls(requestkwargs={'data': {'page': 3}})
         self.assertEqual(2, mockresponse.selector.count('.django-cradmin-listbuilder-list li'))
-        self.assertTrue(mockresponse.selector.exists('#django_cradmin_contentwrapper .pager'))
-        self.assertFalse(mockresponse.selector.one(
-            '#django_cradmin_contentwrapper .pager .previous').hasclass('disabled'))
-        self.assertTrue(mockresponse.selector.one(
-            '#django_cradmin_contentwrapper .pager .next').hasclass('disabled'))
+        self.assertFalse(mockresponse.selector.exists('#django_cradmin_contentwrapper .django-cradmin-loadmorepager'))
