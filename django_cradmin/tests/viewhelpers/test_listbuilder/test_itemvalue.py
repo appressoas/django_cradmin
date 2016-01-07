@@ -36,6 +36,61 @@ class TestTitleDescription(test.TestCase):
             selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-description').alltext_normalized)
 
 
+class TestUseThis(test.TestCase):
+    def __make_mock_value(self, value_str, value_pk=1):
+        mockvalue = mock.MagicMock()
+        mockvalue.__str__.return_value = value_str
+        mockvalue.pk = value_pk
+        return mockvalue
+
+    def __make_mock_request(self):
+        mockrequest = mock.MagicMock()
+        mockrequest.GET.__getitem__.return_value = 'mocked'
+        return mockrequest
+
+    def test_title(self):
+        rendered = listbuilder.itemvalue.UseThis(value=self.__make_mock_value('testvalue'))\
+            .render(request=self.__make_mock_request())
+        selector = htmls.S(rendered)
+        self.assertEqual(
+            'testvalue',
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-title').alltext_normalized)
+
+    def test_without_description(self):
+        rendered = listbuilder.itemvalue.UseThis(value=self.__make_mock_value('testvalue'))\
+            .render(request=self.__make_mock_request())
+        selector = htmls.S(rendered)
+        self.assertFalse(
+            selector.exists('.django-cradmin-listbuilder-itemvalue-titledescription-description'))
+
+    def test_with_description(self):
+        class MyEditDelete(listbuilder.itemvalue.UseThis):
+            def get_description(self):
+                return 'The description'
+        rendered = MyEditDelete(value=self.__make_mock_value('testvalue'))\
+            .render(request=self.__make_mock_request())
+        selector = htmls.S(rendered)
+        self.assertEqual(
+            'The description',
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-description').alltext_normalized)
+
+    def test_preview_label(self):
+        rendered = listbuilder.itemvalue.UseThis(value=self.__make_mock_value('testvalue'))\
+            .render(request=self.__make_mock_request())
+        selector = htmls.S(rendered)
+        self.assertEqual(
+            'Select',
+            selector.one('.django-cradmin-listbuilder-itemvalue-usethis-usethis-button').alltext_normalized)
+
+    def test_preview_aria_label(self):
+        rendered = listbuilder.itemvalue.UseThis(value=self.__make_mock_value('testvalue'))\
+            .render(request=self.__make_mock_request())
+        selector = htmls.S(rendered)
+        self.assertEqual(
+            'Select "testvalue"',
+            selector.one('.django-cradmin-listbuilder-itemvalue-usethis-usethis-button')['aria-label'])
+
+
 class TestEditDelete(test.TestCase):
     def test_title(self):
         rendered = listbuilder.itemvalue.EditDelete(value='testvalue')\
