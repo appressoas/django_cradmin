@@ -38,7 +38,8 @@ class TestWidget(test.TestCase):
         self.assertEqual('/test', path)
         self.assertEqual(
             {'manytomany_select_fieldid': 'testid',
-             'manytomany_select_current_value': '[1, 2]'},
+             'manytomany_select_current_value': '[1, 2]',
+             'manytomany_select_required': 'True'},
             querydict.dict())
 
     def test_inputfield_value_none(self):

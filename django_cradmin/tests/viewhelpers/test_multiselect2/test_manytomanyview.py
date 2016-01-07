@@ -147,15 +147,18 @@ class TestViewMixin(test.TestCase):
     def test_get_target_renderer_kwargs(self):
         view = manytomanyview.ViewMixin()
         view.request = mock.MagicMock()
-        view.request.GET = {'manytomany_select_fieldid': 'testid'}
+        view.request.GET = {'manytomany_select_fieldid': 'testid',
+                            'manytomany_select_required': 'True'}
         self.assertEqual(
-            {'target_formfield_id': 'testid'},
+            {'target_formfield_id': 'testid',
+             'empty_selection_allowed': False},
             view.get_target_renderer_kwargs())
 
     def test_get_target_renderer(self):
         view = manytomanyview.ViewMixin()
         view.request = mock.MagicMock()
-        view.request.GET = {'manytomany_select_fieldid': 'testid'}
+        view.request.GET = {'manytomany_select_fieldid': 'testid',
+                            'manytomany_select_required': 'True'}
         target_renderer = view.get_target_renderer()
         self.assertEqual('testid', target_renderer.target_formfield_id)
 
