@@ -61,7 +61,7 @@ class TitleDescription(FocusBox):
         return None
 
 
-class UseThis(FocusBox):
+class UseThis(TitleDescription):
     """
     Renders a value item with a *Use this* button that uses
     the ``django-cradmin-use-this`` directive.
@@ -80,23 +80,6 @@ class UseThis(FocusBox):
         css_classes.append('django-cradmin-listbuilder-itemvalue-usethis')
         return css_classes
 
-    def get_title(self):
-        """
-        Get the title of the box.
-
-        Defaults to ``str(self.value)``.
-        """
-        return str(self.value)
-
-    def get_description(self):
-        """
-        Get the description (shown below the title).
-
-        Defaults to ``None``, which means that no description
-        is rendered.
-        """
-        return None
-
     def get_use_this_directive_options_dict(self, request):
         return {
             'value': self.value.pk,
@@ -113,9 +96,9 @@ class UseThis(FocusBox):
         return context
 
 
-class EditDelete(FocusBox):
+class EditDelete(TitleDescription):
     """
-    Extends :class:`.FocusBox` with a template that makes it very easy
+    Extends :class:`.TitleDescription` with a template that makes it very easy
     to render a box that provides edit and delete buttons.
 
     The renderer also allows you to specify a description,
@@ -135,23 +118,6 @@ class EditDelete(FocusBox):
         css_classes = super(EditDelete, self).get_base_css_classes_list()
         css_classes.append('django-cradmin-listbuilder-itemvalue-editdelete')
         return css_classes
-
-    def get_title(self):
-        """
-        Get the title of the box.
-
-        Defaults to ``str(self.value)``.
-        """
-        return str(self.value)
-
-    def get_description(self):
-        """
-        Get the description (shown below the title).
-
-        Defaults to ``None``, which means that no description
-        is rendered.
-        """
-        return None
 
     def get_edit_viewname(self):
         """

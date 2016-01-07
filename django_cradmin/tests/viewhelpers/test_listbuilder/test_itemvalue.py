@@ -98,14 +98,14 @@ class TestEditDelete(test.TestCase):
         selector = htmls.S(rendered)
         self.assertEqual(
             'testvalue',
-            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-title').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-title').alltext_normalized)
 
     def test_without_description(self):
         rendered = listbuilder.itemvalue.EditDelete(value='testvalue')\
             .render(request=mock.MagicMock())
         selector = htmls.S(rendered)
         self.assertFalse(
-            selector.exists('.django-cradmin-listbuilder-itemvalue-editdelete-description'))
+            selector.exists('.django-cradmin-listbuilder-itemvalue-titledescription-description'))
 
     def test_with_description(self):
         class MyEditDelete(listbuilder.itemvalue.EditDelete):
@@ -116,7 +116,7 @@ class TestEditDelete(test.TestCase):
         selector = htmls.S(rendered)
         self.assertEqual(
             'The description',
-            selector.one('.django-cradmin-listbuilder-itemvalue-editdelete-description').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-description').alltext_normalized)
 
     def test_edit_label(self):
         rendered = listbuilder.itemvalue.EditDelete(value='testvalue')\
