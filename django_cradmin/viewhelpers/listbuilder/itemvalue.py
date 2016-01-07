@@ -23,6 +23,44 @@ class FocusBox(base.ItemValueRenderer):
         return css_classes
 
 
+class TitleDescription(FocusBox):
+    """
+    Extends :class:`.FocusBox` with a template and methods
+    that makes it easy to render a view with a title and
+    an optional description.
+    """
+
+    #: The template used to render this itemvalue.
+    #: The template has lots of blocks that you can override.
+    template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html'
+
+    def get_base_css_classes_list(self):
+        """
+        Adds the ``django-cradmin-listbuilder-itemvalue-titledescription`` css class
+        in addition to the classes added by the superclasses.
+        """
+        css_classes = super(TitleDescription, self).get_base_css_classes_list()
+        css_classes.append('django-cradmin-listbuilder-itemvalue-titledescription')
+        return css_classes
+
+    def get_title(self):
+        """
+        Get the title of the box.
+
+        Defaults to ``str(self.value)``.
+        """
+        return str(self.value)
+
+    def get_description(self):
+        """
+        Get the description (shown below the title).
+
+        Defaults to ``None``, which means that no description
+        is rendered.
+        """
+        return None
+
+
 class UseThis(FocusBox):
     """
     Renders a value item with a *Use this* button that uses
