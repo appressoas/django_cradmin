@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+import sys
 from future import standard_library
 standard_library.install_aliases()
 from builtins import str
@@ -82,6 +84,10 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         querydict['foreignkey_selected_value'] = [str(object_pk)]
         urllist[3] = urllib.parse.urlencode(querydict, doseq=True)
         url = urllib.parse.urlunsplit(urllist)
+        if sys.version_info[0] == 2:
+            # For some reason, HttpRedirect requires unicode string to work
+            # correctly on Python2, so we ensure that here.
+            url = unicode(url)
         return url
 
     def get_default_save_success_url(self):
