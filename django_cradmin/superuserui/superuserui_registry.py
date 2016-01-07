@@ -194,7 +194,7 @@ class Registry(object):
     def get_modelconfig_for_model_class(self, model_class):
         return self._modelconfigmap.get(model_class, None)
 
-    def make_cradmin_instance_class(self):
+    def make_cradmin_instance_class(self):  # noqa
         me = self
 
         class CrAdminInstance(crinstance.BaseCrAdminInstance):

@@ -10,6 +10,6 @@ class UsermanagerdemoConfig(AppConfig):
 
     def ready(self):
         appconfig = superuserui_registry.default.add_djangoapp(
-                superuserui_registry.DjangoAppConfig(app_label='usermanagerdemo'))
+            superuserui_registry.DjangoAppConfig(app_label='usermanagerdemo'))
         user_model = get_user_model()
         appconfig.add_model(superuserui_registry.ModelConfig(model_class=user_model))

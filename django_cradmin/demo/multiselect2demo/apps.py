@@ -8,5 +8,5 @@ class MultiselectdemoConfig(AppConfig):
 
     def ready(self):
         appconfig = superuserui_registry.default.add_djangoapp(
-                superuserui_registry.DjangoAppConfig(app_label='multiselect2demo'))
+            superuserui_registry.DjangoAppConfig(app_label='multiselect2demo'))
         appconfig.add_all_models()

@@ -10,5 +10,5 @@ class ImageArchiveConfig(AppConfig):
 
     def ready(self):
         appconfig = superuserui_registry.default.add_djangoapp(
-                superuserui_registry.DjangoAppConfig(app_label='cradmin_imagearchive'))
+            superuserui_registry.DjangoAppConfig(app_label='cradmin_imagearchive'))
         appconfig.add_all_models()

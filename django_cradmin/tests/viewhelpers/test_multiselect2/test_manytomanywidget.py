@@ -132,7 +132,7 @@ class TestWidget(test.TestCase):
         ).render(name='testname', value=None, attrs={'id': 'testid'}))
         self.assertTrue(
             selector.one('.django-cradmin-multiselect2-preview-list').hasattribute(
-                    'django-cradmin-model-choice-field-preview'))
+                'django-cradmin-model-choice-field-preview'))
 
     def test_preview_list_without_value(self):
         mockqueryset = mock.MagicMock()
@@ -171,7 +171,7 @@ class TestWidget(test.TestCase):
         ).render(name='testname', value=None, attrs={'id': 'testid'}))
         self.assertTrue(
             selector.one('button').hasattribute(
-                    'django-cradmin-model-choice-field-changebegin-button'))
+                'django-cradmin-model-choice-field-changebegin-button'))
 
     def test_selectbutton_css_class(self):
         mockqueryset = mock.MagicMock()

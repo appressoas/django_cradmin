@@ -32,8 +32,8 @@ class TestModelForm(test.TestCase):
                 fields = ['datetimefield_without_default']
 
         autoformtestmodelobject = mommy.make(
-                'cradmin_automodelform_testapp.AutoFormTestModel',
-                datetimefield_without_default=datetimeutils.default_timezone_datetime(2015, 12, 24, 12, 0, 0))
+            'cradmin_automodelform_testapp.AutoFormTestModel',
+            datetimefield_without_default=datetimeutils.default_timezone_datetime(2015, 12, 24, 12, 0, 0))
         selector = htmls.S(MyModelForm(instance=autoformtestmodelobject).as_ul())
         self.assertEqual(
             '2015-12-24 12:00:00',
@@ -86,8 +86,8 @@ class TestModelForm(test.TestCase):
                 fields = ['datefield_without_default']
 
         autoformtestmodelobject = mommy.make(
-                'cradmin_automodelform_testapp.AutoFormTestModel',
-                datefield_without_default=datetime.date(2015, 12, 24))
+            'cradmin_automodelform_testapp.AutoFormTestModel',
+            datefield_without_default=datetime.date(2015, 12, 24))
         selector = htmls.S(MyModelForm(instance=autoformtestmodelobject).as_ul())
         self.assertEqual(
             '2015-12-24',
@@ -113,8 +113,8 @@ class TestModelForm(test.TestCase):
                 fields = ['datefield_with_default']
 
         autoformtestmodelobject = mommy.make(
-                'cradmin_automodelform_testapp.AutoFormTestModel',
-                datefield_with_default=datetime.date(2015, 12, 24))
+            'cradmin_automodelform_testapp.AutoFormTestModel',
+            datefield_with_default=datetime.date(2015, 12, 24))
         selector = htmls.S(MyModelForm(instance=autoformtestmodelobject).as_ul())
         self.assertEqual(
             '2015-12-24',

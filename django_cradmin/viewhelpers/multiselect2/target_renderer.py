@@ -1,7 +1,7 @@
 import json
 from xml.sax.saxutils import quoteattr
 
-from django.utils.translation import pgettext_lazy, ugettext_lazy
+from django.utils.translation import pgettext_lazy
 
 from django_cradmin import renderable
 from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
