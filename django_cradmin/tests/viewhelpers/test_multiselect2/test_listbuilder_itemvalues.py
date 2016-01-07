@@ -15,14 +15,14 @@ class TestItemValue(test.TestCase):
             value=mockvalue).render())
         self.assertEqual(
             'testvalue',
-            selector.one('.django-cradmin-multiselect2-itemvalue-title').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-title').alltext_normalized)
 
     def test_no_description(self):
         mockvalue = mock.MagicMock()
         selector = htmls.S(listbuilder_itemvalues.ItemValue(
             value=mockvalue).render())
         self.assertFalse(
-            selector.exists('.django-cradmin-multiselect2-itemvalue-description'))
+            selector.exists('.django-cradmin-listbuilder-itemvalue-titledescription-description'))
 
     def test_has_description(self):
         class MySelectedItem(listbuilder_itemvalues.ItemValue):
@@ -33,7 +33,7 @@ class TestItemValue(test.TestCase):
         selector = htmls.S(MySelectedItem(value=mockvalue).render())
         self.assertEqual(
             'test description',
-            selector.one('.django-cradmin-multiselect2-itemvalue-description').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-description').alltext_normalized)
 
     def test_selectbutton_text(self):
         mockvalue = mock.MagicMock()
@@ -110,7 +110,7 @@ class TestManyToManySelect(test.TestCase):
             value=mockvalue).render())
         self.assertEqual(
             'testvalue',
-            selector.one('.django-cradmin-multiselect2-itemvalue-title').alltext_normalized)
+            selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-title').alltext_normalized)
 
     def test_angularjs_directive_custom_data_value(self):
         mockvalue = mock.MagicMock()

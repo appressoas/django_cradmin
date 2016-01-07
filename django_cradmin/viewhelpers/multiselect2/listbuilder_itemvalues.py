@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 import json
-from builtins import str
 from xml.sax.saxutils import quoteattr
 
 from django.utils.translation import pgettext_lazy
@@ -12,7 +11,7 @@ from django_cradmin.viewhelpers.multiselect2 import target_renderer
 from django_cradmin.viewhelpers.multiselect2 import widget_preview_renderer
 
 
-class ItemValue(listbuilder.itemvalue.FocusBox):
+class ItemValue(listbuilder.itemvalue.TitleDescription):
     """
     Listbuilder itemvalue renderable that renders some information
     and a "Select" buttonn that works out of the box with
@@ -81,25 +80,6 @@ class ItemValue(listbuilder.itemvalue.FocusBox):
         css_classes = super(ItemValue, self).get_base_css_classes_list()
         css_classes.append('django-cradmin-multiselect2-itemvalue')
         return css_classes
-
-    def get_title(self):
-        """
-        Returns:
-            str: The title of the box.
-
-            Defaults to ``str(self.value)``.
-        """
-        return str(self.value)
-
-    def get_description(self):
-        """
-        Returns:
-            str: The description (shown below the title).
-
-            Defaults to ``None``, which means that no description
-            is rendered.
-        """
-        return None
 
     def get_selectbutton_text(self):
         """

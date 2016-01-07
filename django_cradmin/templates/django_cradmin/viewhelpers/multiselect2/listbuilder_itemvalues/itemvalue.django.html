@@ -1,30 +1,8 @@
-{% extends "django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html" %}
+{% extends "django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html" %}
 {% load cradmin_tags %}
 {% load cradmin_icon_tags %}
 
-{% block content %}
-    {% block start-of-content %}{% endblock start-of-content %}
-
-    {% block title %}
-        <h2 class="django-cradmin-multiselect2-itemvalue-title">
-            {% block title-content %}
-                {{ me.get_title }}
-            {% endblock title-content %}
-        </h2>
-    {% endblock title %}
-    {% block below-title %}{% endblock below-title %}
-
-    {% block description %}
-        {% if me.get_description %}
-            <p class="django-cradmin-multiselect2-itemvalue-description">
-                {% block description-content %}
-                    {{ me.get_description }}
-                {% endblock description-content %}
-            </p>
-        {% endif %}
-    {% endblock description %}
-    {% block below-description %}{% endblock below-description %}
-
+{% block end-of-content %}
     {% block buttons %}
         <p class="django-cradmin-multiselect2-itemvalue-buttons">
             {% block select-button %}
@@ -47,4 +25,4 @@
     {% block preview-wrapper %}
         {% cradmin_render_renderable me.selected_item_renderer %}
     {% endblock preview-wrapper %}
-{% endblock content %}
+{% endblock end-of-content %}
