@@ -10,16 +10,24 @@ The staticfiles path to the theme CSS. If this is not
 set, we use ``django_cradmin/dist/css/cradmin_theme_default/theme.css``.
 
 
-.. setting::  DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
+.. setting::  DJANGO_CRADMIN_CSS_ICON_MAP
 
-DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
-====================================
+DJANGO_CRADMIN_CSS_ICON_MAP
+===========================
 A dictionary mapping generalized icon names to css classes.
 It is used by the ``cradmin_icon`` template tag. If you do
 not set this, you will get font-awesome icons as defined
 in :obj:`.django_cradmin.css_icon_map.FONT_AWESOME`.
 
 .. seealso:: :ref:`cradmin_icon_tags` and :issue:`43`.
+
+
+.. setting::  DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
+
+DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH
+====================================
+The staticfiles path to the css icon library.
+Defaults to ``"django_cradmin/dist/vendor/fonts/fontawesome/css/font-awesome.min.css"``.
 
 
 .. setting:: DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
