@@ -6645,9 +6645,41 @@ ol.django-cradmin-listbuilder-list:first-child.django-cradmin-listbuilder-rowlis
 ol.django-cradmin-listbuilder-list li a.django-cradmin-listbuilder-itemframe-link {
   display: block;
 }
+a.django-cradmin-listbuilder-itemframe-link {
+  color: #333333;
+  text-decoration: none;
+}
+a.django-cradmin-listbuilder-itemframe-link:hover {
+  color: #333333;
+  text-decoration: none;
+}
 ol.django-cradmin-listbuilder-list li .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox {
   background: #ffffff;
   padding: 15px 15px;
+}
+a.django-cradmin-listbuilder-itemframe-link .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox {
+  border-bottom: 3px solid transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.5);
+}
+@media (min-width: 768px) {
+  a.django-cradmin-listbuilder-itemframe-link .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox {
+    -webkit-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+  }
+}
+a.django-cradmin-listbuilder-itemframe-link .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox .django-cradmin-listbuilder-itemvalue-titledescription {
+  color: #333333;
+}
+a.django-cradmin-listbuilder-itemframe-link .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox .django-cradmin-listbuilder-itemvalue-titledescription .django-cradmin-listbuilder-itemvalue-titledescription-title {
+  color: #377ca8;
+}
+a.django-cradmin-listbuilder-itemframe-link:hover .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox {
+  border-color: #377ca8;
+}
+a.django-cradmin-listbuilder-itemframe-link:hover .django-cradmin-listbuilder-itemvalue.django-cradmin-listbuilder-itemvalue-focusbox .django-cradmin-listbuilder-itemvalue-titledescription .django-cradmin-listbuilder-itemvalue-titledescription-title {
+  color: #24516e;
+  text-decoration: underline;
 }
 ol.django-cradmin-listfilter-filterlist {
   list-style: none;
