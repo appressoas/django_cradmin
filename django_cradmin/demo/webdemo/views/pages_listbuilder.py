@@ -59,10 +59,12 @@ class PageTagChecboxFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter
 
 class PageTagRadioFilter(abstractradio.AbstractRadioFilter, listfilter.django.DjangoOrmFilterMixin):
     def get_choices(self):
-        return [
+        choices = [
             (tag, tag)
             for tag in PageTag.objects.values_list('tag', flat=True).distinct()
         ]
+        choices.insert(0, ('', 'Ignore tags'))
+        return choices
 
     def filter(self, queryobject):
         cleaned_value = self.get_cleaned_value()

@@ -41,7 +41,7 @@ class AbstractRadioFilter(AbstractFilter):
         Returns:
             A tuple with the list of dicts described above and the selected label.
         """
-        selected_value = super(AbstractRadioFilter, self).get_cleaned_value()
+        selected_value = self.get_cleaned_value()
         choicesdata = []
         for value, label in self.get_choices_cached():
             is_selected = value == selected_value
@@ -65,4 +65,4 @@ class AbstractRadioFilter(AbstractFilter):
         if cleaned_value in choices:
             return cleaned_value
         else:
-            return None
+            return ''
