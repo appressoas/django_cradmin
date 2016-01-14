@@ -7,10 +7,10 @@
             class="django-cradmin-listfilter-radiolist"
             django-cradmin-listfilter-radiolist={{ me.get_angularjs_options_json|safe }}>
         {% for choicedata in choicesdata %}
-            <div class="checkbox" id="{{ choicedata.dom_id }}_wrapper">
+            <div class="radio" id="{{ choicedata.dom_id }}_wrapper">
                 {% comment %}
                     We use aria-labeledby to make screenreaders read the main label
-                    and the checkbox label (without this we have no context for the
+                    and the radio label (without this we have no context for the
                     value). Some browsers will read the value twice with this, while
                     others will only read the main label if we only have the main
                     label in aria-labeledby.
