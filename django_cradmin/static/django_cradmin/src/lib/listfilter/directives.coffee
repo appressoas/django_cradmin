@@ -332,3 +332,66 @@ angular.module('djangoCradmin.listfilter.directives', [])
         return
     }
 ])
+
+
+.directive('djangoCradminListfilterRadiolist', [
+  ->
+    return {
+      restrict: 'A',
+      require: '^djangoCradminListfilter'
+      scope: {
+        options: '=djangoCradminListfilterRadiolist'
+      }
+
+      controller: ($scope, $element) ->
+
+        ###
+        Replace all contents with new elements from the server.
+        ###
+        $scope.syncWithRemoteFilterList = ($remoteFilterList) ->
+          domId = $element.attr('id')
+          $remoteElement = $remoteFilterList.find('#' + domId)
+          $element.empty()
+          $element.append(angular.element($remoteElement.html()))
+          $scope.registerCheckboxChangeListeners(true)
+
+        $scope.onLoadInProgress = (filterDomId) ->
+          $element.find('input').prop('disabled', true)
+
+        $scope.onLoadFinished = (filterDomId) ->
+          $element.find('input').prop('disabled', false)
+
+        return
+
+      link: ($scope, $element, attributes, listfilterCtrl) ->
+        listfilterCtrl.addFilterScope($scope)
+
+        getUrl = ($inputElement) ->
+          $inputElement.attr('data-url')
+
+        onLoadSuccess = (data) ->
+          $element.find('#' + data.checkboxId).focus()
+
+        $scope.onRadioChange = (e) ->
+          remoteUrl = getUrl(angular.element(e.target))
+          checkboxId = angular.element(e.target).attr('id')
+          listfilterCtrl.load({
+            remoteUrl: remoteUrl
+            filterDomId: $element.attr('id')
+            onLoadSuccess: onLoadSuccess
+            onLoadSuccessData: {
+              checkboxId: checkboxId
+            }
+            loadingmessage: $scope.options.loadingmessage
+          })
+
+        $scope.registerCheckboxChangeListeners = (removeFirst) ->
+          if removeFirst
+            $element.find('input').off 'change', $scope.onRadioChange
+          $element.find('input').on 'change', $scope.onRadioChange
+
+        $scope.registerCheckboxChangeListeners(false)
+
+        return
+    }
+])

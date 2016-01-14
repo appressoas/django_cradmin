@@ -10,6 +10,8 @@ from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
 from django_cradmin.demo.webdemo.models import Page, PageTag
+from django_cradmin.viewhelpers.listfilter.basefilters.single import abstractradio
+
 standard_library.install_aliases()
 
 from builtins import str
@@ -44,7 +46,7 @@ class OrderPagesFilter(listfilter.django.single.select.AbstractOrderBy):
         ]
 
 
-class PageTagFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter):
+class PageTagChecboxFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter):
     def get_choices(self):
         return [
             (tag, tag)
@@ -53,6 +55,20 @@ class PageTagFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter):
 
     def get_filter_attribute(self):
         return 'tags__tag'
+
+
+class PageTagRadioFilter(abstractradio.AbstractRadioFilter, listfilter.django.DjangoOrmFilterMixin):
+    def get_choices(self):
+        return [
+            (tag, tag)
+            for tag in PageTag.objects.values_list('tag', flat=True).distinct()
+        ]
+
+    def filter(self, queryobject):
+        cleaned_value = self.get_cleaned_value()
+        if cleaned_value:
+            queryobject = queryobject.filter(tags__tag=cleaned_value).distinct()
+        return queryobject
 
 
 class PageSubscriberFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter):
@@ -103,8 +119,10 @@ class PagesListBuilderView(listbuilderview.FilterListMixin,
             slug='image', label='Has image?'))
         filterlist.append(listfilter.django.single.select.DateTime(
             slug='publishing_time', label='Publishing time'))
-        filterlist.append(PageTagFilter(
-            slug='tags', label='Tag'))
+        # filterlist.append(PageTagChecboxFilter(
+        #     slug='tags', label='Tag'))
+        filterlist.append(PageTagRadioFilter(
+            slug='tag', label='Tag'))
         filterlist.append(PageSubscriberFilter(
             slug='subscribers', label='Subscribers'))
 

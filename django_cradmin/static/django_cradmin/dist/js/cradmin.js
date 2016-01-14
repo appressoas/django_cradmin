@@ -4022,6 +4022,67 @@
         }
       };
     }
+  ]).directive('djangoCradminListfilterRadiolist', [
+    function() {
+      return {
+        restrict: 'A',
+        require: '^djangoCradminListfilter',
+        scope: {
+          options: '=djangoCradminListfilterRadiolist'
+        },
+        controller: function($scope, $element) {
+          /*
+          Replace all contents with new elements from the server.
+          */
+
+          $scope.syncWithRemoteFilterList = function($remoteFilterList) {
+            var $remoteElement, domId;
+            domId = $element.attr('id');
+            $remoteElement = $remoteFilterList.find('#' + domId);
+            $element.empty();
+            $element.append(angular.element($remoteElement.html()));
+            return $scope.registerCheckboxChangeListeners(true);
+          };
+          $scope.onLoadInProgress = function(filterDomId) {
+            return $element.find('input').prop('disabled', true);
+          };
+          $scope.onLoadFinished = function(filterDomId) {
+            return $element.find('input').prop('disabled', false);
+          };
+        },
+        link: function($scope, $element, attributes, listfilterCtrl) {
+          var getUrl, onLoadSuccess;
+          listfilterCtrl.addFilterScope($scope);
+          getUrl = function($inputElement) {
+            return $inputElement.attr('data-url');
+          };
+          onLoadSuccess = function(data) {
+            return $element.find('#' + data.checkboxId).focus();
+          };
+          $scope.onRadioChange = function(e) {
+            var checkboxId, remoteUrl;
+            remoteUrl = getUrl(angular.element(e.target));
+            checkboxId = angular.element(e.target).attr('id');
+            return listfilterCtrl.load({
+              remoteUrl: remoteUrl,
+              filterDomId: $element.attr('id'),
+              onLoadSuccess: onLoadSuccess,
+              onLoadSuccessData: {
+                checkboxId: checkboxId
+              },
+              loadingmessage: $scope.options.loadingmessage
+            });
+          };
+          $scope.registerCheckboxChangeListeners = function(removeFirst) {
+            if (removeFirst) {
+              $element.find('input').off('change', $scope.onRadioChange);
+            }
+            return $element.find('input').on('change', $scope.onRadioChange);
+          };
+          $scope.registerCheckboxChangeListeners(false);
+        }
+      };
+    }
   ]);
 
 }).call(this);
