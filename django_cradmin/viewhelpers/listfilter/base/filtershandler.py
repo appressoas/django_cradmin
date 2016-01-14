@@ -178,3 +178,32 @@ class FiltersHandler(object):
                 continue
             queryobject = filterobject.filter(queryobject=queryobject)
         return queryobject
+
+    def get_label_for(self, slug):
+        """
+        Get the label for the filter registered in the filterhandler with the given ``slug``.
+
+        Raises:
+            KeyError: If the ``slug`` is not registered.
+        """
+        return self.filtermap[slug].get_label()
+
+    def get_cleaned_value_for(self, slug):
+        """
+        Get the cleaned value for the filter registered in the filterhandler
+        with the given ``slug``.
+
+        Raises:
+            KeyError: If the ``slug`` is not registered.
+        """
+        return self.filtermap[slug].get_cleaned_value()
+
+    def get_cleaned_values_for(self, slug):
+        """
+        Get the cleaned values (list) for the filter registered in the filterhandler
+        with the given ``slug``.
+
+        Raises:
+            KeyError: If the ``slug`` is not registered.
+        """
+        return self.filtermap[slug].get_cleaned_values()

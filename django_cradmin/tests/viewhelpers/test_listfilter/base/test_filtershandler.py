@@ -202,3 +202,29 @@ class TestFiltersHandler(TestCase):
                                          exclude={'filterone'})
         self.assertEqual({match1, match2},
                          set(queryset))
+
+    def test_get_label_for(self):
+        class MyFilter(AbstractFilter):
+            pass
+
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler.add_filter(MyFilter(label='Test Label', slug='test'))
+        self.assertEqual(
+            'Test Label',
+            filtershandler.get_label_for('test'))
+
+    def test_get_cleaned_value_for(self):
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler.add_filter(MinimalIntFilter())
+        filtershandler.parse('/i-10')
+        self.assertEqual(
+            10,
+            filtershandler.get_cleaned_value_for('i'))
+
+    def test_get_cleaned_values_for(self):
+        filtershandler = FiltersHandler(urlbuilder=mock.MagicMock())
+        filtershandler.add_filter(MinimalIntFilter())
+        filtershandler.parse('/i-10')
+        self.assertEqual(
+            [10],
+            filtershandler.get_cleaned_values_for('i'))
