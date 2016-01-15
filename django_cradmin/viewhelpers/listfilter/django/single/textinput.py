@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import pgettext_lazy
 
 from django_cradmin.viewhelpers.listfilter.basefilters.single import abstracttextinput
 
@@ -45,11 +46,33 @@ class Search(abstracttextinput.AbstractSearch, DjangoOrmFilterMixin):
         else:
             raise NotImplementedError('You must override get_modelfields() or use the modelfields parameter.')
 
+    def get_lookup_suffix(self):
+        """
+        Get the query lookup suffix. Defaults to ``"__icontains"``.
+        """
+        return '__icontains'
+
+    def make_q_object_for_value(self, modelfield, cleaned_value):
+        """
+        Make a :class:`django.db.models.Q` object for matching the
+        given ``modelfield`` with the given ``cleaned_value``.
+
+        Args:
+            modelfield (str): The modelfield to search.
+            cleaned_value: The value to search for (cleaned).
+
+        Returns:
+            django.db.models.Q: A Q object.
+        """
+        comparison_operator = self.get_lookup_suffix()
+        kwargs = {'{}{}'.format(modelfield, comparison_operator): cleaned_value}
+        return models.Q(**kwargs)
+
     def build_query(self, modelfields, cleaned_value):
         full_query = None
         for modelfield in modelfields:
-            kwargs = {'{}__icontains'.format(modelfield): cleaned_value}
-            query = models.Q(**kwargs)
+            query = self.make_q_object_for_value(modelfield=modelfield,
+                                                 cleaned_value=cleaned_value)
             if full_query:
                 full_query |= query
             else:
@@ -63,3 +86,29 @@ class Search(abstracttextinput.AbstractSearch, DjangoOrmFilterMixin):
             queryobject = queryobject.filter(self.build_query(
                 modelfields=modelfields, cleaned_value=cleaned_value))
         return queryobject
+
+
+class IntSearch(abstracttextinput.IntInputFilterMixin, Search):
+    """
+    A "filter" that lets the user search the queryset for exact
+    matches for integers.
+
+    Examples:
+
+        A model for this example::
+
+            class MyModel(models.Model):
+                name = models.CharField(max_length=255)
+                age = models.IntegerField()
+                height = models.IntegerField()
+
+        Create the filter::
+
+            listfilter.django.single.textinput.IntSearch(
+                slug='search_ageheight',
+                label='Search for age or height',
+                modelfields=['age', 'height'])
+
+    """
+    def get_lookup_suffix(self):
+        return '__exact'

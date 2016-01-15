@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy, pgettext
+from django.utils.translation import ugettext_lazy, pgettext, pgettext_lazy
 
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 
@@ -21,6 +21,16 @@ class AbstractInputFilter(AbstractFilter):
         Defaults to ``"text"``.
         """
         return 'text'
+
+    def get_input_html_element_pattern(self):
+        """
+        Get the ``pattern`` attribute of the input HTML element.
+
+        Defaults to ``None``. If this returns a value that
+        is ``bool(value) == False``, the pattern attribute is
+        not added to the input HTML element.
+        """
+        return None
 
     def get_base_css_classes_list(self):
         css_classes = super(AbstractInputFilter, self).get_base_css_classes_list()
@@ -70,6 +80,31 @@ class AbstractInputFilter(AbstractFilter):
         options_dict['timeout_milliseconds'] = self.get_timeout_milliseconds()
         options_dict['urlpattern_replace_text'] = self.urlpattern_replace_text
         return options_dict
+
+
+class IntInputFilterMixin(object):
+    """
+    Mixin class that can be used with a subclass of
+    :class:`.AbstractInputFilter` to provide int input
+    instead of text.
+
+    Must be mixed in **before** :class:`AbstractInputFilter`.
+    """
+    def get_cleaned_value(self):
+        """
+        Get the value as an ``int``, or ``None`` (if no value is provided).
+        """
+        cleaned_value = super(IntInputFilterMixin, self).get_cleaned_value()
+        if cleaned_value in (None, ''):
+            return None
+        try:
+            return int(cleaned_value)
+        except ValueError:
+            return None
+
+    def get_placeholder(self):
+        return pgettext_lazy('listfilter IntInputFilterMixin', 'Type a number ...')
+
 
 
 class AbstractSearch(AbstractInputFilter):
