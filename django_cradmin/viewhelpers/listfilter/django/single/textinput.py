@@ -82,7 +82,7 @@ class Search(abstracttextinput.AbstractSearch, DjangoOrmFilterMixin):
     def filter(self, queryobject):
         modelfields = self.get_modelfields()
         cleaned_value = self.get_cleaned_value()
-        if cleaned_value:
+        if cleaned_value not in ('', None):
             queryobject = queryobject.filter(self.build_query(
                 modelfields=modelfields, cleaned_value=cleaned_value))
         return queryobject
