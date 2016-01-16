@@ -57,6 +57,14 @@ class Page(models.Model):
         settings.AUTH_USER_MODEL,
         blank=True,
         verbose_name=_('Subscribed users'))
+    starred = models.CharField(
+        default='no',
+        max_length=3,
+        choices=[
+            ('yes', 'Yes'),
+            ('no', 'No'),
+        ]
+    )
 
     def __str__(self):
         return self.title

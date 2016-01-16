@@ -8,6 +8,7 @@ from django_cradmin.demo.webdemo.models import Site
 from django_cradmin.demo.webdemo.views import pages_listbuilder
 from django_cradmin.demo.webdemo.views import dashboard
 from django_cradmin.demo.webdemo.views import pages
+from django_cradmin.demo.webdemo.views import formutils
 from django_cradmin.demo.webdemo.views import inviteadmins
 from django_cradmin.demo.webdemo.views import sharable_link
 
@@ -25,6 +26,9 @@ class Menu(crmenu.Menu):
         self.add_menuitem(
             label=_('Pages (listbuilder)'), url=self.appindex_url('pages_listbuilder'),
             active=self.request.cradmin_app.appname == 'pages_listbuilder')
+        self.add_menuitem(
+            label=_('FormUtils demo'), url=self.appindex_url('formutils'),
+            active=self.request.cradmin_app.appname == 'formutils')
         self.add_menuitem(
             label=_('Images'), url=self.appindex_url('imagearchive'),
             active=self.request.cradmin_app.appname == 'imagearchive')
@@ -47,6 +51,7 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         ('dashboard', dashboard.App),
         ('pages', pages.App),
         ('pages_listbuilder', pages_listbuilder.App),
+        ('formutils', formutils.App),
         ('imagearchive', imagearchive.App),
         ('inviteadmins', inviteadmins.App),
         ('sharable_link', sharable_link.App),
