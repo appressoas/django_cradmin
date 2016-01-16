@@ -6,11 +6,21 @@ from django_cradmin.viewhelpers import multiselect2
 
 
 class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
+    """
+    You do not have to create this class - you can also just use
+    :class:`django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`
+    directly if the defaults from that class suites your needs.
+    """
     def get_inputfield_name(self):
         return 'selected_products'
 
 
 class ProductTargetRenderer(multiselect2.target_renderer.Target):
+    """
+    You do not have to create this class - you can also just use
+    :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`
+    directly if the defaults from that class suites your needs.
+    """
     def get_with_items_title(self):
         return 'Products selected'
 
