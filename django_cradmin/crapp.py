@@ -44,9 +44,10 @@ class App(object):
     #: See :meth:`~.App.get_appurls`.
     appurls = []
 
-    def __init__(self, appname, request):
+    def __init__(self, appname, request, active_viewname):
         self.appname = appname
         self.request = request
+        self.active_viewname = active_viewname
 
     def reverse_appurl(self, viewname, args=None, kwargs=None):
         """
@@ -79,9 +80,9 @@ class App(object):
         return cls.appurls
 
     @classmethod
-    def _wrap_view(cls, appname, view):
+    def _wrap_view(cls, appname, view, viewname):
         def viewwrapper(request, *args, **kwargs):
-            request.cradmin_app = cls(appname, request)
+            request.cradmin_app = cls(appname, request, active_viewname=viewname)
             return has_access_to_cradmin_instance(cradminview(view))(request, *args, **kwargs)
 
         # Take name and docstring from view
@@ -99,7 +100,7 @@ class App(object):
         for pattern in cls.get_appurls():
             urls.append(
                 url(
-                    pattern.regex, cls._wrap_view(appname, pattern.view),
+                    pattern.regex, cls._wrap_view(appname, pattern.view, pattern.name),
                     name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
                     kwargs=pattern.kwargs))
         return patterns('', *urls)
