@@ -26,19 +26,18 @@ class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
     value_renderer_class = ProductListItemValue
     paginate_by = 20
 
-    # def get_filterlist_position(self):
-    #     return 'right'
-
-    def get_filterlist_template_name(self):
-        return 'multiselect2demo/productlist.django.html'
-
     def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(
             slug='search',
             label='Search',
             label_is_screenreader_only=True,
             modelfields=['name', 'description']))
-        # filterlist.append(ProductTargetRenderer())
+        # Add the renderer for the target of selects
+        # - the target can be added to a listfilter list,
+        #   or rendered by itself anywhere in the page using
+        #   ``{% cradmin_render_renderable %}`` (see
+        #   :class:`.ProductListItemValue` for an example of this.
+        filterlist.append(ProductTargetRenderer())
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
@@ -47,10 +46,39 @@ class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
     def get_unfiltered_queryset_for_role(self, role):
         return Product.objects.all().order_by('name')
 
+
+class ProductListViewFlexbox(listbuilderview.FilterListMixin, listbuilderview.View):
+    """
+    A slightly more complex alternative to ProductListView above.
+
+    This uses a custom template and renders the target in a column by itself.
+    """
+    model = Product
+    value_renderer_class = ProductListItemValue
+    paginate_by = 20
+
+    def get_filterlist_template_name(self):
+        return 'multiselect2demo/productlist-flexbox.django.html'
+
+    def add_filterlist_items(self, filterlist):
+        filterlist.append(listfilter.django.single.textinput.Search(
+            slug='search',
+            label='Search',
+            label_is_screenreader_only=True,
+            modelfields=['name', 'description']))
+
+    def get_filterlist_url(self, filters_string):
+        return self.request.cradmin_app.reverse_appurl(
+            'flexbox', kwargs={'filters_string': filters_string})
+
+    def get_unfiltered_queryset_for_role(self, role):
+        return Product.objects.all().order_by('name')
+
     def get_context_data(self, **kwargs):
-        context = super(ProductListView, self).get_context_data(**kwargs)
+        context = super(ProductListViewFlexbox, self).get_context_data(**kwargs)
         context['targetrenderer'] = ProductTargetRenderer()
         return context
+
 
 
 class App(crapp.App):
@@ -63,4 +91,8 @@ class App(crapp.App):
             r'^filter/(?P<filters_string>.+)?$',
             ProductListView.as_view(),
             name='filter'),
+        crapp.Url(
+            r'^flexbox/(?P<filters_string>.+)?$',
+            ProductListViewFlexbox.as_view(),
+            name='flexbox'),
     ]

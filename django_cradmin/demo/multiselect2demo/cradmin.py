@@ -1,14 +1,22 @@
 from __future__ import unicode_literals
 
-from django_cradmin import crinstance, crmenu
+from django_cradmin import crinstance, crmenu, crapp
 from django_cradmin.demo.multiselect2demo.views import productlist
 
 
 class Menu(crmenu.Menu):
     def build_menu(self):
+        cradmin_app = self.request.cradmin_app
         self.add_menuitem(
             label='Productlist', url=self.appindex_url('productlist'),
-            active=self.request.cradmin_app.appname == 'productlist')
+            active=(cradmin_app.appname == 'productlist' and
+                    cradmin_app.active_viewname == crapp.INDEXVIEW_NAME))
+        self.add_menuitem(
+            label='Productlist (flexbox)',
+            url=self.cradmin_instance.reverse_url(appname='productlist',
+                                                  viewname='flexbox'),
+            active=(cradmin_app.appname == 'productlist' and
+                    cradmin_app.active_viewname == 'flexbox'))
 
 
 class MultiselectDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
