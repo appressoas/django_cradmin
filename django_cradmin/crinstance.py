@@ -244,6 +244,13 @@ class BaseCrAdminInstance(object):
         is that you do not need to hardcode the id of the cradmin instance,
         and that the ``roleid`` is automatically added to args or kwargs
         (depending on which one you use to pass arguments to the url).
+
+        Args:
+            appname (str): The name of the app.
+            viewname (str): The name of the view within the app.
+            args (list): Args for the view
+            kwargs (dict): Keyword args for the view.
+            roleid: The roleid.
         """
         kwargs = {
             'instanceid': self.id,
@@ -258,13 +265,22 @@ class BaseCrAdminInstance(object):
             kwargs['roleid'] = roleid
         return reverse_cradmin_url(**kwargs)
 
-    def appindex_url(self, appname, roleid=None):
+    def appindex_url(self, appname, args=None, kwargs=None, roleid=None):
         """
         Reverse the url of the landing page for the given app.
 
         The landing page is the view named :obj:`django_cradmin.crapp.INDEXVIEW_NAME`.
+
+        This would be the same as using :meth:`.reverse_url` with ``viewname=crapp.INDEXVIEW_NAME``.
+
+        Args:
+            appname (str): The name of the app.
+            args (list): Args for the view
+            kwargs (dict): Keyword args for the view.
+            roleid: The roleid.
         """
-        return self.reverse_url(appname, viewname=crapp.INDEXVIEW_NAME, roleid=roleid)
+        return self.reverse_url(appname, viewname=crapp.INDEXVIEW_NAME, roleid=roleid,
+                                args=args, kwargs=kwargs)
 
     def rolefrontpage_url(self, roleid=None):
         """
