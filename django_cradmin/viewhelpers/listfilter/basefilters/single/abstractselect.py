@@ -375,7 +375,18 @@ class AbstractOrderBy(AbstractSelectFilter):
     def __init__(self, *args, **kwargs):
         super(AbstractOrderBy, self).__init__(*args, **kwargs)
         self.__ordering_options = self.get_ordering_options()
-        self.__ordering_options_dict = dict(self.__ordering_options)
+        self.__ordering_options_dict = self.__make_ordering_options_dict(self.__ordering_options)
+
+    def __make_ordering_options_dict(self, ordering_options):
+        ordering_options_dict = {}
+        for value, option in ordering_options:
+            if isinstance(option, (list, tuple)):
+                optgroup_options_list = option
+                ordering_options_dict.update(
+                    self.__make_ordering_options_dict(optgroup_options_list))
+            else:
+                ordering_options_dict[value] = option
+        return ordering_options_dict
 
     def get_ordering_options(self):
         """
