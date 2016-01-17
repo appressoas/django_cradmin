@@ -415,5 +415,16 @@ class AbstractOrderBy(AbstractSelectFilter):
         """
         raise NotImplementedError()
 
+    def __make_choices(self, ordering_options_list):
+        choices = []
+        for value, option in ordering_options_list:
+            if isinstance(option, (list, tuple)):
+                optgroup_label = value
+                optgroup_options_list = option
+                choices.append((optgroup_label, self.__make_choices(optgroup_options_list)))
+            else:
+                choices.append((value, option['label']))
+        return choices
+
     def get_choices(self):
-        return [(value, option['label']) for value, option in self.__ordering_options]
+        return self.__make_choices(self.__ordering_options)
