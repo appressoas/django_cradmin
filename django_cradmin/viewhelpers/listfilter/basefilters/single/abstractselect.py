@@ -38,6 +38,35 @@ class AbstractSelectFilter(AbstractFilter):
 
         return 0
 
+    def __make_choicesdata_list(self, choices, selected_value):
+        selected_value = self.get_cleaned_value()
+        choicesdata = []
+        found_selected_value = False
+        for value, label in choices:
+            if isinstance(label, (tuple, list)):
+                optgroup_label = value
+                optgroup_choices = label
+                child_choicesdata, found_selected_value_in_child = self.__make_choicesdata_list(
+                    choices=optgroup_choices, selected_value=selected_value)
+                if found_selected_value_in_child:
+                    found_selected_value = True
+                choicesdata.append({
+                    'is_optgroup': True,
+                    'label': optgroup_label,
+                    'child_choicesdata': child_choicesdata
+                })
+            else:
+                is_selected = value == selected_value
+                if is_selected:
+                    found_selected_value = True
+                url = self.build_set_values_url(values=[value])
+                choicesdata.append({
+                    'url': url,
+                    'label': label,
+                    'is_selected': is_selected
+                })
+        return choicesdata, found_selected_value
+
     def get_choicesdata(self):
         """
         Get choices data as a list of dicts.
@@ -57,20 +86,23 @@ class AbstractSelectFilter(AbstractFilter):
         Returns:
             A tuple with the list of dicts described above and the selected label.
         """
-        selected_value = self.get_cleaned_value()
-        choicesdata = []
-        selected_index = None
-        for value, label in self.get_choices():
-            is_selected = value == selected_value
-            if is_selected:
-                selected_index = True
-            url = self.build_set_values_url(values=[value])
-            choicesdata.append({
-                'url': url,
-                'label': label,
-                'is_selected': is_selected
-            })
-        if selected_index is None and len(choicesdata) > 0:
+        # selected_value = self.get_cleaned_value()
+        # choicesdata = []
+        # found_selected_value = False
+        # for value, label in self.get_choices():
+        #     is_selected = value == selected_value
+        #     if is_selected:
+        #         found_selected_value = True
+        #     url = self.build_set_values_url(values=[value])
+        #     choicesdata.append({
+        #         'url': url,
+        #         'label': label,
+        #         'is_selected': is_selected
+        #     })
+        choicesdata, found_selected_value = self.__make_choicesdata_list(
+            choices=self.get_choices(),
+            selected_value=self.get_cleaned_value())
+        if not found_selected_value and len(choicesdata) > 0:
             selected_index = self.get_default_is_selected_index(choicesdata=choicesdata)
             choicesdata[selected_index]['is_selected'] = True
         return choicesdata
