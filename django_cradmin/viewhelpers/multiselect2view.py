@@ -1,8 +1,10 @@
-from django_cradmin.viewhelpers import multiselect2
+from django.views.generic.edit import FormMixin
+
 from django_cradmin.viewhelpers import listbuilderview
+from django_cradmin.viewhelpers import multiselect2
 
 
-class ViewMixin(object):
+class ViewMixin(FormMixin):
     """
     Multiselect2 view mixin. Must be mixin in before any Django View subclass.
 
@@ -46,6 +48,17 @@ class ViewMixin(object):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         context['target_renderer'] = self.get_target_renderer()
         return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class ListbuilderView(ViewMixin, listbuilderview.View):

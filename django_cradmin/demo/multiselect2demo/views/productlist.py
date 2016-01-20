@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.template import defaultfilters
@@ -9,6 +10,17 @@ from django_cradmin.viewhelpers import multiselect2
 from django_cradmin.viewhelpers import multiselect2view
 
 
+class SelectedProductsForm(forms.Form):
+    selected_items = forms.ModelMultipleChoiceField(
+        queryset=Product.objects.none()
+    )
+
+    def __init__(self, *args, **kwargs):
+        selectable_items_queryset = kwargs.pop('selectable_items_queryset')
+        super(SelectedProductsForm, self).__init__(*args, **kwargs)
+        self.fields['selected_items'].queryset = selectable_items_queryset
+
+
 class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
     """
     You do not have to create this class - you can also just use
@@ -18,7 +30,7 @@ class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
     valuealias = 'product'
 
     def get_inputfield_name(self):
-        return 'selected_products'
+        return 'selected_items'
 
     def get_title(self):
         return self.product.name
@@ -62,16 +74,37 @@ class ProductListView(multiselect2view.ListbuilderView):
     def get_target_renderer_class(self):
         return ProductTargetRenderer
 
-    def post(self, request, *args, **kwargs):
-        messages.success(self.request,
-                         'Posted: {}'.format(self.request.POST))
+    #
+    #
+    # Handling the POST request is just like in a normal Django FormView.
+    # The form is not used for GET requests, so the methods below
+    # are just for handling POST requests (when users submit their selection).
+    #
+    #
+
+    def get_form_class(self):
+        return SelectedProductsForm
+
+    def get_form_kwargs(self):
+        kwargs = super(ProductListView, self).get_form_kwargs()
+        kwargs['selectable_items_queryset'] = Product.objects.all()
+        return kwargs
+
+    def form_valid(self, form):
+        productnames = ['"{}"'.format(product.name) for product in form.cleaned_data['selected_items']]
+        messages.success(
+            self.request,
+            'POST OK. Selected: {}'.format(', '.join(productnames)))
+        return redirect(self.request.get_full_path())
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors.as_text())
         return redirect(self.request.get_full_path())
 
 
 class FilteredProductListView(multiselect2view.ListbuilderFilterView):
     """
-    A slightly more complex alternative to ProductListView above.
-
+    This view is just like ProductListView except that it adds filters!
     """
     model = Product
     value_renderer_class = ProductListItemValue
@@ -94,9 +127,32 @@ class FilteredProductListView(multiselect2view.ListbuilderFilterView):
     def get_target_renderer_class(self):
         return ProductTargetRenderer
 
-    def post(self, request, *args, **kwargs):
-        messages.success(self.request,
-                         'Posted: {}'.format(self.request.POST))
+
+    #
+    #
+    # Handling the POST request is just like in a normal Django FormView.
+    # The form is not used for GET requests, so the methods below
+    # are just for handling POST requests (when users submit their selection).
+    #
+    #
+
+    def get_form_class(self):
+        return SelectedProductsForm
+
+    def get_form_kwargs(self):
+        kwargs = super(FilteredProductListView, self).get_form_kwargs()
+        kwargs['selectable_items_queryset'] = Product.objects.all()
+        return kwargs
+
+    def form_valid(self, form):
+        productnames = ['"{}"'.format(product.name) for product in form.cleaned_data['selected_items']]
+        messages.success(
+            self.request,
+            'POST OK. Selected: {}'.format(', '.join(productnames)))
+        return redirect(self.request.get_full_path())
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors.as_text())
         return redirect(self.request.get_full_path())
 
 
