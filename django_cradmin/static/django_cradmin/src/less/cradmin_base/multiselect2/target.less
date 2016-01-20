@@ -11,7 +11,10 @@
   .django-cradmin-multiselect2-target-title {
     font-size: @font-size-base;
     font-weight: bold;
-    margin: 0 0 10px 0;
+    margin: 20px 0 10px 0;
+    @media (min-width: @screen-sm-min) {
+      margin-top: 0;
+    }
     //padding: 0 0 5px 0;
   }
   .django-cradmin-multiselect2-target-selected-items {

@@ -4,10 +4,11 @@
 
 
 {% block list %}
-    <div class="django-cradmin-multiselect2-columnlayout {% block columnlayout_extra_cssclass %}{% endblock %}">
+    <div class="django-cradmin-multiselect2-columnlayout row {% block columnlayout_extra_cssclass %}{% endblock %}">
         {% block columnlayoutcontainer-inner %}
             {% block listcolumn %}
-                <div class="django-cradmin-multiselect2-listcolumn">
+                <div class="django-cradmin-multiselect2-listcolumn
+                            {% block listcolumn_cssclass %}col-sm-6{% endblock %}">
                     {% block listcolumn-inner %}
                         <div class="django-cradmin-listfilter-target"
                                  id="django_cradmin_listbuilderview_listwrapper"
@@ -30,23 +31,9 @@
                     {% endblock listcolumn-inner %}
                 </div>
             {% endblock listcolumn %}
-            {% block separatorcolumn %}
-                <div class="django-cradmin-multiselect2-separatorcolumn" aria-hidden="true">
-                    {% block separatorcolumn-inner %}
-                        <div class="django-cradmin-multiselect2-separatorcolumn-iconwrapper">
-                            <span class="{% cradmin_icon 'multiselect2-separator-icon' %}"></span>
-                        </div>
-                        <div class="django-cradmin-multiselect2-separatorcolumn-iconwrapper">
-                            <span class="{% cradmin_icon 'multiselect2-separator-icon' %}"></span>
-                        </div>
-                        <div class="django-cradmin-multiselect2-separatorcolumn-iconwrapper">
-                            <span class="{% cradmin_icon 'multiselect2-separator-icon' %}"></span>
-                        </div>
-                    {% endblock separatorcolumn-inner %}
-                </div>
-            {% endblock separatorcolumn %}
             {% block targetcolumn %}
-                <div class="django-cradmin-multiselect2-targetcolumn">
+                <div class="django-cradmin-multiselect2-targetcolumn
+                            {% block targetcolumn_cssclass %}col-sm-6{% endblock %}">
                     {% block targetcolumn-inner %}
                         {% cradmin_render_renderable target_renderer %}
                     {% endblock targetcolumn-inner %}

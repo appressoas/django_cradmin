@@ -7,7 +7,8 @@
 
 {% block columnlayoutcontainer-inner %}
     {% block filtercolumn %}
-        <div class="django-cradmin-multiselect2-filtercolumn">
+        <div class="django-cradmin-multiselect2-filtercolumn
+                    {% block filtercolumn_cssclass %}col-sm-3{% endblock %}">
             {% block filtercolumn-inner %}
                 {% cradmin_render_renderable filterlist %}
             {% endblock filtercolumn-inner %}
@@ -15,3 +16,6 @@
     {% endblock filtercolumn %}
     {{ block.super }}
 {% endblock columnlayoutcontainer-inner %}
+
+{% block listcolumn_cssclass %}col-sm-5{% endblock %}
+{% block targetcolumn_cssclass %}col-sm-4{% endblock %}

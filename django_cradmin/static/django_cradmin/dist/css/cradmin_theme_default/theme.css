@@ -6769,7 +6769,12 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-title {
   font-size: 16px;
   font-weight: bold;
-  margin: 0 0 10px 0;
+  margin: 20px 0 10px 0;
+}
+@media (min-width: 768px) {
+  .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-title {
+    margin-top: 0;
+  }
 }
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-selected-items .django-cradmin-multiselect2-target-selected-item {
   background: #ffffff;
@@ -6831,76 +6836,6 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 }
 .django-cradmin-multiselect2-itemvalue .django-cradmin-multiselect2-itemvalue-buttons {
   margin-bottom: 0;
-}
-.django-cradmin-multiselect2-columnlayout {
-  display: flex;
-  flex-direction: column;
-}
-@media (min-width: 768px) {
-  .django-cradmin-multiselect2-columnlayout {
-    flex-direction: row;
-  }
-}
-.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn {
-  padding: 10px;
-  margin: 20px 0 20px 0;
-  background: #d4d4d4;
-  border-style: solid;
-  border-width: 1px 0 1px 0;
-  border-color: #c7c7c7;
-  text-align: center;
-}
-.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn .django-cradmin-multiselect2-separatorcolumn-iconwrapper {
-  color: #979797;
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  transform: rotate(90deg);
-}
-.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn .django-cradmin-multiselect2-separatorcolumn-iconwrapper:first-child {
-  display: none;
-}
-.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn .django-cradmin-multiselect2-separatorcolumn-iconwrapper:last-child {
-  display: none;
-}
-@media (min-width: 768px) {
-  .django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn {
-    flex-direction: column;
-    justify-content: space-between;
-    display: flex;
-    align-self: stretch;
-    text-align: center;
-    padding: 20px 0 20px 0;
-    margin: 0 20px 0 20px;
-    width: 35px;
-    border-width: 0 1px 0 1px;
-  }
-  .django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn .django-cradmin-multiselect2-separatorcolumn-iconwrapper {
-    -webkit-transform: none;
-    -moz-transform: none;
-    transform: none;
-  }
-  .django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn .django-cradmin-multiselect2-separatorcolumn-iconwrapper:first-child {
-    display: block;
-  }
-  .django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-separatorcolumn .django-cradmin-multiselect2-separatorcolumn-iconwrapper:last-child {
-    display: block;
-  }
-}
-.django-cradmin-multiselect2-columnlayout.django-cradmin-multiselect2-columnlayout-2 .django-cradmin-multiselect2-listcolumn {
-  flex: 1;
-}
-.django-cradmin-multiselect2-columnlayout.django-cradmin-multiselect2-columnlayout-2 .django-cradmin-multiselect2-targetcolumn {
-  flex: 1;
-}
-.django-cradmin-multiselect2-columnlayout.django-cradmin-multiselect2-columnlayout-3 .django-cradmin-multiselect2-filtercolumn {
-  flex: 2;
-  margin-right: 20px;
-}
-.django-cradmin-multiselect2-columnlayout.django-cradmin-multiselect2-columnlayout-3 .django-cradmin-multiselect2-listcolumn {
-  flex: 4;
-}
-.django-cradmin-multiselect2-columnlayout.django-cradmin-multiselect2-columnlayout-3 .django-cradmin-multiselect2-targetcolumn {
-  flex: 4;
 }
 .django-cradmin-loadmorepager {
   text-align: center;
