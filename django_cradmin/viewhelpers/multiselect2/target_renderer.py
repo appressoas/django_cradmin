@@ -124,6 +124,9 @@ class Target(renderable.AbstractRenderableWithCss,
 
     def get_form_action(self, request):
         """
+        If you override this, you should also override
+        :meth:`.post_url_as_it_is_when_form_is_submitted` and return ``False``.
+
         Args:
             request: An HttpRequest object.
 
@@ -138,9 +141,49 @@ class Target(renderable.AbstractRenderableWithCss,
         else:
             return request.get_full_path()
 
+    def post_url_as_it_is_when_form_is_submitted(self):
+        """
+        If this returns ``True`` (the default), the ``action``-attribute of the
+        form will be updated to match the URL in the browser when the form
+        is submitted.
+
+        This defaults to ``True`` unless you set :obj:`.form_action`.
+
+        The primary reason for this feature is here is for javascript libraries
+        that update the URL. It is usually a bad user experience to reset their
+        choices (filters, search, etc.) when they post their selection.
+        """
+        if self.form_action:
+            return False
+        else:
+            return True
+
+    def get_angularjs_directive_dict(self):
+        """
+        Get options for the ``django-cradmin-multiselect2-target`` angularjs
+        directive.
+
+        Returns:
+            dict: With options for the directive.
+        """
+        return {
+            'updateFormActionToWindowLocation': self.post_url_as_it_is_when_form_is_submitted(),
+        }
+
+    def get_angularjs_directive_json(self):
+        """
+        JSON encode :meth:`.get_angularjs_directive_dict`.
+
+        Returns:
+            str: The return value of :meth:`.get_select_directive_dict`
+            as a json encoded and xml attribute encoded string.
+        """
+        return quoteattr(json.dumps(self.get_angularjs_directive_dict()))
+
     def get_context_data(self, request=None):
         context = super(Target, self).get_context_data(request=request)
         context['form_action'] = self.get_form_action(request=request)
+        context['angularjs_directive_json'] = self.get_angularjs_directive_json()
         return context
 
 

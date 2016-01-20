@@ -2,8 +2,8 @@ angular.module('djangoCradmin.multiselect2.directives', [])
 
 
 .directive('djangoCradminMultiselect2Target', [
-  'djangoCradminMultiselect2Coordinator',
-  (djangoCradminMultiselect2Coordinator) ->
+  'djangoCradminMultiselect2Coordinator', '$window'
+  (djangoCradminMultiselect2Coordinator, $window) ->
     return {
       restrict: 'A'
       scope: true
@@ -57,7 +57,16 @@ angular.module('djangoCradmin.multiselect2.directives', [])
         return
 
       link: ($scope, $element, attributes) ->
-
+        $scope.options = {
+          updateFormActionToWindowLocation: false
+        }
+        if attributes.djangoCradminMultiselect2Target != ''
+          options = angular.fromJson(attributes.djangoCradminMultiselect2Target)
+          angular.merge($scope.options, options)
+        console.log $scope.options
+        $element.on 'submit', (e) ->
+          if $scope.options.updateFormActionToWindowLocation
+            $element.attr('action', $window.location.href)
         return
     }
 ])

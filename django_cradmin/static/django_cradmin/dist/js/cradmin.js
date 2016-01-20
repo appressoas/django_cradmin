@@ -4400,7 +4400,7 @@
 
 (function() {
   angular.module('djangoCradmin.multiselect2.directives', []).directive('djangoCradminMultiselect2Target', [
-    'djangoCradminMultiselect2Coordinator', function(djangoCradminMultiselect2Coordinator) {
+    'djangoCradminMultiselect2Coordinator', '$window', function(djangoCradminMultiselect2Coordinator, $window) {
       return {
         restrict: 'A',
         scope: true,
@@ -4456,7 +4456,22 @@
             return $scope.selectedItemsScope;
           };
         },
-        link: function($scope, $element, attributes) {}
+        link: function($scope, $element, attributes) {
+          var options;
+          $scope.options = {
+            updateFormActionToWindowLocation: false
+          };
+          if (attributes.djangoCradminMultiselect2Target !== '') {
+            options = angular.fromJson(attributes.djangoCradminMultiselect2Target);
+            angular.merge($scope.options, options);
+          }
+          console.log($scope.options);
+          $element.on('submit', function(e) {
+            if ($scope.options.updateFormActionToWindowLocation) {
+              return $element.attr('action', $window.location.href);
+            }
+          });
+        }
       };
     }
   ]).directive('djangoCradminMultiselect2TargetSelectedItems', [

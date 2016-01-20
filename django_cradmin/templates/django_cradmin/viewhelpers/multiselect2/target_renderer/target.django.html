@@ -6,8 +6,8 @@
         {% if me.get_empty_selection_allowed %}
             django-cradmin-multiselect2-target-empty-selection-allowed
         {% endif %}"
-    ng-class="{'django-cradmin-multiselect2-target-with-items': hasItems()}"
-      django-cradmin-multiselect2-target>
+      ng-class="{'django-cradmin-multiselect2-target-with-items': hasItems()}"
+      django-cradmin-multiselect2-target={{ angularjs_directive_json|safe }}>
     {% csrf_token %}
 
     <div class="django-cradmin-multiselect2-target-with-items-content">
