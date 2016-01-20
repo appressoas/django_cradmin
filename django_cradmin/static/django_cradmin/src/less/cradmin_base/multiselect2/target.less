@@ -11,16 +11,28 @@
   .django-cradmin-multiselect2-target-title {
     font-size: @font-size-base;
     font-weight: bold;
-    margin: 20px 0 0 0;
-    padding: 0 0 5px 0;
-    //border-bottom: 1px solid @cradmin-bodybg;
+    margin: 0 0 10px 0;
+    //padding: 0 0 5px 0;
   }
   .django-cradmin-multiselect2-target-selected-items {
-    background: @cradmin-focus-bg;
-    padding: 10px;
     .django-cradmin-multiselect2-target-selected-item {
+      background: @cradmin-focus-bg;
+      padding: @cradmin-multiselect2-target-selected-item-padding;
+      margin-top: 5px;
+      &:first-child {
+        margin-top: 0;
+      }
       .django-cradmin-multiselect2-target-selected-item-title {
         font-size: @font-size-base;
+        //margin-top: 10px;
+        margin: 0;
+        padding: 0;
+      }
+      .django-cradmin-multiselect2-target-selected-item-description {
+        margin-top: 10px;
+        font-size: @font-size-small;
+      }
+      .django-cradmin-multiselect2-target-selected-item-deselectbutton {
         margin-top: 10px;
       }
     }

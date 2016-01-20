@@ -1,22 +1,52 @@
 .django-cradmin-multiselect2-columnlayout {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  @media(min-width: @cradmin-multiselect2-stacked-breakpoint) {
+    flex-direction: row;
+  }
 
   .django-cradmin-multiselect2-separatorcolumn {
-    width: 35px;
-    align-self: stretch;
-    border-width: 0 1px 0 1px;
+    padding: 10px;
+    margin: @cradmin-multiselect2-columnspacing 0 @cradmin-multiselect2-columnspacing 0;
+    background: @cradmin-multiselect2-separatorcolumn-bg;
     border-style: solid;
-    display: flex; flex-direction: column;
-    text-align: center; justify-content: space-between;
-    padding-top: 20px; padding-bottom: 20px;
-    margin-left: 20px; margin-right: 20px;
-    opacity: 0.4;
-    background: #ccc;
-    border-color: #bbb;
+    border-width: @cradmin-multiselect2-separatorcolumn-borderwidth 0 @cradmin-multiselect2-separatorcolumn-borderwidth 0;
+    border-color: @cradmin-multiselect2-separatorcolumn-bordercolor;
+    text-align: center;
+
     .django-cradmin-multiselect2-separatorcolumn-iconwrapper {
-      color: #333;
+      color: @cradmin-multiselect2-separatorcolumn-color;
+      .css3-transform(rotate(90deg));
+      &:first-child {
+        display: none;
+      }
+      &:last-child {
+        display: none;
+      }
     }
+
+    @media(min-width: @cradmin-multiselect2-stacked-breakpoint) {
+      flex-direction: column;
+      justify-content: space-between;
+      display: flex;
+      align-self: stretch;
+      text-align: center;
+      padding: 20px 0 20px 0;
+      margin: 0 @cradmin-multiselect2-columnspacing 0 @cradmin-multiselect2-columnspacing;
+      width: @cradmin-multiselect2-separatorcolumn-width;
+      border-width: 0 @cradmin-multiselect2-separatorcolumn-borderwidth 0 @cradmin-multiselect2-separatorcolumn-borderwidth;
+
+      .django-cradmin-multiselect2-separatorcolumn-iconwrapper {
+        .css3-transform(none);
+        &:first-child {
+          display: block;
+        }
+        &:last-child {
+          display: block;
+        }
+      }
+    }
+
   }
 
   &.django-cradmin-multiselect2-columnlayout-2 {
@@ -30,7 +60,7 @@
   &.django-cradmin-multiselect2-columnlayout-3 {
     .django-cradmin-multiselect2-filtercolumn {
       flex: 2;
-      margin-right: 20px;
+      margin-right: @cradmin-multiselect2-columnspacing;
     }
     .django-cradmin-multiselect2-listcolumn {
       flex: 4;

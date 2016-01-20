@@ -92,7 +92,7 @@ class ProductTargetRenderer(multiselect2.target_renderer.Target):
     for more details.
     """
     def get_with_items_title(self):
-        return 'Products selected'
+        return 'Selected products:'
 
     def get_submit_button_text(self):
         return 'Do stuff with products'
