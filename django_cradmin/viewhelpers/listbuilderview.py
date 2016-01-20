@@ -309,9 +309,12 @@ class FilterListMixin(listfilter_viewmixin.ViewMixin):
         various modules (such as :class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`)
         for details on how to use this method.
         """
-        position = self.get_filterlist_position()
-        template_name = 'django_cradmin/viewhelpers/listbuilderview/filterlist-{}.django.html'.format(position)
-        return template_name
+        if getattr(self, 'template_name', None):
+            return self.template_name
+        else:
+            position = self.get_filterlist_position()
+            template_name = 'django_cradmin/viewhelpers/listbuilderview/filterlist-{}.django.html'.format(position)
+            return template_name
 
     def get_filter_unprotected_querystring_arguments(self):
         """
