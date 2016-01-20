@@ -1,0 +1,20 @@
+{% load cradmin_tags %}
+
+<div class="django-cradmin-listfilter-target"
+     id="django_cradmin_listbuilderview_listwrapper"
+     aria-live="polite">
+    {% if listbuilder_list.has_items %}
+        {% cradmin_render_renderable listbuilder_list %}
+        {% block pager %}
+            {% include "django_cradmin/viewhelpers/listbuilderview/includes/loadmorepager.django.html" %}
+        {% endblock pager %}
+    {% else %}
+        {% block no-items-wrapper %}
+            <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
+                {% block no-items-paragraph-contents %}
+                    {{ no_items_message }}
+                {% endblock no-items-paragraph-contents %}
+            </p>
+        {% endblock no-items-wrapper %}
+    {% endif %}
+</div>
