@@ -5,8 +5,8 @@ from invoke_extras.context_managers import cd
 
 LANGUAGE_CODES = ['en', 'nb']
 SQLITE_DATABASE = 'db.sqlite3'
-DUMPSCRIPT_DATAFILE = os.path.join(
-    'django_cradmin', 'demo', 'project', 'dumps', 'dev', 'data.py')
+SQL_DUMP_FILE = os.path.join(
+    'django_cradmin', 'demo', 'project', 'dumps', 'dev', 'data.sql')
 
 
 def _manage(args, echo=True, cwd=None, **kwargs):
@@ -60,8 +60,7 @@ def resetdb():
     """
     Remove db.sqlite if it exists, and run the ``syncmigrate`` task.
     """
-    if os.path.exists(SQLITE_DATABASE):
-        os.remove(SQLITE_DATABASE)
+    removedb()
     syncmigrate()
 
 
@@ -70,8 +69,9 @@ def recreate_devdb():
     """
     Recreate the test database.
     """
-    resetdb()
-    _manage('runscript django_cradmin.demo.project.dumps.dev.data')
+    removedb()
+    _load_devdb_sqldump()
+    syncmigrate()
 
 
 @task
@@ -83,11 +83,22 @@ def recreate_devdb_with_randomdata():
     _manage('cradmin_webdemo_autogenerate_data')
 
 
+def _load_devdb_sqldump():
+    run('sqlite3 db.sqlite3 ".read {}"'.format(SQL_DUMP_FILE))
+
+
 @task
-def dump_current_db_to_dumpscript_datafile():
+def dump_current_db_to_sql():
     """
-    Dump current db to the dumpscript dataset.
+    Dump current db into ``django_cradmin/demo/project/dumps/dev/data.sql``.
     """
-    result = _manage('dumpscript auth.User webdemo listfilterdemo')
-    with open(DUMPSCRIPT_DATAFILE, 'wb') as outfile:
-        outfile.write(result.stdout.encode('utf-8') + b'\n')
+    result = run('sqlite3 db.sqlite3 ".dump"', echo=False)
+    with open(SQL_DUMP_FILE, 'wb') as outfile:
+        outfile.write(result.stdout.encode('utf-8'))
+    print()
+    print("*" * 70)
+    print()
+    print('{} successfully updated.'.format(SQL_DUMP_FILE))
+    print()
+    print("*" * 70)
+    print()
