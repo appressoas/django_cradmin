@@ -65,13 +65,26 @@
     <p>
         <a class="text-muted" href="{{ github_base_url }}/usermanagerdemo/">django_cradmin/demo/usermanagerdemo/</a>
     </p>
-    <hr>
 {% endblock content %}
 
 {% block innerwrapper_post %}
-    <p class="text-center">
-        <a href="/djangoadmin/">
-            Django admin UI
-        </a>
-    </p>
+    <div class="text-center">
+        <div class="row">
+            <div class="col-sm-6">
+                <p>
+                    <a href="/superuser/" class="btn btn-default btn-block btn-lg">
+                        Cradmin superuser UI
+                    </a>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <p>
+                    <a href="/djangoadmin/" class="btn btn-default btn-block btn-lg">
+                        Django admin UI
+                    </a>
+                </p>
+            </div>
+        </div>
+        <br><br>
+    </div>
 {% endblock innerwrapper_post %}
