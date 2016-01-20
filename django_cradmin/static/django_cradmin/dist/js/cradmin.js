@@ -4465,7 +4465,6 @@
             options = angular.fromJson(attributes.djangoCradminMultiselect2Target);
             angular.merge($scope.options, options);
           }
-          console.log($scope.options);
           $element.on('submit', function(e) {
             if ($scope.options.updateFormActionToWindowLocation) {
               return $element.attr('action', $window.location.href);
