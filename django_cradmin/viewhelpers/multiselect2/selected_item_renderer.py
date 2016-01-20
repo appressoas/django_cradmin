@@ -16,6 +16,15 @@ class SelectedItem(renderable.AbstractRenderableWithCss):
     #: The template used to render this selected item.
     template_name = 'django_cradmin/viewhelpers/multiselect2/selected_item_renderer/selected-item.django.html'
 
+    #: If this is specified, we will add an attribute with this name
+    #: for the value as an attribute of the object.
+    #:
+    #: I.e.: if ``valuealias = "person"``, you will be able to use ``me.person`` in
+    #: the template, and you will be able to use ``self.person`` in any methods you
+    #: add or override in the class (just remember to call ``super()`` if you override
+    #: ``__init__``).
+    valuealias = None
+
     def __init__(self, value):
         """
         Args:
@@ -23,6 +32,8 @@ class SelectedItem(renderable.AbstractRenderableWithCss):
 
         """
         self.value = value
+        if self.valuealias:
+            setattr(self, self.valuealias, self.value)
 
     def get_base_css_classes_list(self):
         return ['django-cradmin-multiselect2-selected-item']

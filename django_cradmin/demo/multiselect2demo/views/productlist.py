@@ -11,6 +11,15 @@ from django_cradmin.viewhelpers import multiselect2view
 
 
 class SelectedProductsForm(forms.Form):
+    """
+    The form we use for validation and selected items extractions
+    when the user submits their selection.
+
+    It is just a plain Django form (can also be a ModelForm). You
+    just have to make sure that the name of the form field (``selected_items``)
+    matches the value returned by ``get_inputfield_name()`` in the
+    ``SelectableProductItemValue`` class.
+    """
     selected_items = forms.ModelMultipleChoiceField(
         queryset=Product.objects.none()
     )
@@ -21,13 +30,43 @@ class SelectedProductsForm(forms.Form):
         self.fields['selected_items'].queryset = selectable_items_queryset
 
 
-class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
+class SelectedProductItem(multiselect2.selected_item_renderer.SelectedItem):
     """
+    Define how selected items are rendered.
+
+    You do not have to create this class - you can also just use
+    the default value for the ``selected_item_renderer_class``
+    You can just use the default value from
+    ``multiselect2.listbuilder_itemvalues.ItemValue.selected_item_renderer_class``
+
+    This only scratches the surface of all the options you have for
+    how selected items are rendered. See
+    :class:`django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem`
+    for more details.
+    """
+    valuealias = 'product'
+
+    def get_title(self):
+        return self.product.name
+
+
+class SelectableProductItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
+    """
+    Define how selectable items are rendered.
+
     You do not have to create this class - you can also just use
     :class:`django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`
     directly if the defaults from that class suites your needs.
+
+    This only scratches the surface of all the options you have for
+    how selectable items are rendered. See
+    :class:`django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`
+    for more details.
     """
     valuealias = 'product'
+
+    # You do not need to override this - the default works in most cases!
+    selected_item_renderer_class = SelectedProductItem
 
     def get_inputfield_name(self):
         return 'selected_items'
@@ -41,9 +80,16 @@ class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
 
 class ProductTargetRenderer(multiselect2.target_renderer.Target):
     """
+    Define how to render the box containing selected items.
+
     You do not have to create this class - you can also just use
     :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`
     directly if the defaults from that class suites your needs.
+
+    This only scratches the surface of all the options you have for
+    how the selected items box is rendered. See
+    :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target`
+    for more details.
     """
     def get_with_items_title(self):
         return 'Products selected'
@@ -65,7 +111,7 @@ class ProductListView(multiselect2view.ListbuilderView):
     - You do not have to override ``get_target_renderer_class``.
     """
     model = Product
-    value_renderer_class = ProductListItemValue
+    value_renderer_class = SelectableProductItemValue
     paginate_by = 20
 
     def get_queryset_for_role(self, role):
@@ -107,7 +153,7 @@ class FilteredProductListView(multiselect2view.ListbuilderFilterView):
     This view is just like ProductListView except that it adds filters!
     """
     model = Product
-    value_renderer_class = ProductListItemValue
+    value_renderer_class = SelectableProductItemValue
     paginate_by = 20
 
     def add_filterlist_items(self, filterlist):
