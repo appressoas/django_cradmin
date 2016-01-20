@@ -1,0 +1,17 @@
+{% extends "django_cradmin/viewhelpers/multiselect2view/base.django.html" %}
+{% load cradmin_tags %}
+
+{% block columnlayout_extra_cssclass %}
+    django-cradmin-multiselect2-columnlayout-3
+{% endblock columnlayout_extra_cssclass %}
+
+{% block columnlayoutcontainer-inner %}
+    {% block filtercolumn %}
+        <div class="django-cradmin-multiselect2-filtercolumn">
+            {% block filtercolumn-inner %}
+                {% cradmin_render_renderable filterlist %}
+            {% endblock filtercolumn-inner %}
+        </div>
+    {% endblock filtercolumn %}
+    {{ block.super }}
+{% endblock columnlayoutcontainer-inner %}

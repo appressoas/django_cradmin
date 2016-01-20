@@ -1,8 +1,12 @@
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.template import defaultfilters
+
 from django_cradmin import crapp
 from django_cradmin.demo.multiselect2demo.models import Product
-from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
 from django_cradmin.viewhelpers import multiselect2
+from django_cradmin.viewhelpers import multiselect2view
 
 
 class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
@@ -11,8 +15,16 @@ class ProductListItemValue(multiselect2.listbuilder_itemvalues.ItemValue):
     :class:`django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`
     directly if the defaults from that class suites your needs.
     """
+    valuealias = 'product'
+
     def get_inputfield_name(self):
         return 'selected_products'
+
+    def get_title(self):
+        return self.product.name
+
+    def get_description(self):
+        return defaultfilters.truncatechars(self.product.description, 150)
 
 
 class ProductTargetRenderer(multiselect2.target_renderer.Target):
@@ -31,44 +43,39 @@ class ProductTargetRenderer(multiselect2.target_renderer.Target):
         return 'Nothing selected'
 
 
-class ProductListView(listbuilderview.FilterListMixin, listbuilderview.View):
+class ProductListView(multiselect2view.ListbuilderView):
+    """
+    A very simple example of a multiselect2 view.
+
+    It could be simplified further since the following is optional:
+
+    - You do not have to override ``value_renderer_class``.
+    - You do not have to override ``get_target_renderer_class``.
+    """
     model = Product
     value_renderer_class = ProductListItemValue
     paginate_by = 20
 
-    def add_filterlist_items(self, filterlist):
-        filterlist.append(listfilter.django.single.textinput.Search(
-            slug='search',
-            label='Search',
-            label_is_screenreader_only=True,
-            modelfields=['name', 'description']))
-        # Add the renderer for the target of selects
-        # - the target can be added to a listfilter list,
-        #   or rendered by itself anywhere in the page using
-        #   ``{% cradmin_render_renderable %}`` (see
-        #   :class:`.ProductListItemValue` for an example of this.
-        filterlist.append(ProductTargetRenderer())
-
-    def get_filterlist_url(self, filters_string):
-        return self.request.cradmin_app.reverse_appurl(
-            'filter', kwargs={'filters_string': filters_string})
-
-    def get_unfiltered_queryset_for_role(self, role):
+    def get_queryset_for_role(self, role):
         return Product.objects.all().order_by('name')
 
+    def get_target_renderer_class(self):
+        return ProductTargetRenderer
 
-class ProductListViewFlexbox(listbuilderview.FilterListMixin, listbuilderview.View):
+    def post(self, request, *args, **kwargs):
+        messages.success(self.request,
+                         'Posted: {}'.format(self.request.POST))
+        return redirect(self.request.get_full_path())
+
+
+class FilteredProductListView(multiselect2view.ListbuilderFilterView):
     """
     A slightly more complex alternative to ProductListView above.
 
-    This uses a custom template and renders the target in a column by itself.
     """
     model = Product
     value_renderer_class = ProductListItemValue
     paginate_by = 20
-
-    def get_filterlist_template_name(self):
-        return 'multiselect2demo/productlist-flexbox.django.html'
 
     def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(
@@ -79,16 +86,18 @@ class ProductListViewFlexbox(listbuilderview.FilterListMixin, listbuilderview.Vi
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
-            'flexbox', kwargs={'filters_string': filters_string})
+            'withfilters', kwargs={'filters_string': filters_string})
 
     def get_unfiltered_queryset_for_role(self, role):
         return Product.objects.all().order_by('name')
 
-    def get_context_data(self, **kwargs):
-        context = super(ProductListViewFlexbox, self).get_context_data(**kwargs)
-        context['targetrenderer'] = ProductTargetRenderer()
-        return context
+    def get_target_renderer_class(self):
+        return ProductTargetRenderer
 
+    def post(self, request, *args, **kwargs):
+        messages.success(self.request,
+                         'Posted: {}'.format(self.request.POST))
+        return redirect(self.request.get_full_path())
 
 
 class App(crapp.App):
@@ -98,11 +107,7 @@ class App(crapp.App):
             ProductListView.as_view(),
             name=crapp.INDEXVIEW_NAME),
         crapp.Url(
-            r'^filter/(?P<filters_string>.+)?$',
-            ProductListView.as_view(),
-            name='filter'),
-        crapp.Url(
-            r'^flexbox/(?P<filters_string>.+)?$',
-            ProductListViewFlexbox.as_view(),
-            name='flexbox'),
+            r'^with-filters/(?P<filters_string>.+)?$',
+            FilteredProductListView.as_view(),
+            name='withfilters'),
     ]

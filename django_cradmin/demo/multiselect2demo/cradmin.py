@@ -12,11 +12,11 @@ class Menu(crmenu.Menu):
             active=(cradmin_app.appname == 'productlist' and
                     cradmin_app.active_viewname == crapp.INDEXVIEW_NAME))
         self.add_menuitem(
-            label='Productlist (flexbox)',
+            label='Productlist with filters',
             url=self.cradmin_instance.reverse_url(appname='productlist',
-                                                  viewname='flexbox'),
+                                                  viewname='withfilters'),
             active=(cradmin_app.appname == 'productlist' and
-                    cradmin_app.active_viewname == 'flexbox'))
+                    cradmin_app.active_viewname == 'withfilters'))
 
 
 class MultiselectDemoCrAdminInstance(crinstance.BaseCrAdminInstance):

@@ -1,0 +1,42 @@
+.django-cradmin-multiselect2-columnlayout {
+  display: flex;
+  flex-direction: row;
+
+  .django-cradmin-multiselect2-separatorcolumn {
+    width: 35px;
+    align-self: stretch;
+    border-width: 0 1px 0 1px;
+    border-style: solid;
+    display: flex; flex-direction: column;
+    text-align: center; justify-content: space-between;
+    padding-top: 20px; padding-bottom: 20px;
+    margin-left: 20px; margin-right: 20px;
+    opacity: 0.4;
+    background: #ccc;
+    border-color: #bbb;
+    .django-cradmin-multiselect2-separatorcolumn-iconwrapper {
+      color: #333;
+    }
+  }
+
+  &.django-cradmin-multiselect2-columnlayout-2 {
+    .django-cradmin-multiselect2-listcolumn {
+      flex: 1;
+    }
+    .django-cradmin-multiselect2-targetcolumn {
+      flex: 1;
+    }
+  }
+  &.django-cradmin-multiselect2-columnlayout-3 {
+    .django-cradmin-multiselect2-filtercolumn {
+      flex: 2;
+      margin-right: 20px;
+    }
+    .django-cradmin-multiselect2-listcolumn {
+      flex: 4;
+    }
+    .django-cradmin-multiselect2-targetcolumn {
+      flex: 4;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{% extends "django_cradmin/viewhelpers/listbuilderview/default.django.html" %}
+{% load cradmin_tags %}
+{% load cradmin_icon_tags %}
+
+
+{% block list %}
+    <div class="django-cradmin-multiselect2-columnlayout {% block columnlayout_extra_cssclass %}{% endblock %}">
+        {% block columnlayoutcontainer-inner %}
+            {% block listcolumn %}
+                <div class="django-cradmin-multiselect2-listcolumn">
+                    {% block listcolumn-inner %}
+                        {% include "django_cradmin/viewhelpers/listbuilderview/includes/list.django.html" %}
+                    {% endblock listcolumn-inner %}
+                </div>
+            {% endblock listcolumn %}
+            {% block separatorcolumn %}
+                <div class="django-cradmin-multiselect2-separatorcolumn" aria-hidden="true">
+                    {% block separatorcolumn-inner %}
+                        <div class="django-cradmin-multiselect2-separatorcolumn-iconwrapper">
+                            <span class="{% cradmin_icon 'multiselect2-separator-icon' %}"></span>
+                        </div>
+                        <div class="django-cradmin-multiselect2-separatorcolumn-iconwrapper">
+                            <span class="{% cradmin_icon 'multiselect2-separator-icon' %}"></span>
+                        </div>
+                        <div class="django-cradmin-multiselect2-separatorcolumn-iconwrapper">
+                            <span class="{% cradmin_icon 'multiselect2-separator-icon' %}"></span>
+                        </div>
+                    {% endblock separatorcolumn-inner %}
+                </div>
+            {% endblock separatorcolumn %}
+            {% block targetcolumn %}
+                <div class="django-cradmin-multiselect2-targetcolumn">
+                    {% block targetcolumn-inner %}
+                        {% cradmin_render_renderable target_renderer %}
+                    {% endblock targetcolumn-inner %}
+                </div>
+            {% endblock targetcolumn %}
+        {% endblock columnlayoutcontainer-inner %}
+    </div>
+{% endblock list %}
