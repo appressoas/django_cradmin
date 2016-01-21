@@ -64,14 +64,14 @@ class TestMultiSelectView(TestCase):
                 return queryset
 
             def object_selection_invalid(self, form):
-                return http.HttpResponse(form.errors.as_text())
+                return http.HttpResponse('Invalid selection')
 
         request = self.factory.post('/test', {
             'selected_objects': [1, 10]
         })
         request.cradmin_role = mock.MagicMock()
         response = SimpleMultiSelectView.as_view()(request)
-        self.assertIn(b'1 is not one of the available choices.', response.content)
+        self.assertIn(b'Invalid selection', response.content)
 
 
 class TestMultiSelectFormView(TestCase):
