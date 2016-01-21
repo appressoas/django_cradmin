@@ -92,6 +92,23 @@ class ViewMixin(object):
         """
         return {}
 
+    def get_value_and_frame_renderer_kwargs(self):
+        """
+        Get kwargs for the classes returned by :meth:`.get_value_renderer_class`
+        and :meth:`.get_frame_renderer_class`.
+
+        Both the frame and value renderer base classes takes ``**kwargs``
+        and store them in ``self.kwargs`` (just like django class based views),
+        so even if you just need to send kwargs to one of these classes,
+        you can still use this.
+
+        See  the docs for the ``value_and_frame_renderer_kwargs`` argument for
+        :meth:`django_cradmin.viewhelpers.listbuilder.base.List.extend_with_values`  
+        method for more information. HINT: This can also return a callable to generate
+        kwargs based on each value in the list!
+        """
+        return {}
+
     def get_value_renderer_class(self):
         """
         Get a subclass of :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer`.
@@ -129,6 +146,7 @@ class ViewMixin(object):
         - :meth:`.get_listbuilder_list_value_iterable`
         - :meth:`.get_value_renderer_class`
         - :meth:`.get_frame_renderer_class`
+        - :meth:`.get_value_and_frame_renderer_kwargs`
         - :meth:`.get_listbuilder_list_kwargs`
 
         Parameters:
@@ -138,6 +156,7 @@ class ViewMixin(object):
             value_iterable=self.get_listbuilder_list_value_iterable(context),
             value_renderer_class=self.get_value_renderer_class(),
             frame_renderer_class=self.get_frame_renderer_class(),
+            value_and_frame_renderer_kwargs=self.get_value_and_frame_renderer_kwargs(),
             **self.get_listbuilder_list_kwargs())
 
     def get_no_items_message(self):
