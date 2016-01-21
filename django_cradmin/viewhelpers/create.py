@@ -87,7 +87,7 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         if sys.version_info[0] == 2:
             # For some reason, HttpRedirect requires unicode string to work
             # correctly on Python2, so we ensure that here.
-            url = unicode(url)
+            url = unicode(url)  # noqa
         return url
 
     def get_default_save_success_url(self):
