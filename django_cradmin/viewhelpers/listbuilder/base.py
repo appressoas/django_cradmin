@@ -182,6 +182,10 @@ class List(AbstractRenderableWithCss):
                             }
                         else:
                             return {}
+
+                The ``value``-argument is sent as a positional argument, so your
+                function can name the input argument as you like (so if the value
+                is a ``Product`` object, you can use ``def my_kwargs_generator(product): ...``.
         """
         value_renderer_class = value_renderer_class or self.get_default_value_renderer_class()
         frame_renderer_class = frame_renderer_class or self.get_default_frame_renderer_class()
