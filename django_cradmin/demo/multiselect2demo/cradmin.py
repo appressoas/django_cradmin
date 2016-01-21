@@ -8,15 +8,21 @@ class Menu(crmenu.Menu):
     def build_menu(self):
         cradmin_app = self.request.cradmin_app
         self.add_menuitem(
-            label='Productlist', url=self.appindex_url('productlist'),
+            label='Simple', url=self.appindex_url('productlist'),
             active=(cradmin_app.appname == 'productlist' and
                     cradmin_app.active_viewname == crapp.INDEXVIEW_NAME))
         self.add_menuitem(
-            label='Productlist with filters',
+            label='With filters',
             url=self.cradmin_instance.reverse_url(appname='productlist',
                                                   viewname='withfilters'),
             active=(cradmin_app.appname == 'productlist' and
                     cradmin_app.active_viewname == 'withfilters'))
+        self.add_menuitem(
+            label='Select on load',
+            url=self.cradmin_instance.reverse_url(appname='productlist',
+                                                  viewname='select-on-load'),
+            active=(cradmin_app.appname == 'productlist' and
+                    cradmin_app.active_viewname == 'select-on-load'))
 
 
 class MultiselectDemoCrAdminInstance(crinstance.BaseCrAdminInstance):

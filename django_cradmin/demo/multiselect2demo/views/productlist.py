@@ -201,6 +201,33 @@ class FilteredProductListView(multiselect2view.ListbuilderFilterView):
         return redirect(self.request.get_full_path())
 
 
+class ProductListViewSelectOnLoad(ProductListView):
+    """
+    Extends :class:`.ProductListView` to show how to select items when the
+    view loads.
+    """
+    def __make_value_and_frame_renderer_kwargs(self, product):
+        """
+        Select all products that contains ``"sock"`` in their name.
+
+        This method is called by :meth:`.get_listbuilder_list_kwargs` (below)
+        to create kwargs for our :class:`.SelectableProductItemValue`.
+        That class inherits from
+        :class:`.django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`,
+        which takes ``is_selected`` as a kwarg.
+        """
+        return {
+            'is_selected': 'sock' in product.name.lower()
+        }
+
+    def get_value_and_frame_renderer_kwargs(self):
+        """
+        We return a callable here. This callable is used to create
+        individual kwargs for each value in the list.
+        """
+        return self.__make_value_and_frame_renderer_kwargs
+
+
 class App(crapp.App):
     appurls = [
         crapp.Url(
@@ -211,4 +238,8 @@ class App(crapp.App):
             r'^with-filters/(?P<filters_string>.+)?$',
             FilteredProductListView.as_view(),
             name='withfilters'),
+        crapp.Url(
+            r'^select-on-load$',
+            ProductListViewSelectOnLoad.as_view(),
+            name='select-on-load'),
     ]

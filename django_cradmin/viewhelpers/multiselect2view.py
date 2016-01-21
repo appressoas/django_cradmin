@@ -63,15 +63,18 @@ class ViewMixin(FormMixin):
 
 class ListbuilderView(ViewMixin, listbuilderview.View):
     """
+    Multiselect2 listbuilder view.
     """
     template_name = 'django_cradmin/viewhelpers/multiselect2view/listbuilderview.django.html'
+    value_renderer_class = multiselect2.listbuilder_itemvalues.ItemValue
 
 
 class ListbuilderFilterView(ViewMixin, listbuilderview.FilterListMixin, listbuilderview.View):
     """
-
+    Multiselect2 listbuilder view with filters.
     """
     template_name = 'django_cradmin/viewhelpers/multiselect2view/listbuilderfilterview.django.html'
+    value_renderer_class = multiselect2.listbuilder_itemvalues.ItemValue
 
     def get_filterlist_template_name(self):
         return self.template_name
