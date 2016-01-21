@@ -4599,13 +4599,24 @@
           });
         },
         link: function($scope, $element, attributes) {
-          var select;
+          var select, targetScopeExistsWatcherCancel;
           select = function() {
             djangoCradminMultiselect2Coordinator.select($scope);
             return $scope.markAsSelected();
           };
           if ($scope.options.is_selected) {
-            select();
+            if (djangoCradminMultiselect2Coordinator.targetScopeExists($scope.getTargetDomId())) {
+              select();
+            } else {
+              targetScopeExistsWatcherCancel = $scope.$watch(function() {
+                return djangoCradminMultiselect2Coordinator.targetScopeExists($scope.getTargetDomId());
+              }, function(newValue, oldValue) {
+                if (newValue) {
+                  select();
+                  return targetScopeExistsWatcherCancel();
+                }
+              });
+            }
           }
           $element.on('click', function(e) {
             e.preventDefault();
@@ -4724,6 +4735,10 @@
           throw Error("No target with ID '" + targetDomId + "' registered with djangoCradminMultiselect2Coordinator.");
         }
         return targetScope;
+      };
+
+      Coordinator.prototype.targetScopeExists = function(targetDomId) {
+        return this.targets[targetDomId] != null;
       };
 
       Coordinator.prototype.select = function(selectScope) {

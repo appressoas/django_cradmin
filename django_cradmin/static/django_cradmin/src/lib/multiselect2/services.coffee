@@ -22,6 +22,9 @@ angular.module('djangoCradmin.multiselect2.services', [])
         throw Error("No target with ID '#{targetDomId}' registered with djangoCradminMultiselect2Coordinator.")
       return targetScope
 
+    targetScopeExists: (targetDomId) ->
+      return @targets[targetDomId]?
+
     select: (selectScope) ->
       targetScope = @__getTargetScope(selectScope.getTargetDomId())
       targetScope.select(selectScope)

@@ -210,7 +210,19 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           $scope.markAsSelected()
 
         if $scope.options.is_selected
-          select()
+          # We need to fall back on a watcher if the targetScope does not exist on load.
+          # This happens if the target scope is after the select scope in the body.
+          if djangoCradminMultiselect2Coordinator.targetScopeExists($scope.getTargetDomId())
+            select()
+          else
+            targetScopeExistsWatcherCancel = $scope.$watch(
+              ->
+                return djangoCradminMultiselect2Coordinator.targetScopeExists($scope.getTargetDomId())
+              , (newValue, oldValue) ->
+                if newValue
+                  select()
+                  targetScopeExistsWatcherCancel()
+            )
 
         $element.on 'click', (e) ->
           e.preventDefault()
