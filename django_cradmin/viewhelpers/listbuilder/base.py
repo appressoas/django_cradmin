@@ -168,22 +168,35 @@ class List(AbstractRenderableWithCss):
                 as the ``inneritem`` attribute/parameter.
 
                 Defaults to :meth:`.get_default_frame_renderer_class`.
-            value_and_frame_renderer_kwargs (dict): Keyword arguments to send to all
+            value_and_frame_renderer_kwargs (dict or function): Keyword arguments to send to all
                 the constructor of all the value and frame renderers.
+
+                If this is not a dict, it is assumed to be a function/callable that takes
+                a value from the ``value_iterable`` as the only argument, and returns
+                a dict of kwargs. Example function::
+
+                    def my_kwargs_generator(value):
+                        if value == 10:
+                            return {
+                                'is_selected': True
+                            }
+                        else:
+                            return {}
         """
         value_renderer_class = value_renderer_class or self.get_default_value_renderer_class()
         frame_renderer_class = frame_renderer_class or self.get_default_frame_renderer_class()
         value_and_frame_renderer_kwargs = value_and_frame_renderer_kwargs or {}
-        if frame_renderer_class:
-            renderable_iterable = [
-                frame_renderer_class(inneritem=value_renderer_class(value=value,
-                                                                    **value_and_frame_renderer_kwargs),
-                                     **value_and_frame_renderer_kwargs)
-                for value in value_iterable]
-        else:
-            renderable_iterable = [value_renderer_class(value=value, **value_and_frame_renderer_kwargs)
-                                   for value in value_iterable]
-        self.extend(renderable_iterable)
+        for value in value_iterable:
+            if isinstance(value_and_frame_renderer_kwargs, dict):
+                kwargs = value_and_frame_renderer_kwargs
+            else:
+                kwargs = value_and_frame_renderer_kwargs(value)
+            value_renderable = value_renderer_class(value=value, **kwargs)
+            if frame_renderer_class:
+                renderable = frame_renderer_class(inneritem=value_renderable, **kwargs)
+            else:
+                renderable = value_renderable
+            self.append(renderable)
 
     @classmethod
     def from_value_iterable(cls, value_iterable,
@@ -196,6 +209,8 @@ class List(AbstractRenderableWithCss):
         as __init__ arguments, and then calling :meth:`.extend_with_values` with
         ``value_iterable``, ``value_renderer_class`` and ``frame_renderer_class`` as
         arguments.
+
+        See :meth:`.extend_with_values` for documentation for the arguments.
 
         Returns:
             An object of this class.

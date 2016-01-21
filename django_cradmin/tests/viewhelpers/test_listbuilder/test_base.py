@@ -75,6 +75,28 @@ class TestList(TestCase):
         self.assertTrue(isinstance(testlist.renderable_list[0], listbuilder.base.ItemFrameRenderer))
         self.assertTrue(isinstance(testlist.renderable_list[1], listbuilder.base.ItemFrameRenderer))
 
+    def test_extend_with_values_value_and_frame_renderer_kwargs_dict(self):
+        testlist = listbuilder.base.List()
+        testlist.extend_with_values(['testvalue1', 'testvalue2'],
+                                    value_renderer_class=listbuilder.base.ItemValueRenderer,
+                                    value_and_frame_renderer_kwargs={'extra_kwarg': 10})
+        self.assertEqual({'extra_kwarg': 10}, testlist.renderable_list[0].kwargs)
+        self.assertEqual({'extra_kwarg': 10}, testlist.renderable_list[1].kwargs)
+
+    def test_extend_with_values_value_and_frame_renderer_kwargs_function(self):
+        def kwargs_function(value):
+            if value == 'testvalue1':
+                return {'is_first': True}
+            else:
+                return {}
+
+        testlist = listbuilder.base.List()
+        testlist.extend_with_values(['testvalue1', 'testvalue2'],
+                                    value_renderer_class=listbuilder.base.ItemValueRenderer,
+                                    value_and_frame_renderer_kwargs=kwargs_function)
+        self.assertEqual({'is_first': True}, testlist.renderable_list[0].kwargs)
+        self.assertEqual({}, testlist.renderable_list[1].kwargs)
+
     def test_from_value_iterable_without_frame_renderer_class(self):
         testlist = listbuilder.base.List.from_value_iterable(
             ['testvalue1', 'testvalue2'],
