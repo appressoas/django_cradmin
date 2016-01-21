@@ -102,8 +102,8 @@ class ViewMixin(object):
         so even if you just need to send kwargs to one of these classes,
         you can still use this.
 
-        See  the docs for the ``value_and_frame_renderer_kwargs`` argument for
-        :meth:`django_cradmin.viewhelpers.listbuilder.base.List.extend_with_values`  
+        See the docs for the ``value_and_frame_renderer_kwargs`` argument for
+        :meth:`django_cradmin.viewhelpers.listbuilder.base.List.extend_with_values`
         method for more information. HINT: This can also return a callable to generate
         kwargs based on each value in the list!
         """
@@ -299,6 +299,8 @@ class FilterListMixin(listfilter_viewmixin.ViewMixin):
 
     Must be mixed in before any TemplateView subclass.
     """
+    template_name = None
+
     def get_filterlist_position(self):
         """
         Get the position where you want to place the filterlist.
