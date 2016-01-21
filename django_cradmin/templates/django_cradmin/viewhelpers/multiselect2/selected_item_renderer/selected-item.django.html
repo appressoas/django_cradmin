@@ -3,7 +3,9 @@
 <div class="{{ me.get_css_classes_string }}">
     {% block title %}
         <h3 class="django-cradmin-multiselect2-target-selected-item-title">
-            {{ me.get_title }}
+            {% block title-content %}
+                {{ me.get_title }}
+            {% endblock title-content %}
         </h3>
     {% endblock title %}
     {% block below-title %}{% endblock below-title %}
