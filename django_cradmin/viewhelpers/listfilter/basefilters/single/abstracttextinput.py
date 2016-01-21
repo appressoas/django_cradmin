@@ -106,7 +106,6 @@ class IntInputFilterMixin(object):
         return pgettext_lazy('listfilter IntInputFilterMixin', 'Type a number ...')
 
 
-
 class AbstractSearch(AbstractInputFilter):
     """
     Abstract search filter.

@@ -173,7 +173,6 @@ class FilteredProductListView(multiselect2view.ListbuilderFilterView):
     def get_target_renderer_class(self):
         return ProductTargetRenderer
 
-
     #
     #
     # Handling the POST request is just like in a normal Django FormView.

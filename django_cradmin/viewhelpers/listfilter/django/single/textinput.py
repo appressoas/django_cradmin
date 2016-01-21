@@ -1,8 +1,6 @@
 from django.db import models
-from django.utils.translation import pgettext_lazy
 
 from django_cradmin.viewhelpers.listfilter.basefilters.single import abstracttextinput
-
 from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMixin
 
 
