@@ -12,7 +12,7 @@ class TestViewMixin(test.TestCase):
     def test_get_selected_values_list(self):
         view = manytomanyview.ViewMixin()
         view.request = mock.MagicMock()
-        view.request.GET = QueryDict(mutable=True)
+        view.request.GET = QueryDict('', mutable=True)
         view.request.GET.update({
             'manytomany_select_current_value': '[1,2]'
         })
