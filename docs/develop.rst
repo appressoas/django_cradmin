@@ -43,7 +43,7 @@ Run the development server
 ::
 
     $ workon django_cradmin
-    $ ievv devrun
+    $ python manage.py runserver
 
 Open http://localhost:8000 and login with::
 
