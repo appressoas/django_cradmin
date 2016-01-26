@@ -5,7 +5,7 @@ from builtins import object
 class QuerysetForRoleMixin(object):
     def get_queryset_for_role(self, role):
         """
-        Get a queryset with all objects of :obj:`.model`  that
+        Get a queryset with all objects of ``self.model``  that
         the current role can access.
         """
         raise NotImplementedError()

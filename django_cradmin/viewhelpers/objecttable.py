@@ -943,7 +943,7 @@ class ObjectTableView(ListView):
         """
         Get the model class to list objects for.
 
-        Defaults to :obj:`.model`. See :obj:`.model` for more info.
+        Defaults to :obj:`~.ObjectTableView.model`. See :obj:`~.ObjectTableView.model` for more info.
         """
         return self.model
 
@@ -1068,7 +1068,7 @@ class ObjectTableView(ListView):
 
     def get_queryset_for_role(self, role):
         """
-        Get a queryset with all objects of :obj:`.model`  that
+        Get a queryset with all objects of :obj:`~.ObjectTableView.model`  that
         the current role can access.
         """
         raise NotImplementedError()
@@ -1154,7 +1154,7 @@ class ObjectTableView(ListView):
         """
         Get the page title (the title tag).
 
-        Defaults to the ``verbose_name_plural`` of the :obj:`.model`
+        Defaults to the ``verbose_name_plural`` of the :obj:`~.ObjectTableView.model`
         with the first letter capitalized.
         """
         return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)

@@ -28,7 +28,7 @@ class MultiSelectView(TemplateView):
 
     def get_queryset_for_role(self, role):
         """
-        Get a queryset with all objects of :obj:`.model`  that
+        Get a queryset with all objects of ``self.model``  that
         the current role can access.
         """
         raise NotImplementedError()
@@ -130,7 +130,7 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
     - :meth:`.get_field_layout`
 
     And you have to set:
-    - :obj:`.model`, or override a method as explained in its docs.
+    - :obj:`~.MultiSelectFormView.model`, or override a method as explained in its docs.
     - ``form_class`` or override ``get_form_class(...)`` as documented in the Django FormMixin docs.
 
     You will most likely also want to override :meth:.get_buttons`.
@@ -205,7 +205,7 @@ class MultiSelectFormView(MultiSelectView, FormMixin):
         """
         Get the page title/heading.
 
-        Defaults to the ``verbose_name_plural`` of the :obj:`.model`.
+        Defaults to the ``verbose_name_plural`` of the :obj:`~.MultiSelectFormView.model`.
         """
         return self.model._meta.verbose_name_plural
 

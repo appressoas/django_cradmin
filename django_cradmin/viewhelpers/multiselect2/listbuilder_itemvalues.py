@@ -21,8 +21,8 @@ class ItemValue(listbuilder.itemvalue.TitleDescription):
     If you have multiple lists with multiselect2 on the same page,
     you have to ensure the DOM IDs are unique by overriding:
 
-    - :meth:`get_selectbutton_dom_id`.
-    - :meth:`get_target_dom_id` (or use the ``target_dom_id`` parameter). Make sure you
+    - :meth:`~.ItemValue.get_selectbutton_dom_id`.
+    - :meth:`~.ItemValue.get_target_dom_id` (or use the ``target_dom_id`` parameter). Make sure you
       set :meth:`django_cradmin.viewhelpers.multiselect2.target_renderer.Target.get_target_dom_id`
       on your corresponding Target renderer to reflect the new ID.
     - :meth:`django_cradmin.viewhelpers.multiselect2.selected_item_renderer.SelectedItem.get_inputfield_name`
@@ -40,7 +40,7 @@ class ItemValue(listbuilder.itemvalue.TitleDescription):
     def __init__(self, *args, **kwargs):
         """
         Args:
-            target_dom_id: See :meth:`.get_target_dom_id`.
+            target_dom_id: See :meth:`~.ItemValue.get_target_dom_id`.
             is_selected: Mark the item as selected on load.
         """
         self.target_dom_id = kwargs.pop('target_dom_id', None)

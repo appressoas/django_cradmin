@@ -235,7 +235,7 @@ class ViewMixin(object):
 
     def get_unfiltered_queryset_for_role(self, role):
         """
-        Get a queryset with all objects of :obj:`.model`  that
+        Get a queryset with all objects of :obj:`~.ViewMixin.model`  that
         the current role can access.
         """
         raise NotImplementedError()

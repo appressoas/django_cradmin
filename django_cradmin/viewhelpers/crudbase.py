@@ -51,7 +51,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         """
         Get the model class.
 
-        Defaults to :obj:`.model`.
+        Defaults to :obj:`~.CreateUpdateViewMixin.model`.
         """
         return self.model
 

@@ -247,7 +247,7 @@ class View(ViewMixin, ListView):
         """
         Get the model class to list objects for.
 
-        Defaults to :obj:`.model`. See :obj:`.model` for more info.
+        Defaults to :obj:`~.View.model`. See :obj:`~.View.model` for more info.
         """
         return self.model
 
@@ -255,7 +255,7 @@ class View(ViewMixin, ListView):
         """
         Get the page title (the title tag).
 
-        Defaults to the ``verbose_name_plural`` of the :obj:`.model`
+        Defaults to the ``verbose_name_plural`` of the :obj:`~.View.model`
         with the first letter capitalized.
         """
         return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)
@@ -265,7 +265,7 @@ class View(ViewMixin, ListView):
 
     def get_queryset_for_role(self, role):
         """
-        Get a queryset with all objects of :obj:`.model`  that
+        Get a queryset with all objects of :obj:`~.View.model`  that
         the current role can access.
         """
         raise NotImplementedError()
