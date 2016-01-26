@@ -5,7 +5,7 @@ from django_cradmin.renderable import AbstractRenderableWithCss
 class AbstractItemRenderer(AbstractRenderableWithCss):
     """
     Abstract base class for :class:`.ItemFrameRenderer`
-    and :class:`.InnerValueRenderer`.
+    and :class:`.ItemValueRenderer`.
 
     You will normally add objects of a class that extends this class
     to :class:`.List`, but it is not required.
