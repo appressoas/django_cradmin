@@ -78,6 +78,9 @@ INSTALLED_APPS = (
 
     # Demo for multiselect
     'django_cradmin.demo.multiselect2demo.apps.MultiselectdemoConfig',
+
+    # For building docs
+    'ievv_opensource.ievvtasks_development',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -170,6 +173,11 @@ LOGGING = {
             'level': 'INFO',  # Do not set to debug - logs all queries
             'propagate': False
         },
+        'sh': {
+            'handlers': ['stderr'],
+            'level': 'WARNING',
+            'propagate': False
+        },
         '': {
             'handlers': ['stderr'],
             'level': 'DEBUG',
@@ -247,3 +255,6 @@ DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE = 'cradmin-archiveimage-listing'
 DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH = 170
 DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE = 'cradmin-archiveimage-preview'
 # DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '100KB'
+
+
+IEVVTASKS_DOCS_DIRECTORY = 'docs'

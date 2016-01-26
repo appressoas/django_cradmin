@@ -46,6 +46,8 @@ coverage==4.0
 # For building styles
 vitalstyles==1.1.4
 
+ievv_opensource==0.2.17
+
 # Pull inn development packages from GIT
 -r develop.gitpackages.txt
 
