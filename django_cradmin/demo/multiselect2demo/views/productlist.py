@@ -206,26 +206,25 @@ class ProductListViewSelectOnLoad(ProductListView):
     Extends :class:`.ProductListView` to show how to select items when the
     view loads.
     """
-    def __make_value_and_frame_renderer_kwargs(self, product):
+    def is_initially_selected_on_get(self, value):
         """
         Select all products that contains ``"sock"`` in their name.
+        """
+        return 'sock' in value.name.lower()
 
-        This method is called by :meth:`.get_listbuilder_list_kwargs` (below)
-        to create kwargs for our :class:`.SelectableProductItemValue`.
-        That class inherits from
-        :class:`.django_cradmin.viewhelpers.multiselect2.listbuilder_itemvalues.ItemValue`,
-        which takes ``is_selected`` as a kwarg.
-        """
-        return {
-            'is_selected': 'sock' in product.name.lower()
-        }
 
-    def get_value_and_frame_renderer_kwargs(self):
-        """
-        We return a callable here. This callable is used to create
-        individual kwargs for each value in the list.
-        """
-        return self.__make_value_and_frame_renderer_kwargs
+class SelectedProductsAndMoreForm(SelectedProductsForm):
+    age = forms.CharField(
+        required=True
+    )
+
+
+class ProductListViewWithExtraFormData(ProductListView):
+    def get_form_class(self):
+        return SelectedProductsAndMoreForm
+
+    def form_invalid(self, form):
+        return self.render_to_response(context=self.get_context_data())
 
 
 class App(crapp.App):
@@ -242,4 +241,8 @@ class App(crapp.App):
             r'^select-on-load$',
             ProductListViewSelectOnLoad.as_view(),
             name='select-on-load'),
+        crapp.Url(
+            r'^extra-form-data$',
+            ProductListViewWithExtraFormData.as_view(),
+            name='extra-form-data'),
     ]

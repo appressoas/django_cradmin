@@ -23,6 +23,12 @@ class Menu(crmenu.Menu):
                                                   viewname='select-on-load'),
             active=(cradmin_app.appname == 'productlist' and
                     cradmin_app.active_viewname == 'select-on-load'))
+        self.add_menuitem(
+            label='Extra form data',
+            url=self.cradmin_instance.reverse_url(appname='productlist',
+                                                  viewname='extra-form-data'),
+            active=(cradmin_app.appname == 'productlist' and
+                    cradmin_app.active_viewname == 'extra-form-data'))
 
 
 class MultiselectDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
