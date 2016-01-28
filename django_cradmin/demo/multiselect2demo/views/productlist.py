@@ -219,11 +219,11 @@ class ProductListViewSelectOnLoad(ProductListView):
     Extends :class:`.ProductListView` to show how to select items when the
     view loads.
     """
-    def is_initially_selected_on_get(self, value):
+    def get_inititially_selected_queryset(self):
         """
-        Select all products that contains ``"sock"`` in their name.
+        Select all products that contains ``"sock"`` in their name on load.
         """
-        return 'sock' in value.name.lower()
+        return Product.objects.filter(name__icontains='sock')
 
 
 ###########################################
@@ -253,17 +253,23 @@ class WithExtraFormDataTargetRenderer(ProductTargetRenderer):
         ]
 
 
-class ProductListViewWithExtraFormData(ProductListView):
+class ProductListViewWithExtraFormData(FilteredProductListView):
     """
     Extends :class:`.ProductListView` to set the form with
     the ``age`` field, and the target renderer that includes
     the ``age`` field in the rendered form.
     """
+    # paginate_by = 2
+
     def get_form_class(self):
         return SelectedProductsAndMoreForm
 
     def get_target_renderer_class(self):
         return WithExtraFormDataTargetRenderer
+
+    def get_filterlist_url(self, filters_string):
+        return self.request.cradmin_app.reverse_appurl(
+            'extra-form-data', kwargs={'filters_string': filters_string})
 
 
 ###############################################
@@ -288,7 +294,7 @@ class App(crapp.App):
             ProductListViewSelectOnLoad.as_view(),
             name='select-on-load'),
         crapp.Url(
-            r'^extra-form-data$',
+            r'^extra-form-data/(?P<filters_string>.+)?$',
             ProductListViewWithExtraFormData.as_view(),
             name='extra-form-data'),
     ]

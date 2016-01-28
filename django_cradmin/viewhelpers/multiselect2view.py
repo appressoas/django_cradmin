@@ -1,3 +1,4 @@
+from django import forms
 from django.views.generic.edit import FormMixin
 
 from django_cradmin.viewhelpers import listbuilderview
@@ -66,42 +67,14 @@ class ViewMixin(FormMixin):
         """
         return False
 
-    def is_initially_selected_on_post(self, value, form_is_valid):
-        """
-        Should the provided value be selected on load for POST requests?
-
-        Args:
-            value: A value in the listbuilder list (an object in the queryset).
-            form_is_valid: This is ``False`` if the posted form is invalid.
-
-        Returns:
-            bool: If the provided value should be selected on load, return ``True``,
-            otherwise return ``False``. Defaults to ``True`` if the value was selected
-            in the POST request.
-        """
-        if form_is_valid:
-            return False
-        else:
-            return value in self.items_selected_on_post_set
-
-    def is_initially_selected(self, value):
-        """
-        Calls :meth:`.is_initially_selected_on_get` or :meth:`.is_initially_selected_on_post`
-        depending on the request method.
-        """
-        if self.request.method == 'GET':
-            return self.is_initially_selected_on_get(value=value)
-        elif self.request.method == 'POST':
-            return self.is_initially_selected_on_post(value=value,
-                                                      form_is_valid=self.__form_is_valid)
-
     def make_value_and_frame_renderer_kwargs(self, value):
         """
         This method is called by :meth:`.get_listbuilder_list_kwargs` (below)
         to create kwargs for our value and frame renderers.
         """
         return {
-            'is_selected': self.is_initially_selected(value=value)
+            # 'is_selected': self.is_initially_selected(value=value)
+            'is_selected': value in self._initially_selected_items
         }
 
     def get_value_and_frame_renderer_kwargs(self):
@@ -120,16 +93,61 @@ class ViewMixin(FormMixin):
         """
         return 'selected_items'
 
-    def get_selected_items_set(self, form):
+    def get_selectable_items_queryset(self):
+        if hasattr(self, 'get_unfiltered_queryset_for_role'):
+            queryset = self.get_unfiltered_queryset_for_role(role=self.request.cradmin_role)
+        else:
+            queryset = self.get_queryset()
+        return queryset
+
+    def __make_selected_items_form_class(self):
+        selected_items_form_attribute = self.get_selected_items_form_attribute()
+        selectable_items_queryset = self.get_selectable_items_queryset()
+
+        class SelectedItemsForm(forms.Form):
+            def __init__(self, *args, **kwargs):
+                super(SelectedItemsForm, self).__init__(*args, **kwargs)
+                self.fields[selected_items_form_attribute] = forms.ModelMultipleChoiceField(
+                        queryset=selectable_items_queryset
+                )
+
+        return SelectedItemsForm
+
+    def get_postrequest_selected_values(self):
         """
-        Get a ``set`` of the items that was selected on POST.
+        Get a QuerySet of the items that was selected on POST.
 
         If the form attribute where you set your selected items is not
-        named ``"selected_items"``, you have to override :meth:`.get_selected_items_set`.
+        named ``"selected_items"``, you have to override :meth:`.get_selected_items_form_attribute`.
 
-        Optionally, you can override both :
+        Optionally, you can override both :meth:`.form_invalid_init` and :meth:`.form_invalid`
+        to disable autoselect of the items that was selected before post.
         """
-        return set(form.cleaned_data[self.get_selected_items_form_attribute()])
+        form_class = self.__make_selected_items_form_class()
+        form = form_class(self.request.POST)
+        if form.is_valid():
+            selected_items_form_attribute = self.get_selected_items_form_attribute()
+            return form.cleaned_data[selected_items_form_attribute]
+        else:
+            return self.model.objects.none()
+
+    def get_inititially_selected_queryset(self):
+        """
+        Get queryset of initially selected items.
+
+        Defaults to ``self.model.object.none()``, and you should override this
+        if you want to select any objects on load.
+        """
+        return self.model.objects.none()
+
+    def get_selected_items_queryset(self):
+        if self.request.method == 'POST':
+            return self.get_postrequest_selected_values()
+        else:
+            return self.get_inititially_selected_queryset()
+
+    def __get_selected_items_set(self):
+        return set(self.get_selected_items_queryset())
 
     def form_invalid_init(self, form):
         """
@@ -141,7 +159,10 @@ class ViewMixin(FormMixin):
         you can override this method
         """
         self.object_list = self.get_queryset()
-        self.items_selected_on_post_set = self.get_selected_items_set(form=form)
+
+    def dispatch(self, request, *args, **kwargs):
+        self._initially_selected_items = self.__get_selected_items_set()
+        return super(ViewMixin, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """
@@ -156,6 +177,12 @@ class ViewMixin(FormMixin):
             self.__form_is_valid = False
             self.form_invalid_init(form)
             return self.form_invalid(form)
+
+    def get_queryset(self):
+        queryset = super(ViewMixin, self).get_queryset().distinct()
+        queryset = self.get_selected_items_queryset().distinct() | queryset
+        queryset = queryset.distinct()
+        return queryset
 
 
 class ListbuilderView(ViewMixin, listbuilderview.View):
