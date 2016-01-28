@@ -1,4 +1,5 @@
 from django import forms
+from django.db import models
 from django.views.generic.edit import FormMixin
 
 from django_cradmin.viewhelpers import listbuilderview
@@ -71,8 +72,11 @@ class ViewMixin(FormMixin):
         """
         return value in self._initially_selected_values_set
 
+    def __is_bgreplaced(self):
+        return self.request.GET.get('cradmin-bgreplaced', 'false') == 'true'
+
     def __value_is_selected(self, value):
-        if self.request.GET.get('cradmin-bgreplaced', 'false') == 'true':
+        if self.__is_bgreplaced():
             return False
         else:
             return self.is_initially_selected(value=value)
@@ -189,11 +193,52 @@ class ViewMixin(FormMixin):
             self.form_invalid_init(form)
             return self.form_invalid(form)
 
+    def get_paginate_by_handling_initially_selected(self, paginate_by):
+        number_of_initially_selected_items = len(self._initially_selected_values_set)
+        if paginate_by < number_of_initially_selected_items:
+            # Initially select only works if the selected items is loaded,
+            # so we need to override page size to ensure they are included
+            paginate_by = number_of_initially_selected_items
+        return paginate_by
+
+    def get_paginate_by(self, queryset):
+        paginate_by = self.paginate_by
+        if paginate_by:
+            paginate_by = self.get_paginate_by_handling_initially_selected(paginate_by=paginate_by)
+        return paginate_by
+
+    def __order_queryset(self, queryset):
+        """
+        Order the queryset. We have to order the queryset so that
+        the initially selected items is included on the first page (if pagination is enabled).
+
+        We do this by annotating the queryset with ``cradmin_multiselect2_ordering``,
+        and inserting that as the first order_by argument.
+        """
+        if self.get_paginate_by(queryset):
+            current_order_by = list(queryset.query.order_by)
+            whenqueries = []
+            max_index = 0
+            for index, value in enumerate(self.get_selected_values_queryset().order_by(*current_order_by)):
+                whenqueries.append(models.When(pk=value.pk, then=models.Value(index)))
+                max_index = index
+            queryset = queryset.annotate(
+                cradmin_multiselect2_ordering=models.Case(
+                    *whenqueries,
+                    default=max_index + 1,
+                    output_field=models.IntegerField()
+                )
+            )
+            order_by = ['cradmin_multiselect2_ordering']
+            order_by.extend(current_order_by)
+            queryset = queryset.order_by(*order_by)
+        return queryset
+
     def get_queryset(self):
         queryset = super(ViewMixin, self).get_queryset().distinct()
         queryset = self.get_selected_values_queryset().distinct() | queryset
         queryset = queryset.distinct()
-        return queryset
+        return self.__order_queryset(queryset)
 
 
 class ListbuilderView(ViewMixin, listbuilderview.View):
