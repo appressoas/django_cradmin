@@ -297,6 +297,11 @@
       }
 
       BgReplace.prototype.loadUrlAndExtractRemoteElementHtml = function(options, onSuccess) {
+        var parsedUrl, url;
+        url = options.parameters.url;
+        parsedUrl = new Url(url);
+        parsedUrl.query['cradmin-bgreplaced'] = 'true';
+        options.parameters.url = parsedUrl.toString();
         return this.http(options.parameters).then(function(response) {
           var $remoteHtmlDocument, html, remoteElement, remoteElementInnerHtml;
           html = response.data;
@@ -3708,10 +3713,12 @@
             return $scope.targetElement.attr('aria-busy', 'false');
           };
           onLoadSuccess = function($remoteHtmlDocument, remoteUrl) {
-            var $remoteFilterList, filterScope, title, _i, _len, _results;
+            var $remoteFilterList, filterScope, parsedRemoteUrl, title, _i, _len, _results;
             $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId);
             title = $window.document.title;
-            $window.history.pushState("list filter change", title, remoteUrl);
+            parsedRemoteUrl = new Url(remoteUrl);
+            delete parsedRemoteUrl.query['cradmin-bgreplaced'];
+            $window.history.pushState("list filter change", title, parsedRemoteUrl.toString());
             _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
               filterScope = filterScopes[_i];

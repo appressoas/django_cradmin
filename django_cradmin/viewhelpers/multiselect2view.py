@@ -52,10 +52,14 @@ class ViewMixin(FormMixin):
         context['target_renderer'] = self.get_target_renderer()
         return context
 
-    def is_initially_selected_on_get(self, value):
+    def is_initially_selected(self, value):
         """
-        Should the provided value be selected on load for GET requests?
-        Override this to select values on load for GET requests.
+        Should the provided value be selected on load?
+
+        You normally do not need to override this. Override:
+
+        - :meth:`.get_inititially_selected_queryset`
+        - and for very rare cases, override :meth:`.get_postrequest_selected_queryset`.
 
         Args:
             value: A value in the listbuilder list (an object in the queryset).
@@ -65,7 +69,13 @@ class ViewMixin(FormMixin):
             otherwise return ``False``. Defaults to ``False`` if you do not overrie
             this method.
         """
-        return False
+        return value in self._initially_selected_values_set
+
+    def __value_is_selected(self, value):
+        if self.request.GET.get('cradmin-bgreplaced', 'false') == 'true':
+            return False
+        else:
+            return self.is_initially_selected(value=value)
 
     def make_value_and_frame_renderer_kwargs(self, value):
         """
@@ -73,8 +83,7 @@ class ViewMixin(FormMixin):
         to create kwargs for our value and frame renderers.
         """
         return {
-            # 'is_selected': self.is_initially_selected(value=value)
-            'is_selected': value in self._initially_selected_items
+            'is_selected': self.__value_is_selected(value=value)
         }
 
     def get_value_and_frame_renderer_kwargs(self):
@@ -113,12 +122,14 @@ class ViewMixin(FormMixin):
 
         return SelectedItemsForm
 
-    def get_postrequest_selected_values(self):
+    def get_postrequest_selected_queryset(self):
         """
         Get a QuerySet of the items that was selected on POST.
 
         If the form attribute where you set your selected items is not
         named ``"selected_items"``, you have to override :meth:`.get_selected_items_form_attribute`.
+
+        You normally do not need to override this method.
 
         Optionally, you can override both :meth:`.form_invalid_init` and :meth:`.form_invalid`
         to disable autoselect of the items that was selected before post.
@@ -140,14 +151,14 @@ class ViewMixin(FormMixin):
         """
         return self.model.objects.none()
 
-    def get_selected_items_queryset(self):
+    def get_selected_values_queryset(self):
         if self.request.method == 'POST':
-            return self.get_postrequest_selected_values()
+            return self.get_postrequest_selected_queryset()
         else:
             return self.get_inititially_selected_queryset()
 
-    def __get_selected_items_set(self):
-        return set(self.get_selected_items_queryset())
+    def __get_selected_values_set(self):
+        return set(self.get_selected_values_queryset())
 
     def form_invalid_init(self, form):
         """
@@ -161,7 +172,7 @@ class ViewMixin(FormMixin):
         self.object_list = self.get_queryset()
 
     def dispatch(self, request, *args, **kwargs):
-        self._initially_selected_items = self.__get_selected_items_set()
+        self._initially_selected_values_set = self.__get_selected_values_set()
         return super(ViewMixin, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -180,7 +191,7 @@ class ViewMixin(FormMixin):
 
     def get_queryset(self):
         queryset = super(ViewMixin, self).get_queryset().distinct()
-        queryset = self.get_selected_items_queryset().distinct() | queryset
+        queryset = self.get_selected_values_queryset().distinct() | queryset
         queryset = queryset.distinct()
         return queryset
 

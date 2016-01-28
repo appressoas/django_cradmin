@@ -19,6 +19,11 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
       @rootScope = $rootScope
 
     loadUrlAndExtractRemoteElementHtml: (options, onSuccess) ->
+      url = options.parameters.url
+      parsedUrl = new Url(url)
+      parsedUrl.query['cradmin-bgreplaced'] = 'true'
+      options.parameters.url = parsedUrl.toString()
+
       @http(options.parameters).then((response) ->
         html = response.data
         $remoteHtmlDocument = angular.element(html)

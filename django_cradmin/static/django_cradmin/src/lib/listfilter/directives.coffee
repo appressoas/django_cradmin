@@ -36,7 +36,9 @@ angular.module('djangoCradmin.listfilter.directives', [])
         onLoadSuccess = ($remoteHtmlDocument, remoteUrl) ->
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
           title = $window.document.title
-          $window.history.pushState("list filter change", title, remoteUrl)
+          parsedRemoteUrl = new Url(remoteUrl)
+          delete parsedRemoteUrl.query['cradmin-bgreplaced']
+          $window.history.pushState("list filter change", title, parsedRemoteUrl.toString())
           for filterScope in filterScopes
             filterScope.syncWithRemoteFilterList($remoteFilterList)
 
