@@ -4752,9 +4752,11 @@
         $selectElement = angular.element('#' + selectButtonDomId);
         if ($selectElement != null) {
           selectScope = $selectElement.isolateScope();
-          selectScope.onDeselect();
-          targetScope = this.__getTargetScope(selectScope.getTargetDomId());
-          return targetScope.onDeselect(selectScope);
+          if (selectScope != null) {
+            selectScope.onDeselect();
+            targetScope = this.__getTargetScope(selectScope.getTargetDomId());
+            return targetScope.onDeselect(selectScope);
+          }
         } else {
           return console.log("Element #" + selectButtonDomId + " is not in the DOM");
         }

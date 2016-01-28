@@ -1,8 +1,13 @@
 {% extends "django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html" %}
 {% load cradmin_tags %}
 {% load cradmin_icon_tags %}
+{% load i18n %}
 
-{% block end-of-content %}
+{% block content %}
+    <div class="django-cradmin-multiselect2-itemvalue-details">
+        {{ block.super }}
+    </div>
+
     {% block buttons %}
         <p class="django-cradmin-multiselect2-itemvalue-buttons">
             {% block select-button %}
@@ -22,7 +27,27 @@
         </p>
     {% endblock buttons %}
 
+    {% block selected-summary %}
+        <div class="django-cradmin-multiselect2-itemvalue-selectedsummary">
+            {% block selected-summary-content %}
+                {% block selected-summary-prefix %}
+                    <span class="django-cradmin-multiselect2-itemvalue-selectedsummary-prefix">
+                        {% block selected-summary-prefix-content %}
+                            <span class="{% cradmin_icon "multiselect2-selected" %}
+                                         django-cradmin-multiselect2-itemvalue-selectedsummary-prefix-icon"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">({% trans "Selected" %})</span>
+                        {% endblock selected-summary-prefix-content %}
+                    </span>
+                {% endblock selected-summary-prefix %}
+                {% block selected-summary-title %}
+                    {{ me.get_title }}
+                {% endblock %}
+            {% endblock selected-summary-content %}
+        </div>
+    {% endblock selected-summary %}
+
     {% block preview-wrapper %}
         {% cradmin_render_renderable me.selected_item_renderer %}
     {% endblock preview-wrapper %}
-{% endblock end-of-content %}
+{% endblock content %}

@@ -20,5 +20,5 @@ FONT_AWESOME = {
     'close-overlay-right-to-left': 'fa fa-chevron-left',
     'select-left': 'fa fa-angle-right',
     'select-right': 'fa fa-angle-left',
-    'multiselect2-separator-icon': 'fa fa-exchange',
+    'multiselect2-selected': 'fa fa-check',
 }
