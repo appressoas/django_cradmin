@@ -10,7 +10,6 @@
     @media (min-width: @screen-sm-min) {
       margin-top: 0;
     }
-    //padding: 0 0 5px 0;
   }
   .django-cradmin-multiselect2-target-selected-items {
     .django-cradmin-multiselect2-target-selected-item {
@@ -35,8 +34,33 @@
       }
     }
   }
-  .django-cradmin-multiselect2-target-footer {
-    margin-top: 10px;
+  .django-cradmin-multiselect2-target-formfields {
+    .form-group {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      .control-label  {
+        margin-bottom: 0;
+      }
+      .controls {
+        margin-top: 7px;
+        label.checkbox {
+          font-weight: normal;
+          margin-top: 10px;
+          margin-bottom: 10px;
+          &:first-child {
+            margin-top: 0;
+          }
+          &:hover {
+            color: @link-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .btn {
+      white-space: normal;
+    }
   }
 
   .django-cradmin-multiselect2-target-with-items-content {

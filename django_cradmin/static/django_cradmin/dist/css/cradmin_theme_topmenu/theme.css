@@ -6793,8 +6793,30 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-selected-items .django-cradmin-multiselect2-target-selected-item .django-cradmin-multiselect2-target-selected-item-deselectbutton {
   margin-top: 10px;
 }
-.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-footer {
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .form-group {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .form-group .control-label {
+  margin-bottom: 0;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .form-group .controls {
+  margin-top: 7px;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .form-group .controls label.checkbox {
+  font-weight: normal;
   margin-top: 10px;
+  margin-bottom: 10px;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .form-group .controls label.checkbox:first-child {
+  margin-top: 0;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .form-group .controls label.checkbox:hover {
+  color: #377ca8;
+  cursor: pointer;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .btn {
+  white-space: normal;
 }
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-with-items-content {
   display: none;
