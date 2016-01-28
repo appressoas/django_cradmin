@@ -33,9 +33,10 @@ angular.module('djangoCradmin.multiselect2.services', [])
       $selectElement = angular.element('#' + selectButtonDomId)
       if $selectElement?
         selectScope = $selectElement.isolateScope()
-        selectScope.onDeselect()
-        targetScope = @__getTargetScope(selectScope.getTargetDomId())
-        targetScope.onDeselect(selectScope)
+        if selectScope?
+          selectScope.onDeselect()
+          targetScope = @__getTargetScope(selectScope.getTargetDomId())
+          targetScope.onDeselect(selectScope)
       else
         console.log "Element ##{selectButtonDomId} is not in the DOM"
 
