@@ -101,6 +101,13 @@ class ProductTargetRenderer(multiselect2.target_renderer.Target):
         return 'Nothing selected'
 
 
+###########################################
+#
+# A very simple demo
+#
+###########################################
+
+
 class ProductListView(multiselect2view.ListbuilderView):
     """
     A very simple example of a multiselect2 view.
@@ -143,9 +150,12 @@ class ProductListView(multiselect2view.ListbuilderView):
             'POST OK. Selected: {}'.format(', '.join(productnames)))
         return redirect(self.request.get_full_path())
 
-    def form_invalid(self, form):
-        messages.error(self.request, form.errors.as_text())
-        return redirect(self.request.get_full_path())
+
+###########################################
+#
+# With filters demo
+#
+###########################################
 
 
 class FilteredProductListView(multiselect2view.ListbuilderFilterView):
@@ -196,9 +206,12 @@ class FilteredProductListView(multiselect2view.ListbuilderFilterView):
             'POST OK. Selected: {}'.format(', '.join(productnames)))
         return redirect(self.request.get_full_path())
 
-    def form_invalid(self, form):
-        messages.error(self.request, form.errors.as_text())
-        return redirect(self.request.get_full_path())
+
+###########################################
+#
+# Select on load demo
+#
+###########################################
 
 
 class ProductListViewSelectOnLoad(ProductListView):
@@ -213,18 +226,51 @@ class ProductListViewSelectOnLoad(ProductListView):
         return 'sock' in value.name.lower()
 
 
+###########################################
+#
+# With extra form data demo
+#
+###########################################
+
+
 class SelectedProductsAndMoreForm(SelectedProductsForm):
+    """
+    We add an extra required field (age) to :class:`.SelectedProductsForm`
+    for this demo, to show that form validation works.
+    """
     age = forms.CharField(
         required=True
     )
 
 
+class WithExtraFormDataTargetRenderer(ProductTargetRenderer):
+    """
+    We have to add the ``age`` field to the target renderer.
+    """
+    def get_field_layout(self):
+        return [
+            'age'
+        ]
+
+
 class ProductListViewWithExtraFormData(ProductListView):
+    """
+    Extends :class:`.ProductListView` to set the form with
+    the ``age`` field, and the target renderer that includes
+    the ``age`` field in the rendered form.
+    """
     def get_form_class(self):
         return SelectedProductsAndMoreForm
 
-    def form_invalid(self, form):
-        return self.render_to_response(context=self.get_context_data())
+    def get_target_renderer_class(self):
+        return WithExtraFormDataTargetRenderer
+
+
+###############################################
+#
+# Create an app with the views
+#
+###############################################
 
 
 class App(crapp.App):

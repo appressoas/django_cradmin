@@ -1,9 +1,11 @@
 import json
 from xml.sax.saxutils import quoteattr
 
+from crispy_forms import layout
 from django.utils.translation import pgettext_lazy
 
 from django_cradmin import renderable
+from django_cradmin.crispylayouts import PrimarySubmitBlock, CradminFormHelper
 from django_cradmin.viewhelpers.listfilter.base import abstractfilterlistchild
 
 
@@ -22,7 +24,12 @@ class Target(renderable.AbstractRenderableWithCss,
     #: The default for :meth:`.~Target.get_dom_id`.
     default_target_dom_id = 'django_cradmin_multiselect2_select_target'
 
-    def __init__(self, dom_id=None,
+    #: Used to add custom attributes like angularjs directives to the form.
+    #: See :meth:`.get_form_attributes`.
+    form_attributes = {}
+
+    def __init__(self, form,
+                 dom_id=None,
                  without_items_text=None,
                  with_items_title=None,
                  no_items_selected_text=None,
@@ -31,6 +38,7 @@ class Target(renderable.AbstractRenderableWithCss,
                  empty_selection_allowed=False):
         """
         Args:
+            form: A django Form object.
             dom_id: See :meth:`.get_dom_id`.
             without_items_text: See :meth:`.get_without_items_text`.
             no_items_selected_text: See :meth:`.get_no_items_selected_text`.
@@ -38,6 +46,7 @@ class Target(renderable.AbstractRenderableWithCss,
             submit_button_text: See :meth:`.get_submit_button_text`.
             form_action: See :meth:`.get_form_action`.
         """
+        self.form = form
         self.dom_id = dom_id
         self.without_items_text = without_items_text
         self.with_items_title = with_items_title
@@ -74,6 +83,9 @@ class Target(renderable.AbstractRenderableWithCss,
 
     def get_submit_button_text(self):
         """
+        This is used in :meth:`.get_buttons`, so if you override that or :meth:`.get_button_layout`,
+        this is not used.
+
         Returns:
             str: The submit button text.
 
@@ -185,6 +197,96 @@ class Target(renderable.AbstractRenderableWithCss,
         context['form_action'] = self.get_form_action(request=request)
         context['angularjs_directive_json'] = self.get_angularjs_directive_json()
         return context
+
+    def get_field_layout(self):
+        """
+        Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
+
+        Must be overridden.
+
+        Simple example::
+
+            from django_cradmin.viewhelpers import multiselect2view
+            from crispy_forms import layout
+
+            class MyMultiselect2View(multiselect2view.ListbuilderView):
+                # ... other required stuff
+
+                def get_field_layout(self):
+                    return [
+                        'name',
+                        layout.Field('age', css_class="the-name")
+                    ]
+        """
+        return []
+
+    def get_hidden_fields(self):
+        """
+        Get hidden fields for the form.
+
+        Returns:
+            An iterable of :class:`crispy_forms.layout.Hidden` objects.
+            Defaults to an empty list.
+        """
+        return []
+
+    def get_buttons(self):
+        """
+        Get buttons for the form, normally one or more submit button.
+
+        Each button must be a crispy form layout object, typically some
+        subclass of :class:`crispy_forms.layout.Submit`.
+
+        The default is::
+
+            from django_cradmin.crispylayouts import PrimarySubmitBlock
+
+            return [
+                PrimarySubmitBlock('save', self.get_submit_button_text()),
+            ]
+
+        .. seealso:: This method is used by :meth:`.get_button_layout`.
+            The default label is returned by :meth:`.get_submit_button_text`.
+        """
+        return [
+            PrimarySubmitBlock('save', self.get_submit_button_text()),
+        ]
+
+    def get_button_layout(self):
+        """
+        Get the button layout. This is added to the crispy form layout.
+
+        You will normally want to override :meth:`.get_buttons` instead of this
+        method.
+
+        Defaults to a :class:`crispy_forms.layout.Div` with css class
+        ``django-cradmin-multiselect2-target-submitbuttons`` containing all the buttons
+        returned by :meth:`.get_buttons`.
+        """
+        return [
+            layout.Div(*self.get_buttons(),
+                       css_class="django-cradmin-multiselect2-target-submitbuttons")
+        ]
+
+    def get_formhelper_class(self):
+        return CradminFormHelper
+
+    def get_formhelper(self):
+        """
+        Get a :class:`crispy_forms.helper.FormHelper`.
+
+        You normally do not need to override this directly. Instead
+        you should override:
+
+        - :meth:`.get_field_layout`.
+        - :meth:`.get_hidden_fields`
+        - :meth:`.get_buttons` (or perhaps :meth:`.get_button_layout`)
+        """
+        helper = self.get_formhelper_class()()
+        layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
+        helper.layout = layout.Layout(*layoutargs)
+        helper.form_tag = False
+        return helper
 
 
 class ManyToManySelectTarget(Target):

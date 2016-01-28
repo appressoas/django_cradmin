@@ -27,6 +27,10 @@ class PrimarySubmit(CradminSubmitButton):
     field_classes = "btn btn-primary"
 
 
+class PrimarySubmitBlock(CradminSubmitButton):
+    field_classes = "btn btn-primary btn-block"
+
+
 class PrimarySubmitLg(CradminSubmitButton):
     field_classes = "btn btn-primary btn-lg"
 
@@ -35,8 +39,16 @@ class DangerSubmit(CradminSubmitButton):
     field_classes = "btn btn-danger"
 
 
+class DangerSubmitBlock(CradminSubmitButton):
+    field_classes = "btn btn-danger btn-block"
+
+
 class DefaultSubmit(CradminSubmitButton):
     field_classes = "btn btn-default"
+
+
+class DefaultSubmitBlock(CradminSubmitButton):
+    field_classes = "btn btn-default btn-block"
 
 
 class CollapsedSectionLayout(layout.Div):

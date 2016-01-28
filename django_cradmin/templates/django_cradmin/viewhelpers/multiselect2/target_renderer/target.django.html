@@ -1,4 +1,6 @@
 {% load cradmin_tags %}
+{% load crispy_forms_tags %}
+
 <form method="post" action="{{ form_action }}"
       id="{{ me.get_dom_id }}"
       class="
@@ -32,18 +34,21 @@
                     {% endblock no-items-selected-content %}
                 </div>
             {% endblock selected-items %}
-            {% block with-items-footer %}
-                <div class="django-cradmin-multiselect2-target-footer">
-                    {% block submit-button %}
-                        <button type="submit"
-                                class="{% block submit-button-css-classes %}btn btn-primary btn-block{% endblock %}">
-                            {% block submit-button-content %}
-                                {{ me.get_submit_button_text }}
-                            {% endblock submit-button-content %}
-                        </button>
-                    {% endblock submit-button %}
-                </div>
-            {% endblock with-items-footer %}
+{#            {% block with-items-footer %}#}
+{#                <div class="django-cradmin-multiselect2-target-footer">#}
+{#                    {% block submit-button %}#}
+{#                        <button type="submit"#}
+{#                                class="{% block submit-button-css-classes %}btn btn-primary btn-block{% endblock %}">#}
+{#                            {% block submit-button-content %}#}
+{#                                {{ me.get_submit_button_text }}#}
+{#                            {% endblock submit-button-content %}#}
+{#                        </button>#}
+{#                    {% endblock submit-button %}#}
+{#                </div>#}
+{#            {% endblock with-items-footer %}#}
+            {% block with-items-form %}
+                {% crispy me.form me.get_formhelper %}
+            {% endblock with-items-form %}
         {% endblock with-items-content %}
     </div>
     <div class="django-cradmin-multiselect2-target-without-items-content">

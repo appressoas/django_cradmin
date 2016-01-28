@@ -29,7 +29,9 @@ class ViewMixin(FormMixin):
         You should call ``super()`` when overriding this method
         to get any default kwargs provided by this method.
         """
-        return {}
+        return {
+            'form': self.get_form()
+        }
 
     def get_target_renderer(self):
         """
