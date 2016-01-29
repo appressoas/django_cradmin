@@ -232,6 +232,15 @@ class ViewMixin(FormMixin):
             return self.form_invalid(form)
 
     def get_number_of_extra_items_in_page_with_initially_selected(self):
+        """
+        Get the number of extra items to add to ``paginate_by`` when
+        loading initial items, and the number of initial items is larger
+        than the page size.
+
+        This is used in :meth:`.paginate_by`.
+
+        Defaults to ``10``.
+        """
         return 10
 
     def get_paginate_by_handling_initially_selected(self, paginate_by):
@@ -243,13 +252,54 @@ class ViewMixin(FormMixin):
             paginate_by = number_of_initially_selected_items + extra_items
         return paginate_by
 
-    def __disable_paging_requested(self):
+    def disable_paging_requested(self):
+        """
+        If this returns ``True``, we disable paging.
+
+        The default implementation disables paging if ``disablePaging=true`` is
+        in the querystring (in ``request.GET``).
+        """
         return self.request.GET.get('disablePaging', 'false') == 'true'
 
+    def get_default_paginate_by(self, queryset):
+        """
+        Get the default page size.
+
+        See :meth:`.paginate_by` for more details.
+        """
+        return self.paginate_by
+
     def get_paginate_by(self, queryset):
-        if self.__disable_paging_requested():
+        """
+        Returns the page size. You should normally override :meth:`.get_default_paginate_by`
+        instead of this method.
+
+        .. warning:: Be very careful if you override this. We handle
+            the following cases by default, and if you just return a static value
+            here, these cases will be broken:
+
+            - If you have initially selected items, eighter because you override
+              :meth:`.get_inititially_selected_queryset` or because posting the form
+              fails, and you need to re-select all the items that was posted, we ensure
+              that the initial page size is the number of selected items + the number
+              returned by :meth:`.get_number_of_extra_items_in_page_with_initially_selected`.
+              This is handled so that the page is first loaded with this custom page size,
+              and then the list is reloaded by an angularjs directive with page size set
+              to :meth:`.get_default_paginate_by`.
+            - If you have ``disablePaging=true`` in the querystring of the request, which
+              is what the default "Select all" button does, we disable paging.
+
+            This means that you should override:
+
+            - :meth:`.get_default_paginate_by`
+            - :meth:`.get_number_of_extra_items_in_page_with_initially_selected`
+
+            in almost all cases unless you want to make a major rewrite of all methods
+            related to handling the cases listed above.
+        """
+        if self.disable_paging_requested():
             return None
-        paginate_by = self.paginate_by
+        paginate_by = self.get_default_paginate_by(queryset=queryset)
         if paginate_by and self.__has_initially_selected_items():
             paginate_by = self.get_paginate_by_handling_initially_selected(paginate_by=paginate_by)
         return paginate_by
