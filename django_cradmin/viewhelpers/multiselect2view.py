@@ -104,6 +104,9 @@ class ViewMixin(FormMixin):
     def __is_bgreplaced(self):
         return self.request.GET.get('cradmin-bgreplaced', 'false') == 'true'
 
+    def __is_pagination_request(self):
+        return bool(self.request.GET.get('page'))
+
     def __value_is_selected(self, value):
         if self.__is_bgreplaced():
             return False
@@ -212,8 +215,11 @@ class ViewMixin(FormMixin):
         if self.request.method == 'POST':
             queryset = self.get_postrequest_selected_queryset()
         elif self.__is_bgreplaced():
+        # elif self.__is_pagination_request():
             # This handles the case where:
-            # - We submit
+            #
+            # - We submit an invalid form with selected items.
+            # - We ask for
             #
             # The session variable we fetch here is set in :meth:`.form_invalid_init`
             # using :meth:`.__set_selected_value_pks_in_session`,
