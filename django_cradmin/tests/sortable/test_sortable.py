@@ -202,7 +202,7 @@ class TestRepairSortable(test.TestCase):
     def test_repairs_empty_hole(self):
         container = self._create_container()
         items = self._create_items(2, container)
-        items.append(self._create_item(container, items[1].sort_index+2))
+        items.append(self._create_item(container, items[1].sort_index + 2))
 
         SortableItem.objects.sort_before(items[1], items[0].id)
 
@@ -223,9 +223,9 @@ class TestRepairSortable(test.TestCase):
         container = self._create_container()
         items = self._create_items(2, container)
         items.append(self._create_item(container, items[1].sort_index))
-        items.append(self._create_item(container, items[1].sort_index+1))
-        items.append(self._create_item(container, items[1].sort_index+2))
-        items.append(self._create_item(container, items[1].sort_index+2))
+        items.append(self._create_item(container, items[1].sort_index + 1))
+        items.append(self._create_item(container, items[1].sort_index + 2))
+        items.append(self._create_item(container, items[1].sort_index + 2))
 
         SortableItem.objects.sort_before(items[1], items[0].id)
 
@@ -235,10 +235,10 @@ class TestRepairSortable(test.TestCase):
     def test_repair_multiple_holes_in_indexes(self):
         container = self._create_container()
         items = self._create_items(2, container)
-        items.append(self._create_item(container, items[1].sort_index+2))
-        items.append(self._create_item(container, items[1].sort_index+3))
-        items.append(self._create_item(container, items[1].sort_index+5))
-        items.append(self._create_item(container, items[1].sort_index+7))
+        items.append(self._create_item(container, items[1].sort_index + 2))
+        items.append(self._create_item(container, items[1].sort_index + 3))
+        items.append(self._create_item(container, items[1].sort_index + 5))
+        items.append(self._create_item(container, items[1].sort_index + 7))
 
         SortableItem.objects.sort_before(items[1], items[0].id)
 
@@ -249,8 +249,8 @@ class TestRepairSortable(test.TestCase):
         container = self._create_container()
         items = self._create_items(2, container)
         items.append(self._create_item(container, items[1].sort_index))
-        items.append(self._create_item(container, items[1].sort_index+2))
-        items.append(self._create_item(container, items[1].sort_index+3))
+        items.append(self._create_item(container, items[1].sort_index + 2))
+        items.append(self._create_item(container, items[1].sort_index + 3))
 
         SortableItem.objects.sort_before(items[1], items[0].id)
 
@@ -260,7 +260,7 @@ class TestRepairSortable(test.TestCase):
     def test_repair_several_indexes_hole(self):
         container = self._create_container()
         items = self._create_items(2, container)
-        items.append(self._create_item(container, items[1].sort_index+3))
+        items.append(self._create_item(container, items[1].sort_index + 3))
 
         SortableItem.objects.sort_before(items[1], items[0].id)
 

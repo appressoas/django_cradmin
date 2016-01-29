@@ -63,7 +63,7 @@ def _make_unique_filename(filename_set, wanted_filename, generated_filename, max
         if max_filename_length:
             filename = truncate_filename(
                 filename=wanted_filename,
-                maxlength=max_filename_length-len(generated_uuid)-1,
+                maxlength=max_filename_length - len(generated_uuid) - 1,
                 ellipsis=ellipsis)
         else:
             filename = wanted_filename

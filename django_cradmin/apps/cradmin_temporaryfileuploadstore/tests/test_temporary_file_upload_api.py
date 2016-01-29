@@ -249,8 +249,8 @@ class TestUploadTemporaryFilesView(TestCase):
     def test_post_unique_filenames_and_max_filename_length(self):
         request = self.factory.post('/test', {
             'file': [
-                SimpleUploadedFile('t'*50, b'Testcontent1'),
-                SimpleUploadedFile('t'*50, b'Testcontent2'),
+                SimpleUploadedFile('t' * 50, b'Testcontent1'),
+                SimpleUploadedFile('t' * 50, b'Testcontent2'),
             ],
             'unique_filenames': True,
             'max_filename_length': 45

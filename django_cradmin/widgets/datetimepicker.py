@@ -553,8 +553,8 @@ class DatePickerWidget(widgets.TextInput):
 
         Defaults to the range of ~130 years in the past and future.
         """
-        year_minimum_value = (timezone.now() - timedelta(days=364*130)).year
-        year_maximum_value = (timezone.now() + timedelta(days=364*130)).year
+        year_minimum_value = (timezone.now() - timedelta(days=364 * 130)).year
+        year_maximum_value = (timezone.now() + timedelta(days=364 * 130)).year
         if self.minimum_datetime:
             year_minimum_value = self.minimum_datetime.year
         if self.maximum_datetime:

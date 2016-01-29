@@ -186,10 +186,10 @@ class TestModels(TestCase):
 
     def test_make_unique_filename_maxlength(self):
         unique_filename = make_unique_filename(
-            filename_set={'t'*45},
-            wanted_filename='t'*45,
+            filename_set={'t' * 45},
+            wanted_filename='t' * 45,
             max_filename_length=45)
-        self.assertNotEquals(unique_filename, 't'*45)
+        self.assertNotEquals(unique_filename, 't' * 45)
         self.assertTrue(unique_filename.endswith('-tttttttt'))
         self.assertEquals(len(unique_filename), 45)
 

@@ -88,7 +88,7 @@ class SortableManagerBase(models.Manager):
                 # Found gap, need to move rest of list <size-of-gap> step(s) down
                 self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                     len(itemsqueryset),
-                                                    current_item.sort_index-index)
+                                                    current_item.sort_index - index)
                 itemsqueryset = self._get_siblings_queryset(item).all()
             if index > current_item.sort_index:
                 # Found duplicate sort_index, need to move rest of list one step up
@@ -106,8 +106,8 @@ class SortableManagerBase(models.Manager):
         if original_item_index is not None:
             # fill gap left when moving item to end
             self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset,
-                                                original_item_index+1, len(itemsqueryset))
-            item.sort_index = len(itemsqueryset)-1
+                                                original_item_index + 1, len(itemsqueryset))
+            item.sort_index = len(itemsqueryset) - 1
         else:
             item.sort_index = len(itemsqueryset)
         item.save()
@@ -124,9 +124,9 @@ class SortableManagerBase(models.Manager):
             # Move up, and fill gap left behind by moving items in the gap down
             self.__decrease_sort_index_in_range(itemsqueryset,
                                                 itemsqueryset,
-                                                original_item_index+1,
+                                                original_item_index + 1,
                                                 detected_item_sort_index)
-            item.sort_index = detected_item_sort_index-1
+            item.sort_index = detected_item_sort_index - 1
         elif original_item_index > detected_item_sort_index:
             # Move down, and fill/create gap by moving other objects up
             self.__increase_sort_index_in_range(itemsqueryset,

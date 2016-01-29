@@ -12,5 +12,5 @@ class DelayMiddleware(object):
       delay you want to add to all requests (I.E.: 2000 for 2 seconds).
     """
     def process_request(self, request):
-        time.sleep(settings.DJANGO_CRADMIN_DELAY_MIDDLEWARE_MILLISECONDS/1000.0)
+        time.sleep(settings.DJANGO_CRADMIN_DELAY_MIDDLEWARE_MILLISECONDS / 1000.0)
         return None

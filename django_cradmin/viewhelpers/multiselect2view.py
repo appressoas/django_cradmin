@@ -263,7 +263,7 @@ class ViewMixin(FormMixin):
         and inserting that as the first order_by argument.
         """
         if self.get_paginate_by(queryset) and \
-                        self.request.method == "POST" and self.__has_initially_selected_items():
+                self.request.method == "POST" and self.__has_initially_selected_items():
             current_order_by = list(queryset.query.order_by)
             whenqueries = []
             max_index = 0

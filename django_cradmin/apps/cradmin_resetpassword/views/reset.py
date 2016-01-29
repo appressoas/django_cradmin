@@ -41,7 +41,7 @@ class ResetPasswordView(FormView):
         helper.form_id = 'django_cradmin_resetpassword_reset_form'
         helper.layout = layout.Layout(
             layout.Field('password1', focusonme='focusonme', css_class='input-lg'),
-            layout.Field('password2',  css_class='input-lg'),
+            layout.Field('password2', css_class='input-lg'),
             PrimarySubmitLg('submit', _('Reset password'))
         )
         return helper

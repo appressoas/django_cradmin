@@ -23,7 +23,7 @@ def get_time_to_live_minutes(app):
     time_to_live_minutes = getattr(
         settings,
         'DJANGO_CRADMIN_SECURE_USER_TOKEN_TIME_TO_LIVE_MINUTES', {
-            'default': 60*24*4  # Default to 4 days
+            'default': 60 * 24 * 4  # Default to 4 days
         })
     return time_to_live_minutes.get(app, time_to_live_minutes['default'])
 
