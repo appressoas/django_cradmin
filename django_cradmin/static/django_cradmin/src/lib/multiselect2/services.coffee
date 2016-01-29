@@ -49,8 +49,10 @@ angular.module('djangoCradmin.multiselect2.services', [])
 
     registerSelectScope: (selectScope) ->
       if @selectScopes[selectScope.getTargetDomId()]?.map[selectScope.getDomId()]?
-        throw Error("selectScope with id=#{selectScope.getDomId()} is already " +
-            "registered for target #{selectScope.getTargetDomId()}")
+        console.log "selectScope with id=#{selectScope.getDomId()} is already " +
+            "registered for target #{selectScope.getTargetDomId()}"
+#        throw Error("selectScope with id=#{selectScope.getDomId()} is already " +
+#            "registered for target #{selectScope.getTargetDomId()}")
       else
         if not @selectScopes[selectScope.getTargetDomId()]?
           @selectScopes[selectScope.getTargetDomId()] = {

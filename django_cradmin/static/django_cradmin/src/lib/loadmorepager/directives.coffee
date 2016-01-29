@@ -2,8 +2,8 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
 
 
 .directive('djangoCradminLoadMorePager', [
-  'djangoCradminBgReplaceElement', 'djangoCradminLoadmorepagerCoordinator'
-  (djangoCradminBgReplaceElement, djangoCradminLoadmorepagerCoordinator) ->
+  '$timeout', 'djangoCradminBgReplaceElement', 'djangoCradminLoadmorepagerCoordinator'
+  ($timeout, djangoCradminBgReplaceElement, djangoCradminLoadmorepagerCoordinator) ->
 
     pagerWrapperCssSelector = '.django-cradmin-loadmorepager'
 
@@ -20,8 +20,9 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
         $scope.loadMore = ->
           $scope.loadmorePagerIsLoading = true
           nextPageUrl = new Url()
-          nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber()
-#          console.log 'loading', nextPageUrl.toString()
+          if not $scope.loadmorePagerOptions.reloadPageOneOnLoad
+            nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber()
+          console.log 'loading', nextPageUrl.toString(), 'reload?', $scope.loadmorePagerOptions.reloadPageOneOnLoad
 
           djangoCradminBgReplaceElement.load({
             parameters: {
@@ -31,7 +32,7 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
             remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector
             targetElement: angular.element($scope.loadmorePagerOptions.targetElementCssSelector)
             $scope: $scope
-            replace: false
+            replace: $scope.loadmorePagerOptions.reloadPageOneOnLoad
             onHttpError: (response) ->
               console?.error? 'ERROR loading page', response
             onSuccess: ($remoteHtmlDocument) ->
@@ -47,9 +48,12 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
       link: ($scope, $element, attributes) ->
         $scope.loadmorePagerOptions = {
           pageQueryStringAttribute: "page"
+          reloadPageOneOnLoad: false
         }
         if attributes.djangoCradminLoadMorePager? and attributes.djangoCradminLoadMorePager != ''
           angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager))
+
+        console.log $scope.loadmorePagerOptions
 
         if not $scope.loadmorePagerOptions.targetElementCssSelector?
           throw Error('Missing required option: targetElementCssSelector')
@@ -58,6 +62,12 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
         djangoCradminLoadmorepagerCoordinator.registerPager(domId, $scope)
         $scope.$on "$destroy", ->
           djangoCradminLoadmorepagerCoordinator.unregisterPager(domId, $scope)
+
+        if $scope.loadmorePagerOptions.reloadPageOneOnLoad
+          # We assume the initial digest cycle does not take more than 500ms
+          $timeout(->
+            $scope.loadMore()
+          500)
 
         return
     }

@@ -80,6 +80,7 @@ class ViewMixin(FormMixin):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         context['target_renderer'] = self.__get_target_renderer()
         context['selectall_directive_json'] = self.get_selectall_directive_json()
+        context['must_reload_page1_on_load'] = len(self._initially_selected_values_set) > 0
         return context
 
     def is_initially_selected(self, value):
@@ -215,6 +216,7 @@ class ViewMixin(FormMixin):
         if self.request.method == 'POST':
             queryset = self.get_postrequest_selected_queryset()
         elif self.__is_bgreplaced():
+            queryset = self.model.objects.none()
         # elif self.__is_pagination_request():
             # This handles the case where:
             #
@@ -225,7 +227,7 @@ class ViewMixin(FormMixin):
             # using :meth:`.__set_selected_value_pks_in_session`,
             # and cleared in :meth:`.dispatch` as long as we do not get a
             # background
-            queryset = self.__get_selected_queryset_from_session()
+            # queryset = self.__get_selected_queryset_from_session()
         else:
             queryset = self.get_inititially_selected_queryset()
         return queryset
@@ -265,10 +267,11 @@ class ViewMixin(FormMixin):
 
     def get_paginate_by_handling_initially_selected(self, paginate_by):
         number_of_initially_selected_items = len(self._initially_selected_values_set)
-        if paginate_by < number_of_initially_selected_items:
+        number_of_extra_items_in_page_with_initially_selected = 2
+        if paginate_by < (number_of_initially_selected_items + number_of_extra_items_in_page_with_initially_selected):
             # Initially select only works if the selected items is loaded,
             # so we need to override page size to ensure they are included
-            paginate_by = number_of_initially_selected_items
+            paginate_by = number_of_initially_selected_items + number_of_extra_items_in_page_with_initially_selected
         return paginate_by
 
     def get_paginate_by(self, queryset):
@@ -285,7 +288,7 @@ class ViewMixin(FormMixin):
         We do this by annotating the queryset with ``cradmin_multiselect2_ordering``,
         and inserting that as the first order_by argument.
         """
-        if self.get_paginate_by(queryset):
+        if self.get_paginate_by(queryset) and self.request.method == "POST":
             current_order_by = list(queryset.query.order_by)
             whenqueries = []
             max_index = 0

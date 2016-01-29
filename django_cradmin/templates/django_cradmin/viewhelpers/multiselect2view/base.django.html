@@ -14,7 +14,7 @@
                             <p class="django-cradmin-multiselect2-listcolumn-buttons">
                                 {% block listcolumn-buttons-content %}
                                     {% block selectall-button %}
-                                        <button class="btn btn-default"
+                                        <button class="btn btn-default btn-sm"
                                                 django-cradmin-multiselect2-selectall={{ selectall_directive_json|safe }}>
                                             {% block selectall-button-content %}
                                                 {% trans "Select all" %}
@@ -55,4 +55,11 @@
             {% endblock targetcolumn %}
         {% endblock columnlayoutcontainer-inner %}
     </div>
+    {% if must_reload_page1_on_load %}
+        <div django-cradmin-load-more-pager='{
+            "targetElementCssSelector": "#django_cradmin_listbuilderview_listwrapper",
+            "reloadPageOneOnLoad": true
+        }'></div>
+    {% endif %}
+
 {% endblock list %}

@@ -4096,7 +4096,7 @@
 
 (function() {
   angular.module('djangoCradmin.loadmorepager.directives', []).directive('djangoCradminLoadMorePager', [
-    'djangoCradminBgReplaceElement', 'djangoCradminLoadmorepagerCoordinator', function(djangoCradminBgReplaceElement, djangoCradminLoadmorepagerCoordinator) {
+    '$timeout', 'djangoCradminBgReplaceElement', 'djangoCradminLoadmorepagerCoordinator', function($timeout, djangoCradminBgReplaceElement, djangoCradminLoadmorepagerCoordinator) {
       var pagerWrapperCssSelector;
       pagerWrapperCssSelector = '.django-cradmin-loadmorepager';
       return {
@@ -4111,7 +4111,10 @@
             var nextPageUrl;
             $scope.loadmorePagerIsLoading = true;
             nextPageUrl = new Url();
-            nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
+            if (!$scope.loadmorePagerOptions.reloadPageOneOnLoad) {
+              nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
+            }
+            console.log('loading', nextPageUrl.toString(), 'reload?', $scope.loadmorePagerOptions.reloadPageOneOnLoad);
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
@@ -4120,7 +4123,7 @@
               remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector,
               targetElement: angular.element($scope.loadmorePagerOptions.targetElementCssSelector),
               $scope: $scope,
-              replace: false,
+              replace: $scope.loadmorePagerOptions.reloadPageOneOnLoad,
               onHttpError: function(response) {
                 return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error('ERROR loading page', response) : void 0 : void 0;
               },
@@ -4136,11 +4139,13 @@
         link: function($scope, $element, attributes) {
           var domId;
           $scope.loadmorePagerOptions = {
-            pageQueryStringAttribute: "page"
+            pageQueryStringAttribute: "page",
+            reloadPageOneOnLoad: false
           };
           if ((attributes.djangoCradminLoadMorePager != null) && attributes.djangoCradminLoadMorePager !== '') {
             angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager));
           }
+          console.log($scope.loadmorePagerOptions);
           if ($scope.loadmorePagerOptions.targetElementCssSelector == null) {
             throw Error('Missing required option: targetElementCssSelector');
           }
@@ -4149,6 +4154,11 @@
           $scope.$on("$destroy", function() {
             return djangoCradminLoadmorepagerCoordinator.unregisterPager(domId, $scope);
           });
+          if ($scope.loadmorePagerOptions.reloadPageOneOnLoad) {
+            $timeout(function() {
+              return $scope.loadMore();
+            }, 500);
+          }
         }
       };
     }
@@ -4804,7 +4814,7 @@
       Coordinator.prototype.registerSelectScope = function(selectScope) {
         var listIndex, _ref;
         if (((_ref = this.selectScopes[selectScope.getTargetDomId()]) != null ? _ref.map[selectScope.getDomId()] : void 0) != null) {
-          throw Error(("selectScope with id=" + (selectScope.getDomId()) + " is already ") + ("registered for target " + (selectScope.getTargetDomId())));
+          return console.log(("selectScope with id=" + (selectScope.getDomId()) + " is already ") + ("registered for target " + (selectScope.getTargetDomId())));
         } else {
           if (this.selectScopes[selectScope.getTargetDomId()] == null) {
             this.selectScopes[selectScope.getTargetDomId()] = {
