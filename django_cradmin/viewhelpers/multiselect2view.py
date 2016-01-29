@@ -35,7 +35,7 @@ class ViewMixin(FormMixin):
         to get any default kwargs provided by this method.
         """
         return {
-            'form': self.get_form()
+            'form': self.get_form(form_class=self.get_form_class())
         }
 
     def get_target_renderer(self):

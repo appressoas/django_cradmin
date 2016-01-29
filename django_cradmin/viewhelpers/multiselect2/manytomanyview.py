@@ -92,7 +92,7 @@ class ViewMixin(FormMixin):
         return {
             'target_formfield_id': self.request.GET['manytomany_select_fieldid'],
             'empty_selection_allowed': self.request.GET['manytomany_select_required'] != 'True',
-            'form': self.get_form()
+            'form': self.get_form(form_class=self.get_form_class())
         }
 
     def get_target_renderer(self):
