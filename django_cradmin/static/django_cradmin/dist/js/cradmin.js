@@ -350,12 +350,12 @@
 
       BgReplace.prototype.updateTargetElement = function(options, remoteElementInnerHtml, $remoteHtmlDocument) {
         var $compile, linkingFunction, loadedElement;
-        $compile = this.compile;
-        linkingFunction = $compile(remoteElementInnerHtml);
-        loadedElement = linkingFunction(options.$scope);
         if (options.replace) {
           this.__removeAllChildren(options.targetElement);
         }
+        $compile = this.compile;
+        linkingFunction = $compile(remoteElementInnerHtml);
+        loadedElement = linkingFunction(options.$scope);
         options.targetElement.append(loadedElement);
         if (options.onFinish != null) {
           options.onFinish();
@@ -4601,15 +4601,16 @@
               }
             }
           });
+          djangoCradminMultiselect2Coordinator.registerSelectScope($scope);
           $scope.$on('$destroy', function() {
-            return unregisterBgReplaceEventHandler();
+            unregisterBgReplaceEventHandler();
+            return djangoCradminMultiselect2Coordinator.unregisterSelectScope($scope);
           });
         },
         link: function($scope, $element, attributes) {
           var select, targetScopeExistsWatcherCancel;
           select = function() {
-            djangoCradminMultiselect2Coordinator.select($scope);
-            return $scope.markAsSelected();
+            return djangoCradminMultiselect2Coordinator.select($scope);
           };
           if ($scope.options.is_selected) {
             if (djangoCradminMultiselect2Coordinator.targetScopeExists($scope.getTargetDomId())) {
@@ -4628,6 +4629,27 @@
           $element.on('click', function(e) {
             e.preventDefault();
             return select();
+          });
+        }
+      };
+    }
+  ]).directive('djangoCradminMultiselect2Selectall', [
+    '$rootScope', 'djangoCradminMultiselect2Coordinator', function($rootScope, djangoCradminMultiselect2Coordinator) {
+      return {
+        restrict: 'A',
+        scope: {
+          options: '=djangoCradminMultiselect2Selectall'
+        },
+        controller: function($scope, $element) {},
+        link: function($scope, $element, attributes) {
+          var selectAll, targetDomId;
+          targetDomId = $scope.options.target_dom_id;
+          selectAll = function() {
+            return djangoCradminMultiselect2Coordinator.selectAll(targetDomId);
+          };
+          $element.on('click', function(e) {
+            e.preventDefault();
+            return selectAll();
           });
         }
       };
@@ -4725,6 +4747,7 @@
     Coordinator = (function() {
       function Coordinator() {
         this.targets = {};
+        this.selectScopes = {};
       }
 
       Coordinator.prototype.registerTarget = function(targetDomId, targetScope) {
@@ -4732,7 +4755,7 @@
       };
 
       Coordinator.prototype.unregisterTarget = function(targetDomId, targetScope) {
-        return del(this.targets[targetDomId]);
+        return delete this.targets[targetDomId];
       };
 
       Coordinator.prototype.__getTargetScope = function(targetDomId) {
@@ -4751,7 +4774,10 @@
       Coordinator.prototype.select = function(selectScope) {
         var targetScope;
         targetScope = this.__getTargetScope(selectScope.getTargetDomId());
-        return targetScope.select(selectScope);
+        if (!targetScope.isSelected(selectScope)) {
+          targetScope.select(selectScope);
+          return selectScope.markAsSelected();
+        }
       };
 
       Coordinator.prototype.onDeselect = function(selectButtonDomId) {
@@ -4773,6 +4799,44 @@
         var targetScope;
         targetScope = this.__getTargetScope(targetDomId);
         return targetScope.isSelected(selectScope);
+      };
+
+      Coordinator.prototype.registerSelectScope = function(selectScope) {
+        var listIndex, _ref;
+        if (((_ref = this.selectScopes[selectScope.getTargetDomId()]) != null ? _ref.map[selectScope.getDomId()] : void 0) != null) {
+          throw Error(("selectScope with id=" + (selectScope.getDomId()) + " is already ") + ("registered for target " + (selectScope.getTargetDomId())));
+        } else {
+          if (this.selectScopes[selectScope.getTargetDomId()] == null) {
+            this.selectScopes[selectScope.getTargetDomId()] = {
+              map: {},
+              list: []
+            };
+          }
+          listIndex = this.selectScopes[selectScope.getTargetDomId()].list.push(selectScope);
+          return this.selectScopes[selectScope.getTargetDomId()].map[selectScope.getDomId()] = listIndex;
+        }
+      };
+
+      Coordinator.prototype.unregisterSelectScope = function(selectScope) {
+        var listIndex, _ref;
+        if (((_ref = this.selectScopes[selectScope.getTargetDomId()]) != null ? _ref.map[selectScope.getDomId()] : void 0) != null) {
+          listIndex = this.selectScopes[selectScope.getTargetDomId()][selectScope.getDomId()];
+          this.selectScopes[selectScope.getTargetDomId()].list.splice(listIndex, 1);
+          return delete this.selectScopes[selectScope.getTargetDomId()].map[selectScope.getDomId()];
+        } else {
+          throw Error(("selectScope with id=" + (selectScope.getDomId()) + " is not ") + ("registered for target " + (selectScope.getTargetDomId())));
+        }
+      };
+
+      Coordinator.prototype.selectAll = function(targetDomId) {
+        var selectScope, _i, _len, _ref, _results;
+        _ref = this.selectScopes[targetDomId].list;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          selectScope = _ref[_i];
+          _results.push(this.select(selectScope));
+        }
+        return _results;
       };
 
       return Coordinator;

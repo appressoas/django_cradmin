@@ -58,11 +58,11 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
         @__removeElement($childElement)
 
     updateTargetElement: (options, remoteElementInnerHtml, $remoteHtmlDocument) =>
+      if options.replace
+        @__removeAllChildren(options.targetElement)
       $compile = @compile
       linkingFunction = $compile(remoteElementInnerHtml)
       loadedElement = linkingFunction(options.$scope)
-      if options.replace
-        @__removeAllChildren(options.targetElement)
 
       options.targetElement.append(loadedElement)
       if options.onFinish?

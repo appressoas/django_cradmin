@@ -1,7 +1,7 @@
 {% extends "django_cradmin/viewhelpers/listbuilderview/default.django.html" %}
+{% load i18n %}
 {% load cradmin_tags %}
 {% load cradmin_icon_tags %}
-
 
 {% block list %}
     <div class="django-cradmin-multiselect2-columnlayout row {% block columnlayout_extra_cssclass %}{% endblock %}">
@@ -10,6 +10,20 @@
                 <div class="django-cradmin-multiselect2-listcolumn
                             {% block listcolumn_cssclass %}col-sm-6{% endblock %}">
                     {% block listcolumn-inner %}
+                        {% block listcolumn-buttons %}
+                            <p class="django-cradmin-multiselect2-listcolumn-buttons">
+                                {% block listcolumn-buttons-content %}
+                                    {% block selectall-button %}
+                                        <button class="btn btn-default"
+                                                django-cradmin-multiselect2-selectall={{ selectall_directive_json|safe }}>
+                                            {% block selectall-button-content %}
+                                                {% trans "Select all" %}
+                                            {% endblock selectall-button-content %}
+                                        </button>
+                                    {% endblock selectall-button %}
+                                {% endblock listcolumn-buttons-content %}
+                            </p>
+                        {% endblock listcolumn-buttons %}
                         <div class="django-cradmin-listfilter-target"
                                  id="django_cradmin_listbuilderview_listwrapper"
                                  aria-live="polite">

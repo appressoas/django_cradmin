@@ -199,15 +199,16 @@ angular.module('djangoCradmin.multiselect2.directives', [])
             if djangoCradminMultiselect2Coordinator.isSelected(targetDomId, $scope)
               $scope.markAsSelected()
 
+        djangoCradminMultiselect2Coordinator.registerSelectScope($scope)
         $scope.$on '$destroy', ->
           unregisterBgReplaceEventHandler()
+          djangoCradminMultiselect2Coordinator.unregisterSelectScope($scope)
 
         return
 
       link: ($scope, $element, attributes) ->
         select = ->
           djangoCradminMultiselect2Coordinator.select($scope)
-          $scope.markAsSelected()
 
         if $scope.options.is_selected
           # We need to fall back on a watcher if the targetScope does not exist on load.
@@ -227,6 +228,32 @@ angular.module('djangoCradmin.multiselect2.directives', [])
         $element.on 'click', (e) ->
           e.preventDefault()
           select()
+
+        return
+    }
+])
+
+
+.directive('djangoCradminMultiselect2Selectall', [
+  '$rootScope', 'djangoCradminMultiselect2Coordinator',
+  ($rootScope, djangoCradminMultiselect2Coordinator) ->
+    return {
+      restrict: 'A',
+      scope: {
+        options: '=djangoCradminMultiselect2Selectall'
+      }
+
+      controller: ($scope, $element) ->
+        return
+
+      link: ($scope, $element, attributes) ->
+        targetDomId = $scope.options.target_dom_id
+        selectAll = ->
+          djangoCradminMultiselect2Coordinator.selectAll(targetDomId)
+
+        $element.on 'click', (e) ->
+          e.preventDefault()
+          selectAll()
 
         return
     }

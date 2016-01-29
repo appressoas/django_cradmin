@@ -9,12 +9,13 @@ angular.module('djangoCradmin.multiselect2.services', [])
   class Coordinator
     constructor: ->
       @targets = {}
+      @selectScopes = {}
 
     registerTarget: (targetDomId, targetScope) ->
       @targets[targetDomId] = targetScope
 
     unregisterTarget: (targetDomId, targetScope) ->
-      del @targets[targetDomId]
+      delete @targets[targetDomId]
 
     __getTargetScope: (targetDomId) ->
       targetScope = @targets[targetDomId]
@@ -27,7 +28,9 @@ angular.module('djangoCradmin.multiselect2.services', [])
 
     select: (selectScope) ->
       targetScope = @__getTargetScope(selectScope.getTargetDomId())
-      targetScope.select(selectScope)
+      if not targetScope.isSelected(selectScope)
+        targetScope.select(selectScope)
+        selectScope.markAsSelected()
 
     onDeselect: (selectButtonDomId) ->
       $selectElement = angular.element('#' + selectButtonDomId)
@@ -44,5 +47,30 @@ angular.module('djangoCradmin.multiselect2.services', [])
       targetScope = @__getTargetScope(targetDomId)
       return targetScope.isSelected(selectScope)
 
+    registerSelectScope: (selectScope) ->
+      if @selectScopes[selectScope.getTargetDomId()]?.map[selectScope.getDomId()]?
+        throw Error("selectScope with id=#{selectScope.getDomId()} is already " +
+            "registered for target #{selectScope.getTargetDomId()}")
+      else
+        if not @selectScopes[selectScope.getTargetDomId()]?
+          @selectScopes[selectScope.getTargetDomId()] = {
+            map: {}  # Maps selectScope.getDomId() to index in the list (below)
+            list: []  # List of selectScopes in the order they where added
+          }
+        listIndex = @selectScopes[selectScope.getTargetDomId()].list.push(selectScope)
+        @selectScopes[selectScope.getTargetDomId()].map[selectScope.getDomId()] = listIndex
+
+    unregisterSelectScope: (selectScope) ->
+      if @selectScopes[selectScope.getTargetDomId()]?.map[selectScope.getDomId()]?
+        listIndex = @selectScopes[selectScope.getTargetDomId()][selectScope.getDomId()]
+        @selectScopes[selectScope.getTargetDomId()].list.splice(listIndex, 1)
+        delete @selectScopes[selectScope.getTargetDomId()].map[selectScope.getDomId()]
+      else
+        throw Error("selectScope with id=#{selectScope.getDomId()} is not " +
+            "registered for target #{selectScope.getTargetDomId()}")
+
+    selectAll: (targetDomId) ->
+      for selectScope in @selectScopes[targetDomId].list
+        @select(selectScope)
 
   return new Coordinator()

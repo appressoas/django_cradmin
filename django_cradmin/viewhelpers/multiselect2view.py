@@ -1,3 +1,6 @@
+import json
+from xml.sax.saxutils import quoteattr
+
 from django import forms
 from django.db import models
 from django.views.generic.edit import FormMixin
@@ -48,9 +51,35 @@ class ViewMixin(FormMixin):
         """
         return self.get_target_renderer_class()(**self.get_target_renderer_kwargs())
 
+    def __get_target_renderer(self):
+        if not hasattr(self, '__target_renderer'):
+            self.__target_renderer = self.get_target_renderer()
+        return self.__target_renderer
+
+    def get_selectall_directive_dict(self):
+        """
+        Get options for the ``django-cradmin-multiselect2-selectall`` angularjs
+        directive.
+
+        Returns:
+            dict: With options for the directive.
+        """
+        return {
+            'target_dom_id': self.__get_target_renderer().get_dom_id(),
+        }
+
+    def get_selectall_directive_json(self):
+        """
+        Returns:
+            str: The return value of :meth:`.get_select_directive_dict`
+            as a json encoded and xml attribute encoded string.
+        """
+        return quoteattr(json.dumps(self.get_selectall_directive_dict()))
+
     def get_context_data(self, **kwargs):
         context = super(ViewMixin, self).get_context_data(**kwargs)
-        context['target_renderer'] = self.get_target_renderer()
+        context['target_renderer'] = self.__get_target_renderer()
+        context['selectall_directive_json'] = self.get_selectall_directive_json()
         return context
 
     def is_initially_selected(self, value):
