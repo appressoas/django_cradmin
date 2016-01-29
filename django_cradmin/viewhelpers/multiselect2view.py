@@ -52,9 +52,9 @@ class ViewMixin(FormMixin):
         return self.get_target_renderer_class()(**self.get_target_renderer_kwargs())
 
     def __get_target_renderer(self):
-        if not hasattr(self, '__target_renderer'):
-            self.__target_renderer = self.get_target_renderer()
-        return self.__target_renderer
+        if not hasattr(self, '_target_renderer'):
+            self._target_renderer = self.get_target_renderer()
+        return self._target_renderer
 
     def get_selectall_directive_dict(self):
         """
@@ -83,6 +83,8 @@ class ViewMixin(FormMixin):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         context['target_renderer'] = self.__get_target_renderer()
         context['selectall_directive_json'] = self.get_selectall_directive_json()
+        context['select_all_is_allowed'] = self.select_all_is_allowed()
+
         # When we have initial items, we reload page1 after selecting the initially
         # selected items. This is because we need to load the items to select them,
         # but we do not want the initial selection to affect any further paging
@@ -337,6 +339,43 @@ class ViewMixin(FormMixin):
         queryset = self.get_selected_values_queryset().distinct() | queryset
         queryset = queryset.distinct()
         return self.__order_queryset(queryset)
+
+    def get_total_number_of_items_in_queryset(self):
+        """
+        Get the total number of items in the queryset.
+
+        .. note:: This is cached in ``self._total_number_of_items_in_queryset`` on
+            first call, so calling this multiple times for a single request
+            will only require one database query.
+        """
+        if not hasattr(self, '_total_number_of_items_in_queryset'):
+            self._total_number_of_items_in_queryset = self.get_queryset().count()
+        return self._total_number_of_items_in_queryset
+
+    def get_select_all_max_items(self):
+        """
+        The maximum number of items to allow for select all button.
+
+        If this returns a value other than ``None``, we do not render the "Select all" button,
+        if the number of total items available for "Select all" is more than this number.
+
+        Defaults to ``1500``.
+        """
+        return 1500
+
+    def select_all_is_allowed(self):
+        """
+        Checks if "Select all" is allowed, and returns ``True`` if it is.
+
+        You normally do not need to override this, override :meth:`.get_select_all_max_items`
+        instead. The only reason to override this is if you want to disable "Select all"
+        completely, in which case you return ``False``.
+        """
+        select_all_max_items = self.get_select_all_max_items()
+        if select_all_max_items is None:
+            return True
+        else:
+            return select_all_max_items > self.get_total_number_of_items_in_queryset()
 
 
 class ListbuilderView(ViewMixin, listbuilderview.View):

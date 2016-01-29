@@ -10,41 +10,45 @@
                 <div class="django-cradmin-multiselect2-listcolumn
                             {% block listcolumn_cssclass %}col-sm-6{% endblock %}">
                     {% block listcolumn-inner %}
-                        {% block listcolumn-buttons %}
-                            <p class="django-cradmin-multiselect2-listcolumn-buttons">
-                                {% block listcolumn-buttons-content %}
-                                    {% block selectall-button %}
-                                        <button class="btn btn-default btn-sm"
-                                                django-cradmin-load-more-pager='{
-                                                    "targetElementCssSelector": "#django_cradmin_listbuilderview_listwrapper",
-                                                    "mode": "loadAllOnClick"
-                                                }'
-                                                django-cradmin-multiselect2-selectall={{ selectall_directive_json|safe }}>
-                                            {% block selectall-button-loading-icon %}
-                                                <span class="{% cradmin_icon "loadspinner" %}"
-                                                      ng-if="loadmorePagerIsLoading"
-                                                      aria-hidden="true"></span>
-                                            {% endblock selectall-button-loading-icon %}
-                                            <span class="django-cradmin-loadmorepager-loadingtext" ng-if="loadmorePagerIsLoading">
-                                                {% block selectall-button-loading-text %}
-                                                    {% trans "Loading ..." %}
-                                                {% endblock selectall-button-loading-text %}
-                                            </span>
-                                            <span class="django-cradmin-loadmorepager-not-loadingtext" ng-if="!loadmorePagerIsLoading">
-                                                {% block selectall-button-text %}
-                                                    {% trans "Select all" %}
-                                                {% endblock selectall-button-text %}
-                                            </span>
-                                        </button>
-                                    {% endblock selectall-button %}
-                                {% endblock listcolumn-buttons-content %}
-                            </p>
-                        {% endblock listcolumn-buttons %}
                         <div class="django-cradmin-listfilter-target
                                     django-cradmin-loadmorepager-target
                                     {% if must_reload_page1_on_load %}django-cradmin-loadmorepager-target-reloading-page1{% endif %}"
                                  id="django_cradmin_listbuilderview_listwrapper"
                                  aria-live="polite">
+
+                            {% block listcolumn-buttons %}
+                                <div class="django-cradmin-multiselect2-listcolumn-buttons">
+                                    {% block listcolumn-buttons-content %}
+                                        {% block selectall-button %}
+                                            {% if select_all_is_allowed %}
+                                                <button class="btn btn-default btn-sm"
+                                                        django-cradmin-load-more-pager='{
+                                                            "targetElementCssSelector": "#django_cradmin_listbuilderview_listwrapper",
+                                                            "mode": "loadAllOnClick"
+                                                        }'
+                                                        django-cradmin-multiselect2-selectall={{ selectall_directive_json|safe }}>
+                                                    {% block selectall-button-loading-icon %}
+                                                        <span class="{% cradmin_icon "loadspinner" %}"
+                                                              ng-if="loadmorePagerIsLoading"
+                                                              aria-hidden="true"></span>
+                                                    {% endblock selectall-button-loading-icon %}
+                                                    <span class="django-cradmin-loadmorepager-loadingtext" ng-if="loadmorePagerIsLoading">
+                                                        {% block selectall-button-loading-text %}
+                                                            {% trans "Loading ..." %}
+                                                        {% endblock selectall-button-loading-text %}
+                                                    </span>
+                                                    <span class="django-cradmin-loadmorepager-not-loadingtext" ng-if="!loadmorePagerIsLoading">
+                                                        {% block selectall-button-text %}
+                                                            {% trans "Select all" %}
+                                                        {% endblock selectall-button-text %}
+                                                    </span>
+                                                </button>
+                                            {% endif %}
+                                        {% endblock selectall-button %}
+                                    {% endblock listcolumn-buttons-content %}
+                                </div>
+                            {% endblock listcolumn-buttons %}
+
                             {% if listbuilder_list.has_items %}
                                 {% cradmin_render_renderable listbuilder_list %}
                                 {% block pager %}

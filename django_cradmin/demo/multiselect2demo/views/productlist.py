@@ -271,6 +271,9 @@ class ProductListViewWithExtraFormData(FilteredProductListView):
     """
     # paginate_by = 2
 
+    # def get_select_all_max_items(self):
+    #     return 3
+
     def get_form_class(self):
         return SelectedProductsAndMoreForm
 

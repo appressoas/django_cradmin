@@ -6624,11 +6624,8 @@ ol.django-cradmin-listbuilder-list h3:last-child {
   padding-bottom: 0;
 }
 ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
-  margin-top: 5px;
+  margin-top: 0;
   margin-bottom: 5px;
-}
-ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li:first-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
-  margin-top: 5px;
 }
 ol.django-cradmin-listbuilder-list.django-cradmin-listbuilder-rowlist li:last-child .django-cradmin-listbuilder-itemframe.django-cradmin-listbuilder-itemframe-defaultspacing {
   margin-bottom: 0;
@@ -6881,7 +6878,7 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 .django-cradmin-multiselect2-item-wrapper-selected .django-cradmin-multiselect2-itemvalue .django-cradmin-multiselect2-itemvalue-buttons {
   display: none;
 }
-.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-listcolumn-buttons {
+.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-listcolumn-buttons .btn {
   margin-bottom: 5px;
 }
 .django-cradmin-loadmorepager {
