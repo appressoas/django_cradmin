@@ -243,7 +243,12 @@ class ViewMixin(FormMixin):
             paginate_by = number_of_initially_selected_items + extra_items
         return paginate_by
 
+    def __disable_paging_requested(self):
+        return self.request.GET.get('disablePaging', 'false') == 'true'
+
     def get_paginate_by(self, queryset):
+        if self.__disable_paging_requested():
+            return None
         paginate_by = self.paginate_by
         if paginate_by and self.__has_initially_selected_items():
             paginate_by = self.get_paginate_by_handling_initially_selected(paginate_by=paginate_by)

@@ -30,7 +30,7 @@
             }{% endblock %}'>
         <button type="button"
                 class="django-cradmin-loadmorepager-button {% block load-more-button-extra-css-classes %}btn btn-default{% endblock %}"
-                ng-click="loadMore()"
+                ng-click="pagerLoad()"
                 ng-disabled="loadmorePagerIsLoading">
             <span class="{% cradmin_icon "loadspinner" %}"
                   ng-if="loadmorePagerIsLoading"

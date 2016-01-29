@@ -239,21 +239,26 @@ angular.module('djangoCradmin.multiselect2.directives', [])
   ($rootScope, djangoCradminMultiselect2Coordinator) ->
     return {
       restrict: 'A',
-      scope: {
-        options: '=djangoCradminMultiselect2Selectall'
-      }
+#      scope: {
+#        options: '=djangoCradminMultiselect2Selectall'
+#      }
+      scope: true
 
       controller: ($scope, $element) ->
         return
 
       link: ($scope, $element, attributes) ->
+        $scope.options = angular.fromJson(attributes.djangoCradminMultiselect2Selectall)
         targetDomId = $scope.options.target_dom_id
         selectAll = ->
           djangoCradminMultiselect2Coordinator.selectAll(targetDomId)
 
         $element.on 'click', (e) ->
           e.preventDefault()
-          selectAll()
+          $scope.pagerLoad({
+            onSuccess: ->
+              selectAll()
+          })
 
         return
     }

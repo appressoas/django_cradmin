@@ -4107,31 +4107,41 @@
           $scope.getNextPageNumber = function() {
             return $scope.loadmorePagerOptions.nextPageNumber;
           };
-          $scope.loadMore = function() {
-            var $targetElement, nextPageUrl;
+          $scope.pagerLoad = function(options) {
+            var $targetElement, nextPageUrl, replaceMode;
+            options = angular.extend({}, $scope.loadmorePagerOptions, options);
             $scope.loadmorePagerIsLoading = true;
-            $targetElement = angular.element($scope.loadmorePagerOptions.targetElementCssSelector);
+            $targetElement = angular.element(options.targetElementCssSelector);
+            replaceMode = false;
             nextPageUrl = new Url();
-            if (!$scope.loadmorePagerOptions.reloadPageOneOnLoad) {
-              nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
+            if (options.mode === "reloadPageOneOnLoad") {
+              replaceMode = true;
+            } else if (options.mode === "loadAllOnClick") {
+              replaceMode = true;
+              nextPageUrl.query.disablePaging = "true";
+            } else {
+              nextPageUrl.query[options.pageQueryStringAttribute] = $scope.getNextPageNumber();
             }
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
                 url: nextPageUrl.toString()
               },
-              remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector,
+              remoteElementSelector: options.targetElementCssSelector,
               targetElement: $targetElement,
               $scope: $scope,
-              replace: $scope.loadmorePagerOptions.reloadPageOneOnLoad,
+              replace: replaceMode,
               onHttpError: function(response) {
                 return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error('ERROR loading page', response) : void 0 : void 0;
               },
               onSuccess: function($remoteHtmlDocument) {
-                if ($scope.loadmorePagerOptions.reloadPageOneOnLoad) {
-                  return $targetElement.removeClass('django-cradmin-loadmorepager-target-reloading-page1');
+                if (options.mode === "reloadPageOneOnLoad") {
+                  $targetElement.removeClass('django-cradmin-loadmorepager-target-reloading-page1');
                 } else {
-                  return $element.addClass('django-cradmin-loadmorepager-hidden');
+                  $element.addClass('django-cradmin-loadmorepager-hidden');
+                }
+                if (options.onSuccess != null) {
+                  return options.onSuccess();
                 }
               },
               onFinish: function() {
@@ -4144,7 +4154,7 @@
           var domId;
           $scope.loadmorePagerOptions = {
             pageQueryStringAttribute: "page",
-            reloadPageOneOnLoad: false
+            mode: "loadMoreOnClick"
           };
           if ((attributes.djangoCradminLoadMorePager != null) && attributes.djangoCradminLoadMorePager !== '') {
             angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager));
@@ -4157,9 +4167,9 @@
           $scope.$on("$destroy", function() {
             return djangoCradminLoadmorepagerCoordinator.unregisterPager(domId, $scope);
           });
-          if ($scope.loadmorePagerOptions.reloadPageOneOnLoad) {
+          if ($scope.loadmorePagerOptions.mode === "reloadPageOneOnLoad") {
             $timeout(function() {
-              return $scope.loadMore();
+              return $scope.pagerLoad();
             }, 500);
           }
         }
@@ -4650,19 +4660,22 @@
     '$rootScope', 'djangoCradminMultiselect2Coordinator', function($rootScope, djangoCradminMultiselect2Coordinator) {
       return {
         restrict: 'A',
-        scope: {
-          options: '=djangoCradminMultiselect2Selectall'
-        },
+        scope: true,
         controller: function($scope, $element) {},
         link: function($scope, $element, attributes) {
           var selectAll, targetDomId;
+          $scope.options = angular.fromJson(attributes.djangoCradminMultiselect2Selectall);
           targetDomId = $scope.options.target_dom_id;
           selectAll = function() {
             return djangoCradminMultiselect2Coordinator.selectAll(targetDomId);
           };
           $element.on('click', function(e) {
             e.preventDefault();
-            return selectAll();
+            return $scope.pagerLoad({
+              onSuccess: function() {
+                return selectAll();
+              }
+            });
           });
         }
       };

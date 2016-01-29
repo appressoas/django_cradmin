@@ -17,31 +17,42 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
         $scope.getNextPageNumber = ->
           return $scope.loadmorePagerOptions.nextPageNumber
 
-        $scope.loadMore = ->
+        $scope.pagerLoad = (options) ->
+          options = angular.extend({}, $scope.loadmorePagerOptions, options)
           $scope.loadmorePagerIsLoading = true
-          $targetElement = angular.element($scope.loadmorePagerOptions.targetElementCssSelector)
+          $targetElement = angular.element(options.targetElementCssSelector)
+
+          replaceMode = false
           nextPageUrl = new Url()
-          if not $scope.loadmorePagerOptions.reloadPageOneOnLoad
-            nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber()
+          if options.mode == "reloadPageOneOnLoad"
+            replaceMode = true
+          else if options.mode == "loadAllOnClick"
+            replaceMode = true
+            nextPageUrl.query.disablePaging = "true"
+          else
+            nextPageUrl.query[options.pageQueryStringAttribute] = $scope.getNextPageNumber()
 
           djangoCradminBgReplaceElement.load({
             parameters: {
               method: 'GET'
               url: nextPageUrl.toString()
             },
-            remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector
+            remoteElementSelector: options.targetElementCssSelector
             targetElement: $targetElement
             $scope: $scope
-            replace: $scope.loadmorePagerOptions.reloadPageOneOnLoad
+            replace: replaceMode
             onHttpError: (response) ->
               console?.error? 'ERROR loading page', response
             onSuccess: ($remoteHtmlDocument) ->
 #              console.log 'Success!', $remoteHtmlDocument
 #              if $remoteHtmlDocument
-              if $scope.loadmorePagerOptions.reloadPageOneOnLoad
+              if options.mode == "reloadPageOneOnLoad"
                 $targetElement.removeClass('django-cradmin-loadmorepager-target-reloading-page1')
               else
                 $element.addClass('django-cradmin-loadmorepager-hidden')
+
+              if options.onSuccess?
+                options.onSuccess()
 
             onFinish: ->
               $scope.loadmorePagerIsLoading = false
@@ -52,7 +63,7 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
       link: ($scope, $element, attributes) ->
         $scope.loadmorePagerOptions = {
           pageQueryStringAttribute: "page"
-          reloadPageOneOnLoad: false
+          mode: "loadMoreOnClick"
         }
         if attributes.djangoCradminLoadMorePager? and attributes.djangoCradminLoadMorePager != ''
           angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager))
@@ -65,10 +76,10 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
         $scope.$on "$destroy", ->
           djangoCradminLoadmorepagerCoordinator.unregisterPager(domId, $scope)
 
-        if $scope.loadmorePagerOptions.reloadPageOneOnLoad
+        if $scope.loadmorePagerOptions.mode == "reloadPageOneOnLoad"
           # We assume the initial digest cycle does not take more than 500ms
           $timeout(->
-            $scope.loadMore()
+            $scope.pagerLoad()
           500)
 
         return

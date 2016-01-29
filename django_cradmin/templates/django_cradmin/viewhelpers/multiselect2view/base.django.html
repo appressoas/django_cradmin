@@ -15,10 +15,26 @@
                                 {% block listcolumn-buttons-content %}
                                     {% block selectall-button %}
                                         <button class="btn btn-default btn-sm"
+                                                django-cradmin-load-more-pager='{
+                                                    "targetElementCssSelector": "#django_cradmin_listbuilderview_listwrapper",
+                                                    "mode": "loadAllOnClick"
+                                                }'
                                                 django-cradmin-multiselect2-selectall={{ selectall_directive_json|safe }}>
-                                            {% block selectall-button-content %}
-                                                {% trans "Select all" %}
-                                            {% endblock selectall-button-content %}
+                                            {% block selectall-button-loading-icon %}
+                                                <span class="{% cradmin_icon "loadspinner" %}"
+                                                      ng-if="loadmorePagerIsLoading"
+                                                      aria-hidden="true"></span>
+                                            {% endblock selectall-button-loading-icon %}
+                                            <span class="django-cradmin-loadmorepager-loadingtext" ng-if="loadmorePagerIsLoading">
+                                                {% block selectall-button-loading-text %}
+                                                    {% trans "Loading ..." %}
+                                                {% endblock selectall-button-loading-text %}
+                                            </span>
+                                            <span class="django-cradmin-loadmorepager-not-loadingtext" ng-if="!loadmorePagerIsLoading">
+                                                {% block selectall-button-text %}
+                                                    {% trans "Select all" %}
+                                                {% endblock selectall-button-text %}
+                                            </span>
                                         </button>
                                     {% endblock selectall-button %}
                                 {% endblock listcolumn-buttons-content %}
@@ -60,7 +76,7 @@
     {% if must_reload_page1_on_load %}
         <div django-cradmin-load-more-pager='{
             "targetElementCssSelector": "#django_cradmin_listbuilderview_listwrapper",
-            "reloadPageOneOnLoad": true
+            "mode": "reloadPageOneOnLoad"
         }'></div>
     {% endif %}
 
