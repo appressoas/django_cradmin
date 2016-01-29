@@ -24,7 +24,9 @@
                                 {% endblock listcolumn-buttons-content %}
                             </p>
                         {% endblock listcolumn-buttons %}
-                        <div class="django-cradmin-listfilter-target"
+                        <div class="django-cradmin-listfilter-target
+                                    django-cradmin-loadmorepager-target
+                                    {% if must_reload_page1_on_load %}django-cradmin-loadmorepager-target-reloading-page1{% endif %}"
                                  id="django_cradmin_listbuilderview_listwrapper"
                                  aria-live="polite">
                             {% if listbuilder_list.has_items %}

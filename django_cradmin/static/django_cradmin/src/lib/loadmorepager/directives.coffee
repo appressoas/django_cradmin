@@ -19,6 +19,7 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
 
         $scope.loadMore = ->
           $scope.loadmorePagerIsLoading = true
+          $targetElement = angular.element($scope.loadmorePagerOptions.targetElementCssSelector)
           nextPageUrl = new Url()
           if not $scope.loadmorePagerOptions.reloadPageOneOnLoad
             nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber()
@@ -29,7 +30,7 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
               url: nextPageUrl.toString()
             },
             remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector
-            targetElement: angular.element($scope.loadmorePagerOptions.targetElementCssSelector)
+            targetElement: $targetElement
             $scope: $scope
             replace: $scope.loadmorePagerOptions.reloadPageOneOnLoad
             onHttpError: (response) ->
@@ -37,7 +38,11 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
             onSuccess: ($remoteHtmlDocument) ->
 #              console.log 'Success!', $remoteHtmlDocument
 #              if $remoteHtmlDocument
-              $element.addClass('django-cradmin-loadmorepager-hidden')
+              if $scope.loadmorePagerOptions.reloadPageOneOnLoad
+                $targetElement.removeClass('django-cradmin-loadmorepager-target-reloading-page1')
+              else
+                $element.addClass('django-cradmin-loadmorepager-hidden')
+
             onFinish: ->
               $scope.loadmorePagerIsLoading = false
           })

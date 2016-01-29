@@ -6882,6 +6882,20 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 .django-cradmin-loadmorepager.django-cradmin-loadmorepager-hidden {
   display: none;
 }
+.django-cradmin-loadmorepager-target {
+  opacity: 1;
+  -webkit-transition: opacity 0.2s ease-in-out;
+  -moz-transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
+}
+.django-cradmin-loadmorepager-target.django-cradmin-loadmorepager-target-reloading-page1 {
+  opacity: 0;
+}
+.django-cradmin-loadmorepager-target.django-cradmin-loadmorepager-target-reloading-page1 button,
+.django-cradmin-loadmorepager-target.django-cradmin-loadmorepager-target-reloading-page1 a,
+.django-cradmin-loadmorepager-target.django-cradmin-loadmorepager-target-reloading-page1 input {
+  display: none;
+}
 @media (min-width: 992px) {
   nav#django_cradmin_mainmenu.django-cradmin-menu {
     position: absolute;

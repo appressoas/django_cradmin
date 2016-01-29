@@ -4108,8 +4108,9 @@
             return $scope.loadmorePagerOptions.nextPageNumber;
           };
           $scope.loadMore = function() {
-            var nextPageUrl;
+            var $targetElement, nextPageUrl;
             $scope.loadmorePagerIsLoading = true;
+            $targetElement = angular.element($scope.loadmorePagerOptions.targetElementCssSelector);
             nextPageUrl = new Url();
             if (!$scope.loadmorePagerOptions.reloadPageOneOnLoad) {
               nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
@@ -4120,14 +4121,18 @@
                 url: nextPageUrl.toString()
               },
               remoteElementSelector: $scope.loadmorePagerOptions.targetElementCssSelector,
-              targetElement: angular.element($scope.loadmorePagerOptions.targetElementCssSelector),
+              targetElement: $targetElement,
               $scope: $scope,
               replace: $scope.loadmorePagerOptions.reloadPageOneOnLoad,
               onHttpError: function(response) {
                 return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error('ERROR loading page', response) : void 0 : void 0;
               },
               onSuccess: function($remoteHtmlDocument) {
-                return $element.addClass('django-cradmin-loadmorepager-hidden');
+                if ($scope.loadmorePagerOptions.reloadPageOneOnLoad) {
+                  return $targetElement.removeClass('django-cradmin-loadmorepager-target-reloading-page1');
+                } else {
+                  return $element.addClass('django-cradmin-loadmorepager-hidden');
+                }
               },
               onFinish: function() {
                 return $scope.loadmorePagerIsLoading = false;
