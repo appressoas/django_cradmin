@@ -139,7 +139,7 @@ class ViewMixin(FormMixin):
         if hasattr(self, 'get_unfiltered_queryset_for_role'):
             queryset = self.get_unfiltered_queryset_for_role(role=self.request.cradmin_role)
         else:
-            queryset = self.get_queryset()
+            queryset = self.get_queryset_for_role(role=self.request.cradmin_role)
         return queryset
 
     def __make_selected_items_form_class(self):
@@ -184,11 +184,45 @@ class ViewMixin(FormMixin):
         """
         return self.model.objects.none()
 
+    def get_session_dict_key(self):
+        return '{}.{}.selected'.format(self.__class__.__module__, self.__class__.__name__)
+
+    def __set_selected_value_pks_in_session(self, selected_values):
+        self.request.session[self.get_session_dict_key()] = [value.pk for value in selected_values]
+
+    def __get_selected_value_pks_from_session(self):
+        if self.get_session_dict_key() in self.request.session:
+            return self.request.session[self.get_session_dict_key()]
+        else:
+            return None
+
+    def __clear_selected_value_pks_from_session(self):
+        if self.get_session_dict_key() in self.request.session:
+            del self.request.session[self.get_session_dict_key()]
+
+    def __get_selected_queryset_from_session(self):
+        pks_from_session = self.__get_selected_value_pks_from_session()
+        if pks_from_session:
+            return self.get_selectable_items_queryset()\
+                .filter(pk__in=pks_from_session)
+        else:
+            return self.model.objects.none()
+
     def get_selected_values_queryset(self):
         if self.request.method == 'POST':
-            return self.get_postrequest_selected_queryset()
+            queryset = self.get_postrequest_selected_queryset()
+        elif self.__is_bgreplaced():
+            # This handles the case where:
+            # - We submit
+            #
+            # The session variable we fetch here is set in :meth:`.form_invalid_init`
+            # using :meth:`.__set_selected_value_pks_in_session`,
+            # and cleared in :meth:`.dispatch` as long as we do not get a
+            # background
+            queryset = self.__get_selected_queryset_from_session()
         else:
-            return self.get_inititially_selected_queryset()
+            queryset = self.get_inititially_selected_queryset()
+        return queryset
 
     def __get_selected_values_set(self):
         return set(self.get_selected_values_queryset())
@@ -203,9 +237,12 @@ class ViewMixin(FormMixin):
         you can override this method
         """
         self.object_list = self.get_queryset()
+        self.__set_selected_value_pks_in_session(self._initially_selected_values_set)
 
     def dispatch(self, request, *args, **kwargs):
         self._initially_selected_values_set = self.__get_selected_values_set()
+        if not self.__is_bgreplaced():
+            self.__clear_selected_value_pks_from_session()
         return super(ViewMixin, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -215,10 +252,8 @@ class ViewMixin(FormMixin):
         """
         form = self.get_form()
         if form.is_valid():
-            self.__form_is_valid = True
             return self.form_valid(form)
         else:
-            self.__form_is_valid = False
             self.form_invalid_init(form)
             return self.form_invalid(form)
 
