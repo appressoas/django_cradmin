@@ -1,10 +1,13 @@
 import json
 
+from django import forms
+from django.views.generic.edit import FormMixin
+
 from django_cradmin.viewhelpers.multiselect2 import listbuilder_itemvalues
 from django_cradmin.viewhelpers.multiselect2 import target_renderer
 
 
-class ViewMixin(object):
+class ViewMixin(FormMixin):
     """
     Base class for the mixin classes for views that is shown in an iframe
     by :class:`django_cradmin.viewhelpers.multiselect2.manytomanywidget.Widget`.
@@ -14,6 +17,8 @@ class ViewMixin(object):
     #: The default target renderer task. Should be a subclass of
     #: :class:`django_cradmin.viewhelpers.multiselect2.target_renderer.ManyToManySelectTarget`.
     target_renderer_class = target_renderer.ManyToManySelectTarget
+
+    form_class = forms.Form
 
     def get_selected_values_list(self):
         """
@@ -87,6 +92,7 @@ class ViewMixin(object):
         return {
             'target_formfield_id': self.request.GET['manytomany_select_fieldid'],
             'empty_selection_allowed': self.request.GET['manytomany_select_required'] != 'True',
+            'form': self.get_form()
         }
 
     def get_target_renderer(self):

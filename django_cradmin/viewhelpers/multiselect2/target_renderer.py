@@ -294,8 +294,6 @@ class ManyToManySelectTarget(Target):
     Renders a multiselect target form for
     :class:`django_cradmin.viewhelpers.multiselect2.manytomanywidget.Widget`.
     """
-    template_name = 'django_cradmin/viewhelpers/multiselect2/target_renderer/manytomanyselect-target.django.html'
-
     def __init__(self, target_formfield_id, *args, **kwargs):
         """
         Args:
@@ -304,15 +302,16 @@ class ManyToManySelectTarget(Target):
         self.target_formfield_id = target_formfield_id
         super(ManyToManySelectTarget, self).__init__(*args, **kwargs)
 
-    def get_usethis_directive_dict(self, request):
+    def get_usethis_directive_dict(self):
         return {
             'fieldid': self.target_formfield_id
         }
 
-    def get_usethis_directive_json(self, request):
-        return quoteattr(json.dumps(self.get_usethis_directive_dict(request=request)))
+    def get_usethis_directive_json(self):
+        return json.dumps(self.get_usethis_directive_dict())
 
-    def get_context_data(self, request=None):
-        context = super(ManyToManySelectTarget, self).get_context_data(request=request)
-        context['usethis_directive_json'] = self.get_usethis_directive_json(request=request)
-        return context
+    def get_buttons(self):
+        return [
+            PrimarySubmitBlock('usethis', self.get_submit_button_text(),
+                               django_cradmin_multiselect2_use_this=self.get_usethis_directive_json()),
+        ]
