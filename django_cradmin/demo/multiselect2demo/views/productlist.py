@@ -95,7 +95,7 @@ class ProductTargetRenderer(multiselect2.target_renderer.Target):
         return 'Selected products:'
 
     def get_submit_button_text(self):
-        return 'Do stuff with products'
+        return 'Do some really awesomely cool stuff with products'
 
     def get_without_items_text(self):
         return 'Nothing selected'
@@ -235,21 +235,31 @@ class ProductListViewSelectOnLoad(ProductListView):
 
 class SelectedProductsAndMoreForm(SelectedProductsForm):
     """
-    We add an extra required field (age) to :class:`.SelectedProductsForm`
+    We add an couple of extra required fields (age and tag) to :class:`.SelectedProductsForm`
     for this demo, to show that form validation works.
     """
     age = forms.CharField(
         required=True
     )
+    tag = forms.MultipleChoiceField(
+        required=True,
+        choices=[
+            ('booring', 'Booring'),
+            ('cool', 'Cool'),
+            ('awesome', 'Awesome'),
+        ],
+        widget=forms.CheckboxSelectMultiple()
+    )
 
 
 class WithExtraFormDataTargetRenderer(ProductTargetRenderer):
     """
-    We have to add the ``age`` field to the target renderer.
+    We have to add the ``age`` and ``tag`` fields to the target renderer.
     """
     def get_field_layout(self):
         return [
-            'age'
+            'age',
+            'tag',
         ]
 
 
@@ -270,6 +280,12 @@ class ProductListViewWithExtraFormData(FilteredProductListView):
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
             'extra-form-data', kwargs={'filters_string': filters_string})
+
+    def form_valid(self, form):
+        messages.success(
+            self.request,
+            'POST OK. Data: {!r}'.format(form.cleaned_data))
+        return redirect(self.request.get_full_path())
 
 
 ###############################################
