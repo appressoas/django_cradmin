@@ -4114,7 +4114,6 @@
             if (!$scope.loadmorePagerOptions.reloadPageOneOnLoad) {
               nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber();
             }
-            console.log('loading', nextPageUrl.toString(), 'reload?', $scope.loadmorePagerOptions.reloadPageOneOnLoad);
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
@@ -4145,7 +4144,6 @@
           if ((attributes.djangoCradminLoadMorePager != null) && attributes.djangoCradminLoadMorePager !== '') {
             angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager));
           }
-          console.log($scope.loadmorePagerOptions);
           if ($scope.loadmorePagerOptions.targetElementCssSelector == null) {
             throw Error('Missing required option: targetElementCssSelector');
           }

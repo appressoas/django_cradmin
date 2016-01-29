@@ -22,7 +22,6 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
           nextPageUrl = new Url()
           if not $scope.loadmorePagerOptions.reloadPageOneOnLoad
             nextPageUrl.query[$scope.loadmorePagerOptions.pageQueryStringAttribute] = $scope.getNextPageNumber()
-          console.log 'loading', nextPageUrl.toString(), 'reload?', $scope.loadmorePagerOptions.reloadPageOneOnLoad
 
           djangoCradminBgReplaceElement.load({
             parameters: {
@@ -52,8 +51,6 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
         }
         if attributes.djangoCradminLoadMorePager? and attributes.djangoCradminLoadMorePager != ''
           angular.extend($scope.loadmorePagerOptions, angular.fromJson(attributes.djangoCradminLoadMorePager))
-
-        console.log $scope.loadmorePagerOptions
 
         if not $scope.loadmorePagerOptions.targetElementCssSelector?
           throw Error('Missing required option: targetElementCssSelector')
