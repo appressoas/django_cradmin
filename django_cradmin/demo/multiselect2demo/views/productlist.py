@@ -281,6 +281,9 @@ class ProductListViewWithExtraFormData(FilteredProductListView):
         return self.request.cradmin_app.reverse_appurl(
             'extra-form-data', kwargs={'filters_string': filters_string})
 
+    # def get_inititially_selected_queryset(self):
+    #     return Product.objects.filter(name__icontains='sock')
+
     def form_valid(self, form):
         messages.success(
             self.request,

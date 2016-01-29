@@ -6602,9 +6602,12 @@ Note that the FloatGridList also uses the ``django-cradmin-listbuilder-list`` cl
     clear: left;
   }
 }
+ol.django-cradmin-listbuilder-list {
+  font-size: 14px;
+}
 ol.django-cradmin-listbuilder-list h2,
 ol.django-cradmin-listbuilder-list h3 {
-  font-size: 19px;
+  font-size: 16px;
 }
 ol.django-cradmin-listbuilder-list h2:first-child,
 ol.django-cradmin-listbuilder-list h3:first-child {
@@ -6771,6 +6774,7 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 @media (min-width: 768px) {
   .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-title {
     margin-top: 0;
+    min-height: 28px;
   }
 }
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-selected-items .django-cradmin-multiselect2-target-selected-item {
@@ -6817,6 +6821,9 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 }
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .btn {
   white-space: normal;
+}
+.django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-formfields .django-cradmin-multiselect2-target-submitbuttons {
+  margin-top: 5px;
 }
 .django-cradmin-multiselect2-target .django-cradmin-multiselect2-target-with-items-content {
   display: none;
@@ -6873,6 +6880,9 @@ ol.django-cradmin-listfilter-filterlist.django-cradmin-listfilter-filterlist-hor
 }
 .django-cradmin-multiselect2-item-wrapper-selected .django-cradmin-multiselect2-itemvalue .django-cradmin-multiselect2-itemvalue-buttons {
   display: none;
+}
+.django-cradmin-multiselect2-columnlayout .django-cradmin-multiselect2-listcolumn-buttons {
+  margin-bottom: 5px;
 }
 .django-cradmin-loadmorepager {
   text-align: center;
