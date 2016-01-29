@@ -8,6 +8,12 @@
 
 
 {% block list %}
-    {% cradmin_render_renderable filterlist %}
-    {{ block.super }}
+    {% block filterlist %}
+        {% cradmin_render_renderable filterlist %}
+    {% endblock filterlist %}
+    {% with listbuilderlist_html=block.super %}
+        {% block listbuilderlist %}
+            {{ listbuilderlist_html }}
+        {% endblock listbuilderlist %}
+    {% endwith %}
 {% endblock list %}
