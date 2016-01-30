@@ -77,7 +77,7 @@ class ViewMixin(FormMixin):
         return quoteattr(json.dumps(self.get_selectall_directive_dict()))
 
     def __has_initially_selected_items(self):
-        return len(self._initially_selected_values_set) > 0
+        return len(self._get_selected_values_set()) > 0
 
     def get_context_data(self, **kwargs):
         context = super(ViewMixin, self).get_context_data(**kwargs)
@@ -109,7 +109,7 @@ class ViewMixin(FormMixin):
             otherwise return ``False``. Defaults to ``False`` if you do not overrie
             this method.
         """
-        return value in self._initially_selected_values_set
+        return value in self._get_selected_values_set()
 
     def __is_bgreplaced(self):
         return self.request.GET.get('cradmin-bgreplaced', 'false') == 'true'
@@ -203,8 +203,10 @@ class ViewMixin(FormMixin):
             queryset = self.get_inititially_selected_queryset()
         return queryset
 
-    def __get_selected_values_set(self):
-        return set(self.get_selected_values_queryset())
+    def _get_selected_values_set(self):
+        if not hasattr(self, '_selected_values_set'):
+            self._selected_values_set = set(self.get_selected_values_queryset())
+        return self._selected_values_set
 
     def form_invalid_init(self, form):
         """
@@ -216,10 +218,6 @@ class ViewMixin(FormMixin):
         you can override this method
         """
         self.object_list = self.get_queryset()
-
-    def dispatch(self, request, *args, **kwargs):
-        self._initially_selected_values_set = self.__get_selected_values_set()
-        return super(ViewMixin, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """
@@ -246,7 +244,7 @@ class ViewMixin(FormMixin):
         return 10
 
     def get_paginate_by_handling_initially_selected(self, paginate_by):
-        number_of_initially_selected_items = len(self._initially_selected_values_set)
+        number_of_initially_selected_items = len(self._get_selected_values_set())
         extra_items = self.get_number_of_extra_items_in_page_with_initially_selected()
         if paginate_by < (number_of_initially_selected_items + extra_items):
             # Initially select only works if the selected items is loaded,
