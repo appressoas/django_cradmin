@@ -20,8 +20,21 @@ class SelectedProductsForm(forms.Form):
     matches the value returned by ``get_inputfield_name()`` in the
     ``SelectableProductItemValue`` class.
     """
+
+    invalid_selected_items_message = 'Invalid products was selected, please try again.'
     selected_items = forms.ModelMultipleChoiceField(
-        queryset=Product.objects.none()
+        # No products selectable by default - we override this in __init__()
+        queryset=Product.objects.none(),
+
+        # This is not required for this example, but if your queryset for
+        # selected items depends on data that can change (be deleted, made unavailable for
+        # selection, ...), and thus make selection invalid, you should include a message
+        # like this. You can try this out if you try to select an item in the demo
+        # views, and delete the items (using the superuser UI) before submitting your
+        # selection.
+        error_messages={
+            'invalid_choice': invalid_selected_items_message,
+        }
     )
 
     def __init__(self, *args, **kwargs):

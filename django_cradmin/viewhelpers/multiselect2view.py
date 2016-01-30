@@ -2,6 +2,7 @@ import json
 from xml.sax.saxutils import quoteattr
 
 from django import forms
+from django.contrib import messages
 from django.db import models
 from django.views.generic.edit import FormMixin
 
@@ -219,6 +220,21 @@ class ViewMixin(FormMixin):
         """
         self.object_list = self.get_queryset()
 
+    def form_invalid_add_global_errormessages(self, form):
+        """
+        Called before ``form_invalid()`` to handle adding global error messages.
+
+        We add any error messages in the :meth:`.get_selected_items_form_attribute`
+        field as a Django messages framework error message by default.
+
+        Args:
+            form: The form object.
+        """
+        if self.get_selected_items_form_attribute() in form.errors:
+            errormessages = form.errors[self.get_selected_items_form_attribute()]
+            for errormessage in errormessages:
+                messages.error(self.request, errormessage)
+
     def post(self, request, *args, **kwargs):
         """
         Handles POST requests, instantiating a form instance with the passed
@@ -228,7 +244,8 @@ class ViewMixin(FormMixin):
         if form.is_valid():
             return self.form_valid(form)
         else:
-            self.form_invalid_init(form)
+            self.form_invalid_init(form=form)
+            self.form_invalid_add_global_errormessages(form=form)
             return self.form_invalid(form)
 
     def get_number_of_extra_items_in_page_with_initially_selected(self):
