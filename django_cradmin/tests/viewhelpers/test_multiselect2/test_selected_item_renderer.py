@@ -1,6 +1,7 @@
 import htmls
 from django import test
 
+from django_cradmin import python2_compatibility
 from django_cradmin.viewhelpers.multiselect2 import selected_item_renderer
 from django_cradmin.python2_compatibility import mock
 
@@ -9,6 +10,8 @@ class TestSelectedItem(test.TestCase):
     def test_title(self):
         mockvalue = mock.MagicMock()
         mockvalue.__str__.return_value = 'testvalue'
+        if python2_compatibility.is_python2():
+            mockvalue.__unicode__.return_value = 'testvalue'
         selector = htmls.S(selected_item_renderer.SelectedItem(
             value=mockvalue).render())
         self.assertEqual(
@@ -62,6 +65,8 @@ class TestSelectedItem(test.TestCase):
     def test_deselectbutton_aria_label(self):
         mockvalue = mock.MagicMock()
         mockvalue.__str__.return_value = 'testvalue'
+        if python2_compatibility.is_python2():
+            mockvalue.__unicode__.return_value = 'testvalue'
         selector = htmls.S(selected_item_renderer.SelectedItem(
             value=mockvalue).render())
         self.assertEqual(

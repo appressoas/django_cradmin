@@ -67,7 +67,7 @@ class TestAuthUserCreateAccountForm(TestCase):
         })
         self.assertFalse(form.is_valid())
         self.assertIn('username', form.errors)
-        self.assertRegex(form.errors['username'][0], '^.*name already exists.*$')
+        self.assertIn('name already exists', form.errors['username'][0])
 
 
 class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
@@ -137,5 +137,5 @@ class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
             'email': 'a.very.long.testuser@example.com'
         })
         self.assertTrue(form.is_valid())
-        with self.assertRaisesRegex(ValidationError, '^.*name already exists.*$'):
+        with self.assertRaisesRegexp(ValidationError, '^.*name already exists.*$'):
             form.save()

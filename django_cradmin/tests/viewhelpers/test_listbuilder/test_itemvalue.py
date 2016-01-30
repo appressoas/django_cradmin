@@ -1,5 +1,7 @@
 from django import test
 from django.core.files.base import ContentFile
+from future.utils import python_2_unicode_compatible
+
 from django_cradmin.apps.cradmin_imagearchive.tests.helpers import create_image
 import htmls
 from model_mommy import mommy
@@ -36,12 +38,23 @@ class TestTitleDescription(test.TestCase):
             selector.one('.django-cradmin-listbuilder-itemvalue-titledescription-description').alltext_normalized)
 
 
+@python_2_unicode_compatible
+class MockValue(object):
+    def __init__(self, value_str, pk):
+        self.value_str = value_str
+        self.pk = pk
+
+    def __str__(self):
+        return self.value_str
+
+
 class TestUseThis(test.TestCase):
     def __make_mock_value(self, value_str, value_pk=1):
-        mockvalue = mock.MagicMock()
-        mockvalue.__str__.return_value = value_str
-        mockvalue.pk = value_pk
-        return mockvalue
+        # mockvalue = mock.MagicMock()
+        # mockvalue.__str__.return_value = value_str
+        # mockvalue.pk = value_pk
+        # return mockvalue
+        return MockValue(value_str=value_str, pk=value_pk)
 
     def __make_mock_request(self):
         mockrequest = mock.MagicMock()

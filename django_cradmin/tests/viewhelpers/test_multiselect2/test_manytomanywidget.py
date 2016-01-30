@@ -2,6 +2,7 @@ import htmls
 from django import test
 from django.http import QueryDict
 
+from django_cradmin import python2_compatibility
 from django_cradmin.python2_compatibility import mock
 from django_cradmin.viewhelpers.multiselect2 import manytomanywidget
 
@@ -150,6 +151,8 @@ class TestWidget(test.TestCase):
         mockmodelobject = mock.MagicMock()
         mockmodelobject.pk = 1
         mockmodelobject.__str__.return_value = 'testvalue'
+        if python2_compatibility.is_python2():
+            mockmodelobject.__unicode__.return_value = 'testvalue'
         mockqueryset.filter.return_value = [mockmodelobject]
         selector = htmls.S(manytomanywidget.Widget(
             queryset=mockqueryset,
