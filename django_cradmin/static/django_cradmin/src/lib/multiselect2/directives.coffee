@@ -30,14 +30,6 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           if not $scope.$$phase
             $scope.$apply()
 
-        $scope.onDeselect = (selectScope) ->
-          ###
-          Called by djangoCradminMultiselect2Coordinator when an item is deselected.
-
-          Calls ``djangoCradminMultiselect2TargetSelectedItems.onDeselect()``.
-          ###
-          $scope.selectedItemsScope.onDeselect(selectScope)
-
         $scope.isSelected = (selectScope) ->
           ###
           Called by djangoCradminMultiselect2Select via
@@ -99,9 +91,11 @@ angular.module('djangoCradmin.multiselect2.directives', [])
           $scope.selectedItemsCount += 1
           $scope.selectedItemsData[selectButtonDomId] = selectScope.getCustomData()
 
-        $scope.onDeselect = (selectScope) ->
+        $scope.deselectSelectedItem = (selectedItemScope) ->
           $scope.selectedItemsCount -= 1
-          delete $scope.selectedItemsData[selectScope.getDomId()]
+          delete $scope.selectedItemsData[selectedItemScope.selectButtonDomId]
+          djangoCradminMultiselect2Coordinator.onDeselect(
+            selectedItemScope.selectButtonDomId)
 
         $scope.isSelected = (selectScope) ->
           selectButtonDomId = selectScope.getDomId()
@@ -135,7 +129,7 @@ angular.module('djangoCradmin.multiselect2.directives', [])
       controller: ($scope, $element) ->
         $scope.deselect = ->
           $element.remove()
-          djangoCradminMultiselect2Coordinator.onDeselect($scope.selectButtonDomId)
+          $scope.deselectSelectedItem($scope)
           return
 
         return

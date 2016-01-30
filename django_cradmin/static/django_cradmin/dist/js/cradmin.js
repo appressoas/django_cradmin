@@ -4458,15 +4458,6 @@
               return $scope.$apply();
             }
           };
-          $scope.onDeselect = function(selectScope) {
-            /*
-            Called by djangoCradminMultiselect2Coordinator when an item is deselected.
-            
-            Calls ``djangoCradminMultiselect2TargetSelectedItems.onDeselect()``.
-            */
-
-            return $scope.selectedItemsScope.onDeselect(selectScope);
-          };
           $scope.isSelected = function(selectScope) {
             /*
             Called by djangoCradminMultiselect2Select via
@@ -4525,9 +4516,10 @@
             $scope.selectedItemsCount += 1;
             return $scope.selectedItemsData[selectButtonDomId] = selectScope.getCustomData();
           };
-          $scope.onDeselect = function(selectScope) {
+          $scope.deselectSelectedItem = function(selectedItemScope) {
             $scope.selectedItemsCount -= 1;
-            return delete $scope.selectedItemsData[selectScope.getDomId()];
+            delete $scope.selectedItemsData[selectedItemScope.selectButtonDomId];
+            return djangoCradminMultiselect2Coordinator.onDeselect(selectedItemScope.selectButtonDomId);
           };
           $scope.isSelected = function(selectScope) {
             var selectButtonDomId;
@@ -4561,7 +4553,7 @@
         controller: function($scope, $element) {
           $scope.deselect = function() {
             $element.remove();
-            djangoCradminMultiselect2Coordinator.onDeselect($scope.selectButtonDomId);
+            $scope.deselectSelectedItem($scope);
           };
         },
         link: function($scope, $element, attributes) {
@@ -4807,17 +4799,13 @@
       };
 
       Coordinator.prototype.onDeselect = function(selectButtonDomId) {
-        var $selectElement, selectScope, targetScope;
+        var $selectElement, selectScope;
         $selectElement = angular.element('#' + selectButtonDomId);
         if ($selectElement != null) {
           selectScope = $selectElement.isolateScope();
           if (selectScope != null) {
-            selectScope.onDeselect();
-            targetScope = this.__getTargetScope(selectScope.getTargetDomId());
-            return targetScope.onDeselect(selectScope);
+            return selectScope.onDeselect();
           }
-        } else {
-          return console.log("Element #" + selectButtonDomId + " is not in the DOM");
         }
       };
 

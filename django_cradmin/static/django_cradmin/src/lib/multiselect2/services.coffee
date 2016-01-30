@@ -38,10 +38,9 @@ angular.module('djangoCradmin.multiselect2.services', [])
         selectScope = $selectElement.isolateScope()
         if selectScope?
           selectScope.onDeselect()
-          targetScope = @__getTargetScope(selectScope.getTargetDomId())
-          targetScope.onDeselect(selectScope)
-      else
-        console.log "Element ##{selectButtonDomId} is not in the DOM"
+      # If we can not find the selectedElement or the scope, that just means
+      # that the item has been removed from the body due to filtering, paging,
+      # searching etc.
 
     isSelected: (targetDomId, selectScope) ->
       targetScope = @__getTargetScope(targetDomId)
