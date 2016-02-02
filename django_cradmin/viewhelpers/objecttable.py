@@ -1109,7 +1109,7 @@ class ObjectTableView(ListView):
         """
         if not hasattr(self, '__columns'):
             self.__columns = []
-            for columnindex, columnclass in enumerate(self.columns):
+            for columnindex, columnclass in enumerate(self.get_columns()):
                 if isinstance(columnclass, textstr):
                     columnclass = type(str('SimpleColumn'), (PlainTextColumn,), dict(modelfield=columnclass))
                 self.__columns.append(columnclass(view=self, columnindex=columnindex))
