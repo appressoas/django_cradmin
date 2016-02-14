@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Espen Angell Kristiansen <espen@appresso.no>, 2015
+# Espen Angell Kristiansen <espen@appresso.no>, 2015-2016
 # espengetz <espen@inrupt.no>, 2015
 # Magne Westlie <magne@appresso.no>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-14 19:15+0100\n"
-"PO-Revision-Date: 2016-02-12 15:20+0000\n"
-"Last-Translator: Magne Westlie <magne@appresso.no>\n"
+"POT-Creation-Date: 2016-02-14 19:19+0100\n"
+"PO-Revision-Date: 2016-02-14 18:19+0000\n"
+"Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
 "Language: nb\n"
@@ -646,7 +646,7 @@ msgstr "Konfigurer forhåndsvisningen"
 
 #: templates/django_cradmin/superuserui/dashboard.django.html:15
 msgid "Please select what you would like to edit"
-msgstr "Velg hva du vil endre"
+msgstr "Velg hva du vil redigere"
 
 #: templates/django_cradmin/viewhelpers/delete.django.html:27
 msgid "Cancel"
@@ -680,7 +680,7 @@ msgstr "Neste"
 
 #: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html:13
 msgid "Edit"
-msgstr "Endre"
+msgstr "Rediger"
 
 #: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html:29
 msgid "View"
