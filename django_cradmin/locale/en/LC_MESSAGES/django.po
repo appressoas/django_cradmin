@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-21 03:22+0200\n"
+"POT-Creation-Date: 2016-02-14 19:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,6 +106,10 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
+#: apps/cradmin_imagearchive/apps.py:9
+msgid "Image archive"
+msgstr ""
+
 #: apps/cradmin_imagearchive/cradminviews.py:36
 msgid "Set a description"
 msgstr ""
@@ -114,7 +118,9 @@ msgstr ""
 msgid "Edit description"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:44 viewhelpers/delete.py:29
+#: apps/cradmin_imagearchive/cradminviews.py:44
+#: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html:39
+#: viewhelpers/delete.py:29
 msgid "Delete"
 msgstr ""
 
@@ -122,7 +128,7 @@ msgstr ""
 msgid "Use this"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:91 viewhelpers/crudbase.py:52
+#: apps/cradmin_imagearchive/cradminviews.py:91 viewhelpers/crudbase.py:89
 msgid "Preview"
 msgstr ""
 
@@ -177,11 +183,11 @@ msgstr ""
 msgid "You must upload exactly one image."
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:201
+#: apps/cradmin_imagearchive/cradminviews.py:202
 msgid "Add image"
 msgstr ""
 
-#: apps/cradmin_imagearchive/cradminviews.py:246
+#: apps/cradmin_imagearchive/cradminviews.py:247
 #, python-format
 msgid "Uploaded %(what)s."
 msgstr ""
@@ -378,6 +384,7 @@ msgid "No account with this email address found"
 msgstr ""
 
 #: apps/cradmin_resetpassword/views/begin.py:54
+#: superuserui/views/listview.py:34
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:48
 msgid "Search"
 msgstr ""
@@ -469,11 +476,16 @@ msgstr ""
 msgid "Removing ..."
 msgstr ""
 
-#: crispylayouts.py:46
+#: automodelform.py:112
+msgctxt "automodelform modelchoice_field no value"
+msgid "(Not selected)"
+msgstr ""
+
+#: crispylayouts.py:58
 msgid "Show"
 msgstr ""
 
-#: crispylayouts.py:47
+#: crispylayouts.py:59
 msgid "Hide"
 msgstr ""
 
@@ -484,6 +496,10 @@ msgstr ""
 #: formfields/email_list.py:64
 #, python-format
 msgid "Invalid email address: %(email)s"
+msgstr ""
+
+#: superuserui/superuserui_registry.py:147
+msgid "Superuser UI"
 msgstr ""
 
 #: templates/django_cradmin/acemarkdown/widget.django.html:12
@@ -577,7 +593,7 @@ msgstr ""
 msgid "The requested role does not exist."
 msgstr ""
 
-#: templates/django_cradmin/menu.django.html:29
+#: templates/django_cradmin/menu.django.html:31
 msgid "Menu"
 msgstr ""
 
@@ -598,12 +614,25 @@ msgstr ""
 msgid "Preview options"
 msgstr ""
 
+#: templates/django_cradmin/superuserui/dashboard.django.html:15
+msgid "Please select what you would like to edit"
+msgstr ""
+
 #: templates/django_cradmin/viewhelpers/delete.django.html:27
 msgid "Cancel"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/formview_base.django.html:49
 msgid "Close window"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:40
+#: templates/django_cradmin/viewhelpers/multiselect2view/base.django.html:37
+msgid "Loading ..."
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:45
+msgid "Load more"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/includes/pager.django.html:28
@@ -619,8 +648,48 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+#: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html:13
+msgid "Edit"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html:29
+msgid "View"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/use-this.django.html:12
+#, python-format
+msgid "Select \"%(title)s\""
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/use-this.django.html:14
+msgctxt "listbuilder-usethis"
+msgid "Select"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/listbuilderview/includes/create-button.django.html:5
+#: viewhelpers/create.py:36
+msgid "Create"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html:20
+#, python-format
+msgid "Clear %(label)s"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html:24
+msgid "Clear"
+msgstr ""
+
 #: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:6
 msgid "EDIT"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/multiselect2/listbuilder_itemvalues/itemvalue.django.html:39
+msgid "Selected"
+msgstr ""
+
+#: templates/django_cradmin/viewhelpers/multiselect2view/base.django.html:42
+msgid "Select all"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
@@ -629,84 +698,81 @@ msgid "(None)"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/objecttable/no-items-message.django.html:2
+#: viewhelpers/listbuilderview.py:285
 #, python-format
 msgid "No %(modelname_plural)s"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:42
-#: viewhelpers/objecttable.py:927
+#: viewhelpers/objecttable.py:929
 msgid "Search..."
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:122
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:125
 msgid "Ordered ascending - Click to order descending"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:124
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:127
 msgid "Ordered descending - Click to order ascending"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:131
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:134
 msgid "Do not order by this column"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:136
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:139
 msgid "Ordering priority"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:192
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:195
 msgid "Select an action"
 msgstr ""
 
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:195
+#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:198
 msgid "Go"
 msgstr ""
 
 #: templates/django_cradmin/widgets/modelchoice.django.html:25
-#: widgets/modelchoice.py:32
+#: widgets/modelchoice.py:34
 msgid "Select ..."
 msgstr ""
 
-#: viewhelpers/create.py:31
+#: viewhelpers/create.py:33
 msgid "Back"
 msgstr ""
 
-#: viewhelpers/create.py:33
+#: viewhelpers/create.py:35
 msgid "Create and select"
 msgstr ""
 
-#: viewhelpers/create.py:34
-msgid "Create"
-msgstr ""
-
-#: viewhelpers/create.py:35
+#: viewhelpers/create.py:37
 msgid "Create and continue editing"
 msgstr ""
 
-#: viewhelpers/create.py:43
+#: viewhelpers/create.py:45
 #, python-format
 msgid "Create %(what)s"
 msgstr ""
 
-#: viewhelpers/create.py:110
+#: viewhelpers/create.py:116
 #, python-format
 msgid "Created \"%(object)s\"."
 msgstr ""
 
-#: viewhelpers/create.py:136 viewhelpers/formbase.py:42
+#: viewhelpers/create.py:142 viewhelpers/formbase.py:42
 msgid "Save"
 msgstr ""
 
-#: viewhelpers/create.py:137 viewhelpers/formbase.py:45
+#: viewhelpers/create.py:143 viewhelpers/formbase.py:45
 msgid "Save and continue editing"
 msgstr ""
 
-#: viewhelpers/create.py:140 viewhelpers/update.py:39
+#: viewhelpers/create.py:146 viewhelpers/update.py:39
 #, python-format
 msgid "Saved \"%(object)s\"."
 msgstr ""
 
-#: viewhelpers/crudbase.py:242
+#: viewhelpers/crudbase.py:301
 msgid "Please fix the errors in the form below."
 msgstr ""
 
@@ -725,10 +791,117 @@ msgstr ""
 msgid "Deleted \"%(what)s\""
 msgstr ""
 
+#: viewhelpers/listfilter/base/abstractfilter.py:262
+msgctxt "listfilter loading message"
+msgid "Loading"
+msgstr ""
+
+#: viewhelpers/listfilter/base/abstractfilterlist.py:89
+msgid "An error occurred. Please try to reload the page."
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:137
+msgid "Yes"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:143
+msgid "No"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:176
+msgid "Today"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:184
+msgid "Yesterday"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:192
+msgid "Last seven days"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:200
+msgid "This week"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:208
+msgid "This month"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:216
+msgid "This year"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:232
+msgctxt "listfilter AbstractDateTime"
+msgid "Has no value"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstractselect.py:242
+msgctxt "listfilter AbstractDateTime"
+msgid "Has value"
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstracttextinput.py:106
+msgctxt "listfilter IntInputFilterMixin"
+msgid "Type a number ..."
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstracttextinput.py:125
+msgid "Search ..."
+msgstr ""
+
+#: viewhelpers/listfilter/basefilters/single/abstracttextinput.py:128
+msgctxt "listfilter loading message"
+msgid "Searching"
+msgstr ""
+
 #: viewhelpers/multiselect.py:92
 msgid ""
 "Invalid selection. This is usually caused by someone else changing "
 "permissions while you where selecting items to edit."
+msgstr ""
+
+#: viewhelpers/multiselect2/listbuilder_itemvalues.py:91
+msgctxt "multiselect2 select button"
+msgid "Select"
+msgstr ""
+
+#: viewhelpers/multiselect2/listbuilder_itemvalues.py:100
+#, python-format
+msgctxt "multiselect2 select button"
+msgid "Select \"%(title)s\""
+msgstr ""
+
+#: viewhelpers/multiselect2/manytomanywidget.py:40
+msgctxt "multiselect2 manytomanywidget"
+msgid "Select ..."
+msgstr ""
+
+#: viewhelpers/multiselect2/selected_item_renderer.py:66
+msgctxt "multiselect2 deselect button"
+msgid "Deselect"
+msgstr ""
+
+#: viewhelpers/multiselect2/selected_item_renderer.py:75
+#, python-format
+msgctxt "multiselect2 deselect button"
+msgid "Deselect \"%(title)s\""
+msgstr ""
+
+#: viewhelpers/multiselect2/target_renderer.py:82
+msgctxt "multiselect2 target renderer"
+msgid "Selected items"
+msgstr ""
+
+#: viewhelpers/multiselect2/target_renderer.py:98
+msgctxt "multiselect2 target renderer"
+msgid "Submit selection"
+msgstr ""
+
+#: viewhelpers/multiselect2/target_renderer.py:135
+msgctxt "multiselect2 target renderer"
+msgid "(None)"
 msgstr ""
 
 #: viewhelpers/update.py:22
