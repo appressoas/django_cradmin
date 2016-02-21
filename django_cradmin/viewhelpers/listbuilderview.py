@@ -22,7 +22,7 @@ class ViewMixin(object):
     The ViewMixin works much like :class:`.View`, but you must override/implement:
 
     - :meth:`.get_pagetitle`
-    - :meth:`.get_listbuilder_list_data`
+    - :meth:`.get_listbuilder_list_value_iterable`
     - :meth:`.get_no_items_message`
     """
     template_name = 'django_cradmin/viewhelpers/listbuilderview/default.django.html'
