@@ -28,7 +28,7 @@
 
     {% block deselect-button %}
         <button type="button"
-                class="btn btn-default django-cradmin-multiselect2-target-selected-item-deselectbutton"
+                class="{{ me.get_deselect_button_cssclasses_string }}"
                 aria-label='{{ me.get_deselectbutton_aria_label }}'
                 ng-click="deselect()">
             {% block deselect-button-content %}

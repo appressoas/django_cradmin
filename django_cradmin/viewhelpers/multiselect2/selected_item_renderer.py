@@ -76,6 +76,46 @@ class SelectedItem(renderable.AbstractRenderableWithCss):
             'title': self.get_title()
         }
 
+    def get_deselect_button_base_cssclasses_list(self):
+        """
+        Get the list of base css classes to use for the deselect button.
+        You normally do not want to override this. Override
+        :meth:`.get_deselect_button_extra_cssclasses_list` instead.
+        """
+        return [
+            'django-cradmin-multiselect2-target-selected-item-deselectbutton'
+        ]
+
+    def get_deselect_button_extra_cssclasses_list(self):
+        """
+        Get the list of extra css classes to use for the deselect button.
+
+        Defaults to ``['btn', 'btn-default']``.
+        Override this to provide your own css classes.
+        """
+        return [
+            'btn',
+            'btn-default',
+        ]
+
+    def get_deselect_button_cssclasses_list(self):
+        """
+        Get the list of css classes to use for the deselect button.
+
+        You normally do not want to override this. Override
+        :meth:`.get_deselect_button_extra_cssclasses_list` instead.
+        """
+        return [
+            'btn',
+            'btn-default',
+            'django-cradmin-multiselect2-target-selected-item-deselectbutton'
+        ]
+
+    def get_deselect_button_cssclasses_string(self):
+        css_classes = self.get_deselect_button_base_cssclasses_list() + \
+                      self.get_deselect_button_extra_cssclasses_list()
+        return ' '.join(css_classes)
+
     def get_inputfield_name(self):
         """
         Returns:
