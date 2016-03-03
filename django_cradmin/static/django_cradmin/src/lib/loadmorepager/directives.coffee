@@ -23,14 +23,16 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
           $targetElement = angular.element(options.targetElementCssSelector)
 
           replaceMode = false
-          nextPageUrl = new Url()
+          nextPageUrl = URI()
+          updatedQueryDictAttributes = {}
           if options.mode == "reloadPageOneOnLoad"
             replaceMode = true
           else if options.mode == "loadAllOnClick"
             replaceMode = true
-            nextPageUrl.query.disablePaging = "true"
+            updatedQueryDictAttributes['disablePaging'] = "true"
           else
-            nextPageUrl.query[options.pageQueryStringAttribute] = $scope.getNextPageNumber()
+            updatedQueryDictAttributes[options.pageQueryStringAttribute] = $scope.getNextPageNumber()
+          nextPageUrl.query(updatedQueryDictAttributes)
 
           djangoCradminBgReplaceElement.load({
             parameters: {

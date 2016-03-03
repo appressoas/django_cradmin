@@ -20,6 +20,7 @@ module.exports = (grunt) ->
       'bower_components/mousetrap/mousetrap.js'
       'bower_components/angular-hotkeys/src/hotkeys.js'
       'bower_components/jsurl/url.js'
+      'bower_components/uri.js/src/URI.js'
     ]
     ace_editor: [
       'bower_components/ace-builds/src-min-noconflict/ace.js'

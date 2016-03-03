@@ -4108,20 +4108,22 @@
             return $scope.loadmorePagerOptions.nextPageNumber;
           };
           $scope.pagerLoad = function(options) {
-            var $targetElement, nextPageUrl, replaceMode;
+            var $targetElement, nextPageUrl, replaceMode, updatedQueryDictAttributes;
             options = angular.extend({}, $scope.loadmorePagerOptions, options);
             $scope.loadmorePagerIsLoading = true;
             $targetElement = angular.element(options.targetElementCssSelector);
             replaceMode = false;
-            nextPageUrl = new Url();
+            nextPageUrl = URI();
+            updatedQueryDictAttributes = {};
             if (options.mode === "reloadPageOneOnLoad") {
               replaceMode = true;
             } else if (options.mode === "loadAllOnClick") {
               replaceMode = true;
-              nextPageUrl.query.disablePaging = "true";
+              updatedQueryDictAttributes['disablePaging'] = "true";
             } else {
-              nextPageUrl.query[options.pageQueryStringAttribute] = $scope.getNextPageNumber();
+              updatedQueryDictAttributes[options.pageQueryStringAttribute] = $scope.getNextPageNumber();
             }
+            nextPageUrl.query(updatedQueryDictAttributes);
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',
