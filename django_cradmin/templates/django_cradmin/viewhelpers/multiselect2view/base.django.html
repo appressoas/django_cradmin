@@ -20,7 +20,7 @@
                                 <div class="django-cradmin-multiselect2-listcolumn-buttons">
                                     {% block listcolumn-buttons-content %}
                                         {% block selectall-button %}
-                                            {% if select_all_is_allowed %}
+                                            {% if select_all_button_should_be_shown %}
                                                 <button class="btn btn-default btn-sm"
                                                         django-cradmin-load-more-pager='{
                                                             "targetElementCssSelector": "#django_cradmin_listbuilderview_listwrapper",

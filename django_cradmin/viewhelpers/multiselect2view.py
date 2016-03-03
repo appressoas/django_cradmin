@@ -80,11 +80,17 @@ class ViewMixin(FormMixin):
     def __has_initially_selected_items(self):
         return len(self._get_selected_values_set()) > 0
 
+    def __select_all_button_should_be_shown(self, context):
+        page_obj = context.get('page_obj', None)
+        if page_obj and page_obj.number != 1:
+            return False
+        return self.select_all_is_allowed()
+
     def get_context_data(self, **kwargs):
         context = super(ViewMixin, self).get_context_data(**kwargs)
         context['target_renderer'] = self.__get_target_renderer()
         context['selectall_directive_json'] = self.get_selectall_directive_json()
-        context['select_all_is_allowed'] = self.select_all_is_allowed()
+        context['select_all_button_should_be_shown'] = self.__select_all_button_should_be_shown(context=context)
 
         # When we have initial items, we reload page1 after selecting the initially
         # selected items. This is because we need to load the items to select them,
