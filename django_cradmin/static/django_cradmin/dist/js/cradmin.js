@@ -2164,10 +2164,8 @@
       WindowScrollProvider.prototype._setScrollTopPosition = function() {
         var scrollTopPosition;
         scrollTopPosition = this._getScrollTopPosition();
-        if (scrollTopPosition !== this.scrollTopPosition) {
-          this.scrollTopPosition = scrollTopPosition;
-          return this._onScrollTopChange();
-        }
+        this.scrollTopPosition = scrollTopPosition;
+        return this._onScrollTopChange();
       };
 
       WindowScrollProvider.prototype._onScrollTopChange = function() {

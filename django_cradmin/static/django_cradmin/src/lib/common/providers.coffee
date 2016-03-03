@@ -187,9 +187,8 @@ angular.module('djangoCradmin.providers', [])
 
     _setScrollTopPosition: ->
       scrollTopPosition = @_getScrollTopPosition()
-      if scrollTopPosition != @scrollTopPosition
-        @scrollTopPosition = scrollTopPosition
-        @_onScrollTopChange()
+      @scrollTopPosition = scrollTopPosition
+      @_onScrollTopChange()
 
     _onScrollTopChange: ->
       for scope in @listeningScopes
