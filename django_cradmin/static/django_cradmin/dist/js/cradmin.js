@@ -299,8 +299,8 @@
       BgReplace.prototype.loadUrlAndExtractRemoteElementHtml = function(options, onSuccess) {
         var parsedUrl, url;
         url = options.parameters.url;
-        parsedUrl = new Url(url);
-        parsedUrl.query['cradmin-bgreplaced'] = 'true';
+        parsedUrl = URI(url);
+        parsedUrl.setSearch("cradmin-bgreplaced", 'true');
         options.parameters.url = parsedUrl.toString();
         return this.http(options.parameters).then(function(response) {
           var $remoteHtmlDocument, html, remoteElement, remoteElementInnerHtml;
@@ -3716,8 +3716,9 @@
             var $remoteFilterList, filterScope, parsedRemoteUrl, title, _i, _len, _results;
             $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId);
             title = $window.document.title;
-            parsedRemoteUrl = new Url(remoteUrl);
-            delete parsedRemoteUrl.query['cradmin-bgreplaced'];
+            parsedRemoteUrl = URI(remoteUrl);
+            parsedRemoteUrl.removeSearch('cradmin-bgreplaced').normalizeQuery();
+            console.log(parsedRemoteUrl.toString());
             $window.history.pushState("list filter change", title, parsedRemoteUrl.toString());
             _results = [];
             for (_i = 0, _len = filterScopes.length; _i < _len; _i++) {
@@ -3905,13 +3906,16 @@
             timeoutMilliseconds = 500;
           }
           buildUrl = function(value) {
-            var urlpattern;
+            var encodedValue, urlpattern;
             value = value.trim();
             if (value === '') {
               return $element.attr(emptyvalueUrlAttribute);
             } else {
               urlpattern = $element.attr(urlpatternAttribute);
-              return urlpattern.replace($scope.options.urlpattern_replace_text, value);
+              encodedValue = URI.encodeQuery(value);
+              console.log(value);
+              console.log(encodedValue);
+              return urlpattern.replace($scope.options.urlpattern_replace_text, encodedValue);
             }
           };
           onLoadSearchSuccess = function(data) {
@@ -4119,11 +4123,10 @@
               replaceMode = true;
             } else if (options.mode === "loadAllOnClick") {
               replaceMode = true;
-              updatedQueryDictAttributes['disablePaging'] = "true";
+              nextPageUrl.setSearch('disablePaging', "true");
             } else {
-              updatedQueryDictAttributes[options.pageQueryStringAttribute] = $scope.getNextPageNumber();
+              nextPageUrl.setSearch(options.pageQueryStringAttribute, $scope.getNextPageNumber());
             }
-            nextPageUrl.query(updatedQueryDictAttributes);
             return djangoCradminBgReplaceElement.load({
               parameters: {
                 method: 'GET',

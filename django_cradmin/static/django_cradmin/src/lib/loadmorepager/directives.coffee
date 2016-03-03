@@ -29,10 +29,9 @@ angular.module('djangoCradmin.loadmorepager.directives', [])
             replaceMode = true
           else if options.mode == "loadAllOnClick"
             replaceMode = true
-            updatedQueryDictAttributes['disablePaging'] = "true"
+            nextPageUrl.setSearch('disablePaging', "true")
           else
-            updatedQueryDictAttributes[options.pageQueryStringAttribute] = $scope.getNextPageNumber()
-          nextPageUrl.query(updatedQueryDictAttributes)
+            nextPageUrl.setSearch(options.pageQueryStringAttribute, $scope.getNextPageNumber())
 
           djangoCradminBgReplaceElement.load({
             parameters: {

@@ -36,8 +36,11 @@ angular.module('djangoCradmin.listfilter.directives', [])
         onLoadSuccess = ($remoteHtmlDocument, remoteUrl) ->
           $remoteFilterList = $remoteHtmlDocument.find('#' + filterListDomId)
           title = $window.document.title
-          parsedRemoteUrl = new Url(remoteUrl)
-          delete parsedRemoteUrl.query['cradmin-bgreplaced']
+
+          parsedRemoteUrl = URI(remoteUrl)
+          parsedRemoteUrl.removeSearch('cradmin-bgreplaced').normalizeQuery()
+          console.log parsedRemoteUrl.toString()
+
           $window.history.pushState("list filter change", title, parsedRemoteUrl.toString())
           for filterScope in filterScopes
             filterScope.syncWithRemoteFilterList($remoteFilterList)
@@ -221,7 +224,10 @@ angular.module('djangoCradmin.listfilter.directives', [])
             return $element.attr(emptyvalueUrlAttribute)
           else
             urlpattern = $element.attr(urlpatternAttribute)
-            return urlpattern.replace($scope.options.urlpattern_replace_text, value)
+            encodedValue = URI.encodeQuery(value)
+            console.log value
+            console.log encodedValue
+            return urlpattern.replace($scope.options.urlpattern_replace_text, encodedValue)
 
         onLoadSearchSuccess = (data) ->
           currentValue = $element.val()
@@ -237,7 +243,6 @@ angular.module('djangoCradmin.listfilter.directives', [])
           if loadedValue == value
             return
 
-#          console.log 'Search for', value
           remoteUrl = buildUrl(value)
           loadedValue = value
           listfilterCtrl.load({

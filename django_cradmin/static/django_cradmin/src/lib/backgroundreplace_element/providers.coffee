@@ -20,8 +20,8 @@ angular.module('djangoCradmin.backgroundreplace_element.providers', [])
 
     loadUrlAndExtractRemoteElementHtml: (options, onSuccess) ->
       url = options.parameters.url
-      parsedUrl = new Url(url)
-      parsedUrl.query['cradmin-bgreplaced'] = 'true'
+      parsedUrl = URI(url)
+      parsedUrl.setSearch("cradmin-bgreplaced", 'true')
       options.parameters.url = parsedUrl.toString()
 
       @http(options.parameters).then((response) ->
