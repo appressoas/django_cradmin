@@ -59,4 +59,19 @@
             </div>
         </div>
     {% endif %}
+    {% block handle_preview %}
+        {% if show_preview %}
+            <div django-cradmin-page-preview-wrapper>
+                {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
+                <div django-cradmin-page-preview-open-on-page-load='{
+                    "urls": [
+                        {
+                            "label": "unused",
+                            "url": "{{ preview_url }}"
+                        }
+                    ]
+                }'></div>
+            </div>
+        {% endif %}
+    {% endblock handle_preview %}
 {% endblock outside-bodycontentwrapper %}

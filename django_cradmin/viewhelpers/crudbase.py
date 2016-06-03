@@ -86,7 +86,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     def add_preview_button_if_configured(self, buttons):
         preview_url = self.get_preview_url()
         if preview_url:
-            buttons.append(DefaultSubmit('submit-preview', _('Preview')))
+            buttons.append(DefaultSubmit(self.submit_preview_name, _('Preview')))
 
     def get_model_fields(self):
         """
@@ -161,9 +161,6 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
     def get_context_data(self, **kwargs):
         context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
         context['model_verbose_name'] = self.get_model_class()._meta.verbose_name
-        if getattr(self, 'show_preview', False):
-            context['preview_url'] = self.get_preview_url()
-            context['show_preview'] = True
         return context
 
     def get_editurl(self, obj):
@@ -244,9 +241,8 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         If the form is valid, save the associated model.
         """
         if self.preview_requested():
-            self._store_preview_in_session(self.serialize_preview(form))
-            self.show_preview = True
-            return self.render_to_response(self.get_context_data(form=form))
+            self.store_preview_in_session(self.serialize_preview(form))
+            return self.render_to_response(self.get_context_data(form=form, show_preview=True))
         else:
             self.object = self.save_object(form)
             self.form_saved(self.object)
@@ -319,24 +315,6 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         self.add_form_invalid_messages(form)
         return super(CreateUpdateViewMixin, self).form_invalid(form)
 
-    def preview_requested(self):
-        """
-        Determine if a preview was requested.
-
-        Defaults to checking if :obj:`.submit_preview_name` is
-        in ``request.POST``.
-        """
-        return self.submit_preview_name in self.request.POST
-
-    def get_preview_url(self):
-        """
-        Get the URL of the preview view.
-        """
-        return None
-
-    def _store_preview_in_session(self, data):
-        self.request.session[self.__class__.get_preview_sessionkey()] = data
-
     def serialize_preview(self, form):
         """
         Seralize for preview.
@@ -348,9 +326,12 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         return serializers.serialize('json', [self.save_object(form, commit=False)])
 
     @classmethod
-    def deserialize_preview(self, serialized):
+    def deserialize_preview(cls, serialized):
         """
         Deseralize a preview serialized with :meth:`.serialize_preview`.
+
+        You must override this and :meth:`.serialize_preview` - they work together
+        to send the preview to the preview View.
         """
         return list(serializers.deserialize('json', serialized))[0].object
 
@@ -359,24 +340,18 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         """
         Get the session key used for preview. You should not
         need to override this.
+
+        Unlike the default implementation of this method from
+        :class:`django_cradmin.viewhelpers.formbase.PreviewMixin`,
+        we use the model class module and name as the session key.
+        This is simply because we do not want it to matter if
+        you fetch preview data from create or update views
+        for the same model (to simplify implementing preview views).
         """
-        return 'django_cradmin__{module}.{classname}'.format(
+        sessionkey = 'django_cradmin__{module}.{classname}'.format(
             module=cls.model.__module__,
             classname=cls.model.__name__)
-
-    @classmethod
-    def get_preview_data(cls, request):
-        """
-        Get the preview data.
-
-        You should use this in the preview view to get the
-        data for the preview.
-
-        You normally do not override this. If you want to manage
-        serialization yourself, see :meth:`.serialize_preview`.
-        """
-        serialized = request.session.pop(cls.get_preview_sessionkey())
-        return cls.deserialize_preview(serialized)
+        return sessionkey
 
 
 class OnlySaveButtonMixin(object):
