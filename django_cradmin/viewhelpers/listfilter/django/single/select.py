@@ -153,7 +153,7 @@ class AbstractOrderBy(abstractselect.AbstractOrderBy, DjangoOrmFilterMixin):
     """
     def filter(self, queryobject):
         cleaned_value = self.get_cleaned_value() or ''
-        if cleaned_value in self.__ordering_options_dict:
-            order_by = self.__ordering_options_dict[cleaned_value]['order_by']
+        if cleaned_value in self.ordering_options_dict:
+            order_by = self.ordering_options_dict[cleaned_value]['order_by']
             queryobject = queryobject.order_by(*order_by)
         return queryobject

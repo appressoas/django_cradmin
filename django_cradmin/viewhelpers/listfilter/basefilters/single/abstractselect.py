@@ -374,8 +374,8 @@ class AbstractOrderBy(AbstractSelectFilter):
     """
     def __init__(self, *args, **kwargs):
         super(AbstractOrderBy, self).__init__(*args, **kwargs)
-        self.__ordering_options = self.get_ordering_options()
-        self.__ordering_options_dict = self.__make_ordering_options_dict(self.__ordering_options)
+        self.ordering_options = self.get_ordering_options()
+        self.ordering_options_dict = self.__make_ordering_options_dict(self.ordering_options)
 
     def __make_ordering_options_dict(self, ordering_options):
         ordering_options_dict = {}
@@ -438,4 +438,4 @@ class AbstractOrderBy(AbstractSelectFilter):
         return choices
 
     def get_choices(self):
-        return self.__make_choices(self.__ordering_options)
+        return self.__make_choices(self.ordering_options)
