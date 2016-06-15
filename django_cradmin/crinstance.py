@@ -454,3 +454,12 @@ class BaseCrAdminInstance(object):
                             name='{}-frontpage'.format(cls.id)))
 
         return patterns('', * urls)
+
+    def add_extra_instance_variables_to_request(self, request):
+        """
+        Override this method to add extra attributes to the request object
+        for all views in this cradmin instance.
+
+        This is called by the decorator that wraps all views within the instance.
+        """
+        pass

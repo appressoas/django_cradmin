@@ -64,6 +64,13 @@
         {% endif %}
     </head>
     <body class="
+            {% block global-bodyclass %}
+                {% comment %}
+                    Use this block to set css classes for the entire site.
+                    Do not override this block in views - only override this
+                    when you override the standalone-base.django.html template.
+                {% endcomment %}
+            {% endblock global-bodyclass %}
             {% block bodyclass %}
                 {% if cradmin_hide_menu %}
                     django-cradmin-hide-menu

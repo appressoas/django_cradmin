@@ -77,6 +77,8 @@ def cradminview(view_function):
             if http_headers:
                 for headerattribute, headervalue in http_headers.items():
                     response[headerattribute] = headervalue
+
+        request.cradmin_instance.add_extra_instance_variables_to_request(request)
         return response
 
     return wrapper
