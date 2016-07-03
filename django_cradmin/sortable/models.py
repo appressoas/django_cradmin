@@ -10,6 +10,9 @@ from django_cradmin.utils.nulls_last_queryset import NullsLastManager, NullsLast
 class SortableQuerySetBase(NullsLastQuerySet):
     """
     QuerySet for :class:`.SortableManagerBase`.
+
+    You must use this as a base class if you want to create
+    a custom queryset class for models extending :class:`.SortableBase`.
     """
 
 

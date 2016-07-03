@@ -29,6 +29,36 @@ for this model to be this attribute, you should add the following meta option on
         ordering = ['sort_index']
 
 
+
+*****************************
+Custom QuerySet with sortable
+*****************************
+
+If you want to use a custom queryset with SortableBase, you need to extend
+:class:`django_cradmin.sortable.models.SortableQuerySetBase`. Example::
+
+    from django_cradmin.sortable.models import SortableBase
+    from django_cradmin.sortable.models import SortableManagerBase
+    from django_cradmin.sortable.models import SortableQuerySetBase
+
+    class MySortableItemQuerySet(SortableQuerySetBase):
+        def my_queryset_method(self):
+            pass
+
+    class MySortableItemManager(SortableManagerBase):
+        parent_attribute = 'container'
+
+        def get_query_set(self):
+            return MySortableItemQuerySet(self.model, using=self._db)
+
+    class MySortableItem(SortableBase):
+        container = models.ForeignKey(ItemContainer, blank=False, null=False)
+        name = models.CharField(...)
+
+        objects = MySortableItemManager()
+
+
+
 ***********
 How to sort
 ***********
@@ -81,6 +111,9 @@ with something like this::
 ***
 API
 ***
+
+.. autoclass:: django_cradmin.sortable.models.SortableQuerySetBase
+    :members:
 
 .. autoclass:: django_cradmin.sortable.models.SortableManagerBase
     :members:
