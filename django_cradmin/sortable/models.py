@@ -4,8 +4,16 @@ from builtins import object
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from django_cradmin.utils.nulls_last_queryset import NullsLastManager, NullsLastQuerySet
 
-class SortableManagerBase(models.Manager):
+
+class SortableQuerySetBase(NullsLastQuerySet):
+    """
+    QuerySet for :class:`.SortableManagerBase`.
+    """
+
+
+class SortableManagerBase(NullsLastManager):
     """
     Manager for :class:`.SortableBase`.
     """
@@ -15,13 +23,16 @@ class SortableManagerBase(models.Manager):
         filter_kwargs = {self.parent_attribute: parentobject}
         return self.get_queryset().filter(**filter_kwargs).order_by('sort_index')
 
-    def _get_siblings_queryset(self, item):
+    def _get_siblings_queryset(self, item, ignore_none=True):
         """
         Get the queryset for all the items with the same parent as the given
         item.
         """
         parentobject = getattr(item, self.parent_attribute)
-        return self._get_filtered_by_parentobject_queryset(parentobject)
+        queryset = self._get_filtered_by_parentobject_queryset(parentobject)
+        if ignore_none:
+            queryset = queryset.exclude(sort_index=None)
+        return queryset
 
     def _get_last_sortindex_within_parentobject(self, item):
         lastitem = self._get_siblings_queryset(item).last()
@@ -84,26 +95,22 @@ class SortableManagerBase(models.Manager):
         original_item_index = None
         for index in range(0, len(itemsqueryset)):
             current_item = itemsqueryset[index]
-            current_item_sortindex = current_item.sort_index
-            if current_item_sortindex is None:
-                current_item_sortindex = 0
-
-            if index < current_item_sortindex:
+            if index < current_item.sort_index:
                 # Found gap, need to move rest of list <size-of-gap> step(s) down
                 self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                     len(itemsqueryset),
-                                                    current_item_sortindex - index)
+                                                    current_item.sort_index - index)
                 itemsqueryset = self._get_siblings_queryset(item).all()
-            if index > current_item_sortindex:
+            if index > current_item.sort_index:
                 # Found duplicate sort_index, need to move rest of list one step up
                 self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                     len(itemsqueryset))
                 itemsqueryset = self._get_siblings_queryset(item).all()
 
             if item.id == current_item.id:
-                original_item_index = current_item_sortindex
+                original_item_index = current_item.sort_index
             elif sort_before_id is not None and current_item.id == sort_before_id:
-                detected_item_sort_index = current_item_sortindex
+                detected_item_sort_index = current_item.sort_index
         return itemsqueryset, detected_item_sort_index, original_item_index
 
     def __sort_last(self, itemsqueryset, item, original_item_index):
@@ -170,6 +177,9 @@ class SortableManagerBase(models.Manager):
             self.sort_before(item, sort_before_id=None)
         """
         self.sort_before(item, sort_before_id=None)
+
+    def get_query_set(self):
+        return SortableQuerySetBase(self.model, using=self._db)
 
 
 def validate_sort_index(value):
