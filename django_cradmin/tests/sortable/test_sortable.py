@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from builtins import range
 from django import test
+from model_mommy import mommy
 
 from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import SortableItem
 from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import ItemContainer
@@ -174,6 +175,21 @@ class TestSortableItem(test.TestCase):
 
         for object in SortableItem.objects.all():
             self.assertTrue(object.sort_index >= 0)
+
+    def test_sortindex_is_none_sanity(self):
+        container = mommy.make(ItemContainer)
+        item1 = mommy.make(SortableItem, sort_index=None, container=container)
+        item2 = mommy.make(SortableItem, sort_index=None, container=container)
+        item3 = mommy.make(SortableItem, sort_index=None, container=container)
+        SortableItem.objects.sort_last(item1)
+        SortableItem.objects.sort_last(item2)
+        SortableItem.objects.sort_last(item3)
+        item1.refresh_from_db()
+        item2.refresh_from_db()
+        item3.refresh_from_db()
+        self.assertEqual(0, item1.sort_index)
+        self.assertEqual(1, item2.sort_index)
+        self.assertEqual(2, item3.sort_index)
 
 
 class TestRepairSortable(test.TestCase):

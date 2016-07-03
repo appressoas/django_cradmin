@@ -84,22 +84,26 @@ class SortableManagerBase(models.Manager):
         original_item_index = None
         for index in range(0, len(itemsqueryset)):
             current_item = itemsqueryset[index]
-            if index < current_item.sort_index:
+            current_item_sortindex = current_item.sort_index
+            if current_item_sortindex is None:
+                current_item_sortindex = 0
+
+            if index < current_item_sortindex:
                 # Found gap, need to move rest of list <size-of-gap> step(s) down
                 self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                     len(itemsqueryset),
-                                                    current_item.sort_index - index)
+                                                    current_item_sortindex - index)
                 itemsqueryset = self._get_siblings_queryset(item).all()
-            if index > current_item.sort_index:
+            if index > current_item_sortindex:
                 # Found duplicate sort_index, need to move rest of list one step up
                 self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                     len(itemsqueryset))
                 itemsqueryset = self._get_siblings_queryset(item).all()
 
             if item.id == current_item.id:
-                original_item_index = current_item.sort_index
+                original_item_index = current_item_sortindex
             elif sort_before_id is not None and current_item.id == sort_before_id:
-                detected_item_sort_index = current_item.sort_index
+                detected_item_sort_index = current_item_sortindex
         return itemsqueryset, detected_item_sort_index, original_item_index
 
     def __sort_last(self, itemsqueryset, item, original_item_index):
