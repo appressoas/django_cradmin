@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views import static
 
 from django_cradmin.demo.listfilterdemo.cradmin import ListfilterDemoCrAdminInstance
 from django_cradmin.demo.login_not_required_demo.cradmin import LoginNotRequiredCrAdminInstance
@@ -30,7 +31,7 @@ urlpatterns = [
     url(r'^usermanagerdemo/', include(UsermanagerCrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
     url(r'^$', DemoView.as_view()),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+    url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT}),
     url(r'^polls/', include('django_cradmin.demo.polls_demo.urls')),
 
