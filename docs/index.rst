@@ -134,8 +134,9 @@ Releasenotes
 
 .. toctree::
     :maxdepth: 1
+    :glob:
 
-    releasenoteslisting
+    releasenotes/releasenotes-*
 
 ******************
 Indices and tables
