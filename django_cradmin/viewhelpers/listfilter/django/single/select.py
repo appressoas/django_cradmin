@@ -7,8 +7,8 @@ from django_cradmin.viewhelpers.listfilter.django.base import DjangoOrmFilterMix
 
 class Boolean(abstractselect.AbstractBoolean, DjangoOrmFilterMixin):
     """
-    A boolean filter that works on any BooleanField and CharField.
-    (False, None and ``""`` is considered ``False``).
+    A boolean filter that works on any BooleanField.
+    False and None is considered ``False``.
 
     Examples:
 
@@ -24,7 +24,6 @@ class Boolean(abstractselect.AbstractBoolean, DjangoOrmFilterMixin):
     """
     def get_query(self, modelfield):
         return (models.Q(**{modelfield: False}) |
-                models.Q(**{modelfield: ''}) |
                 models.Q(**{'{}__isnull'.format(modelfield): True}))
 
     def filter(self, queryobject):

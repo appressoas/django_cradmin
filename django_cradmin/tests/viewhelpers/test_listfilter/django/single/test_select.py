@@ -40,32 +40,6 @@ class TestBoolean(TestCase):
             {withvalue, emptyvalue, nullvalue},
             set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
 
-    def test_false_charfield(self):
-        testfilter = listfilter.django.single.select.Boolean(slug='mycharfield')
-        testfilter.set_values(values=['false'])
-        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                   mycharfield='A testvalue')
-        emptyvalue = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                                mycharfield='')
-        nullvalue = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                               mycharfield=None)
-        self.assertEqual(
-            {emptyvalue, nullvalue},
-            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
-
-    def test_true_charfield(self):
-        testfilter = listfilter.django.single.select.Boolean(slug='mycharfield')
-        testfilter.set_values(values=['true'])
-        withvalue = mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                               mycharfield='A testvalue')
-        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                   mycharfield='')
-        mommy.make('cradmin_viewhelpers_testapp.FilterTestModel',
-                   mycharfield=None)
-        self.assertEqual(
-            {withvalue},
-            set(testfilter.filter(queryobject=FilterTestModel.objects.all())))
-
     def test_false_booleanfield(self):
         testfilter = listfilter.django.single.select.Boolean(slug='mybooleanfield')
         testfilter.set_values(values=['false'])
