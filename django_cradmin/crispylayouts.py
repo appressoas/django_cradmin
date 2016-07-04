@@ -13,6 +13,7 @@ from django_cradmin.templatetags.cradmin_icon_tags import cradmin_icon
 class CradminSubmitButton(layout.Submit):
     template = 'django_cradmin/crispylayouts/submitbutton.django.html'
     extra_button_attributes = {}
+    button_css_classes = 'btn btn-default'
 
     def get_extra_button_attributes(self):
         return self.extra_button_attributes
@@ -21,34 +22,35 @@ class CradminSubmitButton(layout.Submit):
         self.extra_button_attributes = flatatt(self.get_extra_button_attributes())
         self.icon_cssclass = icon_cssclass
         super(CradminSubmitButton, self).__init__(name, value, **kwargs)
+        self.field_classes = self.button_css_classes
 
 
 class PrimarySubmit(CradminSubmitButton):
-    field_classes = "btn btn-primary"
+    button_css_classes = "btn btn-primary"
 
 
 class PrimarySubmitBlock(CradminSubmitButton):
-    field_classes = "btn btn-primary btn-block"
+    button_css_classes = "btn btn-primary btn-block"
 
 
 class PrimarySubmitLg(CradminSubmitButton):
-    field_classes = "btn btn-primary btn-lg"
+    button_css_classes = "btn btn-primary btn-lg"
 
 
 class DangerSubmit(CradminSubmitButton):
-    field_classes = "btn btn-danger"
+    button_css_classes = "btn btn-danger"
 
 
 class DangerSubmitBlock(CradminSubmitButton):
-    field_classes = "btn btn-danger btn-block"
+    button_css_classes = "btn btn-danger btn-block"
 
 
 class DefaultSubmit(CradminSubmitButton):
-    field_classes = "btn btn-default"
+    button_css_classes = "btn btn-default"
 
 
 class DefaultSubmitBlock(CradminSubmitButton):
-    field_classes = "btn btn-default btn-block"
+    button_css_classes = "btn btn-default btn-block"
 
 
 class CollapsedSectionLayout(layout.Div):
