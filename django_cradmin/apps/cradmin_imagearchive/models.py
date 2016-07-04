@@ -1,16 +1,18 @@
 from __future__ import unicode_literals
-from builtins import object
+
 import os
 import posixpath
 import uuid
+from builtins import object
+
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from django.template import RequestContext
+from django.db import models
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from future.utils import python_2_unicode_compatible
+
 from django_cradmin import crsettings
 
 
@@ -127,15 +129,16 @@ class ArchiveImage(models.Model):
         """
         if not imagetype:
             imagetype = crsettings.get_setting('DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE')
-        context = RequestContext(request, {
+        context = {
             'archiveimage': self,
             'imagetype': imagetype,
             'fallbackoptions': {
                 'width': 300,
                 'height': 300
             }
-        })
-        return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html', context)
+        }
+        return render_to_string('django_cradmin/apps/cradmin_imagearchive/preview.django.html',
+                                context, request=request)
 
     @property
     def screenreader_text(self):

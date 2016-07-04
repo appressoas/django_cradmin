@@ -1,4 +1,3 @@
-from django.template import RequestContext
 from django.template.loader import render_to_string
 
 
@@ -43,35 +42,20 @@ class AbstractRenderable(object):
             'me': self
         }
 
-    def get_template_context_object(self, request=None):
-        """
-        Get the template context object returned by
-        :meth:`.render`.
-
-        See the docs for the ``request`` parameter for
-        :meth:`.render` for more details.
-        """
-        context = self.get_context_data(request=request)
-        if request:
-            context = RequestContext(request, context)
-        return context
-
     def render(self, request=None):
         """
         Render :obj:`.get_template_name` with
         the context returned by :meth:`.get_context_data`.
 
         Paramteters:
-            request (HttpRequest): If this is provided, we create
-                wrap the response from :meth:`.get_context_data`
-                in a ``RequestContext``.
-
-                You can override this behavior in
-                :meth:`.get_template_context_object`.
+            request (HttpRequest): If this is provided, we forward it to
+                :meth:`.get_context_data`, and to ``render_to_string()``
+                (which is used to render the template).
         """
         return render_to_string(
             self.get_template_name(),
-            self.get_template_context_object(request=request))
+            self.get_context_data(request=request),
+            request=request)
 
 
 class AbstractRenderableWithCss(AbstractRenderable):

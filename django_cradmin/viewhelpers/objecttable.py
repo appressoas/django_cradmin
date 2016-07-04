@@ -11,7 +11,7 @@ from xml.sax.saxutils import quoteattr
 from django import forms
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.template import defaultfilters, RequestContext
+from django.template import defaultfilters
 from django.template.defaultfilters import truncatechars
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
@@ -204,8 +204,8 @@ class Column(object):
         """
         Render the cell using the template specifed in :obj:`.template_name`.
         """
-        context = RequestContext(self.view.request, self.get_context_data(obj))
-        return render_to_string(self.get_template_name(obj), context)
+        context_data = self.get_context_data(obj)
+        return render_to_string(self.get_template_name(obj), context_data, request=self.view.request)
 
     def get_flip_ordering_url(self):
         """

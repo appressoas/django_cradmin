@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
+
 import posixpath
+
 from django import forms
 from django.conf import settings
-from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
@@ -73,11 +74,11 @@ class ImageWidget(forms.ClearableFileInput):
         input_html = forms.FileInput.render(self, name, value, attrs)
         imagepath = getattr(value, 'name', None)
         imageurl = self.build_preview_url(imagepath)
-        context = RequestContext(self.request, self.get_context_data(
+        context_data = self.get_context_data(
             input_html=input_html,
             imageurl=imageurl,
-            name=name))
-        output = render_to_string(self.template_name, context)
+            name=name)
+        output = render_to_string(self.template_name, context_data, request=self.request)
         return mark_safe(output)
 
 
