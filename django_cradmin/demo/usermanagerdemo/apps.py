@@ -2,7 +2,6 @@ from django.apps import AppConfig
 from django.contrib.auth import get_user_model
 
 
-
 class UsermanagerdemoConfig(AppConfig):
     name = 'django_cradmin.demo.usermanagerdemo'
     verbose_name = "Usermanager demo"

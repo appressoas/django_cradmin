@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 
 from django_cradmin.renderable import AbstractRenderable
 
