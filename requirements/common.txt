@@ -1,7 +1,8 @@
-Django==1.8.4
+Django==1.9.7
+
 django-crispy-forms==1.6.0
 Pillow==2.8.1
-sorl-thumbnail==12.1c
+sorl-thumbnail==12.3
 pytz==2014.10
 html2text==2015.6.21
 
@@ -22,7 +23,7 @@ tox==1.9.2
 htmls==0.9.6
 
 # For mocking tests
-mock-django==0.6.7
+mock-django==0.6.10
 
 # Better Django shell and other utils for development
 django-extensions==1.5.2
@@ -39,7 +40,7 @@ transifex-client==0.11b3
 invoke==0.10.1
 
 # For model creation in tests
-model_mommy==1.2.5
+model_mommy==1.2.6
 
 coverage==4.0
 
