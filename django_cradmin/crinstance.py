@@ -1,14 +1,15 @@
 from __future__ import unicode_literals
+
 from builtins import object
 
-from django.conf.urls import patterns, url, include
-from django.shortcuts import render
+from django.conf.urls import url, include
 from django.core.urlresolvers import reverse
+from django.shortcuts import render
 from django.utils.html import format_html
 
 from django_cradmin.decorators import has_access_to_cradmin_instance
-from .registry import cradmin_instance_registry
 from . import crapp
+from .registry import cradmin_instance_registry
 from .views import roleselect
 
 
@@ -453,7 +454,7 @@ class BaseCrAdminInstance(object):
             urls.append(url('^$', cls.get_instance_frontpage_view(),
                             name='{}-frontpage'.format(cls.id)))
 
-        return patterns('', * urls)
+        return urls
 
     def add_extra_instance_variables_to_request(self, request):
         """

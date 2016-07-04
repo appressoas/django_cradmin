@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 
 from django_cradmin.demo.listfilterdemo.cradmin import ListfilterDemoCrAdminInstance
@@ -14,8 +14,7 @@ from django_cradmin.demo.webdemo.cradmin import WebdemoCrAdminInstance
 from django_cradmin.superuserui import superuserui_registry
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
     url(r'^resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
     url(r'^activate_account/', include('django_cradmin.apps.cradmin_activate_account.urls')),
@@ -36,4 +35,4 @@ urlpatterns = patterns(
     url(r'^polls/', include('django_cradmin.demo.polls_demo.urls')),
 
     url(r'^superuser/', include(superuserui_registry.default.make_cradmin_instance_class().urls())),
-)
+]

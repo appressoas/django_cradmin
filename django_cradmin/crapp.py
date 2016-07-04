@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
+
 from builtins import object
-from django.conf.urls import url
-from django.conf.urls import patterns
 from functools import update_wrapper
 
-from .decorators import cradminview, has_access_to_cradmin_instance
+from django.conf.urls import url
 
+from .decorators import cradminview, has_access_to_cradmin_instance
 
 #: The name of the app index view (the landing page for the app).
 #: We do not enforce this, but we assume that each app has a
@@ -103,4 +103,4 @@ class App(object):
                     pattern.regex, cls._wrap_view(appname, pattern.view, pattern.name),
                     name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
                     kwargs=pattern.kwargs))
-        return patterns('', *urls)
+        return urls
