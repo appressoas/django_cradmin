@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 from django.contrib.auth import get_user_model
 
-from django_cradmin.superuserui import superuserui_registry
 
 
 class UsermanagerdemoConfig(AppConfig):
@@ -9,6 +8,7 @@ class UsermanagerdemoConfig(AppConfig):
     verbose_name = "Usermanager demo"
 
     def ready(self):
+        from django_cradmin.superuserui import superuserui_registry
         appconfig = superuserui_registry.default.add_djangoapp(
             superuserui_registry.DjangoAppConfig(app_label='usermanagerdemo'))
         user_model = get_user_model()

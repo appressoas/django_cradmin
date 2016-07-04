@@ -3,7 +3,7 @@ from builtins import str
 from collections import OrderedDict
 import textwrap
 from django import template
-from django.template.base import parse_bits
+# from django.template.base import parse_bits
 
 register = template.Library()
 

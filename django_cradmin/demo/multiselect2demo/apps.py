@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from django_cradmin.superuserui import superuserui_registry
 
 
 class MultiselectdemoConfig(AppConfig):
@@ -7,6 +6,7 @@ class MultiselectdemoConfig(AppConfig):
     verbose_name = "Multiselect demo"
 
     def ready(self):
+        from django_cradmin.superuserui import superuserui_registry
         appconfig = superuserui_registry.default.add_djangoapp(
             superuserui_registry.DjangoAppConfig(app_label='multiselect2demo'))
         appconfig.add_all_models()

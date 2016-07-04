@@ -61,7 +61,7 @@ class TestActivateAccountView(TestCase):
             metadata={'next_url': '/next'})
         response = self.client.get(self.__get_url('valid-token'))
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], 'http://testserver/next')
+        self.assertEqual(response['location'], '/next')
 
     def test_get_activate_ok(self):
         self._create_generic_token_with_metadata(

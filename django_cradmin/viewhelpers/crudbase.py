@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.fields import GenericForeignKey
 from future import standard_library
 
 from django_cradmin import automodelform
@@ -12,7 +13,6 @@ import urllib.error
 from django import forms
 from django import http
 from django.contrib import messages
-from django.contrib.contenttypes.generic import GenericForeignKey
 from django.core import serializers
 from django.utils.translation import ugettext_lazy as _
 
@@ -221,19 +221,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
         obj = form.save(commit=False)
         self.set_automatic_attributes(obj=obj)
         if commit:
-            if obj.pk is None:
-                fail_message = 'created'
-            else:
-                fail_message = 'changed'
-            forms.save_instance(
-                form=form,
-                instance=obj,
-                fields=form._meta.fields,
-                fail_message=fail_message,
-                commit=True,
-                exclude=form._meta.exclude,
-                construct=False
-            )
+            obj = form.save(commit=True)
         return obj
 
     def form_valid(self, form):

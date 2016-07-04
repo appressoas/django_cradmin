@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import json
 
-from django.utils.datastructures import MultiValueDict, MergeDict
+from django.utils.datastructures import MultiValueDict
 from django.utils.translation import pgettext_lazy
 from future import standard_library
 
@@ -76,7 +76,7 @@ class Widget(widgets.TextInput):
             # the other stuff below is just if we get data
             # from tests and other sources where it is not JSON encoded.
             return json.loads(value)
-        elif isinstance(data, (MultiValueDict, MergeDict)):
+        elif isinstance(data, MultiValueDict):
             return data.getlist(name)
         else:
             return data.get(name, None)

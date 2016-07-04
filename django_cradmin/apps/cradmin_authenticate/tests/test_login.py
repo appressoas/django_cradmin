@@ -58,7 +58,7 @@ class TestEmailLogin(TestCase):
                 'password': 'test'
             })
         self.assertEquals(response.status_code, 302)
-        self.assertEqual(response['location'], 'http://testserver/login/redirect')
+        self.assertEqual(response['location'], '/login/redirect')
 
     def test_login_next(self):
         response = self.client.post('{}?next=/next'.format(self.url), {
@@ -66,7 +66,7 @@ class TestEmailLogin(TestCase):
             'password': 'test'
         })
         self.assertEquals(response.status_code, 302)
-        self.assertEqual(response['location'], 'http://testserver/next')
+        self.assertEqual(response['location'], '/next')
 
     def test_login_invalid(self):
         response = self.client.post(self.url, {

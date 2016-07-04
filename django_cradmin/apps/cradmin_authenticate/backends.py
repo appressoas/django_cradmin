@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from builtins import object
 from django.contrib import auth
-from django.contrib.auth import models as auth_models
+from django.contrib.auth.hashers import check_password
 
 
 class EmailAuthBackend(object):
@@ -24,7 +24,7 @@ class EmailAuthBackend(object):
         if not user:
             return None
 
-        password_valid = auth_models.check_password(password, user.password)
+        password_valid = check_password(password, user.password)
 
         if not password_valid:
             return None

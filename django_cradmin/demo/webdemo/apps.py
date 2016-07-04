@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from django_cradmin.superuserui import superuserui_registry
 
 
 class WebdemoConfig(AppConfig):
@@ -7,6 +6,7 @@ class WebdemoConfig(AppConfig):
     verbose_name = "Webdemo"
 
     def ready(self):
+        from django_cradmin.superuserui import superuserui_registry
         appconfig = superuserui_registry.default.add_djangoapp(
             superuserui_registry.DjangoAppConfig(app_label='webdemo'))
         # page_model = self.get_model('Page')
