@@ -54,9 +54,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
-    # Nice for debugging, but not required to use django_cradmin
-    'django_extensions',
-
     # Just here to get the demo overview view.
     'django_cradmin.demo.project.demo',
 

@@ -41,9 +41,9 @@ def compilemessages():
 @task
 def syncmigrate():
     """
-    Runs the syncdb and migrate django management commands.
+    Runs the migrate django management command.
     """
-    _manage('syncdb --noinput')
+    _manage('migrate --noinput')
 
 
 @task
