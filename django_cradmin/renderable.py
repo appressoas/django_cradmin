@@ -69,7 +69,7 @@ class AbstractRenderableWithCss(AbstractRenderable):
         Override this to set your own css classes. Must return a list
         of css classes.
 
-        This is reserved for setting css classes when extending a
+        This is reserved for setting css classes when making a
         reusable component.
 
         See :meth:`.get_css_classes_string`.

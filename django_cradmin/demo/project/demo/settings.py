@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_register_account',
     'django_cradmin.apps.cradmin_invite',
     'django_cradmin.apps.cradmin_email',
+    'django_cradmin.uicontainer',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
@@ -73,6 +74,9 @@ INSTALLED_APPS = (
 
     # Demo for multiselect
     'django_cradmin.demo.multiselect2demo.apps.MultiselectdemoConfig',
+
+    #: Demo for django_cradmin.uicontainer
+    'django_cradmin.demo.uicontainerdemo',
 
     # For building docs
     'ievv_opensource.ievvtasks_development',

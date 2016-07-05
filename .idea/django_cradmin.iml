@@ -47,7 +47,7 @@
         <option value="$MODULE_DIR$/django_cradmin/demo/login_not_required_demo/templates" />
         <option value="$MODULE_DIR$/django_cradmin/demo/no_role_demo/templates" />
         <option value="$MODULE_DIR$/django_cradmin/demo/webdemo/templates" />
-        <option value="$MODULE_DIR$/django_cradmin/demo/multiselectdemo/templates" />
+        <option value="$MODULE_DIR$/django_cradmin/demo/uicontainerdemo/templates" />
       </list>
     </option>
   </component>

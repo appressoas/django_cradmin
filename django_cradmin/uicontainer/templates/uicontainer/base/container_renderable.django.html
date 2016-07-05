@@ -1,0 +1,21 @@
+{% load cradmin_tags %}
+
+{% block wrapper_tag_start %}
+    <div class="{{ me.get_css_classes_string }}">
+{% endblock wrapper_tag_start %}
+
+{% block content_pre_children %}{% endblock content_pre_children %}
+
+{% block childcontainers %}
+    {% for childcontainer in me.iter_childcontainers %}
+        {% block childcontainer %}
+            {% cradmin_render_renderable childcontainer %}
+        {% endblock childcontainer %}
+    {% endfor %}
+{% endblock childcontainers %}
+
+{% block content_post_children %}{% endblock content_post_children %}
+
+{% block wrapper_tag_end %}
+    </div>
+{% endblock wrapper_tag_end %}

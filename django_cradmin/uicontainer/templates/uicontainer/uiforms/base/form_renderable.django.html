@@ -1,0 +1,9 @@
+{% extends "uicontainer/base/container_renderable.django.html" %}
+
+{% block wrapper_tag_start %}
+    <form class="{{ me.get_css_classes_string }}">
+{% endblock wrapper_tag_start %}
+
+{% block wrapper_tag_end %}
+    </form>
+{% endblock wrapper_tag_end %}

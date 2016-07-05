@@ -1,0 +1,7 @@
+{% extends "uicontainer/base/container_renderable.django.html" %}
+
+{% block content_pre_children %}
+    {% block field %}
+        {{ me.field }}
+    {% endblock field %}
+{% endblock content_pre_children %}
