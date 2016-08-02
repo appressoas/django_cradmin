@@ -109,10 +109,14 @@ class TestCaseMixin(object):
 
                 def test_post(self):
                     messagesmock = mock.MagicMock()
-                    mockresponse = self.mock_postrequest(data={
-                        'name': 'Jane Doe',
-                        'age': 24
-                    }, messagesmock=messagesmock)
+                    mockresponse = self.mock_postrequest(
+                        requestkwargs={
+                            'data': {
+                                'name': 'Jane Doe',
+                                'age': 24
+                        },
+                        messagesmock=messagesmock
+                    )
                     messagesmock.add.assert_called_once_with(
                         messages.SUCCESS,
                         'The data was posted successfully!',
