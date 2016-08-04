@@ -7,35 +7,67 @@
     <section id="kssref-{{ section.section }}" class="kss-section  kss-section--depth-{{ section|kss_section_level }}">
 {% endif %}
 
-<h2 class="kss-title  kss-title--level-{{ section|kss_section_level }}">
-    <a class="kss-title__permalink" href="#kssref-{{ section.section }}">
-        <span class="kss-title__ref">
-            {{ section.section }}
-        </span>
-        {{ section.heading }}
-    </a>
-</h2>
+{% block heading %}
+    <h2 class="kss-title  kss-title--level-{{ section|kss_section_level }}">
+        <a class="kss-title__permalink" href="#kssref-{{ section.section }}">
+            {% block heading-content %}
+                <span class="kss-title__ref">
+                    {{ section.section }}
+                </span>
+                {{ section.heading }}
+            {% endblock heading-content %}
+        </a>
+    </h2>
+{% endblock heading %}
 
-<div class="kss-description">
-    {{ section.description_html|safe }}
-</div>
+{% block modifiers %}
+    {% if section.modifiers %}
+        <ul class="kss-parameters">
+            {% for modifier in section.modifiers %}
+                <li class="kss-parameters__item">
+                    <code class="kss-parameters__name">{{ modifier.name }}</code>
+                    <div class="kss-parameters__description">{{ modifier.description_html|safe }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock modifiers %}
 
-{% if section.examples %}
-    {% for example in section.examples %}
-        <h3>
-            {% if example.title %}
-                {{ example.title }}
-            {% else %}
-                {% trans "Example" context "cradmin_kss_styleguide" %}
-            {% endif %}
-        </h3>
-        <div class="kss-example kss-example--{{ example.get_syntax }}">
-            {{ example.html|safe }}
+{% block description %}
+    {% if section.description %}
+        <div class="kss-description">
+            {{ section.description_html|safe }}
         </div>
-    {% endfor %}
+    {% endif %}
+{% endblock description %}
 
-{% endif %}
-
+{% block usage %}
+    {% if section.has_examples %}
+        <div class="kss--usage">
+            {% block usage-title %}
+                <h3>
+                    {% trans "Usage" context "cradmin_kss_styleguide" %}
+                </h3>
+            {% endblock usage-title %}
+            {% for example in section.examples %}
+                {% block example %}
+                    {% block example-title %}
+                        {% if example.title %}
+                            <h4>
+                                {{ example.title }}
+                            </h4>
+                        {% endif %}
+                    {% endblock example-title %}
+                    {% block example-markup %}
+                        <div class="kss-markup kss-markup--{{ example.get_syntax }}">
+                            {{ example.html|safe }}
+                        </div>
+                    {% endblock example-markup %}
+                {% endblock example %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock usage %}
 
 
 {% if section|kss_section_level == 1 %}

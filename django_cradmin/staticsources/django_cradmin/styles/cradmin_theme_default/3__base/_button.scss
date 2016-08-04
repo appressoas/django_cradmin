@@ -2,51 +2,37 @@
 Buttons
 
 In most cases you should not use the button class for links. Use either `<button>` or `<input type="submit" />` when using buttons. <strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as buttons.
-<h3>This is the button types we have</h3>
-<ul>
-    <li>
-        <h4>The default button</h4>
-        <button type="button" class="button">Button</button>
-        <button type="button" class="button  button--fill">Button</button>
-    </li>
-    <li>
-        <h4>For primary actions, use this only to separate from other actions.</h4>
-        <button type="button" class="button  button--primary">Button</button>
-        <button type="button" class="button  button--primary-fill">Button</button>
-    </li>
-    <li>
-        <h4>For secondary actions, don't overuse.</h4>
-        <button type="button" class="button  button--secondary">Button</button>
-        <button type="button" class="button  button--secondary-fill">Button</button>
-    </li>
-    <li>
-        <h4>For actions that need's to stand out on red or dark blue background.</h4>
-        <button type="button" class="button  button--light">Button</button>
-        <button type="button" class="button  button--light-fill">Button</button>
-    </li>
-</ul>
 
-<h3>This is some modifiers you can add</h3>
-<ul>
-    <li>
-        <button type="button" class="button  button--block">Button</button>
-        `block`:  Make it 100% width of whatever container. Be careful with this one.
-        <br />
-        <br />
-    </li>
-    <li>
-        <button type="button" class="button  button--compact">Button</button> — `compact`: Make the button more compact.
-    </li>
-    <li>
-        <button type="button" class="button  button--wider">Button</button> — `wider`: Make short-texted buttons simular in width.
-    </li>
-    <li>
-        <button type="button" class="button  button--spaced">Button</button> — `spaced`: Make some space around it
-    </li>
-    <li>
-        <button type="button" class="button" disabled>Button</button> — `disabled`: Make the button disabled.
-    </li>
-</ul>
+# This is the button types we have
+
+## The default button
+<button type="button" class="button">Button</button>
+<button type="button" class="button  button--fill">Button</button>
+
+## For primary actions, use this only to separate from other actions.
+<button type="button" class="button  button--primary">Button</button>
+<button type="button" class="button  button--primary-fill">Button</button>
+
+## For secondary actions, don't overuse.
+<button type="button" class="button  button--secondary">Button</button>
+<button type="button" class="button  button--secondary-fill">Button</button>
+
+## For actions that need's to stand out on red or dark blue background.
+<button type="button" class="button  button--light">Button</button>
+<button type="button" class="button  button--light-fill">Button</button>
+
+# This is some modifiers you can add
+
+<button type="button" class="button  button--block">Button</button>
+`block`:  Make it 100% width of whatever container. **Be careful with this one.**
+
+<button type="button" class="button  button--compact">Button</button> — `compact`: Make the button more compact.
+
+<button type="button" class="button  button--wider">Button</button> — `wider`: Make short-texted buttons simular in width.
+
+<button type="button" class="button  button--spaced">Button</button> — `spaced`: Make some space around it
+
+<button type="button" class="button" disabled>Button</button> — `disabled`: Make the button disabled.
 
 <br />
 

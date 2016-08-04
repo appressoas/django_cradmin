@@ -212,7 +212,7 @@
 
 // Code styles
 .kss-usage {
-    .kss-example {
+    .kss-markup {
         display: none;
     }
 
@@ -235,7 +235,7 @@
         position: absolute;
         opacity: 0;
 
-        &:checked ~ .kss-example {
+        &:checked ~ .kss-markup {
             display: block;
         }
 
