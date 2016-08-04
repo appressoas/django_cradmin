@@ -5,16 +5,18 @@ If you use `blockquote` you get a default styling.
 
 <div class="kss-blockquote-wrapper">
     <blockquote>
-        <cite><a href="">Trond Giske</a>, nestleder i Arbeiderpartiet</cite>
-        <p>Man behandler ikke næringsaktører med å finne på avgifter i siste budsjettinnspurt, uten noen foregående utredning, uten å analysere konsekvensene og uten å vurdere alternativer.</p>
+        <cite><a href="">John Doe</a>, no one knows who he is</cite>
+        <p>Nullam quis risus eget urna mollis ornare vel eu leo.</p>
     </blockquote>
 </div>
 
-Markup:
+# Markup:
+```html
 <blockquote>
-    <cite><a href="">Trond Giske</a>, nestleder i Arbeiderpartiet</cite>
-    <p>Man behandler ikke næringsaktører med å finne på avgifter i siste budsjettinnspurt, uten noen foregående utredning, uten å analysere konsekvensene og uten å vurdere alternativer.</p>
+    <cite><a href="">John Doe</a>, no one knows who he is</cite>
+    <p>Nullam quis risus eget urna mollis ornare vel eu leo.</p>
 </blockquote>
+```
 
 Styleguide 3.8
 */

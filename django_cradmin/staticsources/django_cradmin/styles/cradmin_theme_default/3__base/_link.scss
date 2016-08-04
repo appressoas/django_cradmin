@@ -1,8 +1,9 @@
 /*
 Links
 
-<strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as links.
-<h3>This is the links:</h3>
+__Never__ use `<span>`, `<div>` or elements without a semantic meaning as links.
+
+# This is the links:
 <ul>
     <li>
         <a href="">I'm a link</a>
@@ -12,12 +13,17 @@ Links
     </li>
 </ul>
 
-Markup:
+# Markup:
+```html
 <a href="">I'm a link</a>
 <a href="" class="link--light">I'm also link</a>
-// For extending:
+```
+
+For extending:
+```scss
 @extend %link;
 @extend %link--light;
+```
 
 Styleguide 3.1
 */
