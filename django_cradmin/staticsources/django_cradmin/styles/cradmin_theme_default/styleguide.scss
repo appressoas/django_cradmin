@@ -212,7 +212,7 @@
 
 // Code styles
 .kss-usage {
-    .kss-markup {
+    .kss-example {
         display: none;
     }
 
@@ -235,7 +235,7 @@
         position: absolute;
         opacity: 0;
 
-        &:checked ~ .kss-markup {
+        &:checked ~ .kss-example {
             display: block;
         }
 
@@ -259,60 +259,6 @@
     }
 }
 
-.kss-markup {
-    border: $border-style;
-
-    pre,
-    code,
-    kbd,
-    samp {
-        @include font-size(xsmall);
-        font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
-        color: $color-text;
-        font-weight: 600;
-    }
-
-    pre.prettyprint {
-        margin: 0;
-        padding: $unit 0;
-        border: 0;
-        background: $color-light;
-    }
-
-    .tag {
-        display: inline;
-        padding: 0;
-        border: 0;
-        margin: 0;
-        font-family: inherit;
-        font-size: inherit;
-        font-weight: inherit;
-        line-height: inherit;
-    }
-
-    ol.linenums {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-
-        li {
-            list-style-type: none;
-            margin: 0;
-            border-bottom: $border-style--small;
-            padding: $unit $spacing--small;
-            background: $color-light;
-
-            &:last-child {
-                border: 0;
-            }
-
-            &:nth-child(even) {
-                background: color(neutral, light);
-            }
-        }
-    }
-}
-
 .kss-blockquote-wrapper {
     @include mq(lg) {
         margin-left: $spacing--xlarge;
@@ -325,4 +271,12 @@
 
 .kss-separator {
     margin: $spacing 0;
+}
+
+
+.codehilite {
+    border: $border-style;
+    @include font-size(xsmall);
+    font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
+    font-weight: 600;
 }

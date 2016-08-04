@@ -50,8 +50,8 @@ coverage==4.0
 Markdown==2.6.6
 Pygments==2.1.3
 beautifulsoup4==4.3.2
-pykss==0.5
 html5lib==0.9999999
+-e /Users/espenak/code/pythonkss
 
 #ievv_opensource==0.2.17
 -e /Users/espenak/code/ievv_opensource

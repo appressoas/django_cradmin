@@ -10,23 +10,19 @@ instead of ruining the hierarchy: `.h1`, `.h2`, `.h3`, `.h4`
 - <h3>Big deal, so am I</h3>
 - <h4>I'm just a tiny header :'(</h4>
 
-# Markup:
-```html
+Example: (html)
 <h1 class="xl-text">Look, I'm a giant header</h1>
 <h1>Look, I'm a header</h1>
 <h2>Look, I'm also a header</h2>
 <h3>Big deal, so am I</h3>
 <h3>I'm just a tiny header :'(</h3>
-```
 
-For extending:
-```scss
+Example: (scss) For extending
 @extend %xl-text;
 @extend %h1;
 @extend %h2;
 @extend %h3;
 @extend %h4;
-```
 
 Styleguide 3.3
 */

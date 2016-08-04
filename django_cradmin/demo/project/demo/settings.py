@@ -57,7 +57,6 @@ INSTALLED_APPS = (
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
     # For the styleguide for themes
-    'pykss.contrib.django',
     'django_cradmin.apps.cradmin_kss_styleguide',
 
     # Just here to get the demo overview view.

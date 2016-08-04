@@ -1,4 +1,5 @@
 {% load cradmin_kss_styleguide_tags %}
+{% load i18n %}
 
 {% if section|kss_section_level == 1 %}
     <div id="kssref-{{ section.section }}" class="kss-section  kss-section--depth-{{ section|kss_section_level }}">
@@ -11,12 +12,31 @@
         <span class="kss-title__ref">
             {{ section.section }}
         </span>
-        {% render_kss_section_header section %}
+        {{ section.heading }}
     </a>
 </h2>
 
+<div class="kss-description">
+    {{ section.description_html|safe }}
+</div>
 
-{% render_kss_section_description styleguideconfig=styleguideconfig section=section %}
+{% if section.examples %}
+    {% for example in section.examples %}
+        <h3>
+            {% if example.title %}
+                {{ example.title }}
+            {% else %}
+                {% trans "Example" context "cradmin_kss_styleguide" %}
+            {% endif %}
+        </h3>
+        <div class="kss-example kss-example--{{ example.get_syntax }}">
+            {{ example.html|safe }}
+        </div>
+    {% endfor %}
+
+{% endif %}
+
+
 
 {% if section|kss_section_level == 1 %}
     </div>

@@ -60,19 +60,13 @@ def kss_section_url(styleguideconfig, section):
 
 @register.simple_tag()
 def render_kss_section_description(styleguideconfig, section):
-    lines = section.description.strip().splitlines()
-    description = '\n'.join(lines[1:]).strip()
-    description = styleguideconfig.format_description_text(text=description)
+    description = styleguideconfig.format_description(section)
     return mark_safe(description)
 
 
 @register.simple_tag()
-def render_kss_section_header(section):
-    lines = section.description.strip().splitlines()
-    if len(lines) > 0:
-        return lines[0]
-    else:
-        return ''
+def render_kss_section_example(styleguideconfig, section):
+    return mark_safe(styleguideconfig.format_example(section))
 
 
 @register.simple_tag(takes_context=True)

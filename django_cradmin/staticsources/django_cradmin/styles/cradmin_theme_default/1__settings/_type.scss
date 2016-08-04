@@ -10,12 +10,10 @@ Fonts
 
 The markup shows how to specify the font-weight.
 
-# Markup:
-```scss
+Example:
 @include font(header);
 @include font(base);
 @include font(base, bold);
-```
 
 Styleguide 1.1
 */
@@ -55,15 +53,13 @@ Font sizes should be consistant, therefor never refer to a specific font size an
 1. `xlarge` - For headers</li>
 1. `xxlarge` - For headers, use with care</li>
 
-# Markup:
-```scss
+Markup:
 @include font-size(xsmall);
 @include font-size(small);
 @include font-size(medium);
 @include font-size(large);
 @include font-size(xlarge);
 @include font-size(xxlarge);
-```
 
 Styleguide 1.3
 */
