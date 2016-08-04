@@ -1,0 +1,16 @@
+.flex-grid {
+    @include mq(lg) {
+        display: flex;
+    }
+
+    &__item {
+        flex-grow: 1;
+        flex-basis: 0;
+        padding: $spacing;
+
+        @include mq(lg) {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+}

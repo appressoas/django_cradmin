@@ -25,6 +25,9 @@ setup(
         'future',
         'html2text',
         'htmls',
+        'Markdown',
+        'beautifulsoup4',
+        'html5lib',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

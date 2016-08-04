@@ -1,0 +1,108 @@
+/*
+Fonts
+
+# The fonts on the webpage is:
+
+1. <div style="font-family: 'bebas-neue';">Bebase Neue</div>
+   Use this for header, always in normal font-weight.
+2. <div>Helvetica Neue</div>
+   Body copy, only in font-weights: `normal`, `400` or `700`
+
+The markup shows how to specify the font-weight.
+
+# Markup:
+```scss
+@include font(header);
+@include font(base);
+@include font(base, bold);
+```
+
+Styleguide 1.1
+*/
+
+/*
+font-family: 'Danton Bold'
+font-family: 'Danton Medium'
+font-family: 'Danton Regular'
+font-family: 'Danton Extra Light'
+*/
+
+$fonts: (
+    base: (
+        font: 'Gotham Narrow SSm A',
+        fallback: 'Gotham Narrow SSm B',
+        normal: 400,
+        bold: 700
+    ),
+    header: (
+        font: 'Merriweather',
+        fallback: serif,
+        normal: 400,
+        bold: 700
+    )
+);
+
+/* Font sizes
+
+Font sizes should be consistant, therefor never refer to a specific font size anywhere in the css.
+
+# Just refer to the following sizes:
+
+1. `xsmall` - Rare cases where the font needs tro be smaller than usual</li>
+1. `small` - The default font size</li>
+1. `medium` - For small headers and preamble text</li>
+1. `large` - For headers</li>
+1. `xlarge` - For headers</li>
+1. `xxlarge` - For headers, use with care</li>
+
+# Markup:
+```scss
+@include font-size(xsmall);
+@include font-size(small);
+@include font-size(medium);
+@include font-size(large);
+@include font-size(xlarge);
+@include font-size(xxlarge);
+```
+
+Styleguide 1.3
+*/
+
+$font-size: (
+    xsmall: (
+        base: 15px,
+        md: 16px,
+    ),
+    small: (
+        base: (19px, 1.4),
+        md: 21px,
+    ),
+    medium: (
+        base: 22px,
+        md: 24px,
+    ),
+    large: (
+        base: 26px,
+        md: 32px,
+    ),
+    xlarge: (
+        base: 34px,
+        md: 42px,
+    ),
+    xxlarge: (
+        base: 48px,
+        md: 60px,
+        lg: 74px,
+        xl: 82px,
+    )
+);
+
+/*
+Golden ratio font sizes:
+http://designmodo.com/wp-content/uploads/2015/06/readymag-hint-1113x876-99041.png
+
+18px
+29px
+47px
+76px
+*/

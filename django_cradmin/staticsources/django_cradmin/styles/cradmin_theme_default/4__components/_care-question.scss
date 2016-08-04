@@ -1,0 +1,123 @@
+.care-question {
+    position: relative;
+    overflow: hidden;
+    margin-top: $spacing--large;
+    margin-bottom: $spacing--large;
+    text-align: center;
+    color: $color-text;
+    // background-color: rgba(color(neutral), 0.2);
+
+    max-width: $grid-width--tight - ($spacing--large * 2);
+    margin-left: auto;
+    margin-right: auto;
+    border-top: $border-style;
+    border-bottom: $border-style;
+
+    &__step {
+        padding-left: $spacing;
+        padding-right: $spacing;
+        padding-top: $spacing--large + $spacing;
+        padding-bottom: $spacing--large + $spacing;
+
+        &.ng-enter {
+            animation: 1s;
+
+            & > *,
+            .care-question__form > *
+            .care-question__options > * {
+                @extend %animation-fall-down;
+                @include animation-delay(6, 70ms);
+            }
+        }
+
+        &.ng-leave {
+            @extend %animation-fade-out-down;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+        }
+    }
+
+    &__title {
+        @include font(header, bold);
+        @include font-size(large);
+
+        &--main {
+            margin-bottom: $spacing--large;
+        }
+
+        &--small {
+            @include font-size(large);
+        }
+
+        &--xsmall {
+            @include font(base, normal);
+            @include font-size(small);
+            margin-bottom: $unit;
+        }
+    }
+
+    &__options {
+        // ...
+    }
+
+    &__option {
+        margin-top: $unit;
+    }
+
+    &__form {
+        max-width: 410px + ($spacing * 2);
+        margin: 0 auto $spacing;
+        padding: 0;
+
+        &--wider {
+            max-width: 630px + ($spacing * 2);
+        }
+
+        &--left {
+            text-align: left;
+        }
+    }
+
+    &--footer {
+        max-width: none;
+        border-bottom: 0;
+        margin-bottom: 0;
+        background-color: rgba(color(neutral), 0.2);
+    }
+
+    &--active {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        // min-height: 80vh;
+        max-width: none;
+        color: $color-light;
+        border-color: color(primary);
+        background-color: color(primary);
+
+        &.ng-animate {
+            background: linear-gradient(
+                -35deg,
+                tint(color(neutral), 80%) 49%,
+                color(primary) 50.1%);
+
+
+            background-size: 800% 800%;
+
+            animation: show-focus-step 0.8s $swift-out forwards;
+
+            .care-question__form > * {
+                @extend %animation-fall-down;
+                @include animation-delay(6, 50ms, 200ms);
+            }
+        }
+    }
+}
+
+@keyframes show-focus-step {
+    // 0% {background-position: 32% 0%}
+    0% {background-position: -30% -20%}
+    100% {background-position: -69% -100%}
+}

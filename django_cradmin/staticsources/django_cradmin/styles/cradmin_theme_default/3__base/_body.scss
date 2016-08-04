@@ -1,0 +1,26 @@
+body {
+    // Type
+    @include font(base, normal);
+    @include font-size(small);
+
+    position: relative;
+
+    color: $color-text;
+    font-style: normal;
+
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+
+    background-color: $color-background;
+
+    &.overlay,
+    &.modal-open {
+        overflow: hidden;
+        position: fixed;
+
+        @include mq(md) {
+            position: relative;
+        }
+    }
+}

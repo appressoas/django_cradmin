@@ -1,0 +1,149 @@
+@mixin mq($name) {
+    @if not map-has-key($breakpoints, $name) {
+        @warn 'Warning: `#{$name}` is not a valid breakpoint name, get your shit together!';
+    } @else {
+        @media (min-width: map-get($breakpoints, $name)) {
+            @content;
+        }
+    }
+}
+
+
+// Defining colors as a map
+// retrieve color from $colors map ie. `color(primary, base)`
+@function color($color-name, $color-variant: 'base') {
+    // map inception
+    @return map-get(map-get($colors, $color-name), $color-variant);
+}
+
+// Find the contrast color to any color hex
+@function color-contrast($n) {
+    $color-brightness: round((red($n) * 299) + (green($n) * 587) + (blue($n) * 114) / 1000);
+    $light-color: round((red(#fff) * 299) + (green(#fff) * 587) + (blue(#fff) * 114) / 1000);
+
+    @if abs($color-brightness) < ($light-color / 2) {
+        @return $color-light;
+    } @else {
+        @return $color-dark;
+    }
+}
+
+// Responsive font sizes with vertical rythm
+@function line-height($size, $min: 1.2) {
+    $line-height: $vertical-rythm;
+    $i: 1;
+
+    @while $line-height < ($size * $min) {
+        $line-height: $vertical-rythm * $i;
+        $i: $i + 1;
+    }
+
+    @return $line-height;
+}
+
+@mixin font-size($size: base, $fs-breakpoints: $breakpoints) {
+    $fs-map: map-get($font-size, $size);
+    @each $fs-breakpoint, $fs-font-size in $fs-map {
+        @if $fs-breakpoint == base {
+            @include make-font-size($fs-font-size);
+        } @else {
+            @if map-has-key($fs-breakpoints, $fs-breakpoint) {
+                $fs-breakpoint: map-get($fs-breakpoints, $fs-breakpoint);
+            }
+            @media screen and (min-width: $fs-breakpoint) {
+                @include make-font-size($fs-font-size);
+            }
+        }
+    }
+}
+@mixin make-font-size($fs-font-size) {
+    @if type-of($fs-font-size) == 'list' {
+        font-size: nth($fs-font-size, 1);
+
+        @if (length($fs-font-size) > 1) {
+            line-height: line-height(
+                nth($fs-font-size, 1),
+                nth($fs-font-size, 2));
+        } @else {
+            line-height: line-height($fs-font-size);
+        }
+    } @else {
+        font-size: $fs-font-size;
+        line-height: line-height($fs-font-size);
+    }
+}
+
+// Font family and weights
+@mixin font($font-family: base, $weight: null) {
+    $family: map-get($fonts, $font-family);
+    @if $weight {
+        @if map-has-key($family, $weight) {
+            $f-weight: map-get($family, $weight);
+
+            @if (length($f-weight) > 1) {
+                font-family: nth($f-weight, 2), map-get($family, fallback);
+                font-weight: nth($f-weight, 1);
+            } @else {
+                font-family: map-get($family, font), map-get($family, fallback);
+                font-weight: $f-weight;
+            }
+        } @else {
+            font-family: map-get($family, font), map-get($family, fallback);
+        }
+    } @else {
+        font-family: map-get($family, font), map-get($family, fallback);
+    }
+}
+
+// Spaced text
+@mixin spaced-text {
+    @include font(base, bold);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+
+// Sprite icons
+@mixin icon($col, $row, $width, $height) {
+    display: inline-block;
+    vertical-align: top;
+
+    width: $width;
+    height: $height;
+
+    background-image: url('../images/sprite.svg');
+    background-position: (-( ( $col - 1 ) * 100) + px ) (-( ( $row - 1 ) * 100 ) + px);
+    background-repeat: no-repeat;
+}
+
+// TINT AND SHADE
+
+// Add percentage of white to a color
+@function tint($color, $percent) {
+    @return mix(white, $color, $percent);
+}
+
+// Add percentage of black to a color
+@function shade($color, $percent) {
+    @return mix(black, $color, $percent);
+}
+
+// Animation delay for childs
+@mixin animation-delay($count, $delay, $initial: 0) {
+    animation-delay: (($count + 1) * $delay) + $initial;
+
+    @for $i from 1 through $count {
+        &:nth-child(#{$i}) {
+            animation-delay: ($i * $delay) + $initial;
+        }
+    }
+}
+
+
+// STYLE INPUT PLACEHOLDERS
+@mixin input-placeholder {
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+}

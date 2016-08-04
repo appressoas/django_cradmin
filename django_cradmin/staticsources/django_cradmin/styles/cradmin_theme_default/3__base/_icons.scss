@@ -1,0 +1,859 @@
+/*
+Icons
+
+All icons come in the following colors: `dark` (default), `primary`, `secondary` and `light`.
+
+<ul class="sg-icon-grid">
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-up"></i>
+        <code>.icon-arrow-up</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-up--primary"></i>
+        <code>.icon-arrow-up--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-up--secondary"></i>
+        <code>.icon-arrow-up--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-up--light"></i>
+        <code>.icon-arrow-up--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-down"></i>
+        <code>.icon-arrow-down</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-down--primary"></i>
+        <code>.icon-arrow-down--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-down--secondary"></i>
+        <code>.icon-arrow-down--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-down--light"></i>
+        <code>.icon-arrow-down--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-right"></i>
+        <code>.icon-arrow-right</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-right--primary"></i>
+        <code>.icon-arrow-right--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-right--secondary"></i>
+        <code>.icon-arrow-right--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-right--light"></i>
+        <code>.icon-arrow-right--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-left"></i>
+        <code>.icon-arrow-left</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-left--primary"></i>
+        <code>.icon-arrow-left--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-left--secondary"></i>
+        <code>.icon-arrow-left--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-arrow-left--light"></i>
+        <code>.icon-arrow-left--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-up"></i>
+        <code>.icon-chevron-up</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-up--primary"></i>
+        <code>.icon-chevron-up--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-up--secondary"></i>
+        <code>.icon-chevron-up--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-up--light"></i>
+        <code>.icon-chevron-up--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-down"></i>
+        <code>.icon-chevron-down</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-down--primary"></i>
+        <code>.icon-chevron-down--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-down--secondary"></i>
+        <code>.icon-chevron-down--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-down--light"></i>
+        <code>.icon-chevron-down--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-right"></i>
+        <code>.icon-chevron-right</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-right--primary"></i>
+        <code>.icon-chevron-right--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-right--secondary"></i>
+        <code>.icon-chevron-right--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-right--light"></i>
+        <code>.icon-chevron-right--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-left"></i>
+        <code>.icon-chevron-left</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-left--primary"></i>
+        <code>.icon-chevron-left--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-left--secondary"></i>
+        <code>.icon-chevron-left--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-chevron-left--light"></i>
+        <code>.icon-chevron-left--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-check"></i>
+        <code>.icon-check</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-check--primary"></i>
+        <code>.icon-check--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-check--secondary"></i>
+        <code>.icon-check--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-check--light"></i>
+        <code>.icon-check--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-search"></i>
+        <code>.icon-search</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-search--primary"></i>
+        <code>.icon-search--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-search--secondary"></i>
+        <code>.icon-search--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-search--light"></i>
+        <code>.icon-search--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-close"></i>
+        <code>.icon-close</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-close--primary"></i>
+        <code>.icon-close--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-close--secondary"></i>
+        <code>.icon-close--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-close--light"></i>
+        <code>.icon-close--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-user"></i>
+        <code>.icon-user</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-user--primary"></i>
+        <code>.icon-user--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-user--secondary"></i>
+        <code>.icon-user--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-user--light"></i>
+        <code>.icon-user--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-time"></i>
+        <code>.icon-time</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-time--primary"></i>
+        <code>.icon-time--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-time--secondary"></i>
+        <code>.icon-time--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-time--light"></i>
+        <code>.icon-time--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-flag"></i>
+        <code>.icon-flag</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-flag--primary"></i>
+        <code>.icon-flag--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-flag--secondary"></i>
+        <code>.icon-flag--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-flag--light"></i>
+        <code>.icon-flag--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-more"></i>
+        <code>.icon-more</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-more--primary"></i>
+        <code>.icon-more--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-more--secondary"></i>
+        <code>.icon-more--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-more--light"></i>
+        <code>.icon-more--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-user-small"></i>
+        <code>.icon-user-small</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-user-small--primary"></i>
+        <code>.icon-user-small--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-user-small--secondary"></i>
+        <code>.icon-user-small--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-user-small--light"></i>
+        <code>.icon-user-small--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-facebook"></i>
+        <code>.icon-facebook</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-facebook--primary"></i>
+        <code>.icon-facebook--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-facebook--secondary"></i>
+        <code>.icon-facebook--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-facebook--light"></i>
+        <code>.icon-facebook--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-twitter"></i>
+        <code>.icon-twitter</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-twitter--primary"></i>
+        <code>.icon-twitter--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-twitter--secondary"></i>
+        <code>.icon-twitter--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-twitter--light"></i>
+        <code>.icon-twitter--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-email"></i>
+        <code>.icon-email</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-email--primary"></i>
+        <code>.icon-email--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-email--secondary"></i>
+        <code>.icon-email--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-email--light"></i>
+        <code>.icon-email--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-podcast"></i>
+        <code>.icon-podcast</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-podcast--primary"></i>
+        <code>.icon-podcast--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-podcast--secondary"></i>
+        <code>.icon-podcast--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-podcast--light"></i>
+        <code>.icon-podcast--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-instagram"></i>
+        <code>.icon-instagram</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-instagram--primary"></i>
+        <code>.icon-instagram--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-instagram--secondary"></i>
+        <code>.icon-instagram--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-instagram--light"></i>
+        <code>.icon-instagram--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-snapchat"></i>
+        <code>.icon-snapchat</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-snapchat--primary"></i>
+        <code>.icon-snapchat--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-snapchat--secondary"></i>
+        <code>.icon-snapchat--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-snapchat--light"></i>
+        <code>.icon-snapchat--light</code>
+    </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-blog"></i>
+        <code>.icon-blog</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-blog--primary"></i>
+        <code>.icon-blog--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-blog--secondary"></i>
+        <code>.icon-blog--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-blog--light"></i>
+        <code>.icon-blog--light</code>
+    </li>
+</ul>
+
+Styleguide 3.4
+*/
+
+
+// Arrow
+.icon-arrow,
+%icon-arrow {
+    &-up {
+        @include icon(1, 1, 15px, 15px);
+
+        &--light {
+            @include icon(1, 2, 15px, 15px);
+        }
+
+        &--primary {
+            @include icon(1, 3, 15px, 15px);
+        }
+
+        &--secondary {
+            @include icon(1, 4, 15px, 15px);
+        }
+    }
+
+    &-right {
+        @include icon(2, 1, 15px, 15px);
+
+        &--light {
+            @include icon(2, 2, 15px, 15px);
+        }
+
+        &--primary {
+            @include icon(2, 3, 15px, 15px);
+        }
+
+        &--secondary {
+            @include icon(2, 4, 15px, 15px);
+        }
+    }
+
+    &-down {
+        @include icon(3, 1, 15px, 15px);
+
+        &--light {
+            @include icon(3, 2, 15px, 15px);
+        }
+
+        &--primary {
+            @include icon(3, 3, 15px, 15px);
+        }
+
+        &--secondary {
+            @include icon(3, 4, 15px, 15px);
+        }
+    }
+
+    &-left {
+        @include icon(4, 1, 15px, 15px);
+
+        &--light {
+            @include icon(4, 2, 15px, 15px);
+        }
+
+        &--primary {
+            @include icon(4, 3, 15px, 15px);
+        }
+
+        &--secondary {
+            @include icon(4, 4, 15px, 15px);
+        }
+    }
+}
+
+// Chevron
+.icon-chevron,
+%icon-chevron {
+    &-up {
+        @include icon(5, 1, 15px, 10px);
+
+        &--light {
+            @include icon(5, 2, 15px, 10px);
+        }
+
+        &--primary {
+            @include icon(5, 3, 15px, 10px);
+        }
+
+        &--secondary {
+            @include icon(5, 4, 15px, 10px);
+        }
+    }
+
+    &-right {
+        @include icon(6, 1, 10px, 15px);
+
+        &--light {
+            @include icon(6, 2, 10px, 15px);
+        }
+
+        &--primary {
+            @include icon(6, 3, 10px, 15px);
+        }
+
+        &--secondary {
+            @include icon(6, 4, 10px, 15px);
+        }
+    }
+
+    &-down {
+        @include icon(7, 1, 15px, 10px);
+
+        &--light {
+            @include icon(7, 2, 15px, 10px);
+        }
+
+        &--primary {
+            @include icon(7, 3, 15px, 10px);
+        }
+
+        &--secondary {
+            @include icon(7, 4, 15px, 10px);
+        }
+    }
+
+    &-left {
+        @include icon(8, 1, 10px, 15px);
+
+        &--light {
+            @include icon(8, 2, 10px, 15px);
+        }
+
+        &--primary {
+            @include icon(8, 3, 10px, 15px);
+        }
+
+        &--secondary {
+            @include icon(8, 4, 10px, 15px);
+        }
+    }
+}
+
+.icon-check,
+%icon-check {
+    @include icon(10, 1, 15px, 12px);
+
+    &--light {
+        @include icon(10, 2, 15px, 12px);
+    }
+
+    &--primary {
+        @include icon(10, 3, 15px, 12px);
+    }
+
+    &--secondary {
+        @include icon(10, 4, 15px, 12px);
+    }
+}
+
+.icon-search,
+%icon-search {
+    @include icon(9, 1, 19px, 19px);
+
+    &--light {
+        @include icon(9, 2, 19px, 19px);
+    }
+
+    &--primary {
+        @include icon(9, 3, 19px, 19px);
+    }
+
+    &--secondary {
+        @include icon(9, 4, 19px, 19px);
+    }
+}
+
+.icon-close,
+%icon-close {
+    @include icon(11, 1, 15px, 15px);
+
+    &--light {
+        @include icon(11, 2, 15px, 15px);
+    }
+
+    &--primary {
+        @include icon(11, 3, 15px, 15px);
+    }
+
+    &--secondary {
+        @include icon(11, 4, 15px, 15px);
+    }
+}
+
+.icon-user,
+%icon-user {
+    @include icon(12, 1, 17px, 20px);
+
+    &--light {
+        @include icon(12, 2, 17px, 20px);
+    }
+
+    &--primary {
+        @include icon(12, 3, 17px, 20px);
+    }
+
+    &--secondary {
+        @include icon(12, 4, 17px, 20px);
+    }
+}
+
+.icon-time,
+%icon-time {
+    @include icon(13, 1, 18px, 18px);
+
+    &--light {
+        @include icon(13, 2, 18px, 18px);
+    }
+
+    &--primary {
+        @include icon(13, 3, 18px, 18px);
+    }
+
+    &--secondary {
+        @include icon(13, 4, 18px, 18px);
+    }
+}
+
+.icon-flag,
+%icon-flag {
+    @include icon(14, 1, 12px, 15px);
+
+    &--light {
+        @include icon(14, 2, 12px, 15px);
+    }
+
+    &--primary {
+        @include icon(14, 3, 12px, 15px);
+    }
+
+    &--secondary {
+        @include icon(14, 4, 12px, 15px);
+    }
+}
+
+.icon-more,
+%icon-more {
+    @include icon(15, 1, 21px, 5px);
+
+    &--light {
+        @include icon(15, 2, 21px, 5px);
+    }
+
+    &--primary {
+        @include icon(15, 3, 21px, 5px);
+    }
+
+    &--secondary {
+        @include icon(15, 4, 21px, 5px);
+    }
+}
+
+.icon-user-small,
+%icon-user-small {
+    @include icon(16, 1, 14px, 16px);
+
+    &--light {
+        @include icon(16, 2, 14px, 16px);
+    }
+
+    &--primary {
+        @include icon(16, 3, 14px, 16px);
+    }
+
+    &--secondary {
+        @include icon(16, 4, 14px, 16px);
+    }
+}
+
+
+.icon-facebook,
+%icon-facebook {
+    @include icon(1, 5, 20px, 20px);
+
+    &--light {
+        @include icon(1, 6, 20px, 20px);
+    }
+
+    &--primary {
+        @include icon(1, 7, 20px, 20px);
+    }
+
+    &--secondary {
+        @include icon(1, 8, 20px, 20px);
+    }
+}
+
+.icon-twitter,
+%icon-twitter {
+    @include icon(2, 5, 20px, 17px);
+
+    &--light {
+        @include icon(2, 6, 20px, 17px);
+    }
+
+    &--primary {
+        @include icon(2, 7, 20px, 17px);
+    }
+
+    &--secondary {
+        @include icon(2, 8, 20px, 17px);
+    }
+}
+
+.icon-email,
+%icon-email {
+    @include icon(3, 5, 20px, 14px);
+
+    &--light {
+        @include icon(3, 6, 20px, 14px);
+    }
+
+    &--primary {
+        @include icon(3, 7, 20px, 14px);
+    }
+
+    &--secondary {
+        @include icon(3, 8, 20px, 14px);
+    }
+}
+
+.icon-podcast,
+%icon-podcast {
+    @include icon(4, 5, 12px, 16px);
+
+    &--light {
+        @include icon(4, 6, 12px, 16px);
+    }
+
+    &--primary {
+        @include icon(4, 7, 12px, 16px);
+    }
+
+    &--secondary {
+        @include icon(4, 8, 12px, 16px);
+    }
+}
+
+.icon-instagram,
+%icon-instagram {
+    @include icon(5, 5, 20px, 17px);
+
+    &--light {
+        @include icon(5, 6, 20px, 17px);
+    }
+
+    &--primary {
+        @include icon(5, 7, 20px, 17px);
+    }
+
+    &--secondary {
+        @include icon(5, 8, 20px, 17px);
+    }
+}
+
+.icon-snapchat,
+%icon-snapchat {
+    @include icon(6, 5, 18px, 17px);
+
+    &--light {
+        @include icon(6, 6, 18px, 17px);
+    }
+
+    &--primary {
+        @include icon(6, 7, 18px, 17px);
+    }
+
+    &--secondary {
+        @include icon(6, 8, 18px, 17px);
+    }
+}
+
+.icon-blog,
+%icon-blog {
+    @include icon(7, 5, 16px, 16px);
+
+    &--light {
+        @include icon(7, 6, 16px, 16px);
+    }
+
+    &--primary {
+        @include icon(7, 7, 16px, 16px);
+    }
+
+    &--secondary {
+        @include icon(7, 8, 16px, 16px);
+    }
+}
+
+.icon-middle {
+    vertical-align: middle;
+}
+
+.icon-bottom {
+    vertical-align: bottom;
+}
+
+
+// Custom css icons
+.icon-hamburger,
+%icon-hamburger {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: $unit * 4 + 2px;
+    margin-right: $border-width;
+    float: left;
+
+    transform-origin: center center;
+    transition: transform 0.3s $swift-out;
+
+    &__bar {
+        display: block;
+        height: $border-width;
+        width: 100%;
+        margin-bottom: ($border-width * 2);
+        background-color: color(primary);
+
+        transform-origin: left center;
+        transition: all 0.3s $swift-out;
+
+        &:first-child {
+            transform-origin: left bottom;
+        }
+
+        &:last-child {
+            transform-origin: left top;
+            margin-bottom: 0;
+        }
+    }
+
+    &--close {
+        transform: rotate(-360deg);
+
+        .icon-hamburger__bar {
+            background-color: $color-light;
+            transform: scaleX(0.9);
+
+            &:first-child {
+                transform: rotate(-45deg) scaleX(0.6) translate(-12px, 6px);
+            }
+
+            &:last-child {
+                transform: rotate(45deg) scaleX(0.6) translate(-12px, -6px);
+            }
+        }
+    }
+
+    &--light {
+        .icon-hamburger__bar {
+            background-color: $color-light;
+        }
+    }
+}

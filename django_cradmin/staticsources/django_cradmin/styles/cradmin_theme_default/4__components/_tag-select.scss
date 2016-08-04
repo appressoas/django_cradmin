@@ -1,0 +1,110 @@
+.tag-select {
+    &__toggle {
+        @include font(base, bold);
+        // @include font-size(small);
+        line-height: 1.2;
+        border-bottom: color(primary) solid $border-width;
+
+        &:after {
+            @extend %icon-chevron-down;
+            content: '';
+            vertical-align: middle;
+            margin-left: $unit;
+        }
+
+        &--empty {
+            opacity: 0;
+        }
+    }
+
+    &__item {
+        @include font(base, normal);
+        // @include font-size(small);
+        line-height: 1.2;
+        color: $color-light;
+        padding: $unit $spacing--small;
+        margin-right: $border-width;
+        margin-bottom: $border-width;
+        background-color: color(secondary, dark);
+
+        &:hover,
+        &:focus {
+            background-color: color(primary);
+        }
+
+        &--selected {
+            background-color: color(primary);
+        }
+
+        &--animate {
+            pointer-events: none;
+            transition: transform 300ms $swift-out,
+                        color     300ms $swift-out,
+                        opacity   300ms ease-in;
+            transform-origin: left top;
+            outline: 0;
+            color: $color-text;
+            opacity: 0;
+
+            &,
+            &:hover,
+            &:focus {
+                background-color: transparent;
+            }
+        }
+    }
+
+    &__content {
+        outline: 0;
+        padding: $spacing--small 0;
+
+        &.ng-enter {
+            animation: tag-select-open (300ms + (12*15ms));
+
+            .tag-select__item {
+                @extend %animation-fall-down;
+                @include animation-delay(12, 15ms);
+            }
+        }
+
+        &.ng-leave {
+            position: absolute;
+            animation: 300ms + (12 * 15ms);
+
+            .tag-select__item:not(.tag-select__item--animate) {
+                @extend %animation-fade-out-down;
+                @include animation-delay(12, 15ms);
+            }
+        }
+    }
+
+    &--closed {
+        &:after {
+            content: '';
+            display: block;
+            will-change: height;
+            animation: spacer-height 300ms $swift-out;
+        }
+    }
+}
+
+@keyframes spacer-height {
+    from {
+        height: 150px;
+    }
+    to {
+        height: 0;
+    }
+}
+
+@keyframes tag-select-open {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}

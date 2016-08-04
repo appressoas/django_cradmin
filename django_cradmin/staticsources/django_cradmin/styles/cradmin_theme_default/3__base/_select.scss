@@ -1,0 +1,243 @@
+/*
+Select
+
+<ul>
+    <li>
+        <h3>Regular select</h3>
+
+        <label class="select">
+            <select aria-label="Kategori">
+                <option>alle tema</option>
+                <option>arbeid og næring</option>
+                <option>...</option>
+            </select>
+        </label>
+
+        <br />
+        <br />
+    </li>
+    <li>
+        <h3>Outlined select</h3>
+
+        <label class="select  select--outlined">
+            <select aria-label="Kategori">
+                <option>alle tema</option>
+                <option>arbeid og næring</option>
+                <option>...</option>
+            </select>
+        </label>
+
+        <br />
+        <br />
+    </li>
+    <li>
+        <h3>Light select</h3>
+        <p>To put on dark backgrounds</p>
+
+        <label class="select  select--light">
+            <select aria-label="Kategori">
+                <option>alle tema</option>
+                <option>arbeid og næring</option>
+                <option>...</option>
+            </select>
+        </label>
+
+        <br />
+        <br />
+    </li>
+    <li>
+        <h3>Adaptive and inline select</h3>
+        Look, inline:
+        <label class="select">
+            <select select-autowidth aria-label="Kategori">
+                <option>alle tema</option>
+                <option>arbeid og næring</option>
+                <option>...</option>
+            </select>
+        </label>
+        ...and I adapt the width to it's selected option. OMG!
+    </li>
+</ul>
+
+Markup:
+<label class="select">
+    <select aria-label="Kategori">
+        <option>alle tema</option>
+        <option>arbeid og næring</option>
+        <option>...</option>
+    </select>
+</label>
+<label class="select  select--outlined">
+    <select aria-label="Kategori">
+        <option>alle tema</option>
+        <option>arbeid og næring</option>
+        <option>...</option>
+    </select>
+</label>
+<label class="select  select--light">
+    <select aria-label="Kategori">
+        <option>alle tema</option>
+        <option>arbeid og næring</option>
+        <option>...</option>
+    </select>
+</label>
+<p>
+    I adapt:
+    <label class="select">
+        <select select-autowidth aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
+    ...OMG!
+</p>
+
+Styleguide 3.7
+*/
+
+.select {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    margin: 0;
+
+    border-bottom: $border-width solid color(primary);
+    margin-top: -1px;
+    margin-bottom: -($border-width);
+
+    select {
+        @include font(base, bold);
+        font-size: inherit;
+        // @include font-size(medium);
+
+        // Reset
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+
+        display: inline-block;
+        cursor: pointer;
+        margin: 0;
+
+        padding: $unit 0;
+        padding-right: 22px;
+
+        max-width: 100%;
+        border-radius: 0;
+        border: 0;
+
+        color: $color-text;
+        background-color: transparent;
+
+        &:focus:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #000;
+        }
+
+        &::-ms-expand {
+            // Hide the arrow in IE10 and up
+            display: none;
+        }
+
+        option {
+            @include font(base, normal);
+        }
+
+        transition: width 100ms $swift-out;
+        will-change: width;
+    }
+
+    &:before {
+        @extend %icon-chevron-down;
+        content: '';
+        position: absolute;
+        display: block;
+        pointer-events: none;
+        top: 50%;
+        right: 1px; // Optical aligning
+        margin-top: -4px;
+    }
+
+    &--block {
+        display: block;
+
+        select {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    &--light {
+        color: $color-light;
+        border-color: $color-light;
+
+        &:before {
+            @extend %icon-chevron-down--light;
+        }
+
+        select {
+            color: $color-light;
+        }
+    }
+
+    &--outlined,
+    &--inline-action {
+        border: $border-width solid color(neutral, medium);
+
+        &:before {
+            right: $spacing--small;
+        }
+
+        select {
+            @include font(base, normal);
+            @include font-size(small);
+
+            padding-left: $spacing--small;
+            padding-right: $spacing--large + $unit;
+        }
+    }
+
+    &--inline-action {
+        margin: 0;
+        border: 0;
+        background-color: $color-light;
+
+        &:not(:last-child) {
+            margin-right: $border-width;
+        }
+
+        select {
+            border: $border-width solid $color-light;
+            height: 100%;
+            width: 100%;
+            padding-right: $unit * 6;
+
+            &:focus {
+                border-color: color(secondary, dark);
+            }
+        }
+    }
+
+    &--small {
+        width: $input-small;
+    }
+}
+
+// Media query to target Firefox only
+@-moz-document url-prefix() {
+    // Firefox hack to hide the arrow
+    .select {
+        select {
+            text-indent: 0.01px;
+            text-overflow: '';
+            padding-right: 1rem;
+        }
+
+        // <option> elements inherit styles from <select>, so reset them.
+        option {
+            background-color: white;
+        }
+    }
+}

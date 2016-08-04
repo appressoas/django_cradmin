@@ -1,0 +1,22 @@
+/*
+No select
+
+For text and images when you don't want them to be selectable or draggable
+
+Only for extending:
+`@extend %user-select-none`
+
+Styleguide 2.2
+*/
+
+%user-select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    user-drag: none;
+}

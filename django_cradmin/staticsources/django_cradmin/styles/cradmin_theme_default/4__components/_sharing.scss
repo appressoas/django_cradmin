@@ -1,0 +1,18 @@
+.sharing {
+    text-align: center;
+    margin-top: $vertical-rythm;
+    margin-bottom: $vertical-rythm--spacing;
+
+    &__item {
+        // @extend %link--light;
+        @include font(header, bold);
+        display: inline-block;
+        border-color: transparent;
+        margin-left: $spacing--small;
+        margin-right: $spacing--small;
+    }
+
+    &__text {
+        margin: $spacing--small 0 0;
+    }
+}

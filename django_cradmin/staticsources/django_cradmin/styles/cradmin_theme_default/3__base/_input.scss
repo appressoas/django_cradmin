@@ -1,0 +1,209 @@
+/*
+Inputs
+
+By default these inputs are styled:
+`text`,
+`password`,
+`number`,
+`email`,
+`url`,
+`search`,
+`tel`,
+`textarea`.
+
+If you want to style something else as input just use the class `.input`
+
+<h3>Standard inputs</h3>
+
+<label>
+    Standard input
+    <input type="text" placeholder="I set the standard" />
+</label>
+
+<label>
+    I'm a error input!
+    <input type="text" placeholder="Omg!" class="input--error" />
+</label>
+<label>
+    Look,
+    <input type="text" placeholder="I'm inline!!" class="input--inline" />
+    Wuut?
+</label>
+<label>
+    Outlined input
+    <input type="text" placeholder="Look at ma' outlines" class="input--outlined" />
+</label>
+
+<h3>Textareas</h3>
+
+<label>
+    I'm a textarea
+    <textarea placeholder="I more got space!"></textarea>
+</label>
+<label>
+    I'm a textarea with error!
+    <textarea placeholder="Why? :'('" class="input--error"></textarea>
+</label>
+<label>
+    I got the outlines!
+    <textarea placeholder="Look, outlines!" class="input--outlined"></textarea>
+</label>
+<label>
+    I'm a textarea that can grow
+    <textarea placeholder="Type alot on me!" auto-grow></textarea>
+</label>
+
+Markup:
+<label>
+    Label
+    <input />
+</label>
+<input type="text" />
+<input type="text" class="input--error" />
+<input type="text" class="input--inline" />
+<input type="text" class="input--outlined" />
+<textarea></textarea>
+<textarea class="input--error"></textarea>
+<textarea class="input--outlined"></textarea>
+<textarea auto-grow></textarea>
+
+Styleguide 3.5
+*/
+
+
+// TODO: Remove all except .input?
+textarea,
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='email'],
+input[type='url'],
+input[type='search'],
+input[type='tel'],
+.input {
+    @include font(base, normal);
+    @include font-size(small);
+
+    display: block;
+    width: 100%;
+    padding: #{$unit + $border-width} #{$spacing--small + $border-width};
+
+    color: $color-text;
+
+    border-radius: 0;
+    border: $border-width solid $color-light;
+    background-color: $color-light;
+
+    &:focus {
+        border-color: color(secondary, dark);
+    }
+
+    &[disabled] {
+        background-color: color(neutral);
+    }
+
+    @include input-placeholder {
+        color: color(neutral);
+    }
+}
+
+.input-required { // TODO: What is this again?
+    @include font(header, normal);
+    @include font-size(xsmall);
+
+    pointer-events: none;
+    position: relative;
+    display: inline-block;
+    float: right;
+    height: 30px;
+    line-height: 30px;
+    margin-top: -($unit * 9);
+    padding-right: $spacing--small;
+
+    color: $color-muted;
+
+    &.ng-enter {
+        @extend %animation-fade-in;
+    }
+
+    &.ng-leave {
+        @extend %animation-fade-out;
+    }
+
+    &--warning {
+        color: color(info, dark);
+    }
+
+    &--error {
+        color: $color-warning;
+    }
+
+    &--safe {
+        color: $color-success;
+    }
+}
+
+.input--error {
+    &,
+    &[type='text'],
+    &[type='password'],
+    &[type='number'],
+    &[type='email'],
+    &[type='url'],
+    &[type='search'],
+    &[type='tel'] {
+        background-color: tint(color(primary), 70%);
+    }
+}
+
+.input--inline {
+    &,
+    &[type='text'],
+    &[type='password'],
+    &[type='number'],
+    &[type='email'],
+    &[type='url'],
+    &[type='search'],
+    &[type='tel'] {
+        @include font-size(small);
+        display: inline-block;
+        width: auto;
+        min-width: 160px;
+        padding: $unit $spacing--small;
+    }
+}
+
+.input--small {
+    &,
+    &[type='text'],
+    &[type='password'],
+    &[type='number'],
+    &[type='email'],
+    &[type='url'],
+    &[type='search'],
+    &[type='tel'] {
+        width: 220px;
+    }
+}
+
+.input--outlined {
+    &,
+    &[type='text'],
+    &[type='password'],
+    &[type='number'],
+    &[type='email'],
+    &[type='url'],
+    &[type='search'],
+    &[type='tel'] {
+        border: $border-width solid color(neutral, medium);
+
+        // &:focus {
+        //     border-color: color(primary, dark);
+        // }
+    }
+}
+
+textarea {
+    resize: none;
+    word-wrap: break-word;
+}

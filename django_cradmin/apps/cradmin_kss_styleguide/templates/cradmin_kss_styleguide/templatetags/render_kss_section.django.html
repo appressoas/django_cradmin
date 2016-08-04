@@ -1,0 +1,25 @@
+{% load cradmin_kss_styleguide_tags %}
+
+{% if section|kss_section_level == 1 %}
+    <div id="kssref-{{ section.section }}" class="kss-section  kss-section--depth-{{ section|kss_section_level }}">
+{% else %}
+    <section id="kssref-{{ section.section }}" class="kss-section  kss-section--depth-{{ section|kss_section_level }}">
+{% endif %}
+
+<h2 class="kss-title  kss-title--level-{{ section|kss_section_level }}">
+    <a class="kss-title__permalink" href="#kssref-{{ section.section }}">
+        <span class="kss-title__ref">
+            {{ section.section }}
+        </span>
+        {% render_kss_section_header section %}
+    </a>
+</h2>
+
+
+{% render_kss_section_description styleguideconfig=styleguideconfig section=section %}
+
+{% if section|kss_section_level == 1 %}
+    </div>
+{% else %}
+    </section>
+{% endif %}

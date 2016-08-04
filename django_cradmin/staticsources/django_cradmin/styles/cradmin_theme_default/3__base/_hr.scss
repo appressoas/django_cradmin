@@ -1,0 +1,12 @@
+hr,
+.separator {
+    margin: 0;
+    margin-bottom: $spacing;
+    padding: 0;
+    border: 0;
+    border-top: $border-width solid rgba($color-dark, 0.05);
+
+    @include mq(md) {
+        margin-bottom: $spacing--large;
+    }
+}

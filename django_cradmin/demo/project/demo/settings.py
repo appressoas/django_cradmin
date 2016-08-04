@@ -8,6 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 from __future__ import unicode_literals
+from ievv_opensource.utils import ievvbuildstatic
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -55,6 +56,10 @@ INSTALLED_APPS = (
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
+    # For the styleguide for themes
+    'pykss.contrib.django',
+    'django_cradmin.apps.cradmin_kss_styleguide',
+
     # Just here to get the demo overview view.
     'django_cradmin.demo.project.demo',
 
@@ -78,8 +83,8 @@ INSTALLED_APPS = (
     #: Demo for django_cradmin.uicontainer
     'django_cradmin.demo.uicontainerdemo',
 
-    # For building docs
     'ievv_opensource.ievvtasks_development',
+    'ievv_opensource.ievvtasks_common',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -270,3 +275,31 @@ DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE = 'cradmin-archiveimage-preview'
 
 IEVVTASKS_DOCS_DIRECTORY = 'docs'
 IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
+
+
+IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
+    ievvbuildstatic.config.App(
+        appname='django_cradmin',
+        version='1.0.0',
+        plugins=[
+            ievvbuildstatic.sassbuild.Plugin(
+                sourcefolder='styles/cradmin_theme_default',
+                sourcefile='main.scss',
+                minify=False
+            ),
+            ievvbuildstatic.sassbuild.Plugin(
+                sourcefolder='styles/cradmin_theme_default',
+                sourcefile='styleguide.scss',
+                minify=False
+            ),
+        ]
+    ),
+)
+
+
+# PYKSS_DIRS = [
+#     IEVVTASKS_BUILDSTATIC_APPS.get_app('django_cradmin').get_source_path('styles', 'cradmin_theme_default')
+# ]
+
+
+DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/1.0.0/styles/cradmin_theme_default/main.css'

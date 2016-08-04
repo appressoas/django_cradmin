@@ -1,0 +1,70 @@
+/*------------------------------------*\
+    #LAYOUT
+\*------------------------------------*/
+@for $i from 1 through 11 {
+    .col-#{$i} {
+        float: left;
+        width: percentage($i/12);
+    }
+}
+
+@include mq(md) {
+    @for $i from 1 through 11 {
+        .col-#{$i}--md  {
+            float: left;
+            width: percentage($i/12);
+        }
+    }
+}
+
+@include mq(lg) {
+    @for $i from 1 through 11 {
+        .col-#{$i}--lg  {
+            float: left;
+            width: percentage($i/12);
+        }
+    }
+}
+
+@include mq(xl) {
+    @for $i from 1 through 11 {
+        .col-#{$i}--xl  {
+            float: left;
+            width: percentage($i/12);
+        }
+    }
+}
+
+
+/*------------------------------------*\
+    OFFSET
+\*------------------------------------*/
+@for $i from 1 through 11 {
+    .col-offset-#{$i} {
+        margin-left: percentage($i/12);
+    }
+}
+
+@include mq(md) {
+    @for $i from 1 through 11 {
+        .col-offset-#{$i}--md  {
+            margin-left: percentage($i/12);
+        }
+    }
+}
+
+@include mq(lg) {
+    @for $i from 1 through 11 {
+        .col-offset-#{$i}--lg  {
+            margin-left: percentage($i/12);
+        }
+    }
+}
+
+@include mq(xl) {
+    @for $i from 1 through 11 {
+        .col-offset-#{$i}--xl  {
+            margin-left: percentage($i/12);
+        }
+    }
+}

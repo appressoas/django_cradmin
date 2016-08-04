@@ -1,0 +1,242 @@
+/*
+Headers
+
+Make sure headers represent semantic hierarchy of the page. For pure styling use these classes instead of ruining the hierarchy: `.h1`, `.h2`, `.h3`, `.h4`
+<ul>
+    <li>
+        <h1 class="xl-text">Look, I'm a giant header</h1>
+    </li>
+    <li>
+        <h1>Look, I'm a header</h1>
+    </li>
+    <li>
+        <h2>Look, I'm also a header</h2>
+    </li>
+    <li>
+        <h3>Big deal, so am I</h3>
+    </li>
+    <li>
+        <h4>I'm just a tiny header :'(</h4>
+    </li>
+</ul>
+
+Markup:
+<h1 class="xl-text">Look, I'm a giant header</h1>
+<h1>Look, I'm a header</h1>
+<h2>Look, I'm also a header</h2>
+<h3>Big deal, so am I</h3>
+<h3>I'm just a tiny header :'(</h3>
+// For extending:
+@extend %xl-text;
+@extend %h1;
+@extend %h2;
+@extend %h3;
+@extend %h4;
+
+Styleguide 3.3
+*/
+
+h1,
+.h1,
+%h1,
+h2,
+.h2,
+%h2,
+h3,
+.h3,
+%h3,
+h4,
+.h4,
+%h4 {
+    @include font(header, bold);
+    word-wrap: break-word;
+    margin: 0;
+    margin-bottom: $vertical-rythm--spacing;
+
+    strong {
+        @include font(header, bold);
+    }
+}
+
+h1,
+.h1,
+%h1 {
+    @include font-size(xxlarge);
+
+    @include mq(md) {
+        margin-bottom: $vertical-rythm--spacing;
+    }
+
+    em { // TODO?
+        font-style: normal;
+        display: inline-block;
+        padding: 0 $spacing--small;
+        margin-left: -($unit);
+        margin-right: -($unit);
+        background-color: color(primary, dark);
+    }
+}
+
+h2,
+.h2,
+%h2 {
+    @include font-size(xlarge);
+}
+
+h3,
+.h3,
+%h3 {
+    @include font-size(large);
+    // letter-spacing: 0.4px;
+}
+
+h4,
+.h4,
+%h4 {
+    @include font-size(small);
+    // letter-spacing: 0.3px;
+}
+
+// TODO: Is this a good rule?
+p:not(:empty) + h2,
+p:not(:empty) + h3,
+p:not(:empty) + h4,
+ul + h2,
+ul + h3,
+ul + h4 {
+    margin-top: $vertical-rythm * 6; // TODO: Is there a better way?
+}
+
+.xl-text,
+%xl-text {
+    // This one doesn't follow the excact font-size pattern since it's kind of a special case
+    letter-spacing: -0.5px;
+    line-height: 0.97;
+    font-size: 60px;
+
+    @include mq(md) {
+        font-size: 80px;
+    }
+
+    @include mq(lg) {
+        font-size: 110px;
+    }
+
+    @media (min-height: 850px) and (min-width: map-get($breakpoints, lg)) {
+        font-size: 120px;
+    }
+
+    &--medium {
+        @include font-size(xxlarge);
+    }
+
+    &--small {
+        font-size: 52px;
+        letter-spacing: 0.5px;
+
+        @include mq(md) {
+            font-size: 60px;
+        }
+        @include mq(lg) {
+            font-size: 80px;
+        }
+    }
+}
+
+
+// Paragraph
+p,
+.paragraph {
+    @include font(base, normal);
+    margin-bottom: $vertical-rythm--spacing;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &:empty {
+        display: none;
+    }
+}
+
+.preamble {
+    @include font(base, normal);
+    @include font-size(medium);
+    margin-bottom: $vertical-rythm--spacing;
+}
+
+.normal {
+    @include font(base, normal);
+    @include font-size(small);
+}
+
+.no-break {
+    white-space: nowrap;
+}
+
+// Strong / Bold
+strong,
+.strong,
+b {
+    @include font(base, bold);
+}
+
+.italic {
+    font-style: italic;
+}
+
+.text-muted,
+%text-muted {
+    color: $color-muted;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+// time and date
+time {
+    @include spaced-text;
+    @include font-size(xsmall);
+    // @include font(base, normal);
+    color: $color-muted;
+    font-size: 0.7em;
+    margin-left: $unit;
+
+    &:before {
+        content: '─	';
+    }
+}
+
+// depended on <time>
+.date {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: $unit * 10;
+    top: $unit;
+    border: $border-style;
+    padding: $border-width 0;
+    font-size: 0.7em;
+    float: left;
+    margin: 0;
+    margin-right: $spacing--small;
+    text-align: center;
+
+    &:before {
+        content: '';
+    }
+
+    &__day,
+    &__month {
+        display: block;
+    }
+}

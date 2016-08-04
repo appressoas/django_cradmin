@@ -1,0 +1,82 @@
+.people-list {
+    @extend .grid;
+    margin: 0 auto;
+    text-align: left;
+
+    &__item {
+        display: flex;
+        align-content: stretch;
+        background-color: $color-background;
+        margin-bottom: $unit;
+    }
+
+    &__avatar {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 15%;
+        min-height: $unit * 30;
+        overflow: hidden;
+        background-color: color(primary);
+    }
+
+    &__image {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        // mix-blend-mode: darken;
+    }
+
+    &__letter {
+        // @include font(header, bold);
+        @include spaced-text;
+        @include font-size(xlarge);
+        color: color(primary, dark);
+        // opacity: 0.5;
+        // transform: rotate(-35deg);
+    }
+
+    &__name {
+        margin-bottom: $vertical-rythm;
+    }
+
+    &__content {
+        width: 85%;
+        padding: $spacing;
+    }
+
+    &__info {
+        display: flex;
+    }
+
+    &__details {
+        width: 50%;
+
+        &:first-child {
+            padding-right: $unit;
+        }
+
+        &:last-child {
+            padding-left: $unit;
+        }
+    }
+
+    &__some {
+        display: inline-flex;
+        margin-top: -($unit);
+        margin-right: -($unit);
+        align-items: center;
+        justify-content: center;
+        vertical-align: top;
+        width: $unit * 7;
+        height: $unit * 7;
+        border: $border-width solid transparent;
+        border-radius: 50%;
+        // background-color: $color-light;
+    }
+}

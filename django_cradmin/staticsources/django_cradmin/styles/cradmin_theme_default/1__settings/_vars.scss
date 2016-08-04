@@ -1,0 +1,116 @@
+/*
+Breakpoints / Media queries
+
+Media queries are **only** ment for the mobile first approach; Which means you design for mobile first, then add media queries for larger screens -- Never the other way around
+
+# These are the following breakpoints
+
+1. `xs: 400px` - Small and up
+2. `md: 720px`, - Medium and up
+3. `lg: 960px`, - Large and up
+4. `xl: 1240px` - Extra large and up
+
+# Markup:
+```scss
+@include mq(xs) {}
+@include mq(md) {}
+@include mq(lg) {}
+@include mq(xl) {}
+```
+
+Styleguide 1.4
+*/
+$breakpoints: (
+    xs: 400px, // Small and up
+    md: 720px, // Medium and up
+    lg: 960px, // Large and up
+    xl: 1240px // Extra large and up
+);
+
+
+// Grids max-width
+$grid-width--xtight: 620px;
+$grid-width--tight: 740px;
+$grid-width: $grid-width--tight * 1.5;
+$grid-width--wide: 1400px;
+
+
+/*
+Spacing
+
+All the sizes are based on a unit. **The unit size is 5px.**
+
+Never refer to a pixel-size for padding, margin or simular.
+
+# Use these variables for sizes:
+- <div class="sg-size  sg-size--small"></div>
+  `$spacing--small` - 2 units
+- <div class="sg-size  sg-size--base"></div>
+  `$spacing` - 4 units
+- <div class="sg-size  sg-size--large"></div>
+  `$spacing--large` - 10 units
+- <div class="sg-size  sg-size--xlarge"></div>
+  `$spacing--xlarge` - 40 units
+
+# Markup:
+```scss
+$unit;
+$spacing--small;
+$spacing;
+$spacing--large;
+$spacing--xlarge;
+```
+
+Styleguide 1.5
+*/
+$unit: 6px;
+$spacing--xlarge: $unit * 40; // TODO: Reduce this a bit and add a new for this big...
+$spacing--large: $unit * 10;
+$spacing: $unit * 4;
+$spacing--small: $unit * 2;
+
+
+// Indention
+$indention: $unit * 7;
+
+// Vertical rythm
+$vertical-rythm: 12px; // TODO: Responsive?
+$vertical-rythm--spacing: ($vertical-rythm * 2) + $vertical-rythm;
+
+
+// Border-width
+$border-width: 3px;
+$border-width--small: 1px;
+
+
+// Border style
+$border-style: $border-width solid color(neutral, medium);
+$border-style--small: $border-width--small solid color(neutral, medium);
+
+
+// Better easing
+$swift-out: cubic-bezier(0, 0, 0.1, 1);
+
+
+// Header height
+$header-height: $vertical-rythm * 7;
+
+
+// Input sizes (width)
+$input-small: $unit * 38;
+
+
+// Z-index levels
+$level-1: 10;
+$level-2: 20;
+$level-3: 30;
+$level-4: 40;
+
+
+// Shadow levels
+// TODO: Remove?
+$shadow--blured: 0 2px 20px rgba($color-dark, 0.02);
+$shadow--strong: 0 2px 6px rgba($color-dark, 0.6);
+$shadow--large: 0 2px 20px rgba($color-dark, 0.1);
+$shadow--medium: 0 2px 15px rgba($color-dark, 0.1);
+$shadow--small: 0 1px 10px rgba($color-dark, 0.1);

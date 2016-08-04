@@ -1,0 +1,7 @@
+.page-content {
+    padding-top: $header-height - $spacing--large;
+
+    @include mq(md) {
+        padding-top: $header-height;
+    }
+}

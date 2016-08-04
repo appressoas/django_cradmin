@@ -1,0 +1,5 @@
+{% load cradmin_kss_styleguide_tags %}
+
+{% for section in sections %}
+    {% render_kss_section styleguideconfig=styleguideconfig section=section %}
+{% endfor %}

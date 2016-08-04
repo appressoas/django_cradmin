@@ -1,0 +1,218 @@
+/*
+Buttons
+
+In most cases you should not use the button class for links. Use either `<button>` or `<input type="submit" />` when using buttons. <strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as buttons.
+<h3>This is the button types we have</h3>
+<ul>
+    <li>
+        <h4>The default button</h4>
+        <button type="button" class="button">Button</button>
+        <button type="button" class="button  button--fill">Button</button>
+    </li>
+    <li>
+        <h4>For primary actions, use this only to separate from other actions.</h4>
+        <button type="button" class="button  button--primary">Button</button>
+        <button type="button" class="button  button--primary-fill">Button</button>
+    </li>
+    <li>
+        <h4>For secondary actions, don't overuse.</h4>
+        <button type="button" class="button  button--secondary">Button</button>
+        <button type="button" class="button  button--secondary-fill">Button</button>
+    </li>
+    <li>
+        <h4>For actions that need's to stand out on red or dark blue background.</h4>
+        <button type="button" class="button  button--light">Button</button>
+        <button type="button" class="button  button--light-fill">Button</button>
+    </li>
+</ul>
+
+<h3>This is some modifiers you can add</h3>
+<ul>
+    <li>
+        <button type="button" class="button  button--block">Button</button>
+        `block`:  Make it 100% width of whatever container. Be careful with this one.
+        <br />
+        <br />
+    </li>
+    <li>
+        <button type="button" class="button  button--compact">Button</button> — `compact`: Make the button more compact.
+    </li>
+    <li>
+        <button type="button" class="button  button--wider">Button</button> — `wider`: Make short-texted buttons simular in width.
+    </li>
+    <li>
+        <button type="button" class="button  button--spaced">Button</button> — `spaced`: Make some space around it
+    </li>
+    <li>
+        <button type="button" class="button" disabled>Button</button> — `disabled`: Make the button disabled.
+    </li>
+</ul>
+
+<br />
+
+<i>PS: You can combine modifiers with the button types</i>
+
+Markup:
+// Types:
+<button type="button" class="button">Button</button>
+<button type="button" class="button  button--fill">Button</button>
+<button type="button" class="button  button--primary">Button</button>
+<button type="button" class="button  button--primary-fill">Button</button>
+<button type="button" class="button  button--secondary">Button</button>
+<button type="button" class="button  button--secondary-fill">Button</button>
+<button type="button" class="button  button--light">Button</button>
+<button type="button" class="button  button--light-fill">Button</button>
+// Modifiers
+<button type="button" class="button  button--block">Button</button>
+<button type="button" class="button  button--wider">Button</button>
+<button type="button" class="button  button--spaced">Button</button>
+<button type="button" class="button  button--compact">Button</button>
+<button type="button" class="button" disabled>Button</button>
+
+Styleguide 3.2
+*/
+
+@mixin button($b-name, $b-main, $b-text, $b-hover, $b-text-hover: false) {
+    &--#{$b-name} {
+        color: $b-text;
+        border-color: $b-main;
+        background-color: transparent;
+
+        &:hover,
+        &:focus,
+        &:active {
+            border-color: $b-hover;
+            background-color: $b-hover;
+
+            @if ($b-text-hover) {
+                color: $b-text-hover;
+            } @else {
+                color: color-contrast($b-hover);
+            }
+        }
+    }
+
+    &--#{$b-name}-fill {
+        border-color: $b-hover;
+        background-color: $b-hover;
+
+        @if ($b-text-hover) {
+            color: $b-text-hover;
+        } @else {
+            color: color-contrast($b-hover);
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: $b-text;
+            border-color: $b-main;
+            background-color: transparent;
+        }
+    }
+}
+
+.button {
+    @include spaced-text;
+    @include font-size(small);
+    text-align: center;
+
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: $spacing--small; // TODO: What to do?!
+    border-radius: 0;
+
+    color: $color-text;
+    white-space: nowrap;
+
+    border: $border-width solid color(neutral);
+    background-color: transparent;
+    margin-bottom: $unit;
+
+    @include mq(md) {
+        display: inline-block;
+        width: auto;
+        padding: $spacing--small #{$indention - $border-width};
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: $color-light;
+        border-color: color(neutral);
+        background-color: color(neutral);
+    }
+
+    &:focus {
+        z-index: 2;
+    }
+
+    &--fill {
+        color: $color-light;
+        border-color: color(neutral);
+        background-color: color(neutral);
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: $color-text;
+            border-color: color(neutral);
+            background-color: transparent;
+        }
+    }
+
+    @include button(
+        'primary',
+        color(primary),
+        color(primary),
+        color(primary, dark)
+    );
+
+    @include button(
+        'secondary',
+        color(secondary, dark),
+        color(secondary, dark),
+        color(secondary, dark)
+    );
+
+    @include button(
+        'light',
+        $color-light,
+        $color-light,
+        $color-light,
+        color(primary)
+    );
+
+    &--wider {
+        min-width: $unit * 30;
+    }
+
+    &--spaced {
+        @include mq(md) {
+            margin-left: $spacing--small;
+            margin-right: $spacing--small;
+        }
+    }
+
+    &--block {
+        display: block;
+        width: 100%;
+    }
+
+    &--compact {
+        @include font-size(small);
+        padding: $spacing--small;
+    }
+
+    &[disabled] {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+
+    // General rules for icons in buttons
+    [class^='icon-'] {
+        vertical-align: middle;
+        margin-right: $unit;
+    }
+}

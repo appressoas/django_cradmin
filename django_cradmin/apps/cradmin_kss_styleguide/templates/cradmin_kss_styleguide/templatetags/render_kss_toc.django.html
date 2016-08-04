@@ -1,0 +1,37 @@
+{% load cradmin_kss_styleguide_tags %}
+
+<div class="kss-vertical-rythme"></div>
+
+<nav class="kss-nav">
+    {% block toctitle %}
+        <h1 class="kss-nav__title">
+            <a href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">{{ styleguideconfig.label }}</a>
+        </h1>
+    {% endblock toctitle %}
+
+    <ul class="kss-nav__menu">
+    {% for section in sections_tree %}
+        {% if section == 'levelup' %}
+            <li class="kss-nav__menu-item">
+                <ul class="kss-nav__menu-child">
+        {% elif section == 'leveldown' %}
+                </ul>
+            </li>
+        {% else %}
+            {% block tocentry-wrapper %}
+                <li>
+                    {% block tocentry %}
+                        <a {% block tocentry-href %}href="{% kss_section_url styleguideconfig=styleguideconfig section=section %}"{% endblock %}
+                                class="kss-nav__link">
+                            {% block tocentry-text %}
+                                <span class="kss-nav__ref">{{ section.section }}.</span>
+                                <span class="kss-nav__name">{% render_kss_section_header section %}</span>
+                            {% endblock tocentry-text %}
+                        </a>
+                    {% endblock tocentry %}
+                </li>
+            {% endblock tocentry-wrapper %}
+        {% endif %}
+    {% endfor %}
+    </ul>
+</nav>

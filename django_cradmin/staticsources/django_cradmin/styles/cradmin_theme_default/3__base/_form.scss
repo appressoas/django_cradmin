@@ -1,0 +1,64 @@
+// FORMS
+form {
+    @extend %clearfix;
+}
+
+fieldset {
+    @extend %clearfix;
+    position: relative;
+    display: block;
+    border: 0;
+    margin-top: 0;
+    margin-bottom: $vertical-rythm--spacing;
+}
+
+legend {
+    @extend %h3;
+
+    // Legend position fix
+    display: block;
+    float: left;
+    width: 100%;
+}
+
+// Label
+label,
+.label {
+    display: block;
+    margin-bottom: $vertical-rythm--spacing;
+}
+
+.label--inline {
+    display: inline;
+    margin: 0;
+}
+
+.label--spaceless {
+    margin-bottom: $unit;
+}
+
+// Form additions
+.form-addition {
+    padding: $spacing;
+    background-color: tint(color(neutral), 80%);
+    margin-bottom: $vertical-rythm--spacing;
+
+    &.ng-enter {
+        @extend %animation-fall-down;
+    }
+
+    &.ng-leave {
+        @extend %animation-fade-out-up;
+    }
+}
+
+// Form error
+.error {
+    @include font(base, bold);
+    @include font-size(small);
+
+    padding: $spacing;
+    margin-bottom: $vertical-rythm--spacing;
+    color: $color-light;
+    background-color: color(primary);
+}

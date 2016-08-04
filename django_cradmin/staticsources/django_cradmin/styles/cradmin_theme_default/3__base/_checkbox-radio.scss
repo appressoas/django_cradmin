@@ -1,0 +1,271 @@
+/*
+Checkbox and radio
+
+The markup for checkboxes and radio are almost simular.
+
+They both have these modifiers:
+* `inline` - Removes margin underneath so it flows better with text
+* `block` - Make it 100% width
+
+<h3>Checkboxes</h3>
+
+<label class="checkbox  checkbox--inline">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+<label class="checkbox  checkbox--inline">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Nei takk
+</label>
+<hr class="kss-separator" />
+<label class="checkbox  checkbox--block">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+<label class="checkbox  checkbox--block">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Nei takk
+</label>
+<hr class="kss-separator" />
+<label class="checkbox  checkbox--light">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+
+<h3>Radiobuttons</h3>
+
+<label class="radio  radio--inline">
+    <input type="radio" name="example-1" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+<label class="radio  radio--inline">
+    <input type="radio" name="example-1" />
+    <span class="radio__control-indicator"></span>
+    Nei takk
+</label>
+<hr class="kss-separator" />
+<label class="radio  radio--block">
+    <input type="radio" name="example-2" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+<label class="radio  radio--block">
+    <input type="radio" name="example-2" />
+    <span class="radio__control-indicator"></span>
+    Nei takk
+</label>
+<hr class="kss-separator" />
+<label class="radio  radio--light">
+    <input type="radio" name="example-3" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+
+Markup:
+<label class="checkbox">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+<label class="checkbox  checkbox--light">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+<label class="checkbox  checkbox--inline">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+<label class="checkbox  checkbox--block">
+    <input type="checkbox" />
+    <span class="checkbox__control-indicator"></span>
+    Ja takk
+</label>
+<!-- RADIO -->
+<label class="radio">
+    <input type="radio" name="groupname" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+<label class="radio  radio--light">
+    <input type="radio" name="groupname" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+<label class="radio  radio--inline">
+    <input type="radio" name="groupname" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+<label class="radio  radio--block">
+    <input type="radio" name="groupname" />
+    <span class="radio__control-indicator"></span>
+    Ja takk
+</label>
+
+
+Styleguide 3.9
+*/
+.radio,
+.checkbox {
+    @extend %user-select-none; // This makes it respond faster for some reason
+
+    position: relative;
+    display: inline-block;
+    padding-left: $indention;
+    margin-bottom: $vertical-rythm;
+    margin-right: $spacing;
+    cursor: pointer;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    input[type='radio'],
+    input[type='checkbox'] {
+        position: absolute;
+        opacity: 0;
+        z-index: -1; // Put the input behind the label so it doesn't overlay text
+
+        // Checked state
+        &:checked ~ .radio__control-indicator,
+        &:checked ~ .checkbox__control-indicator {
+            &:before {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        &:checked ~ .checkbox__label,
+        &:checked ~ .radio__label {
+            // @extend strong;
+        }
+
+        &:focus ~ .checkbox__control-indicator,
+        &:focus ~ .radio__control-indicator {
+            border-color: color(primary, dark);
+        }
+    }
+
+    &__control-indicator {
+        position: absolute;
+        display: block;
+        user-select: none;
+        top: 0.25em;
+        left: 0;
+        width: $unit * 4;
+        height: $unit * 4;
+
+        border-radius: 0;
+        background-color: $color-light;
+        border: $border-width solid color(neutral);
+
+
+        &:before {
+            content: '';
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            opacity: 0;
+            transform: scale(0);
+            transition: all .1s $swift-out;
+        }
+    }
+
+    &--inline {
+        margin-bottom: 0;
+    }
+
+    &--spaceless {
+        margin-right: 0;
+        margin-bottom: 0;
+    }
+
+    &--light {
+        .radio__control-indicator,
+        .checkbox__control-indicator {
+            border: 0;
+        }
+
+        &:hover {
+            .radio__control-indicator,
+            .checkbox__control-indicator {
+                background-color: color(neutral, light);
+            }
+        }
+
+
+        input[type='radio']:focus ~ .radio__control-indicator,
+        input[type='checkbox']:focus ~ .checkbox__control-indicator {
+            box-shadow: 0 0 0 $border-width rgba($color-dark, 0.4);
+        }
+    }
+
+    &--block {
+        display: block;
+    }
+}
+
+.checkbox {
+    padding-left: $indention;
+
+    &__control-indicator {
+        top: 0.1em;
+        width: $unit * 5;
+        height: $unit * 5;
+        line-height: 1;
+
+        border: $border-width solid color(neutral, medium);
+        background-color: color(neutral, light);
+
+        &:before {
+            @extend %icon-check;
+            margin-top: -6px;
+            margin-left: -8px;
+        }
+    }
+
+    &:hover {
+        .checkbox__control-indicator {
+            border-color: color(primary);
+        }
+    }
+
+    &--light {
+        .checkbox__control-indicator:before {
+            @extend %icon-check--secondary;
+        }
+    }
+}
+
+.radio {
+    &:hover {
+        .radio__control-indicator {
+            border-color: color(neutral);
+        }
+    }
+
+    &__control-indicator {
+        border-radius: 50%;
+
+        &:before {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            margin-left: -4px;
+            margin-top: -4px;
+            background-color: color(secondary, dark);
+        }
+    }
+}

@@ -1,0 +1,151 @@
+/*
+Lists
+
+List styles are turned of by default. You need to add classes to style it.
+
+<p>`Ordered list`; Default styling</p>
+
+<ol>
+    <li>I'm number one!</li>
+    <li>Second isn't all that bad</li>
+    <li>I'm last :(</li>
+</ol>
+
+<br />
+
+<p>`.list`; Default styling</p>
+
+<ul class="list">
+    <li>I'm number one!</li>
+    <li>Second isn't all that bad</li>
+    <li>I'm last :(</li>
+</ul>
+
+<br />
+
+<p>`.list  .list--large`; Larger lists</p>
+
+<ul class="list  list--large">
+    <li>I'm number one!</li>
+    <li>Second isn't all that bad</li>
+    <li>I'm last :(</li>
+</ul>
+
+<br />
+
+<p>`.list  .list--results`; Simple result list</p>
+
+<ul class="list  list--results">
+    <li>I'm number one!</li>
+    <li>Second isn't all that bad</li>
+    <li>I'm last :(</li>
+</ul>
+
+<br />
+
+<p>`.list  .list--links`; Link list</p>
+
+<ul class="list  list--results">
+    <li>I'm number one!</li>
+    <li>Second isn't all that bad</li>
+    <li>I'm last :(</li>
+</ul>
+
+<br />
+
+<p>`.list  .list--dates`; List with dates</p>
+
+<ul class="list  list--dates">
+    <li>
+        <time class="date">
+            <span class="date__day">7</span>
+            <span class="date__month">aug</span>
+        </time>
+        <a href="">AUFs sommerleir begynner på Utøya</a>
+    </li>
+    <li>
+        <time class="date">
+            <span class="date__day">7</span>
+            <span class="date__month">des</span>
+        </time>
+        <a href="">Frist for innsending av forslag til landsmøtet 2017</a>
+    </li>
+</ul>
+
+Styleguide 3.6
+*/
+ol {
+    margin-bottom: $vertical-rythm--spacing;
+
+    & > li {
+        margin-left: $indention;
+        margin-bottom: $vertical-rythm;
+        list-style-type: decimal;
+    }
+}
+
+.list {
+    margin-bottom: $vertical-rythm--spacing;
+    text-align: left;
+
+    & > li {
+        position: relative;
+        padding-left: $indention;
+        margin-bottom: 0;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0.7em;
+            left: 0;
+            width: $unit * 3;
+            border-bottom: $border-width solid color(primary);
+        }
+    }
+
+    &--large {
+        & > li {
+            margin-bottom: $spacing;
+        }
+    }
+
+    &--results {
+        & > li {
+            &.ng-enter {
+                @extend %animation-fall-down;
+                @include animation-delay(10, 30ms);
+            }
+
+            padding-top: $spacing--small;
+            padding-bottom: $spacing--small;
+            border-bottom: $border-style;
+
+            &:before {
+                @extend %icon-arrow-right;
+                top: 1em;
+                border: 0;
+            }
+        }
+    }
+
+    &--links {
+        & > li {
+            &:before {
+                @extend %icon-arrow-right--secondary;
+                top: 0.48em;
+                border: 0;
+            }
+        }
+    }
+
+    &--dates {
+        & > li {
+            padding: 0;
+            min-height: $vertical-rythm * 6;
+
+            &:before {
+                display: none;
+            }
+        }
+    }
+}

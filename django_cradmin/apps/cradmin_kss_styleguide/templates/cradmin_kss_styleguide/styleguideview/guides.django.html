@@ -1,0 +1,17 @@
+{% extends "django_cradmin/base.django.html" %}
+{% load cradmin_kss_styleguide_tags %}
+{#{% load static %}#}
+
+{% block body %}
+    <h1>Style guides</h1>
+    <ul>
+        {% for styleguideconfig in styleguideregistry.iterstyleguides %}
+            <li>
+                <a href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">
+                    {{ styleguideconfig.label }}
+                </a>
+            </li>
+        {% endfor %}
+
+    </ul>
+{% endblock body %}

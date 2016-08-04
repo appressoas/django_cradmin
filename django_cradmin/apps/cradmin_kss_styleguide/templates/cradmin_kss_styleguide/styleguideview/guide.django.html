@@ -1,0 +1,14 @@
+{% extends "cradmin_kss_styleguide/styleguideview/guidebase.django.html" %}
+{% load cradmin_kss_styleguide_tags %}
+
+{% block nav %}
+    {% render_kss_toc styleguideconfig=styleguideconfig kss_styleguide=kss_styleguide %}
+{% endblock nav %}
+
+{% block main %}
+    {% if prefix %}
+        {% block sections %}
+            {% render_kss_sections styleguideconfig=styleguideconfig kss_styleguide=kss_styleguide prefix=prefix %}
+        {% endblock sections %}
+    {% endif %}
+{% endblock main %}

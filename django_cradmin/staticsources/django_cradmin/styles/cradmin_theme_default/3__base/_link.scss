@@ -1,0 +1,51 @@
+/*
+Links
+
+<strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as links.
+<h3>This is the links:</h3>
+<ul>
+    <li>
+        <a href="">I'm a link</a>
+    </li>
+    <li>
+        <a href="" class="link--light">I'm also link</a>
+    </li>
+</ul>
+
+Markup:
+<a href="">I'm a link</a>
+<a href="" class="link--light">I'm also link</a>
+// For extending:
+@extend %link;
+@extend %link--light;
+
+Styleguide 3.1
+*/
+a,
+.link,
+%link {
+    display: inline;
+    cursor: pointer;
+    text-decoration: none;
+
+    color: $color-links;
+    border-bottom: $border-width--small dotted $color-links;
+
+    &:hover,
+    &:focus {
+        color: $color-links--hover;
+        border-color: $color-links--hover;
+    }
+}
+
+.link--light,
+%link--light {
+    color: $color-light;
+    border-color: rgba($color-light, 0.7);
+
+    &:hover,
+    &:focus {
+        color: $color-light;
+        border-color: $color-light;
+    }
+}

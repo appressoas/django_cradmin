@@ -1,0 +1,328 @@
+@import 'main';
+@import 'pygments';
+
+.kss-vertical-rythme {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: repeating-linear-gradient(
+        transparent,
+        transparent ($vertical-rythm - 1px),
+            color(neutral) ($vertical-rythm - 1px),
+                color(neutral) ($vertical-rythm));
+}
+
+.kss-content {
+    display: flex;
+    min-height: 100vh;
+}
+
+.kss-main {
+    width: calc(100% - 250px);
+}
+
+.kss-description {
+    margin-bottom: $vertical-rythm--spacing;
+    max-width: $grid-width--tight;
+}
+
+.kss-section {
+    margin: $vertical-rythm--spacing 0;
+    padding: $vertical-rythm--spacing $spacing--large;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.kss-title {
+    margin: #{-($vertical-rythm--spacing)} #{-($spacing--large)};
+    margin-bottom: 0;
+    padding: $vertical-rythm--spacing $spacing--large;
+    // padding-bottom: $spacing;
+    border-top: $vertical-rythm solid $color-dark;
+
+    &--level-1 {
+        @include font-size(xlarge);
+        border: 0;
+    }
+
+    &--level-2 {
+        @include font-size(large);
+    }
+
+    &--level-3 {
+        @include font-size(medium);
+    }
+
+    &--level-4 {
+        @include font-size(small);
+    }
+
+    &__permalink {
+        // ...
+    }
+
+    &__permalink-hash {
+        display: none;
+    }
+}
+
+.kss-nav {
+    width: 270px;
+    padding: $spacing 0 0;
+    background-color: color(neutral, dark);
+
+    &__title {
+        @include font-size(medium);
+        margin: 0 $spacing $spacing;
+        a {
+            color: $color-light;
+        }
+    }
+
+    &__link {
+        display: block;
+        max-width: 100%;
+        color: $color-light;
+        border: 0;
+
+        padding: $spacing--small $spacing;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:hover,
+        &:focus {
+            color: $color-light;
+            background-color: shade($color-dark, 50%);
+        }
+
+        &--active {
+            &,
+            &:hover,
+            &:focus {
+                background-color: color(primary, base);
+            }
+        }
+    }
+
+    &__menu-item {
+        margin-bottom: $spacing--small;
+    }
+
+    &__menu-child {
+        margin-bottom: $spacing;
+
+        .kss-nav__menu-item {
+            text-indent: $spacing--small;
+            margin: 0;
+        }
+    }
+
+    &__ref {
+        margin-right: $unit;
+    }
+}
+
+.sg-colors {
+    display: flex;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+
+        @each $item, $colorgroup in $colors {
+            @each $sub, $color in $colorgroup {
+                &--#{$item} {
+                    &--#{$sub} {
+                        color: color-contrast($color);
+                        background-color: #{$color};
+
+                        &:before {
+                            content: '#{$sub}';
+                        }
+
+                        &:after {
+                            content: '#{$color}';
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.sg-icon-grid {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__item {
+        padding: $spacing 0;
+        width: calc(25% - #{$unit});
+        text-align: center;
+        margin-bottom: $unit;
+        background-color: tint(color(neutral, medium), 50%);
+        margin-right: $unit;
+
+        code {
+            display: block;
+            margin-top: $spacing--small;
+            // border: $border-style--small;
+        }
+    }
+}
+
+.sg-size {
+    width: $spacing;
+    height: $spacing;
+    border: $border-width--small dotted color(neutral);
+
+    &--small {
+        width: $spacing--small;
+        height: $spacing--small;
+    }
+
+    &--base {
+        margin-top: $spacing + $spacing;
+        // ...
+    }
+
+    &--large {
+        margin-top: $spacing + $spacing;
+        width: $spacing--large;
+        height: $spacing--large;
+    }
+
+    &--xlarge {
+        margin-top: $spacing + $spacing;
+        width: $spacing--xlarge;
+        height: $spacing--xlarge;
+    }
+}
+
+// Code styles
+.kss-usage {
+    .kss-markup {
+        display: none;
+    }
+
+    &__toggle {
+        @extend .button;
+        cursor: pointer;
+
+        &:after {
+            @extend %icon-arrow-down;
+            vertical-align: middle;
+            content: '';
+            margin-left: $spacing;
+            margin-right: -($unit);
+            transition: transform 300ms $swift-out;
+        }
+    }
+
+    & > input  {
+        // visibility: hidden;
+        position: absolute;
+        opacity: 0;
+
+        &:checked ~ .kss-markup {
+            display: block;
+        }
+
+        &:checked ~ .kss-usage__toggle:after {
+            transform: rotate(-180deg);
+        }
+
+        &:focus ~ .kss-usage__toggle {
+            border-color: color(primary);
+        }
+    }
+}
+
+// Code style
+.kss-description {
+    code {
+        @include font-size(xsmall);
+        font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
+        color: $color-text;
+        font-weight: 600;
+    }
+}
+
+.kss-markup {
+    border: $border-style;
+
+    pre,
+    code,
+    kbd,
+    samp {
+        @include font-size(xsmall);
+        font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
+        color: $color-text;
+        font-weight: 600;
+    }
+
+    pre.prettyprint {
+        margin: 0;
+        padding: $unit 0;
+        border: 0;
+        background: $color-light;
+    }
+
+    .tag {
+        display: inline;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+    }
+
+    ol.linenums {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        li {
+            list-style-type: none;
+            margin: 0;
+            border-bottom: $border-style--small;
+            padding: $unit $spacing--small;
+            background: $color-light;
+
+            &:last-child {
+                border: 0;
+            }
+
+            &:nth-child(even) {
+                background: color(neutral, light);
+            }
+        }
+    }
+}
+
+.kss-blockquote-wrapper {
+    @include mq(lg) {
+        margin-left: $spacing--xlarge;
+        max-width: calc(100% - #{$spacing--xlarge});
+    }
+    @include mq(xl) {
+        margin-left: $spacing--xlarge;
+    }
+}
+
+.kss-separator {
+    margin: $spacing 0;
+}

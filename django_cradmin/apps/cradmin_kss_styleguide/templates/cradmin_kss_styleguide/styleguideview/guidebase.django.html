@@ -1,0 +1,28 @@
+{% comment %}
+    Base template for guide templates.
+{% endcomment %}<!DOCTYPE html>
+<html {% block html_element_attributes %}lang="en"{% endblock %}>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block extra_meta %}{% endblock extra_meta %}
+        <title>{% block title %}{{ styleguideconfig.label }}{% endblock %}</title>
+
+        {% block styles %}
+            <link href='{{ styleguideconfig.get_cssurl_for_styleguide }}' rel="stylesheet">
+        {% endblock styles %}
+
+        {% block javascript %}
+            {# Override this to add javascript #}
+        {% endblock javascript %}
+    </head>
+    <body class="{% block bodyclass %}kss-content{% endblock %}">
+        {% block nav %}{% endblock nav %}
+        <main role="main" class="kss-main">
+            {% block main %}
+                {# Override this with the contents of the styleguide #}
+            {% endblock main %}
+        </main>
+    </body>
+</html>

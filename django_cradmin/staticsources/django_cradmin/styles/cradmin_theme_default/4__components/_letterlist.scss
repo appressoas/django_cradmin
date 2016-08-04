@@ -1,0 +1,63 @@
+.letterlist {
+    position: relative;
+    max-width: $grid-width--tight - ($spacing * 2);
+    margin: 0 auto;
+
+    &__section {
+        @extend %animation-fall-down;
+        @include animation-delay(10, 30ms);
+
+        display: flex;
+        margin-bottom: $unit;
+        // background-color: rgba(color(neutral), 0.1);
+        background-color: $color-background;
+
+        &.ng-leave {
+            animation: fade-out 100ms $swift-out;
+        }
+    }
+
+    &__letter {
+        text-align: center;
+        min-width: $unit * 6;
+        padding-top: $vertical-rythm + $unit - 1px;
+        padding-bottom: $vertical-rythm + $unit;
+        color: $color-light;
+        background-color: color(primary);
+
+        @include mq(md) {
+            min-width: $indention;
+        }
+    }
+
+    &__items {
+        padding: $vertical-rythm $spacing;
+    }
+
+    &__item {
+        @include font(base, normal);
+        @include font-size(small);
+        display: inline-block;
+        margin-right: $spacing + $unit;
+        margin-top: $unit;
+        margin-bottom: $unit;
+
+        &.ng-enter {
+            animation: fade-in 300ms ease-out;
+        }
+
+        &.ng-leave {
+            animation: fade-out 100ms $swift-out;
+        }
+    }
+
+    &__link {
+        border-color: transparent;
+    }
+
+    &__title {
+        @include font(base, bold);
+        @include font-size(small);
+        margin: 0;
+    }
+}

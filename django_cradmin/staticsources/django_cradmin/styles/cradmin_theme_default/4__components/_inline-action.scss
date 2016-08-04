@@ -1,0 +1,148 @@
+.inline-action {
+    margin-bottom: $spacing;
+
+    &__input {
+        position: relative;
+
+        &[type='text'],
+        &[type='email'],
+        &[type='number'],
+        &[type='search'] {
+            height: $vertical-rythm * 5;
+            margin: 0;
+            margin-bottom: $border-width;
+            border: $border-style;
+            border-color: $color-light;
+
+            @include mq(md) {
+                margin-right: $border-width;
+                margin-bottom: 0;
+            }
+        }
+
+        &--small {
+            &[type='text'],
+            &[type='email'],
+            &[type='number'],
+            &[type='search'] {
+                width: $input-small;
+            }
+        }
+
+        &--medium {
+            &[type='text'],
+            &[type='email'],
+            &[type='number'],
+            &[type='search'] {
+                width: auto;
+                flex-grow: 1;
+            }
+        }
+    }
+
+    &__separator {
+        padding: 0 $spacing--small;
+        margin-right: $border-width;
+        line-height: $vertical-rythm * 5;
+
+        &--dummy {
+            line-height: normal;
+            visibility: hidden;
+        }
+    }
+
+    &__action {
+        @extend .button;
+        @extend .button--secondary-fill;
+        height: $vertical-rythm * 5;
+        padding: 0 $spacing;
+        margin: 0;
+    }
+
+    &__body,
+    &__labels {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: stretch;
+
+        @include mq(md) {
+            flex-direction: row;
+            align-items: stretch;
+        }
+    }
+
+    &__label {
+        display: block;
+        margin-bottom: $vertical-rythm * 2;
+
+        &--small {
+            display: none;
+            text-align: left;
+            padding: 0 #{$spacing--small + $border-width};
+            width: $input-small;
+            margin-bottom: $unit;
+
+            @include mq(md) {
+                display: block;
+            }
+        }
+    }
+
+    &--light {
+        .inline-action__action {
+            @extend .button--light;
+        }
+    }
+
+    &--center {
+        .inline-action__body,
+        .inline-action__labels {
+            align-items: center;
+
+            @include mq(md) {
+                align-items: stretch;
+            }
+        }
+    }
+
+    &--search {
+        .inline-action__body {
+            flex-direction: row;
+        }
+
+        .inline-action__action {
+            @extend .button--light-fill;
+            padding: 0;
+            width: $unit * 12;
+            overflow: hidden;
+            background-color: $color-light;
+
+            &:before {
+                @extend %icon-search;
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                margin: -9px -10px;
+            }
+
+            &,
+            &:hover,
+            &:focus,
+            &:active {
+                color: transparent;
+            }
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: color(primary);
+
+                &:before {
+                    @extend %icon-search--light;
+                }
+            }
+        }
+    }
+}

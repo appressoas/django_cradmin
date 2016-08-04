@@ -1,0 +1,111 @@
+.list-section {
+    @extend .grid;
+    @extend .grid--wide;
+    padding: 0;
+    margin-bottom: $spacing;
+
+    @include mq(lg) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    &__item {
+        flex-grow: 1;
+        flex-basis: 0;
+        padding: $spacing;
+        background-color: tint($color-background, 50%);
+        margin: $spacing--small 0;
+
+        @include mq(md) {
+            margin: $spacing--small $unit;
+        }
+
+        @include mq(xl) {
+            max-width: $grid-width--wide / 3 - ($unit * 2);
+            padding: $vertical-rythm--spacing $indention;
+        }
+
+        & > *:last-child {
+            margin-bottom: 0;
+        }
+
+        &--cta {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        // IF 3 CHILDS
+        &:nth-child(2):nth-last-child(2) {
+            // background-color: tint($color-background, 70%);
+        }
+
+        // // IF 5 CHILDS (4 + dummy to break.. TODO: Find a better way?)
+        // &:nth-child(1):nth-last-child(5),
+        // &:nth-child(2):nth-last-child(4),
+        // &:nth-child(3):nth-last-child(3),
+        // &:nth-child(4):nth-last-child(2),
+        // &:nth-child(5):nth-last-child(1) {
+        //     @include mq(md) {
+        //         margin: $unit $unit 0;
+        //     }
+        // }
+        //
+        // // TODO: Find a better way?
+        //
+        // &--dummy {
+        //     padding: 0;
+        //     margin: 0;
+        //     height: 0;
+        //     overflow: hidden;
+        //     min-width: 100%;
+        // }
+    }
+
+    &__title {
+        @include font-size(medium);
+        // @include spaced-text;
+        // @include font-size(small);
+        text-align: center;
+    }
+
+    &--combined {
+        .list-section__item {
+            margin-left: 0;
+            margin-right: 0;
+
+            @include mq(xl) {
+                max-width: $grid-width--wide / 3 - ($unit);
+            }
+        }
+    }
+}
+
+/*
+// one item
+li:nth-child(1):nth-last-child(1) {
+	width: 100%;
+}
+
+// two items
+li:nth-child(1):nth-last-child(2),
+li:nth-child(2):nth-last-child(1) {
+	width: 50%;
+}
+
+// three items
+li:nth-child(1):nth-last-child(3),
+li:nth-child(2):nth-last-child(2),
+li:nth-child(3):nth-last-child(1) {
+	width: 33.3333%;
+}
+
+// four items
+li:nth-child(1):nth-last-child(4),
+li:nth-child(2):nth-last-child(3),
+li:nth-child(3):nth-last-child(2),
+li:nth-child(4):nth-last-child(1) {
+	width: 25%;
+}
+*/

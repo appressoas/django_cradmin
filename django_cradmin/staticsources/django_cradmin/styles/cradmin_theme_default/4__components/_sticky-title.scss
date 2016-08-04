@@ -1,0 +1,53 @@
+.sticky-title {
+    position: relative;
+
+    &__content {
+        display: inline-block;
+        padding: 0 0 $spacing;
+
+        @include mq(md) {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: $spacing;
+
+            transition: box-shadow 100ms $swift-out;
+        }
+    }
+
+    &__title {
+        margin-bottom: 0;
+    }
+
+    &--sticky {
+        .sticky-title__content {
+            &:after {
+                @extend %icon-chevron-down--primary;
+            }
+
+            @include mq(md) {
+                position: fixed;
+                bottom: 0;
+                background-color: shade($color-background, 3%);
+                box-shadow: 0 -1px 12px rgba($color-dark, 0.27);
+
+                &:hover {
+                    color: $color-links;
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+
+                }
+            }
+        }
+    }
+
+    &:not(.sticky-title--sticky) {
+        .sticky-title__content {
+            outline: 0;
+            cursor: default;
+        }
+    }
+}
