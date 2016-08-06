@@ -13,11 +13,11 @@ __Never__ use `<span>`, `<div>` or elements without a semantic meaning as links.
     </li>
 </ul>
 
-Example: (html)
+Markup: (html)
 <a href="">I'm a link</a>
 <a href="" class="link--light">I'm also link</a>
 
-Example: For extending
+Markup: For extending
 @extend %link;
 @extend %link--light;
 

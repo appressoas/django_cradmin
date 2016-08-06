@@ -24,8 +24,8 @@
                         <a {% block tocentry-href %}href="{% kss_section_url styleguideconfig=styleguideconfig section=section %}"{% endblock %}
                                 class="kss-nav__link">
                             {% block tocentry-text %}
-                                <span class="kss-nav__ref">{{ section.section }}.</span>
-                                <span class="kss-nav__name">{{ section.heading }}</span>
+                                <span class="kss-nav__ref">{{ section.reference }}.</span>
+                                <span class="kss-nav__name">{{ section.title }}</span>
                             {% endblock tocentry-text %}
                         </a>
                     {% endblock tocentry %}

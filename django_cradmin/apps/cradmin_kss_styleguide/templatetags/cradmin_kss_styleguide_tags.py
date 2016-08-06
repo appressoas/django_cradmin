@@ -11,13 +11,13 @@ register = template.Library()
 def _get_kss_sections(kss_styleguide, prefix=None):
     sections = kss_styleguide.sections.values()
     if prefix:
-        sections = filter(lambda s: s.section.startswith(prefix), sections)
-    sections = sorted(sections, key=lambda s: s.section)
+        sections = filter(lambda s: s.reference.startswith(prefix), sections)
+    sections = sorted(sections, key=lambda s: s.reference)
     return sections
 
 
 def _kss_section_level(section):
-    return section.section.count('.') + 1
+    return section.reference.count('.') + 1
 
 
 class KssSectionTree(object):
@@ -50,12 +50,12 @@ def kss_section_level(section):
 
 @register.simple_tag()
 def kss_section_url(styleguideconfig, section):
-    level1 = section.section.split('.')[0]
+    level1 = section.reference.split('.')[0]
     url = reverse('cradmin_kss_styleguide_guide', kwargs={
         'unique_id': styleguideconfig.unique_id,
         'prefix': level1
     })
-    return '{}#kssref-{}'.format(url, section.section)
+    return '{}#kssref-{}'.format(url, section.reference)
 
 
 @register.simple_tag()
@@ -84,7 +84,7 @@ def render_kss_section(
 
 @register.simple_tag(takes_context=True)
 def render_kss_toc(context, styleguideconfig, kss_styleguide, prefix=None):
-    sections_flat = _get_kss_sections(kss_styleguide=kss_styleguide, prefix=prefix)
+    sections_flat = kss_styleguide.iter_sorted_sections(referenceprefix=prefix)
     return render_to_string(
         template_name=styleguideconfig.get_toc_template_name(),
         context={
@@ -99,7 +99,7 @@ def render_kss_toc(context, styleguideconfig, kss_styleguide, prefix=None):
 @register.simple_tag(takes_context=True)
 def render_kss_sections(
         context, styleguideconfig, kss_styleguide, prefix=None):
-    sections = _get_kss_sections(kss_styleguide=kss_styleguide, prefix=prefix)
+    sections = kss_styleguide.iter_sorted_sections(referenceprefix=prefix)
     return render_to_string(
         template_name=styleguideconfig.get_sections_template_name(),
         context={
