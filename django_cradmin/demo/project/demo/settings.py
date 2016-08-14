@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 from __future__ import unicode_literals
 from ievv_opensource.utils import ievvbuildstatic
+from ievv_opensource.utils import ievvdevrun
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
@@ -294,6 +295,17 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
         ]
     ),
 )
+
+IEVVTASKS_DEVRUN_RUNNABLES = {
+    'default': ievvdevrun.config.RunnableThreadList(
+        ievvdevrun.runnables.django_runserver.RunnableThread(),
+    ),
+    'design': ievvdevrun.config.RunnableThreadList(
+        ievvdevrun.runnables.django_runserver.RunnableThread(),
+        ievvdevrun.runnables.ievv_buildstatic.RunnableThread(),
+    ),
+}
+
 
 
 # PYKSS_DIRS = [

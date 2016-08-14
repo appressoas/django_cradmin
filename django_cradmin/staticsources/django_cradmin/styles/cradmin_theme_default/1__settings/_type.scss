@@ -18,25 +18,28 @@ Markup:
 Styleguide 1.1
 */
 
-/*
-font-family: 'Danton Bold'
-font-family: 'Danton Medium'
-font-family: 'Danton Regular'
-font-family: 'Danton Extra Light'
-*/
+$font-base-font: Roboto, "Helvetica Neue" !default;
+$font-base-fallback: Arial, sans-serif !default;
+$font-base-normal: 400 !default;
+$font-base-bold: 700 !default;
+
+$font-header-font: Roboto, "Helvetica Neue" !default;
+$font-header-fallback: Arial, sans-serif !default;
+$font-header-normal: 400 !default;
+$font-header-bold: 700 !default;
 
 $fonts: (
     base: (
-        font: 'Gotham Narrow SSm A',
-        fallback: 'Gotham Narrow SSm B',
-        normal: 400,
-        bold: 700
+        font: $font-base-font,
+        fallback: $font-base-fallback,
+        normal: $font-base-normal,
+        bold: $font-base-bold
     ),
     header: (
-        font: 'Merriweather',
-        fallback: serif,
-        normal: 400,
-        bold: 700
+        font: $font-header-font,
+        fallback: $font-header-fallback,
+        normal: $font-header-normal,
+        bold: $font-header-bold
     )
 );
 
@@ -64,32 +67,53 @@ Markup:
 Styleguide 1.3
 */
 
+
+$font-size-xsmall-base: 15px !default;
+$font-size-xsmall-md: ($font-size-xsmall-base + 1) !default;
+
+$font-size-small-base: (19px, 1.4) !default;
+$font-size-small-md: 21px !default;
+
+$font-size-medium-base: 22px !default;
+$font-size-medium-md: 24px !default;
+
+$font-size-large-base: 26px !default;
+$font-size-large-md: 32px !default;
+
+$font-size-xlarge-base: 34px !default;
+$font-size-xlarge-md: 42px !default;
+
+$font-size-xxlarge-base: 48px !default;
+$font-size-xxlarge-md: round($font-size-xxlarge-base * 1.25) !default;
+$font-size-xxlarge-lg: round($font-size-xxlarge-md * 1.24) !default;
+$font-size-xxlarge-xl: round($font-size-xxlarge-lg * 1.11) !default;
+
 $font-size: (
     xsmall: (
-        base: 15px,
-        md: 16px,
+        base: $font-size-xsmall-base,
+        md: $font-size-xsmall-md,
     ),
     small: (
-        base: (19px, 1.4),
-        md: 21px,
+        base: $font-size-small-base,
+        md: $font-size-small-md,
     ),
     medium: (
-        base: 22px,
-        md: 24px,
+        base: $font-size-medium-base,
+        md: $font-size-medium-base,
     ),
     large: (
-        base: 26px,
-        md: 32px,
+        base: $font-size-large-base,
+        md: $font-size-large-md,
     ),
     xlarge: (
-        base: 34px,
-        md: 42px,
+        base: $font-size-xlarge-base,
+        md: $font-size-xlarge-md,
     ),
     xxlarge: (
-        base: 48px,
-        md: 60px,
-        lg: 74px,
-        xl: 82px,
+        base: $font-size-xxlarge-base,
+        md: $font-size-xxlarge-md,
+        lg: $font-size-xxlarge-lg,
+        xl: $font-size-xxlarge-xl,
     )
 );
 

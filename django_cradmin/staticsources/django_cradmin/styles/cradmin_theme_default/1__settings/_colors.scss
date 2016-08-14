@@ -27,25 +27,38 @@ Colors
 Styleguide 1.1
 */
 
+$color-primary-base: #d71921 !default;
+$color-primary-dark: #b4151b !default;
+
+$color-secondary-base: #73ccde !default;
+$color-secondary-dark: #35687a !default;
+
+$color-info-base: #ffce00 !default;
+$color-info-dark: #e58200 !default;
+
+$color-neutral-base: mix(#f5f4f0, #393939, 50%) !default;
+$color-neutral-light: #f5f4f0 !default;
+$color-neutral-medium: #cbcbca !default;
+$color-neutral-dark: #393939 !default;
+
 $colors: (
     primary: (
-        base: #d71921,
-        dark: #b4151b
+        base: $color-primary-base,
+        dark: $color-primary-dark
     ),
     secondary: (
-        base: #73ccde,
-        dark: #35687a
-        // dark: #006c83
+        base: $color-secondary-base,
+        dark: $color-secondary-dark
     ),
     info: (
-        base: #ffce00,
-        dark: #e58200
+        base: $color-info-base,
+        dark: $color-info-dark
     ),
     neutral: (
-        light: #f5f4f0,
-        medium: #cbcbca,
-        base: mix(#f5f4f0, #393939, 50%),
-        dark: #393939
+        base: $color-neutral-base,
+        light: $color-neutral-light,
+        medium: $color-neutral-medium,
+        dark: $color-neutral-dark
     )
 );
 

@@ -20,8 +20,7 @@ class AbstractStyleGuide(object):
                  section_template_name='cradmin_kss_styleguide/templatetags/render_kss_section.django.html',
                  sections_template_name='cradmin_kss_styleguide/templatetags/render_kss_sections.django.html',
                  toc_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc.django.html',
-                 frontpage_template=None,
-                 example_syntax='scss'):
+                 frontpage_template=None):
         """
         Args:
             unique_id: A unique ID for the styleguide.
@@ -34,7 +33,6 @@ class AbstractStyleGuide(object):
         self.sections_template_name = sections_template_name
         self.toc_template_name = toc_template_name
         self.frontpage_template = frontpage_template
-        self.example_syntax = example_syntax
 
     def get_sourcefolders(self):
         raise NotImplementedError()
@@ -56,16 +54,6 @@ class AbstractStyleGuide(object):
 
     def get_toc_template_name(self):
         return self.toc_template_name
-
-    # def format_description(self, section):
-    #     return section.description_html
-
-    # def format_example(self, section):
-    #     # markdowntext = '```{example_syntax}\n{text}\n```'.format(
-    #     #     example_syntax=self.example_syntax,
-    #     #     text=text)
-    #     # return markdownformatter.MarkdownFormatter.to_html(markdowntext=markdowntext)
-    #     return section.example_html
 
     def __str__(self):
         return self.label
