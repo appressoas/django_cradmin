@@ -30,3 +30,7 @@
 /htmlcov/
 
 *.sqlite3
+
+
+/django_cradmin/staticsources/django_cradmin/node_modules/
+/django_cradmin/staticsources/django_cradmin/package.json

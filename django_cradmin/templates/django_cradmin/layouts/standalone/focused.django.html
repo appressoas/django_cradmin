@@ -6,8 +6,30 @@
     your own project, and override it without having to reimplement
     anything.
 
-    .. note:: Make sure you put the Django app overriding this template
-        after ``django_cradmin`` in ``INSTALLED_APPS``.
+    NOTE: Make sure you put the Django app overriding this template
+    after ``django_cradmin`` in ``INSTALLED_APPS``.
 
-    .. note:: We will NEVER add anything to this template by default.
+    NOTE: We will NEVER add anything to this template by default.
+
+
+    # Use cases
+
+    Suitable for pages with a single purpose such as login,
+    reset password, accept invite, etc.
+
+
+    # Example
+
+    ```
+    {% extends "django_cradmin/focused.django.html" %}
+
+    {% block pageheader-inner %}
+        <h1>My cool page</h1>
+    {% endblock pageheader-inner %}
+
+    {% block content %}
+        Some content here!
+    {% endblock content %}
+    ```
+
 {% endcomment %}
