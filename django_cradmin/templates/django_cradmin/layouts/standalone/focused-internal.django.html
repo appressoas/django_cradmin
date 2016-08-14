@@ -5,22 +5,15 @@
 {% endcomment %}
 
 {% block body %}
-    <section id="id_django_cradmin_focusedlayout_wrapper"
-         class="{% block wrapperclass %}page-section {% block wrapperclass-modifier %}page-section--tight page-section--focus{% endblock %}{% endblock %}">
-
+    <section class="{% block wrapperclass %}page-section {% block wrapperclass-modifier %}page-section--tight page-section--focus{% endblock %}{% endblock %}">
         {% block messages %}
             {% include "django_cradmin/include/messages.django.html" %}
         {% endblock messages %}
 
         {% block pageheader %}
-            <div class="focusbox__header">
-                {% block pageheader-inner %}{% endblock pageheader-inner %}
-            </div>
+            {% block pageheader-inner %}{% endblock pageheader-inner %}
         {% endblock pageheader %}
 
-        <div id="id_django_cradmin_focusedlayout_content" class="focusbox__body">
-            {% block content %}{% endblock content %}
-        </div>
-
+        {% block content %}{% endblock content %}
     </section>
 {% endblock body %}

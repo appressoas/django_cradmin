@@ -72,6 +72,7 @@ $indention: $unit * 7;
 // Vertical rythm
 $vertical-rythm: 12px; // TODO: Responsive?
 $vertical-rythm--spacing: ($vertical-rythm * 2) + $vertical-rythm;
+$vertical-rythm--spacing--small: $vertical-rythm--spacing / 2;
 
 
 // Border-width

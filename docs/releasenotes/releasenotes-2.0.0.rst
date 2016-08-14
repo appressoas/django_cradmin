@@ -53,3 +53,25 @@ wrap them in section tags with the ``page-section page-section--tight`` css clas
             {# The content you had in innerwrapper_post here #}
         </section>
     {% endblock body %}
+
+
+
+*****************
+CSS class changes
+*****************
+
+Removed css classes
+===================
+
+- ``django-cradmin-listbuilder-floatgridlist``: This was never ready to use out of the box,
+  and it is better to create this per app to make it work perfectly with whatever
+  javascript library required to handle the layout.
+
+
+Listbuilder lists
+=================
+Listbuilder lists use the new ``list`` css class. Unlike the old ``django-cradmin-listbuilder-list`` css
+class, this does not override typography styles. Instead it only focus on layout-specific styles.
+
+This means that you need to use css classes to style heading elements unless you want them to have
+their original sizes.

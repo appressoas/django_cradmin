@@ -27,11 +27,11 @@ Colors
 Styleguide 1.1
 */
 
-$color-primary-base: #d71921 !default;
-$color-primary-dark: #b4151b !default;
+$color-primary-base: #57917E !default;
+$color-primary-dark: #267158 !default;
 
-$color-secondary-base: #73ccde !default;
-$color-secondary-dark: #35687a !default;
+$color-secondary-base: #58758D !default;
+$color-secondary-dark: #2A4F6E !default;
 
 $color-info-base: #ffce00 !default;
 $color-info-dark: #e58200 !default;
@@ -73,5 +73,5 @@ $color-success: #007f1e;
 $color-background: color(neutral, light);
 $color-text: $color-dark;
 $color-muted: tint($color-text, 26%);
-$color-links: color(secondary, dark);
-$color-links--hover: shade(color(secondary, dark), 35%);
+$color-links: color(secondary, base);
+$color-links--hover: shade(color(secondary, base), 35%);

@@ -212,40 +212,11 @@
 
 // Code styles
 .kss-usage {
-    .kss-markup {
-        display: none;
+    .kss-usage__markuptitle {
+        margin-bottom: 5px;
     }
-
-    &__toggle {
-        @extend .button;
-        cursor: pointer;
-
-        &:after {
-            @extend %icon-arrow-down;
-            vertical-align: middle;
-            content: '';
-            margin-left: $spacing;
-            margin-right: -($unit);
-            transition: transform 300ms $swift-out;
-        }
-    }
-
-    & > input  {
-        // visibility: hidden;
-        position: absolute;
-        opacity: 0;
-
-        &:checked ~ .kss-markup {
-            display: block;
-        }
-
-        &:checked ~ .kss-usage__toggle:after {
-            transform: rotate(-180deg);
-        }
-
-        &:focus ~ .kss-usage__toggle {
-            border-color: color(primary);
-        }
+    .kss-usage__markup {
+        margin-bottom: $vertical-rythm--spacing;
     }
 }
 

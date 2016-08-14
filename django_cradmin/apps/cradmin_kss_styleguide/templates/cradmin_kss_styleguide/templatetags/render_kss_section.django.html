@@ -43,7 +43,7 @@
 
 {% block usage %}
     {% if section.has_markups %}
-        <div class="kss--usage">
+        <div class="kss-usage">
             {% block usage-title %}
                 <h3>
                     {% trans "Usage" context "cradmin_kss_styleguide" %}
@@ -53,13 +53,13 @@
                 {% block markup %}
                     {% block markup-title %}
                         {% if markup.title %}
-                            <h4>
+                            <h4 class="kss-usage__markuptitle">
                                 {{ markup.title }}
                             </h4>
                         {% endif %}
                     {% endblock markup-title %}
                     {% block markup-markup %}
-                        <div class="kss-markup kss-markup--{{ markup.get_syntax }}">
+                        <div class="kss-usage__markup kss-usage__markup--{{ markup.get_syntax }}">
                             {{ markup.html|safe }}
                         </div>
                     {% endblock markup-markup %}
