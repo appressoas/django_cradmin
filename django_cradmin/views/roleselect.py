@@ -12,7 +12,6 @@ class RoleSelectView(ListView):
     context_object_name = 'roles'
     pagetitle = _('What would you like to edit?')
     autoredirect_if_single_role = True
-    list_cssclass = 'django-cradmin-roleselect-list django-cradmin-roleselect-list-flat'
 
     def get_queryset(self):
         cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
@@ -37,11 +36,7 @@ class RoleSelectView(ListView):
     def get_pagetitle(self):
         return self.pagetitle
 
-    def get_list_cssclass(self):
-        return self.list_cssclass
-
     def get_context_data(self, **kwargs):
         context = super(RoleSelectView, self).get_context_data(**kwargs)
         context['pagetitle'] = self.get_pagetitle()
-        context['list_cssclass'] = self.get_list_cssclass()
         return context

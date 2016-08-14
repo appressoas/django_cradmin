@@ -9,22 +9,21 @@
 {% endblock pageheader-inner %}
 
 {% block content %}
-    <ul class="{{ list_cssclass }}">
+    <section class="{% block list_css_class %}blocklist{% endblock %}">
         {% for role in roles %}
-            <li>
-                <a href="{% cradmin_rolefrontpage_url role %}">
-                    <h2 class="django-cradmin-roleselect-role-title">
-                        {% cradmin_titletext_for_role role %}
-                    </h2>
-                    {% cradmin_descriptionhtml_for_role role as descriptionhtml %}
-                    {% if descriptionhtml %}
-                        <div class="django-cradmin-roleselect-role-description">
-                            {{ descriptionhtml }}
-                        </div>
-                    {% endif %}
-                </a>
-            </li>
+            <a href="{% cradmin_rolefrontpage_url role %}"
+                    class="{% block list_element_css_class %}blocklist__element  {% block list_element_css_class_modifier %}blocklist__element--link{% endblock %}{% endblock %}">
+                <h2 class="django-cradmin-roleselect-role-title">
+                    {% cradmin_titletext_for_role role %}
+                </h2>
+                {% cradmin_descriptionhtml_for_role role as descriptionhtml %}
+                {% if descriptionhtml %}
+                    <div class="django-cradmin-roleselect-role-description">
+                        {{ descriptionhtml }}
+                    </div>
+                {% endif %}
+            </a>
         {% endfor %}
-    </ul>
+    </section>
     {% include "django_cradmin/viewhelpers/includes/pager.django.html" %}
 {% endblock content %}

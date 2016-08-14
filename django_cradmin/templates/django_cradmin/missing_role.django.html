@@ -1,11 +1,12 @@
-{% extends "django_cradmin/standalone-base.django.html" %}
+{% extends "django_cradmin/layouts/standalone/focused.django.html" %}
 {% load i18n %}
 
-{% block body %}
-    <div class="container">
-        <h1>{% trans "Permission denied" %}</h1>
-        <p>
-            {% blocktrans with what=role %}You do not have permission to administer "{{what}}".{% endblocktrans %}
-        </p>
-    </div>
-{% endblock body %}
+{% block pageheader-inner %}
+    <h1>{% trans "Permission denied" %}</h1>
+{% endblock pageheader-inner %}
+
+{% block content %}
+    <p>
+        {% blocktrans with what=role %}You do not have permission to administer "{{what}}".{% endblocktrans %}
+    </p>
+{% endblock content %}
