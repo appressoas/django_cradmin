@@ -1,17 +1,17 @@
-{% extends "django_cradmin/base.django.html" %}
+{% extends "django_cradmin/layouts/standalone/focused.django.html" %}
 {% load cradmin_kss_styleguide_tags %}
-{#{% load static %}#}
 
-{% block body %}
+{% block pageheader-inner %}
     <h1>Style guides</h1>
-    <ul>
-        {% for styleguideconfig in styleguideregistry.iterstyleguides %}
-            <li>
-                <a href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">
-                    {{ styleguideconfig.label }}
-                </a>
-            </li>
-        {% endfor %}
+{% endblock pageheader-inner %}
 
-    </ul>
-{% endblock body %}
+{% block content %}
+    <nav class="blocklist">
+        {% for styleguideconfig in styleguideregistry.iterstyleguides %}
+            <a class="blocklist__element blocklist__element--link"
+                    href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">
+                {{ styleguideconfig.label }}
+            </a>
+        {% endfor %}
+    </nav>
+{% endblock content %}
