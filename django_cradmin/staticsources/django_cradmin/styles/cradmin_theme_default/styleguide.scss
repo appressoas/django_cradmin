@@ -230,9 +230,11 @@
     }
 
     .kss-usage__previewiframe {
-        border: $border-style;
         margin-bottom: $vertical-rythm--spacing;
-        width: 100%;
+        iframe {
+            width: 100%;
+            border: $border-style;
+        }
     }
 
     .kss-usage__example {

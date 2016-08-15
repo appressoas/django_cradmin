@@ -79,10 +79,16 @@
                             </div>
                             {% block example-preview %}
                                 {% if example.type == 'isolated' or example.type == 'fullpage' %}
-                                    <iframe class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}"
-                                        src="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
-                                        style="height: {{ example.height }}">
-                                    </iframe>
+                                    <div class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}">
+                                        <iframe
+                                            src="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
+                                            style="height: {{ example.height }}">
+                                        </iframe>
+                                        <a href="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
+                                                target="_blank">
+                                            {% trans "Open example in new window" %}
+                                        </a>
+                                    </div>
                                 {% else %}
                                     <div class="kss-usage__preview">
                                         {{ example.text|safe }}
