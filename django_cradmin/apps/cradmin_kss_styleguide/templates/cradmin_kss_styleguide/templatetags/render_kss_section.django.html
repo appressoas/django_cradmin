@@ -78,20 +78,22 @@
                                 </button>
                             </div>
                             {% block example-preview %}
-                                <div class="kss-usage__preview">
-                                    {{ example.text|safe }}
-                                </div>
+                                {% if example.type == 'isolated' or example.type == 'fullpage' %}
+                                    <iframe class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}"
+                                        src="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
+                                        style="height: {{ example.height }}">
+                                    </iframe>
+                                {% else %}
+                                    <div class="kss-usage__preview">
+                                        {{ example.text|safe }}
+                                    </div>
+                                {% endif %}
                             {% endblock example-preview %}
                             {% block example-htmlcode %}
                                 <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
                                     {{ example.html|safe }}
                                 </div>
                             {% endblock example-htmlcode %}
-                            {% block example-javascript %}
-                                <script>
-
-                                </script>
-                            {% endblock example-javascript %}
                         </div>
                     {% else %}
                         {% block example-nothtmlcode %}
