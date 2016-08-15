@@ -1,6 +1,14 @@
 {% extends "django_cradmin/standalone-base.django.html" %}
 {% load cradmin_tags %}
 
+
+{% block bodyclass %}
+    layout
+    {% block bodylayout-variant %}
+        layout--leftsidebar-content
+    {% endblock bodylayout-variant %}
+{% endblock bodyclass %}
+
 {% block body %}
     {% block menu %}
         {% cradmin_render_menu %}
