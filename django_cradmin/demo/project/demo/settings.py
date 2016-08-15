@@ -281,6 +281,7 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ievvbuildstatic.config.App(
         appname='django_cradmin',
         version='1.0.0',
+        keep_temporary_files=True,
         plugins=[
             ievvbuildstatic.sassbuild.Plugin(
                 sourcefolder='styles/cradmin_theme_default',

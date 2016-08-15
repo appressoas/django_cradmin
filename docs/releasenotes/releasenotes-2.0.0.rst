@@ -13,6 +13,11 @@ What is new?
 Django base template changes
 ****************************
 
+standalone-base-internal.django.html
+====================================
+The div with id ``django_cradmin_bodycontentwrapper`` no longer exists, and this also means
+that the ``outside-bodycontentwrapper`` template block no longer exists.
+
 
 layouts/standalone/focused.django.html
 ======================================
@@ -55,10 +60,17 @@ wrap them in section tags with the ``page-section page-section--tight`` css clas
     {% endblock body %}
 
 
+menu.django.html
+================
+The ``pre-menunav`` and ``post-menunav`` blocks no longer exists.
+
 
 *****************
 CSS class changes
 *****************
+The css framework is completely new, so all CSS classes have new names and they are structured
+differently. This section has a
+
 
 Removed css classes
 ===================

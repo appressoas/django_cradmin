@@ -5,16 +5,20 @@
 {% block bodyclass %}
     layout
     {% block bodylayout-variant %}
-        layout--leftsidebar-content
+        {% if not cradmin_hide_menu %}
+            layout--leftsidebar-content
+        {% endif %}
     {% endblock bodylayout-variant %}
 {% endblock bodyclass %}
 
 {% block body %}
     {% block menu %}
-        {% cradmin_render_menu %}
+        {% if not cradmin_hide_menu %}
+            {% cradmin_render_menu %}
+        {% endif %}
     {% endblock menu %}
 
-    <div id="django_cradmin_contentwrapper">
+    <div class="layout__element">
         {% block pageheader %}
             {% comment %}
                 The page header can be hidden in two ways:
