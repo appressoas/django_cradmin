@@ -6,9 +6,9 @@
 {% load cradmin_tags %}
 
 {% if not cradmin_hide_menu %}
-    <div id="django_cradmin_mainmenu_backdrop"></div>
+    <div id="id_django_cradmin_mainmenu_backdrop"></div>
     {% block pre-menunav %}{% endblock pre-menunav %}
-    <nav id="django_cradmin_mainmenu"
+    <nav id="id_django_cradmin_mainmenu"
             django-cradmin-menu
             django-cradmin-menu-autodetect-overflow-y="django-cradmin-menu-overflow-y"
             {% block scrollfixed %}
@@ -16,10 +16,10 @@
                     django-cradmin-scroll-top-fixed='{{ DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED|cradmin_jsonencode }}'
                 {% endif %}
             {% endblock scrollfixed %}
-            class="{% block css-class %}django-cradmin-menu{% endblock %}">
+            class="{% block css-class %}menu{% endblock %}">
         {% block pre-menu %}{% endblock pre-menu %}
 
-        <div class="django-cradmin-menu-mobileheader">
+        <div class="menu__mobileheader">
             {% block mobile-header %}
                 {% block mobile-header-pre %}{% endblock mobile-header-pre %}
                     <a href="#" role="button"
@@ -35,7 +35,7 @@
             {% endblock mobile-header %}
         </div>
 
-      <div class="django-cradmin-menu-content"
+      <div class="menu__content"
                 ng-class="{'django-cradmin-menu-content-display': cradminMenuDisplay}">
             {% block menucontent %}
                 {% with menu=request.cradmin_instance.get_menu %}

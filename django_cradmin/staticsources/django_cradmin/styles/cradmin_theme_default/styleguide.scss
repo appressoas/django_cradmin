@@ -19,10 +19,16 @@
 .kss-content {
     display: flex;
     min-height: 100vh;
+    flex-direction: column;
+    @include mq(lg) {
+        flex-direction: row;
+    }
 }
 
 .kss-main {
-    width: calc(100% - 250px);
+    @include mq(lg) {
+        width: calc(100% - 250px);
+    }
 }
 
 .kss-description {
@@ -73,7 +79,9 @@
 }
 
 .kss-nav {
-    width: 270px;
+    @include mq(lg) {
+        width: 270px;
+    }
     padding: $spacing 0 0;
     background-color: color(neutral, dark);
 
@@ -215,8 +223,53 @@
     .kss-usage__markuptitle {
         margin-bottom: 5px;
     }
-    .kss-usage__markup {
+    .kss-usage__code, .kss-usage__preview {
+        border: $border-style;
+        padding: $spacing--small;
         margin-bottom: $vertical-rythm--spacing;
+    }
+
+    .kss-usage__example {
+        &--with-preview {
+            position: relative;
+            .kss-usage__subtitle {
+                @include mq(lg) {
+                    margin-right: 260px;
+                }
+            }
+
+            .kss-usage__code {
+                display: none;
+            }
+            .kss-usage__preview {
+                display: none;
+            }
+
+            .kss-usage__previewbuttons {
+                @include mq(lg) {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
+
+        &--showcode {
+            .kss-usage__code {
+                display: block;
+            }
+            .kss-usage__preview {
+                display: none;
+            }
+        }
+        &--showpreview {
+            .kss-usage__code {
+                display: none;
+            }
+            .kss-usage__preview {
+                display: block;
+            }
+        }
     }
 }
 
@@ -246,7 +299,6 @@
 
 
 .codehilite {
-    border: $border-style;
     @include font-size(xsmall);
     font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
     font-weight: 600;

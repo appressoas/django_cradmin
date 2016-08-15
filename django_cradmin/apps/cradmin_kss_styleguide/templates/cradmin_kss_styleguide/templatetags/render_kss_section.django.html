@@ -42,27 +42,81 @@
 {% endblock description %}
 
 {% block usage %}
-    {% if section.has_markups %}
+    {% if section.has_markups or section.has_examples %}
         <div class="kss-usage">
             {% block usage-title %}
                 <h3>
                     {% trans "Usage" context "cradmin_kss_styleguide" %}
                 </h3>
             {% endblock usage-title %}
+
+            {% for example in section.examples %}
+                {% block example %}
+                    <div class="kss-usage__example
+                            {% if example.syntax == 'html' %}
+                                kss-usage__example--with-preview  kss-usage__example--showpreview
+                            {% endif %}"
+                         id="id_example_{{ section.reference }}_{{ forloop.counter }}">
+                        {% block example-title %}
+                            {% if example.title %}
+                                <h4 class="kss-usage__subtitle">
+                                    {{ example.title }}
+                                </h4>
+                            {% endif %}
+                        {% endblock example-title %}
+                        {% if example.syntax == 'html' %}
+                            <div class="kss-usage__previewbuttons">
+                                <button type="button" class="button button--compact button--fill"
+                                        id="id_example_{{ section.reference }}_{{ forloop.counter }}_previewbutton"
+                                        onclick="cradmin_kss_styleguide_toggle_example(event, 'id_example_{{ section.reference }}_{{ forloop.counter }}', false)">
+                                    {% trans "Preview" %}
+                                </button>
+                                <button type="button" class="button button--compact"
+                                        id="id_example_{{ section.reference }}_{{ forloop.counter }}_codebutton"
+                                        onclick="cradmin_kss_styleguide_toggle_example(event, 'id_example_{{ section.reference }}_{{ forloop.counter }}', true)">
+                                    {% trans "Code" %}
+                                </button>
+                            </div>
+                            {% block example-preview %}
+                                <div class="kss-usage__preview">
+                                    {{ example.text|safe }}
+                                </div>
+                            {% endblock example-preview %}
+                            {% block example-htmlcode %}
+                                <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
+                                    {{ example.html|safe }}
+                                </div>
+                            {% endblock example-htmlcode %}
+                            {% block example-javascript %}
+                                <script>
+
+                                </script>
+                            {% endblock example-javascript %}
+                        </div>
+                    {% else %}
+                        {% block example-nothtmlcode %}
+                            <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
+                                {{ example.html|safe }}
+                            </div>
+                        {% endblock example-nothtmlcode %}
+                    {% endif %}
+                {% endblock example %}
+            {% endfor %}
+
             {% for markup in section.markups %}
                 {% block markup %}
                     {% block markup-title %}
                         {% if markup.title %}
-                            <h4 class="kss-usage__markuptitle">
+                            <h4 class="kss-usage__subtitle">
                                 {{ markup.title }}
                             </h4>
                         {% endif %}
                     {% endblock markup-title %}
-                    {% block markup-markup %}
-                        <div class="kss-usage__markup kss-usage__markup--{{ markup.get_syntax }}">
+                    {% block markup-code %}
+                        <div class="kss-usage__code  kss-usage__code--{{ markup.syntax }}">
                             {{ markup.html|safe }}
                         </div>
-                    {% endblock markup-markup %}
+                    {% endblock markup-code %}
                 {% endblock markup %}
             {% endfor %}
         </div>

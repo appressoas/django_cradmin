@@ -3,3 +3,27 @@
 {% for section in sections %}
     {% render_kss_section styleguideconfig=styleguideconfig section=section %}
 {% endfor %}
+
+
+<script>
+    function cradmin_kss_styleguide_toggle_example(event, id, showcode) {
+        var domElement = window.document.getElementById(id);
+        var previewButtonElement = window.document.getElementById(id + '_previewbutton');
+        var codeButtonElement = window.document.getElementById(id + '_codebutton');
+
+        domElement.classList.remove('kss-usage__example--showpreview');
+        domElement.classList.remove('kss-usage__example--showcode');
+        previewButtonElement.classList.remove('button--fill');
+        codeButtonElement.classList.remove('button--fill');
+
+        if(showcode) {
+            domElement.classList.add('kss-usage__example--showcode');
+            codeButtonElement.classList.add('button--fill');
+        } else {
+            domElement.classList.add('kss-usage__example--showpreview');
+            previewButtonElement.classList.add('button--fill');
+        }
+
+        event.target.blur();
+    }
+</script>
