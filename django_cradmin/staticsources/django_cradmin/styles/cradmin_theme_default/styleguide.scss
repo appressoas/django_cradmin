@@ -250,6 +250,9 @@
             .kss-usage__preview {
                 display: none;
             }
+            .kss-usage__previewiframe {
+                display: none;
+            }
 
             .kss-usage__previewbuttons {
                 @include mq(lg) {
@@ -267,12 +270,18 @@
             .kss-usage__preview {
                 display: none;
             }
+            .kss-usage__previewiframe {
+                display: none;
+            }
         }
         &--showpreview {
             .kss-usage__code {
                 display: none;
             }
             .kss-usage__preview {
+                display: block;
+            }
+            .kss-usage__previewiframe {
                 display: block;
             }
         }
