@@ -60,6 +60,16 @@ wrap them in section tags with the ``page-section page-section--tight`` css clas
     {% endblock body %}
 
 
+django_cradmin/menu.django.html
+===============================
+
+- The ``mobile-header`` block no longer exists. All of the child blocks (mobile-header-pre, mobile-header-post, ...)
+  are also gone. It is replaced by ``menutoggle`` block, but this does not have a 1:1 feature set.
+- The ``css-class`` block no longer exists. It has been replaced by the ``cssclasses`` block, but this
+  should not be overridden in the same manner. It has child-blocks that you will normally want to
+  override instead.
+
+
 django_cradmin/menuitem.django.html
 ===================================
 

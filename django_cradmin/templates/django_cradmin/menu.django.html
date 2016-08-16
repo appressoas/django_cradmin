@@ -9,36 +9,24 @@
 {% block pre-menunav %}{% endblock pre-menunav %}
 
 <div id="id_django_cradmin_mainmenu"
-        {% comment %}
         django-cradmin-menu
-        django-cradmin-menu-autodetect-overflow-y="django-cradmin-menu-overflow-y"
-        {% block scrollfixed %}
-            {% if DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED %}
-                django-cradmin-scroll-top-fixed='{{ DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED|cradmin_jsonencode }}'
-            {% endif %}
-        {% endblock scrollfixed %}
-        {% endcomment %}
-        class="{% block css-class %}menu{% endblock %}">
+        class="{% block cssclasses %}menu  {% block modifier-cssclasses %}menu--disable-toggle-{{ request.cradmin_instance.get_menu.get_smallscreen_breakpoint }}{% endblock %}{% endblock %}">
     {% block pre-menu %}{% endblock pre-menu %}
 
-    <div class="menu__mobileheader">
-        {% block mobile-header %}
-            {% block mobile-header-pre %}{% endblock mobile-header-pre %}
-                <button type="button"
-                        class="django-cradmin-menu-mobiletoggle"
-                        ng-click="cradminMenuTogglePressed()"
-                        ng-class="{'django-cradmin-menu-mobile-toggle-button-expanded': cradminMenuDisplay}"
-                        aria-pressed="{% verbatim %}{{ getAriaPressed() }}{% endverbatim %}">
-                    {% block mobile-header-menutoggle-content %}
-                        {% trans "Menu" %}
-                    {% endblock mobile-header-menutoggle-content %}
-                </button>
-            {% block mobile-header-post %}{% endblock mobile-header-post %}
-        {% endblock mobile-header %}
-    </div>
+    {% block menutoggle %}
+        <button type="button"
+                class="menu__toggle  button button--block  button--primary-fill  button--nomargin"
+                ng-click="cradminMenuTogglePressed()"
+                ng-class="{'button--selected': cradminMenuDisplay}"
+                aria-pressed="{% verbatim %}{{ getAriaPressed() }}{% endverbatim %}">
+            {% block menutoggle_content %}
+                {% trans "Menu" %}
+            {% endblock menutoggle_content %}
+        </button>
+    {% endblock menutoggle %}
 
-    <div class="menu__content" ng-class="{'menu__content--display': cradminMenuDisplay}">
-        <nav class="navigationtree  navigationtree--vertical  navigationtree--primary">
+    <div class="menu__content" ng-class="{'menu__content--expanded': cradminMenuDisplay}">
+        <nav class="navigationtree  navigationtree--vertical-viewheight-{{ request.cradmin_instance.get_menu.get_smallscreen_breakpoint }}  navigationtree--primary">
             {% block menucontent %}
                 {% with menu=request.cradmin_instance.get_menu %}
                     {% for menuitem in menu %}

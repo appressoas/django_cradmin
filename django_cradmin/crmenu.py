@@ -319,3 +319,6 @@ class Menu(object):
             The menu as HTML.
         """
         return render_to_string(self.get_template_name(), context)
+
+    def get_smallscreen_breakpoint(self):
+        return 'md'

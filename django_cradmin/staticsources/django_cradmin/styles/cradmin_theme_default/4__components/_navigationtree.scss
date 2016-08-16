@@ -128,6 +128,20 @@ Styleguide 4.4
         }
     }
 
+    &--vertical-viewheight-md {
+        @extend .navigationtree--vertical;
+        @include minwidth(md) {
+            min-height: 100vh;
+        }
+    }
+
+    &--vertical-viewheight-lg {
+        @extend .navigationtree--vertical;
+        @include minwidth(lg) {
+            min-height: 100vh;
+        }
+    }
+
     &--horizontal {
         display: flex;
         flex-direction: row;
@@ -161,5 +175,4 @@ Styleguide 4.4
             }
         }
     }
-
 }
