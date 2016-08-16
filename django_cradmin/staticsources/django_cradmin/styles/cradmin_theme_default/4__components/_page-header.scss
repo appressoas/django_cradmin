@@ -8,7 +8,7 @@
 
     color: color(primary);
 
-    @include mq(md) {
+    @include minwidth(md) {
         padding: #{$vertical-rythm * 2} 0;
         height: $header-height;
     }
@@ -36,12 +36,12 @@
             border-color: $color-links;
         }
 
-        @include mq(lg) {
+        @include minwidth(lg) {
             display: inline;
         }
 
         &--mittap {
-            @include mq(lg) {
+            @include minwidth(lg) {
                 display: inline-block;
             }
             float: right;
@@ -67,7 +67,7 @@
 
         transition: all 300ms $swift-out;
 
-        @include mq(lg) {
+        @include minwidth(lg) {
             display: none;
         }
 
@@ -96,7 +96,7 @@
             fill: $color-light;
             color: $color-light;
 
-            @include mq(md) {
+            @include minwidth(md) {
                 fill: color(primary);
                 color: color(primary);
             }

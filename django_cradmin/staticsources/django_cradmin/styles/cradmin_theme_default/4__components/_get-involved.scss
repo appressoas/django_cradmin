@@ -7,7 +7,7 @@
     padding-right: $spacing;
     background-color: color(primary);
 
-    @include mq(lg) {
+    @include minwidth(lg) {
         flex-direction: row;
         padding-top: $header-height + $vertical-rythm--spacing;
         padding-bottom: $vertical-rythm--spacing * 2;
@@ -25,7 +25,7 @@
         color: $color-light;
         padding-bottom: $vertical-rythm--spacing;
 
-        @include mq(lg) {
+        @include minwidth(lg) {
             padding: $vertical-rythm--spacing $indention;
             width: calc(#{$grid-width--wide + ($spacing)} * 0.56);
         }
@@ -38,7 +38,7 @@
         color: rgba($color-light, 0.82);
         background-color: color(primary, dark);
 
-        @include mq(lg) {
+        @include minwidth(lg) {
             margin-left: 0;
             margin-right: 0;
             width: calc(#{$grid-width--wide + ($spacing)} * 0.34);
@@ -46,7 +46,7 @@
     }
 
     &__title {
-        @include mq(lg) {
+        @include minwidth(lg) {
             margin-top: $vertical-rythm--spacing;
         }
     }

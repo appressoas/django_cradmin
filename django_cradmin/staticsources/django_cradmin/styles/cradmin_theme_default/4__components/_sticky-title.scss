@@ -5,7 +5,7 @@
         display: inline-block;
         padding: 0 0 $spacing;
 
-        @include mq(md) {
+        @include minwidth(md) {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -25,7 +25,7 @@
                 @extend %icon-chevron-down--primary;
             }
 
-            @include mq(md) {
+            @include minwidth(md) {
                 position: fixed;
                 bottom: 0;
                 background-color: shade($color-background, 3%);

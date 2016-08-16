@@ -25,7 +25,7 @@
         color: $color-light;
         background-color: color(primary);
 
-        @include mq(md) {
+        @include minwidth(md) {
             min-width: $indention;
         }
     }

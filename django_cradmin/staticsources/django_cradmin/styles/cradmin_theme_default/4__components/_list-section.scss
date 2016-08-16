@@ -4,7 +4,7 @@
     padding: 0;
     margin-bottom: $spacing;
 
-    @include mq(lg) {
+    @include minwidth(lg) {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -17,11 +17,11 @@
         background-color: tint($color-background, 50%);
         margin: $spacing--small 0;
 
-        @include mq(md) {
+        @include minwidth(md) {
             margin: $spacing--small $unit;
         }
 
-        @include mq(xl) {
+        @include minwidth(xl) {
             max-width: $grid-width--wide / 3 - ($unit * 2);
             padding: $vertical-rythm--spacing $indention;
         }
@@ -47,7 +47,7 @@
         // &:nth-child(3):nth-last-child(3),
         // &:nth-child(4):nth-last-child(2),
         // &:nth-child(5):nth-last-child(1) {
-        //     @include mq(md) {
+        //     @include minwidth(md) {
         //         margin: $unit $unit 0;
         //     }
         // }
@@ -75,7 +75,7 @@
             margin-left: 0;
             margin-right: 0;
 
-            @include mq(xl) {
+            @include minwidth(xl) {
                 max-width: $grid-width--wide / 3 - ($unit);
             }
         }

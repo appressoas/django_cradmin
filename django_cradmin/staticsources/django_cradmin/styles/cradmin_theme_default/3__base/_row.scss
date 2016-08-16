@@ -20,7 +20,7 @@
     }
 
     &--wide {
-        @include mq(md) {
+        @include minwidth(md) {
             margin-left: -($spacing--large);
             margin-right: -($spacing--large);
 

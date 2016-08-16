@@ -32,7 +32,7 @@
         }
     }
 
-    @include mq(md) {
+    @include minwidth(md) {
         padding-top: $header-height + $vertical-rythm--spacing;
         padding-bottom: $vertical-rythm--spacing * 3;
     }

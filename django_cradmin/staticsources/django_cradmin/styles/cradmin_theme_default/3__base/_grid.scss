@@ -7,7 +7,7 @@
     padding-left: $spacing;
     padding-right: $spacing;
 
-    @include mq(lg) {
+    @include minwidth(lg) {
         padding-left: $spacing--large;
         padding-right: $spacing--large;
     }

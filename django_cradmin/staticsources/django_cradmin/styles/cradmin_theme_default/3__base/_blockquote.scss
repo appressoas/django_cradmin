@@ -29,12 +29,12 @@ blockquote {
         @include font-size(large);
         font-style: italic;
 
-        @include mq(lg) {
+        @include minwidth(lg) {
             margin-left: -($spacing--large * 3);
             margin-right: -($spacing--large * 3);
         }
 
-        @include mq(xl) {
+        @include minwidth(xl) {
             margin-left: -($spacing--xlarge);
             margin-right: -($spacing--xlarge);
         }

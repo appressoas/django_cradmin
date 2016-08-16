@@ -11,10 +11,10 @@ Media queries are **only** ment for the mobile first approach; Which means you d
 4. `xl: 1240px` - Extra large and up
 
 Markup:
-@include mq(xs) {}
-@include mq(md) {}
-@include mq(lg) {}
-@include mq(xl) {}
+@include minwidth(xs) {}
+@include minwidth(md) {}
+@include minwidth(lg) {}
+@include minwidth(xl) {}
 
 Styleguide 1.4
 */

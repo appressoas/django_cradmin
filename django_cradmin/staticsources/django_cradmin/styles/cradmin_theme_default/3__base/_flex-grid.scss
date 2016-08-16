@@ -1,5 +1,5 @@
 .flex-grid {
-    @include mq(lg) {
+    @include minwidth(lg) {
         display: flex;
     }
 
@@ -8,7 +8,7 @@
         flex-basis: 0;
         padding: $spacing;
 
-        @include mq(lg) {
+        @include minwidth(lg) {
             padding-top: 0;
             padding-bottom: 0;
         }

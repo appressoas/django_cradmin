@@ -1,4 +1,4 @@
-@mixin mq($name) {
+@mixin minwidth($name) {
     @if not map-has-key($breakpoints, $name) {
         @warn 'Warning: `#{$name}` is not a valid breakpoint name, get your shit together!';
     } @else {

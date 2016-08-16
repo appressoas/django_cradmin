@@ -9,7 +9,7 @@
 
     width: 40px;
 
-    @include mq(xs) {
+    @include minwidth(xs) {
         width: auto;
     }
 
@@ -30,7 +30,7 @@
         line-height: 40px;
         color: color(primary);
 
-        @include mq(md) {
+        @include minwidth(md) {
             display: inline-block;
         }
     }
