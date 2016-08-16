@@ -29,8 +29,7 @@ Styleguide 4.3
         }
 
         .layout__item {
-            &:first-child {
-                background: #ccc;
+            &:nth-child(1) {
                 @include minwidth(md) {
                     width: sidebar-size(md);
                 }
@@ -41,7 +40,8 @@ Styleguide 4.3
                     width: sidebar-size(xl);
                 }
             }
-            &:last-child {
+            &:nth-child(2) {
+                padding: 0 $spacing;
                 @include minwidth(md) {
                     width: calc(100% - #{sidebar-size(md)});
                 }
