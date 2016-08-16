@@ -82,7 +82,12 @@
                                     <div class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}">
                                         <iframe
                                             src="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
-                                            style="height: {{ example.height }}">
+                                            {% if example.height %}
+                                                style="height: {{ example.height }}"
+                                            {% else %}
+                                                onload="cradmin_kss_styleguide_autoresize_iframe(this)"
+                                            {% endif %}
+                                        >
                                         </iframe>
                                         <a href="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
                                                 target="_blank">
