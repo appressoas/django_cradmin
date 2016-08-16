@@ -84,4 +84,4 @@ HTML style guide
 - **Never** use ID for styling.
 - Prefix IDs with ``id_``, and write ids in all lowercase with words separated by a single ``_``.
   Example: ``id_my_cool_element``.
-- Separate css classes with two spaces. Example: ``<div class=class1  class2>``
+- Separate css classes with two spaces. Example: ``<div class="class1  class2">``

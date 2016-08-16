@@ -58,11 +58,13 @@
                             {% endif %}"
                          id="id_example_{{ section.reference }}_{{ forloop.counter }}">
                         {% block example-title %}
-                            {% if example.title %}
-                                <h4 class="kss-usage__subtitle">
+                            <h4 class="kss-usage__subtitle">
+                                {% if example.title %}
                                     {{ example.title }}
-                                </h4>
-                            {% endif %}
+                                {% else %}
+                                    {% trans "Example" %}
+                                {% endif %}
+                            </h4>
                         {% endblock example-title %}
                         {% if example.syntax == 'html' %}
                             <div class="kss-usage__previewbuttons">

@@ -14,7 +14,9 @@
 {% block body %}
     {% block menu %}
         {% if not cradmin_hide_menu %}
-            {% cradmin_render_menu %}
+            <div class="layout__item">
+                {% cradmin_render_menu %}
+            </div>
         {% endif %}
     {% endblock menu %}
 

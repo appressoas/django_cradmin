@@ -9,6 +9,11 @@
 }
 
 
+@function sidebar-size($name) {
+    @return map-get($sidebar-sizes, $name);
+}
+
+
 // Defining colors as a map
 // retrieve color from $colors map ie. `color(primary, base)`
 @function color($color-name, $color-variant: 'base') {

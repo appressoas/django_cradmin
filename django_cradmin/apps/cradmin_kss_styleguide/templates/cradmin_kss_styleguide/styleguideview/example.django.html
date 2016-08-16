@@ -1,9 +1,24 @@
-<html>
+{% comment %}
+    Base template for guide examples.
+{% endcomment %}<!DOCTYPE html>
+<html {% block html_element_attributes %}lang="en"{% endblock %}>
     <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>{{ section.reference }} - Example {{ exampleindex }}</title>
-        <link href='{{ styleguideconfig.get_cssurl_for_styleguide }}' rel="stylesheet">
+
+        {% block styles %}
+            <link href='{{ styleguideconfig.get_cssurl_for_styleguide }}' rel="stylesheet">
+        {% endblock styles %}
+
+        {% block javascript %}
+            {# Override this to add javascript #}
+        {% endblock javascript %}
     </head>
     <body>
         {{ example.text|safe }}
+        {% block end-of-body %}{% endblock end-of-body %}
     </body>
 </html>

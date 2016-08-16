@@ -4,7 +4,10 @@ from django_cradmin.apps.cradmin_kss_styleguide import styleguide_registry
 
 
 class ExampleView(TemplateView):
-    template_name = 'cradmin_kss_styleguide/styleguideview/example.django.html'
+    def get_template_names(self):
+        return [
+            self.styleguideconfig.get_example_template_name()
+        ]
 
     def get_styleguideconfig(self):
         styleguideconfig = styleguide_registry.Registry.get_instance()[self.kwargs['unique_id']]

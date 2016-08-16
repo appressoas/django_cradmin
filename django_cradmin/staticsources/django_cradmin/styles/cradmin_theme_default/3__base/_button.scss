@@ -177,6 +177,10 @@ Styleguide 3.2
         }
     }
 
+    &--nomargin {
+        margin: 0;
+    }
+
     &--block {
         display: block;
         width: 100%;

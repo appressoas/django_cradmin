@@ -60,9 +60,10 @@ wrap them in section tags with the ``page-section page-section--tight`` css clas
     {% endblock body %}
 
 
-menu.django.html
-================
-The ``pre-menunav`` and ``post-menunav`` blocks no longer exists.
+django_cradmin/menuitem.django.html
+===================================
+
+- The ``extra-list-item-attributes`` block no longer exists.
 
 
 *****************
@@ -87,3 +88,12 @@ class, this does not override typography styles. Instead it only focus on layout
 
 This means that you need to use css classes to style heading elements unless you want them to have
 their original sizes.
+
+
+
+********************************
+Deprecated in the python library
+********************************
+
+- django_cradmin.crmenu.MenuItem.get_active_item_wrapper_tag is deprecated. Use
+  :meth:`django_cradmin.crmenu.MenuItem.get_menu_item_active_htmltag`.

@@ -14,5 +14,7 @@ class CradminAppConfig(AppConfig):
             appname='django_cradmin',
             sourcefolder='styles/cradmin_theme_default',
             sourcefile='styleguide.scss',
+            template_name='cradmin_kss_styleguide/styleguideview/cradmin-guide.django.html',
+            example_template_name='cradmin_kss_styleguide/styleguideview/cradmin-example.django.html',
         )
         styleguide_registry.Registry.get_instance().add(styleguide)

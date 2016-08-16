@@ -46,7 +46,7 @@ class MenuItem(object):
         return 'django-cradmin-menu-item'
 
     def get_link_css_class(self):
-        return ''
+        return 'navigationtree__link'
 
     def get_context_data(self):
         """
@@ -64,21 +64,42 @@ class MenuItem(object):
     def render(self):
         return render_to_string(self.template_name, self.get_context_data())
 
-    def get_active_item_wrapper_tag(self):
+    def get_menu_item_htmltag(self):
         """
-        Get the wrapper tag for the active item.
+        Get the HTML tag to use for the html element with the ``menu__item`` css class.
 
-        This defaults to ``None``, which means that we do not
-        wrap the active item in any tag.
+        Defaults to ``"div"`` if :attr:`.active` is ``False`` and uses :meth:`.get_menu_item_active_htmltag`
+        if :attr:`.active` is ``True``.
+        """
+        if self.is_active():
+            return self.get_menu_item_active_htmltag()
+        else:
+            return 'div'
+
+    def get_menu_item_active_htmltag(self):
+        """
+        Get the HTML tag to use for the html element with the ``menu__item`` css class if :attr:`.active`
+        is ``True``.
+
+        Defaults to ``"div"``.
 
         You would typically override this if you hide or do not include
         the page header, and want the active menu item to be H1::
 
             class MyMenuItem(crmenu.Item):
-                def get_active_item_wrapper_tag(self):
+                def get_menu_item_active_htmltag(self):
                     return "h1"
         """
-        return None
+        try:
+            tag = self.get_active_item_wrapper_tag()
+        except DeprecationWarning:
+            tag = 'div'
+        else:
+            warnings.warn("add() is deprecated, use get_active_item_wrapper_tag() instead.", DeprecationWarning)
+        return tag
+
+    def get_active_item_wrapper_tag(self):
+        raise DeprecationWarning()
 
     def is_active(self):
         """
@@ -259,7 +280,12 @@ class Menu(object):
         Returns:
             An iterator over subclasses of :class:`.MenuItem`.
         """
-        return iter(self.menu)
+        for menuitem in self.headeritems:
+            yield menuitem
+        for menuitem in self.mainitems:
+            yield menuitem
+        for menuitem in self.footeritems:
+            yield menuitem
 
     def appindex_url(self, appname):
         """

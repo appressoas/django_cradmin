@@ -18,19 +18,39 @@ Example: {type: isolated} Left sidebar with content filling right hand side
         </main>
     </div>
 
-
 Styleguide 4.3
 */
 .layout {
     &--leftsidebar-content {
         display: flex;
+        flex-direction: column;
+        @include minwidth(md) {
+            flex-direction: row;
+        }
 
         .layout__item {
             &:first-child {
-                width: 300px;
+                background: #ccc;
+                @include minwidth(md) {
+                    width: sidebar-size(md);
+                }
+                @include minwidth(lg) {
+                    width: sidebar-size(lg);
+                }
+                @include minwidth(xl) {
+                    width: sidebar-size(xl);
+                }
             }
             &:last-child {
-                width: calc(100% - 350px);
+                @include minwidth(md) {
+                    width: calc(100% - #{sidebar-size(md)});
+                }
+                @include minwidth(lg) {
+                    width: calc(100% - #{sidebar-size(lg)});
+                }
+                @include minwidth(xl) {
+                    width: calc(100% - #{sidebar-size(xl)});
+                }
             }
         }
     }
