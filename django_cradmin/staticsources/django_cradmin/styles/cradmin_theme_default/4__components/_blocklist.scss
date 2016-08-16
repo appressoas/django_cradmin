@@ -1,26 +1,39 @@
 
 /* List of block elements
 
+Nulla vitae elit libero, a pharetra augue. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam id dolor id nibh ultricies vehicula ut id elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.
+
+Cras justo odio, dapibus ac *facilisis* in,
+
+- egestas eget quam.
+- Donec id elit non mi porta gravida at eget metus. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
+
+Markup: {format: css} Hello world
+    .test {
+
+    }
+
+
 Example: Basic block list
     <ul class="blocklist">
-        <li class="blocklist__element">Element 1</li>
-        <li class="blocklist__element">Element 2</li>
-        <li class="blocklist__element">Element 3</li>
+        <li class="blocklist__item">Element 1</li>
+        <li class="blocklist__item">Element 2</li>
+        <li class="blocklist__item">Element 3</li>
     </ul>
 
 
 Example: With headings for each element
     <section class="blocklist">
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h4">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
         </section>
 
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h4">Element 2</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
         </section>
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h4">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </section>
@@ -29,15 +42,15 @@ Example: With headings for each element
 
 Example: List of links
     <nav class="blocklist">
-        <a class="blocklist__element blocklist__element--link">
+        <a class="blocklist__item blocklist__item--link">
             <h2 class="h4">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
         </a>
-        <a class="blocklist__element blocklist__element--link">
+        <a class="blocklist__item blocklist__item--link">
             <h2 class="h4">Element 2</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
         </a>
-        <a class="blocklist__element blocklist__element--link">
+        <a class="blocklist__item blocklist__item--link">
             <h2 class="h4">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </a>
@@ -46,14 +59,14 @@ Example: List of links
 
 Example: With buttons
     <section class="blocklist">
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h4">Element 1</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
             <p>
                 <button class="button  button--primary">Edit</button>
             </p>
         </section>
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h4">Element 2</h2>
             <p>Pellentesque Cursus Adipiscing</p>
             <p>
@@ -66,15 +79,15 @@ Example: With buttons
 
 Example: With tighter spacing
     <section class="blocklist blocklist--tight">
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h6">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
         </section>
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h6">Element 2</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
         </section>
-        <section class="blocklist__element">
+        <section class="blocklist__item">
             <h2 class="h6">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </section>
@@ -84,7 +97,7 @@ Example: With tighter spacing
 Styleguide 4.2
 */
 .blocklist {
-    .blocklist__element {
+    .blocklist__item {
         display: block;
         margin-bottom: $vertical-rythm--spacing;
         background-color: rgba(color(neutral), 0.2);
@@ -123,7 +136,7 @@ Styleguide 4.2
     }
 
     &--tight {
-        .blocklist__element {
+        .blocklist__item {
             margin-bottom: $vertical-rythm--spacing--small;
             padding: $vertical-rythm--spacing--small $spacing--small;
         }

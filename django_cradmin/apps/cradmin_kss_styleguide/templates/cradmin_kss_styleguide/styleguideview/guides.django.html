@@ -8,7 +8,7 @@
 {% block content %}
     <nav class="blocklist">
         {% for styleguideconfig in styleguideregistry.iterstyleguides %}
-            <a class="blocklist__element blocklist__element--link"
+            <a class="blocklist__item blocklist__item--link"
                     href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">
                 {{ styleguideconfig.label }}
             </a>

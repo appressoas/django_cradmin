@@ -12,7 +12,7 @@
     <section class="{% block list_css_class %}blocklist{% endblock %}">
         {% for role in roles %}
             <a href="{% cradmin_rolefrontpage_url role %}"
-                    class="{% block list_element_css_class %}blocklist__element  {% block list_element_css_class_modifier %}blocklist__element--link{% endblock %}{% endblock %}">
+                    class="{% block list_element_css_class %}blocklist__item  {% block list_element_css_class_modifier %}blocklist__item--link{% endblock %}{% endblock %}">
                 <h2 class="django-cradmin-roleselect-role-title">
                     {% cradmin_titletext_for_role role %}
                 </h2>
