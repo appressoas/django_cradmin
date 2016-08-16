@@ -1,18 +1,6 @@
 
 /* List of block elements
 
-Nulla vitae elit libero, a pharetra augue. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam id dolor id nibh ultricies vehicula ut id elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit.
-
-Cras justo odio, dapibus ac *facilisis* in,
-
-- egestas eget quam.
-- Donec id elit non mi porta gravida at eget metus. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.
-
-Markup: {format: css} Hello world
-    .test {
-
-    }
-
 
 Example: Basic block list
     <ul class="blocklist">
@@ -23,35 +11,55 @@ Example: Basic block list
 
 
 Example: With headings for each element
-    <section class="blocklist">
+    <div class="blocklist">
         <section class="blocklist__item">
-            <h2 class="h4">Element 1</h2>
+            <h2 class="blocklist__itemtitle">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
         </section>
-
         <section class="blocklist__item">
-            <h2 class="h4">Element 2</h2>
+            <h2 class="blocklist__itemtitle">Element 2</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
         </section>
         <section class="blocklist__item">
-            <h2 class="h4">Element 3</h2>
+            <h2 class="blocklist__itemtitle">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </section>
-    </section>
+    </div>
+
+
+Example: We have variants for heading sizes
+    <div class="blocklist">
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle blocklist__itemtitle--small">Small heading</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Default heading</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle blocklist__itemtitle--large">Large heading</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle blocklist__itemtitle--xlarge">Extra large heading</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+    </div>
 
 
 Example: List of links
     <nav class="blocklist">
         <a class="blocklist__item blocklist__item--link">
-            <h2 class="h4">Element 1</h2>
+            <h2 class="blocklist__itemtitle">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
         </a>
         <a class="blocklist__item blocklist__item--link">
-            <h2 class="h4">Element 2</h2>
+            <h2 class="blocklist__itemtitle">Element 2</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
         </a>
         <a class="blocklist__item blocklist__item--link">
-            <h2 class="h4">Element 3</h2>
+            <h2 class="blocklist__itemtitle">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </a>
     </nav>
@@ -60,14 +68,14 @@ Example: List of links
 Example: With buttons
     <section class="blocklist">
         <section class="blocklist__item">
-            <h2 class="h4">Element 1</h2>
+            <h2 class="blocklist__itemtitle">Element 1</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
             <p>
                 <button class="button  button--primary">Edit</button>
             </p>
         </section>
         <section class="blocklist__item">
-            <h2 class="h4">Element 2</h2>
+            <h2 class="blocklist__itemtitle">Element 2</h2>
             <p>Pellentesque Cursus Adipiscing</p>
             <p>
                 <button class="button  button--primary">Edit</button>
@@ -80,15 +88,15 @@ Example: With buttons
 Example: With tighter spacing
     <section class="blocklist blocklist--tight">
         <section class="blocklist__item">
-            <h2 class="h6">Element 1</h2>
+            <h2 class="blocklist__itemtitle">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
         </section>
         <section class="blocklist__item">
-            <h2 class="h6">Element 2</h2>
+            <h2 class="blocklist__itemtitle">Element 2</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
         </section>
         <section class="blocklist__item">
-            <h2 class="h6">Element 3</h2>
+            <h2 class="blocklist__itemtitle">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </section>
     </section>
@@ -132,6 +140,24 @@ Styleguide 4.2
             &:focus {
                 border-color: $color-links--hover;
             }
+        }
+    }
+
+    .blocklist__itemtitle {
+        margin-bottom: $vertical-rythm--spacing--small;
+
+        @include font-size(medium);
+
+        &--small {
+            @include font-size(small);
+        }
+
+        &--large {
+            @include font-size(large);
+        }
+
+        &--xlarge {
+            @include font-size(xlarge);
         }
     }
 
