@@ -75,6 +75,8 @@ SASS style guide
 - Indent with 4 spaces.
 - Use BEM naming syntax. See http://getbem.com/ and http://cssguidelin.es/#bem-like-naming.
 - Document everything with `PythonKSS <http://pythonkss.readthedocs.io/en/latest/style_documentation_syntax.html>`_.
+- Use ``md``, ``lg``, ``xl``, ... (as part of modifier name) for breakpoints.
+- Use ``small``, ``large``, ``xlarge``, ... (as part of modifier name) for sizes.
 
 
 ****************

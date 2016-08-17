@@ -107,3 +107,11 @@ Deprecated in the python library
 
 - django_cradmin.crmenu.MenuItem.get_active_item_wrapper_tag is deprecated. Use
   :meth:`django_cradmin.crmenu.MenuItem.get_menu_item_active_htmltag`.
+
+
+*******************************
+Removed from the python library
+*******************************
+
+- ``django_cradmin.viewhelpers.listbuilder.lists.FloatGridList`` is removed for the reason explained
+  for the ``django-cradmin-listbuilder-floatgridlist`` css class above.
