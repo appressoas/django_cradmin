@@ -31,12 +31,15 @@ Styleguide 4.3
         .layout__item {
             &:nth-child(1) {
                 @include minwidth(md) {
+                    min-width: sidebar-size(md);
                     width: sidebar-size(md);
                 }
                 @include minwidth(lg) {
+                    min-width: sidebar-size(md);
                     width: sidebar-size(lg);
                 }
                 @include minwidth(xl) {
+                    min-width: sidebar-size(md);
                     width: sidebar-size(xl);
                 }
             }
