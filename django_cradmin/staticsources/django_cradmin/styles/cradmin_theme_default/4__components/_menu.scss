@@ -149,7 +149,7 @@ Styleguide 4.5
     }
 
     &--disable-toggle-md {
-        @include minwidth(md) {
+        @include min-width(md) {
             .menu__toggle {
                 display: none;
             }
@@ -160,7 +160,7 @@ Styleguide 4.5
     }
 
     &--disable-toggle-lg {
-        @include minwidth(lg) {
+        @include min-width(lg) {
             .menu__toggle {
                 display: none;
             }

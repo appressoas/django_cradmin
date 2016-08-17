@@ -4,7 +4,7 @@
     overflow: hidden;
     background-color: shade($color-background, 5%);
 
-    @include minwidth(md) {
+    @include min-width(md) {
         &:before {
             content: '';
             display: block;
@@ -22,7 +22,7 @@
         z-index: 2;
         padding: $spacing--large 0;
 
-        @include minwidth(md) {
+        @include min-width(md) {
             width: 50%;
             float: left;
         }
@@ -38,7 +38,7 @@
                 padding: 0;
             }
 
-            @include minwidth(md) {
+            @include min-width(md) {
                 background-color: transparent;
 
                 padding-left: $spacing--large;

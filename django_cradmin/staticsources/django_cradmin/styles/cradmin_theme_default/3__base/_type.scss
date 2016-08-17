@@ -53,7 +53,7 @@ h1,
 %h1 {
     @include font-size(xxlarge);
 
-    @include minwidth(md) {
+    @include min-width(md) {
         margin-bottom: $vertical-rythm--spacing;
     }
 
@@ -104,11 +104,11 @@ ul + h4 {
     line-height: 0.97;
     font-size: 60px;
 
-    @include minwidth(md) {
+    @include min-width(md) {
         font-size: 80px;
     }
 
-    @include minwidth(lg) {
+    @include min-width(lg) {
         font-size: 110px;
     }
 
@@ -124,10 +124,10 @@ ul + h4 {
         font-size: 52px;
         letter-spacing: 0.5px;
 
-        @include minwidth(md) {
+        @include min-width(md) {
             font-size: 60px;
         }
-        @include minwidth(lg) {
+        @include min-width(lg) {
             font-size: 80px;
         }
     }

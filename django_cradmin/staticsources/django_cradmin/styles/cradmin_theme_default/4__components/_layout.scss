@@ -24,34 +24,34 @@ Styleguide 4.3
     &--leftsidebar-content {
         display: flex;
         flex-direction: column;
-        @include minwidth(md) {
+        @include min-width(md) {
             flex-direction: row;
         }
 
         .layout__item {
             &:nth-child(1) {
-                @include minwidth(md) {
+                @include min-width(md) {
                     min-width: sidebar-size(md);
                     width: sidebar-size(md);
                 }
-                @include minwidth(lg) {
+                @include min-width(lg) {
                     min-width: sidebar-size(md);
                     width: sidebar-size(lg);
                 }
-                @include minwidth(xl) {
+                @include min-width(xl) {
                     min-width: sidebar-size(md);
                     width: sidebar-size(xl);
                 }
             }
             &:nth-child(2) {
                 padding: 0 $spacing;
-                @include minwidth(md) {
+                @include min-width(md) {
                     width: calc(100% - #{sidebar-size(md)});
                 }
-                @include minwidth(lg) {
+                @include min-width(lg) {
                     width: calc(100% - #{sidebar-size(lg)});
                 }
-                @include minwidth(xl) {
+                @include min-width(xl) {
                     width: calc(100% - #{sidebar-size(xl)});
                 }
             }

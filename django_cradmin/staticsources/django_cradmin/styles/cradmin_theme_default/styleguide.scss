@@ -20,13 +20,13 @@
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    @include minwidth(lg) {
+    @include min-width(lg) {
         flex-direction: row;
     }
 }
 
 .kss-main {
-    @include minwidth(lg) {
+    @include min-width(lg) {
         width: calc(100% - 250px);
     }
 }
@@ -79,7 +79,7 @@
 }
 
 .kss-nav {
-    @include minwidth(lg) {
+    @include min-width(lg) {
         width: 270px;
     }
     padding: $spacing 0 0;
@@ -241,7 +241,7 @@
         &--with-preview {
             position: relative;
             .kss-usage__subtitle {
-                @include minwidth(lg) {
+                @include min-width(lg) {
                     margin-right: 260px;
                 }
             }
@@ -257,7 +257,7 @@
             }
 
             .kss-usage__previewbuttons {
-                @include minwidth(lg) {
+                @include min-width(lg) {
                     position: absolute;
                     top: 0;
                     right: 0;
@@ -301,11 +301,11 @@
 }
 
 .kss-blockquote-wrapper {
-    @include minwidth(lg) {
+    @include min-width(lg) {
         margin-left: $spacing--xlarge;
         max-width: calc(100% - #{$spacing--xlarge});
     }
-    @include minwidth(xl) {
+    @include min-width(xl) {
         margin-left: $spacing--xlarge;
     }
 }

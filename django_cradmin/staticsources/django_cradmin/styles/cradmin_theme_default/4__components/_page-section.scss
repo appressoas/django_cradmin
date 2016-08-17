@@ -31,7 +31,7 @@
         background-color: color(primary);
         margin-top: -($vertical-rythm * 5);
 
-        @include minwidth(md) {
+        @include min-width(md) {
             margin-top: -($vertical-rythm * 10);
         }
     }

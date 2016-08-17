@@ -32,7 +32,7 @@
 
         padding: $spacing;
 
-        @include minwidth(md) {
+        @include min-width(md) {
             padding: $spacing--large;
         }
 

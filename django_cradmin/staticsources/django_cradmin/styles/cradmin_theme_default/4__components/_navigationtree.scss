@@ -130,14 +130,14 @@ Styleguide 4.4
 
     &--vertical-viewheight-md {
         @extend .navigationtree--vertical;
-        @include minwidth(md) {
+        @include min-width(md) {
             min-height: 100vh;
         }
     }
 
     &--vertical-viewheight-lg {
         @extend .navigationtree--vertical;
-        @include minwidth(lg) {
+        @include min-width(lg) {
             min-height: 100vh;
         }
     }

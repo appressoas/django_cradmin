@@ -9,7 +9,7 @@
     -webkit-overflow-scrolling: touch;
     padding-bottom: $spacing;
 
-    @include minwidth(md) {
+    @include min-width(md) {
         left: 50%;
     }
 
@@ -26,7 +26,7 @@
         bottom: 0;
         background-color: color(primary);
 
-        @include minwidth(md) {
+        @include min-width(md) {
             width: 50%;
         }
     }
@@ -41,7 +41,7 @@
         padding-left: $spacing;
         padding-right: $spacing;
 
-        @include minwidth(lg) {
+        @include min-width(lg) {
             padding-top: $header-height + $spacing--large;
             padding-left: $spacing--large;
             padding-right: $spacing--large;
@@ -87,7 +87,7 @@
 
         display: none;
 
-        @include minwidth(md) {
+        @include min-width(md) {
             display: block;
         }
     }

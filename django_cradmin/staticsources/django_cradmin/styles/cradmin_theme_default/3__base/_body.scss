@@ -19,7 +19,7 @@ body {
         overflow: hidden;
         position: fixed;
 
-        @include minwidth(md) {
+        @include min-width(md) {
             position: relative;
         }
     }

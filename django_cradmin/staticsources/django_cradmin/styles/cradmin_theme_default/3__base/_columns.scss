@@ -8,7 +8,7 @@
     }
 }
 
-@include minwidth(md) {
+@include min-width(md) {
     @for $i from 1 through 11 {
         .col-#{$i}--md  {
             float: left;
@@ -17,7 +17,7 @@
     }
 }
 
-@include minwidth(lg) {
+@include min-width(lg) {
     @for $i from 1 through 11 {
         .col-#{$i}--lg  {
             float: left;
@@ -26,7 +26,7 @@
     }
 }
 
-@include minwidth(xl) {
+@include min-width(xl) {
     @for $i from 1 through 11 {
         .col-#{$i}--xl  {
             float: left;
@@ -45,7 +45,7 @@
     }
 }
 
-@include minwidth(md) {
+@include min-width(md) {
     @for $i from 1 through 11 {
         .col-offset-#{$i}--md  {
             margin-left: percentage($i/12);
@@ -53,7 +53,7 @@
     }
 }
 
-@include minwidth(lg) {
+@include min-width(lg) {
     @for $i from 1 through 11 {
         .col-offset-#{$i}--lg  {
             margin-left: percentage($i/12);
@@ -61,7 +61,7 @@
     }
 }
 
-@include minwidth(xl) {
+@include min-width(xl) {
     @for $i from 1 through 11 {
         .col-offset-#{$i}--xl  {
             margin-left: percentage($i/12);

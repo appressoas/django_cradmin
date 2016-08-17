@@ -112,7 +112,7 @@ Styleguide 3.2
     background-color: transparent;
     margin-bottom: $unit;
 
-    @include minwidth(md) {
+    @include min-width(md) {
         display: inline-block;
         width: auto;
         padding: $spacing--small #{$indention - $border-width};
@@ -171,7 +171,7 @@ Styleguide 3.2
     }
 
     &--spaced {
-        @include minwidth(md) {
+        @include min-width(md) {
             margin-left: $spacing--small;
             margin-right: $spacing--small;
         }
