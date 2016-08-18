@@ -114,6 +114,19 @@ class IevvBuildstaticStyleGuide(AbstractStyleGuide):
         return static(staticurl)
 
 
+class CradminStyleGuide(IevvBuildstaticStyleGuide):
+    def __init__(self, *args, **kwargs):
+        template_name = kwargs.pop(
+            'template_name',
+            'cradmin_kss_styleguide/styleguideview/cradmin-guide.django.html')
+        example_template_name = kwargs.pop(
+            'example_template_name',
+            'cradmin_kss_styleguide/styleguideview/cradmin-example.django.html')
+        kwargs['template_name'] = template_name
+        kwargs['example_template_name'] = example_template_name
+        super(CradminStyleGuide, self).__init__(*args, **kwargs)
+
+
 class Registry(Singleton):
     """
     Registry of :class:`.StyleGuide` objects.

@@ -116,7 +116,7 @@ class List(AbstractRenderableWithCss):
         """
         Sets ``django-cradmin-listbuilder-list`` as css class for the list.
         """
-        return ['django-cradmin-listbuilder-list']
+        return []
 
     def append(self, renderable):
         """
