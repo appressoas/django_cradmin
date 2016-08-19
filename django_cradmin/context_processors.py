@@ -19,9 +19,6 @@ def get_django_cradmin_menu_scroll_top_fixed_setting():
 
 def cradmin(request):
     return {
-        'DJANGO_CRADMIN_THEME_PATH': get_setting(
-            'DJANGO_CRADMIN_THEME_PATH',
-            'django_cradmin/dist/css/cradmin_theme_default/theme.css'),
         'DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED': get_django_cradmin_menu_scroll_top_fixed_setting(),
         'DJANGO_CRADMIN_MOMENTJS_LOCALE': get_setting(
             'DJANGO_CRADMIN_MOMENTJS_LOCALE', None),
