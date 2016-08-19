@@ -99,6 +99,9 @@ class List(AbstractRenderableWithCss):
     def __init__(self):
         self.renderable_list = []
 
+    def get_wrapper_htmltag(self):
+        return 'div'
+
     def iter_renderables(self):
         """
         Get an iterator over the items in the list.

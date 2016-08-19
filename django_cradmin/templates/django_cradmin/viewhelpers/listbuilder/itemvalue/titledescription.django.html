@@ -6,7 +6,7 @@
     {% block start-of-content %}{% endblock start-of-content %}
 
     {% block title %}
-        <h2 class="django-cradmin-listbuilder-itemvalue-titledescription-title">
+        <h2 class="blocklist__itemtitle">
             {% block title-content %}
                 {{ me.get_title }}
             {% endblock title-content %}
@@ -16,7 +16,7 @@
 
     {% block description %}
         {% if me.get_description %}
-            <p class="django-cradmin-listbuilder-itemvalue-titledescription-description">
+            <p>
                 {% block description-content %}
                     {{ me.get_description }}
                 {% endblock description-content %}

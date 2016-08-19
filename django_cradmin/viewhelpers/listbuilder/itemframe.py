@@ -7,7 +7,7 @@ class DefaultSpacingItemFrame(base.ItemFrameRenderer):
     """
     def get_base_css_classes_list(self):
         css_classes = super(DefaultSpacingItemFrame, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listbuilder-itemframe-defaultspacing')
+        css_classes.append('blocklist__item')
         return css_classes
 
 
@@ -19,7 +19,7 @@ class Link(DefaultSpacingItemFrame):
 
     def get_base_css_classes_list(self):
         css_classes = super(Link, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listbuilder-itemframe-link')
+        css_classes.append('blocklist__item--link')
         return css_classes
 
     def get_url(self):
