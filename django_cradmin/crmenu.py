@@ -322,3 +322,15 @@ class Menu(object):
 
     def get_smallscreen_breakpoint(self):
         return 'md'
+
+    def get_layout_direction(self):
+        """
+        Decides the direction of the navigation tree menu layout
+
+        - vertical (Default)
+        - horizontal
+
+        Returns:
+            the direction as a string
+        """
+        return 'vertical'

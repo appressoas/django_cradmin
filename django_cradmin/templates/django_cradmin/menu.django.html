@@ -26,7 +26,7 @@
     {% endblock menutoggle %}
 
     <div class="menu__content" ng-class="{'menu__content--expanded': cradminMenuDisplay}">
-        <nav class="navigationtree  navigationtree--vertical-viewheight-{{ request.cradmin_instance.get_menu.get_smallscreen_breakpoint }}  navigationtree--primary">
+        <nav class="navigationtree  navigationtree--{{ request.cradmin_instance.get_menu.get_layout_direction }}-viewheight-{{ request.cradmin_instance.get_menu.get_smallscreen_breakpoint }}  navigationtree--primary">
             {% block menucontent %}
                 {% with menu=request.cradmin_instance.get_menu %}
                     {% for menuitem in menu %}
