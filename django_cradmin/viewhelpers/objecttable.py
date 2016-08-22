@@ -1179,10 +1179,7 @@ class ObjectTableView(ListView):
             del querystring_dict['page']
 
         if querystring_dict:
-            querystring = {}
-            for k, v in querystring_dict.items():
-                querystring[k] = v
-            return urlencode(querystring)
+            return querystring_dict.urlencode()
         else:
             return ''
 
