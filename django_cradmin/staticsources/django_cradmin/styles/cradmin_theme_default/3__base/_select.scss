@@ -184,7 +184,7 @@ Styleguide 3.7
 
     &--outlined,
     &--inline-action {
-        border: $border-width solid color(neutral, medium);
+        border: $border-width solid color(neutral, dark);
 
         &:before {
             right: $spacing--small;

@@ -299,39 +299,39 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
             )
         ]
     ),
-    ievvbuildstatic.config.App(
-        appname='custom_theme_demo',
-        version='2.0.1',
-        plugins=[
-            ievvbuildstatic.mediacopy.Plugin(
-                sourcefolder=ievvbuildstatic.filepath.SourcePath('django_cradmin', 'media'),
-                destinationfolder='media'
-            ),
-            ievvbuildstatic.sassbuild.Plugin(
-                sourcefolder='styles/cradmin_theme_example',
-                sourcefile='main.scss',
-                minify=False,
-                other_sourcefolders=[
-                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles', 'cradmin_theme_default'),
-                ],
-                sass_include_paths=[
-                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles')
-                ]
-            ),
-            ievvbuildstatic.sassbuild.Plugin(
-                sourcefolder='styles/cradmin_theme_example',
-                sourcefile='styleguide.scss',
-                minify=False,
-                other_sourcefolders=[
-                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles', 'cradmin_theme_default'),
-                ],
-                sass_include_paths=[
-                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles')
-                ]
-            ),
-        ]
-
-    )
+    # ievvbuildstatic.config.App(
+    #     appname='custom_theme_demo',
+    #     version='2.0.1',
+    #     plugins=[
+    #         ievvbuildstatic.mediacopy.Plugin(
+    #             sourcefolder=ievvbuildstatic.filepath.SourcePath('django_cradmin', 'media'),
+    #             destinationfolder='media'
+    #         ),
+    #         ievvbuildstatic.sassbuild.Plugin(
+    #             sourcefolder='styles/cradmin_theme_example',
+    #             sourcefile='main.scss',
+    #             minify=False,
+    #             other_sourcefolders=[
+    #                 ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles', 'cradmin_theme_default'),
+    #             ],
+    #             sass_include_paths=[
+    #                 ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles')
+    #             ]
+    #         ),
+    #         ievvbuildstatic.sassbuild.Plugin(
+    #             sourcefolder='styles/cradmin_theme_example',
+    #             sourcefile='styleguide.scss',
+    #             minify=False,
+    #             other_sourcefolders=[
+    #                 ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles', 'cradmin_theme_default'),
+    #             ],
+    #             sass_include_paths=[
+    #                 ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles')
+    #             ]
+    #         ),
+    #     ]
+    #
+    # )
 )
 
 IEVVTASKS_DEVRUN_RUNNABLES = {

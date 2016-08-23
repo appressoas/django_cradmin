@@ -83,7 +83,7 @@
         width: 270px;
     }
     padding: $spacing 0 0;
-    background-color: color(neutral, dark);
+    background-color: color(neutral, xdark);
 
     &__title {
         @include font-size(medium);
@@ -179,7 +179,7 @@
         width: calc(25% - #{$unit});
         text-align: center;
         margin-bottom: $unit;
-        background-color: tint(color(neutral, medium), 50%);
+        background-color: tint(color(neutral, dark), 50%);
         margin-right: $unit;
 
         code {

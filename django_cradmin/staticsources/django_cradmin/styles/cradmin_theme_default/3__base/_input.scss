@@ -195,7 +195,7 @@ input[type='tel'],
     &[type='url'],
     &[type='search'],
     &[type='tel'] {
-        border: $border-width solid color(neutral, medium);
+        border: $border-width solid color(neutral, dark);
 
         // &:focus {
         //     border-color: color(primary, dark);

@@ -1,63 +1,53 @@
-/*
-Colors
+/* Colors
 
-<h3>Primary</h3>
-<ul class="sg-colors">
-    <li class="sg-colors__item  sg-colors__item--primary--base"></li>
-    <li class="sg-colors__item  sg-colors__item--primary--dark"></li>
-</ul>
-<h3>Secondary</h3>
-<ul class="sg-colors">
-    <li class="sg-colors__item  sg-colors__item--secondary--base"></li>
-    <li class="sg-colors__item  sg-colors__item--secondary--dark"></li>
-</ul>
-<h3>Information</h3>
-<ul class="sg-colors">
-    <li class="sg-colors__item  sg-colors__item--info--base"></li>
-    <li class="sg-colors__item  sg-colors__item--info--dark"></li>
-</ul>
-<h3>Neutral shades</h3>
-<ul class="sg-colors">
-    <li class="sg-colors__item  sg-colors__item--neutral--light"></li>
-    <li class="sg-colors__item  sg-colors__item--neutral--medium"></li>
-    <li class="sg-colors__item  sg-colors__item--neutral--base"></li>
-    <li class="sg-colors__item  sg-colors__item--neutral--dark"></li>
-</ul>
+Example: Primary
+    <ul class="sg-colors">
+        <li class="sg-colors__item  sg-colors__item--primary--base"></li>
+        <li class="sg-colors__item  sg-colors__item--primary--dark"></li>
+    </ul>
 
-Styleguide 1.1
+Example: Secondary
+    <ul class="sg-colors">
+        <li class="sg-colors__item  sg-colors__item--secondary--base"></li>
+        <li class="sg-colors__item  sg-colors__item--secondary--dark"></li>
+    </ul>
+
+Example: Neutral shades
+    <ul class="sg-colors">
+        <li class="sg-colors__item  sg-colors__item--neutral--xlight"></li>
+        <li class="sg-colors__item  sg-colors__item--neutral--light"></li>
+        <li class="sg-colors__item  sg-colors__item--neutral--base"></li>
+        <li class="sg-colors__item  sg-colors__item--neutral--dark"></li>
+        <li class="sg-colors__item  sg-colors__item--neutral--xdark"></li>
+    </ul>
+
+Styleguide 1.2
 */
 
 $color-primary-base: #57917E !default;
-$color-primary-dark: #267158 !default;
-
 $color-secondary-base: #58758D !default;
-$color-secondary-dark: #2A4F6E !default;
-
-
 $color-neutral-base: mix(#f5f4f0, #393939, 50%) !default;
-$color-neutral-light: #f5f4f0 !default;
-$color-neutral-medium: #cbcbca !default;
-$color-neutral-dark: #393939 !default;
 
 $colors: (
     primary: (
         base: $color-primary-base,
-        dark: $color-primary-dark
+        dark: shade($color-primary-base, 20%)
     ),
     secondary: (
         base: $color-secondary-base,
-        dark: $color-secondary-dark
+        dark: shade($color-secondary-base, 20%)
     ),
     neutral: (
+        xlight: tint($color-neutral-base, 91%),
+        light: tint($color-neutral-base, 50%),
         base: $color-neutral-base,
-        light: $color-neutral-light,
-        medium: $color-neutral-medium,
-        dark: $color-neutral-dark
+        dark: shade($color-neutral-base, 20%),
+        xdark: shade($color-neutral-base, 80%)
     )
-);
+) !default;
 
 $color-light: #fff !default;
-$color-dark: color(neutral, dark) !default;
+$color-dark: color(neutral, xdark) !default;
 $color-warning: color(primary) !default;
 $color-success: #007f1e !default;
 $color-info: #ffce00 !default;
@@ -65,7 +55,7 @@ $color-info: #ffce00 !default;
 
 // Specific colors.
 // Variables are there to be reused, so being to specific or creating to many will create the opposite situation
-$color-background: color(neutral, light) !default;
+$color-background: color(neutral, xlight) !default;
 $color-text: $color-dark !default;
 $color-muted: tint($color-text, 26%) !default;
 $color-links: color(secondary, base) !default;

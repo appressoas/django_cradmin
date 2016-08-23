@@ -199,7 +199,7 @@ Styleguide 3.9
         &:hover {
             .radio__control-indicator,
             .checkbox__control-indicator {
-                background-color: color(neutral, light);
+                background-color: color(neutral, xlight);
             }
         }
 
@@ -224,8 +224,8 @@ Styleguide 3.9
         height: $unit * 5;
         line-height: 1;
 
-        border: $border-width solid color(neutral, medium);
-        background-color: color(neutral, light);
+        border: $border-width solid color(neutral, dark);
+        background-color: color(neutral, xlight);
 
         &:before {
             @extend %icon-check;

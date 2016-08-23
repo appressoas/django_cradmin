@@ -4,6 +4,7 @@
 'link',
 'type',
 'lists',
+'icons',
 'form',
 'button',
 'input',
@@ -11,3 +12,14 @@
 'hr',
 'checkbox-radio'
 ;
+
+
+/*
+
+Example:
+
+    {% for modifier in ['compact', 'tight'] %}
+        <button class="button button--{{ modifier }}">
+    {% endfor %}
+
+*/
