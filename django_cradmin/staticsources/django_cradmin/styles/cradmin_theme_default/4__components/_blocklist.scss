@@ -111,22 +111,6 @@ Styleguide 4.2
         background-color: rgba(color(neutral), 0.2);
         padding: $vertical-rythm--spacing $spacing;
 
-        h2, .h2,
-        h3, .h3,
-        h4, .h4,
-        h5, .h5,
-        h6, .h6,
-        p, pre, table, form {
-            &:first-child {
-                margin-top: 0;
-                padding-top: 0;
-            }
-            &:last-child {
-                margin-bottom: 0;
-                padding-bottom: 0;
-            }
-        }
-
         &--link {
             border-bottom: $border-width solid $color-links;
             color: $color-text;

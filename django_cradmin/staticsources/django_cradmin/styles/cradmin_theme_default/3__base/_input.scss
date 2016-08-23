@@ -131,7 +131,7 @@ input[type='tel'],
     }
 
     &--warning {
-        color: color(info, dark);
+        color: $color-info;
     }
 
     &--error {

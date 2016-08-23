@@ -103,49 +103,9 @@ ol {
         }
     }
 
-    &--large {
-        & > li {
-            margin-bottom: $spacing;
-        }
-    }
-
-    &--results {
-        & > li {
-            &.ng-enter {
-                @extend %animation-fall-down;
-                @include animation-delay(10, 30ms);
-            }
-
-            padding-top: $spacing--small;
-            padding-bottom: $spacing--small;
-            border-bottom: $border-style;
-
-            &:before {
-                @extend %icon-arrow-right;
-                top: 1em;
-                border: 0;
-            }
-        }
-    }
-
-    &--links {
-        & > li {
-            &:before {
-                @extend %icon-arrow-right--secondary;
-                top: 0.48em;
-                border: 0;
-            }
-        }
-    }
-
-    &--dates {
-        & > li {
-            padding: 0;
-            min-height: $vertical-rythm * 6;
-
-            &:before {
-                display: none;
-            }
-        }
-    }
+    //&--large {
+    //    & > li {
+    //        margin-bottom: $spacing;
+    //    }
+    //}
 }

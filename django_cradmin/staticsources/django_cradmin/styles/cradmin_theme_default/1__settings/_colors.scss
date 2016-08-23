@@ -33,8 +33,6 @@ $color-primary-dark: #267158 !default;
 $color-secondary-base: #58758D !default;
 $color-secondary-dark: #2A4F6E !default;
 
-$color-info-base: #ffce00 !default;
-$color-info-dark: #e58200 !default;
 
 $color-neutral-base: mix(#f5f4f0, #393939, 50%) !default;
 $color-neutral-light: #f5f4f0 !default;
@@ -50,10 +48,6 @@ $colors: (
         base: $color-secondary-base,
         dark: $color-secondary-dark
     ),
-    info: (
-        base: $color-info-base,
-        dark: $color-info-dark
-    ),
     neutral: (
         base: $color-neutral-base,
         light: $color-neutral-light,
@@ -62,16 +56,17 @@ $colors: (
     )
 );
 
-$color-light: #fff;
-$color-dark: color(neutral, dark);
-$color-warning: color(primary);
-$color-success: #007f1e;
+$color-light: #fff !default;
+$color-dark: color(neutral, dark) !default;
+$color-warning: color(primary) !default;
+$color-success: #007f1e !default;
+$color-info: #ffce00 !default;
 
 
 // Specific colors.
 // Variables are there to be reused, so being to specific or creating to many will create the opposite situation
-$color-background: color(neutral, light);
-$color-text: $color-dark;
-$color-muted: tint($color-text, 26%);
-$color-links: color(secondary, base);
-$color-links--hover: shade(color(secondary, base), 35%);
+$color-background: color(neutral, light) !default;
+$color-text: $color-dark !default;
+$color-muted: tint($color-text, 26%) !default;
+$color-links: color(secondary, base) !default;
+$color-links--hover: shade(color(secondary, base), 35%) !default;
