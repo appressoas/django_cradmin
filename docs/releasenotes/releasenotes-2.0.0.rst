@@ -115,3 +115,12 @@ Removed from the python library
 
 - ``django_cradmin.viewhelpers.listbuilder.lists.FloatGridList`` is removed for the reason explained
   for the ``django-cradmin-listbuilder-floatgridlist`` css class above.
+
+
+****************************
+Changes in the template tags
+****************************
+
+- The ``django_cradmin.templatetags.cradmin_tags.cradmin_theme_staticpath`` template tag
+  raises an exception if ``request`` is not in the template context.
+

@@ -8,60 +8,64 @@
     {% load static %}
     {% load cradmin_tags %}
 {% endspaceless %}<!DOCTYPE html>
-<html lang="en" ng-app="djangoCradminUi" class="{% block html-element-class %}{% endblock %}">
+<html lang="{% block html-element-lang %}en{% endblock %}" class="{% block html-element-class %}{% endblock %}" {% block html-element-extra-attributes %}{% endblock %}>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% block extra_meta %}{% endblock extra_meta %}
+        {% block head %}
+            {% block meta %}
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                {% block extra_meta %}{% endblock extra_meta %}
+            {% endblock meta %}
 
-        {% comment %}
-            The title tag contains two blocks:
+            {% comment %}
+                The title tag contains two blocks:
 
-            - ``title``: Overridden per page.
-            - ``title-pre`` and ``title-post``: Typically overridden by overriding ``standalone-base.django.html``
-              to provide some common prefix/postfix for the the title tag for the entire site.
-        {% endcomment %}
-        <title>{% block title-pre %}{% endblock %}{% block title %}{% endblock %}{% block title-post %}{% endblock %}</title>
+                - ``title``: Overridden per page.
+                - ``title-pre`` and ``title-post``: Typically overridden by overriding ``standalone-base.django.html``
+                  to provide some common prefix/postfix for the the title tag for the entire site.
+            {% endcomment %}
+            <title>{% block title-pre %}{% endblock %}{% block title %}{% endblock %}{% block title-post %}{% endblock %}</title>
 
-        {% block styles %}
-{#            <link href='{% if crinstance_theme_path %}{% static crinstance_theme_path %}{% else %}{% static DJANGO_CRADMIN_THEME_PATH %}{% endif %}' rel="stylesheet">#}
-            <link href='{% cradmin_theme_staticpath %}' rel="stylesheet">
-        {% endblock styles %}
-        {% block iconlibrary %}
-            <link href='{% static DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH %}' rel="stylesheet">
-        {% endblock iconlibrary %}
+            {% block styles %}
+    {#            <link href='{% if crinstance_theme_path %}{% static crinstance_theme_path %}{% else %}{% static DJANGO_CRADMIN_THEME_PATH %}{% endif %}' rel="stylesheet">#}
+                <link href='{% cradmin_theme_staticpath %}' rel="stylesheet">
+            {% endblock styles %}
+            {% block iconlibrary %}
+                <link href='{% static DJANGO_CRADMIN_CSS_ICON_LIBRARY_PATH %}' rel="stylesheet">
+            {% endblock iconlibrary %}
 
-        {% block vendorjs %}
-            <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>
-        {% endblock vendorjs %}
+            {% block vendorjs %}
+                <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>
+            {% endblock vendorjs %}
 
-        {% block momentjslocale %}
-            {% if DJANGO_CRADMIN_MOMENTJS_LOCALE %}
-                <script src="{{ STATIC_URL }}django_cradmin/dist/vendor/momentjs-locale/{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}.js" type="text/javascript"></script>
-                <script>
-                  moment.locale('{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}')
-                </script>
+            {% block momentjslocale %}
+                {% if DJANGO_CRADMIN_MOMENTJS_LOCALE %}
+                    <script src="{{ STATIC_URL }}django_cradmin/dist/vendor/momentjs-locale/{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}.js" type="text/javascript"></script>
+                    <script>
+                      moment.locale('{{ DJANGO_CRADMIN_MOMENTJS_LOCALE }}')
+                    </script>
+                {% endif %}
+            {% endblock momentjslocale %}
+
+            {% block cradminjs %}
+                <script src="{% static 'django_cradmin/dist/js/cradmin.min.js' %}" type="text/javascript"></script>
+            {% endblock cradminjs %}
+
+            {% block jsimports %}
+                {# Override this to add js imports in child templates #}
+            {% endblock %}
+
+            {% comment %}
+                Send in cradmin_javascript_library_urls as context data to render
+                them as script tags.
+            {% endcomment %}
+            {% if cradmin_javascript_library_urls %}
+                {% for cradmin_javascript_library_url in cradmin_javascript_library_urls %}
+                    <script type="text/javascript" src="{{ cradmin_javascript_library_url }}"></script>
+                {% endfor %}
             {% endif %}
-        {% endblock momentjslocale %}
-
-        {% block cradminjs %}
-            <script src="{% static 'django_cradmin/dist/js/cradmin.min.js' %}" type="text/javascript"></script>
-        {% endblock cradminjs %}
-
-        {% block jsimports %}
-            {# Override this to add js imports in child templates #}
-        {% endblock %}
-
-        {% comment %}
-            Send in cradmin_javascript_library_urls as context data to render
-            them as script tags.
-        {% endcomment %}
-        {% if cradmin_javascript_library_urls %}
-            {% for cradmin_javascript_library_url in cradmin_javascript_library_urls %}
-                <script type="text/javascript" src="{{ cradmin_javascript_library_url }}"></script>
-            {% endfor %}
-        {% endif %}
+        {% endblock head %}
     </head>
     <body class="
             {% block global-bodyclass %}

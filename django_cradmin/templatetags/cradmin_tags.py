@@ -256,7 +256,9 @@ def cradmin_theme_staticpath(context):
                                  'django_cradmin/1.0.0/styles/cradmin_theme_default/main.css')
         return static(theme_path)
     else:
-        return ''
+        raise Exception('The cradmin_theme_staticpath requires "request" to be in the template '
+                        'context. You can get this using the "django.template.context_processors.request" '
+                        'context processor.')
 
 
 @register.simple_tag(takes_context=True)
