@@ -1,8 +1,0 @@
-<script>
-    angular.module('{{ me.get_angularjs_appname }}', [
-        {% for module in me.get_angularjs_modules %}
-            '{{ module }}'{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ]);
-    angular.bootstrap(document.querySelector('{{ me.get_target_domelement_selector }}'), ['{{ me.get_angularjs_appname }}']);
-</script>

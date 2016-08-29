@@ -81,6 +81,8 @@ class Registry(Singleton):
             for dependency_component_id in component.get_dependencies():
                 add_component(dependency_component_id)
 
+        return components
+
 
 class MockableRegistry(Registry):
     """
