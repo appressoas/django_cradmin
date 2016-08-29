@@ -15,8 +15,9 @@ Django base template changes
 
 standalone-base-internal.django.html
 ====================================
-The div with id ``django_cradmin_bodycontentwrapper`` no longer exists, and this also means
-that the ``outside-bodycontentwrapper`` template block no longer exists.
+- The div with id ``django_cradmin_bodycontentwrapper`` no longer exists, and this also means
+  that the ``outside-bodycontentwrapper`` template block no longer exists.
+- We no longer load any javascript by default.
 
 
 layouts/standalone/focused.django.html
@@ -123,4 +124,3 @@ Changes in the template tags
 
 - The ``django_cradmin.templatetags.cradmin_tags.cradmin_theme_staticpath`` template tag
   raises an exception if ``request`` is not in the template context.
-

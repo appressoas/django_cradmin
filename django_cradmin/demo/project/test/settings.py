@@ -35,8 +35,8 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_email',
     'django_cradmin.uicontainer',
 
-    'django_cradmin.tests.sortable.cradmin_sortable_testapp',
-    'django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp',
+    'django_cradmin.tests.test_sortable.cradmin_sortable_testapp',
+    'django_cradmin.tests.test_viewhelpers.cradmin_viewhelpers_testapp',
     'django_cradmin.tests.test_automodelform.cradmin_automodelform_testapp',
     'django_cradmin.apps.cradmin_authenticate.tests.cradmin_authenticate_testapp',
     'django_cradmin.apps.cradmin_register_account.tests.cradmin_register_account_testapp',

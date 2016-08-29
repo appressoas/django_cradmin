@@ -1,5 +1,4 @@
-from django.views.generic import TemplateView
-
+from django_cradmin import viewhelpers
 from django_cradmin.viewhelpers import listbuilder
 
 
@@ -15,7 +14,7 @@ class ItemValueDjangoApp(listbuilder.itemvalue.FocusBox):
     template_name = 'django_cradmin/superuserui/listbuilder/itemvalue-djangoapp.django.html'
 
 
-class View(TemplateView):
+class View(viewhelpers.generic.WithinRoleTemplateView):
     template_name = 'django_cradmin/superuserui/dashboard.django.html'
 
     def get_djangoapps_listbuilder_list(self):

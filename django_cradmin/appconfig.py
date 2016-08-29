@@ -1,13 +1,21 @@
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy
+from django_cradmin import javascriptregistry
 
 
-class CradminWithStyleguideAppConfig(AppConfig):
+class CradminAppConfig(AppConfig):
     name = 'django_cradmin'
     verbose_name = ugettext_lazy("Django CRadmin")
+    
+    def ready(self):
+        javascriptregistry.Registry.get_instance().add(javascriptregistry.component.CradminMenu)
+
+
+class CradminWithStyleguideAppConfig(CradminAppConfig):
 
     def ready(self):
         from django_cradmin.apps.cradmin_kss_styleguide import styleguide_registry
+        super(CradminWithStyleguideAppConfig, self).ready()
 
         styleguide = styleguide_registry.CradminStyleGuide(
             unique_id='django_cradmin_theme_default',

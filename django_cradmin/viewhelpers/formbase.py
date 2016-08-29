@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import FormView as DjangoFormView
 
 from django_cradmin import crapp
+from django_cradmin import javascriptregistry
 from django_cradmin.crispylayouts import CradminFormHelper
 
 
@@ -444,7 +445,7 @@ class FormViewMixin(PreviewMixin):
         return self.get_default_save_success_url()
 
 
-class FormView(FormViewMixin, DjangoFormView):
+class FormView(javascriptregistry.viewmixin.WithinRoleViewMixin, FormViewMixin, DjangoFormView):
     """
     A :class:`django.views.generic.edit.FormView` with :class:`.FormViewMixin`.
 
@@ -480,3 +481,7 @@ class FormView(FormViewMixin, DjangoFormView):
                     return HttpResponseRedirect('/some/view')
     """
     template_name = 'django_cradmin/viewhelpers/formview_base.django.html'
+
+    def add_context_data(self, context):
+        super(FormView, self).add_context_data(context=context)
+        self.add_javascriptregistry_component_ids_to_context(context=context)

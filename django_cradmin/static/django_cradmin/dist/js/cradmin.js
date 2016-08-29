@@ -4265,7 +4265,7 @@
 
       return {
         scope: true,
-        controller: function($scope, djangoCradminPagePreview) {
+        controller: function($scope) {
           $scope.cradminMenuDisplay = false;
           $scope.cradminMenuTogglePressed = function() {
             return $scope.cradminMenuDisplay = !$scope.cradminMenuDisplay;

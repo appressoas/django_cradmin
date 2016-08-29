@@ -1,6 +1,5 @@
-from django.views.generic import TemplateView
-
 from django_cradmin.viewhelpers import listbuilder
+from django_cradmin import viewhelpers
 
 
 class ItemFrameModel(listbuilder.itemframe.Link):
@@ -15,7 +14,7 @@ class ItemValueModel(listbuilder.itemvalue.FocusBox):
     template_name = 'django_cradmin/superuserui/listbuilder/itemvalue-model.django.html'
 
 
-class View(TemplateView):
+class View(viewhelpers.generic.WithinRoleTemplateView):
     template_name = 'django_cradmin/superuserui/appdashboard.django.html'
 
     def get_models_listbuilder_list(self):

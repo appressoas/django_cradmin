@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.conf import settings
+from django_cradmin import javascriptregistry
 from django.template import defaultfilters
 from django.views.generic import ListView
 from django_cradmin.viewhelpers import listbuilder
@@ -215,7 +216,7 @@ class ViewCreateButtonMixin(object):
         return "django_cradmin/viewhelpers/listbuilderview/includes/create-button.django.html"
 
 
-class View(ViewMixin, ListView):
+class View(javascriptregistry.viewmixin.WithinRoleViewMixin, ViewMixin, ListView):
     """
     View using the :doc:`viewhelpers_listbuilder`.
 
@@ -289,6 +290,7 @@ class View(ViewMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(View, self).get_context_data(**kwargs)
         context['cradmin_hide_menu'] = self.hide_menu
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         return context
 
 

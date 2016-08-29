@@ -2,9 +2,10 @@ from __future__ import unicode_literals
 from django.views.generic import TemplateView
 
 from django_cradmin import crapp
+from django_cradmin import viewhelpers
 
 
-class Overview(TemplateView):
+class Overview(viewhelpers.generic.StandaloneBaseTemplateView):
     template_name = 'usermanagerdemo/overview.django.html'
 
 

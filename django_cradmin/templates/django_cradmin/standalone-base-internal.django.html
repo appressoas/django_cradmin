@@ -7,6 +7,7 @@
 {% endcomment %}{% spaceless %}
     {% load static %}
     {% load cradmin_tags %}
+    {% load cradmin_javascriptregistry_tags %}
 {% endspaceless %}<!DOCTYPE html>
 <html lang="{% block html-element-lang %}en{% endblock %}" class="{% block html-element-class %}{% endblock %}" {% block html-element-extra-attributes %}{% endblock %}>
     <head>
@@ -36,7 +37,8 @@
             {% endblock iconlibrary %}
 
             {% block vendorjs %}
-                <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>
+{#                <script src="{% static 'django_cradmin/dist/vendor/cradmin-vendorjs.js' %}" type="text/javascript"></script>#}
+                {% cradmin_javascriptregistry_head %}
             {% endblock vendorjs %}
 
             {% block momentjslocale %}
@@ -113,21 +115,66 @@
             via the ``cradmin_javascript_library_urls`` template context
             variable (documented above), or by overriding the ``jsimports`` block.
         {% endcomment %}
-        {% block initialize_angular %}
-            <script>
-                angular.module('djangoCradminUi', [
-                    'djangoCradmin'
-                    {% block extra_angular_libraries %}
-                        {% if cradmin_extra_angular_libraries %}
-                            {% for library in cradmin_extra_angular_libraries %}
-                                , '{{ library }}'
-                            {% endfor %}
-                        {% endif %}
-                    {% endblock %}
-                ]);
-            </script>
-        {% endblock %}
+{#        {% block initialize_angular %}#}
+{#            <script>#}
+{#                angular.module('djangoCradminUi', [#}
+{#                    'djangoCradmin'#}
+{#                    {% block extra_angular_libraries %}#}
+{#                        {% if cradmin_extra_angular_libraries %}#}
+{#                            {% for library in cradmin_extra_angular_libraries %}#}
+{#                                , '{{ library }}'#}
+{#                            {% endfor %}#}
+{#                        {% endif %}#}
+{#                    {% endblock %}#}
+{#                ]);#}
+{#            </script>#}
+{#        {% endblock %}#}
+
+{#        <script>#}
+{#            angular.module('DjangoCradminMenuApp', [#}
+{#                'djangoCradmin.menu'#}
+{#            ]);#}
+{#            angular.bootstrap(document.getElementById('id_django_cradmin_mainmenu'), ['DjangoCradminMenuApp']);#}
+{#        </script>#}
+{##}
+{#        <script>#}
+{#            angular.module('DjangoCradminCrudbaseApp', [#}
+{#              'djangoCradmin.templates',#}
+{#              'djangoCradmin.directives',#}
+{#              'djangoCradmin.providers',#}
+{#              'djangoCradmin.calendar.providers',#}
+{#              'djangoCradmin.detectizr',#}
+{#              'djangoCradmin.objecttable',#}
+{#              'djangoCradmin.acemarkdown',#}
+{#              'djangoCradmin.bulkfileupload',#}
+{#              'djangoCradmin.iosaddtohomescreen',#}
+{#              'djangoCradmin.imagepreview',#}
+{#              'djangoCradmin.collapse',#}
+{#              'djangoCradmin.modal',#}
+{#              'djangoCradmin.scrollfixed',#}
+{#              'djangoCradmin.pagepreview',#}
+{#              'djangoCradmin.forms.modelchoicefield',#}
+{#              'djangoCradmin.forms.usethisbutton',#}
+{#              'djangoCradmin.forms.datetimewidget',#}
+{#              'djangoCradmin.forms.filewidget',#}
+{#              'djangoCradmin.forms.setfieldvalue',#}
+{#              'djangoCradmin.forms.select',#}
+{#              'djangoCradmin.forms.clearabletextinput',#}
+{#              'djangoCradmin.backgroundreplace_element.providers',#}
+{#              'djangoCradmin.backgroundreplace_element.directives',#}
+{#              'djangoCradmin.listfilter.directives',#}
+{#              'djangoCradmin.multiselect2.services',#}
+{#              'djangoCradmin.multiselect2.directives',#}
+{#              'djangoCradmin.loadmorepager.services',#}
+{#              'djangoCradmin.loadmorepager.directives'#}
+{##}
+{#            ]);#}
+{#            angular.bootstrap(document.querySelector('body'), ['DjangoCradminCrudbaseApp']);#}
+{#        </script>#}
 
         {% block end-of-body %}{% endblock end-of-body %}
+
+{#        {% cradmin_jsregistry_end_of_body_tags %}#}
+
     </body>
 </html>

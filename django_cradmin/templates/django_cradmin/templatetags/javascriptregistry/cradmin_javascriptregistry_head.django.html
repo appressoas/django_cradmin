@@ -1,0 +1,5 @@
+{% for component in components %}
+    {% for sourceurl in component.get_head_sourceurls %}
+        <script src="{{ sourceurl }}" type="text/javascript"></script>
+    {% endfor %}
+{% endfor %}

@@ -5,7 +5,7 @@ import htmls
 from django_cradmin.python2_compatibility import mock
 from django.test import TestCase, RequestFactory
 
-from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import TestModel
+from django_cradmin.tests.test_viewhelpers.cradmin_viewhelpers_testapp.models import TestModel
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.django_cradmin_testapp import models as testmodels
 

@@ -9,6 +9,7 @@ import warnings
 from xml.sax.saxutils import quoteattr
 
 from django import forms
+from django_cradmin import javascriptregistry
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.template import defaultfilters
@@ -860,7 +861,7 @@ class SearchForm(forms.Form):
     search = forms.CharField(required=True)
 
 
-class ObjectTableView(ListView):
+class ObjectTableView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView):
     """
     A view inspired by the changelist in ``django.contrib.admin``.
 
@@ -1198,6 +1199,7 @@ class ObjectTableView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ObjectTableView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         object_list = context['object_list']
 
         multiselect_actions = self.get_multiselect_actions()

@@ -13,13 +13,12 @@ class Menu(crmenu.Menu):
         if self.request.cradmin_instance.get_rolequeryset().count() > 1:
             self.add_headeritem(
                 label=_('Select user'),
-                url=self.roleselectview_url(),
-                icon='chevron-up')
+                url=self.roleselectview_url())
 
-        self.add(
+        self.add_menuitem(
             label=_('Account overview'), url=self.appindex_url('overview'),
             active=self.request.cradmin_app.appname == 'overview')
-        self.add(
+        self.add_menuitem(
             label=_('Edit profile'), url=self.appindex_url('edit_user'),
             active=self.request.cradmin_app.appname == 'edit_user')
 

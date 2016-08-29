@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from future import standard_library
 
 from django_cradmin import automodelform
+from django_cradmin import javascriptregistry
 from django_cradmin.crispylayouts import PrimarySubmit, DefaultSubmit
 
 standard_library.install_aliases()
@@ -21,7 +22,7 @@ from crispy_forms import layout
 from . import formbase
 
 
-class CreateUpdateViewMixin(formbase.FormViewMixin):
+class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, formbase.FormViewMixin):
     """
     Mixin class for Update and Create views.
     """
@@ -160,6 +161,7 @@ class CreateUpdateViewMixin(formbase.FormViewMixin):
 
     def get_context_data(self, **kwargs):
         context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['model_verbose_name'] = self.get_model_class()._meta.verbose_name
         return context
 

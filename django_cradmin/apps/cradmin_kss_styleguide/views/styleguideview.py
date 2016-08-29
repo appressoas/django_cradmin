@@ -1,9 +1,9 @@
-from django.views.generic import TemplateView
+from django_cradmin import viewhelpers
 
 from django_cradmin.apps.cradmin_kss_styleguide import styleguide_registry
 
 
-class GuideListView(TemplateView):
+class GuideListView(viewhelpers.generic.WithinRoleTemplateView):
     template_name = 'cradmin_kss_styleguide/styleguideview/guides.django.html'
 
     def get_context_data(self, **kwargs):
@@ -13,7 +13,7 @@ class GuideListView(TemplateView):
         return context
 
 
-class GuideView(TemplateView):
+class GuideView(viewhelpers.generic.WithinRoleTemplateView):
     template_name = 'cradmin_kss_styleguide/styleguideview/guide.django.html'
 
     def get_styleguideconfig(self):

@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
-from django.views.generic import TemplateView
 
 from django_cradmin import crapp
+from django_cradmin import viewhelpers
 
 
-class DashboardView(TemplateView):
+class DashboardView(viewhelpers.generic.WithinRoleTemplateView):
     template_name = 'no_role_demo/dashboard.django.html'
 
 

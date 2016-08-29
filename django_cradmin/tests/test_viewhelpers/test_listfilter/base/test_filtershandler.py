@@ -5,7 +5,7 @@ from django_cradmin.python2_compatibility import mock
 from model_mommy import mommy
 from future import standard_library
 
-from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
+from django_cradmin.tests.test_viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 from django_cradmin.viewhelpers.listfilter.base.abstractfilter import AbstractFilter
 from django_cradmin.viewhelpers.listfilter.base.exceptions import InvalidFiltersStringError
 from django_cradmin.viewhelpers.listfilter.base.filtershandler import FiltersHandler

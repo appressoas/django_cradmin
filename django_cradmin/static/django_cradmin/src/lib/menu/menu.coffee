@@ -40,7 +40,7 @@ angular.module('djangoCradmin.menu', [])
     return {
       scope: true
 
-      controller: ($scope, djangoCradminPagePreview) ->
+      controller: ($scope) ->
         $scope.cradminMenuDisplay = false
         $scope.cradminMenuTogglePressed = ->
           $scope.cradminMenuDisplay = !$scope.cradminMenuDisplay

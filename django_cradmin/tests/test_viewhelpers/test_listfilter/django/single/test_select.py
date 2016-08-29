@@ -7,7 +7,7 @@ from future import standard_library
 from model_mommy import mommy
 
 from django_cradmin import datetimeutils
-from django_cradmin.tests.viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
+from django_cradmin.tests.test_viewhelpers.cradmin_viewhelpers_testapp.models import FilterTestModel
 from django_cradmin.viewhelpers import listfilter
 
 standard_library.install_aliases()

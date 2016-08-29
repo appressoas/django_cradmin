@@ -3,8 +3,8 @@ from builtins import range
 from django import test
 from model_mommy import mommy
 
-from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import SortableItem
-from django_cradmin.tests.sortable.cradmin_sortable_testapp.models import ItemContainer
+from django_cradmin.tests.test_sortable.cradmin_sortable_testapp.models import SortableItem
+from django_cradmin.tests.test_sortable.cradmin_sortable_testapp.models import ItemContainer
 
 
 class TestSortableItem(test.TestCase):

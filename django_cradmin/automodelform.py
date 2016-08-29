@@ -5,7 +5,6 @@ from builtins import str
 from django import forms
 from django.utils.translation import pgettext
 
-from django_cradmin.viewhelpers.multiselect2 import manytomanywidget
 from django_cradmin.widgets import datetimepicker
 from django_cradmin.widgets import filewidgets
 from django_cradmin.widgets import modelchoice
@@ -163,6 +162,7 @@ class ModelForm(forms.ModelForm):
             fieldname: The name of the field.
             formfield: The form field object.
         """
+        from django_cradmin.viewhelpers.multiselect2 import manytomanywidget
         if not self.view or not hasattr(self.view.request, 'cradmin_instance'):
             return
         model_class = formfield.queryset.model

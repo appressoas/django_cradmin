@@ -1,7 +1,7 @@
-from django.views.generic import TemplateView
+from django_cradmin import viewhelpers
 
 
-class DemoView(TemplateView):
+class DemoView(viewhelpers.generic.StandaloneBaseTemplateView):
     template_name = 'cradmin_demo/demo-overview.django.html'
 
     def get_context_data(self, **kwargs):
