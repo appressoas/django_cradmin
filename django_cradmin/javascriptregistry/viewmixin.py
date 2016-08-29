@@ -2,6 +2,17 @@ from . import component
 
 
 class MinimalViewMixin(object):
+    """
+    Views that use the javascriptregistry template tags must
+    use this mixin. The base templates for cradmin uses these template
+    tags, so this means that this mixin is essential for most views.
+    You will normally want to mix in one of the subclasses:
+
+    - :class:`.StandaloneBaseViewMixin`
+    - :class:`.WithinRoleViewMixin`
+
+    Or extend one of the views in ``django_cradmin.viewhelpers``.
+    """
     def get_javascriptregistry_component_ids(self):
         return []
 

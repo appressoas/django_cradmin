@@ -7,6 +7,11 @@ Django cradmin 2.0.0 releasenotes
 What is new?
 ************
 - New theme. No longer based on bootstrap, and using SASS instead of LESS.
+- ``django_cradmin.viewhelpers`` can be imported as ``from django_cradmin import viewhelpers``. After
+  this import, you can use ``viewhelpers.create.CreateView``, ``viewhelpers.update.UpdateView``, ...
+- Views using any of the base templates for cradmin must inherit from one of the views in
+  ``django_cradmin.viewhelpers`` or mix in one of the subclasses of
+  :class:`django_cradmin.javascriptregistry.viewmixin.MinimalViewMixin`.
 
 
 ****************************
