@@ -127,22 +127,6 @@ class TestCradminAngular1(test.TestCase):
         with self.assertRaises(NotImplementedError):
             MockCradminAngular1(request=None).get_target_domelement_selector()
 
-    def test_get_angularjs_appname_simple(self):
-        class MockCradminAngular1(javascriptregistry.component.CradminAngular1):
-            @classmethod
-            def get_component_id(cls):
-                return 'simple'
-
-        self.assertEqual('SimpleApp', MockCradminAngular1(request=None).get_angularjs_appname())
-
-    def test_get_angularjs_appname_underscore(self):
-        class MockCradminAngular1(javascriptregistry.component.CradminAngular1):
-            @classmethod
-            def get_component_id(cls):
-                return 'my_cool_stuff'
-
-        self.assertEqual('MyCoolStuffApp', MockCradminAngular1(request=None).get_angularjs_appname())
-
     def test_get_head_sourceurls(self):
         self.assertEqual(
             [

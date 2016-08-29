@@ -80,10 +80,6 @@ class CradminAngular1(AbstractJsComponent):
     def get_target_domelement_selector(self):
         raise NotImplementedError()
 
-    def get_angularjs_appname(self):
-        return '{}App'.format(
-            ''.join(word.capitalize() for word in self.component_id.split('_')))
-
     def get_head_sourceurls(self):
         return [
             self.get_static_url('django_cradmin/dist/vendor/cradmin-vendorjs.js'),
