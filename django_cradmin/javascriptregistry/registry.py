@@ -1,7 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import inspect
+
 from ievv_opensource.utils.singleton import Singleton
+
+from django_cradmin.javascriptregistry.component import AbstractJsComponent
+
+
+class DuplicateComponentId(Exception):
+    """
+    Raised by :meth:`.Registry.add` if adding a component_id that is
+    already in the registry.
+    """
 
 
 class Registry(Singleton):
@@ -48,14 +59,30 @@ class Registry(Singleton):
                 to the registry.
         """
         if jscomponent_class.get_component_id() in self._jscomponent_classes:
-            raise KeyError('Duplicate component ID in javascriptregistry: {}'.format(
+            raise DuplicateComponentId('Duplicate component ID in javascriptregistry: {}'.format(
                 jscomponent_class.get_component_id()))
         self._jscomponent_classes[jscomponent_class.get_component_id()] = jscomponent_class
+
+    def __contains__(self, component_id_or_object):
+        """
+        Check if the provided component ID, component object or
+        component class is in the registry.
+
+        Args:
+            component_id_or_object: Can be a
+                :class:`~django_cradmin.javascriptregistry.component.AbstractJsComponent` object,
+                or a string.
+        """
+        if inspect.isclass(component_id_or_object) and issubclass(component_id_or_object, AbstractJsComponent):
+            component_id = component_id_or_object.get_component_id()
+        else:
+            component_id = component_id_or_object
+        return component_id in self._jscomponent_classes
 
     def __getitem__(self, component_id):
         """
         Get the :class:`~django_cradmin.javascri~ptregistry.component.AbstractJsComponent`
-        registered with ``component_id``.
+        class registered with ``component_id``.
         """
         return self._jscomponent_classes[component_id]
 
@@ -65,21 +92,40 @@ class Registry(Singleton):
         return component
 
     def get_component_objects(self, request, component_ids):
+        """
+        Get the :class:`~django_cradmin.javascri~ptregistry.component.AbstractJsComponent`
+        objects for all the provided ``component_ids``, including all their
+        dependencies (see :class:`~django_cradmin.javascri~ptregistry.component.AbstractJsComponent.get_dependencies`).
+
+        Args:
+            request: A :class:`django.http.HttpRequest` object.
+            component_ids: An iterable of component IDs.
+
+        Raises:
+            KeyError: If any of the component IDs is not in the registry.
+
+        Returns:
+            list: A list of component objects.
+        """
         added_component_ids = set()
         components = []
 
-        def add_component(component_id):
-            if component_id in added_component_ids:
-                return
-            added_component_ids.add(component_id)
-            component_object = self._get_component_object(request=request, component_id=component_id)
-            components.append(component_object)
-            return component_object
-
         for requested_component_id in component_ids:
-            component = add_component(requested_component_id)
-            for dependency_component_id in component.get_dependencies():
-                add_component(dependency_component_id)
+            if requested_component_id in added_component_ids:
+                continue
+
+            requested_component = self._get_component_object(
+                request=request, component_id=requested_component_id)
+            for dependency_component_id in requested_component.get_dependencies():
+                if dependency_component_id in added_component_ids:
+                    continue
+                dependency_component = self._get_component_object(
+                    request=request, component_id=dependency_component_id)
+                components.append(dependency_component)
+                added_component_ids.add(dependency_component_id)
+
+            components.append(requested_component)
+            added_component_ids.add(requested_component_id)
 
         return components
 
@@ -90,7 +136,7 @@ class MockableRegistry(Registry):
 
     Typical usage in a test::
 
-        from django_cradmin.utils import javascriptregistry
+        from django_cradmin import javascriptregistry
 
         class MockJsComponent(javascriptregistry.component.AbstractJsComponent):
             @classmethod
