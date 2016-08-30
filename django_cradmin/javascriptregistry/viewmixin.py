@@ -12,7 +12,18 @@ class MinimalViewMixin(object):
     - :class:`.WithinRoleViewMixin`
 
     Or extend one of the views in ``django_cradmin.viewhelpers``.
+
+    Examples:
+
+        Usage (same for the subclasses)::
+
+            class MyView(TemplateView, javascriptregistry.viewmixin.MinimalViewMixin):
+                def get_context_data(self, **kwargs):
+                    context = super(MinimalViewMixin, self).get_context_data(**kwargs)
+                    self.add_javascriptregistry_component_ids_to_context(context=context)
+                    return context
     """
+
     def get_javascriptregistry_component_ids(self):
         return []
 

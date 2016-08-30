@@ -3,10 +3,12 @@ from builtins import str
 from django.contrib import messages
 from django.views.generic import DeleteView as DjangoDeleteView
 from django.utils.translation import ugettext_lazy as _
+
+from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 
-class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
+class DeleteView(QuerysetForRoleMixin, DjangoDeleteView, javascriptregistry.viewmixin.WithinRoleViewMixin):
 
     #: The name of the template to use.
     template_name = 'django_cradmin/viewhelpers/delete.django.html'
@@ -62,6 +64,7 @@ class DeleteView(QuerysetForRoleMixin, DjangoDeleteView):
 
     def get_context_data(self, **kwargs):
         context = super(DeleteView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         obj = context['object']
         context['model_verbose_name'] = obj._meta.verbose_name
         context['success_url'] = self.get_success_url()

@@ -8,10 +8,11 @@ from django import http
 from crispy_forms import layout
 
 from django_cradmin import crapp
+from django_cradmin import javascriptregistry
 from django_cradmin.crispylayouts import CradminFormHelper
 
 
-class MultiSelectView(TemplateView):
+class MultiSelectView(TemplateView, javascriptregistry.viewmixin.WithinRoleViewMixin):
     """
     Base view for multiselect views (views used when the
     user selects one or more items for some action).
@@ -95,6 +96,7 @@ class MultiSelectView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MultiSelectView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['selected_objects_form'] = self.selected_objects_form
         context['selected_objects'] = self.selected_objects
         return context

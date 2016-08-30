@@ -5,10 +5,11 @@ from django.utils.module_loading import import_string
 
 from django.views.generic import FormView
 
+from django_cradmin import javascriptregistry
 from django_cradmin.apps.cradmin_activate_account.utils import ActivationEmail
 
 
-class BeginRegisterAccountView(FormView):
+class BeginRegisterAccountView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
     template_name = 'cradmin_register_account/begin.django.html'
 
     def get_form_class(self):
@@ -19,6 +20,7 @@ class BeginRegisterAccountView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BeginRegisterAccountView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['DJANGO_CRADMIN_SITENAME'] = settings.DJANGO_CRADMIN_SITENAME
         return context
 

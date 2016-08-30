@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from django_cradmin.apps.cradmin_authenticate import backends
 
-from django_cradmin.tests.views.helpers import create_testuser
+from django_cradmin.tests.test_views.helpers import create_testuser
 
 
 class TestEmailAuthBackend(TestCase):

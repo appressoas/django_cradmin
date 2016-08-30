@@ -5,7 +5,7 @@ import htmls
 from django_cradmin.apps.cradmin_authenticate.tests.cradmin_authenticate_testapp.models import EmailUser
 from django.test.utils import override_settings
 
-from django_cradmin.tests.views.helpers import create_testuser
+from django_cradmin.tests.test_views.helpers import create_testuser
 
 
 class TestUsernameLogin(TestCase):

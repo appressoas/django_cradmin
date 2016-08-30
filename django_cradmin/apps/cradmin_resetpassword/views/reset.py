@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.views.generic import FormView
 
+from django_cradmin import javascriptregistry
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     GenericTokenExpiredError
 from django_cradmin.crispylayouts import PrimarySubmitLg
@@ -31,7 +32,7 @@ class RepeatPasswordForm(forms.Form):
                 raise forms.ValidationError(_('The passwords do not match'))
 
 
-class ResetPasswordView(FormView):
+class ResetPasswordView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
     template_name = 'cradmin_resetpassword/reset.django.html'
     form_class = RepeatPasswordForm
 
@@ -48,6 +49,7 @@ class ResetPasswordView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ResetPasswordView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['formhelper'] = self.get_formhelper()
         try:
             context['generic_token_with_metadata'] = GenericTokenWithMetadata.objects.get_and_validate(

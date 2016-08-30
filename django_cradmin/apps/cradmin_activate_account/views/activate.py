@@ -4,11 +4,12 @@ from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 
+from django_cradmin import javascriptregistry
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     GenericTokenExpiredError
 
 
-class ActivateAccountView(TemplateView):
+class ActivateAccountView(TemplateView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
     template_name = 'cradmin_activate_account/activate.django.html'
     appname = 'cradmin_activate_account'
 
@@ -32,6 +33,7 @@ class ActivateAccountView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ActivateAccountView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['token_does_not_exist'] = self.token_does_not_exist
         context['token_expired'] = self.token_expired
         return context

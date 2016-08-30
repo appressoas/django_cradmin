@@ -11,6 +11,7 @@ from django.views.generic import FormView
 
 from crispy_forms.helper import FormHelper
 
+from django_cradmin import javascriptregistry
 from django_cradmin.apps.cradmin_email import emailutils
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     get_expiration_datetime_for_app
@@ -40,7 +41,7 @@ class EmailForm(forms.Form):
         return email
 
 
-class BeginPasswordResetView(FormView):
+class BeginPasswordResetView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
     template_name = 'cradmin_resetpassword/begin.django.html'
     form_class = EmailForm
 
@@ -57,6 +58,7 @@ class BeginPasswordResetView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(BeginPasswordResetView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['formhelper'] = self.get_formhelper()
         return context
 

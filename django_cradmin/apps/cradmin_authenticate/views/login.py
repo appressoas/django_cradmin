@@ -10,6 +10,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from django.views.generic import FormView
 
+from django_cradmin import javascriptregistry
 from django_cradmin.crispylayouts import PrimarySubmitLg
 
 
@@ -138,7 +139,7 @@ class EmailLoginFormNoSanityCheck(EmailLoginForm):
         pass
 
 
-class LoginView(FormView):
+class LoginView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
     """
     View for handling login.
     By default, a "forgot password" link is read from ``DJANGO_CRADMIN_FORGOTPASSWORD_URL`` to your ``settings.py``.
@@ -268,6 +269,7 @@ class LoginView(FormView):
         template-context.
         """
         context = super(LoginView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
         context['formhelper'] = self.get_form_helper()
         context['DJANGO_CRADMIN_FORGOTPASSWORD_URL'] = getattr(
             settings, 'DJANGO_CRADMIN_FORGOTPASSWORD_URL', None)
