@@ -20,36 +20,17 @@ Example: For actions that need's to stand out on red or dark blue background.
     <button type="button" class="button  button--light">Button</button>
     <button type="button" class="button  button--light-fill">Button</button>
 
-Example: This is some modifiers you can add
+Example: This is some modifiers you can add (PS: Can be combined)
     <button type="button" class="button  button--block">
-        Button.
         Make it 100% width of whatever container
     </button>
-    <button type="button" class="button  button--compact">Button</button> — `compact`: Make the button more compact.
+    <button type="button" class="button  button--compact">Compact button</button>
     <br>
-    <button type="button" class="button  button--wider">Button</button> — `wider`: Make short-texted buttons simular in width.
+    <button type="button" class="button  button--wider">Wider button</button>
     <br>
-    <button type="button" class="button  button--spaced">Button</button> — `spaced`: Make some space around it
+    <button type="button" class="button  button--spaced">Spaced button</button>
     <br>
-    <button type="button" class="button" disabled>Button</button> — `disabled`: Make the button disabled.
-
-
-Example: You can combine modifiers with the button types
-    <!--  Types: -->
-    <button type="button" class="button">Button</button>
-    <button type="button" class="button  button--fill">Button</button>
-    <button type="button" class="button  button--primary">Button</button>
-    <button type="button" class="button  button--primary-fill">Button</button>
-    <button type="button" class="button  button--secondary">Button</button>
-    <button type="button" class="button  button--secondary-fill">Button</button>
-    <button type="button" class="button  button--light">Button</button>
-    <button type="button" class="button  button--light-fill">Button</button>
-    <!-- Modifiers -->
-    <button type="button" class="button  button--block">Button</button>
-    <button type="button" class="button  button--wider">Button</button>
-    <button type="button" class="button  button--spaced">Button</button>
-    <button type="button" class="button  button--compact">Button</button>
-    <button type="button" class="button" disabled>Button</button>
+    <button type="button" class="button" disabled>Disabled button</button>
 
 Styleguide 3.2
 */

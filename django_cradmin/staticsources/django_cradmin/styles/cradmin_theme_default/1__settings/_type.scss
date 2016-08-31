@@ -8,7 +8,7 @@ Fonts
 - Never specify `font-family` anywhere, use the include method.
 - Never specify font-weight, use the include method.
 
-Example: Use these includes when a font is needed
+Example: {syntax: scss, preview: false} Use these includes when a font is needed
     @include font(header);
     @include font(header, bold);
     @include font(base);
@@ -55,14 +55,6 @@ Font sizes should be consistant, therefor never refer to a specific font size an
 1. `large` - For headers</li>
 1. `xlarge` - For headers</li>
 1. `xxlarge` - For headers, use with care</li>
-
-Markup:
-@include font-size(xsmall);
-@include font-size(small);
-@include font-size(medium);
-@include font-size(large);
-@include font-size(xlarge);
-@include font-size(xxlarge);
 
 Styleguide 2.2
 */
