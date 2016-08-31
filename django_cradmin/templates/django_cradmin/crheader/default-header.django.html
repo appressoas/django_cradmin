@@ -8,9 +8,9 @@
         </a>
     {% endblock brand %}
 
-    {% block largescreen-menu %}
-        {% if request.cradmin_instance.largescreen_menu_renderable %}
-            {% cradmin_render_renderable request.cradmin_instance.largescreen_menu_renderable %}
+    {% block main-menu %}
+        {% if request.cradmin_instance.main_menu_renderable %}
+            {% cradmin_render_renderable request.cradmin_instance.main_menu_renderable %}
         {% endif %}
-    {% endblock largescreen-menu %}
+    {% endblock main-menu %}
 {% endblock content %}

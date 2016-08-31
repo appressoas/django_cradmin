@@ -50,7 +50,7 @@
 
 
 {% block toggleable-menu %}
-    {% if request.cradmin_instance.smallscreen_menu_renderable %}
-        {% cradmin_render_renderable request.cradmin_instance.smallscreen_menu_renderable %}
+    {% if request.cradmin_instance.expandable_menu_renderable %}
+        {% cradmin_render_renderable request.cradmin_instance.expandable_menu_renderable %}
     {% endif %}
 {% endblock toggleable-menu %}

@@ -239,25 +239,25 @@ class AbstractMenuRenderable(listbuilder.base.List):
         raise None
 
 
-class DefaultLargeScreenMenuRenderable(AbstractMenuRenderable):
+class DefaultMainMenuRenderable(AbstractMenuRenderable):
     """
     The default large screen (desktop) :class:`.Menu` renderable.
     """
-    template_name = 'django_cradmin/crmenu/default-largescreen.django.html'
+    template_name = 'django_cradmin/crmenu/menu/default-main.django.html'
     menutoggle_renderable_class = MenuToggleItemItemRenderable
 
     def get_wrapper_htmltag_id(self):
-        return 'id_django_cradmin_menu_largescreen'
+        return 'id_django_cradmin_menu_main'
 
     def get_menutoggle_renderable(self):
         return self.menutoggle_renderable_class()
 
 
-class DefaultSmallScreenMenuRenderable(AbstractMenuRenderable):
+class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
     """
     The default small screen (mobile) :class:`.Menu` renderable.
     """
-    template_name = 'django_cradmin/crmenu/default-smallscreen.django.html'
+    template_name = 'django_cradmin/crmenu/menu/default-expandable.django.html'
 
     def get_wrapper_htmltag_id(self):
-        return 'id_django_cradmin_menu_smallscreen'
+        return 'id_django_cradmin_menu_expandable'

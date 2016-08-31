@@ -74,13 +74,14 @@ class BaseCrAdminInstance(object):
     #: Defaults to ``\d+``.
     roleid_regex = r'\d+'
 
-    #: The renderable class for the large screen (desktop) menu.
-    #: See :meth:`.get_largescreen_menu_renderable`.
-    largescreen_menu_renderable_class = crmenu.DefaultLargeScreenMenuRenderable
+    #: The renderable class for the main menu.
+    #: See :meth:`.get_main_menu_renderable`.
+    main_menu_renderable_class = crmenu.DefaultMainMenuRenderable
 
-    #: The renderable class for the small screen (mobile) menu.
-    #: See :meth:`.get_smallscreen_menu_renderable`.
-    smallscreen_menu_renderable_class = crmenu.DefaultSmallScreenMenuRenderable
+    #: The renderable class for the expandable menu
+    #: (the menu that is toggled by a button in the main menu).
+    #: See :meth:`.get_expandable_menu_renderable`.
+    expandable_menu_renderable_class = crmenu.DefaultExpandableMenuRenderable
 
     #: The header class for this cradmin instance.
     #: Must be a subclass of :class:`django_cradmin.crheader.AbstractHeaderRenderable`.
@@ -233,51 +234,53 @@ class BaseCrAdminInstance(object):
     def get_menu_item_renderables(self):
         return []
 
-    def get_smallscreen_menu_item_renderables(self):
+    def get_expandable_menu_item_renderables(self):
         return self.get_menu_item_renderables()
 
-    def get_largescreen_menu_item_renderables(self):
+    def get_main_menu_item_renderables(self):
         return self.get_menu_item_renderables()
 
-    def get_largescreen_menu_renderable(self):
+    def get_main_menu_renderable(self):
         """
-        Get the large screen (desktop) menu renderable instance.
+        Get the main menu renderable instance.
 
         Defaults to a instance of the class specified in
-        :obj:`~.BaseCrAdminInstance.largescreen_menu_renderable_class`.
+        :obj:`~.BaseCrAdminInstance.main_menu_renderable_class`.
 
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        menu_renderable = self.largescreen_menu_renderable_class(cradmin_instance=self)
-        menu_renderable.extend(self.get_largescreen_menu_item_renderables())
+        menu_renderable = self.main_menu_renderable_class(cradmin_instance=self)
+        menu_renderable.extend(self.get_main_menu_item_renderables())
         return menu_renderable
 
     @property
-    def largescreen_menu_renderable(self):
-        if not hasattr(self, '_largescreen_menu_renderable_cached'):
-            self._largescreen_menu_renderable_cached = self.get_largescreen_menu_renderable()
-        return self._largescreen_menu_renderable_cached
+    def main_menu_renderable(self):
+        if not hasattr(self, '_main_menu_renderable_cached'):
+            self._main_menu_renderable_cached = self.get_main_menu_renderable()
+        return self._main_menu_renderable_cached
 
-    def get_smallscreen_menu_renderable(self):
+    def get_expandable_menu_renderable(self):
         """
-        Get the small screen (mobile) menu renderable instance.
+        Get the expandable menu renderable instance. This is the menu
+        that is expanded by a button which by default is in the main
+        menu.
 
         Defaults to a instance of the class specified in
-        :obj:`~.BaseCrAdminInstance.smallscreen_menu_renderable_class`.
+        :obj:`~.BaseCrAdminInstance.expandable_menu_renderable_class`.
 
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        menu_renderable = self.smallscreen_menu_renderable_class(cradmin_instance=self)
-        menu_renderable.extend(self.get_smallscreen_menu_item_renderables())
+        menu_renderable = self.expandable_menu_renderable_class(cradmin_instance=self)
+        menu_renderable.extend(self.get_expandable_menu_item_renderables())
         return menu_renderable
 
     @property
-    def smallscreen_menu_renderable(self):
-        if not hasattr(self, '_smallscreen_menu_renderable_cached'):
-            self._smallscreen_menu_renderable_cached = self.get_smallscreen_menu_renderable()
-        return self._smallscreen_menu_renderable_cached
+    def expandable_menu_renderable(self):
+        if not hasattr(self, '_expandable_menu_renderable_cached'):
+            self._expandable_menu_renderable_cached = self.get_expandable_menu_renderable()
+        return self._expandable_menu_renderable_cached
 
     def get_header_renderable(self):
         """
