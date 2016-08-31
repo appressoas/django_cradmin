@@ -74,11 +74,6 @@ class BaseCrAdminInstance(object):
     #: Defaults to ``\d+``.
     roleid_regex = r'\d+'
 
-    #: The menu class for this cradmin instance.
-    #: Must be a subclass of :class:`django_cradmin.crmenu.Menu`.
-    #: You can also override :meth:`.get_menu` to generate this dynamically.
-    menuclass = None
-
     #: The renderable class for the large screen (desktop) menu.
     #: See :meth:`.get_largescreen_menu_renderable`.
     largescreen_menu_renderable_class = crmenu.DefaultLargeScreenMenuRenderable
@@ -88,8 +83,8 @@ class BaseCrAdminInstance(object):
     smallscreen_menu_renderable_class = crmenu.DefaultSmallScreenMenuRenderable
 
     #: The header class for this cradmin instance.
-    #: Must be a subclass of :class:`django_cradmin.crheader.AbstractHeader`.
-    header_renderable_class = crheader.DefaultHeader
+    #: Must be a subclass of :class:`django_cradmin.crheader.AbstractHeaderRenderable`.
+    header_renderable_class = crheader.DefaultHeaderRenderable
 
     #: The footer class for this cradmin instance.
     #: Must be a subclass of :class:`django_cradmin.crfooter.AbstractFooter`.
@@ -235,24 +230,14 @@ class BaseCrAdminInstance(object):
             'role': role
         })
 
-    def _get_menu(self):
-        if not hasattr(self, '_menu'):
-            menuclass = self.menuclass
-            self._menu = menuclass(self)
-        return self._menu
+    def get_menu_item_renderables(self):
+        return []
 
-    def get_menu(self):
-        """
-        Get the navigation menu for the cradmin instance.
+    def get_smallscreen_menu_item_renderables(self):
+        return self.get_menu_item_renderables()
 
-        Returns:
-            django_cradmin.crmenu.Menu: An instance of :obj:`~.BaseCrAdminInstance.menuclass` by default, but you can
-            override this method to determine/create the menu dynamically.
-
-        See Also:
-            :class:`django_cradmin.crmenu.Menu`.
-        """
-        return self._get_menu()
+    def get_largescreen_menu_item_renderables(self):
+        return self.get_menu_item_renderables()
 
     def get_largescreen_menu_renderable(self):
         """
@@ -264,7 +249,15 @@ class BaseCrAdminInstance(object):
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        return self.largescreen_menu_renderable_class(cradmin_instance=self)
+        menu_renderable = self.largescreen_menu_renderable_class(cradmin_instance=self)
+        menu_renderable.extend(self.get_largescreen_menu_item_renderables())
+        return menu_renderable
+
+    @property
+    def largescreen_menu_renderable(self):
+        if not hasattr(self, '_largescreen_menu_renderable_cached'):
+            self._largescreen_menu_renderable_cached = self.get_largescreen_menu_renderable()
+        return self._largescreen_menu_renderable_cached
 
     def get_smallscreen_menu_renderable(self):
         """
@@ -276,7 +269,15 @@ class BaseCrAdminInstance(object):
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        return self.smallscreen_menu_renderable_class(cradmin_instance=self)
+        menu_renderable = self.smallscreen_menu_renderable_class(cradmin_instance=self)
+        menu_renderable.extend(self.get_smallscreen_menu_item_renderables())
+        return menu_renderable
+
+    @property
+    def smallscreen_menu_renderable(self):
+        if not hasattr(self, '_smallscreen_menu_renderable_cached'):
+            self._smallscreen_menu_renderable_cached = self.get_smallscreen_menu_renderable()
+        return self._smallscreen_menu_renderable_cached
 
     def get_header_renderable(self):
         """
@@ -286,10 +287,10 @@ class BaseCrAdminInstance(object):
         :obj:`~.BaseCrAdminInstance.header_renderable_class`.
 
         Returns:
-            django_cradmin.crheader.AbstractHeader: An AbstractHeader object.
+            django_cradmin.crheader.AbstractHeaderRenderable: An AbstractHeaderRenderable object.
 
         See Also:
-            :class:`django_cradmin.crheader.AbstractHeader`.
+            :class:`django_cradmin.crheader.AbstractHeaderRenderable`.
         """
         return self.header_renderable_class(cradmin_instance=self)
 
@@ -301,10 +302,10 @@ class BaseCrAdminInstance(object):
         :obj:`~.BaseCrAdminInstance.footer_renderable_class`.
 
         Returns:
-            django_cradmin.crfooter.AbstractHeader: An AbstractHeader object.
+            django_cradmin.crfooter.AbstractHeaderRenderable: An AbstractHeaderRenderable object.
 
         See Also:
-            :class:`django_cradmin.crfooter.AbstractHeader`.
+            :class:`django_cradmin.crfooter.AbstractHeaderRenderable`.
         """
         if self.footer_renderable_class:
             return self.footer_renderable_class(cradmin_instance=self)

@@ -115,6 +115,12 @@ class List(AbstractRenderableWithCss):
         """
         return len(self.renderable_list) > 0
 
+    def __bool__(self):
+        return self.has_items()
+
+    def __len__(self):
+        return len(self.renderable_list)
+
     def get_base_css_classes_list(self):
         """
         Sets ``django-cradmin-listbuilder-list`` as css class for the list.

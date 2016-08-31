@@ -1,6 +1,6 @@
-{% block wrapper %}
+{% block outer-wrapper %}
     <{{ me.get_wrapper_htmltag }} id="{{ me.get_wrapper_htmltag_id }}"
             class="{{ me.get_css_classes_string }}">
         {% block content %}{% endblock content %}
     </{{ me.get_wrapper_htmltag }}>
-{% endblock wrapper %}
+{% endblock outer-wrapper %}

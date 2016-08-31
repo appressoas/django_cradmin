@@ -1,0 +1,7 @@
+{% block outer-wrapper %}
+    <button type="button" class="{{ me.get_css_classes_string }}">
+        {% block content %}
+            {{ me.get_label }}
+        {% endblock content %}
+    </button>
+{% endblock outer-wrapper %}

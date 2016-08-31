@@ -105,4 +105,4 @@ class AbstractRenderableWithCss(AbstractRenderable):
         css_classes = []
         css_classes.extend(self.get_base_css_classes_list())
         css_classes.extend(self.get_extra_css_classes_list())
-        return ' '.join(css_classes)
+        return '  '.join(css_classes)

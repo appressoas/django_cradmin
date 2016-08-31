@@ -50,10 +50,7 @@
 
 
 {% block toggleable-menu %}
-    {% with smallscreen_menu_renderable=request.cradmin_instance.get_smallscreen_menu_renderable %}
-        {% if smallscreen_menu_renderable %}
-            {% cradmin_render_renderable smallscreen_menu_renderable %}
-        {% endif %}
-    {% endwith %}
+    {% if request.cradmin_instance.smallscreen_menu_renderable %}
+        {% cradmin_render_renderable request.cradmin_instance.smallscreen_menu_renderable %}
+    {% endif %}
 {% endblock toggleable-menu %}
-

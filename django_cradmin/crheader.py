@@ -1,7 +1,7 @@
 from django_cradmin import renderable
 
 
-class AbstractHeader(renderable.AbstractRenderableWithCss):
+class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
     def __init__(self, cradmin_instance):
         self.cradmin_instance = cradmin_instance
 
@@ -17,5 +17,5 @@ class AbstractHeader(renderable.AbstractRenderableWithCss):
         return 'id_django_cradmin_header'
 
 
-class DefaultHeader(AbstractHeader):
+class DefaultHeaderRenderable(AbstractHeaderRenderable):
     template_name = 'django_cradmin/crheader/default-header.django.html'

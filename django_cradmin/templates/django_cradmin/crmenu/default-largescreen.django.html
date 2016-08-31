@@ -1,1 +1,7 @@
 {% extends "django_cradmin/crmenu/base.django.html" %}
+{% load cradmin_tags %}
+
+{% block content %}
+    {{ block.super }}
+    {% cradmin_render_renderable me.get_menutoggle_renderable %}
+{% endblock content %}

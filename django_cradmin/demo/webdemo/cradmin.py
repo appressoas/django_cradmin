@@ -13,37 +13,8 @@ from django_cradmin.demo.webdemo.views import inviteadmins
 from django_cradmin.demo.webdemo.views import sharable_link
 
 
-class Menu(crmenu.Menu):
-    def build_menu(self):
-        self.add_headeritem(
-            label=_('Select role'), url=self.cradmin_instance.roleselectview_url())
-        self.add_menuitem(
-            label=_('Dashboard'), url=self.appindex_url('dashboard'),
-            active=self.request.cradmin_app.appname == 'dashboard')
-        self.add_menuitem(
-            label=_('Pages'), url=self.appindex_url('pages'),
-            active=self.request.cradmin_app.appname == 'pages')
-        self.add_menuitem(
-            label=_('Pages (listbuilder)'), url=self.appindex_url('pages_listbuilder'),
-            active=self.request.cradmin_app.appname == 'pages_listbuilder')
-        self.add_menuitem(
-            label=_('FormUtils demo'), url=self.appindex_url('formutils'),
-            active=self.request.cradmin_app.appname == 'formutils')
-        self.add_menuitem(
-            label=_('Images'), url=self.appindex_url('imagearchive'),
-            active=self.request.cradmin_app.appname == 'imagearchive')
-
-        self.add_footeritem(
-            label=_('Invite admins'), url=self.appindex_url('inviteadmins'),
-            active=self.request.cradmin_app.appname == 'inviteadmins')
-        self.add_footeritem(
-            label=_('Share'), url=self.appindex_url('sharable_link'),
-            active=self.request.cradmin_app.appname == 'sharable_link')
-
-
 class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'webdemo'
-    menuclass = Menu
     roleclass = Site
     rolefrontpage_appname = 'dashboard'
 
@@ -84,3 +55,30 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         in the same project.
         """
         return urlpath.startswith('/webdemo')
+
+    def get_menu_item_renderables(self):
+        return [
+            crmenu.LinkItemRenderable(
+                label=_('Select role'), url=self.roleselectview_url()),
+            crmenu.LinkItemRenderable(
+                label=_('Dashboard'), url=self.appindex_url('dashboard'),
+                is_active=self.request.cradmin_app.appname == 'dashboard'),
+            crmenu.LinkItemRenderable(
+                label=_('Pages'), url=self.appindex_url('pages'),
+                is_active=self.request.cradmin_app.appname == 'pages'),
+            crmenu.LinkItemRenderable(
+                label=_('Pages (listbuilder)'), url=self.appindex_url('pages_listbuilder'),
+                is_active=self.request.cradmin_app.appname == 'pages_listbuilder'),
+            crmenu.LinkItemRenderable(
+                label=_('FormUtils demo'), url=self.appindex_url('formutils'),
+                is_active=self.request.cradmin_app.appname == 'formutils'),
+            crmenu.LinkItemRenderable(
+                label=_('Images'), url=self.appindex_url('imagearchive'),
+                is_active=self.request.cradmin_app.appname == 'imagearchive'),
+            crmenu.LinkItemRenderable(
+                label=_('Invite admins'), url=self.appindex_url('inviteadmins'),
+                is_active=self.request.cradmin_app.appname == 'inviteadmins'),
+            crmenu.LinkItemRenderable(
+                label=_('Share'), url=self.appindex_url('sharable_link'),
+                is_active=self.request.cradmin_app.appname == 'sharable_link'),
+        ]
