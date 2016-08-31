@@ -109,7 +109,6 @@ Styleguide 3.7
     select {
         @include font(base, bold);
         font-size: inherit;
-        // @include font-size(medium);
 
         // Reset
         -webkit-appearance: none;
@@ -184,7 +183,7 @@ Styleguide 3.7
 
     &--outlined,
     &--inline-action {
-        border: $border-width solid color(neutral, dark);
+        border: $border-width solid color(neutral, xlight);
 
         &:before {
             right: $spacing--small;

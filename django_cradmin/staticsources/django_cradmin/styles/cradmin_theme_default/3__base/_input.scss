@@ -53,20 +53,6 @@ If you want to style something else as input just use the class `.input`
     <textarea placeholder="Type alot on me!" auto-grow></textarea>
 </label>
 
-Markup:
-<label>
-    Label
-    <input />
-</label>
-<input type="text" />
-<input type="text" class="input--error" />
-<input type="text" class="input--inline" />
-<input type="text" class="input--outlined" />
-<textarea></textarea>
-<textarea class="input--error"></textarea>
-<textarea class="input--outlined"></textarea>
-<textarea auto-grow></textarea>
-
 Styleguide 3.5
 */
 
@@ -195,7 +181,7 @@ input[type='tel'],
     &[type='url'],
     &[type='search'],
     &[type='tel'] {
-        border: $border-width solid color(neutral, dark);
+        border: $border-width solid color(neutral, xxlight);
 
         // &:focus {
         //     border-color: color(primary, dark);

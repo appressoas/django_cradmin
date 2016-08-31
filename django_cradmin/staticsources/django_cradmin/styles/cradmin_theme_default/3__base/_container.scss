@@ -1,0 +1,32 @@
+// Centered page container element
+.container {
+    @extend %clearfix;
+    max-width: $container-width;
+    margin: 0 auto;
+
+    padding-left: $spacing;
+    padding-right: $spacing;
+
+    @include min-width(lg) {
+        padding-left: $spacing--large;
+        padding-right: $spacing--large;
+    }
+
+    &--xtight {
+        max-width: $container-width--xtight;
+    }
+
+    &--tight {
+        max-width: $container-width--tight;
+    }
+
+    &--wide {
+        max-width: $container-width--wide;
+    }
+
+    // Remove padding from container within container
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

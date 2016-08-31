@@ -1,41 +1,42 @@
 @charset 'UTF-8';
 
-
 /*
-Setup
+Basic
 
-Something about that
+Colors, Breakpoints, Spacing...
 
 Styleguide 1
 */
-@import '1__settings/all';
-
 
 /*
-Generic
-
-Something about that
+Typography
 
 Styleguide 2
 */
-@import '2__generic/all';
-
 
 /*
-Base
-
-Something about that
+Form elements
 
 Styleguide 3
 */
-@import '3__base/all';
 
+// Icons in bwtween (4)
+
+/*
+Layout
+
+Styleguide 5
+*/
 
 /*
 Components
 
-Something about that
-
-Styleguide 4
+Styleguide 6
 */
+
+
+
+@import '1__settings/all';
+@import '2__generic/all';
+@import '3__base/all';
 @import '4__components/all';

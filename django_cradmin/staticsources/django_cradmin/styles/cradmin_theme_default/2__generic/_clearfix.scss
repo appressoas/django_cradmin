@@ -1,15 +1,3 @@
-/*
-Clearfix
-
-Usage:
-`.clearfix`
-
-Or for extending:
-Use `@extend %clearfix`
-
-Styleguide 2.1
-*/
-
 .clearfix,
 %clearfix {
     &::before,

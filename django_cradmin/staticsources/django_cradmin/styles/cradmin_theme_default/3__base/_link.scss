@@ -3,25 +3,11 @@ Links
 
 __Never__ use `<span>`, `<div>` or elements without a semantic meaning as links.
 
-# This is the links:
-<ul>
-    <li>
-        <a href="">I'm a link</a>
-    </li>
-    <li>
-        <a href="" class="link--light">I'm also link</a>
-    </li>
-</ul>
+Example: Link styles
+    <a href="">I'm a link</a>
+    <a href="" class="link--light">I'm also link</a>
 
-Markup: (html)
-<a href="">I'm a link</a>
-<a href="" class="link--light">I'm also link</a>
-
-Markup: For extending
-@extend %link;
-@extend %link--light;
-
-Styleguide 3.1
+Styleguide 2.6
 */
 a,
 .link,
@@ -31,7 +17,7 @@ a,
     text-decoration: none;
 
     color: $color-links;
-    border-bottom: $border-width--small dotted $color-links;
+    border-bottom: $border-width--small solid rgba($color-links, 0.15);
 
     &:hover,
     &:focus {

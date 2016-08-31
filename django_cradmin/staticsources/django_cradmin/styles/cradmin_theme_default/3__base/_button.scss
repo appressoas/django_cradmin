@@ -106,7 +106,7 @@ Styleguide 3.2
     border-radius: 0;
 
     color: $color-text;
-    white-space: nowrap;
+    white-space: normal;
 
     border: $border-width solid color(neutral);
     background-color: transparent;
@@ -114,6 +114,7 @@ Styleguide 3.2
 
     @include min-width(md) {
         display: inline-block;
+        white-space: nowrap;
         width: auto;
         padding: $spacing--small #{$indention - $border-width};
     }
@@ -177,18 +178,14 @@ Styleguide 3.2
         }
     }
 
-    &--nomargin {
-        margin: 0;
-    }
-
     &--block {
         display: block;
         width: 100%;
     }
 
     &--compact {
-        @include font-size(small);
-        padding: $spacing--small;
+        @include font-size(xsmall);
+        padding: $unit $spacing--small;
     }
 
     &[disabled] {
