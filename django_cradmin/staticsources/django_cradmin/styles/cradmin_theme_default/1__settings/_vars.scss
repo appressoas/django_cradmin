@@ -10,12 +10,6 @@ Media queries are **only** ment for the mobile first approach; Which means you d
 3. `lg: 960px`, - Large and up
 4. `xl: 1240px` - Extra large and up
 
-Markup:
-@include min-width(xs) {}
-@include min-width(md) {}
-@include min-width(lg) {}
-@include min-width(xl) {}
-
 Styleguide 1.4
 */
 $breakpoints: (
@@ -27,10 +21,10 @@ $breakpoints: (
 
 
 // Grids max-width
-$grid-width--xtight: 620px;
-$grid-width--tight: 740px;
-$grid-width: $grid-width--tight * 1.5;
-$grid-width--wide: 1400px;
+$container-width--xtight: 620px;
+$container-width--tight: 740px;
+$container-width: $container-width--tight * 1.5;
+$container-width--wide: 1400px;
 
 
 /*
@@ -50,13 +44,6 @@ Never refer to a pixel-size for padding, margin or simular.
 - <div class="sg-size  sg-size--xlarge"></div>
   `$spacing--xlarge` - 40 units
 
-Markup:
-$unit;
-$spacing--small;
-$spacing;
-$spacing--large;
-$spacing--xlarge;
-
 Styleguide 1.5
 */
 $unit: 6px;
@@ -72,17 +59,18 @@ $indention: $unit * 7;
 // Vertical rythm
 $vertical-rythm: 12px; // TODO: Responsive?
 $vertical-rythm--spacing: ($vertical-rythm * 2) + $vertical-rythm;
-$vertical-rythm--spacing--small: $vertical-rythm--spacing / 2;
+$vertical-rythm--spacing--small: $vertical-rythm; // TODO: Just use $vertical-rythm
 
 
 // Border-width
 $border-width: 3px;
-$border-width--small: 1px;
+$border-width--small: 2px;
+$border-width--large: 4px;
 
 
 // Border style
-$border-style: $border-width solid color(neutral, dark);
-$border-style--small: $border-width--small solid color(neutral, dark);
+$border-style: $border-width solid color(neutral, light);
+$border-style--small: $border-width--small solid color(neutral, light);
 
 
 // Better easing

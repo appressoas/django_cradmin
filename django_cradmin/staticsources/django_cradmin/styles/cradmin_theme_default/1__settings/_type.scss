@@ -1,23 +1,23 @@
 /*
 Fonts
 
-# The fonts on the webpage is:
+1. Base font: <div class="sg-font-base">Fallback: </div>
+2. Header font: <div class="sg-font-header">Fallback: </div>
 
-1. <div style="font-family: 'bebas-neue';">Bebase Neue</div>
-   Use this for header, always in normal font-weight.
-2. <div>Helvetica Neue</div>
-   Body copy, only in font-weights: `normal`, `400` or `700`
+- Never use other fonts than these.
+- Never specify `font-family` anywhere, use the include method.
+- Never specify font-weight, use the include method.
 
-The markup shows how to specify the font-weight.
+Example: Use these includes when a font is needed
+    @include font(header);
+    @include font(header, bold);
+    @include font(base);
+    @include font(base, bold);
 
-Markup:
-@include font(header);
-@include font(base);
-@include font(base, bold);
-
-Styleguide 1.1
+Styleguide 2.1
 */
 
+// TODO: Should remove all these variables, it's better to just override the map itself
 $font-base-font: Roboto, "Helvetica Neue" !default;
 $font-base-fallback: Arial, sans-serif !default;
 $font-base-normal: 400 !default;
@@ -41,7 +41,7 @@ $fonts: (
         normal: $font-header-normal,
         bold: $font-header-bold
     )
-);
+) !default;
 
 /* Font sizes
 
@@ -64,10 +64,10 @@ Markup:
 @include font-size(xlarge);
 @include font-size(xxlarge);
 
-Styleguide 1.3
+Styleguide 2.2
 */
 
-
+// TODO: Should remove all these variables, it's better to just override the map itself
 $font-size-xsmall-base: 15px !default;
 $font-size-xsmall-md: ($font-size-xsmall-base + 1) !default;
 
@@ -115,7 +115,7 @@ $font-size: (
         lg: $font-size-xxlarge-lg,
         xl: $font-size-xxlarge-xl,
     )
-);
+) !default;
 
 /*
 Golden ratio font sizes:

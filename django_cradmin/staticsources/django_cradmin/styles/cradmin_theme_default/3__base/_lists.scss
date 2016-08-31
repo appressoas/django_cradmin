@@ -3,76 +3,21 @@ Lists
 
 List styles are turned of by default. You need to add classes to style it.
 
-<p>`Ordered list`; Default styling</p>
+Example: `Ordered list`; Default styling
+    <ol>
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ol>
 
-<ol>
-    <li>I'm number one!</li>
-    <li>Second isn't all that bad</li>
-    <li>I'm last :(</li>
-</ol>
+Example: `.list`; Default styling
+    <ul class="list">
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ul>
 
-<br />
-
-<p>`.list`; Default styling</p>
-
-<ul class="list">
-    <li>I'm number one!</li>
-    <li>Second isn't all that bad</li>
-    <li>I'm last :(</li>
-</ul>
-
-<br />
-
-<p>`.list  .list--large`; Larger lists</p>
-
-<ul class="list  list--large">
-    <li>I'm number one!</li>
-    <li>Second isn't all that bad</li>
-    <li>I'm last :(</li>
-</ul>
-
-<br />
-
-<p>`.list  .list--results`; Simple result list</p>
-
-<ul class="list  list--results">
-    <li>I'm number one!</li>
-    <li>Second isn't all that bad</li>
-    <li>I'm last :(</li>
-</ul>
-
-<br />
-
-<p>`.list  .list--links`; Link list</p>
-
-<ul class="list  list--results">
-    <li>I'm number one!</li>
-    <li>Second isn't all that bad</li>
-    <li>I'm last :(</li>
-</ul>
-
-<br />
-
-<p>`.list  .list--dates`; List with dates</p>
-
-<ul class="list  list--dates">
-    <li>
-        <time class="date">
-            <span class="date__day">7</span>
-            <span class="date__month">aug</span>
-        </time>
-        <a href="">AUFs sommerleir begynner på Utøya</a>
-    </li>
-    <li>
-        <time class="date">
-            <span class="date__day">7</span>
-            <span class="date__month">des</span>
-        </time>
-        <a href="">Frist for innsending av forslag til landsmøtet 2017</a>
-    </li>
-</ul>
-
-Styleguide 3.6
+Styleguide 2.5
 */
 ol {
     margin-bottom: $vertical-rythm--spacing;
@@ -102,10 +47,4 @@ ol {
             border-bottom: $border-width solid color(primary);
         }
     }
-
-    //&--large {
-    //    & > li {
-    //        margin-bottom: $spacing;
-    //    }
-    //}
 }

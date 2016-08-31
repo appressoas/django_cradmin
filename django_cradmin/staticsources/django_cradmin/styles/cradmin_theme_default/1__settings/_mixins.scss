@@ -9,11 +9,6 @@
 }
 
 
-@function sidebar-size($name) {
-    @return map-get($sidebar-sizes, $name);
-}
-
-
 // Defining colors as a map
 // retrieve color from $colors map ie. `color(primary, base)`
 @function color($color-name, $color-variant: 'base') {
@@ -38,6 +33,10 @@
     $line-height: $vertical-rythm;
     $i: 1;
 
+    @if (unit($size) != 'px') {
+        @return inherit;
+    }
+
     @while $line-height < ($size * $min) {
         $line-height: $vertical-rythm * $i;
         $i: $i + 1;
@@ -61,6 +60,7 @@
         }
     }
 }
+
 @mixin make-font-size($fs-font-size) {
     @if type-of($fs-font-size) == 'list' {
         font-size: nth($fs-font-size, 1);
@@ -116,7 +116,7 @@
     width: $width;
     height: $height;
 
-    background-image: url('#{$media-path}/images/sprite.svg');
+    background-image: url('../images/sprite.svg');
     background-position: (-( ( $col - 1 ) * 100) + px ) (-( ( $row - 1 ) * 100 ) + px);
     background-repeat: no-repeat;
 }

@@ -6,7 +6,7 @@
     }
 
     &-fade-in-down {
-        animation: fade-in-down 300ms $swift-out;
+        animation: fade-in-down 300ms $swift-out both;
     }
 
     &-fade-in-up {
