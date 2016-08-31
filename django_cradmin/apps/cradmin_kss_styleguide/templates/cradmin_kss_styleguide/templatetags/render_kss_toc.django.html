@@ -1,31 +1,39 @@
 {% load cradmin_kss_styleguide_tags %}
-
-<div class="kss-vertical-rythme"></div>
-
-<nav class="kss-nav">
+<header class="kss-header">
     {% block toctitle %}
-        <h1 class="kss-nav__title">
-            <a href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">{{ styleguideconfig.label }}</a>
+        <h1 class="kss-header__title">
+            <a href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}" class="kss-header__title-link">{{ styleguideconfig.label }}</a>
         </h1>
     {% endblock toctitle %}
 
-    <ul class="kss-nav__menu">
+    <button type="button" class="kss-header__menu" onclick="cradmin_kss_styleguide_toggle_menu()">
+        <span class="icon-hamburger  icon-hamburger--light">
+            <span class="icon-hamburger__bar"></span>
+            <span class="icon-hamburger__bar"></span>
+            <span class="icon-hamburger__bar"></span>
+        </span>
+        <span class="kss-header__menu-text">Menu</span>
+    </button>
+</header>
+
+<nav class="kss-menu" onclick="cradmin_kss_styleguide_toggle_menu()">
+    <ul class="kss-menu__content">
     {% for section in sections_tree %}
         {% if section == 'levelup' %}
-            <li class="kss-nav__menu-item">
-                <ul class="kss-nav__menu-child">
+            <li class="kss-menu__item  kss-menu__item--children">
+                <ul class="kss-menu__children">
         {% elif section == 'leveldown' %}
                 </ul>
             </li>
         {% else %}
             {% block tocentry-wrapper %}
-                <li>
+                <li class="kss-menu__item">
                     {% block tocentry %}
                         <a {% block tocentry-href %}href="{% kss_section_url styleguideconfig=styleguideconfig section=section %}"{% endblock %}
-                                class="kss-nav__link">
+                                class="kss-menu__link">
                             {% block tocentry-text %}
-                                <span class="kss-nav__ref">{{ section.reference }}.</span>
-                                <span class="kss-nav__name">{{ section.title }}</span>
+                                <span class="kss-menu__ref">{{ section.reference }}.</span>
+                                <span class="kss-menu__name">{{ section.title }}</span>
                             {% endblock tocentry-text %}
                         </a>
                     {% endblock tocentry %}
@@ -35,3 +43,95 @@
     {% endfor %}
     </ul>
 </nav>
+<ul class="kss-sizer"></ul>
+
+<script>
+    var menuState = false;
+
+    function cradmin_kss_styleguide_toggle_menu() {
+        var menu = document.querySelector('.kss-menu');
+        var menuToggle = document.querySelector('.kss-header__menu-text');
+        var burger = document.querySelector('.icon-hamburger');
+
+        if (menuState) {
+            menu.classList.remove('kss-menu--show');
+            burger.classList.remove('icon-hamburger--close');
+            menuToggle.innerHTML = 'Menu';
+        } else {
+            menu.classList.add('kss-menu--show');
+            burger.classList.add('icon-hamburger--close');
+            menuToggle.innerHTML = 'Close';
+        }
+
+        menuState = !menuState;
+    }
+
+    var kssIframeSizes = [
+        { size: 320 },
+        { size: 480 },
+        { size: 600 },
+        { size: 720 },
+        { size: 840 },
+        { size: 960 },
+        { size: 1080, selected: true },
+        { size: 1280 }
+    ].reverse();
+
+    function kssSetSize(size) {
+        if (event) {
+            event.preventDefault();
+        }
+
+        kssIframeSizes.forEach(function(item) {
+            if (item.size !== size) {
+                item.selected = false;
+            } else {
+                item.selected = true;
+            }
+        });
+
+        kssInitSizer();
+    }
+
+    function kssUpdateIframes(size) {
+        var previews = document.querySelectorAll('.kss-usage__preview-content');
+
+        previews.forEach(function(item) {
+            item.style.width = size + 'px';
+        });
+    }
+
+    function kssInitSizer() {
+        var controls = document.querySelector('.kss-sizer');
+
+        var sizers = kssIframeSizes.map(function(item, index) {
+            var classes = 'kss-sizer__sizer';
+
+            if (item.selected) {
+                classes += '  kss-sizer__sizer--selected';
+
+                if (window.innerWidth < item.size) {
+                    kssSetSize(kssIframeSizes[index + 1].size);
+                    return;
+                }
+
+                kssUpdateIframes(item.size);
+            }
+
+            if (window.innerWidth > item.size) {
+                return  '<li class="kss-sizer__item">' +
+                            '<a role="button" href="" class="' + classes + '" id="kss-sizer-' + item.size + '" onclick="kssSetSize(' + item.size + ')" style="width: ' + item.size + 'px;">' +
+                                '<span>' + item.size + '</span>' +
+                                '<span>' + item.size + '</span>' +
+                            '</a>' +
+                        '</li>';
+            }
+        });
+
+        controls.innerHTML = sizers.join(' ');
+    }
+
+    window.addEventListener('resize', kssInitSizer);
+
+    document.addEventListener('DOMContentLoaded', kssInitSizer);
+</script>

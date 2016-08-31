@@ -1,57 +1,185 @@
 @import 'main';
 @import 'pygments';
 
-.kss-vertical-rythme {
-    display: none;
-    pointer-events: none;
-    position: absolute;
-    top: 2px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: repeating-linear-gradient(
-        transparent,
-        transparent ($vertical-rythm - 1px),
-            color(neutral) ($vertical-rythm - 1px),
-                color(neutral) ($vertical-rythm));
-}
+$kss-header-height: $vertical-rythm * 4;
+$kss-controls-height: $vertical-rythm * 2;
 
 .kss-content {
+    padding-top: $kss-header-height + $kss-controls-height + $vertical-rythm--spacing;
+}
+
+.kss-header {
     display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    @include min-width(lg) {
-        flex-direction: row;
+    position: fixed;
+    z-index: 3;
+    padding: 0 $spacing;
+    top: 0;
+    left: 0;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: $kss-header-height;
+    color: $color-light;
+    background-color: $color-dark;
+    // box-shadow: $shadow--weak;
+
+    &__title {
+        @include font-size(small);
+        margin: 0;
+        color: inherit;
+    }
+
+    &__title-link {
+        color: inherit;
+        border: 0;
+    }
+
+    &__menu {
+        .icon-hamburger {
+            margin-top: 2px;
+            margin-right: $unit;
+        }
     }
 }
 
-.kss-main {
-    @include min-width(lg) {
-        width: calc(100% - 250px);
+.kss-menu {
+    display: none;
+    position: fixed;
+    z-index: 4;
+    top: $kss-header-height;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: $color-light;
+    background-color: $color-dark;
+    overflow: auto;
+
+    &--show {
+        display: block;
+    }
+
+    &__content {
+        @include font(header, bold);
+        @include font-size(medium);
+
+        max-width: $container-width;
+        margin: 0 auto;
+        padding: $vertical-rythm--spacing $spacing;
+        column-count: 2;
+        column-gap: $spacing;
+
+        @include min-width(md) {
+            column-count: 3;
+            column-gap: $spacing--large;
+        }
+
+        & > .kss-menu__item:not(.kss-menu__item--children) + .kss-menu__item:not(.kss-menu__item--children) {
+            margin-top: $vertical-rythm--spacing;
+        }
+    }
+
+    &__item {
+        break-after: avoid-column;
+
+        &--children {
+            @include font(base, normal);
+            @include font-size(small);
+            display: inline-block;
+            break-inside: avoid-column;
+            margin-bottom: $vertical-rythm--spacing;
+        }
+    }
+
+    &__link {
+        color: $color-light;
+        border: 0;
+
+        &:hover {
+            color: color(primary);
+        }
+    }
+
+    &__ref {
+        @include font(header, normal);
+        @include font-size(xsmall);
+        display: inline-block;
+        color: rgba($color-light, 0.7);
+        width: $indention;
+        text-align: right;
+    }
+}
+
+.kss-sizer {
+    position: fixed;
+    z-index: 3;
+    top: $kss-header-height;
+    width: 100%;
+    height: $kss-controls-height;
+    background-color: color(neutral, light);
+    box-shadow: 0 1px 0 shade(color(neutral, light), 15%);
+
+    &__item {
+        position: absolute;
+        height: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    &__sizer {
+        @include font-size(xsmall);
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        height: $kss-controls-height;
+        line-height: $kss-controls-height;
+        padding-left: $unit;
+        padding-right: $unit;
+        border: 0;
+        border-left: 1px solid shade(color(neutral, light), 18%);
+        border-right: 1px solid shade(color(neutral, light), 18%);
+        outline: 0;
+        color: inherit;
+        background-color: transparent;
+
+        &:hover,
+        &:focus {
+            background-color: shade(color(neutral, light), 20%);
+            border-color: shade(color(neutral, light), 18%);
+        }
+
+        &--selected {
+            &,
+            &:hover,
+            &:focus {
+                background-color: shade(color(neutral, light), 10%);
+            }
+        }
     }
 }
 
 .kss-description {
     margin-bottom: $vertical-rythm--spacing;
-    max-width: $container-width--tight;
+    // max-width: $container-width--tight;
 }
 
 .kss-section {
-    margin: $vertical-rythm--spacing 0;
-    padding: $vertical-rythm--spacing $spacing--large;
+    margin: $vertical-rythm--spacing auto;
+    padding: $vertical-rythm--spacing $spacing;
+    border-top: $border-width solid color(neutral, light);
 
-    &:first-child {
+    @include min-width(lg) {
+        max-width: $container-width--tight;
+        padding: $vertical-rythm--spacing 0;
+    }
+
+    &--depth-1 {
+        border: 0;
         margin-top: 0;
     }
 }
 
 .kss-title {
-    margin: #{-($vertical-rythm--spacing)} #{-($spacing--large)};
-    margin-bottom: 0;
-    padding: $vertical-rythm--spacing $spacing--large;
-    // padding-bottom: $spacing;
-    border-top: $border-width solid color(neutral, light);
-
     &--level-1 {
         @include font-size(xlarge);
         border: 0;
@@ -68,88 +196,9 @@
     &--level-4 {
         @include font-size(small);
     }
-
-    &__permalink {
-        // ...
-    }
-
-    &__permalink-hash {
-        display: none;
-    }
-}
-
-.kss-nav {
-    @include min-width(lg) {
-        width: 300px;
-    }
-    padding: $spacing 0 0;
-    background-color: color(neutral, dark);
-
-    &__title {
-        @include font-size(medium);
-        margin: 0 $spacing $spacing;
-
-        a {
-            color: $color-light;
-        }
-    }
-
-    &__link {
-        display: block;
-        max-width: 100%;
-        color: $color-light;
-        border: 0;
-
-        padding: $unit $spacing;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        &:hover,
-        &:focus {
-            color: $color-light;
-            background-color: shade($color-dark, 50%);
-        }
-
-        &--active {
-            &,
-            &:hover,
-            &:focus {
-                background-color: color(primary, base);
-            }
-        }
-
-        @include font(base, bold);
-        margin-top: $spacing;
-
-        .kss-nav__menu-child & {
-            @include font(base, normal);
-            text-transform: none;
-            margin-top: 0;
-        }
-    }
-
-    &__menu-item {
-        @include font-size(xsmall);
-    }
-
-    &__menu-child {
-        margin-bottom: $spacing;
-
-        .kss-nav__menu-item {
-            text-indent: $spacing--small;
-            margin: 0;
-        }
-    }
-
-    &__ref {
-        margin-right: $unit;
-    }
 }
 
 .sg-font-base {
-
     &:before {
         @include font(base, bold);
         display: block;
@@ -257,6 +306,34 @@
     }
 }
 
+.kss-usage__preview-wrapper {
+    @extend %full-width;
+    padding-bottom: $spacing;
+    background-color: color(neutral, light);
+}
+
+.kss-usage__preview-content {
+    margin: 0 auto;
+}
+
+.kss-usage__new-window {
+    @include font-size(xsmall);
+    position: relative;
+    top: -8px;
+    text-align: center;
+}
+
+.kss-usage__header {
+    @extend %full-width;
+    padding: $spacing $spacing $spacing--small;
+    text-align: center;
+    background-color: color(neutral, light);
+}
+
+.kss-usage__subtitle {
+    margin-bottom: $spacing--small;
+}
+
 // Code styles
 .kss-usage {
     .kss-usage__markuptitle {
@@ -265,31 +342,22 @@
 
     .kss-usage__code,
     .kss-usage__preview {
-        border: $border-style;
         padding: $spacing--small;
-        margin-bottom: $vertical-rythm--spacing;
+        background-color: $color-background;
+        border: $border-width--small solid color(neutral);
     }
 
     .kss-usage__previewiframe {
-        margin-bottom: $vertical-rythm--spacing;
 
         iframe {
             width: 100%;
-            border: $border-style;
+            border: $border-width--small solid color(neutral);
         }
     }
 
     .kss-usage__example {
         &--with-preview {
             position: relative;
-
-            .kss-usage__subtitle {
-                margin-bottom: $spacing--small;
-
-                @include min-width(lg) {
-                    margin-right: 350px;
-                }
-            }
 
             .kss-usage__code {
                 display: none;
@@ -301,14 +369,6 @@
 
             .kss-usage__previewiframe {
                 display: none;
-            }
-
-            .kss-usage__previewbuttons {
-                @include min-width(lg) {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                }
             }
         }
 
