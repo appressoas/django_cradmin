@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils.html import format_html
 
+from django_cradmin import crheader
+from django_cradmin import crmenu
 from django_cradmin.decorators import has_access_to_cradmin_instance
 from . import crapp
 from .registry import cradmin_instance_registry
@@ -73,7 +75,25 @@ class BaseCrAdminInstance(object):
     roleid_regex = r'\d+'
 
     #: The menu class for this cradmin instance.
+    #: Must be a subclass of :class:`django_cradmin.crmenu.Menu`.
+    #: You can also override :meth:`.get_menu` to generate this dynamically.
     menuclass = None
+
+    #: The renderable class for the large screen (desktop) menu.
+    #: See :meth:`.get_largescreen_menu_renderable`.
+    largescreen_menu_renderable_class = crmenu.DefaultLargeScreenMenuRenderable
+
+    #: The renderable class for the small screen (mobile) menu.
+    #: See :meth:`.get_smallscreen_menu_renderable`.
+    smallscreen_menu_renderable_class = crmenu.DefaultSmallScreenMenuRenderable
+
+    #: The header class for this cradmin instance.
+    #: Must be a subclass of :class:`django_cradmin.crheader.AbstractHeader`.
+    header_renderable_class = crheader.DefaultHeader
+
+    #: The footer class for this cradmin instance.
+    #: Must be a subclass of :class:`django_cradmin.crfooter.AbstractFooter`.
+    footer_renderable_class = None
 
     #: The class defining the role for this cradmin instance.
     #: If you do not set this, the role system will not be used,
@@ -223,10 +243,7 @@ class BaseCrAdminInstance(object):
 
     def get_menu(self):
         """
-        Get the navigation menu for the authenticated user.
-
-        Parameters:
-            user (Django User): The user requesting the menu.
+        Get the navigation menu for the cradmin instance.
 
         Returns:
             django_cradmin.crmenu.Menu: An instance of :obj:`~.BaseCrAdminInstance.menuclass` by default, but you can
@@ -236,6 +253,63 @@ class BaseCrAdminInstance(object):
             :class:`django_cradmin.crmenu.Menu`.
         """
         return self._get_menu()
+
+    def get_largescreen_menu_renderable(self):
+        """
+        Get the large screen (desktop) menu renderable instance.
+
+        Defaults to a instance of the class specified in
+        :obj:`~.BaseCrAdminInstance.largescreen_menu_renderable_class`.
+
+        Returns:
+            django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
+        """
+        return self.largescreen_menu_renderable_class(cradmin_instance=self)
+
+    def get_smallscreen_menu_renderable(self):
+        """
+        Get the small screen (mobile) menu renderable instance.
+
+        Defaults to a instance of the class specified in
+        :obj:`~.BaseCrAdminInstance.smallscreen_menu_renderable_class`.
+
+        Returns:
+            django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
+        """
+        return self.smallscreen_menu_renderable_class(cradmin_instance=self)
+
+    def get_header_renderable(self):
+        """
+        Get the header renderable for this cradmin instance.
+
+        Defaults to a instance of the class specified in
+        :obj:`~.BaseCrAdminInstance.header_renderable_class`.
+
+        Returns:
+            django_cradmin.crheader.AbstractHeader: An AbstractHeader object.
+
+        See Also:
+            :class:`django_cradmin.crheader.AbstractHeader`.
+        """
+        return self.header_renderable_class(cradmin_instance=self)
+
+    def get_footer_renderable(self):
+        """
+        Get the footer renderable for this cradmin instance.
+
+        Defaults to a instance of the class specified in
+        :obj:`~.BaseCrAdminInstance.footer_renderable_class`.
+
+        Returns:
+            django_cradmin.crfooter.AbstractHeader: An AbstractHeader object.
+
+        See Also:
+            :class:`django_cradmin.crfooter.AbstractHeader`.
+        """
+        if self.footer_renderable_class:
+            return self.footer_renderable_class(cradmin_instance=self)
+        else:
+            return None
 
     def reverse_url(self, appname, viewname, args=None, kwargs=None, roleid=None):
         """
@@ -463,4 +537,25 @@ class BaseCrAdminInstance(object):
 
         This is called by the decorator that wraps all views within the instance.
         """
-        pass
+
+    def get_body_css_classes_list(self):
+        """
+        Get the css classes for the ``<body>`` element that this
+        cradmin instance should add for all views as a list.
+
+        Returns an empty list by default, but you should override this
+        to add css classes to the ``<body>`` element for all views
+        within this instance.
+        """
+        return []
+
+    def get_body_css_classes_string(self):
+        """
+        Get the css classes for the ``<body>`` element that this
+        cradmin instance should add for all views as a string.
+
+        You should not override this - override :meth:`.get_body_css_classes_list`.
+        This method only joins the list returned by that method to make it
+        easier to use in Django templates.
+        """
+        return ' '.join(self.get_body_css_classes_list())

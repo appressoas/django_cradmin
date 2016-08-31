@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load cradmin_tags %}
+
+{% block wrapper %}
+    <{{ me.get_wrapper_htmltag }} id="{{ me.get_wrapper_htmltag_id }}"
+         class="{{ me.get_css_classes_string }}">
+        {% block content %}
+            {% with menu=me.cradmin_instance.get_menu %}
+                {% for menuitem in menu.iterate_menuitems %}
+                    {% block menuitem %}
+                        {{ menuitem.render|safe }}
+                    {% endblock menuitem %}
+                {% endfor %}
+            {% endwith %}
+        {% endblock content %}
+    </{{ me.get_wrapper_htmltag }}>
+{% endblock wrapper %}

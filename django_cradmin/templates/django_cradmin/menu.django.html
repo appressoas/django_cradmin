@@ -29,7 +29,7 @@
         <nav class="navigationtree  navigationtree--{{ request.cradmin_instance.get_menu.get_layout_direction }}-viewheight-{{ request.cradmin_instance.get_menu.get_smallscreen_breakpoint }}  navigationtree--primary">
             {% block menucontent %}
                 {% with menu=request.cradmin_instance.get_menu %}
-                    {% for menuitem in menu %}
+                    {% for menuitem in me.iterate_menuitems %}
                         {{ menuitem.render|safe }}
                     {% endfor %}
                 {% endwith %}

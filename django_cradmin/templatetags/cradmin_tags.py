@@ -180,6 +180,12 @@ def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
 
 
 @register.simple_tag(takes_context=True)
+def cradmin_instance_rolefrontpage_url(context):
+    request = context['request']
+    return request.cradmin_instance.rolefrontpage_url()
+
+
+@register.simple_tag(takes_context=True)
 def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs):
     """
     Template tag implementation of :meth:`django_cradmin.crinstance.reverse_cradmin_url`.
@@ -214,20 +220,6 @@ def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs)
         appname=appname,
         roleid=roleid,
         viewname=viewname, args=args, kwargs=kwargs)
-
-
-@register.simple_tag(takes_context=True)
-def cradmin_render_menu(context):
-    """
-    Template tag that renders the cradmin menu.
-
-    We use this instead of an include tag to handle some issues
-    with mocking tests.
-    """
-    request = context['request']
-    if hasattr(request, 'cradmin_instance'):
-        return request.cradmin_instance.get_menu().render(context)
-    return ''
 
 
 @register.filter

@@ -1,0 +1,22 @@
+{% extends "django_cradmin/crheader/base.django.html" %}
+{% load cradmin_tags %}
+
+{% block content %}
+    {% block brand %}
+        <a {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
+            {% cradmin_titletext_for_role request.cradmin_role %}
+        </a>
+    {% endblock brand %}
+
+    {% block largescreen-menu %}
+        {% with largescreen_menu_renderable=request.cradmin_instance.get_largescreen_menu_renderable %}
+            {% if largescreen_menu_renderable %}
+                {% cradmin_render_renderable largescreen_menu_renderable %}
+            {% endif %}
+        {% endwith %}
+    {% endblock largescreen-menu %}
+
+    {% block smallscreen-menutoggle %}
+        <button type="button" class="header__button  header__button--menutoggle"></button>
+    {% endblock smallscreen-menutoggle %}
+{% endblock content %}

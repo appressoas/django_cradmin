@@ -82,7 +82,33 @@
             {% endcomment %}
         {% endblock global-pre-body %}
 
-        {% block body %}{% endblock body %}
+        {% block body %}
+            {% block header %}
+                {% comment %}
+                    A common header for many pages. This is not part of the ``<main>``
+                    content of the page, so you should not add your H1 here.
+                {% endcomment %}
+            {% endblock header %}
+
+            {% block messages %}
+                {% include "django_cradmin/include/messages.django.html" %}
+            {% endblock messages %}
+
+            {% block main %}
+                <main role="main">
+                    {% block main-content %}{% endblock main-content %}
+                </main>
+            {% endblock main %}
+
+            {% block footer %}{% endblock footer %}
+
+            {% block toggleable-menu %}
+                {% comment %}
+                    If you have a toggleable menu, put the hidden part of the menu in this block.
+                    The button that toggles the menu is typically added to the ``header`` block.
+                {% endcomment %}
+            {% endblock toggleable-menu %}
+        {% endblock body %}
 
         {% block global-post-body %}
             {% comment %}
@@ -93,6 +119,20 @@
                 This block is not intended to be, and should never be overridden in app views.
             {% endcomment %}
         {% endblock global-post-body %}
+
+        {% block javascriptregistry-end-of-body %}
+            {% cradmin_javascriptregistry_end_of_body %}
+        {% endblock javascriptregistry-end-of-body %}
+
+        {% block end-of-body %}{% endblock end-of-body %}
+    </body>
+</html>
+
+
+
+
+
+
 
         {% comment %}
             To customize the angularjs libraries available in your views,
@@ -163,11 +203,3 @@
 {#            ]);#}
 {#            angular.bootstrap(document.querySelector('body'), ['DjangoCradminCrudbaseApp']);#}
 {#        </script>#}
-
-        {% block javascriptregistry-end-of-body %}
-            {% cradmin_javascriptregistry_end_of_body %}
-        {% endblock javascriptregistry-end-of-body %}
-
-        {% block end-of-body %}{% endblock end-of-body %}
-    </body>
-</html>

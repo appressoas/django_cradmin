@@ -3,40 +3,57 @@
 
 
 {% block bodyclass %}
-    layout
-    {% block bodylayout-variant %}
-        {% if not cradmin_hide_menu %}
-            layout--leftsidebar-content
-        {% endif %}
-    {% endblock bodylayout-variant %}
+    {% block cradmin-instance-bodyclass %}
+        {{ request.cradmin_instance.get_body_css_classes_string }}
+    {% endblock cradmin-instance-bodyclass %}
+
+    {% block viewspecific-bodyclass %}
+        {# Put view specific body classes here #}
+    {% endblock viewspecific-bodyclass %}
 {% endblock bodyclass %}
 
-{% block body %}
-    {% block menu %}
-        {% if not cradmin_hide_menu %}
-            <div class="layout__item">
-                {% cradmin_render_menu %}
-            </div>
-        {% endif %}
-    {% endblock menu %}
 
-    <div class="layout__item">
-        {% if not hide_pageheader and not DJANGO_CRADMIN_HIDE_PAGE_HEADER %}
-            {% block pageheader %}
-            {% comment %}
-                The page header can be hidden in two ways:
-                - Set hide_pageheader = True in the template context.
-                - Set the DJANGO_CRADMIN_HIDE_PAGE_HEADER setting.
-            {% endcomment %}
+{% block header %}
+    {% with header_renderable=request.cradmin_instance.get_header_renderable %}
+        {% if header_renderable %}
+            {% cradmin_render_renderable header_renderable %}
+        {% endif %}
+    {% endwith %}
+{% endblock header %}
+
+
+{% block main-content %}
+    {% comment %}
+        The page header can be hidden in two ways:
+        - Set hide_pageheader = True in the template context.
+        - Set the DJANGO_CRADMIN_HIDE_PAGE_HEADER setting.
+    {% endcomment %}
+    {% if not hide_pageheader and not DJANGO_CRADMIN_HIDE_PAGE_HEADER %}
+        {% block pageheader %}
+            <header class="{% block pageheader-cssclasses %}page-header{% endblock %}">
                 {% block pageheader-inner %}{% endblock pageheader-inner %}
-            {% endblock pageheader %}
+            </header>
+        {% endblock pageheader %}
+    {% endif %}
+
+    {% block content %}{% endblock content %}
+{% endblock main-content %}
+
+
+{% block footer %}
+    {% with footer_renderable=request.cradmin_instance.get_footer_renderable %}
+        {% if footer_renderable %}
+            {% cradmin_render_renderable footer_renderable %}
         {% endif %}
+    {% endwith %}
+{% endblock footer %}
 
-        {% block messages %}
-            {% include "django_cradmin/include/messages.django.html" %}
-        {% endblock messages %}
 
-        {% block content %}{% endblock content %}
-    </div>
+{% block toggleable-menu %}
+    {% with smallscreen_menu_renderable=request.cradmin_instance.get_smallscreen_menu_renderable %}
+        {% if smallscreen_menu_renderable %}
+            {% cradmin_render_renderable smallscreen_menu_renderable %}
+        {% endif %}
+    {% endwith %}
+{% endblock toggleable-menu %}
 
-{% endblock body %}

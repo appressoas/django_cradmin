@@ -1,143 +1,7 @@
 from __future__ import unicode_literals
-from builtins import object
-from django.template.loader import render_to_string
-import warnings
 
-
-class MenuItem(object):
-    """
-    A  menu item. Basically a pythonic interface to
-    create a HTML element.
-
-    If you want to make major changes to the look and feel of the
-    menu, you may want to subclass this and override the template
-    and/or :meth:`render` method.
-    """
-    template_name = 'django_cradmin/menuitem.django.html'
-
-    def __init__(self, label, url,
-                 active=False,
-                 expanded=False,
-                 attributes={},
-                 open_new_window=False,
-                 extra_css_classes='',
-                 extra_context_data=None):
-        """
-        Parameters:
-            label: A label shown in the menu.
-            url: The url to go to whem the user clicks the menu item.
-            active: Should be ``True`` if the menuitem should be styled as active.
-            expanded: Should be ``True`` if the menuitem should be styled as expanded.
-            open_new_window: Set this to ``True`` to set the ``target="_blank"``
-                attribute on the menu link.
-            extra_css_classes: String with extra css classes to set on the ``<li>`` element.
-        """
-        self.label = label
-        self.url = url
-        self.attributes = attributes
-        self.active = active
-        self.expanded = expanded
-        self.open_new_window = open_new_window
-        self.extra_css_classes = extra_css_classes
-        self.extra_context_data = extra_context_data
-        self.childitems = []
-
-    def get_item_css_class(self):
-        return 'django-cradmin-menu-item'
-
-    def get_link_css_class(self):
-        return 'navigationtree__link'
-
-    def get_context_data(self):
-        """
-        Context data for the template.
-
-        If you override this, make sure you call super() to get the defaults.
-        """
-        context_data = {
-            'menuitem': self
-        }
-        if self.extra_context_data:
-            context_data.update(self.extra_context_data)
-        return context_data
-
-    def render(self):
-        return render_to_string(self.template_name, self.get_context_data())
-
-    def get_menu_item_htmltag(self):
-        """
-        Get the HTML tag to use for the html element with the ``menu__item`` css class.
-
-        Defaults to ``"div"`` if :attr:`.active` is ``False`` and uses :meth:`.get_menu_item_active_htmltag`
-        if :attr:`.active` is ``True``.
-        """
-        if self.is_active():
-            return self.get_menu_item_active_htmltag()
-        else:
-            return 'div'
-
-    def get_menu_item_active_htmltag(self):
-        """
-        Get the HTML tag to use for the html element with the ``menu__item`` css class if :attr:`.active`
-        is ``True``.
-
-        Defaults to ``"div"``.
-
-        You would typically override this if you hide or do not include
-        the page header, and want the active menu item to be H1::
-
-            class MyMenuItem(crmenu.Item):
-                def get_menu_item_active_htmltag(self):
-                    return "h1"
-        """
-        try:
-            tag = self.get_active_item_wrapper_tag()
-        except DeprecationWarning:
-            tag = 'div'
-        else:
-            warnings.warn("add() is deprecated, use get_active_item_wrapper_tag() instead.", DeprecationWarning)
-        return tag
-
-    def get_active_item_wrapper_tag(self):
-        raise DeprecationWarning()
-
-    def is_active(self):
-        """
-        Returns ``True`` if the item is currently active (if ``active=True`` was
-        sent to __init__).
-        """
-        return self.active
-
-    def is_expanded(self):
-        """
-        Returns ``True`` if the item is currently expanded (if ``expanded=True`` was
-        sent to __init__), or if the item :meth:`.is_active` and :meth:`.has_childitems`.
-        """
-        return self.expanded or (self.is_active() and self.has_childitems())
-
-    def has_childitems(self):
-        """
-        Returns ``True`` if this item has child items.
-        """
-        return bool(self.childitems)
-
-    def get_childitem_class(self):
-        return self.__class__
-
-    def add_childitem(self, *args, **kwargs):
-        """
-        Add a child of this menuitem.
-
-        The default template will only render child items when this item
-        :meth:`is_active`.
-        """
-        childitem_class = self.get_childitem_class()
-        childitem = childitem_class(*args, **kwargs)
-        self.childitems.append(childitem)
-        return childitem
-
-    def get_title(self):
-        return ''
+from django_cradmin import renderable
+from django_cradmin.viewhelpers import listbuilder
 
 
 class Menu(object):
@@ -149,7 +13,7 @@ class Menu(object):
 
     In advanced cases, you may create multiple subclasses of
     this for your site, and override
-    :obj:`django_cradmin.crinstance.BaseInstance.get_menuclass`
+    :obj:`django_cradmin.crinstance.BaseInstance.menuclass`.
 
     Attributes:
         cradmin_instance (BaseInstance): The current cradmin instance.
@@ -157,11 +21,6 @@ class Menu(object):
         menu (list): A list of MenuItem objects. You use :meth:`.add`
             to add items to the menu.
     """
-
-    #: The name of the template to use for rendering the menu.
-    #: Used by :meth:`.get_template_name`.
-    template_name = "django_cradmin/menu.django.html"
-
     def __init__(self, cradmin_instance):
         """
         Parameters:
@@ -273,7 +132,7 @@ class Menu(object):
         """
         raise NotImplementedError()
 
-    def __iter__(self):
+    def iterate_menuitems(self):
         """
         Iterate over all items in the menu.
 
@@ -303,23 +162,6 @@ class Menu(object):
         """
         return self.cradmin_instance.roleselectview_url()
 
-    def get_template_name(self):
-        """
-        Get the name of the template to use for rendering the menu.
-
-        Defaults to :obj:`.template_name`.
-        """
-        return self.template_name
-
-    def render(self, context):
-        """
-        Render the menu.
-
-        Returns:
-            The menu as HTML.
-        """
-        return render_to_string(self.get_template_name(), context)
-
     def get_smallscreen_breakpoint(self):
         return 'md'
 
@@ -334,3 +176,81 @@ class Menu(object):
             the direction as a string
         """
         return 'vertical'
+
+
+class AbstractMenuItem(listbuilder.base.AbstractItemRenderer):
+    """
+    A menu item renderable.
+    """
+    # template_name = 'django_cradmin/crmenu/menuitem.django.html'
+
+    def __init__(self, value, url, is_active=False, **kwargs):
+        """
+        Parameters:
+            label: A label shown in the menu.
+            url: The url to go to whem the user clicks the menu item.
+            is_active: Should be ``True`` if the menuitem should be styled as active.
+        """
+        self.url = url
+        self.is_active = is_active
+        super(AbstractMenuItem, self).__init__(value=value)
+
+    def get_label(self):
+        return str(self.value)
+
+
+class AbstractMenuRenderable(listbuilder.base.List):
+    """
+    Base class for rendering a menu.
+
+    You will normally just want to override :meth:`.build_menu`.
+
+    To get a completely custom HTML menu, you simply set your own template
+    (see :meth:`django_cradmin.renderable.AbstractRenderable.get_template_name`)
+    and write your own HTML.
+
+    To get something between the simple possibilities with overriding :meth:`.build_menu`,
+    and the flexibility of creating a completely custom menu, you can override both
+    the template and :meth:`.build_menu`.
+    """
+    def __init__(self, cradmin_instance):
+        self.cradmin_instance = cradmin_instance
+        self.build_menu()
+        super(AbstractMenuRenderable, self).__init__()
+
+    def get_wrapper_htmltag(self):
+        """
+        Get the HTML tag to wrap the menu in.
+
+        Defaults to ``"div"``.
+        """
+        return 'div'
+
+    def get_wrapper_htmltag_id(self):
+        """
+        Get the ID of the wrapper HTML element.
+        """
+        raise NotImplementedError()
+
+    def build_menu(self):
+        pass
+
+
+class DefaultLargeScreenMenuRenderable(AbstractMenuRenderable):
+    """
+    The default large screen (desktop) :class:`.Menu` renderable.
+    """
+    template_name = 'django_cradmin/crmenu/default-largescreen.django.html'
+
+    def get_wrapper_htmltag_id(self):
+        return 'id_django_cradmin_menu_largescreen'
+
+
+class DefaultSmallScreenMenuRenderable(AbstractMenuRenderable):
+    """
+    The default small screen (mobile) :class:`.Menu` renderable.
+    """
+    template_name = 'django_cradmin/crmenu/default-smallscreen.django.html'
+
+    def get_wrapper_htmltag_id(self):
+        return 'id_django_cradmin_menu_smallscreen'

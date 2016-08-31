@@ -10,6 +10,8 @@ class AbstractRenderable(object):
     which renders a template with an object of this class as
     input.
     """
+
+    #: The default value for :meth:`.get_template_name`.
     template_name = None
 
     def get_template_name(self):
