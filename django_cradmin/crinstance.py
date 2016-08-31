@@ -578,7 +578,7 @@ class NoRoleMixin(object):
         return settings.DJANGO_CRADMIN_SITENAME
 
 
-class NoLoginCradminInstance(object):
+class NoLoginMixin(object):
     """
     Mixin to make a :class:`.BaseCrAdminInstance` not require login.
 
@@ -591,8 +591,8 @@ class NoLoginCradminInstance(object):
         return True
 
 
-class NoRoleNoLoginCrAdminInstance(NoRoleMixin, NoLoginCradminInstance, BaseCrAdminInstance):
+class NoRoleNoLoginCrAdminInstance(NoRoleMixin, NoLoginMixin, BaseCrAdminInstance):
     """
     Shortcut for creating a :class:`.BaseCrAdminInstance` with the
-     :class:`.NoRoleMixin` and :class:`.NoLoginCradminInstance`.
+     :class:`.NoRoleMixin` and :class:`.NoLoginMixin`.
     """

@@ -8,7 +8,7 @@ from django_cradmin.demo.login_not_required_demo.views import dashboard
 from django_cradmin.demo.webdemo.models import Site
 
 
-class LoginNotRequiredCrAdminInstance(crinstance.NoLoginCradminInstance, crinstance.BaseCrAdminInstance):
+class LoginNotRequiredCrAdminInstance(crinstance.NoLoginMixin, crinstance.BaseCrAdminInstance):
     id = 'login_not_required_demo'
     roleclass = Site
     rolefrontpage_appname = 'dashboard'
