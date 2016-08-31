@@ -6,27 +6,15 @@ from django_cradmin import crinstance, crmenu
 from django_cradmin.demo.no_role_demo.views import dashboard
 
 
-class Menu(crmenu.Menu):
-    def build_menu(self):
-        self.add_menuitem(
-            label=_('Dashboard'), url=self.appindex_url('dashboard'),
-            active=self.request.cradmin_app.appname == 'dashboard')
-
-
-class NoRoleCrAdminInstance(crinstance.BaseCrAdminInstance):
+class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
     id = 'no_role_demo'
-    menuclass = Menu
     rolefrontpage_appname = 'dashboard'
-    flatten_rolefrontpage_url = True
 
     apps = [
         ('dashboard', dashboard.App),
     ]
 
     def has_access(self):
-        """
-        We give any user access to this instance, including unauthenticated users.
-        """
         return True
 
     @classmethod
@@ -36,3 +24,10 @@ class NoRoleCrAdminInstance(crinstance.BaseCrAdminInstance):
         in the same project.
         """
         return urlpath.startswith('/no_role_demo')
+
+    def get_menu_item_renderables(self):
+        return [
+            crmenu.LinkItemRenderable(
+                label=_('Dashboard'), url=self.appindex_url('dashboard'),
+                is_active=self.request.cradmin_app.appname == 'dashboard'),
+        ]

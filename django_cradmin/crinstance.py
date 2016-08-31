@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from builtins import object
 
+from django.conf import settings
 from django.conf.urls import url, include
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
@@ -563,3 +564,35 @@ class BaseCrAdminInstance(object):
         easier to use in Django templates.
         """
         return ' '.join(self.get_body_css_classes_list())
+
+
+class NoRoleMixin(object):
+    """
+    Mixin to make a :class:`.BaseCrAdminInstance` not require a role.
+
+    Must be mixed in before :class:`.BaseCrAdminInstance`.
+    """
+    flatten_rolefrontpage_url = True
+
+    def get_titletext_for_role(self, role):
+        return settings.DJANGO_CRADMIN_SITENAME
+
+
+class NoLoginCradminInstance(object):
+    """
+    Mixin to make a :class:`.BaseCrAdminInstance` not require login.
+
+    Must be mixed in before :class:`.BaseCrAdminInstance`.
+    """
+    def has_access(self):
+        """
+        We give any user access to this instance, including unauthenticated users.
+        """
+        return True
+
+
+class NoRoleNoLoginCrAdminInstance(NoRoleMixin, NoLoginCradminInstance, BaseCrAdminInstance):
+    """
+    Shortcut for creating a :class:`.BaseCrAdminInstance` with the
+     :class:`.NoRoleMixin` and :class:`.NoLoginCradminInstance`.
+    """

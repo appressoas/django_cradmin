@@ -12,6 +12,55 @@ What is new?
 - Views using any of the base templates for cradmin must inherit from one of the views in
   ``django_cradmin.viewhelpers`` or mix in one of the subclasses of
   :class:`django_cradmin.javascriptregistry.viewmixin.MinimalViewMixin`.
+- New menu system. Much more flexible, with a much simpler core based on ``django_cradmin.viewhelpers.listbuilder``.
+
+
+***************
+New menu system
+***************
+Menus are structurally changed, and they are defined in a different manner.
+Read :doc:`crmenu` for details.
+
+
+Migrating from the old menu system
+==================================
+From a simple cases updating your menu for 2.x is fairly easy:
+
+1. Add menu items in :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_menu_item_renderables` instead
+   of in the ``build_menu``-method of your Menu. Since the attributes of
+   :class:`django_cradmin.crmenu.LinkItemRenderable` is the same as for
+   the old ``add_menuitem()``-method, this is easy. Just make sure to change
+   the ``active`` attribute to ``is_active``.
+2. Remove your old ``django_cradmin.crmenu.Menu`` subclass.
+3. Remove the ``menuclass``-attribute from your BaseCrAdminInstance subclass.
+
+
+If your old menu was defined like this::
+
+    from django_cradmin import crinstance, crmenu
+
+    class Menu(crmenu.Menu):
+        def build_menu(self):
+            self.add_menuitem(
+                label=_('Dashboard'), url=self.appindex_url('dashboard'),
+                active=self.request.cradmin_app.appname == 'dashboard')
+
+    class CrInstance(crinstance.BaseCrAdminInstance):
+        # ... other required BaseCrAdminInstance attributes and methods ...
+
+        menuclass = Menu
+
+It will look like this in cradmin 2.x::
+
+    class CrInstance(crinstance.BaseCrAdminInstance):
+        # ... other required BaseCrAdminInstance attributes and methods ...
+
+        def get_menu_item_renderables(self):
+            return [
+                crmenu.LinkItemRenderable(
+                    label=_('Dashboard'), url=self.appindex_url('dashboard'),
+                    is_active=self.request.cradmin_app.appname == 'dashboard'),
+            ]
 
 
 ****************************
@@ -64,22 +113,6 @@ wrap them in section tags with the ``page-section page-section--tight`` css clas
             {# The content you had in innerwrapper_post here #}
         </section>
     {% endblock body %}
-
-
-django_cradmin/menu.django.html
-===============================
-
-- The ``mobile-header`` block no longer exists. All of the child blocks (mobile-header-pre, mobile-header-post, ...)
-  are also gone. It is replaced by ``menutoggle`` block, but this does not have a 1:1 feature set.
-- The ``css-class`` block no longer exists. It has been replaced by the ``cssclasses`` block, but this
-  should not be overridden in the same manner. It has child-blocks that you will normally want to
-  override instead.
-
-
-django_cradmin/menuitem.django.html
-===================================
-
-- The ``extra-list-item-attributes`` block no longer exists.
 
 
 *****************

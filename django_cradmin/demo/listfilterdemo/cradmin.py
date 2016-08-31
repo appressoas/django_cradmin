@@ -5,16 +5,8 @@ from django_cradmin.demo.listfilterdemo.models import Site
 from django_cradmin.demo.listfilterdemo.views import personlist
 
 
-class Menu(crmenu.Menu):
-    def build_menu(self):
-        self.add_menuitem(
-            label='Personlist', url=self.appindex_url('personlist'),
-            active=self.request.cradmin_app.appname == 'personlist')
-
-
 class ListfilterDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'listfilterdemo'
-    menuclass = Menu
     roleclass = Site
     rolefrontpage_appname = 'personlist'
 
@@ -38,3 +30,10 @@ class ListfilterDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         in the demo project.
         """
         return urlpath.startswith('/listfilterdemo')
+
+    def get_menu_item_renderables(self):
+        return [
+            crmenu.LinkItemRenderable(
+                label='Personlist', url=self.appindex_url('personlist'),
+                is_active=self.request.cradmin_app.appname == 'personlist'),
+        ]

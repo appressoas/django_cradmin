@@ -8,16 +8,8 @@ from django_cradmin.demo.login_not_required_demo.views import dashboard
 from django_cradmin.demo.webdemo.models import Site
 
 
-class Menu(crmenu.Menu):
-    def build_menu(self):
-        self.add_menuitem(
-            label=_('Dashboard'), url=self.appindex_url('dashboard'),
-            active=self.request.cradmin_app.appname == 'dashboard')
-
-
-class LoginNotRequiredCrAdminInstance(crinstance.BaseCrAdminInstance):
+class LoginNotRequiredCrAdminInstance(crinstance.NoLoginCradminInstance, crinstance.BaseCrAdminInstance):
     id = 'login_not_required_demo'
-    menuclass = Menu
     roleclass = Site
     rolefrontpage_appname = 'dashboard'
 
@@ -32,12 +24,6 @@ class LoginNotRequiredCrAdminInstance(crinstance.BaseCrAdminInstance):
         """
         queryset = Site.objects.all()
         return queryset
-
-    def has_access(self):
-        """
-        We give any user access to this instance.
-        """
-        return True
 
     def get_titletext_for_role(self, role):
         """
@@ -60,3 +46,10 @@ class LoginNotRequiredCrAdminInstance(crinstance.BaseCrAdminInstance):
         in the same project.
         """
         return urlpath.startswith('/login_not_required_demo')
+
+    def get_menu_item_renderables(self):
+        return [
+            crmenu.LinkItemRenderable(
+                label=_('Dashboard'), url=self.appindex_url('dashboard'),
+                is_active=self.request.cradmin_app.appname == 'dashboard'),
+        ]

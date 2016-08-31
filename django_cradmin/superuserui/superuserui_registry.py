@@ -160,33 +160,34 @@ class Registry(object):
         """
         self._modelconfigmap[modelconfig.get_model_class()] = modelconfig
 
-    def make_menu_class(self):
-        me = self
-
-        class Menu(crmenu.Menu):
-            def add_modelconfigs(self, appconfig, appmenuitem):
-                for modelconfig in appconfig.iter_modelconfigs():
-                    appmenuitem.add_childitem(
-                        label=modelconfig.get_menulabel(),
-                        url=self.appindex_url(modelconfig.get_unique_identifier()),
-                        active=self.request.cradmin_app.appname == modelconfig.get_unique_identifier())
-
-            def add_appconfig(self, appconfig):
-                childappnames = set()
-                for modelconfig in appconfig.iter_modelconfigs():
-                    childappnames.add(modelconfig.get_unique_identifier())
-                appmenuitem = self.add_menuitem(
-                    label=appconfig.get_menulabel(),
-                    url=appconfig.get_indexview_url(),
-                    active=self.request.cradmin_app.appname == appconfig.get_app_label(),
-                    expanded=self.request.cradmin_app.appname in childappnames)
-                self.add_modelconfigs(appconfig=appconfig, appmenuitem=appmenuitem)
-
-            def build_menu(self):
-                for appconfig in me.iter_djangoappconfigs():
-                    self.add_appconfig(appconfig=appconfig)
-
-        return Menu
+    # TODO: Port this to 2.x menu structure
+    # def make_menu_class(self):
+    #     me = self
+    #
+    #     class Menu(crmenu.Menu):
+    #         def add_modelconfigs(self, appconfig, appmenuitem):
+    #             for modelconfig in appconfig.iter_modelconfigs():
+    #                 appmenuitem.add_childitem(
+    #                     label=modelconfig.get_menulabel(),
+    #                     url=self.appindex_url(modelconfig.get_unique_identifier()),
+    #                     active=self.request.cradmin_app.appname == modelconfig.get_unique_identifier())
+    #
+    #         def add_appconfig(self, appconfig):
+    #             childappnames = set()
+    #             for modelconfig in appconfig.iter_modelconfigs():
+    #                 childappnames.add(modelconfig.get_unique_identifier())
+    #             appmenuitem = self.add_menuitem(
+    #                 label=appconfig.get_menulabel(),
+    #                 url=appconfig.get_indexview_url(),
+    #                 active=self.request.cradmin_app.appname == appconfig.get_app_label(),
+    #                 expanded=self.request.cradmin_app.appname in childappnames)
+    #             self.add_modelconfigs(appconfig=appconfig, appmenuitem=appmenuitem)
+    #
+    #         def build_menu(self):
+    #             for appconfig in me.iter_djangoappconfigs():
+    #                 self.add_appconfig(appconfig=appconfig)
+    #
+    #     return Menu
 
     def get_dashboardview_class(self):
         return dashboardview.View
@@ -199,7 +200,7 @@ class Registry(object):
 
         class CrAdminInstance(crinstance.BaseCrAdminInstance):
             id = me.id
-            menuclass = me.make_menu_class()
+            rolefrontpage_appname = next(iter(me._djangoappconfigs.values())).get_app_label()
 
             def has_access(self):
                 return self.request.user.is_superuser
@@ -209,6 +210,9 @@ class Registry(object):
 
             def get_superuserui_registry(self):
                 return me
+
+            def get_titletext_for_role(self, role):
+                return str(role)
 
             def get_foreignkeyselectview_url(self, model_class):
                 modelconfig = me.get_modelconfig_for_model_class(model_class=model_class)
@@ -242,6 +246,16 @@ class Registry(object):
             @classmethod
             def get_instance_frontpage_view(cls):
                 return has_access_to_cradmin_instance(me.get_dashboardview_class().as_view())
+
+            def get_menu_item_renderables(self):
+                menuitems = []
+                for appconfig in me.iter_djangoappconfigs():
+                    menuitem = crmenu.LinkItemRenderable(
+                        label=appconfig.get_menulabel(),
+                        url=appconfig.get_indexview_url(),
+                        is_active=self.request.cradmin_app.appname == appconfig.get_app_label())
+                    menuitems.append(menuitem)
+                return menuitems
 
         return CrAdminInstance
 

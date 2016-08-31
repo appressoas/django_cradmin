@@ -1,31 +1,17 @@
 from __future__ import unicode_literals
+
 from builtins import str
+
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from django_cradmin import crinstance, crmenu
-from .crapps import overview
 from .crapps import edit_user
-
-
-class Menu(crmenu.Menu):
-    def build_menu(self):
-        if self.request.cradmin_instance.get_rolequeryset().count() > 1:
-            self.add_headeritem(
-                label=_('Select user'),
-                url=self.roleselectview_url())
-
-        self.add_menuitem(
-            label=_('Account overview'), url=self.appindex_url('overview'),
-            active=self.request.cradmin_app.appname == 'overview')
-        self.add_menuitem(
-            label=_('Edit profile'), url=self.appindex_url('edit_user'),
-            active=self.request.cradmin_app.appname == 'edit_user')
+from .crapps import overview
 
 
 class UsermanagerCrAdminInstance(crinstance.BaseCrAdminInstance):
     id = 'usermanager'
-    menuclass = Menu
     roleclass = User
     rolefrontpage_appname = 'overview'
 
@@ -55,3 +41,19 @@ class UsermanagerCrAdminInstance(crinstance.BaseCrAdminInstance):
         in the same project.
         """
         return urlpath.startswith('/usermanagerdemo')
+
+    def get_menu_item_renderables(self):
+        menuitems = []
+        if self.request.cradmin_instance.get_rolequeryset().count() > 1:
+            menuitems.append(crmenu.LinkItemRenderable(
+                label=_('Select user'),
+                url=self.roleselectview_url()))
+        menuitems.extend([
+            crmenu.LinkItemRenderable(
+                label=_('Account overview'), url=self.appindex_url('overview'),
+                is_active=self.request.cradmin_app.appname == 'overview'),
+            crmenu.LinkItemRenderable(
+                label=_('Edit profile'), url=self.appindex_url('edit_user'),
+                is_active=self.request.cradmin_app.appname == 'edit_user'),
+        ])
+        return menuitems
