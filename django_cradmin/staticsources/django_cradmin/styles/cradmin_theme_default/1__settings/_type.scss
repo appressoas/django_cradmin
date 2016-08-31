@@ -114,6 +114,9 @@ $font-size: (
         md: $font-size-xxlarge-md,
         lg: $font-size-xxlarge-lg,
         xl: $font-size-xxlarge-xl,
+    ),
+    smallcaps: (
+        base: 0.79em
     )
 ) !default;
 
