@@ -54,7 +54,7 @@ html5lib==0.9999999
 #-e /Users/espenak/code/pythonkss
 pythonkss==1.1
 
-ievv_opensource==1.1.5
+ievv_opensource==1.1.7
 #-e /Users/espenak/code/ievv_opensource
 
 # Pull inn development packages from GIT
