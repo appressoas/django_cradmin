@@ -30,7 +30,7 @@
     {% endcomment %}
     {% if not hide_pageheader and not DJANGO_CRADMIN_HIDE_PAGE_HEADER %}
         {% block pageheader %}
-            <header class="{% block pageheader-cssclasses %}page-header{% endblock %}">
+            <header class="{% block pageheader-cssclasses %}main-header{% endblock %}">
                 {% block pageheader-inner %}{% endblock pageheader-inner %}
             </header>
         {% endblock pageheader %}

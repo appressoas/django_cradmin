@@ -11,7 +11,7 @@ class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
 
         Defaults to ``"header"``.
         """
-        return 'header'
+        return 'page-header'
 
     def get_wrapper_htmltag_id(self):
         return 'id_django_cradmin_header'
