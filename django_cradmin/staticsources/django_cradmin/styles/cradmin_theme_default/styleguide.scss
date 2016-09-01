@@ -258,26 +258,6 @@ $kss-controls-height: $vertical-rythm * 2;
     }
 }
 
-.sg-icon-grid {
-    display: flex;
-    flex-wrap: wrap;
-
-    &__item {
-        padding: $spacing 0;
-        width: calc(25% - #{$unit});
-        text-align: center;
-        margin-bottom: $unit;
-        background-color: $color-light;
-        margin-right: $unit;
-
-        code {
-            display: block;
-            margin-top: $spacing--small;
-            // border: $border-style--small;
-        }
-    }
-}
-
 .sg-size {
     width: $spacing;
     height: $spacing;
@@ -427,4 +407,30 @@ $kss-controls-height: $vertical-rythm * 2;
     @include font-size(xsmall);
     font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
     font-weight: 600;
+}
+
+.sg-icon-grid {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__item {
+        padding: $spacing 0 0;
+        width: calc(25% - #{$unit});
+        text-align: center;
+        margin-bottom: $unit;
+        background-color: shade($color-background, 5%);
+        margin-right: $unit;
+
+        code {
+            display: block;
+            margin-top: $spacing--small;
+
+            font-size: 0.65em;
+
+            @include min-width(md) {
+                font-size: 0.65em;
+            }
+            // border: $border-style--small;
+        }
+    }
 }
