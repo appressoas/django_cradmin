@@ -29,19 +29,17 @@
         - Set the DJANGO_CRADMIN_HIDE_PAGE_HEADER setting.
     {% endcomment %}
     {% if not hide_pageheader and not DJANGO_CRADMIN_HIDE_PAGE_HEADER %}
-        {% block pageheader %}    {# NOTE: pageheader is deprecated - use page-cover #}
+        {% block page-cover %}
             <header class="{% block page-cover-cssclass %}page-cover{% endblock %}">
-                {% block pageheader-inner %}  {# NOTE: pageheader-inner is deprecated - use page-cover #}
-                    {% block page-cover %}
-                        {% block page-cover-title %}
-                            <h1>
-                                {% block page-cover-title-content %}{% endblock page-cover-title-content %}
-                            </h1>
-                        {% endblock page-cover-title %}
-                    {% endblock page-cover %}
+                {% block pageheader-inner %}  {# NOTE: pageheader-inner is deprecated - use page-cover-content #}
+                    {% block page-cover-content %}
+                        <h1>
+                            {% block page-cover-title %}{% endblock page-cover-title %}
+                        </h1>
+                    {% endblock page-cover-content %}
                 {% endblock pageheader-inner %}
             </header>
-        {% endblock pageheader %}
+        {% endblock page-cover %}
     {% endif %}
 
     {% block content %}{% endblock content %}
