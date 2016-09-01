@@ -120,7 +120,18 @@ ul + h4 {
 }
 
 
-// Paragraph
+/* Paragraphs
+
+Example: {isolated: true} Default paragraphs
+    <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    <p>Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
+    <p>The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
+
+Example: {isolated: true} Preamble
+    <p class="preamble">We are going to make placeholder text great again. Greater than ever before. Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot.</p>
+
+Styleguide 2.4
+*/
 p,
 .paragraph {
     @include font(base, normal);
@@ -150,7 +161,18 @@ p,
     white-space: nowrap;
 }
 
-// Strong / Bold
+/* Other type styles
+
+Example: {isolated: true} Strong, italic, muted, alignments, small caps
+    <p><strong>Strong text</strong></p>
+    <p class="italic">Italic text</p>
+    <p class="text-muted">Muted text.</p>
+    <p class="text-center">Centered text</p>
+    <p class="text-right">Right aligned text</p>
+    <p><strong class="text-smallcaps">Small capsed text</strong> can be useful to introduse a paragraph sometimes</p>
+
+Styleguide 2.5
+*/
 strong,
 .strong,
 b {
@@ -178,6 +200,17 @@ b {
     text-align: right;
 }
 
+.text-smallcaps,
+%text-smallcaps {
+    @include spaced-text;
+    @include font-size(smallcaps);
+
+    &--thin {
+        @include font(base, normal);
+    }
+}
+
+// TODO: Separate out?
 // time and date
 time {
     @include spaced-text;
@@ -214,15 +247,5 @@ time {
     &__day,
     &__month {
         display: block;
-    }
-}
-
-.text-smallcaps,
-%text-smallcaps {
-    @include spaced-text;
-    @include font-size(smallcaps);
-
-    &--thin {
-        @include font(base, normal);
     }
 }

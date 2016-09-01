@@ -1,7 +1,6 @@
-/*
-Lists
+/* Lists
 
-List styles are turned of by default. You need to add classes to style it.
+Unordered list styles are turned of by default. You need to add classes to style it.
 
 Example: `Ordered list`; Default styling
     <ol>
@@ -17,7 +16,7 @@ Example: `.list`; Default styling
         <li>I'm last :(</li>
     </ul>
 
-Styleguide 2.5
+Styleguide 2.8
 */
 ol {
     margin-bottom: $vertical-rythm--spacing;
@@ -32,6 +31,10 @@ ol {
 .list {
     margin-bottom: $vertical-rythm--spacing;
     text-align: left;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     & > li {
         position: relative;
