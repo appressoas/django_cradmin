@@ -49,14 +49,14 @@ but you can make them have different items by overriding:
 If you want to change how the menu is rendered, you can change the menu renderer
 classes by overring the following attributes:
 
-    - :obj:`~django_cradmin.crinstance.BaseCrAdminInstance.main_menu_renderable_class`
-    - :obj:`~django_cradmin.crinstance.BaseCrAdminInstance.expandable_menu_renderable_class`
+- :obj:`~django_cradmin.crinstance.BaseCrAdminInstance.main_menu_renderable_class`
+- :obj:`~django_cradmin.crinstance.BaseCrAdminInstance.expandable_menu_renderable_class`
 
 If changing the renderer classes is not enough, you can override the methods that
 creates renderable objects:
 
-    - :meth:`~django_cradmin.crinstance.BaseCrAdminInstance.get_main_menu_renderable`
-    - :meth:`~django_cradmin.crinstance.BaseCrAdminInstance.get_expandable_menu_renderable`
+- :meth:`~django_cradmin.crinstance.BaseCrAdminInstance.get_main_menu_renderable`
+- :meth:`~django_cradmin.crinstance.BaseCrAdminInstance.get_expandable_menu_renderable`
 
 The last option gives you full control, and only require you to return an
 :class:`django_cradmin.renderable.AbstractRenderable` object.
