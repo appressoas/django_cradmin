@@ -110,10 +110,12 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         Unless you have some special needs, you will most likely want to just override
         :obj:`.token_error_template_name` instead of this view.
         """
-        return render(self.request, self.get_token_error_template_name(), {
+        context = {
             'token_does_not_exist': token_does_not_exist,
             'token_expired': token_expired
-        })
+        }
+        self.add_javascriptregistry_component_ids_to_context(context=context)
+        return render(self.request, self.get_token_error_template_name(), context)
 
     def add_next_argument_to_url(self, url, next_url=None):
         """
