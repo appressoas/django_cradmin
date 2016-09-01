@@ -4,23 +4,23 @@ Buttons
 In most cases you should not use the button class for links. Use either `<button>` or `<input type="submit" />`
 when using buttons. <strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as buttons.
 
-Example: The default button
+Example: {type: isolated} The default button
     <button type="button" class="button">Button</button>
     <button type="button" class="button  button--fill">Button</button>
 
-Example: For primary actions, use this only to separate from other actions.
+Example: {type: isolated} For primary actions, use this only to separate from other actions.
     <button type="button" class="button  button--primary">Button</button>
     <button type="button" class="button  button--primary-fill">Button</button>
 
-Example: For secondary actions, don't overuse.
+Example: {type: isolated} For secondary actions, don't overuse.
     <button type="button" class="button  button--secondary">Button</button>
     <button type="button" class="button  button--secondary-fill">Button</button>
 
-Example: For actions that need's to stand out on red or dark blue background.
+Example: {type: isolated} For actions that need's to stand out on red or dark blue background.
     <button type="button" class="button  button--light">Button</button>
     <button type="button" class="button  button--light-fill">Button</button>
 
-Example: This is some modifiers you can add (PS: Can be combined)
+Example: {type: isolated} This is some modifiers you can add (PS: Can be combined)
     <button type="button" class="button  button--block">
         Make it 100% width of whatever container
     </button>
