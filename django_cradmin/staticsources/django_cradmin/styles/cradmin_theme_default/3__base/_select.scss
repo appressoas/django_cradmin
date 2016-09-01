@@ -1,53 +1,36 @@
 /*
 Select
 
-<ul>
-    <li>
-        <h3>Regular select</h3>
+Example: Default
+    <label class="select">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
 
-        <label class="select">
-            <select aria-label="Kategori">
-                <option>alle tema</option>
-                <option>arbeid og næring</option>
-                <option>...</option>
-            </select>
-        </label>
+Example: Outlined
+    <label class="select  select--outlined">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
 
-        <br />
-        <br />
-    </li>
-    <li>
-        <h3>Outlined select</h3>
+Example: Light
+    <label class="select  select--light">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
 
-        <label class="select  select--outlined">
-            <select aria-label="Kategori">
-                <option>alle tema</option>
-                <option>arbeid og næring</option>
-                <option>...</option>
-            </select>
-        </label>
-
-        <br />
-        <br />
-    </li>
-    <li>
-        <h3>Light select</h3>
-        <p>To put on dark backgrounds</p>
-
-        <label class="select  select--light">
-            <select aria-label="Kategori">
-                <option>alle tema</option>
-                <option>arbeid og næring</option>
-                <option>...</option>
-            </select>
-        </label>
-
-        <br />
-        <br />
-    </li>
-    <li>
-        <h3>Adaptive and inline select</h3>
-        Look, inline:
+Example: Adaptable
+    <p>
+        I adapt:
         <label class="select">
             <select select-autowidth aria-label="Kategori">
                 <option>alle tema</option>
@@ -55,46 +38,13 @@ Select
                 <option>...</option>
             </select>
         </label>
-        ...and I adapt the width to it's selected option. OMG!
-    </li>
-</ul>
-
-Markup:
-<label class="select">
-    <select aria-label="Kategori">
-        <option>alle tema</option>
-        <option>arbeid og næring</option>
-        <option>...</option>
-    </select>
-</label>
-<label class="select  select--outlined">
-    <select aria-label="Kategori">
-        <option>alle tema</option>
-        <option>arbeid og næring</option>
-        <option>...</option>
-    </select>
-</label>
-<label class="select  select--light">
-    <select aria-label="Kategori">
-        <option>alle tema</option>
-        <option>arbeid og næring</option>
-        <option>...</option>
-    </select>
-</label>
-<p>
-    I adapt:
-    <label class="select">
-        <select select-autowidth aria-label="Kategori">
-            <option>alle tema</option>
-            <option>arbeid og næring</option>
-            <option>...</option>
-        </select>
-    </label>
-    ...OMG!
-</p>
+        ...OMG!
+    </p>
 
 Styleguide 3.7
 */
+
+// TODO: Document inline-action
 
 .select {
     position: relative;
@@ -192,6 +142,7 @@ Styleguide 3.7
         select {
             @include font(base, normal);
             @include font-size(small);
+            min-height: 46px; // TODO: Figure out...
 
             padding-left: $spacing--small;
             padding-right: $spacing--large + $unit;

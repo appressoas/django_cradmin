@@ -1,115 +1,116 @@
-/*
-Checkbox and radio
+/* Checkbox and radio
 
 The markup for checkboxes and radio are almost simular.
 
-They both have these modifiers:
-* `inline` - Removes margin underneath so it flows better with text
-* `block` - Make it 100% width
+### They both have these modifiers:
+- `inline` - Removes margin underneath so it flows better with text
+- `block` - Make it 100% width
+- `light` - Make it light, only use on darker backgrounds
+- `spaceless` - Remove spaces to the right and underneath
 
-<h3>Checkboxes</h3>
+Example: {type: isolated} Checkbox default
+    <label class="checkbox">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        Yes
+    </label>
+    <label class="checkbox">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        No
+    </label>
 
-<label class="checkbox  checkbox--inline">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
-<label class="checkbox  checkbox--inline">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Nei takk
-</label>
-<hr class="kss-separator" />
-<label class="checkbox  checkbox--block">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
-<label class="checkbox  checkbox--block">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Nei takk
-</label>
-<hr class="kss-separator" />
-<label class="checkbox  checkbox--light">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
+Example: {type: isolated} Checkbox light
+    <label class="checkbox  checkbox--light">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        Yes
+    </label>
+    <label class="checkbox  checkbox--light">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        No
+    </label>
 
-<h3>Radiobuttons</h3>
+Example: {type: isolated} Checkbox block
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        Yes
+    </label>
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        No
+    </label>
 
-<label class="radio  radio--inline">
-    <input type="radio" name="example-1" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
-<label class="radio  radio--inline">
-    <input type="radio" name="example-1" />
-    <span class="radio__control-indicator"></span>
-    Nei takk
-</label>
-<hr class="kss-separator" />
-<label class="radio  radio--block">
-    <input type="radio" name="example-2" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
-<label class="radio  radio--block">
-    <input type="radio" name="example-2" />
-    <span class="radio__control-indicator"></span>
-    Nei takk
-</label>
-<hr class="kss-separator" />
-<label class="radio  radio--light">
-    <input type="radio" name="example-3" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
+Example: {type: isolated} Checkbox inline
+    <p>
+        Look, I'm mixed with
+        <label class="checkbox  checkbox--inline">
+            <input type="checkbox" />
+            <span class="checkbox__control-indicator"></span>
+            Yes
+        </label>
+        <label class="checkbox  checkbox--inline">
+            <input type="checkbox" />
+            <span class="checkbox__control-indicator"></span>
+            No
+        </label>
+        text
+    </p>
 
-Markup:
-<label class="checkbox">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
-<label class="checkbox  checkbox--light">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
-<label class="checkbox  checkbox--inline">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
-<label class="checkbox  checkbox--block">
-    <input type="checkbox" />
-    <span class="checkbox__control-indicator"></span>
-    Ja takk
-</label>
-<!-- RADIO -->
-<label class="radio">
-    <input type="radio" name="groupname" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
-<label class="radio  radio--light">
-    <input type="radio" name="groupname" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
-<label class="radio  radio--inline">
-    <input type="radio" name="groupname" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
-<label class="radio  radio--block">
-    <input type="radio" name="groupname" />
-    <span class="radio__control-indicator"></span>
-    Ja takk
-</label>
+Example: {type: isolated} Radio default
+    <label class="radio">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
 
+Example: {type: isolated} Checkbox light
+    <label class="radio  radio--light">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio  radio--light">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox block
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox inline
+    <p>
+        Look, I'm mixed with
+        <label class="radio  radio--inline">
+            <input type="radio" name="styleguide" />
+            <span class="radio__control-indicator"></span>
+            Yes
+        </label>
+        <label class="radio  radio--inline">
+            <input type="radio" name="styleguide" />
+            <span class="radio__control-indicator"></span>
+            No
+        </label>
+        text
+    </p>
 
 Styleguide 3.9
 */
@@ -199,7 +200,7 @@ Styleguide 3.9
         &:hover {
             .radio__control-indicator,
             .checkbox__control-indicator {
-                background-color: color(neutral, xxlight);
+                background-color: tint(color(secondary, dark), 80%);
             }
         }
 
@@ -241,8 +242,12 @@ Styleguide 3.9
     }
 
     &--light {
-        .checkbox__control-indicator:before {
-            @extend %icon-check--secondary;
+        .checkbox__control-indicator {
+            background-color: $color-light;
+
+            &:before {
+                @extend %icon-check--secondary;
+            }
         }
     }
 }

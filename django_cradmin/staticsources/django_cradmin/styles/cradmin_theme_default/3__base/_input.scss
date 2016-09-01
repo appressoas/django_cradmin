@@ -11,47 +11,62 @@ By default these inputs are styled:
 `tel`,
 `textarea`.
 
-If you want to style something else as input just use the class `.input`
+If you want to style something else as input just use the class `.input`.
 
-<h3>Standard inputs</h3>
+Example: {type: isolated} Standard input
+    <label>
+        Standard input
+        <input type="text" placeholder="I set the standard" />
+    </label>
 
-<label>
-    Standard input
-    <input type="text" placeholder="I set the standard" />
-</label>
+Example: {type: isolated} Error input
+    <label>
+        I'm a error input!
+        <input type="text" placeholder="Omg!" class="input--error" />
+    </label>
 
-<label>
-    I'm a error input!
-    <input type="text" placeholder="Omg!" class="input--error" />
-</label>
-<label>
-    Look,
-    <input type="text" placeholder="I'm inline!!" class="input--inline" />
-    Wuut?
-</label>
-<label>
-    Outlined input
-    <input type="text" placeholder="Look at ma' outlines" class="input--outlined" />
-</label>
+Example: {type: isolated} Inline input
+    <label>
+        Look,
+        <input type="text" placeholder="I'm inline!!" class="input--inline" />
+        Wuut?
+    </label>
 
-<h3>Textareas</h3>
+Example: {type: isolated} Outlined input
+    <label>
+        Outlined input
+        <input type="text" placeholder="Look at ma' outlines" class="input--outlined" />
+    </label>
 
-<label>
-    I'm a textarea
-    <textarea placeholder="I more got space!"></textarea>
-</label>
-<label>
-    I'm a textarea with error!
-    <textarea placeholder="Why? :'('" class="input--error"></textarea>
-</label>
-<label>
-    I got the outlines!
-    <textarea placeholder="Look, outlines!" class="input--outlined"></textarea>
-</label>
-<label>
-    I'm a textarea that can grow
-    <textarea placeholder="Type alot on me!" auto-grow></textarea>
-</label>
+Example: {type: isolated} Smaller input
+    <label>
+        Outlined input
+        <input type="text" placeholder="I'm tiny!" class="input--small" />
+    </label>
+
+Example: {type: isolated} Standard textarea
+    <label>
+        I'm a textarea
+        <textarea placeholder="I more got space!"></textarea>
+    </label>
+
+Example: {type: isolated} Textarea with error
+    <label>
+        I'm a textarea with error!
+        <textarea placeholder="Why? :'('" class="input--error"></textarea>
+    </label>
+
+Example: {type: isolated} Textarea with outlines
+    <label>
+        I got the outlines!
+        <textarea placeholder="Look, outlines!" class="input--outlined"></textarea>
+    </label>
+
+Example: {type: isolated} Textarea that grows
+    <label>
+        I'm a textarea that can grow
+        <textarea placeholder="You can type alot on me!" auto-grow></textarea>
+    </label>
 
 Styleguide 3.5
 */
@@ -181,7 +196,7 @@ input[type='tel'],
     &[type='url'],
     &[type='search'],
     &[type='tel'] {
-        border: $border-width solid color(neutral, xxlight);
+        border: $border-width solid color(neutral, light);
 
         // &:focus {
         //     border-color: color(primary, dark);

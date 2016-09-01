@@ -214,13 +214,13 @@ $kss-controls-height: $vertical-rythm * 2;
 
 .sg-font-header {
     &:before {
-        @include font(base, bold);
+        @include font(header, bold);
         display: block;
         content: '#{map-get(map-get($fonts, header), font)}';
     }
 
     &:after {
-        @include font(base, bold);
+        @include font(header, bold);
         display: block;
         content: '#{map-get(map-get($fonts, header), fallback)}';
     }
