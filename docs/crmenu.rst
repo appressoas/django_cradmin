@@ -10,7 +10,7 @@ Using crmenu with BaseCrAdminInstance
 Simple example
 ==============
 Lets create a menu with two links, one to the "dashboard" app, and one
-to the "pages" app (both apps are within the cradmin instance):
+to the "pages" app (both apps are within the cradmin instance)::
 
     class CrInstance(crinstance.BaseCrAdminInstance):
         # ... other required BaseCrAdminInstance attributes and methods ...
