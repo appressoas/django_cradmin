@@ -116,7 +116,7 @@
     width: $width;
     height: $height;
 
-    background-image: url('#{$media-path}/images/sprite.svg');
+    background-image: url('../images/sprite.svg');
     background-position: (-( ( $col - 1 ) * 100) + px ) (-( ( $row - 1 ) * 100 ) + px);
     background-repeat: no-repeat;
 }
@@ -143,7 +143,6 @@
         }
     }
 }
-
 
 // STYLE INPUT PLACEHOLDERS
 @mixin input-placeholder {

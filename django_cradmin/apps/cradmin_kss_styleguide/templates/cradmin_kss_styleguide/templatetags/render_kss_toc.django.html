@@ -97,12 +97,22 @@
         kssInitSizer();
     }
 
+    function kssResizeAllIframes() {
+        var iframes = document.querySelectorAll('iframe');
+
+        iframes.forEach(function(iframe) {
+            cradmin_kss_styleguide_autoresize_iframe(iframe);
+        });
+    }
+
     function kssUpdateIframes(size) {
         var previews = document.querySelectorAll('.kss-usage__preview-content');
 
         previews.forEach(function(item) {
             item.style.width = size + 'px';
         });
+
+        kssResizeAllIframes();
     }
 
     function kssInitSizer() {
