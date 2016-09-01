@@ -73,24 +73,36 @@
         { size: 720 },
         { size: 840 },
         { size: 960 },
-        { size: 1080, selected: true },
-        { size: 1280 }
+        { size: 1080 },
+        { size: 1280, selected: true }
     ].reverse();
+
+    function kssSetSelection(size) {
+        kssIframeSizes.forEach(function(item) {
+            if (item.size !== parseInt(size, 10)) {
+                item.selected = false;
+            } else {
+                item.selected = true;
+            }
+        });
+    }
 
     function kssSetSize(size) {
         if (event) {
             event.preventDefault();
         }
 
-        kssIframeSizes.forEach(function(item) {
-            if (item.size !== size) {
-                item.selected = false;
-            } else {
-                item.selected = true;
-            }
-        });
+        localStorage.setItem('kssFrameSize', size);
 
         kssInitSizer();
+    }
+
+    function kssResizeAllIframes() {
+        var iframes = document.querySelectorAll('iframe');
+
+        iframes.forEach(function(iframe) {
+            cradmin_kss_styleguide_autoresize_iframe(iframe);
+        });
     }
 
     function kssUpdateIframes(size) {
@@ -99,10 +111,16 @@
         previews.forEach(function(item) {
             item.style.width = size + 'px';
         });
+
+        kssResizeAllIframes();
     }
 
     function kssInitSizer() {
         var controls = document.querySelector('.kss-sizer');
+
+        if (localStorage.getItem('kssFrameSize')) {
+            kssSetSelection(localStorage.getItem('kssFrameSize'));
+        }
 
         var sizers = kssIframeSizes.map(function(item, index) {
             var classes = 'kss-sizer__sizer';

@@ -145,6 +145,7 @@ Styleguide 5.3
 .menu {
     .menu__content {
         display: none;
+
         &--expanded {
             display: block;
         }
@@ -155,6 +156,7 @@ Styleguide 5.3
             .menu__toggle {
                 display: none;
             }
+
             .menu__content {
                 display: block;
             }
@@ -166,6 +168,7 @@ Styleguide 5.3
             .menu__toggle {
                 display: none;
             }
+
             .menu__content {
                 display: block;
             }
@@ -182,7 +185,7 @@ Example: {type: isolated}  Basic pure CSS example
 
   <button type="button" class="button" cradmin-menu-toggle>Toggle menu</button>
 
-Styleguide 4.6
+Styleguide 5.6
 */
 .menutoggle {
 
