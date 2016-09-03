@@ -4,9 +4,9 @@
 
 {% block title %}{{ pagetitle }}{% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>{{ pagetitle }}</h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {{ pagetitle }}
+{% endblock page-cover-title %}
 
 {% block content %}
     <section class="{% block list_css_class %}blocklist{% endblock %}{% cradmin_test_css_class 'cradmin-roleselect-list' %}">

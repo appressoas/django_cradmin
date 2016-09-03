@@ -1,9 +1,9 @@
 {% extends "django_cradmin/layouts/standalone/focused.django.html" %}
 {% load i18n %}
 
-{% block pageheader-inner %}
-    <h1>{% trans "Permission denied" %}</h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {% trans "Permission denied" %}
+{% endblock page-cover-title %}
 
 {% block content %}
     <p>
