@@ -8,21 +8,23 @@
     {% trans "Public share link" %}
 {% endblock title %}
 
-{% block pageheader-inner %}
+{% block page-cover-title %}
     {% if generictoken %}
-        <h1>
-            {% trans "Sharable link" %}
-        </h1>
+        {% trans "Sharable link" %}
+    {% else %}
+        {% trans "Get sharable link" %}
+    {% endif %}
+{% endblock page-cover-title %}
+
+{% block page-cover-content %}
+    {{ block.super }}
+    {% if generictoken %}
         <p>
             Anyone with the link can add themself as administrator for the site.
             This is just a demo for a public sharing workflow. You SHOULD NOT use this to invite admins in production!
         </p>
-    {% else %}
-        <h1>
-            {% trans "Get sharable link" %}
-        </h1>
     {% endif %}
-{% endblock pageheader-inner %}
+{% endblock page-cover-content %}
 
 {% block content %}
     <div class="container django-cradmin-container-focus">

@@ -8,13 +8,11 @@
 {% block main-content %}
     {% block page-cover %}
         <header class="{% block page-cover-cssclass %}page-cover{% endblock %}{% cradmin_test_css_class 'page-cover' %}">
-            {% block pageheader-inner %}  {# NOTE: pageheader-inner is deprecated - use page-cover-content #}
-                {% block page-cover-content %}
-                    <h1 class="page-cover__title{% cradmin_test_css_class 'primary-h1' %}">
-                        {% block page-cover-title %}{% endblock page-cover-title %}
-                    </h1>
-                {% endblock page-cover-content %}
-            {% endblock pageheader-inner %}
+            {% block page-cover-content %}
+                <h1 class="page-cover__title{% cradmin_test_css_class 'primary-h1' %}">
+                    {% block page-cover-title %}{% endblock page-cover-title %}
+                </h1>
+            {% endblock page-cover-content %}
         </header>
     {% endblock page-cover %}
 

@@ -1,15 +1,18 @@
 {% extends "django_cradmin/layouts/standalone/focused.django.html" %}
 
+{% block page-cover-title %}
+    Django-cradmin demos
+{% endblock page-cover-title %}
 
-{% block pageheader-inner %}
-    <h1>Django-cradmin demos</h1>
+{% block page-cover-content %}
+    {{ block.super }}
     <p>
         The sourcecode for the demos is in
         <a href="{{ github_base_url }}">
             django_cradmin/demo/
         </a>
     </p>
-{% endblock pageheader-inner %}
+{% endblock page-cover-content %}
 
 
 {% block content %}

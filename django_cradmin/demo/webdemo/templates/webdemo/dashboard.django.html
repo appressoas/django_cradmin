@@ -2,13 +2,10 @@
 {% load i18n %}
 {% load static %}
 
-
-{% block pageheader-inner %}
-    <h1>
-        {% trans "Demo" %}:
-        <strong>{{ request.cradmin_role.name }}</strong>
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {% trans "Demo" %}:
+    <strong>{{ request.cradmin_role.name }}</strong>
+{% endblock page-cover-title %}
 
 {% block content %}
     <section class="page-section">
