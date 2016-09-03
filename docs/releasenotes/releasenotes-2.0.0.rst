@@ -96,6 +96,21 @@ blocks that only contain a H1 tag with the new ``page-cover-title`` block:
 The regex in *Text to find* is both Python an java compatible, so you should be able
 to create a python script to handle this if needed.
 
+Recommended migration route:
+
+- Replace pageheader-inner with the regex above.
+- Search for pageheader-inner, and update the more complex cases manually to use something like this::
+
+    {% block page-cover-title %}
+        My title
+    {% endblock page-cover-title %}
+
+    {% block page-cover-content %}
+        {{ block.super }}
+        Stuff below the title in the old pageheader-inner block.
+    {% endblock page-cover-content %}
+
+
 
 layouts/standalone/focused.django.html
 ======================================
