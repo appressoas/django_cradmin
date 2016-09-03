@@ -82,6 +82,20 @@ django_cradmin/base-internal.django.html
     - ``page-cover-content`` instead of ``pageheader-inner``, or use ``page-cover-title``
       to just set the content of the H1 tag.
 
+You can use the following regex in PyCharm to searh and all replace ``page-header-content``
+blocks that only contain a H1 tag with the new ``page-cover-title`` block:
+
+    Text to find::
+
+        \{\% block pageheader\-inner \%\}\s*\<h1\>\s*([^>]+?)\s*\<\/h1\>\s*\{\% endblock pageheader\-inner \%\}
+
+    Replace with::
+
+        \{\% block page-cover-title \%\}\n    $1\n\{\% endblock page-cover-title \%\}
+
+The regex in *Text to find* is both Python an java compatible, so you should be able
+to create a python script to handle this if needed.
+
 
 layouts/standalone/focused.django.html
 ======================================
