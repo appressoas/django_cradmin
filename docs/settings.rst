@@ -62,6 +62,16 @@ template. This means all the views in ``django_cradmin.viewhelpers``, but not th
 views, or other standalone (non-crapp.App views).
 
 
+.. setting:: DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES
+
+DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES
+=======================================
+Enable CSS classes for unit tests? The CSS classes added
+using the :func:`django_cradmin.templatetags.cradmin_tags.cradmin_test_css_class` template
+tag is not included unless this is ``True``. Should only be ``True`` when running
+automatic tests. Defaults to ``False``.
+
+
 **********
 imageutils
 **********

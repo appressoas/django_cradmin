@@ -8,6 +8,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 import warnings
 
 from django_cradmin import crapp
+from django_cradmin import crsettings
 from django_cradmin.crinstance import reverse_cradmin_url
 from django_cradmin.registry import cradmin_instance_registry
 
@@ -274,3 +275,54 @@ def cradmin_render_renderable(context, renderable):
     """
     request = context.get('request', None)
     return renderable.render(request=request)
+
+
+@register.simple_tag
+def cradmin_test_css_class(suffix):
+    """
+    Adds a CSS class for automatic tests. CSS classes added using this
+    template tag is only included when the the :setting:`DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES`
+    setting is set to ``True``.
+
+    To use this template tag, you provide a ``suffix`` as input,
+    and the output will be `` test-<suffix> ``. Notice that we
+    include space before and after the css class - this means that you do not need to
+    add any extra spaces within your class-attribute to make room for the
+    automatic test only css class.
+
+    Examples:
+
+        Use the template tag to add test only css classes:
+
+        .. code-block:: django
+
+            {% load cradmin_tags %}
+
+            <p class="paragraph paragraph--large{% cradmin_test_css_class 'introduction' %}">
+                The introduction
+            </p>
+
+        Ensure that your test settings have ``DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES = True``.
+
+        Write tests based on the test css class::
+
+            from django import test
+            import htmls
+
+            class TestCase(test.TestCase):
+
+                def test_introduction(self):
+                    response = some_code_to_get_response()
+                    selector = htmls.S(response.content)
+                    with self.assertEqual(
+                        'The introduction',
+                        selector.one('test-introduction')
+
+    Args:
+        suffix: The suffix for your css class. The actual css class will be `` test-<suffix> ``.
+    """
+    include_test_css_classes = crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False)
+    if include_test_css_classes:
+        return '  test-{}  '.format(suffix)
+    else:
+        return ''

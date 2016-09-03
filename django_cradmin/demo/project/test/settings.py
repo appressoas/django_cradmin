@@ -120,3 +120,5 @@ ROOT_URLCONF = 'django_cradmin.demo.project.test.urls'
 DJANGO_CRADMIN_SITENAME = 'Testsite'
 DJANGO_CRADMIN_REGISTER_ACCOUNT_FORM_CLASS = \
     'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountForm'
+
+DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES = True
