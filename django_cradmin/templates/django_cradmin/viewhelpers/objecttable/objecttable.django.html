@@ -1,6 +1,7 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load i18n %}
 {% load cradmin_icon_tags %}
+{% load cradmin_tags %}
 
 {% block title %}{{ pagetitle }}{% endblock title %}
 
@@ -201,7 +202,7 @@
                     </div> {# END div with ng-controller="CradminMultiselectObjectTableViewController" #}
 
                 {% else %}
-                    <div class="django-cradmin-listing-no-items-message django-cradmin-objecttable-no-items-message"
+                    <div class="{% cradmin_test_css_class 'cradmin-no-items-message' %}"
                             id="objecttableview-no-items-message">
                         {{ no_items_message|safe }}
                     </div>

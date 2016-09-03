@@ -1,5 +1,7 @@
 from django.template.loader import render_to_string
 
+from django_cradmin import crsettings
+
 
 class AbstractRenderable(object):
     """
@@ -91,6 +93,16 @@ class AbstractRenderableWithCss(AbstractRenderable):
         """
         return []
 
+    def get_test_css_class_suffixes_list(self):
+        """
+        List of css class suffixes to include when running automatic tests.
+
+        These suffixes are filtered through the
+        :func:`~django_cradmin.templatetags.cradmin_tags.cradmin_test_css_class`
+        template tag.
+        """
+        return []
+
     def get_css_classes_string(self):
         """
         Get css classes.
@@ -102,7 +114,11 @@ class AbstractRenderableWithCss(AbstractRenderable):
         - Override :meth:`.get_extra_css_classes` if you are extending a reusable component.
         - Override :meth:`.get_base_css_classes` if you are creating a reusable component.
         """
+        from django_cradmin.templatetags import cradmin_tags  # Avoid circular import
         css_classes = []
         css_classes.extend(self.get_base_css_classes_list())
         css_classes.extend(self.get_extra_css_classes_list())
+        if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
+            for css_class_suffix in self.get_test_css_class_suffixes_list():
+                css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
         return '  '.join(css_classes)

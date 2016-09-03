@@ -23,8 +23,7 @@ class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         site = mommy.make('webdemo.Site')
         mommy.make('webdemo.Page', site=site)
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
-        view_title = mockresponse.selector.one('.django-cradmin-page-header-inner').alltext_normalized
-
+        view_title = mockresponse.selector.one('h1.test-primary-h1').alltext_normalized
         self.assertEquals('Create Page', view_title)
 
     def test_get_create_button_text(self):

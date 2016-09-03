@@ -4,16 +4,16 @@
 {% load i18n %}
 
 {% block content %}
-    <div class="django-cradmin-multiselect2-itemvalue-details">
+    <div class="{% cradmin_test_css_class 'cradmin-multiselect2-itemvalue-details' %}">
         {{ block.super }}
     </div>
 
     {% block buttons %}
-        <p class="django-cradmin-multiselect2-itemvalue-buttons">
+        <p class="{% cradmin_test_css_class 'cradmin-multiselect2-itemvalue-buttons' %}">
             {% block select-button %}
                 <button type="button"
                         id="{{ me.get_selectbutton_dom_id }}"
-                        class="btn btn-default django-cradmin-multiselect2-itemvalue-button"
+                        class="btn btn-default {% cradmin_test_css_class 'cradmin-multiselect2-itemvalue-select-button' %}"
                         django-cradmin-multiselect2-select={{ select_directive_json|safe }}
                         aria-label='{{ me.get_selectbutton_aria_label }}'>
                     {% block usethis-button-content %}
@@ -28,13 +28,13 @@
     {% endblock buttons %}
 
     {% block selected-summary %}
-        <div class="django-cradmin-multiselect2-itemvalue-selectedsummary">
+        <div class="{% cradmin_test_css_class 'cradmin-multiselect2-itemvalue-selectedsummary' %}">
             {% block selected-summary-content %}
                 {% block selected-summary-prefix %}
-                    <span class="django-cradmin-multiselect2-itemvalue-selectedsummary-prefix">
+                    <span class="{% cradmin_test_css_class 'cradmin-multiselect2-itemvalue-selectedsummary-prefix' %}">
                         {% block selected-summary-prefix-content %}
                             <span class="{% cradmin_icon "multiselect2-selected" %}
-                                         django-cradmin-multiselect2-itemvalue-selectedsummary-prefix-icon"
+                                         {% cradmin_test_css_class 'cradmin-multiselect2-itemvalue-selectedsummary-prefix-icon' %}"
                                 aria-hidden="true"></span>
                             <span class="sr-only">({% trans "Selected" %})</span>
                         {% endblock selected-summary-prefix-content %}

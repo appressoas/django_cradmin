@@ -16,6 +16,10 @@ class FocusBox(base.ItemValueRenderer):
     :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer`
     subclass for more than the most simple use cases.
     """
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-focus-box')
+        return css_class_suffixes
 
     def get_base_css_classes_list(self):
         css_classes = super(FocusBox, self).get_base_css_classes_list()
@@ -33,6 +37,11 @@ class TitleDescription(FocusBox):
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
     template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html'
+
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-title-description')
+        return css_class_suffixes
 
     def get_base_css_classes_list(self):
         """
@@ -70,6 +79,11 @@ class UseThis(TitleDescription):
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
     template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/use-this.django.html'
+
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-use-this')
+        return css_class_suffixes
 
     def get_base_css_classes_list(self):
         """
@@ -109,6 +123,11 @@ class EditDelete(TitleDescription):
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
     template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html'
+
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-edit-delete')
+        return css_class_suffixes
 
     def get_base_css_classes_list(self):
         """
@@ -192,6 +211,11 @@ class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
     and :class:`.EditDelete`.
     """
 
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(EditDeleteWithPreview, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-preview')
+        return css_class_suffixes
+
 
 class EditDeleteWithArchiveImage(EditDelete):
     """
@@ -203,6 +227,11 @@ class EditDeleteWithArchiveImage(EditDelete):
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
     template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete-with-archive-image.django.html'
+
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(EditDeleteWithArchiveImage, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-archive-image')
+        return css_class_suffixes
 
     def get_archiveimage(self):
         """
@@ -254,3 +283,8 @@ class EditDeleteWithArchiveImageAndPreview(EditDeleteWithPreviewMixin, EditDelet
     Shortcut for subclassing :class:`EditDeleteWithPreviewMixin`
     and :class:`.EditDeleteWithArchiveImage`.
     """
+
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(EditDeleteWithArchiveImage, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-archive-image-and-preview')
+        return css_class_suffixes

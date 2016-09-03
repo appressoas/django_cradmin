@@ -282,7 +282,7 @@ class TestObjectTableView(TestCase):
         selector = htmls.S(response.content)
         # selector.one('#django_cradmin_contentwrapper').prettyprint()
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 4)
-        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager'))
+        self.assertFalse(selector.exists('main .pager'))
 
     def test_paginate_by_firstpage(self):
         testmodels.SomeItem.objects.bulk_create(
@@ -301,10 +301,10 @@ class TestObjectTableView(TestCase):
         response.render()
         selector = htmls.S(response.content)
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 4)
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager'))
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next'))
-        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))
+        self.assertTrue(selector.exists('main .pager'))
+        self.assertTrue(selector.exists('main .pager .previous.disabled'))
+        self.assertTrue(selector.exists('main .pager .next'))
+        self.assertFalse(selector.exists('main .pager .next.disabled'))
 
     def test_paginate_by_lastpage(self):
         testmodels.SomeItem.objects.bulk_create(
@@ -325,10 +325,10 @@ class TestObjectTableView(TestCase):
         response.render()
         selector = htmls.S(response.content)
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 1)
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager'))
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .previous'))
-        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))
+        self.assertTrue(selector.exists('main .pager'))
+        self.assertTrue(selector.exists('main .pager .previous'))
+        self.assertFalse(selector.exists('main .pager .previous.disabled'))
+        self.assertTrue(selector.exists('main .pager .next.disabled'))
 
     def test_paginate_by_middlepage(self):
         testmodels.SomeItem.objects.bulk_create(
@@ -350,11 +350,11 @@ class TestObjectTableView(TestCase):
         selector = htmls.S(response.content)
         # selector.one('#django_cradmin_contentwrapper').prettyprint()
         self.assertEqual(selector.count('#objecttableview-table>tbody>tr'), 4)
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager'))
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .previous'))
-        self.assertTrue(selector.exists('#django_cradmin_contentwrapper .pager .next'))
-        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .previous.disabled'))
-        self.assertFalse(selector.exists('#django_cradmin_contentwrapper .pager .next.disabled'))
+        self.assertTrue(selector.exists('main .pager'))
+        self.assertTrue(selector.exists('main .pager .previous'))
+        self.assertTrue(selector.exists('main .pager .next'))
+        self.assertFalse(selector.exists('main .pager .previous.disabled'))
+        self.assertFalse(selector.exists('main .pager .next.disabled'))
 
     def test_render_single_simple_column(self):
         testmodels.SomeItem.objects.create(name='Item One')

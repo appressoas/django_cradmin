@@ -25,13 +25,9 @@ class List(listbuilder.lists.RowList):
             frame_renderer_class=frame_renderer_class,
             **listkwargs)
 
-    def get_base_css_classes_list(self):
-        """
-        Adds the ``django-cradmin-multiselect2-preview-list`` css class
-        to the css classes added by the superclasses.
-        """
-        css_classes = super(List, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-multiselect2-preview-list')
+    def get_test_css_class_suffixes_list(self):
+        css_classes = super(List, self).get_test_css_class_suffixes_list()
+        css_classes.append('cradmin-multiselect2-preview-list')
         return css_classes
 
 
@@ -57,11 +53,7 @@ class Value(listbuilder.base.ItemValueRenderer):
         self.wrap_in_li_element = wrap_in_li_element
         super(Value, self).__init__(value=value)
 
-    def get_base_css_classes_list(self):
-        """
-        Adds the ``django-cradmin-multiselect2-preview-list-value`` css class
-        to the css classes added by the superclasses.
-        """
-        css_classes = super(Value, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-multiselect2-preview-list-value')
+    def get_test_css_class_suffixes_list(self):
+        css_classes = super(Value, self).get_test_css_class_suffixes_list()
+        css_classes.append('cradmin-multiselect2-preview-list-value')
         return css_classes

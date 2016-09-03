@@ -26,9 +26,7 @@ class TestPageUpdateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         # When updating the view, the url needs a parameter, here the pk of the page to update.
         # According to the views/pages.py class Apps ('^edit/(?P<pk>\d+)$').
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site, viewkwargs={'pk': page.id})
-        view_title = mockresponse.selector.one('.django-cradmin-page-header-inner').alltext_normalized
-        # mockresponse.selector.prettyprint()
-
+        view_title = mockresponse.selector.one('h1.test-primary-h1').alltext_normalized
         self.assertEquals('Edit Page', view_title)
 
     def test_post_without_required_field_title(self):

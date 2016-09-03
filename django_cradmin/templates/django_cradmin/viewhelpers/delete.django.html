@@ -5,16 +5,11 @@
     {{ pagetitle }}
 {% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>
-        {% block heading %}
-            {{ pagetitle }}
-        {% endblock heading %}
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {{ pagetitle }}
+{% endblock page-cover-title %}
 
 {% block content %}
-
     {% block delete-form %}
         <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">{% csrf_token %}
             <div class="container">

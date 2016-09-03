@@ -6,10 +6,14 @@
     {% trans "Find your account" %}
 {% endblock subtitle %}
 
-{% block pageheader-inner %}
-    <h1>{% trans "Find your account" %}</h1>
+{% block page-cover-title %}
+    {% trans "Find your account" %}
+{% endblock page-cover-title %}
+
+{% block page-cover-content %}
+    {{ block.super }}
     <p>{% trans "Type in your email-address" %}</p>
-{% endblock pageheader-inner %}
+{% endblock page-cover-content %}
 
 {% block content %}
     {% crispy form formhelper %}

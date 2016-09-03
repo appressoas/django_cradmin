@@ -121,6 +121,8 @@ class TestList(TestCase):
         testlist.append(listbuilder.base.ItemValueRenderer(value='testvalue1'))
         testlist.append(listbuilder.base.ItemValueRenderer(value='testvalue2'))
         selector = htmls.S(testlist.render(request=mock.MagicMock()))
-        self.assertEqual(2, selector.count('li'))
-        self.assertEqual('testvalue1', selector.list('li')[0].alltext_normalized)
-        self.assertEqual('testvalue2', selector.list('li')[1].alltext_normalized)
+        self.assertEqual(2, selector.count('.test-cradmin-listbuilder-item-value-renderer'))
+        self.assertEqual('testvalue1',
+                         selector.list('.test-cradmin-listbuilder-item-value-renderer')[0].alltext_normalized)
+        self.assertEqual('testvalue2',
+                         selector.list('.test-cradmin-listbuilder-item-value-renderer')[1].alltext_normalized)

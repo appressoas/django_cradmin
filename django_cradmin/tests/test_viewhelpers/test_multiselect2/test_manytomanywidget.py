@@ -122,7 +122,7 @@ class TestWidget(test.TestCase):
             queryset=mockqueryset,
             selectview_url='/test'
         ).render(name='testname', value=None, attrs={'id': 'testid'}))
-        self.assertTrue(selector.exists('.django-cradmin-multiselect2-preview-list'))
+        self.assertTrue(selector.exists('.test-cradmin-multiselect2-preview-list'))
 
     def test_preview_list_angularjs_directive(self):
         mockqueryset = mock.MagicMock()
@@ -132,7 +132,7 @@ class TestWidget(test.TestCase):
             selectview_url='/test'
         ).render(name='testname', value=None, attrs={'id': 'testid'}))
         self.assertTrue(
-            selector.one('.django-cradmin-multiselect2-preview-list').hasattribute(
+            selector.one('.test-cradmin-multiselect2-preview-list').hasattribute(
                 'django-cradmin-model-choice-field-preview'))
 
     def test_preview_list_without_value(self):
@@ -144,7 +144,7 @@ class TestWidget(test.TestCase):
         ).render(name='testname', value=None, attrs={'id': 'testid'}))
         self.assertEqual(
             0,
-            selector.count('.django-cradmin-multiselect2-preview-list li'))
+            selector.count('.test-cradmin-multiselect2-preview-list li'))
 
     def test_preview_list_with_value(self):
         mockqueryset = mock.MagicMock()
@@ -160,11 +160,11 @@ class TestWidget(test.TestCase):
         ).render(name='testname', value=None, attrs={'id': 'testid'}))
         self.assertEqual(
             1,
-            selector.count('.django-cradmin-multiselect2-preview-list li'))
+            selector.count('.test-cradmin-multiselect2-preview-list-value'))
         self.assertEqual(
             'testvalue',
-            selector.one('.django-cradmin-multiselect2-preview-list '
-                         '.django-cradmin-multiselect2-preview-list-value').alltext_normalized)
+            selector.one('.test-cradmin-multiselect2-preview-list '
+                         '.test-cradmin-multiselect2-preview-list-value').alltext_normalized)
 
     def test_selectbutton_angularjs_directive(self):
         mockqueryset = mock.MagicMock()

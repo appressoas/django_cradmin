@@ -74,6 +74,15 @@ standalone-base-internal.django.html
 - We no longer load any javascript by default.
 
 
+django_cradmin/base-internal.django.html
+========================================
+- We use the new template blocks from ``standalone-base-internal.django.html`` (see the section above).
+- The ``pageheader`` and ``pageheader-inner`` blocks no longer exist. Use:
+    - ``page-cover`` instead of ``pageheader``.
+    - ``page-cover-content`` instead of ``pageheader-inner``, or use ``page-cover-title``
+      to just set the content of the H1 tag.
+
+
 layouts/standalone/focused.django.html
 ======================================
 

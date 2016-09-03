@@ -48,7 +48,7 @@
                         {% endblock listbuilder_list_live_area_has_items %}
                     {% else %}
                         {% block no-items-wrapper %}
-                            <p class="django-cradmin-listing-no-items-message django-cradmin-listbuilderview-no-items-message">
+                            <p class="{% cradmin_test_css_class 'cradmin-no-items-message' %}">
                                 {% block no-items-paragraph-contents %}
                                     {{ no_items_message }}
                                 {% endblock no-items-paragraph-contents %}

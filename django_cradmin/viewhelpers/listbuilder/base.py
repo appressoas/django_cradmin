@@ -38,6 +38,11 @@ class ItemValueRenderer(AbstractItemRenderer):
     """
     template_name = 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html'
 
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(ItemValueRenderer, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-item-value-renderer')
+        return css_class_suffixes
+
     def get_base_css_classes_list(self):
         """
         Override this to set your own css classes.
@@ -70,6 +75,11 @@ class ItemFrameRenderer(AbstractItemRenderer):
     def __init__(self, inneritem, **kwargs):
         super(ItemFrameRenderer, self).__init__(inneritem.value, **kwargs)
         self.inneritem = inneritem
+
+    def get_test_css_class_suffixes_list(self):
+        css_class_suffixes = super(ItemFrameRenderer, self).get_test_css_class_suffixes_list()
+        css_class_suffixes.append('cradmin-listbuilder-item-frame-renderer')
+        return css_class_suffixes
 
     def get_base_css_classes_list(self):
         """
@@ -120,12 +130,6 @@ class List(AbstractRenderableWithCss):
 
     def __len__(self):
         return len(self.renderable_list)
-
-    def get_base_css_classes_list(self):
-        """
-        Sets ``django-cradmin-listbuilder-list`` as css class for the list.
-        """
-        return []
 
     def append(self, renderable):
         """

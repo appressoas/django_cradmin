@@ -88,11 +88,13 @@ class MultiSelectView(TemplateView, javascriptregistry.viewmixin.WithinRoleViewM
         Called if the form used to validate the selected objects is invalid.
         Must be overridden.
         """
-        return render(self.request, 'django_cradmin/error.django.html', {
+        context = {
             'error': _(
                 'Invalid selection. This is usually caused by someone else changing '
                 'permissions while you where selecting items to edit.')
-        })
+        }
+        self.add_javascriptregistry_component_ids_to_context(context=context)
+        return render(self.request, 'django_cradmin/error.django.html', context)
 
     def get_context_data(self, **kwargs):
         context = super(MultiSelectView, self).get_context_data(**kwargs)

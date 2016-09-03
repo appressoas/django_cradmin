@@ -22,7 +22,7 @@ class TestBeginPasswordResetView(TestCase):
         self.assertEquals(selector.one('h1').alltext_normalized, 'Find your account')
         self.assertIn(
             'Type in your email-address',
-            selector.one('.page-header').alltext_normalized)
+            selector.one('.test-page-cover').alltext_normalized)
         self.assertTrue(selector.exists('input[type="email"][name="email"]'))
         self.assertEquals(selector.one('button[type="submit"]').alltext_normalized, 'Search')
 

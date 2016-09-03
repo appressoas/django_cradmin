@@ -71,7 +71,7 @@ class TestAbstractAcceptInviteView(TestCase):
         response.render()
         selector = htmls.S(response.content)
         self.assertEqual(selector.one('title').alltext_normalized, 'Accept invite')
-        self.assertEqual(selector.one('.page-header h1').alltext_normalized, 'Accept invite')
+        self.assertEqual(selector.one('h1.test-primary-h1').alltext_normalized, 'Accept invite')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_description').alltext_normalized,
             'TODO: Set a description_template for your AbstractAcceptInviteView subclass.')

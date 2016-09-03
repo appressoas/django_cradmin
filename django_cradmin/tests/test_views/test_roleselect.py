@@ -99,9 +99,9 @@ class TestRoleSelectView(TestCase):
                 response.render()
                 selector = htmls.S(response.content)
 
-                self.assertEqual(selector.count('.django-cradmin-roleselect-role-title'), 2)
+                self.assertEqual(selector.count('.test-cradmin-roleselect-list__itemtitle'), 2)
                 titletextlist = [element.alltext_normalized
-                                 for element in selector.list('.django-cradmin-roleselect-role-title')]
+                                 for element in selector.list('.test-cradmin-roleselect-list__itemtitle')]
                 self.assertEquals(titletextlist, ['Role One', 'Role Two'])
 
     def test_render_list_descriptions(self):
@@ -129,9 +129,9 @@ class TestRoleSelectView(TestCase):
                 response.render()
                 selector = htmls.S(response.content)
 
-                self.assertEqual(selector.count('.django-cradmin-roleselect-role-description'), 2)
+                self.assertEqual(selector.count('.test-cradmin-roleselect-list__itemdescription'), 2)
                 titletextlist = [element.alltext_normalized
-                                 for element in selector.list('.django-cradmin-roleselect-role-description')]
+                                 for element in selector.list('.test-cradmin-roleselect-list__itemdescription')]
                 self.assertEquals(titletextlist, ['Role One desc', 'Role Two desc'])
 
     def test_render_list_urls(self):
@@ -158,7 +158,7 @@ class TestRoleSelectView(TestCase):
                 selector = htmls.S(response.content)
 
                 urllist = [element['href']
-                           for element in selector.list('.django-cradmin-roleselect-list li a')]
+                           for element in selector.list('.test-cradmin-roleselect-list__item')]
                 self.assertEquals(urllist, ['/role/1', '/role/2'])
 
     def test_render_pagination(self):
@@ -195,8 +195,8 @@ class TestRoleSelectView(TestCase):
                 response_page2.render()
                 selector_page2 = htmls.S(response_page2.content)
 
-                self.assertEqual(selector_page1.count('.django-cradmin-roleselect-list li'), 3)
-                self.assertEqual(selector_page2.count('.django-cradmin-roleselect-list li'), 2)
+                self.assertEqual(selector_page1.count('.test-cradmin-roleselect-list__item'), 3)
+                self.assertEqual(selector_page2.count('.test-cradmin-roleselect-list__item'), 2)
 
                 self.assertTrue(selector_page1.exists('.pager-container'))
                 self.assertTrue(selector_page1.exists('.pager-container li.previous.disabled'))
@@ -232,5 +232,5 @@ class TestRoleSelectView(TestCase):
                 selector = htmls.S(response.content)
 
                 # selector.one('#django_cradmin_roleselect').prettyprint()
-                self.assertEqual(selector.count('.django-cradmin-roleselect-list li'), 3)
+                self.assertEqual(selector.count('.test-cradmin-roleselect-list__item'), 3)
                 self.assertFalse(selector.exists('.pager-container'))
