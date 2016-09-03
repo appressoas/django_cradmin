@@ -7,11 +7,9 @@
     {% trans "Activate account error" %}
 {% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>
-        {% trans "Activate account error" %}
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {% trans "Activate account error" %}
+{% endblock page-cover-title %}
 
 {% block content %}
     {% if token_does_not_exist %}

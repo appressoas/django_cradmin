@@ -7,11 +7,9 @@
     {% trans "Invalid invite" %}
 {% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>
-        {% trans "Invalid invite" %}
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {% trans "Invalid invite" %}
+{% endblock page-cover-title %}
 
 {% block content %}
     {% if token_does_not_exist %}

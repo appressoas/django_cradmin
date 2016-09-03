@@ -4,11 +4,9 @@
 {% load cradmin_tags %}
 
 
-{% block pageheader-inner %}
-    <h1>
-        {{ djangoappconfig.get_menulabel }}
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {{ djangoappconfig.get_menulabel }}
+{% endblock page-cover-title %}
 
 {% block content %}
     <div class="container">

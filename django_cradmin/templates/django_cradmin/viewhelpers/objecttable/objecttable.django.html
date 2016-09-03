@@ -5,13 +5,9 @@
 
 {% block title %}{{ pagetitle }}{% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>
-        {% block heading %}
-            {{ pageheading }}
-        {% endblock heading %}
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {{ pageheading }}
+{% endblock page-cover-title %}
 
 {% block content %}
     {% if buttons or enable_search %}

@@ -11,13 +11,11 @@
     {{ pagetitle }}
 {% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>
-        {% block heading %}
+{% block page-cover-title %}
+    {% block heading %}
             {{ pageheading }}
         {% endblock heading %}
-    </h1>
-{% endblock pageheader-inner %}
+{% endblock page-cover-title %}
 
 {% block content %}
     {% block listbuilderview_pre %}

@@ -6,11 +6,9 @@
     {% blocktrans with sitename=DJANGO_CRADMIN_SITENAME%}Create your {{ sitename }} account{% endblocktrans %}
 {% endblock title %}
 
-{% block pageheader-inner %}
-    <h1>
-        {% blocktrans with sitename=DJANGO_CRADMIN_SITENAME%}Create your {{ sitename }} account{% endblocktrans %}
-    </h1>
-{% endblock pageheader-inner %}
+{% block page-cover-title %}
+    {% blocktrans with sitename=DJANGO_CRADMIN_SITENAME%}Create your {{ sitename }} account{% endblocktrans %}
+{% endblock page-cover-title %}
 
 {% block content %}
     {% crispy form %}
