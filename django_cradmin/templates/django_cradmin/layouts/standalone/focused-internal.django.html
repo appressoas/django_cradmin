@@ -4,16 +4,22 @@
     ``django_cradmin/layouts/standalone/focused.django.html`` instead.
 {% endcomment %}
 
-{% block body %}
-    <section class="{% block wrapperclass %}page-section {% block wrapperclass-modifier %}page-section--tight page-section--focus{% endblock %}{% endblock %}">
-        {% block messages %}
-            {% include "django_cradmin/include/messages.django.html" %}
-        {% endblock messages %}
+{% block main-content %}
+    {% block page-cover %}
+        <header class="{% block page-cover-cssclass %}page-cover{% endblock %}">
+            {% block pageheader-inner %}  {# NOTE: pageheader-inner is deprecated - use page-cover-content #}
+                {% block page-cover-content %}
+                    <h1 class="page-cover__title">
+                        {% block page-cover-title %}{% endblock page-cover-title %}
+                    </h1>
+                {% endblock page-cover-content %}
+            {% endblock pageheader-inner %}
+        </header>
+    {% endblock page-cover %}
 
-        {% block pageheader %}
-            {% block pageheader-inner %}{% endblock pageheader-inner %}
-        {% endblock pageheader %}
-
-        {% block content %}{% endblock content %}
-    </section>
-{% endblock body %}
+    {% block contentwrapper %}
+        <section class="{% block contentwrapper-class %}container {% block contentwrapper-class-modifier %}{% endblock %}{% endblock %}">
+            {% block content %}{% endblock content %}
+        </section>
+    {% endblock contentwrapper %}
+{% endblock main-content %}

@@ -95,7 +95,7 @@
             {% endblock messages %}
 
             {% block main %}
-                <main role="main">
+                <main {% block main-attributes %}role="main"{% endblock %}>
                     {% block main-content %}{% endblock main-content %}
                 </main>
             {% endblock main %}
