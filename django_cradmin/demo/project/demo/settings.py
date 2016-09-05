@@ -318,6 +318,7 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
                 }
             ),
             ievvbuildstatic.typescriptbuild.Plugin(
+                main_sourcefile="CradminModuleLoader.ts",
                 destinationfile="django_cradmin.js",
                 typings_global_dependencies=['dt~node@', 'dt~core-js']
             ),
