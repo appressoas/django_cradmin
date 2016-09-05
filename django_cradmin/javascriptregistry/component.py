@@ -139,15 +139,15 @@ class CradminAngular1(AbstractJsComponent):
                                 })
 
 
-class CradminMenu(CradminAngular1):
+class CradminMenu(AbstractJsComponent):
     @classmethod
     def get_component_id(cls):
         return 'django_cradmin_mainmenu'
 
-    def get_target_domelement_selector(self):
-        return '#id_django_cradmin_mainmenu'
-
-    def get_angularjs_modules(self):
-        return [
-            'djangoCradmin.menu'
-        ]
+    # def get_target_domelement_selector(self):
+    #     return '#id_django_cradmin_mainmenu'
+    #
+    # def get_angularjs_modules(self):
+    #     return [
+    #         'djangoCradmin.menu'
+    #     ]
