@@ -32,16 +32,16 @@ Example: {type: isolated}  Basic pure CSS example with the menu collapsed
 Example: {type: isolated}  With javascript
 
     <!-- TODO: JS for expanding the menu on click -->
-    <button type="button" class="button">Toggle menu</button>
+    <button type="button" class="button" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable cradmin_menutoggle_activestyle="button--fill">Toggle menu</button>
 
-    <div class="expandable-right-menu  expandable-right-menu--primary">
+    <div class="expandable-right-menu  expandable-right-menu--primary" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="expandable-right-menu--expanded">
 
         <!-- TODO: JS for closing the menu on click -->
-        <div class="expandable-right-menu__backdrop"></div>
+        <div class="expandable-right-menu__backdrop" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable></div>
 
         <div class="expandable-right-menu__content">
             <!-- TODO: JS for closing the menu on click -->
-            <button type="button" class="button">Close</button>
+            <button type="button" class="button" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable>Close</button>
 
             <p>Menu content here</p>
         </div>
