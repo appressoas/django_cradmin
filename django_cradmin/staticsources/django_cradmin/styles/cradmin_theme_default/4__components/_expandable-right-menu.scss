@@ -1,0 +1,90 @@
+/* Expandable right hand side menu
+
+
+Example: {type: isolated}  Basic pure CSS example with the menu expanded
+
+    <div class="expandable-right-menu  expandable-right-menu--primary  expandable-right-menu--expanded">
+
+        <div class="expandable-right-menu__backdrop"></div>
+
+        <div class="expandable-right-menu__content">
+            <button type="button" class="button">Close</button>
+
+            <p>Menu content here</p>
+        </div>
+    </div>
+
+
+Example: {type: isolated}  Basic pure CSS example with the menu collapsed
+
+    <div class="expandable-right-menu  expandable-right-menu--primary">
+
+        <div class="expandable-right-menu__backdrop"></div>
+
+        <div class="expandable-right-menu__content">
+            <button type="button" class="button">Close</button>
+
+            <p>Menu content here</p>
+        </div>
+    </div>
+
+
+Example: {type: isolated}  With javascript
+
+    <!-- TODO: JS for expanding the menu on click -->
+    <button type="button" class="button">Toggle menu</button>
+
+    <div class="expandable-right-menu  expandable-right-menu--primary">
+
+        <!-- TODO: JS for closing the menu on click -->
+        <div class="expandable-right-menu__backdrop"></div>
+
+        <div class="expandable-right-menu__content">
+            <!-- TODO: JS for closing the menu on click -->
+            <button type="button" class="button">Close</button>
+
+            <p>Menu content here</p>
+        </div>
+    </div>
+
+Styleguide 5.6
+*/
+.expandable-right-menu {
+    position: fixed;
+    display: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+
+    &--primary {
+        .expandable-right-menu__content {
+            background-color: color(primary);
+            color: $color-light;
+        }
+    }
+
+    &--expanded {
+        display: block;
+    }
+
+    &__backdrop {
+        position: fixed;
+        z-index: $level-2;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, .3);
+    }
+
+    &__content {
+        position: fixed;
+        z-index: $level-3;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+    }
+}
