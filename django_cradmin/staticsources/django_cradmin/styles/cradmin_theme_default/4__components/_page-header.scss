@@ -1,0 +1,173 @@
+/* Page header
+
+Example: {type: isolated} Very basic - no content
+
+    <header class="page-header  page-header--dark">
+    </header>
+
+Example: {type: isolated} With brand an a couple of links
+
+    <header class="page-header  page-header--dark">
+        <a class="branding">
+            <span class="branding__name">
+                My brand
+            </span>
+        </a>
+    </header>
+
+Styleguide 5.7
+*/
+.page-header {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: $level-1;
+
+    padding: $vertical-rythm 0;
+
+    color: color(primary);
+
+    @include min-width(md) {
+        padding: #{$vertical-rythm * 2} 0;
+        height: $header-height;
+    }
+
+    &__nav {
+        position: relative;
+        top: 1px;
+        float: right;
+    }
+
+    &__link {
+        @include font(base, bold);
+        @include font-size(xsmall);
+        display: none;
+        position: relative;
+        margin-left: 1em;
+        color: $color-links;
+        border-bottom: $border-width--small solid transparent;
+
+        // letter-spacing: 0.1em;
+        // text-transform: uppercase;
+
+        &:hover,
+        &:focus {
+            border-color: $color-links;
+        }
+
+        @include min-width(lg) {
+            display: inline;
+        }
+    }
+
+    &__menu {
+        position: relative;
+        top: 8px;
+        float: right;
+        min-width: $unit * 14;
+        line-height: 20px;
+
+        transition: all 300ms $swift-out;
+
+        @include min-width(lg) {
+            display: none;
+        }
+
+        &--light {
+            color: $color-light;
+
+            .icon-hamburger__bar {
+                background-color: $color-light;
+            }
+        }
+    }
+
+    &__content {
+        @extend .container;
+        @extend .container--wide;
+    }
+
+    &--show-menu {
+        position: fixed;
+        color: $color-light;
+        z-index: $level-4;
+
+        .branding__text,
+        .branding__mark,
+        .branding__name {
+            fill: $color-light;
+            color: $color-light;
+
+            @include min-width(md) {
+                fill: color(primary);
+                color: color(primary);
+            }
+        }
+    }
+
+    &--light {
+        color: $color-light;
+
+        .icon-hamburger__bar {
+            background-color: $color-light;
+        }
+
+        .page-header__link {
+            color: $color-light;
+
+            &:hover,
+            &:focus {
+                border-color: $color-light;
+            }
+        }
+
+        .page-header__button {
+            border-color: color(primary, dark);
+
+            &--user {
+                @extend %icon-user-small--light;
+                opacity: 0.9;
+            }
+        }
+
+        .branding__text,
+        .branding__mark,
+        .branding__name {
+            fill: $color-light;
+            color: $color-light;
+        }
+    }
+
+    &--dark {
+        color: $color-light;
+        // background-color: shade(color(primary, dark), 5%);
+        background-color: color(primary, dark);
+        // background-color: color(primary);
+        // border-bottom: $border-width solid color(primary, dark);
+        // background-color: color(neutral, xlight);
+
+        .icon-hamburger__bar {
+            background-color: $color-light;
+        }
+
+        .page-header__link {
+            color: rgba($color-light, 0.8);
+
+            &:hover,
+            &:focus {
+                border-color: $color-light;
+            }
+        }
+
+        .page-header__link--promoted {
+            color: $color-light;
+        }
+
+        .branding__text,
+        .branding__mark,
+        .branding__name {
+            fill: $color-light;
+            color: $color-light;
+        }
+    }
+}
