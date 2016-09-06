@@ -94,12 +94,10 @@ class AbstractEmail(object):
         'contents_div_style': 'display: inline-block;'
                               'max-width: 600px;'
                               'text-align: left;',
-        'footer_td_style': 'border-top: 3px solid #eee; '
-                           'font-size: 13px; '
-                           'color: #777; '
-                           'text-align: center; '
-                           'padding-top: 20px; '
-                           'padding-bottom: 20px; ',
+        'footer_td_style': 'text-align: center;',
+        'footer_div_style': 'display: inline-block;'
+                            'max-width: 600px;'
+                            'text-align: left;',
         'footer_link_style': 'color: #777; text-decoration: underline;',
         'link_style': 'color: #377CA8; text-decoration: underline;',
         'secondary_button_link_style': 'font-size: 16px; '

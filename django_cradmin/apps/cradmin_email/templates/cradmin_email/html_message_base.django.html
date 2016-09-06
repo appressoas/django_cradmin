@@ -36,9 +36,11 @@
             </tr>
             <tr>
                 <td style="{{ common_td_style }}{{ footer_td_style }}">
-                    {% block footer %}
-                        {% include "cradmin_email/include/html_message_footer.django.html" %}
-                    {% endblock footer %}
+                    <div style="{{ footer_div_style }}">
+                        {% block footer %}
+                            {% include "cradmin_email/include/html_message_footer.django.html" %}
+                        {% endblock footer %}
+                    </div>
                 </td>
             </tr>
         </table>
