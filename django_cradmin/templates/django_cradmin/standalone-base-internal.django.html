@@ -61,17 +61,20 @@
             {% endblock javascriptregistry-head %}
         {% endblock head %}
     </head>
-    <body class="
-            {% block global-bodyclass %}
-                {% comment %}
-                    Use this block to set css classes for the entire site.
-                    Do not override this block in views - only override this
-                    when you override the standalone-base.django.html template.
-                {% endcomment %}
-            {% endblock global-bodyclass %}
-            {% block bodyclass %}
-            {% endblock bodyclass %}
-            ">
+    <body {% block body-attributes %}
+            {# NOTE: We probably want to deprecate these bodyclass blocks and solve it some other way #}
+            class="
+                {% block global-bodyclass %}
+                    {% comment %}
+                        Use this block to set css classes for the entire site.
+                        Do not override this block in views - only override this
+                        when you override the standalone-base.django.html template.
+                    {% endcomment %}
+                {% endblock global-bodyclass %}
+                {% block bodyclass %}
+                {% endblock bodyclass %}
+            "
+            {% endblock body-attributes %}>
         {% block global-pre-body %}
             {% comment %}
                 This block is here to be overridden in standalone-base.django.html
