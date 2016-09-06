@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 register = template.Library()
 
 
-def _cradmin_email_buttonlink(parser, token, linkstyle_context_variable):
+def _cradmin_email_link(parser, token, linkstyle_context_variable, template_name):
     try:
         tag_name, url = token.split_contents()
     except ValueError:
@@ -15,12 +15,19 @@ def _cradmin_email_buttonlink(parser, token, linkstyle_context_variable):
     end_tag = 'end_{}'.format(tag_name)
     nodelist = parser.parse((end_tag,))
     parser.delete_first_token()
-    return CradminEmailButtonlinkNode(nodelist=nodelist, url=url,
-                                      linkstyle_context_variable=linkstyle_context_variable)
+    return CradminEmailLinkNode(nodelist=nodelist, url=url,
+                                linkstyle_context_variable=linkstyle_context_variable,
+                                template_name=template_name)
 
 
-class CradminEmailButtonlinkNode(template.Node):
-    def __init__(self, nodelist, url, linkstyle_context_variable):
+def _cradmin_email_buttonlink(parser, token, linkstyle_context_variable):
+    _cradmin_email_link(parser=parser, token=token,
+                        linkstyle_context_variable=linkstyle_context_variable,
+                        template_name='cradmin_email/templatetags/cradmin_email_buttonlink.django.html')
+
+
+class CradminEmailLinkNode(template.Node):
+    def __init__(self, nodelist, url, linkstyle_context_variable, template_name):
         if url[0] in ('"', "'"):
             url = url[1:-1]
         else:
@@ -29,6 +36,7 @@ class CradminEmailButtonlinkNode(template.Node):
         self.url = url
         self.nodelist = nodelist
         self.linkstyle_context_variable = linkstyle_context_variable
+        self.template_name = template_name
 
     def render(self, context):
         output = self.nodelist.render(context)
@@ -37,12 +45,45 @@ class CradminEmailButtonlinkNode(template.Node):
             url = self.url.resolve(context)
         else:
             url = self.url
+        request = context['request']
+        url = request.build_absolute_uri(url)
+
         linkstyle = context.get(self.linkstyle_context_variable, '')
-        return render_to_string('cradmin_email/templatetags/cradmin_email_buttonlink.django.html', {
+        return render_to_string(self.template_name, {
             'url': url,
-            'label': output,
+            'label': output.strip(),
             'linkstyle': linkstyle
-        })
+        }).strip()
+
+
+@register.tag
+def cradmin_email_link(parser, token):
+    """
+    Render a normal link.
+
+    Examples::
+
+        Url as string:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_email_tags %}
+            {% cradmin_email_link "http://example.com" %}
+                A link
+            {% end_cradmin_email_link %}
+
+        Url as context variable:
+
+        .. code-block:: htmldjango
+
+            {% load cradmin_email_tags %}
+            {% cradmin_email_link someurl %}
+                A link
+            {% end_cradmin_email_link %}
+    """
+    return _cradmin_email_link(parser=parser, token=token,
+                               linkstyle_context_variable='link_style',
+                               template_name='cradmin_email/templatetags/cradmin_email_link.django.html')
 
 
 @register.tag
@@ -97,16 +138,18 @@ def cradmin_email_secondary_buttonlink(parser, token):
             {% load cradmin_email_tags %}
             {% cradmin_email_secondary_buttonlink someurl %}
                 A secondary button link
-            {% end_cradmin_email_primary_buttonlink %}
+            {% end_cradmin_email_secondary_buttonlink %}
     """
     return _cradmin_email_buttonlink(parser, token,
                                      linkstyle_context_variable='secondary_button_link_style')
 
 
-@register.inclusion_tag('cradmin_email/templatetags/cradmin_email_link.django.html')
-def cradmin_email_link(url, label=None):
-    return {
-        'url': url,
-        'label': label,
-        'style': getattr(settings, 'DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA', {}).get('link_style')
-    }
+# @register.inclusion_tag('cradmin_email/templatetags/cradmin_email_link.django.html',
+#                         takes_context=True)
+# def cradmin_email_link(context, url, label=None):
+#     request = context['request']
+#     return {
+#         'url': request.build_absolute_uri(url),
+#         'label': label,
+#         'style': getattr(settings, 'DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA', {}).get('link_style')
+#     }
