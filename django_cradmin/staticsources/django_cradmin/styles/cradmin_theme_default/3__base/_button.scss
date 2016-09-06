@@ -106,12 +106,39 @@ Styleguide 3.2
         padding: $spacing--small #{$indention - $border-width};
     }
 
+    &__icon {
+        position: relative;
+        vertical-align: middle;
+        top: -2px;
+        margin-right: $unit;
+
+        &--non-hover {
+            display: inline-block;
+        }
+
+        &--hover {
+            display: none;
+        }
+
+        &--first {
+            margin-left: -($unit);
+        }
+    }
+
     &:hover,
     &:focus,
     &:active {
         color: $color-light;
         border-color: color(neutral);
         background-color: color(neutral);
+
+        .button__icon--non-hover {
+            display: none;
+        }
+
+        .button__icon--hover {
+            display: inline-block;
+        }
     }
 
     &:focus {
@@ -178,11 +205,5 @@ Styleguide 3.2
     &[disabled] {
         pointer-events: none;
         opacity: 0.4;
-    }
-
-    // General rules for icons in buttons
-    [class^='icon-'] {
-        vertical-align: middle;
-        margin-right: $unit;
     }
 }
