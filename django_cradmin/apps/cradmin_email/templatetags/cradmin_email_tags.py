@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 from django.template.loader import render_to_string
 
 register = template.Library()
@@ -100,3 +101,12 @@ def cradmin_email_secondary_buttonlink(parser, token):
     """
     return _cradmin_email_buttonlink(parser, token,
                                      linkstyle_context_variable='secondary_button_link_style')
+
+
+@register.inclusion_tag('cradmin_email/templatetags/cradmin_email_link.django.html')
+def cradmin_email_link(url, label=None):
+    return {
+        'url': url,
+        'label': label,
+        'style': getattr(settings, 'DJANGO_CRADMIN_EMAIL_DEFAULT_CONTEXT_DATA', {}).get('link_style')
+    }
