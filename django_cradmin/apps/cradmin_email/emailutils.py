@@ -86,7 +86,14 @@ class AbstractEmail(object):
                            'letter-spacing: 0.5px; ',
         'header_td_style': '',
         'logo_style': '',
-        'contents_td_style': 'padding-top: 20px; padding-bottom: 28px;',
+        'contents_td_style': 'padding-top: 20px; '
+                             'padding-bottom: 28px; '
+                             'padding-left: 20px; '
+                             'padding-right: 20px; '
+                             'text-align: center;',
+        'contents_div_style': 'display: inline-block;'
+                              'max-width: 600px;'
+                              'text-align: left;',
         'footer_td_style': 'border-top: 3px solid #eee; '
                            'font-size: 13px; '
                            'color: #777; '
