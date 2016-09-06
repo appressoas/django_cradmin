@@ -73,6 +73,12 @@ Styleguide 3.2
             background-color: transparent;
         }
     }
+
+    &--hidden-in-print {
+        @media print {
+            display: none;
+        }
+    }
 }
 
 .button {
