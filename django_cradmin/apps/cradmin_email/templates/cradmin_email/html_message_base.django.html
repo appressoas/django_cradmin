@@ -3,16 +3,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <style type="text/css">
-            @media (max-width: 670px) {
-                #outer_wrapper_table {
-                    width: 100%;
-                    max-width: 600px;
-                    padding-left: 10px;
-                    padding-right: 10px;
-                }
-            }
-        </style>
     </head>
     <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0"
           style="{{ body_style }}">
@@ -29,20 +19,18 @@
             <tr>
                 <td style="{{ common_td_style }}{{ contents_td_style }}">
                     {# Override this in your html_message_template #}
-                    <div style="{{ contents_div_style }}">
-                        {% block contents %}{% endblock contents %}
-                    </div>
+                    {% block contents %}{% endblock contents %}
                 </td>
             </tr>
-            <tr>
-                <td style="{{ common_td_style }}{{ footer_td_style }}">
-                    <div style="{{ footer_div_style }}">
+            {% block footer-wrapper %}
+                <tr>
+                    <td style="{{ common_td_style }}{{ footer_td_style }}">
                         {% block footer %}
                             {% include "cradmin_email/include/html_message_footer.django.html" %}
                         {% endblock footer %}
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            {% endblock footer-wrapper %}
         </table>
     </body>
 </html>

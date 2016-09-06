@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^activate_account/', include('django_cradmin.apps.cradmin_activate_account.urls')),
     url(r'^register/', include('django_cradmin.apps.cradmin_register_account.urls')),
     url(r'^styleguide/', include('django_cradmin.apps.cradmin_kss_styleguide.urls')),
+    url(r'^cradmin_email/', include('django_cradmin.apps.cradmin_email.urls')),
 
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
