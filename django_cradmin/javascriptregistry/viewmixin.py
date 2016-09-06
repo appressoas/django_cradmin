@@ -1,6 +1,3 @@
-from . import component
-
-
 class MinimalViewMixin(object):
     """
     Views that use the javascriptregistry template tags must
@@ -50,7 +47,10 @@ class StandaloneBaseViewMixin(MinimalViewMixin):
     use :class:`.BaseViewMixin` for that.
     """
     def get_javascriptregistry_component_ids(self):
-        return []
+        if getattr(self.request, 'cradmin_instance', None):
+            return self.request.cradmin_instance.get_default_javascriptregistry_component_ids()
+        else:
+            return []
 
 
 class WithinRoleViewMixin(StandaloneBaseViewMixin):
@@ -58,6 +58,7 @@ class WithinRoleViewMixin(StandaloneBaseViewMixin):
     Use with views that use the ``django_cradmin/base.django.html`` template.
     """
     def get_javascriptregistry_component_ids(self):
-        return [
-            component.CradminMenu.get_component_id()
-        ]
+        if getattr(self.request, 'cradmin_instance', None):
+            return self.request.cradmin_instance.get_default_within_role_javascriptregistry_component_ids()
+        else:
+            return []

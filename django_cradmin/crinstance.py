@@ -565,6 +565,20 @@ class BaseCrAdminInstance(object):
         """
         return ' '.join(self.get_body_css_classes_list())
 
+    def get_default_javascriptregistry_component_ids(self):
+        """
+        Get default component IDs for all views within this cradmin instance.
+        """
+        return []
+
+    def get_default_within_role_javascriptregistry_component_ids(self):
+        """
+        Get default component IDs for all views within a cradmin_role within this cradmin instance.
+
+        Defaults to :meth:`.get_default_javascriptregistry_component_ids`.
+        """
+        return self.get_default_javascriptregistry_component_ids()
+
 
 class NoRoleMixin(object):
     """
