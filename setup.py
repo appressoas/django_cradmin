@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='django_cradmin',
     description='A role based admin UI for Django that produces a user friendly and beautiful UI.',
-    version='2.0.0a2',
+    version='2.0.0a3',
     url='https://github.com/appressoas/django_cradmin',
     author='Espen Angell Kristiansen, Tor Johansen, Vegard Angell, Magne Westlie',
     author_email='post@appresso.no',
