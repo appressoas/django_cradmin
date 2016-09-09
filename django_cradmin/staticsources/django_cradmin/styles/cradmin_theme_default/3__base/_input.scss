@@ -68,7 +68,7 @@ Example: {type: isolated} Textarea that grows
         <textarea placeholder="You can type alot on me!" auto-grow></textarea>
     </label>
 
-Styleguide 3.5
+Styleguide 3.1
 */
 
 
@@ -84,6 +84,7 @@ input[type='tel'],
 .input {
     @include font(base, normal);
     @include font-size(small);
+    line-height: 1;
 
     display: block;
     width: 100%;

@@ -255,6 +255,32 @@ $kss-controls-height: $vertical-rythm * 2;
                 }
             }
         }
+
+        &--info {
+            color: color-contrast($color-info);
+            background-color: $color-info;
+
+            &:before {
+                content: 'Info';
+            }
+
+            &:after {
+                content: '#{$color-info}';
+            }
+        }
+
+        &--success {
+            color: color-contrast($color-success);
+            background-color: $color-success;
+
+            &:before {
+                content: 'Success';
+            }
+
+            &:after {
+                content: '#{$color-success}';
+            }
+        }
     }
 }
 
@@ -396,6 +422,10 @@ $kss-controls-height: $vertical-rythm * 2;
         padding-right: 0; // TODO: Untill we get the extra space removed
         // margin-right: $unit;
         background-color: $color-light;
+
+        // &:last-child {
+        //     padding-right: $unit + 2;
+        // }
     }
 }
 

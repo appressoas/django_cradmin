@@ -1,4 +1,28 @@
-// Reusable animations
+/* Animations
+
+### TODO's
+1. Maybe this should be moved somewhere else
+2. Add some examples
+
+### These are the animations:
+- `.animation-fade-in`
+- `.animation-fade-in-down`
+- `.animation-fade-in-up`
+- `.animation-fade-in-slow`
+- `.animation-fade-in-extra-slow`
+
+- `.animation-fade-out`
+- `.animation-fade-out-slow`
+- `.animation-fade-out-up`
+- `.animation-fade-out-down`
+- `.animation-fade-out-right`
+
+- `.animation-fall-down`
+- `.animation-height`
+- `.animation-explode`
+
+Styleguide 1.8
+*/
 .animation,
 %animation {
     &-fade-in {

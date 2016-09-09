@@ -1,4 +1,23 @@
-// FORMS
+/* From, label, fieldset...
+
+Example: Fieldset and Legend
+    <fieldset>
+        <legend>I'm a legend</legend>
+    </fieldset>
+
+Example: Label
+    <label>
+        I'm a label!
+    </label>
+
+    <p>Look, <label class="label--inline">I'm a inline label</label>!!!</p>
+
+    <label class="label--spaceless">
+        I have less spacing under...
+    </label>
+
+Styleguide 3.7
+*/
 form {
     @extend %clearfix;
 }
@@ -52,12 +71,18 @@ label,
     }
 }
 
-// Form error
+/* Error messages
+
+Example:
+    <p class="error">Look, I'm an error message!</p>
+
+Styleguide 3.6
+*/
 .error {
-    @include font(base, bold);
+    @include font(base);
     @include font-size(small);
 
-    padding: $spacing;
+    padding: $spacing--small $spacing;
     margin-bottom: $vertical-rythm--spacing;
     color: $color-light;
     background-color: color(primary);

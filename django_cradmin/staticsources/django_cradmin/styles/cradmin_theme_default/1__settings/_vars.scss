@@ -1,5 +1,4 @@
-/*
-Breakpoints / Media queries
+/* Breakpoints / Media queries
 
 Media queries are **only** ment for the mobile first approach; Which means you design for mobile first, then add media queries for larger screens -- Never the other way around
 
@@ -27,10 +26,9 @@ $container-width: $container-width--tight * 1.5;
 $container-width--wide: 1400px;
 
 
-/*
-Spacing
+/* Spacing
 
-All the sizes are based on a unit. **The unit size is 5px.**
+All the sizes are based on a unit. **The unit size is 6px.**
 
 Never refer to a pixel-size for padding, margin or simular.
 
@@ -44,6 +42,8 @@ Never refer to a pixel-size for padding, margin or simular.
 - <div class="sg-size  sg-size--xlarge"></div>
   `$spacing--xlarge` - 40 units
 
+If you space out content it's often best to use `$indention`. This way we can create consistent aligning for texts.
+
 Styleguide 1.5
 */
 $unit: 6px;
@@ -56,13 +56,32 @@ $spacing--small: $unit * 2;
 // Indention
 $indention: $unit * 7;
 
-// Vertical rythm
-$vertical-rythm: 12px; // TODO: Responsive?
+/* Vertical rhythm
+
+In order to create a vertical rhythm it's important to stick to spacings that follows the same rhythm as the text's line height.
+
+By default you should never specify heights without variables. If the spacing is vertical; stick to the vertical rhythm variables.
+
+There is a system that creates proper line heights for text. **Never interfer with line-height's neither, since they are essentials to keep a good verticla rhythm.**
+
+# Use these variables for vertical spacings:
+- `$vertical-rythm` - For smaller spacing
+- `$vertical-rythm--spacing` - For default spacings.
+- Pro tip: `$vertical-rythm--spacing * X` - if you need more space
+
+Styleguide 1.6
+*/
+$vertical-rythm: $unit * 2; // TODO: Responsive?
 $vertical-rythm--spacing: ($vertical-rythm * 2) + $vertical-rythm;
 $vertical-rythm--spacing--small: $vertical-rythm; // TODO: Just use $vertical-rythm
 
 
-// Border-width
+/* Borders
+
+TODO: Make some documentation...
+
+Styleguide 1.7
+*/
 $border-width: 3px;
 $border-width--small: 2px;
 $border-width--large: 4px;

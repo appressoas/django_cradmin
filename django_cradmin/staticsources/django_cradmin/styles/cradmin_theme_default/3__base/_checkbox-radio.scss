@@ -1,8 +1,6 @@
-/* Checkbox and radio
+/* Checkbox
 
-The markup for checkboxes and radio are almost simular.
-
-### They both have these modifiers:
+### These are the modifiers:
 - `inline` - Removes margin underneath so it flows better with text
 - `block` - Make it 100% width
 - `light` - Make it light, only use on darker backgrounds
@@ -60,6 +58,17 @@ Example: {type: isolated} Checkbox inline
         text
     </p>
 
+Styleguide 3.4
+*/
+
+/* Radio
+
+### These are the modifiers:
+- `inline` - Removes margin underneath so it flows better with text
+- `block` - Make it 100% width
+- `light` - Make it light, only use on darker backgrounds
+- `spaceless` - Remove spaces to the right and underneath
+
 Example: {type: isolated} Radio default
     <label class="radio">
         <input type="radio" name="styleguide" />
@@ -112,7 +121,7 @@ Example: {type: isolated} Checkbox inline
         text
     </p>
 
-Styleguide 3.9
+Styleguide 3.5
 */
 .radio,
 .checkbox {
