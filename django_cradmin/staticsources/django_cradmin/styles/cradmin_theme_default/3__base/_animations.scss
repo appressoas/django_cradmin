@@ -26,7 +26,7 @@ Styleguide 1.8
 .animation,
 %animation {
     &-fade-in {
-        animation: fade-in 300ms $swift-out;
+        animation: fade-in 300ms $swift-out both;
     }
 
     &-fade-in-down {
@@ -34,19 +34,19 @@ Styleguide 1.8
     }
 
     &-fade-in-up {
-        animation: fade-in-up 300ms $swift-out;
+        animation: fade-in-up 300ms $swift-out both;
     }
 
     &-fade-out {
-        animation: fade-out 300ms $swift-out;
+        animation: fade-out 300ms $swift-out both;
     }
 
     &-fade-out-slow {
-        animation: fade-out 800ms $swift-out;
+        animation: fade-out 800ms $swift-out both;
     }
 
     &-fade-out-up {
-        animation: fade-out-up 100ms $swift-out;
+        animation: fade-out-up 100ms $swift-out both;
     }
 
     &-fade-out-down {
@@ -54,19 +54,19 @@ Styleguide 1.8
     }
 
     &-fade-out-right {
-        animation: fade-out-right 300ms $swift-out;
+        animation: fade-out-right 300ms $swift-out both;
     }
 
     &-fade-in-slow {
-        animation: fade-in 700ms $swift-out;
+        animation: fade-in 700ms $swift-out both;
     }
 
     &-fade-in-extra-slow {
-        animation: fade-in 2s $swift-out;
+        animation: fade-in 2s $swift-out both;
     }
 
     &-menu-out {
-        animation: fade-out 300ms $swift-out;
+        animation: fade-out 300ms $swift-out both;
     }
 
     &-fall-down {
