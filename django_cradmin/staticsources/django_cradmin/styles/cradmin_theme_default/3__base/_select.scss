@@ -128,6 +128,10 @@ Styleguide 3.3
 
         select {
             color: $color-light;
+
+            &:focus {
+                color: $color-text;
+            }
         }
     }
 
