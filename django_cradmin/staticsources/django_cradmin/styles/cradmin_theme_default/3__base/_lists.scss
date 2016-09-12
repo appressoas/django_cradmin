@@ -38,16 +38,25 @@ ol {
 
     & > li {
         position: relative;
-        padding-left: $indention;
+        padding-left: $indention--sm;
         margin-bottom: 0;
+
+        @include min-width(md) {
+            padding-left: $indention;
+        }
 
         &:before {
             content: '';
             position: absolute;
-            top: 0.7em;
+            top: 0.85em;
             left: 0;
-            width: $unit * 3;
+            width: $unit * 2;
             border-bottom: $border-width solid color(primary);
+
+            @include min-width(md) {
+                top: 0.7em;
+                width: $unit * 3;
+            }
         }
     }
 }

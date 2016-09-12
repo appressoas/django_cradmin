@@ -2,7 +2,7 @@
 @import 'pygments';
 
 $kss-header-height: $vertical-rythm * 4;
-$kss-controls-height: $vertical-rythm * 2;
+$kss-controls-height: $vertical-rythm--medium;
 
 .kss-content {
     padding-top: $kss-header-height + $kss-controls-height + $vertical-rythm--spacing;

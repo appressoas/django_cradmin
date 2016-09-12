@@ -128,7 +128,7 @@ Styleguide 7.2
     }
 
     .blocklist__itemtitle {
-        margin-bottom: $vertical-rythm--spacing--small;
+        margin-bottom: $vertical-rythm;
 
         @include font-size(medium);
 
@@ -147,8 +147,8 @@ Styleguide 7.2
 
     &--tight {
         .blocklist__item {
-            margin-bottom: $vertical-rythm--spacing--small;
-            padding: $vertical-rythm--spacing--small $spacing--small;
+            margin-bottom: $vertical-rythm;
+            padding: $vertical-rythm $spacing--small;
         }
     }
 }

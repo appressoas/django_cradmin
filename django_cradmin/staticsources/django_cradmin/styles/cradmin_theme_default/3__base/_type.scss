@@ -3,7 +3,6 @@
 Make sure headers represent semantic hierarchy of the page. For pure styling use these classes instead of ruining the hierarchy: `.h1`, `.h2`, `.h3`, `.h4`
 
 Example: {isolated: true}
-    <p class="h1 xl-text">XL Text</p>
     <h1>Header 1</h1>
     <h2>Header 2</h2>
     <h3>Header 3</h3>
@@ -27,10 +26,10 @@ h4,
     @include font(header, bold);
     word-wrap: break-word;
     margin: 0;
-    margin-bottom: $vertical-rythm--spacing;
+    margin-bottom: $vertical-rythm--medium;
 
-    strong {
-        @include font(header, bold);
+    @include min-width(md) {
+        margin-bottom: $vertical-rythm--spacing;
     }
 }
 
@@ -63,7 +62,6 @@ h3,
 .h3,
 %h3 {
     @include font-size(large);
-    // letter-spacing: 0.4px;
 }
 
 h4,
@@ -81,42 +79,6 @@ ul + h2,
 ul + h3,
 ul + h4 {
     margin-top: $vertical-rythm * 6; // TODO: Is there a better way?
-}
-
-.xl-text,
-%xl-text {
-    // This one doesn't follow the excact font-size pattern since it's kind of a special case
-    letter-spacing: -0.5px;
-    line-height: 0.97;
-    font-size: 60px;
-
-    @include min-width(md) {
-        font-size: 80px;
-    }
-
-    @include min-width(lg) {
-        font-size: 110px;
-    }
-
-    @media (min-height: 850px) and (min-width: map-get($breakpoints, lg)) {
-        font-size: 120px;
-    }
-
-    &--medium {
-        @include font-size(xxlarge);
-    }
-
-    &--small {
-        font-size: 52px;
-        letter-spacing: 0.5px;
-
-        @include min-width(md) {
-            font-size: 60px;
-        }
-        @include min-width(lg) {
-            font-size: 80px;
-        }
-    }
 }
 
 

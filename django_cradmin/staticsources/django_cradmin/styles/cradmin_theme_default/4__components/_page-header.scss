@@ -28,7 +28,7 @@ Styleguide 7.7
     color: color(primary);
 
     @include min-width(md) {
-        padding: #{$vertical-rythm * 2} 0;
+        padding: #{$vertical-rythm--medium} 0;
         height: $header-height;
     }
 

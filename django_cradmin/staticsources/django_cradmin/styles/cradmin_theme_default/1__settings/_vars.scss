@@ -55,6 +55,7 @@ $spacing--small: $unit * 2;
 
 // Indention
 $indention: $unit * 7;
+$indention--sm: $unit * 5; // TODO: Make a mixin for this?
 
 /* Vertical rhythm
 
@@ -71,9 +72,9 @@ There is a system that creates proper line heights for text. **Never interfer wi
 
 Styleguide 1.6
 */
-$vertical-rythm: $unit * 2; // TODO: Responsive?
-$vertical-rythm--spacing: ($vertical-rythm * 2) + $vertical-rythm;
-$vertical-rythm--spacing--small: $vertical-rythm; // TODO: Just use $vertical-rythm
+$vertical-rythm: $unit * 2; // TODO: Responsive? REM?
+$vertical-rythm--medium: ($vertical-rythm * 2);
+$vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm;
 
 
 /* Borders
