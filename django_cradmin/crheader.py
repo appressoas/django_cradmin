@@ -21,4 +21,4 @@ class DefaultHeaderRenderable(AbstractHeaderRenderable):
     template_name = 'django_cradmin/crheader/default-header.django.html'
 
     def get_base_css_classes_list(self):
-        return ['page-header', 'page-header--light']
+        return ['page-header', 'page-header--floating']

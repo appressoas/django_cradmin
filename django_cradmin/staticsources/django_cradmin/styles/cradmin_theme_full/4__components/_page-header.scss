@@ -41,6 +41,21 @@ Example: {type: isolated} With brand and navigation
         </div>
     </header>
 
+Example: {type: isolated} Navigation active links
+    <header class="page-header">
+        <div class="page-header__content">
+            <a class="page-header__brand">
+                <span class="page-header__brandname">My brand</span>
+            </a>
+            <nav class="page-header__nav">
+                <a class="page-header__navlink">Nonactive link</a>
+                <a class="page-header__navlink  page-header__navlink--active">Active link</a>
+                <a class="page-header__navlink  page-header__navlink--button">Nonactive button</a>
+                <a class="page-header__navlink  page-header__navlink--button page-header__navlink--active">Active button</a>
+            </nav>
+        </div>
+    </header>
+
 Example: {type: isolated} With navigation buttons and menu toggle button
     <header class="page-header">
         <div class="page-header__content">
@@ -138,12 +153,6 @@ Styleguide 7.7
         color: $color-light;
         border-bottom: $border-width--small solid transparent;
 
-        &:hover,
-        &:focus {
-            color: $color-light;
-            border-color: $color-light;
-        }
-
         @include min-width(lg) {
             display: inline;
         }
@@ -155,6 +164,13 @@ Styleguide 7.7
             margin-top: -2px;
             padding: #{$unit + 1px} $spacing--small $unit;
             border: $border-style;
+        }
+
+        &--active,
+        &:hover,
+        &:focus {
+            color: $color-light;
+            border-color: $color-light;
         }
     }
 

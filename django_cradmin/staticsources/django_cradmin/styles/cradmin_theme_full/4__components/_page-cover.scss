@@ -38,14 +38,24 @@ Example: {type: isolated} With description
 
     <header class="page-cover  page-cover--without-page-header">
         <h1 class="page-cover__title">The title</h1>
-        <h1 class="page-cover__description">The description</h1>
+        <p class="page-cover__description">The description</p>
     </header>
 
 Example: {type: isolated} With large description
 
     <header class="page-cover  page-cover--without-page-header">
         <h1 class="page-cover__title">The title</h1>
-        <h1 class="page-cover__description  page-cover__description--large">The description</h1>
+        <p class="page-cover__description  page-cover__description--large">The description</p>
+    </header>
+
+Example: {type: isolated} With inline elements in description
+
+    <header class="page-cover  page-cover--without-page-header">
+        <h1 class="page-cover__title">The title</h1>
+        <p class="page-cover__description">
+            The <strong class="page-cover__strong">awesome</strong>
+            <a class="page-cover__link">description</a>
+        </p>
     </header>
 
 Styleguide 7.8
@@ -101,17 +111,26 @@ Styleguide 7.8
         margin-left: auto;
         margin-right: auto;
 
-        strong { // TODO: BEM?
-            @include font(base, bold);
-            display: inline-block;
-            padding: 0 $unit 2px;
-            margin: 0 -2px;
-            background-color: color(primary, dark);
-        }
-
         &--large {
             @include font-size(large);
             @include spaced-text;
+        }
+    }
+
+    &__strong {
+        @include font(base, bold);
+        display: inline-block;
+        padding: 0 $unit 2px;
+        margin: 0 -2px;
+        background-color: color(primary, dark);
+    }
+    &__link {
+        color: $color-light;
+        border-color: color(primary, dark);
+        &:hover,
+        &:focus {
+            color: $color-light;
+            border-color: $color-light;
         }
     }
 }

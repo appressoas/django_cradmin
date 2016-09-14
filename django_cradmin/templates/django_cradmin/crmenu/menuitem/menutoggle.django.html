@@ -1,7 +1,16 @@
 {% block outer-wrapper %}
     <button type="button" class="{{ me.get_css_classes_string }}">
         {% block content %}
-            {{ me.get_label }}
+            {% block label %}
+                {{ me.get_label }}
+            {% endblock label %}
+            {% block icon %}
+                <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                    <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                </i>
+            {% endblock icon %}
         {% endblock content %}
     </button>
 {% endblock outer-wrapper %}

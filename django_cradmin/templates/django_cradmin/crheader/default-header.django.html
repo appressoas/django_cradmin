@@ -5,8 +5,10 @@
     <div class="page-header__content">
         {% block content-inner %}
             {% block brand %}
-                <a {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
-                    {% cradmin_titletext_for_role request.cradmin_role %}
+                <a class="page-header__brand" {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
+                    <span class="page-header__brandname">
+                        {% cradmin_titletext_for_role request.cradmin_role %}
+                    </span>
                 </a>
             {% endblock brand %}
 

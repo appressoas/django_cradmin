@@ -8,7 +8,7 @@ from django_cradmin.viewhelpers import listbuilder
 
 class LinkItemRenderable(renderable.AbstractRenderableWithCss):
     """
-    A menu item renderable.
+    Use this to add links to the menu.
     """
     template_name = 'django_cradmin/crmenu/menuitem/link.django.html'
 
@@ -23,10 +23,26 @@ class LinkItemRenderable(renderable.AbstractRenderableWithCss):
         self.url = url
         self.is_active = is_active
 
+    def get_base_css_classes_list(self):
+        css_classes = ['page-header__navlink']
+        if self.is_active:
+            css_classes.append('page-header__navlink--active')
+        return css_classes
+
+
+class ButtonLinkItemRenderable(LinkItemRenderable):
+    """
+    Use this to add links styled as a button to the menu.
+    """
+    def get_base_css_classes_list(self):
+        css_classes = super(ButtonLinkItemRenderable, self).get_base_css_classes_list()
+        css_classes.append('page-header__navlink--button')
+        return css_classes
+
 
 class MenuToggleItemItemRenderable(renderable.AbstractRenderableWithCss):
     """
-    A menu item renderable.
+    Use this to add an expandable menu toggle to the menu.
     """
     template_name = 'django_cradmin/crmenu/menuitem/menutoggle.django.html'
 
@@ -34,7 +50,7 @@ class MenuToggleItemItemRenderable(renderable.AbstractRenderableWithCss):
         return pgettext_lazy('cradmin default header menu toggle label', 'Menu')
 
     def get_base_css_classes_list(self):
-        return ['header__button', 'header__button--menutoggle']
+        return ['page-header__navmenutoggle']
 
 
 class AbstractMenuRenderable(listbuilder.base.List):
@@ -76,6 +92,9 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
 
     def get_menutoggle_renderable(self):
         return self.menutoggle_renderable_class()
+
+    def get_base_css_classes_list(self):
+        return ['page-header__nav']
 
 
 class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
