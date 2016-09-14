@@ -12,23 +12,21 @@ The basic components of a header is:
             .page-header__navmenutoggle  (navigation element menu toggle)
 ```
 
-Example: {type: isolated} Very basic - no content
-
-    <header class="page-header">
-    </header>
-
 Example: {type: isolated} With brand
 
-    <header class="page-header">
+    <header class="page-header  page-header--fill">
         <div class="page-header__content">
             <a class="page-header__brand">
                 <span class="page-header__brandname">My brand</span>
             </a>
         </div>
     </header>
+    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
+    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
+    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} With brand and navigation
-    <header class="page-header">
+    <header class="page-header  page-header--fill">
         <div class="page-header__content">
             <a class="page-header__brand">
                 <span class="page-header__brandname">My brand</span>
@@ -40,9 +38,12 @@ Example: {type: isolated} With brand and navigation
             </nav>
         </div>
     </header>
+    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
+    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
+    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} Navigation active links
-    <header class="page-header">
+    <header class="page-header  page-header--fill">
         <div class="page-header__content">
             <a class="page-header__brand">
                 <span class="page-header__brandname">My brand</span>
@@ -55,9 +56,12 @@ Example: {type: isolated} Navigation active links
             </nav>
         </div>
     </header>
+    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
+    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
+    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} With navigation buttons and menu toggle button
-    <header class="page-header">
+    <header class="page-header  page-header--fill">
         <div class="page-header__content">
             <a class="page-header__brand">
                 <span class="page-header__brandname">My brand</span>
@@ -77,10 +81,13 @@ Example: {type: isolated} With navigation buttons and menu toggle button
             </nav>
         </div>
     </header>
+    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
+    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
+    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} Floating over a page-cover
     <!-- Page header -->
-    <header class="page-header  page-header--floating">
+    <header class="page-header">
         <div class="page-header__content">
             <a class="page-header__brand">
                 <span class="page-header__brandname">My brand</span>
@@ -109,8 +116,10 @@ Styleguide 7.7
 .page-header {
     padding: $vertical-rythm 0;
     color: $color-light;
-    background-color: color(primary, dark);
-    position: relative;
+    width: 100%;
+    top: 0;
+    position: absolute;
+    z-index: $level-1;
 
     @include min-width(md) {
         padding: #{$vertical-rythm--medium} 0;
@@ -186,13 +195,16 @@ Styleguide 7.7
         .icon-hamburger__bar {
             background-color: $color-light;
         }
+
     }
 
-    &--floating {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        z-index: $level-1;
-        background-color: transparent;
+    &--fill {
+        background-color: color(primary, base);
     }
+
+    &--showmenu {
+        position: fixed;
+        z-index: $level-4;
+    }
+
 }

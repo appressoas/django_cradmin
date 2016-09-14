@@ -1,7 +1,7 @@
 
 
 export class CradminMenuToggle {
-  active:boolean = false;
+  activeMap = {};
   styleToggleElementGroups = {};
 
   constructor(private clickableAttribute:string="cradmin_menutoggle_clickable",
@@ -26,19 +26,26 @@ export class CradminMenuToggle {
     }
   }
 
+  getGroupIdForClickable(clickable:Element) {
+    return clickable.attributes.getNamedItem(this.groupIdAttribute).nodeValue;
+  }
+
   addClickListeners() {
     let clickables = Array.from(document.querySelectorAll(`[${this.clickableAttribute}]`));
     for (let clickable of clickables) {
-      clickable.addEventListener('click', this.toggleAction);
+      this.activeMap[this.getGroupIdForClickable(clickable)] = false;
+      clickable.addEventListener('click', (event:Event) => {
+        this.toggleAction(event, clickable);
+      });
     }
   }
 
-  toggleAction = (event:Event) => {
-    this.active = !this.active;
-    let groupId = event.srcElement.attributes.getNamedItem(this.groupIdAttribute).nodeValue;
+  toggleAction = (event:Event, clickable:Element) => {
+    let groupId = this.getGroupIdForClickable(clickable);
+    this.activeMap[groupId] = !this.activeMap[groupId];
 
     for (let element of this.styleToggleElementGroups[groupId]) {
-      if (this.active){
+      if (this.activeMap[groupId]){
         element.node.classList.add(element.value);
       } else{
         element.node.classList.remove(element.value);

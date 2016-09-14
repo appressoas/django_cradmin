@@ -1,0 +1,90 @@
+/* Expandable right side menu
+
+
+Example: {type: isolated} Example
+
+    <header class="page-header  page-header--fill"
+            cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="page-header--showmenu">
+        <div class="page-header__content">
+            <a class="page-header__brand">
+                <span class="page-header__brandname">My brand</span>
+            </a>
+            <nav class="page-header__nav">
+                <button type="button" class="page-header__navmenutoggle"
+                        cradmin_menutoggle_clickable
+                        cradmin_menutoggle_groupid="group1"
+                        cradmin_menutoggle_activestyle="page-header__navmenutoggle--active">
+                    Menu
+                    <i class="icon-hamburger"
+                            cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="icon-hamburger--close"
+                            aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
+    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
+    varius blandit sit amet non magna.</p>
+
+    <div class="expandable-right-menu  expandable-right-menu--primary" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="expandable-right-menu--expanded">
+        <div class="expandable-right-menu__backdrop" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable></div>
+        <div class="expandable-right-menu__content">
+            <p>Menu content here</p>
+        </div>
+    </div>
+
+Styleguide 7.6
+*/
+.expandable-right-menu {
+    position: fixed;
+    display: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    z-index: $level-3;
+
+    &--primary {
+        .expandable-right-menu__content {
+            background-color: color(primary, base);
+            color: $color-light;
+        }
+    }
+
+    &--expanded {
+        display: block;
+    }
+
+    &__backdrop {
+        position: fixed;
+        z-index: $level-2;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, .3);
+        display: none;
+        @include min-width(lg) {
+            display: block;
+        }
+    }
+
+    &__content {
+        position: fixed;
+        z-index: $level-3;
+        padding-top: 80px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        @include min-width(lg) {
+            width: 50%;
+        }
+    }
+}
