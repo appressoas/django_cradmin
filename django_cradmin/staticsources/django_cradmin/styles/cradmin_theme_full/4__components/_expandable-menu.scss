@@ -12,8 +12,7 @@ Example: {type: isolated} Example
             <nav class="page-header__nav">
                 <button type="button" class="page-header__navmenutoggle"
                         cradmin_menutoggle_clickable
-                        cradmin_menutoggle_groupid="group1"
-                        cradmin_menutoggle_activestyle="page-header__navmenutoggle--active">
+                        cradmin_menutoggle_groupid="group1">
                     Menu
                     <i class="icon-hamburger"
                             cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="icon-hamburger--close"
@@ -31,16 +30,16 @@ Example: {type: isolated} Example
     sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
     varius blandit sit amet non magna.</p>
 
-    <div class="expandable-right-menu  expandable-right-menu--primary" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="expandable-right-menu--expanded">
-        <div class="expandable-right-menu__backdrop" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable></div>
-        <div class="expandable-right-menu__content">
+    <div class="expandable-menu  expandable-menu--primary" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="expandable-menu--expanded">
+        <div class="expandable-menu__backdrop" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable></div>
+        <div class="expandable-menu__content">
             <p>Menu content here</p>
         </div>
     </div>
 
 Styleguide 7.6
 */
-.expandable-right-menu {
+.expandable-menu {
     position: fixed;
     display: none;
     left: 0;
@@ -51,7 +50,7 @@ Styleguide 7.6
     z-index: $level-3;
 
     &--primary {
-        .expandable-right-menu__content {
+        .expandable-menu__content {
             background-color: color(primary, base);
             color: $color-light;
         }
