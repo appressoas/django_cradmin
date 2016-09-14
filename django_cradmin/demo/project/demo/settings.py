@@ -288,14 +288,27 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
         plugins=[
             ievvbuildstatic.mediacopy.Plugin(),
             ievvbuildstatic.sassbuild.Plugin(
-                sourcefolder='styles/cradmin_theme_default',
+                sourcefolder='styles/cradmin_theme_full',
                 sourcefile='main.scss',
-                minify=False
+                minify=False,
+                other_sourcefolders=[
+                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles',
+                                                        'cradmin_theme_base'),
+                ],
+                sass_include_paths=[
+                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles')
+                ]
             ),
             ievvbuildstatic.sassbuild.Plugin(
-                sourcefolder='styles/cradmin_theme_default',
+                sourcefolder='styles/cradmin_theme_full',
                 sourcefile='styleguide.scss',
-                minify=False
+                minify=False,
+                other_sourcefolders=[
+                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles', 'cradmin_theme_base'),
+                ],
+                sass_include_paths=[
+                    ievvbuildstatic.filepath.SourcePath('django_cradmin', 'styles')
+                ]
             ),
 
             # AngularJS

@@ -1,0 +1,182 @@
+/* Page header
+
+The basic components of a header is:
+
+```
+.page-header  (the outer wrapper)
+    .page-header__content   (wrapper around the content of the header)
+        .page-header__brand   (container for a brand)
+        .page-header__nav     (navigation elements)
+            .page-header__navlink        (navigation element link)
+            .page-header__navbutton      (navigation element button)
+            .page-header__navmenutoggle  (navigation element menu toggle)
+```
+
+Example: {type: isolated} Very basic - no content
+
+    <header class="page-header">
+    </header>
+
+Example: {type: isolated} With brand
+
+    <header class="page-header">
+        <div class="page-header__content">
+            <a class="page-header__brand">
+                <span class="page-header__brandname">My brand</span>
+            </a>
+        </div>
+    </header>
+
+Example: {type: isolated} With brand and navigation
+    <header class="page-header">
+        <div class="page-header__content">
+            <a class="page-header__brand">
+                <span class="page-header__brandname">My brand</span>
+            </a>
+            <nav class="page-header__nav">
+                <a class="page-header__navlink">About</a>
+                <a class="page-header__navlink">Important stuff</a>
+                <a class="page-header__navlink">Information</a>
+            </nav>
+        </div>
+    </header>
+
+Example: {type: isolated} With navigation buttons and menu toggle button
+    <header class="page-header">
+        <div class="page-header__content">
+            <a class="page-header__brand">
+                <span class="page-header__brandname">My brand</span>
+            </a>
+            <nav class="page-header__nav">
+                <a class="page-header__navlink">About</a>
+                <a class="page-header__navlink">Important stuff</a>
+                <a class="page-header__navlink  page-header__navlink--button">A button</a>
+                <button type="button" class="page-header__navmenutoggle">
+                    Menu
+                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+Example: {type: isolated} Floating over a page-cover
+    <!-- Page header -->
+    <header class="page-header  page-header--floating">
+        <div class="page-header__content">
+            <a class="page-header__brand">
+                <span class="page-header__brandname">My brand</span>
+            </a>
+            <nav class="page-header__nav">
+                <a class="page-header__navlink">About</a>
+                <button type="button" class="page-header__navmenutoggle">
+                    Menu
+                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page cover with title -->
+    <header class="page-cover">
+        <h1 class="page-cover__title">The title</h1>
+    </header>
+
+Styleguide 7.7
+*/
+.page-header {
+    padding: $vertical-rythm 0;
+    color: $color-light;
+    background-color: color(primary, dark);
+    position: relative;
+
+    @include min-width(md) {
+        padding: #{$vertical-rythm--medium} 0;
+        height: $header-height;
+    }
+
+    &__content {
+        @extend .container;
+        @extend .container--wide;
+    }
+
+    &__brand {
+        display: inline-block;
+        border: none;
+    }
+
+    &__brandname {
+        display: none;
+        //line-height: 40px;
+        fill: $color-light;
+        color: $color-light;
+
+        @include min-width(md) {
+            display: inline-block;
+        }
+    }
+
+    &__nav {
+        position: relative;
+        top: 1px;
+        float: right;
+    }
+
+    &__navlink {
+        @include font(base, bold);
+        @include font-size(xsmall);
+        display: none;
+        position: relative;
+        margin-left: 1em;
+        color: $color-light;
+        border-bottom: $border-width--small solid transparent;
+
+        &:hover,
+        &:focus {
+            color: $color-light;
+            border-color: $color-light;
+        }
+
+        @include min-width(lg) {
+            display: inline;
+        }
+
+        &--button {
+            @include min-width(lg) {
+                display: inline-block;
+            }
+            margin-top: -2px;
+            padding: #{$unit + 1px} $spacing--small $unit;
+            border: $border-style;
+        }
+    }
+
+    &__navmenutoggle {
+        position: relative;
+        top: 8px;
+        float: right;
+        margin-left: 1em;
+        min-width: $unit * 14;
+        line-height: 20px;
+        color: $color-light;
+        transition: all 300ms $swift-out;
+        .icon-hamburger__bar {
+            background-color: $color-light;
+        }
+    }
+
+    &--floating {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        z-index: $level-1;
+        background-color: transparent;
+    }
+}

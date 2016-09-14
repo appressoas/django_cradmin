@@ -16,6 +16,7 @@
 .idea/dataSources.ids
 .idea/dataSources.local.xml
 .idea/dictionaries/
+.idea/jsLibraryMappings.xml
 
 # Files created when running tests and demos
 /django_media_root/
@@ -37,3 +38,5 @@
 /django_cradmin/demo/custom_theme_demo/staticsources/custom_theme_demo/node_modules/
 /django_cradmin/demo/custom_theme_demo/staticsources/custom_theme_demo/package.json
 /django_cradmin/demo/custom_theme_demo/static/
+/django_cradmin/staticsources/django_cradmin/typings.json
+/django_cradmin/staticsources/django_cradmin/typings/
