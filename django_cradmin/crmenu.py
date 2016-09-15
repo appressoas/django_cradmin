@@ -105,3 +105,6 @@ class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
 
     def get_wrapper_htmltag_id(self):
         return 'id_django_cradmin_menu_expandable'
+
+    def get_base_css_classes_list(self):
+        return ['expandable-menu']

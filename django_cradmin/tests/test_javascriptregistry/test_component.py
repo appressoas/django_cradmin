@@ -176,18 +176,8 @@ class TestCradminAngular1(test.TestCase):
             js)
 
 
-class TestCradminMenu(test.TestCase):
+class TestCradminJavascript(test.TestCase):
     def test_get_component_id(self):
         self.assertEqual(
-            'django_cradmin_mainmenu',
-            javascriptregistry.component.CradminMenu.get_component_id())
-
-    def test_get_target_domelement_selector(self):
-        self.assertEqual(
-            '#id_django_cradmin_mainmenu',
-            javascriptregistry.component.CradminMenu(request=None).get_target_domelement_selector())
-
-    def test_get_angularjs_modules(self):
-        self.assertEqual(
-            ['djangoCradmin.menu'],
-            javascriptregistry.component.CradminMenu(request=None).get_angularjs_modules())
+            'django_cradmin_javascript',
+            javascriptregistry.component.CradminJavascript.get_component_id())

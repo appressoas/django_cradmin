@@ -1,6 +1,14 @@
 {% comment %}
     Base template for guide examples.
-{% endcomment %}<!DOCTYPE html>
+{% endcomment %}{% comment %}
+    Base template for all django_cradmin templates.
+
+    You should extend this directly for standalone pages like
+    login and error pages. For pages that require a role,
+    you should extend ``base.django.html`` instead.
+{% endcomment %}{% spaceless %}
+    {% load cradmin_javascriptregistry_tags %}
+{% endspaceless %}<!DOCTYPE html>
 <html {% block html_element_attributes %}lang="en"{% endblock %}>
     <head>
         <meta charset="utf-8">
@@ -16,9 +24,17 @@
         {% block javascript %}
             {# Override this to add javascript #}
         {% endblock javascript %}
+
+        {% block javascriptregistry-head %}
+            {% cradmin_javascriptregistry_head %}
+        {% endblock javascriptregistry-head %}
+
     </head>
     <body>
         {{ example.text|safe }}
         {% block end-of-body %}{% endblock end-of-body %}
+        {% block javascriptregistry-end-of-body %}
+            {% cradmin_javascriptregistry_end_of_body %}
+        {% endblock javascriptregistry-end-of-body %}
     </body>
 </html>

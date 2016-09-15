@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 import json
+
+import django_cradmin
 import re
 
 from django.contrib.staticfiles.templatetags import staticfiles
@@ -139,15 +141,14 @@ class CradminAngular1(AbstractJsComponent):
                                 })
 
 
-class CradminMenu(AbstractJsComponent):
+class CradminJavascript(AbstractJsComponent):
     @classmethod
     def get_component_id(cls):
-        return 'django_cradmin_mainmenu'
+        return 'django_cradmin_javascript'
 
-    # def get_target_domelement_selector(self):
-    #     return '#id_django_cradmin_mainmenu'
-    #
-    # def get_angularjs_modules(self):
-    #     return [
-    #         'djangoCradmin.menu'
-    #     ]
+    def get_sourceurls(self):
+        return [
+            self.get_static_url('django_cradmin/{version}/scripts/django_cradmin.js'.format(
+                version=django_cradmin.__version__
+            ))
+        ]

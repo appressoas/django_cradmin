@@ -1,9 +1,16 @@
+import json
+
+import os
 from setuptools import setup, find_packages
+
+with open(os.path.join(os.path.dirname(__file__), 'django_cradmin', 'version.json')) as f:
+    version = json.loads(f.read())
+
 
 setup(
     name='django_cradmin',
     description='A role based admin UI for Django that produces a user friendly and beautiful UI.',
-    version='2.0.0a3',
+    version=version,
     url='https://github.com/appressoas/django_cradmin',
     author='Espen Angell Kristiansen, Tor Johansen, Vegard Angell, Magne Westlie',
     author_email='post@appresso.no',

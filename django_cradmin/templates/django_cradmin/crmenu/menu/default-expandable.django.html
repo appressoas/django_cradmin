@@ -1,1 +1,13 @@
 {% extends "django_cradmin/crmenu/base.django.html" %}
+
+{% block list-element-attributes %}
+    cradmin_menutoggle_groupid="mainmenu"
+    cradmin_menutoggle_activestyle="expandable-menu--expanded"
+{% endblock list-element-attributes %}
+
+{% block content %}
+    <div class="expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
+    <div class="expandable-menu__content">
+        {{ block.super }}
+    </div>
+{% endblock content %}

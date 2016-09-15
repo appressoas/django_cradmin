@@ -1,11 +1,15 @@
 {% block outer-wrapper %}
-    <button type="button" class="{{ me.get_css_classes_string }}">
+    <button type="button"
+            class="{{ me.get_css_classes_string }}"
+            cradmin_menutoggle_clickable
+            cradmin_menutoggle_groupid="mainmenu">
         {% block content %}
             {% block label %}
                 {{ me.get_label }}
             {% endblock label %}
             {% block icon %}
-                <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                <i class="icon-hamburger" aria-hidden="true" role="presentation"
+                        cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="icon-hamburger--close">
                     <span aria-hidden="true" class="icon-hamburger__bar"></span>
                     <span aria-hidden="true" class="icon-hamburger__bar"></span>
                     <span aria-hidden="true" class="icon-hamburger__bar"></span>

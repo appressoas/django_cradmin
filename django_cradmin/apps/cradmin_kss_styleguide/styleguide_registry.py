@@ -21,7 +21,8 @@ class AbstractStyleGuide(object):
                  sections_template_name='cradmin_kss_styleguide/templatetags/render_kss_sections.django.html',
                  toc_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc.django.html',
                  example_template_name='cradmin_kss_styleguide/styleguideview/example.django.html',
-                 frontpage_template=None):
+                 frontpage_template=None,
+                 javascript_component_ids=None):
         """
         Args:
             unique_id: A unique ID for the styleguide.
@@ -35,6 +36,7 @@ class AbstractStyleGuide(object):
         self.toc_template_name = toc_template_name
         self.frontpage_template = frontpage_template
         self.example_template_name = example_template_name
+        self.javascript_component_ids = javascript_component_ids or []
 
     def get_sourcefolders(self):
         raise NotImplementedError()
@@ -124,6 +126,8 @@ class CradminStyleGuide(IevvBuildstaticStyleGuide):
             'cradmin_kss_styleguide/styleguideview/cradmin-example.django.html')
         kwargs['template_name'] = template_name
         kwargs['example_template_name'] = example_template_name
+        javascript_component_ids = kwargs.pop('javascript_component_ids', ['django_cradmin_javascript'])
+        kwargs['javascript_component_ids'] = javascript_component_ids
         super(CradminStyleGuide, self).__init__(*args, **kwargs)
 
 

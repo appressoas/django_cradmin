@@ -577,7 +577,9 @@ class BaseCrAdminInstance(object):
 
         Defaults to :meth:`.get_default_javascriptregistry_component_ids`.
         """
-        return self.get_default_javascriptregistry_component_ids()
+        return self.get_default_javascriptregistry_component_ids() + [
+            'django_cradmin_javascript'
+        ]
 
 
 class NoRoleMixin(object):

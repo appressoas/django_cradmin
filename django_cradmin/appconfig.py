@@ -8,7 +8,7 @@ class CradminAppConfig(AppConfig):
     verbose_name = ugettext_lazy("Django CRadmin")
     
     def ready(self):
-        javascriptregistry.Registry.get_instance().add(javascriptregistry.component.CradminMenu)
+        javascriptregistry.Registry.get_instance().add(javascriptregistry.component.CradminJavascript)
 
 
 class CradminWithStyleguideAppConfig(CradminAppConfig):

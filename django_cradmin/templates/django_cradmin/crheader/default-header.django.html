@@ -1,6 +1,12 @@
 {% extends "django_cradmin/crheader/base.django.html" %}
 {% load cradmin_tags %}
 
+{% block outer-wrapper-element-attributes %}
+    {{ block.super   }}
+    cradmin_menutoggle_groupid="mainmenu"
+    cradmin_menutoggle_activestyle="page-header--showmenu"
+{% endblock outer-wrapper-element-attributes %}
+
 {% block content %}
     <div class="page-header__content">
         {% block content-inner %}

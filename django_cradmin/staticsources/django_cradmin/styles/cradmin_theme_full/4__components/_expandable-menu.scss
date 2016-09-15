@@ -1,10 +1,10 @@
-/* Expandable right side menu
+/* Expandable menu
 
 
 Example: {type: isolated} Example
 
     <header class="page-header  page-header--fill"
-            cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="page-header--showmenu">
+            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="page-header--showmenu">
         <div class="page-header__content">
             <a class="page-header__brand">
                 <span class="page-header__brandname">My brand</span>
@@ -12,10 +12,10 @@ Example: {type: isolated} Example
             <nav class="page-header__nav">
                 <button type="button" class="page-header__navmenutoggle"
                         cradmin_menutoggle_clickable
-                        cradmin_menutoggle_groupid="group1">
+                        cradmin_menutoggle_groupid="mainmenu">
                     Menu
                     <i class="icon-hamburger"
-                            cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="icon-hamburger--close"
+                            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="icon-hamburger--close"
                             aria-hidden="true" role="presentation">
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
@@ -26,12 +26,10 @@ Example: {type: isolated} Example
         </div>
     </header>
 
-    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
-    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
-    varius blandit sit amet non magna.</p>
+    <div class="page-cover"></div>
 
-    <div class="expandable-menu  expandable-menu--primary" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_activestyle="expandable-menu--expanded">
-        <div class="expandable-menu__backdrop" cradmin_menutoggle_groupid="group1" cradmin_menutoggle_clickable></div>
+    <div class="expandable-menu" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="expandable-menu--expanded">
+        <div class="expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
         <div class="expandable-menu__content">
             <p>Menu content here</p>
         </div>
@@ -48,13 +46,6 @@ Styleguide 7.6
     bottom: 0;
     overflow: auto;
     z-index: $level-3;
-
-    &--primary {
-        .expandable-menu__content {
-            background-color: color(primary, base);
-            color: $color-light;
-        }
-    }
 
     &--expanded {
         display: block;
@@ -82,6 +73,8 @@ Styleguide 7.6
         top: 0;
         bottom: 0;
         width: 100%;
+        background-color: color(primary, base);
+        color: $color-light;
         @include min-width(lg) {
             width: 50%;
         }

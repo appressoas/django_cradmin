@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 from __future__ import unicode_literals
+
+import django_cradmin
 from ievv_opensource.utils import ievvbuildstatic
 from ievv_opensource.utils import ievvdevrun
 
@@ -283,7 +285,7 @@ IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
 IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ievvbuildstatic.config.App(
         appname='django_cradmin',
-        version='1.0.0',
+        version=django_cradmin.__version__,
         # keep_temporary_files=True,
         plugins=[
             ievvbuildstatic.mediacopy.Plugin(),
@@ -396,4 +398,6 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 # ]
 
 
-DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/1.0.0/styles/cradmin_theme_full/main.css'
+DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/{version}/styles/cradmin_theme_full/main.css'.format(
+    version=django_cradmin.__version__
+)
