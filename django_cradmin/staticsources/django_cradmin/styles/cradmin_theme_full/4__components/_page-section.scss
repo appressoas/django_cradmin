@@ -1,0 +1,190 @@
+/*
+Sections
+
+Most modifiers can be combined.
+Note: Be careful with combining `tight`, don't combine it with `focus`.
+
+Example: {type: isolated} Default page section - without any container
+    <section class="page-section">
+        <h2>Default page section</h2>
+        <p>As you can see, the default page-section relies on a container to provide
+        space on the sides, so do not use this example!</p>
+    </section>
+
+Example: {type: isolated} Default page section
+    <section class="page-section">
+        <div class="container  container--tight">
+            <h2>Default page section</h2>
+        </div>
+    </section>
+
+Example: {type: isolated} `tight`
+    <section class="page-section  page-section--tight">
+        <h2>A tight section</h2>
+        <p>Good for pure content</p>
+    </section>
+
+Example: {type: isolated} `focus`
+    <section class="page-section  page-section--focus">
+        <div class="container  container--tight">
+            <h2>Focus section</h2>
+            <p>Used for making the content stand out slightly from the rest of the page</p>
+        </div>
+    </section>
+
+Example: {type: isolated} `center`
+    <section class="page-section  page-section--center">
+        <h2>Centered content</h2>
+    </section>
+
+Example: {type: isolated} `center-lg`
+    <section class="page-section  page-section--center-lg">
+        <h2>Centered content (Only for large screens)</h2>
+    </section>
+
+Example: {type: isolated} `spaced`
+    <section class="page-section  page-section--spaced">
+        <div class="container  container--tight">
+            <h2>Spaced section</h2>
+            <p>Used to give the content more air, which gives it more focus.</p>
+        </div>
+    </section>
+
+Example: {type: isolated} `outlined`
+    <section class="page-section  page-section--outlined">
+        <div class="container  container--tight">
+            <h2>Adds a line above</h2>
+        </div>
+    </section>
+
+Example: {type: isolated} `last`
+    <section class="page-section  page-section--last">
+        <div class="container  container--tight">
+            <h2>No spacing below</h2>
+            <p>Used at the bottom of the page mostlye</p>
+        </div>
+    </section>
+
+Styleguide 5.2
+*/
+
+.page-section {
+    padding-top: $vertical-rythm--medium;
+    padding-bottom: $vertical-rythm--medium;
+
+    @include min-width(md) {
+        padding-top: $vertical-rythm--spacing + $unit;
+        padding-bottom: $vertical-rythm--spacing + $unit;
+    }
+
+    &--tight {
+        @extend .container;
+        @extend .container--tight;
+    }
+
+    &--focus {
+        background-color: color(neutral, light);
+    }
+
+    &--center {
+        text-align: center;
+    }
+
+    &--center-md {
+        @include min-width(md) {
+            text-align: center;
+        }
+    }
+
+    &--center-lg {
+        @include min-width(lg) {
+            text-align: center;
+        }
+    }
+
+    &--spaced {
+        padding-top: $vertical-rythm--spacing;
+        padding-bottom: $vertical-rythm--spacing;
+
+        @include min-width(md) {
+            padding-top: $vertical-rythm--spacing * 2;
+            padding-bottom: $vertical-rythm--spacing * 2;
+        }
+    }
+
+    &--outlined { // TODO: Better naming
+        border-top: $border-style;
+        border-color: color(neutral, light);
+    }
+
+    &--last {
+        margin-bottom: 0;
+
+        & + .care-question {
+            margin-top: 0;
+        }
+    }
+
+    // Collapsable (mobile) styles
+
+    &__toggle {
+        @extend %h3;
+        position: relative;
+        display: block;
+        width: 100%;
+        padding-right: $unit * 4;
+        margin-bottom: 0;
+
+        text-align: inherit;
+
+        &:hover,
+        &:focus {
+            color: $color-links--hover;
+        }
+
+        &:after {
+            @extend %icon-chevron-down--secondary;
+            content: '';
+            position: absolute;
+            display: block;
+            right: 0;
+            top: 50%;
+            margin-top: -5px;
+            transition: all 300ms $swift-out;
+        }
+
+        @include min-width(md) { // TODO: Base this on the modifier --sm?
+            display: none;
+        }
+    }
+
+    &--collapsable-sm {
+        border-bottom: $border-style;
+        border-color: color(neutral, light);
+
+        @include min-width(md) {
+            border-bottom: 0;
+        }
+
+        .page-section__title,
+        .page-section__content {
+            @extend %animation-fall-down;
+            display: none;
+            margin-top: $vertical-rythm--medium;
+
+            @include min-width(md) {
+                display: block;
+            }
+        }
+    }
+
+    &--expanded {
+        .page-section__content {
+            display: block;
+        }
+
+        .page-section__toggle:after {
+            transform: rotate(-180deg);
+        }
+    }
+}
