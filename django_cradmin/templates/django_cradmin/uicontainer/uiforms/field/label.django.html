@@ -1,0 +1,8 @@
+{% extends "django_cradmin/uicontainer/container.django.html" %}
+
+{% block content %}
+    {% block label_text %}
+        {{ me.label_text|capfirst }}
+    {% endblock label_text %}
+    {{ block.super }}
+{% endblock content %}

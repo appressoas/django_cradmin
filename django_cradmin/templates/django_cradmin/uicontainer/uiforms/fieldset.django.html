@@ -1,0 +1,10 @@
+{% extends "django_cradmin/uicontainer/container.django.html" %}
+
+{% block content %}
+    {% block title %}
+        <legend>
+            {{ me.title }}
+        </legend>
+    {% endblock title %}
+    {{ block.super }}
+{% endblock content %}

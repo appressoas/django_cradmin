@@ -1,0 +1,5 @@
+{% extends "django_cradmin/uicontainer/container.django.html" %}
+
+{% block outer_wrapper_attributes %}
+    {{ block.super }}{% if me.action_is_redirect_to_self %}action="{{ request.get_full_path }}"{% endif %}
+{% endblock outer_wrapper_attributes %}

@@ -1,3 +1,5 @@
+import warnings
+
 from django.template.loader import render_to_string
 
 from django_cradmin import crsettings
@@ -68,30 +70,27 @@ class AbstractRenderableWithCss(AbstractRenderable):
     API for setting CSS classes.
     """
 
-    def get_extra_css_classes_list(self):
+    def get_css_classes_list(self):
         """
-        Override this to set your own css classes. Must return a list
-        of css classes.
-
-        This is reserved for setting css classes when making a
-        reusable component.
-
-        See :meth:`.get_css_classes_string`.
-        """
-        return []
-
-    def get_base_css_classes_list(self):
-        """
-        If you are creating a reusable component, use this to
-        define css classes that should always be present on
-        the component. When developers extend your re-usable
-        component, they should override :meth:`.get_extra_css_classes`.
+        Override this to define css classes for the component.
 
         Must return a list of css classes.
 
         See :meth:`.get_css_classes_string`.
         """
-        return []
+        css_classes_list = []
+        if hasattr(self, 'get_base_css_classes_list'):
+            warnings.warn("AbstractRenderableWithCss.get_base_css_classes_list() is deprectated "
+                          "- override get_css_classes_list() instead.",
+                          DeprecationWarning)
+            css_classes_list.extend(self.get_base_css_classes_list())
+        if hasattr(self, 'get_extra_css_classes_list'):
+            warnings.warn("AbstractRenderableWithCss.get_extra_css_classes_list() is deprectated "
+                          "- override get_css_classes_list() instead.",
+                          DeprecationWarning)
+            css_classes_list.extend(self.get_extra_css_classes_list())
+
+        return css_classes_list
 
     def get_test_css_class_suffixes_list(self):
         """
@@ -103,22 +102,24 @@ class AbstractRenderableWithCss(AbstractRenderable):
         """
         return []
 
-    def get_css_classes_string(self):
+    @property
+    def css_classes(self):
         """
         Get css classes.
 
-        Joins :meth:`.get_base_css_classes` with :meth:`.get_extra_css_classes` into a string.
+        Joins :meth:`.get_css_classes_list` into a string.
 
-        You should not override this:
-
-        - Override :meth:`.get_extra_css_classes` if you are extending a reusable component.
-        - Override :meth:`.get_base_css_classes` if you are creating a reusable component.
+        You should not override this, override :meth:`.get_css_classes_list` instead.
         """
         from django_cradmin.templatetags import cradmin_tags  # Avoid circular import
-        css_classes = []
-        css_classes.extend(self.get_base_css_classes_list())
-        css_classes.extend(self.get_extra_css_classes_list())
+        css_classes = list(self.get_css_classes_list())
         if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
             for css_class_suffix in self.get_test_css_class_suffixes_list():
                 css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
         return '  '.join(css_classes)
+
+    def get_css_classes_string(self):
+        warnings.warn("AbstractRenderableWithCss.get_css_classes_string() is deprectated "
+                      "- use the AbstractRenderableWithCss.css_classes property instead.",
+                      DeprecationWarning)
+        return self.css_classes
