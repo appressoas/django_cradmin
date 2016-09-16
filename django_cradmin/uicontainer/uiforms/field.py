@@ -28,12 +28,15 @@ class LabelRenderable(AbstractContainerRenderable, FieldWrapperRenderableChildMi
         return 'label'
 
     @property
-    def field_dom_id(self):
-        return self.field_wrapper_renderable.field_renderable.dom_id
+    def for_attribute(self):
+        if self.field_wrapper_renderable.field_should_be_child_of_label():
+            return False
+        else:
+            return self.field_wrapper_renderable.field_renderable.dom_id
 
     def get_html_element_attributes(self):
         html_element_attributes = super(LabelRenderable, self).get_html_element_attributes()
-        html_element_attributes['for'] = self.field_dom_id
+        html_element_attributes['for'] = self.for_attribute
         return html_element_attributes
 
     @property
@@ -222,6 +225,17 @@ class FieldWrapperRenderable(AbstractContainerRenderable, mixins.FormRenderableC
         """
         return AutomaticHelpTextRenderable()
 
+    def field_should_be_child_of_label(self):
+        """
+        If this returns ``True``, we add the field renderable as a child
+        of the label renderable. Otherwise, we add the label above the field
+        renderable.
+
+        Returns:
+             boolean: ``True`` by default.
+        """
+        return True
+
     def prepopulate_children_list(self):
         """
         Pre-populates the children list with:
@@ -229,6 +243,9 @@ class FieldWrapperRenderable(AbstractContainerRenderable, mixins.FormRenderableC
         - Label renderable.
         - Field renderable.
         - Help text renderable.
+
+        By default the field renderable will be added as a child of the label
+        renderable. This is determined by :meth:`.field_should_be_child_of_label`.
 
         If you want to:
 
@@ -241,11 +258,13 @@ class FieldWrapperRenderable(AbstractContainerRenderable, mixins.FormRenderableC
         See :meth:`django_cradmin.uicontainer.container.AbstractContainerRenderable.prepopulate_children_list`
         for details about what this method works, and what it should return.
         """
-        return [
-            self.label_renderable,
-            self.field_renderable,
-            self.help_text_renderable,
-        ]
+        children = [self.label_renderable]
+        if self.field_should_be_child_of_label():
+            self.label_renderable.add_child(self.field_renderable)
+        else:
+            children.append(self.field_renderable)
+        children.append(self.help_text_renderable)
+        return children
 
     @property
     def bound_formfield(self):
