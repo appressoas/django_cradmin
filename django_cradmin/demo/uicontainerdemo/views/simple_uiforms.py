@@ -9,10 +9,6 @@ class SimpleForm(forms.Form):
     name = forms.CharField()
 
 
-class CustomCharField(uicontainer.uiforms.base.FieldRenderable):
-    pass
-
-
 class SimpleUiContainerView(viewhelpers.generic.StandaloneBaseTemplateView):
     template_name = 'uicontainerdemo/simple/simpleuicontainerview.django.html'
 
@@ -21,9 +17,12 @@ class SimpleUiContainerView(viewhelpers.generic.StandaloneBaseTemplateView):
         return form
 
     def __get_container(self):
-        container = uicontainer.uiforms.base.FormRenderable(
-            form=self.__get_form())
-        container.add_fieldrenderer(CustomCharField(fieldname='name'))
+        container = uicontainer.uiforms.form.FormRenderable(
+            form=self.__get_form(),
+            children=[
+                uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='name'),
+            ]
+        ).bootstrap()
         return container
 
     def get_context_data(self, **kwargs):
