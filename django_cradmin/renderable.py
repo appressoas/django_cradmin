@@ -69,6 +69,11 @@ class AbstractRenderableWithCss(AbstractRenderable):
     Extends :class:`.AbstractRenderable` with a unified
     API for setting CSS classes.
     """
+    def get_base_css_classes_list(self):
+        return []
+
+    def get_extra_css_classes_list(self):
+        return []
 
     def get_css_classes_list(self):
         """
@@ -79,17 +84,18 @@ class AbstractRenderableWithCss(AbstractRenderable):
         See :meth:`.get_css_classes_string`.
         """
         css_classes_list = []
-        if hasattr(self, 'get_base_css_classes_list'):
-            warnings.warn("AbstractRenderableWithCss.get_base_css_classes_list() is deprectated "
-                          "- override get_css_classes_list() instead.",
-                          DeprecationWarning)
-            css_classes_list.extend(self.get_base_css_classes_list())
-        if hasattr(self, 'get_extra_css_classes_list'):
-            warnings.warn("AbstractRenderableWithCss.get_extra_css_classes_list() is deprectated "
-                          "- override get_css_classes_list() instead.",
-                          DeprecationWarning)
-            css_classes_list.extend(self.get_extra_css_classes_list())
-
+        # if hasattr(self, 'get_base_css_classes_list'):
+        #     warnings.warn("AbstractRenderableWithCss.get_base_css_classes_list() is deprectated "
+        #                   "- override get_css_classes_list() instead.",
+        #                   DeprecationWarning)
+        #     css_classes_list.extend(self.get_base_css_classes_list())
+        # if hasattr(self, 'get_extra_css_classes_list'):
+        #     warnings.warn("AbstractRenderableWithCss.get_extra_css_classes_list() is deprectated "
+        #                   "- override get_css_classes_list() instead.",
+        #                   DeprecationWarning)
+        #     css_classes_list.extend(self.get_extra_css_classes_list())
+        css_classes_list.extend(self.get_base_css_classes_list())
+        css_classes_list.extend(self.get_extra_css_classes_list())
         return css_classes_list
 
     def get_test_css_class_suffixes_list(self):

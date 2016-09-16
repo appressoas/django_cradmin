@@ -412,7 +412,10 @@ class FormViewMixin(PreviewMixin):
         to add the context data required for the form.
         """
         super(FormViewMixin, self).add_context_data(context)
-        context['formhelper'] = self.get_formhelper()
+        if hasattr(self, 'get_form_renderable'):
+            context['form_renderable'] = self.get_form_renderable()
+        else:
+            context['formhelper'] = self.get_formhelper()
         context['enable_modelchoicefield_support'] = self.enable_modelchoicefield_support
         context['hide_pageheader'] = self.get_hide_page_header()
         context['pagetitle'] = self.get_pagetitle()

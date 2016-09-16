@@ -32,7 +32,6 @@
 {% endcomment %}
 {% load cradmin_tags %}
 
-
 {% block bodyclass %}
     {% block cradmin-instance-bodyclass %}
         {{ request.cradmin_instance.get_body_css_classes_string }}
@@ -52,6 +51,8 @@
     {% endwith %}
 {% endblock header %}
 
+{# Override messages - show in the below-page-cover-messages block #}
+{% block messages %}{% endblock messages %}
 
 {% block main-content %}
     {% comment %}
@@ -70,6 +71,10 @@
             </header>
         {% endblock page-cover %}
     {% endif %}
+
+    {% block below-page-cover-messages %}
+        {% include "django_cradmin/include/messages.django.html" %}
+    {% endblock below-page-cover-messages %}
 
     {% block content %}{% endblock content %}
 {% endblock main-content %}

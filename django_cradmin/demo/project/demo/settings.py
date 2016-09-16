@@ -100,6 +100,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django_cradmin.delay_middleware.DelayMiddleware',
+    # 'django_cradmin.messages_debug_middleware.MessagesDebugMiddleware',
 )
 # DJANGO_CRADMIN_DELAY_MIDDLEWARE_MILLISECONDS = 2000
 

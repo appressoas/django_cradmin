@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load cradmin_icon_tags %}
+{% load cradmin_tags %}
 
 {% block bodyclass %}
     {{ block.super }}
@@ -20,7 +21,11 @@
     {% block pre_form %}{% endblock pre_form %}
     {% block form %}
         <div class="container">
-            {% crispy form formhelper %}
+            {% if form_renderable %}
+                {% cradmin_render_renderable form_renderable %}
+            {% else %}
+                {% crispy form formhelper %}
+            {% endif %}
         </div>
 
         {% comment %}

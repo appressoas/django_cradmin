@@ -8,6 +8,7 @@ from django import forms
 from crispy_forms import layout
 from django.views.generic import TemplateView
 from django.utils import timezone
+from django_cradmin import uicontainer
 
 from django_cradmin.viewhelpers import objecttable
 from django_cradmin.viewhelpers import listfilter
@@ -129,8 +130,8 @@ class PageCreateUpdateMixin(object):
         'intro',
         'body',
         'image',
-        'publishing_time',
-        'unpublish_time',
+        # 'publishing_time',
+        # 'unpublish_time',
         'attachment',
         'internal_notes'
     ]
@@ -141,54 +142,94 @@ class PageCreateUpdateMixin(object):
     def _get_image_selectview_url(self):
         return self.request.cradmin_instance.reverse_url('imagearchive', 'singleselect')
 
-    def get_field_layout(self):
-        return [
-            layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
-            layout.Fieldset(
-                'Image',
-                'image',
-            ),
-            layout.Div('intro', css_class="cradmin-focusfield"),
-            layout.Div('body', css_class="cradmin-focusfield"),
-            layout.Fieldset(
-                'Advanced',
-                'publishing_time',
-                'unpublish_time',
-                'attachment',
-                'internal_notes'
-            ),
-            # layout.Div(
-            #     'publishing_time',
-            #     'internal_notes',
-            #     css_class='cradmin-globalfields'
-            # ),
-        ]
+    # def get_field_layout(self):
+    #     return [
+    #         layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
+    #         layout.Fieldset(
+    #             'Image',
+    #             'image',
+    #         ),
+    #         layout.Div('intro', css_class="cradmin-focusfield"),
+    #         layout.Div('body', css_class="cradmin-focusfield"),
+    #         layout.Fieldset(
+    #             'Advanced',
+    #             'publishing_time',
+    #             'unpublish_time',
+    #             'attachment',
+    #             'internal_notes'
+    #         ),
+    #     ]
+
+    # def get_form(self, form_class=None):
+    #     form = super(PageCreateUpdateMixin, self).get_form(form_class=form_class)
+    #     # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
+    #     form.fields['body'].widget = AceMarkdownWidget()
+    #     preview = '<p class="text-muted">(No image selected)</p>'
+    #     if self.object and self.object.image:
+    #         preview = self.object.image.get_preview_html(request=self.request)
+    #     form.fields['image'].widget = ModelChoiceWidget(
+    #         queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role),
+    #         preview=preview,
+    #         selectview_url=self._get_image_selectview_url()
+    #     )
+    #     form.fields['publishing_time'].widget = DateTimePickerWidget(
+    #         # minimum_datetime=datetime(2014, 8, 14, 12, 30),
+    #         minimum_datetime=timezone.now(),
+    #         maximum_datetime=datetime(2030, 12, 5, 21, 40),
+    #         required=False
+    #     )
+    #     form.fields['unpublish_time'].widget = DatePickerWidget(
+    #         no_value_preview_text='No date selected')
+    #     # form.fields['unpublish_time'].widget = DateTimePickerWidget(
+    #     #     no_value_preview_text='No date selected')
+    #     form.fields['attachment'].widget = filewidgets.ImageWidget(request=self.request)
+    #     # form.fields['attachment'].widget = filewidgets.FileWidget()
+    #     return form
 
     def get_form(self, form_class=None):
         form = super(PageCreateUpdateMixin, self).get_form(form_class=form_class)
         # form.fields['body'].widget = WysiHtmlTextArea(attrs={})
-        form.fields['body'].widget = AceMarkdownWidget()
-        preview = '<p class="text-muted">(No image selected)</p>'
-        if self.object and self.object.image:
-            preview = self.object.image.get_preview_html(request=self.request)
-        form.fields['image'].widget = ModelChoiceWidget(
-            queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role),
-            preview=preview,
-            selectview_url=self._get_image_selectview_url()
-        )
-        form.fields['publishing_time'].widget = DateTimePickerWidget(
-            # minimum_datetime=datetime(2014, 8, 14, 12, 30),
-            minimum_datetime=timezone.now(),
-            maximum_datetime=datetime(2030, 12, 5, 21, 40),
-            required=False
-        )
-        form.fields['unpublish_time'].widget = DatePickerWidget(
-            no_value_preview_text='No date selected')
-        # form.fields['unpublish_time'].widget = DateTimePickerWidget(
+        # form.fields['body'].widget = AceMarkdownWidget()
+        # preview = '<p class="text-muted">(No image selected)</p>'
+        # if self.object and self.object.image:
+        #     preview = self.object.image.get_preview_html(request=self.request)
+        # form.fields['image'].widget = ModelChoiceWidget(
+        #     queryset=ArchiveImage.objects.filter_owned_by_role(self.request.cradmin_role),
+        #     preview=preview,
+        #     selectview_url=self._get_image_selectview_url()
+        # )
+        # form.fields['publishing_time'].widget = DateTimePickerWidget(
+        #     # minimum_datetime=datetime(2014, 8, 14, 12, 30),
+        #     minimum_datetime=timezone.now(),
+        #     maximum_datetime=datetime(2030, 12, 5, 21, 40),
+        #     required=False
+        # )
+        # form.fields['unpublish_time'].widget = DatePickerWidget(
         #     no_value_preview_text='No date selected')
-        form.fields['attachment'].widget = filewidgets.ImageWidget(request=self.request)
-        # form.fields['attachment'].widget = filewidgets.FileWidget()
+        # # form.fields['unpublish_time'].widget = DateTimePickerWidget(
+        # #     no_value_preview_text='No date selected')
+        # form.fields['attachment'].widget = filewidgets.ImageWidget(request=self.request)
+        # # form.fields['attachment'].widget = filewidgets.FileWidget()
         return form
+
+    def get_form_renderable(self):
+        return uicontainer.uiforms.form.Form(
+            form=self.get_form(),
+            children=[
+                uicontainer.uiforms.fieldwrapper.FieldWrapper('title'),
+                uicontainer.uiforms.fieldwrapper.FieldWrapper('intro'),
+                uicontainer.uiforms.fieldwrapper.FieldWrapper('body'),
+                # uicontainer.uiforms.fieldwrapper.FieldWrapper('publishing_time'),
+                uicontainer.uiforms.fieldset.FieldSet(
+                    title='Advanced',
+                    children=[
+                        uicontainer.uiforms.fieldwrapper.FieldWrapper('internal_notes'),
+                    ]
+                ),
+                uicontainer.button.SubmitPrimary(
+                    text='Save')
+            ]
+        ).bootstrap()
 
 
 class PageCreateView(PageCreateUpdateMixin, create.CreateView):
