@@ -102,6 +102,23 @@ Example: With tighter spacing
     </section>
 
 
+Example: Color variants
+    <section class="blocklist">
+        <section class="blocklist__item  blocklist__item--warning">
+            <h2 class="blocklist__itemtitle">Warning</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </section>
+        <section class="blocklist__item  blocklist__item--success">
+            <h2 class="blocklist__itemtitle">Success</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </section>
+        <section class="blocklist__item  blocklist__item--info">
+            <h2 class="blocklist__itemtitle">Info</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+    </section>
+
+
 Styleguide 7.2
 */
 .blocklist {
@@ -124,6 +141,21 @@ Styleguide 7.2
             &:focus {
                 border-color: $color-links--hover;
             }
+        }
+
+        &--warning {
+            background-color: $color-warning;
+            color: $color-light;
+        }
+
+        &--success {
+            background-color: $color-success;
+            color: $color-light;
+        }
+
+        &--info {
+            background-color: $color-info;
+            color: $color-text;
         }
     }
 
