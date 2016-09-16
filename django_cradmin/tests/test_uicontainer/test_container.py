@@ -1,3 +1,4 @@
+import django_cradmin.uicontainer.semantic
 import htmls
 from django import test
 from django_cradmin import uicontainer
@@ -263,25 +264,25 @@ class TestDivRenderable(test.TestCase):
 
 class TestSectionRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.Section().bootstrap()
+        container = django_cradmin.uicontainer.semantic.Section().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('section'))
 
 
 class TestHeaderRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.Header().bootstrap()
+        container = django_cradmin.uicontainer.semantic.Header().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('header'))
 
 
 class TestMainRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.Main().bootstrap()
+        container = django_cradmin.uicontainer.semantic.Main().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('main'))
 
     def test_default_role_is_main(self):
-        container = uicontainer.container.Main().bootstrap()
+        container = django_cradmin.uicontainer.semantic.Main().bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('main')['role'], 'main')

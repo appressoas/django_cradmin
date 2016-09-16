@@ -54,10 +54,10 @@ class AbstractWithOptionalParagraphWithEscapedText(container.AbstractContainerRe
         that is ``bool(text) == True``.
         """
         from . import text
-        from . import typography
+        from . import semantic
         if self.text:
             return [
-                typography.Paragraph(
+                semantic.Paragraph(
                     children=[text.EscapedText(text=self.text)])
             ]
         else:

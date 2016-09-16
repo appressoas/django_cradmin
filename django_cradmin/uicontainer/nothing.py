@@ -15,5 +15,7 @@ class Nothing(container.AbstractContainerRenderable):
     to ``None``, because that would just fall back to using the
     default help text renderable, so you use class instead.
     """
+
+    @property
     def should_render(self):
         return False

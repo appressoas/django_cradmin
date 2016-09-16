@@ -1,3 +1,5 @@
+from django_cradmin.uicontainer.container import AbstractContainerRenderable
+
 from . import convenience
 
 
@@ -39,3 +41,38 @@ class H4(convenience.AbstractWithOptionalEscapedText):
     """
     def get_wrapper_htmltag(self):
         return 'h4'
+
+
+class Section(AbstractContainerRenderable):
+    """
+    Renders a ``<section>``.
+    """
+    def get_wrapper_htmltag(self):
+        return 'section'
+
+
+class Header(AbstractContainerRenderable):
+    """
+    Renders a ``<header>``.
+    """
+    def get_wrapper_htmltag(self):
+        return 'header'
+
+
+class Footer(AbstractContainerRenderable):
+    """
+    Renders a ``<footer>``.
+    """
+    def get_wrapper_htmltag(self):
+        return 'footer'
+
+
+class Main(AbstractContainerRenderable):
+    """
+    Renders a ``<main>``.
+    """
+    def get_wrapper_htmltag(self):
+        return 'main'
+
+    def get_default_role(self):
+        return 'main'

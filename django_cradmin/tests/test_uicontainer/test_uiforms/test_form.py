@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import django_cradmin.uicontainer.semantic
 import htmls
 import mock
 from django import forms
@@ -32,7 +33,7 @@ class TestFormRenderable(test.TestCase):
                 uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='name'),
                 uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='age'),
                 uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='user_type'),
-                uicontainer.container.Main(
+                django_cradmin.uicontainer.semantic.Main(
                     children=[
                         uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='created_by'),
                         uicontainer.uiforms.fieldset.FieldSet(
@@ -179,24 +180,30 @@ class TestFormRenderable(test.TestCase):
         self.assertEqual(selector.one('#id_name_wrapper .test-warning-message').alltext_normalized,
                          'This field is required.')
 
-    def test_form_invalid_field_error_field_not_rendered_without_label(self):
+    def test_form_invalid_field_error_field_not_rendered(self):
         class TestForm(forms.Form):
             name = forms.CharField(required=True)
 
         form = TestForm(data={})
-        formrenderable = uicontainer.uiforms.form.Form(form=form).bootstrap()
+        formrenderable = uicontainer.uiforms.form.Form(form=form
+        ).bootstrap()
         selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
         selector.prettyprint()
-        self.assertEqual(selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized,
-                         'name: This field is required.')
+        self.assertEqual(selector.one('#id_name_wrapper .test-warning-message').alltext_normalized,
+                         'This field is required.')
 
-    def test_form_invalid_field_error_field_not_rendered_with_label(self):
-        class TestForm(forms.Form):
-            name = forms.CharField(required=True, label='The name')
-
-        form = TestForm(data={})
-        formrenderable = uicontainer.uiforms.form.Form(form=form).bootstrap()
-        selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
-        selector.prettyprint()
-        self.assertEqual(selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized,
-                         'The name: This field is required.')
+        # class TestForm(forms.Form):
+        #     name = forms.CharField()
+        #
+        #     def clean(self):
+        #         raise forms.ValidationError('Global error test')
+        #
+        # form = TestForm(data={'name': ''})
+        # formrenderable = uicontainer.uiforms.form.Form(
+        #     form=form,
+        #     children=[
+        #         uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='name')
+        #     ]
+        # ).bootstrap()
+        # selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
+        # selector.prettyprint()

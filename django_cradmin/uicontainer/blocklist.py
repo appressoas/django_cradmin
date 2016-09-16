@@ -162,14 +162,14 @@ class Blocklist(container.AbstractContainerRenderable):
                     uicontainer.blocklist.BlocklistItem(
                         children=[
                             uicontainer.blocklist.BlocklistItemTitle(html_tag='h3')
-                            uicontainer.typography.paragraph(text='Hello world')
+                            uicontainer.typography.Paragraph(text='Hello world')
                         ]
                     ),
                     uicontainer.blocklist.BlocklistItem(
                         children=[
                             uicontainer.blocklist.BlocklistItemTitle(html_tag='h3',
                                 variant=uicontainer.typography.BlocklistItemTitle.VARIANT_XLARGE)
-                            uicontainer.typography.paragraph(text='Hello world 2')
+                            uicontainer.typography.Paragraph(text='Hello world 2')
                         ]
                     ),
                 ]
