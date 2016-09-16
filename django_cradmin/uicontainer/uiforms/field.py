@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django import forms
 from django.utils import safestring
 
 from . import mixins
@@ -61,8 +62,6 @@ class BaseFieldRenderable(AbstractContainerRenderable, FieldWrapperRenderableChi
     @property
     def field_attributes_dict(self):
         attributes_dict = {}
-        # if self.field_wrapper_renderable.field_dom_id:
-        #     attributes_dict['id'] = self.field_wrapper_renderable.field_dom_id
         attributes_dict = self.bound_formfield.build_widget_attrs(attributes_dict)
         attributes_dict.update(self.get_html_element_attributes())
         return attributes_dict
@@ -92,13 +91,23 @@ class AutomaticDjangoFieldRenderable(BaseFieldRenderable):
         # print("*" * 70)
         # print()
 
-        widgets = []
-        for subwidget in self.bound_formfield.field.widget.subwidgets(
-                name=self.bound_formfield.html_name,
-                value=self.bound_formfield.value(),
-                attrs=self.field_attributes_dict):
-            widgets.append(str(subwidget))
-        return safestring.mark_safe('\n'.join(widgets))
+        # widgets = []
+        # for subwidget in self.bound_formfield.field.widget.subwidgets(
+        #         name=self.bound_formfield.html_name,
+        #         value=self.bound_formfield.value(),
+        #         attrs=self.field_attributes_dict):
+        #     widgets.append(str(subwidget))
+        # return safestring.mark_safe('\n'.join(widgets))
+
+        # TODO: Add support for radio and checkbox lists
+        if isinstance(self.bound_formfield.field.widget, forms.RadioSelect):
+            raise NotImplementedError('AutomaticDjangoFieldRenderable does not support the '
+                                      'RadioSelect widget yet.')
+        elif isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple):
+            raise NotImplementedError('AutomaticDjangoFieldRenderable does not support the '
+                                      'CheckboxSelectMultiple widget yet.')
+
+        return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
 
 
 class BaseHelpTextRenderable(AbstractContainerRenderable, FieldWrapperRenderableChildMixin):
@@ -162,7 +171,7 @@ class FieldWrapperRenderable(AbstractContainerRenderable, mixins.FormRenderableC
         self.fieldname = fieldname
         self.label_renderable = label_renderable or self.get_default_label_renderable()
         self.field_renderable = field_renderable or self.get_default_field_renderable()
-        self.help_text_renderable = help_text_renderable or self.get_default_field_renderable()
+        self.help_text_renderable = help_text_renderable or self.get_default_help_text_renderable()
         super(FieldWrapperRenderable, self).__init__(**kwargs)
         self.properties['field_wrapper_renderable'] = self
 
