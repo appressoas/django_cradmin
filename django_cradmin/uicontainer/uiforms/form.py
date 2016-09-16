@@ -1,13 +1,14 @@
-from ..container import AbstractContainerRenderable
+from .. import container
+from .. import messagecontainer
 
 
-class Form(AbstractContainerRenderable):
+class Form(container.AbstractContainerRenderable):
     """
     Renderable for a ``<form>``.
     """
     template_name = 'django_cradmin/uicontainer/uiforms/form.django.html'
 
-    def __init__(self, form, action=None, method=None, **kwargs):
+    def __init__(self, form, action=None, method=None, message_container=None, **kwargs):
         """
 
         Args:
@@ -18,14 +19,30 @@ class Form(AbstractContainerRenderable):
                 Use ``False`` to not include an action attribute.
             method: The method attribute of the HTML form.
                 Defaults to :meth:`.get_default_method` if not specified.
+            message_container: A :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`
+                object where we add and render messages such as global errors and info messages.
+                Defaults to :meth:`.get_default_message_container`.
+
             **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
         """
         self.form = form
         self.action = action
         self._overridden_method = method
+        self.message_container = message_container or self.get_default_message_container()
         self._fieldrenderable_map = {}
         super(Form, self).__init__(**kwargs)
         self.properties['formrenderable'] = self
+
+    def get_default_dom_id(self):
+        return 'id_form'
+
+    def prepopulate_children_list(self):
+        if self.message_container:
+            return [
+                self.message_container
+            ]
+        else:
+            return []
 
     def get_wrapper_htmltag(self):
         return 'form'
@@ -100,3 +117,62 @@ class Form(AbstractContainerRenderable):
         objects within the form.
         """
         return self._fieldrenderable_map.values()
+
+    def get_default_message_container(self):
+        """
+        Get the default message container. Used unless
+        the ``message_container`` kwarg for :meth:`.__init__` overrides it.
+
+        Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessageContainer`.
+
+        Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
+        """
+        return messagecontainer.MessageContainer(
+            test_css_class_suffixes_list=['form-globalmessages']
+        )
+
+    def validate(self):
+        if self.form.is_valid():
+            self.form_valid()
+        else:
+            self.form_invalid()
+
+    def form_valid(self):
+        pass
+
+    def add_global_form_validation_errors(self, validationerror_list):
+        self.message_container.add_validationerror_list(
+            validationerror_list=validationerror_list)
+
+    def add_field_validation_errors(self, field_wrapper_renderable, validationerror_list):
+        field_wrapper_renderable.message_container.add_validationerror_list(
+            validationerror_list=validationerror_list)
+
+    def add_field_validation_errors_field_not_child(self, fieldname, validationerror_list):
+        field_label = self.form.fields[fieldname].label
+        if not field_label:
+            field_label = fieldname
+        self.message_container.add_validationerror_list(
+            validationerror_list=validationerror_list,
+            prefix=field_label)
+
+    def form_invalid(self):
+        for fieldname, validationerror_list in self.form.errors.as_data().items():
+            if fieldname == '__all__':
+                self.add_global_form_validation_errors(validationerror_list=validationerror_list)
+            else:
+                try:
+                    field_wrapper_renderable = self.get_field_wrapper_renderable(fieldname=fieldname)
+                except KeyError:
+                    self.add_field_validation_errors_field_not_child(
+                        fieldname=fieldname,
+                        validationerror_list=validationerror_list)
+                else:
+                    self.add_field_validation_errors(
+                        field_wrapper_renderable=field_wrapper_renderable,
+                        validationerror_list=validationerror_list)
+
+    def bootstrap(self, **kwargs):
+        result = super(Form, self).bootstrap(**kwargs)
+        self.validate()
+        return result

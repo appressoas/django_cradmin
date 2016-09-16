@@ -151,3 +151,52 @@ class TestFormRenderable(test.TestCase):
             form=MinimalForm(), action='/overridden').bootstrap()
         selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
         self.assertEqual(selector.one('form')['action'], '/overridden')
+
+    def test_form_invalid_global_error(self):
+        class TestForm(forms.Form):
+            name = forms.CharField(required=False)
+
+            def clean(self):
+                raise forms.ValidationError('Global error test')
+
+        form = TestForm(data={})
+        formrenderable = uicontainer.uiforms.form.Form(form=form).bootstrap()
+        selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
+        self.assertEqual(selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized,
+                         'Global error test')
+
+    def test_form_invalid_field_error(self):
+        class TestForm(forms.Form):
+            name = forms.CharField(required=True)
+
+        form = TestForm(data={})
+        formrenderable = uicontainer.uiforms.form.Form(
+            form=form,
+            children=[uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='name')]
+        ).bootstrap()
+        selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
+        selector.prettyprint()
+        self.assertEqual(selector.one('#id_name_wrapper .test-warning-message').alltext_normalized,
+                         'This field is required.')
+
+    def test_form_invalid_field_error_field_not_rendered_without_label(self):
+        class TestForm(forms.Form):
+            name = forms.CharField(required=True)
+
+        form = TestForm(data={})
+        formrenderable = uicontainer.uiforms.form.Form(form=form).bootstrap()
+        selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
+        selector.prettyprint()
+        self.assertEqual(selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized,
+                         'name: This field is required.')
+
+    def test_form_invalid_field_error_field_not_rendered_with_label(self):
+        class TestForm(forms.Form):
+            name = forms.CharField(required=True, label='The name')
+
+        form = TestForm(data={})
+        formrenderable = uicontainer.uiforms.form.Form(form=form).bootstrap()
+        selector = htmls.S(formrenderable.render(request=self.__make_mockrequest()))
+        selector.prettyprint()
+        self.assertEqual(selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized,
+                         'The name: This field is required.')

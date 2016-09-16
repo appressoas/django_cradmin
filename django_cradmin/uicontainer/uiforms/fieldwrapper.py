@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from django_cradmin.uicontainer import messagecontainer
+
 from .. import container
 from . import mixins
 from . import field
@@ -27,13 +29,17 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
     template_name = 'django_cradmin/uicontainer/uiforms/field/fieldwrapper.django.html'
 
     def __init__(self, fieldname, label_renderable=None, field_renderable=None,
-                 help_text_renderable=None, **kwargs):
+                 help_text_renderable=None, message_container=None, **kwargs):
         self.fieldname = fieldname
         self.label_renderable = label_renderable or self.get_default_label_renderable()
         self.field_renderable = field_renderable or self.get_default_field_renderable()
         self.help_text_renderable = help_text_renderable or self.get_default_help_text_renderable()
+        self.message_container = message_container or self.get_default_message_container()
         super(FieldWrapper, self).__init__(**kwargs)
         self.properties['field_wrapper_renderable'] = self
+
+    def get_default_dom_id(self):
+        return '{}_wrapper'.format(self.field_renderable.dom_id)
 
     def bootstrap(self, **kwargs):
         """
@@ -83,6 +89,21 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
         """
         return help_text.AutomaticHelpText()
 
+    def get_default_message_container(self):
+        """
+        Get the default message container.
+
+        This is used unless it is overridden using the ``message_container``
+        kwarg for :meth:`.__init__`.
+
+        Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessageContainer`.
+
+        Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
+        """
+        return messagecontainer.MessageContainer(
+            test_css_class_suffixes_list=['field-messages']
+        )
+
     def field_should_be_child_of_label(self):
         """
         If this returns ``True``, we add the field renderable as a child
@@ -101,6 +122,7 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
         - Label renderable.
         - Field renderable.
         - Help text renderable.
+        - Message renderable.
 
         By default the field renderable will be added as a child of the label
         renderable. This is determined by :meth:`.field_should_be_child_of_label`.
@@ -122,6 +144,7 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
         else:
             children.append(self.field_renderable)
         children.append(self.help_text_renderable)
+        children.append(self.message_container)
         return children
 
     @property

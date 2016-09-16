@@ -52,7 +52,8 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     """
     template_name = 'django_cradmin/uicontainer/container.django.html'
 
-    def __init__(self, children=None, css_classes_list=None, extra_css_classes_list=None,
+    def __init__(self, children=None,
+                 css_classes_list=None, extra_css_classes_list=None, test_css_class_suffixes_list=None,
                  role=False, dom_id=False, html_element_attributes=None):
         """
         Args:
@@ -88,6 +89,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         self._html_element_attributes = html_element_attributes
         self.add_children(*self.prepopulate_children_list())
         self.css_classes_list = css_classes_list
+        self.test_css_class_suffixes_list = test_css_class_suffixes_list
         self.extra_css_classes_list = extra_css_classes_list
         if children:
             self.add_children(*children)
@@ -199,6 +201,9 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
             css_classes_list.extend(self.extra_css_classes_list)
         return css_classes_list
 
+    def get_test_css_class_suffixes_list(self):
+        return self.test_css_class_suffixes_list or []
+
     def bootstrap(self, parent=None):
         """
         Bootstrap the container.
@@ -247,6 +252,8 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         """
         if self.wrapper_element_can_have_children:
             self._childrenlist.append(childcontainer)
+            if self._is_bootsrapped and not childcontainer._is_bootsrapped:
+                childcontainer.bootstrap(parent=self)
         else:
             raise NotAllowedToAddChildrenError('{modulename}.{classname} can not have children'.format(
                 modulename=self.__class__.__module__,
