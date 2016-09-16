@@ -29,16 +29,16 @@ class TestFormRenderable(test.TestCase):
         formrenderable = uicontainer.uiforms.form.FormRenderable(
             form=form,
             children=[
-                uicontainer.uiforms.field.FieldWrapperRenderable(fieldname='name'),
-                uicontainer.uiforms.field.FieldWrapperRenderable(fieldname='age'),
-                uicontainer.uiforms.field.FieldWrapperRenderable(fieldname='user_type'),
+                uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='name'),
+                uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='age'),
+                uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='user_type'),
                 uicontainer.container.MainRenderable(
                     children=[
-                        uicontainer.uiforms.field.FieldWrapperRenderable(fieldname='created_by'),
+                        uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='created_by'),
                         uicontainer.uiforms.fieldset.FieldSetRenderable(
                             title='Metadata',
                             children=[
-                                uicontainer.uiforms.field.FieldWrapperRenderable(fieldname='created_by')
+                                uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='created_by')
                             ]
                         )
                     ],
