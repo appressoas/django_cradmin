@@ -22,7 +22,7 @@ flake8==2.4.0
 tox==1.9.2
 
 # For testing HTML output in tests
-htmls==0.9.6
+htmls==1.0.0
 
 # For mocking tests
 mock-django==0.6.10
