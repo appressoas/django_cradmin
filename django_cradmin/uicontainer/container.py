@@ -12,6 +12,21 @@ class NotBootsrappedError(Exception):
     """
 
 
+class AlreadyBootsrappedError(Exception):
+    """
+    Raised when trying to :meth:`~.AbstractContainerRenderable.bootstrap`
+    and already bootstrapped :class:`.AbstractContainerRenderable`.
+    """
+
+
+class NotAllowedToAddChildrenError(Exception):
+    """
+    Raised when trying to add children to a :class:`.AbstractContainerRenderable`
+    where :meth:`~.AbstractContainerRenderable.wrapper_element_can_have_children`
+    returns ``False``.
+    """
+
+
 class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     """
     Base class for all renderables in the uicontainer framework.
@@ -196,6 +211,9 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         Updates the properties of all children (using dict update())
         with :attr:`.properties`.
         """
+        if self._is_bootsrapped:
+            raise AlreadyBootsrappedError('The container is already bootstrapped. Can not bootstrap '
+                                          'the same container twice.')
         self.parent = parent
         if self.parent:
             self.properties.update(self.parent.properties)
@@ -230,7 +248,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         if self.wrapper_element_can_have_children:
             self._childrenlist.append(childcontainer)
         else:
-            raise ValueError('{modulename}.{classname} can not have children'.format(
+            raise NotAllowedToAddChildrenError('{modulename}.{classname} can not have children'.format(
                 modulename=self.__class__.__module__,
                 classname=self.__class__.__name__
             ))
@@ -258,6 +276,12 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         subclasses.
         """
         return iter(self._childrenlist)
+
+    def get_childcount(self):
+        """
+        Get the number of children in the container.
+        """
+        return len(self._childrenlist)
 
     @property
     def wrapper_element_can_have_children(self):

@@ -2,9 +2,24 @@ from ..container import AbstractContainerRenderable
 
 
 class FormRenderable(AbstractContainerRenderable):
+    """
+    Renderable for a ``<form>``.
+    """
     template_name = 'django_cradmin/uicontainer/uiforms/form.django.html'
 
     def __init__(self, form, action=None, method=None, **kwargs):
+        """
+
+        Args:
+            form: The Django form to render.
+            action: The action attribute of the HTML form.
+                If this is ``None`` (the default), we will
+                use :meth:`django.http.HttpRequest.get_full_path`.
+                Use ``False`` to not include an action attribute.
+            method: The method attribute of the HTML form.
+                Defaults to :meth:`.get_default_method` if not specified.
+            **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
+        """
         self.form = form
         self.action = action
         self._overridden_method = method
