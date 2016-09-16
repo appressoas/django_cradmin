@@ -9,9 +9,9 @@ from .. import container
 class BaseFieldRenderable(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
     """
     Abstract base class for renders of the actual form field
-    for a :class:`.FieldWrapperRenderable`.
+    for a :class:`.FieldWrapper`.
 
-    You never use this on its own outside a :class:`.FieldWrapperRenderable`.
+    You never use this on its own outside a :class:`.FieldWrapper`.
     """
     @property
     def bound_formfield(self):
@@ -28,12 +28,12 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, mixins.FieldWra
         return attributes_dict
 
 
-class AutomaticDjangoFieldRenderable(BaseFieldRenderable):
+class AutomaticDjangoField(BaseFieldRenderable):
     """
-    Automatically renders a form field for a :class:`.FieldWrapperRenderable`
+    Automatically renders a form field for a :class:`.FieldWrapper`
     using the Django widget system.
 
-    You never use this on its own outside a :class:`.FieldWrapperRenderable`.
+    You never use this on its own outside a :class:`.FieldWrapper`.
     """
     template_name = 'django_cradmin/uicontainer/uiforms/field/automatic_django_field.django.html'
 
@@ -62,10 +62,10 @@ class AutomaticDjangoFieldRenderable(BaseFieldRenderable):
 
         # TODO: Add support for radio and checkbox lists
         if isinstance(self.bound_formfield.field.widget, forms.RadioSelect):
-            raise NotImplementedError('AutomaticDjangoFieldRenderable does not support the '
+            raise NotImplementedError('AutomaticDjangoField does not support the '
                                       'RadioSelect widget yet.')
         elif isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple):
-            raise NotImplementedError('AutomaticDjangoFieldRenderable does not support the '
+            raise NotImplementedError('AutomaticDjangoField does not support the '
                                       'CheckboxSelectMultiple widget yet.')
 
         return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)

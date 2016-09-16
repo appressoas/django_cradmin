@@ -1,7 +1,7 @@
 from ..container import AbstractContainerRenderable
 
 
-class FormRenderable(AbstractContainerRenderable):
+class Form(AbstractContainerRenderable):
     """
     Renderable for a ``<form>``.
     """
@@ -24,7 +24,7 @@ class FormRenderable(AbstractContainerRenderable):
         self.action = action
         self._overridden_method = method
         self._fieldrenderable_map = {}
-        super(FormRenderable, self).__init__(**kwargs)
+        super(Form, self).__init__(**kwargs)
         self.properties['formrenderable'] = self
 
     def get_wrapper_htmltag(self):
@@ -51,7 +51,7 @@ class FormRenderable(AbstractContainerRenderable):
         return self.action is None
 
     def get_html_element_attributes(self):
-        html_element_attributes = super(FormRenderable, self).get_html_element_attributes()
+        html_element_attributes = super(Form, self).get_html_element_attributes()
         html_element_attributes['method'] = self.method
         if not self.action_is_redirect_to_self():
             # if action is ``None`` (I.E.: redirect to self), we add this attribute in the
@@ -63,40 +63,40 @@ class FormRenderable(AbstractContainerRenderable):
 
     def register_field_wrapper_renderable(self, field_wrapper_renderable):
         """
-        Register a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`
+        Register a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
         with this form.
 
         The form can access all its fields via :meth:`.get_field_wrapper_renderable`
         and :meth:`.iter_field_wrapper_renderables`.
 
         Args:
-            field_wrapper_renderable: A :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`
+            field_wrapper_renderable: A :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
                 object.
         """
         self._fieldrenderable_map[field_wrapper_renderable.fieldname] = field_wrapper_renderable
 
     def get_field_wrapper_renderable(self, fieldname):
         """
-        Get a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`
+        Get a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
         that is a child of the form.
 
         Args:
-            fieldname (str): A fieldname for a FieldWrapperRenderable that is a child
+            fieldname (str): A fieldname for a FieldWrapper that is a child
                 of the form. Does not need to be a direct child.
 
         Raises:
-            KeyError: If no FieldWrapperRenderable with the provided ``fieldname`` exists
+            KeyError: If no FieldWrapper with the provided ``fieldname`` exists
                 within the form.
 
         Returns:
-            The FieldWrapperRenderable with the provided ``fieldname``.
+            The FieldWrapper with the provided ``fieldname``.
         """
         return self._fieldrenderable_map[fieldname]
 
     def iter_field_wrapper_renderables(self):
         """
         Get an iterator over all the
-        :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`
+        :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
         objects within the form.
         """
         return self._fieldrenderable_map.values()

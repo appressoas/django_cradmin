@@ -17,10 +17,10 @@ class SimpleUiContainerView(viewhelpers.generic.StandaloneBaseTemplateView):
         return form
 
     def __get_container(self):
-        container = uicontainer.uiforms.form.FormRenderable(
+        container = uicontainer.uiforms.form.Form(
             form=self.__get_form(),
             children=[
-                uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='name'),
+                uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='name'),
             ]
         ).bootstrap()
         return container

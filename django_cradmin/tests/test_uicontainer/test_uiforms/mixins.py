@@ -18,9 +18,9 @@ class SingleFormRenderableHelperMixin(object):
         if formvalue:
             data = {'testfield': formvalue}
         form = form_class(data=data)
-        formrenderable = uicontainer.uiforms.form.FormRenderable(
+        formrenderable = uicontainer.uiforms.form.Form(
             form=form,
-            children=[uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='testfield')]
+            children=[uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='testfield')]
         ).bootstrap()
         return formrenderable
 

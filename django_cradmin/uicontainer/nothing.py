@@ -1,7 +1,7 @@
 from . import container
 
 
-class NothingRenderable(container.AbstractContainerRenderable):
+class Nothing(container.AbstractContainerRenderable):
     """
     Does not render anything.
 
@@ -10,7 +10,7 @@ class NothingRenderable(container.AbstractContainerRenderable):
     ``None`` values everywhere.
 
     Typical use case is the help_text_renderable kwarg for
-    :class:`django_cradmin.uicontainer.uiforms.field.FieldWrapperRenderable`.
+    :class:`django_cradmin.uicontainer.uiforms.field.FieldWrapper`.
     If you want to disable the help text, you can not set the kwarg
     to ``None``, because that would just fall back to using the
     default help text renderable, so you use class instead.

@@ -4,12 +4,12 @@ from . import mixins
 from .. import container
 
 
-class LabelRenderable(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
+class Label(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
     """
-    Renders a label for a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`.
+    Renders a label for a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.
 
     You never use this on its own outside a
-    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`.
+    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.
     """
     template_name = 'django_cradmin/uicontainer/uiforms/field/label.django.html'
 
@@ -24,7 +24,7 @@ class LabelRenderable(container.AbstractContainerRenderable, mixins.FieldWrapper
             return self.field_wrapper_renderable.field_renderable.dom_id
 
     def get_html_element_attributes(self):
-        html_element_attributes = super(LabelRenderable, self).get_html_element_attributes()
+        html_element_attributes = super(Label, self).get_html_element_attributes()
         html_element_attributes['for'] = self.for_attribute
         return html_element_attributes
 

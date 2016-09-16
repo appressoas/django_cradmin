@@ -7,20 +7,20 @@ from .. import container
 class BaseHelpTextRenderable(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
     """
     Base class for renderers of help text for a
-    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`.
+    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.
 
     You never use this on its own outside a
-    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`.
+    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.
     """
 
 
-class AutomaticHelpTextRenderable(BaseHelpTextRenderable):
+class AutomaticHelpText(BaseHelpTextRenderable):
     """
-    Renders help text for a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`
+    Renders help text for a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
     using the help text from the Django form field.
 
     You never use this on its own outside a
-    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable`.
+    :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.
     """
     template_name = 'django_cradmin/uicontainer/uiforms/field/automatic_help_text.django.html'
 

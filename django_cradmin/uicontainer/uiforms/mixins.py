@@ -1,6 +1,6 @@
 class FieldWrapperRenderableChildMixin(object):
     """
-    Mixin class for renderables that are children of :class:`.FieldWrapperRenderable`.
+    Mixin class for renderables that are children of :class:`.FieldWrapper`.
     """
     @property
     def field_wrapper_renderable(self):

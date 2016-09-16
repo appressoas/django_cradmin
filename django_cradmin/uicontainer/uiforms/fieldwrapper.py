@@ -7,20 +7,20 @@ from . import label
 from . import help_text
 
 
-class FieldWrapperRenderable(container.AbstractContainerRenderable, mixins.FormRenderableChildMixin):
+class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableChildMixin):
     """
     Renders a form field.
 
     This just renders a wrapper ``div``, and lets other renderable classes
     render the field, label, etc.:
 
-    - A :class:`~django_cradmin.uicontainer.uiforms.label.LabelRenderable` renders the label.
+    - A :class:`~django_cradmin.uicontainer.uiforms.label.Label` renders the label.
       This can be overridden using the ``label_renderable`` kwarg, or in
       :meth:`.get_default_label_renderable`.
     - A :class:`~django_cradmin.uicontainer.uiforms.field.BaseFieldRenderable` renders the
       form field. This can be overridden using the ``field_renderable`` kwarg,
       or in :meth:`.get_default_field_renderable`.
-    - A :class:`~django_cradmin.uicontainer.uiforms.help_text.AutomaticHelpTextRenderable`
+    - A :class:`~django_cradmin.uicontainer.uiforms.help_text.AutomaticHelpText`
       renders the help text. This can be overridden using the ``help_text_renderable``
       kwarg, or in :meth:`.get_default_help_text_renderable`.
     """
@@ -32,17 +32,17 @@ class FieldWrapperRenderable(container.AbstractContainerRenderable, mixins.FormR
         self.label_renderable = label_renderable or self.get_default_label_renderable()
         self.field_renderable = field_renderable or self.get_default_field_renderable()
         self.help_text_renderable = help_text_renderable or self.get_default_help_text_renderable()
-        super(FieldWrapperRenderable, self).__init__(**kwargs)
+        super(FieldWrapper, self).__init__(**kwargs)
         self.properties['field_wrapper_renderable'] = self
 
     def bootstrap(self, **kwargs):
         """
         Extends :meth:`django_cradmin.uicontainer.container.container.AbstractContainerRenderable.bootstrap`
         with a call to
-        :meth:`django_cradmin.uicontainer.uiforms.form.FormRenderable.register_field_wrapper_renderable`
+        :meth:`django_cradmin.uicontainer.uiforms.form.Form.register_field_wrapper_renderable`
         to register this with the form.
         """
-        returnvalue = super(FieldWrapperRenderable, self).bootstrap(**kwargs)
+        returnvalue = super(FieldWrapper, self).bootstrap(**kwargs)
         self.formrenderable.register_field_wrapper_renderable(field_wrapper_renderable=self)
         return returnvalue
 
@@ -56,9 +56,9 @@ class FieldWrapperRenderable(container.AbstractContainerRenderable, mixins.FormR
         This is used unless it is overridden using the ``label_renderable``
         kwarg for :meth:`.__init__`.
 
-        Defaults to an object of :class:`~django_cradmin.uicontainer.uiforms.label.LabelRenderable`.
+        Defaults to an object of :class:`~django_cradmin.uicontainer.uiforms.label.Label`.
         """
-        return label.LabelRenderable()
+        return label.Label()
 
     def get_default_field_renderable(self):
         """
@@ -68,9 +68,9 @@ class FieldWrapperRenderable(container.AbstractContainerRenderable, mixins.FormR
         kwarg for :meth:`.__init__`.
 
         Defaults to an object of
-        :class:`~django_cradmin.uicontainer.uiforms.field.AutomaticDjangoFieldRenderable`.
+        :class:`~django_cradmin.uicontainer.uiforms.field.AutomaticDjangoField`.
         """
-        return field.AutomaticDjangoFieldRenderable()
+        return field.AutomaticDjangoField()
 
     def get_default_help_text_renderable(self):
         """
@@ -79,9 +79,9 @@ class FieldWrapperRenderable(container.AbstractContainerRenderable, mixins.FormR
         This is used unless it is overridden using the ``help_text_renderable``
         kwarg for :meth:`.__init__`.
 
-        Defaults to an object of :class:`~django_cradmin.uicontainer.uiforms.help_text.AutomaticHelpTextRenderable`.
+        Defaults to an object of :class:`~django_cradmin.uicontainer.uiforms.help_text.AutomaticHelpText`.
         """
-        return help_text.AutomaticHelpTextRenderable()
+        return help_text.AutomaticHelpText()
 
     def field_should_be_child_of_label(self):
         """
@@ -132,6 +132,6 @@ class FieldWrapperRenderable(container.AbstractContainerRenderable, mixins.FormR
         return self.formrenderable.form[self.fieldname]
 
     # def get_default_css_classes_list(self):
-    #     css_classes = super(FieldWrapperRenderable, self).get_default_css_classes_list()
+    #     css_classes = super(FieldWrapper, self).get_default_css_classes_list()
     #     css_classes.append('field')
     #     return css_classes
