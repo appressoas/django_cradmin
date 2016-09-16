@@ -75,11 +75,6 @@ class FormRenderable(AbstractContainerRenderable):
         """
         self._fieldrenderable_map[field_wrapper_renderable.fieldname] = field_wrapper_renderable
 
-    def get_default_css_classes_list(self):
-        css_classes = super(FormRenderable, self).get_default_css_classes_list()
-        css_classes.append('form')
-        return css_classes
-
     def get_field_wrapper_renderable(self, fieldname):
         """
         Get a :class:`django_cradmin.uicontainer.uiforms.field.FieldWrapperRenderable`

@@ -273,7 +273,7 @@ class FieldWrapperRenderable(AbstractContainerRenderable, mixins.FormRenderableC
         """
         return self.formrenderable.form[self.fieldname]
 
-    def get_default_css_classes_list(self):
-        css_classes = super(FieldWrapperRenderable, self).get_default_css_classes_list()
-        css_classes.append('field')
-        return css_classes
+    # def get_default_css_classes_list(self):
+    #     css_classes = super(FieldWrapperRenderable, self).get_default_css_classes_list()
+    #     css_classes.append('field')
+    #     return css_classes
