@@ -34,7 +34,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     This can not be used directly. You extend it, and at least override
     :meth:`.get_wrapper_htmltag`, or use one of the subclasses.
 
-    The most basic subclass is :class:`django_cradmin.uicontainer.div.DivRenderable`.
+    The most basic subclass is :class:`django_cradmin.uicontainer.div.Div`.
 
     .. attribute:: parent
 
@@ -335,7 +335,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
             return ''
 
 
-class DivRenderable(AbstractContainerRenderable):
+class Div(AbstractContainerRenderable):
     """
     Renders a ``<div>``.
 
@@ -347,7 +347,7 @@ class DivRenderable(AbstractContainerRenderable):
         return 'div'
 
 
-class SectionRenderable(AbstractContainerRenderable):
+class Section(AbstractContainerRenderable):
     """
     Renders a ``<section>``.
     """
@@ -355,7 +355,7 @@ class SectionRenderable(AbstractContainerRenderable):
         return 'section'
 
 
-class HeaderRenderable(AbstractContainerRenderable):
+class Header(AbstractContainerRenderable):
     """
     Renders a ``<header>``.
     """
@@ -363,7 +363,7 @@ class HeaderRenderable(AbstractContainerRenderable):
         return 'header'
 
 
-class FooterRenderable(AbstractContainerRenderable):
+class Footer(AbstractContainerRenderable):
     """
     Renders a ``<footer>``.
     """
@@ -371,7 +371,7 @@ class FooterRenderable(AbstractContainerRenderable):
         return 'footer'
 
 
-class MainRenderable(AbstractContainerRenderable):
+class Main(AbstractContainerRenderable):
     """
     Renders a ``<main>``.
     """

@@ -32,7 +32,7 @@ class TestFormRenderable(test.TestCase):
                 uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='name'),
                 uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='age'),
                 uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='user_type'),
-                uicontainer.container.MainRenderable(
+                uicontainer.container.Main(
                     children=[
                         uicontainer.uiforms.fieldwrapper.FieldWrapperRenderable(fieldname='created_by'),
                         uicontainer.uiforms.fieldset.FieldSetRenderable(

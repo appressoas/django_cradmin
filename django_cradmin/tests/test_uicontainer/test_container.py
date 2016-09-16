@@ -256,32 +256,32 @@ class TestAbstractContainerRenderable(test.TestCase):
 
 class TestDivRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.DivRenderable().bootstrap()
+        container = uicontainer.container.Div().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('div'))
 
 
 class TestSectionRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.SectionRenderable().bootstrap()
+        container = uicontainer.container.Section().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('section'))
 
 
 class TestHeaderRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.HeaderRenderable().bootstrap()
+        container = uicontainer.container.Header().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('header'))
 
 
 class TestMainRenderable(test.TestCase):
     def test_sanity(self):
-        container = uicontainer.container.MainRenderable().bootstrap()
+        container = uicontainer.container.Main().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('main'))
 
     def test_default_role_is_main(self):
-        container = uicontainer.container.MainRenderable().bootstrap()
+        container = uicontainer.container.Main().bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('main')['role'], 'main')
