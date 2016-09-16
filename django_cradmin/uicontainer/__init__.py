@@ -6,3 +6,4 @@ from . import uiforms  # noqa
 from . import blocklist  # noqa
 from . import messagecontainer  # noqa
 from . import typography  # noqa
+from . import button  # noqa
