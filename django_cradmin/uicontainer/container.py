@@ -27,6 +27,14 @@ class NotAllowedToAddChildrenError(Exception):
     """
 
 
+class UnsupportedHtmlTagError(ValueError):
+    """
+    Raised when providing an invalid ``html_tag`` kwarg to :class:`.AbstractContainerRenderable`.
+
+    See :obj:`.AbstractContainerRenderable.supported_html_tags`.
+    """
+
+
 class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     """
     Base class for all renderables in the uicontainer framework.
@@ -52,9 +60,24 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     """
     template_name = 'django_cradmin/uicontainer/container.django.html'
 
+    #: You can override this to specify a set of supported HTML tags
+    #: for the ``html_tag`` attribute for :meth:`~.AbstractContainerRenderable.__init__`.
+    #: This is useful to avoid typing errors. It should not be a big problem if you
+    #: forget a tag that should be supported - developers can just create a subclass.
+    #:
+    #: If the value of this field is None, or any other value that is considered False by
+    #: ``bool()``, we do not validate the ``html_tag`` kwarg.
+    supported_html_tags = None
+
     def __init__(self, children=None,
-                 css_classes_list=None, extra_css_classes_list=None, test_css_class_suffixes_list=None,
-                 role=False, dom_id=False, html_element_attributes=None):
+                 bem_block=None, bem_element=None, bem_variants=None,
+                 html_tag=None,
+                 css_classes_list=None,
+                 extra_css_classes_list=None,
+                 test_css_class_suffixes_list=None,
+                 role=False,
+                 dom_id=False,
+                 html_element_attributes=None):
         """
         Args:
             children: List of children. Children must be objects of subclasses
@@ -81,11 +104,13 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                 The format of the dict is specified in :meth:`.get_html_element_attributes`.
 
         """
+        self.validate_html_tag(html_tag)
         self._childrenlist = []
         self._is_bootsrapped = False
         self.properties = {}
         self._overridden_role = role
         self._overridden_dom_id = dom_id
+        self._overridden_html_tag = html_tag
         self._html_element_attributes = html_element_attributes
         self.add_children(*self.prepopulate_children_list())
         self.css_classes_list = css_classes_list
@@ -93,6 +118,24 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         self.extra_css_classes_list = extra_css_classes_list
         if children:
             self.add_children(*children)
+
+    def get_full_class_path_as_string(self):
+        """
+        Get full class path as string.
+
+        Useful for providing some extra information in exceptions.
+        Normally this will be in a traceback, but when dealing with
+        things rendered by a Django template, this information is not
+        always included.
+        """
+        return '{}.{}'.format(self.__class__.__module__, self.__class__.__name__)
+
+    def validate_html_tag(self, html_tag):
+        if html_tag and self.supported_html_tags and html_tag not in self.supported_html_tags:
+            raise UnsupportedHtmlTagError('Unsupported HTML tag for {classpath}: {html_tag}'.format(
+                classpath=self.get_full_class_path_as_string(),
+                html_tag=self._overridden_html_tag
+            ))
 
     def get_wrapper_htmltag(self):
         """
@@ -201,8 +244,32 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
             css_classes_list.extend(self.extra_css_classes_list)
         return css_classes_list
 
+    def get_default_test_css_class_suffixes_list(self):
+        """
+        Override this to provide a default list of css classes for unit tests.
+
+        The css classes specified here can be overridden using
+        the ``test_css_class_suffixes_list`` kwarg for :meth:`.__init__`.
+        """
+        return []
+
     def get_test_css_class_suffixes_list(self):
-        return self.test_css_class_suffixes_list or []
+        """
+        DO NOT OVERRIDE THIS METHOD.
+
+        Unlike with :class:`django_cradmin.renderable.AbstractRenderableWithCss`,
+        you do not override this class to add your own test css classes. Override
+        :meth:`.get_default_test_css_class_suffixes_list`.
+
+        This is because this method respects the ``test_css_class_suffixes_list`` kwarg
+        for :meth:`.__init__`, and just falls back to :meth:`.get_default_test_css_class_suffixes_list`.
+        So if you override this method, the ``test_css_class_suffixes_list`` kwarg will be useless.
+        """
+        if self.test_css_class_suffixes_list:
+            test_css_class_suffixes_list = self.test_css_class_suffixes_list
+        else:
+            test_css_class_suffixes_list = self.get_default_test_css_class_suffixes_list()
+        return test_css_class_suffixes_list
 
     def bootstrap(self, parent=None):
         """

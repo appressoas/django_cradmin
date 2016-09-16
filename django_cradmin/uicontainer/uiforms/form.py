@@ -1,5 +1,5 @@
 from .. import container
-from .. import messagecontainer
+from .. import messagescontainer
 
 
 class Form(container.AbstractContainerRenderable):
@@ -8,7 +8,7 @@ class Form(container.AbstractContainerRenderable):
     """
     template_name = 'django_cradmin/uicontainer/uiforms/form.django.html'
 
-    def __init__(self, form, action=None, method=None, message_container=None, **kwargs):
+    def __init__(self, form, action=None, method=None, messages_container=None, **kwargs):
         """
 
         Args:
@@ -19,16 +19,16 @@ class Form(container.AbstractContainerRenderable):
                 Use ``False`` to not include an action attribute.
             method: The method attribute of the HTML form.
                 Defaults to :meth:`.get_default_method` if not specified.
-            message_container: A :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`
+            messages_container: A :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`
                 object where we add and render messages such as global errors and info messages.
-                Defaults to :meth:`.get_default_message_container`.
+                Defaults to :meth:`.get_default_messages_container`.
 
             **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
         """
         self.form = form
         self.action = action
         self._overridden_method = method
-        self.message_container = message_container or self.get_default_message_container()
+        self.messages_container = messages_container or self.get_default_messages_container()
         self._fieldrenderable_map = {}
         super(Form, self).__init__(**kwargs)
         self.properties['formrenderable'] = self
@@ -37,9 +37,9 @@ class Form(container.AbstractContainerRenderable):
         return 'id_form'
 
     def prepopulate_children_list(self):
-        if self.message_container:
+        if self.messages_container:
             return [
-                self.message_container
+                self.messages_container
             ]
         else:
             return []
@@ -118,16 +118,16 @@ class Form(container.AbstractContainerRenderable):
         """
         return self._fieldrenderable_map.values()
 
-    def get_default_message_container(self):
+    def get_default_messages_container(self):
         """
         Get the default message container. Used unless
-        the ``message_container`` kwarg for :meth:`.__init__` overrides it.
+        the ``messages_container`` kwarg for :meth:`.__init__` overrides it.
 
-        Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessageContainer`.
+        Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessagesContainer`.
 
         Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
         """
-        return messagecontainer.MessageContainer(
+        return messagescontainer.MessagesContainer(
             test_css_class_suffixes_list=['form-globalmessages']
         )
 
@@ -141,18 +141,18 @@ class Form(container.AbstractContainerRenderable):
         pass
 
     def add_global_form_validation_errors(self, validationerror_list):
-        self.message_container.add_validationerror_list(
+        self.messages_container.add_validationerror_list(
             validationerror_list=validationerror_list)
 
     def add_field_validation_errors(self, field_wrapper_renderable, validationerror_list):
-        field_wrapper_renderable.message_container.add_validationerror_list(
+        field_wrapper_renderable.messages_container.add_validationerror_list(
             validationerror_list=validationerror_list)
 
     def add_field_validation_errors_field_not_child(self, fieldname, validationerror_list):
         field_label = self.form.fields[fieldname].label
         if not field_label:
             field_label = fieldname
-        self.message_container.add_validationerror_list(
+        self.messages_container.add_validationerror_list(
             validationerror_list=validationerror_list,
             prefix=field_label)
 

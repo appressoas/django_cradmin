@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django_cradmin.uicontainer import messagecontainer
+from django_cradmin.uicontainer import messagescontainer
 
 from .. import container
 from . import mixins
@@ -29,12 +29,12 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
     template_name = 'django_cradmin/uicontainer/uiforms/field/fieldwrapper.django.html'
 
     def __init__(self, fieldname, label_renderable=None, field_renderable=None,
-                 help_text_renderable=None, message_container=None, **kwargs):
+                 help_text_renderable=None, messages_container=None, **kwargs):
         self.fieldname = fieldname
         self.label_renderable = label_renderable or self.get_default_label_renderable()
         self.field_renderable = field_renderable or self.get_default_field_renderable()
         self.help_text_renderable = help_text_renderable or self.get_default_help_text_renderable()
-        self.message_container = message_container or self.get_default_message_container()
+        self.messages_container = messages_container or self.get_default_messages_container()
         super(FieldWrapper, self).__init__(**kwargs)
         self.properties['field_wrapper_renderable'] = self
 
@@ -89,18 +89,18 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
         """
         return help_text.AutomaticHelpText()
 
-    def get_default_message_container(self):
+    def get_default_messages_container(self):
         """
         Get the default message container.
 
-        This is used unless it is overridden using the ``message_container``
+        This is used unless it is overridden using the ``messages_container``
         kwarg for :meth:`.__init__`.
 
-        Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessageContainer`.
+        Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessagesContainer`.
 
         Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
         """
-        return messagecontainer.MessageContainer(
+        return messagescontainer.MessagesContainer(
             test_css_class_suffixes_list=['field-messages']
         )
 
@@ -144,7 +144,7 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
         else:
             children.append(self.field_renderable)
         children.append(self.help_text_renderable)
-        children.append(self.message_container)
+        children.append(self.messages_container)
         return children
 
     @property

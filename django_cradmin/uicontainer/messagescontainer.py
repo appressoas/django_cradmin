@@ -74,7 +74,7 @@ class AbstractMessageContainerMixin(object):
             **kwargs:: Kwargs for :meth:`.create_message_container`.
         """
         message_container = self.create_message_container(**kwargs)
-        self.add_child(message_container)
+        return self.add_child(message_container)
 
     def add_warning(self, **kwargs):
         """
@@ -85,7 +85,7 @@ class AbstractMessageContainerMixin(object):
                 difference is that the ``level`` kwarg is set.
         """
         kwargs['level'] = 'warning'
-        self.add_message(**kwargs)
+        return self.add_message(**kwargs)
 
     def add_success(self, **kwargs):
         """
@@ -96,7 +96,7 @@ class AbstractMessageContainerMixin(object):
                 difference is that the ``level`` kwarg is set.
         """
         kwargs['level'] = 'success'
-        self.add_message(**kwargs)
+        return self.add_message(**kwargs)
 
     def add_info(self, **kwargs):
         """
@@ -107,7 +107,7 @@ class AbstractMessageContainerMixin(object):
                 difference is that the ``level`` kwarg is set.
         """
         kwargs['level'] = 'info'
-        self.add_message(**kwargs)
+        return self.add_message(**kwargs)
 
     def add_validationerror(self, validationerror, prefix=None, **kwargs):
         """
@@ -121,6 +121,7 @@ class AbstractMessageContainerMixin(object):
             if prefix:
                 message = '{}: {}'.format(prefix, message)
             self.add_warning(text=message, **kwargs)
+        return self
 
     def add_validationerror_list(self, validationerror_list, **kwargs):
         """
@@ -135,11 +136,25 @@ class AbstractMessageContainerMixin(object):
         """
         for validationerror in validationerror_list:
             self.add_validationerror(validationerror=validationerror, **kwargs)
+        return self
 
 
-class MessageContainer(AbstractMessageContainerMixin, blocklist.Blocklist):
+class MessageContainer(blocklist.BlocklistItem):
     """
-    Message container.
+    Single message container.
+
+    This is a very thin extension of :class:`django_cradmin.uicontainer.blocklist.BlocklistItem`
+    that just adds unit test css classes.
+    """
+    def get_default_test_css_class_suffixes_list(self):
+        return super(MessageContainer, self).get_default_test_css_class_suffixes_list() + [
+            '{}-message'.format(self.variant or 'default')
+        ]
+
+
+class MessagesContainer(AbstractMessageContainerMixin, blocklist.Blocklist):
+    """
+    Messages container - contains zero or more :class:`.MessageContainer`.
 
     This is a very thin extension of :class:`django_cradmin.uicontainer.blocklist.Blocklist`
     that:
@@ -152,10 +167,7 @@ class MessageContainer(AbstractMessageContainerMixin, blocklist.Blocklist):
     def __init__(self, **kwargs):
         variant = kwargs.pop('variant', self.VARIANT_TIGHT)
         kwargs['variant'] = variant
-        super(MessageContainer, self).__init__(**kwargs)
+        super(MessagesContainer, self).__init__(**kwargs)
 
     def create_message_container(self, level, text='', **kwargs):
-        test_css_class_suffixes_list = kwargs.pop('test_css_class_suffixes_list', None) or []
-        test_css_class_suffixes_list.append('{}-message'.format(level))
-        kwargs['test_css_class_suffixes_list'] = test_css_class_suffixes_list
-        return blocklist.BlocklistItem(variant=level, text=text, **kwargs)
+        return MessageContainer(variant=level, text=text, **kwargs)

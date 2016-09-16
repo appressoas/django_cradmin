@@ -20,13 +20,13 @@
 {% block content %}
     {% block pre_form %}{% endblock pre_form %}
     {% block form %}
-        <div class="container">
             {% if form_renderable %}
                 {% cradmin_render_renderable form_renderable %}
             {% else %}
-                {% crispy form formhelper %}
+                <div class="container">
+                    {% crispy form formhelper %}
+                </div>
             {% endif %}
-        </div>
 
         {% comment %}
             NOTE: This will probably break when https://github.com/maraujop/django-crispy-forms/issues/263 is fixed

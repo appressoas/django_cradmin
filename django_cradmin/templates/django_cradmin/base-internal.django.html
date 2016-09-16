@@ -73,7 +73,11 @@
     {% endif %}
 
     {% block below-page-cover-messages %}
-        {% include "django_cradmin/include/messages.django.html" %}
+        <div class="page-section  page-section--center">
+            <div class="container  container--tight">
+                {% include "django_cradmin/include/messages.django.html" %}
+            </div>
+        </div>
     {% endblock below-page-cover-messages %}
 
     {% block content %}{% endblock content %}
