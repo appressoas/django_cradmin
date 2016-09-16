@@ -97,6 +97,33 @@ class BlocklistItem(convenience.AbstractWithOptionalParagraphWithEscapedText):
         return css_classes
 
 
+class BlocklistItemWarning(BlocklistItem):
+    """
+    Shortcut for creating a :class:`.BlocklistItem` with the
+    :obj:`~.BlocklistItem.VARIANT_WARNING` variant.
+    """
+    def __init__(self, **kwargs):
+        super(BlocklistItemWarning, self).__init__(variant=self.VARIANT_WARNING, **kwargs)
+
+
+class BlocklistItemSuccess(BlocklistItem):
+    """
+    Shortcut for creating a :class:`.BlocklistItem` with the
+    :obj:`~.BlocklistItem.VARIANT_SUCCESS` variant.
+    """
+    def __init__(self, **kwargs):
+        super(BlocklistItemSuccess, self).__init__(variant=self.VARIANT_SUCCESS, **kwargs)
+
+
+class BlocklistItemInfo(BlocklistItem):
+    """
+    Shortcut for creating a :class:`.BlocklistItem` with the
+    :obj:`~.BlocklistItem.VARIANT_INFO` variant.
+    """
+    def __init__(self, **kwargs):
+        super(BlocklistItemInfo, self).__init__(variant=self.VARIANT_INFO, **kwargs)
+
+
 class Blocklist(container.AbstractContainerRenderable):
     """
     Renders a list of block elements styled with the ``blocklist`` css class.
@@ -121,10 +148,8 @@ class Blocklist(container.AbstractContainerRenderable):
             uicontainer.blocklist.Blocklist(
                 variant=uicontainer.blocklist.Blocklist.VARIANT_TIGHT,
                 children=[
-                    uicontainer.blocklist.BlocklistItem(text='Success !',
-                        variant=uicontainer.blocklist.BlocklistItem.VARIANT_SUCCESS),
-                    uicontainer.blocklist.BlocklistItem(text='Warning :(',
-                        variant=uicontainer.blocklist.BlocklistItem.VARIANT_WARNING)
+                    uicontainer.blocklist.BlocklistItemSuccess(text='Success !'),
+                    uicontainer.blocklist.BlocklistItemWarning(text='Warning :(')
                 ]
             )
 

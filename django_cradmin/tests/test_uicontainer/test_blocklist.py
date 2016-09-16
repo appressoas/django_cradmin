@@ -86,6 +86,24 @@ class TestBlocklistItem(test.TestCase):
         self.assertEqual(selector.one('div p').alltext_normalized, 'test')
 
 
+class TestBlocklistItemWarning(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.blocklist.BlocklistItemWarning()
+        self.assertEqual(container.variant, uicontainer.blocklist.BlocklistItem.VARIANT_WARNING)
+
+
+class TestBlocklistItemSuccess(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.blocklist.BlocklistItemSuccess()
+        self.assertEqual(container.variant, uicontainer.blocklist.BlocklistItem.VARIANT_SUCCESS)
+
+
+class TestBlocklistItemInfo(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.blocklist.BlocklistItemInfo()
+        self.assertEqual(container.variant, uicontainer.blocklist.BlocklistItem.VARIANT_INFO)
+
+
 class TestBlocklist(test.TestCase):
     def test_sanity(self):
         container = uicontainer.blocklist.Blocklist().bootstrap()
