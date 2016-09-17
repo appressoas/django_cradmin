@@ -6,10 +6,9 @@ class Button(convenience.AbstractWithOptionalEscapedText):
     Renders a ``<button type="button">`` with the default
     style (using the ``button`` css class).
     """
-    def __init__(self, button_type=None, name=False, variant=None, **kwargs):
+    def __init__(self, button_type=None, name=False, **kwargs):
         self._overridden_button_type = button_type
         self._overridden_name = name
-        self.variant = variant
         super(Button, self).__init__(**kwargs)
 
     def get_default_html_tag(self):
@@ -55,13 +54,8 @@ class Button(convenience.AbstractWithOptionalEscapedText):
         html_attributes['name'] = self.name
         return html_attributes
 
-    def get_css_classes_list(self):
-        css_classes = [
-            'button'
-        ]
-        if self.variant:
-            css_classes.append('button--{}'.format(self.variant))
-        return css_classes
+    def get_bem_block_or_element(self):
+        return 'button'
 
 
 class ButtonPrimary(Button):
@@ -69,8 +63,8 @@ class ButtonPrimary(Button):
     Renders a ``<button type="button">`` with the primary
     style (using the ``button  button--primary`` css class).
     """
-    def __init__(self, **kwargs):
-        super(ButtonPrimary, self).__init__(variant='primary', **kwargs)
+    def get_default_bem_variant_list(self):
+        return ['primary']
 
 
 class Submit(Button):
@@ -87,5 +81,5 @@ class SubmitPrimary(Submit):
     Renders a ``<button type="submit">`` with the primary
     style (using the ``button  button--primary`` css class).
     """
-    def __init__(self, **kwargs):
-        super(SubmitPrimary, self).__init__(variant='primary', **kwargs)
+    def get_default_bem_variant_list(self):
+        return ['primary']

@@ -44,10 +44,10 @@ class Blocklist(container.AbstractContainerRenderable):
             from django_cradmin import uicontainer
 
             uicontainer.blocklist.Blocklist(
-                variant=uicontainer.blocklist.Blocklist.VARIANT_TIGHT,
+                bem_variant_list=['tight']
                 children=[
-                    uicontainer.blocklist.BlocklistItemSuccess(text='Success !'),
-                    uicontainer.blocklist.BlocklistItemWarning(text='Warning :(')
+                    uicontainer.blocklist.BlocklistItem(text='Success !', bem_variant_list=['success']),
+                    uicontainer.blocklist.BlocklistItem(text='Warning :(', bem_variant_list=['warning'])
                 ]
             )
 
@@ -60,19 +60,18 @@ class Blocklist(container.AbstractContainerRenderable):
                     uicontainer.blocklist.BlocklistItem(
                         children=[
                             uicontainer.blocklist.BlocklistItemTitle(html_tag='h3')
-                            uicontainer.typography.Paragraph(text='Hello world')
+                            uicontainer.semantic.Paragraph(text='Hello world')
                         ]
                     ),
                     uicontainer.blocklist.BlocklistItem(
                         children=[
                             uicontainer.blocklist.BlocklistItemTitle(html_tag='h3',
-                                variant=uicontainer.typography.BlocklistItemTitle.VARIANT_XLARGE)
-                            uicontainer.typography.Paragraph(text='Hello world 2')
+                                bem_variant_list=['xlarge'])
+                            uicontainer.semantic.Paragraph(text='Hello world 2')
                         ]
                     ),
                 ]
             )
-
     """
     def get_default_bem_block_or_element(self):
         return 'blocklist'
