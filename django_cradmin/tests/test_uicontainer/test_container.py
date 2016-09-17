@@ -5,8 +5,7 @@ from django_cradmin import uicontainer
 
 
 class MinimalContainer(uicontainer.container.AbstractContainerRenderable):
-    def get_wrapper_htmltag(self):
-        return 'div'
+    pass
 
 
 class TestAbstractContainerRenderable(test.TestCase):
@@ -156,16 +155,26 @@ class TestAbstractContainerRenderable(test.TestCase):
 
     def test_wrapper_element_can_have_children(self):
         container = MinimalContainer()
-        self.assertTrue(container.wrapper_element_can_have_children)
+        self.assertTrue(container.can_have_children)
 
     def test_wrapper_element_can_have_children_false_can_not_add_children(self):
         class MyContainer(MinimalContainer):
             @property
-            def wrapper_element_can_have_children(self):
+            def can_have_children(self):
                 return False
         container = MyContainer()
         with self.assertRaises(uicontainer.container.NotAllowedToAddChildrenError):
             container.add_child(MinimalContainer())
+
+    def test_wrapper_element_can_have_children_uses_html_tag_supports_children(self):
+        self.assertTrue(MinimalContainer().can_have_children)
+
+        class OverriddenContainer(MinimalContainer):
+            @property
+            def html_tag_supports_children(self):
+                return False
+
+        self.assertFalse(OverriddenContainer().can_have_children)
 
     def test_bootstrap(self):
         container = MinimalContainer()

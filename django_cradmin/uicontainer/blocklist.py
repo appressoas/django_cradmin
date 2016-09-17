@@ -24,7 +24,7 @@ class BlocklistItemTitle(convenience.AbstractWithOptionalEscapedText):
     #: if you want the --xlarge variant.
     VARIANT_XLARGE = 'xlarge'
 
-    def __init__(self, html_tag, variant=None, **kwargs):
+    def __init__(self, variant=None, **kwargs):
         """
         Args:
             html_tag: The HTML tag to use for the title.
@@ -35,12 +35,8 @@ class BlocklistItemTitle(convenience.AbstractWithOptionalEscapedText):
             **kwargs: Kwargs for
                 :class:`~django_cradmin.uicontainer.container.AbstractWithOptionalEscapedText`.
         """
-        self.html_tag = html_tag
         self.variant = variant
         super(BlocklistItemTitle, self).__init__(**kwargs)
-
-    def get_wrapper_htmltag(self):
-        return self.html_tag
 
     def get_css_classes_list(self):
         css_classes = [
@@ -85,7 +81,7 @@ class BlocklistItem(convenience.AbstractWithOptionalParagraphWithEscapedText):
         self.variant = variant
         super(BlocklistItem, self).__init__(**kwargs)
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'div'
 
     def get_css_classes_list(self):
@@ -191,7 +187,7 @@ class Blocklist(container.AbstractContainerRenderable):
         self.variant = variant
         super(Blocklist, self).__init__(**kwargs)
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'div'
 
     def get_css_classes_list(self):

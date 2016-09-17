@@ -1,7 +1,7 @@
 {% load cradmin_tags %}
 
 {% block outer_wrapper %}
-    <{{ me.get_wrapper_htmltag }}{% block outer_wrapper_attributes %}{{ me.html_element_attributes_string }}{% endblock %}>
+    <{{ me.html_tag }}{% block outer_wrapper_attributes %}{{ me.html_element_attributes_string }}{% endblock %}>
         {% block content %}
             {% for childcontainer in me.iter_children %}
                 {% block childcontainer %}
@@ -9,5 +9,5 @@
                 {% endblock childcontainer %}
             {% endfor %}
         {% endblock content %}
-    {% if me.wrapper_element_can_have_children %}</{{ me.get_wrapper_htmltag }}>{% endif %}
+    {% if me.html_tag_supports_children %}</{{ me.html_tag }}>{% endif %}
 {% endblock outer_wrapper %}

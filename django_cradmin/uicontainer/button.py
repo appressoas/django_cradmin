@@ -12,7 +12,7 @@ class Button(convenience.AbstractWithOptionalEscapedText):
         self.variant = variant
         super(Button, self).__init__(**kwargs)
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'button'
 
     def get_default_button_type(self):

@@ -44,7 +44,7 @@ class Form(container.AbstractContainerRenderable):
         else:
             return []
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'form'
 
     def get_default_method(self):

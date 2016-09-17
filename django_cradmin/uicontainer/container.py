@@ -22,7 +22,7 @@ class AlreadyBootsrappedError(Exception):
 class NotAllowedToAddChildrenError(Exception):
     """
     Raised when trying to add children to a :class:`.AbstractContainerRenderable`
-    where :meth:`~.AbstractContainerRenderable.wrapper_element_can_have_children`
+    where :meth:`~.AbstractContainerRenderable.html_tag_supports_children`
     returns ``False``.
     """
 
@@ -40,7 +40,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     Base class for all renderables in the uicontainer framework.
 
     This can not be used directly. You extend it, and at least override
-    :meth:`.get_wrapper_htmltag`, or use one of the subclasses.
+    :meth:`.get_default_html_tag`, or use one of the subclasses.
 
     The most basic subclass is :class:`django_cradmin.uicontainer.div.Div`.
 
@@ -137,16 +137,57 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                 html_tag=self._overridden_html_tag
             ))
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         """
-        Get the HTML tag to wrap renderable in.
+        Get the default HTML tag to wrap renderable in.
 
-        Raises NotImplementedError by default, so this must be overridden in subclasses.
+        Can be overriden by the ``html_tag`` kwarg for :meth:`.__init__`.
+
+        Returns ``"div"`` by default.
         """
-        raise NotImplementedError('{module}.{classname} must override get_wrapper_htmltag()'.format(
-            module=self.__class__.__module__,
-            classname=self.__class__.__name__
-        ))
+        return 'div'
+
+    @property
+    def html_tag(self):
+        """
+        Get the HTML tag for this container.
+        """
+        return self._overridden_html_tag or self.get_default_html_tag()
+
+    @property
+    def html_tag_supports_children(self):
+        """
+        Does the html tag support children?
+
+        If this returns ``False``, we:
+
+        - Do not render an end tag for the wrapper element.
+        - Do not allow children to be added to the container.
+
+        Should be overridden to return ``False`` if the :meth:`.get_default_html_tag`
+        does not allow for children. Examples of this case is if the
+        wrapper html tag i ``input`` or ``hr``.
+
+        See also :meth:`.can_have_children`, which should be used if the HTML tag
+        should have and end tag, but not children.
+
+        Returns:
+            boolean: True by default.
+        """
+        return True
+
+    @property
+    def can_have_children(self):
+        """
+        Can this container have children?
+
+        If this returns ``False``, :meth:`.add_child` will raise
+        :class:`.NotAllowedToAddChildrenError`.
+
+        Returns:
+            boolean: The return value from :meth:`.html_tag_supports_children` by default.
+        """
+        return self.html_tag_supports_children
 
     def get_default_role(self):
         """
@@ -317,7 +358,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         Returns:
             A reference to self. This means that you can chain calls to this method.
         """
-        if self.wrapper_element_can_have_children:
+        if self.can_have_children:
             self._childrenlist.append(childcontainer)
             if self._is_bootsrapped and not childcontainer._is_bootsrapped:
                 childcontainer.bootstrap(parent=self)
@@ -356,22 +397,6 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         Get the number of children in the container.
         """
         return len(self._childrenlist)
-
-    @property
-    def wrapper_element_can_have_children(self):
-        """
-        Can this contain children?
-
-        If this returns ``False``, we:
-
-        - Do not render an end tag for the wrapper element.
-        - Do not allow children to be added to the container.
-
-        Should be overridden to return ``False`` if the :meth:`.get_wrapper_htmltag`
-        does not allow for children. Examples of this case is if the
-        wrapper html tag i ``input`` or ``hr``.
-        """
-        return True
 
     @property
     def should_render(self):
@@ -414,8 +439,8 @@ class Div(AbstractContainerRenderable):
     Renders a ``<div>``.
 
     The only thing this class does is to override
-    :meth:`django_cradmin.uicontainer.container.AbstractContainerRenderable.get_wrapper_htmltag`
+    :meth:`django_cradmin.uicontainer.container.AbstractContainerRenderable.get_default_html_tag`
     and return ``"div"``.
     """
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'div'

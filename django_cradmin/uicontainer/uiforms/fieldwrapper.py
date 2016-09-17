@@ -52,7 +52,7 @@ class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableC
         self.formrenderable.register_field_wrapper_renderable(field_wrapper_renderable=self)
         return returnvalue
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'div'
 
     def get_default_label_renderable(self):

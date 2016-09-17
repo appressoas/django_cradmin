@@ -13,7 +13,7 @@ class Label(container.AbstractContainerRenderable, mixins.FieldWrapperRenderable
     """
     template_name = 'django_cradmin/uicontainer/uiforms/field/label.django.html'
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'label'
 
     @property

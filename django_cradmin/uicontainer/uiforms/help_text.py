@@ -24,7 +24,7 @@ class AutomaticHelpText(BaseHelpTextRenderable):
     """
     template_name = 'django_cradmin/uicontainer/uiforms/field/automatic_help_text.django.html'
 
-    def get_wrapper_htmltag(self):
+    def get_default_html_tag(self):
         return 'p'
 
     @property

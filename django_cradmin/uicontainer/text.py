@@ -19,7 +19,7 @@ class EscapedText(container.AbstractContainerRenderable):
         super(EscapedText, self).__init__(**kwargs)
 
     @property
-    def wrapper_element_can_have_children(self):
+    def can_have_children(self):
         return False
 
 
@@ -41,5 +41,5 @@ class Html(container.AbstractContainerRenderable):
         super(Html, self).__init__(**kwargs)
 
     @property
-    def wrapper_element_can_have_children(self):
+    def can_have_children(self):
         return False
