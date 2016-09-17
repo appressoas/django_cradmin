@@ -35,7 +35,7 @@ class AutomaticDjangoField(BaseFieldRenderable):
 
     You never use this on its own outside a :class:`.FieldWrapper`.
     """
-    template_name = 'django_cradmin/uicontainer/uiforms/field/automatic_django_field.django.html'
+    template_name = 'django_cradmin/uicontainer/field/automatic_django_field.django.html'
 
     @property
     def rendered_field(self):

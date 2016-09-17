@@ -3,7 +3,7 @@ from . import form_mixins
 
 
 class FieldSet(AbstractContainerRenderable, form_mixins.FormRenderableChildMixin):
-    template_name = 'django_cradmin/uicontainer/uiforms/fieldset.django.html'
+    template_name = 'django_cradmin/uicontainer/fieldset.django.html'
 
     def __init__(self, title, **kwargs):
         self.title = title

@@ -6,7 +6,7 @@ class Form(container.AbstractContainerRenderable):
     """
     Renderable for a ``<form>``.
     """
-    template_name = 'django_cradmin/uicontainer/uiforms/form.django.html'
+    template_name = 'django_cradmin/uicontainer/form.django.html'
 
     def __init__(self, form, action=None, method=None, messages_container=None, **kwargs):
         """

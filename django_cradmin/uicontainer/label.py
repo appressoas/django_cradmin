@@ -11,7 +11,7 @@ class Label(container.AbstractContainerRenderable, form_mixins.FieldWrapperRende
     You never use this on its own outside a
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
-    template_name = 'django_cradmin/uicontainer/uiforms/field/label.django.html'
+    template_name = 'django_cradmin/uicontainer/field/label.django.html'
 
     def get_default_html_tag(self):
         return 'label'
