@@ -113,23 +113,6 @@
                         </div>
                     {% endblock example %}
                 {% endfor %}
-
-                {% for markup in node.section.markups %}
-                    {% block markup %}
-                        {% block markup-title %}
-                            {% if markup.title %}
-                                <h4 class="kss-usage__subtitle">
-                                    {{ markup.title }}
-                                </h4>
-                            {% endif %}
-                        {% endblock markup-title %}
-                        {% block markup-code %}
-                            <div class="kss-usage__code  kss-usage__code--{{ markup.syntax }}">
-                                {{ markup.html|safe }}
-                            </div>
-                        {% endblock markup-code %}
-                    {% endblock markup %}
-                {% endfor %}
             </div>
         {% endif %}
     {% endblock usage %}
