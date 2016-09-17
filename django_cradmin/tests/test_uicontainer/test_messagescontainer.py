@@ -31,17 +31,6 @@ class TestMessagesContainer(test.TestCase):
         self.assertEqual(selector.one('.test-messages').cssclasses_set,
                          {'blocklist', 'blocklist--tight', 'test-messages'})
 
-    def test_css_classes_variant_none(self):
-        container = uicontainer.messagescontainer.MessagesContainer(
-            test_css_class_suffixes_list=['messages'],
-            variant=None
-        )\
-            .add_info(text='test')\
-            .bootstrap()
-        selector = htmls.S(container.render())
-        self.assertEqual(selector.one('.test-messages').cssclasses_set,
-                         {'blocklist', 'test-messages'})
-
     def test_add_message(self):
         container = uicontainer.messagescontainer.MessagesContainer(
             test_css_class_suffixes_list=['messages']

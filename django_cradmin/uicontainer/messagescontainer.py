@@ -146,9 +146,26 @@ class MessageContainer(blocklist.BlocklistItem):
     This is a very thin extension of :class:`django_cradmin.uicontainer.blocklist.BlocklistItem`
     that just adds unit test css classes.
     """
+    def __init__(self, level, **kwargs):
+        """
+        Args:
+            level: The message level. See :meth:`.AbstractMessageContainerMixin.create_message_container`.
+            **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
+        """
+        self.level = level
+        super(MessageContainer, self).__init__(**kwargs)
+
+    def get_default_bem_variant_list(self):
+        """
+        Default BEM variant set to the level kwarg for :meth:`.__init__`.
+
+        So this assumes that a variant matching the level exists.
+        """
+        return [self.level]
+
     def get_default_test_css_class_suffixes_list(self):
         return super(MessageContainer, self).get_default_test_css_class_suffixes_list() + [
-            '{}-message'.format(self.variant or 'default')
+            '{}-message'.format(self.level or 'default')
         ]
 
 
@@ -161,13 +178,10 @@ class MessagesContainer(AbstractMessageContainerMixin, blocklist.Blocklist):
 
     - Changes the default variant to :obj:`~django_cradmin.uicontainer.blocklist.Blocklist.VARIANT_TIGHT`.
     - Implements :class:`.AbstractMessageContainerMixin` with
-      :class:`django_cradmin.uicontainer.blocklist.BlocklistItem` as the message container.
-      Levels are mapped directly to variants.
+      :class:`.MessageContainer` as the message container.
     """
-    def __init__(self, **kwargs):
-        variant = kwargs.pop('variant', self.VARIANT_TIGHT)
-        kwargs['variant'] = variant
-        super(MessagesContainer, self).__init__(**kwargs)
-
     def create_message_container(self, level, text='', **kwargs):
-        return MessageContainer(variant=level, text=text, **kwargs)
+        return MessageContainer(level=level, text=text, **kwargs)
+
+    def get_default_bem_variant_list(self):
+        return ['tight']
