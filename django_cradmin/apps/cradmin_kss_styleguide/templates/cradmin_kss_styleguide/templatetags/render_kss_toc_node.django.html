@@ -5,6 +5,7 @@
         <a {% block tocentry-href %}href="{% kss_section_url styleguideconfig=styleguideconfig node=node %}"{% endblock %}
                 class="kss-menu__link  kss-menu__link--level{{ node.level }}">
             {% block tocentry-text %}
+                <span class="kss-menu__ref">{{ node.dotted_numbered_path }}</span>
                 {% if node.section %}
                     <span class="kss-menu__name">
                         {{ node.section.title }}

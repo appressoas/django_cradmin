@@ -66,14 +66,12 @@ $kss-controls-height: $vertical-rythm--medium;
         column-gap: $spacing;
 
         @include min-width(md) {
-            column-count: 3;
-            column-gap: $spacing--large;
+            column-count: 2;
         }
 
         @include min-width(lg) {
-            column-count: 4;
+            column-count: 3;
             column-gap: $spacing--large;
-            max-width: $container-width--wide;
         }
     }
 
@@ -99,6 +97,14 @@ $kss-controls-height: $vertical-rythm--medium;
         &:hover {
             color: color(primary);
         }
+    }
+    &__ref {
+        @include font(header, normal);
+        @include font-size(xsmall);
+        display: inline-block;
+        color: rgba($color-light, 0.7);
+        width: $indention;
+        text-align: right;
     }
 }
 
