@@ -1,7 +1,14 @@
 /*
+Form
+
+
+Styleguide form
+*/
+
+/*
 Form sections
 
-Example: {type: isolated} Default form section
+Example: Default form section
 
     <section class="form-section">
         <label>
@@ -10,8 +17,32 @@ Example: {type: isolated} Default form section
         </label>
     </section>
 
+Example: {preview: false} Without preview
 
-Styleguide components.form-section
+    <section class="form-section">
+        <label>
+            Standard input
+            <input class="input" type="text" placeholder="I set the standard">
+        </label>
+    </section>
+
+Example: {code: false} Without code
+
+    <section class="form-section">
+        <label>
+            Standard input
+            <input class="input" type="text" placeholder="I set the standard">
+        </label>
+    </section>
+
+Example: {syntax: css} Syntax other than HTML - preview is false by default
+
+    .stuff {
+        color: red;
+    }
+
+
+Styleguide form.form-section
 */
 
 .form-section {

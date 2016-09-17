@@ -91,6 +91,7 @@ def render_kss_sections(
     node = kss_styleguide.as_tree()
     if prefix:
         node = node.get_node_by_reference(prefix)
+
     return render_to_string(
         template_name=styleguideconfig.get_sections_template_name(),
         context={

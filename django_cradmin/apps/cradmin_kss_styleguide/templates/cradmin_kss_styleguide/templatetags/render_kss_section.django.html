@@ -44,7 +44,7 @@
                 {% for example in node.section.examples %}
                     {% block example %}
                         <div class="kss-usage__example
-                                {% if example.syntax == 'html' %}
+                                {% if example.preview %}
                                     kss-usage__example--with-preview  kss-usage__example--showpreview
                                 {% endif %}"
                              id="id_example_{{ node.reference }}_{{ forloop.counter }}">
@@ -58,7 +58,7 @@
                                         {% endif %}
                                     </h4>
                                 {% endblock example-title %}
-                                {% if example.syntax == 'html' %}
+                                {% if example.code and example.preview %}
                                     <div class="kss-usage__previewbuttons">
                                         <button type="button" class="button button--compact button--fill"
                                                 id="id_example_{{ node.reference }}_{{ forloop.counter }}_previewbutton"
@@ -73,9 +73,10 @@
                                     </div>
                                 {% endif %}
                             </header>
+
                             <div class="kss-usage__preview-wrapper">
                                 <div class="kss-usage__preview-content">
-                                    {% if example.syntax == 'html' %}
+                                    {% if example.preview %}
                                         {% block example-preview %}
                                             {% if example.type == 'isolated' or example.type == 'fullpage' %}
                                                 <div class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}">
@@ -101,21 +102,15 @@
                                                 </div>
                                             {% endif %}
                                         {% endblock example-preview %}
-                                        {% block example-htmlcode %}
-                                            <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
-                                                {{ example.html|safe }}
-                                            </div>
-                                        {% endblock example-htmlcode %}
-                                    </div>
+                                    {% endif %}
+                                    {% block example-htmlcode %}
+                                        <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
+                                            {{ example.html|safe }}
+                                        </div>
+                                    {% endblock example-htmlcode %}
                                 </div>
                             </div>
-                        {% else %}
-                            {% block example-nothtmlcode %}
-                                <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
-                                    {{ example.html|safe }}
-                                </div>
-                            {% endblock example-nothtmlcode %}
-                        {% endif %}
+                        </div>
                     {% endblock example %}
                 {% endfor %}
 
