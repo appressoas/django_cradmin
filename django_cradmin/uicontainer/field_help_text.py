@@ -22,7 +22,7 @@ class AutomaticHelpText(BaseHelpTextRenderable):
     You never use this on its own outside a
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
-    template_name = 'django_cradmin/uicontainer/field/automatic_help_text.django.html'
+    template_name = 'django_cradmin/uicontainer/field_help_text/automatic_help_text.django.html'
 
     def get_default_html_tag(self):
         return 'p'

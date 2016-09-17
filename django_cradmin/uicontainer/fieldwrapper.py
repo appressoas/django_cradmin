@@ -6,7 +6,7 @@ from . import container
 from . import form_mixins
 from . import field
 from . import label
-from . import help_text
+from . import field_help_text
 
 
 class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRenderableChildMixin):
@@ -87,7 +87,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
 
         Defaults to an object of :class:`~django_cradmin.uicontainer.help_text.AutomaticHelpText`.
         """
-        return help_text.AutomaticHelpText()
+        return field_help_text.AutomaticHelpText()
 
     def get_default_messages_container(self):
         """
