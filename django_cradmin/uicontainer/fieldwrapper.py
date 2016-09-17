@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django_cradmin.uicontainer import messagescontainer
 
-from .. import container
+from . import container
 from . import form_mixins
 from . import field
 from . import label
@@ -16,13 +16,13 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
     This just renders a wrapper ``div``, and lets other renderable classes
     render the field, label, etc.:
 
-    - A :class:`~django_cradmin.uicontainer.uiforms.label.Label` renders the label.
+    - A :class:`~django_cradmin.uicontainer.label.Label` renders the label.
       This can be overridden using the ``label_renderable`` kwarg, or in
       :meth:`.get_default_label_renderable`.
-    - A :class:`~django_cradmin.uicontainer.uiforms.field.BaseFieldRenderable` renders the
+    - A :class:`~django_cradmin.uicontainer.field.BaseFieldRenderable` renders the
       form field. This can be overridden using the ``field_renderable`` kwarg,
       or in :meth:`.get_default_field_renderable`.
-    - A :class:`~django_cradmin.uicontainer.uiforms.help_text.AutomaticHelpText`
+    - A :class:`~django_cradmin.uicontainer.help_text.AutomaticHelpText`
       renders the help text. This can be overridden using the ``help_text_renderable``
       kwarg, or in :meth:`.get_default_help_text_renderable`.
     """
@@ -45,7 +45,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         """
         Extends :meth:`django_cradmin.uicontainer.container.container.AbstractContainerRenderable.bootstrap`
         with a call to
-        :meth:`django_cradmin.uicontainer.uiforms.form.Form.register_field_wrapper_renderable`
+        :meth:`django_cradmin.uicontainer.form.Form.register_field_wrapper_renderable`
         to register this with the form.
         """
         returnvalue = super(FieldWrapper, self).bootstrap(**kwargs)
@@ -62,7 +62,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         This is used unless it is overridden using the ``label_renderable``
         kwarg for :meth:`.__init__`.
 
-        Defaults to an object of :class:`~django_cradmin.uicontainer.uiforms.label.Label`.
+        Defaults to an object of :class:`~django_cradmin.uicontainer.label.Label`.
         """
         return label.Label()
 
@@ -74,7 +74,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         kwarg for :meth:`.__init__`.
 
         Defaults to an object of
-        :class:`~django_cradmin.uicontainer.uiforms.field.AutomaticDjangoField`.
+        :class:`~django_cradmin.uicontainer.field.AutomaticDjangoField`.
         """
         return field.AutomaticDjangoField()
 
@@ -85,7 +85,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         This is used unless it is overridden using the ``help_text_renderable``
         kwarg for :meth:`.__init__`.
 
-        Defaults to an object of :class:`~django_cradmin.uicontainer.uiforms.help_text.AutomaticHelpText`.
+        Defaults to an object of :class:`~django_cradmin.uicontainer.help_text.AutomaticHelpText`.
         """
         return help_text.AutomaticHelpText()
 

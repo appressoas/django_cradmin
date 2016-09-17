@@ -1,4 +1,4 @@
-from ..container import AbstractContainerRenderable
+from .container import AbstractContainerRenderable
 from . import form_mixins
 
 

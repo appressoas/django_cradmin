@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django import forms
 
 from . import form_mixins
-from .. import container
+from . import container
 
 
 class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.FieldWrapperRenderableChildMixin):

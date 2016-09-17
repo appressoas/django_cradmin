@@ -187,17 +187,17 @@ class PageCreateUpdateMixin(object):
     #     return form
 
     def get_form_renderable(self):
-        return uicontainer.uiforms.form.Form(
+        return uicontainer.form.Form(
             form=self.get_form(),
             children=[
-                uicontainer.uiforms.fieldwrapper.FieldWrapper('title'),
-                uicontainer.uiforms.fieldwrapper.FieldWrapper('intro'),
-                uicontainer.uiforms.fieldwrapper.FieldWrapper('body'),
-                # uicontainer.uiforms.fieldwrapper.FieldWrapper('publishing_time'),
-                uicontainer.uiforms.fieldset.FieldSet(
+                uicontainer.fieldwrapper.FieldWrapper('title'),
+                uicontainer.fieldwrapper.FieldWrapper('intro'),
+                uicontainer.fieldwrapper.FieldWrapper('body'),
+                # uicontainer.fieldwrapper.FieldWrapper('publishing_time'),
+                uicontainer.fieldset.FieldSet(
                     title='Advanced',
                     children=[
-                        uicontainer.uiforms.fieldwrapper.FieldWrapper('internal_notes'),
+                        uicontainer.fieldwrapper.FieldWrapper('internal_notes'),
                     ]
                 ),
                 uicontainer.button.SubmitPrimary(

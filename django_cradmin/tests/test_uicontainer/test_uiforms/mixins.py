@@ -18,14 +18,12 @@ class SingleFormRenderableHelperMixin(object):
         if formvalue:
             data = {'testfield': formvalue}
         form = form_class(data=data)
-        formrenderable = uicontainer.uiforms.form.Form(
+        formrenderable = uicontainer.form.Form(
             form=form,
-            children=[uicontainer.uiforms.fieldwrapper.FieldWrapper(fieldname='testfield')]
+            children=[uicontainer.fieldwrapper.FieldWrapper(fieldname='testfield')]
         ).bootstrap()
         return formrenderable
 
     def single_field_formrenderable_htmls(self, **kwargs):
         formrenderable = self.single_field_formrenderable_factory(**kwargs)
         return htmls.S(formrenderable.render(request=mock.MagicMock()))
-
-

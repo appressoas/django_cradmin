@@ -1,5 +1,5 @@
-from .. import container
-from .. import messagescontainer
+from . import container
+from . import messagescontainer
 
 
 class Form(container.AbstractContainerRenderable):
@@ -80,21 +80,21 @@ class Form(container.AbstractContainerRenderable):
 
     def register_field_wrapper_renderable(self, field_wrapper_renderable):
         """
-        Register a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
+        Register a :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`
         with this form.
 
         The form can access all its fields via :meth:`.get_field_wrapper_renderable`
         and :meth:`.iter_field_wrapper_renderables`.
 
         Args:
-            field_wrapper_renderable: A :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
+            field_wrapper_renderable: A :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`
                 object.
         """
         self._fieldrenderable_map[field_wrapper_renderable.fieldname] = field_wrapper_renderable
 
     def get_field_wrapper_renderable(self, fieldname):
         """
-        Get a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
+        Get a :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`
         that is a child of the form.
 
         Args:
@@ -113,7 +113,7 @@ class Form(container.AbstractContainerRenderable):
     def iter_field_wrapper_renderables(self):
         """
         Get an iterator over all the
-        :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`
+        :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`
         objects within the form.
         """
         return self._fieldrenderable_map.values()
