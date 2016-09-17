@@ -74,12 +74,28 @@ def render_kss_section_example(styleguideconfig, section):
 
 @register.simple_tag(takes_context=True)
 def render_kss_section(
-        context, styleguideconfig, section):
+        context, styleguideconfig, node):
     return render_to_string(
         template_name=styleguideconfig.get_section_template_name(),
         context={
             'styleguideconfig': styleguideconfig,
-            'section': section,
+            'node': node,
+        },
+        request=context.get('request', None)
+    )
+
+
+@register.simple_tag(takes_context=True)
+def render_kss_sections(
+        context, styleguideconfig, kss_styleguide, prefix=None):
+    node = kss_styleguide.as_tree()
+    if prefix:
+        node = node.get_node_by_reference(prefix)
+    return render_to_string(
+        template_name=styleguideconfig.get_sections_template_name(),
+        context={
+            'styleguideconfig': styleguideconfig,
+            'node': node,
         },
         request=context.get('request', None)
     )
@@ -98,27 +114,13 @@ def render_kss_toc_node(context, styleguideconfig, node):
 
 
 @register.simple_tag(takes_context=True)
-def render_kss_toc(context, styleguideconfig, kss_styleguide, prefix=None):
-    sectiontree = kss_styleguide.as_tree(referenceprefix=prefix)
+def render_kss_toc(context, styleguideconfig, kss_styleguide):
+    sectiontree = kss_styleguide.as_tree()
     return render_to_string(
         template_name=styleguideconfig.get_toc_template_name(),
         context={
             'styleguideconfig': styleguideconfig,
             'sectiontree': sectiontree,
-        },
-        request=context.get('request', None)
-    )
-
-
-@register.simple_tag(takes_context=True)
-def render_kss_sections(
-        context, styleguideconfig, kss_styleguide, prefix=None):
-    sections = kss_styleguide.iter_sorted_sections(referenceprefix=prefix)
-    return render_to_string(
-        template_name=styleguideconfig.get_sections_template_name(),
-        context={
-            'styleguideconfig': styleguideconfig,
-            'sections': sections,
         },
         request=context.get('request', None)
     )

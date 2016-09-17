@@ -1,150 +1,143 @@
 {% load cradmin_kss_styleguide_tags %}
 {% load i18n %}
 
-{% if section|kss_section_level == 1 %}
-    <div id="kssref-{{ section.reference }}" class="kss-section  kss-section--depth-{{ section|kss_section_level }}">
-{% else %}
-    <section id="kssref-{{ section.reference }}" class="kss-section  kss-section--depth-{{ section|kss_section_level }}">
-{% endif %}
+<div id="kssref-{{ node.reference }}" class="kss-section  kss-section--depth-{{ node.level }}">
 
 {% block title %}
-    <h2 class="kss-title  kss-title--level-{{ section|kss_section_level }}">
-        <a class="kss-title__permalink" href="#kssref-{{ section.reference }}">
+    <h2 class="kss-title  kss-title--level-{{ node.level }}">
+        <a class="kss-title__permalink" href="#kssref-{{ node.reference }}">
             {% block title-content %}
                 <span class="kss-title__ref">
-                    {{ section.reference }}
+                    {{ node.dotted_numbered_path }}
                 </span>
-                {{ section.title }}
+                {{ node.title }}
             {% endblock title-content %}
         </a>
     </h2>
 {% endblock title %}
 
-{% block modifiers %}
-    {% if section.modifiers %}
-        <ul class="kss-parameters">
-            {% for modifier in section.modifiers %}
-                <li class="kss-parameters__item">
-                    <code class="kss-parameters__name">{{ modifier.name }}</code>
-                    <div class="kss-parameters__description">{{ modifier.description_html|safe }}</div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock modifiers %}
+{% if node.section %}
+    {% block modifiers %}
+        {% if node.section.modifiers %}
+            <ul class="kss-parameters">
+                {% for modifier in node.section.modifiers %}
+                    <li class="kss-parameters__item">
+                        <code class="kss-parameters__name">{{ modifier.name }}</code>
+                        <div class="kss-parameters__description">{{ modifier.description_html|safe }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endblock modifiers %}
 
-{% block description %}
-    {% if section.description %}
-        <div class="kss-description">
-            {{ section.description_html|safe }}
-        </div>
-    {% endif %}
-{% endblock description %}
+    {% block description %}
+        {% if node.section.description %}
+            <div class="kss-description">
+                {{ node.section.description_html|safe }}
+            </div>
+        {% endif %}
+    {% endblock description %}
 
-{% block usage %}
-    {% if section.has_markups or section.has_examples %}
-        <div class="kss-usage">
-            {% for example in section.examples %}
-                {% block example %}
-                    <div class="kss-usage__example
-                            {% if example.syntax == 'html' %}
-                                kss-usage__example--with-preview  kss-usage__example--showpreview
-                            {% endif %}"
-                         id="id_example_{{ section.reference }}_{{ forloop.counter }}">
-                        <header class="kss-usage__header">
-                            {% block example-title %}
-                                <h4 class="kss-usage__subtitle">
-                                    {% if example.title %}
-                                        {{ example.title }}
-                                    {% else %}
-                                        {% trans "Example" %}
-                                    {% endif %}
-                                </h4>
-                            {% endblock example-title %}
-                            {% if example.syntax == 'html' %}
-                                <div class="kss-usage__previewbuttons">
-                                    <button type="button" class="button button--compact button--fill"
-                                            id="id_example_{{ section.reference }}_{{ forloop.counter }}_previewbutton"
-                                            onclick="cradmin_kss_styleguide_toggle_example(event, 'id_example_{{ section.reference }}_{{ forloop.counter }}', false)">
-                                        {% trans "Preview" %}
-                                    </button>
-                                    <button type="button" class="button button--compact"
-                                            id="id_example_{{ section.reference }}_{{ forloop.counter }}_codebutton"
-                                            onclick="cradmin_kss_styleguide_toggle_example(event, 'id_example_{{ section.reference }}_{{ forloop.counter }}', true)">
-                                        {% trans "Code" %}
-                                    </button>
-                                </div>
-                            {% endif %}
-                        </header>
-                        <div class="kss-usage__preview-wrapper">
-                            <div class="kss-usage__preview-content">
+    {% block usage %}
+        {% if node.section.has_markups or node.section.has_examples %}
+            <div class="kss-usage">
+                {% for example in node.section.examples %}
+                    {% block example %}
+                        <div class="kss-usage__example
                                 {% if example.syntax == 'html' %}
-                                    {% block example-preview %}
-                                        {% if example.type == 'isolated' or example.type == 'fullpage' %}
-                                            <div class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}">
-                                                <iframe
-                                                    scrolling="no"
-                                                    src="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}"
-                                                    {% if example.height %}
-                                                        style="height: {{ example.height }}"
-                                                    {% else %}
-                                                        onload="cradmin_kss_styleguide_autoresize_iframe(this)"
-                                                    {% endif %}
-                                                >
-                                                </iframe>
-                                                <div class="kss-usage__new-window">
-                                                    <a href="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=section.reference exampleindex=forloop.counter0 %}" target="_blank">
-                                                        {% trans "Open example in new window" %}
-                                                    </a>
-                                                </div>
-                                            </div>
+                                    kss-usage__example--with-preview  kss-usage__example--showpreview
+                                {% endif %}"
+                             id="id_example_{{ node.reference }}_{{ forloop.counter }}">
+                            <header class="kss-usage__header">
+                                {% block example-title %}
+                                    <h4 class="kss-usage__subtitle">
+                                        {% if example.title %}
+                                            {{ example.title }}
                                         {% else %}
-                                            <div class="kss-usage__preview">
-                                                {{ example.text|safe }}
-                                            </div>
+                                            {% trans "Example" %}
                                         {% endif %}
-                                    {% endblock example-preview %}
-                                    {% block example-htmlcode %}
-                                        <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
-                                            {{ example.html|safe }}
-                                        </div>
-                                    {% endblock example-htmlcode %}
+                                    </h4>
+                                {% endblock example-title %}
+                                {% if example.syntax == 'html' %}
+                                    <div class="kss-usage__previewbuttons">
+                                        <button type="button" class="button button--compact button--fill"
+                                                id="id_example_{{ node.reference }}_{{ forloop.counter }}_previewbutton"
+                                                onclick="cradmin_kss_styleguide_toggle_example(event, 'id_example_{{ node.reference }}_{{ forloop.counter }}', false)">
+                                            {% trans "Preview" %}
+                                        </button>
+                                        <button type="button" class="button button--compact"
+                                                id="id_example_{{ node.reference }}_{{ forloop.counter }}_codebutton"
+                                                onclick="cradmin_kss_styleguide_toggle_example(event, 'id_example_{{ node.reference }}_{{ forloop.counter }}', true)">
+                                            {% trans "Code" %}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </header>
+                            <div class="kss-usage__preview-wrapper">
+                                <div class="kss-usage__preview-content">
+                                    {% if example.syntax == 'html' %}
+                                        {% block example-preview %}
+                                            {% if example.type == 'isolated' or example.type == 'fullpage' %}
+                                                <div class="kss-usage__previewiframe  kss-usage__previewiframe--{{ example.syntax }}">
+                                                    <iframe
+                                                        scrolling="no"
+                                                        src="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=node.reference exampleindex=forloop.counter0 %}"
+                                                        {% if example.height %}
+                                                            style="height: {{ example.height }}"
+                                                        {% else %}
+                                                            onload="cradmin_kss_styleguide_autoresize_iframe(this)"
+                                                        {% endif %}
+                                                    >
+                                                    </iframe>
+                                                    <div class="kss-usage__new-window">
+                                                        <a href="{% url 'cradmin_kss_styleguide_example' unique_id=styleguideconfig.unique_id section=node.reference exampleindex=forloop.counter0 %}" target="_blank">
+                                                            {% trans "Open example in new window" %}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div class="kss-usage__preview">
+                                                    {{ example.text|safe }}
+                                                </div>
+                                            {% endif %}
+                                        {% endblock example-preview %}
+                                        {% block example-htmlcode %}
+                                            <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
+                                                {{ example.html|safe }}
+                                            </div>
+                                        {% endblock example-htmlcode %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% else %}
-                        {% block example-nothtmlcode %}
-                            <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
-                                {{ example.html|safe }}
-                            </div>
-                        {% endblock example-nothtmlcode %}
-                    {% endif %}
-                {% endblock example %}
-            {% endfor %}
-
-            {% for markup in section.markups %}
-                {% block markup %}
-                    {% block markup-title %}
-                        {% if markup.title %}
-                            <h4 class="kss-usage__subtitle">
-                                {{ markup.title }}
-                            </h4>
+                        {% else %}
+                            {% block example-nothtmlcode %}
+                                <div class="kss-usage__code  kss-usage__code--{{ example.syntax }}">
+                                    {{ example.html|safe }}
+                                </div>
+                            {% endblock example-nothtmlcode %}
                         {% endif %}
-                    {% endblock markup-title %}
-                    {% block markup-code %}
-                        <div class="kss-usage__code  kss-usage__code--{{ markup.syntax }}">
-                            {{ markup.html|safe }}
-                        </div>
-                    {% endblock markup-code %}
-                {% endblock markup %}
-            {% endfor %}
-        </div>
-    {% endif %}
-{% endblock usage %}
+                    {% endblock example %}
+                {% endfor %}
 
-
-{% if section|kss_section_level == 1 %}
-    </div>
-{% else %}
-    </section>
+                {% for markup in node.section.markups %}
+                    {% block markup %}
+                        {% block markup-title %}
+                            {% if markup.title %}
+                                <h4 class="kss-usage__subtitle">
+                                    {{ markup.title }}
+                                </h4>
+                            {% endif %}
+                        {% endblock markup-title %}
+                        {% block markup-code %}
+                            <div class="kss-usage__code  kss-usage__code--{{ markup.syntax }}">
+                                {{ markup.html|safe }}
+                            </div>
+                        {% endblock markup-code %}
+                    {% endblock markup %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endblock usage %}
 {% endif %}
+
+</div>

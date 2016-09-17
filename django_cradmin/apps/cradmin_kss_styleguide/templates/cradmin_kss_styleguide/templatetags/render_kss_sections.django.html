@@ -1,7 +1,11 @@
 {% load cradmin_kss_styleguide_tags %}
 
-{% for section in sections %}
-    {% render_kss_section styleguideconfig=styleguideconfig section=section %}
+{% if node.level != -1 %}
+    {% render_kss_section styleguideconfig=styleguideconfig node=node %}
+{% endif %}
+
+{% for childnode in node.sorted_all_descendants_flat %}
+    {% render_kss_section styleguideconfig=styleguideconfig node=childnode %}
 {% endfor %}
 
 
