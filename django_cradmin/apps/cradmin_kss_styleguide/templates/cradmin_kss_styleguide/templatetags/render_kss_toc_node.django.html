@@ -1,0 +1,24 @@
+{% load cradmin_kss_styleguide_tags %}
+
+<div class="kss-menu__item  kss-menu__item--level{{ node.level }}">
+    {% block tocentry %}
+        <a {% block tocentry-href %}href="{% kss_section_url styleguideconfig=styleguideconfig node=node %}"{% endblock %}
+                class="kss-menu__link  kss-menu__link--level{{ node.level }}">
+            {% block tocentry-text %}
+                {% if node.section %}
+                    <span class="kss-menu__name">
+                        {{ node.section.title }}
+                    </span>
+                {% else %}
+                    <span class="kss-menu__name">{{ node.segment_text|capfirst }}</span>
+                {% endif %}
+            {% endblock tocentry-text %}
+        </a>
+    {% endblock tocentry %}
+
+    <div class="kss-menu__children">
+        {% for childnode in node.sorted_children %}
+            {% render_kss_toc_node styleguideconfig=styleguideconfig node=childnode %}
+        {% endfor %}
+    </div>
+</div>

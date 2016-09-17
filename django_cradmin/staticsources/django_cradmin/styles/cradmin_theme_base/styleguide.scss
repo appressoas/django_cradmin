@@ -59,9 +59,6 @@ $kss-controls-height: $vertical-rythm--medium;
     }
 
     &__content {
-        @include font(header, bold);
-        @include font-size(medium);
-
         max-width: $container-width;
         margin: 0 auto;
         padding: $vertical-rythm--spacing $spacing;
@@ -73,20 +70,25 @@ $kss-controls-height: $vertical-rythm--medium;
             column-gap: $spacing--large;
         }
 
-        & > .kss-menu__item:not(.kss-menu__item--children) + .kss-menu__item:not(.kss-menu__item--children) {
-            margin-top: $vertical-rythm--spacing;
+        @include min-width(lg) {
+            column-count: 4;
+            column-gap: $spacing--large;
+            max-width: $container-width--wide;
         }
     }
 
     &__item {
+        @include font(base, normal);
+        @include font-size(small);
+        break-inside: avoid-column;
         break-after: avoid-column;
+        display: block;
 
-        &--children {
-            @include font(base, normal);
-            @include font-size(small);
-            display: inline-block;
-            break-inside: avoid-column;
-            margin-bottom: $vertical-rythm--spacing;
+        &--level0 {
+            @include font(header, bold);
+            @include font-size(medium);
+            margin-top: ($vertical-rythm--spacing / 2);
+            margin-bottom: ($vertical-rythm--spacing / 2);
         }
     }
 
@@ -97,15 +99,6 @@ $kss-controls-height: $vertical-rythm--medium;
         &:hover {
             color: color(primary);
         }
-    }
-
-    &__ref {
-        @include font(header, normal);
-        @include font-size(xsmall);
-        display: inline-block;
-        color: rgba($color-light, 0.7);
-        width: $indention;
-        text-align: right;
     }
 }
 

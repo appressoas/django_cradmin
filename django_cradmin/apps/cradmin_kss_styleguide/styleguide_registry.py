@@ -20,6 +20,7 @@ class AbstractStyleGuide(object):
                  section_template_name='cradmin_kss_styleguide/templatetags/render_kss_section.django.html',
                  sections_template_name='cradmin_kss_styleguide/templatetags/render_kss_sections.django.html',
                  toc_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc.django.html',
+                 toc_node_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc_node.django.html',
                  example_template_name='cradmin_kss_styleguide/styleguideview/example.django.html',
                  frontpage_template=None,
                  javascript_component_ids=None):
@@ -34,6 +35,7 @@ class AbstractStyleGuide(object):
         self.section_template_name = section_template_name
         self.sections_template_name = sections_template_name
         self.toc_template_name = toc_template_name
+        self.toc_node_template_name = toc_node_template_name
         self.frontpage_template = frontpage_template
         self.example_template_name = example_template_name
         self.javascript_component_ids = javascript_component_ids or []
@@ -58,6 +60,9 @@ class AbstractStyleGuide(object):
 
     def get_toc_template_name(self):
         return self.toc_template_name
+
+    def get_toc_node_template_name(self):
+        return self.toc_node_template_name
 
     def get_example_template_name(self):
         return self.example_template_name

@@ -17,33 +17,17 @@
 </header>
 
 <nav class="kss-menu" onclick="cradmin_kss_styleguide_toggle_menu()">
-    <ul class="kss-menu__content">
-    {% for section in sections_tree %}
-        {% if section == 'levelup' %}
-            <li class="kss-menu__item  kss-menu__item--children">
-                <ul class="kss-menu__children">
-        {% elif section == 'leveldown' %}
-                </ul>
-            </li>
-        {% else %}
-            {% block tocentry-wrapper %}
-                <li class="kss-menu__item">
-                    {% block tocentry %}
-                        <a {% block tocentry-href %}href="{% kss_section_url styleguideconfig=styleguideconfig section=section %}"{% endblock %}
-                                class="kss-menu__link">
-                            {% block tocentry-text %}
-                                <span class="kss-menu__ref">{{ section.reference }}.</span>
-                                <span class="kss-menu__name">{{ section.title }}</span>
-                            {% endblock tocentry-text %}
-                        </a>
-                    {% endblock tocentry %}
-                </li>
-            {% endblock tocentry-wrapper %}
-        {% endif %}
-    {% endfor %}
-    </ul>
+    <div class="kss-menu__content">
+        {% for childnode in sectiontree.sorted_children %}
+            {% render_kss_toc_node styleguideconfig=styleguideconfig node=childnode %}
+        {% endfor %}
+    </div>
 </nav>
+
+
 <ul class="kss-sizer"></ul>
+
+
 
 <script>
     var menuState = false;
