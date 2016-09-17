@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 from django_cradmin.uicontainer import messagescontainer
 
 from .. import container
-from . import mixins
+from . import form_mixins
 from . import field
 from . import label
 from . import help_text
 
 
-class FieldWrapper(container.AbstractContainerRenderable, mixins.FormRenderableChildMixin):
+class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRenderableChildMixin):
     """
     Renders a form field.
 

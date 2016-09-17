@@ -2,11 +2,11 @@ from __future__ import unicode_literals
 
 from django import forms
 
-from . import mixins
+from . import form_mixins
 from .. import container
 
 
-class BaseFieldRenderable(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
+class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.FieldWrapperRenderableChildMixin):
     """
     Abstract base class for renders of the actual form field
     for a :class:`.FieldWrapper`.

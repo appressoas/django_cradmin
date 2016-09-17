@@ -1,4 +1,4 @@
-from . import mixins  # noqa
+from . import form_mixins  # noqa
 from . import form  # noqa
 from . import label  # noqa
 from . import help_text  # noqa

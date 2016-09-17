@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
 
-from . import mixins
+from . import form_mixins
 from .. import container
 
 
-class BaseHelpTextRenderable(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
+class BaseHelpTextRenderable(container.AbstractContainerRenderable, form_mixins.FieldWrapperRenderableChildMixin):
     """
     Base class for renderers of help text for a
     :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.

@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
 
-from . import mixins
+from . import form_mixins
 from .. import container
 
 
-class Label(container.AbstractContainerRenderable, mixins.FieldWrapperRenderableChildMixin):
+class Label(container.AbstractContainerRenderable, form_mixins.FieldWrapperRenderableChildMixin):
     """
     Renders a label for a :class:`~django_cradmin.uicontainer.uiforms.fieldwrapper.FieldWrapper`.
 
