@@ -90,6 +90,7 @@ Utilities
     crhumanize
     delay_middleware
     messages_debug_middleware
+    uicontainer
 
 
 *******

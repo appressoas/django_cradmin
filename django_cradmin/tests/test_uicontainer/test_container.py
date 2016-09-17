@@ -86,6 +86,51 @@ class TestAbstractContainerRenderable(test.TestCase):
         container = MyContainer(css_classes_list=['x'], extra_css_classes_list=['c', 'd'])
         self.assertEqual(container.get_css_classes_list(), ['x', 'c', 'd'])
 
+    def test_get_bem_block_kwarg_invalid(self):
+        with self.assertRaises(uicontainer.container.InvalidBemError):
+            MinimalContainer(bem_block='menu__item')
+
+    def test_get_css_classes_list_bem_block_kwarg(self):
+        container = MinimalContainer(bem_block='menu')
+        self.assertEqual(container.get_css_classes_list(), ['menu'])
+
+    def test_get_bem_element_kwarg_invalid(self):
+        with self.assertRaises(uicontainer.container.InvalidBemError):
+            MinimalContainer(bem_element='menu')
+
+    def test_get_css_classes_list_bem_element_kwarg(self):
+        container = MinimalContainer(bem_element='menu__item')
+        self.assertEqual(container.get_css_classes_list(), ['menu__item'])
+
+    def test_get_css_classes_list_bem_variants_kwarg(self):
+        container = MinimalContainer(bem_element='menu__item', bem_variant_list=['active'])
+        self.assertEqual(container.get_css_classes_list(), ['menu__item', 'menu__item--active'])
+
+    def test_get_css_classes_list_bem_multiple_variants(self):
+        container = MinimalContainer(bem_element='menu__item', bem_variant_list=['active', 'large'])
+        self.assertEqual(container.get_css_classes_list(),
+                         ['menu__item', 'menu__item--active', 'menu__item--large'])
+
+    def test_get_css_classes_list_get_default_bem_block_or_element(self):
+        class MyContainer(MinimalContainer):
+            def get_default_bem_block_or_element(self):
+                return 'menu'
+        container = MyContainer()
+        self.assertEqual(container.get_css_classes_list(), ['menu'])
+
+    def test_get_css_classes_list_get_default_bem_variant_list(self):
+        class MyContainer(MinimalContainer):
+            def get_default_bem_variant_list(self):
+                return ['expanded']
+        container = MyContainer(bem_block='menu')
+        self.assertEqual(container.get_css_classes_list(), ['menu', 'menu--expanded'])
+
+    def test_get_css_classes_list_bem_does_not_affect_other_css_classes(self):
+        container = MinimalContainer(bem_block='menu',
+                                     bem_variant_list=['expanded'],
+                                     css_classes_list=['someclass'])
+        self.assertEqual(container.get_css_classes_list(), ['menu', 'menu--expanded', 'someclass'])
+
     def test_iter_children(self):
         container = MinimalContainer(children=[
             MinimalContainer(dom_id='a'), MinimalContainer(dom_id='b')])

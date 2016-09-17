@@ -35,6 +35,12 @@ class UnsupportedHtmlTagError(ValueError):
     """
 
 
+class InvalidBemError(ValueError):
+    """
+    Raised when invalid BEM is supplied.
+    """
+
+
 class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     """
     Base class for all renderables in the uicontainer framework.
@@ -70,7 +76,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     supported_html_tags = None
 
     def __init__(self, children=None,
-                 bem_block=None, bem_element=None, bem_variants=None,
+                 bem_block=None, bem_element=None, bem_variant_list=None,
                  html_tag=None,
                  css_classes_list=None,
                  extra_css_classes_list=None,
@@ -102,22 +108,47 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                 attributes returned by :meth:`.get_html_element_attributes`,
                 the attributes specified in this kwarg takes presedense.
                 The format of the dict is specified in :meth:`.get_html_element_attributes`.
-
         """
         self.validate_html_tag(html_tag)
+        self.__validate_bem(bem_block=bem_block,
+                            bem_element=bem_element)
         self._childrenlist = []
         self._is_bootsrapped = False
         self.properties = {}
+        self._overridden_bem_block_or_element = bem_block or bem_element
+        self._overridden_bem_variant_list = bem_variant_list
         self._overridden_role = role
         self._overridden_dom_id = dom_id
         self._overridden_html_tag = html_tag
         self._html_element_attributes = html_element_attributes
         self.add_children(*self.prepopulate_children_list())
-        self.css_classes_list = css_classes_list
-        self.test_css_class_suffixes_list = test_css_class_suffixes_list
-        self.extra_css_classes_list = extra_css_classes_list
+        self._overridden_css_classes_list = css_classes_list
+        self._overridden_test_css_class_suffixes_list = test_css_class_suffixes_list
+        self._extra_css_classes_list = extra_css_classes_list
         if children:
             self.add_children(*children)
+
+    def __validate_bem(self, bem_block, bem_element):
+        if bem_block and bem_element:
+            raise InvalidBemError(
+                'Can not specify both bem_element or bem_block. An '
+                'HTML element is eighter a BEM block or a BEM element.')
+        if bem_block:
+            if '__' in bem_block:
+                raise InvalidBemError(
+                    '{bem_block} is not a valid BEM block name. '
+                    'BEM blocks do not contain "__". Are you sure you '
+                    'did not mean to use the bem_element kwarg?'.format(
+                        bem_block=bem_block
+                    ))
+        elif bem_element:
+            if '__' not in bem_element:
+                raise InvalidBemError(
+                    '{bem_element} is not a valid BEM element name. '
+                    'BEM elements must contain "__". Are you sure you '
+                    'did not mean to use the bem_block kwarg?'.format(
+                        bem_element=bem_element
+                    ))
 
     def get_full_class_path_as_string(self):
         """
@@ -264,6 +295,64 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         """
         return []
 
+    def get_default_bem_block_or_element(self):
+        """
+        Get the default BEM block or element.
+
+        A HTML element is eighter a BEM block or a
+        BEM element, so we have joined this into
+        a single method.
+        """
+        return None
+
+    def get_bem_block_or_element(self):
+        """
+        Get the BEM block or element.
+
+        DO NOT OVERRIDE THIS METHOD.
+        Override :meth:`.get_default_bem_block_or_element` instead.
+        """
+        return (self._overridden_bem_block_or_element or
+                self.get_default_bem_block_or_element())
+
+    def get_default_bem_variant_list(self):
+        """
+        Get the default BEM variants.
+
+        The full CSS class of any variant in the list will
+        be :meth:`.get_bem_block_or_element` with ``--`` and
+        the variant appended, so if the bem block/element is
+        ``"menu"``, and the variant is ``"expanded"``, the
+        resulting css class will be ``"menu--expanded"``.
+        """
+        return []
+
+    def get_bem_variant_list(self):
+        """
+        Get the list of BEM variants.
+
+        DO NOT OVERRIDE THIS METHOD.
+        Override :meth:`.get_default_bem_variant_list` instead.
+        """
+        return self._overridden_bem_variant_list or self.get_default_bem_variant_list()
+
+    def get_bem_css_classes_list(self):
+        """
+        Get the BEM css classes as list.
+
+        DO NOT OVERRIDE THIS METHOD.
+        Override :meth:`.get_default_bem_block_or_element`
+        and :meth:`.get_default_bem_variant_list` instead.
+        """
+        bem_block_or_element = self.get_bem_block_or_element()
+        bem_css_classes = []
+        if bem_block_or_element:
+            bem_css_classes.append(bem_block_or_element)
+            for variant in self.get_bem_variant_list():
+                css_class = '{}--{}'.format(bem_block_or_element, variant)
+                bem_css_classes.append(css_class)
+        return bem_css_classes
+
     def get_css_classes_list(self):
         """
         DO NOT OVERRIDE THIS METHOD.
@@ -276,13 +365,13 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         for :meth:`.__init__`, and just falls back to :meth:`.get_default_css_classes_list`.
         So if you override this method, the ``css_classes_list`` kwarg will be useless.
         """
-        if self.css_classes_list:
-            css_classes_list = self.css_classes_list
+        css_classes_list = self.get_bem_css_classes_list()
+        if self._overridden_css_classes_list:
+            css_classes_list.extend(self._overridden_css_classes_list)
         else:
-            css_classes_list = self.get_default_css_classes_list()
-        if self.extra_css_classes_list:
-            css_classes_list = list(css_classes_list)
-            css_classes_list.extend(self.extra_css_classes_list)
+            css_classes_list.extend(self.get_default_css_classes_list())
+        if self._extra_css_classes_list:
+            css_classes_list.extend(self._extra_css_classes_list)
         return css_classes_list
 
     def get_default_test_css_class_suffixes_list(self):
@@ -306,8 +395,8 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         for :meth:`.__init__`, and just falls back to :meth:`.get_default_test_css_class_suffixes_list`.
         So if you override this method, the ``test_css_class_suffixes_list`` kwarg will be useless.
         """
-        if self.test_css_class_suffixes_list:
-            test_css_class_suffixes_list = self.test_css_class_suffixes_list
+        if self._overridden_test_css_class_suffixes_list:
+            test_css_class_suffixes_list = self._overridden_test_css_class_suffixes_list
         else:
             test_css_class_suffixes_list = self.get_default_test_css_class_suffixes_list()
         return test_css_class_suffixes_list
