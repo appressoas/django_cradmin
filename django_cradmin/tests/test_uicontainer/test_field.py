@@ -2,10 +2,10 @@ from __future__ import unicode_literals
 
 from django import forms
 from django import test
-from . import mixins
+from . import formtest_mixins
 
 
-class TestAutomaticDjangoFieldRenderable(test.TestCase, mixins.SingleFormRenderableHelperMixin):
+class TestAutomaticDjangoFieldRenderable(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
 
     #
     # CharField
