@@ -5,71 +5,78 @@
 
 
 {% block title %}
-    {% trans "Public share link" %}
+    Public share link
 {% endblock title %}
 
 {% block page-cover-title %}
     {% if generictoken %}
-        {% trans "Sharable link" %}
+        Sharable link
     {% else %}
-        {% trans "Get sharable link" %}
+        Get sharable link
     {% endif %}
 {% endblock page-cover-title %}
 
 {% block page-cover-content %}
     {{ block.super }}
     {% if generictoken %}
-        <p>
+        <p class="page-cover__description">
             Anyone with the link can add themself as administrator for the site.
-            This is just a demo for a public sharing workflow. You SHOULD NOT use this to invite admins in production!
+            This is just a demo for a public sharing workflow.
+            You <strong class="page-cover__strong">SHOULD NOT</strong> use this to
+            invite admins in production!
         </p>
     {% endif %}
 {% endblock page-cover-content %}
 
 {% block content %}
-    <div class="container django-cradmin-container-focus">
-        {% if generictoken %}
-            <h2>{% trans "Share" %}</h2>
+    {% if generictoken %}
+        <div class="page-section  page-section--tight">
+            <h2>Share</h2>
             <p>
-                {% trans "Share the link below with anyone you want to make an administrator for this site." %}
-                <input type="text" class="form-control"
-                       value="{{ url }}"
-                       django-cradmin-select-text-for-copy-on-focus="{{ url }}">
+                Share the link below with anyone you want to make an administrator for this site.
             </p>
+            <pre>{{ url }}</pre>
+        </div>
 
-            <h2>{% trans "Details" %}</h2>
-            <dl>
-                <dt>{% trans "Expires" %}</dt>
+        <div class="page-section  page-section--tight">
+            <h2>Details</h2>
+            <p>Expires:
                 {% if generictoken.expiration_datetime %}
-                    <dd>{{ generictoken.expiration_datetime|date:"DATETIME_FORMAT" }}</dd>
+                    {{ generictoken.expiration_datetime|date:"DATETIME_FORMAT" }}
                 {% else %}
-                    <dd class="text-muted">{% trans "Never" %}</dd>
+                    <span class="text-muted">Never</span>
                 {% endif %}
-                <dt>{% trans "Message" %}</dt>
-                {% if generictoken.metadata.message %}
-                    <dd style="white-space: pre-wrap;">{{ generictoken.metadata.message }}</dd>
-                {% else %}
-                    <dd class="text-muted">{% trans "(None)" %}</dd>
-                {% endif %}
-            </dl>
-
-            <h2>{% trans "Edit" %}</h2>
+            </p>
             <p>
-                <a href="{% cradmin_appurl 'edit' %}" class="btn btn-default">
-                    {% trans "Edit" %}
+                Message:
+                {% if generictoken.metadata.message %}
+                    <span style="white-space: pre-wrap;">{{ generictoken.metadata.message }}</span>
+                {% else %}
+                    <span class="text-muted">(None)</span>
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="page-section  page-section--tight">
+            <h2>Edit</h2>
+            <p>
+                <a href="{% cradmin_appurl 'edit' %}" class="button  button--primary">
+                    Edit
                 </a>
-                <a href="{% cradmin_appurl 'delete' generictoken.pk %}" class="btn btn-danger">
-                    {% trans "Disable" %}
+                <a href="{% cradmin_appurl 'delete' generictoken.pk %}" class="button">
+                    Disable
                 </a>
             </p>
-        {% else %}
+        </div>
+    {% else %}
+        <div class="page-section  page-section--tight  page-section--center">
             <p>
                 Click the button below to create a sharable link that enables anyone with
                 the link to add themselves as administrator for this site.
             </p>
-            <a href="{% cradmin_appurl 'edit' %}" class="btn btn-success btn-lg">
-                {% trans "Get sharable link" %}
+            <a href="{% cradmin_appurl 'edit' %}" class="button button--primary">
+                Get sharable link
             </a>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock content %}
