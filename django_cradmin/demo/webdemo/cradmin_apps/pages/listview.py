@@ -9,7 +9,7 @@ from . import mixins
 
 
 class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImage):
-    template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
+    template_name = 'webdemo/pages/pagelist-itemvalue.django.html'
     valuealias = 'page'
 
     def get_archiveimage(self):
@@ -84,12 +84,12 @@ class PagesListBuilderView(mixins.PagesQuerySetForRoleMixin,
     model = Page
     value_renderer_class = PageListItemValue
 
-    def get_filterlist_url(self, filters_string):
-        return self.request.cradmin_app.reverse_appurl(
-            'filter', kwargs={'filters_string': filters_string})
+    # def get_filterlist_url(self, filters_string):
+    #     return self.request.cradmin_app.reverse_appurl(
+    #         'filter', kwargs={'filters_string': filters_string})
 
     def get_post_include_template(self):
-        return 'webdemo/pages_listbuilder/pagelist-post-include.django.html'
+        return 'webdemo/pages/pagelist-post-include.django.html'
 
     def get_unfiltered_queryset_for_role(self, site):
         return mixins.PagesQuerySetForRoleMixin.get_queryset_for_role(self, site=site)\

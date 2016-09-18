@@ -3,14 +3,22 @@
 {% load static %}
 
 {% block page-cover-title %}
-    {% trans "Demo" %}:
-    <strong>{{ request.cradmin_role.name }}</strong>
+    Dashboard
 {% endblock page-cover-title %}
 
+{% block page-cover-content %}
+    {{ block.super }}
+    <p class="page-cover__description">
+        For {{ request.cradmin_role.name }}
+    </p>
+{% endblock page-cover-content %}
+
 {% block content %}
-    <section class="page-section">
-        <p>
-            Welcome to the django cradmin demo!
-        </p>
+    <section class="page-section  page-section--center-lg">
+        <div class="container">
+            <p>
+                Welcome to the django cradmin demo!
+            </p>
+        </div>
     </section>
 {% endblock content %}

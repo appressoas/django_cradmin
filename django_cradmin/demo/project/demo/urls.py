@@ -12,7 +12,7 @@ from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
 from django_cradmin.demo.project.demo.views.demo_overview import DemoView
 from django_cradmin.demo.uicontainerdemo.cradmin import UIContainerDemoCrAdminInstance
 from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
-from django_cradmin.demo.webdemo.cradmin import WebdemoCrAdminInstance
+from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 from django_cradmin.superuserui import superuserui_registry
 
 

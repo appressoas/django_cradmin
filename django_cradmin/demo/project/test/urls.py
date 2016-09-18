@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 
 from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
-from django_cradmin.demo.webdemo.cradmin import WebdemoCrAdminInstance
+from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 
 urlpatterns = [
     url(r'^cradmin_authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),

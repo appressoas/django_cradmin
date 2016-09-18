@@ -1,0 +1,25 @@
+{% extends "django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html" %}
+{% load cradmin_tags %}
+
+{% block title-content %}
+    {{ me.token.metadata.email }}
+{% endblock title-content %}
+
+{% block description-content %}
+    Created: {{ me.token.created_datetime|date:"DATETIME_FORMAT" }},
+    Expires: {{ me.token.expiration_datetime|date:"DATETIME_FORMAT" }},
+{% endblock description-content %}
+
+{% block content %}
+    {{ block.super }}
+
+    <p>
+        <a href="{% block deletebutton-url %}{% cradmin_appurl "delete" me.value.id %}{% endblock %}"
+                class="button"
+                aria-label='{% block deletebutton-arialabel %}Delete "{{ me.get_title }}"{% endblock %}'>
+            {% block deletebutton-content %}
+                Delete
+            {% endblock deletebutton-content %}
+        </a>
+    </p>
+{% endblock content %}

@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from django.template.defaultfilters import truncatechars
 from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
-from django_cradmin.apps.cradmin_imagearchive import cradminviews as imagearchive
 
 from django_cradmin.demo.webdemo.models import Site
 from django_cradmin.demo.webdemo.cradmin_apps import pages
@@ -19,7 +18,6 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     apps = [
         ('dashboard', dashboard.App),
         ('pages', pages.App),
-        ('imagearchive', imagearchive.App),
         ('inviteadmins', inviteadmins.App),
         ('sharable_link', sharable_link.App),
     ]
@@ -60,9 +58,6 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
             crmenu.LinkItemRenderable(
                 label=_('Pages'), url=self.appindex_url('pages'),
                 is_active=self.request.cradmin_app.appname == 'pages'),
-            crmenu.LinkItemRenderable(
-                label=_('Images'), url=self.appindex_url('imagearchive'),
-                is_active=self.request.cradmin_app.appname == 'imagearchive'),
             crmenu.LinkItemRenderable(
                 label=_('Invite admins'), url=self.appindex_url('inviteadmins'),
                 is_active=self.request.cradmin_app.appname == 'inviteadmins'),
