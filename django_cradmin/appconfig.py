@@ -22,7 +22,14 @@ class CradminWithStyleguideAppConfig(CradminAppConfig):
             label='Django CRadmin full theme',
             appname='django_cradmin',
             sourcefolder='styles/cradmin_theme_full',
-            sourcefile='styleguide.scss'
+            sourcefile='styleguide.scss',
+            # filename_patterns=[
+            #     '*cradmin_theme_base/*',
+            #     '*cradmin_theme_full/1__components/*',
+            #     '*cradmin_theme_full/2__components/*',
+            #     '*cradmin_theme_full/3__components/*',
+            #     '*cradmin_theme_full/4__components/_page-header.scss',
+            # ]
         )
         styleguide_registry.Registry.get_instance().add(styleguide)
 
