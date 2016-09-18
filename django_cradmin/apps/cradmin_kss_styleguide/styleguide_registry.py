@@ -23,7 +23,8 @@ class AbstractStyleGuide(object):
                  toc_node_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc_node.django.html',
                  example_template_name='cradmin_kss_styleguide/styleguideview/example.django.html',
                  frontpage_template=None,
-                 javascript_component_ids=None):
+                 javascript_component_ids=None,
+                 filename_patterns=None):
         """
         Args:
             unique_id: A unique ID for the styleguide.
@@ -39,6 +40,7 @@ class AbstractStyleGuide(object):
         self.frontpage_template = frontpage_template
         self.example_template_name = example_template_name
         self.javascript_component_ids = javascript_component_ids or []
+        self.filename_patterns = filename_patterns
 
     def get_sourcefolders(self):
         raise NotImplementedError()
@@ -47,7 +49,10 @@ class AbstractStyleGuide(object):
         raise NotImplementedError()
 
     def make_kss_styleguide(self):
-        return pythonkss.Parser(*self.get_sourcefolders(), extensions=self.stylefile_extensions)
+        return pythonkss.Parser(
+            *self.get_sourcefolders(),
+            extensions=self.stylefile_extensions,
+            filename_patterns=self.filename_patterns)
 
     def get_template_name(self):
         return self.template_name
