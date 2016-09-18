@@ -1,13 +1,9 @@
-from __future__ import unicode_literals
-
 from django.contrib.contenttypes.fields import GenericForeignKey
-from future import standard_library
 
 from django_cradmin import automodelform
 from django_cradmin import javascriptregistry
 from django_cradmin.crispylayouts import PrimarySubmit, DefaultSubmit
 
-standard_library.install_aliases()
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -19,10 +15,13 @@ from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms import layout
 
-from . import formbase
+from . import formviewmixin
+from . import previewmixin
 
 
-class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, formbase.FormViewMixin):
+class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
+                            previewmixin.PreviewMixin,
+                            formviewmixin.FormViewMixin):
     """
     Mixin class for Update and Create views.
     """
@@ -84,11 +83,6 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
             kwargs['view'] = self
         return kwargs
 
-    def add_preview_button_if_configured(self, buttons):
-        preview_url = self.get_preview_url()
-        if preview_url:
-            buttons.append(DefaultSubmit(self.submit_preview_name, _('Preview')))
-
     def get_model_fields(self):
         """
         Get model fields. Defaults to :obj:`.fields`.
@@ -100,43 +94,6 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
             if self.roleid_field and self.roleid_field in fields:
                 fields.remove(self.roleid_field)
             return fields
-
-    def get_field_layout(self):
-        """
-        Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
-        Defaults to a all fields on the model. If :obj:`.fields`, we use those fields.
-
-        Simple example (same as specifying the fields in :obj:`.fields`)::
-
-            from crispy_forms import layout
-
-            class MyCreateView(CreateView):
-                def get_field_layout(self):
-                    return [
-                        layout.Div(
-                            'title', 'name', 'size', 'tags',
-                            css_class='cradmin-globalfields')
-                    ]
-
-        A slightly more complex example::
-
-            from crispy_forms import layout
-
-            class MyCreateView(CreateView):
-                def get_field_layout(self):
-                    return [
-                        layout.Div('title', css_class="cradmin-focusfield cradmin-focusfield-lg"),
-                        layout.Div('description', css_class="cradmin-focusfield"),
-                        layout.Fieldset('Metadata',
-                            'size',
-                            'tags'
-                        )
-
-                    ]
-
-        """
-        fields = self.get_model_fields()
-        return [layout.Div(*fields, css_class='cradmin-globalfields')]
 
     def get_form(self, form_class=None):
         """
@@ -162,6 +119,8 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
     def get_context_data(self, **kwargs):
         context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
         self.add_javascriptregistry_component_ids_to_context(context=context)
+        self.add_preview_mixin_context_data(context=context)
+        self.add_formview_mixin_context_data(context=context)
         context['model_verbose_name'] = self.get_model_class()._meta.verbose_name
         return context
 
@@ -189,7 +148,7 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
         else:
             return self.get_default_save_success_url()
 
-    def set_automatic_attributes(self, obj):
+    def set_automatic_attributes(self, obj, form):
         """
         Called by :meth:`.save_object` to set automatic attributes for the
         object before it is saved.
@@ -200,6 +159,7 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
 
         Parameters:
             obj: The object you are about to save.
+            form: The cleaned form.
         """
         if self.roleid_field:
             setattr(obj, self.roleid_field, self.request.cradmin_role)
@@ -221,7 +181,7 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
             The saved object.
         """
         obj = form.save(commit=False)
-        self.set_automatic_attributes(obj=obj)
+        self.set_automatic_attributes(obj, form)
         if commit:
             obj = form.save(commit=True)
         return obj
@@ -249,21 +209,21 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
         """
         pass
 
-    def get_success_message(self, object):
+    def get_success_message(self, obj):
         """
         Override this to provide a success message.
 
-        The ``object`` is the saved object.
+        The ``obj`` is the saved object.
 
         Used by :meth:`.add_success_messages`.
         """
         return None
 
-    def add_success_messages(self, object):
+    def add_success_messages(self, obj):
         """
         Called after the form has been saved, and after :meth:`.form_saved` has been called.
 
-        The ``object`` is the saved object.
+        The ``obj`` is the saved obj.
 
         Defaults to add :meth:`.get_success_message` as a django messages
         success message if :meth:`.get_success_message` returns anything.
@@ -342,21 +302,3 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin, fo
             module=cls.model.__module__,
             classname=cls.model.__name__)
         return sessionkey
-
-
-class OnlySaveButtonMixin(object):
-    """
-    Mixin class that overrides ``get_buttons()`` to just include
-    the save button (no "Save and continue editing").
-
-    You must mix this in **before** any :class:`.CreateUpdateViewMixin`
-    subclass (like UpdateView or CreateView).
-    """
-    def get_buttons(self):
-        if hasattr(self, 'is_in_foreignkey_select_mode') and self.is_in_foreignkey_select_mode():
-            return super(OnlySaveButtonMixin, self).get_buttons()
-        buttons = [
-            PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
-        ]
-        self.add_preview_button_if_configured(buttons)
-        return buttons

@@ -8,7 +8,7 @@ from django_cradmin.demo.webdemo.cradmin_apps.sharable_link.mixins import Querys
 
 from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 from django_cradmin.crispylayouts import PrimarySubmit
-from django_cradmin.viewhelpers.formbase import FormView
+from django_cradmin.viewhelpers import formview
 
 
 class SharableLinkForm(forms.Form):
@@ -35,7 +35,7 @@ class SiteAdminInviteUrl(InviteUrl):
         })
 
 
-class CreateOrEditSharableLinkView(FormView, QuerysetForRoleMixin):
+class CreateOrEditSharableLinkView(formview.FormView, QuerysetForRoleMixin):
     form_class = SharableLinkForm
     template_name = 'webdemo/sharable_link/edit.django.html'
 

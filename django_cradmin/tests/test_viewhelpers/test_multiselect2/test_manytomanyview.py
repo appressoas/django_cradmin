@@ -109,7 +109,7 @@ class TestViewMixin(test.TestCase):
         mockqueryset = mock.MagicMock()
 
         class SuperMyView(object):
-            def get_queryset_for_role(self, role):
+            def get_queryset_for_role(self):
                 return mockqueryset
 
         class MyView(manytomanyview.ViewMixin, SuperMyView):
@@ -125,7 +125,7 @@ class TestViewMixin(test.TestCase):
         mockqueryset = mock.MagicMock()
 
         class SuperMyView(object):
-            def get_queryset_for_role(self, role):
+            def get_queryset_for_role(self):
                 return mockqueryset
 
         class MyView(manytomanyview.ViewMixin, SuperMyView):

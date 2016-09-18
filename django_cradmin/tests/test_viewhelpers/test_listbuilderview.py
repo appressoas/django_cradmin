@@ -9,7 +9,7 @@ from django_cradmin.django_cradmin_testapp import models as testmodels
 class ListBuilderViewWithoutPaging(listbuilderview.View):
     model = testmodels.SomeItem
 
-    def get_queryset_for_role(self, role):
+    def get_queryset_for_role(self):
         return testmodels.SomeItem.objects.all()
 
 

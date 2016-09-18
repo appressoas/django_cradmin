@@ -42,9 +42,9 @@ class ViewMixin(FormMixin):
             the values with ``pk__in=<get_selected_values_list()>``.
         """
         if hasattr(self, 'get_unfiltered_queryset_for_role'):
-            queryset = self.get_unfiltered_queryset_for_role(self.request.cradmin_role)
+            queryset = self.get_unfiltered_queryset_for_role()
         else:
-            queryset = self.get_queryset_for_role(self.request.cradmin_role)
+            queryset = self.get_queryset_for_role()
         return queryset.filter(pk__in=self.get_selected_values_list())
 
     def should_include_previously_selected(self):
@@ -68,8 +68,8 @@ class ViewMixin(FormMixin):
         else:
             return True
 
-    def get_queryset_for_role(self, role=None):
-        queryset = super(ViewMixin, self).get_queryset_for_role(role=role)
+    def get_queryset_for_role(self):
+        queryset = super(ViewMixin, self).get_queryset_for_role()
         if self.should_include_previously_selected():
             # We have to exclude the selected values because we add them
             # to the listbuilder list as selected items in :meth:`.get_listbuilder_list`.
@@ -125,7 +125,7 @@ class ListBuilderViewMixin(ViewMixin):
             class MySelectView(multiselect2.manytomanyview.ListBuilderViewMixin,
                                listbuilderview.FilterListMixin,
                                listbuilderview.View):
-                def get_queryset_for_role(self, role):
+                def get_queryset_for_role(self):
                     ...
 
                 def get_context_data(self, context):
@@ -171,7 +171,7 @@ class ListBuilderFilterListViewMixin(ListBuilderViewMixin):
             class MySelectView(multiselect2.manytomanyview.ListBuilderFilterListViewMixin,
                                listbuilderview.FilterListMixin,
                                listbuilderview.View):
-                def get_queryset_for_role(self, role):
+                def get_queryset_for_role(self):
                     ...
     """
     def get_filterlist_url(self, filters_string):

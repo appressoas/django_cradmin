@@ -233,14 +233,14 @@ class ViewMixin(object):
         context['filterlist'] = self.get_filterlist()
         return context
 
-    def get_unfiltered_queryset_for_role(self, role):
+    def get_unfiltered_queryset_for_role(self):
         """
         Get a queryset with all objects of :obj:`~.ViewMixin.model`  that
         the current role can access.
         """
         raise NotImplementedError()
 
-    def get_queryset_for_role(self, role):
+    def get_queryset_for_role(self):
         """
         Uses :meth:`.get_unfiltered_queryset_for_role` ot get the base
         queryset, then we apply the filters using
@@ -249,6 +249,6 @@ class ViewMixin(object):
         You should not need to override this - override :meth:`.get_unfiltered_queryset_for_role`
         instead.
         """
-        queryset = self.get_unfiltered_queryset_for_role(role)
+        queryset = self.get_unfiltered_queryset_for_role()
         queryset = self.get_filterlist().filter(queryset)
         return queryset.distinct()

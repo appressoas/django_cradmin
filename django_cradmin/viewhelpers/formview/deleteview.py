@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-from builtins import str
 from django.contrib import messages
 from django.views.generic import DeleteView as DjangoDeleteView
 from django.utils.translation import ugettext_lazy as _
@@ -8,7 +6,9 @@ from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 
-class DeleteView(QuerysetForRoleMixin, DjangoDeleteView, javascriptregistry.viewmixin.WithinRoleViewMixin):
+class DeleteView(QuerysetForRoleMixin,
+                 DjangoDeleteView,
+                 javascriptregistry.viewmixin.WithinRoleViewMixin):
 
     #: The name of the template to use.
     template_name = 'django_cradmin/viewhelpers/delete.django.html'

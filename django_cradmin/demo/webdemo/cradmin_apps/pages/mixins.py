@@ -7,5 +7,5 @@ class PagesQuerySetForRoleMixin(object):
     that only pages that the current role has access to
     is available.
     """
-    def get_queryset_for_role(self, site):
-        return Page.objects.filter(site=site)
+    def get_queryset_for_role(self):
+        return Page.objects.filter(site=self.request.cradmin_role)

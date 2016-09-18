@@ -154,9 +154,9 @@ class ViewMixin(FormMixin):
 
     def get_selectable_items_queryset(self):
         if hasattr(self, 'get_unfiltered_queryset_for_role'):
-            queryset = self.get_unfiltered_queryset_for_role(role=self.request.cradmin_role)
+            queryset = self.get_unfiltered_queryset_for_role()
         else:
-            queryset = self.get_queryset_for_role(role=self.request.cradmin_role)
+            queryset = self.get_queryset_for_role()
         return queryset
 
     def __make_selected_items_form_class(self):

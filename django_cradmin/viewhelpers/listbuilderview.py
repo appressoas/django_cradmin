@@ -264,7 +264,7 @@ class View(javascriptregistry.viewmixin.WithinRoleViewMixin, ViewMixin, ListView
     def get_listbuilder_list_value_iterable(self, context):
         return context['object_list']
 
-    def get_queryset_for_role(self, role):
+    def get_queryset_for_role(self):
         """
         Get a queryset with all objects of :obj:`~.View.model`  that
         the current role can access.
@@ -276,8 +276,7 @@ class View(javascriptregistry.viewmixin.WithinRoleViewMixin, ViewMixin, ListView
         DO NOT override this. Override :meth:`.get_queryset_for_role`
         instead.
         """
-        queryset = self.get_queryset_for_role(self.request.cradmin_role)
-        return queryset
+        return self.get_queryset_for_role()
 
     def get_no_items_message(self):
         """

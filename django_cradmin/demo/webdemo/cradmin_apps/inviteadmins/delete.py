@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
 from django.template import defaultfilters
 
-from django_cradmin.viewhelpers import delete
+from django_cradmin.viewhelpers import formview
 from .mixins import QuerysetForRoleMixin
 
 
-class DeleteInvitesView(QuerysetForRoleMixin, delete.DeleteView):
+class DeleteInvitesView(QuerysetForRoleMixin, formview.DeleteView):
     """
     View used to delete existing invites.
     """

@@ -1,16 +1,16 @@
-from __future__ import unicode_literals
-
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import UpdateView as DjangoUpdateView
 
 from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.crispylayouts import DefaultSubmit
-from .crudbase import CreateUpdateViewMixin
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
+from . import create_update_view_mixin
 
 
-class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
+class UpdateView(QuerysetForRoleMixin,
+                 create_update_view_mixin.CreateUpdateViewMixin,
+                 DjangoUpdateView):
     template_name = 'django_cradmin/viewhelpers/update.django.html'
 
     def get_pagetitle(self):
@@ -27,15 +27,9 @@ class UpdateView(QuerysetForRoleMixin, CreateUpdateViewMixin, DjangoUpdateView):
             DefaultSubmit(self.get_submit_save_and_continue_edititing_button_name(),
                           self.get_submit_save_and_continue_edititing_label()),
         ]
-        self.add_preview_button_if_configured(buttons)
         return buttons
 
-    def get_formhelper(self):
-        helper = super(UpdateView, self).get_formhelper()
-        helper.form_id = 'django_cradmin_updateform'
-        return helper
-
-    def get_success_message(self, object):
+    def get_success_message(self, obj):
         return _('Saved "%(object)s".') % {'object': object}
 
 
@@ -49,10 +43,10 @@ class UpdateRoleView(UpdateView):
     object.
     """
     def get_object(self, queryset=None):
-        return self.get_queryset_for_role(self.request.cradmin_role).get()
+        return self.get_queryset_for_role().get()
 
-    def get_queryset_for_role(self, role):
-        return self.get_model_class().objects.filter(pk=role.pk)
+    def get_queryset_for_role(self):
+        return self.get_model_class().objects.filter(pk=self.request.cradmin_role.pk)
 
 
 class RedirectToCreateIfDoesNotExistMixin(object):
@@ -66,10 +60,11 @@ class RedirectToCreateIfDoesNotExistMixin(object):
 
         class MyUpdateView(update.UpdateView, update.RedirectToCreateIfDoesNotExistMixin):
             def get_object(self, queryset=None):
-                return self.get_queryset_for_role(self.request.cradmin_role).get()
+                return self.get_queryset_for_role().get()
 
-            def get_queryset_for_role(self, role):
-                return self.get_model_class().objects.filter(someonetooneattr=role)
+            def get_queryset_for_role(self):
+                return self.get_model_class().objects.filter(
+                    someonetooneattr=self.request.cradmin_role)
 
     And the view will automatically redirect to the create view
     if the object does not exist.

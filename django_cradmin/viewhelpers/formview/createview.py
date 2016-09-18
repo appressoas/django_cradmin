@@ -1,8 +1,4 @@
-from __future__ import unicode_literals
-
 import sys
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 import urllib.request
 import urllib.parse
@@ -13,10 +9,11 @@ from django.views.generic import CreateView as DjangoCreateView
 
 from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.crispylayouts import DefaultSubmit
-from .crudbase import CreateUpdateViewMixin
+from . import create_update_view_mixin
 
 
-class CreateView(CreateUpdateViewMixin, DjangoCreateView):
+class CreateView(create_update_view_mixin.CreateUpdateViewMixin,
+                 DjangoCreateView):
     template_name = 'django_cradmin/viewhelpers/create.django.html'
 
     #: If this is ``True`` (default), we go into foreignkey select mode
@@ -61,20 +58,6 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
     def get_foreignkey_select_mode_backbutton_label(self):
         return self.foreignkey_select_mode_backbutton_label
 
-    def get_buttons(self):
-        if self.is_in_foreignkey_select_mode():
-            buttons = [
-                PrimarySubmit('submit-use', self.get_submit_use_label()),
-            ]
-        else:
-            buttons = [
-                PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
-                DefaultSubmit(self.get_submit_save_and_continue_edititing_button_name(),
-                              self.get_submit_save_and_continue_edititing_label()),
-            ]
-        self.add_preview_button_if_configured(buttons)
-        return buttons
-
     @classmethod
     def add_foreignkey_selected_value_to_url_querystring(cls, url, object_pk):
         url = urllib.parse.unquote_plus(url)
@@ -84,10 +67,6 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         querydict['foreignkey_selected_value'] = [str(object_pk)]
         urllist[3] = urllib.parse.urlencode(querydict, doseq=True)
         url = urllib.parse.urlunsplit(urllist)
-        if sys.version_info[0] == 2:
-            # For some reason, HttpRedirect requires unicode string to work
-            # correctly on Python2, so we ensure that here.
-            url = unicode(url)  # noqa
         return url
 
     def get_default_save_success_url(self):
@@ -95,11 +74,6 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         if self.is_in_foreignkey_select_mode():
             url = self.__class__.add_foreignkey_selected_value_to_url_querystring(url, self.object.pk)
         return url
-
-    def get_formhelper(self):
-        helper = super(CreateView, self).get_formhelper()
-        helper.form_id = 'django_cradmin_createform'
-        return helper
 
     def is_in_foreignkey_select_mode(self):
         return self.allow_foreignkey_select and self.request.GET.get('foreignkey_select_mode') == '1'
@@ -112,8 +86,8 @@ class CreateView(CreateUpdateViewMixin, DjangoCreateView):
         context['foreignkey_select_mode_backbutton_label'] = self.get_foreignkey_select_mode_backbutton_label()
         return context
 
-    def get_success_message(self, object):
-        return _('Created "%(object)s".') % {'object': object}
+    def get_success_message(self, obj):
+        return _('Created "%(object)s".') % {'object': obj}
 
 
 class CreateLikeUpdateView(CreateView):

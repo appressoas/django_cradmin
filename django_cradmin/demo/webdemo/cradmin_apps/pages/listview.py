@@ -91,6 +91,7 @@ class PagesListBuilderView(mixins.PagesQuerySetForRoleMixin,
     def get_post_include_template(self):
         return 'webdemo/pages/pagelist-post-include.django.html'
 
-    def get_unfiltered_queryset_for_role(self, site):
-        return mixins.PagesQuerySetForRoleMixin.get_queryset_for_role(self, site=site)\
+    def get_unfiltered_queryset_for_role(self):
+        return mixins.PagesQuerySetForRoleMixin\
+            .get_queryset_for_role(self)\
             .prefetch_related('tags')

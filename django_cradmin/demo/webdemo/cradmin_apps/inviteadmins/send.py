@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
 from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.formfields.email_list import EmailListField
-from django_cradmin.viewhelpers.formbase import FormView
+from django_cradmin.viewhelpers import formview
 
 
 class InviteEmailsForm(forms.Form):
@@ -28,7 +28,7 @@ class SiteAdminInviteUrl(InviteUrl):
         })
 
 
-class SendInvitesView(FormView):
+class SendInvitesView(formview.FormView):
     form_class = InviteEmailsForm
     template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
 

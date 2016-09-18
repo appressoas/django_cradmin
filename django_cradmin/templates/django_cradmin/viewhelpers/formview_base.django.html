@@ -4,11 +4,6 @@
 {% load cradmin_icon_tags %}
 {% load cradmin_tags %}
 
-{% block bodyclass %}
-    {{ block.super }}
-    django-cradmin-formview-page
-{% endblock %}
-
 {% block title %}
     {{ pagetitle }}
 {% endblock title %}
@@ -18,25 +13,10 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    {% block pre_form %}{% endblock pre_form %}
-    {% block form %}
-            {% if form_renderable %}
-                {% cradmin_render_renderable form_renderable %}
-            {% else %}
-                <div class="container">
-                    {% crispy form formhelper %}
-                </div>
-            {% endif %}
-
-        {% comment %}
-            NOTE: This will probably break when https://github.com/maraujop/django-crispy-forms/issues/263 is fixed
-        {% endcomment %}
-        {{ form.media }}
-    {% endblock form %}
-    {% block post_form %}{% endblock post_form %}
+    {% cradmin_render_renderable uicontainer %}
 {% endblock content %}
 
-{% block outside-bodycontentwrapper %}
+{% block end-of-body %}
     {{ block.super }}
     {% if enable_modelchoicefield_support %}
         <div class="django-cradmin-floating-fullsize-iframe-wrapper django-cradmin-modelchoicefield-iframe-wrapper"
@@ -75,4 +55,4 @@
             </div>
         {% endif %}
     {% endblock handle_preview %}
-{% endblock outside-bodycontentwrapper %}
+{% endblock end-of-body %}

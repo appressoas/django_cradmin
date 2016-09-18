@@ -26,7 +26,7 @@ class DetailRoleView(DetailView):
     object.
     """
     def get_object(self, queryset=None):
-        return self.get_queryset_for_role(self.request.cradmin_role).get()
+        return self.get_queryset_for_role().get()
 
-    def get_queryset_for_role(self, role):
-        return self.model.objects.filter(pk=role.pk)
+    def get_queryset_for_role(self):
+        return self.model.objects.filter(pk=self.request.cradmin_role.pk)

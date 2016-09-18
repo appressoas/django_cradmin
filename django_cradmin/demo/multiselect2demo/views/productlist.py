@@ -134,7 +134,7 @@ class ProductListView(multiselect2view.ListbuilderView):
     value_renderer_class = SelectableProductItemValue
     paginate_by = 20
 
-    def get_queryset_for_role(self, role):
+    def get_queryset_for_role(self):
         return Product.objects.all().order_by('name')
 
     def get_target_renderer_class(self):

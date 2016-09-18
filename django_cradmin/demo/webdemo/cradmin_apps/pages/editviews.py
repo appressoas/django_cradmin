@@ -1,5 +1,5 @@
 from django_cradmin import uicontainer
-from django_cradmin import viewhelpers
+from django_cradmin.viewhelpers import formview
 from django_cradmin.demo.webdemo.models import Page
 
 from . import mixins
@@ -52,7 +52,7 @@ class PageCreateUpdateMixin(object):
     #     # form.fields['attachment'].widget = filewidgets.FileWidget()
     #     return form
 
-    def get_form_renderable(self):
+    def get_uicontainer(self):
         return uicontainer.form.Form(
             form=self.get_form(),
             children=[
@@ -72,13 +72,13 @@ class PageCreateUpdateMixin(object):
         ).bootstrap()
 
 
-class PageCreateView(PageCreateUpdateMixin, viewhelpers.create.CreateView):
+class PageCreateView(PageCreateUpdateMixin, formview.CreateView):
     """
     View used to create new pages.
     """
 
 
-class PageUpdateView(mixins.PagesQuerySetForRoleMixin, PageCreateUpdateMixin, viewhelpers.update.UpdateView):
+class PageUpdateView(mixins.PagesQuerySetForRoleMixin, PageCreateUpdateMixin, formview.UpdateView):
     """
     View used to create edit existing pages.
     """
@@ -101,7 +101,7 @@ class PageUpdateView(mixins.PagesQuerySetForRoleMixin, PageCreateUpdateMixin, vi
 #         return context
 
 
-class PageDeleteView(mixins.PagesQuerySetForRoleMixin, viewhelpers.delete.DeleteView):
+class PageDeleteView(mixins.PagesQuerySetForRoleMixin, formview.DeleteView):
     """
     View used to delete existing pages.
     """

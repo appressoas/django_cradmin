@@ -14,16 +14,13 @@ class TestDelete(TestCase):
 
     def test_get(self):
         class SimpleDeleteView(delete.DeleteView):
-            def get_queryset_for_role(self, role):
+            def get_queryset_for_role(self):
                 queryset = mock.MagicMock()
                 return queryset
 
             def get_object(self, queryset=None):
                 obj = mock.MagicMock()
-                if six.PY2:
-                    obj.__unicode__.return_value = 'Simple Test Item'
-                else:
-                    obj.__str__.return_value = 'Simple Test Item'
+                obj.__str__.return_value = 'Simple Test Item'
                 obj._meta = mock.MagicMock()
                 obj._meta.verbose_name = 'TestModel'
                 return obj
@@ -46,7 +43,7 @@ class TestDelete(TestCase):
         obj = mock.MagicMock()
 
         class SimpleDeleteView(delete.DeleteView):
-            def get_queryset_for_role(self, role):
+            def get_queryset_for_role(self):
                 queryset = mock.MagicMock()
                 return queryset
 

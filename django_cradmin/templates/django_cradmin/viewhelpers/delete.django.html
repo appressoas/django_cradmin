@@ -10,17 +10,18 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    {% block delete-form %}
-        <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">{% csrf_token %}
-            <div class="container">
+    <div class="page-section  page-section--center">
+        {% block delete-form %}
+            <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">
+                {% csrf_token %}
                 {% block deletequestion %}
                     <div id="deleteview-preview">
                         <p>{{ confirm_message }}</p>
                     </div>
                 {% endblock deletequestion %}
-                <button type="submit" class="btn btn-danger">{{ delete_button_label }}</button>
-                <a class="btn btn-cancel" django-cradmin-back>{% trans "Cancel" %}</a>
-            </div>
-        </form>
-    {% endblock delete-form%}
+                <button type="submit" class="button  button--primary">{{ delete_button_label }}</button>
+                <a class="button" django-cradmin-back>{% trans "Cancel" %}</a>
+            </form>
+        {% endblock delete-form%}
+    </div>
 {% endblock content %}
