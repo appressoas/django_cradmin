@@ -3,7 +3,7 @@ from django.test import TestCase, RequestFactory
 from django.core import mail
 import htmls
 from django_cradmin.python2_compatibility import mock
-from django_cradmin.demo.webdemo.views.inviteadmins.send import SendInvitesView
+from django_cradmin.demo.webdemo.cradmin_apps.inviteadmins.send import SendInvitesView
 
 from django_cradmin.demo.webdemo.models import Site
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata

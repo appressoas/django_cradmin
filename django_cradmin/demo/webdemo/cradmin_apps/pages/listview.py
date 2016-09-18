@@ -1,23 +1,14 @@
-from __future__ import unicode_literals
-
 from django.contrib.auth import get_user_model
-from future import standard_library
-
-from django_cradmin.demo.webdemo.views.pages import PagesQuerySetForRoleMixin, PageCreateView, PageUpdateView, \
-    PageDeleteView, PreviewPageView
+from django_cradmin.demo.webdemo.models import PageTag, Page
+from django_cradmin.viewhelpers import listbuilder
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import listfilter
-from django_cradmin.viewhelpers import listbuilder
-from django_cradmin import crapp
-from django_cradmin.demo.webdemo.models import Page, PageTag
 from django_cradmin.viewhelpers.listfilter.basefilters.single import abstractradio
 
-standard_library.install_aliases()
-
-from builtins import str
+from . import mixins
 
 
-class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImageAndPreview):
+class PageListItemValue(listbuilder.itemvalue.EditDeleteWithArchiveImage):
     template_name = 'webdemo/pages_listbuilder/pagelist-itemvalue.django.html'
     valuealias = 'page'
 
@@ -84,23 +75,14 @@ class PageSubscriberFilter(listfilter.django.multi.checkbox.RelatedModelOrFilter
         return 'subscribers__username'
 
 
-class PagesListBuilderView(listbuilderview.FilterListMixin,
-                           PagesQuerySetForRoleMixin,
+class PagesListBuilderView(mixins.PagesQuerySetForRoleMixin,
                            listbuilderview.ViewCreateButtonMixin,
                            listbuilderview.View):
     """
     Shows how to use listbuilderview with listfilter.
     """
     model = Page
-    enable_previews = True
-    # listbuilder_class = listbuilder.lists.FloatGridList
     value_renderer_class = PageListItemValue
-    # filterlist_class = listfilter.lists.Horizontal
-
-    # def get_filterlist_position(self):
-    #     return 'left'
-    # def get_label_is_screenreader_only_by_default(self):
-    #     return True
 
     def get_filterlist_url(self, filters_string):
         return self.request.cradmin_app.reverse_appurl(
@@ -109,54 +91,6 @@ class PagesListBuilderView(listbuilderview.FilterListMixin,
     def get_post_include_template(self):
         return 'webdemo/pages_listbuilder/pagelist-post-include.django.html'
 
-    def add_filterlist_items(self, filterlist):
-        filterlist.append(listfilter.django.single.textinput.Search(
-            slug='search',
-            label='Search',
-            label_is_screenreader_only=True,
-            modelfields=['title']))
-        filterlist.append(OrderPagesFilter(
-            slug='orderby', label='Order by'))
-        filterlist.append(listfilter.django.single.select.IsNotNull(
-            slug='image', label='Has image?'))
-        filterlist.append(listfilter.django.single.select.DateTime(
-            slug='publishing_time', label='Publishing time'))
-        # filterlist.append(PageTagChecboxFilter(
-        #     slug='tags', label='Tag'))
-        filterlist.append(PageTagRadioFilter(
-            slug='tag', label='Tag'))
-        filterlist.append(PageSubscriberFilter(
-            slug='subscribers', label='Subscribers'))
-
     def get_unfiltered_queryset_for_role(self, site):
-        return PagesQuerySetForRoleMixin.get_queryset_for_role(self, site=site)\
+        return mixins.PagesQuerySetForRoleMixin.get_queryset_for_role(self, site=site)\
             .prefetch_related('tags')
-
-
-class App(crapp.App):
-    appurls = [
-        crapp.Url(
-            r'^$',
-            PagesListBuilderView.as_view(),
-            name=crapp.INDEXVIEW_NAME),
-        crapp.Url(
-            r'^filter/(?P<filters_string>.+)?$',
-            PagesListBuilderView.as_view(),
-            name='filter'),
-        crapp.Url(
-            r'^create$',
-            PageCreateView.as_view(),
-            name="create"),
-        crapp.Url(
-            r'^edit/(?P<pk>\d+)$',
-            PageUpdateView.as_view(),
-            name="edit"),
-        crapp.Url(
-            r'^preview/(?P<pk>\d+)?$',
-            PreviewPageView.as_view(),
-            name="preview"),
-        crapp.Url(
-            r'^delete/(?P<pk>\d+)$',
-            PageDeleteView.as_view(),
-            name="delete"),
-    ]
