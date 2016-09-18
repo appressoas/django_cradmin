@@ -37,7 +37,5 @@ urlpatterns = [
     url(r'^$', DemoView.as_view()),
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT}),
-    url(r'^polls/', include('django_cradmin.demo.polls_demo.urls')),
-
     url(r'^superuser/', include(superuserui_registry.default.make_cradmin_instance_class().urls())),
 ]

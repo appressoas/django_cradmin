@@ -70,9 +70,6 @@ INSTALLED_APPS = (
     'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
 
-    # The demo based on the Django tutorial
-    'django_cradmin.demo.polls_demo',
-
     # Demo for usermanager
     'django_cradmin.demo.usermanagerdemo.apps.UsermanagerdemoConfig',
 
