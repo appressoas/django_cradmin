@@ -1,12 +1,12 @@
 from django import test
 from model_mommy import mommy
 
-from django_cradmin.demo.webdemo.cradmin_apps import pages_listbuilder
+from django_cradmin.demo.webdemo.cradmin_apps import pages
 from django_cradmin import cradmin_testhelpers
 
 
 class TesPagesListBuilderView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
-    viewclass = pages_listbuilder.PagesListBuilderView
+    viewclass = pages.listview.PagesListBuilderView
 
     def test_get(self):
         site = mommy.make('webdemo.Site')

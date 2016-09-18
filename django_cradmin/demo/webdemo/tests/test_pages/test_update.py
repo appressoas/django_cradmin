@@ -14,7 +14,7 @@ class TestPageUpdateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         The viewclass to be tested.
 
     """
-    viewclass = pages.PageUpdateView
+    viewclass = pages.editviews.PageUpdateView
 
     def test_get_view_title(self):
         """
