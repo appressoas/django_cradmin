@@ -46,7 +46,7 @@ INSTALLED_APPS = (
 
     # Required by django cradmin
     'django_cradmin.appconfig.CradminWithStyleguideAppConfig',
-    'django_cradmin.apps.cradmin_imagearchive.apps.ImageArchiveConfig',
+    'django_cradmin.apps.cradmin_imagearchive',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
@@ -66,18 +66,18 @@ INSTALLED_APPS = (
     'django_cradmin.demo.project.demo',
 
     # The advanced demo
-    'django_cradmin.demo.webdemo.apps.WebdemoConfig',
+    'django_cradmin.demo.webdemo',
     'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
 
     # Demo for usermanager
-    'django_cradmin.demo.usermanagerdemo.apps.UsermanagerdemoConfig',
+    'django_cradmin.demo.usermanagerdemo',
 
     # Demo for listfilter
     'django_cradmin.demo.listfilterdemo',
 
     # Demo for multiselect
-    'django_cradmin.demo.multiselect2demo.apps.MultiselectdemoConfig',
+    'django_cradmin.demo.multiselect2demo',
 
     #: Demo for django_cradmin.uicontainer
     'django_cradmin.demo.uicontainerdemo',
