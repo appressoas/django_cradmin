@@ -75,6 +75,9 @@ class Submit(Button):
     def get_default_button_type(self):
         return 'submit'
 
+    def get_default_test_css_class_suffixes_list(self):
+        return ['submit']
+
 
 class SubmitPrimary(Submit):
     """
@@ -83,3 +86,6 @@ class SubmitPrimary(Submit):
     """
     def get_default_bem_variant_list(self):
         return ['primary']
+
+    def get_default_test_css_class_suffixes_list(self):
+        return ['submit-primary']

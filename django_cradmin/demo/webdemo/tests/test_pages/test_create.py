@@ -33,7 +33,7 @@ class TestPageCreateView(test.TestCase, cradmin_testhelpers.TestCaseMixin):
         site = mommy.make('webdemo.Site', name='Demosite')
         mommy.make('webdemo.Page', title='Webpage2', site=site)
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=site)
-        button_text = mockresponse.selector.one('.test-create-button').alltext_normalized
+        button_text = mockresponse.selector.one('.test-submit-primary').alltext_normalized
         self.assertEquals('Create', button_text)
 
     def test_post_create_all_required_fields_filled(self):

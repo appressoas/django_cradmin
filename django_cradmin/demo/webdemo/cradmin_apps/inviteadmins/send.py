@@ -1,12 +1,9 @@
-from __future__ import unicode_literals
 from django import forms
-from crispy_forms import layout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-
+from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_invite.invite_url import InviteUrl
-from django_cradmin.crispylayouts import PrimarySubmit
 from django_cradmin.formfields.email_list import EmailListField
 from django_cradmin.viewhelpers import formview
 
@@ -32,18 +29,14 @@ class SendInvitesView(formview.FormView):
     form_class = InviteEmailsForm
     template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
 
-    def get_field_layout(self):
-        return [
-            layout.Div(
-                layout.Field('emails', placeholder='joe@example.com\njane@example.com'),
-                css_class='cradmin-globalfields'
-            )
-        ]
-
-    def get_buttons(self):
-        return [
-            PrimarySubmit('submit', _('Send invites')),
-        ]
+    def get_uicontainer(self):
+        return uicontainer.form.Form(
+            form=self.get_form(),
+            children=[
+                uicontainer.button.SubmitPrimary(
+                    text='Send invites')
+            ]
+        ).bootstrap()
 
     def form_valid(self, form):
         emails = form.cleaned_data['emails']

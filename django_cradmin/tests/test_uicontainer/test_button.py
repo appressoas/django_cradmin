@@ -96,7 +96,8 @@ class TestSubmit(test.TestCase):
     def test_default_css_classes(self):
         container = uicontainer.button.Submit().bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('button')['class'], 'button')
+        self.assertEqual(selector.one('button').cssclasses_set,
+                         {'button', 'test-submit'})
 
 
 class TestSubmitPrimary(test.TestCase):
@@ -108,4 +109,5 @@ class TestSubmitPrimary(test.TestCase):
     def test_default_css_classes(self):
         container = uicontainer.button.SubmitPrimary().bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('button')['class'], 'button  button--primary')
+        self.assertEqual(selector.one('button').cssclasses_set,
+                         {'button', 'button--primary', 'test-submit-primary'})

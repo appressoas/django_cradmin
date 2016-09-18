@@ -67,7 +67,7 @@ class PageCreateUpdateMixin(object):
                     ]
                 ),
                 uicontainer.button.SubmitPrimary(
-                    text='Save')
+                    text=self.submit_save_label)
             ]
         ).bootstrap()
 
