@@ -390,12 +390,6 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 }
 
 
-
-# PYKSS_DIRS = [
-#     IEVVTASKS_BUILDSTATIC_APPS.get_app('django_cradmin').get_source_path('styles', 'cradmin_theme_default')
-# ]
-
-
 DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/{version}/styles/cradmin_theme_full/main.css'.format(
     version=django_cradmin.__version__
 )

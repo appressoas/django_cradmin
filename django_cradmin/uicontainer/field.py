@@ -43,7 +43,8 @@ class AutomaticDjangoField(BaseFieldRenderable):
         # print("*" * 70)
         # print()
         # print(dir(self.bound_formfield))
-        # for attribute in ('data', 'errors', 'auto_id', 'html_name', 'id_for_label', 'label', 'label_tag', 'name', 'value'):
+        # for attribute in ('data', 'errors', 'auto_id', 'html_name',
+        #                   'id_for_label', 'label', 'label_tag', 'name', 'value'):
         #     print(attribute, getattr(self.bound_formfield, attribute))
         # print('label', self.bound_formfield.field.label)
         # print(dir(self.bound_formfield.field.widget))

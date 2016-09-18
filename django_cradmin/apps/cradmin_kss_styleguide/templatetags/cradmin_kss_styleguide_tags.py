@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from django import template
 from django.template.loader import render_to_string
 from django.urls import reverse

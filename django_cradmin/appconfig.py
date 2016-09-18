@@ -6,7 +6,7 @@ from django_cradmin import javascriptregistry
 class CradminAppConfig(AppConfig):
     name = 'django_cradmin'
     verbose_name = ugettext_lazy("Django CRadmin")
-    
+
     def ready(self):
         javascriptregistry.Registry.get_instance().add(javascriptregistry.component.CradminJavascript)
 
