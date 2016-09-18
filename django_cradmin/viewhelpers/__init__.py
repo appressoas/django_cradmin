@@ -7,5 +7,3 @@ from . import update  # noqa
 from . import delete  # noqa
 from . import detail  # noqa
 from . import listbuilderview  # noqa
-from . import multiselect  # noqa
-from . import objecttable  # noqa
