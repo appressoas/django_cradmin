@@ -11,7 +11,6 @@ from django_cradmin.demo.multiselect2demo.cradmin import MultiselectDemoCrAdminI
 from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
 from django_cradmin.demo.project.demo.views.demo_overview import DemoView
 from django_cradmin.demo.uicontainerdemo.cradmin import UIContainerDemoCrAdminInstance
-from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 
 
@@ -30,7 +29,6 @@ urlpatterns = [
     url(r'^login_not_required_demo/', include(LoginNotRequiredCrAdminInstance.urls())),
     url(r'^no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     url(r'^webdemo/', include('django_cradmin.demo.webdemo.urls')),
-    url(r'^usermanagerdemo/', include(UsermanagerCrAdminInstance.urls())),
     url(r'^uicontainerdemo/', include(UIContainerDemoCrAdminInstance.urls())),
     url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
     url(r'^$', DemoView.as_view()),
