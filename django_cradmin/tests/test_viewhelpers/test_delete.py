@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 import six
 
-from django_cradmin.viewhelpers import delete
+from django_cradmin.viewhelpers import formview
 
 
 class TestDelete(TestCase):
@@ -13,7 +13,7 @@ class TestDelete(TestCase):
         self.factory = RequestFactory()
 
     def test_get(self):
-        class SimpleDeleteView(delete.DeleteView):
+        class SimpleDeleteView(formview.DeleteView):
             def get_queryset_for_role(self):
                 queryset = mock.MagicMock()
                 return queryset
@@ -42,7 +42,7 @@ class TestDelete(TestCase):
     def test_post(self):
         obj = mock.MagicMock()
 
-        class SimpleDeleteView(delete.DeleteView):
+        class SimpleDeleteView(formview.DeleteView):
             def get_queryset_for_role(self):
                 queryset = mock.MagicMock()
                 return queryset

@@ -128,8 +128,8 @@ class ListBuilderViewMixin(ViewMixin):
                 def get_queryset_for_role(self):
                     ...
 
-                def get_context_data(self, context):
-                    context = super(MySelectView, self).get_context_data(context)
+                def get_context_data(self, **kwargs):
+                    context = super(MySelectView, self).get_context_data(**kwargs)
                     context['target_renderer'] = self.get_target_renderer()
                     return context
     """

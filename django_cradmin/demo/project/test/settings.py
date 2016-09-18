@@ -48,7 +48,6 @@ INSTALLED_APPS = (
 
     # Demo apps
     'django_cradmin.demo.webdemo',
-    'django_cradmin.demo.usermanagerdemo',
     'django_cradmin.demo.listfilterdemo',
     'django_cradmin.demo.multiselect2demo',
 )

@@ -30,7 +30,7 @@ class TestViewMixin(test.TestCase):
 
         view.get_selected_objects()
         mockqueryset.filter.assert_called_once_with(pk__in='testvalue')
-        view.get_queryset_for_role.assert_called_once_with('testrole')
+        view.get_queryset_for_role.assert_called_once_with()
 
     def test_get_selected_objects_has_get_unfiltered_queryset_for_role_method(self):
         view = manytomanyview.ViewMixin()
@@ -43,7 +43,7 @@ class TestViewMixin(test.TestCase):
 
         view.get_selected_objects()
         mockqueryset.filter.assert_called_once_with(pk__in='testvalue')
-        view.get_unfiltered_queryset_for_role.assert_called_once_with('testrole')
+        view.get_unfiltered_queryset_for_role.assert_called_once_with()
         view.get_queryset_for_role.assert_not_called()
 
     def test_should_include_previously_selected_no_paging_no_get_filters_string(self):
