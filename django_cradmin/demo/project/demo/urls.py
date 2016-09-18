@@ -13,7 +13,6 @@ from django_cradmin.demo.project.demo.views.demo_overview import DemoView
 from django_cradmin.demo.uicontainerdemo.cradmin import UIContainerDemoCrAdminInstance
 from django_cradmin.demo.usermanagerdemo.cradmin import UsermanagerCrAdminInstance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
-from django_cradmin.superuserui import superuserui_registry
 
 
 urlpatterns = [
@@ -37,5 +36,4 @@ urlpatterns = [
     url(r'^$', DemoView.as_view()),
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT}),
-    url(r'^superuser/', include(superuserui_registry.default.make_cradmin_instance_class().urls())),
 ]
