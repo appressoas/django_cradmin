@@ -38,8 +38,7 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                                 children=[
                                     uicontainer.fieldwrapper.FieldWrapper('first_name'),
                                     uicontainer.fieldwrapper.FieldWrapper('last_name'),
-                                    uicontainer.button.SubmitPrimary(
-                                        text=self.submit_save_label)
+                                    uicontainer.button.SubmitPrimary(text='Save)
                                 ]
                             )
                         ]
@@ -53,6 +52,18 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleFormView, self).get_context_data(**kwargs)
+        self.add_formview_mixin_context_data(context=context)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
+        return context
+
+
+class StandaloneFormView(javascriptregistry.viewmixin.StandaloneBaseViewMixin,
+                         formviewmixin.FormViewMixin,
+                         DjangoFormView):
+    template_name = 'django_cradmin/viewhelpers/formview/standalone_form_view.django.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StandaloneFormView, self).get_context_data(**kwargs)
         self.add_formview_mixin_context_data(context=context)
         self.add_javascriptregistry_component_ids_to_context(context=context)
         return context

@@ -1,6 +1,7 @@
 from .previewmixin import PreviewMixin  # noqa
 from .formviewmixin import FormViewMixin  # noqa
 from .formview import WithinRoleFormView  # noqa
+from .formview import StandaloneFormView  # noqa
 from .create_update_view_mixin import CreateUpdateViewMixin  # noqa
 from .createview import WithinRoleCreateView  # noqa
 from .updateview import WithinRoleUpdateView  # noqa
