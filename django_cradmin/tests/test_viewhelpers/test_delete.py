@@ -33,7 +33,7 @@ class TestDelete(TestCase):
             selector.one('h1.test-primary-h1').alltext_normalized,
             'Delete Simple Test Item')
         self.assertEqual(
-            selector.one('#deleteview-preview').alltext_normalized,
+            selector.one('#id_deleteview_question').alltext_normalized,
             'Are you sure you want to delete "Simple Test Item"?')
 
     def test_post(self):

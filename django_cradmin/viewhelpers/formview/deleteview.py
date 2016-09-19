@@ -1,7 +1,6 @@
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy
 from django.views.generic import DeleteView as DjangoDeleteView
-from django.utils.translation import ugettext_lazy as _
-
 from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
@@ -11,7 +10,7 @@ class DeleteView(QuerysetForRoleMixin,
                  javascriptregistry.viewmixin.WithinRoleViewMixin):
 
     #: The name of the template to use.
-    template_name = 'django_cradmin/viewhelpers/delete.django.html'
+    template_name = 'django_cradmin/viewhelpers/formview/within_role_delete_view.django.html'
 
     def get_pagetitle(self):
         """
@@ -19,7 +18,7 @@ class DeleteView(QuerysetForRoleMixin,
 
         Defaults to ``Delete <verbose_name model>``.
         """
-        return _('Delete %(what)s') % {'what': self.get_object_preview()}
+        return ugettext_lazy('Delete %(what)s') % {'what': self.get_object_preview()}
 
     def get_action_label(self):
         """
@@ -28,7 +27,7 @@ class DeleteView(QuerysetForRoleMixin,
         Used as the prefix of the page title (see :meth:`.get_pagetitle`),
         and as the default for :meth:`.get_delete_button_label`.
         """
-        return _('Delete')
+        return ugettext_lazy('Delete')
 
     def get_delete_button_label(self):
         """
@@ -50,7 +49,7 @@ class DeleteView(QuerysetForRoleMixin,
         """
         Get the confirm message shown in the focus area of the view.
         """
-        return _('Are you sure you want to delete "%(object_preview)s"?') % {
+        return ugettext_lazy('Are you sure you want to delete "%(object_preview)s"?') % {
             'object_preview': self.get_object_preview()
         }
 
@@ -80,7 +79,7 @@ class DeleteView(QuerysetForRoleMixin,
 
         Used by :meth:`.add_success_messages`.
         """
-        return _('Deleted "%(what)s"') % {
+        return ugettext_lazy('Deleted "%(what)s"') % {
             'what': object_preview
         }
 
