@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import json
 
+import django_cradmin
 from django import template
 from django.conf import settings
 from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -246,7 +247,9 @@ def cradmin_theme_staticpath(context):
         if not theme_path:
             theme_path = getattr(settings,
                                  'DJANGO_CRADMIN_THEME_PATH',
-                                 'django_cradmin/1.0.0/styles/cradmin_theme_default/main.css')
+                                 'django_cradmin/{version}/styles/cradmin_theme_full/main.css'.format(
+                                     version=django_cradmin.__version__
+                                 ))
         return static(theme_path)
     else:
         raise Exception('The cradmin_theme_staticpath requires "request" to be in the template '
