@@ -394,6 +394,23 @@ All icons come in the following colors: `dark` (default), `primary`, `secondary`
         <i class="icon-blog--light"></i>
         <code>.icon-blog--light</code>
     </li>
+
+    <li class="sg-icon-grid__item">
+        <i class="icon-phone"></i>
+        <code>.icon-phone</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-phone--primary"></i>
+        <code>.icon-phone--primary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-phone--secondary"></i>
+        <code>.icon-phone--secondary</code>
+    </li>
+    <li class="sg-icon-grid__item">
+        <i class="icon-phone--light"></i>
+        <code>.icon-phone--light</code>
+    </li>
 </ul>
 
 Styleguide 4
@@ -709,18 +726,18 @@ Styleguide 4
 
 .icon-email,
 %icon-email {
-    @include icon(3, 5, 20px, 14px);
+    @include icon(3, 5, 18px, 13px);
 
     &--light {
-        @include icon(3, 6, 20px, 14px);
+        @include icon(3, 6, 18px, 13px);
     }
 
     &--primary {
-        @include icon(3, 7, 20px, 14px);
+        @include icon(3, 7, 18px, 13px);
     }
 
     &--secondary {
-        @include icon(3, 8, 20px, 14px);
+        @include icon(3, 8, 18px, 13px);
     }
 }
 
@@ -789,6 +806,23 @@ Styleguide 4
 
     &--secondary {
         @include icon(7, 8, 16px, 16px);
+    }
+}
+
+.icon-phone,
+%icon-phone {
+    @include icon(8, 5, 14px, 14px);
+
+    &--light {
+        @include icon(8, 6, 14px, 14px);
+    }
+
+    &--primary {
+        @include icon(8, 7, 14px, 14px);
+    }
+
+    &--secondary {
+        @include icon(8, 8, 14px, 14px);
     }
 }
 
