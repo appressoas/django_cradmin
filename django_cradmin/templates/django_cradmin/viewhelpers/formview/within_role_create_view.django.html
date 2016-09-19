@@ -1,14 +1,1 @@
-{% extends "django_cradmin/viewhelpers/create_update_base.django.html" %}
-
-{% block pageheader %}
-    {{ block.super }}
-    {% if is_foreignkey_select_mode %}
-        <div class="container">
-            <p class="django-cradmin-formsized-wrapper django-cradmin-create-foreignkey-select-mode-buttonbar">
-                <a href="{{ foreignkey_select_mode_backbutton_url }}">
-                    {{ foreignkey_select_mode_backbutton_label }}
-                </a>
-            </p>
-        </div>
-    {% endif %}
-{% endblock pageheader %}
+{% extends "django_cradmin/viewhelpers/formview/within_role_form_view.django.html" %}

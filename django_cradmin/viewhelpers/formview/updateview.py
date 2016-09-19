@@ -8,8 +8,6 @@ from . import create_update_view_mixin
 
 
 class UpdateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
-    template_name = 'django_cradmin/viewhelpers/update.django.html'
-
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
@@ -26,7 +24,7 @@ class WithinRoleUpdateView(QuerysetForRoleMixin,
                            UpdateViewMixin,
                            DjangoUpdateView,
                            javascriptregistry.viewmixin.WithinRoleViewMixin):
-    template_name = 'django_cradmin/viewhelpers/update.django.html'
+    template_name = 'django_cradmin/viewhelpers/formview/within_role_update_view.django.html'
 
     def get_pagetitle(self):
         """
