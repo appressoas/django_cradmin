@@ -7,10 +7,7 @@ from django_cradmin import javascriptregistry
 from . import create_update_view_mixin
 
 
-class CreateView(create_update_view_mixin.CreateUpdateViewMixin,
-                 DjangoCreateView,
-                 javascriptregistry.viewmixin.WithinRoleViewMixin):
-    template_name = 'django_cradmin/viewhelpers/create.django.html'
+class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 
     #: The viewname within this app for the edit view.
     #: See :meth:`.get_editurl`.
@@ -58,6 +55,12 @@ class CreateView(create_update_view_mixin.CreateUpdateViewMixin,
                 url, urllib.parse.urlencode({
                     'success_url': self.request.GET['success_url']}))
         return url
+
+
+class CreateView(CreateViewMixin,
+                 DjangoCreateView,
+                 javascriptregistry.viewmixin.WithinRoleViewMixin):
+    template_name = 'django_cradmin/viewhelpers/create.django.html'
 
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)
