@@ -109,41 +109,6 @@ input[type='tel'],
     }
 }
 
-.input-required { // TODO: What is this again?
-    @include font(header, normal);
-    @include font-size(xsmall);
-
-    pointer-events: none;
-    position: relative;
-    display: inline-block;
-    float: right;
-    height: 30px;
-    line-height: 30px;
-    margin-top: -($unit * 9);
-    padding-right: $spacing--small;
-
-    color: $color-muted;
-
-    &.ng-enter {
-        @extend %animation-fade-in;
-    }
-
-    &.ng-leave {
-        @extend %animation-fade-out;
-    }
-
-    &--warning {
-        color: $color-info;
-    }
-
-    &--error {
-        color: $color-warning;
-    }
-
-    &--safe {
-        color: $color-success;
-    }
-}
 
 .input--error {
     &,
