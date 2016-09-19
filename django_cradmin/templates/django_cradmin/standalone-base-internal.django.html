@@ -69,13 +69,37 @@
                 {% endcomment %}
             {% endblock header %}
 
-            {% block messages %}
-                {% include "django_cradmin/include/messages.django.html" %}
-            {% endblock messages %}
-
             {% block main %}
                 <main {% block main-attributes %}role="main"{% endblock %}>
-                    {% block main-content %}{% endblock main-content %}
+                    {% block main-content %}
+                        {% block page-cover %}
+                            <header class="
+                                    {% block page-cover-bem-block %}page-cover{% endblock %}
+                                    {% block page-cover-bem-variant %}page-cover--without-page-header{% endblock %}
+                                    {% cradmin_test_css_class 'page-cover' %}">
+                                {% block page-cover-content %}
+                                    <h1 class="
+                                            {% block page-cover-title-bem-block %}page-cover__title{% endblock %}
+                                            {% block page-cover-title-bem-variant %}{% endblock %}
+                                            {% cradmin_test_css_class 'primary-h1' %}">
+                                        {% block page-cover-title %}{% endblock page-cover-title %}
+                                    </h1>
+                                {% endblock page-cover-content %}
+                            </header>
+                        {% endblock page-cover %}
+
+                        {% block messages %}
+                            {% if messages %}
+                                <div class="page-section  page-section--center">
+                                    <div class="container  container--tight">
+                                        {% include "django_cradmin/include/messages.django.html" %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endblock messages %}
+
+                        {% block content %}{% endblock %}
+                    {% endblock main-content %}
                 </main>
             {% endblock main %}
 

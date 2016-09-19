@@ -51,40 +51,7 @@
     {% endwith %}
 {% endblock header %}
 
-{# Override messages - show in the below-page-cover-messages block #}
-{% block messages %}{% endblock messages %}
-
-{% block main-content %}
-    {% comment %}
-        The page header can be hidden in two ways:
-        - Set hide_pageheader = True in the template context.
-        - Set the DJANGO_CRADMIN_HIDE_PAGE_HEADER setting.
-    {% endcomment %}
-    {% if not hide_pageheader and not DJANGO_CRADMIN_HIDE_PAGE_HEADER %}
-        {% block page-cover %}
-            <header class="{% block page-cover-cssclass %}page-cover{% endblock %}{% cradmin_test_css_class 'page-cover' %}">
-                {% block page-cover-content %}
-                    <h1 class="page-cover__title  {% block page-title-cssclass %}{% endblock %}{% cradmin_test_css_class 'primary-h1' %}">
-                        {% block page-cover-title %}{% endblock page-cover-title %}
-                    </h1>
-                {% endblock page-cover-content %}
-            </header>
-        {% endblock page-cover %}
-    {% endif %}
-
-    {% block below-page-cover-messages %}
-        {% if messages %}
-            <div class="page-section  page-section--center">
-                <div class="container  container--tight">
-                    {% include "django_cradmin/include/messages.django.html" %}
-                </div>
-            </div>
-        {% endif %}
-    {% endblock below-page-cover-messages %}
-
-    {% block content %}{% endblock content %}
-{% endblock main-content %}
-
+{% block page-cover-bem-variant %}{% endblock %}
 
 {% block footer %}
     {% with footer_renderable=request.cradmin_instance.get_footer_renderable %}
