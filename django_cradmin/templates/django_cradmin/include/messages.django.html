@@ -1,8 +1,8 @@
 {% load i18n %}
-{% load cradmin_icon_tags %}
+{% load cradmin_tags %}
 
 {% if messages %}
-    <div id="id_django_cradmin_messages" role="complementary" class="blocklist  blocklist--tight">
+    <div id="id_django_cradmin_messages" role="complementary" class="blocklist  blocklist--tight{% cradmin_test_css_class 'djangomessages' %}">
         {% for message in messages %}
             <p class="blocklist__item
                         {% if message.tags == "error" %}
@@ -14,6 +14,7 @@
                         {% elif message.tags == "success" %}
                             blocklist__item--success
                         {% endif %}
+                        {% cradmin_test_css_class message.tags %}
                     "
                     role="alertdialog">
                 <span class="screenreader-only">
