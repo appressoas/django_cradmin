@@ -7,8 +7,23 @@ from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 from . import create_update_view_mixin
 
 
+class UpdateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
+    template_name = 'django_cradmin/viewhelpers/update.django.html'
+
+    def get_pagetitle(self):
+        """
+        Get the page title (the title tag).
+
+        Defaults to ``Edit <verbose_name model>``.
+        """
+        return _('Edit %(what)s') % {'what': self.model_verbose_name}
+
+    def get_success_message(self, obj):
+        return _('Saved "%(object)s"') % {'object': obj}
+
+
 class UpdateView(QuerysetForRoleMixin,
-                 create_update_view_mixin.CreateUpdateViewMixin,
+                 UpdateViewMixin,
                  DjangoUpdateView,
                  javascriptregistry.viewmixin.WithinRoleViewMixin):
     template_name = 'django_cradmin/viewhelpers/update.django.html'
