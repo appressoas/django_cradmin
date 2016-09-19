@@ -1,11 +1,16 @@
-from __future__ import unicode_literals
-
 from django import forms
 from django import test
+from django_cradmin import uicontainer
+
 from . import formtest_mixins
 
 
-class TestAutomaticDjangoFieldRenderable(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
+class TestAutomaticDjangoField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
+
+    def test_hiddenwidget_sanity(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(widget=forms.HiddenInput()))
+        self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])
 
     #
     # CharField
@@ -235,3 +240,32 @@ class TestAutomaticDjangoFieldRenderable(test.TestCase, formtest_mixins.SingleFo
         with self.assertRaises(NotImplementedError):
             self.single_field_formrenderable_htmls(
                 field=forms.MultipleChoiceField(choices=[('a', 'A')], widget=forms.CheckboxSelectMultiple()))
+
+
+class TestAutomaticDjangoHiddenField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
+    def single_field_formrenderable_fieldwrapper_factory(self):
+        return uicontainer.fieldwrapper.FieldWrapper(
+            fieldname='testfield',
+            field_renderable=uicontainer.field.AutomaticDjangoHiddenField())
+
+    def test_charfield_type(self):
+        selector = self.single_field_formrenderable_htmls(field=forms.CharField())
+        self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])
+
+    def test_integerfield_type(self):
+        selector = self.single_field_formrenderable_htmls(field=forms.IntegerField())
+        self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])
+
+    def test_textarea_type(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(initial='testinitial', widget=forms.Textarea()))
+        self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])
+
+    def test_booleanfield_type(self):
+        selector = self.single_field_formrenderable_htmls(field=forms.BooleanField())
+        self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])
+
+    def test_choicefield_type(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')]))
+        self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])

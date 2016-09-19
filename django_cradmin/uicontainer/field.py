@@ -68,5 +68,14 @@ class AutomaticDjangoField(BaseFieldRenderable):
         elif isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple):
             raise NotImplementedError('AutomaticDjangoField does not support the '
                                       'CheckboxSelectMultiple widget yet.')
-
         return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
+
+
+class AutomaticDjangoHiddenField(AutomaticDjangoField):
+    """
+    Just like :class:`.AutomaticDjangoField`, but renders as
+    a ``<input type="hidden">``.
+    """
+    @property
+    def rendered_field(self):
+        return self.bound_formfield.as_hidden(attrs=self.field_attributes_dict)

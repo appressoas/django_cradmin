@@ -12,6 +12,9 @@ class SingleFormRenderableHelperMixin(object):
             testfield = field
         return TestForm
 
+    def single_field_formrenderable_fieldwrapper_factory(self):
+        return uicontainer.fieldwrapper.FieldWrapper(fieldname='testfield')
+
     def single_field_formrenderable_factory(self, field, formvalue=None):
         form_class = self.single_field_formclass_factory(field=field)
         data = None
@@ -20,7 +23,7 @@ class SingleFormRenderableHelperMixin(object):
         form = form_class(data=data)
         formrenderable = uicontainer.form.Form(
             form=form,
-            children=[uicontainer.fieldwrapper.FieldWrapper(fieldname='testfield')]
+            children=[self.single_field_formrenderable_fieldwrapper_factory()]
         ).bootstrap()
         return formrenderable
 
