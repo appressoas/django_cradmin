@@ -151,4 +151,4 @@ class TestAbstractSelectFilter(TestCase):
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertTrue(selector.exists('label'))
-        self.assertTrue(selector.one('label').hasclass('sr-only'))
+        self.assertTrue(selector.one('label').hasclass('screenreader-only'))

@@ -186,4 +186,4 @@ class TestAbstractCheckboxFilter(TestCase):
         filterlist.append(testfilter)
         selector = htmls.S(testfilter.render())
         self.assertTrue(selector.exists('label#django_cradmin_listfilter_test_label'))
-        self.assertTrue(selector.one('label#django_cradmin_listfilter_test_label').hasclass('sr-only'))
+        self.assertTrue(selector.one('label#django_cradmin_listfilter_test_label').hasclass('screenreader-only'))
