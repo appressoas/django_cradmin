@@ -60,7 +60,7 @@ class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 class WithinRoleCreateView(CreateViewMixin,
                            DjangoCreateView,
                            javascriptregistry.viewmixin.WithinRoleViewMixin):
-    template_name = 'django_cradmin/viewhelpers/create.django.html'
+    template_name = 'django_cradmin/viewhelpers/formview/within_role_create_view.django.html'
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleCreateView, self).get_context_data(**kwargs)
