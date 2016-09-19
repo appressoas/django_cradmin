@@ -10,7 +10,10 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    <a href="{{ LOGIN_URL }}">
-        {% trans "Sign back in" %}
-    </a>
+    <div class="page-section page-section--center">
+        <a href="{{ LOGIN_URL }}" class="button">
+            {% trans "Sign back in" %}
+        </a>
+    </div>
+
 {% endblock content %}

@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.auth.views import logout
 
@@ -12,5 +11,6 @@ def cradmin_logoutview(request, template_name='cradmin_authenticate/logout.djang
         template_name=template_name,
         next_page=next_page,
         extra_context={
-            'LOGIN_URL': settings.LOGIN_URL
+            'LOGIN_URL': settings.LOGIN_URL,
+            'cradmin_javascriptregistry_component_ids': []
         })

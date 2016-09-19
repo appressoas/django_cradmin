@@ -1,7 +1,5 @@
-{% extends "django_cradmin/layouts/standalone/focused.django.html" %}
-{% load crispy_forms_tags %}
+{% extends "django_cradmin/viewhelpers/formview/standalone_form_view.django.html" %}
 {% load i18n %}
-{#{% load staticfiles %}#}
 
 {% block title %}
     {% trans "Sign in" %}
@@ -12,13 +10,15 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    {% crispy form formhelper %}
+    {{ block.super }}
 
     {% if DJANGO_CRADMIN_FORGOTPASSWORD_URL %}
-        <p id="cradmin_authenticate_login_forgotpasswordlink">
-            <a href="{{ DJANGO_CRADMIN_FORGOTPASSWORD_URL }}">
-                {% trans "Forgot your password?" %}
-            </a>
-        </p>
+        <div class="page-section  page-section--center  page-section--last">
+            <p id="cradmin_authenticate_login_forgotpasswordlink">
+                <a href="{{ DJANGO_CRADMIN_FORGOTPASSWORD_URL }}">
+                    {% trans "Forgot your password?" %}
+                </a>
+            </p>
+        </div>
     {% endif %}
 {% endblock content %}

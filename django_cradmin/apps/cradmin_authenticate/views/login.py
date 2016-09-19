@@ -1,17 +1,12 @@
-from __future__ import unicode_literals
-
-from crispy_forms import layout
 from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model
 from django.http import HttpResponseRedirect
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django import forms
-from crispy_forms.helper import FormHelper
-from django.views.generic import FormView
+from django_cradmin import uicontainer
 
-from django_cradmin import javascriptregistry
-from django_cradmin.crispylayouts import PrimarySubmitLg
+from django_cradmin.viewhelpers import formview
 
 
 class AbstractLoginForm(forms.Form):
@@ -139,7 +134,7 @@ class EmailLoginFormNoSanityCheck(EmailLoginForm):
         pass
 
 
-class LoginView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
+class LoginView(formview.StandaloneFormView):
     """
     View for handling login.
     By default, a "forgot password" link is read from ``DJANGO_CRADMIN_FORGOTPASSWORD_URL`` to your ``settings.py``.
@@ -211,39 +206,67 @@ class LoginView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
             self._inital_email_value = self.get_initial_email_value()
         return self._inital_email_value
 
-    def get_field_layout(self):
+    # def get_field_layout(self):
+    #     form_class = self.get_form_class()
+    #     if self.initial_email_value:
+    #         return [
+    #             layout.Hidden(form_class.username_field, self.initial_email_value),
+    #             layout.Field('password',
+    #                          placeholder=form_class.password_field_placeholder,
+    #                          focusonme='focusonme',
+    #                          css_class='input-lg'),
+    #         ]
+    #     else:
+    #         return [
+    #             layout.Field(form_class.username_field,
+    #                          placeholder=form_class.username_field_placeholder,
+    #                          css_class='input-lg',
+    #                          focusonme='focusonme'),
+    #             layout.Field('password',
+    #                          placeholder=form_class.password_field_placeholder,
+    #                          css_class='input-lg'),
+    #         ]
+
+    # def get_form_helper(self):
+    #     """
+    #     Defines and returns the ``django_crispy_forms`` layout. Override this if you want to alter the form-layout.
+    #     """
+    #     formhelper = FormHelper()
+    #     formhelper.form_action = self.request.get_full_path()
+    #     formhelper.form_id = 'cradmin_authenticate_login_form'
+    #     formhelper.label_class = 'sr-only'
+    #
+    #     layoutargs = self.get_field_layout() + [PrimarySubmitLg('login', _('Sign in'))]
+    #     formhelper.layout = layout.Layout(*layoutargs)
+    #     return formhelper
+
+    def get_form_renderable(self):
         form_class = self.get_form_class()
         if self.initial_email_value:
-            return [
-                layout.Hidden(form_class.username_field, self.initial_email_value),
-                layout.Field('password',
-                             placeholder=form_class.password_field_placeholder,
-                             focusonme='focusonme',
-                             css_class='input-lg'),
+            formchildren = [
+                uicontainer.fieldwrapper.FieldWrapper(
+                    fieldname=form_class.username_field,
+                    field_renderable=uicontainer.field.AutomaticDjangoHiddenField()),
+                uicontainer.fieldwrapper.FieldWrapper('password'),
             ]
         else:
-            return [
-                layout.Field(form_class.username_field,
-                             placeholder=form_class.username_field_placeholder,
-                             css_class='input-lg',
-                             focusonme='focusonme'),
-                layout.Field('password',
-                             placeholder=form_class.password_field_placeholder,
-                             css_class='input-lg'),
+            formchildren = [
+                uicontainer.fieldwrapper.FieldWrapper(form_class.username_field),
+                uicontainer.fieldwrapper.FieldWrapper('password'),
             ]
+        formchildren.append(
+            uicontainer.button.SubmitPrimary(
+                text=ugettext_lazy('Sign in'))
+        )
 
-    def get_form_helper(self):
-        """
-        Defines and returns the ``django_crispy_forms`` layout. Override this if you want to alter the form-layout.
-        """
-        formhelper = FormHelper()
-        formhelper.form_action = self.request.get_full_path()
-        formhelper.form_id = 'cradmin_authenticate_login_form'
-        formhelper.label_class = 'sr-only'
-
-        layoutargs = self.get_field_layout() + [PrimarySubmitLg('login', _('Sign in'))]
-        formhelper.layout = layout.Layout(*layoutargs)
-        return formhelper
+        return uicontainer.layout.PageSectionTight(
+            children=[
+                uicontainer.form.Form(
+                    form=self.get_form(),
+                    children=formchildren
+                )
+            ]
+        ).bootstrap()
 
     def get_success_url(self):
         """
@@ -269,8 +292,6 @@ class LoginView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
         template-context.
         """
         context = super(LoginView, self).get_context_data(**kwargs)
-        self.add_javascriptregistry_component_ids_to_context(context=context)
-        context['formhelper'] = self.get_form_helper()
         context['DJANGO_CRADMIN_FORGOTPASSWORD_URL'] = getattr(
             settings, 'DJANGO_CRADMIN_FORGOTPASSWORD_URL', None)
         return context

@@ -35,7 +35,7 @@ class TestUsernameLogin(TestCase):
         selector = htmls.S(response.content)
         self.assertIn(
             "Your username and password didn't match",
-            selector.one('#cradmin_authenticate_login_form').alltext_normalized)
+            selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized)
 
 
 class TestEmailLogin(TestCase):
@@ -77,7 +77,7 @@ class TestEmailLogin(TestCase):
         selector = htmls.S(response.content)
         self.assertIn(
             "Your email and password didn't match",
-            selector.one('#cradmin_authenticate_login_form').alltext_normalized)
+            selector.one('.test-form-globalmessages .test-warning-message').alltext_normalized)
 
 TestEmailLogin = override_settings(
     AUTH_USER_MODEL='cradmin_authenticate_testapp.EmailUser',
