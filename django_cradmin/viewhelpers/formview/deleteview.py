@@ -5,13 +5,7 @@ from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 
-class DeleteView(QuerysetForRoleMixin,
-                 DjangoDeleteView,
-                 javascriptregistry.viewmixin.WithinRoleViewMixin):
-
-    #: The name of the template to use.
-    template_name = 'django_cradmin/viewhelpers/formview/within_role_delete_view.django.html'
-
+class DeleteViewMixin:
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
@@ -61,18 +55,6 @@ class DeleteView(QuerysetForRoleMixin,
         """
         return self.request.cradmin_app.reverse_appindexurl()
 
-    def get_context_data(self, **kwargs):
-        context = super(DeleteView, self).get_context_data(**kwargs)
-        self.add_javascriptregistry_component_ids_to_context(context=context)
-        obj = context['object']
-        context['model_verbose_name'] = obj._meta.verbose_name
-        context['success_url'] = self.get_success_url()
-        context['object_preview'] = self.get_object_preview()
-        context['pagetitle'] = self.get_pagetitle()
-        context['confirm_message'] = self.get_confirm_message()
-        context['delete_button_label'] = self.get_delete_button_label()
-        return context
-
     def get_success_message(self, object_preview):
         """
         Override this to provide a success message.
@@ -96,8 +78,30 @@ class DeleteView(QuerysetForRoleMixin,
         if success_message:
             messages.success(self.request, success_message)
 
+    def add_delete_view_mixin_context_data(self, context):
+        obj = context['object']
+        context['model_verbose_name'] = obj._meta.verbose_name
+        context['success_url'] = self.get_success_url()
+        context['object_preview'] = self.get_object_preview()
+        context['pagetitle'] = self.get_pagetitle()
+        context['confirm_message'] = self.get_confirm_message()
+        context['delete_button_label'] = self.get_delete_button_label()
+
     def delete(self, request, *args, **kwargs):
         object_preview = self.get_object_preview()
-        response = super(DeleteView, self).delete(request, *args, **kwargs)
+        response = super(DeleteViewMixin, self).delete(request, *args, **kwargs)
         self.add_success_messages(object_preview)
         return response
+
+
+class DeleteView(QuerysetForRoleMixin,
+                 DeleteViewMixin,
+                 DjangoDeleteView,
+                 javascriptregistry.viewmixin.WithinRoleViewMixin):
+    template_name = 'django_cradmin/viewhelpers/formview/within_role_delete_view.django.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
+        self.add_delete_view_mixin_context_data(context=context)
+        return context
