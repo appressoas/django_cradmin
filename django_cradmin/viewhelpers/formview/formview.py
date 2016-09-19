@@ -49,7 +49,7 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                     # ... do something with the form ...
                     return HttpResponseRedirect('/some/view')
     """
-    template_name = 'django_cradmin/viewhelpers/formview_base.django.html'
+    template_name = 'django_cradmin/viewhelpers/formview/within_role_form_view.django.html'
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleFormView, self).get_context_data(**kwargs)

@@ -57,7 +57,7 @@ class FormViewMixin:
                     self.add_formview_mixin_context_data(context=context)
                     return context
         """
-        context['uicontainer'] = self.get_form_renderable()
+        context['form_renderable'] = self.get_form_renderable()
         context['pagetitle'] = self.get_pagetitle()
         context['pageheading'] = self.get_pageheading()
 
