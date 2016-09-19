@@ -78,7 +78,22 @@ class FormViewMixin:
         """
         return self.submit_save_and_continue_edititing_button_name
 
-    def get_uicontainer(self):
+    def get_form_renderable(self):
+        """
+        Get a :class:`django_cradmin.renderable.AbstractRenderable` that renders
+        the form.
+
+        This will typically be a :doc:`uicontainer` tree containing a
+        :class:`django_cradmin.uicontainer.form.Form`, but it can be any
+        AbstractRenderable. Not using a :class:`django_cradmin.uicontainer.form.Form`
+        (or a subclass of it) is fairly complex when it comes to handling error
+        messages and form rendering, so it is generally not recommended.
+
+        See :meth:`django_cradmin.viewhelpers.formview.formview.FormView` for examples.
+
+        Returns:
+            django_cradmin.renderable.AbstractRenderable: The renderable object.
+        """
         raise NotImplementedError()
 
     def add_formview_mixin_context_data(self, context):
@@ -95,7 +110,7 @@ class FormViewMixin:
                     self.add_formview_mixin_context_data(context=context)
                     return context
         """
-        context['uicontainer'] = self.get_uicontainer()
+        context['uicontainer'] = self.get_form_renderable()
         context['pagetitle'] = self.get_pagetitle()
         context['pageheading'] = self.get_pageheading()
 

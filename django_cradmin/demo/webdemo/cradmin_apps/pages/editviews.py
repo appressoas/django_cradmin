@@ -52,22 +52,26 @@ class PageCreateUpdateMixin(object):
     #     # form.fields['attachment'].widget = filewidgets.FileWidget()
     #     return form
 
-    def get_uicontainer(self):
-        return uicontainer.form.Form(
-            form=self.get_form(),
+    def get_form_renderable(self):
+        return uicontainer.layout.PageSectionTight(
             children=[
-                uicontainer.fieldwrapper.FieldWrapper('title'),
-                uicontainer.fieldwrapper.FieldWrapper('intro'),
-                uicontainer.fieldwrapper.FieldWrapper('body'),
-                # uicontainer.fieldwrapper.FieldWrapper('publishing_time'),
-                uicontainer.fieldset.FieldSet(
-                    title='Advanced',
+                uicontainer.form.Form(
+                    form=self.get_form(),
                     children=[
-                        uicontainer.fieldwrapper.FieldWrapper('internal_notes'),
+                        uicontainer.fieldwrapper.FieldWrapper('title'),
+                        uicontainer.fieldwrapper.FieldWrapper('intro'),
+                        uicontainer.fieldwrapper.FieldWrapper('body'),
+                        # uicontainer.fieldwrapper.FieldWrapper('publishing_time'),
+                        uicontainer.fieldset.FieldSet(
+                            title='Advanced',
+                            children=[
+                                uicontainer.fieldwrapper.FieldWrapper('internal_notes'),
+                            ]
+                        ),
+                        uicontainer.button.SubmitPrimary(
+                            text=self.submit_save_label)
                     ]
-                ),
-                uicontainer.button.SubmitPrimary(
-                    text=self.submit_save_label)
+                )
             ]
         ).bootstrap()
 

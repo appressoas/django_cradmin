@@ -29,7 +29,7 @@ class SendInvitesView(formview.FormView):
     form_class = InviteEmailsForm
     template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
 
-    def get_uicontainer(self):
+    def get_form_renderable(self):
         return uicontainer.form.Form(
             form=self.get_form(),
             children=[

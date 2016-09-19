@@ -26,16 +26,20 @@ class FormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                 template_name = 'myapp/myview.django.html'
                 form_class = MyForm
 
-                def get_field_layout(self):
-                    return [
-                        'first_name',
-                        'last_name',
-                    ]
-
-                def get_buttons(self):
-                    return [
-                        PrimarySubmit('save', 'Save'),
-                    ]
+                def get_form_renderable(self):
+                    return uicontainer.layout.PageSectionTight(
+                        children=[
+                            uicontainer.form.Form(
+                                form=self.get_form(),
+                                children=[
+                                    uicontainer.fieldwrapper.FieldWrapper('first_name'),
+                                    uicontainer.fieldwrapper.FieldWrapper('last_name'),
+                                    uicontainer.button.SubmitPrimary(
+                                        text=self.submit_save_label)
+                                ]
+                            )
+                        ]
+                    ).bootstrap()
 
                 def form_valid(self, form):
                     # ... do something with the form ...
