@@ -47,3 +47,4 @@ class FormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
         context = super(FormView, self).get_context_data(**kwargs)
         self.add_formview_mixin_context_data(context=context)
         self.add_javascriptregistry_component_ids_to_context(context=context)
+        return context
