@@ -74,9 +74,9 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         kwarg for :meth:`.__init__`.
 
         Defaults to an object of
-        :class:`~django_cradmin.uicontainer.field.AutomaticDjangoField`.
+        :class:`~django_cradmin.uicontainer.field.Field`.
         """
-        return field.AutomaticDjangoField()
+        return field.Field()
 
     def get_default_help_text_renderable(self):
         """

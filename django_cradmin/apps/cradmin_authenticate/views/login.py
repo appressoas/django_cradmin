@@ -246,7 +246,7 @@ class LoginView(formview.StandaloneFormView):
             formchildren = [
                 uicontainer.fieldwrapper.FieldWrapper(
                     fieldname=form_class.username_field,
-                    field_renderable=uicontainer.field.AutomaticDjangoHiddenField()),
+                    field_renderable=uicontainer.field.HiddenField()),
                 uicontainer.fieldwrapper.FieldWrapper('password'),
             ]
         else:

@@ -28,7 +28,7 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         return attributes_dict
 
 
-class AutomaticDjangoField(BaseFieldRenderable):
+class Field(BaseFieldRenderable):
     """
     Automatically renders a form field for a :class:`.FieldWrapper`
     using the Django widget system.
@@ -63,17 +63,17 @@ class AutomaticDjangoField(BaseFieldRenderable):
 
         # TODO: Add support for radio and checkbox lists
         if isinstance(self.bound_formfield.field.widget, forms.RadioSelect):
-            raise NotImplementedError('AutomaticDjangoField does not support the '
+            raise NotImplementedError('Field does not support the '
                                       'RadioSelect widget yet.')
         elif isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple):
-            raise NotImplementedError('AutomaticDjangoField does not support the '
+            raise NotImplementedError('Field does not support the '
                                       'CheckboxSelectMultiple widget yet.')
         return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
 
 
-class AutomaticDjangoHiddenField(AutomaticDjangoField):
+class HiddenField(Field):
     """
-    Just like :class:`.AutomaticDjangoField`, but renders as
+    Just like :class:`.Field`, but renders as
     a ``<input type="hidden">``.
     """
     @property

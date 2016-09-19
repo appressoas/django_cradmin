@@ -246,7 +246,7 @@ class TestAutomaticDjangoHiddenField(test.TestCase, formtest_mixins.SingleFormRe
     def single_field_formrenderable_fieldwrapper_factory(self):
         return uicontainer.fieldwrapper.FieldWrapper(
             fieldname='testfield',
-            field_renderable=uicontainer.field.AutomaticDjangoHiddenField())
+            field_renderable=uicontainer.field.HiddenField())
 
     def test_charfield_type(self):
         selector = self.single_field_formrenderable_htmls(field=forms.CharField())
