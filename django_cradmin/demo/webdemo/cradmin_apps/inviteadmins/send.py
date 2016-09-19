@@ -30,11 +30,16 @@ class SendInvitesView(formview.WithinRoleFormView):
     template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
 
     def get_form_renderable(self):
-        return uicontainer.form.Form(
-            form=self.get_form(),
+        return uicontainer.layout.PageSectionTight(
             children=[
-                uicontainer.button.SubmitPrimary(
-                    text='Send invites')
+                uicontainer.form.Form(
+                    form=self.get_form(),
+                    children=[
+                        uicontainer.fieldwrapper.FieldWrapper('emails'),
+                        uicontainer.button.SubmitPrimary(
+                            text='Send invites')
+                    ]
+                )
             ]
         ).bootstrap()
 
