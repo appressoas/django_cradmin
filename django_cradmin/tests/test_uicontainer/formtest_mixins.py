@@ -15,15 +15,17 @@ class SingleFormRenderableHelperMixin(object):
     def single_field_formrenderable_fieldwrapper_factory(self):
         return uicontainer.fieldwrapper.FieldWrapper(fieldname='testfield')
 
-    def single_field_formrenderable_factory(self, field, formvalue=None):
+    def single_field_formrenderable_factory(self, field, formvalue=None,
+                                            fieldwrapper=None):
         form_class = self.single_field_formclass_factory(field=field)
         data = None
         if formvalue:
             data = {'testfield': formvalue}
         form = form_class(data=data)
+        fieldwrapper = fieldwrapper or self.single_field_formrenderable_fieldwrapper_factory()
         formrenderable = uicontainer.form.Form(
             form=form,
-            children=[self.single_field_formrenderable_fieldwrapper_factory()]
+            children=[fieldwrapper]
         ).bootstrap()
         return formrenderable
 

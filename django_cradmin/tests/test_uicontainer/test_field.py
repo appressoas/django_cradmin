@@ -5,12 +5,60 @@ from django_cradmin import uicontainer
 from . import formtest_mixins
 
 
-class TestAutomaticDjangoField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
-
+class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_hiddenwidget_sanity(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.CharField(widget=forms.HiddenInput()))
         self.assertEqual('hidden', selector.one('input[name="testfield"]')['type'])
+
+    def test_placeholder_default(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField())
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('placeholder'),)
+
+    def test_placeholder_kwarg_false(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(),
+            fieldwrapper=uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='testfield',
+                field_renderable=uicontainer.field.Field(placeholder=False)
+            ))
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('placeholder'),)
+
+    def test_placeholder_kwarg_string(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(),
+            fieldwrapper=uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='testfield',
+                field_renderable=uicontainer.field.Field(placeholder='Type something')
+            ))
+        self.assertEqual(
+            selector.one('input[name="testfield"]')['placeholder'],
+            'Type something'
+        )
+
+    def test_autofocus_default(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField())
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('autofocus'),)
+
+    def test_autofocus_kwarg_false(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(),
+            fieldwrapper=uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='testfield',
+                field_renderable=uicontainer.field.Field(autofocus=False)
+            ))
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('autofocus'),)
+
+    def test_autofocus_kwarg_true(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(),
+            fieldwrapper=uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='testfield',
+                field_renderable=uicontainer.field.Field(autofocus=True)
+            ))
+        self.assertTrue(selector.one('input[name="testfield"]').hasattribute('autofocus'),)
 
     #
     # CharField
@@ -242,7 +290,7 @@ class TestAutomaticDjangoField(test.TestCase, formtest_mixins.SingleFormRenderab
                 field=forms.MultipleChoiceField(choices=[('a', 'A')], widget=forms.CheckboxSelectMultiple()))
 
 
-class TestAutomaticDjangoHiddenField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
+class TestHiddenField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def single_field_formrenderable_fieldwrapper_factory(self):
         return uicontainer.fieldwrapper.FieldWrapper(
             fieldname='testfield',

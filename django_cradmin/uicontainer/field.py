@@ -13,6 +13,62 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
 
     You never use this on its own outside a :class:`.FieldWrapper`.
     """
+    def __init__(self, autofocus=False, placeholder=False, **kwargs):
+        """
+
+        Args:
+            autofocus (boolean): Autofocus on this field at page load?
+            placeholder (str): Placeholder text. See
+                :meth:`~django_cradmin.uicontainer.container.AbstractContainerRenderable.get_html_element_attributes`
+                for details about how values are applied.
+            **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
+        """
+        self._overridden_autofocus = autofocus
+        self._overridden_placeholder = placeholder
+        super(BaseFieldRenderable, self).__init__(**kwargs)
+
+    def get_default_autofocus(self):
+        """
+        Get the default value for the autofocus attribute of the html element.
+
+        Defaults to ``False``.
+        """
+        return False
+
+    @property
+    def autofocus(self):
+        """
+        Get the value for the autofocus attribute of the html element.
+
+        You should not override this. Override :meth:`.get_default_autofocus` instead.
+        """
+        return self._overridden_autofocus or self.get_default_autofocus()
+
+    def get_default_placeholder(self):
+        """
+        Get the default value for the placeholder attribute of the html element.
+
+        Defaults to ``False``.
+        """
+        return False
+
+    @property
+    def placeholder(self):
+        """
+        Get the value for the placeholder attribute of the html element.
+
+        You should not override this. Override :meth:`.get_default_placeholder` instead.
+        """
+        return self._overridden_placeholder or self.get_default_placeholder()
+
+    def get_html_element_attributes(self):
+        attributes = super(BaseFieldRenderable, self).get_html_element_attributes()
+        attributes.update({
+            'autofocus': self.autofocus,
+            'placeholder': self.placeholder,
+        })
+        return attributes
+
     @property
     def bound_formfield(self):
         return self.field_wrapper_renderable.formrenderable.form[self.field_wrapper_renderable.fieldname]
