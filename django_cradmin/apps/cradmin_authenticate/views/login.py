@@ -206,58 +206,36 @@ class LoginView(formview.StandaloneFormView):
             self._inital_email_value = self.get_initial_email_value()
         return self._inital_email_value
 
-    # def get_field_layout(self):
-    #     form_class = self.get_form_class()
-    #     if self.initial_email_value:
-    #         return [
-    #             layout.Hidden(form_class.username_field, self.initial_email_value),
-    #             layout.Field('password',
-    #                          placeholder=form_class.password_field_placeholder,
-    #                          focusonme='focusonme',
-    #                          css_class='input-lg'),
-    #         ]
-    #     else:
-    #         return [
-    #             layout.Field(form_class.username_field,
-    #                          placeholder=form_class.username_field_placeholder,
-    #                          css_class='input-lg',
-    #                          focusonme='focusonme'),
-    #             layout.Field('password',
-    #                          placeholder=form_class.password_field_placeholder,
-    #                          css_class='input-lg'),
-    #         ]
-
-    # def get_form_helper(self):
-    #     """
-    #     Defines and returns the ``django_crispy_forms`` layout. Override this if you want to alter the form-layout.
-    #     """
-    #     formhelper = FormHelper()
-    #     formhelper.form_action = self.request.get_full_path()
-    #     formhelper.form_id = 'cradmin_authenticate_login_form'
-    #     formhelper.label_class = 'sr-only'
-    #
-    #     layoutargs = self.get_field_layout() + [PrimarySubmitLg('login', _('Sign in'))]
-    #     formhelper.layout = layout.Layout(*layoutargs)
-    #     return formhelper
-
     def get_form_renderable(self):
         form_class = self.get_form_class()
+        autofocus_password_field = False
         if self.initial_email_value:
             formchildren = [
                 uicontainer.fieldwrapper.FieldWrapper(
                     fieldname=form_class.username_field,
                     field_renderable=uicontainer.field.HiddenField()),
-                uicontainer.fieldwrapper.FieldWrapper('password'),
             ]
+            autofocus_password_field = True
         else:
             formchildren = [
-                uicontainer.fieldwrapper.FieldWrapper(form_class.username_field),
-                uicontainer.fieldwrapper.FieldWrapper('password'),
+                uicontainer.fieldwrapper.FieldWrapper(
+                    fieldname=form_class.username_field,
+                    field_renderable=uicontainer.field.Field(
+                        autofocus=True,
+                        placeholder=form_class.username_field_placeholder
+                    )
+                ),
             ]
-        formchildren.append(
+        formchildren.extend([
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password',
+                field_renderable=uicontainer.field.Field(
+                    autofocus=autofocus_password_field,
+                    placeholder=form_class.password_field_placeholder
+                )),
             uicontainer.button.SubmitPrimary(
-                text=ugettext_lazy('Sign in'))
-        )
+                text=ugettext_lazy('Sign in')),
+        ])
 
         return uicontainer.layout.PageSectionTight(
             children=[
