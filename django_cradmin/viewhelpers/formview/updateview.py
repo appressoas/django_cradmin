@@ -22,10 +22,10 @@ class UpdateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
         return _('Saved "%(object)s"') % {'object': obj}
 
 
-class UpdateView(QuerysetForRoleMixin,
-                 UpdateViewMixin,
-                 DjangoUpdateView,
-                 javascriptregistry.viewmixin.WithinRoleViewMixin):
+class WithinRoleUpdateView(QuerysetForRoleMixin,
+                           UpdateViewMixin,
+                           DjangoUpdateView,
+                           javascriptregistry.viewmixin.WithinRoleViewMixin):
     template_name = 'django_cradmin/viewhelpers/update.django.html'
 
     def get_pagetitle(self):
@@ -40,13 +40,13 @@ class UpdateView(QuerysetForRoleMixin,
         return _('Saved "%(object)s"') % {'object': obj}
 
     def get_context_data(self, **kwargs):
-        context = super(UpdateView, self).get_context_data(**kwargs)
+        context = super(WithinRoleUpdateView, self).get_context_data(**kwargs)
         self.add_javascriptregistry_component_ids_to_context(context=context)
         self.add_create_update_view_mixin_context_data(context=context)
         return context
 
 
-class UpdateRoleView(UpdateView):
+class UpdateRoleView(WithinRoleUpdateView):
     """
     Extends :class:`.UpdateView` to streamline editing the current role
     object.

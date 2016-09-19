@@ -82,7 +82,7 @@ class PageCreateView(PageCreateUpdateMixin, formview.WithinRoleCreateView):
     """
 
 
-class PageUpdateView(mixins.PagesQuerySetForRoleMixin, PageCreateUpdateMixin, formview.UpdateView):
+class PageUpdateView(mixins.PagesQuerySetForRoleMixin, PageCreateUpdateMixin, formview.WithinRoleUpdateView):
     """
     View used to create edit existing pages.
     """
