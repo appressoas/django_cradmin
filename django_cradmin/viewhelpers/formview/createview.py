@@ -26,7 +26,7 @@ class CreateView(create_update_view_mixin.CreateUpdateViewMixin,
         """
         Defaults to ``"Created "<str(obj)>".``
         """
-        return ugettext_lazy('Created "%(object)s".') % {'object': obj}
+        return ugettext_lazy('Created "%(object)s"') % {'object': obj}
 
     def get_editurl(self, obj):
         """

@@ -20,7 +20,7 @@ class UpdateView(QuerysetForRoleMixin,
         return _('Edit %(what)s') % {'what': self.model_verbose_name}
 
     def get_success_message(self, obj):
-        return _('Saved "%(object)s".') % {'object': obj}
+        return _('Saved "%(object)s"') % {'object': obj}
 
 
 class UpdateRoleView(UpdateView):
