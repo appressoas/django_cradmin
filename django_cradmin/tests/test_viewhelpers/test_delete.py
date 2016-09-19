@@ -10,7 +10,7 @@ class TestDelete(TestCase):
         self.factory = RequestFactory()
 
     def test_get(self):
-        class SimpleDeleteView(formview.DeleteView):
+        class SimpleDeleteView(formview.WithinRoleDeleteView):
             def get_queryset_for_role(self):
                 queryset = mock.MagicMock()
                 return queryset
@@ -39,7 +39,7 @@ class TestDelete(TestCase):
     def test_post(self):
         obj = mock.MagicMock()
 
-        class SimpleDeleteView(formview.DeleteView):
+        class SimpleDeleteView(formview.WithinRoleDeleteView):
             def get_queryset_for_role(self):
                 queryset = mock.MagicMock()
                 return queryset

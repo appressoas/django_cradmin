@@ -5,7 +5,7 @@ from django_cradmin.viewhelpers import formview
 from django_cradmin.demo.webdemo.cradmin_apps.sharable_link.mixins import QuerysetForRoleMixin
 
 
-class DeletePublicInviteView(QuerysetForRoleMixin, formview.DeleteView):
+class DeletePublicInviteView(QuerysetForRoleMixin, formview.WithinRoleDeleteView):
     """
     View used to delete existing invites.
     """

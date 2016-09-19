@@ -105,7 +105,7 @@ class PageUpdateView(mixins.PagesQuerySetForRoleMixin, PageCreateUpdateMixin, fo
 #         return context
 
 
-class PageDeleteView(mixins.PagesQuerySetForRoleMixin, formview.DeleteView):
+class PageDeleteView(mixins.PagesQuerySetForRoleMixin, formview.WithinRoleDeleteView):
     """
     View used to delete existing pages.
     """

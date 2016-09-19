@@ -5,7 +5,7 @@ from django_cradmin.viewhelpers import formview
 from .mixins import QuerysetForRoleMixin
 
 
-class DeleteInvitesView(QuerysetForRoleMixin, formview.DeleteView):
+class DeleteInvitesView(QuerysetForRoleMixin, formview.WithinRoleDeleteView):
     """
     View used to delete existing invites.
     """

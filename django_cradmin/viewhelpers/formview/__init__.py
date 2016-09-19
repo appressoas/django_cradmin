@@ -5,4 +5,4 @@ from .create_update_view_mixin import CreateUpdateViewMixin  # noqa
 from .createview import WithinRoleCreateView  # noqa
 from .updateview import WithinRoleUpdateView  # noqa
 from .updateview import UpdateRoleView  # noqa
-from .deleteview import DeleteView  # noqa
+from .deleteview import WithinRoleDeleteView  # noqa
