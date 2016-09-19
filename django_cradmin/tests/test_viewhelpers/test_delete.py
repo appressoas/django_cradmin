@@ -1,10 +1,7 @@
-from __future__ import unicode_literals
-from django_cradmin.python2_compatibility import mock
 import htmls
 from django.test import TestCase
 from django.test.client import RequestFactory
-import six
-
+from django_cradmin.python2_compatibility import mock
 from django_cradmin.viewhelpers import formview
 
 

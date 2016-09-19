@@ -1,8 +1,8 @@
-from .previewmixin import PreviewMixin
-from .formviewmixin import FormViewMixin
-from .formview import WithinRoleFormView
-from .create_update_view_mixin import CreateUpdateViewMixin
-from .createview import WithinRoleCreateView
-from .updateview import WithinRoleUpdateView
-from .updateview import UpdateRoleView
-from .deleteview import DeleteView
+from .previewmixin import PreviewMixin  # noqa
+from .formviewmixin import FormViewMixin  # noqa
+from .formview import WithinRoleFormView  # noqa
+from .create_update_view_mixin import CreateUpdateViewMixin  # noqa
+from .createview import WithinRoleCreateView  # noqa
+from .updateview import WithinRoleUpdateView  # noqa
+from .updateview import UpdateRoleView  # noqa
+from .deleteview import DeleteView  # noqa
