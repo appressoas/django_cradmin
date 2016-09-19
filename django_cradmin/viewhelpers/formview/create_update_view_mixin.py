@@ -1,19 +1,15 @@
-from django.contrib.contenttypes.fields import GenericForeignKey
-
-from django_cradmin import automodelform
-from django_cradmin import javascriptregistry
-from django_cradmin.crispylayouts import PrimarySubmit, DefaultSubmit
-
-import urllib.request
-import urllib.parse
 import urllib.error
+import urllib.parse
+import urllib.request
+
 from django import forms
 from django import http
 from django.contrib import messages
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core import serializers
 from django.utils.translation import ugettext_lazy as _
-
-from crispy_forms import layout
+from django_cradmin import automodelform
+from django_cradmin import javascriptregistry
 
 from . import formviewmixin
 from . import previewmixin

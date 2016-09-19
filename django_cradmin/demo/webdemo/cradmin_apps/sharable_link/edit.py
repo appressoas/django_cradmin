@@ -35,7 +35,7 @@ class SiteAdminInviteUrl(InviteUrl):
         })
 
 
-class CreateOrEditSharableLinkView(formview.FormView, QuerysetForRoleMixin):
+class CreateOrEditSharableLinkView(formview.WithinRoleFormView, QuerysetForRoleMixin):
     form_class = SharableLinkForm
     template_name = 'webdemo/sharable_link/edit.django.html'
 

@@ -4,11 +4,15 @@ from django_cradmin import javascriptregistry
 from . import formviewmixin
 
 
-class FormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
-               formviewmixin.FormViewMixin,
-               DjangoFormView):
+class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
+                         formviewmixin.FormViewMixin,
+                         DjangoFormView):
     """
-    A :class:`django.views.generic.edit.FormView` with :class:`.FormViewMixin`.
+    Form view.
+
+    Uses :class:`django.views.generic.edit.FormView` with
+    :class:`django_cradmin.viewhelpers.formview.formviewmixin.FormViewMixin`
+    and :class:`django_cradmin.javascriptregistry.viewmixin.WithinRoleViewMixin`.
 
     Examples:
 
@@ -16,13 +20,13 @@ class FormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
 
             from django import forms
             from django.http import HttpResponseRedirect
-            from django_cradmin.crispylayouts import PrimarySubmit
+            from django_cradmin.viewhelpers import formview
 
             class MyForm(forms.Form):
                 first_name = forms.CharField(max_length=50)
                 last_name = forms.CharField(max_length=50)
 
-            class MyFormView(FormView):
+            class MyFormView(formview.WithinRoleFormView):
                 template_name = 'myapp/myview.django.html'
                 form_class = MyForm
 
@@ -48,7 +52,7 @@ class FormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
     template_name = 'django_cradmin/viewhelpers/formview_base.django.html'
 
     def get_context_data(self, **kwargs):
-        context = super(FormView, self).get_context_data(**kwargs)
+        context = super(WithinRoleFormView, self).get_context_data(**kwargs)
         self.add_formview_mixin_context_data(context=context)
         self.add_javascriptregistry_component_ids_to_context(context=context)
         return context

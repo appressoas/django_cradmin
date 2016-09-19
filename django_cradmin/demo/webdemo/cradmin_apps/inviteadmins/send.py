@@ -25,7 +25,7 @@ class SiteAdminInviteUrl(InviteUrl):
         })
 
 
-class SendInvitesView(formview.FormView):
+class SendInvitesView(formview.WithinRoleFormView):
     form_class = InviteEmailsForm
     template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
 
