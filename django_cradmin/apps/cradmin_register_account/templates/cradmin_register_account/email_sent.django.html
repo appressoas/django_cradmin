@@ -1,6 +1,6 @@
 {% extends "cradmin_register_account/base.django.html" %}
-{% load crispy_forms_tags %}
 {% load i18n %}
+{% load cradmin_tags %}
 
 
 {% block title %}
@@ -12,10 +12,12 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    <p>
-        {% trans "We have sent you an email. Click the link in the email to activate your account." %}
-    </p>
-    <p>
-        {% trans "If you do not see the email, check your junk folder." %}
-    </p>
+    <div class="page-section  page-section--tight{% cradmin_test_css_class 'page-content' %}">
+        <p>
+            {% trans "We have sent you an email. Click the link in the email to activate your account." %}
+        </p>
+        <p>
+            {% trans "If you do not see the email, check your junk folder." %}
+        </p>
+    </div>
 {% endblock content %}
