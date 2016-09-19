@@ -12,7 +12,7 @@ class DeleteViewMixin:
 
         Defaults to ``Delete <verbose_name model>``.
         """
-        return ugettext_lazy('Delete %(what)s') % {'what': self.get_object_preview()}
+        return ugettext_lazy('Confirm delete')
 
     def get_action_label(self):
         """
