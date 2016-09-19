@@ -1,10 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import UpdateView as DjangoUpdateView
-
-from django_cradmin.crispylayouts import PrimarySubmit
-from django_cradmin.crispylayouts import DefaultSubmit
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
+
 from . import create_update_view_mixin
 
 
@@ -19,18 +17,10 @@ class UpdateView(QuerysetForRoleMixin,
 
         Defaults to ``Edit <verbose_name model>``.
         """
-        return _('Edit %(what)s') % {'what': self.get_model_class()._meta.verbose_name}
-
-    def get_buttons(self):
-        buttons = [
-            PrimarySubmit(self.get_submit_save_button_name(), self.get_submit_save_label()),
-            DefaultSubmit(self.get_submit_save_and_continue_edititing_button_name(),
-                          self.get_submit_save_and_continue_edititing_label()),
-        ]
-        return buttons
+        return _('Edit %(what)s') % {'what': self.model_verbose_name}
 
     def get_success_message(self, obj):
-        return _('Saved "%(object)s".') % {'object': object}
+        return _('Saved "%(object)s".') % {'object': obj}
 
 
 class UpdateRoleView(UpdateView):

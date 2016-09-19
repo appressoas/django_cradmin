@@ -1,7 +1,3 @@
-import urllib.error
-import urllib.parse
-import urllib.request
-
 from django import forms
 from django import http
 from django.contrib import messages
@@ -29,19 +25,11 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
     #: See :meth:`.get_model_fields` and :meth:`.get_field_layout`.
     fields = None
 
-    #: The name of the submit button used for preview.
-    #: Only used when :meth:`.preview_url` is defined.
-    submit_preview_name = 'submit-preview'
-
     #: The field that should always be set to the current role.
     #: Removes the field from the form (see :meth:`.get_form`),
     #: and instead sets the value directly on the object in
     #: :meth:`.save_object`.
     roleid_field = None
-
-    #: The viewname within this app for the edit view.
-    #: See :meth:`.get_editurl`.
-    editview_appurl_name = 'edit'
 
     def get_model_class(self):
         """
@@ -112,37 +100,20 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
                     del form.fields[self.roleid_field]
         return form
 
+    @property
+    def model_verbose_name(self):
+        """
+        Get the verbose name of the model.
+        """
+        return self.get_model_class()._meta.verbose_name
+
     def get_context_data(self, **kwargs):
         context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
         self.add_javascriptregistry_component_ids_to_context(context=context)
         self.add_preview_mixin_context_data(context=context)
         self.add_formview_mixin_context_data(context=context)
-        context['model_verbose_name'] = self.get_model_class()._meta.verbose_name
+        context['model_verbose_name'] = self.model_verbose_name
         return context
-
-    def get_editurl(self, obj):
-        """
-        Get the edit URL for ``obj``.
-
-        Defaults to::
-
-            self.request.cradmin_app.reverse_appurl(self.editview_appurl_name, args=[obj.pk])
-        """
-        return self.request.cradmin_app.reverse_appurl(self.editview_appurl_name, args=[obj.pk])
-
-    def _get_full_editurl(self, obj):
-        url = self.get_editurl(obj)
-        if 'success_url' in self.request.GET:
-            url = '{}?{}'.format(
-                url, urllib.parse.urlencode({
-                    'success_url': self.request.GET['success_url']}))
-        return url
-
-    def get_success_url(self):
-        if self.get_submit_save_and_continue_edititing_button_name() in self.request.POST:
-            return self._get_full_editurl(self.object)
-        else:
-            return self.get_default_save_success_url()
 
     def set_automatic_attributes(self, obj, form):
         """
@@ -226,7 +197,7 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
 
         You can override this to add multiple messages or to show messages in some other way.
         """
-        success_message = self.get_success_message(object)
+        success_message = self.get_success_message(obj)
         if success_message:
             messages.success(self.request, success_message)
 
@@ -253,7 +224,7 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
 
         You can override this to add multiple messages or to show error messages in some other way.
         """
-        form_invalid_message = self.get_form_invalid_message(object)
+        form_invalid_message = self.get_form_invalid_message(form)
         if form_invalid_message:
             messages.error(self.request, form_invalid_message)
 

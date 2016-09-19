@@ -1,32 +1,15 @@
-from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crapp
 
 
 class FormViewMixin:
     """
     Mixin class for form views.
-
-    See :class:`.FormView` for a ready to use view that uses this mixin,
-    and see :class:`.PreviewMixin` (the superclass of this class) for docs
-    on how to add previews.
     """
 
     #: Get the view name for the listing page.
     #: You can set this, or implement :meth:`.get_listing_url`.
     #: Defaults to :obj:`django_cradmin.crapp.INDEXVIEW_NAME`.
     listing_viewname = crapp.INDEXVIEW_NAME
-
-    #: The save submit label. See :meth:`~.FormViewMixin.get_submit_save_label`.
-    submit_save_label = _('Save')
-
-    #: The save submit label. See :meth:`~.FormViewMixin.get_submit_save_and_continue_edititing_label`.
-    submit_save_and_continue_edititing_label = _('Save and continue editing')
-
-    #: See :meth:`~.FormViewMixin.get_submit_save_button_name`.
-    submit_save_button_name = 'submit-save'
-
-    #: See :meth:`~.FormViewMixin.get_submit_save_and_continue_edititing_button_name`.
-    submit_save_and_continue_edititing_button_name = 'submit-save-and-continue-editing'
 
     def get_pagetitle(self):
         """
@@ -41,42 +24,6 @@ class FormViewMixin:
         Defaults to :meth:`.get_pagetitle`.
         """
         return self.get_pagetitle()
-
-    def get_submit_save_label(self):
-        """
-        Get the save submit label. Not used by this mixin, but you
-        can use this in your own ``get_buttons``-method.
-
-        Defaults to :obj:`~.FormViewMixin.submit_save_label`.
-        """
-        return self.submit_save_label
-
-    def get_submit_save_and_continue_edititing_label(self):
-        """
-        Get the "save and continue editing" submit label. Not used by this mixin, but you
-        can use this in your own ``get_buttons``-method.
-
-        Defaults to :obj:`~.FormViewMixin.submit_save_and_continue_edititing_label`.
-        """
-        return self.submit_save_and_continue_edititing_label
-
-    def get_submit_save_button_name(self):
-        """
-        Get the name of the save submit button. Not used by this mixin, but you
-        can use this in your own ``get_buttons``-method.
-
-        Defaults to :obj:`~.FormViewMixin.submit_save_button_name`.
-        """
-        return self.submit_save_button_name
-
-    def get_submit_save_and_continue_edititing_button_name(self):
-        """
-        Get the "save and continue editing" submit button name.
-        Not used by this mixin, but you can use this in your own ``get_buttons``-method.
-
-        Defaults to :obj:`~.FormViewMixin.submit_save_and_continue_edititing_button_name`.
-        """
-        return self.submit_save_and_continue_edititing_button_name
 
     def get_form_renderable(self):
         """
@@ -124,10 +71,19 @@ class FormViewMixin:
         return self.request.cradmin_app.reverse_appurl(self.listing_viewname)
 
     def get_default_save_success_url(self):
+        """
+        Get the save success URL.
+
+        Defaults to :meth:`.get_listing_url`, but if ``success_url`` is in
+        ``request.GET``, that is used instead.
+        """
         if 'success_url' in self.request.GET:
             return self.request.GET['success_url']
         else:
             return self.get_listing_url()
 
     def get_success_url(self):
+        """
+        Defaults to :meth:`.get_default_save_success_url`.
+        """
         return self.get_default_save_success_url()

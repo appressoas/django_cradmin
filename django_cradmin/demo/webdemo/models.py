@@ -1,16 +1,11 @@
-from __future__ import unicode_literals
-from builtins import object
-
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from future.utils import python_2_unicode_compatible
 
 from django_cradmin.apps.cradmin_imagearchive import models as imagearchivemodels
 
 
-@python_2_unicode_compatible
 class Site(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(
@@ -21,7 +16,6 @@ class Site(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class Page(models.Model):
     site = models.ForeignKey(Site)
     title = models.CharField(
@@ -75,7 +69,6 @@ class Page(models.Model):
         ordering = ('title', 'intro')
 
 
-@python_2_unicode_compatible
 class PageTag(models.Model):
     page = models.ForeignKey(Page, related_name='tags')
     tag = models.SlugField()
