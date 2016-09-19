@@ -76,7 +76,7 @@ class PageCreateUpdateMixin(object):
         ).bootstrap()
 
 
-class PageCreateView(PageCreateUpdateMixin, formview.CreateView):
+class PageCreateView(PageCreateUpdateMixin, formview.WithinRoleCreateView):
     """
     View used to create new pages.
     """
