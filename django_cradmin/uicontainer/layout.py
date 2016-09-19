@@ -31,12 +31,9 @@ class Container(container.AbstractContainerRenderable):
         return ['container']
 
 
-class ContainerTight(container.AbstractContainerRenderable):
+class ContainerTight(Container):
     """
     ``container`` BEM block with the ``tight`` BEM variant.
     """
-    def get_default_bem_block_or_element(self):
-        return 'container'
-
     def get_default_bem_variant_list(self):
         return ['tight']
