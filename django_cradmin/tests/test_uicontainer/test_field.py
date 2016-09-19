@@ -14,7 +14,7 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_placeholder_default(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.CharField())
-        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('placeholder'),)
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('placeholder'))
 
     def test_placeholder_kwarg_false(self):
         selector = self.single_field_formrenderable_htmls(
@@ -23,7 +23,7 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
                 fieldname='testfield',
                 field_renderable=uicontainer.field.Field(placeholder=False)
             ))
-        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('placeholder'),)
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('placeholder'))
 
     def test_placeholder_kwarg_string(self):
         selector = self.single_field_formrenderable_htmls(
@@ -40,7 +40,7 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_autofocus_default(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.CharField())
-        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('autofocus'),)
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('autofocus'))
 
     def test_autofocus_kwarg_false(self):
         selector = self.single_field_formrenderable_htmls(
@@ -49,7 +49,7 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
                 fieldname='testfield',
                 field_renderable=uicontainer.field.Field(autofocus=False)
             ))
-        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('autofocus'),)
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('autofocus'))
 
     def test_autofocus_kwarg_true(self):
         selector = self.single_field_formrenderable_htmls(
@@ -58,7 +58,7 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
                 fieldname='testfield',
                 field_renderable=uicontainer.field.Field(autofocus=True)
             ))
-        self.assertTrue(selector.one('input[name="testfield"]').hasattribute('autofocus'),)
+        self.assertTrue(selector.one('input[name="testfield"]').hasattribute('autofocus'))
 
     #
     # CharField
