@@ -16,43 +16,43 @@
     {% cradmin_render_renderable uicontainer %}
 {% endblock content %}
 
-{% block end-of-body %}
-    {{ block.super }}
-    {% if enable_modelchoicefield_support %}
-        <div class="django-cradmin-floating-fullsize-iframe-wrapper django-cradmin-modelchoicefield-iframe-wrapper"
-             django-cradmin-model-choice-field-iframe-wrapper="{{ fieldid }}">
-            <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"
-                    django-cradmin-model-choice-field-iframe-closebutton>
-                <span aria-hidden="true"
-                        class="{% cradmin_icon 'close-overlay-right-to-left' %}
-                            django-cradmin-floating-fullsize-iframe-closebutton-icon"></span>
-                <span class="sr-only">{% trans "Close window" %}</span>
-            </a>
-            <div class="django-cradmin-floating-fullsize-content">
-                <div class="ng-hide django-cradmin-floating-fullsize-loadspinner"
-                        django-cradmin-model-choice-field-load-spinner>
-                    <span class="{% cradmin_icon 'loadspinner' %}"></span>
-                </div>
-                <div class="django-cradmin-floating-fullsize-iframe-inner"
-                        django-cradmin-model-choice-field-iframe-wrapper-inner>
-                    <iframe django-cradmin-model-choice-field-iframe></iframe>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    {% block handle_preview %}
-        {% if show_preview %}
-            <div django-cradmin-page-preview-wrapper>
-                {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}
-                <div django-cradmin-page-preview-open-on-page-load='{
-                    "urls": [
-                        {
-                            "label": "unused",
-                            "url": "{{ preview_url }}"
-                        }
-                    ]
-                }'></div>
-            </div>
-        {% endif %}
-    {% endblock handle_preview %}
-{% endblock end-of-body %}
+{#{% block end-of-body %}#}
+{#    {{ block.super }}#}
+{#    {% if enable_modelchoicefield_support %}#}
+{#        <div class="django-cradmin-floating-fullsize-iframe-wrapper django-cradmin-modelchoicefield-iframe-wrapper"#}
+{#             django-cradmin-model-choice-field-iframe-wrapper="{{ fieldid }}">#}
+{#            <a href="#" class="django-cradmin-floating-fullsize-iframe-closebutton"#}
+{#                    django-cradmin-model-choice-field-iframe-closebutton>#}
+{#                <span aria-hidden="true"#}
+{#                        class="{% cradmin_icon 'close-overlay-right-to-left' %}#}
+{#                            django-cradmin-floating-fullsize-iframe-closebutton-icon"></span>#}
+{#                <span class="sr-only">{% trans "Close window" %}</span>#}
+{#            </a>#}
+{#            <div class="django-cradmin-floating-fullsize-content">#}
+{#                <div class="ng-hide django-cradmin-floating-fullsize-loadspinner"#}
+{#                        django-cradmin-model-choice-field-load-spinner>#}
+{#                    <span class="{% cradmin_icon 'loadspinner' %}"></span>#}
+{#                </div>#}
+{#                <div class="django-cradmin-floating-fullsize-iframe-inner"#}
+{#                        django-cradmin-model-choice-field-iframe-wrapper-inner>#}
+{#                    <iframe django-cradmin-model-choice-field-iframe></iframe>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#    {% block handle_preview %}#}
+{#        {% if show_preview %}#}
+{#            <div django-cradmin-page-preview-wrapper>#}
+{#                {% include "django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html" %}#}
+{#                <div django-cradmin-page-preview-open-on-page-load='{#}
+{#                    "urls": [#}
+{#                        {#}
+{#                            "label": "unused",#}
+{#                            "url": "{{ preview_url }}"#}
+{#                        }#}
+{#                    ]#}
+{#                }'></div>#}
+{#            </div>#}
+{#        {% endif %}#}
+{#    {% endblock handle_preview %}#}
+{#{% endblock end-of-body %}#}
