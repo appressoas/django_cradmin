@@ -42,7 +42,7 @@
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-default">
                                     <span class="{% cradmin_icon 'search' %}"></span>
-                                    <span class="sr-only">{% trans "Search" %}</span>
+                                    <span class="screenreader-only">{% trans "Search" %}</span>
                                 </button>
                             </span>
                         </div>
@@ -99,7 +99,7 @@
                             {% csrf_token %}
 
                             <table id="objecttableview-table" class="table django-cradmin-table">
-                                <thead class="{% if hide_column_headers %}sr-only{% endif %}">
+                                <thead class="{% if hide_column_headers %}screenreader-only{% endif %}">
                                     <tr>
                                         {% if multiselect_actions %}
                                             <th class="objecttableview-multiselectcolumn">
@@ -117,9 +117,9 @@
                                                             href="{{ column.get_flip_ordering_url }}">
                                                         {{ column.get_header|capfirst }}
                                                         {% if column.orderinginfo.order_ascending %}
-                                                            <span class="sr-only">- {% trans "Ordered ascending - Click to order descending" %}</span>
+                                                            <span class="screenreader-only">- {% trans "Ordered ascending - Click to order descending" %}</span>
                                                         {% else %}
-                                                            <span class="sr-only">- {% trans "Ordered descending - Click to order ascending" %}</span>
+                                                            <span class="screenreader-only">- {% trans "Ordered descending - Click to order ascending" %}</span>
                                                         {% endif %}
                                                     </a>
                                                     {% if column.is_ordered %}
@@ -131,7 +131,7 @@
                                                             </a>
                                                             {% if multicolumn_ordering %}
                                                                 <span class="objecttableview-orderingindex">
-                                                                    <span class="sr-only"> - {% trans "Ordering priority" %}</span>
+                                                                    <span class="screenreader-only"> - {% trans "Ordering priority" %}</span>
                                                                     {{ column.orderinginfo.orderingstringindex|add:1 }}
                                                                 </span>
                                                             {% endif %}
