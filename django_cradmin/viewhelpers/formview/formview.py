@@ -38,7 +38,7 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                                 children=[
                                     uicontainer.fieldwrapper.FieldWrapper('first_name'),
                                     uicontainer.fieldwrapper.FieldWrapper('last_name'),
-                                    uicontainer.button.SubmitPrimary(text='Save)
+                                    uicontainer.button.SubmitPrimary(text='Save')
                                 ]
                             )
                         ]
