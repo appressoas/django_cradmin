@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import UpdateView as DjangoUpdateView
+from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin
 
 from . import create_update_view_mixin
@@ -8,7 +9,8 @@ from . import create_update_view_mixin
 
 class UpdateView(QuerysetForRoleMixin,
                  create_update_view_mixin.CreateUpdateViewMixin,
-                 DjangoUpdateView):
+                 DjangoUpdateView,
+                 javascriptregistry.viewmixin.WithinRoleViewMixin):
     template_name = 'django_cradmin/viewhelpers/update.django.html'
 
     def get_pagetitle(self):
@@ -21,6 +23,12 @@ class UpdateView(QuerysetForRoleMixin,
 
     def get_success_message(self, obj):
         return _('Saved "%(object)s"') % {'object': obj}
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateView, self).get_context_data(**kwargs)
+        self.add_javascriptregistry_component_ids_to_context(context=context)
+        self.add_create_update_view_mixin_context_data(context=context)
+        return context
 
 
 class UpdateRoleView(UpdateView):

@@ -3,16 +3,14 @@ from django import http
 from django.contrib import messages
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core import serializers
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy
 from django_cradmin import automodelform
-from django_cradmin import javascriptregistry
 
 from . import formviewmixin
 from . import previewmixin
 
 
-class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
-                            previewmixin.PreviewMixin,
+class CreateUpdateViewMixin(previewmixin.PreviewMixin,
                             formviewmixin.FormViewMixin):
     """
     Mixin class for Update and Create views.
@@ -107,13 +105,17 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
         """
         return self.get_model_class()._meta.verbose_name
 
-    def get_context_data(self, **kwargs):
-        context = super(CreateUpdateViewMixin, self).get_context_data(**kwargs)
-        self.add_javascriptregistry_component_ids_to_context(context=context)
+    def add_create_update_view_mixin_context_data(self, context):
+        """
+        Must be called in :meth:`.get_context_data` in subclasses
+        to add the required context data.
+
+        Args:
+            context: The template context data.
+        """
         self.add_preview_mixin_context_data(context=context)
         self.add_formview_mixin_context_data(context=context)
         context['model_verbose_name'] = self.model_verbose_name
-        return context
 
     def set_automatic_attributes(self, obj, form):
         """
@@ -211,7 +213,7 @@ class CreateUpdateViewMixin(javascriptregistry.viewmixin.WithinRoleViewMixin,
 
         Used by :meth:`.add_form_invalid_messages`.
         """
-        return _('Please fix the errors in the form below.')
+        return ugettext_lazy('Please fix the errors in the form below.')
 
     def add_form_invalid_messages(self, form):
         """
