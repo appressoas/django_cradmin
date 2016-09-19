@@ -31,7 +31,7 @@ class TestDelete(TestCase):
         self.assertEqual(selector.one('form')['action'], 'http://testserver/test')
         self.assertEqual(
             selector.one('h1.test-primary-h1').alltext_normalized,
-            'Delete Simple Test Item')
+            'Confirm delete')
         self.assertEqual(
             selector.one('#id_deleteview_question').alltext_normalized,
             'Are you sure you want to delete "Simple Test Item"?')
