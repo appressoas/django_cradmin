@@ -162,3 +162,27 @@ DJANGO_CRADMIN_SUPERUSERUI_THEME_PATH
 =====================================
 The theme path to use by default for ``django_cradmin.superuserui``.
 Defaults to ``None``, which means that we use :setting:`DJANGO_CRADMIN_THEME_PATH`.
+
+
+***********
+uicontainer
+***********
+
+.. setting:: DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM
+
+DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM
+=======================================
+Set this to ``False`` in production to disable validation of
+BEM blocks and elements. See
+:meth:`django_cradmin.uicontainer.container.AbstractContainerRenderable.should_validate_bem`.
+for more details.
+
+
+.. setting:: DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID
+
+DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID
+==========================================
+Set this to ``False`` in production to disable validation of
+DOM ids. See
+:meth:`django_cradmin.uicontainer.container.AbstractContainerRenderable.should_validate_dom_id`.
+for more details.

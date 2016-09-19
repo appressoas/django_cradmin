@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.forms.utils import flatatt
 from django_cradmin import renderable
 
@@ -38,6 +39,12 @@ class UnsupportedHtmlTagError(ValueError):
 class InvalidBemError(ValueError):
     """
     Raised when invalid BEM is supplied.
+    """
+
+
+class InvalidDomIdError(ValueError):
+    """
+    Raised when invalid dom_id is supplied.
     """
 
 
@@ -109,9 +116,10 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                 the attributes specified in this kwarg takes presedense.
                 The format of the dict is specified in :meth:`.get_html_element_attributes`.
         """
-        self.validate_html_tag(html_tag)
-        self.__validate_bem(bem_block=bem_block,
-                            bem_element=bem_element)
+        self.validate_dom_id(dom_id=dom_id)
+        self.validate_bem(bem_block=bem_block,
+                          bem_element=bem_element)
+        self.validate_html_tag(html_tag=html_tag)
         self._childrenlist = []
         self._is_bootsrapped = False
         self.properties = {}
@@ -128,7 +136,59 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         if children:
             self.add_children(*children)
 
-    def __validate_bem(self, bem_block, bem_element):
+    def should_validate_dom_id(self):
+        """
+        Should we raise :class:`.InvalidDomIdError` exception
+        when the ``dom_id`` kwarg is malformed.
+
+        Returns the value of the :setting:`DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID`
+        setting, falling back to ``True`` if it is not defined.
+
+        The validator requires the dom_id
+        to start with ``id_``, be lowercase, and not contain ``-``.
+
+        We recommend to not override this to ensure uniform DOM id naming.
+
+        You should disable this validation in production using the
+        :setting:`DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID` setting.
+        """
+        return getattr(settings, 'DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID', True)
+
+    def should_validate_bem(self):
+        """
+        Should we raise :class:`.InvalidBemIdError` exception
+        when the ``bem_block`` or ``bem_element`` kwarg is malformed?
+
+        Returns the value of the :setting:`DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM`
+        setting, falling back to ``True`` if it is not defined.
+
+        The validator requires the bem_block to not contain ``__``
+        (double underscore), and the bem_element to comtain ``__`` (double
+        underscore).
+
+        We recommend to not chanding this to ensure BEM elements and
+        blocks are used correctly.
+
+        You should disable this validation in production using the
+        :setting:`DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM` setting.
+        """
+        return getattr(settings, 'DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM', True)
+
+    def validate_dom_id(self, dom_id):
+        if dom_id is False:
+            return
+        if not self.should_validate_dom_id():
+            return
+        normalized_dom_id = dom_id.replace('-', '').lower()
+        if not dom_id.startswith('id_') or dom_id != normalized_dom_id:
+            raise InvalidDomIdError(
+                'dom_id must begin with "id_", be all lowercase, and can not contain "-". '
+                '{dom_id!r} does not match this requirement.'.format(
+                    dom_id=dom_id))
+
+    def validate_bem(self, bem_block, bem_element):
+        if not self.should_validate_bem():
+            return
         if bem_block and bem_element:
             raise InvalidBemError(
                 'Can not specify both bem_element or bem_block. An '

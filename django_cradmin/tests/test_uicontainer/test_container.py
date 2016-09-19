@@ -36,8 +36,16 @@ class TestAbstractContainerRenderable(test.TestCase):
         self.assertEqual(container.dom_id, 'a')
 
     def test_dom_id_kwarg(self):
-        container = MinimalContainer(dom_id='a')
-        self.assertEqual(container.dom_id, 'a')
+        container = MinimalContainer(dom_id='id_a')
+        self.assertEqual(container.dom_id, 'id_a')
+
+    def test_dom_id_kwarg_invalid(self):
+        with self.assertRaises(uicontainer.container.InvalidDomIdError):
+            MinimalContainer(dom_id='test')
+
+    def test_dom_id_kwarg_invalid_validation_disabled(self):
+        with self.settings(DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID=False):
+            MinimalContainer(dom_id='test')  # No InvalidDomIdError
 
     def test_role_default(self):
         container = MinimalContainer()
@@ -90,6 +98,10 @@ class TestAbstractContainerRenderable(test.TestCase):
         with self.assertRaises(uicontainer.container.InvalidBemError):
             MinimalContainer(bem_block='menu__item')
 
+    def test_get_bem_block_kwarg_invalid_validation_disabled(self):
+        with self.settings(DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM=False):
+            MinimalContainer(bem_block='menu__item')  # No InvalidBemError
+
     def test_get_css_classes_list_bem_block_kwarg(self):
         container = MinimalContainer(bem_block='menu')
         self.assertEqual(container.get_css_classes_list(), ['menu'])
@@ -97,6 +109,10 @@ class TestAbstractContainerRenderable(test.TestCase):
     def test_get_bem_element_kwarg_invalid(self):
         with self.assertRaises(uicontainer.container.InvalidBemError):
             MinimalContainer(bem_element='menu')
+
+    def test_get_bem_element_kwarg_invalid_validation_disabled(self):
+        with self.settings(DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM=False):
+            MinimalContainer(bem_element='menu')  # No InvalidBemError
 
     def test_get_css_classes_list_bem_element_kwarg(self):
         container = MinimalContainer(bem_element='menu__item')
@@ -133,10 +149,10 @@ class TestAbstractContainerRenderable(test.TestCase):
 
     def test_iter_children(self):
         container = MinimalContainer(children=[
-            MinimalContainer(dom_id='a'), MinimalContainer(dom_id='b')])
+            MinimalContainer(dom_id='id_a'), MinimalContainer(dom_id='id_b')])
         children = list(container.iter_children())
-        self.assertEqual(children[0].dom_id, 'a')
-        self.assertEqual(children[1].dom_id, 'b')
+        self.assertEqual(children[0].dom_id, 'id_a')
+        self.assertEqual(children[1].dom_id, 'id_b')
 
     def test_get_html_element_attributes_default(self):
         container = MinimalContainer()
@@ -151,8 +167,8 @@ class TestAbstractContainerRenderable(test.TestCase):
         self.assertEqual(container.get_html_element_attributes()['role'], 'a')
 
     def test_get_html_element_attributes_dom_id(self):
-        container = MinimalContainer(dom_id='a')
-        self.assertEqual(container.get_html_element_attributes()['id'], 'a')
+        container = MinimalContainer(dom_id='id_a')
+        self.assertEqual(container.get_html_element_attributes()['id'], 'id_a')
 
     def test_get_html_element_attributes_dom_css_classes(self):
         container = MinimalContainer(css_classes_list=['a', 'b'])
@@ -167,8 +183,8 @@ class TestAbstractContainerRenderable(test.TestCase):
         self.assertEqual(container.html_element_attributes_string, ' role="a"')
 
     def test_html_element_attributes_string_dom_id(self):
-        container = MinimalContainer(dom_id="a")
-        self.assertEqual(container.html_element_attributes_string, ' id="a"')
+        container = MinimalContainer(dom_id="id_a")
+        self.assertEqual(container.html_element_attributes_string, ' id="id_a"')
 
     def test_html_element_attributes_string_css_classes(self):
         container = MinimalContainer(css_classes_list=['a'])
@@ -192,11 +208,11 @@ class TestAbstractContainerRenderable(test.TestCase):
     def test_prepopulate_children_list_overridden_other_children_added(self):
         class MyContainer(MinimalContainer):
             def prepopulate_children_list(self):
-                return [MinimalContainer(dom_id='a')]
-        container = MyContainer(children=[MinimalContainer(dom_id='b')])
+                return [MinimalContainer(dom_id='id_a')]
+        container = MyContainer(children=[MinimalContainer(dom_id='id_b')])
         children = list(container.iter_children())
-        self.assertEqual(children[0].dom_id, 'a')
-        self.assertEqual(children[1].dom_id, 'b')
+        self.assertEqual(children[0].dom_id, 'id_a')
+        self.assertEqual(children[1].dom_id, 'id_b')
 
     def test_wrapper_element_can_have_children(self):
         container = MinimalContainer()
@@ -256,9 +272,9 @@ class TestAbstractContainerRenderable(test.TestCase):
         self.assertEqual(selector.count('div'), 1)
 
     def test_render_dom_id(self):
-        container = MinimalContainer(dom_id='mycontainer').bootstrap()
+        container = MinimalContainer(dom_id='id_mycontainer').bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('div')['id'], 'mycontainer')
+        self.assertEqual(selector.one('div')['id'], 'id_mycontainer')
 
     def test_render_role(self):
         container = MinimalContainer(role='main').bootstrap()
@@ -276,29 +292,29 @@ class TestAbstractContainerRenderable(test.TestCase):
         self.assertEqual(selector.one('div')['my-attribute'], 'test')
 
     def test_render_with_children(self):
-        container = MinimalContainer(dom_id='main', children=[
-            MinimalContainer(dom_id='child1'),
-            MinimalContainer(dom_id='child2'),
+        container = MinimalContainer(dom_id='id_main', children=[
+            MinimalContainer(dom_id='id_child1'),
+            MinimalContainer(dom_id='id_child2'),
         ]).bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.count('div'), 3)
-        self.assertTrue(selector.exists('div#main'))
-        self.assertTrue(selector.exists('div#main > div#child1'))
-        self.assertTrue(selector.exists('div#main > div#child2'))
+        self.assertTrue(selector.exists('div#id_main'))
+        self.assertTrue(selector.exists('div#id_main > div#id_child1'))
+        self.assertTrue(selector.exists('div#id_main > div#id_child2'))
 
     def test_render_with_children_deep(self):
-        container = MinimalContainer(dom_id='main', children=[
-            MinimalContainer(dom_id='child1', children=[
-                MinimalContainer(dom_id='child1_1'),
+        container = MinimalContainer(dom_id='id_main', children=[
+            MinimalContainer(dom_id='id_child1', children=[
+                MinimalContainer(dom_id='id_child1_1'),
             ]),
-            MinimalContainer(dom_id='child2'),
+            MinimalContainer(dom_id='id_child2'),
         ]).bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.count('div'), 4)
-        self.assertTrue(selector.exists('div#main'))
-        self.assertTrue(selector.exists('div#main > div#child1'))
-        self.assertTrue(selector.exists('div#main > div#child1 > div#child1_1'))
-        self.assertTrue(selector.exists('div#main > div#child2'))
+        self.assertTrue(selector.exists('div#id_main'))
+        self.assertTrue(selector.exists('div#id_main > div#id_child1'))
+        self.assertTrue(selector.exists('div#id_main > div#id_child1 > div#id_child1_1'))
+        self.assertTrue(selector.exists('div#id_main > div#id_child2'))
 
     def test_should_render_false(self):
         class MyContainer(MinimalContainer):
