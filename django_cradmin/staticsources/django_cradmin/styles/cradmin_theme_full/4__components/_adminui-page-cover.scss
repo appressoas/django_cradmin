@@ -1,5 +1,5 @@
 
-/* Page cover
+/* Admin UI page cover
 
 Example: {type: isolated} Typical example with .page-header
 
@@ -58,9 +58,9 @@ Example: {type: isolated} With inline elements in description
         </p>
     </header>
 
-Styleguide 7.8
+Styleguide components.adminui.page-cover
 */
-.page-cover {
+.adminui-page-cover {
     position: relative;
     padding-top: $header-height; // TODO: Vertical variables...
     padding-bottom: $spacing--large; // TODO: Vertical variables...
