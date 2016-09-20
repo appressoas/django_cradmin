@@ -30,7 +30,7 @@ class SendInvitesView(formview.WithinRoleFormView):
     template_name = 'webdemo/inviteadmins/send_private_invite.django.html'
 
     def get_form_renderable(self):
-        return uicontainer.layout.PageSectionTight(
+        return uicontainer.layout.AdminuiPageSectionTight(
             children=[
                 uicontainer.form.Form(
                     form=self.get_form(),

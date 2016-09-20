@@ -31,7 +31,7 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                 form_class = MyForm
 
                 def get_form_renderable(self):
-                    return uicontainer.layout.PageSectionTight(
+                    return uicontainer.layout.AdminuiPageSectionTight(
                         children=[
                             uicontainer.form.Form(
                                 form=self.get_form(),

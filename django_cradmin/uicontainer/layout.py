@@ -1,7 +1,7 @@
 from . import container
 
 
-class PageSection(container.AbstractContainerRenderable):
+class AdminuiPageSection(container.AbstractContainerRenderable):
     """
     ``adminui-page-section`` BEM block.
     """
@@ -12,7 +12,7 @@ class PageSection(container.AbstractContainerRenderable):
         return ['adminui-page-section']
 
 
-class PageSectionTight(PageSection):
+class AdminuiPageSectionTight(AdminuiPageSection):
     """
     ``adminui-page-section`` BEM block with the ``tight`` BEM variant.
     """

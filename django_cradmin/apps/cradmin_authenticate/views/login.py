@@ -237,7 +237,7 @@ class LoginView(formview.StandaloneFormView):
                 text=ugettext_lazy('Sign in')),
         ])
 
-        return uicontainer.layout.PageSectionTight(
+        return uicontainer.layout.AdminuiPageSectionTight(
             children=[
                 uicontainer.form.Form(
                     form=self.get_form(),

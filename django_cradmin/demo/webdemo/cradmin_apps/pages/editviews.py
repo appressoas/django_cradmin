@@ -53,7 +53,7 @@ class PageCreateUpdateMixin(object):
     #     return form
 
     def get_form_renderable(self):
-        return uicontainer.layout.PageSectionTight(
+        return uicontainer.layout.AdminuiPageSectionTight(
             children=[
                 uicontainer.form.Form(
                     form=self.get_form(),
