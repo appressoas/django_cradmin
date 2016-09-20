@@ -30,10 +30,22 @@ class TestFormRenderable(test.TestCase):
         formrenderable = uicontainer.form.Form(
             form=form,
             children=[
-                uicontainer.fieldwrapper.FieldWrapper(fieldname='name'),
-                uicontainer.fieldwrapper.FieldWrapper(fieldname='age'),
-                uicontainer.fieldwrapper.FieldWrapper(fieldname='user_type'),
-                django_cradmin.uicontainer.semantic.Main(
+                django_cradmin.uicontainer.layout.AdminuiPageSectionTight(
+                    children=[
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='name',
+                            field_renderable=uicontainer.field.Field(
+                                autofocus=True,
+                                placeholder='The name ffs...'
+                            )
+                        ),
+                        uicontainer.fieldwrapper.FieldWrapper(fieldname='age'),
+                        uicontainer.fieldwrapper.FieldWrapper(fieldname='user_type'),
+                    ]
+                ),
+                django_cradmin.uicontainer.layout.AdminuiPageSection(
+                    bem_variant_list=['supertight'],
+                    dom_id='id_tull',
                     children=[
                         uicontainer.fieldwrapper.FieldWrapper(fieldname='created_by'),
                         uicontainer.fieldset.FieldSet(
@@ -43,7 +55,6 @@ class TestFormRenderable(test.TestCase):
                             ]
                         )
                     ],
-                    css_classes_list=['stuff']
                 )
             ]
         ).bootstrap()

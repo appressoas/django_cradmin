@@ -39,6 +39,11 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
     def should_include_for_attribute(self):
         return not self.field_wrapper_renderable.field_renderable.should_render_as_subwidgets()
 
+    def get_default_dom_id(self):
+        return '{field_dom_id}_label'.format(
+            field_dom_id=self.field_wrapper_renderable.field_renderable.dom_id
+        )
+
     @property
     def for_attribute(self):
         if self.should_include_for_attribute():

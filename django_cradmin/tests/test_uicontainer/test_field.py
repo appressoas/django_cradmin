@@ -345,6 +345,12 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
         self.assertTrue(selector.one('#id_testfield_wrapper input[value="a"]').hasattribute('checked'))
         self.assertFalse(selector.one('#id_testfield_wrapper input[value="b"]').hasattribute('checked'))
 
+    def test_choicefield_radio_main_label_no_for(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.RadioSelect()))
+        self.assertFalse(selector.one('#id_testfield_label').hasattribute('for'))
+
 
     # def test_multichoicefield_checkbox_not_implemented(self):
     #     with self.assertRaises(NotImplementedError):
