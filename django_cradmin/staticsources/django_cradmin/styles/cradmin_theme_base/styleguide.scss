@@ -76,23 +76,35 @@ $kss-controls-height: $vertical-rythm--medium;
     }
 
     &__item {
-        @include font(base, normal);
-        @include font-size(small);
         break-inside: avoid-column;
         break-after: avoid-column;
         display: block;
 
         &--level0 {
-            @include font(header, bold);
-            @include font-size(medium);
             margin-top: ($vertical-rythm--spacing / 2);
             margin-bottom: ($vertical-rythm--spacing / 2);
+        }
+        &--level1 {
+            @include font-size(small);
+            @include font(base, normal);
         }
     }
 
     &__link {
+        @include font(base, normal);
         color: $color-light;
         border: 0;
+
+        // All levels except 0 and 1 uses xsmall font size
+        @include font-size(xsmall);
+
+        &--level0 {
+            @include font(header, bold);
+            @include font-size(medium);
+        }
+        &--level1 {
+            @include font-size(small);
+        }
 
         &:hover {
             color: color(primary);
