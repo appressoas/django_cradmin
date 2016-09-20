@@ -107,4 +107,4 @@ class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
         return 'id_django_cradmin_menu_expandable'
 
     def get_base_css_classes_list(self):
-        return ['expandable-menu']
+        return ['adminui-expandable-menu']

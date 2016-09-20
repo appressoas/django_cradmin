@@ -28,16 +28,16 @@ Example: {type: isolated} Example
 
     <div class="adminui-page-cover"></div>
 
-    <div class="expandable-menu" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="expandable-menu--expanded">
-        <div class="expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
-        <div class="expandable-menu__content">
+    <div class="adminui-expandable-menu" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
+        <div class="adminui-expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
+        <div class="adminui-expandable-menu__content">
             <p>Menu content here</p>
         </div>
     </div>
 
-Styleguide components.adminui.expandable-menu
+Styleguide components.adminui.adminui-expandable-menu
 */
-.expandable-menu {
+.adminui-expandable-menu {
     position: fixed;
     display: none;
     left: 0;
