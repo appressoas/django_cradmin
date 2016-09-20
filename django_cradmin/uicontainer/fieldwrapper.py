@@ -26,7 +26,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
       renders the help text. This can be overridden using the ``help_text_renderable``
       kwarg, or in :meth:`.get_default_help_text_renderable`.
     """
-    template_name = 'django_cradmin/uicontainer/field/fieldwrapper.django.html'
+    template_name = 'django_cradmin/uicontainer/fieldwrapper.django.html'
 
     def __init__(self, fieldname, label_renderable=None, field_renderable=None,
                  help_text_renderable=None, messages_container=None, **kwargs):
