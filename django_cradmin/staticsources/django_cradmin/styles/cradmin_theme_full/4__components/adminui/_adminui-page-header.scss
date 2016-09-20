@@ -85,7 +85,7 @@ Example: {type: isolated} With navigation buttons and menu toggle button
     sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
     varius blandit sit amet non magna.</p>
 
-Example: {type: isolated} Floating over a page-cover
+Example: {type: isolated} Floating over a adminui-page-cover
     <!-- Page header -->
     <header class="adminui-page-header">
         <div class="adminui-page-header__content">
@@ -107,8 +107,8 @@ Example: {type: isolated} Floating over a page-cover
     </header>
 
     <!-- Page cover with title -->
-    <header class="page-cover">
-        <h1 class="page-cover__title">The title</h1>
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
     </header>
 
 Styleguide components.adminui.adminui-page-header

@@ -24,43 +24,43 @@ Example: {type: isolated} Typical example with .adminui-page-header
     </header>
 
     <!-- Page cover with title -->
-    <header class="page-cover">
-        <h1 class="page-cover__title">The title</h1>
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
     </header>
 
 Example: {type: isolated} Without top padding to make room for a .adminui-page-header
 
-    <header class="page-cover  page-cover--without-adminui-page-header">
-        <h1 class="page-cover__title">The title</h1>
+    <header class="adminui-page-cover  adminui-page-cover--without-adminui-page-header">
+        <h1 class="adminui-page-cover__title">The title</h1>
     </header>
 
 Example: {type: isolated} With description
 
-    <header class="page-cover  page-cover--without-adminui-page-header">
-        <h1 class="page-cover__title">The title</h1>
-        <p class="page-cover__description">The description</p>
+    <header class="adminui-page-cover  adminui-page-cover--without-adminui-page-header">
+        <h1 class="adminui-page-cover__title">The title</h1>
+        <p class="adminui-page-cover__description">The description</p>
     </header>
 
 Example: {type: isolated} With large description
 
-    <header class="page-cover  page-cover--without-adminui-page-header">
-        <h1 class="page-cover__title">The title</h1>
-        <p class="page-cover__description  page-cover__description--large">The description</p>
+    <header class="adminui-page-cover  adminui-page-cover--without-adminui-page-header">
+        <h1 class="adminui-page-cover__title">The title</h1>
+        <p class="adminui-page-cover__description  adminui-page-cover__description--large">The description</p>
     </header>
 
 Example: {type: isolated} With inline elements in description
 
-    <header class="page-cover  page-cover--without-adminui-page-header">
-        <h1 class="page-cover__title">The title</h1>
-        <p class="page-cover__description">
-            The <strong class="page-cover__strong">awesome</strong>
-            <a class="page-cover__link">description</a>
+    <header class="adminui-page-cover  adminui-page-cover--without-adminui-page-header">
+        <h1 class="adminui-page-cover__title">The title</h1>
+        <p class="adminui-page-cover__description">
+            The <strong class="adminui-page-cover__strong">awesome</strong>
+            <a class="adminui-page-cover__link">description</a>
         </p>
     </header>
 
-Styleguide components.adminui.page-cover
+Styleguide components.adminui.adminui-page-cover
 */
-.adminui-page-cover {
+.adminui-adminui-page-cover {
     position: relative;
     padding-top: $header-height; // TODO: Vertical variables...
     padding-bottom: $spacing--large; // TODO: Vertical variables...
