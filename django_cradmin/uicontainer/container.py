@@ -643,7 +643,9 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
             raise NotBootsrappedError(
                 'Can not render an AbstractContainerRenderable that has not been bootstrapped. '
                 'Ensure you call bootsrap() on the top-level container in the container '
-                'hierarchy before rendering.')
+                'hierarchy before rendering. Class causing this issue: {classpath}'.format(
+                    classpath=self.get_full_class_path_as_string()
+                ))
         if self.should_render:
             return super(AbstractContainerRenderable, self).render(**kwargs)
         else:

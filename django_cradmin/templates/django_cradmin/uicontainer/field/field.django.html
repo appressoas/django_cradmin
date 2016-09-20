@@ -1,1 +1,9 @@
-{{ me.rendered_field }}
+{% load cradmin_tags %}
+
+{% if me.should_render_as_subwidgets %}
+    {% for subwidget in me.iter_subwidgets %}
+        {% cradmin_render_renderable subwidget %}
+    {% endfor %}
+{% else %}
+    {{ me.rendered_field }}
+{% endif %}

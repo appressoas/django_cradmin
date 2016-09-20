@@ -276,14 +276,75 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
         self.assertFalse(selector.one('select[name="testfield"] option[value="a"]').hasattribute('selected'))
 
     #
-    # Unsupported
+    # ChoiceField radio
     #
 
-    def test_choicefield_radio_not_implemented(self):
+    def test_choicefield_radio_name(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.ChoiceField(choices=[('a', 'A')],
                                     widget=forms.RadioSelect()))
-        # selector.prettyprint()
+        self.assertEqual(selector.count('input[name="testfield"]'), 1)
+
+    def test_choicefield_radio_multiple(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B')],
+                                    widget=forms.RadioSelect()))
+        self.assertEqual(selector.count('input[name="testfield"]'), 2)
+
+    def test_choicefield_radio_id(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.RadioSelect()))
+        self.assertEqual('id_testfield_0', selector.one('input[name="testfield"]')['id'])
+
+    def test_choicefield_radio_id_multiple(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B'), ('c', 'C')],
+                                    widget=forms.RadioSelect()))
+        self.assertTrue(selector.exists('#id_testfield_0'))
+        self.assertTrue(selector.exists('#id_testfield_1'))
+        self.assertTrue(selector.exists('#id_testfield_2'))
+
+    def test_choicefield_radio_required(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.RadioSelect(),
+                                    required=True))
+        self.assertTrue(selector.one('input[name="testfield"]').hasattribute('required'))
+
+    def test_choicefield_radio_not_required(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.RadioSelect(),
+                                    required=False))
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('required'))
+
+    def test_choicefield_radio_widget_attrs(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(
+                choices=[('a', 'A')],
+                widget=forms.RadioSelect(
+                    attrs={'my-attribute': '10'}
+                )))
+        self.assertEqual('10', selector.one('input[name="testfield"]')['my-attribute'])
+
+    def test_choicefield_radio_initial(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B')],
+                                    initial='b',
+                                    widget=forms.RadioSelect()))
+        self.assertFalse(selector.one('#id_testfield_wrapper input[value="a"]').hasattribute('checked'))
+        self.assertTrue(selector.one('#id_testfield_wrapper input[value="b"]').hasattribute('checked'))
+
+    def test_choicefield_radio_value_from_form(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B')],
+                                    initial='b',
+                                    widget=forms.RadioSelect()),
+            formvalue='a')
+        self.assertTrue(selector.one('#id_testfield_wrapper input[value="a"]').hasattribute('checked'))
+        self.assertFalse(selector.one('#id_testfield_wrapper input[value="b"]').hasattribute('checked'))
+
 
     # def test_multichoicefield_checkbox_not_implemented(self):
     #     with self.assertRaises(NotImplementedError):
