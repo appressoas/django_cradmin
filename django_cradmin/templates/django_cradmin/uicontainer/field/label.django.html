@@ -1,8 +1,13 @@
 {% extends "django_cradmin/uicontainer/container.django.html" %}
+{% load cradmin_tags %}
 
 {% block content %}
     {% block label_text %}
         {{ me.label_text|capfirst }}
     {% endblock label_text %}
+    {% if me.field_wrapper_renderable.field_renderable.should_render_as_child_of_label %}
+        {% cradmin_render_renderable me.field_wrapper_renderable.field_renderable %}
+    {% endif %}
+
     {{ block.super }}
 {% endblock content %}

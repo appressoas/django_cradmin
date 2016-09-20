@@ -121,7 +121,8 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                           bem_element=bem_element)
         self.validate_html_tag(html_tag=html_tag)
         self._childrenlist = []
-        self._is_bootsrapped = False
+        self._virtual_childrenlist = []
+        self._is_bootstrapped = False
         self.properties = {}
         self._overridden_bem_block_or_element = bem_block or bem_element
         self._overridden_bem_variant_list = bem_variant_list
@@ -129,10 +130,11 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         self._overridden_dom_id = dom_id
         self._overridden_html_tag = html_tag
         self._html_element_attributes = html_element_attributes
-        self.add_children(*self.prepopulate_children_list())
         self._overridden_css_classes_list = css_classes_list
         self._overridden_test_css_class_suffixes_list = test_css_class_suffixes_list
         self._extra_css_classes_list = extra_css_classes_list
+        self.add_children(*self.prepopulate_children_list())
+        self.add_virtual_children(*self.prepopulate_virtual_children_list())
         if children:
             self.add_children(*children)
 
@@ -473,15 +475,17 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         Updates the properties of all children (using dict update())
         with :attr:`.properties`.
         """
-        if self._is_bootsrapped:
+        if self._is_bootstrapped:
             raise AlreadyBootsrappedError('The container is already bootstrapped. Can not bootstrap '
                                           'the same container twice.')
         self.parent = parent
         if self.parent:
             self.properties.update(self.parent.properties)
+        for child in self._virtual_childrenlist:
+            child.bootstrap(parent=self)
         for child in self._childrenlist:
             child.bootstrap(parent=self)
-        self._is_bootsrapped = True
+        self._is_bootstrapped = True
         return self
 
     def prepopulate_children_list(self):
@@ -490,6 +494,20 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
 
         This is called in :meth:`.__init__` before
         any children from the kwargs is added.
+
+        Returns:
+            list: An empty list by default, but you can override this
+            in subclasses.
+        """
+        return []
+
+    def prepopulate_virtual_children_list(self):
+        """
+        Pre-polulate the virtual children list.
+
+        This is called in :meth:`.__init__` before
+        any children from the kwargs is added, and before any children
+        is :meth:`.prepopulate_children_list` is added.
 
         Returns:
             list: An empty list by default, but you can override this
@@ -509,13 +527,33 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         """
         if self.can_have_children:
             self._childrenlist.append(childcontainer)
-            if self._is_bootsrapped and not childcontainer._is_bootsrapped:
+            if self._is_bootstrapped and not childcontainer._is_bootstrapped:
                 childcontainer.bootstrap(parent=self)
         else:
             raise NotAllowedToAddChildrenError('{modulename}.{classname} can not have children'.format(
                 modulename=self.__class__.__module__,
                 classname=self.__class__.__name__
             ))
+        return self
+
+    def add_virtual_child(self, childcontainer):
+        """
+        Add a "virtual" child to the container.
+
+        This child is not rendered as a child of the container automatically
+        (that is left to the template rendering the container). But it
+        inherits properties and is automatically bootstrapped just like a
+        regular child.
+
+        Args:
+            childcontainer: A :class:`.AbstractContainerRenderable` object.
+        Returns:
+            A reference to self. This means that you can chain calls to this method.
+        """
+        if self.can_have_children:
+            self._virtual_childrenlist.append(childcontainer)
+            if self._is_bootstrapped and not childcontainer._is_bootstrapped:
+                childcontainer.bootstrap(parent=self)
         return self
 
     def add_children(self, *childcontainers):
@@ -532,6 +570,20 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
             self.add_child(childcontainer)
         return self
 
+    def add_virtual_children(self, *childcontainers):
+        """
+        Add virtual children to the container.
+
+        Args:
+            *childcontainers: Zero or more :class:`.AbstractContainerRenderable` objects.
+
+        Returns:
+            A reference to self. This means that you can chain calls to this method.
+        """
+        for childcontainer in childcontainers:
+            self.add_virtual_child(childcontainer)
+        return self
+
     def iter_children(self):
         """
         Returns an iterator over the children of this container.
@@ -541,11 +593,26 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         """
         return iter(self._childrenlist)
 
+    def iter_virtual_children(self):
+        """
+        Returns an iterator over the virtual children of this container.
+
+        The yielded children will be objects of :class:`.AbstractContainerRenderable`
+        subclasses.
+        """
+        return iter(self._virtual_childrenlist)
+
     def get_childcount(self):
         """
         Get the number of children in the container.
         """
         return len(self._childrenlist)
+
+    def get_virtual_childcount(self):
+        """
+        Get the number of virtual children in the container.
+        """
+        return len(self._virtual_childrenlist)
 
     @property
     def should_render(self):
@@ -572,7 +639,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         Args:
             **kwargs: Forwarded to the overridden method if it is called.
         """
-        if not self._is_bootsrapped:
+        if not self._is_bootstrapped:
             raise NotBootsrappedError(
                 'Can not render an AbstractContainerRenderable that has not been bootstrapped. '
                 'Ensure you call bootsrap() on the top-level container in the container '

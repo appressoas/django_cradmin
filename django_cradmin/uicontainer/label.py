@@ -18,7 +18,7 @@ class Label(container.AbstractContainerRenderable, form_mixins.FieldWrapperRende
 
     @property
     def for_attribute(self):
-        if self.field_wrapper_renderable.field_should_be_child_of_label():
+        if self.field_wrapper_renderable.field_renderable.should_render_as_child_of_label():
             return False
         else:
             return self.field_wrapper_renderable.field_renderable.dom_id

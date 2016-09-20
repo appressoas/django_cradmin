@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django import forms
+from django.utils import safestring
 
 from . import form_mixins
 from . import container
@@ -70,6 +71,20 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         return attributes
 
     @property
+    def should_render_as_child_of_label(self):
+        """
+        Should this field be renderered as a child of the ``<label>``?
+
+
+        Returns ``True`` by default, but subclasses should override this
+        for fields that should not be rendered within a label.
+
+        For example, :class:`.Field` overrides this with varying behavior
+        depending on the type of the Django field widget.
+        """
+        return True
+
+    @property
     def bound_formfield(self):
         return self.field_wrapper_renderable.formrenderable.form[self.field_wrapper_renderable.fieldname]
 
@@ -91,7 +106,43 @@ class Field(BaseFieldRenderable):
 
     You never use this on its own outside a :class:`.FieldWrapper`.
     """
-    template_name = 'django_cradmin/uicontainer/field/automatic_django_field.django.html'
+    template_name = 'django_cradmin/uicontainer/field/field.django.html'
+
+    def is_radio_select(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django.forms.widgets.RadioSelect`.
+        """
+        return isinstance(self.bound_formfield.field.widget, forms.RadioSelect)
+
+    def is_checkbox_select_multiple(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django.forms.widgets.CheckboxSelectMultiple`.
+        """
+        return isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple)
+
+    def should_render_as_subwidgets(self):
+        """
+        Returns True if we should render using :meth:`.render_bound_formfield_as_widget`.
+        """
+        if self.is_radio_select() or self.is_checkbox_select_multiple():
+            return True
+        else:
+            return False
+
+    def render_bound_formfield_as_widget(self):
+        return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
+
+    def render_bound_formfield_subwidgets(self):
+        widgets = []
+        for subwidget in self.bound_formfield.field.widget.subwidgets(
+                name=self.bound_formfield.html_name,
+                value=self.bound_formfield.value(),
+                attrs=self.field_attributes_dict):
+            widgets.append(str(subwidget))
+        return safestring.mark_safe('\n'.join(widgets))
+
+    def should_render_as_child_of_label(self):
+        return not self.should_render_as_subwidgets()
 
     @property
     def rendered_field(self):
@@ -117,14 +168,17 @@ class Field(BaseFieldRenderable):
         #     widgets.append(str(subwidget))
         # return safestring.mark_safe('\n'.join(widgets))
 
-        # TODO: Add support for radio and checkbox lists
-        if isinstance(self.bound_formfield.field.widget, forms.RadioSelect):
-            raise NotImplementedError('Field does not support the '
-                                      'RadioSelect widget yet.')
-        elif isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple):
-            raise NotImplementedError('Field does not support the '
-                                      'CheckboxSelectMultiple widget yet.')
-        return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
+        # # TODO: Add support for radio and checkbox lists
+        # if self.is_radio_select():
+        #     raise NotImplementedError('Field does not support the '
+        #                               'RadioSelect widget yet.')
+        # elif self.is_checkbox_select_multiple():
+        #     raise NotImplementedError('Field does not support the '
+        #                               'CheckboxSelectMultiple widget yet.')
+        if self.should_render_as_subwidgets():
+            return self.render_bound_formfield_subwidgets()
+        else:
+            return self.render_bound_formfield_as_widget()
 
 
 class HiddenField(Field):

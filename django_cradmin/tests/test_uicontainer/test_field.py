@@ -280,14 +280,15 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     #
 
     def test_choicefield_radio_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            self.single_field_formrenderable_htmls(
-                field=forms.ChoiceField(choices=[('a', 'A')], widget=forms.RadioSelect()))
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.RadioSelect()))
+        # selector.prettyprint()
 
-    def test_multichoicefield_checkbox_not_implemented(self):
-        with self.assertRaises(NotImplementedError):
-            self.single_field_formrenderable_htmls(
-                field=forms.MultipleChoiceField(choices=[('a', 'A')], widget=forms.CheckboxSelectMultiple()))
+    # def test_multichoicefield_checkbox_not_implemented(self):
+    #     with self.assertRaises(NotImplementedError):
+    #         self.single_field_formrenderable_htmls(
+    #             field=forms.MultipleChoiceField(choices=[('a', 'A')], widget=forms.CheckboxSelectMultiple()))
 
 
 class TestHiddenField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):

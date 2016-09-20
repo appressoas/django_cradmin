@@ -104,48 +104,32 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
             test_css_class_suffixes_list=['field-messages']
         )
 
-    def field_should_be_child_of_label(self):
+    def prepopulate_virtual_children_list(self):
         """
-        If this returns ``True``, we add the field renderable as a child
-        of the label renderable. Otherwise, we add the label above the field
-        renderable.
+        Pre-populates the virtual children list with:
 
-        Returns:
-             boolean: ``True`` by default.
+        - Label renderable
+        - Field renderable
         """
-        return True
+        return [
+            self.label_renderable,
+            self.field_renderable
+        ]
 
     def prepopulate_children_list(self):
         """
         Pre-populates the children list with:
 
-        - Label renderable.
-        - Field renderable.
         - Help text renderable.
         - Message renderable.
-
-        By default the field renderable will be added as a child of the label
-        renderable. This is determined by :meth:`.field_should_be_child_of_label`.
-
-        If you want to:
-
-        - Add any renderables above the label, you can override this method
-          and insert a renderable at the top (or just override the ``content`` template
-          block.
-        - Add any renderables in between these renderables, you will need to override
-          this method.
 
         See :meth:`django_cradmin.uicontainer.container.container.AbstractContainerRenderable.prepopulate_children_list`
         for details about what this method works, and what it should return.
         """
-        children = [self.label_renderable]
-        if self.field_should_be_child_of_label():
-            self.label_renderable.add_child(self.field_renderable)
-        else:
-            children.append(self.field_renderable)
-        children.append(self.help_text_renderable)
-        children.append(self.messages_container)
-        return children
+        return [
+            self.help_text_renderable,
+            self.messages_container,
+        ]
 
     @property
     def bound_formfield(self):

@@ -199,11 +199,14 @@ class TestAbstractContainerRenderable(test.TestCase):
         self.assertEqual(container.get_childcount(), 0)
 
     def test_prepopulate_children_list_overridden_no_other_children_added(self):
+        the_child = MinimalContainer()
+
         class MyContainer(MinimalContainer):
             def prepopulate_children_list(self):
-                return [MinimalContainer()]
+                return [the_child]
         container = MyContainer()
         self.assertEqual(container.get_childcount(), 1)
+        self.assertEqual(list(container.iter_children())[0], the_child)
 
     def test_prepopulate_children_list_overridden_other_children_added(self):
         class MyContainer(MinimalContainer):
@@ -213,6 +216,20 @@ class TestAbstractContainerRenderable(test.TestCase):
         children = list(container.iter_children())
         self.assertEqual(children[0].dom_id, 'id_a')
         self.assertEqual(children[1].dom_id, 'id_b')
+
+    def test_prepopulate_virtual_children_list_default(self):
+        container = MinimalContainer()
+        self.assertEqual(container.get_virtual_childcount(), 0)
+
+    def test_prepopulate_virtual_children_list_overridden_no_other_children_added(self):
+        the_child = MinimalContainer()
+
+        class MyContainer(MinimalContainer):
+            def prepopulate_virtual_children_list(self):
+                return [the_child]
+        container = MyContainer()
+        self.assertEqual(container.get_virtual_childcount(), 1)
+        self.assertEqual(list(container.iter_virtual_children())[0], the_child)
 
     def test_wrapper_element_can_have_children(self):
         container = MinimalContainer()
@@ -240,10 +257,10 @@ class TestAbstractContainerRenderable(test.TestCase):
     def test_bootstrap(self):
         container = MinimalContainer()
         self.assertFalse(hasattr(container, 'parent'))
-        self.assertFalse(container._is_bootsrapped)
+        self.assertFalse(container._is_bootstrapped)
         container.bootstrap()
         self.assertTrue(hasattr(container, 'parent'))
-        self.assertTrue(container._is_bootsrapped)
+        self.assertTrue(container._is_bootstrapped)
 
     def test_bootstrap_with_parent(self):
         container = MinimalContainer()
