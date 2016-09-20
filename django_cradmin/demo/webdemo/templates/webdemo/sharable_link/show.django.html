@@ -30,7 +30,7 @@
 
 {% block content %}
     {% if generictoken %}
-        <div class="page-section  page-section--tight">
+        <div class="adminui-page-section  adminui-page-section--tight">
             <h2>Share</h2>
             <p>
                 Share the link below with anyone you want to make an administrator for this site.
@@ -38,7 +38,7 @@
             <pre>{{ url }}</pre>
         </div>
 
-        <div class="page-section  page-section--tight">
+        <div class="adminui-page-section  adminui-page-section--tight">
             <h2>Details</h2>
             <p>Expires:
                 {% if generictoken.expiration_datetime %}
@@ -57,7 +57,7 @@
             </p>
         </div>
 
-        <div class="page-section  page-section--tight">
+        <div class="adminui-page-section  adminui-page-section--tight">
             <h2>Edit</h2>
             <p>
                 <a href="{% cradmin_appurl 'edit' %}" class="button  button--primary">
@@ -69,7 +69,7 @@
             </p>
         </div>
     {% else %}
-        <div class="page-section  page-section--tight  page-section--center">
+        <div class="adminui-page-section  adminui-page-section--tight  adminui-page-section--center">
             <p>
                 Click the button below to create a sharable link that enables anyone with
                 the link to add themselves as administrator for this site.

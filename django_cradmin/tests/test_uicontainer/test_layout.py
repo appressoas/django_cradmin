@@ -7,26 +7,26 @@ class TestPageSection(test.TestCase):
     def test_sanity(self):
         container = uicontainer.layout.PageSection().bootstrap()
         selector = htmls.S(container.render())
-        self.assertTrue(selector.exists('.page-section'))
+        self.assertTrue(selector.exists('.adminui-page-section'))
 
     def test_default_css_classes(self):
         container = uicontainer.layout.PageSection(dom_id='id_pagesection').bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('#id_pagesection').cssclasses_set,
-                         {'page-section', 'test-page-section'})
+                         {'adminui-page-section', 'test-adminui-page-section'})
 
 
 class TestPageSectionTight(test.TestCase):
     def test_sanity(self):
         container = uicontainer.layout.PageSectionTight().bootstrap()
         selector = htmls.S(container.render())
-        self.assertTrue(selector.exists('.page-section--tight'))
+        self.assertTrue(selector.exists('.adminui-page-section--tight'))
 
     def test_default_css_classes(self):
         container = uicontainer.layout.PageSectionTight(dom_id='id_pagesection').bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('#id_pagesection').cssclasses_set,
-                         {'page-section', 'page-section--tight', 'test-page-section'})
+                         {'adminui-page-section', 'adminui-page-section--tight', 'test-adminui-page-section'})
 
 
 class TestContainer(test.TestCase):

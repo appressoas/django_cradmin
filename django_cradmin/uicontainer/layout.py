@@ -3,18 +3,18 @@ from . import container
 
 class PageSection(container.AbstractContainerRenderable):
     """
-    ``page-section`` BEM block.
+    ``adminui-page-section`` BEM block.
     """
     def get_default_bem_block_or_element(self):
-        return 'page-section'
+        return 'adminui-page-section'
 
     def get_default_test_css_class_suffixes_list(self):
-        return ['page-section']
+        return ['adminui-page-section']
 
 
 class PageSectionTight(PageSection):
     """
-    ``page-section`` BEM block with the ``tight`` BEM variant.
+    ``adminui-page-section`` BEM block with the ``tight`` BEM variant.
     """
     def get_default_bem_variant_list(self):
         return ['tight']

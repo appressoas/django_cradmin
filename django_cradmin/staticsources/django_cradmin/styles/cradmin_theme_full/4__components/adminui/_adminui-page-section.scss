@@ -5,27 +5,27 @@ Most modifiers can be combined.
 Note: Be careful with combining `tight`, don't combine it with `focus`.
 
 Example: {type: isolated} Default page section - without any container
-    <section class="page-section">
+    <section class="adminui-page-section">
         <h2>Default page section</h2>
-        <p>As you can see, the default page-section relies on a container to provide
+        <p>As you can see, the default adminui-page-section relies on a container to provide
         space on the sides, so do not use this example!</p>
     </section>
 
 Example: {type: isolated} Default page section
-    <section class="page-section">
+    <section class="adminui-page-section">
         <div class="container  container--tight">
             <h2>Default page section</h2>
         </div>
     </section>
 
 Example: {type: isolated} `tight`
-    <section class="page-section  page-section--tight">
+    <section class="adminui-page-section  adminui-page-section--tight">
         <h2>A tight section</h2>
         <p>Good for pure content</p>
     </section>
 
 Example: {type: isolated} `focus`
-    <section class="page-section  page-section--focus">
+    <section class="adminui-page-section  adminui-page-section--focus">
         <div class="container  container--tight">
             <h2>Focus section</h2>
             <p>Used for making the content stand out slightly from the rest of the page</p>
@@ -33,17 +33,17 @@ Example: {type: isolated} `focus`
     </section>
 
 Example: {type: isolated} `center`
-    <section class="page-section  page-section--center">
+    <section class="adminui-page-section  adminui-page-section--center">
         <h2>Centered content</h2>
     </section>
 
 Example: {type: isolated} `center-lg`
-    <section class="page-section  page-section--center-lg">
+    <section class="adminui-page-section  adminui-page-section--center-lg">
         <h2>Centered content (Only for large screens)</h2>
     </section>
 
 Example: {type: isolated} `spaced`
-    <section class="page-section  page-section--spaced">
+    <section class="adminui-page-section  adminui-page-section--spaced">
         <div class="container  container--tight">
             <h2>Spaced section</h2>
             <p>Used to give the content more air, which gives it more focus.</p>
@@ -51,24 +51,24 @@ Example: {type: isolated} `spaced`
     </section>
 
 Example: {type: isolated} `outlined`
-    <section class="page-section  page-section--outlined">
+    <section class="adminui-page-section  adminui-page-section--outlined">
         <div class="container  container--tight">
             <h2>Adds a line above</h2>
         </div>
     </section>
 
 Example: {type: isolated} `last`
-    <section class="page-section  page-section--last">
+    <section class="adminui-page-section  adminui-page-section--last">
         <div class="container  container--tight">
             <h2>No spacing below</h2>
             <p>Used at the bottom of the page mostlye</p>
         </div>
     </section>
 
-Styleguide components.adminui.page-section
+Styleguide components.adminui.adminui-page-section
 */
 
-.page-section {
+.adminui-page-section {
     padding-top: $vertical-rythm--medium;
     padding-bottom: $vertical-rythm--medium;
 
@@ -166,8 +166,8 @@ Styleguide components.adminui.page-section
             border-bottom: 0;
         }
 
-        .page-section__title,
-        .page-section__content {
+        .adminui-page-section__title,
+        .adminui-page-section__content {
             @extend %animation-fall-down;
             display: none;
             margin-top: $vertical-rythm--medium;
@@ -179,11 +179,11 @@ Styleguide components.adminui.page-section
     }
 
     &--expanded {
-        .page-section__content {
+        .adminui-page-section__content {
             display: block;
         }
 
-        .page-section__toggle:after {
+        .adminui-page-section__toggle:after {
             transform: rotate(-180deg);
         }
     }
