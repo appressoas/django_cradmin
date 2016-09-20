@@ -36,7 +36,11 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                             uicontainer.form.Form(
                                 form=self.get_form(),
                                 children=[
-                                    uicontainer.fieldwrapper.FieldWrapper('first_name'),
+                                    uicontainer.fieldwrapper.FieldWrapper(
+                                        fieldname='first_name',
+                                        # Override field renderable to set autofocus
+                                        field_renderable=uicontainer.field.Field(autofocus=True)
+                                    ),
                                     uicontainer.fieldwrapper.FieldWrapper('last_name'),
                                     uicontainer.button.SubmitPrimary(text='Save')
                                 ]
