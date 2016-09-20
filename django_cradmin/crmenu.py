@@ -24,9 +24,9 @@ class LinkItemRenderable(renderable.AbstractRenderableWithCss):
         self.is_active = is_active
 
     def get_base_css_classes_list(self):
-        css_classes = ['page-header__navlink']
+        css_classes = ['adminui-page-header__navlink']
         if self.is_active:
-            css_classes.append('page-header__navlink--active')
+            css_classes.append('adminui-page-header__navlink--active')
         return css_classes
 
 
@@ -36,7 +36,7 @@ class ButtonLinkItemRenderable(LinkItemRenderable):
     """
     def get_base_css_classes_list(self):
         css_classes = super(ButtonLinkItemRenderable, self).get_base_css_classes_list()
-        css_classes.append('page-header__navlink--button')
+        css_classes.append('adminui-page-header__navlink--button')
         return css_classes
 
 
@@ -50,7 +50,7 @@ class MenuToggleItemItemRenderable(renderable.AbstractRenderableWithCss):
         return pgettext_lazy('cradmin default header menu toggle label', 'Menu')
 
     def get_base_css_classes_list(self):
-        return ['page-header__navmenutoggle']
+        return ['adminui-page-header__navmenutoggle']
 
 
 class AbstractMenuRenderable(listbuilder.base.List):
@@ -94,7 +94,7 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
         return self.menutoggle_renderable_class()
 
     def get_base_css_classes_list(self):
-        return ['page-header__nav']
+        return ['adminui-page-header__nav']
 
 
 class DefaultExpandableMenuRenderable(AbstractMenuRenderable):

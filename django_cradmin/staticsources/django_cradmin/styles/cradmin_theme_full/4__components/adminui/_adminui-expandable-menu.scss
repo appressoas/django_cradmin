@@ -3,14 +3,14 @@
 
 Example: {type: isolated} Example
 
-    <header class="page-header  page-header--fill"
-            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="page-header--showmenu">
-        <div class="page-header__content">
-            <a class="page-header__brand">
-                <span class="page-header__brandname">My brand</span>
+    <header class="adminui-page-header  adminui-page-header--fill"
+            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-page-header--showmenu">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
             </a>
-            <nav class="page-header__nav">
-                <button type="button" class="page-header__navmenutoggle"
+            <nav class="adminui-page-header__nav">
+                <button type="button" class="adminui-page-header__navmenutoggle"
                         cradmin_menutoggle_clickable
                         cradmin_menutoggle_groupid="mainmenu">
                     Menu

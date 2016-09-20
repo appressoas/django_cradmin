@@ -28,7 +28,7 @@ class CradminWithStyleguideAppConfig(CradminAppConfig):
             #     '*cradmin_theme_full/1__components/*',
             #     '*cradmin_theme_full/2__components/*',
             #     '*cradmin_theme_full/3__components/*',
-            #     '*cradmin_theme_full/4__components/_page-header.scss',
+            #     '*cradmin_theme_full/4__components/_adminui-page-header.scss',
             # ]
         )
         styleguide_registry.Registry.get_instance().add(styleguide)

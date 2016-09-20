@@ -4,15 +4,15 @@
 {% block outer-wrapper-element-attributes %}
     {{ block.super   }}
     cradmin_menutoggle_groupid="mainmenu"
-    cradmin_menutoggle_activestyle="page-header--showmenu"
+    cradmin_menutoggle_activestyle="adminui-page-header--showmenu"
 {% endblock outer-wrapper-element-attributes %}
 
 {% block content %}
-    <div class="page-header__content">
+    <div class="adminui-page-header__content">
         {% block content-inner %}
             {% block brand %}
-                <a class="page-header__brand" {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
-                    <span class="page-header__brandname">
+                <a class="adminui-page-header__brand" {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
+                    <span class="adminui-page-header__brandname">
                         {% cradmin_titletext_for_role request.cradmin_role %}
                     </span>
                 </a>

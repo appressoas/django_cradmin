@@ -3,21 +3,21 @@
 The basic components of a header is:
 
 ```
-.page-header  (the outer wrapper)
-    .page-header__content   (wrapper around the content of the header)
-        .page-header__brand   (container for a brand)
-        .page-header__nav     (navigation elements)
-            .page-header__navlink        (navigation element link)
-            .page-header__navbutton      (navigation element button)
-            .page-header__navmenutoggle  (navigation element menu toggle)
+.adminui-page-header  (the outer wrapper)
+    .adminui-page-header__content   (wrapper around the content of the header)
+        .adminui-page-header__brand   (container for a brand)
+        .adminui-page-header__nav     (navigation elements)
+            .adminui-page-header__navlink        (navigation element link)
+            .adminui-page-header__navbutton      (navigation element button)
+            .adminui-page-header__navmenutoggle  (navigation element menu toggle)
 ```
 
 Example: {type: isolated} With brand
 
-    <header class="page-header  page-header--fill">
-        <div class="page-header__content">
-            <a class="page-header__brand">
-                <span class="page-header__brandname">My brand</span>
+    <header class="adminui-page-header  adminui-page-header--fill">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
             </a>
         </div>
     </header>
@@ -26,15 +26,15 @@ Example: {type: isolated} With brand
     varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} With brand and navigation
-    <header class="page-header  page-header--fill">
-        <div class="page-header__content">
-            <a class="page-header__brand">
-                <span class="page-header__brandname">My brand</span>
+    <header class="adminui-page-header  adminui-page-header--fill">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
             </a>
-            <nav class="page-header__nav">
-                <a class="page-header__navlink">About</a>
-                <a class="page-header__navlink">Important stuff</a>
-                <a class="page-header__navlink">Information</a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink">Information</a>
             </nav>
         </div>
     </header>
@@ -43,16 +43,16 @@ Example: {type: isolated} With brand and navigation
     varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} Navigation active links
-    <header class="page-header  page-header--fill">
-        <div class="page-header__content">
-            <a class="page-header__brand">
-                <span class="page-header__brandname">My brand</span>
+    <header class="adminui-page-header  adminui-page-header--fill">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
             </a>
-            <nav class="page-header__nav">
-                <a class="page-header__navlink">Nonactive link</a>
-                <a class="page-header__navlink  page-header__navlink--active">Active link</a>
-                <a class="page-header__navlink  page-header__navlink--button">Nonactive button</a>
-                <a class="page-header__navlink  page-header__navlink--button page-header__navlink--active">Active button</a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">Nonactive link</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--active">Active link</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button">Nonactive button</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button adminui-page-header__navlink--active">Active button</a>
             </nav>
         </div>
     </header>
@@ -61,16 +61,16 @@ Example: {type: isolated} Navigation active links
     varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} With navigation buttons and menu toggle button
-    <header class="page-header  page-header--fill">
-        <div class="page-header__content">
-            <a class="page-header__brand">
-                <span class="page-header__brandname">My brand</span>
+    <header class="adminui-page-header  adminui-page-header--fill">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
             </a>
-            <nav class="page-header__nav">
-                <a class="page-header__navlink">About</a>
-                <a class="page-header__navlink">Important stuff</a>
-                <a class="page-header__navlink  page-header__navlink--button">A button</a>
-                <button type="button" class="page-header__navmenutoggle">
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button">A button</a>
+                <button type="button" class="adminui-page-header__navmenutoggle">
                     Menu
                     <i class="icon-hamburger" aria-hidden="true" role="presentation">
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
@@ -87,14 +87,14 @@ Example: {type: isolated} With navigation buttons and menu toggle button
 
 Example: {type: isolated} Floating over a page-cover
     <!-- Page header -->
-    <header class="page-header">
-        <div class="page-header__content">
-            <a class="page-header__brand">
-                <span class="page-header__brandname">My brand</span>
+    <header class="adminui-page-header">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
             </a>
-            <nav class="page-header__nav">
-                <a class="page-header__navlink">About</a>
-                <button type="button" class="page-header__navmenutoggle">
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <button type="button" class="adminui-page-header__navmenutoggle">
                     Menu
                     <i class="icon-hamburger" aria-hidden="true" role="presentation">
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
@@ -111,9 +111,9 @@ Example: {type: isolated} Floating over a page-cover
         <h1 class="page-cover__title">The title</h1>
     </header>
 
-Styleguide components.adminui.page-header
+Styleguide components.adminui.adminui-page-header
 */
-.page-header {
+.adminui-page-header {
     padding: $vertical-rythm 0;
     color: $color-light;
     width: 100%;
