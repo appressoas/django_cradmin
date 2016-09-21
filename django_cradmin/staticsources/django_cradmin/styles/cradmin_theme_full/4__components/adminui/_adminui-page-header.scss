@@ -14,19 +14,16 @@ The basic components of a header is:
 
 Example: {type: isolated} With brand
 
-    <header class="adminui-page-header  adminui-page-header--fill">
+    <header class="adminui-page-header">
         <div class="adminui-page-header__content">
             <a class="adminui-page-header__brand">
                 <span class="adminui-page-header__brandname">My brand</span>
             </a>
         </div>
     </header>
-    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
-    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
-    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} With brand and navigation
-    <header class="adminui-page-header  adminui-page-header--fill">
+    <header class="adminui-page-header">
         <div class="adminui-page-header__content">
             <a class="adminui-page-header__brand">
                 <span class="adminui-page-header__brandname">My brand</span>
@@ -38,12 +35,9 @@ Example: {type: isolated} With brand and navigation
             </nav>
         </div>
     </header>
-    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
-    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
-    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} Navigation active links
-    <header class="adminui-page-header  adminui-page-header--fill">
+    <header class="adminui-page-header">
         <div class="adminui-page-header__content">
             <a class="adminui-page-header__brand">
                 <span class="adminui-page-header__brandname">My brand</span>
@@ -56,12 +50,9 @@ Example: {type: isolated} Navigation active links
             </nav>
         </div>
     </header>
-    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
-    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
-    varius blandit sit amet non magna.</p>
 
 Example: {type: isolated} With navigation buttons and menu toggle button
-    <header class="adminui-page-header  adminui-page-header--fill">
+    <header class="adminui-page-header">
         <div class="adminui-page-header__content">
             <a class="adminui-page-header__brand">
                 <span class="adminui-page-header__brandname">My brand</span>
@@ -81,35 +72,6 @@ Example: {type: isolated} With navigation buttons and menu toggle button
             </nav>
         </div>
     </header>
-    <p>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit
-    sit amet non magna. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus
-    varius blandit sit amet non magna.</p>
-
-Example: {type: isolated} Floating over a adminui-page-cover
-    <!-- Page header -->
-    <header class="adminui-page-header">
-        <div class="adminui-page-header__content">
-            <a class="adminui-page-header__brand">
-                <span class="adminui-page-header__brandname">My brand</span>
-            </a>
-            <nav class="adminui-page-header__nav">
-                <a class="adminui-page-header__navlink">About</a>
-                <button type="button" class="adminui-page-header__navmenutoggle">
-                    Menu
-                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                    </i>
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Page cover with title -->
-    <header class="adminui-page-cover">
-        <h1 class="adminui-page-cover__title">The title</h1>
-    </header>
 
 Styleguide components.adminui.adminui-page-header
 */
@@ -118,8 +80,7 @@ Styleguide components.adminui.adminui-page-header
     color: $color-light;
     width: 100%;
     top: 0;
-    position: absolute;
-    z-index: $level-1;
+    background-color: color(primary, dark);
 
     @include min-width(md) {
         padding: #{$vertical-rythm--medium} 0;
@@ -196,10 +157,6 @@ Styleguide components.adminui.adminui-page-header
             background-color: $color-light;
         }
 
-    }
-
-    &--fill {
-        background-color: color(primary, base);
     }
 
     &--showmenu {

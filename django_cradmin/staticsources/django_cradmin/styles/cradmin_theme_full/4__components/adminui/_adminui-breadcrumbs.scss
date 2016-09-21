@@ -1,0 +1,67 @@
+/* AdminUI breadcrumb
+
+The basic components of a breadcrumb is:
+
+```
+.adminui-breadcrumbs  (the outer wrapper)
+    .adminui-breadcrumbs__content   (wrapper around the content)
+        .adminui-breadcrumbs__link   (a link in the breadcrumb)
+```
+
+Example: {type: isolated} With brand
+
+    <nav class="adminui-breadcrumbs">
+        <div class="adminui-breadcrumbs__content">
+            <a class="adminui-breadcrumbs__link">
+                First
+            </a>
+            <span class="adminui-breadcrumbs__separator">
+                <i class="adminui-breadcrumbs__icon icon-chevron-right--light"></i>
+            </span>
+            <a class="adminui-breadcrumbs__link">
+                Second
+            </a>
+            <span class="adminui-breadcrumbs__separator">
+                <i class="adminui-breadcrumbs__icon icon-chevron-right--light"></i>
+            </span>
+            <a class="adminui-breadcrumbs__link">
+                Last
+            </a>
+        </div>
+    </nav>
+
+Styleguide components.adminui.adminui-breadcrumbs
+*/
+.adminui-breadcrumbs {
+    padding: $unit 0;
+    background-color: color(neutral, xdark);
+
+    &__content {
+        @extend .container;
+        @extend .container--wide;
+    }
+
+    // TODO: Fix this ugly hack with icon position
+    &__separator {
+        position: relative;
+        display: inline-block;
+        width: 20px;
+        height: 15px;
+    }
+    &__icon {
+        position: absolute;
+        top: 2px;
+        left: 6px;
+    }
+
+    &__link {
+        @include font-size(xsmall);
+        color: color(neutral, light);
+        border: none;
+        &:hover {
+            color: $color-light;
+            border: none;
+        }
+    }
+
+}
