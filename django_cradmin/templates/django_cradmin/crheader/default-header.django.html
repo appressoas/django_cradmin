@@ -2,17 +2,19 @@
 {% load cradmin_tags %}
 
 {% block outer-wrapper-element-attributes %}
-    {{ block.super   }}
-    cradmin_menutoggle_groupid="mainmenu"
-    cradmin_menutoggle_activestyle="adminui-page-header--showmenu"
+    {{ block.super }}
+    {% if me.include_menutoggle_javascript %}
+        cradmin_menutoggle_groupid="mainmenu"
+        cradmin_menutoggle_activestyle="{{ me.get_bem_block }}--showmenu"
+    {% endif %}
 {% endblock outer-wrapper-element-attributes %}
 
 {% block content %}
-    <div class="adminui-page-header__content">
+    <div class="{{ me.get_bem_block }}__content">
         {% block content-inner %}
             {% block brand %}
-                <a class="adminui-page-header__brand" {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
-                    <span class="adminui-page-header__brandname">
+                <a class="{{ me.get_bem_block }}__brand" {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
+                    <span class="{{ me.get_bem_block }}__brandname">
                         {% cradmin_titletext_for_role request.cradmin_role %}
                     </span>
                 </a>
