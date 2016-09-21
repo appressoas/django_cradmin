@@ -5,7 +5,7 @@ from django_cradmin import uicontainer
 from . import formtest_mixins
 
 
-class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
+class TestFieldBasics(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_hiddenwidget_sanity(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.CharField(widget=forms.HiddenInput()))
@@ -60,10 +60,8 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
             ))
         self.assertTrue(selector.one('input[name="testfield"]').hasattribute('autofocus'))
 
-    #
-    # CharField
-    #
 
+class TestFieldCharFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_charfield_name(self):
         selector = self.single_field_formrenderable_htmls(field=forms.CharField())
         self.assertTrue(selector.exists('input[name="testfield"]'))
@@ -101,10 +99,8 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
             field=forms.CharField(), formvalue='testvalue')
         self.assertEqual('testvalue', selector.one('input[name="testfield"]')['value'])
 
-    #
-    # IntegerField
-    #
 
+class TestFieldIntegerFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_integerfield_name(self):
         selector = self.single_field_formrenderable_htmls(field=forms.IntegerField())
         self.assertTrue(selector.exists('input[name="testfield"]'))
@@ -142,9 +138,8 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
             field=forms.CharField(), formvalue=20)
         self.assertEqual('20', selector.one('input[name="testfield"]')['value'])
 
-    #
-    # Textarea
-    #
+
+class TestFieldTextareaRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
 
     def test_textarea_name(self):
         selector = self.single_field_formrenderable_htmls(field=forms.CharField(widget=forms.Textarea()))
@@ -181,9 +176,8 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
             field=forms.CharField(widget=forms.Textarea()), formvalue='testvalue')
         self.assertEqual('testvalue', selector.one('textarea[name="testfield"]').alltext)
 
-    #
-    # BooleanField
-    #
+
+class TestFieldBooleanFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
 
     def test_booleanfield_name(self):
         selector = self.single_field_formrenderable_htmls(field=forms.BooleanField())
@@ -231,9 +225,8 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
             field=forms.BooleanField(), formvalue=False)
         self.assertFalse(selector.one('input[name="testfield"]').hasattribute('checked'))
 
-    #
-    # ChoiceField select
-    #
+
+class TestFieldChoiceFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
 
     def test_choicefield_select_name(self):
         selector = self.single_field_formrenderable_htmls(field=forms.ChoiceField(choices=[('a', 'A')]))
@@ -275,10 +268,9 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
         self.assertTrue(selector.one('select[name="testfield"] option[value="b"]').hasattribute('selected'))
         self.assertFalse(selector.one('select[name="testfield"] option[value="a"]').hasattribute('selected'))
 
-    #
-    # ChoiceField radio
-    #
 
+class TestFieldChoiceFieldRadioWidgetRendering(test.TestCase,
+                                               formtest_mixins.SingleFormRenderableHelperMixin):
     def test_choicefield_radio_name(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.ChoiceField(choices=[('a', 'A')],
@@ -351,12 +343,9 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
                                     widget=forms.RadioSelect()))
         self.assertFalse(selector.one('#id_testfield_label').hasattribute('for'))
 
-    #
-    #
-    # MultipleChoiceField checkbox
-    #
-    #
 
+class TestFieldMultipleChoiceFieldCheckboxWidgetRendering(test.TestCase,
+                                                          formtest_mixins.SingleFormRenderableHelperMixin):
     def test_multichoicefield_checkbox_name(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.MultipleChoiceField(choices=[('a', 'A')],
@@ -383,20 +372,24 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
         self.assertTrue(selector.exists('#id_testfield_1'))
         self.assertTrue(selector.exists('#id_testfield_2'))
 
-    # def test_multichoicefield_checkbox_required(self):
-    #     selector = self.single_field_formrenderable_htmls(
-    #         field=forms.ChoiceField(choices=[('a', 'A')],
-    #                                 widget=forms.CheckboxSelectMultiple(),
-    #                                 required=True))
-    #     selector.prettyprint()
-        # self.assertTrue(selector.one('input[name="testfield"]').hasattribute('required'))
+    def test_multichoicefield_checkbox_required(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.CheckboxSelectMultiple(),
+                                    required=True))
+        # NOTE: Multiple checkboxes can not have required attribute - they do not
+        #       seem to be handled the same way as radio (in html5).
+        #       This makes a bit of sense because what we mean by required in Django
+        #       with required is that at least one must be checked, and HTML5
+        #       required do not seem to use the same logic.
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('required'))
 
-    # def test_multichoicefield_checkbox_not_required(self):
-    #     selector = self.single_field_formrenderable_htmls(
-    #         field=forms.ChoiceField(choices=[('a', 'A')],
-    #                                 widget=forms.CheckboxSelectMultiple(),
-    #                                 required=False))
-    #     self.assertFalse(selector.one('input[name="testfield"]').hasattribute('required'))
+    def test_multichoicefield_checkbox_not_required(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.CheckboxSelectMultiple(),
+                                    required=False))
+        self.assertFalse(selector.one('input[name="testfield"]').hasattribute('required'))
 
     def test_multichoicefield_checkbox_widget_attrs(self):
         selector = self.single_field_formrenderable_htmls(
