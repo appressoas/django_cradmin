@@ -156,11 +156,12 @@ class TestAbstractContainerRenderable(test.TestCase):
 
     def test_get_html_element_attributes_default(self):
         container = MinimalContainer()
-        self.assertEqual(container.get_html_element_attributes(), {
-            'role': False,
-            'id': False,
-            'class': False,
-        })
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            self.assertEqual(container.get_html_element_attributes(), {
+                'role': False,
+                'id': False,
+                'class': False,
+            })
 
     def test_get_html_element_attributes_role(self):
         container = MinimalContainer(role='a')
@@ -172,27 +173,33 @@ class TestAbstractContainerRenderable(test.TestCase):
 
     def test_get_html_element_attributes_dom_css_classes(self):
         container = MinimalContainer(css_classes_list=['a', 'b'])
-        self.assertEqual(container.get_html_element_attributes()['class'], 'a  b')
+        self.assertEqual(set(container.get_html_element_attributes()['class'].split()),
+                         {'a', 'b', 'test-uicontainer-minimalcontainer'})
 
     def test_html_element_attributes_string_default(self):
         container = MinimalContainer()
-        self.assertEqual(container.html_element_attributes_string, '')
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            self.assertEqual(container.html_element_attributes_string, '')
 
     def test_html_element_attributes_string_role(self):
         container = MinimalContainer(role="a")
-        self.assertEqual(container.html_element_attributes_string, ' role="a"')
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            self.assertEqual(container.html_element_attributes_string, ' role="a"')
 
     def test_html_element_attributes_string_dom_id(self):
         container = MinimalContainer(dom_id="id_a")
-        self.assertEqual(container.html_element_attributes_string, ' id="id_a"')
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            self.assertEqual(container.html_element_attributes_string, ' id="id_a"')
 
     def test_html_element_attributes_string_css_classes(self):
         container = MinimalContainer(css_classes_list=['a'])
-        self.assertEqual(container.html_element_attributes_string, ' class="a"')
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            self.assertEqual(container.html_element_attributes_string, ' class="a"')
 
     def test_html_element_attributes_string_html_element_attributes_kwarg(self):
         container = MinimalContainer(html_element_attributes={'a': '10'})
-        self.assertEqual(container.html_element_attributes_string, ' a="10"')
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            self.assertEqual(container.html_element_attributes_string, ' a="10"')
 
     def test_prepopulate_children_list_default(self):
         container = MinimalContainer()
@@ -301,7 +308,8 @@ class TestAbstractContainerRenderable(test.TestCase):
     def test_render_cssclass(self):
         container = MinimalContainer(css_classes_list=['a']).bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('div')['class'], 'a')
+        self.assertEqual(selector.one('div').cssclasses_set,
+                         {'a', 'test-uicontainer-minimalcontainer'})
 
     def test_render_html_element_attributes(self):
         container = MinimalContainer(html_element_attributes={'my-attribute': 'test'}).bootstrap()

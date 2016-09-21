@@ -41,7 +41,8 @@ class TestButton(test.TestCase):
 
     def test_default_css_classes(self):
         container = uicontainer.button.Button().bootstrap()
-        selector = htmls.S(container.render())
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            selector = htmls.S(container.render())
         self.assertEqual(selector.one('button')['class'], 'button')
 
 
@@ -53,7 +54,8 @@ class TestButtonPrimary(test.TestCase):
 
     def test_default_css_classes(self):
         container = uicontainer.button.ButtonPrimary().bootstrap()
-        selector = htmls.S(container.render())
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            selector = htmls.S(container.render())
         self.assertEqual(selector.one('button')['class'], 'button  button--primary')
 
 

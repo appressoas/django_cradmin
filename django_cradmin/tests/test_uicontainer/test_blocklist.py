@@ -11,7 +11,8 @@ class TestBlocklistItemTitle(test.TestCase):
 
     def test_default_css_classes(self):
         container = uicontainer.blocklist.BlocklistItemTitle(html_tag='h1').bootstrap()
-        selector = htmls.S(container.render())
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            selector = htmls.S(container.render())
         self.assertEqual(selector.one('h1')['class'], 'blocklist__itemtitle')
 
     def test_no_text(self):
@@ -33,7 +34,8 @@ class TestBlocklistItem(test.TestCase):
 
     def test_default_css_classes(self):
         container = uicontainer.blocklist.BlocklistItem().bootstrap()
-        selector = htmls.S(container.render())
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            selector = htmls.S(container.render())
         self.assertEqual(selector.one('div')['class'], 'blocklist__item')
 
     def test_no_text(self):
@@ -55,7 +57,8 @@ class TestBlocklist(test.TestCase):
 
     def test_default_css_classes(self):
         container = uicontainer.blocklist.Blocklist().bootstrap()
-        selector = htmls.S(container.render())
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            selector = htmls.S(container.render())
         self.assertEqual(selector.one('div')['class'], 'blocklist')
 
     def test_with_children(self):
