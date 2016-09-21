@@ -443,7 +443,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         The css classes specified here can be overridden using
         the ``test_css_class_suffixes_list`` kwarg for :meth:`.__init__`.
         """
-        return []
+        return ['uicontainer-{}'.format(self.__class__.__name__.lower())]
 
     def get_test_css_class_suffixes_list(self):
         """

@@ -75,7 +75,6 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         """
         Should this field be renderered as a child of the ``<label>``?
 
-
         Returns ``True`` by default, but subclasses should override this
         for fields that should not be rendered within a label.
 
@@ -262,38 +261,62 @@ class Field(BaseFieldRenderable):
         super(Field, self).__init__(**kwargs)
         self.properties['field_wrapper_renderable'] = self
 
-    def is_radio_select(self):
+    @property
+    def django_widget(self):
+        return self.bound_formfield.field.widget
+
+    def is_radio_select_widget(self):
         """
         Returns ``True`` if the field widget is a :class:`django.forms.widgets.RadioSelect`.
         """
-        return isinstance(self.bound_formfield.field.widget, forms.RadioSelect)
+        return isinstance(self.django_widget, forms.RadioSelect)
 
-    def is_checkbox_select_multiple(self):
+    def is_checkbox_select_multiple_widget(self):
         """
         Returns ``True`` if the field widget is a :class:`django.forms.widgets.CheckboxSelectMultiple`.
         """
-        return isinstance(self.bound_formfield.field.widget, forms.CheckboxSelectMultiple)
+        return isinstance(self.django_widget, forms.CheckboxSelectMultiple)
+
+    def is_select_multiple_widget(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django.forms.widgets.SelectMultiple`.
+        """
+        return isinstance(self.django_widget, forms.SelectMultiple)
+
+    def is_select_widget(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django.forms.widgets.Select`.
+        """
+        return isinstance(self.django_widget, forms.Select)
 
     def should_render_as_subwidgets(self):
         """
         Returns True if we should render using :meth:`.make_subwidget_renderable`.
 
-        Default to returining ``True`` if :meth:`.is_radio_select` or
-        :meth:`.is_checkbox_select_multiple` returns ``True``.
+        Default to returining ``True`` if :meth:`.is_radio_select_widget` or
+        :meth:`.is_checkbox_select_multiple_widget` returns ``True``.
         """
-        if self.is_radio_select() or self.is_checkbox_select_multiple():
-            return True
-        else:
-            return False
+        return (self.is_radio_select_widget()
+                or self.is_checkbox_select_multiple_widget())
 
     def should_render_as_child_of_label(self):
-        return not self.should_render_as_subwidgets()
+        return not (self.should_render_as_subwidgets()
+                    or self.is_select_widget()
+                    or self.is_select_multiple_widget())
 
     def get_default_bem_block_or_element(self):
         """
         Default BEM block is ``input``.
         """
-        return 'input'
+        if self.is_select_widget():
+            return None
+        else:
+            return 'input'
+
+    def get_default_test_css_class_suffixes_list(self):
+        return super(Field, self).get_default_test_css_class_suffixes_list() + [
+            'djangowidget-{}'.format(self.django_widget.__class__.__name__.lower())
+        ]
 
     def render_bound_formfield_as_widget(self):
         return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
@@ -314,7 +337,7 @@ class Field(BaseFieldRenderable):
 
     def make_subwidget_renderable_radio(self, django_subwidget, index_in_parent):
         """
-        Make subwidget renderable to use if :meth:`.is_radio_select` returns ``True``.
+        Make subwidget renderable to use if :meth:`.is_radio_select_widget` returns ``True``.
 
         Returns a :class:`django_cradmin.uicontainer.label.RadioSubWidgetLabel`
         with kwargs from :meth:`.get_subwidget_renderable_kwargs` by default.
@@ -336,7 +359,7 @@ class Field(BaseFieldRenderable):
 
     def make_subwidget_renderable_checkbox(self, django_subwidget, index_in_parent):
         """
-        Make subwidget renderable to use if :meth:`.is_checkbox_select_multiple` returns ``True``.
+        Make subwidget renderable to use if :meth:`.is_checkbox_select_multiple_widget` returns ``True``.
 
         Returns a :class:`django_cradmin.uicontainer.label.CheckboxSubWidgetLabel`
         with kwargs from :meth:`.get_subwidget_renderable_kwargs` by default.
@@ -360,8 +383,8 @@ class Field(BaseFieldRenderable):
 
         By default this returns:
 
-        - :meth:`.make_subwidget_renderable_radio` if :meth:`.is_radio_select` returns ``True``.
-        - :meth:`.make_subwidget_renderable_checkbox` if :meth:`.is_checkbox_select_multiple` returns ``True``.
+        - :meth:`.make_subwidget_renderable_radio` if :meth:`.is_radio_select_widget` returns ``True``.
+        - :meth:`.make_subwidget_renderable_checkbox` if :meth:`.is_checkbox_select_multiple_widget` returns ``True``.
         - Raise NotImplementedError otherwise.
 
         Args:
@@ -369,21 +392,21 @@ class Field(BaseFieldRenderable):
             index_in_parent: The index of the subwidget in the parent.
 
         """
-        if self.is_radio_select():
+        if self.is_radio_select_widget():
             return self.make_subwidget_renderable_radio(
                 django_subwidget=django_subwidget, index_in_parent=index_in_parent)
-        elif self.is_checkbox_select_multiple():
+        elif self.is_checkbox_select_multiple_widget():
             return self.make_subwidget_renderable_checkbox(
                 django_subwidget=django_subwidget, index_in_parent=index_in_parent)
         else:
-            widget_class = self.bound_formfield.field.widget.__class__
+            widget_class = self.django_widget.__class__
             raise NotImplementedError(
                 'The {widget_class!r} widget is not supported.'.format(
                     widget_class='{}.{}'.format(widget_class.__module__, widget_class.__name__)
                 ))
 
     def iter_subwidgets(self):
-        for index, django_subwidget in enumerate(self.bound_formfield.field.widget.subwidgets(
+        for index, django_subwidget in enumerate(self.django_widget.subwidgets(
                 name=self.bound_formfield.html_name,
                 value=self.bound_formfield.value(),
                 attrs=self.field_attributes_dict)):

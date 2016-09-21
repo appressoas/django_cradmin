@@ -44,6 +44,12 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
             field_dom_id=self.field_wrapper_renderable.field_renderable.dom_id
         )
 
+    def get_default_bem_block_or_element(self):
+        """
+        Default BEM block is ``label``.
+        """
+        return 'label'
+
     @property
     def for_attribute(self):
         if self.should_include_for_attribute():

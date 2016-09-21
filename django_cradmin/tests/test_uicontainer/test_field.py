@@ -99,6 +99,11 @@ class TestFieldCharFieldRendering(test.TestCase, formtest_mixins.SingleFormRende
             field=forms.CharField(), formvalue='testvalue')
         self.assertEqual('testvalue', selector.one('input[name="testfield"]')['value'])
 
+    def test_css_classes_sanity(self):
+        selector = self.single_field_formrenderable_htmls(field=forms.CharField())
+        self.assertEqual(selector.one('input[name="testfield"]').cssclasses_set,
+                         {'input', 'test-uicontainer-field', 'test-djangowidget-textinput'})
+
 
 class TestFieldIntegerFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
     def test_integerfield_name(self):
@@ -130,13 +135,18 @@ class TestFieldIntegerFieldRendering(test.TestCase, formtest_mixins.SingleFormRe
         self.assertEqual('10', selector.one('input[name="testfield"]')['my-attribute'])
 
     def test_integerfield_initial(self):
-        selector = self.single_field_formrenderable_htmls(field=forms.CharField(initial=10))
+        selector = self.single_field_formrenderable_htmls(field=forms.IntegerField(initial=10))
         self.assertEqual('10', selector.one('input[name="testfield"]')['value'])
 
     def test_integerfield_value_from_form(self):
         selector = self.single_field_formrenderable_htmls(
-            field=forms.CharField(), formvalue=20)
+            field=forms.IntegerField(), formvalue=20)
         self.assertEqual('20', selector.one('input[name="testfield"]')['value'])
+
+    def test_css_classes_sanity(self):
+        selector = self.single_field_formrenderable_htmls(field=forms.IntegerField())
+        self.assertEqual(selector.one('input[name="testfield"]').cssclasses_set,
+                         {'input', 'test-uicontainer-field', 'test-djangowidget-numberinput'})
 
 
 class TestFieldTextareaRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
@@ -175,6 +185,12 @@ class TestFieldTextareaRendering(test.TestCase, formtest_mixins.SingleFormRender
         selector = self.single_field_formrenderable_htmls(
             field=forms.CharField(widget=forms.Textarea()), formvalue='testvalue')
         self.assertEqual('testvalue', selector.one('textarea[name="testfield"]').alltext)
+
+    def test_css_classes_sanity(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.CharField(widget=forms.Textarea()), formvalue='testvalue')
+        self.assertEqual(selector.one('textarea[name="testfield"]').cssclasses_set,
+                         {'input', 'test-uicontainer-field', 'test-djangowidget-textarea'})
 
 
 class TestFieldBooleanFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
@@ -225,6 +241,11 @@ class TestFieldBooleanFieldRendering(test.TestCase, formtest_mixins.SingleFormRe
             field=forms.BooleanField(), formvalue=False)
         self.assertFalse(selector.one('input[name="testfield"]').hasattribute('checked'))
 
+    def test_css_classes_sanity(self):
+        selector = self.single_field_formrenderable_htmls(field=forms.BooleanField())
+        self.assertEqual(selector.one('input[name="testfield"]').cssclasses_set,
+                         {'input', 'test-uicontainer-field', 'test-djangowidget-checkboxinput'})
+
 
 class TestFieldChoiceFieldRendering(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
 
@@ -267,6 +288,19 @@ class TestFieldChoiceFieldRendering(test.TestCase, formtest_mixins.SingleFormRen
             formvalue='b')
         self.assertTrue(selector.one('select[name="testfield"] option[value="b"]').hasattribute('selected'))
         self.assertFalse(selector.one('select[name="testfield"] option[value="a"]').hasattribute('selected'))
+
+    def test_css_classes_sanity(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')]))
+        self.assertEqual(selector.one('select[name="testfield"]').cssclasses_set,
+                         {'test-uicontainer-field', 'test-djangowidget-select'})
+
+    def test_not_wrapped_in_label(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.MultipleChoiceField(choices=[('a', 'A')]))
+        self.assertTrue(selector.exists('label'))
+        self.assertTrue(selector.exists('select'))
+        self.assertFalse(selector.exists('label select'))
 
 
 class TestFieldChoiceFieldRadioWidgetRendering(test.TestCase,
@@ -407,10 +441,12 @@ class TestFieldMultipleChoiceFieldRendering(test.TestCase,
         self.assertTrue(selector.one('#id_testfield option[value="a"]').hasattribute('selected'))
         self.assertFalse(selector.one('#id_testfield option[value="b"]').hasattribute('selected'))
 
-    def test_multichoicefield_wrapped_in_label(self):
+    def test_multichoicefield_not_wrapped_in_label(self):
         selector = self.single_field_formrenderable_htmls(
             field=forms.MultipleChoiceField(choices=[('a', 'A')]))
-        self.assertTrue(selector.exists('label select'))
+        self.assertTrue(selector.exists('label'))
+        self.assertTrue(selector.exists('select'))
+        self.assertFalse(selector.exists('label select'))
 
 
 class TestFieldMultipleChoiceFieldCheckboxWidgetRendering(test.TestCase,
