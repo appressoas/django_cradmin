@@ -3,415 +3,418 @@ Icons
 
 All icons come in the following colors: `dark` (default), `primary`, `secondary` and `light`.
 
-<ul class="sg-icon-grid">
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-up"></i>
-        <code>.icon-arrow-up</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-up--primary"></i>
-        <code>.icon-arrow-up--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-up--secondary"></i>
-        <code>.icon-arrow-up--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-up--light"></i>
-        <code>.icon-arrow-up--light</code>
-    </li>
+Example: All the icons
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-down"></i>
-        <code>.icon-arrow-down</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-down--primary"></i>
-        <code>.icon-arrow-down--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-down--secondary"></i>
-        <code>.icon-arrow-down--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-down--light"></i>
-        <code>.icon-arrow-down--light</code>
-    </li>
+    // Ignore the ``sg-icon-*`` wrappers - they are just for the styleguide.
+    <ul class="sg-icon-grid">
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up"></i>
+            <code>.icon-arrow-up</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up--primary"></i>
+            <code>.icon-arrow-up--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up--secondary"></i>
+            <code>.icon-arrow-up--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up--light"></i>
+            <code>.icon-arrow-up--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-right"></i>
-        <code>.icon-arrow-right</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-right--primary"></i>
-        <code>.icon-arrow-right--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-right--secondary"></i>
-        <code>.icon-arrow-right--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-right--light"></i>
-        <code>.icon-arrow-right--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down"></i>
+            <code>.icon-arrow-down</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down--primary"></i>
+            <code>.icon-arrow-down--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down--secondary"></i>
+            <code>.icon-arrow-down--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down--light"></i>
+            <code>.icon-arrow-down--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-left"></i>
-        <code>.icon-arrow-left</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-left--primary"></i>
-        <code>.icon-arrow-left--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-left--secondary"></i>
-        <code>.icon-arrow-left--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-arrow-left--light"></i>
-        <code>.icon-arrow-left--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right"></i>
+            <code>.icon-arrow-right</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right--primary"></i>
+            <code>.icon-arrow-right--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right--secondary"></i>
+            <code>.icon-arrow-right--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right--light"></i>
+            <code>.icon-arrow-right--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-up"></i>
-        <code>.icon-chevron-up</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-up--primary"></i>
-        <code>.icon-chevron-up--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-up--secondary"></i>
-        <code>.icon-chevron-up--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-up--light"></i>
-        <code>.icon-chevron-up--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left"></i>
+            <code>.icon-arrow-left</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left--primary"></i>
+            <code>.icon-arrow-left--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left--secondary"></i>
+            <code>.icon-arrow-left--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left--light"></i>
+            <code>.icon-arrow-left--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-down"></i>
-        <code>.icon-chevron-down</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-down--primary"></i>
-        <code>.icon-chevron-down--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-down--secondary"></i>
-        <code>.icon-chevron-down--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-down--light"></i>
-        <code>.icon-chevron-down--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up"></i>
+            <code>.icon-chevron-up</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up--primary"></i>
+            <code>.icon-chevron-up--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up--secondary"></i>
+            <code>.icon-chevron-up--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up--light"></i>
+            <code>.icon-chevron-up--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-right"></i>
-        <code>.icon-chevron-right</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-right--primary"></i>
-        <code>.icon-chevron-right--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-right--secondary"></i>
-        <code>.icon-chevron-right--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-right--light"></i>
-        <code>.icon-chevron-right--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down"></i>
+            <code>.icon-chevron-down</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down--primary"></i>
+            <code>.icon-chevron-down--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down--secondary"></i>
+            <code>.icon-chevron-down--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down--light"></i>
+            <code>.icon-chevron-down--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-left"></i>
-        <code>.icon-chevron-left</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-left--primary"></i>
-        <code>.icon-chevron-left--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-left--secondary"></i>
-        <code>.icon-chevron-left--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-chevron-left--light"></i>
-        <code>.icon-chevron-left--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right"></i>
+            <code>.icon-chevron-right</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right--primary"></i>
+            <code>.icon-chevron-right--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right--secondary"></i>
+            <code>.icon-chevron-right--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right--light"></i>
+            <code>.icon-chevron-right--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-check"></i>
-        <code>.icon-check</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-check--primary"></i>
-        <code>.icon-check--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-check--secondary"></i>
-        <code>.icon-check--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-check--light"></i>
-        <code>.icon-check--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left"></i>
+            <code>.icon-chevron-left</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left--primary"></i>
+            <code>.icon-chevron-left--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left--secondary"></i>
+            <code>.icon-chevron-left--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left--light"></i>
+            <code>.icon-chevron-left--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-search"></i>
-        <code>.icon-search</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-search--primary"></i>
-        <code>.icon-search--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-search--secondary"></i>
-        <code>.icon-search--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-search--light"></i>
-        <code>.icon-search--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check"></i>
+            <code>.icon-check</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check--primary"></i>
+            <code>.icon-check--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check--secondary"></i>
+            <code>.icon-check--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check--light"></i>
+            <code>.icon-check--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-close"></i>
-        <code>.icon-close</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-close--primary"></i>
-        <code>.icon-close--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-close--secondary"></i>
-        <code>.icon-close--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-close--light"></i>
-        <code>.icon-close--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search"></i>
+            <code>.icon-search</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search--primary"></i>
+            <code>.icon-search--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search--secondary"></i>
+            <code>.icon-search--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search--light"></i>
+            <code>.icon-search--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-user"></i>
-        <code>.icon-user</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-user--primary"></i>
-        <code>.icon-user--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-user--secondary"></i>
-        <code>.icon-user--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-user--light"></i>
-        <code>.icon-user--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close"></i>
+            <code>.icon-close</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close--primary"></i>
+            <code>.icon-close--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close--secondary"></i>
+            <code>.icon-close--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close--light"></i>
+            <code>.icon-close--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-time"></i>
-        <code>.icon-time</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-time--primary"></i>
-        <code>.icon-time--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-time--secondary"></i>
-        <code>.icon-time--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-time--light"></i>
-        <code>.icon-time--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user"></i>
+            <code>.icon-user</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user--primary"></i>
+            <code>.icon-user--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user--secondary"></i>
+            <code>.icon-user--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user--light"></i>
+            <code>.icon-user--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-flag"></i>
-        <code>.icon-flag</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-flag--primary"></i>
-        <code>.icon-flag--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-flag--secondary"></i>
-        <code>.icon-flag--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-flag--light"></i>
-        <code>.icon-flag--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time"></i>
+            <code>.icon-time</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time--primary"></i>
+            <code>.icon-time--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time--secondary"></i>
+            <code>.icon-time--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time--light"></i>
+            <code>.icon-time--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-more"></i>
-        <code>.icon-more</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-more--primary"></i>
-        <code>.icon-more--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-more--secondary"></i>
-        <code>.icon-more--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-more--light"></i>
-        <code>.icon-more--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag"></i>
+            <code>.icon-flag</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag--primary"></i>
+            <code>.icon-flag--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag--secondary"></i>
+            <code>.icon-flag--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag--light"></i>
+            <code>.icon-flag--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-user-small"></i>
-        <code>.icon-user-small</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-user-small--primary"></i>
-        <code>.icon-user-small--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-user-small--secondary"></i>
-        <code>.icon-user-small--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-user-small--light"></i>
-        <code>.icon-user-small--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more"></i>
+            <code>.icon-more</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more--primary"></i>
+            <code>.icon-more--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more--secondary"></i>
+            <code>.icon-more--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more--light"></i>
+            <code>.icon-more--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-facebook"></i>
-        <code>.icon-facebook</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-facebook--primary"></i>
-        <code>.icon-facebook--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-facebook--secondary"></i>
-        <code>.icon-facebook--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-facebook--light"></i>
-        <code>.icon-facebook--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small"></i>
+            <code>.icon-user-small</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small--primary"></i>
+            <code>.icon-user-small--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small--secondary"></i>
+            <code>.icon-user-small--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small--light"></i>
+            <code>.icon-user-small--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-twitter"></i>
-        <code>.icon-twitter</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-twitter--primary"></i>
-        <code>.icon-twitter--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-twitter--secondary"></i>
-        <code>.icon-twitter--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-twitter--light"></i>
-        <code>.icon-twitter--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook"></i>
+            <code>.icon-facebook</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook--primary"></i>
+            <code>.icon-facebook--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook--secondary"></i>
+            <code>.icon-facebook--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook--light"></i>
+            <code>.icon-facebook--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-email"></i>
-        <code>.icon-email</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-email--primary"></i>
-        <code>.icon-email--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-email--secondary"></i>
-        <code>.icon-email--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-email--light"></i>
-        <code>.icon-email--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter"></i>
+            <code>.icon-twitter</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter--primary"></i>
+            <code>.icon-twitter--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter--secondary"></i>
+            <code>.icon-twitter--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter--light"></i>
+            <code>.icon-twitter--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-podcast"></i>
-        <code>.icon-podcast</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-podcast--primary"></i>
-        <code>.icon-podcast--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-podcast--secondary"></i>
-        <code>.icon-podcast--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-podcast--light"></i>
-        <code>.icon-podcast--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email"></i>
+            <code>.icon-email</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email--primary"></i>
+            <code>.icon-email--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email--secondary"></i>
+            <code>.icon-email--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email--light"></i>
+            <code>.icon-email--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-instagram"></i>
-        <code>.icon-instagram</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-instagram--primary"></i>
-        <code>.icon-instagram--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-instagram--secondary"></i>
-        <code>.icon-instagram--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-instagram--light"></i>
-        <code>.icon-instagram--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast"></i>
+            <code>.icon-podcast</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast--primary"></i>
+            <code>.icon-podcast--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast--secondary"></i>
+            <code>.icon-podcast--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast--light"></i>
+            <code>.icon-podcast--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-snapchat"></i>
-        <code>.icon-snapchat</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-snapchat--primary"></i>
-        <code>.icon-snapchat--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-snapchat--secondary"></i>
-        <code>.icon-snapchat--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-snapchat--light"></i>
-        <code>.icon-snapchat--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram"></i>
+            <code>.icon-instagram</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram--primary"></i>
+            <code>.icon-instagram--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram--secondary"></i>
+            <code>.icon-instagram--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram--light"></i>
+            <code>.icon-instagram--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-blog"></i>
-        <code>.icon-blog</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-blog--primary"></i>
-        <code>.icon-blog--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-blog--secondary"></i>
-        <code>.icon-blog--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-blog--light"></i>
-        <code>.icon-blog--light</code>
-    </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat"></i>
+            <code>.icon-snapchat</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat--primary"></i>
+            <code>.icon-snapchat--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat--secondary"></i>
+            <code>.icon-snapchat--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat--light"></i>
+            <code>.icon-snapchat--light</code>
+        </li>
 
-    <li class="sg-icon-grid__item">
-        <i class="icon-phone"></i>
-        <code>.icon-phone</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-phone--primary"></i>
-        <code>.icon-phone--primary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-phone--secondary"></i>
-        <code>.icon-phone--secondary</code>
-    </li>
-    <li class="sg-icon-grid__item">
-        <i class="icon-phone--light"></i>
-        <code>.icon-phone--light</code>
-    </li>
-</ul>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog"></i>
+            <code>.icon-blog</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog--primary"></i>
+            <code>.icon-blog--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog--secondary"></i>
+            <code>.icon-blog--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog--light"></i>
+            <code>.icon-blog--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone"></i>
+            <code>.icon-phone</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone--primary"></i>
+            <code>.icon-phone--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone--secondary"></i>
+            <code>.icon-phone--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone--light"></i>
+            <code>.icon-phone--light</code>
+        </li>
+    </ul>
 
 Styleguide 4
 */
