@@ -4,11 +4,18 @@
 
 
 
+.. _uicontainer_styling:
+
+*************************************
+Specifying CSS classes in uicontainer
+*************************************
+TODO: Explain the various kwargs for styling.
+
+
 .. _uicontainer_bem:
 
-*******************
-UIcontainer and BEM
-*******************
+uicontainer and BEM
+===================
 We use BEM syntax for the cradmin CSS, and we have designed
 the uicontainer library with built in support for
 working with BEM.

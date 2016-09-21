@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-import django_cradmin.uicontainer.semantic
 import htmls
 import mock
 from django import forms
@@ -23,14 +20,15 @@ class TestFormRenderable(test.TestCase):
                     ('a', 'A'),
                     ('b', 'B'),
                 ],
-                initial='b'
+                initial='b',
+                widget=forms.RadioSelect()
             )
 
         form = ExampleForm()
         formrenderable = uicontainer.form.Form(
             form=form,
             children=[
-                django_cradmin.uicontainer.layout.AdminuiPageSectionTight(
+                uicontainer.layout.AdminuiPageSectionTight(
                     children=[
                         uicontainer.fieldwrapper.FieldWrapper(
                             fieldname='name',
@@ -43,19 +41,25 @@ class TestFormRenderable(test.TestCase):
                         uicontainer.fieldwrapper.FieldWrapper(fieldname='user_type'),
                     ]
                 ),
-                django_cradmin.uicontainer.layout.AdminuiPageSection(
+                uicontainer.layout.AdminuiPageSection(
                     bem_variant_list=['supertight'],
-                    dom_id='id_tull',
                     children=[
                         uicontainer.fieldwrapper.FieldWrapper(fieldname='created_by'),
                         uicontainer.fieldset.FieldSet(
                             title='Metadata',
                             children=[
-                                uicontainer.fieldwrapper.FieldWrapper(fieldname='created_by')
+                                uicontainer.fieldwrapper.FieldWrapper(fieldname='created_by'),
                             ]
                         )
                     ],
-                )
+                ),
+                uicontainer.fieldwrapper.FieldWrapper(
+                    fieldname='user_type',
+                    field_renderable=uicontainer.field.Field(
+                        subwidget_renderable_kwargs={
+                            'bem_variant_list': ['inline']
+                        }
+                    )),
             ]
         ).bootstrap()
         htmls.S(formrenderable.render(request=mock.MagicMock())).prettyprint()

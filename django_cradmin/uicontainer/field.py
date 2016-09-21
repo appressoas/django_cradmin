@@ -136,10 +136,129 @@ class Field(BaseFieldRenderable):
     using the Django widget system.
 
     You never use this on its own outside a :class:`.FieldWrapper`.
+
+    Examples:
+
+        First of all, this is always used within a
+        :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`,
+        and by default FieldWrapper uses this class without any kwargs
+        as the ``field_renderable``. So the following will render a
+        field on the form named ``email`` no matter what the type or
+        widget of the field is::
+
+            from django_cradmin import uicontainer
+
+            class ExampleForm(forms.Form):
+                email = forms.EmailField()
+
+            # You would put the fieldwrapper as a child somewhere below
+            # a ``django_cradmin.uicontainer.form.Form``, but we
+            # do not include that in these examples for brevity. See the docs for
+            # ``django_cradmin.uicontainer.form.Form`` for a complete example.
+            uicontainer.fieldwrapper.FieldWrapper(fieldname='email')
+
+        Let us adjust some parameters of the field rendered by the FieldWrapper
+        by providing a custom field_renderable::
+
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_wrapper_renderable=uicontainer.field.Field(
+                    autofocus=True,  # Autofocus on page load
+                    placeholder="Type your email...",  # Set a placeholder text
+
+                    # Change the css classes - the css class of the field will
+                    # be ``custom-input custom-input--big``
+                    bem_block='custom-input',
+                    bem_variant_list=['big']
+
+                    # Alternatively, we can set the css class
+                ))
+
+        What about some CSS classes on the input field? We can do that using
+        BEM naming, by specifying css classes directly as a list,
+        or by just adding some css classes. Lets look at the BEM options::
+
+            # Change the BEM block from ``input`` (the default) to ``custom-input``.
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_wrapper_renderable=uicontainer.field.Field(
+                    bem_block='custom-input',
+                    bem_variant_list=['big']
+                ))
+
+            # .. or just add some variants ..
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_wrapper_renderable=uicontainer.field.Field(
+                    bem_variant_list=['inline', 'small']
+                ))
+
+            # .. or both ..
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_wrapper_renderable=uicontainer.field.Field(
+                    bem_block='custom-input',
+                    bem_variant_list=['large']
+                ))
+
+            # In all cases, the resulting CSS class will be
+            # <bem_block> [<bem_block>--<variant0]  [<bem_block>--<variantN>]
+
+        Refer to :ref:`uicontainer_styling` for more details about setting
+        CSS classes.
+
+        Field just works automatically with choice fields, but that uses a
+        ``<select>`` by default. Let us render a ChoiceField as a
+        radio button list instead::
+
+            class ExampleForm(forms.Form):
+                user_type = forms.ChoiceField(
+                    choices=[
+                        ('standard', 'Standard'),
+                        ('admin', 'Admin'),
+                    ],
+                    initial='standard',
+                    widget=forms.RadioSelect()
+                )
+
+            # Nothing special is needed - we pick up that you override
+            # the widget on the form field, and just render it differently.
+            uicontainer.fieldwrapper.FieldWrapper(fieldname='user_type')
+
+            # We can override options for the sub-widgets (the radio buttons)
+            # Lets change the CSS class of the label around each of the radio buttons
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='user_type',
+                field_renderable=uicontainer.field.Field(
+                    subwidget_renderable_kwargs={
+                        'bem_variant_list': ['inline']
+                    }
+                )
+            )
+
+        CheckboxSelectMultiple widgets work just like the RadioSelect widget.
+
+        If you need more customization than the ``subwidget_renderable_kwargs`` option
+        provides, you can customize exactly how RadioSelect and CheckboxSelectMultiple is rendered
+        by extending :class:`.Field` and override:
+
+        - :meth:`~.Field.make_subwidget_renderable_radio`
+        - :meth:`~.Field.make_subwidget_renderable_checkbox`
+
     """
     template_name = 'django_cradmin/uicontainer/field/field.django.html'
 
-    def __init__(self, **kwargs):
+    def __init__(self, subwidget_renderable_kwargs=None, **kwargs):
+        """
+
+        Args:
+            subwidget_renderable_kwargs: Kwargs for the subwidget renderable.
+                See :meth:`.make_subwidget_renderable`. You can provide any
+                kwargs that works with
+                :class:`~django_cradmin.uicontainer.container.AbstractContainerRenderable`.
+            **kwargs: Kwargs for :class:`.BaseFieldRenderable`.
+        """
+        self.extra_subwidget_renderable_kwargs = subwidget_renderable_kwargs or {}
         super(Field, self).__init__(**kwargs)
         self.properties['field_wrapper_renderable'] = self
 
@@ -157,7 +276,10 @@ class Field(BaseFieldRenderable):
 
     def should_render_as_subwidgets(self):
         """
-        Returns True if we should render using :meth:`.render_bound_formfield_as_widget`.
+        Returns True if we should render using :meth:`.make_subwidget_renderable`.
+
+        Default to returining ``True`` if :meth:`.is_radio_select` or
+        :meth:`.is_checkbox_select_multiple` returns ``True``.
         """
         if self.is_radio_select() or self.is_checkbox_select_multiple():
             return True
@@ -167,20 +289,86 @@ class Field(BaseFieldRenderable):
     def should_render_as_child_of_label(self):
         return not self.should_render_as_subwidgets()
 
+    def get_default_bem_block_or_element(self):
+        """
+        Default BEM block is ``input``.
+        """
+        return 'input'
+
     def render_bound_formfield_as_widget(self):
         return self.bound_formfield.as_widget(attrs=self.field_attributes_dict)
 
+    def get_subwidget_renderable_kwargs(self, django_subwidget, index_in_parent):
+        """
+        Get kwargs for the subwidget created by :meth:`.make_subwidget_renderable`.
+
+        Defaults to the ``subwidget_renderable_kwargs`` kwargs + adding
+        a :class:`.SubWidgetField` object as ``subwidget_field_renderable``.
+        """
+        kwargs = dict(self.extra_subwidget_renderable_kwargs)
+        kwargs.update({
+            'subwidget_field_renderable': SubWidgetField(django_subwidget=django_subwidget,
+                                                         index_in_parent=index_in_parent)
+        })
+        return kwargs
+
     def make_subwidget_renderable_radio(self, django_subwidget, index_in_parent):
-        return label.RadioSubWidgetLabel(
-            subwidget_field_renderable=SubWidgetField(django_subwidget=django_subwidget,
-                                                      index_in_parent=index_in_parent))
+        """
+        Make subwidget renderable to use if :meth:`.is_radio_select` returns ``True``.
+
+        Returns a :class:`django_cradmin.uicontainer.label.RadioSubWidgetLabel`
+        with kwargs from :meth:`.get_subwidget_renderable_kwargs` by default.
+
+        Used by :meth:`.make_subwidget_renderable`.
+
+        Args:
+            django_subwidget: The SubWidget object.
+            index_in_parent: The index of the subwidget in the parent.
+        """
+        kwargs = {
+            'subwidget_field_renderable': SubWidgetField(django_subwidget=django_subwidget,
+                                                         index_in_parent=index_in_parent)
+        }
+        return label.RadioSubWidgetLabel(**self.get_subwidget_renderable_kwargs(
+            django_subwidget=django_subwidget,
+            index_in_parent=index_in_parent
+        ))
 
     def make_subwidget_renderable_checkbox(self, django_subwidget, index_in_parent):
-        return label.CheckboxSubWidgetLabel(
-            subwidget_field_renderable=SubWidgetField(django_subwidget=django_subwidget,
-                                                      index_in_parent=index_in_parent))
+        """
+        Make subwidget renderable to use if :meth:`.is_checkbox_select_multiple` returns ``True``.
+
+        Returns a :class:`django_cradmin.uicontainer.label.CheckboxSubWidgetLabel`
+        with kwargs from :meth:`.get_subwidget_renderable_kwargs` by default.
+
+        Used by :meth:`.make_subwidget_renderable`.
+
+        Args:
+            django_subwidget: The SubWidget object.
+            index_in_parent: The index of the subwidget in the parent.
+        """
+        return label.CheckboxSubWidgetLabel(**self.get_subwidget_renderable_kwargs(
+            django_subwidget=django_subwidget,
+            index_in_parent=index_in_parent
+        ))
 
     def make_subwidget_renderable(self, django_subwidget, index_in_parent):
+        """
+        Make a renderable for a Django SubWidget.
+
+        Only used if :meth:`.should_render_as_subwidgets` returns ``True``.
+
+        By default this returns:
+
+        - :meth:`.make_subwidget_renderable_radio` if :meth:`.is_radio_select` returns ``True``.
+        - :meth:`.make_subwidget_renderable_checkbox` if :meth:`.is_checkbox_select_multiple` returns ``True``.
+        - Raise NotImplementedError otherwise.
+
+        Args:
+            django_subwidget: The SubWidget object.
+            index_in_parent: The index of the subwidget in the parent.
+
+        """
         if self.is_radio_select():
             return self.make_subwidget_renderable_radio(
                 django_subwidget=django_subwidget, index_in_parent=index_in_parent)

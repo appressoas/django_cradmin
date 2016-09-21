@@ -71,6 +71,13 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
 
 
 class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
+    """
+    Basic label for a Django SubWidget.
+
+    Assumes that we want ot render the Django SubWidget within the label.
+
+    If you want
+    """
     def __init__(self, subwidget_field_renderable, **kwargs):
         self.subwidget_field_renderable = subwidget_field_renderable
         super(SubWidgetLabel, self).__init__(**kwargs)
@@ -98,10 +105,16 @@ class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
 
 
 class StyledSubWidgetLabel(SubWidgetLabel):
-    template_name = 'django_cradmin/uicontainer/label/styled_sub_widget_label.django.html'
+    """
+    A ``<label>`` for checkbox or radio list where we
+    assumes that you want to hide the actual input field
+    and style it with a _control indicator_ span.
 
-    def __init__(self, **kwargs):
-        super(StyledSubWidgetLabel, self).__init__(**kwargs)
+    The control indicator span element css class will
+    be ``<BEM block>__control-indicator`` - can be overriden
+    in :meth:`~.StyledSubWidgetLabel.control_indicator_bem_element`.
+    """
+    template_name = 'django_cradmin/uicontainer/label/styled_sub_widget_label.django.html'
 
     @property
     def control_indicator_bem_element(self):
@@ -109,16 +122,36 @@ class StyledSubWidgetLabel(SubWidgetLabel):
 
 
 class RadioSubWidgetLabel(StyledSubWidgetLabel):
-    def __init__(self, **kwargs):
-        super(RadioSubWidgetLabel, self).__init__(**kwargs)
-
+    """
+    A ``<label>`` suitable for wrapping around lists of
+    radio buttons.
+    """
     def get_default_bem_block_or_element(self):
+        """
+        Uses the ``radio`` BEM block by default.
+        """
         return 'radio'
+
+    def get_default_bem_variant_list(self):
+        """
+        Uses the ``radio--block`` BEM variant by default.
+        """
+        return ['block']
 
 
 class CheckboxSubWidgetLabel(StyledSubWidgetLabel):
-    def __init__(self, **kwargs):
-        super(CheckboxSubWidgetLabel, self).__init__(**kwargs)
-
+    """
+    A ``<label>`` suitable for wrapping around lists of
+    checkboxes.
+    """
     def get_default_bem_block_or_element(self):
+        """
+        Uses the ``checkbox`` BEM block by default.
+        """
         return 'checkbox'
+
+    def get_default_bem_variant_list(self):
+        """
+        Uses the ``checkbox--block`` BEM variant by default.
+        """
+        return ['block']
