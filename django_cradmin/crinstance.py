@@ -565,6 +565,23 @@ class BaseCrAdminInstance(object):
         """
         return ' '.join(self.get_body_css_classes_list())
 
+    @property
+    def pagecover_bem_block(self):
+        """
+        Get the name of the BEM block for the page cover.
+
+        Should be overridden if you do not want the default of ``adminui-page-cover``.
+
+        If you need more complex behavior, you should consider:
+        - Making your own templates that extend:
+            - ``django_cradmin/standalone-base.django.html`` - for all the views outside the role.
+            - ``django_cradmin/base.django.html`` - for all the views within the role
+        - OR override (this affects all cradmin instances):
+            - ``django_cradmin/standalone-base.django.html``
+            - ``django_cradmin/base.django.html``
+        """
+        return 'adminui-page-cover'
+
     def get_default_javascriptregistry_component_ids(self):
         """
         Get default component IDs for all views within this cradmin instance.

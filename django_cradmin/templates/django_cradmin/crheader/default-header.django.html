@@ -5,18 +5,21 @@
     {{ block.super }}
     {% if me.include_menutoggle_javascript %}
         cradmin_menutoggle_groupid="mainmenu"
-        cradmin_menutoggle_activestyle="{{ me.get_bem_block }}--showmenu"
+        cradmin_menutoggle_activestyle="{{ me.bem_block }}--showmenu"
     {% endif %}
 {% endblock outer-wrapper-element-attributes %}
 
 {% block content %}
-    <div class="{{ me.get_bem_block }}__content">
+    <div class="{{ me.bem_block }}__content">
         {% block content-inner %}
             {% block brand %}
-                <a class="{{ me.get_bem_block }}__brand" {% block brand-attributes %}href="{% cradmin_instance_rolefrontpage_url %}"{% endblock %}>
-                    <span class="{{ me.get_bem_block }}__brandname">
-                        {% cradmin_titletext_for_role request.cradmin_role %}
-                    </span>
+                <a class="{{ me.bem_block }}__brand"
+                        href="{% cradmin_instance_rolefrontpage_url %}">
+                    {% block brand_content %}
+                        <span class="{{ me.bem_block }}__brandname">
+                            {% cradmin_titletext_for_role request.cradmin_role %}
+                        </span>
+                    {% endblock brand_content %}
                 </a>
             {% endblock brand %}
 

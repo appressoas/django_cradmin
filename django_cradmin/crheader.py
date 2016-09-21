@@ -23,18 +23,20 @@ class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
 class DefaultHeaderRenderable(AbstractHeaderRenderable):
     template_name = 'django_cradmin/crheader/default-header.django.html'
 
-    def get_bem_block(self):
+    @property
+    def bem_block(self):
         return 'adminui-page-header'
 
-    def get_bem_variants_list(self):
+    @property
+    def bem_variants_list(self):
         return []
 
     def expand_bem_variants_list(self):
-        bem_block = self.get_bem_block()
-        return ['{}--{}'.format(bem_block, variant) for variant in self.get_bem_variants_list()]
+        bem_block = self.bem_block
+        return ['{}--{}'.format(bem_block, variant) for variant in self.bem_variants_list]
 
     def get_base_css_classes_list(self):
-        return [self.get_bem_block()] + self.expand_bem_variants_list()
+        return [self.bem_block] + self.expand_bem_variants_list()
 
     def include_menutoggle_javascript(self):
         return False
