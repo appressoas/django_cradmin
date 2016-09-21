@@ -35,8 +35,8 @@ Styleguide components.adminui.adminui-page-cover
 */
 .adminui-page-cover {
     position: relative;
-    padding-top: $spacing--large; // TODO: Vertical variables...
-    padding-bottom: $spacing--large; // TODO: Vertical variables...
+    padding-top: $spacing; // TODO: Vertical variables...
+    padding-bottom: $spacing; // TODO: Vertical variables...
     text-align: center;
     color: $color-light;
     background-color: color(primary);
@@ -47,8 +47,8 @@ Styleguide components.adminui.adminui-page-cover
     }
 
     @include min-width(md) {
-        padding-top: $vertical-rythm--spacing * 3;
-        padding-bottom: $vertical-rythm--spacing * 3;
+        padding-top: $vertical-rythm--spacing;
+        padding-bottom: $vertical-rythm--spacing;
     }
 
     &__title {
@@ -56,10 +56,12 @@ Styleguide components.adminui.adminui-page-cover
         z-index: 2;
         padding: 0 $spacing;
         max-width: $container-width;
-        margin: 0 auto $spacing;
+        margin: 0 auto $spacing--small;
+        @include font-size(xlarge);
+
 
         &--small {
-            @include font-size(large);
+            @include font-size(medium);
         }
 
         &:only-child {
@@ -68,7 +70,7 @@ Styleguide components.adminui.adminui-page-cover
     }
 
     &__description {
-        @include font-size(medium);
+        @include font-size(small);
         position: relative;
         z-index: 2;
 
@@ -78,7 +80,7 @@ Styleguide components.adminui.adminui-page-cover
         margin-right: auto;
 
         &--large {
-            @include font-size(large);
+            @include font-size(medium);
             @include spaced-text;
         }
     }
