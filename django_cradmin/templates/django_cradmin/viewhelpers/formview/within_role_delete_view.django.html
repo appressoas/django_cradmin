@@ -22,7 +22,7 @@
             <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">
                 {% csrf_token %}
                 <button type="submit" class="button  button--primary">{{ delete_button_label }}</button>
-                <a class="button" django-cradmin-back>{% trans "Cancel" %}</a>
+                <button type="button" class="button" onclick="history.back();return false;">{% trans "Cancel" %}</button>
             </form>
         {% endblock delete-form%}
     </div>
