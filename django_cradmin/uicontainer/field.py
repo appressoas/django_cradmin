@@ -70,7 +70,16 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         })
         return attributes
 
-    @property
+    def should_have_for_attribute_on_label(self):
+        """
+        Should this field get a ``for`` attribute on its label?
+
+        Used by :class:`django_cradmin.uicontainer.label.Label`.
+
+        Defaults to ``True``, but subclasses can override this.
+        """
+        return True
+
     def should_render_as_child_of_label(self):
         """
         Should this field be renderered as a child of the ``<label>``?
@@ -263,6 +272,9 @@ class Field(BaseFieldRenderable):
 
     @property
     def django_widget(self):
+        """
+        Get the Django Widget object for the formfield.
+        """
         return self.bound_formfield.field.widget
 
     def is_radio_select_widget(self):
@@ -299,7 +311,22 @@ class Field(BaseFieldRenderable):
         return (self.is_radio_select_widget()
                 or self.is_checkbox_select_multiple_widget())
 
+    def should_have_for_attribute_on_label(self):
+        """
+        Should this field get a ``for`` attribute on its label?
+
+        Used by :class:`django_cradmin.uicontainer.label.Label`.
+
+        Defaults to :meth:`.should_render_as_subwidgets`.
+        """
+        return not self.should_render_as_subwidgets()
+
     def should_render_as_child_of_label(self):
+        """
+        Should this field be rendered as a child of the label?
+
+        Used by :class:`django_cradmin.uicontainer.label.Label`.
+        """
         return not (self.should_render_as_subwidgets()
                     or self.is_select_widget()
                     or self.is_select_multiple_widget())

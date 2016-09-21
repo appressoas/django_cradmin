@@ -37,7 +37,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
     def should_include_for_attribute(self):
-        return not self.field_wrapper_renderable.field_renderable.should_render_as_subwidgets()
+        return self.field_wrapper_renderable.field_renderable.should_have_for_attribute_on_label()
 
     def get_default_dom_id(self):
         return '{field_dom_id}_label'.format(
