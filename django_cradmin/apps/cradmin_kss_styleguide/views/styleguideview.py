@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django_cradmin import viewhelpers
 

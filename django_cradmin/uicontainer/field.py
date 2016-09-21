@@ -348,10 +348,6 @@ class Field(BaseFieldRenderable):
             django_subwidget: The SubWidget object.
             index_in_parent: The index of the subwidget in the parent.
         """
-        kwargs = {
-            'subwidget_field_renderable': SubWidgetField(django_subwidget=django_subwidget,
-                                                         index_in_parent=index_in_parent)
-        }
         return label.RadioSubWidgetLabel(**self.get_subwidget_renderable_kwargs(
             django_subwidget=django_subwidget,
             index_in_parent=index_in_parent
