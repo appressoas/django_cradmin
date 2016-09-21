@@ -566,7 +566,7 @@ class BaseCrAdminInstance(object):
         return ' '.join(self.get_body_css_classes_list())
 
     @property
-    def pagecover_bem_block(self):
+    def page_cover_bem_block(self):
         """
         Get the name of the BEM block for the page cover.
 
