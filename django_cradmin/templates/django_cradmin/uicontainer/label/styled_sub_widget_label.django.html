@@ -1,7 +1,7 @@
 {% extends "django_cradmin/uicontainer/label/label.django.html" %}
 {% load cradmin_tags %}
 
-{% block content %}
-    <span class="{{ me.control_indicator_bem_element }}"></span>
+{% block field %}
     {{ block.super }}
-{% endblock content %}
+    <span class="{{ me.control_indicator_bem_element }}"></span>
+{% endblock field %}
