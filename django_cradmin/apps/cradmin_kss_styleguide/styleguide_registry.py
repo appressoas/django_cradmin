@@ -187,6 +187,12 @@ class Registry(Singleton):
         """
         return self._styleguides[unique_id]
 
+    def __len__(self):
+        return len(self._styleguides)
+
+    def first_guide(self):
+        return list(self.iterstyleguides())[0]
+
     def iterstyleguides(self):
         return self._styleguides.values()
 

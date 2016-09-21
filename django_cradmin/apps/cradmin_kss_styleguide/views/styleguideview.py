@@ -1,3 +1,5 @@
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django_cradmin import viewhelpers
 
 from django_cradmin.apps.cradmin_kss_styleguide import styleguide_registry
@@ -6,9 +8,17 @@ from django_cradmin.apps.cradmin_kss_styleguide import styleguide_registry
 class GuideListView(viewhelpers.generic.WithinRoleTemplateView):
     template_name = 'cradmin_kss_styleguide/styleguideview/guides.django.html'
 
+    def get(self, request, *args, **kwargs):
+        self.styleguideregistry = styleguide_registry.Registry.get_instance()
+        if len(self.styleguideregistry) == 1:
+            styleguideconfig = self.styleguideregistry.first_guide()
+            return redirect('cradmin_kss_styleguide_guide', unique_id=styleguideconfig.unique_id)
+        else:
+            return super(GuideListView, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(GuideListView, self).get_context_data(**kwargs)
-        context['styleguideregistry'] = styleguide_registry.Registry.get_instance()
+        context['styleguideregistry'] = self.styleguideregistry
         context['prefix'] = self.kwargs.get('prefix', None)
         return context
 

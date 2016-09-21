@@ -6,12 +6,14 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    <nav class="blocklist">
-        {% for styleguideconfig in styleguideregistry.iterstyleguides %}
-            <a class="blocklist__item blocklist__item--link"
-                    href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">
-                {{ styleguideconfig.label }}
-            </a>
-        {% endfor %}
-    </nav>
+    <div class="adminui-page-section adminui-page-section--tight">
+        <nav class="blocklist">
+            {% for styleguideconfig in styleguideregistry.iterstyleguides %}
+                <a class="blocklist__item blocklist__item--link"
+                        href="{% url 'cradmin_kss_styleguide_guide' unique_id=styleguideconfig.unique_id %}">
+                    {{ styleguideconfig.label }}
+                </a>
+            {% endfor %}
+        </nav>
+    </div>
 {% endblock content %}
