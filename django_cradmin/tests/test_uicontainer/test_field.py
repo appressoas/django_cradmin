@@ -351,11 +351,84 @@ class TestField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
                                     widget=forms.RadioSelect()))
         self.assertFalse(selector.one('#id_testfield_label').hasattribute('for'))
 
+    #
+    #
+    # MultipleChoiceField checkbox
+    #
+    #
 
-    # def test_multichoicefield_checkbox_not_implemented(self):
-    #     with self.assertRaises(NotImplementedError):
-    #         self.single_field_formrenderable_htmls(
-    #             field=forms.MultipleChoiceField(choices=[('a', 'A')], widget=forms.CheckboxSelectMultiple()))
+    def test_multichoicefield_checkbox_name(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.MultipleChoiceField(choices=[('a', 'A')],
+                                            widget=forms.CheckboxSelectMultiple()))
+        self.assertEqual(selector.count('input[name="testfield"]'), 1)
+
+    def test_multichoicefield_checkbox_multiple(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B')],
+                                    widget=forms.CheckboxSelectMultiple()))
+        self.assertEqual(selector.count('input[name="testfield"]'), 2)
+
+    def test_multichoicefield_checkbox_id(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.CheckboxSelectMultiple()))
+        self.assertEqual('id_testfield_0', selector.one('input[name="testfield"]')['id'])
+
+    def test_multichoicefield_checkbox_id_multiple(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B'), ('c', 'C')],
+                                    widget=forms.CheckboxSelectMultiple()))
+        self.assertTrue(selector.exists('#id_testfield_0'))
+        self.assertTrue(selector.exists('#id_testfield_1'))
+        self.assertTrue(selector.exists('#id_testfield_2'))
+
+    # def test_multichoicefield_checkbox_required(self):
+    #     selector = self.single_field_formrenderable_htmls(
+    #         field=forms.ChoiceField(choices=[('a', 'A')],
+    #                                 widget=forms.CheckboxSelectMultiple(),
+    #                                 required=True))
+    #     selector.prettyprint()
+        # self.assertTrue(selector.one('input[name="testfield"]').hasattribute('required'))
+
+    # def test_multichoicefield_checkbox_not_required(self):
+    #     selector = self.single_field_formrenderable_htmls(
+    #         field=forms.ChoiceField(choices=[('a', 'A')],
+    #                                 widget=forms.CheckboxSelectMultiple(),
+    #                                 required=False))
+    #     self.assertFalse(selector.one('input[name="testfield"]').hasattribute('required'))
+
+    def test_multichoicefield_checkbox_widget_attrs(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(
+                choices=[('a', 'A')],
+                widget=forms.CheckboxSelectMultiple(
+                    attrs={'my-attribute': '10'}
+                )))
+        self.assertEqual('10', selector.one('input[name="testfield"]')['my-attribute'])
+
+    def test_multichoicefield_checkbox_initial(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B')],
+                                    initial='b',
+                                    widget=forms.CheckboxSelectMultiple()))
+        self.assertFalse(selector.one('#id_testfield_wrapper input[value="a"]').hasattribute('checked'))
+        self.assertTrue(selector.one('#id_testfield_wrapper input[value="b"]').hasattribute('checked'))
+
+    def test_multichoicefield_checkbox_value_from_form(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A'), ('b', 'B')],
+                                    initial='b',
+                                    widget=forms.CheckboxSelectMultiple()),
+            formvalue='a')
+        self.assertTrue(selector.one('#id_testfield_wrapper input[value="a"]').hasattribute('checked'))
+        self.assertFalse(selector.one('#id_testfield_wrapper input[value="b"]').hasattribute('checked'))
+
+    def test_multichoicefield_checkbox_main_label_no_for(self):
+        selector = self.single_field_formrenderable_htmls(
+            field=forms.ChoiceField(choices=[('a', 'A')],
+                                    widget=forms.CheckboxSelectMultiple()))
+        self.assertFalse(selector.one('#id_testfield_label').hasattribute('for'))
 
 
 class TestHiddenField(test.TestCase, formtest_mixins.SingleFormRenderableHelperMixin):
