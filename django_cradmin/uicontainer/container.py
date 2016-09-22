@@ -662,3 +662,10 @@ class Div(AbstractContainerRenderable):
     """
     def get_default_html_tag(self):
         return 'div'
+
+
+class NoWrapperElement(AbstractContainerRenderable):
+    """
+    Renders children, but no wrapper HTML element.
+    """
+    template_name = 'django_cradmin/uicontainer/no_wrapper_element.django.html'
