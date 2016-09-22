@@ -166,9 +166,10 @@ b {
 %text-smallcaps {
     @include spaced-text;
     @include font-size(smallcaps);
+    @include font(base, bold);
 
     &--thin {
-        @include font(base, normal);
+        @include font(base, light);
     }
 }
 

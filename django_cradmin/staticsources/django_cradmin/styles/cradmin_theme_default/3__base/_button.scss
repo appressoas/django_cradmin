@@ -83,6 +83,7 @@ Styleguide 3.2
 
 .button {
     @include spaced-text;
+    @include font(base, bold);
     @include font-size(small);
     text-align: center;
 
