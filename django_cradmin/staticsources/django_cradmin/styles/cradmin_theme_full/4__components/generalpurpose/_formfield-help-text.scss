@@ -25,3 +25,9 @@ Styleguide components.formfield-help-text
     @include font-size(xsmall);
     margin-bottom: $vertical-rythm--spacing;
 }
+
+// TODO: Fix this ugly hack. Should probably change .label to only have margin if it is
+//       preceded by another label.
+.label + .formfield-help-text {
+    margin-top: -($vertical-rythm--spacing - $spacing--small);
+}
