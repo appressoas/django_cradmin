@@ -11,9 +11,9 @@ Example: {isolated: true}
 Styleguide 2.3
 */
 
-h1,
-.h1,
-%h1,
+// h1,
+// .h1,
+// %h1,
 h2,
 .h2,
 %h2,
@@ -23,7 +23,7 @@ h3,
 h4,
 .h4,
 %h4 {
-    @include font(header, bold);
+    @include font(base, bold);
     word-wrap: break-word;
     margin: 0;
     margin-bottom: $vertical-rythm--medium;
@@ -36,19 +36,26 @@ h4,
 h1,
 .h1,
 %h1 {
+    @include font(header, bold);
     @include font-size(xxlarge);
+    word-wrap: break-word;
+    margin: 0;
+    margin-bottom: $vertical-rythm--medium;
 
     @include min-width(md) {
         margin-bottom: $vertical-rythm--spacing;
     }
 
-    em { // TODO?
-        font-style: normal;
-        display: inline-block;
-        padding: 0 $spacing--small;
-        margin-left: -($unit);
-        margin-right: -($unit);
-        background-color: color(primary, dark);
+    strong { // TODO?
+        @include font(header, bold);
+        color: color(secondary, dark);
+        white-space: nowrap;
+        // font-style: normal;
+        // display: inline-block;
+        // padding: 0 $spacing--small;
+        // margin-left: -($unit);
+        // margin-right: -($unit);
+        // background-color: color(primary, dark);
     }
 }
 

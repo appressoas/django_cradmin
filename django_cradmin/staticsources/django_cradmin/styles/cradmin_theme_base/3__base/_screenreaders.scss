@@ -8,6 +8,7 @@ Example: Only visible to screenreaders
 
 Styleguide base.screenreaders
 */
+
 .screenreader-only {
-    @include screenreader-only();
+    @include screenreader-only;
 }

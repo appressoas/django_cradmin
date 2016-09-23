@@ -102,7 +102,7 @@
 
 // Spaced text
 @mixin spaced-text {
-    @include font(base, normal);
+    @include font(base, bold);
     letter-spacing: 0.16em;
     text-transform: uppercase;
 }
@@ -186,6 +186,6 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     border: 0;
 }

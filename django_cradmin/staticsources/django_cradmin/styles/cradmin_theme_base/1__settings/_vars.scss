@@ -85,7 +85,6 @@ Styleguide 1.7
 */
 $border-width: 4px;
 $border-width--small: 2px;
-$border-width--large: 12px;
 
 
 // Border style
@@ -114,7 +113,7 @@ $level-4: 40;
 
 // Shadow levels
 // TODO: Remove?
-$shadow--blured: 0 2px 20px rgba($color-dark, 0.02);
+$shadow--blured: 0 2px 20px rgba($color-dark, 0.03);
 $shadow--strong: 0 2px 6px rgba($color-dark, 0.6);
 $shadow--large: 0 2px 20px rgba($color-dark, 0.1);
 $shadow--medium: 0 2px 15px rgba($color-dark, 0.1);

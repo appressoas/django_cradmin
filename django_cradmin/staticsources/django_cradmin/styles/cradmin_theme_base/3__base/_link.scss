@@ -17,7 +17,7 @@ a,
     text-decoration: none;
 
     color: $color-text;
-    border-bottom: $border-width solid color(secondary);
+    border-bottom: $border-width--small solid $color-text;
     // border-bottom: $border-width--small solid rgba($color-links, 0.15);
 
     &:hover,
