@@ -1,0 +1,27 @@
+/* Form field help text
+
+Example:
+
+    <label class="label">
+        Standard input
+        <input type="text" placeholder="I set the standard" />
+    </label>
+    <p class="formfield-help-text">
+        Vestibulum id ligula porta felis euismod semper.
+        Nullam id dolor id nibh ultricies vehicula ut id elit.
+    </p>
+
+    <label class="label">
+        I'm a textarea
+        <textarea placeholder="I more got space!"></textarea>
+    </label>
+    <p class="formfield-help-text">
+        Donec sed odio dui.
+    </p>
+
+Styleguide components.formfield-help-text
+*/
+.formfield-help-text {
+    @include font-size(xsmall);
+    margin-bottom: $vertical-rythm--spacing;
+}

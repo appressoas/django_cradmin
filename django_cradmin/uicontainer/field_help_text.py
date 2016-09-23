@@ -13,6 +13,9 @@ class BaseHelpTextRenderable(container.AbstractContainerRenderable, form_mixins.
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
 
+    def get_default_bem_block_or_element(self):
+        return 'formfield-help-text'
+
 
 class AutomaticHelpText(BaseHelpTextRenderable):
     """
