@@ -28,17 +28,7 @@ Example: {type: isolated} Tight container
 Styleguide 5.1
 */
 .container {
-    @extend %clearfix;
-    max-width: $container-width;
-    margin: 0 auto;
-
-    padding-left: $spacing;
-    padding-right: $spacing;
-
-    @include min-width(lg) {
-        padding-left: $spacing--large;
-        padding-right: $spacing--large;
-    }
+    @include container;
 
     &--xtight {
         max-width: $container-width--xtight;
