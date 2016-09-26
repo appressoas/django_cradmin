@@ -1,0 +1,42 @@
+/* Tabs
+
+
+Example: Structure - first draft
+
+    <!--
+    Not sure if this is a good structure, but it works
+    semantically (I.E.: It works logically without the styling too)
+    -->
+
+    <div class="tabs">
+        <section class="tabs__tab  tabs__tab--active" id="id_tab_1">
+            <h2 class="tabs__title">
+                <a href="#id_tab_1" class="tabs__link">Tab 1</a>
+            </h2>
+
+            <div class="tabs__tabcontent">
+                Tab 1 content
+            </div>
+        </section>
+        <section class="tabs__tab" id="id_tab_2">
+            <h2 class="tabs__title">
+                <a href="#id_tab_2" class="tabs__link">Tab 2</a>
+            </h2>
+
+            <div class="tabs__tabcontent">
+                Tab 2 content
+            </div>
+        </section>
+        <section class="tabs__tab" id="id_tab_3">
+            <h2 class="tabs__title">
+                <a href="#id_tab_3" class="tabs__link">Tab 3</a>
+            </h2>
+
+            <div class="tabs__tabcontent">
+                Tab 3 content
+            </div>
+        </section>
+    </div>
+
+Styleguide components.tabs
+*/
