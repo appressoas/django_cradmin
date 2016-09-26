@@ -7,7 +7,7 @@ Example: Basics
     <div class="formfield">
         <label class="label">
             Standard input
-            <input type="text" placeholder="I set the standard" />
+            <input type="text" placeholder="I set the standard" class="input" />
         </label>
         <p class="formfield__help-text">
             Vestibulum id ligula porta felis euismod semper.
@@ -18,14 +18,14 @@ Example: Basics
     <div class="formfield">
         <label class="label">
             Standard input
-            <input type="text" placeholder="I set the standard" />
+            <input type="text" placeholder="I set the standard" class="input" />
         </label>
     </div>
 
     <div class="formfield">
         <label class="label">
             I'm a textarea
-            <textarea placeholder="I more got space!"></textarea>
+            <textarea placeholder="I more got space!" class="input"></textarea>
         </label>
         <p class="formfield__help-text">
             Donec sed odio dui.
@@ -39,12 +39,12 @@ Example: More advanced fields
             <legend class="legend">Are you good?</legend>
             <label class="radio  radio--block">
                 <input type="radio" />
-                <span class="checkbox__control-indicator"></span>
+                <span class="radio__control-indicator"></span>
                 Yes
             </label>
             <label class="radio  radio--block">
                 <input type="radio" />
-                <span class="checkbox__control-indicator"></span>
+                <span class="radio__control-indicator"></span>
                 No
             </label>
             <label class="radio  radio--block">
@@ -102,7 +102,7 @@ Example: Warning and success messages
     <div class="formfield">
         <label class="label">
             Standard input
-            <input type="text" placeholder="I set the standard" />
+            <input type="text" placeholder="I set the standard" class="input" />
         </label>
         <p class="formfield__help-text">
             Donec sed odio dui.
@@ -117,7 +117,7 @@ Example: Warning and success messages
     <div class="formfield">
         <label class="label">
             Standard input
-            <input type="text" placeholder="I set the standard" />
+            <input type="text" placeholder="I set the standard" class="input" />
         </label>
         <p class="SOMETHING--success">
             I am a success message
@@ -128,7 +128,7 @@ Example: Warning and success variants
     <div class="formfield  formfield--warning">
         <label class="label">
             Standard input
-            <input type="text" placeholder="I set the standard" />
+            <input type="text" placeholder="I set the standard" class="input" />
         </label>
         <p class="formfield__help-text">
             Donec sed odio dui.
@@ -137,7 +137,7 @@ Example: Warning and success variants
     <div class="formfield  formfield--success">
         <label class="label">
             Standard input
-            <input type="text" placeholder="I set the standard" />
+            <input type="text" placeholder="I set the standard" class="input" />
         </label>
         <p class="formfield__help-text">
             Donec sed odio dui.
