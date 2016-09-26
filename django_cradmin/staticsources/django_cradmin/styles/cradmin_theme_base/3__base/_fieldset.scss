@@ -21,10 +21,7 @@ fieldset {
 }
 
 legend {
-    @extend %h3;
-
-    // Legend position fix
-    display: block;
-    float: left;
-    width: 100%;
+    @extend %clearfix;
+    @extend %h4;
+    margin-bottom: $vertical-rythm;
 }

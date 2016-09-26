@@ -55,9 +55,9 @@ $colors: (
 
 $color-light: #fff !default;
 $color-dark: color(neutral, xdark) !default;
-$color-warning: #933D2D !default;
-$color-success: #007f1e !default;
-$color-info: #ffce00 !default;
+$color-warning: mix(red, $color-neutral-base, 60%) !default;
+$color-success: mix(green, $color-neutral-base, 60%) !default;
+$color-info: mix(#ffce00, $color-neutral-base, 90%) !default;
 
 
 // Specific colors.

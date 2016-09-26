@@ -17,14 +17,3 @@
 'container',
 'errors'
 ;
-
-
-/*
-
-Example:
-
-    {% for modifier in ['compact', 'tight'] %}
-        <button class="button button--{{ modifier }}">
-    {% endfor %}
-
-*/

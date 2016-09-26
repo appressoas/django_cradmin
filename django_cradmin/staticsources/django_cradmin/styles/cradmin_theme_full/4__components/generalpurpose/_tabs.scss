@@ -1,42 +1,52 @@
 /* Tabs
 
+http://simplyaccessible.com/article/danger-aria-tabs/
 
-Example: Structure - first draft
+Example: {type: isolated} Structure
 
-    <!--
-    Not sure if this is a good structure, but it works
-    semantically (I.E.: It works logically without the styling too)
-    -->
+    <div id="tabs">
+        <ul class="tabs__tab-list">
+            <li class="tabs__tab-item">
+                <a class="tabs__tab  tabs__tab--active" href="#ipa" id="tab-ipa" aria-selected="true">India Pale Ale (IPA)</a>
+            </li>
+            <li class="tabs__tab-item">
+                <a class="tabs__tab" href="#gueuze" id="tab-gueuze" aria-selected="false">Gueuze</a>
+            </li>
+            <li class="tabs__tab-item">
+                <a class="tabs__tab" href="#imperial-stout" id="tab-imperial-stout" aria-selected="false">Imperial Stout</a>
+            </li>
+        </ul>
 
-    <div class="tabs">
-        <section class="tabs__tab  tabs__tab--active" id="id_tab_1">
-            <h2 class="tabs__title">
-                <a href="#id_tab_1" class="tabs__link">Tab 1</a>
-            </h2>
-
-            <div class="tabs__tabcontent">
-                Tab 1 content
-            </div>
-        </section>
-        <section class="tabs__tab" id="id_tab_2">
-            <h2 class="tabs__title">
-                <a href="#id_tab_2" class="tabs__link">Tab 2</a>
-            </h2>
-
-            <div class="tabs__tabcontent">
-                Tab 2 content
-            </div>
-        </section>
-        <section class="tabs__tab" id="id_tab_3">
-            <h2 class="tabs__title">
-                <a href="#id_tab_3" class="tabs__link">Tab 3</a>
-            </h2>
-
-            <div class="tabs__tabcontent">
-                Tab 3 content
-            </div>
-        </section>
+        <div class="tabs__panel  tabs__panel--active" aria-hidden="false" aria-labelledby="tab-ipa">
+            <h2 id="ipa">India Pale Ale (IPA)</h2>
+            ...
+        </div>
+        <div class="tabs__panel" aria-hidden="true" aria-labelledby="tab-gueuze">
+            <h2 id="gueuze">Gueuze</h2>
+            ...
+        </div>
+        <div class="tabs__panel" aria-hidden="true" aria-labelledby="tab-imperial-stout">
+            <h2 id="imperial-stout">Imperial Stout</h2>
+            ...
+        </div>
     </div>
+
 
 Styleguide components.tabs
 */
+
+.tabs {
+    &__tab-list {
+        display: flex;
+    }
+
+    &__tab-item {}
+
+    &__tab {
+        &--active {}
+    }
+
+    &__panel {
+        &--active {}
+    }
+}
