@@ -59,6 +59,25 @@ class TestButtonPrimary(test.TestCase):
         self.assertEqual(selector.one('button')['class'], 'button  button--primary')
 
 
+class TestButtonHistoryBack(test.TestCase):
+    def test_button_type_default(self):
+        container = uicontainer.button.ButtonHistoryBack().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('button')['type'], 'button')
+
+    def test_default_css_classes(self):
+        container = uicontainer.button.ButtonHistoryBack().bootstrap()
+        with self.settings(DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES=False):
+            selector = htmls.S(container.render())
+        self.assertEqual(selector.one('button')['class'], 'button')
+
+    def test_onclick_attribute(self):
+        container = uicontainer.button.ButtonHistoryBack().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('button')['onclick'],
+                         'history.back();return false;')
+
+
 class TestSubmit(test.TestCase):
     def test_sanity(self):
         container = uicontainer.button.Submit().bootstrap()

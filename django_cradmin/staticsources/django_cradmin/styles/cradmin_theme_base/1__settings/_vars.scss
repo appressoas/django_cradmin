@@ -20,10 +20,10 @@ $breakpoints: (
 
 
 // Grids max-width
-$container-width--xtight: 620px;
-$container-width--tight: 740px;
-$container-width: $container-width--tight * 1.5;
-$container-width--wide: 1400px;
+$container-width--xtight: 620px !default;
+$container-width--tight: 740px !default;
+$container-width: $container-width--tight * 1.5 !default;
+$container-width--wide: 1400px !default;
 
 
 /* Spacing
@@ -46,16 +46,16 @@ If you space out content it's often best to use `$indention`. This way we can cr
 
 Styleguide 1.5
 */
-$unit: 6px;
-$spacing--xlarge: $unit * 40; // TODO: Reduce this a bit and add a new for this big...
-$spacing--large: $unit * 10;
+$unit: 6px !default;
+$spacing--xlarge: $unit * 40 !default; // TODO: Reduce this a bit and add a new for this big...
+$spacing--large: $unit * 10 !default;
 $spacing: $unit * 4;
-$spacing--small: $unit * 2;
+$spacing--small: $unit * 2 !default;
 
 
 // Indention
-$indention: $unit * 7;
-$indention--sm: $unit * 5; // TODO: Make a mixin for this?
+$indention: $unit * 7 !default;
+$indention--sm: $unit * 5 !default; // TODO: Make a mixin for this?
 
 /* Vertical rhythm
 
@@ -72,9 +72,9 @@ There is a system that creates proper line heights for text. **Never interfer wi
 
 Styleguide 1.6
 */
-$vertical-rythm: $unit * 2; // TODO: Responsive? REM?
-$vertical-rythm--medium: ($vertical-rythm * 2);
-$vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm;
+$vertical-rythm: $unit * 2 !default; // TODO: Responsive? REM?
+$vertical-rythm--medium: ($vertical-rythm * 2) !default;
+$vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm !default;
 
 
 /* Borders
@@ -83,32 +83,37 @@ TODO: Make some documentation...
 
 Styleguide 1.7
 */
+<<<<<<< HEAD
 $border-width: 3px;
 $border-width--small: 2px;
+=======
+$border-width: 4px !default;
+$border-width--small: 2px !default;
+>>>>>>> 0b4bbe8229cf864df8429d18f69f8b17904ea435
 
 
 // Border style
-$border-style: $border-width solid color(neutral, light);
-$border-style--small: $border-width--small solid color(neutral, light);
+$border-style: $border-width solid color(neutral, light) !default;
+$border-style--small: $border-width--small solid color(neutral, light) !default;
 
 
 // Better easing
-$swift-out: cubic-bezier(0, 0, 0.1, 1);
+$swift-out: cubic-bezier(0, 0, 0.1, 1) !default;
 
 
 // Header height
-$header-height: $vertical-rythm * 7;
+$header-height: $vertical-rythm * 7 !default;
 
 
 // Input sizes (width)
-$input-small: $unit * 38;
+$input-small: $unit * 38  !default;
 
 
 // Z-index levels
-$level-1: 10;
-$level-2: 20;
-$level-3: 30;
-$level-4: 40;
+$level-1: 10 !default;
+$level-2: 20 !default;
+$level-3: 30 !default;
+$level-4: 40 !default;
 
 
 // Shadow levels
@@ -127,4 +132,4 @@ $sidebar-sizes: (
 );
 
 
-$media-path: '../../media';  // Must NOT end with /
+$media-path: '../../media' !default;  // Must NOT end with /

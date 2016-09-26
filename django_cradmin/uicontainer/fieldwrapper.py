@@ -41,9 +41,6 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
     def get_default_dom_id(self):
         return '{}_wrapper'.format(self.field_renderable.dom_id)
 
-    def get_base_template_name(self):
-        return 'django_cradmin/uicontainer/no_wrapper_element.django.html'
-
     def bootstrap(self, **kwargs):
         """
         Extends :meth:`django_cradmin.uicontainer.container.container.AbstractContainerRenderable.bootstrap`
@@ -147,14 +144,9 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
     #     return css_classes
 
 
-class FieldWrapperWithWrapperElement(FieldWrapper):
-    """
-    Same as :class:`.FieldWrapper` except that it includes the wrapper
-    element.
-
-    This is normally not needed for a field wrapper because
-    it only adds unneded extra HTML. The typical use case for needing
-    a wrapper element is if you have some javascript that needs it.
-    """
-    def get_base_template_name(self):
-        return 'django_cradmin/uicontainer/container.django.html'
+# class NoWrapperElementFieldWrapper(FieldWrapper):
+#     """
+#     Same as :class:`.FieldWrapper` except that it does not include the wrapper
+#     element.
+#     """
+#     template_name = 'django_cradmin/uicontainer/fieldwrapper_no_wrapper_element.django.html'

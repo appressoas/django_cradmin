@@ -67,6 +67,20 @@ class ButtonPrimary(Button):
         return ['primary']
 
 
+class ButtonHistoryBack(Button):
+    """
+    Renders a ``<button type="button">`` just like
+    :class:`.Button`, with ``onclick="history.back();return false;"``.
+
+    Typically used for cancel buttons where we just want to return
+    to the previous page.
+    """
+    def get_html_element_attributes(self):
+        attributes = super(ButtonHistoryBack, self).get_html_element_attributes()
+        attributes['onclick'] = 'history.back();return false;'
+        return attributes
+
+
 class Submit(Button):
     """
     Renders a ``<button type="submit">`` with the default
