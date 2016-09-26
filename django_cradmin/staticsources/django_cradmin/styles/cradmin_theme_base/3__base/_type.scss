@@ -185,7 +185,7 @@ b {
 time {
     @include spaced-text;
     @include font-size(xsmall);
-    // @include font(base, normal);
+    @include font(base, normal);
     color: $color-muted;
     font-size: 0.7em;
     margin-left: $unit;
@@ -197,6 +197,7 @@ time {
 
 // depended on <time>
 .date {
+    @include font(base, bold);
     position: relative;
     display: inline-block;
     vertical-align: top;
@@ -204,7 +205,6 @@ time {
     top: $unit;
     border: $border-style;
     padding: $border-width 0;
-    font-size: 0.7em;
     float: left;
     margin: 0;
     margin-right: $spacing--small;
