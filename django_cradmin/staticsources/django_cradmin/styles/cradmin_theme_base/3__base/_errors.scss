@@ -1,0 +1,16 @@
+/* Error messages
+
+Example:
+    <p class="error">Look, I'm an error message!</p>
+
+Styleguide 3.6
+*/
+.error {
+    @include font(base);
+    @include font-size(small);
+
+    padding: $spacing--small $spacing;
+    margin-bottom: $vertical-rythm--spacing;
+    color: $color-light;
+    background-color: color(primary);
+}

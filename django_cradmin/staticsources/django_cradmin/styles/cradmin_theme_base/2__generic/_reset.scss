@@ -147,18 +147,17 @@ input[type='url'],
 input[type='search'],
 input[type='tel'],
 input[type='color'] {
-    font-size: inherit;
     outline: 0;
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
     box-sizing: border-box;
-    font-size: inherit;
-    color: inherit;
 }
 
 textarea {
     overflow: auto;
+    resize: none;
+    word-wrap: break-word;
 }
 
 // Input type date reset
@@ -166,6 +165,7 @@ input[type='date']::-webkit-clear-button,
 input[type='date']::-webkit-inner-spin-button {
     display: none;
 }
+
 input[type='date']::-webkit-calendar-picker-indicator {
     // Might need this one, if not, use display: none
 }

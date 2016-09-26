@@ -1,86 +1,66 @@
 /*
 Inputs
 
-By default these inputs are styled:
-`text`,
-`password`,
-`number`,
-`email`,
-`url`,
-`search`,
-`tel`,
-`textarea`.
-
-If you want to style something else as input just use the class `.input`.
+Use the class `.input` to add styling to input fields
 
 Example: {type: isolated} Standard input
     <label>
         Standard input
-        <input type="text" placeholder="I set the standard" />
+        <input type="text" placeholder="I set the standard" class="input" />
     </label>
 
 Example: {type: isolated} Error input
     <label>
         I'm a error input!
-        <input type="text" placeholder="Omg!" class="input--error" />
+        <input type="text" placeholder="Omg!" class="input  input--error" />
     </label>
 
 Example: {type: isolated} Inline input
     <label>
         Look,
-        <input type="text" placeholder="I'm inline!!" class="input--inline" />
+        <input class="input  input--inline" type="text" placeholder="I'm inline!!" />
         Wuut?
     </label>
 
 Example: {type: isolated} Outlined input
     <label>
         Outlined input
-        <input type="text" placeholder="Look at ma' outlines" class="input--outlined" />
+        <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
     </label>
 
 Example: {type: isolated} Smaller input
     <label>
-        Outlined input
-        <input type="text" placeholder="I'm tiny!" class="input--small" />
+        Small input
+        <input type="text" placeholder="I'm tiny!" class="input input--small" />
     </label>
 
 Example: {type: isolated} Standard textarea
     <label>
         I'm a textarea
-        <textarea placeholder="I more got space!"></textarea>
+        <textarea placeholder="I more got space!" class="input"></textarea>
     </label>
 
 Example: {type: isolated} Textarea with error
     <label>
         I'm a textarea with error!
-        <textarea placeholder="Why? :'('" class="input--error"></textarea>
+        <textarea placeholder="Why? :'('" class="input  input--error"></textarea>
     </label>
 
 Example: {type: isolated} Textarea with outlines
     <label>
         I got the outlines!
-        <textarea placeholder="Look, outlines!" class="input--outlined"></textarea>
+        <textarea placeholder="Look, outlines!" class="input  input--outlined"></textarea>
     </label>
 
 Example: {type: isolated} Textarea that grows
     <label>
         I'm a textarea that can grow
-        <textarea placeholder="You can type alot on me!" auto-grow></textarea>
+        <textarea class="input" placeholder="You can type alot on me!" auto-grow></textarea>
     </label>
 
 Styleguide 3.1
 */
 
-
-// TODO: Remove all except .input?
-textarea,
-input[type='text'],
-input[type='password'],
-input[type='number'],
-input[type='email'],
-input[type='url'],
-input[type='search'],
-input[type='tel'],
 .input {
     @include font(base, normal);
     @include font-size(small);
@@ -107,70 +87,24 @@ input[type='tel'],
     @include input-placeholder {
         color: color(neutral);
     }
-}
 
-
-.input--error {
-    &,
-    &[type='text'],
-    &[type='password'],
-    &[type='number'],
-    &[type='email'],
-    &[type='url'],
-    &[type='search'],
-    &[type='tel'] {
-        background-color: tint(color(primary), 70%);
-    }
-}
-
-.input--inline {
-    &,
-    &[type='text'],
-    &[type='password'],
-    &[type='number'],
-    &[type='email'],
-    &[type='url'],
-    &[type='search'],
-    &[type='tel'] {
+    &--inline {
         @include font-size(small);
         display: inline-block;
         width: auto;
         min-width: 160px;
         padding: $unit $spacing--small;
     }
-}
 
-.input--small {
-    &,
-    &[type='text'],
-    &[type='password'],
-    &[type='number'],
-    &[type='email'],
-    &[type='url'],
-    &[type='search'],
-    &[type='tel'] {
+    &--small {
         width: 220px;
     }
-}
 
-.input--outlined {
-    &,
-    &[type='text'],
-    &[type='password'],
-    &[type='number'],
-    &[type='email'],
-    &[type='url'],
-    &[type='search'],
-    &[type='tel'] {
+    &--outlined {
         border: $border-width solid color(neutral, light);
-
-        // &:focus {
-        //     border-color: color(primary, dark);
-        // }
     }
-}
 
-textarea {
-    resize: none;
-    word-wrap: break-word;
+    &--error {
+        background-color: tint(color(primary), 70%);
+    }
 }
