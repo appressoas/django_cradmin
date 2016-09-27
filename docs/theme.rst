@@ -38,19 +38,18 @@ Define dependencies last in the description
 ===========================================
 Define dependencies last in the description as follows:
 
-```
-/* Something
+.. code-block:: css
 
-Some description.
+    /* Something
 
-# Depends on
-- component.modal
-- component.backdrop
+    Some description.
 
+    # Depends on
+    - component.modal
+    - component.backdrop
 
-Styleguide something.something
-*/
-```
+    Styleguide something.something
+    */
 
 
 ****************
