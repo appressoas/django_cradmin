@@ -44,7 +44,7 @@ class StandaloneBaseViewMixin(MinimalViewMixin):
     template.
 
     DO NOT use for views that use the ``django_cradmin/base.django.html`` template,
-    use :class:`.BaseViewMixin` for that.
+    use :class:`.ViewMixin` for that.
     """
     def get_javascriptregistry_component_ids(self):
         if getattr(self.request, 'cradmin_instance', None):
