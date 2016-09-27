@@ -18,10 +18,10 @@ class CradminWithStyleguideAppConfig(CradminAppConfig):
         super(CradminWithStyleguideAppConfig, self).ready()
 
         styleguide = styleguide_registry.CradminStyleGuide(
-            unique_id='cradmin_theme_full',
-            label='Django CRadmin full theme',
+            unique_id='basetheme',
+            label='Django CRadmin basetheme',
             appname='django_cradmin',
-            sourcefolder='styles/cradmin_theme_full',
+            sourcefolder='styles/basetheme',
             sourcefile='styleguide.scss',
             # filename_patterns=[
             #     '*cradmin_theme_base/*',
