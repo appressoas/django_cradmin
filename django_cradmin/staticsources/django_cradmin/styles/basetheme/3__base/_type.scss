@@ -48,14 +48,8 @@ h1,
 
     strong { // TODO?
         @include font(header, bold);
-        color: color(secondary, dark);
+        font-style: italic;
         white-space: nowrap;
-        // font-style: normal;
-        // display: inline-block;
-        // padding: 0 $spacing--small;
-        // margin-left: -($unit);
-        // margin-right: -($unit);
-        // background-color: color(primary, dark);
     }
 }
 

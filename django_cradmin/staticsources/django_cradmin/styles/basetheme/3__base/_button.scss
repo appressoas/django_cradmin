@@ -32,36 +32,61 @@ Example: {type: isolated} This is some modifiers you can add (PS: Can be combine
     <br>
     <button type="button" class="button" disabled>Disabled button</button>
 
-Styleguide 3.2
+Styleguide 3.button
 */
 
+@mixin button-modifier($b-name, $b-main, $b-text, $b-hover, $b-text-hover: false) {
+    &--#{$b-name} {
+        color: $b-text;
+        border-color: $b-main;
+        background-color: transparent;
 
-/*
-Use this if you want to create something that
-looks and behaves like a button.
+        &:hover,
+        &:focus,
+        &:active {
+            border-color: $b-hover;
+            background-color: $b-hover;
 
-With this you would get the same styles as if you
-used the ``button`` class, with no color variants.
+            @if ($b-text-hover) {
+                color: $b-text-hover;
+            } @else {
+                color: color-contrast($b-hover);
+            }
+        }
+    }
 
-So if I want to create a ``myfancybutton``, I would
-do something like this:
+    &--#{$b-name}-fill {
+        border-color: $b-hover;
+        background-color: $b-hover;
 
-```
-.myfancybutton {
-    @include button-basic-styles();
-    // Extra styles for myfancybutton
+        @if ($b-text-hover) {
+            color: $b-text-hover;
+        } @else {
+            color: color-contrast($b-hover);
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: $b-text;
+            border-color: $b-main;
+            background-color: transparent;
+        }
+    }
+
+    &--hidden-in-print {
+        @media print {
+            display: none;
+        }
+    }
 }
-```
 
-This would give me ``myfancybutton`` and ``myfancybutton myfancybutton--fill``
-that works exactly like ``button`` and ``button button--fill``.
-Very useful when styling external components where we can not select
-the CSS classes ourselves.
-*/
-@mixin button-basic-styles() {
+
+.button {
     @include spaced-text;
     @include font(base, bold);
     @include font-size(small);
+    font-style: normal;
     text-align: center;
 
     position: relative;
@@ -140,95 +165,26 @@ the CSS classes ourselves.
             background-color: transparent;
         }
     }
-}
-
-
-@mixin button-colormodifier($b-name, $b-main, $b-text, $b-hover, $b-text-hover: false) {
-    &--#{$b-name} {
-        color: $b-text;
-        border-color: $b-main;
-        background-color: transparent;
-
-        &:hover,
-        &:focus,
-        &:active {
-            border-color: $b-hover;
-            background-color: $b-hover;
-
-            @if ($b-text-hover) {
-                color: $b-text-hover;
-            } @else {
-                color: color-contrast($b-hover);
-            }
-        }
-    }
-
-    &--#{$b-name}-fill {
-        border-color: $b-hover;
-        background-color: $b-hover;
-
-        @if ($b-text-hover) {
-            color: $b-text-hover;
-        } @else {
-            color: color-contrast($b-hover);
-        }
-
-        &:hover,
-        &:focus,
-        &:active {
-            color: $b-text;
-            border-color: $b-main;
-            background-color: transparent;
-        }
-    }
-
-    &--hidden-in-print {
-        @media print {
-            display: none;
-        }
-    }
-}
-
-
-@mixin button--wider() {
-    min-width: $unit * 30;
-}
-
-@mixin button--spaced() {
-    @include min-width(md) {
-        margin-left: $spacing--small;
-        margin-right: $spacing--small;
-    }
-}
-
-@mixin button--compact() {
-    @include font-size(xsmall);
-    padding: $unit $spacing--small;
-}
-
-
-.button {
-    @include button-basic-styles();
 
     @include min-width(md) {
         padding: $spacing--small #{$indention - $border-width};
     }
 
-    @include button-colormodifier(
+    @include button-modifier(
         'primary',
         color(primary),
         color(primary),
         color(primary, dark)
     );
 
-    @include button-colormodifier(
+    @include button-modifier(
         'secondary',
         color(secondary, dark),
         color(secondary, dark),
         color(secondary, dark)
     );
 
-    @include button-colormodifier(
+    @include button-modifier(
         'light',
         $color-light,
         $color-light,
@@ -236,12 +192,15 @@ the CSS classes ourselves.
         color(primary)
     );
 
-    &--wider {
-        @include button--wider();
+    &--wider { // TODO: Remove?
+        min-width: $unit * 30;
     }
 
     &--spaced {
-        @include button--spaced();
+        @include min-width(md) {
+            margin-left: $spacing--small;
+            margin-right: $spacing--small;
+        }
     }
 
     &--block {
@@ -250,6 +209,7 @@ the CSS classes ourselves.
     }
 
     &--compact {
-        @include button--compact();
+        @include font-size(xsmall);
+        padding: $unit $spacing--small;
     }
 }

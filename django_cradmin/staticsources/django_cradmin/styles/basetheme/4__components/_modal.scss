@@ -27,7 +27,7 @@
         max-width: 100%;
         overflow: hidden;
 
-        box-shadow: $shadow--large;
+        box-shadow: $shadow-level-3;
         background-color: $color-light;
 
         padding: $spacing;
@@ -43,8 +43,7 @@
         transform-origin: left top;
 
         &--animate {
-            transition: transform 300ms $swift-out,
-                        opacity   300ms cubic-bezier(0,1,0,1);
+            transition: transform 300ms $swift-out, opacity 300ms cubic-bezier(0, 1, 0, 1);
         }
     }
 
