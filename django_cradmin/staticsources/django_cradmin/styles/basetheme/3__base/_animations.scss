@@ -68,6 +68,10 @@ Styleguide 1.8
     &-pop-in {
         animation: pop-in 600ms linear both;
     }
+
+    &-scale-in {
+        animation: scale-in 500ms $swift-out both;
+    }
 }
 
 @keyframes fade-in {
@@ -246,4 +250,11 @@ Styleguide 1.8
     88.89% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
     94.44% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
     100.00% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+}
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
 }
