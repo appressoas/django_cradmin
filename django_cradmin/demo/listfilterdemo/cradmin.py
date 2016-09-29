@@ -23,14 +23,6 @@ class ListfilterDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
     def get_titletext_for_role(self, role):
         return role.name
 
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        """
-        We only need this because we have multiple cradmin UIs
-        in the demo project.
-        """
-        return urlpath.startswith('/listfilterdemo')
-
     def get_menu_item_renderables(self):
         return [
             crmenu.LinkItemRenderable(

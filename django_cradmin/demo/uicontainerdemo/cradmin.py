@@ -13,10 +13,6 @@ class UIContainerDemoCrAdminInstance(crinstance.NoRoleNoLoginCrAdminInstance):
         ('simple_uiforms', simple_uiforms.App),
     ]
 
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        return urlpath.startswith('/uicontainerdemo')
-
     def get_menu_item_renderables(self):
         return [
             crmenu.LinkItemRenderable(

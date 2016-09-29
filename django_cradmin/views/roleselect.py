@@ -15,20 +15,14 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
     autoredirect_if_single_role = True
 
     def get_queryset(self):
-        cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
-        return cradmin_instance.get_rolequeryset()
+        return self.request.cradmin_instance.get_rolequeryset()
 
     def get(self, *args, **kwargs):
-        cradmin_instance = cradmin_instance_registry.get_current_instance(self.request)
         if self.get_autoredirect_if_single_role() and self.get_queryset().count() == 1:
             only_role = self.get_queryset().first()
-            return HttpResponseRedirect(cradmin_instance.rolefrontpage_url(
-                cradmin_instance.get_roleid(only_role)))
+            return HttpResponseRedirect(self.request.cradmin_instance.rolefrontpage_url(
+                self.request.cradmin_instance.get_roleid(only_role)))
         else:
-            # Add cradmin_instance to request just like django_cradmin.decorators.cradminview.
-            # Convenient when overriding standalone-base.django.html and using the current
-            # CrInstance to distinguish multiple crinstances.
-            self.request.cradmin_instance = cradmin_instance
             return super(RoleSelectView, self).get(*args, **kwargs)
 
     def get_autoredirect_if_single_role(self):

@@ -12,14 +12,6 @@ class MultiselectDemoCrAdminInstance(crinstance.NoRoleNoLoginCrAdminInstance):
         ('productlist', productlist.App),
     ]
 
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        """
-        We only need this because we have multiple cradmin UIs
-        in the demo project.
-        """
-        return urlpath.startswith('/multiselect2demo')
-
     def get_menu_item_renderables(self):
         cradmin_app = self.request.cradmin_app
         return [

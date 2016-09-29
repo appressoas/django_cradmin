@@ -1,4 +1,5 @@
 {% extends "django_cradmin/standalone-base.django.html" %}
+{% load cradmin_tags %}
 
 {% block page-cover-title %}
     Django-cradmin demos
@@ -19,7 +20,7 @@
     <div class="adminui-page-section adminui-page-section--tight">
         <div class="blocklist">
             <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/webdemo/">webdemo</a></h2>
+                <h2 class="blocklist__itemtitle"><a href="{% cradmin_instanceroot_url 'webdemo' %}">webdemo</a></h2>
                 <p>
                     A fairly full featured demo.
                 </p>
@@ -29,7 +30,7 @@
             </section>
 
             <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/listfilterdemo/">listfilterdemo</a></h2>
+                <h2 class="blocklist__itemtitle"><a href="{% cradmin_instanceroot_url 'listfilterdemo' %}">listfilterdemo</a></h2>
                 <p>
                     A demo for <em>django_cradmin.viewhelpers.listfilter</em>.
                 </p>
@@ -39,7 +40,7 @@
             </section>
 
             <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/multiselect2demo/">multiselect2demo</a></h2>
+                <h2 class="blocklist__itemtitle"><a href="{% cradmin_instanceroot_url 'multiselect2demo' %}">multiselect2demo</a></h2>
                 <p>
                     A demo for <em>django_cradmin.viewhelpers.multiselect2</em>.
                 </p>
@@ -49,7 +50,7 @@
             </section>
 
             <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/login_not_required_demo/">login_not_required_demo</a></h2>
+                <h2 class="blocklist__itemtitle"><a href="{% cradmin_instanceroot_url 'login_not_required_demo' %}">login_not_required_demo</a></h2>
                 <p>
                     Shows how to create a cradmin instance that does not require login.
                 </p>
@@ -59,7 +60,7 @@
             </section>
 
             <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/no_role_demo/">no_role_demo</a></h2>
+                <h2 class="blocklist__itemtitle"><a href="{% cradmin_instanceroot_url 'no_role_demo' %}">no_role_demo</a></h2>
                 <p>
                     Shows how to create a cradmin instance without a role (for regular websites).
                 </p>
@@ -69,17 +70,7 @@
             </section>
 
             <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/usermanagerdemo/">usermanagerdemo</a></h2>
-                <p>
-                    A starting point for an account management dashboard.
-                </p>
-                <p>
-                    <a href="{{ github_base_url }}/usermanagerdemo/">django_cradmin/demo/usermanagerdemo/</a>
-                </p>
-            </section>
-
-            <section class="blocklist__item">
-                <h2 class="blocklist__itemtitle"><a href="/uicontainerdemo/">uicontainerdemo</a></h2>
+                <h2 class="blocklist__itemtitle"><a href="{% cradmin_instanceroot_url 'uicontainerdemo' %}">uicontainerdemo</a></h2>
                 <p>
                     A demo of <em>django_cradmin.uicontainer</em>.
                 </p>

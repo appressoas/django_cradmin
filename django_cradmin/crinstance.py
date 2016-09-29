@@ -7,16 +7,17 @@ from django.conf.urls import url, include
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils.html import format_html
-
+from django.views import View
 from django_cradmin import crheader
 from django_cradmin import crmenu
 from django_cradmin.decorators import has_access_to_cradmin_instance
+
 from . import crapp
 from .registry import cradmin_instance_registry
 from .views import roleselect
 
 
-def reverse_cradmin_url(instanceid, appname, roleid=None,
+def reverse_cradmin_url(instanceid, appname=None, roleid=None,
                         viewname=crapp.INDEXVIEW_NAME,
                         args=None, kwargs=None):
     """
@@ -43,15 +44,27 @@ def reverse_cradmin_url(instanceid, appname, roleid=None,
                 roleid=site.id,
                 viewname='add')
     """
-    if roleid:
-        if args:
-            args = [roleid] + list(args)
-        else:
-            if not kwargs:
-                kwargs = {}
-            kwargs['roleid'] = roleid
-    urlname = u'{}-{}-{}'.format(instanceid, appname, viewname)
+    if appname:
+        if roleid:
+            if args:
+                args = [roleid] + list(args)
+            else:
+                if not kwargs:
+                    kwargs = {}
+                kwargs['roleid'] = roleid
+        urlname = u'{}-{}-{}'.format(instanceid, appname, viewname)
+    else:
+        urlname = instanceid
     return reverse(urlname, args=args, kwargs=kwargs)
+
+
+class FakeRoleFrontpageView(View):
+    def dispatch(self, request, *args, **kwargs):
+        raise Exception('This is just a fake view - it should not be possible to access. '
+                        'The most common reason for this error is that you have configured '
+                        'the BaseCrAdminInstance with flatten_rolefrontpage_url, and not '
+                        'provided a URL at the root of the the rolefrontpage_appname '
+                        'crapp.App.')
 
 
 class BaseCrAdminInstance(object):
@@ -460,7 +473,7 @@ class BaseCrAdminInstance(object):
             where ``<cradmin instance id>`` is :obj:`.id`. You can reverse the URL of
             this view with :meth:`.get_instance_frontpage_url`.
         """
-        return has_access_to_cradmin_instance(roleselect.RoleSelectView.as_view())
+        return has_access_to_cradmin_instance(cls.id, roleselect.RoleSelectView.as_view())
 
     @classmethod
     def get_instance_frontpage_view(cls):
@@ -469,21 +482,6 @@ class BaseCrAdminInstance(object):
         else:
             raise NotImplementedError('When you do not define a roleclass, you have '
                                       'to override get_instance_frontpage_view()')
-
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        """
-        If you have more than one BaseCrAdminInstance in a single Django
-        instance, you have to implement this classmethod on each of the
-        instances to be able to lookup/detect the _current_ BaseCrAdminInstance.
-
-        Parameters:
-            urlpath: The url path (HttpRequest.path) to match against.
-
-        Returns:
-            ``True`` if the given urlpath is for a view within this CrAdmin instance.
-        """
-        raise NotImplementedError()
 
     @classmethod
     def get_apps(cls):
@@ -529,9 +527,12 @@ class BaseCrAdminInstance(object):
         """
         cradmin_instance_registry.add(cls)
         urls = cls._get_app_urls()
-        if not cls.__no_role_and_flatten_rolefrontpage_url():
+        if cls.__no_role_and_flatten_rolefrontpage_url():
+            urls.append(url('^$', FakeRoleFrontpageView.as_view(),
+                            name=cls.id))
+        else:
             urls.append(url('^$', cls.get_instance_frontpage_view(),
-                            name='{}-frontpage'.format(cls.id)))
+                            name=cls.id))
 
         return urls
 

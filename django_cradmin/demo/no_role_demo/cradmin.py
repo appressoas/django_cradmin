@@ -17,14 +17,6 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
     def has_access(self):
         return True
 
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        """
-        We only need this because we have multiple cradmin UIs
-        in the same project.
-        """
-        return urlpath.startswith('/no_role_demo')
-
     def get_menu_item_renderables(self):
         return [
             crmenu.LinkItemRenderable(

@@ -11,7 +11,7 @@ from django.shortcuts import resolve_url
 from django_cradmin.registry import cradmin_instance_registry
 
 
-def has_access_to_cradmin_instance(view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
+def has_access_to_cradmin_instance(cradmin_instance_id, view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
     """
     Decorator for django_cradmin views.
 
@@ -21,12 +21,15 @@ def has_access_to_cradmin_instance(view_function, redirect_field_name=REDIRECT_F
 
     Adds the following variables to the request:
 
-        - ``cradmin_instance``: The detected cradmin instance.
+        - ``cradmin_instance``: The :class:`django_cradmin.crinstance.BaseCrAdminInstance`
+          registered with the provided ``cradmin_instance_id``.
     """
 
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
-        cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+        cradmin_instance = cradmin_instance_registry.get_instance_by_id(
+            id=cradmin_instance_id,
+            request=request)
         if cradmin_instance.has_access():
             request.cradmin_instance = cradmin_instance
             return view_function(request, *args, **kwargs)

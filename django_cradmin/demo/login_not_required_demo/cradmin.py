@@ -39,14 +39,6 @@ class LoginNotRequiredCrAdminInstance(crinstance.NoLoginMixin, crinstance.BaseCr
         """
         return truncatechars(role.description, 100)
 
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        """
-        We only need this because we have multiple cradmin UIs
-        in the same project.
-        """
-        return urlpath.startswith('/login_not_required_demo')
-
     def get_menu_item_renderables(self):
         return [
             crmenu.LinkItemRenderable(

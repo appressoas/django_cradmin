@@ -7,11 +7,11 @@ from django import template
 from django.conf import settings
 from django.contrib.staticfiles.templatetags.staticfiles import static
 import warnings
+from django.urls import reverse
 
 from django_cradmin import crapp
 from django_cradmin import crsettings
 from django_cradmin.crinstance import reverse_cradmin_url
-from django_cradmin.registry import cradmin_instance_registry
 
 register = template.Library()
 
@@ -23,7 +23,7 @@ def cradmin_titletext_for_role(context, role):
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role`.
     """
     request = context['request']
-    cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+    cradmin_instance = request.cradmin_instance
     return cradmin_instance.get_titletext_for_role(role)
 
 
@@ -34,7 +34,7 @@ def cradmin_descriptionhtml_for_role(context, role):
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role`.
     """
     request = context['request']
-    cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+    cradmin_instance = request.cradmin_instance
     return cradmin_instance.get_descriptionhtml_for_role(role)
 
 
@@ -45,7 +45,7 @@ def cradmin_rolefrontpage_url(context, role):
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.rolefrontpage_url`.
     """
     request = context['request']
-    cradmin_instance = cradmin_instance_registry.get_current_instance(request)
+    cradmin_instance = request.cradmin_instance
     return cradmin_instance.rolefrontpage_url(cradmin_instance.get_roleid(role))
 
 
@@ -179,6 +179,18 @@ def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
     request = context['request']
     return request.cradmin_instance.reverse_url(
         appname=appname, viewname=viewname, args=args, kwargs=kwargs)
+
+
+@register.simple_tag
+def cradmin_instanceroot_url(instanceid):
+    """
+    Get the URL of the cradmin instance with the provided ``instanceid``.
+
+    Args:
+        instanceid: The :obj:`~django_cradmin.crinstance.BaseCrAdminInstance.id`
+            if a :class:`django_cradmin.crinstance.BaseCrAdminInstance`.
+    """
+    return reverse(instanceid)
 
 
 @register.simple_tag(takes_context=True)

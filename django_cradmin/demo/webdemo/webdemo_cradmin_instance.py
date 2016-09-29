@@ -42,14 +42,6 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         """
         return truncatechars(role.description, 100)
 
-    @classmethod
-    def matches_urlpath(cls, urlpath):
-        """
-        We only need this because we have multiple cradmin UIs
-        in the same project.
-        """
-        return urlpath.startswith('/webdemo')
-
     def get_menu_item_renderables(self):
         return [
             crmenu.LinkItemRenderable(

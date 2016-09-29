@@ -80,10 +80,11 @@ class App(object):
         return cls.appurls
 
     @classmethod
-    def _wrap_view(cls, appname, view, viewname):
+    def _wrap_view(cls, cradmin_instance_id, appname, view, viewname):
         def viewwrapper(request, *args, **kwargs):
             request.cradmin_app = cls(appname, request, active_viewname=viewname)
-            return has_access_to_cradmin_instance(cradminview(view))(request, *args, **kwargs)
+            return has_access_to_cradmin_instance(cradmin_instance_id, cradminview(view))(
+                request, *args, **kwargs)
 
         # Take name and docstring from view
         update_wrapper(viewwrapper, view, updated=())
@@ -100,7 +101,8 @@ class App(object):
         for pattern in cls.get_appurls():
             urls.append(
                 url(
-                    pattern.regex, cls._wrap_view(appname, pattern.view, pattern.name),
+                    pattern.regex, cls._wrap_view(cradmin_instance_id,
+                                                  appname, pattern.view, pattern.name),
                     name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
                     kwargs=pattern.kwargs))
         return urls
