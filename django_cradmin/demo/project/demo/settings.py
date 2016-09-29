@@ -374,6 +374,6 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 }
 
 
-DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/{version}/styles/cradmin_theme_full/main.css'.format(
+DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/{version}/styles/basetheme/main.css'.format(
     version=django_cradmin.__version__
 )
