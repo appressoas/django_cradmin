@@ -195,9 +195,10 @@ time {
     position: relative;
     display: inline-block;
     vertical-align: top;
-    width: $unit * 10;
+    width: $unit * 10 + $border-width;
     top: $unit;
     border: $border-style;
+    border-color: color(primary, dark);
     padding: $border-width 0;
     float: left;
     margin: 0;
