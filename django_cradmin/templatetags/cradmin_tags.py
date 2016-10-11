@@ -200,7 +200,7 @@ def cradmin_instance_rolefrontpage_url(context):
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs):
+def cradmin_url(context, instanceid=None, appname=None, roleid=None, viewname=crapp.INDEXVIEW_NAME, *args, **kwargs):
     """
     Template tag implementation of :meth:`django_cradmin.crinstance.reverse_cradmin_url`.
 
@@ -229,11 +229,15 @@ def cradmin_url(context, instanceid, appname, roleid, viewname, *args, **kwargs)
                 Show advanced pages listing ordered by name
             </a>
     """
+    if instanceid is None:
+        request = context['request']
+        instanceid = request.cradmin_instance.id
     return reverse_cradmin_url(
         instanceid=instanceid,
         appname=appname,
         roleid=roleid,
-        viewname=viewname, args=args, kwargs=kwargs)
+        viewname=viewname,
+        args=args, kwargs=kwargs)
 
 
 @register.filter
