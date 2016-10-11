@@ -8,10 +8,60 @@ The basic components of a breadcrumb is:
         .adminui-breadcrumbs__item   (an item in the breadcrumb)
 ```
 
-Example: {type: isolated} With brand
+Example: {type: isolated} Basic example
 
-    <nav class="adminui-breadcrumbs">
-        <div class="adminui-breadcrumbs__content">
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--dark">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Example: {type: isolated} block-light variant
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--block-light  adminui-breadcrumbs--dark">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Example: {type: isolated} Content before and after (inline-block by default)
+
+    Before the breadcrumb!
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--dark">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+    After the breadcrumb!
+
+Example: {type: isolated} With container
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--block-light  adminui-breadcrumbs--dark">
+        <div class="container container--wide">
             <a class="adminui-breadcrumbs__item">
                 First
             </a>
@@ -26,20 +76,29 @@ Example: {type: isolated} With brand
         </div>
     </nav>
 
+
+Example: {type: isolated} Light variant
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--light">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
 Styleguide components.adminui.adminui-breadcrumbs
 */
 .adminui-breadcrumbs {
     position: relative;
     @include font-size(xsmall);
-    padding: $vertical-rythm 0;
-    color: $color-text;
-    background-color: $color-light;
-    box-shadow: 0 $border-width 0 rgba(color(neutral), 0.15);
-
-    &__content {
-        @extend .container;
-        @extend .container--wide;
-    }
+    display: inline-block;
 
     &__item {
         color: inherit;
@@ -50,5 +109,46 @@ Styleguide components.adminui.adminui-breadcrumbs
         vertical-align: middle;
         margin: -2px $unit 0;
         transform: scale(0.7);
+    }
+
+    &--dark {
+        color: $color-text;
+        .adminui-breadcrumbs__item {
+            color: inherit;
+            border-color: transparent;
+            &:hover {
+                color: $color-links--hover;
+            }
+        }
+        .adminui-breadcrumbs__separator {
+            @extend %icon-chevron-right;
+            vertical-align: middle;
+            margin: -2px $unit 0;
+            transform: scale(0.7);
+        }
+    }
+
+    &--light {
+        color: $color-light;
+        .adminui-breadcrumbs__item {
+            color: inherit;
+            &:hover {
+                color: color(neutral, light);
+                border-color: color(neutral, light);
+            }
+        }
+        .adminui-breadcrumbs__separator {
+            @extend %icon-chevron-right--light;
+            vertical-align: middle;
+            margin: -2px $unit 0;
+            transform: scale(0.7);
+        }
+    }
+
+    &--block-light {
+        display: block;
+        padding: $vertical-rythm 0;
+        background-color: $color-light;
+        box-shadow: 0 $border-width 0 rgba(color(neutral), 0.15);
     }
 }
