@@ -162,6 +162,10 @@ Styleguide components.blocklist
     .blocklist__itemtitle {
         margin-bottom: $vertical-rythm;
 
+        &:last-child {
+            margin-bottom: 0;
+        }
+
         @include font-size(medium);
 
         &--small {
