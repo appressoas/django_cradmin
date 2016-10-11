@@ -1,4 +1,5 @@
 import {CradminMenuToggle} from './CradminMenuToggle';
+import {CradminTabController} from './CradminTabController';
 
 export class CradminModuleLoader {
   private static isInitialized = false;
@@ -10,6 +11,7 @@ export class CradminModuleLoader {
     }
     this.isInitialized = true;
     new CradminMenuToggle();
+    new CradminTabController();
   }
 }
 

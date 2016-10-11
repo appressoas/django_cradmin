@@ -4,29 +4,51 @@ http://simplyaccessible.com/article/danger-aria-tabs/
 
 Example: {type: isolated} Structure
 
-    <div id="tabs">
-        <ul class="tabs__tab-list">
-            <li class="tabs__tab-item">
-                <a class="tabs__tab  tabs__tab--active" href="#ipa" id="tab-ipa" aria-selected="true">India Pale Ale (IPA)</a>
-            </li>
-            <li class="tabs__tab-item">
-                <a class="tabs__tab" href="#gueuze" id="tab-gueuze" aria-selected="false">Gueuze</a>
-            </li>
-            <li class="tabs__tab-item">
-                <a class="tabs__tab" href="#imperial-stout" id="tab-imperial-stout" aria-selected="false">Imperial Stout</a>
-            </li>
-        </ul>
+    <div id="tabs" cradmin_tabs>
+        <nav class="tabs__tab-list">
+            <a class="tabs__tab  tabs__tab--active"
+                    href="#ipa"
+                    id="tab-ipa"
+                    cradmin_tabs_tab
+                    aria-selected="true">
+                India Pale Ale (IPA)
+            </a>
+            <a class="tabs__tab"
+                    href="#gueuze"
+                    id="tab-gueuze"
+                    cradmin_tabs_tab
+                    aria-selected="false">
+                Gueuze
+            </a>
+            <a class="tabs__tab"
+                    href="#imperial-stout"
+                    id="tab-imperial-stout"
+                    cradmin_tabs_tab
+                    aria-selected="false">
+                Imperial Stout
+            </a>
+        </nav>
 
-        <div class="tabs__panel  tabs__panel--active" aria-hidden="false" aria-labelledby="tab-ipa">
-            <h2 id="ipa">India Pale Ale (IPA)</h2>
+        <div class="tabs__panel  tabs__panel--active"
+                aria-hidden="false" aria-labelledby="tab-ipa"
+                id="ipa"
+                cradmin_tabs_panel>
+            <h2>India Pale Ale (IPA)</h2>
             ...
         </div>
-        <div class="tabs__panel" aria-hidden="true" aria-labelledby="tab-gueuze">
-            <h2 id="gueuze">Gueuze</h2>
+        <div class="tabs__panel"
+                aria-hidden="true"
+                aria-labelledby="tab-gueuze"
+                id="gueuze"
+                cradmin_tabs_panel>
+            <h2>Gueuze</h2>
             ...
         </div>
-        <div class="tabs__panel" aria-hidden="true" aria-labelledby="tab-imperial-stout">
-            <h2 id="imperial-stout">Imperial Stout</h2>
+        <div class="tabs__panel"
+                aria-hidden="true" aria-labelledby="tab-imperial-stout"
+                id="imperial-stout"
+                cradmin_tabs_panel>
+            <h2>Imperial Stout</h2>
             ...
         </div>
     </div>
@@ -38,15 +60,31 @@ Styleguide components.tabs
 .tabs {
     &__tab-list {
         display: flex;
+        border-bottom: $border-width solid color(primary, dark);
+        //@extend .container;
+        //@extend .container--tight;
     }
 
-    &__tab-item {}
-
     &__tab {
-        &--active {}
+        display: block;
+        text-align: center;
+        flex-grow: 1;
+        padding: $spacing--small;
+        border: none;
+
+        &:hover,
+        &:focus,
+        &:active,
+        &--active {
+            background-color: color(primary, dark);
+            color: color-contrast(color(primary, dark));
+        }
     }
 
     &__panel {
-        &--active {}
+        display: none;
+        &--active {
+            display: block;
+        }
     }
 }
