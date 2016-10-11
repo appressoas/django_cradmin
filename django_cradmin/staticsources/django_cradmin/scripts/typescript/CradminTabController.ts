@@ -56,12 +56,18 @@ export class CradminTabController {
   activateTab = (event:Event, tabElement:Element) => {
     event.preventDefault();
     let panelDomId = tabElement.attributes.getNamedItem('href').nodeValue.substring(1);
-    let panelElement = document.getElementById(panelDomId);
+    let panelElement:Element = document.getElementById(panelDomId);
     let tabgroup = this.tabMap[panelDomId];
+
     tabgroup.activeTabElement.classList.remove(this.tabActiveCssClass);
+    tabgroup.activeTabElement.setAttribute('aria-selected', 'false');
     tabgroup.activePanelElement.classList.remove(this.panelActiveCssClass);
+    tabgroup.activePanelElement.setAttribute('aria-hidden', 'true');
+
     tabElement.classList.add(this.tabActiveCssClass);
+    tabElement.setAttribute('aria-selected', 'true');
     panelElement.classList.add(this.panelActiveCssClass);
+    panelElement.setAttribute('aria-hidden', 'false');
     tabgroup.activeTabElement = tabElement;
     tabgroup.activePanelElement = panelElement;
   }
