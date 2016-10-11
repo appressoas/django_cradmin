@@ -46,7 +46,7 @@
 {% block header %}
     {% with header_renderable=request.cradmin_instance.get_header_renderable %}
         {% if header_renderable %}
-            {% cradmin_render_renderable header_renderable %}
+            {% cradmin_render_renderable header_renderable include_context=True %}
         {% endif %}
     {% endwith %}
 {% endblock header %}

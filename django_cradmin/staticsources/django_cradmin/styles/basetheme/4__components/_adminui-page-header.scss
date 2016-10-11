@@ -36,6 +36,20 @@ Example: {type: isolated} With brand and navigation
         </div>
     </header>
 
+Example: {type: isolated} Compact
+    <header class="adminui-page-header  adminui-page-header--compact">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink">Information</a>
+            </nav>
+        </div>
+    </header>
+
 Example: {type: isolated} Navigation active links
     <header class="adminui-page-header">
         <div class="adminui-page-header__content">
@@ -84,7 +98,13 @@ Styleguide components.adminui.adminui-page-header
 
     @include min-width(md) {
         padding: #{$vertical-rythm--medium} 0;
-        height: $header-height;
+        //height: $header-height;
+    }
+
+    &--compact {
+        @include min-width(md) {
+            padding: #{$vertical-rythm} 0;
+        }
     }
 
     &__content {

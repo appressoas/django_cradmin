@@ -48,7 +48,7 @@ class AbstractRenderable(object):
             'me': self
         }
 
-    def render(self, request=None):
+    def render(self, request=None, extra_context_data=None):
         """
         Render :obj:`.get_template_name` with
         the context returned by :meth:`.get_context_data`.
@@ -58,9 +58,13 @@ class AbstractRenderable(object):
                 :meth:`.get_context_data`, and to ``render_to_string()``
                 (which is used to render the template).
         """
+        context_data = {}
+        if extra_context_data:
+            context_data.update(extra_context_data)
+        context_data.update(self.get_context_data(request=request))
         return render_to_string(
-            self.get_template_name(),
-            self.get_context_data(request=request),
+            template_name=self.get_template_name(),
+            context=context_data,
             request=request)
 
 
