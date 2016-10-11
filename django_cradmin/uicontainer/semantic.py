@@ -11,6 +11,23 @@ class Paragraph(convenience.AbstractWithOptionalEscapedText):
         return 'p'
 
 
+class Link(convenience.AbstractWithOptionalEscapedText):
+    """
+    Renders a ``<a>``.
+    """
+    def __init__(self, href=None, **kwargs):
+        self.href = href
+        super(Link, self).__init__(**kwargs)
+
+    def get_default_html_tag(self):
+        return 'a'
+
+    def get_html_element_attributes(self):
+        attributes = super(Link, self).get_html_element_attributes()
+        attributes['href'] = self.href
+        return attributes
+
+
 class H1(convenience.AbstractWithOptionalEscapedText):
     """
     Renders a ``<h1>``.
@@ -76,3 +93,14 @@ class Main(AbstractContainerRenderable):
 
     def get_default_role(self):
         return 'main'
+
+
+class Nav(AbstractContainerRenderable):
+    """
+    Renders a ``<nav>``.
+    """
+    def get_default_html_tag(self):
+        return 'nav'
+
+    def get_default_role(self):
+        return 'nav'
