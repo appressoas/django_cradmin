@@ -5,26 +5,22 @@ The basic components of a breadcrumb is:
 ```
 .adminui-breadcrumbs  (the outer wrapper)
     .adminui-breadcrumbs__content   (wrapper around the content)
-        .adminui-breadcrumbs__link   (a link in the breadcrumb)
+        .adminui-breadcrumbs__item   (an item in the breadcrumb)
 ```
 
 Example: {type: isolated} With brand
 
     <nav class="adminui-breadcrumbs">
         <div class="adminui-breadcrumbs__content">
-            <a class="adminui-breadcrumbs__link">
+            <a class="adminui-breadcrumbs__item">
                 First
             </a>
-            <span class="adminui-breadcrumbs__separator">
-                <i class="adminui-breadcrumbs__icon icon-chevron-right--light"></i>
-            </span>
-            <a class="adminui-breadcrumbs__link">
+            <span class="adminui-breadcrumbs__separator"></span>
+            <a class="adminui-breadcrumbs__item">
                 Second
             </a>
-            <span class="adminui-breadcrumbs__separator">
-                <i class="adminui-breadcrumbs__icon icon-chevron-right--light"></i>
-            </span>
-            <a class="adminui-breadcrumbs__link">
+            <span class="adminui-breadcrumbs__separator"></span>
+            <a class="adminui-breadcrumbs__item">
                 Last
             </a>
         </div>
@@ -33,35 +29,26 @@ Example: {type: isolated} With brand
 Styleguide components.adminui.adminui-breadcrumbs
 */
 .adminui-breadcrumbs {
-    padding: $unit 0;
-    background-color: color(neutral, xdark);
+    position: relative;
+    @include font-size(xsmall);
+    padding: $vertical-rythm 0;
+    color: $color-text;
+    background-color: $color-light;
+    box-shadow: 0 $border-width 0 rgba(color(neutral), 0.15);
 
     &__content {
         @extend .container;
         @extend .container--wide;
     }
 
-    // TODO: Fix this ugly hack with icon position
+    &__item {
+        color: inherit;
+        border-color: transparent;
+    }
     &__separator {
-        position: relative;
-        display: inline-block;
-        width: 20px;
-        height: 15px;
+        @extend %icon-chevron-right;
+        vertical-align: middle;
+        margin: -2px $unit 0;
+        transform: scale(0.7);
     }
-    &__icon {
-        position: absolute;
-        top: 2px;
-        left: 6px;
-    }
-
-    &__link {
-        @include font-size(xsmall);
-        color: color(neutral, light);
-        border: none;
-        &:hover {
-            color: $color-light;
-            border: none;
-        }
-    }
-
 }
