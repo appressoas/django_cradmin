@@ -274,7 +274,7 @@ def cradmin_theme_staticpath(context):
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_render_renderable(context, renderable, **kwargs):
+def cradmin_render_renderable(context, renderable, include_context=False, **kwargs):
     """
     Render a :class:`django_cradmin.renderable.AbstractRenderable`.
 
@@ -293,7 +293,11 @@ def cradmin_render_renderable(context, renderable, **kwargs):
             {% cradmin_render_renderable renderable %}
     """
     request = context.get('request', None)
-    return renderable.render(request=request, **kwargs)
+    full_kwargs = {}
+    if include_context:
+        full_kwargs['extra_context_data'] = context.flatten()
+    full_kwargs.update(kwargs)
+    return renderable.render(request=request, **full_kwargs)
 
 
 @register.simple_tag
