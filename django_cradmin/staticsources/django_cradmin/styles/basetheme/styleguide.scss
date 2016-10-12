@@ -100,7 +100,7 @@ $kss-controls-height: $vertical-rythm--medium;
 
         &--level0 {
             @include font(header, bold);
-            @include font-size(medium);
+            @include font-size(large);
         }
         &--level1 {
             @include font-size(small);
@@ -201,7 +201,7 @@ $kss-controls-height: $vertical-rythm--medium;
     }
 
     &--level-3 {
-        @include font-size(medium);
+        @include font-size(large);
     }
 
     &--level-4 {

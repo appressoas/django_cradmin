@@ -111,7 +111,7 @@ p,
 
 .preamble {
     @include font(base, normal);
-    @include font-size(medium);
+    @include font-size(large);
     margin-bottom: $vertical-rythm--spacing;
 }
 

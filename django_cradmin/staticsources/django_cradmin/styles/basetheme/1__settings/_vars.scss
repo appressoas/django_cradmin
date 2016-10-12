@@ -72,7 +72,7 @@ There is a system that creates proper line heights for text. **Never interfer wi
 
 Styleguide 1.6
 */
-$vertical-rythm: $unit * 2 !default; // TODO: Responsive? REM?
+$vertical-rythm: 10px !default; // TODO: Responsive? REM?
 $vertical-rythm--medium: ($vertical-rythm * 2) !default;
 $vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm !default;
 

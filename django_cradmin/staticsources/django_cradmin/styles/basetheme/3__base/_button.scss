@@ -177,11 +177,12 @@ Styleguide 3.button
         color(primary, dark)
     );
 
+    // TODO: Remove?
     @include button-modifier(
         'secondary',
-        color(secondary, dark),
-        color(secondary, dark),
-        color(secondary, dark)
+        color(secondary),
+        color(secondary),
+        color(secondary)
     );
 
     @include button-modifier(

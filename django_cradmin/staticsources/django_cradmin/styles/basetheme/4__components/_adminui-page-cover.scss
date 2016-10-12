@@ -61,7 +61,7 @@ Styleguide components.adminui.adminui-page-cover
 
 
         &--small {
-            @include font-size(medium);
+            @include font-size(large);
         }
 
         &:only-child {
@@ -80,7 +80,7 @@ Styleguide components.adminui.adminui-page-cover
         margin-right: auto;
 
         &--large {
-            @include font-size(medium);
+            @include font-size(large);
             @include spaced-text;
         }
     }
