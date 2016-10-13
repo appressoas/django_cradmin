@@ -4,7 +4,7 @@ hr,
     margin-bottom: $spacing;
     padding: 0;
     border: 0;
-    border-top: $border-width solid rgba($color-dark, 0.05);
+    border-top: $border-style;
 
     @include min-width(md) {
         margin-bottom: $spacing--large;

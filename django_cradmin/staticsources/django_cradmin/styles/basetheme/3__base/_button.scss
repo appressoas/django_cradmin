@@ -167,7 +167,7 @@ Styleguide 3.button
     }
 
     @include min-width(md) {
-        padding: $spacing--small #{$indention - $border-width};
+        padding: #{$spacing--small - $border-width} #{$indention - $border-width};
     }
 
     @include button-modifier(
