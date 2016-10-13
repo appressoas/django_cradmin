@@ -15,12 +15,12 @@ class AbstractRenderable(object):
     input.
     """
 
-    #: The default value for :meth:`.get_template_name`.
+    #: The default value for :meth:`.get_template_names`.
     template_name = None
 
-    def get_template_name(self):
+    def get_template_names(self):
         """
-        Get the template name for :meth:`.render`.
+        Get the template name(s) for :meth:`.render`.
 
         Defaults to :obj:`~.AbstractRenderable.template_name`.
 
@@ -32,7 +32,7 @@ class AbstractRenderable(object):
             return self.template_name
         else:
             raise NotImplementedError('You must set template_name or override '
-                                      'get_template_name().')
+                                      'get_template_names().')
 
     def get_context_data(self, request=None):
         """
@@ -50,7 +50,7 @@ class AbstractRenderable(object):
 
     def render(self, request=None, extra_context_data=None):
         """
-        Render :obj:`.get_template_name` with
+        Render :obj:`.get_template_names` with
         the context returned by :meth:`.get_context_data`.
 
         Paramteters:
@@ -63,7 +63,7 @@ class AbstractRenderable(object):
             context_data.update(extra_context_data)
         context_data.update(self.get_context_data(request=request))
         return render_to_string(
-            template_name=self.get_template_name(),
+            template_name=self.get_template_names(),
             context=context_data,
             request=request)
 
