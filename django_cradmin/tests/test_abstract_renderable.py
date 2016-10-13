@@ -10,10 +10,10 @@ class MinimalRenderable(AbstractRenderable):
 class TestAbstractRenderable(TestCase):
     def test_get_template_name_no_template_name(self):
         with self.assertRaises(NotImplementedError):
-            AbstractRenderable().get_template_name()
+            AbstractRenderable().get_template_names()
 
     def test_get_template_name_has_template_name(self):
-        MinimalRenderable().get_template_name()  # NotImplementedError not raised
+        MinimalRenderable().get_template_names()  # NotImplementedError not raised
 
     def test_get_context_data(self):
         renderable = AbstractRenderable()

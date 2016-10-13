@@ -90,7 +90,8 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                  test_css_class_suffixes_list=None,
                  role=False,
                  dom_id=False,
-                 html_element_attributes=None):
+                 html_element_attributes=None,
+                 **kwargs):
         """
         Args:
             children: List of children. Children must be objects of subclasses
@@ -116,6 +117,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
                 the attributes specified in this kwarg takes presedense.
                 The format of the dict is specified in :meth:`.get_html_element_attributes`.
         """
+        self.kwargs = kwargs
         self.validate_dom_id(dom_id=dom_id)
         self.validate_bem(bem_block=bem_block,
                           bem_element=bem_element)
