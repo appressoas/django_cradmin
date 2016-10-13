@@ -20,6 +20,33 @@ class TestParagraph(test.TestCase):
         self.assertEqual(selector.one('p').alltext_normalized, 'test')
 
 
+class TestLink(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Link().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('a'))
+
+    def test_no_text(self):
+        container = uicontainer.semantic.Link().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('a').alltext_normalized, '')
+
+    def test_with_text(self):
+        container = uicontainer.semantic.Link(text='test').bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('a').alltext_normalized, 'test')
+
+    def test_no_href(self):
+        container = uicontainer.semantic.Link().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertFalse(selector.one('a').hasattribute('href'))
+
+    def test_with_href(self):
+        container = uicontainer.semantic.Link(href='http://example.com').bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('a')['href'], 'http://example.com')
+
+
 class TestH1(test.TestCase):
     def test_sanity(self):
         container = uicontainer.semantic.H1().bootstrap()
@@ -86,3 +113,64 @@ class TestH4(test.TestCase):
         container = uicontainer.semantic.H4(text='test').bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('h4').alltext_normalized, 'test')
+
+
+class TestSection(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Section().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('section'))
+
+
+class TestHeader(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Header().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('header'))
+
+
+class TestFooter(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Footer().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('footer'))
+
+
+class TestMain(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Main().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('main'))
+
+    def test_role(self):
+        container = uicontainer.semantic.Main().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('main')['role'], 'main')
+
+
+class TestNav(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Nav().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('nav'))
+
+
+class TestUl(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Ul().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('ul'))
+
+
+class TestOl(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Ol().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('ol'))
+
+
+class TestLi(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Li().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('li'))

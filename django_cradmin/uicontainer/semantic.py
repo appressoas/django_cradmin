@@ -15,7 +15,14 @@ class Link(convenience.AbstractWithOptionalEscapedText):
     """
     Renders a ``<a>``.
     """
-    def __init__(self, href=None, **kwargs):
+    def __init__(self, href=False, **kwargs):
+        """
+
+        Args:
+            href: The href attribute value. If this is ``False``
+                (the default), no href attribute is rendered.
+            **kwargs: Kwargs for :class:`django_cradmin.uicontainer.convenience.AbstractWithOptionalEscapedText`.
+        """
         self.href = href
         super(Link, self).__init__(**kwargs)
 
@@ -102,5 +109,26 @@ class Nav(AbstractContainerRenderable):
     def get_default_html_tag(self):
         return 'nav'
 
-    def get_default_role(self):
-        return 'nav'
+
+class Ul(AbstractContainerRenderable):
+    """
+    Renders a ``<ul>``.
+    """
+    def get_default_html_tag(self):
+        return 'ul'
+
+
+class Ol(AbstractContainerRenderable):
+    """
+    Renders a ``<ol>``.
+    """
+    def get_default_html_tag(self):
+        return 'ol'
+
+
+class Li(AbstractContainerRenderable):
+    """
+    Renders a ``<li>``.
+    """
+    def get_default_html_tag(self):
+        return 'li'
