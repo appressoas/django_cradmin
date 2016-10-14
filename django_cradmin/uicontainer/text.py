@@ -31,15 +31,28 @@ class Html(container.AbstractContainerRenderable):
     """
     template_name = 'django_cradmin/uicontainer/text/html.django.html'
 
-    def __init__(self, html, **kwargs):
+    def __init__(self, html=None, **kwargs):
         """
         Args:
             html: The HTML to render.
             **kwargs: Kwargs for :class:`~django_cradmin.uicontainer.container.AbstractContainerRenderable`.
         """
-        self.html = html
+        self._overridden_html = html
         super(Html, self).__init__(**kwargs)
 
     @property
     def can_have_children(self):
         return False
+
+    def get_default_html(self):
+        """
+        Get the default HTML to render if no HTML is provided
+        as the ``html`` kwarg for :meth:`.__init__`.
+
+        Defaults to empty string.
+        """
+        return ''
+
+    @property
+    def html(self):
+        return self._overridden_html or self.get_default_html()
