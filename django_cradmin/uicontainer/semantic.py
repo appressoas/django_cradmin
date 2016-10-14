@@ -126,7 +126,7 @@ class Ol(AbstractContainerRenderable):
         return 'ol'
 
 
-class Li(AbstractContainerRenderable):
+class Li(convenience.AbstractWithOptionalEscapedText):
     """
     Renders a ``<li>``.
     """

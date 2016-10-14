@@ -174,3 +174,13 @@ class TestLi(test.TestCase):
         container = uicontainer.semantic.Li().bootstrap()
         selector = htmls.S(container.render())
         self.assertTrue(selector.exists('li'))
+
+    def test_no_text(self):
+        container = uicontainer.semantic.Li().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('li').alltext_normalized, '')
+
+    def test_with_text(self):
+        container = uicontainer.semantic.Li(text='test').bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('li').alltext_normalized, 'test')
