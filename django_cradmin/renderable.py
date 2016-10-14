@@ -5,6 +5,13 @@ from django.template.loader import render_to_string
 from django_cradmin import crsettings
 
 
+def join_css_classes_list(css_classes_list):
+    """
+    Join the provided list of css classes into a string.
+    """
+    return '  '.join(css_classes_list)
+
+
 class AbstractRenderable(object):
     """
     An abstract class that implements an interface for
@@ -126,7 +133,7 @@ class AbstractRenderableWithCss(AbstractRenderable):
         if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
             for css_class_suffix in self.get_test_css_class_suffixes_list():
                 css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
-        return '  '.join(css_classes)
+        return join_css_classes_list(css_classes)
 
     def get_css_classes_string(self):
         warnings.warn("AbstractRenderableWithCss.get_css_classes_string() is deprectated "
