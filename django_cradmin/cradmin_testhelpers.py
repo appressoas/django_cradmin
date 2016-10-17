@@ -243,6 +243,14 @@ class AbstractTestCaseMixin(object):
         kwargs['expected_statuscode'] = 201
         return self.mock_postrequest(**kwargs)
 
+    def mock_http400_postrequest(self, **kwargs):
+        kwargs['expected_statuscode'] = 400
+        return self.mock_postrequest(**kwargs)
+
+    def mock_http403_postrequest(self, **kwargs):
+        kwargs['expected_statuscode'] = 403
+        return self.mock_postrequest(**kwargs)
+
 
 class TestCaseMixin(AbstractTestCaseMixin):
     """
