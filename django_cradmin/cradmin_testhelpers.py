@@ -251,6 +251,15 @@ class AbstractTestCaseMixin(object):
         kwargs['expected_statuscode'] = 403
         return self.mock_postrequest(**kwargs)
 
+    def mock_putrequest(self, **kwargs):
+        return self.mock_request(method='put', **kwargs)
+
+    def mock_patchrequest(self, **kwargs):
+        return self.mock_request(method='patch', **kwargs)
+
+    def mock_deleterequest(self, **kwargs):
+        return self.mock_request(method='delete', **kwargs)
+
 
 class TestCaseMixin(AbstractTestCaseMixin):
     """
@@ -447,3 +456,9 @@ class RestFrameworkApiTestCaseMixin(TestCaseMixin):
             else:
                 output = '[cradmin RestFrameworkApiTestCaseMixin info]: response.content is empty.'
         return output, warnings
+
+    def mock_request(self, **kwargs):
+        requestkwargs = kwargs.pop('requestkwargs', {})
+        requestkwargs['format'] = requestkwargs.get('format', 'json')
+        kwargs['requestkwargs'] = requestkwargs
+        return super(RestFrameworkApiTestCaseMixin, self).mock_request(**kwargs)
