@@ -1,17 +1,14 @@
 from __future__ import unicode_literals
-from crispy_forms import layout
-from crispy_forms.helper import FormHelper
+
+from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _
-from django import forms
-from django.views.generic import FormView
-
-from django_cradmin import javascriptregistry
+from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     GenericTokenExpiredError
-from django_cradmin.crispylayouts import PrimarySubmitLg
+from django_cradmin.viewhelpers import formview
 
 
 class RepeatPasswordForm(forms.Form):
@@ -32,25 +29,36 @@ class RepeatPasswordForm(forms.Form):
                 raise forms.ValidationError(_('The passwords do not match'))
 
 
-class ResetPasswordView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
+class ResetPasswordView(formview.StandaloneFormView):
     template_name = 'cradmin_resetpassword/reset.django.html'
     form_class = RepeatPasswordForm
 
-    def get_formhelper(self):
-        helper = FormHelper()
-        helper.form_action = '#'
-        helper.form_id = 'django_cradmin_resetpassword_reset_form'
-        helper.layout = layout.Layout(
-            layout.Field('password1', focusonme='focusonme', css_class='input-lg'),
-            layout.Field('password2', css_class='input-lg'),
-            PrimarySubmitLg('submit', _('Reset password'))
-        )
-        return helper
+    def get_form_renderable(self):
+        formchildren = [
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password1',
+                field_renderable=uicontainer.field.Field(
+                    autofocus=True,
+                )
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password2',
+            ),
+            uicontainer.button.SubmitPrimary(
+                text=ugettext_lazy('Reset password')),
+        ]
+        return uicontainer.layout.AdminuiPageSectionTight(
+            children=[
+                uicontainer.form.Form(
+                    form=self.get_form(),
+                    children=formchildren,
+                    dom_id='id_django_cradmin_resetpassword_reset_form'
+                )
+            ]
+        ).bootstrap()
 
     def get_context_data(self, **kwargs):
         context = super(ResetPasswordView, self).get_context_data(**kwargs)
-        self.add_javascriptregistry_component_ids_to_context(context=context)
-        context['formhelper'] = self.get_formhelper()
         try:
             context['generic_token_with_metadata'] = GenericTokenWithMetadata.objects.get_and_validate(
                 token=self.kwargs['token'], app='cradmin_resetpassword')

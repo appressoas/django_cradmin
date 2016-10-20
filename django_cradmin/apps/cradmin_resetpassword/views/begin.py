@@ -1,21 +1,16 @@
 from __future__ import unicode_literals
 
-from crispy_forms import layout
+from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _
-from django import forms
-from django.views.generic import FormView
-
-from crispy_forms.helper import FormHelper
-
-from django_cradmin import javascriptregistry
+from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_email import emailutils
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     get_expiration_datetime_for_app
-from django_cradmin.crispylayouts import PrimarySubmitLg
+from django_cradmin.viewhelpers import formview
 
 
 class PasswordResetEmail(emailutils.AbstractEmail):
@@ -41,26 +36,31 @@ class EmailForm(forms.Form):
         return email
 
 
-class BeginPasswordResetView(FormView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
+class BeginPasswordResetView(formview.StandaloneFormView):
     template_name = 'cradmin_resetpassword/begin.django.html'
     form_class = EmailForm
 
-    def get_formhelper(self):
-        helper = FormHelper()
-        helper.form_action = '#'
-        helper.form_id = 'django_cradmin_resetpassword_begin_form'
-        helper.form_show_labels = False
-        helper.layout = layout.Layout(
-            layout.Field('email', css_class='input-lg', placeholder=_('Email'), focusonme='focusonme'),
-            PrimarySubmitLg('submit', _('Search'))
-        )
-        return helper
-
-    def get_context_data(self, **kwargs):
-        context = super(BeginPasswordResetView, self).get_context_data(**kwargs)
-        self.add_javascriptregistry_component_ids_to_context(context=context)
-        context['formhelper'] = self.get_formhelper()
-        return context
+    def get_form_renderable(self):
+        formchildren = [
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_renderable=uicontainer.field.Field(
+                    autofocus=True,
+                    placeholder=ugettext_lazy('Email')
+                )
+            ),
+            uicontainer.button.SubmitPrimary(
+                text=ugettext_lazy('Search')),
+        ]
+        return uicontainer.layout.AdminuiPageSectionTight(
+            children=[
+                uicontainer.form.Form(
+                    form=self.get_form(),
+                    children=formchildren,
+                    dom_id='id_django_cradmin_resetpassword_begin_form'
+                )
+            ]
+        ).bootstrap()
 
     def get_success_url(self):
         return reverse('cradmin-resetpassword-email-sent')

@@ -18,11 +18,11 @@ class TestBeginPasswordResetView(TestCase):
     def test_get(self):
         response = self.client.get(self.url)
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('form#django_cradmin_resetpassword_begin_form'))
+        self.assertTrue(selector.exists('form#id_django_cradmin_resetpassword_begin_form'))
         self.assertEquals(selector.one('h1').alltext_normalized, 'Find your account')
         self.assertIn(
             'Type in your email-address',
-            selector.one('.test-page-cover').alltext_normalized)
+            selector.one('.adminui-page-cover').alltext_normalized)
         self.assertTrue(selector.exists('input[type="email"][name="email"]'))
         self.assertEquals(selector.one('button[type="submit"]').alltext_normalized, 'Search')
 
@@ -32,7 +32,7 @@ class TestBeginPasswordResetView(TestCase):
         selector = htmls.S(response.content)
         self.assertIn(
             'No account with this email address found',
-            selector.one('form#django_cradmin_resetpassword_begin_form').alltext_normalized)
+            selector.one('form#id_django_cradmin_resetpassword_begin_form').alltext_normalized)
 
     def test_post_user_found(self):
         create_user('testuser', email='testuser@example.com')
@@ -43,7 +43,7 @@ class TestBeginPasswordResetView(TestCase):
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Reset your Testsite password')
-        self.assertIn('http://testserver/cradmin_resetpassword/reset/testtoken',
+        self.assertIn('http://testserver/resetpassword/reset/testtoken',
                       mail.outbox[0].alternatives[0][0])
         self.assertIn('We received a request to reset the password for your '
                       'Testsite account, testuser',

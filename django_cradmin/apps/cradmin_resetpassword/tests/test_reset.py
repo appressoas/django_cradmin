@@ -35,7 +35,7 @@ class TestResetPasswordView(TestCase):
         self.assertEqual(
             selector.one('h1').alltext_normalized,
             'Reset your password testuser')
-        self.assertTrue(selector.exists('form#django_cradmin_resetpassword_reset_form'))
+        self.assertTrue(selector.exists('form#id_django_cradmin_resetpassword_reset_form'))
         self.assertTrue(selector.exists('input[type="password"][name="password1"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password2"]'))
 
@@ -71,7 +71,7 @@ class TestResetPasswordView(TestCase):
         selector = htmls.S(response.content)
         self.assertIn(
             'The passwords do not match',
-            selector.one('form#django_cradmin_resetpassword_reset_form').alltext_normalized)
+            selector.one('form#id_django_cradmin_resetpassword_reset_form').alltext_normalized)
 
     def test_post_expired_token(self):
         self._create_generic_token_with_metadata(

@@ -1,5 +1,5 @@
-{% extends "cradmin_resetpassword/base.django.html" %}
-{% load crispy_forms_tags %}
+{% extends "django_cradmin/viewhelpers/formview/standalone_form_view.django.html" %}
+
 {% load i18n %}
 
 {% block subtitle %}
@@ -16,5 +16,5 @@
 {% endblock page-cover-content %}
 
 {% block content %}
-    {% crispy form formhelper %}
+    {{ block.super }}
 {% endblock content %}
