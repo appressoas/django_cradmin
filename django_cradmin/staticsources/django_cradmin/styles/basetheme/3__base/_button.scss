@@ -73,12 +73,6 @@ Styleguide 3.button
             background-color: transparent;
         }
     }
-
-    &--hidden-in-print {
-        @media print {
-            display: none;
-        }
-    }
 }
 
 
@@ -92,7 +86,7 @@ Styleguide 3.button
     position: relative;
     display: block;
     width: 100%;
-    padding: $spacing--small; // TODO: What to do?!
+    padding: $spacing--small;
     border-radius: 0;
 
     color: $color-text;
@@ -180,9 +174,9 @@ Styleguide 3.button
     // TODO: Remove?
     @include button-modifier(
         'secondary',
-        color(secondary),
-        color(secondary),
-        color(secondary)
+        color(secondary, dark),
+        color(secondary, dark),
+        color(secondary, dark)
     );
 
     @include button-modifier(
@@ -212,5 +206,11 @@ Styleguide 3.button
     &--compact {
         @include font-size(xsmall);
         padding: $unit $spacing--small;
+    }
+
+    &--hidden-in-print {
+        @media print {
+            display: none;
+        }
     }
 }

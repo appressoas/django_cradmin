@@ -1,0 +1,90 @@
+.form {
+    @include container(xtight);
+    margin-bottom: $vertical-rythm--spacing * 2;
+
+    &__section {
+        margin-bottom: $vertical-rythm--spacing;
+    }
+
+    &__title {
+        // @include font(header);
+        // font-style: italic;
+        @include font-size(large);
+
+        // Legend reset
+        float: left;
+        width: 100%;
+
+        text-align: center;
+        margin-bottom: $vertical-rythm--medium;
+
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: $border-width;
+            background-color: color(neutral, light);
+        }
+
+        &:before {
+            margin-right: $spacing--small;
+        }
+
+        &:after {
+            margin-left: $spacing--small;
+        }
+    }
+
+    &__sub-title {
+        @include font(base, bold);
+
+        // Legend reset
+        float: left;
+        width: 100%;
+
+        display: block;
+        margin-bottom: $vertical-rythm;
+    }
+
+    &__item {
+        @extend %animation-fall-down;
+        @include animation-delay(8, 50ms);
+        display: block;
+        width: 100%;
+        margin-bottom: $vertical-rythm--medium;
+
+        &--split {
+            margin-left: $unit;
+            margin-right: $unit;
+
+            @include min-width(md) {
+                margin-left: $spacing--small;
+                margin-right: $spacing--small;
+            }
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__split {
+        display: flex;
+        width: 100%;
+        margin: 0;
+    }
+
+    &__message {
+        border: $border-width solid color(neutral, light);
+        padding: $vertical-rythm $spacing--small;
+    }
+}

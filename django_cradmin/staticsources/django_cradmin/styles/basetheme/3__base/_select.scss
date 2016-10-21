@@ -137,6 +137,7 @@ Styleguide 3.3
 
     &--outlined {
         border: $border-width solid color(neutral, light);
+        background-color: $color-light;
 
         &:before {
             right: $spacing--small;
