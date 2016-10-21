@@ -1,0 +1,4465 @@
+@charset "UTF-8";
+/*
+Basic
+
+Colors, Breakpoints, Spacing...
+
+Styleguide 1
+*/
+/*
+Typography
+
+Styleguide 2
+*/
+/*
+Form elements
+
+Styleguide 3
+*/
+/*
+Layout
+
+Styleguide 5
+*/
+/*
+Components
+
+Styleguide 6
+*/
+/*
+CR Admin
+
+*/
+/* Colors
+
+## Primary
+<ul class="sg-colors">
+    <li class="sg-colors__item  sg-colors__item--primary--base"></li>
+    <li class="sg-colors__item  sg-colors__item--primary--dark"></li>
+</ul>
+
+## Secondary
+<ul class="sg-colors">
+    <li class="sg-colors__item  sg-colors__item--secondary--base"></li>
+    <li class="sg-colors__item  sg-colors__item--secondary--dark"></li>
+</ul>
+
+## Neutral shades (TODO: Flip xlight and light...)
+<ul class="sg-colors">
+    <li class="sg-colors__item  sg-colors__item--neutral--xxlight"></li>
+    <li class="sg-colors__item  sg-colors__item--neutral--xlight"></li>
+    <li class="sg-colors__item  sg-colors__item--neutral--light"></li>
+    <li class="sg-colors__item  sg-colors__item--neutral--base"></li>
+    <li class="sg-colors__item  sg-colors__item--neutral--dark"></li>
+    <li class="sg-colors__item  sg-colors__item--neutral--xdark"></li>
+</ul>
+
+## Additional colors
+<ul class="sg-colors">
+    <li class="sg-colors__item  sg-colors__item--success"></li>
+    <li class="sg-colors__item  sg-colors__item--info"></li>
+</ul>
+
+Styleguide 1.1
+*/
+/* Breakpoints / Media queries
+
+Media queries are **only** ment for the mobile first approach; Which means you design for mobile first, then add media queries for larger screens -- Never the other way around
+
+# These are the following breakpoints
+
+1. `xs: 400px` - Small and up
+2. `md: 720px`, - Medium and up
+3. `lg: 960px`, - Large and up
+4. `xl: 1240px` - Extra large and up
+
+Styleguide 1.4
+*/
+/* Spacing
+
+All the sizes are based on a unit. **The unit size is 6px.**
+
+Never refer to a pixel-size for padding, margin or simular.
+
+# Use these variables for sizes:
+- <div class="sg-size  sg-size--small"></div>
+  `$spacing--small` - 2 units
+- <div class="sg-size  sg-size--base"></div>
+  `$spacing` - 4 units
+- <div class="sg-size  sg-size--large"></div>
+  `$spacing--large` - 10 units
+- <div class="sg-size  sg-size--xlarge"></div>
+  `$spacing--xlarge` - 40 units
+
+If you space out content it's often best to use `$indention`. This way we can create consistent aligning for texts.
+
+Styleguide 1.5
+*/
+/* Vertical rhythm
+
+In order to create a vertical rhythm it's important to stick to spacings that follows the same rhythm as the text's line height.
+
+By default you should never specify heights without variables. If the spacing is vertical; stick to the vertical rhythm variables.
+
+There is a system that creates proper line heights for text. **Never interfer with line-height's neither, since they are essentials to keep a good verticla rhythm.**
+
+# Use these variables for vertical spacings:
+- `$vertical-rythm` - For smaller spacing
+- `$vertical-rythm--spacing` - For default spacings.
+- Pro tip: `$vertical-rythm--spacing * X` - if you need more space
+
+Styleguide 1.6
+*/
+/* Borders
+
+TODO: Make some documentation...
+
+Styleguide 1.7
+*/
+/*
+Fonts
+
+1. Base font: <div class="sg-font-base">Fallback: </div>
+2. Header font: <div class="sg-font-header">Fallback: </div>
+
+- Never use other fonts than these.
+- Never specify `font-family` anywhere, use the include method.
+- Never specify font-weight, use the include method.
+
+Example: {syntax: scss, preview: false} Use these includes when a font is needed
+    @include font(header);
+    @include font(header, bold);
+    @include font(base);
+    @include font(base, bold);
+
+Styleguide 2.1
+*/
+/* Font sizes
+
+Font sizes should be consistant, therefor never refer to a specific font size anywhere in the css.
+
+# Just refer to the following sizes:
+
+1. `xsmall` - Rare cases where the font needs tro be smaller than usual</li>
+1. `small` - The default font size</li>
+1. `medium` - For small headers and preamble text</li>
+1. `large` - For headers</li>
+1. `xlarge` - For headers</li>
+1. `xxlarge` - For headers, use with care</li>
+
+Styleguide 2.2
+*/
+/*
+Golden ratio font sizes:
+http://designmodo.com/wp-content/uploads/2015/06/readymag-hint-1113x876-99041.png
+
+18px
+29px
+47px
+76px
+*/
+/*------------------------------------*    Custom css reset so we don't got so much bloat that we have to reset again
+\*------------------------------------*/
+*, *:before, *:after {
+  box-sizing: border-box; }
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; }
+
+body,
+html,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+dl,
+dd,
+ol,
+ul,
+form,
+fieldset,
+legend,
+table,
+th,
+td,
+caption,
+hr,
+figure {
+  margin: 0;
+  padding: 0; }
+
+legend {
+  border: 0; }
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block; }
+
+a {
+  text-decoration: none;
+  background: transparent; }
+  a:active, a:hover {
+    outline: 0; }
+
+ul > li {
+  list-style: none; }
+
+img {
+  border: 0;
+  max-width: 100%; }
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: none;
+  overflow: visible;
+  cursor: pointer;
+  font-size: inherit;
+  color: inherit; }
+
+button,
+select {
+  text-transform: none; }
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+button[disabled],
+html input[disabled] {
+  cursor: default; }
+
+input {
+  line-height: normal; }
+
+textarea,
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='email'],
+input[type='url'],
+input[type='search'],
+input[type='tel'],
+input[type='color'] {
+  outline: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box; }
+
+textarea {
+  overflow: auto;
+  resize: none;
+  word-wrap: break-word; }
+
+input[type='date']::-webkit-clear-button,
+input[type='date']::-webkit-inner-spin-button {
+  display: none; }
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  height: auto;
+  display: none; }
+
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none; }
+
+input[type='checkbox'],
+input[type='radio'] {
+  box-sizing: border-box;
+  padding: 0; }
+
+sub,
+sup {
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+svg:not(:root) {
+  overflow: hidden; }
+
+pre {
+  overflow: auto; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td,
+th {
+  padding: 0; }
+
+.radio,
+.checkbox {
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  user-drag: none; }
+
+.clearfix::before, .clearfix::after,
+fieldset::before,
+legend::before,
+fieldset::after,
+legend::after {
+  content: ' ';
+  display: table; }
+
+.clearfix::after,
+fieldset::after,
+legend::after {
+  clear: both; }
+
+.ng-cloak,
+[ng-cloak] {
+  display: none; }
+
+/* Screen reader optimizations
+
+Example: Only visible to screenreaders
+
+    <span class="screenreader-only">
+        This is only visible to screen readers.
+    </span>
+
+Styleguide base.screenreaders
+*/
+.screenreader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0; }
+
+/* Animations
+
+### TODO's
+1. Maybe this should be moved somewhere else
+2. Add some examples
+
+### These are the animations:
+- `.animation-fade-in`
+- `.animation-fade-in-down`
+- `.animation-fade-in-up`
+- `.animation-fade-in-slow`
+- `.animation-fade-in-extra-slow`
+
+- `.animation-fade-out`
+- `.animation-fade-out-slow`
+- `.animation-fade-out-up`
+- `.animation-fade-out-down`
+- `.animation-fade-out-right`
+
+Styleguide 1.8
+*/
+.animation-fade-in,
+.modal__backdrop,
+.backdrop {
+  -webkit-animation: fade-in 300ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-in 300ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-in-down {
+  -webkit-animation: fade-in-down 300ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-in-down 300ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-in-up {
+  -webkit-animation: fade-in-up 300ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-in-up 300ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-out,
+.backdrop.ng-leave,
+.ng-leave.modal__backdrop {
+  -webkit-animation: fade-out 300ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-out 300ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-out-slow {
+  -webkit-animation: fade-out 800ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-out 800ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-out-up {
+  -webkit-animation: fade-out-up 100ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-out-up 100ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-out-down {
+  -webkit-animation: fade-out-down 500ms cubic-bezier(0, 0, 0.1, 1) forwards;
+          animation: fade-out-down 500ms cubic-bezier(0, 0, 0.1, 1) forwards; }
+
+.animation-fade-out-right {
+  -webkit-animation: fade-out-right 300ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-out-right 300ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-in-slow {
+  -webkit-animation: fade-in 700ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-in 700ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fade-in-extra-slow {
+  -webkit-animation: fade-in 2s cubic-bezier(0, 0, 0.1, 1) both;
+          animation: fade-in 2s cubic-bezier(0, 0, 0.1, 1) both; }
+
+.animation-fall-down,
+.adminui-page-section--collapsable-sm .adminui-page-section__title,
+.adminui-page-section--collapsable-sm .adminui-page-section__content {
+  -webkit-animation: fall-down 400ms linear both;
+          animation: fall-down 400ms linear both; }
+
+.animation-pop-in {
+  -webkit-animation: pop-in 600ms linear both;
+          animation: pop-in 600ms linear both; }
+
+.animation-scale-in {
+  -webkit-animation: scale-in 500ms cubic-bezier(0, 0, 0.1, 1) both;
+          animation: scale-in 500ms cubic-bezier(0, 0, 0.1, 1) both; }
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes fade-in {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@-webkit-keyframes fade-in-down {
+  0% {
+    -webkit-transform: translateY(-70px);
+            transform: translateY(-70px);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1; } }
+
+@keyframes fade-in-down {
+  0% {
+    -webkit-transform: translateY(-70px);
+            transform: translateY(-70px);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1; } }
+
+@-webkit-keyframes fade-in-up {
+  0% {
+    -webkit-transform: translateY(120px);
+            transform: translateY(120px);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1; } }
+
+@keyframes fade-in-up {
+  0% {
+    -webkit-transform: translateY(120px);
+            transform: translateY(120px);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1; } }
+
+@-webkit-keyframes fade-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
+@keyframes fade-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
+@-webkit-keyframes fade-out-down {
+  0% {
+    opacity: 1; }
+  30% {
+    opacity: 0.05; }
+  100% {
+    -webkit-transform: translateY(200px);
+            transform: translateY(200px);
+    opacity: 0; } }
+
+@keyframes fade-out-down {
+  0% {
+    opacity: 1; }
+  30% {
+    opacity: 0.05; }
+  100% {
+    -webkit-transform: translateY(200px);
+            transform: translateY(200px);
+    opacity: 0; } }
+
+@-webkit-keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); }
+  100% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+    opacity: 0; } }
+
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); }
+  100% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+    opacity: 0; } }
+
+@-webkit-keyframes fade-out-right {
+  0% {
+    opacity: 1; }
+  100% {
+    -webkit-transform: translateX(30%);
+            transform: translateX(30%);
+    opacity: 0; } }
+
+@keyframes fade-out-right {
+  0% {
+    opacity: 1; }
+  100% {
+    -webkit-transform: translateX(30%);
+            transform: translateX(30%);
+    opacity: 0; } }
+
+@-webkit-keyframes fall-down {
+  0.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -100, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -100, 1, 1);
+    opacity: 0; }
+  5.56% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -34.746, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -34.746, 1, 1); }
+  11.11% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -3.811, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -3.811, 1, 1); }
+  16.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 4.476, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 4.476, 1, 1); }
+  22.22% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3.784, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3.784, 1, 1); }
+  27.78% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1.719, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1.719, 1, 1); }
+  33.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.401, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.401, 1, 1); }
+  38.89% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.06, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.06, 1, 1); }
+  44.44% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.123, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.123, 1, 1); }
+  50.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.072, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.072, 1, 1);
+    opacity: 1; }
+  55.56% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.025, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.025, 1, 1); }
+  61.11% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.003, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.003, 1, 1); }
+  66.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1); }
+  72.22% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1); }
+  77.78% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.001, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.001, 1, 1); }
+  83.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  88.89% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  94.44% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  100.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); } }
+
+@keyframes fall-down {
+  0.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -100, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -100, 1, 1);
+    opacity: 0; }
+  5.56% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -34.746, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -34.746, 1, 1); }
+  11.11% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -3.811, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -3.811, 1, 1); }
+  16.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 4.476, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 4.476, 1, 1); }
+  22.22% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3.784, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3.784, 1, 1); }
+  27.78% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1.719, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1.719, 1, 1); }
+  33.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.401, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.401, 1, 1); }
+  38.89% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.06, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.06, 1, 1); }
+  44.44% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.123, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.123, 1, 1); }
+  50.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.072, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.072, 1, 1);
+    opacity: 1; }
+  55.56% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.025, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.025, 1, 1); }
+  61.11% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.003, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.003, 1, 1); }
+  66.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1); }
+  72.22% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.003, 1, 1); }
+  77.78% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.001, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.001, 1, 1); }
+  83.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  88.89% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  94.44% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  100.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); } }
+
+@-webkit-keyframes move-away-up {
+  0.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  3.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.891, 0, 0, 0, 0, 1, 0, 0, -172.648, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.891, 0, 0, 0, 0, 1, 0, 0, -172.648, 1, 1); }
+  6.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.952, 0, 0, 0, 0, 1, 0, 0, -332.052, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.952, 0, 0, 0, 0, 1, 0, 0, -332.052, 1, 1); }
+  10.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.987, 0, 0, 0, 0, 1, 0, 0, -448.402, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.987, 0, 0, 0, 0, 1, 0, 0, -448.402, 1, 1); }
+  13.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1.003, 0, 0, 0, 0, 1, 0, 0, -511.214, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1.003, 0, 0, 0, 0, 1, 0, 0, -511.214, 1, 1); }
+  16.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1.007, 0, 0, 0, 0, 1, 0, 0, -536.549, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1.007, 0, 0, 0, 0, 1, 0, 0, -536.549, 1, 1);
+    opacity: 0; }
+  100.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -499.997, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -499.997, 1, 1);
+    opacity: 0; } }
+
+@keyframes move-away-up {
+  0.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1); }
+  3.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.891, 0, 0, 0, 0, 1, 0, 0, -172.648, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.891, 0, 0, 0, 0, 1, 0, 0, -172.648, 1, 1); }
+  6.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.952, 0, 0, 0, 0, 1, 0, 0, -332.052, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.952, 0, 0, 0, 0, 1, 0, 0, -332.052, 1, 1); }
+  10.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 0.987, 0, 0, 0, 0, 1, 0, 0, -448.402, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 0.987, 0, 0, 0, 0, 1, 0, 0, -448.402, 1, 1); }
+  13.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1.003, 0, 0, 0, 0, 1, 0, 0, -511.214, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1.003, 0, 0, 0, 0, 1, 0, 0, -511.214, 1, 1); }
+  16.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1.007, 0, 0, 0, 0, 1, 0, 0, -536.549, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1.007, 0, 0, 0, 0, 1, 0, 0, -536.549, 1, 1);
+    opacity: 0; }
+  100.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -499.997, 1, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -499.997, 1, 1);
+    opacity: 0; } }
+
+@-webkit-keyframes move-away-down {
+  0% {
+    margin-top: 250px;
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); }
+  15% {
+    opacity: 0;
+    -webkit-transform: translateY(400px);
+            transform: translateY(400px); }
+  100% {
+    margin-top: 250px;
+    opacity: 0; } }
+
+@keyframes move-away-down {
+  0% {
+    margin-top: 250px;
+    opacity: 1;
+    -webkit-transform: translateY(0);
+            transform: translateY(0); }
+  15% {
+    opacity: 0;
+    -webkit-transform: translateY(400px);
+            transform: translateY(400px); }
+  100% {
+    margin-top: 250px;
+    opacity: 0; } }
+
+@-webkit-keyframes pop-in {
+  0.00% {
+    -webkit-transform: matrix3d(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    opacity: 0; }
+  5.56% {
+    -webkit-transform: matrix3d(0.803, 0, 0, 0, 0, 0.803, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.803, 0, 0, 0, 0, 0.803, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  11.11% {
+    -webkit-transform: matrix3d(0.975, 0, 0, 0, 0, 0.975, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.975, 0, 0, 0, 0, 0.975, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  16.67% {
+    -webkit-transform: matrix3d(1.033, 0, 0, 0, 0, 1.033, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.033, 0, 0, 0, 0, 1.033, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  22.22% {
+    -webkit-transform: matrix3d(1.031, 0, 0, 0, 0, 1.031, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.031, 0, 0, 0, 0, 1.031, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  27.78% {
+    -webkit-transform: matrix3d(1.016, 0, 0, 0, 0, 1.016, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.016, 0, 0, 0, 0, 1.016, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  33.33% {
+    -webkit-transform: matrix3d(1.004, 0, 0, 0, 0, 1.004, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.004, 0, 0, 0, 0, 1.004, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  38.89% {
+    -webkit-transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  44.44% {
+    -webkit-transform: matrix3d(0.998, 0, 0, 0, 0, 0.998, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.998, 0, 0, 0, 0, 0.998, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  50.00% {
+    -webkit-transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    opacity: 1; }
+  55.56% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  61.11% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  66.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  72.22% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  77.78% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  83.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  88.89% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  94.44% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  100.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } }
+
+@keyframes pop-in {
+  0.00% {
+    -webkit-transform: matrix3d(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.5, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    opacity: 0; }
+  5.56% {
+    -webkit-transform: matrix3d(0.803, 0, 0, 0, 0, 0.803, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.803, 0, 0, 0, 0, 0.803, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  11.11% {
+    -webkit-transform: matrix3d(0.975, 0, 0, 0, 0, 0.975, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.975, 0, 0, 0, 0, 0.975, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  16.67% {
+    -webkit-transform: matrix3d(1.033, 0, 0, 0, 0, 1.033, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.033, 0, 0, 0, 0, 1.033, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  22.22% {
+    -webkit-transform: matrix3d(1.031, 0, 0, 0, 0, 1.031, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.031, 0, 0, 0, 0, 1.031, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  27.78% {
+    -webkit-transform: matrix3d(1.016, 0, 0, 0, 0, 1.016, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.016, 0, 0, 0, 0, 1.016, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  33.33% {
+    -webkit-transform: matrix3d(1.004, 0, 0, 0, 0, 1.004, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1.004, 0, 0, 0, 0, 1.004, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  38.89% {
+    -webkit-transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  44.44% {
+    -webkit-transform: matrix3d(0.998, 0, 0, 0, 0, 0.998, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.998, 0, 0, 0, 0, 0.998, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  50.00% {
+    -webkit-transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    opacity: 1; }
+  55.56% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  61.11% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  66.67% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  72.22% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  77.78% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  83.33% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  88.89% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  94.44% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  100.00% {
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } }
+
+@-webkit-keyframes scale-in {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5); } }
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5); } }
+
+body {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 30px;
+  position: relative;
+  color: #1e1e1e;
+  font-style: normal;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-color: #f6f6f5; }
+  @media screen and (min-width: 720px) {
+    body {
+      font-size: 21px;
+      line-height: 30px; } }
+  body.overlay, body.modal-open {
+    overflow: hidden;
+    position: fixed; }
+    @media (min-width: 720px) {
+      body.overlay, body.modal-open {
+        position: relative; } }
+
+html,
+body {
+  overflow-x: hidden; }
+
+/*
+Links
+
+__Never__ use `<span>`, `<div>` or elements without a semantic meaning as links.
+
+Example: Link styles
+    <a href="">I'm a link</a>
+    <a href="" class="link--light">I'm also link</a>
+
+Styleguide 2.7
+*/
+a,
+.link {
+  display: inline;
+  cursor: pointer;
+  text-decoration: none;
+  color: #1e1e1e;
+  border-bottom: 2px solid #1e1e1e; }
+  a:hover, a:focus,
+  .link:hover,
+  .link:focus {
+    color: #394c5c;
+    border-color: #394c5c; }
+
+.link--light {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7); }
+  .link--light:hover, .link--light:focus {
+    color: #fff;
+    border-color: #fff; }
+
+/* Headers
+
+Make sure headers represent semantic hierarchy of the page. For pure styling use these classes instead of ruining the hierarchy: `.h1`, `.h2`, `.h3`, `.h4`
+
+Example: {isolated: true}
+    <h1>Header 1</h1>
+    <h2>Header 2</h2>
+    <h3>Header 3</h3>
+    <h4>Header 4</h4>
+
+Styleguide 2.3
+*/
+h2,
+.h2,
+h3,
+.h3,
+.adminui-page-section__toggle,
+h4,
+.h4,
+legend {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  word-wrap: break-word;
+  margin: 0;
+  margin-bottom: 20px; }
+  @media (min-width: 720px) {
+    h2,
+    .h2,
+    h3,
+    .h3,
+    .adminui-page-section__toggle,
+    h4,
+    .h4,
+    legend {
+      margin-bottom: 30px; } }
+
+h1,
+.h1 {
+  font-family: Georgia, sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 60px;
+  word-wrap: break-word;
+  margin: 0;
+  margin-bottom: 20px; }
+  @media screen and (min-width: 720px) {
+    h1,
+    .h1 {
+      font-size: 60px;
+      line-height: 80px; } }
+  @media screen and (min-width: 960px) {
+    h1,
+    .h1 {
+      font-size: 74px;
+      line-height: 90px; } }
+  @media screen and (min-width: 1240px) {
+    h1,
+    .h1 {
+      font-size: 82px;
+      line-height: 100px; } }
+  @media (min-width: 720px) {
+    h1,
+    .h1 {
+      margin-bottom: 30px; } }
+  h1 strong,
+  .h1 strong {
+    font-family: Georgia, sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    white-space: nowrap; }
+
+h2,
+.h2 {
+  font-size: 34px;
+  line-height: 50px; }
+  @media screen and (min-width: 720px) {
+    h2,
+    .h2 {
+      font-size: 42px;
+      line-height: 60px; } }
+
+h3,
+.h3,
+.adminui-page-section__toggle {
+  font-size: 26px;
+  line-height: 40px; }
+  @media screen and (min-width: 720px) {
+    h3,
+    .h3,
+    .adminui-page-section__toggle {
+      font-size: 32px;
+      line-height: 40px; } }
+
+h4,
+.h4,
+legend {
+  font-size: 19px;
+  line-height: 30px; }
+  @media screen and (min-width: 720px) {
+    h4,
+    .h4,
+    legend {
+      font-size: 21px;
+      line-height: 30px; } }
+
+p:not(:empty) + h2,
+p:not(:empty) + h3,
+p:not(:empty) + h4,
+ul + h2,
+ul + h3,
+ul + h4 {
+  margin-top: 60px; }
+
+/* Paragraphs
+
+Example: {isolated: true} Default paragraphs
+    <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    <p>Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
+    <p>The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
+
+Example: {isolated: true} Preamble
+    <p class="preamble">We are going to make placeholder text great again. Greater than ever before. Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot.</p>
+
+Styleguide 2.4
+*/
+p,
+.paragraph {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  margin-bottom: 30px; }
+  p:last-child,
+  .paragraph:last-child {
+    margin-bottom: 0; }
+  p:empty,
+  .paragraph:empty {
+    display: none; }
+
+.preamble {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 40px;
+  margin-bottom: 30px; }
+  @media screen and (min-width: 720px) {
+    .preamble {
+      font-size: 32px;
+      line-height: 40px; } }
+
+.normal {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 30px; }
+  @media screen and (min-width: 720px) {
+    .normal {
+      font-size: 21px;
+      line-height: 30px; } }
+
+.no-break {
+  white-space: nowrap; }
+
+/* Other type styles
+
+Example: {isolated: true} Strong, italic, muted, alignments, small caps
+    <p><strong>Strong text</strong></p>
+    <p class="italic">Italic text</p>
+    <p class="text-muted">Muted text.</p>
+    <p class="text-center">Centered text</p>
+    <p class="text-right">Right aligned text</p>
+    <p><strong class="text-smallcaps">Small capsed text</strong> can be useful to introduse a paragraph sometimes</p>
+
+Styleguide 2.5
+*/
+strong,
+.strong,
+b {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700; }
+
+.italic {
+  font-style: italic; }
+
+.text-muted {
+  color: #595959; }
+
+.text-center {
+  text-align: center; }
+
+.text-left {
+  text-align: left; }
+
+.text-right {
+  text-align: right; }
+
+.text-smallcaps {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.78em;
+  line-height: inherit;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700; }
+  .text-smallcaps--thin {
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
+
+time {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 15px;
+  line-height: 20px;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  color: #595959;
+  font-size: 0.7em;
+  margin-left: 6px; }
+  @media screen and (min-width: 720px) {
+    time {
+      font-size: 16px;
+      line-height: 20px; } }
+  time:before {
+    content: '─	'; }
+
+.date {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 63px;
+  top: 6px;
+  border: 3px solid #cbcbca;
+  border-color: #467465;
+  padding: 3px 0;
+  float: left;
+  margin: 0;
+  margin-right: 12px;
+  text-align: center; }
+  .date:before {
+    content: ''; }
+  .date__day, .date__month {
+    display: block; }
+
+/* Lists
+
+Unordered list styles are turned of by default. You need to add classes to style it.
+
+Example: `Ordered list`; Default styling
+    <ol>
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ol>
+
+Example: `.list`; Default styling
+    <ul class="list">
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ul>
+
+Styleguide 2.100
+*/
+ol {
+  margin-bottom: 30px; }
+  ol > li {
+    margin-left: 42px;
+    margin-bottom: 10px;
+    list-style-type: decimal; }
+
+.list {
+  margin-bottom: 30px;
+  text-align: left; }
+  .list:last-child {
+    margin-bottom: 0; }
+  .list > li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 0; }
+    @media (min-width: 720px) {
+      .list > li {
+        padding-left: 42px; } }
+    .list > li:before {
+      content: '';
+      position: absolute;
+      top: 0.85em;
+      left: 0;
+      width: 12px;
+      border-bottom: 3px solid #57917E; }
+      @media (min-width: 720px) {
+        .list > li:before {
+          top: 0.7em;
+          width: 18px; } }
+
+/*
+Icons
+
+All icons come in the following colors: `dark` (default), `primary`, `secondary` and `light`.
+
+Example: All the icons
+
+    <!-- Ignore the ``sg-icon-*`` wrappers - they are just for the styleguide. -->
+    <ul class="sg-icon-grid">
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up"></i>
+            <code>.icon-arrow-up</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up--primary"></i>
+            <code>.icon-arrow-up--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up--secondary"></i>
+            <code>.icon-arrow-up--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-up--light"></i>
+            <code>.icon-arrow-up--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down"></i>
+            <code>.icon-arrow-down</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down--primary"></i>
+            <code>.icon-arrow-down--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down--secondary"></i>
+            <code>.icon-arrow-down--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-down--light"></i>
+            <code>.icon-arrow-down--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right"></i>
+            <code>.icon-arrow-right</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right--primary"></i>
+            <code>.icon-arrow-right--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right--secondary"></i>
+            <code>.icon-arrow-right--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-right--light"></i>
+            <code>.icon-arrow-right--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left"></i>
+            <code>.icon-arrow-left</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left--primary"></i>
+            <code>.icon-arrow-left--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left--secondary"></i>
+            <code>.icon-arrow-left--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-arrow-left--light"></i>
+            <code>.icon-arrow-left--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up"></i>
+            <code>.icon-chevron-up</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up--primary"></i>
+            <code>.icon-chevron-up--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up--secondary"></i>
+            <code>.icon-chevron-up--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-up--light"></i>
+            <code>.icon-chevron-up--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down"></i>
+            <code>.icon-chevron-down</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down--primary"></i>
+            <code>.icon-chevron-down--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down--secondary"></i>
+            <code>.icon-chevron-down--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-down--light"></i>
+            <code>.icon-chevron-down--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right"></i>
+            <code>.icon-chevron-right</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right--primary"></i>
+            <code>.icon-chevron-right--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right--secondary"></i>
+            <code>.icon-chevron-right--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-right--light"></i>
+            <code>.icon-chevron-right--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left"></i>
+            <code>.icon-chevron-left</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left--primary"></i>
+            <code>.icon-chevron-left--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left--secondary"></i>
+            <code>.icon-chevron-left--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-chevron-left--light"></i>
+            <code>.icon-chevron-left--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-check"></i>
+            <code>.icon-check</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check--primary"></i>
+            <code>.icon-check--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check--secondary"></i>
+            <code>.icon-check--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-check--light"></i>
+            <code>.icon-check--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-search"></i>
+            <code>.icon-search</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search--primary"></i>
+            <code>.icon-search--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search--secondary"></i>
+            <code>.icon-search--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-search--light"></i>
+            <code>.icon-search--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-close"></i>
+            <code>.icon-close</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close--primary"></i>
+            <code>.icon-close--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close--secondary"></i>
+            <code>.icon-close--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-close--light"></i>
+            <code>.icon-close--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-user"></i>
+            <code>.icon-user</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user--primary"></i>
+            <code>.icon-user--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user--secondary"></i>
+            <code>.icon-user--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user--light"></i>
+            <code>.icon-user--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-time"></i>
+            <code>.icon-time</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time--primary"></i>
+            <code>.icon-time--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time--secondary"></i>
+            <code>.icon-time--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-time--light"></i>
+            <code>.icon-time--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag"></i>
+            <code>.icon-flag</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag--primary"></i>
+            <code>.icon-flag--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag--secondary"></i>
+            <code>.icon-flag--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-flag--light"></i>
+            <code>.icon-flag--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-more"></i>
+            <code>.icon-more</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more--primary"></i>
+            <code>.icon-more--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more--secondary"></i>
+            <code>.icon-more--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-more--light"></i>
+            <code>.icon-more--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small"></i>
+            <code>.icon-user-small</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small--primary"></i>
+            <code>.icon-user-small--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small--secondary"></i>
+            <code>.icon-user-small--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-user-small--light"></i>
+            <code>.icon-user-small--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook"></i>
+            <code>.icon-facebook</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook--primary"></i>
+            <code>.icon-facebook--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook--secondary"></i>
+            <code>.icon-facebook--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-facebook--light"></i>
+            <code>.icon-facebook--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter"></i>
+            <code>.icon-twitter</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter--primary"></i>
+            <code>.icon-twitter--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter--secondary"></i>
+            <code>.icon-twitter--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-twitter--light"></i>
+            <code>.icon-twitter--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-email"></i>
+            <code>.icon-email</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email--primary"></i>
+            <code>.icon-email--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email--secondary"></i>
+            <code>.icon-email--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-email--light"></i>
+            <code>.icon-email--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast"></i>
+            <code>.icon-podcast</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast--primary"></i>
+            <code>.icon-podcast--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast--secondary"></i>
+            <code>.icon-podcast--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-podcast--light"></i>
+            <code>.icon-podcast--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram"></i>
+            <code>.icon-instagram</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram--primary"></i>
+            <code>.icon-instagram--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram--secondary"></i>
+            <code>.icon-instagram--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-instagram--light"></i>
+            <code>.icon-instagram--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat"></i>
+            <code>.icon-snapchat</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat--primary"></i>
+            <code>.icon-snapchat--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat--secondary"></i>
+            <code>.icon-snapchat--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-snapchat--light"></i>
+            <code>.icon-snapchat--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog"></i>
+            <code>.icon-blog</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog--primary"></i>
+            <code>.icon-blog--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog--secondary"></i>
+            <code>.icon-blog--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-blog--light"></i>
+            <code>.icon-blog--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone"></i>
+            <code>.icon-phone</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone--primary"></i>
+            <code>.icon-phone--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone--secondary"></i>
+            <code>.icon-phone--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-phone--light"></i>
+            <code>.icon-phone--light</code>
+        </li>
+    </ul>
+
+Styleguide 4
+*/
+.icon-arrow-up {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: 0px 0px;
+  background-repeat: no-repeat; }
+  .icon-arrow-up--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: 0px -100px;
+    background-repeat: no-repeat; }
+  .icon-arrow-up--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: 0px -200px;
+    background-repeat: no-repeat; }
+  .icon-arrow-up--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: 0px -300px;
+    background-repeat: no-repeat; }
+
+.icon-arrow-right {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -100px 0px;
+  background-repeat: no-repeat; }
+  .icon-arrow-right--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -100px -100px;
+    background-repeat: no-repeat; }
+  .icon-arrow-right--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -100px -200px;
+    background-repeat: no-repeat; }
+  .icon-arrow-right--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -100px -300px;
+    background-repeat: no-repeat; }
+
+.icon-arrow-down {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -200px 0px;
+  background-repeat: no-repeat; }
+  .icon-arrow-down--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -200px -100px;
+    background-repeat: no-repeat; }
+  .icon-arrow-down--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -200px -200px;
+    background-repeat: no-repeat; }
+  .icon-arrow-down--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -200px -300px;
+    background-repeat: no-repeat; }
+
+.icon-arrow-left {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -300px 0px;
+  background-repeat: no-repeat; }
+  .icon-arrow-left--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -300px -100px;
+    background-repeat: no-repeat; }
+  .icon-arrow-left--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -300px -200px;
+    background-repeat: no-repeat; }
+  .icon-arrow-left--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -300px -300px;
+    background-repeat: no-repeat; }
+
+.icon-chevron-up {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 10px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -400px 0px;
+  background-repeat: no-repeat; }
+  .icon-chevron-up--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 10px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -400px -100px;
+    background-repeat: no-repeat; }
+  .icon-chevron-up--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 10px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -400px -200px;
+    background-repeat: no-repeat; }
+  .icon-chevron-up--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 10px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -400px -300px;
+    background-repeat: no-repeat; }
+
+.icon-chevron-right,
+.adminui-breadcrumbs__separator,
+.adminui-breadcrumbs--dark .adminui-breadcrumbs__separator {
+  display: inline-block;
+  vertical-align: top;
+  width: 10px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -500px 0px;
+  background-repeat: no-repeat; }
+  .icon-chevron-right--light,
+  .adminui-breadcrumbs--light .adminui-breadcrumbs__separator {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -500px -100px;
+    background-repeat: no-repeat; }
+  .icon-chevron-right--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -500px -200px;
+    background-repeat: no-repeat; }
+  .icon-chevron-right--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -500px -300px;
+    background-repeat: no-repeat; }
+
+.icon-chevron-down,
+.select:before {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 10px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -600px 0px;
+  background-repeat: no-repeat; }
+  .icon-chevron-down--light,
+  .select--light:before {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 10px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -600px -100px;
+    background-repeat: no-repeat; }
+  .icon-chevron-down--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 10px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -600px -200px;
+    background-repeat: no-repeat; }
+  .icon-chevron-down--secondary,
+  .adminui-page-section__toggle:after {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 10px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -600px -300px;
+    background-repeat: no-repeat; }
+
+.icon-chevron-left {
+  display: inline-block;
+  vertical-align: top;
+  width: 10px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -700px 0px;
+  background-repeat: no-repeat; }
+  .icon-chevron-left--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -700px -100px;
+    background-repeat: no-repeat; }
+  .icon-chevron-left--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -700px -200px;
+    background-repeat: no-repeat; }
+  .icon-chevron-left--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 10px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -700px -300px;
+    background-repeat: no-repeat; }
+
+.icon-check,
+.checkbox__control-indicator:before {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 12px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -900px 0px;
+  background-repeat: no-repeat; }
+  .icon-check--light,
+  .radio--light:hover .checkbox__control-indicator:before,
+  .checkbox--light:hover .checkbox__control-indicator:before {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 12px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -900px -100px;
+    background-repeat: no-repeat; }
+  .icon-check--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 12px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -900px -200px;
+    background-repeat: no-repeat; }
+  .icon-check--secondary,
+  .checkbox--light .checkbox__control-indicator:before {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 12px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -900px -300px;
+    background-repeat: no-repeat; }
+
+.icon-search {
+  display: inline-block;
+  vertical-align: top;
+  width: 19px;
+  height: 19px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -800px 0px;
+  background-repeat: no-repeat; }
+  .icon-search--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 19px;
+    height: 19px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -800px -100px;
+    background-repeat: no-repeat; }
+  .icon-search--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 19px;
+    height: 19px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -800px -200px;
+    background-repeat: no-repeat; }
+  .icon-search--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 19px;
+    height: 19px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -800px -300px;
+    background-repeat: no-repeat; }
+
+.icon-close {
+  display: inline-block;
+  vertical-align: top;
+  width: 15px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1000px 0px;
+  background-repeat: no-repeat; }
+  .icon-close--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1000px -100px;
+    background-repeat: no-repeat; }
+  .icon-close--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1000px -200px;
+    background-repeat: no-repeat; }
+  .icon-close--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1000px -300px;
+    background-repeat: no-repeat; }
+
+.icon-user {
+  display: inline-block;
+  vertical-align: top;
+  width: 17px;
+  height: 20px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1100px 0px;
+  background-repeat: no-repeat; }
+  .icon-user--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 17px;
+    height: 20px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1100px -100px;
+    background-repeat: no-repeat; }
+  .icon-user--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 17px;
+    height: 20px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1100px -200px;
+    background-repeat: no-repeat; }
+  .icon-user--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 17px;
+    height: 20px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1100px -300px;
+    background-repeat: no-repeat; }
+
+.icon-time {
+  display: inline-block;
+  vertical-align: top;
+  width: 18px;
+  height: 18px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1200px 0px;
+  background-repeat: no-repeat; }
+  .icon-time--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 18px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1200px -100px;
+    background-repeat: no-repeat; }
+  .icon-time--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 18px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1200px -200px;
+    background-repeat: no-repeat; }
+  .icon-time--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 18px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1200px -300px;
+    background-repeat: no-repeat; }
+
+.icon-flag {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1300px 0px;
+  background-repeat: no-repeat; }
+  .icon-flag--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1300px -100px;
+    background-repeat: no-repeat; }
+  .icon-flag--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1300px -200px;
+    background-repeat: no-repeat; }
+  .icon-flag--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 15px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1300px -300px;
+    background-repeat: no-repeat; }
+
+.icon-more {
+  display: inline-block;
+  vertical-align: top;
+  width: 21px;
+  height: 5px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1400px 0px;
+  background-repeat: no-repeat; }
+  .icon-more--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 21px;
+    height: 5px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1400px -100px;
+    background-repeat: no-repeat; }
+  .icon-more--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 21px;
+    height: 5px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1400px -200px;
+    background-repeat: no-repeat; }
+  .icon-more--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 21px;
+    height: 5px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1400px -300px;
+    background-repeat: no-repeat; }
+
+.icon-user-small {
+  display: inline-block;
+  vertical-align: top;
+  width: 14px;
+  height: 16px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1500px 0px;
+  background-repeat: no-repeat; }
+  .icon-user-small--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1500px -100px;
+    background-repeat: no-repeat; }
+  .icon-user-small--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1500px -200px;
+    background-repeat: no-repeat; }
+  .icon-user-small--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1500px -300px;
+    background-repeat: no-repeat; }
+
+.icon-facebook {
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 20px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: 0px -400px;
+  background-repeat: no-repeat; }
+  .icon-facebook--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: 0px -500px;
+    background-repeat: no-repeat; }
+  .icon-facebook--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: 0px -600px;
+    background-repeat: no-repeat; }
+  .icon-facebook--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: 0px -700px;
+    background-repeat: no-repeat; }
+
+.icon-twitter {
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 17px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -100px -400px;
+  background-repeat: no-repeat; }
+  .icon-twitter--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -100px -500px;
+    background-repeat: no-repeat; }
+  .icon-twitter--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -100px -600px;
+    background-repeat: no-repeat; }
+  .icon-twitter--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -100px -700px;
+    background-repeat: no-repeat; }
+
+.icon-email {
+  display: inline-block;
+  vertical-align: top;
+  width: 18px;
+  height: 13px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -200px -400px;
+  background-repeat: no-repeat; }
+  .icon-email--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 13px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -200px -500px;
+    background-repeat: no-repeat; }
+  .icon-email--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 13px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -200px -600px;
+    background-repeat: no-repeat; }
+  .icon-email--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 13px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -200px -700px;
+    background-repeat: no-repeat; }
+
+.icon-podcast {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 16px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -300px -400px;
+  background-repeat: no-repeat; }
+  .icon-podcast--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -300px -500px;
+    background-repeat: no-repeat; }
+  .icon-podcast--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -300px -600px;
+    background-repeat: no-repeat; }
+  .icon-podcast--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -300px -700px;
+    background-repeat: no-repeat; }
+
+.icon-instagram {
+  display: inline-block;
+  vertical-align: top;
+  width: 20px;
+  height: 17px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -400px -400px;
+  background-repeat: no-repeat; }
+  .icon-instagram--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -400px -500px;
+    background-repeat: no-repeat; }
+  .icon-instagram--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -400px -600px;
+    background-repeat: no-repeat; }
+  .icon-instagram--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -400px -700px;
+    background-repeat: no-repeat; }
+
+.icon-snapchat {
+  display: inline-block;
+  vertical-align: top;
+  width: 18px;
+  height: 17px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -500px -400px;
+  background-repeat: no-repeat; }
+  .icon-snapchat--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -500px -500px;
+    background-repeat: no-repeat; }
+  .icon-snapchat--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -500px -600px;
+    background-repeat: no-repeat; }
+  .icon-snapchat--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 17px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -500px -700px;
+    background-repeat: no-repeat; }
+
+.icon-blog {
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -600px -400px;
+  background-repeat: no-repeat; }
+  .icon-blog--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -600px -500px;
+    background-repeat: no-repeat; }
+  .icon-blog--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -600px -600px;
+    background-repeat: no-repeat; }
+  .icon-blog--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -600px -700px;
+    background-repeat: no-repeat; }
+
+.icon-phone {
+  display: inline-block;
+  vertical-align: top;
+  width: 14px;
+  height: 14px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -700px -400px;
+  background-repeat: no-repeat; }
+  .icon-phone--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 14px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -700px -500px;
+    background-repeat: no-repeat; }
+  .icon-phone--primary {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 14px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -700px -600px;
+    background-repeat: no-repeat; }
+  .icon-phone--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 14px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -700px -700px;
+    background-repeat: no-repeat; }
+
+.icon-middle {
+  position: relative;
+  top: -0.08em;
+  vertical-align: middle; }
+
+.icon-bottom {
+  vertical-align: bottom; }
+
+.icon-hamburger {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 26px;
+  margin-right: 3px;
+  float: left;
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.1, 1);
+  transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.1, 1);
+  transition: transform 0.3s cubic-bezier(0, 0, 0.1, 1);
+  transition: transform 0.3s cubic-bezier(0, 0, 0.1, 1), -webkit-transform 0.3s cubic-bezier(0, 0, 0.1, 1); }
+  .icon-hamburger__bar {
+    display: block;
+    height: 3px;
+    width: 100%;
+    margin-bottom: 6px;
+    background-color: #57917E;
+    -webkit-transform-origin: left center;
+            transform-origin: left center;
+    -webkit-transition: all 0.3s cubic-bezier(0, 0, 0.1, 1);
+    transition: all 0.3s cubic-bezier(0, 0, 0.1, 1); }
+    .icon-hamburger__bar:first-child {
+      -webkit-transform-origin: left bottom;
+              transform-origin: left bottom; }
+    .icon-hamburger__bar:last-child {
+      -webkit-transform-origin: left top;
+              transform-origin: left top;
+      margin-bottom: 0; }
+  .icon-hamburger--close {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg); }
+    .icon-hamburger--close .icon-hamburger__bar {
+      background-color: #fff;
+      -webkit-transform: scaleX(0.9);
+              transform: scaleX(0.9); }
+      .icon-hamburger--close .icon-hamburger__bar:first-child {
+        -webkit-transform: rotate(-45deg) scaleX(0.6) translate(-12px, 6px);
+                transform: rotate(-45deg) scaleX(0.6) translate(-12px, 6px); }
+      .icon-hamburger--close .icon-hamburger__bar:last-child {
+        -webkit-transform: rotate(45deg) scaleX(0.6) translate(-12px, -6px);
+                transform: rotate(45deg) scaleX(0.6) translate(-12px, -6px); }
+  .icon-hamburger--light .icon-hamburger__bar {
+    background-color: #fff; }
+
+/* Fieldset and legend
+
+Fieldset and legends is a bitch. For that reason we have to have a little hacky code to fix them...
+
+Example: Fieldset and Legend
+    <fieldset>
+        <legend>I'm a legend</legend>
+    </fieldset>
+
+Styleguide 3.7
+*/
+fieldset {
+  position: relative;
+  display: block;
+  border: 0;
+  margin-top: 0;
+  margin-bottom: 30px; }
+
+legend {
+  margin-bottom: 10px; }
+
+/* Label
+
+Add the class `.label` to style labels.
+
+As a default; wrap labels around inputs. It saves markup and make it more intuitive to read code :)
+
+Example: Label
+    <label class="label">
+        I'm a label!
+    </label>
+
+    <p>Look, <label class="label  label--inline">I'm a inline label</label>!!!</p>
+
+    <label class="label  label--spaceless">
+        I have less spacing under...
+    </label>
+
+Styleguide 3.label
+*/
+.label {
+  display: block;
+  margin-bottom: 30px; }
+
+.label--inline {
+  display: inline;
+  margin: 0; }
+
+.label--spaceless {
+  margin-bottom: 6px; }
+
+/*
+Buttons
+
+In most cases you should not use the button class for links. Use either `<button>` or `<input type="submit" />`
+when using buttons. <strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as buttons.
+
+Example: {type: isolated} The default button
+    <button type="button" class="button">Button</button>
+    <button type="button" class="button  button--fill">Button</button>
+
+Example: {type: isolated} For primary actions, use this only to separate from other actions.
+    <button type="button" class="button  button--primary">Button</button>
+    <button type="button" class="button  button--primary-fill">Button</button>
+
+Example: {type: isolated} For secondary actions, don't overuse.
+    <button type="button" class="button  button--secondary">Button</button>
+    <button type="button" class="button  button--secondary-fill">Button</button>
+
+Example: {type: isolated} For actions that need's to stand out on red or dark blue background.
+    <button type="button" class="button  button--light">Button</button>
+    <button type="button" class="button  button--light-fill">Button</button>
+
+Example: {type: isolated} This is some modifiers you can add (PS: Can be combined)
+    <button type="button" class="button  button--block">
+        Make it 100% width of whatever container
+    </button>
+    <button type="button" class="button  button--compact">Compact button</button>
+    <br>
+    <button type="button" class="button  button--wider">Wider button</button>
+    <br>
+    <button type="button" class="button  button--spaced">Spaced button</button>
+    <br>
+    <button type="button" class="button" disabled>Disabled button</button>
+
+Styleguide 3.button
+*/
+.button {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 30px;
+  font-style: normal;
+  text-align: center;
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border-radius: 0;
+  color: #1e1e1e;
+  white-space: normal;
+  border: 3px solid #979795;
+  background-color: transparent;
+  margin-bottom: 6px; }
+  @media screen and (min-width: 720px) {
+    .button {
+      font-size: 21px;
+      line-height: 30px; } }
+  @media (min-width: 720px) {
+    .button {
+      display: inline-block;
+      white-space: nowrap;
+      width: auto; } }
+  .button[disabled] {
+    pointer-events: none;
+    opacity: 0.4; }
+  .button__icon {
+    position: relative;
+    vertical-align: middle;
+    top: -2px;
+    margin-right: 6px; }
+    .button__icon--non-hover {
+      display: inline-block; }
+    .button__icon--hover {
+      display: none; }
+    .button__icon--first {
+      margin-left: -6px; }
+  .button:hover, .button:focus, .button:active {
+    color: #fff;
+    border-color: #979795;
+    background-color: #979795; }
+    .button:hover .button__icon--non-hover, .button:focus .button__icon--non-hover, .button:active .button__icon--non-hover {
+      display: none; }
+    .button:hover .button__icon--hover, .button:focus .button__icon--hover, .button:active .button__icon--hover {
+      display: inline-block; }
+  .button:focus {
+    z-index: 2; }
+  .button--fill {
+    color: #fff;
+    border-color: #979795;
+    background-color: #979795; }
+    .button--fill:hover, .button--fill:focus, .button--fill:active {
+      color: #1e1e1e;
+      border-color: #979795;
+      background-color: transparent; }
+  @media (min-width: 720px) {
+    .button {
+      padding: 9px 39px; } }
+  .button--primary {
+    color: #57917E;
+    border-color: #57917E;
+    background-color: transparent; }
+    .button--primary:hover, .button--primary:focus, .button--primary:active {
+      border-color: #467465;
+      background-color: #467465;
+      color: #fff; }
+  .button--primary-fill {
+    border-color: #467465;
+    background-color: #467465;
+    color: #fff; }
+    .button--primary-fill:hover, .button--primary-fill:focus, .button--primary-fill:active {
+      color: #57917E;
+      border-color: #57917E;
+      background-color: transparent; }
+  @media print {
+    .button--hidden-in-print {
+      display: none; } }
+  .button--secondary {
+    color: #58758D;
+    border-color: #58758D;
+    background-color: transparent; }
+    .button--secondary:hover, .button--secondary:focus, .button--secondary:active {
+      border-color: #58758D;
+      background-color: #58758D;
+      color: #fff; }
+  .button--secondary-fill {
+    border-color: #58758D;
+    background-color: #58758D;
+    color: #fff; }
+    .button--secondary-fill:hover, .button--secondary-fill:focus, .button--secondary-fill:active {
+      color: #58758D;
+      border-color: #58758D;
+      background-color: transparent; }
+  @media print {
+    .button--hidden-in-print {
+      display: none; } }
+  .button--light {
+    color: #fff;
+    border-color: #fff;
+    background-color: transparent; }
+    .button--light:hover, .button--light:focus, .button--light:active {
+      border-color: #fff;
+      background-color: #fff;
+      color: #57917E; }
+  .button--light-fill {
+    border-color: #fff;
+    background-color: #fff;
+    color: #57917E; }
+    .button--light-fill:hover, .button--light-fill:focus, .button--light-fill:active {
+      color: #fff;
+      border-color: #fff;
+      background-color: transparent; }
+  @media print {
+    .button--hidden-in-print {
+      display: none; } }
+  .button--wider {
+    min-width: 180px; }
+  @media (min-width: 720px) {
+    .button--spaced {
+      margin-left: 12px;
+      margin-right: 12px; } }
+  .button--block {
+    display: block;
+    width: 100%; }
+  .button--compact {
+    font-size: 15px;
+    line-height: 20px;
+    padding: 6px 12px; }
+    @media screen and (min-width: 720px) {
+      .button--compact {
+        font-size: 16px;
+        line-height: 20px; } }
+
+/*
+Inputs
+
+Use the class `.input` to add styling to input fields
+
+Example: {type: isolated} Standard input
+    <label>
+        Standard input
+        <input type="text" placeholder="I set the standard" class="input" />
+    </label>
+
+Example: {type: isolated} Error input
+    <label>
+        I'm a error input!
+        <input type="text" placeholder="Omg!" class="input  input--error" />
+    </label>
+
+Example: {type: isolated} Inline input
+    <label>
+        Look,
+        <input class="input  input--inline" type="text" placeholder="I'm inline!!" />
+        Wuut?
+    </label>
+
+Example: {type: isolated} Outlined input
+    <label>
+        Outlined input
+        <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
+    </label>
+
+Example: {type: isolated} Smaller input
+    <label>
+        Small input
+        <input type="text" placeholder="I'm tiny!" class="input input--small" />
+    </label>
+
+Example: {type: isolated} Standard textarea
+    <label>
+        I'm a textarea
+        <textarea placeholder="I more got space!" class="input"></textarea>
+    </label>
+
+Example: {type: isolated} Textarea with error
+    <label>
+        I'm a textarea with error!
+        <textarea placeholder="Why? :'('" class="input  input--error"></textarea>
+    </label>
+
+Example: {type: isolated} Textarea with outlines
+    <label>
+        I got the outlines!
+        <textarea placeholder="Look, outlines!" class="input  input--outlined"></textarea>
+    </label>
+
+Example: {type: isolated} Textarea that grows
+    <label>
+        I'm a textarea that can grow
+        <textarea class="input" placeholder="You can type alot on me!" auto-grow></textarea>
+    </label>
+
+Styleguide 3.1
+*/
+.input {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 30px;
+  line-height: 1;
+  display: block;
+  width: 100%;
+  padding: 9px 15px;
+  color: #1e1e1e;
+  border-radius: 0;
+  border: 3px solid #fff;
+  background-color: #fff; }
+  @media screen and (min-width: 720px) {
+    .input {
+      font-size: 21px;
+      line-height: 30px; } }
+  .input:focus {
+    border-color: #465e71; }
+  .input[disabled] {
+    background-color: #979795; }
+  .input:-moz-placeholder {
+    color: #979795; }
+  .input::-moz-placeholder {
+    color: #979795; }
+  .input:-ms-input-placeholder {
+    color: #979795; }
+  .input::-webkit-input-placeholder {
+    color: #979795; }
+  .input--inline {
+    font-size: 19px;
+    line-height: 30px;
+    display: inline-block;
+    width: auto;
+    min-width: 160px;
+    padding: 6px 12px; }
+    @media screen and (min-width: 720px) {
+      .input--inline {
+        font-size: 21px;
+        line-height: 30px; } }
+  .input--small {
+    width: 220px; }
+  .input--outlined {
+    border: 3px solid #cbcbca; }
+  .input--error {
+    background-color: #cdded8; }
+
+/*
+Select
+
+Example: Default
+    <label class="select">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
+
+Example: Outlined
+    <label class="select  select--outlined">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
+
+Example: Light
+    <label class="select  select--light">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
+
+Example: Adaptable
+    <p>
+        I adapt:
+        <label class="select">
+            <select select-autowidth aria-label="Kategori">
+                <option>alle tema</option>
+                <option>arbeid og næring</option>
+                <option>...</option>
+            </select>
+        </label>
+        ...OMG!
+    </p>
+
+Styleguide 3.3
+*/
+.select {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  border-bottom: 3px solid #57917E; }
+  .select select {
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0;
+    padding: 6px 0;
+    padding-right: 22px;
+    max-width: 100%;
+    border-radius: 0;
+    border: 0;
+    color: #1e1e1e;
+    background-color: transparent;
+    -webkit-transition: width 100ms cubic-bezier(0, 0, 0.1, 1);
+    transition: width 100ms cubic-bezier(0, 0, 0.1, 1);
+    will-change: width; }
+    .select select:focus:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000; }
+    .select select::-ms-expand {
+      display: none; }
+    .select select option {
+      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400; }
+  .select:before {
+    content: '';
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    top: 50%;
+    right: 1px;
+    margin-top: -4px; }
+  .select--block {
+    display: block; }
+    .select--block select {
+      display: block;
+      width: 100%; }
+  .select--light {
+    color: #fff;
+    border-color: #fff; }
+    .select--light select {
+      color: #fff; }
+      .select--light select:focus {
+        color: #1e1e1e; }
+  .select--outlined {
+    border: 3px solid #cbcbca; }
+    .select--outlined:before {
+      right: 12px; }
+    .select--outlined select {
+      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      font-size: 19px;
+      line-height: 30px;
+      padding: 9px 15px; }
+      @media screen and (min-width: 720px) {
+        .select--outlined select {
+          font-size: 21px;
+          line-height: 30px; } }
+  .select--small {
+    width: 228px; }
+
+@-moz-document url-prefix() {
+  .select select {
+    text-indent: 0.01px;
+    text-overflow: '';
+    padding-right: 1rem; }
+  .select option {
+    background-color: white; } }
+
+hr,
+.separator {
+  margin: 0;
+  margin-bottom: 24px;
+  padding: 0;
+  border: 0;
+  border-top: 3px solid #cbcbca; }
+  @media (min-width: 720px) {
+    hr,
+    .separator {
+      margin-bottom: 60px; } }
+
+/* Checkbox
+
+### These are the modifiers:
+- `inline` - Removes margin underneath so it flows better with text
+- `block` - Make it 100% width
+- `light` - Make it light, only use on darker backgrounds
+- `spaceless` - Remove spaces to the right and underneath
+
+Example: {type: isolated} Checkbox default
+    <label class="checkbox">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        Yes
+    </label>
+    <label class="checkbox">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox light
+    <label class="checkbox  checkbox--light">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        Yes
+    </label>
+    <label class="checkbox  checkbox--light">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox block
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        Yes
+    </label>
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox" />
+        <span class="checkbox__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox inline
+    <p>
+        Look, I'm mixed with
+        <label class="checkbox  checkbox--inline">
+            <input type="checkbox" />
+            <span class="checkbox__control-indicator"></span>
+            Yes
+        </label>
+        <label class="checkbox  checkbox--inline">
+            <input type="checkbox" />
+            <span class="checkbox__control-indicator"></span>
+            No
+        </label>
+        text
+    </p>
+
+Styleguide 3.4
+*/
+/* Radio
+
+### These are the modifiers:
+- `inline` - Removes margin underneath so it flows better with text
+- `block` - Make it 100% width
+- `light` - Make it light, only use on darker backgrounds
+- `spaceless` - Remove spaces to the right and underneath
+
+Example: {type: isolated} Radio default
+    <label class="radio">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox light
+    <label class="radio  radio--light">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio  radio--light">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Radio block
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+Example: {type: isolated} Checkbox inline
+    <p>
+        Look, I'm mixed with
+        <label class="radio  radio--inline">
+            <input type="radio" name="styleguide" />
+            <span class="radio__control-indicator"></span>
+            Yes
+        </label>
+        <label class="radio  radio--inline">
+            <input type="radio" name="styleguide" />
+            <span class="radio__control-indicator"></span>
+            No
+        </label>
+        text
+    </p>
+
+Styleguide 3.5
+*/
+.radio,
+.checkbox {
+  position: relative;
+  display: inline-block;
+  padding-left: 42px;
+  margin-bottom: 10px;
+  margin-right: 24px;
+  cursor: pointer; }
+  .radio:last-child,
+  .checkbox:last-child {
+    margin-bottom: 0; }
+  .radio input[type='radio'],
+  .radio input[type='checkbox'],
+  .checkbox input[type='radio'],
+  .checkbox input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1; }
+    .radio input[type='radio']:checked ~ .radio__control-indicator:before,
+    .radio input[type='radio']:checked ~ .checkbox__control-indicator:before,
+    .radio input[type='checkbox']:checked ~ .radio__control-indicator:before,
+    .radio input[type='checkbox']:checked ~ .checkbox__control-indicator:before,
+    .checkbox input[type='radio']:checked ~ .radio__control-indicator:before,
+    .checkbox input[type='radio']:checked ~ .checkbox__control-indicator:before,
+    .checkbox input[type='checkbox']:checked ~ .radio__control-indicator:before,
+    .checkbox input[type='checkbox']:checked ~ .checkbox__control-indicator:before {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      opacity: 1; }
+    .radio input[type='radio']:focus ~ .checkbox__control-indicator,
+    .radio input[type='radio']:focus ~ .radio__control-indicator,
+    .radio input[type='checkbox']:focus ~ .checkbox__control-indicator,
+    .radio input[type='checkbox']:focus ~ .radio__control-indicator,
+    .checkbox input[type='radio']:focus ~ .checkbox__control-indicator,
+    .checkbox input[type='radio']:focus ~ .radio__control-indicator,
+    .checkbox input[type='checkbox']:focus ~ .checkbox__control-indicator,
+    .checkbox input[type='checkbox']:focus ~ .radio__control-indicator {
+      border-color: #467465; }
+  .radio__control-indicator,
+  .checkbox__control-indicator {
+    position: absolute;
+    display: block;
+    -webkit-user-select: none;
+            user-select: none;
+    top: 0.25em;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 0;
+    background-color: #fff;
+    border: 3px solid #979795; }
+    .radio__control-indicator:before,
+    .checkbox__control-indicator:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      opacity: 0;
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transition: -webkit-transform 100ms cubic-bezier(0, 0, 0.1, 1);
+      transition: -webkit-transform 100ms cubic-bezier(0, 0, 0.1, 1);
+      transition: transform 100ms cubic-bezier(0, 0, 0.1, 1);
+      transition: transform 100ms cubic-bezier(0, 0, 0.1, 1), -webkit-transform 100ms cubic-bezier(0, 0, 0.1, 1); }
+  .radio--inline,
+  .checkbox--inline {
+    margin-bottom: 0; }
+  .radio--spaceless,
+  .checkbox--spaceless {
+    margin-right: 0;
+    margin-bottom: 0; }
+  .radio--light .radio__control-indicator,
+  .radio--light .checkbox__control-indicator,
+  .checkbox--light .radio__control-indicator,
+  .checkbox--light .checkbox__control-indicator {
+    border: 0; }
+  .radio--light:hover .radio__control-indicator,
+  .radio--light:hover .checkbox__control-indicator,
+  .checkbox--light:hover .radio__control-indicator,
+  .checkbox--light:hover .checkbox__control-indicator {
+    background-color: #465e71; }
+  .radio--light:hover .radio__control-indicator:before,
+  .checkbox--light:hover .radio__control-indicator:before {
+    background-color: #fff; }
+  .radio--light input[type='radio']:focus ~ .radio__control-indicator,
+  .radio--light input[type='checkbox']:focus ~ .checkbox__control-indicator,
+  .checkbox--light input[type='radio']:focus ~ .radio__control-indicator,
+  .checkbox--light input[type='checkbox']:focus ~ .checkbox__control-indicator {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4); }
+  .radio--block,
+  .checkbox--block {
+    display: block; }
+
+.checkbox {
+  padding-left: 42px; }
+  .checkbox__control-indicator {
+    top: 0.1em;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+    border: 3px solid #f6f6f5; }
+    .checkbox__control-indicator:before {
+      margin-top: -6px;
+      margin-left: -8px; }
+  .checkbox:hover .checkbox__control-indicator {
+    border-color: #57917E; }
+  .checkbox--light .checkbox__control-indicator {
+    background-color: #fff; }
+
+.radio:hover .radio__control-indicator {
+  border-color: #979795; }
+
+.radio__control-indicator {
+  border-radius: 50%; }
+  .radio__control-indicator:before {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    margin-left: -4px;
+    margin-top: -4px;
+    background-color: #465e71; }
+
+/* Advanced form elements
+
+Because sometimes you want more fancy form elements with some javascript-modifiers to add some sugar :)
+
+Example: {type: isolated} Radio block with adaptable select with input for custom values
+    <label class="radio  radio--block  radio-content-toggle ">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        Do this stuff!
+        <label class="select  radio-content-toggle__element  hideme">
+            With
+            <select select-autowidth aria-label="Kategori">
+                <option>this</option>
+                <option>that</option>
+                <option>custom!</option>
+            </select>
+        </label>
+        <label class="hideme">
+            <input type="text" placeholder="Woop!" class="input--inline" />
+        </label>
+    </label>
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide" />
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+
+Styleguide 3.99
+*/
+.hideme {
+  display: none !important; }
+
+/* Container
+
+In most cases you shouldn't lett the content float to the full width, then you should use a containger.
+
+For text-content you shouldn't use width's larger than `.container--tight`.
+
+Example: {type: isolated} Default container
+    <div class="container">
+        <h2>Default container</h2>
+
+        <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    </div>
+
+Example: {type: isolated} Wide container
+    <div class="container  container--wide">
+        <h2>Wide container</h2>
+
+        <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    </div>
+
+Example: {type: isolated} Tight container
+    <div class="container  container--tight">
+        <h2>Tight container</h2>
+
+        <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    </div>
+
+Styleguide 5.1
+*/
+.container, .adminui-page-header__content, .adminui-page-section--tight {
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  max-width: 1110px; }
+  @media (min-width: 960px) {
+    .container, .adminui-page-header__content, .adminui-page-section--tight {
+      padding-left: 60px;
+      padding-right: 60px; } }
+  .container--xtight {
+    max-width: 620px; }
+  .container--tight, .adminui-page-section--tight {
+    max-width: 740px; }
+  .container--wide, .adminui-page-header__content {
+    max-width: 1400px; }
+  .container .container, .adminui-page-header__content .container, .adminui-page-section--tight .container, .container .adminui-page-header__content, .adminui-page-header__content .adminui-page-header__content, .adminui-page-section--tight .adminui-page-header__content, .container .adminui-page-section--tight, .adminui-page-header__content .adminui-page-section--tight, .adminui-page-section--tight .adminui-page-section--tight {
+    padding-left: 0;
+    padding-right: 0; }
+
+/* Error messages
+
+Example:
+    <p class="error">Look, I'm an error message!</p>
+
+Styleguide 3.6
+*/
+.error {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 19px;
+  line-height: 30px;
+  padding: 12px 24px;
+  margin-bottom: 30px;
+  color: #fff;
+  background-color: #57917E; }
+  @media screen and (min-width: 720px) {
+    .error {
+      font-size: 21px;
+      line-height: 30px; } }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px; }
+  .modal__content {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 24px;
+    z-index: 40;
+    top: 0;
+    width: 700px;
+    max-width: 100%;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(30, 30, 30, 0.3);
+    background-color: #fff;
+    padding: 24px;
+    -webkit-transform-origin: left top;
+            transform-origin: left top; }
+    @media (min-width: 720px) {
+      .modal__content {
+        padding: 60px; } }
+    .modal__content:focus {
+      outline: 0; }
+    .modal__content--animate {
+      -webkit-transition: opacity 300ms cubic-bezier(0, 1, 0, 1), -webkit-transform 300ms cubic-bezier(0, 0, 0.1, 1);
+      transition: opacity 300ms cubic-bezier(0, 1, 0, 1), -webkit-transform 300ms cubic-bezier(0, 0, 0.1, 1);
+      transition: transform 300ms cubic-bezier(0, 0, 0.1, 1), opacity 300ms cubic-bezier(0, 1, 0, 1);
+      transition: transform 300ms cubic-bezier(0, 0, 0.1, 1), opacity 300ms cubic-bezier(0, 1, 0, 1), -webkit-transform 300ms cubic-bezier(0, 0, 0.1, 1); }
+  .modal__title {
+    margin-bottom: 60px; }
+  .modal__close {
+    position: absolute;
+    top: 24px;
+    right: 24px; }
+  .modal--tight .modal__content {
+    width: 460px; }
+
+.backdrop, .modal__backdrop {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(246, 246, 245, 0.9); }
+
+/* List of block elements
+
+
+Example: Basic block list
+    <ul class="blocklist">
+        <li class="blocklist__item">Element 1</li>
+        <li class="blocklist__item">Element 2</li>
+        <li class="blocklist__item">Element 3</li>
+    </ul>
+
+
+Example: With headings for each element
+    <div class="blocklist">
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 1</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 2</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 3</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+    </div>
+
+
+Example: We have variants for heading sizes
+    <div class="blocklist">
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle blocklist__itemtitle--small">Small heading</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Default heading</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle blocklist__itemtitle--large">Large heading</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle blocklist__itemtitle--xlarge">Extra large heading</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+    </div>
+
+
+Example: List of links
+    <nav class="blocklist">
+        <a class="blocklist__item blocklist__item--link">
+            <h2 class="blocklist__itemtitle">Element 1</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </a>
+        <a class="blocklist__item blocklist__item--link">
+            <h2 class="blocklist__itemtitle">Element 2</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </a>
+        <a class="blocklist__item blocklist__item--link">
+            <h2 class="blocklist__itemtitle">Element 3</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </a>
+    </nav>
+
+
+Example: With buttons
+    <section class="blocklist">
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 1</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+            <p>
+                <button class="button  button--primary">Edit</button>
+            </p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 2</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+            <p>
+                <button class="button  button--primary">Edit</button>
+                <button class="button">Preview</button>
+            </p>
+        </section>
+    </section>
+
+
+Example: With tighter spacing
+    <section class="blocklist blocklist--tight">
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 1</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 2</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </section>
+        <section class="blocklist__item">
+            <h2 class="blocklist__itemtitle">Element 3</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+    </section>
+
+
+Example: Color variants
+    <section class="blocklist">
+        <section class="blocklist__item  blocklist__item--warning">
+            <h2 class="blocklist__itemtitle">Warning</h2>
+            <p>Inceptos Tristique Bibendum Parturient</p>
+        </section>
+        <section class="blocklist__item  blocklist__item--success">
+            <h2 class="blocklist__itemtitle">Success</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+        </section>
+        <section class="blocklist__item  blocklist__item--info">
+            <h2 class="blocklist__itemtitle">Info</h2>
+            <p>Pellentesque Cursus Adipiscing</p>
+        </section>
+    </section>
+
+
+Styleguide components.blocklist
+*/
+.blocklist .blocklist__item {
+  display: block;
+  margin-bottom: 30px;
+  background-color: rgba(151, 151, 149, 0.2);
+  padding: 30px 24px; }
+  .blocklist .blocklist__item--link {
+    border-bottom: 3px solid #58758D;
+    color: #1e1e1e;
+    text-decoration: none; }
+    .blocklist .blocklist__item--link:hover {
+      color: #1e1e1e;
+      text-decoration: none; }
+    .blocklist .blocklist__item--link:hover, .blocklist .blocklist__item--link:focus {
+      border-color: #394c5c; }
+  .blocklist .blocklist__item--warning {
+    background-color: #d53c3c;
+    color: #fff; }
+  .blocklist .blocklist__item--success {
+    background-color: #3c893c;
+    color: #fff; }
+  .blocklist .blocklist__item--info {
+    background-color: #f5c90f;
+    color: #1e1e1e; }
+
+.blocklist .blocklist__itemtitle {
+  margin-bottom: 10px;
+  font-size: 26px;
+  line-height: 40px; }
+  .blocklist .blocklist__itemtitle:last-child {
+    margin-bottom: 0; }
+  @media screen and (min-width: 720px) {
+    .blocklist .blocklist__itemtitle {
+      font-size: 32px;
+      line-height: 40px; } }
+  .blocklist .blocklist__itemtitle--small {
+    font-size: 19px;
+    line-height: 30px; }
+    @media screen and (min-width: 720px) {
+      .blocklist .blocklist__itemtitle--small {
+        font-size: 21px;
+        line-height: 30px; } }
+  .blocklist .blocklist__itemtitle--large {
+    font-size: 26px;
+    line-height: 40px; }
+    @media screen and (min-width: 720px) {
+      .blocklist .blocklist__itemtitle--large {
+        font-size: 32px;
+        line-height: 40px; } }
+  .blocklist .blocklist__itemtitle--xlarge {
+    font-size: 34px;
+    line-height: 50px; }
+    @media screen and (min-width: 720px) {
+      .blocklist .blocklist__itemtitle--xlarge {
+        font-size: 42px;
+        line-height: 60px; } }
+
+.blocklist--tight .blocklist__item {
+  margin-bottom: 10px;
+  padding: 10px 12px; }
+
+/* Form field help text
+
+Example:
+
+    <label class="label">
+        Standard input
+        <input type="text" placeholder="I set the standard" />
+    </label>
+    <p class="formfield-help-text">
+        Vestibulum id ligula porta felis euismod semper.
+        Nullam id dolor id nibh ultricies vehicula ut id elit.
+    </p>
+
+    <label class="label">
+        I'm a textarea
+        <textarea placeholder="I more got space!"></textarea>
+    </label>
+    <p class="formfield-help-text">
+        Donec sed odio dui.
+    </p>
+
+Styleguide components.formfield-help-text
+*/
+/* Tabs
+
+http://simplyaccessible.com/article/danger-aria-tabs/
+
+Example: {type: isolated} Structure
+
+    <div cradmin_tabs>
+        <nav class="tabs__tab-list">
+            <a class="tabs__tab  tabs__tab--active"
+                    href="#ipa"
+                    id="tab-ipa"
+                    cradmin_tabs_tab
+                    aria-selected="true">
+                India Pale Ale (IPA)
+            </a>
+            <a class="tabs__tab"
+                    href="#gueuze"
+                    id="tab-gueuze"
+                    cradmin_tabs_tab
+                    aria-selected="false">
+                Gueuze
+            </a>
+            <a class="tabs__tab"
+                    href="#imperial-stout"
+                    id="tab-imperial-stout"
+                    cradmin_tabs_tab
+                    aria-selected="false">
+                Imperial Stout
+            </a>
+        </nav>
+
+        <div class="tabs__panel  tabs__panel--active"
+                aria-hidden="false" aria-labelledby="tab-ipa"
+                id="ipa"
+                cradmin_tabs_panel>
+            <h2>India Pale Ale (IPA)</h2>
+            ...
+        </div>
+        <div class="tabs__panel"
+                aria-hidden="true"
+                aria-labelledby="tab-gueuze"
+                id="gueuze"
+                cradmin_tabs_panel>
+            <h2>Gueuze</h2>
+            ...
+        </div>
+        <div class="tabs__panel"
+                aria-hidden="true" aria-labelledby="tab-imperial-stout"
+                id="imperial-stout"
+                cradmin_tabs_panel>
+            <h2>Imperial Stout</h2>
+            ...
+        </div>
+    </div>
+
+
+Styleguide components.tabs
+*/
+.tabs__tab-list {
+  display: -webkit-box;
+  display: flex;
+  border-bottom: 3px solid #467465; }
+
+.tabs__tab {
+  display: block;
+  text-align: center;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
+  padding: 12px;
+  border: none; }
+  .tabs__tab:hover, .tabs__tab:focus, .tabs__tab:active, .tabs__tab--active {
+    background-color: #467465;
+    color: #fff; }
+
+.tabs__panel {
+  display: none; }
+  .tabs__panel--active {
+    display: block; }
+
+/* Form field wrapper
+
+NOTE: Not sure about combining formfield variants and "alerts" of different variants.
+
+Example: Basics
+
+    <div class="formfield">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+        <p class="formfield__help-text">
+            Vestibulum id ligula porta felis euismod semper.
+            Nullam id dolor id nibh ultricies vehicula ut id elit.
+        </p>
+    </div>
+
+    <div class="formfield">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+    </div>
+
+    <div class="formfield">
+        <label class="label">
+            I'm a textarea
+            <textarea placeholder="I more got space!" class="input"></textarea>
+        </label>
+        <p class="formfield__help-text">
+            Donec sed odio dui.
+        </p>
+    </div>
+
+Example: More advanced fields
+
+    <div class="formfield">
+        <fieldset class="fieldset">
+            <legend class="legend">Are you good?</legend>
+            <label class="radio  radio--block">
+                <input type="radio" />
+                <span class="radio__control-indicator"></span>
+                Yes
+            </label>
+            <label class="radio  radio--block">
+                <input type="radio" />
+                <span class="radio__control-indicator"></span>
+                No
+            </label>
+            <label class="radio  radio--block">
+                <input type="radio" />
+                <span class="radio__control-indicator"></span>
+                Maybe
+            </label>
+            <p class="formfield__help-text">
+                Donec sed odio dui.
+            </p>
+        </fieldset>
+    </div>
+
+    <div class="formfield">
+        <fieldset class="fieldset">
+            <legend class="legend">Which of these statements are true?</legend>
+            <label class="checkbox  checkbox--block">
+                <input type="checkbox" />
+                <span class="checkbox__control-indicator"></span>
+                CSS is better than SASS
+            </label>
+            <label class="checkbox  checkbox--block">
+                <input type="checkbox" />
+                <span class="checkbox__control-indicator"></span>
+                SASS is a superset of CSS
+            </label>
+            <label class="checkbox  checkbox--block">
+                <input type="checkbox" />
+                <span class="checkbox__control-indicator"></span>
+                SASS is a programming language
+            </label>
+            <p class="formfield__help-text">
+                Donec sed odio dui.
+            </p>
+        </fieldset>
+    </div>
+
+    <div class="formfield">
+        <fieldset class="fieldset">
+            <legend class="legend">Are you good?</legend>
+            <label class="select">
+                <select aria-label="Kategori">
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Maybe</option>
+                </select>
+            </label>
+            <p class="formfield__help-text">
+                Donec sed odio dui.
+            </p>
+        </fieldset>
+    </div>
+
+Example: Warning and success messages
+    <div class="formfield">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+        <p class="formfield__help-text">
+            Donec sed odio dui.
+        </p>
+        <p class="SOMETHING--warning">
+            I am a warning
+        </p>
+        <p class="SOMETHING--success">
+            I am a success message
+        </p>
+    </div>
+    <div class="formfield">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+        <p class="SOMETHING--success">
+            I am a success message
+        </p>
+    </div>
+
+Example: Warning and success variants
+    <div class="formfield  formfield--warning">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+        <p class="formfield__help-text">
+            Donec sed odio dui.
+        </p>
+    </div>
+    <div class="formfield  formfield--success">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+        <p class="formfield__help-text">
+            Donec sed odio dui.
+        </p>
+    </div>
+
+Styleguide components.formfield
+*/
+/* AdminUI breadcrumb
+
+The basic components of a breadcrumb is:
+
+```
+.adminui-breadcrumbs  (the outer wrapper)
+    .adminui-breadcrumbs__content   (wrapper around the content)
+        .adminui-breadcrumbs__item   (an item in the breadcrumb)
+```
+
+Example: {type: isolated} Basic example
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--dark">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Example: {type: isolated} block-light variant
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--block-light  adminui-breadcrumbs--dark">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Example: {type: isolated} Content before and after (inline-block by default)
+
+    Before the breadcrumb!
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--dark">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+    After the breadcrumb!
+
+Example: {type: isolated} With container
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--block-light  adminui-breadcrumbs--dark">
+        <div class="container container--wide">
+            <a class="adminui-breadcrumbs__item">
+                First
+            </a>
+            <span class="adminui-breadcrumbs__separator"></span>
+            <a class="adminui-breadcrumbs__item">
+                Second
+            </a>
+            <span class="adminui-breadcrumbs__separator"></span>
+            <a class="adminui-breadcrumbs__item">
+                Last
+            </a>
+        </div>
+    </nav>
+
+
+Example: {type: isolated} Light variant
+
+    <nav class="adminui-breadcrumbs  adminui-breadcrumbs--light">
+        <a class="adminui-breadcrumbs__item">
+            First
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Second
+        </a>
+        <span class="adminui-breadcrumbs__separator"></span>
+        <a class="adminui-breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Styleguide components.adminui.adminui-breadcrumbs
+*/
+.adminui-breadcrumbs {
+  position: relative;
+  font-size: 15px;
+  line-height: 20px;
+  display: inline-block; }
+  @media screen and (min-width: 720px) {
+    .adminui-breadcrumbs {
+      font-size: 16px;
+      line-height: 20px; } }
+  .adminui-breadcrumbs__item {
+    color: inherit;
+    border-color: transparent; }
+  .adminui-breadcrumbs__separator {
+    vertical-align: middle;
+    margin: -2px 6px 0;
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7); }
+  .adminui-breadcrumbs--dark {
+    color: #1e1e1e; }
+    .adminui-breadcrumbs--dark .adminui-breadcrumbs__item {
+      color: inherit;
+      border-color: transparent; }
+      .adminui-breadcrumbs--dark .adminui-breadcrumbs__item:hover {
+        color: #394c5c; }
+    .adminui-breadcrumbs--dark .adminui-breadcrumbs__separator {
+      vertical-align: middle;
+      margin: -2px 6px 0;
+      -webkit-transform: scale(0.7);
+              transform: scale(0.7); }
+  .adminui-breadcrumbs--light {
+    color: #fff; }
+    .adminui-breadcrumbs--light .adminui-breadcrumbs__item {
+      color: inherit; }
+      .adminui-breadcrumbs--light .adminui-breadcrumbs__item:hover {
+        color: #cbcbca;
+        border-color: #cbcbca; }
+    .adminui-breadcrumbs--light .adminui-breadcrumbs__separator {
+      vertical-align: middle;
+      margin: -2px 6px 0;
+      -webkit-transform: scale(0.7);
+              transform: scale(0.7); }
+  .adminui-breadcrumbs--block-light {
+    display: block;
+    padding: 10px 0;
+    background-color: #fff;
+    box-shadow: 0 3px 0 rgba(151, 151, 149, 0.15); }
+
+/* AdminUI page header
+
+The basic components of a header is:
+
+```
+.adminui-page-header  (the outer wrapper)
+    .adminui-page-header__content   (wrapper around the content of the header)
+        .adminui-page-header__brand   (container for a brand)
+        .adminui-page-header__nav     (navigation elements)
+            .adminui-page-header__navlink        (navigation element link)
+            .adminui-page-header__navbutton      (navigation element button)
+            .adminui-page-header__navmenutoggle  (navigation element menu toggle)
+```
+
+Example: {type: isolated} With brand
+
+    <header class="adminui-page-header">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+        </div>
+    </header>
+
+Example: {type: isolated} With brand and navigation
+    <header class="adminui-page-header">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink">Information</a>
+            </nav>
+        </div>
+    </header>
+
+Example: {type: isolated} Compact
+    <header class="adminui-page-header  adminui-page-header--compact">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink">Information</a>
+            </nav>
+        </div>
+    </header>
+
+Example: {type: isolated} Navigation active links
+    <header class="adminui-page-header">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">Nonactive link</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--active">Active link</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button">Nonactive button</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button adminui-page-header__navlink--active">Active button</a>
+            </nav>
+        </div>
+    </header>
+
+Example: {type: isolated} With navigation buttons and menu toggle button
+    <header class="adminui-page-header">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button">A button</a>
+                <button type="button" class="adminui-page-header__navmenutoggle">
+                    Menu
+                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+Styleguide components.adminui.adminui-page-header
+*/
+.adminui-page-header {
+  padding: 10px 0;
+  color: #fff;
+  width: 100%;
+  top: 0;
+  background-color: #467465; }
+  @media (min-width: 720px) {
+    .adminui-page-header {
+      padding: 20px 0; } }
+  @media (min-width: 720px) {
+    .adminui-page-header--compact {
+      padding: 10px 0; } }
+  .adminui-page-header__brand {
+    display: inline-block;
+    border: none; }
+  .adminui-page-header__brandname {
+    display: none;
+    fill: #fff;
+    color: #fff; }
+    @media (min-width: 720px) {
+      .adminui-page-header__brandname {
+        display: inline-block; } }
+  .adminui-page-header__nav {
+    position: relative;
+    top: 1px;
+    float: right; }
+  .adminui-page-header__navlink {
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 20px;
+    display: none;
+    position: relative;
+    margin-left: 1em;
+    color: #fff;
+    border-bottom: 2px solid transparent; }
+    @media screen and (min-width: 720px) {
+      .adminui-page-header__navlink {
+        font-size: 16px;
+        line-height: 20px; } }
+    @media (min-width: 960px) {
+      .adminui-page-header__navlink {
+        display: inline; } }
+    .adminui-page-header__navlink--button {
+      margin-top: -2px;
+      padding: 7px 12px 6px;
+      border: 3px solid #cbcbca; }
+      @media (min-width: 960px) {
+        .adminui-page-header__navlink--button {
+          display: inline-block; } }
+    .adminui-page-header__navlink--active, .adminui-page-header__navlink:hover, .adminui-page-header__navlink:focus {
+      color: #fff;
+      border-color: #fff; }
+  .adminui-page-header__navmenutoggle {
+    position: relative;
+    top: 8px;
+    float: right;
+    margin-left: 1em;
+    min-width: 84px;
+    line-height: 20px;
+    color: #fff;
+    -webkit-transition: all 300ms cubic-bezier(0, 0, 0.1, 1);
+    transition: all 300ms cubic-bezier(0, 0, 0.1, 1); }
+    .adminui-page-header__navmenutoggle .icon-hamburger__bar {
+      background-color: #fff; }
+  .adminui-page-header--showmenu {
+    position: fixed;
+    z-index: 40; }
+
+/* AdminUI expandable menu
+
+
+Example: {type: isolated} Example
+
+    <header class="adminui-page-header  adminui-page-header--fill"
+            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-page-header--showmenu">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <button type="button" class="adminui-page-header__navmenutoggle"
+                        cradmin_menutoggle_clickable
+                        cradmin_menutoggle_groupid="mainmenu">
+                    Menu
+                    <i class="icon-hamburger"
+                            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="icon-hamburger--close"
+                            aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="adminui-page-cover"></div>
+
+    <div class="adminui-expandable-menu" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
+        <div class="adminui-expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
+        <div class="adminui-expandable-menu__content">
+            <p>Menu content here</p>
+        </div>
+    </div>
+
+Styleguide components.adminui.adminui-expandable-menu
+*/
+.adminui-expandable-menu {
+  position: fixed;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  z-index: 30; }
+  .adminui-expandable-menu--expanded {
+    display: block; }
+  .adminui-expandable-menu__backdrop {
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    display: none; }
+    @media (min-width: 960px) {
+      .adminui-expandable-menu__backdrop {
+        display: block; } }
+  .adminui-expandable-menu__content {
+    position: fixed;
+    z-index: 30;
+    padding-top: 80px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #57917E;
+    color: #fff; }
+    @media (min-width: 960px) {
+      .adminui-expandable-menu__content {
+        width: 50%; } }
+
+/* AdminUI page cover
+
+Example: {type: isolated} Minimal example
+
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
+    </header>
+
+Example: {type: isolated} With description
+
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
+        <p class="adminui-page-cover__description">The description</p>
+    </header>
+
+Example: {type: isolated} With large description
+
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
+        <p class="adminui-page-cover__description  adminui-page-cover__description--large">The description</p>
+    </header>
+
+Example: {type: isolated} With inline elements in description
+
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
+        <p class="adminui-page-cover__description">
+            The <strong class="adminui-page-cover__strong">awesome</strong>
+            <a class="adminui-page-cover__link">description</a>
+        </p>
+    </header>
+
+Styleguide components.adminui.adminui-page-cover
+*/
+.adminui-page-cover {
+  position: relative;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  text-align: center;
+  color: #fff;
+  background-color: #57917E; }
+  @media print {
+    .adminui-page-cover {
+      background-color: transparent;
+      color: #000; } }
+  @media (min-width: 720px) {
+    .adminui-page-cover {
+      padding-top: 30px;
+      padding-bottom: 30px; } }
+  .adminui-page-cover__title {
+    position: relative;
+    z-index: 2;
+    padding: 0 24px;
+    max-width: 1110px;
+    margin: 0 auto 12px;
+    font-size: 34px;
+    line-height: 50px; }
+    @media screen and (min-width: 720px) {
+      .adminui-page-cover__title {
+        font-size: 42px;
+        line-height: 60px; } }
+    .adminui-page-cover__title--small {
+      font-size: 26px;
+      line-height: 40px; }
+      @media screen and (min-width: 720px) {
+        .adminui-page-cover__title--small {
+          font-size: 32px;
+          line-height: 40px; } }
+    .adminui-page-cover__title:only-child {
+      margin-bottom: 0; }
+  .adminui-page-cover__description {
+    font-size: 19px;
+    line-height: 30px;
+    position: relative;
+    z-index: 2;
+    max-width: 788px;
+    padding: 0 24px;
+    margin-left: auto;
+    margin-right: auto; }
+    @media screen and (min-width: 720px) {
+      .adminui-page-cover__description {
+        font-size: 21px;
+        line-height: 30px; } }
+    .adminui-page-cover__description--large {
+      font-size: 26px;
+      line-height: 40px;
+      font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase; }
+      @media screen and (min-width: 720px) {
+        .adminui-page-cover__description--large {
+          font-size: 32px;
+          line-height: 40px; } }
+  .adminui-page-cover__strong {
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    display: inline-block;
+    padding: 0 6px 2px;
+    margin: 0 -2px;
+    background-color: #467465; }
+  .adminui-page-cover__link {
+    color: #fff;
+    border-color: #467465; }
+    .adminui-page-cover__link:hover, .adminui-page-cover__link:focus {
+      color: #fff;
+      border-color: #fff; }
+
+/*
+AdminUI page sections
+
+Most modifiers can be combined.
+Note: Be careful with combining `tight`, don't combine it with `focus`.
+
+Example: {type: isolated} Default page section - without any container
+    <section class="adminui-page-section">
+        <h2>Default page section</h2>
+        <p>As you can see, the default adminui-page-section relies on a container to provide
+        space on the sides, so do not use this example!</p>
+    </section>
+
+Example: {type: isolated} Default page section
+    <section class="adminui-page-section">
+        <div class="container  container--tight">
+            <h2>Default page section</h2>
+        </div>
+    </section>
+
+Example: {type: isolated} `tight`
+    <section class="adminui-page-section  adminui-page-section--tight">
+        <h2>A tight section</h2>
+        <p>Good for pure content</p>
+    </section>
+
+Example: {type: isolated} `focus`
+    <section class="adminui-page-section  adminui-page-section--focus">
+        <div class="container  container--tight">
+            <h2>Focus section</h2>
+            <p>Used for making the content stand out slightly from the rest of the page</p>
+        </div>
+    </section>
+
+Example: {type: isolated} `center`
+    <section class="adminui-page-section  adminui-page-section--center">
+        <h2>Centered content</h2>
+    </section>
+
+Example: {type: isolated} `center-lg`
+    <section class="adminui-page-section  adminui-page-section--center-lg">
+        <h2>Centered content (Only for large screens)</h2>
+    </section>
+
+Example: {type: isolated} `spaced`
+    <section class="adminui-page-section  adminui-page-section--spaced">
+        <div class="container  container--tight">
+            <h2>Spaced section</h2>
+            <p>Used to give the content more air, which gives it more focus.</p>
+        </div>
+    </section>
+
+Example: {type: isolated} `outlined`
+    <section class="adminui-page-section  adminui-page-section--outlined">
+        <div class="container  container--tight">
+            <h2>Adds a line above</h2>
+        </div>
+    </section>
+
+Example: {type: isolated} `last`
+    <section class="adminui-page-section  adminui-page-section--last">
+        <div class="container  container--tight">
+            <h2>No spacing below</h2>
+            <p>Used at the bottom of the page mostlye</p>
+        </div>
+    </section>
+
+Styleguide components.adminui.adminui-page-section
+*/
+.adminui-page-section {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+  @media (min-width: 720px) {
+    .adminui-page-section {
+      padding-top: 36px;
+      padding-bottom: 36px; } }
+  .adminui-page-section--focus {
+    background-color: #cbcbca; }
+  .adminui-page-section--center {
+    text-align: center; }
+  @media (min-width: 720px) {
+    .adminui-page-section--center-md {
+      text-align: center; } }
+  @media (min-width: 960px) {
+    .adminui-page-section--center-lg {
+      text-align: center; } }
+  .adminui-page-section--spaced {
+    padding-top: 30px;
+    padding-bottom: 30px; }
+    @media (min-width: 720px) {
+      .adminui-page-section--spaced {
+        padding-top: 60px;
+        padding-bottom: 60px; } }
+  .adminui-page-section--outlined {
+    border-top: 3px solid #cbcbca;
+    border-color: #cbcbca; }
+  .adminui-page-section--last {
+    margin-bottom: 0; }
+    .adminui-page-section--last + .care-question {
+      margin-top: 0; }
+  .adminui-page-section__toggle {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding-right: 24px;
+    margin-bottom: 0;
+    text-align: inherit; }
+    .adminui-page-section__toggle:hover, .adminui-page-section__toggle:focus {
+      color: #394c5c; }
+    .adminui-page-section__toggle:after {
+      content: '';
+      position: absolute;
+      display: block;
+      right: 0;
+      top: 50%;
+      margin-top: -5px;
+      -webkit-transition: all 300ms cubic-bezier(0, 0, 0.1, 1);
+      transition: all 300ms cubic-bezier(0, 0, 0.1, 1); }
+    @media (min-width: 720px) {
+      .adminui-page-section__toggle {
+        display: none; } }
+  .adminui-page-section--collapsable-sm {
+    border-bottom: 3px solid #cbcbca;
+    border-color: #cbcbca; }
+    @media (min-width: 720px) {
+      .adminui-page-section--collapsable-sm {
+        border-bottom: 0; } }
+    .adminui-page-section--collapsable-sm .adminui-page-section__title,
+    .adminui-page-section--collapsable-sm .adminui-page-section__content {
+      display: none;
+      margin-top: 20px; }
+      @media (min-width: 720px) {
+        .adminui-page-section--collapsable-sm .adminui-page-section__title,
+        .adminui-page-section--collapsable-sm .adminui-page-section__content {
+          display: block; } }
+  .adminui-page-section--expanded .adminui-page-section__content {
+    display: block; }
+  .adminui-page-section--expanded .adminui-page-section__toggle:after {
+    -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg); }
