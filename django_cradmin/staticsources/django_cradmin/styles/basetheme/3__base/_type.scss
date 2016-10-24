@@ -195,8 +195,8 @@ time {
     position: relative;
     display: inline-block;
     vertical-align: top;
-    width: $unit * 10 + $border-width;
-    top: $unit;
+    width: $unit * 9 + $border-width;
+    // top: $unit;
     border: $border-style;
     border-color: color(primary, dark);
     padding: $border-width 0;
@@ -212,5 +212,9 @@ time {
     &__day,
     &__month {
         display: block;
+    }
+
+    &__month {
+        font-size: 0.7em;
     }
 }
