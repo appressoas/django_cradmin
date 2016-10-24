@@ -44,8 +44,6 @@ Example: Adaptable
 Styleguide 3.3
 */
 
-// TODO: Document inline-action
-
 .select {
     position: relative;
     display: inline-block;
@@ -147,6 +145,7 @@ Styleguide 3.3
             @include font(base, normal);
             @include font-size(small);
             padding: #{$unit + $border-width} #{$spacing--small + $border-width};
+            padding-right: 28px;
         }
     }
 

@@ -1,5 +1,6 @@
 .form {
     @include container(xtight);
+    position: relative;
     margin-bottom: $vertical-rythm--spacing * 2;
 
     &__section {
@@ -7,8 +8,6 @@
     }
 
     &__title {
-        // @include font(header);
-        // font-style: italic;
         @include font-size(large);
 
         // Legend reset
@@ -53,7 +52,8 @@
 
     &__item {
         @extend %animation-fall-down;
-        @include animation-delay(8, 50ms);
+        @include animation-delay(8, 40ms);
+
         display: block;
         width: 100%;
         margin-bottom: $vertical-rythm--medium;
@@ -81,10 +81,33 @@
         display: flex;
         width: 100%;
         margin: 0;
+
+        &--tight {
+            .form__item--split {
+                margin-left: $unit;
+                margin-right: $unit;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
     }
 
     &__message {
+        @extend %animation-fall-down;
+
         border: $border-width solid color(neutral, light);
-        padding: $vertical-rythm $spacing--small;
+        padding: $vertical-rythm #{$spacing--small + $border-width};
+
+        &.ng-leave {
+            @extend %animation-fade-out-up;
+            position: absolute;
+            width: 100%;
+        }
     }
 }
