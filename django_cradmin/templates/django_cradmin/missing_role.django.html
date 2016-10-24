@@ -6,7 +6,11 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    <p>
-        {% blocktrans with what=role %}You do not have permission to administer "{{what}}".{% endblocktrans %}
-    </p>
+    <div class="adminui-page-section adminui-page-section--center-md">
+        <div class="container container--tight">
+            <p>
+                {% blocktrans with what=role %}You do not have permission to administer "{{what}}".{% endblocktrans %}
+            </p>
+        </div>
+    </div>
 {% endblock content %}

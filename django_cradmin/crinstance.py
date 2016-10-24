@@ -242,7 +242,8 @@ class BaseCrAdminInstance(object):
                 ``django_cradmin/missing_role.django.html``
         """
         return render(self.request, 'django_cradmin/missing_role.django.html', {
-            'role': role
+            'role': role,
+            'cradmin_javascriptregistry_component_ids': self.get_default_javascriptregistry_component_ids()
         })
 
     def get_menu_item_renderables(self):
