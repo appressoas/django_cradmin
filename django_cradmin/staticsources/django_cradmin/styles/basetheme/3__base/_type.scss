@@ -37,7 +37,7 @@ h1,
 .h1,
 %h1 {
     @include font(header, bold);
-    @include font-size(xxlarge);
+    @include font-size(xxxlarge);
     word-wrap: break-word;
     margin: 0;
     margin-bottom: $vertical-rythm--medium;
