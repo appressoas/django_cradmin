@@ -112,8 +112,7 @@ $level-4: 40 !default;
 
 
 // Shadow levels
-// TODO: Find a more consistant system: $shadow-level-1 etc...
-$shadow-level-1: 0 2px 20px rgba($color-dark, 0.03);
+$shadow-level-1: 0 0 20px rgba($color-dark, 0.06);
 $shadow-level-2: 0 2px 15px rgba($color-dark, 0.1);
 $shadow-level-3: 0 2px 6px rgba($color-dark, 0.3);
 

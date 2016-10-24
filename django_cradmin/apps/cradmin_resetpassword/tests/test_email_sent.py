@@ -12,10 +12,10 @@ class TestEmailSentView(TestCase):
         with self.settings(DJANGO_CRADMIN_SITENAME='Testsite'):
             response = self.client.get(self.url)
         selector = htmls.S(response.content)
-        self.assertEqual(selector.one('.test-primary-h1').alltext_normalized, 'Check your email')
+        self.assertEqual(selector.one('.adminui-page-cover').alltext_normalized, 'Check your email')
         self.assertIn(
             'We have sent you an email. Click the link in the email to reset your password.',
-            selector.one('.test-page-content').alltext_normalized)
+            selector.one('.adminui-page-section').alltext_normalized)
         self.assertIn(
             'If you do not see the email, check your junk folder or try searching for "Reset your Testsite password".',
-            selector.one('.test-page-content').alltext_normalized)
+            selector.one('.adminui-page-section').alltext_normalized)
