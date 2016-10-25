@@ -100,9 +100,9 @@ p,
     @include font(base, normal);
     margin-bottom: $vertical-rythm--spacing;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+    // &:last-child {
+    //     margin-bottom: 0;
+    // }
 
     &:empty {
         display: none;
@@ -174,9 +174,7 @@ b {
     }
 }
 
-// TODO: Separate out?
-// time and date
-time {
+.time-stamp {
     @include spaced-text;
     @include font-size(xsmall);
     @include font(base, normal);
@@ -186,35 +184,5 @@ time {
 
     &:before {
         content: '─	';
-    }
-}
-
-// depended on <time>
-.date {
-    @include font(base, bold);
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    width: $unit * 9 + $border-width;
-    // top: $unit;
-    border: $border-style;
-    border-color: color(primary, dark);
-    padding: $border-width 0;
-    float: left;
-    margin: 0;
-    margin-right: $spacing--small;
-    text-align: center;
-
-    &:before {
-        content: '';
-    }
-
-    &__day,
-    &__month {
-        display: block;
-    }
-
-    &__month {
-        font-size: 0.7em;
     }
 }

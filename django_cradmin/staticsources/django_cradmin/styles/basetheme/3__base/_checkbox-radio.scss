@@ -134,10 +134,6 @@ Styleguide 3.5
     margin-right: $spacing;
     cursor: pointer;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
-
     input[type='radio'],
     input[type='checkbox'] {
         position: absolute;
@@ -168,7 +164,7 @@ Styleguide 3.5
         position: absolute;
         display: block;
         user-select: none;
-        top: 0.15em;
+        top: -0.1em;
         left: 0;
         width: $unit * 4;
         height: $unit * 4;
@@ -176,6 +172,10 @@ Styleguide 3.5
         border-radius: 0;
         background-color: $color-light;
         border: $border-width solid color(neutral);
+
+        @include min-width(xs) {
+            top: 0.15em;
+        }
 
 
         &:before {
@@ -243,13 +243,17 @@ Styleguide 3.5
     padding-left: $indention;
 
     &__control-indicator {
-        top: 0.1em;
+        top: -0.1em;
         width: $unit * 5;
         height: $unit * 5;
         line-height: 1;
 
         border: $border-width solid color(neutral, xlight);
         background-color: color(neutral, xxlight);
+
+        @include min-width(xs) {
+            top: 0.1em;
+        }
 
         &:before {
             @extend %icon-check;
