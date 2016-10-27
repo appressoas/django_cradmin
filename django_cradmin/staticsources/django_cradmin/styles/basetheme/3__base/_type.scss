@@ -69,7 +69,6 @@ h4,
 .h4,
 %h4 {
     @include font-size(small);
-    // letter-spacing: 0.3px;
 }
 
 // TODO: Is this a good rule?
@@ -79,7 +78,7 @@ p:not(:empty) + h4,
 ul + h2,
 ul + h3,
 ul + h4 {
-    margin-top: $vertical-rythm * 6; // TODO: Is there a better way?
+    margin-top: $vertical-rythm--spacing + $vertical-rythm; // TODO: Is there a better way?
 }
 
 
@@ -99,10 +98,6 @@ p,
 .paragraph {
     @include font(base, normal);
     margin-bottom: $vertical-rythm--spacing;
-
-    // &:last-child {
-    //     margin-bottom: 0;
-    // }
 
     &:empty {
         display: none;
