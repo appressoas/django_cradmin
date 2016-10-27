@@ -61,8 +61,6 @@ Styleguide components.tabs
     &__tab-list {
         display: flex;
         border-bottom: $border-width solid color(primary, dark);
-        //@extend .container;
-        //@extend .container--tight;
     }
 
     &__tab {
@@ -70,7 +68,7 @@ Styleguide components.tabs
         text-align: center;
         flex-grow: 1;
         padding: $spacing--small;
-        border: none;
+        border: 0;
 
         &:hover,
         &:focus,
@@ -83,6 +81,7 @@ Styleguide components.tabs
 
     &__panel {
         display: none;
+
         &--active {
             display: block;
         }
