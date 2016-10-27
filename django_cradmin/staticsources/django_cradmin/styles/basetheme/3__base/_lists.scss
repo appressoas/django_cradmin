@@ -16,25 +16,49 @@ Example: `.list`; Default styling
         <li>I'm last :(</li>
     </ul>
 
+Example: `.list .list--large`; Default styling
+    <ul class="list  list--large">
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ul>
+
+Example: `.list .list--links`; Results list
+    <ul class="list  list--links">
+        <li><a href="">I'm number one!</a></li>
+        <li><a href="">Second isn't all that bad</a></li>
+        <li><a href="">I'm last :(</a></li>
+    </ul>
+
 Styleguide 2.100
 */
 ol {
+    counter-reset: ol-counter;
+    text-align: left;
     margin-bottom: $vertical-rythm--spacing;
 
     & > li {
-        margin-left: $indention;
-        margin-bottom: $vertical-rythm;
-        list-style-type: decimal;
+        position: relative;
+        padding-left: $indention--sm;
+        margin-bottom: 0;
+        list-style-type: none;
+
+        @include min-width(md) {
+            padding-left: $indention;
+        }
+
+        &:before {
+            content: counter(ol-counter) '.';
+            counter-increment: ol-counter;
+            position: absolute;
+            left: 0;
+        }
     }
 }
 
 .list {
     margin-bottom: $vertical-rythm--spacing;
     text-align: left;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
 
     & > li {
         position: relative;
@@ -48,14 +72,33 @@ ol {
         &:before {
             content: '';
             position: absolute;
-            top: 0.85em;
             left: 0;
-            width: $unit * 2;
-            border-bottom: $border-width solid color(primary);
+            top: $unit * 2;
+            height: $unit * 2 - 3;
+            width: $unit * 2 - 3;
+            border-radius: 50%;
+            background-color: color(primary, dark);
+        }
+    }
+
+    &--large {
+        & > li {
+            margin-bottom: $vertical-rythm;
 
             @include min-width(md) {
-                top: 0.7em;
-                width: $unit * 3;
+                margin-bottom: $vertical-rythm--spacing;
+            }
+        }
+    }
+
+    &--links {
+        & > li {
+            &:before {
+                @extend %icon-arrow-right--primary;
+                background-color: transparent;
+                border-radius: 0;
+                top: 0.48em;
+                border: 0;
             }
         }
     }
