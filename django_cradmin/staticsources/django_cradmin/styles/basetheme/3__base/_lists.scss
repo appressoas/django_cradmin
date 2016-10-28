@@ -73,11 +73,15 @@ ol {
             content: '';
             position: absolute;
             left: 0;
-            top: $unit * 2;
+            top: 0.35em;
             height: $unit * 2 - 3;
             width: $unit * 2 - 3;
             border-radius: 50%;
             background-color: color(primary, dark);
+
+            @include min-width(xs) {
+                top: 0.6em;
+            }
         }
     }
 
