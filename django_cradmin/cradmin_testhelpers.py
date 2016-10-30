@@ -440,6 +440,7 @@ class RestFrameworkApiTestCaseMixin(TestCaseMixin):
 
     def prettyformat_response_content(self, response):
         warnings = []
+        output = None
         if hasattr(response, 'data'):
             output = _indent_string(json.dumps(response.data, indent=4))
         else:
