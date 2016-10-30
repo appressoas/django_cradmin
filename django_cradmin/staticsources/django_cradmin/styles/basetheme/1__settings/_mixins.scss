@@ -45,36 +45,43 @@
     @return $line-height;
 }
 
-@mixin font-size($size: base, $fs-breakpoints: $breakpoints) {
+@mixin font-size($size: base, $skip-line-height: false) {
+    $fs-breakpoints: $breakpoints;
     $fs-map: map-get($font-size, $size);
+
     @each $fs-breakpoint, $fs-font-size in $fs-map {
         @if $fs-breakpoint == base {
-            @include make-font-size($fs-font-size);
+            @include make-font-size($fs-font-size, $skip-line-height);
         } @else {
             @if map-has-key($fs-breakpoints, $fs-breakpoint) {
                 $fs-breakpoint: map-get($fs-breakpoints, $fs-breakpoint);
             }
             @media screen and (min-width: $fs-breakpoint) {
-                @include make-font-size($fs-font-size);
+                @include make-font-size($fs-font-size, $skip-line-height);
             }
         }
     }
 }
 
-@mixin make-font-size($fs-font-size) {
-    @if type-of($fs-font-size) == 'list' {
+@mixin make-font-size($fs-font-size, $skip-line-height: false) {
+    @if (type-of($fs-font-size) == 'list') {
         font-size: nth($fs-font-size, 1);
 
-        @if (length($fs-font-size) > 1) {
-            line-height: line-height(
-                nth($fs-font-size, 1),
-                nth($fs-font-size, 2));
-        } @else {
-            line-height: line-height($fs-font-size);
+        @if ($skip-line-height != true) {
+            @if (length($fs-font-size) > 1) {
+                line-height: line-height(
+                    nth($fs-font-size, 1),
+                    nth($fs-font-size, 2));
+            } @else {
+                line-height: line-height($fs-font-size);
+            }
         }
     } @else {
         font-size: $fs-font-size;
-        line-height: line-height($fs-font-size);
+
+        @if ($skip-line-height != true) {
+            line-height: line-height($fs-font-size);
+        }
     }
 }
 

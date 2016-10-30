@@ -78,8 +78,7 @@ Styleguide components.adminui.adminui-page-section
     }
 
     &--tight {
-        @extend .container;
-        @extend .container--tight;
+        @include container(tight);
     }
 
     &--focus {

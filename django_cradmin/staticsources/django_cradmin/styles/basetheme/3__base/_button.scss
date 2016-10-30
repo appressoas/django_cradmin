@@ -92,7 +92,7 @@ Styleguide 3.button
     color: $color-text;
     white-space: normal;
 
-    border: $border-width solid color(neutral);
+    border: $border-width solid color(neutral, dark);
     background-color: transparent;
     margin-bottom: $unit;
 
@@ -130,8 +130,8 @@ Styleguide 3.button
     &:focus,
     &:active {
         color: $color-light;
-        border-color: color(neutral);
-        background-color: color(neutral);
+        border-color: color(neutral, dark);
+        background-color: color(neutral, dark);
 
         .button__icon--non-hover {
             display: none;
@@ -148,14 +148,14 @@ Styleguide 3.button
 
     &--fill {
         color: $color-light;
-        border-color: color(neutral);
-        background-color: color(neutral);
+        border-color: color(neutral, dark);
+        background-color: color(neutral, dark);
 
         &:hover,
         &:focus,
         &:active {
             color: $color-text;
-            border-color: color(neutral);
+            border-color: color(neutral, dark);
             background-color: transparent;
         }
     }

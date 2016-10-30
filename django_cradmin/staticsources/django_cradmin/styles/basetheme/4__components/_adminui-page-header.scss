@@ -108,13 +108,12 @@ Styleguide components.adminui.adminui-page-header
     }
 
     &__content {
-        @extend .container;
-        @extend .container--wide;
+        @include container(wide);
     }
 
     &__brand {
         display: inline-block;
-        border: none;
+        border: 0;
     }
 
     &__brandname {
@@ -173,6 +172,7 @@ Styleguide components.adminui.adminui-page-header
         line-height: 20px;
         color: $color-light;
         transition: all 300ms $swift-out;
+
         .icon-hamburger__bar {
             background-color: $color-light;
         }
