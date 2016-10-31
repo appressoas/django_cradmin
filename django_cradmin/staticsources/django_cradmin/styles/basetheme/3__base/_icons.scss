@@ -414,6 +414,40 @@ Example: All the icons
             <i class="icon-phone--light"></i>
             <code>.icon-phone--light</code>
         </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-file"></i>
+            <code>.icon-file</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-file--primary"></i>
+            <code>.icon-file--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-file--secondary"></i>
+            <code>.icon-file--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-file--light"></i>
+            <code>.icon-file--light</code>
+        </li>
+
+        <li class="sg-icon-grid__item">
+            <i class="icon-download"></i>
+            <code>.icon-download</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-download--primary"></i>
+            <code>.icon-download--primary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-download--secondary"></i>
+            <code>.icon-download--secondary</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <i class="icon-download--light"></i>
+            <code>.icon-download--light</code>
+        </li>
     </ul>
 
 Styleguide 4
@@ -826,6 +860,40 @@ Styleguide 4
 
     &--secondary {
         @include icon(8, 8, 14px, 14px);
+    }
+}
+
+.icon-file,
+%icon-file {
+    @include icon(9, 5, 39px, 47px);
+
+    &--light {
+        @include icon(9, 6, 39px, 47px);
+    }
+
+    &--primary {
+        @include icon(9, 7, 39px, 47px);
+    }
+
+    &--secondary {
+        @include icon(9, 8, 39px, 47px);
+    }
+}
+
+.icon-download,
+%icon-download {
+    @include icon(10, 5, 19px, 21px);
+
+    &--light {
+        @include icon(10, 6, 19px, 21px);
+    }
+
+    &--primary {
+        @include icon(10, 7, 19px, 21px);
+    }
+
+    &--secondary {
+        @include icon(10, 8, 19px, 21px);
     }
 }
 
