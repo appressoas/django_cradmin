@@ -46,8 +46,26 @@ class AbstractTestCaseMixin(object):
     Implements the common API for the test case mixins.
     """
 
-    #: The view class - must be set in subclasses
+    #: The view class - must be set in subclasses unless
+    #: you override :meth:`~.AbstractTestCaseMixin.get_viewclass`.
     viewclass = None
+
+    def get_viewclass(self):
+        """
+        Get the view class. Defaults to :obj:`.~AbstractTestCaseMixin.viewclass`
+        """
+        return self.viewclass
+
+    def make_view(self):
+        """
+        Make view function.
+
+        Calls ``get_viewclass().as_view()`` by default.
+        """
+        viewclass = self.get_viewclass()
+        if self.viewclass is None:
+            raise NotImplementedError('You must set the viewclass attribute on TestCase classes using TestCaseMixin.')
+        return viewclass.as_view()
 
     def get_requestfactory_class(self):
         """
@@ -95,8 +113,6 @@ class AbstractTestCaseMixin(object):
         Returns:
             The created request object.
         """
-        if self.viewclass is None:
-            raise NotImplementedError('You must set the viewclass attribute on TestCase classes using TestCaseMixin.')
         requestkwargs_full = {
             'path': '/'
         }
@@ -208,7 +224,7 @@ class AbstractTestCaseMixin(object):
             messagesmock=messagesmock
         )
         viewkwargs = viewkwargs or {}
-        response = self.viewclass.as_view()(request, **viewkwargs)
+        response = self.make_view()(request, **viewkwargs)
 
         if verbose:
             print(self.prettyformat_response(response=response))
@@ -432,6 +448,9 @@ class RestFrameworkApiTestCaseMixin(TestCaseMixin):
     has a different debug output, and no ``*_htmls`` methods.
 
     Assumes that the viewclass is a subclass of :class:`rest_framework.views.APIView`.
+
+    You can also make it work with viewsets by overriding :meth:`~.AbstractTestCaseMixin.make_view`
+    and use ``return ViewSetClass.as_view({...})`` there.
     """
     def get_requestfactory_class(self):
         # Importing it here to avoid har dependency on rest framework.
