@@ -85,7 +85,8 @@ Styleguide 3.1
     }
 
     @include input-placeholder {
-        color: color(neutral);
+        color: tint($color-muted, 20%);
+        // color: color(primary);
     }
 
     &--inline {
