@@ -1,21 +1,21 @@
 .form {
     @include container(xtight);
     position: relative;
-    margin-bottom: $vertical-rythm--spacing * 2;
+    margin-bottom: vertical-space($spacing--large); //$vertical-rythm--spacing * 2;
 
     &__section {
-        margin-bottom: $vertical-rythm--spacing;
+        margin-bottom: vertical-space($spacing, 1.2);
     }
 
     &__title {
         @include font-size(large);
 
         // Legend reset
-        float: left;
+        // float: left;
         width: 100%;
 
         text-align: center;
-        margin-bottom: $vertical-rythm--medium;
+        margin-bottom: vertical-space($spacing);
 
         display: flex;
         align-items: center;
@@ -43,20 +43,22 @@
         @include font(base, bold);
 
         // Legend reset
-        float: left;
+        // float: left;
         width: 100%;
 
         display: block;
-        margin-bottom: $vertical-rythm;
+        margin-bottom: vertical-space();
     }
 
     &__item {
-        @extend %animation-fall-down;
-        @include animation-delay(8, 40ms);
+        &.animate {
+            @extend %animation-fall-down;
+            @include animation-delay(8, 40ms);
+        }
 
         display: block;
         width: 100%;
-        margin-bottom: $vertical-rythm--medium;
+        margin-bottom: vertical-space($spacing);
 
         &--split {
             margin-left: $unit;
@@ -99,10 +101,12 @@
     }
 
     &__message {
-        @extend %animation-fall-down;
+        &.animate {
+            @extend %animation-fall-down;
+        }
 
         border: $border-width solid color(neutral, light);
-        padding: $vertical-rythm #{$spacing--small + $border-width};
+        padding: vertical-space() #{$spacing--small + $border-width};
 
         &.ng-leave {
             @extend %animation-fade-out-up;
