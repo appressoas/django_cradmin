@@ -12,7 +12,7 @@ Media queries are **only** ment for the mobile first approach; Which means you d
 Styleguide 1.4
 */
 $breakpoints: (
-    xs: 400px, // Small and up
+    xs: 440px, // Small and up
     md: 720px, // Medium and up
     lg: 960px, // Large and up
     xl: 1240px // Extra large and up
@@ -72,8 +72,8 @@ There is a system that creates proper line heights for text. **Never interfer wi
 
 Styleguide 1.6
 */
-$vertical-rythm: 11px !default; // TODO: Responsive? REM?
-$vertical-rythm--medium: ($vertical-rythm * 2) !default;
+$vertical-rythm: 8px !default; // TODO: Responsive? REM?
+$vertical-rythm--medium: ($vertical-rythm * 3) !default;
 $vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm !default;
 
 

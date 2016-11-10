@@ -203,10 +203,15 @@
     margin: 0 auto;
 
     @if ($no-padding != true) {
-        padding-left: $spacing;
-        padding-right: $spacing;
+        padding-left: $spacing--small;
+        padding-right: $spacing--small;
 
-        @include min-width(lg) {
+        @include min-width(xs) {
+            padding-left: $spacing;
+            padding-right: $spacing;
+        }
+
+        @include min-width(md) {
             padding-left: $spacing--large;
             padding-right: $spacing--large;
         }
@@ -223,6 +228,22 @@
     } @else {
         max-width: $container-width - $width-modifier;
     }
+}
+
+@function vertical-space($val: $vertical-rythm, $min: 1) {
+    $space: $vertical-rythm;
+    $i: 1;
+
+    @if (unit($val) != 'px') {
+        $space: $vertical-rythm * $val;
+    } @else {
+        @while $space < ($val * $min) {
+            $space: $vertical-rythm * $i;
+            $i: $i + 1;
+        }
+    }
+
+    @return $space;
 }
 
 // Full-width

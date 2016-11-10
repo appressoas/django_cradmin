@@ -26,10 +26,10 @@ h4,
     @include font(base, bold);
     word-wrap: break-word;
     margin: 0;
-    margin-bottom: $vertical-rythm--medium;
+    margin-bottom: vertical-space($spacing);
 
     @include min-width(md) {
-        margin-bottom: $vertical-rythm--spacing;
+        margin-bottom: vertical-space($spacing, 1.2);
     }
 }
 
@@ -39,12 +39,6 @@ h1,
     @include font(header, bold);
     @include font-size(xxxlarge);
     word-wrap: break-word;
-    margin: 0;
-    margin-bottom: $vertical-rythm--medium;
-
-    @include min-width(md) {
-        margin-bottom: $vertical-rythm--spacing;
-    }
 
     strong { // TODO?
         @include font(header, bold);
@@ -78,7 +72,7 @@ p:not(:empty) + h4,
 ul + h2,
 ul + h3,
 ul + h4 {
-    margin-top: $vertical-rythm--spacing + $vertical-rythm; // TODO: Is there a better way?
+    margin-top: vertical-space($spacing--large);
 }
 
 
@@ -97,7 +91,7 @@ Styleguide 2.4
 p,
 .paragraph {
     @include font(base, normal);
-    margin-bottom: $vertical-rythm--spacing;
+    margin-bottom: vertical-space($spacing);
 
     &:empty {
         display: none;
@@ -107,7 +101,7 @@ p,
 .preamble {
     @include font(base, normal);
     @include font-size(large);
-    margin-bottom: $vertical-rythm--spacing;
+    margin-bottom: vertical-space($spacing);
 }
 
 .normal {
