@@ -1,12 +1,19 @@
 hr,
 .separator {
-    margin: 0;
-    margin-bottom: $spacing;
+    margin: 0 0 vertical-space($spacing--large);
     padding: 0;
     border: 0;
     border-top: $border-style;
+}
 
-    @include min-width(md) {
-        margin-bottom: $spacing--large;
-    }
+.separator--light {
+    border-color: $color-light;
+}
+
+.separator--large {
+    border-top-width: $unit;
+}
+
+.separator--no-space {
+    margin: 0;
 }

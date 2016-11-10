@@ -19,6 +19,14 @@
 
 Styleguide 1.8
 */
+.animate-end {
+    // Fix for text-rendering after an animation is completed
+    transform: translate3d(0, 0, 0);
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    // background: blue;
+}
+
 .animation,
 %animation {
     &-fade-in {
