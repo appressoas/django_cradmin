@@ -45,7 +45,7 @@
                     {% endblock listbuilder_list_live_area_has_items %}
                 {% else %}
                     {% block no-items-wrapper %}
-                        <div class="adminui-page-section" {% cradmin_test_css_class 'cradmin-no-items-message' %}>
+                        <div class="adminui-page-section{% cradmin_test_css_class 'cradmin-no-items-message' %}">
                             <div class="container">
                                 <p>
                                     {% block no-items-paragraph-contents %}
