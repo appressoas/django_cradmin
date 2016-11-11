@@ -19,7 +19,7 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
 
     def get_menu_item_renderables(self):
         return [
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label=_('Dashboard'), url=self.appindex_url('dashboard'),
                 is_active=self.request.cradmin_app.appname == 'dashboard'),
         ]

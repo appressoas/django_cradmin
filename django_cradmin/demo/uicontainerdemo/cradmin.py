@@ -15,7 +15,7 @@ class UIContainerDemoCrAdminInstance(crinstance.NoRoleNoLoginCrAdminInstance):
 
     def get_menu_item_renderables(self):
         return [
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label='Simple uiforms', url=self.appindex_url('simple_uiforms'),
                 is_active=self.request.cradmin_app.appname == 'simple_uiforms'),
         ]

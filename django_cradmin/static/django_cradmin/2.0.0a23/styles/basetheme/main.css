@@ -226,6 +226,7 @@ img {
 
 button {
   -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   box-sizing: border-box;
   border: 0;
@@ -264,6 +265,7 @@ input[type='tel'],
 input[type='color'] {
   outline: 0;
   -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   box-sizing: border-box; }
 
@@ -324,6 +326,7 @@ th {
 .radio,
 .checkbox {
   -webkit-user-select: none;
+  -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -388,6 +391,12 @@ Styleguide base.screenreaders
 
 Styleguide 1.8
 */
+.animate-end {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; }
+
 .animation-fade-in,
 .modal__backdrop,
 .backdrop {
@@ -434,8 +443,8 @@ Styleguide 1.8
           animation: fade-in 2s cubic-bezier(0, 0, 0.1, 1) both; }
 
 .animation-fall-down,
-.form__item,
-.form__message,
+.form__item.animate,
+.form__message.animate,
 .adminui-page-section--collapsable-sm .adminui-page-section__title,
 .adminui-page-section--collapsable-sm .adminui-page-section__content {
   -webkit-animation: fall-down 400ms linear both;
@@ -907,7 +916,7 @@ body {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 19px;
-  line-height: 33px;
+  line-height: 32px;
   position: relative;
   color: #1e1e1e;
   font-style: normal;
@@ -918,7 +927,7 @@ body {
   @media screen and (min-width: 720px) {
     body {
       font-size: 21px;
-      line-height: 33px; } }
+      line-height: 32px; } }
   body.overlay, body.modal-open {
     overflow: hidden;
     position: fixed; }
@@ -985,7 +994,7 @@ legend {
   font-weight: 700;
   word-wrap: break-word;
   margin: 0;
-  margin-bottom: 22px; }
+  margin-bottom: 24px; }
   @media (min-width: 720px) {
     h2,
     .h2,
@@ -995,36 +1004,30 @@ legend {
     h4,
     .h4,
     legend {
-      margin-bottom: 33px; } }
+      margin-bottom: 32px; } }
 
 h1,
 .h1 {
   font-family: Georgia, sans-serif;
   font-weight: 700;
   font-size: 48px;
-  line-height: 66px;
-  word-wrap: break-word;
-  margin: 0;
-  margin-bottom: 22px; }
+  line-height: 64px;
+  word-wrap: break-word; }
   @media screen and (min-width: 720px) {
     h1,
     .h1 {
       font-size: 60px;
-      line-height: 77px; } }
+      line-height: 72px; } }
   @media screen and (min-width: 960px) {
     h1,
     .h1 {
       font-size: 74px;
-      line-height: 99px; } }
+      line-height: 96px; } }
   @media screen and (min-width: 1240px) {
     h1,
     .h1 {
       font-size: 82px;
-      line-height: 99px; } }
-  @media (min-width: 720px) {
-    h1,
-    .h1 {
-      margin-bottom: 33px; } }
+      line-height: 104px; } }
   h1 strong,
   .h1 strong {
     font-family: Georgia, sans-serif;
@@ -1035,36 +1038,36 @@ h1,
 h2,
 .h2 {
   font-size: 34px;
-  line-height: 44px; }
+  line-height: 48px; }
   @media screen and (min-width: 720px) {
     h2,
     .h2 {
       font-size: 42px;
-      line-height: 55px; } }
+      line-height: 56px; } }
 
 h3,
 .h3,
 .adminui-page-section__toggle {
   font-size: 26px;
-  line-height: 33px; }
+  line-height: 32px; }
   @media screen and (min-width: 720px) {
     h3,
     .h3,
     .adminui-page-section__toggle {
       font-size: 32px;
-      line-height: 44px; } }
+      line-height: 40px; } }
 
 h4,
 .h4,
 legend {
   font-size: 19px;
-  line-height: 33px; }
+  line-height: 32px; }
   @media screen and (min-width: 720px) {
     h4,
     .h4,
     legend {
       font-size: 21px;
-      line-height: 33px; } }
+      line-height: 32px; } }
 
 p:not(:empty) + h2,
 p:not(:empty) + h3,
@@ -1072,7 +1075,7 @@ p:not(:empty) + h4,
 ul + h2,
 ul + h3,
 ul + h4 {
-  margin-top: 44px; }
+  margin-top: 64px; }
 
 /* Paragraphs
 
@@ -1090,7 +1093,7 @@ p,
 .paragraph {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
-  margin-bottom: 33px; }
+  margin-bottom: 24px; }
   p:empty,
   .paragraph:empty {
     display: none; }
@@ -1099,22 +1102,22 @@ p,
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 26px;
-  line-height: 33px;
-  margin-bottom: 33px; }
+  line-height: 32px;
+  margin-bottom: 24px; }
   @media screen and (min-width: 720px) {
     .preamble {
       font-size: 32px;
-      line-height: 44px; } }
+      line-height: 40px; } }
 
 .normal {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 19px;
-  line-height: 33px; }
+  line-height: 32px; }
   @media screen and (min-width: 720px) {
     .normal {
       font-size: 21px;
-      line-height: 33px; } }
+      line-height: 32px; } }
 
 .no-break {
   white-space: nowrap; }
@@ -1170,7 +1173,7 @@ b {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: 15px;
-  line-height: 22px;
+  line-height: 24px;
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   color: #595959;
@@ -1179,7 +1182,7 @@ b {
   @media screen and (min-width: 720px) {
     .time-stamp {
       font-size: 16px;
-      line-height: 22px; } }
+      line-height: 24px; } }
   .time-stamp:before {
     content: '─	'; }
 
@@ -1220,7 +1223,7 @@ Styleguide 2.100
 ol {
   counter-reset: ol-counter;
   text-align: left;
-  margin-bottom: 33px; }
+  margin-bottom: 32px; }
   ol > li {
     position: relative;
     padding-left: 30px;
@@ -1236,7 +1239,7 @@ ol {
       left: 0; }
 
 .list {
-  margin-bottom: 33px;
+  margin-bottom: 32px;
   text-align: left; }
   .list > li {
     position: relative;
@@ -1254,14 +1257,14 @@ ol {
       width: 9px;
       border-radius: 50%;
       background-color: #467465; }
-      @media (min-width: 400px) {
+      @media (min-width: 440px) {
         .list > li:before {
           top: 0.6em; } }
   .list--large > li {
-    margin-bottom: 11px; }
+    margin-bottom: 8px; }
     @media (min-width: 720px) {
       .list--large > li {
-        margin-bottom: 33px; } }
+        margin-bottom: 32px; } }
   .list--links > li:before {
     background-color: transparent;
     border-radius: 0;
@@ -2661,10 +2664,10 @@ fieldset {
   display: block;
   border: 0;
   margin-top: 0;
-  margin-bottom: 33px; }
+  margin-bottom: 32px; }
 
 legend {
-  margin-bottom: 11px; }
+  margin-bottom: 8px; }
 
 /* Label
 
@@ -2687,7 +2690,7 @@ Styleguide 3.label
 */
 .label {
   display: block;
-  margin-bottom: 33px; }
+  margin-bottom: 32px; }
 
 .label--inline {
   display: inline;
@@ -2740,7 +2743,7 @@ Styleguide 3.button
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   font-size: 19px;
-  line-height: 33px;
+  line-height: 32px;
   font-style: normal;
   text-align: center;
   position: relative;
@@ -2756,7 +2759,7 @@ Styleguide 3.button
   @media screen and (min-width: 720px) {
     .button {
       font-size: 21px;
-      line-height: 33px; } }
+      line-height: 32px; } }
   @media (min-width: 720px) {
     .button {
       display: inline-block;
@@ -2856,12 +2859,12 @@ Styleguide 3.button
     width: 100%; }
   .button--compact {
     font-size: 15px;
-    line-height: 22px;
+    line-height: 24px;
     padding: 6px 12px; }
     @media screen and (min-width: 720px) {
       .button--compact {
         font-size: 16px;
-        line-height: 22px; } }
+        line-height: 24px; } }
   @media print {
     .button--hidden-in-print {
       display: none; } }
@@ -2932,7 +2935,7 @@ Styleguide 3.1
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 19px;
-  line-height: 33px;
+  line-height: 32px;
   line-height: 1;
   display: block;
   width: 100%;
@@ -2944,22 +2947,22 @@ Styleguide 3.1
   @media screen and (min-width: 720px) {
     .input {
       font-size: 21px;
-      line-height: 33px; } }
+      line-height: 32px; } }
   .input:focus {
     border-color: #465e71; }
   .input[disabled] {
     background-color: #979795; }
   .input:-moz-placeholder {
-    color: #979795; }
+    color: #7a7a7a; }
   .input::-moz-placeholder {
-    color: #979795; }
+    color: #7a7a7a; }
   .input:-ms-input-placeholder {
-    color: #979795; }
+    color: #7a7a7a; }
   .input::-webkit-input-placeholder {
-    color: #979795; }
+    color: #7a7a7a; }
   .input--inline {
     font-size: 19px;
-    line-height: 33px;
+    line-height: 32px;
     display: inline-block;
     width: auto;
     min-width: 160px;
@@ -2967,7 +2970,7 @@ Styleguide 3.1
     @media screen and (min-width: 720px) {
       .input--inline {
         font-size: 21px;
-        line-height: 33px; } }
+        line-height: 32px; } }
   .input--half {
     width: calc(50% - 12px); }
   .input--small {
@@ -3035,6 +3038,7 @@ Styleguide 3.3
     font-weight: 700;
     font-size: inherit;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     display: inline-block;
     cursor: pointer;
@@ -3086,13 +3090,13 @@ Styleguide 3.3
       font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 400;
       font-size: 19px;
-      line-height: 33px;
+      line-height: 32px;
       padding: 9px 15px;
       padding-right: 28px; }
       @media screen and (min-width: 720px) {
         .select--outlined select {
           font-size: 21px;
-          line-height: 33px; } }
+          line-height: 32px; } }
   .select--small {
     width: 228px; }
 
@@ -3106,24 +3110,27 @@ Styleguide 3.3
 
 .form {
   margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 12px;
+  padding-right: 12px;
   max-width: 620px;
   position: relative;
-  margin-bottom: 66px; }
-  @media (min-width: 960px) {
+  margin-bottom: 64px; }
+  @media (min-width: 440px) {
+    .form {
+      padding-left: 24px;
+      padding-right: 24px; } }
+  @media (min-width: 720px) {
     .form {
       padding-left: 60px;
       padding-right: 60px; } }
   .form__section {
-    margin-bottom: 33px; }
+    margin-bottom: 32px; }
   .form__title {
     font-size: 26px;
-    line-height: 33px;
-    float: left;
+    line-height: 32px;
     width: 100%;
     text-align: center;
-    margin-bottom: 22px;
+    margin-bottom: 24px;
     display: -webkit-box;
     display: flex;
     -webkit-box-align: center;
@@ -3132,7 +3139,7 @@ Styleguide 3.3
     @media screen and (min-width: 720px) {
       .form__title {
         font-size: 32px;
-        line-height: 44px; } }
+        line-height: 40px; } }
     .form__title:before, .form__title:after {
       content: '';
       display: block;
@@ -3146,40 +3153,40 @@ Styleguide 3.3
   .form__sub-title {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
-    float: left;
     width: 100%;
     display: block;
-    margin-bottom: 11px; }
+    margin-bottom: 8px; }
   .form__item {
-    -webkit-animation-delay: 360ms;
-            animation-delay: 360ms;
     display: block;
     width: 100%;
-    margin-bottom: 22px; }
-    .form__item:nth-child(1) {
-      -webkit-animation-delay: 40ms;
-              animation-delay: 40ms; }
-    .form__item:nth-child(2) {
-      -webkit-animation-delay: 80ms;
-              animation-delay: 80ms; }
-    .form__item:nth-child(3) {
-      -webkit-animation-delay: 120ms;
-              animation-delay: 120ms; }
-    .form__item:nth-child(4) {
-      -webkit-animation-delay: 160ms;
-              animation-delay: 160ms; }
-    .form__item:nth-child(5) {
-      -webkit-animation-delay: 200ms;
-              animation-delay: 200ms; }
-    .form__item:nth-child(6) {
-      -webkit-animation-delay: 240ms;
-              animation-delay: 240ms; }
-    .form__item:nth-child(7) {
-      -webkit-animation-delay: 280ms;
-              animation-delay: 280ms; }
-    .form__item:nth-child(8) {
-      -webkit-animation-delay: 320ms;
-              animation-delay: 320ms; }
+    margin-bottom: 24px; }
+    .form__item.animate {
+      -webkit-animation-delay: 360ms;
+              animation-delay: 360ms; }
+      .form__item.animate:nth-child(1) {
+        -webkit-animation-delay: 40ms;
+                animation-delay: 40ms; }
+      .form__item.animate:nth-child(2) {
+        -webkit-animation-delay: 80ms;
+                animation-delay: 80ms; }
+      .form__item.animate:nth-child(3) {
+        -webkit-animation-delay: 120ms;
+                animation-delay: 120ms; }
+      .form__item.animate:nth-child(4) {
+        -webkit-animation-delay: 160ms;
+                animation-delay: 160ms; }
+      .form__item.animate:nth-child(5) {
+        -webkit-animation-delay: 200ms;
+                animation-delay: 200ms; }
+      .form__item.animate:nth-child(6) {
+        -webkit-animation-delay: 240ms;
+                animation-delay: 240ms; }
+      .form__item.animate:nth-child(7) {
+        -webkit-animation-delay: 280ms;
+                animation-delay: 280ms; }
+      .form__item.animate:nth-child(8) {
+        -webkit-animation-delay: 320ms;
+                animation-delay: 320ms; }
     .form__item--split {
       margin-left: 6px;
       margin-right: 6px; }
@@ -3205,22 +3212,26 @@ Styleguide 3.3
         margin-right: 0; }
   .form__message {
     border: 3px solid #cbcbca;
-    padding: 11px 15px; }
+    padding: 8px 15px; }
     .form__message.ng-leave {
       position: absolute;
       width: 100%; }
 
 hr,
 .separator {
-  margin: 0;
-  margin-bottom: 24px;
+  margin: 0 0 64px;
   padding: 0;
   border: 0;
   border-top: 3px solid #cbcbca; }
-  @media (min-width: 720px) {
-    hr,
-    .separator {
-      margin-bottom: 60px; } }
+
+.separator--light {
+  border-color: #fff; }
+
+.separator--large {
+  border-top-width: 6px; }
+
+.separator--no-space {
+  margin: 0; }
 
 /* Checkbox
 
@@ -3351,7 +3362,7 @@ Styleguide 3.5
   position: relative;
   display: inline-block;
   padding-left: 42px;
-  margin-bottom: 11px;
+  margin-bottom: 8px;
   margin-right: 24px;
   cursor: pointer; }
   .radio input[type='radio'],
@@ -3386,6 +3397,7 @@ Styleguide 3.5
     position: absolute;
     display: block;
     -webkit-user-select: none;
+       -moz-user-select: none;
             user-select: none;
     top: -0.1em;
     left: 0;
@@ -3394,7 +3406,7 @@ Styleguide 3.5
     border-radius: 0;
     background-color: #fff;
     border: 3px solid #979795; }
-    @media (min-width: 400px) {
+    @media (min-width: 440px) {
       .radio__control-indicator,
       .checkbox__control-indicator {
         top: 0.15em; } }
@@ -3452,7 +3464,7 @@ Styleguide 3.5
     height: 30px;
     line-height: 1;
     border: 3px solid #f6f6f5; }
-    @media (min-width: 400px) {
+    @media (min-width: 440px) {
       .checkbox__control-indicator {
         top: 0.1em; } }
     .checkbox__control-indicator:before {
@@ -3542,10 +3554,14 @@ Styleguide 5.1
 */
 .container {
   margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 12px;
+  padding-right: 12px;
   max-width: 1110px; }
-  @media (min-width: 960px) {
+  @media (min-width: 440px) {
+    .container {
+      padding-left: 24px;
+      padding-right: 24px; } }
+  @media (min-width: 720px) {
     .container {
       padding-left: 60px;
       padding-right: 60px; } }
@@ -3569,15 +3585,15 @@ Styleguide 3.6
 .error {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 19px;
-  line-height: 33px;
+  line-height: 32px;
   padding: 12px 24px;
-  margin-bottom: 33px;
+  margin-bottom: 32px;
   color: #fff;
   background-color: #57917E; }
   @media screen and (min-width: 720px) {
     .error {
       font-size: 21px;
-      line-height: 33px; } }
+      line-height: 32px; } }
 
 /* Modal
 
@@ -3798,9 +3814,9 @@ Styleguide components.blocklist
 */
 .blocklist .blocklist__item {
   display: block;
-  margin-bottom: 33px;
+  margin-bottom: 32px;
   background-color: rgba(151, 151, 149, 0.2);
-  padding: 33px 24px; }
+  padding: 32px 24px; }
   .blocklist .blocklist__item--link {
     border-bottom: 3px solid #58758D;
     color: #1e1e1e;
@@ -3821,40 +3837,40 @@ Styleguide components.blocklist
     color: #1e1e1e; }
 
 .blocklist .blocklist__itemtitle {
-  margin-bottom: 11px;
+  margin-bottom: 8px;
   font-size: 26px;
-  line-height: 33px; }
+  line-height: 32px; }
   .blocklist .blocklist__itemtitle:last-child {
     margin-bottom: 0; }
   @media screen and (min-width: 720px) {
     .blocklist .blocklist__itemtitle {
       font-size: 32px;
-      line-height: 44px; } }
+      line-height: 40px; } }
   .blocklist .blocklist__itemtitle--small {
     font-size: 19px;
-    line-height: 33px; }
+    line-height: 32px; }
     @media screen and (min-width: 720px) {
       .blocklist .blocklist__itemtitle--small {
         font-size: 21px;
-        line-height: 33px; } }
+        line-height: 32px; } }
   .blocklist .blocklist__itemtitle--large {
     font-size: 26px;
-    line-height: 33px; }
+    line-height: 32px; }
     @media screen and (min-width: 720px) {
       .blocklist .blocklist__itemtitle--large {
         font-size: 32px;
-        line-height: 44px; } }
+        line-height: 40px; } }
   .blocklist .blocklist__itemtitle--xlarge {
     font-size: 34px;
-    line-height: 44px; }
+    line-height: 48px; }
     @media screen and (min-width: 720px) {
       .blocklist .blocklist__itemtitle--xlarge {
         font-size: 42px;
-        line-height: 55px; } }
+        line-height: 56px; } }
 
 .blocklist--tight .blocklist__item {
-  margin-bottom: 11px;
-  padding: 11px 12px; }
+  margin-bottom: 8px;
+  padding: 8px 12px; }
 
 /* Form field help text
 
@@ -4206,12 +4222,12 @@ Styleguide components.adminui.adminui-breadcrumbs
 .adminui-breadcrumbs {
   position: relative;
   font-size: 15px;
-  line-height: 22px;
+  line-height: 24px;
   display: inline-block; }
   @media screen and (min-width: 720px) {
     .adminui-breadcrumbs {
       font-size: 16px;
-      line-height: 22px; } }
+      line-height: 24px; } }
   .adminui-breadcrumbs__item {
     color: inherit;
     border-color: transparent; }
@@ -4246,7 +4262,7 @@ Styleguide components.adminui.adminui-breadcrumbs
               transform: scale(0.7); }
   .adminui-breadcrumbs--block-light {
     display: block;
-    padding: 11px 0;
+    padding: 8px 0;
     background-color: #fff;
     box-shadow: 0 3px 0 rgba(151, 151, 149, 0.15); }
 
@@ -4339,26 +4355,52 @@ Example: {type: isolated} With navigation buttons and menu toggle button
         </div>
     </header>
 
+Example: {type: isolated} Compact variant with navigation buttons and menu toggle button
+    <header class="adminui-page-header adminui-page-header--compact">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button-compact">A button</a>
+                <button type="button" class="adminui-page-header__navmenutoggle">
+                    Menu
+                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
 Styleguide components.adminui.adminui-page-header
 */
 .adminui-page-header {
-  padding: 11px 0;
+  padding: 8px 0;
   color: #fff;
   width: 100%;
   top: 0;
   background-color: #467465; }
   @media (min-width: 720px) {
     .adminui-page-header {
-      padding: 22px 0; } }
+      padding: 24px 0; } }
   @media (min-width: 720px) {
     .adminui-page-header--compact {
-      padding: 11px 0; } }
+      padding: 8px 0; } }
   .adminui-page-header__content {
     margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
     max-width: 1400px; }
-    @media (min-width: 960px) {
+    @media (min-width: 440px) {
+      .adminui-page-header__content {
+        padding-left: 24px;
+        padding-right: 24px; } }
+    @media (min-width: 720px) {
       .adminui-page-header__content {
         padding-left: 60px;
         padding-right: 60px; } }
@@ -4380,7 +4422,7 @@ Styleguide components.adminui.adminui-page-header
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
     font-size: 15px;
-    line-height: 22px;
+    line-height: 24px;
     display: none;
     position: relative;
     margin-left: 1em;
@@ -4389,7 +4431,7 @@ Styleguide components.adminui.adminui-page-header
     @media screen and (min-width: 720px) {
       .adminui-page-header__navlink {
         font-size: 16px;
-        line-height: 22px; } }
+        line-height: 24px; } }
     @media (min-width: 960px) {
       .adminui-page-header__navlink {
         display: inline; } }
@@ -4405,7 +4447,7 @@ Styleguide components.adminui.adminui-page-header
       border-color: #fff; }
   .adminui-page-header__navmenutoggle {
     position: relative;
-    top: 8px;
+    top: 6px;
     float: right;
     margin-left: 1em;
     min-width: 84px;
@@ -4415,9 +4457,6 @@ Styleguide components.adminui.adminui-page-header
     transition: all 300ms cubic-bezier(0, 0, 0.1, 1); }
     .adminui-page-header__navmenutoggle .icon-hamburger__bar {
       background-color: #fff; }
-  .adminui-page-header--showmenu {
-    position: fixed;
-    z-index: 40; }
 
 /* AdminUI expandable menu
 
@@ -4436,7 +4475,7 @@ Example: {type: isolated} Example
                         cradmin_menutoggle_groupid="mainmenu">
                     Menu
                     <i class="icon-hamburger"
-                            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="icon-hamburger--close"
+                            cradmin_menutoggle_groupid="mainmenu"
                             aria-hidden="true" role="presentation">
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
@@ -4449,9 +4488,24 @@ Example: {type: isolated} Example
 
     <div class="adminui-page-cover"></div>
 
-    <div class="adminui-expandable-menu" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
-        <div class="adminui-expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
+    <div class="adminui-expandable-menu"
+            cradmin_menutoggle_groupid="mainmenu"
+            cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
+        <div class="adminui-expandable-menu__backdrop"
+                cradmin_menutoggle_groupid="mainmenu"
+                cradmin_menutoggle_clickable></div>
+
         <div class="adminui-expandable-menu__content">
+            <button type="button" class="adminui-expandable-menu__close"
+                    cradmin_menutoggle_clickable
+                    cradmin_menutoggle_groupid="mainmenu">
+                <i class="icon-close--light"
+                        cradmin_menutoggle_groupid="mainmenu"
+                        aria-hidden="true" role="presentation">
+                </i>
+                <span class="screenreader-only">Close menu</span>
+            </button>
+
             <p>Menu content here</p>
         </div>
     </div>
@@ -4481,10 +4535,18 @@ Styleguide components.adminui.adminui-expandable-menu
     @media (min-width: 960px) {
       .adminui-expandable-menu__backdrop {
         display: block; } }
+  .adminui-expandable-menu__close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    min-width: 84px;
+    text-align: right;
+    line-height: 30px;
+    color: #fff; }
   .adminui-expandable-menu__content {
     position: fixed;
     z-index: 30;
-    padding-top: 80px;
+    padding: 80px 24px 0 24px;
     right: 0;
     top: 0;
     bottom: 0;
@@ -4542,8 +4604,8 @@ Styleguide components.adminui.adminui-page-cover
       color: #000; } }
   @media (min-width: 720px) {
     .adminui-page-cover {
-      padding-top: 33px;
-      padding-bottom: 33px; } }
+      padding-top: 32px;
+      padding-bottom: 32px; } }
   .adminui-page-cover__title {
     position: relative;
     z-index: 2;
@@ -4551,23 +4613,23 @@ Styleguide components.adminui.adminui-page-cover
     max-width: 1110px;
     margin: 0 auto 12px;
     font-size: 34px;
-    line-height: 44px; }
+    line-height: 48px; }
     @media screen and (min-width: 720px) {
       .adminui-page-cover__title {
         font-size: 42px;
-        line-height: 55px; } }
+        line-height: 56px; } }
     .adminui-page-cover__title--small {
       font-size: 26px;
-      line-height: 33px; }
+      line-height: 32px; }
       @media screen and (min-width: 720px) {
         .adminui-page-cover__title--small {
           font-size: 32px;
-          line-height: 44px; } }
+          line-height: 40px; } }
     .adminui-page-cover__title:only-child {
       margin-bottom: 0; }
   .adminui-page-cover__description {
     font-size: 19px;
-    line-height: 33px;
+    line-height: 32px;
     position: relative;
     z-index: 2;
     max-width: 788px;
@@ -4577,10 +4639,10 @@ Styleguide components.adminui.adminui-page-cover
     @media screen and (min-width: 720px) {
       .adminui-page-cover__description {
         font-size: 21px;
-        line-height: 33px; } }
+        line-height: 32px; } }
     .adminui-page-cover__description--large {
       font-size: 26px;
-      line-height: 33px;
+      line-height: 32px;
       font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 700;
       letter-spacing: 0.16em;
@@ -4588,7 +4650,7 @@ Styleguide components.adminui.adminui-page-cover
       @media screen and (min-width: 720px) {
         .adminui-page-cover__description--large {
           font-size: 32px;
-          line-height: 44px; } }
+          line-height: 40px; } }
   .adminui-page-cover__strong {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
@@ -4673,18 +4735,22 @@ Example: {type: isolated} `last`
 Styleguide components.adminui.adminui-page-section
 */
 .adminui-page-section {
-  padding-top: 22px;
-  padding-bottom: 22px; }
+  padding-top: 24px;
+  padding-bottom: 24px; }
   @media (min-width: 720px) {
     .adminui-page-section {
-      padding-top: 39px;
-      padding-bottom: 39px; } }
+      padding-top: 38px;
+      padding-bottom: 38px; } }
   .adminui-page-section--tight {
     margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
     max-width: 740px; }
-    @media (min-width: 960px) {
+    @media (min-width: 440px) {
+      .adminui-page-section--tight {
+        padding-left: 24px;
+        padding-right: 24px; } }
+    @media (min-width: 720px) {
       .adminui-page-section--tight {
         padding-left: 60px;
         padding-right: 60px; } }
@@ -4699,12 +4765,12 @@ Styleguide components.adminui.adminui-page-section
     .adminui-page-section--center-lg {
       text-align: center; } }
   .adminui-page-section--spaced {
-    padding-top: 33px;
-    padding-bottom: 33px; }
+    padding-top: 32px;
+    padding-bottom: 32px; }
     @media (min-width: 720px) {
       .adminui-page-section--spaced {
-        padding-top: 66px;
-        padding-bottom: 66px; } }
+        padding-top: 64px;
+        padding-bottom: 64px; } }
   .adminui-page-section--outlined {
     border-top: 3px solid #cbcbca;
     border-color: #cbcbca; }
@@ -4742,7 +4808,7 @@ Styleguide components.adminui.adminui-page-section
     .adminui-page-section--collapsable-sm .adminui-page-section__title,
     .adminui-page-section--collapsable-sm .adminui-page-section__content {
       display: none;
-      margin-top: 22px; }
+      margin-top: 24px; }
       @media (min-width: 720px) {
         .adminui-page-section--collapsable-sm .adminui-page-section__title,
         .adminui-page-section--collapsable-sm .adminui-page-section__content {

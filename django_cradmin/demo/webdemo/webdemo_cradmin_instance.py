@@ -42,18 +42,25 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
         """
         return truncatechars(role.description, 100)
 
-    def get_menu_item_renderables(self):
+    def get_expandable_menu_item_renderables(self):
         return [
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label=_('Dashboard'), url=self.appindex_url('dashboard'),
                 is_active=self.request.cradmin_app.appname == 'dashboard'),
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label=_('Pages'), url=self.appindex_url('pages'),
                 is_active=self.request.cradmin_app.appname == 'pages'),
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label=_('Invite admins'), url=self.appindex_url('inviteadmins'),
                 is_active=self.request.cradmin_app.appname == 'inviteadmins'),
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label=_('Share'), url=self.appindex_url('sharable_link'),
                 is_active=self.request.cradmin_app.appname == 'sharable_link'),
+        ]
+
+    def get_main_menu_item_renderables(self):
+        return [
+            crmenu.NavLinkItemRenderable(
+                label=_('Pages'), url=self.appindex_url('pages'),
+                is_active=self.request.cradmin_app.appname == 'pages'),
         ]

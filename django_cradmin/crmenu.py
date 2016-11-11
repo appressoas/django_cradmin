@@ -6,10 +6,7 @@ from django_cradmin import renderable
 from django_cradmin.viewhelpers import listbuilder
 
 
-class LinkItemRenderable(renderable.AbstractRenderableWithCss):
-    """
-    Use this to add links to the menu.
-    """
+class BaseMenuLinkRenderable(renderable.AbstractRenderableWithCss):
     template_name = 'django_cradmin/crmenu/menuitem/link.django.html'
 
     def __init__(self, label, url, is_active=False):
@@ -23,6 +20,13 @@ class LinkItemRenderable(renderable.AbstractRenderableWithCss):
         self.url = url
         self.is_active = is_active
 
+
+class NavLinkItemRenderable(BaseMenuLinkRenderable):
+    """
+    Use this to add links to the main menu.
+
+
+    """
     def get_base_css_classes_list(self):
         css_classes = ['adminui-page-header__navlink']
         if self.is_active:
@@ -30,14 +34,26 @@ class LinkItemRenderable(renderable.AbstractRenderableWithCss):
         return css_classes
 
 
-class ButtonLinkItemRenderable(LinkItemRenderable):
+class NavLinkButtonItemRenderable(NavLinkItemRenderable):
     """
-    Use this to add links styled as a button to the menu.
+    Use this to add links styled as a button to the main menu.
     """
     def get_base_css_classes_list(self):
-        css_classes = super(ButtonLinkItemRenderable, self).get_base_css_classes_list()
+        css_classes = super(NavLinkButtonItemRenderable, self).get_base_css_classes_list()
         css_classes.append('adminui-page-header__navlink--button')
         return css_classes
+
+
+# class BlockLinkItemRenderable(BaseMenuLinkRenderable):
+#     """
+#     Use this to add links to the main menu.
+#     """
+#
+#     def get_base_css_classes_list(self):
+#         css_classes = ['adminui-page-header__navlink']
+#         if self.is_active:
+#             css_classes.append('adminui-page-header__navlink--active')
+#         return css_classes
 
 
 class MenuToggleItemItemRenderable(renderable.AbstractRenderableWithCss):
@@ -95,6 +111,9 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
 
     def get_base_css_classes_list(self):
         return ['adminui-page-header__nav']
+
+    def __bool__(self):
+        return self.has_items() or bool(self.cradmin_instance.expandable_menu_renderable)
 
 
 class DefaultExpandableMenuRenderable(AbstractMenuRenderable):

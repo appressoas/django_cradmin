@@ -25,7 +25,7 @@ class ListfilterDemoCrAdminInstance(crinstance.BaseCrAdminInstance):
 
     def get_menu_item_renderables(self):
         return [
-            crmenu.LinkItemRenderable(
+            crmenu.NavLinkItemRenderable(
                 label='Personlist', url=self.appindex_url('personlist'),
                 is_active=self.request.cradmin_app.appname == 'personlist'),
         ]

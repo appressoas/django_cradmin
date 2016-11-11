@@ -15,7 +15,7 @@ Example: {type: isolated} Example
                         cradmin_menutoggle_groupid="mainmenu">
                     Menu
                     <i class="icon-hamburger"
-                            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="icon-hamburger--close"
+                            cradmin_menutoggle_groupid="mainmenu"
                             aria-hidden="true" role="presentation">
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
@@ -28,9 +28,24 @@ Example: {type: isolated} Example
 
     <div class="adminui-page-cover"></div>
 
-    <div class="adminui-expandable-menu" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
-        <div class="adminui-expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
+    <div class="adminui-expandable-menu"
+            cradmin_menutoggle_groupid="mainmenu"
+            cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
+        <div class="adminui-expandable-menu__backdrop"
+                cradmin_menutoggle_groupid="mainmenu"
+                cradmin_menutoggle_clickable></div>
+
         <div class="adminui-expandable-menu__content">
+            <button type="button" class="adminui-expandable-menu__close"
+                    cradmin_menutoggle_clickable
+                    cradmin_menutoggle_groupid="mainmenu">
+                <i class="icon-close--light"
+                        cradmin_menutoggle_groupid="mainmenu"
+                        aria-hidden="true" role="presentation">
+                </i>
+                <span class="screenreader-only">Close menu</span>
+            </button>
+
             <p>Menu content here</p>
         </div>
     </div>
@@ -65,10 +80,20 @@ Styleguide components.adminui.adminui-expandable-menu
         }
     }
 
+    &__close {
+        position: absolute;
+        top: $spacing;
+        right: $spacing;
+        min-width: $unit * 14;
+        text-align: right;
+        line-height: 30px;
+        color: $color-light;
+    }
+
     &__content {
         position: fixed;
         z-index: $level-3;
-        padding-top: 80px;
+        padding: 80px $spacing 0 $spacing;
         right: 0;
         top: 0;
         bottom: 0;

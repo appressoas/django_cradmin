@@ -1,3 +1,6 @@
+
+
+
 /* AdminUI page header
 
 The basic components of a header is:
@@ -87,6 +90,28 @@ Example: {type: isolated} With navigation buttons and menu toggle button
         </div>
     </header>
 
+Example: {type: isolated} Compact variant with navigation buttons and menu toggle button
+    <header class="adminui-page-header adminui-page-header--compact">
+        <div class="adminui-page-header__content">
+            <a class="adminui-page-header__brand">
+                <span class="adminui-page-header__brandname">My brand</span>
+            </a>
+            <nav class="adminui-page-header__nav">
+                <a class="adminui-page-header__navlink">About</a>
+                <a class="adminui-page-header__navlink">Important stuff</a>
+                <a class="adminui-page-header__navlink  adminui-page-header__navlink--button-compact">A button</a>
+                <button type="button" class="adminui-page-header__navmenutoggle">
+                    Menu
+                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
+                    </i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
 Styleguide components.adminui.adminui-page-header
 */
 .adminui-page-header {
@@ -95,6 +120,7 @@ Styleguide components.adminui.adminui-page-header
     width: 100%;
     top: 0;
     background-color: color(primary, dark);
+
 
     @include min-width(md) {
         padding: #{$vertical-rythm--medium} 0;
@@ -165,7 +191,7 @@ Styleguide components.adminui.adminui-page-header
 
     &__navmenutoggle {
         position: relative;
-        top: 8px;
+        top: 6px;
         float: right;
         margin-left: 1em;
         min-width: $unit * 14;
@@ -176,11 +202,10 @@ Styleguide components.adminui.adminui-page-header
         .icon-hamburger__bar {
             background-color: $color-light;
         }
-
     }
 
-    &--showmenu {
-        position: fixed;
-        z-index: $level-4;
-    }
+    //&--showmenu {
+    //    position: fixed;
+    //    z-index: $level-4;
+    //}
 }
