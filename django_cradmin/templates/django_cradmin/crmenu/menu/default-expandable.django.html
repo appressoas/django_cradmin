@@ -1,4 +1,5 @@
 {% extends "django_cradmin/crmenu/base.django.html" %}
+{% load i18n %}
 
 {% block list-element-attributes %}
     cradmin_menutoggle_groupid="mainmenu"
@@ -8,6 +9,19 @@
 {% block content %}
     <div class="adminui-expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
     <div class="adminui-expandable-menu__content">
-        {{ block.super }}
+        <button type="button" class="adminui-expandable-menu__close"
+                cradmin_menutoggle_clickable
+                cradmin_menutoggle_groupid="mainmenu">
+            <i class="icon-close--light"
+                    cradmin_menutoggle_groupid="mainmenu"
+                    aria-hidden="true" role="presentation">
+            </i>
+            <span class="screenreader-only">{% trans "Close menu" %}</span>
+        </button>
+
+        <ul class="adminui-expandable-menu__list">
+            {{ block.super }}
+        </ul>
+
     </div>
 {% endblock content %}

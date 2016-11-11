@@ -44,16 +44,17 @@ class NavLinkButtonItemRenderable(NavLinkItemRenderable):
         return css_classes
 
 
-# class BlockLinkItemRenderable(BaseMenuLinkRenderable):
-#     """
-#     Use this to add links to the main menu.
-#     """
-#
-#     def get_base_css_classes_list(self):
-#         css_classes = ['adminui-page-header__navlink']
-#         if self.is_active:
-#             css_classes.append('adminui-page-header__navlink--active')
-#         return css_classes
+class ExpandableMenuItem(BaseMenuLinkRenderable):
+    """
+    Use this to add links to the main menu.
+    """
+    template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-item.django.html'
+
+    def get_base_css_classes_list(self):
+        css_classes = ['adminui-expandable-menu__link']
+        if self.is_active:
+            css_classes.append('adminui-expandable-menu__link--active')
+        return css_classes
 
 
 class MenuToggleItemItemRenderable(renderable.AbstractRenderableWithCss):

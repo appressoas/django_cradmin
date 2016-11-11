@@ -46,7 +46,14 @@ Example: {type: isolated} Example
                 <span class="screenreader-only">Close menu</span>
             </button>
 
-            <p>Menu content here</p>
+            <ul class="adminui-expandable-menu__list">
+                <li class="adminui-expandable-menu__listitem">
+                    <a href="#" class="adminui-expandable-menu__link">Item 1</a>
+                </li>
+                <li class="adminui-expandable-menu__listitem">
+                    <a href="#" class="adminui-expandable-menu__link">Item 2</a>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -93,7 +100,7 @@ Styleguide components.adminui.adminui-expandable-menu
     &__content {
         position: fixed;
         z-index: $level-3;
-        padding: 80px $spacing 0 $spacing;
+        padding-top: 80px;
         right: 0;
         top: 0;
         bottom: 0;
@@ -102,6 +109,29 @@ Styleguide components.adminui.adminui-expandable-menu
         color: $color-light;
         @include min-width(lg) {
             width: 50%;
+        }
+    }
+
+    &__list {
+        padding: 0 $spacing 0 $spacing;
+    }
+
+    &__listitem {
+        margin-bottom: $vertical-rythm;
+    }
+
+    &__link {
+        @include font(base, bold);
+        position: relative;
+        margin-left: 1em;
+        color: $color-light;
+        border-bottom: $border-width--small solid transparent;
+
+        &--active,
+        &:hover,
+        &:focus {
+            color: $color-light;
+            border-color: $color-light;
         }
     }
 }

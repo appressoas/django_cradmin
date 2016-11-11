@@ -44,16 +44,16 @@ class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
 
     def get_expandable_menu_item_renderables(self):
         return [
-            crmenu.NavLinkItemRenderable(
+            crmenu.ExpandableMenuItem(
                 label=_('Dashboard'), url=self.appindex_url('dashboard'),
                 is_active=self.request.cradmin_app.appname == 'dashboard'),
-            crmenu.NavLinkItemRenderable(
+            crmenu.ExpandableMenuItem(
                 label=_('Pages'), url=self.appindex_url('pages'),
                 is_active=self.request.cradmin_app.appname == 'pages'),
-            crmenu.NavLinkItemRenderable(
+            crmenu.ExpandableMenuItem(
                 label=_('Invite admins'), url=self.appindex_url('inviteadmins'),
                 is_active=self.request.cradmin_app.appname == 'inviteadmins'),
-            crmenu.NavLinkItemRenderable(
+            crmenu.ExpandableMenuItem(
                 label=_('Share'), url=self.appindex_url('sharable_link'),
                 is_active=self.request.cradmin_app.appname == 'sharable_link'),
         ]
