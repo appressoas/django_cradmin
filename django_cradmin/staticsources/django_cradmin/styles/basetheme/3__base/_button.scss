@@ -79,7 +79,7 @@ Styleguide 3.button
 .button {
     @include spaced-text;
     @include font(base, bold);
-    @include font-size(small);
+    @include font-size(xsmall);
     font-style: normal;
     text-align: center;
 

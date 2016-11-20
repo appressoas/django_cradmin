@@ -110,7 +110,7 @@
 // Spaced text
 @mixin spaced-text {
     @include font(base, bold);
-    letter-spacing: 0.16em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
@@ -221,6 +221,8 @@
 
     @if ($size == wide) {
         max-width: $container-width--wide - $width-modifier;
+    } @else if ($size == medium) {
+        max-width: $container-width--medium - $width-modifier;
     } @else if ($size == tight) {
         max-width: $container-width--tight - $width-modifier;
     } @else if ($size == xtight) {
