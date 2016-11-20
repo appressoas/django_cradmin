@@ -19,11 +19,8 @@ h2,
 %h2,
 h3,
 .h3,
-%h3,
-h4,
-.h4,
-%h4 {
-    @include font(base, bold);
+%h3 {
+    @include font(header, bold);
     word-wrap: break-word;
     margin: 0;
     margin-bottom: vertical-space($spacing);
@@ -62,7 +59,16 @@ h3,
 h4,
 .h4,
 %h4 {
+    @include font(base, bold);
     @include font-size(small);
+
+    word-wrap: break-word;
+    margin: 0;
+    margin-bottom: vertical-space($spacing);
+
+    @include min-width(md) {
+        margin-bottom: vertical-space($spacing, 1.2);
+    }
 }
 
 // TODO: Is this a good rule?

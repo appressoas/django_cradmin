@@ -78,6 +78,9 @@ Styleguide 3.3
         color: $color-text;
         background-color: transparent;
 
+        will-change: width;
+        transition: width 100ms $swift-out;
+
         &:focus:-moz-focusring {
             color: transparent;
             text-shadow: 0 0 0 #000;
@@ -91,9 +94,6 @@ Styleguide 3.3
         option {
             @include font(base, normal);
         }
-
-        transition: width 100ms $swift-out;
-        will-change: width;
     }
 
     &:before {
@@ -134,6 +134,7 @@ Styleguide 3.3
     }
 
     &--outlined {
+        border-radius: $border-radius;
         border: $border-width solid color(neutral, light);
         background-color: $color-light;
 
