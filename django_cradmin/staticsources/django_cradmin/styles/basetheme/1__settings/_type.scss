@@ -35,6 +35,12 @@ $fonts: (
         normal: $font-base-normal,
         bold: $font-base-bold
     ),
+    mono: (
+        font: $font-base-font,
+        fallback: $font-base-fallback,
+        normal: $font-base-normal,
+        bold: $font-base-bold
+    ),
     header: (
         font: $font-header-font,
         fallback: $font-header-fallback,
