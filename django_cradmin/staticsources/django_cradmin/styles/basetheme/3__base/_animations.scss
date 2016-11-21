@@ -42,23 +42,23 @@ Styleguide 1.8
     }
 
     &-fade-out {
-        animation: fade-out 300ms $swift-out both;
+        animation: fade-out 300ms ease-out both;
     }
 
     &-fade-out-slow {
-        animation: fade-out 800ms $swift-out both;
+        animation: fade-out 800ms ease-out both;
     }
 
     &-fade-out-up {
-        animation: fade-out-up 100ms $swift-out both;
+        animation: fade-out-up 100ms ease-out both;
     }
 
     &-fade-out-down {
-        animation: fade-out-down 500ms $swift-out forwards;
+        animation: fade-out-down 500ms ease-out forwards;
     }
 
     &-fade-out-right {
-        animation: fade-out-right 300ms $swift-out both;
+        animation: fade-out-right 300ms ease-out both;
     }
 
     &-fade-in-slow {

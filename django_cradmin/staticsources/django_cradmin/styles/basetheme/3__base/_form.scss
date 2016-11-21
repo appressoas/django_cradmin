@@ -8,7 +8,9 @@
     }
 
     &__title {
-        @include font-size(large);
+        @include font(header, bold);
+        @include font-size(xlarge);
+        color: color(primary);
 
         // Legend reset
         // float: left;
@@ -16,27 +18,6 @@
 
         text-align: center;
         margin-bottom: vertical-space($spacing);
-
-        display: flex;
-        align-items: center;
-        white-space: nowrap;
-
-        &:before,
-        &:after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: $border-width;
-            background-color: color(neutral, light);
-        }
-
-        &:before {
-            margin-right: $spacing--small;
-        }
-
-        &:after {
-            margin-left: $spacing--small;
-        }
     }
 
     &__sub-title {
