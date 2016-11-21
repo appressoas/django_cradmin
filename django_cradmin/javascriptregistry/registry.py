@@ -91,6 +91,15 @@ class Registry(Singleton):
         component = component_class(request=request)
         return component
 
+    def _get_all_dependencies_for_component(self, request, component):
+        all_dependencies = []
+        for component_id in component.get_dependencies():
+            component = self._get_component_object(request=request, component_id=component_id)
+            all_dependencies.append(component)
+            all_dependencies.extend(self._get_all_dependencies_for_component(
+                request=request, component=component))
+        return all_dependencies
+
     def get_component_objects(self, request, component_ids):
         """
         Get the :class:`~django_cradmin.javascri~ptregistry.component.AbstractJsComponent`
@@ -116,11 +125,11 @@ class Registry(Singleton):
 
             requested_component = self._get_component_object(
                 request=request, component_id=requested_component_id)
-            for dependency_component_id in requested_component.get_dependencies():
+            for dependency_component in self._get_all_dependencies_for_component(
+                    request=request, component=requested_component):
+                dependency_component_id = dependency_component.__class__.get_component_id()
                 if dependency_component_id in added_component_ids:
                     continue
-                dependency_component = self._get_component_object(
-                    request=request, component_id=dependency_component_id)
                 components.append(dependency_component)
                 added_component_ids.add(dependency_component_id)
 

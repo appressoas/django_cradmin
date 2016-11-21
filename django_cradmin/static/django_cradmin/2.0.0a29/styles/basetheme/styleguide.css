@@ -994,11 +994,8 @@ h2,
 .h2,
 h3,
 .h3,
-.adminui-page-section__toggle,
-h4,
-.h4,
-legend {
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+.adminui-page-section__toggle {
+  font-family: Georgia, sans-serif;
   font-weight: 700;
   word-wrap: break-word;
   margin: 0;
@@ -1008,10 +1005,7 @@ legend {
     .h2,
     h3,
     .h3,
-    .adminui-page-section__toggle,
-    h4,
-    .h4,
-    legend {
+    .adminui-page-section__toggle {
       margin-bottom: 32px; } }
 
 h1,
@@ -1068,14 +1062,40 @@ h3,
 h4,
 .h4,
 legend {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
   font-size: 19px;
-  line-height: 32px; }
+  line-height: 32px;
+  word-wrap: break-word;
+  margin: 0;
+  margin-bottom: 24px; }
   @media screen and (min-width: 720px) {
     h4,
     .h4,
     legend {
       font-size: 21px;
       line-height: 32px; } }
+  @media (min-width: 720px) {
+    h4,
+    .h4,
+    legend {
+      margin-bottom: 32px; } }
+
+.type-xxlarge {
+  font-size: 48px;
+  line-height: 64px; }
+  @media screen and (min-width: 720px) {
+    .type-xxlarge {
+      font-size: 60px;
+      line-height: 72px; } }
+  @media screen and (min-width: 960px) {
+    .type-xxlarge {
+      font-size: 74px;
+      line-height: 96px; } }
+  @media screen and (min-width: 1240px) {
+    .type-xxlarge {
+      font-size: 82px;
+      line-height: 104px; } }
 
 p:not(:empty) + h2,
 p:not(:empty) + h3,
@@ -1166,7 +1186,7 @@ b {
 .text-smallcaps {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 0.78em;
   line-height: inherit;
@@ -1176,23 +1196,18 @@ b {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif; }
 
 .time-stamp {
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
   font-size: 15px;
   line-height: 24px;
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
+  display: block;
   color: #595959;
   font-size: 0.7em;
-  margin-left: 6px; }
+  margin-bottom: 16px; }
   @media screen and (min-width: 720px) {
     .time-stamp {
       font-size: 16px;
       line-height: 24px; } }
-  .time-stamp:before {
-    content: '─	'; }
 
 /* Lists
 
@@ -2746,19 +2761,19 @@ Styleguide 3.button
 .button {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
-  font-size: 19px;
-  line-height: 32px;
+  font-size: 15px;
+  line-height: 24px;
   font-style: normal;
   text-align: center;
   position: relative;
   display: block;
   width: 100%;
   padding: 12px;
-  border-radius: 0;
+  border-radius: 6px;
   color: #1e1e1e;
   white-space: normal;
   border: 3px solid #797977;
@@ -2766,8 +2781,8 @@ Styleguide 3.button
   margin-bottom: 6px; }
   @media screen and (min-width: 720px) {
     .button {
-      font-size: 21px;
-      line-height: 32px; } }
+      font-size: 16px;
+      line-height: 24px; } }
   @media (min-width: 720px) {
     .button {
       display: inline-block;
@@ -2949,7 +2964,7 @@ Styleguide 3.1
   width: 100%;
   padding: 9px 15px;
   color: #1e1e1e;
-  border-radius: 0;
+  border-radius: 6px;
   border: 3px solid #fff;
   background-color: #fff; }
   @media screen and (min-width: 720px) {
@@ -3058,9 +3073,9 @@ Styleguide 3.3
     border: 0;
     color: #1e1e1e;
     background-color: transparent;
+    will-change: width;
     -webkit-transition: width 100ms cubic-bezier(0, 0, 0.1, 1);
-    transition: width 100ms cubic-bezier(0, 0, 0.1, 1);
-    will-change: width; }
+    transition: width 100ms cubic-bezier(0, 0, 0.1, 1); }
     .select select:focus:-moz-focusring {
       color: transparent;
       text-shadow: 0 0 0 #000; }
@@ -3090,6 +3105,7 @@ Styleguide 3.3
       .select--light select:focus {
         color: #1e1e1e; }
   .select--outlined {
+    border-radius: 6px;
     border: 3px solid #cbcbca;
     background-color: #fff; }
     .select--outlined:before {
@@ -3471,7 +3487,8 @@ Styleguide 3.5
     width: 30px;
     height: 30px;
     line-height: 1;
-    border: 3px solid #f6f6f5; }
+    border: 3px solid #979795;
+    background-color: #fff; }
     @media (min-width: 440px) {
       .checkbox__control-indicator {
         top: 0.1em; } }
@@ -4674,7 +4691,7 @@ Styleguide components.adminui.adminui-page-cover
       line-height: 32px;
       font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.1em;
       text-transform: uppercase; }
       @media screen and (min-width: 720px) {
         .adminui-page-cover__description--large {
