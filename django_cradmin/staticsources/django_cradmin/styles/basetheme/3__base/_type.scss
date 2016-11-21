@@ -174,14 +174,10 @@ b {
 }
 
 .time-stamp {
-    @include spaced-text;
     @include font-size(xsmall);
-    @include font(base, normal);
+    @include font(mono, normal);
+    display: block;
     color: $color-muted;
     font-size: 0.7em;
-    margin-left: $unit;
-
-    &:before {
-        content: '─	';
-    }
+    margin-bottom: vertical-space(2);
 }
