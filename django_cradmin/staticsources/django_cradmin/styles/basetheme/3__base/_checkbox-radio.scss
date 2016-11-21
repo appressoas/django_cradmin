@@ -248,8 +248,8 @@ Styleguide 3.5
         height: $unit * 5;
         line-height: 1;
 
-        border: $border-width solid color(neutral, xlight);
-        background-color: color(neutral, xxlight);
+        border: $border-width solid color(neutral);
+        background-color: $color-light;
 
         @include min-width(xs) {
             top: 0.1em;
