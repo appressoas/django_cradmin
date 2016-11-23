@@ -109,9 +109,11 @@ p,
 }
 
 .preamble {
-    @include font(base, normal);
-    @include font-size(large);
-    margin-bottom: vertical-space($spacing);
+    @include font(base, bold);
+
+    &:only-child {
+        margin: 0;
+    }
 }
 
 .normal {

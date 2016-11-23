@@ -30,7 +30,17 @@ Example: `.list .list--links`; Results list
         <li><a href="">I'm last :(</a></li>
     </ul>
 
-Styleguide 2.100
+Example: `.list .list--contact`; Contact list
+    <ul class="list  list--contact">
+        <li class="list__item  list__item--phone">
+            <a href="tel:47063736">470 63 736</a>
+        </li>
+        <li class="list__item  list__item--email">
+            <a href="mailto:edina.ringdal@arbeiderpartiet.no">edina.ringdal@arbeiderpartiet.no</a>
+        </li>
+    </ul>
+
+Styleguide 2.list
 */
 ol {
     counter-reset: ol-counter;
@@ -103,6 +113,25 @@ ol {
                 border-radius: 0;
                 top: 0.48em;
                 border: 0;
+            }
+        }
+    }
+
+    &--contact {
+        .list__item {
+            &:before {
+                background-color: transparent;
+                border-radius: 0;
+                top: 0.48em;
+                border: 0;
+            }
+
+            &--email:before {
+                @extend %icon-email--primary;
+            }
+
+            &--phone:before {
+                @extend %icon-phone--primary;
             }
         }
     }
