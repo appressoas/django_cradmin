@@ -1,13 +1,14 @@
 @mixin min-width($name) {
     @if not map-has-key($breakpoints, $name) {
-        @warn 'Warning: `#{$name}` is not a valid breakpoint name, get your shit together!';
+        @media (min-width: $name) {
+            @content;
+        }
     } @else {
         @media (min-width: map-get($breakpoints, $name)) {
             @content;
         }
     }
 }
-
 
 // Defining colors as a map
 // retrieve color from $colors map ie. `color(primary, base)`
