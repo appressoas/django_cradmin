@@ -65,6 +65,7 @@ Styleguide 3.1
     @include font(base, normal);
     @include font-size(small);
     line-height: 1;
+    min-height: vertical-space(6);
 
     display: block;
     width: 100%;
