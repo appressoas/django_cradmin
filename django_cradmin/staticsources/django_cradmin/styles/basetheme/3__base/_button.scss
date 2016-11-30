@@ -87,7 +87,7 @@ Styleguide 3.button
     display: block;
     width: 100%;
     max-width: calc(100vw - #{$spacing--small * 2});
-    padding: $spacing--small;
+    padding: $unit $spacing--small;
     border-radius: $border-radius;
 
     color: $color-text;
@@ -101,6 +101,7 @@ Styleguide 3.button
         display: inline-block;
         white-space: nowrap;
         width: auto;
+        padding: $spacing--small;
     }
 
     &[disabled] {

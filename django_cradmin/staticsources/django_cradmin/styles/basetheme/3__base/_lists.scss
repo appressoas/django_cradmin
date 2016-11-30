@@ -90,7 +90,7 @@ ol {
             background-color: color(primary, dark);
 
             @include min-width(xs) {
-                top: 0.6em;
+                top: 0.4em;
             }
         }
     }
@@ -107,11 +107,13 @@ ol {
 
     &--links {
         & > li {
+            margin-bottom: vertical-space();
+
             &:before {
                 @extend %icon-arrow-right--primary;
                 background-color: transparent;
                 border-radius: 0;
-                top: 0.48em;
+                top: 0.28em;
                 border: 0;
             }
         }
@@ -119,10 +121,12 @@ ol {
 
     &--contact {
         .list__item {
+            margin-bottom: vertical-space();
+
             &:before {
                 background-color: transparent;
                 border-radius: 0;
-                top: 0.48em;
+                top: 0.32em;
                 border: 0;
             }
 

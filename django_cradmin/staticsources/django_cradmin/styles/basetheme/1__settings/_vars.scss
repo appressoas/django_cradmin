@@ -25,6 +25,7 @@ $container-width--tight: 740px !default;
 $container-width--medium: 950px !default;
 $container-width: $container-width--tight * 1.5 !default; // TODO: Improve?
 $container-width--wide: 1400px !default;
+$container-width--xwide: 1600px !default;
 
 
 /* Spacing
@@ -73,7 +74,7 @@ There is a system that creates proper line heights for text. **Never interfer wi
 
 Styleguide 1.6
 */
-$vertical-rythm: 8px !default; // TODO: Responsive? REM?
+$vertical-rythm: 7px !default; // TODO: Responsive? REM?
 $vertical-rythm--medium: ($vertical-rythm * 3) !default;
 $vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm !default;
 

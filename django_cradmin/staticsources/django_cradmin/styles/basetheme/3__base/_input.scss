@@ -63,8 +63,8 @@ Styleguide 3.1
 
 .input {
     @include font(base, normal);
-    @include font-size(small);
-    line-height: 1;
+    @include font-size(small, true);
+    line-height: 1.6;
     min-height: vertical-space(6);
 
     display: block;
