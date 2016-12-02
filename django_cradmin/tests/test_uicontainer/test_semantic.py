@@ -47,6 +47,40 @@ class TestLink(test.TestCase):
         self.assertEqual(selector.one('a')['href'], 'http://example.com')
 
 
+class TestStrong(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Strong().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('strong'))
+
+    def test_no_text(self):
+        container = uicontainer.semantic.Strong().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('strong').alltext_normalized, '')
+
+    def test_with_text(self):
+        container = uicontainer.semantic.Strong(text='test').bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('strong').alltext_normalized, 'test')
+
+
+class TestEm(test.TestCase):
+    def test_sanity(self):
+        container = uicontainer.semantic.Em().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertTrue(selector.exists('em'))
+
+    def test_no_text(self):
+        container = uicontainer.semantic.Em().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('em').alltext_normalized, '')
+
+    def test_with_text(self):
+        container = uicontainer.semantic.Em(text='test').bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('em').alltext_normalized, 'test')
+
+
 class TestH1(test.TestCase):
     def test_sanity(self):
         container = uicontainer.semantic.H1().bootstrap()

@@ -35,6 +35,22 @@ class Link(convenience.AbstractWithOptionalEscapedText):
         return attributes
 
 
+class Strong(convenience.AbstractWithOptionalEscapedText):
+    """
+    Renders a ``<strong>``.
+    """
+    def get_default_html_tag(self):
+        return 'strong'
+
+
+class Em(convenience.AbstractWithOptionalEscapedText):
+    """
+    Renders a ``<em>``.
+    """
+    def get_default_html_tag(self):
+        return 'em'
+
+
 class H1(convenience.AbstractWithOptionalEscapedText):
     """
     Renders a ``<h1>``.
