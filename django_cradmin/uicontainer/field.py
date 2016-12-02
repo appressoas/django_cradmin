@@ -329,7 +329,8 @@ class Field(BaseFieldRenderable):
         """
         return not (self.should_render_as_subwidgets()
                     or self.is_select_widget()
-                    or self.is_select_multiple_widget())
+                    or self.is_select_multiple_widget()
+                    or not self.field_wrapper_renderable.label_renderable.should_render)
 
     def get_default_bem_block_or_element(self):
         """
