@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
-from functools import wraps
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import HttpResponse
-from django.utils.encoding import force_str
 from django.shortcuts import resolve_url
+from django.utils.encoding import force_str
+from functools import wraps
 
 from django_cradmin.registry import cradmin_instance_registry
 
@@ -33,6 +33,8 @@ def has_access_to_cradmin_instance(cradmin_instance_id, view_function, redirect_
         if cradmin_instance.has_access():
             request.cradmin_instance = cradmin_instance
             return view_function(request, *args, **kwargs)
+        elif request.user.is_authenticated():
+            raise PermissionDenied()
         else:
             # Redirect to login just like login_required()
             from django.contrib.auth.views import redirect_to_login
