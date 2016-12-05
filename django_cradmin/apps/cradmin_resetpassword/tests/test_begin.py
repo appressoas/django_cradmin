@@ -43,10 +43,10 @@ class TestBeginPasswordResetView(TestCase):
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Reset your Testsite password')
-        self.assertIn('http://testserver/resetpassword/reset/testtoken',
+        self.assertIn('http://testserver/cradmin_resetpassword/reset/testtoken',
                       mail.outbox[0].alternatives[0][0])
-        self.assertIn('We received a request to reset the password for your '
-                      'Testsite account, testuser',
+        self.assertIn('We received a request to reset the password '
+                      'for your Testsite account, testuser.',
                       mail.outbox[0].alternatives[0][0])
 
     def test_post_token_created(self):
