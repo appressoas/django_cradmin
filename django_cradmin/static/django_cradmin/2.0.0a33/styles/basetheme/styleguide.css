@@ -226,6 +226,7 @@ img {
 
 button {
   -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   box-sizing: border-box;
   border: 0;
@@ -264,6 +265,7 @@ input[type='tel'],
 input[type='color'] {
   outline: 0;
   -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   box-sizing: border-box; }
 
@@ -324,6 +326,7 @@ th {
 .radio,
 .checkbox {
   -webkit-user-select: none;
+  -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -921,7 +924,7 @@ body {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 19px;
-  line-height: 32px;
+  line-height: 28px;
   position: relative;
   color: #1e1e1e;
   font-style: normal;
@@ -932,7 +935,7 @@ body {
   @media screen and (min-width: 720px) {
     body {
       font-size: 21px;
-      line-height: 32px; } }
+      line-height: 28px; } }
   body.overlay, body.modal-open {
     overflow: hidden;
     position: fixed; }
@@ -996,37 +999,37 @@ h3,
   font-weight: 700;
   word-wrap: break-word;
   margin: 0;
-  margin-bottom: 24px; }
+  margin-bottom: 28px; }
   @media (min-width: 720px) {
     h2,
     .h2,
     h3,
     .h3,
     .adminui-page-section__toggle {
-      margin-bottom: 32px; } }
+      margin-bottom: 35px; } }
 
 h1,
 .h1 {
   font-family: Georgia, sans-serif;
   font-weight: 700;
   font-size: 48px;
-  line-height: 64px;
+  line-height: 63px;
   word-wrap: break-word; }
   @media screen and (min-width: 720px) {
     h1,
     .h1 {
       font-size: 60px;
-      line-height: 72px; } }
+      line-height: 77px; } }
   @media screen and (min-width: 960px) {
     h1,
     .h1 {
       font-size: 74px;
-      line-height: 96px; } }
+      line-height: 91px; } }
   @media screen and (min-width: 1240px) {
     h1,
     .h1 {
       font-size: 82px;
-      line-height: 104px; } }
+      line-height: 105px; } }
   h1 strong,
   .h1 strong {
     font-family: Georgia, sans-serif;
@@ -1037,7 +1040,7 @@ h1,
 h2,
 .h2 {
   font-size: 34px;
-  line-height: 48px; }
+  line-height: 42px; }
   @media screen and (min-width: 720px) {
     h2,
     .h2 {
@@ -1048,13 +1051,13 @@ h3,
 .h3,
 .adminui-page-section__toggle {
   font-size: 26px;
-  line-height: 32px; }
+  line-height: 35px; }
   @media screen and (min-width: 720px) {
     h3,
     .h3,
     .adminui-page-section__toggle {
       font-size: 32px;
-      line-height: 40px; } }
+      line-height: 42px; } }
 
 h4,
 .h4,
@@ -1062,37 +1065,37 @@ legend {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   font-size: 19px;
-  line-height: 32px;
+  line-height: 28px;
   word-wrap: break-word;
   margin: 0;
-  margin-bottom: 24px; }
+  margin-bottom: 28px; }
   @media screen and (min-width: 720px) {
     h4,
     .h4,
     legend {
       font-size: 21px;
-      line-height: 32px; } }
+      line-height: 28px; } }
   @media (min-width: 720px) {
     h4,
     .h4,
     legend {
-      margin-bottom: 32px; } }
+      margin-bottom: 35px; } }
 
 .type-xxlarge {
   font-size: 48px;
-  line-height: 64px; }
+  line-height: 63px; }
   @media screen and (min-width: 720px) {
     .type-xxlarge {
       font-size: 60px;
-      line-height: 72px; } }
+      line-height: 77px; } }
   @media screen and (min-width: 960px) {
     .type-xxlarge {
       font-size: 74px;
-      line-height: 96px; } }
+      line-height: 91px; } }
   @media screen and (min-width: 1240px) {
     .type-xxlarge {
       font-size: 82px;
-      line-height: 104px; } }
+      line-height: 105px; } }
 
 p:not(:empty) + h2,
 p:not(:empty) + h3,
@@ -1100,7 +1103,7 @@ p:not(:empty) + h4,
 ul + h2,
 ul + h3,
 ul + h4 {
-  margin-top: 64px; }
+  margin-top: 63px; }
 
 /* Paragraphs
 
@@ -1118,31 +1121,26 @@ p,
 .paragraph {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
-  margin-bottom: 24px; }
+  margin-bottom: 28px; }
   p:empty,
   .paragraph:empty {
     display: none; }
 
 .preamble {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 400;
-  font-size: 26px;
-  line-height: 32px;
-  margin-bottom: 24px; }
-  @media screen and (min-width: 720px) {
-    .preamble {
-      font-size: 32px;
-      line-height: 40px; } }
+  font-weight: 700; }
+  .preamble:only-child {
+    margin: 0; }
 
 .normal {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 19px;
-  line-height: 32px; }
+  line-height: 28px; }
   @media screen and (min-width: 720px) {
     .normal {
       font-size: 21px;
-      line-height: 32px; } }
+      line-height: 28px; } }
 
 .no-break {
   white-space: nowrap; }
@@ -1196,15 +1194,15 @@ b {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 15px;
-  line-height: 24px;
+  line-height: 21px;
   display: block;
   color: #595959;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   border: 0; }
   @media screen and (min-width: 720px) {
     .time-stamp {
       font-size: 16px;
-      line-height: 24px; } }
+      line-height: 21px; } }
 
 /* Lists
 
@@ -1238,12 +1236,22 @@ Example: `.list .list--links`; Results list
         <li><a href="">I'm last :(</a></li>
     </ul>
 
-Styleguide 2.100
+Example: `.list .list--contact`; Contact list
+    <ul class="list  list--contact">
+        <li class="list__item  list__item--phone">
+            <a href="tel:47063736">470 63 736</a>
+        </li>
+        <li class="list__item  list__item--email">
+            <a href="mailto:edina.ringdal@arbeiderpartiet.no">edina.ringdal@arbeiderpartiet.no</a>
+        </li>
+    </ul>
+
+Styleguide 2.list
 */
 ol {
   counter-reset: ol-counter;
   text-align: left;
-  margin-bottom: 32px; }
+  margin-bottom: 28px; }
   ol > li {
     position: relative;
     padding-left: 30px;
@@ -1259,7 +1267,7 @@ ol {
       left: 0; }
 
 .list {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   text-align: left; }
   .list > li {
     position: relative;
@@ -1279,17 +1287,26 @@ ol {
       background-color: #467465; }
       @media (min-width: 440px) {
         .list > li:before {
-          top: 0.6em; } }
+          top: 0.4em; } }
   .list--large > li {
-    margin-bottom: 8px; }
+    margin-bottom: 7px; }
     @media (min-width: 720px) {
       .list--large > li {
-        margin-bottom: 32px; } }
-  .list--links > li:before {
-    background-color: transparent;
-    border-radius: 0;
-    top: 0.48em;
-    border: 0; }
+        margin-bottom: 28px; } }
+  .list--links > li {
+    margin-bottom: 7px; }
+    .list--links > li:before {
+      background-color: transparent;
+      border-radius: 0;
+      top: 0.28em;
+      border: 0; }
+  .list--contact .list__item {
+    margin-bottom: 7px; }
+    .list--contact .list__item:before {
+      background-color: transparent;
+      border-radius: 0;
+      top: 0.32em;
+      border: 0; }
 
 /*
 Icons
@@ -2366,7 +2383,8 @@ Styleguide 4
     background-image: url("../../media/images/sprite.svg");
     background-position: -200px -500px;
     background-repeat: no-repeat; }
-  .icon-email--primary {
+  .icon-email--primary,
+  .list--contact .list__item--email:before {
     display: inline-block;
     vertical-align: top;
     width: 18px;
@@ -2531,7 +2549,8 @@ Styleguide 4
     background-image: url("../../media/images/sprite.svg");
     background-position: -700px -500px;
     background-repeat: no-repeat; }
-  .icon-phone--primary {
+  .icon-phone--primary,
+  .list--contact .list__item--phone:before {
     display: inline-block;
     vertical-align: top;
     width: 14px;
@@ -2684,10 +2703,10 @@ fieldset {
   display: block;
   border: 0;
   margin-top: 0;
-  margin-bottom: 32px; }
+  margin-bottom: 28px; }
 
 legend {
-  margin-bottom: 8px; }
+  margin-bottom: 7px; }
 
 /* Label
 
@@ -2710,7 +2729,7 @@ Styleguide 3.label
 */
 .label {
   display: block;
-  margin-bottom: 32px; }
+  margin-bottom: 28px; }
 
 .label--inline {
   display: inline;
@@ -2763,14 +2782,15 @@ Styleguide 3.button
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   font-size: 15px;
-  line-height: 24px;
+  line-height: 21px;
   font-style: normal;
   text-align: center;
   position: relative;
   display: block;
   width: 100%;
-  padding: 12px;
-  border-radius: 6px;
+  max-width: calc(100vw - 24px);
+  padding: 6px 12px;
+  border-radius: 5px;
   color: #1e1e1e;
   white-space: normal;
   border: 3px solid #797977;
@@ -2779,12 +2799,13 @@ Styleguide 3.button
   @media screen and (min-width: 720px) {
     .button {
       font-size: 16px;
-      line-height: 24px; } }
+      line-height: 21px; } }
   @media (min-width: 720px) {
     .button {
       display: inline-block;
       white-space: nowrap;
-      width: auto; } }
+      width: auto;
+      padding: 12px; } }
   .button[disabled] {
     pointer-events: none;
     opacity: 0.4; }
@@ -2879,12 +2900,12 @@ Styleguide 3.button
     width: 100%; }
   .button--compact {
     font-size: 15px;
-    line-height: 24px;
+    line-height: 21px;
     padding: 6px 12px; }
     @media screen and (min-width: 720px) {
       .button--compact {
         font-size: 16px;
-        line-height: 24px; } }
+        line-height: 21px; } }
   @media print {
     .button--hidden-in-print {
       display: none; } }
@@ -2955,19 +2976,18 @@ Styleguide 3.1
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   font-size: 19px;
-  line-height: 32px;
-  line-height: 1;
+  line-height: 1.6;
+  min-height: 42px;
   display: block;
   width: 100%;
   padding: 9px 15px;
   color: #1e1e1e;
-  border-radius: 6px;
+  border-radius: 5px;
   border: 3px solid #fff;
   background-color: #fff; }
   @media screen and (min-width: 720px) {
     .input {
-      font-size: 21px;
-      line-height: 32px; } }
+      font-size: 21px; } }
   .input:focus {
     border-color: #465e71; }
   .input[disabled] {
@@ -2982,7 +3002,7 @@ Styleguide 3.1
     color: #7a7a7a; }
   .input--inline {
     font-size: 19px;
-    line-height: 32px;
+    line-height: 28px;
     display: inline-block;
     width: auto;
     min-width: 160px;
@@ -2990,7 +3010,7 @@ Styleguide 3.1
     @media screen and (min-width: 720px) {
       .input--inline {
         font-size: 21px;
-        line-height: 32px; } }
+        line-height: 28px; } }
   .input--half {
     width: calc(50% - 12px); }
   .input--small {
@@ -3058,6 +3078,7 @@ Styleguide 3.3
     font-weight: 700;
     font-size: inherit;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     display: inline-block;
     cursor: pointer;
@@ -3101,7 +3122,7 @@ Styleguide 3.3
       .select--light select:focus {
         color: #1e1e1e; }
   .select--outlined {
-    border-radius: 6px;
+    border-radius: 5px;
     border: 3px solid #cbcbca;
     background-color: #fff; }
     .select--outlined:before {
@@ -3110,13 +3131,13 @@ Styleguide 3.3
       font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 400;
       font-size: 19px;
-      line-height: 32px;
+      line-height: 28px;
       padding: 9px 15px;
       padding-right: 28px; }
       @media screen and (min-width: 720px) {
         .select--outlined select {
           font-size: 21px;
-          line-height: 32px; } }
+          line-height: 28px; } }
   .select--small {
     width: 228px; }
 
@@ -3134,7 +3155,7 @@ Styleguide 3.3
   padding-right: 12px;
   max-width: 620px;
   position: relative;
-  margin-bottom: 64px; }
+  margin-bottom: 63px; }
   @media (min-width: 440px) {
     .form {
       padding-left: 24px;
@@ -3144,16 +3165,16 @@ Styleguide 3.3
       padding-left: 60px;
       padding-right: 60px; } }
   .form__section {
-    margin-bottom: 32px; }
+    margin-bottom: 35px; }
   .form__title {
     font-family: Georgia, sans-serif;
     font-weight: 700;
     font-size: 34px;
-    line-height: 48px;
+    line-height: 42px;
     color: #57917E;
     width: 100%;
     text-align: center;
-    margin-bottom: 24px; }
+    margin-bottom: 28px; }
     @media screen and (min-width: 720px) {
       .form__title {
         font-size: 42px;
@@ -3163,11 +3184,11 @@ Styleguide 3.3
     font-weight: 700;
     width: 100%;
     display: block;
-    margin-bottom: 8px; }
+    margin-bottom: 7px; }
   .form__item {
     display: block;
     width: 100%;
-    margin-bottom: 24px; }
+    margin-bottom: 28px; }
     .form__item.animate {
       -webkit-animation-delay: 360ms;
               animation-delay: 360ms; }
@@ -3220,14 +3241,14 @@ Styleguide 3.3
         margin-right: 0; }
   .form__message {
     border: 3px solid #cbcbca;
-    padding: 8px 15px; }
+    padding: 7px 15px; }
     .form__message.ng-leave {
       position: absolute;
       width: 100%; }
 
 hr,
 .separator {
-  margin: 0 0 64px;
+  margin: 0 0 63px;
   padding: 0;
   border: 0;
   border-top: 3px solid #cbcbca; }
@@ -3370,7 +3391,7 @@ Styleguide 3.5
   position: relative;
   display: inline-block;
   padding-left: 42px;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   margin-right: 24px;
   cursor: pointer; }
   .radio input[type='radio'],
@@ -3405,6 +3426,7 @@ Styleguide 3.5
     position: absolute;
     display: block;
     -webkit-user-select: none;
+       -moz-user-select: none;
             user-select: none;
     top: -0.1em;
     left: 0;
@@ -3416,7 +3438,7 @@ Styleguide 3.5
     @media (min-width: 440px) {
       .radio__control-indicator,
       .checkbox__control-indicator {
-        top: 0.15em; } }
+        top: 0.05em; } }
     .radio__control-indicator:before,
     .checkbox__control-indicator:before {
       content: '';
@@ -3474,7 +3496,7 @@ Styleguide 3.5
     background-color: #fff; }
     @media (min-width: 440px) {
       .checkbox__control-indicator {
-        top: 0.1em; } }
+        top: -0.1em; } }
     .checkbox__control-indicator:before {
       margin-top: -6px;
       margin-left: -8px; }
@@ -3593,15 +3615,15 @@ Styleguide 3.6
 .error {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 19px;
-  line-height: 32px;
+  line-height: 28px;
   padding: 12px 24px;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   color: #fff;
   background-color: #57917E; }
   @media screen and (min-width: 720px) {
     .error {
       font-size: 21px;
-      line-height: 32px; } }
+      line-height: 28px; } }
 
 /* Modal
 
@@ -3822,9 +3844,9 @@ Styleguide components.blocklist
 */
 .blocklist .blocklist__item {
   display: block;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   background-color: rgba(151, 151, 149, 0.2);
-  padding: 32px 24px; }
+  padding: 28px 24px; }
   .blocklist .blocklist__item--link {
     border-bottom: 3px solid #58758D;
     color: #1e1e1e;
@@ -3845,40 +3867,40 @@ Styleguide components.blocklist
     color: #1e1e1e; }
 
 .blocklist .blocklist__itemtitle {
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   font-size: 26px;
-  line-height: 32px; }
+  line-height: 35px; }
   .blocklist .blocklist__itemtitle:last-child {
     margin-bottom: 0; }
   @media screen and (min-width: 720px) {
     .blocklist .blocklist__itemtitle {
       font-size: 32px;
-      line-height: 40px; } }
+      line-height: 42px; } }
   .blocklist .blocklist__itemtitle--small {
     font-size: 19px;
-    line-height: 32px; }
+    line-height: 28px; }
     @media screen and (min-width: 720px) {
       .blocklist .blocklist__itemtitle--small {
         font-size: 21px;
-        line-height: 32px; } }
+        line-height: 28px; } }
   .blocklist .blocklist__itemtitle--large {
     font-size: 26px;
-    line-height: 32px; }
+    line-height: 35px; }
     @media screen and (min-width: 720px) {
       .blocklist .blocklist__itemtitle--large {
         font-size: 32px;
-        line-height: 40px; } }
+        line-height: 42px; } }
   .blocklist .blocklist__itemtitle--xlarge {
     font-size: 34px;
-    line-height: 48px; }
+    line-height: 42px; }
     @media screen and (min-width: 720px) {
       .blocklist .blocklist__itemtitle--xlarge {
         font-size: 42px;
         line-height: 56px; } }
 
 .blocklist--tight .blocklist__item {
-  margin-bottom: 8px;
-  padding: 8px 12px; }
+  margin-bottom: 7px;
+  padding: 7px 12px; }
 
 /* Form field help text
 
@@ -4230,12 +4252,12 @@ Styleguide components.adminui.adminui-breadcrumbs
 .adminui-breadcrumbs {
   position: relative;
   font-size: 15px;
-  line-height: 24px;
+  line-height: 21px;
   display: inline-block; }
   @media screen and (min-width: 720px) {
     .adminui-breadcrumbs {
       font-size: 16px;
-      line-height: 24px; } }
+      line-height: 21px; } }
   .adminui-breadcrumbs__item {
     color: inherit;
     border-color: transparent; }
@@ -4270,7 +4292,7 @@ Styleguide components.adminui.adminui-breadcrumbs
               transform: scale(0.7); }
   .adminui-breadcrumbs--block-light {
     display: block;
-    padding: 8px 0;
+    padding: 7px 0;
     background-color: #fff;
     box-shadow: 0 3px 0 rgba(151, 151, 149, 0.15); }
 
@@ -4388,17 +4410,17 @@ Example: {type: isolated} Compact variant with navigation buttons and menu toggl
 Styleguide components.adminui.adminui-page-header
 */
 .adminui-page-header {
-  padding: 8px 0;
+  padding: 7px 0;
   color: #fff;
   width: 100%;
   top: 0;
   background-color: #467465; }
   @media (min-width: 720px) {
     .adminui-page-header {
-      padding: 24px 0; } }
+      padding: 21px 0; } }
   @media (min-width: 720px) {
     .adminui-page-header--compact {
-      padding: 8px 0; } }
+      padding: 7px 0; } }
   .adminui-page-header__content {
     margin: 0 auto;
     padding-left: 12px;
@@ -4430,7 +4452,7 @@ Styleguide components.adminui.adminui-page-header
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
     font-size: 15px;
-    line-height: 24px;
+    line-height: 21px;
     display: none;
     position: relative;
     margin-left: 1em;
@@ -4439,7 +4461,7 @@ Styleguide components.adminui.adminui-page-header
     @media screen and (min-width: 720px) {
       .adminui-page-header__navlink {
         font-size: 16px;
-        line-height: 24px; } }
+        line-height: 21px; } }
     @media (min-width: 960px) {
       .adminui-page-header__navlink {
         display: inline; } }
@@ -4574,7 +4596,7 @@ Styleguide components.adminui.adminui-expandable-menu
   .adminui-expandable-menu__list {
     padding: 0 24px 0 24px; }
   .adminui-expandable-menu__listitem {
-    margin-bottom: 8px; }
+    margin-bottom: 7px; }
   .adminui-expandable-menu__link {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
@@ -4633,45 +4655,70 @@ Styleguide components.adminui.adminui-page-cover
       color: #000; } }
   @media (min-width: 720px) {
     .adminui-page-cover {
-      padding-top: 32px;
-      padding-bottom: 32px; } }
+      padding-top: 28px;
+      padding-bottom: 28px; } }
   .adminui-page-cover__title {
     position: relative;
+    margin: 0 auto;
+    padding-left: 12px;
+    padding-right: 12px;
+    max-width: 1400px;
     z-index: 2;
-    padding: 0 24px;
+    width: 100%;
     max-width: 1110px;
-    margin: 0 auto 12px;
+    margin-bottom: 12px;
     font-size: 34px;
-    line-height: 48px; }
+    line-height: 42px; }
+    @media (min-width: 440px) {
+      .adminui-page-cover__title {
+        padding-left: 24px;
+        padding-right: 24px; } }
+    @media (min-width: 720px) {
+      .adminui-page-cover__title {
+        padding-left: 60px;
+        padding-right: 60px; } }
     @media screen and (min-width: 720px) {
       .adminui-page-cover__title {
         font-size: 42px;
         line-height: 56px; } }
     .adminui-page-cover__title--small {
       font-size: 26px;
-      line-height: 32px; }
+      line-height: 35px; }
       @media screen and (min-width: 720px) {
         .adminui-page-cover__title--small {
           font-size: 32px;
-          line-height: 40px; } }
+          line-height: 42px; } }
     .adminui-page-cover__title:only-child {
       margin-bottom: 0; }
   .adminui-page-cover__description {
+    margin: 0 auto;
+    padding-left: 12px;
+    padding-right: 12px;
+    max-width: 740px;
+    font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
     font-size: 19px;
-    line-height: 32px;
+    line-height: 28px;
     position: relative;
     z-index: 2;
     max-width: 788px;
-    padding: 0 24px;
-    margin-left: auto;
-    margin-right: auto; }
+    padding: 0;
+    margin-bottom: 12px; }
+    @media (min-width: 440px) {
+      .adminui-page-cover__description {
+        padding-left: 24px;
+        padding-right: 24px; } }
+    @media (min-width: 720px) {
+      .adminui-page-cover__description {
+        padding-left: 60px;
+        padding-right: 60px; } }
     @media screen and (min-width: 720px) {
       .adminui-page-cover__description {
         font-size: 21px;
-        line-height: 32px; } }
+        line-height: 28px; } }
     .adminui-page-cover__description--large {
       font-size: 26px;
-      line-height: 32px;
+      line-height: 35px;
       font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 700;
       letter-spacing: 0.1em;
@@ -4679,7 +4726,7 @@ Styleguide components.adminui.adminui-page-cover
       @media screen and (min-width: 720px) {
         .adminui-page-cover__description--large {
           font-size: 32px;
-          line-height: 40px; } }
+          line-height: 42px; } }
   .adminui-page-cover__strong {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 700;
@@ -4764,12 +4811,12 @@ Example: {type: isolated} `last`
 Styleguide components.adminui.adminui-page-section
 */
 .adminui-page-section {
-  padding-top: 24px;
-  padding-bottom: 24px; }
+  padding-top: 21px;
+  padding-bottom: 21px; }
   @media (min-width: 720px) {
     .adminui-page-section {
-      padding-top: 38px;
-      padding-bottom: 38px; } }
+      padding-top: 34px;
+      padding-bottom: 34px; } }
   .adminui-page-section--tight {
     margin: 0 auto;
     padding-left: 12px;
@@ -4794,12 +4841,12 @@ Styleguide components.adminui.adminui-page-section
     .adminui-page-section--center-lg {
       text-align: center; } }
   .adminui-page-section--spaced {
-    padding-top: 32px;
-    padding-bottom: 32px; }
+    padding-top: 28px;
+    padding-bottom: 28px; }
     @media (min-width: 720px) {
       .adminui-page-section--spaced {
-        padding-top: 64px;
-        padding-bottom: 64px; } }
+        padding-top: 56px;
+        padding-bottom: 56px; } }
   .adminui-page-section--outlined {
     border-top: 3px solid #cbcbca;
     border-color: #cbcbca; }
@@ -4837,7 +4884,7 @@ Styleguide components.adminui.adminui-page-section
     .adminui-page-section--collapsable-sm .adminui-page-section__title,
     .adminui-page-section--collapsable-sm .adminui-page-section__content {
       display: none;
-      margin-top: 24px; }
+      margin-top: 21px; }
       @media (min-width: 720px) {
         .adminui-page-section--collapsable-sm .adminui-page-section__title,
         .adminui-page-section--collapsable-sm .adminui-page-section__content {
@@ -5168,7 +5215,7 @@ List all available styles:
 
 /* Literal.Number.Integer.Long */
 .kss-content {
-  padding-top: 88px; }
+  padding-top: 77px; }
 
 .kss-header {
   display: -webkit-box;
@@ -5183,18 +5230,18 @@ List all available styles:
           justify-content: space-between;
   -webkit-box-align: center;
           align-items: center;
-  height: 32px;
+  height: 28px;
   color: #fff;
   background-color: #1e1e1e; }
   .kss-header__title {
     font-size: 19px;
-    line-height: 32px;
+    line-height: 28px;
     margin: 0;
     color: inherit; }
     @media screen and (min-width: 720px) {
       .kss-header__title {
         font-size: 21px;
-        line-height: 32px; } }
+        line-height: 28px; } }
   .kss-header__title-link {
     color: inherit;
     border: 0; }
@@ -5206,7 +5253,7 @@ List all available styles:
   display: none;
   position: fixed;
   z-index: 4;
-  top: 32px;
+  top: 28px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -5218,73 +5265,80 @@ List all available styles:
   .kss-menu__content {
     max-width: 1110px;
     margin: 0 auto;
-    padding: 32px 24px;
+    padding: 28px 24px;
     -webkit-column-count: 2;
+       -moz-column-count: 2;
             column-count: 2;
     -webkit-column-gap: 24px;
+       -moz-column-gap: 24px;
             column-gap: 24px; }
     @media (min-width: 720px) {
       .kss-menu__content {
         -webkit-column-count: 2;
+           -moz-column-count: 2;
                 column-count: 2; } }
     @media (min-width: 960px) {
       .kss-menu__content {
         -webkit-column-count: 3;
+           -moz-column-count: 3;
                 column-count: 3;
         -webkit-column-gap: 60px;
+           -moz-column-gap: 60px;
                 column-gap: 60px; } }
   .kss-menu__item {
     -webkit-column-break-inside: avoid;
+       page-break-inside: avoid;
             break-inside: avoid-column;
     -webkit-column-break-after: avoid-column;
+       page-break-after: avoid-column;
             break-after: avoid-column;
     display: block; }
     .kss-menu__item--level0 {
-      margin-top: 16px;
-      margin-bottom: 16px; }
+      margin-top: 14px;
+      margin-bottom: 14px; }
     .kss-menu__item--level1 {
       font-size: 19px;
-      line-height: 32px;
+      line-height: 28px;
       font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 400; }
       @media screen and (min-width: 720px) {
         .kss-menu__item--level1 {
           font-size: 21px;
-          line-height: 32px; } }
+          line-height: 28px; } }
   .kss-menu__link {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 400;
     color: #fff;
     border: 0;
     font-size: 15px;
-    line-height: 24px; }
+    line-height: 21px; }
     @media screen and (min-width: 720px) {
       .kss-menu__link {
         font-size: 16px;
-        line-height: 24px; } }
+        line-height: 21px; } }
     .kss-menu__link--level0 {
       font-family: Georgia, sans-serif;
       font-weight: 700;
       font-size: 26px;
-      line-height: 32px; }
+      line-height: 35px; }
       @media screen and (min-width: 720px) {
         .kss-menu__link--level0 {
           font-size: 32px;
-          line-height: 40px; } }
+          line-height: 42px; } }
     .kss-menu__link--level1 {
       font-size: 19px;
-      line-height: 32px; }
+      line-height: 28px; }
       @media screen and (min-width: 720px) {
         .kss-menu__link--level1 {
           font-size: 21px;
-          line-height: 32px; } }
+          line-height: 28px; } }
     .kss-menu__link:hover {
       color: #57917E; }
   .kss-menu__ref {
     font-family: Georgia, sans-serif;
     font-weight: 400;
     font-size: 15px;
-    line-height: 24px;
+    line-height: 21px;
     display: inline-block;
     color: rgba(255, 255, 255, 0.7);
     width: 42px;
@@ -5292,14 +5346,14 @@ List all available styles:
     @media screen and (min-width: 720px) {
       .kss-menu__ref {
         font-size: 16px;
-        line-height: 24px; } }
+        line-height: 21px; } }
 
 .kss-sizer {
   position: fixed;
   z-index: 3;
-  top: 32px;
+  top: 28px;
   width: 100%;
-  height: 24px;
+  height: 21px;
   background-color: #cbcbca;
   box-shadow: 0 1px 0 #adadac; }
   .kss-sizer__item {
@@ -5310,14 +5364,14 @@ List all available styles:
     width: 100%; }
   .kss-sizer__sizer {
     font-size: 15px;
-    line-height: 24px;
+    line-height: 21px;
     display: -webkit-box;
     display: flex;
     -webkit-box-pack: justify;
             justify-content: space-between;
     margin: 0 auto;
-    height: 24px;
-    line-height: 24px;
+    height: 21px;
+    line-height: 21px;
     padding-left: 6px;
     padding-right: 6px;
     border: 0;
@@ -5329,7 +5383,7 @@ List all available styles:
     @media screen and (min-width: 720px) {
       .kss-sizer__sizer {
         font-size: 16px;
-        line-height: 24px; } }
+        line-height: 21px; } }
     .kss-sizer__sizer:hover, .kss-sizer__sizer:focus {
       background-color: #a2a2a2;
       border-color: #a6a6a6; }
@@ -5337,23 +5391,23 @@ List all available styles:
       background-color: #b7b7b6; }
 
 .kss-description {
-  margin-bottom: 32px; }
+  margin-bottom: 28px; }
 
 .kss-section {
-  margin: 32px auto;
-  padding: 32px 24px;
+  margin: 28px auto;
+  padding: 28px 24px;
   border-top: 3px solid #cbcbca; }
   @media (min-width: 960px) {
     .kss-section {
       max-width: 740px;
-      padding: 32px 0; } }
+      padding: 28px 0; } }
   .kss-section--depth-1 {
     border: 0;
     margin-top: 0; }
 
 .kss-title--level-1 {
   font-size: 34px;
-  line-height: 48px;
+  line-height: 42px;
   border: 0; }
   @media screen and (min-width: 720px) {
     .kss-title--level-1 {
@@ -5362,27 +5416,27 @@ List all available styles:
 
 .kss-title--level-2 {
   font-size: 26px;
-  line-height: 32px; }
+  line-height: 35px; }
   @media screen and (min-width: 720px) {
     .kss-title--level-2 {
       font-size: 32px;
-      line-height: 40px; } }
+      line-height: 42px; } }
 
 .kss-title--level-3 {
   font-size: 26px;
-  line-height: 32px; }
+  line-height: 35px; }
   @media screen and (min-width: 720px) {
     .kss-title--level-3 {
       font-size: 32px;
-      line-height: 40px; } }
+      line-height: 42px; } }
 
 .kss-title--level-4 {
   font-size: 19px;
-  line-height: 32px; }
+  line-height: 28px; }
   @media screen and (min-width: 720px) {
     .kss-title--level-4 {
       font-size: 21px;
-      line-height: 32px; } }
+      line-height: 28px; } }
 
 .sg-font-base:before {
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -5528,14 +5582,14 @@ List all available styles:
 
 .kss-usage__new-window {
   font-size: 15px;
-  line-height: 24px;
+  line-height: 21px;
   position: relative;
   top: -8px;
   text-align: center; }
   @media screen and (min-width: 720px) {
     .kss-usage__new-window {
       font-size: 16px;
-      line-height: 24px; } }
+      line-height: 21px; } }
 
 .kss-usage__header {
   padding: 24px 24px 12px;
@@ -5587,7 +5641,7 @@ List all available styles:
 
 .kss-description code {
   font-size: 15px;
-  line-height: 24px;
+  line-height: 21px;
   font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
   color: #CC315F;
   font-weight: normal;
@@ -5599,20 +5653,20 @@ List all available styles:
   @media screen and (min-width: 720px) {
     .kss-description code {
       font-size: 16px;
-      line-height: 24px; } }
+      line-height: 21px; } }
 
 .kss-separator {
   margin: 24px 0; }
 
 .codehilite {
   font-size: 15px;
-  line-height: 24px;
+  line-height: 21px;
   font-family: Menlo, 'Ubuntu Mono', 'Lucida Console', 'Courier New', Courier, monospace;
   font-weight: 600; }
   @media screen and (min-width: 720px) {
     .codehilite {
       font-size: 16px;
-      line-height: 24px; } }
+      line-height: 21px; } }
 
 .sg-icon-grid {
   display: -webkit-box;
