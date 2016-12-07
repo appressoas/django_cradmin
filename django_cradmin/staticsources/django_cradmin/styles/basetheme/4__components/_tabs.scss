@@ -2,57 +2,106 @@
 
 http://simplyaccessible.com/article/danger-aria-tabs/
 
-Example: {type: isolated} Structure
+Example: {type: isolated} Simple example
 
-    <div cradmin_tabs>
-        <nav class="tabs__tab-list">
-            <a class="tabs__tab  tabs__tab--active"
-                    href="#ipa"
-                    id="tab-ipa"
-                    cradmin_tabs_tab
-                    aria-selected="true">
-                India Pale Ale (IPA)
-            </a>
-            <a class="tabs__tab"
-                    href="#gueuze"
-                    id="tab-gueuze"
-                    cradmin_tabs_tab
-                    aria-selected="false">
-                Gueuze
-            </a>
-            <a class="tabs__tab"
-                    href="#imperial-stout"
-                    id="tab-imperial-stout"
-                    cradmin_tabs_tab
-                    aria-selected="false">
-                Imperial Stout
-            </a>
-        </nav>
+    <nav class="tabs__tab-list">
+        <a class="tabs__tab  tabs__tab--active"
+           href="#ipa"
+           id="tab-ipa"
+           data-ievv-jsbase-widget="cradmin-tab-button">
+            India Pale Ale (IPA)
+        </a>
+        <a class="tabs__tab"
+           href="#gueuze"
+           id="tab-gueuze"
+           data-ievv-jsbase-widget="cradmin-tab-button">
+            Gueuze
+        </a>
+        <a class="tabs__tab"
+           href="#imperial-stout"
+           id="tab-imperial-stout"
+           data-ievv-jsbase-widget="cradmin-tab-button">
+            Imperial Stout
+        </a>
+    </nav>
 
-        <div class="tabs__panel  tabs__panel--active"
-                aria-hidden="false" aria-labelledby="tab-ipa"
-                id="ipa"
-                cradmin_tabs_panel>
+    <div class="tabs__panel"
+             id="ipa"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
             <h2>India Pale Ale (IPA)</h2>
             ...
         </div>
-        <div class="tabs__panel"
-                aria-hidden="true"
-                aria-labelledby="tab-gueuze"
-                id="gueuze"
-                cradmin_tabs_panel>
+    </div>
+    <div class="tabs__panel"
+             id="gueuze"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
             <h2>Gueuze</h2>
             ...
         </div>
-        <div class="tabs__panel"
-                aria-hidden="true" aria-labelledby="tab-imperial-stout"
-                id="imperial-stout"
-                cradmin_tabs_panel>
+    </div>
+    <div class="tabs__panel"
+             id="imperial-stout"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
             <h2>Imperial Stout</h2>
             ...
         </div>
     </div>
 
+
+Example: {type: isolated} Styling using sections
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <nav class="tabs__tab-list">
+                <a class="tabs__tab  tabs__tab--active"
+                   href="#ipa"
+                   id="tab-ipa"
+                   data-ievv-jsbase-widget="cradmin-tab-button">
+                    India Pale Ale (IPA)
+                </a>
+                <a class="tabs__tab"
+                   href="#gueuze"
+                   id="tab-gueuze"
+                   data-ievv-jsbase-widget="cradmin-tab-button">
+                    Gueuze
+                </a>
+                <a class="tabs__tab"
+                   href="#imperial-stout"
+                   id="tab-imperial-stout"
+                   data-ievv-jsbase-widget="cradmin-tab-button">
+                    Imperial Stout
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <section class="adminui-page-section  tabs__panel"
+             id="ipa"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
+            <h2>India Pale Ale (IPA)</h2>
+            ...
+        </div>
+    </section>
+    <section class="adminui-page-section  tabs__panel"
+             id="gueuze"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
+            <h2>Gueuze</h2>
+            ...
+        </div>
+    </section>
+    <section class="adminui-page-section  tabs__panel"
+             id="imperial-stout"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
+            <h2>Imperial Stout</h2>
+            ...
+        </div>
+    </section>
 
 Styleguide components.tabs
 */

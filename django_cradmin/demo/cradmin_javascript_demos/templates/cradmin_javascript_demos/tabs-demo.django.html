@@ -17,63 +17,51 @@
 {% block content %}
     <div class="adminui-page-section">
         <div class="container">
-            <nav class="tabs__tab-list"
-                    data-ievv-jsbase-widget="cradmin-tab-bar">
+            <nav class="tabs__tab-list">
                 <a class="tabs__tab  tabs__tab--active"
                    href="#ipa"
                    id="tab-ipa"
-                   aria-selected="true">
+                   data-ievv-jsbase-widget="cradmin-tab-button">
                     India Pale Ale (IPA)
                 </a>
                 <a class="tabs__tab"
                    href="#gueuze"
                    id="tab-gueuze"
-                   aria-selected="false">
+                   data-ievv-jsbase-widget="cradmin-tab-button">
                     Gueuze
                 </a>
                 <a class="tabs__tab"
                    href="#imperial-stout"
                    id="tab-imperial-stout"
-                   aria-selected="false">
+                   data-ievv-jsbase-widget="cradmin-tab-button">
                     Imperial Stout
                 </a>
             </nav>
         </div>
     </div>
 
-    <div class="tabs__panel  tabs__panel--active"
-         aria-hidden="false" aria-labelledby="tab-ipa"
-         id="ipa"
-         data-ievv-jsbase-widget="cradmin-tab-panel"
-         data-ievv-jsbase-widget-config='{}'>
-        <section class="adminui-page-section">
-            <div class="container">
-                <h2>India Pale Ale (IPA)</h2>
-                ...
-            </div>
-        </section>
-    </div>
-    <div class="tabs__panel"
-         aria-hidden="true"
-         aria-labelledby="tab-gueuze"
-         id="gueuze"
-         data-ievv-jsbase-widget="cradmin-tab-panel">
-        <section class="adminui-page-section">
-            <div class="container">
-                <h2>Gueuze</h2>
-                ...
-            </div>
-        </section>
-    </div>
-    <div class="tabs__panel"
-         aria-hidden="true" aria-labelledby="tab-imperial-stout"
-         id="imperial-stout"
-         data-ievv-jsbase-widget="cradmin-tab-panel">
-        <section class="adminui-page-section">
-            <div class="container">
-                <h2>Imperial Stout</h2>
-                ...
-            </div>
-        </section>
-    </div>
+    <section class="adminui-page-section  tabs__panel"
+             id="ipa"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
+            <h2>India Pale Ale (IPA)</h2>
+            ...
+        </div>
+    </section>
+    <section class="adminui-page-section  tabs__panel"
+             id="gueuze"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
+            <h2>Gueuze</h2>
+            ...
+        </div>
+    </section>
+    <section class="adminui-page-section  tabs__panel"
+             id="imperial-stout"
+             data-ievv-jsbase-widget="cradmin-tab-panel">
+        <div class="container">
+            <h2>Imperial Stout</h2>
+            ...
+        </div>
+    </section>
 {% endblock content %}

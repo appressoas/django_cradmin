@@ -4,7 +4,7 @@ export default class TabPanelWidget extends AbstractWidget {
 
   getDefaultConfig() {
     return {
-      id: 'default',
+      id: 'defaultTab',
       activeClass: "tabs__panel--active"
     }
   }
@@ -25,35 +25,9 @@ export default class TabPanelWidget extends AbstractWidget {
   _initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `cradmin.ActivateTab.${this.config.id}`,
-      `cradmin.TabPanel.${this.config.id}.${this._domId}`,
+      `cradmin.TabPanelWidget.${this.config.id}.${this._domId}`,
       this._onActivateTabSignal
     );
-  }
-
-  _hasActiveClass() {
-    return this.element.classList.contains(this.config.activeClass);
-  }
-
-  _activate() {
-    if(!this._hasActiveClass()) {
-      this.element.classList.add(this.config.activeClass);
-    }
-  }
-
-  _deactivate() {
-    if(this._hasActiveClass()) {
-      this.element.classList.remove(this.config.activeClass);
-    }
-  }
-
-  _onActivateTabSignal(receivedSignalInfo) {
-    const tabPanelId = receivedSignalInfo.data.tabPanelId;
-    if(this._domId == tabPanelId) {
-      this._activate();
-    } else {
-      this._deactivate();
-    }
-
   }
 
   destroy() {
@@ -61,5 +35,49 @@ export default class TabPanelWidget extends AbstractWidget {
       `cradmin.ActivateTab.${this.config.id}`,
       `cradmin.TabPanel.${this.config.id}.${this._domId}`
     );
+  }
+
+  _hasActiveClass() {
+    return this.element.classList.contains(this.config.activeClass);
+  }
+
+  _isAriaHidden() {
+    return this.element.getAttribute('aria-hidden') == 'true';
+  }
+
+  _activate() {
+    if(!this._hasActiveClass()) {
+      this.element.classList.add(this.config.activeClass);
+    }
+    if(this._isAriaHidden()) {
+      this.element.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  _deactivate() {
+    if(this._hasActiveClass()) {
+      this.element.classList.remove(this.config.activeClass);
+    }
+    if(!this._isAriaHidden()) {
+      this.element.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  _onActivateTabSignal(receivedSignalInfo) {
+    const tabPanelDomId = receivedSignalInfo.data.tabPanelDomId;
+    if(this._domId == tabPanelDomId) {
+      this._activate();
+    } else {
+      this._deactivate();
+    }
+  }
+
+  initializeFromTabButton(isActive, tabButtonDomId) {
+    this.element.setAttribute('aria-labelledby', tabButtonDomId);
+    if(isActive) {
+      this._activate();
+    } else {
+      this._deactivate();
+    }
   }
 }
