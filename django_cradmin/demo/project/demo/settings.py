@@ -84,6 +84,7 @@ INSTALLED_APPS = (
 
     'ievv_opensource.ievvtasks_development',
     'ievv_opensource.ievvtasks_common',
+    'ievv_opensource.ievv_jsbase',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -286,44 +287,51 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
             ievvbuildstatic.mediacopy.Plugin(),
             ievvbuildstatic.sassbuild.Plugin(
                 sourcefolder='styles/basetheme',
-                sourcefile='main.scss',
-                minify=False
+                sourcefile='main.scss'
             ),
             ievvbuildstatic.sassbuild.Plugin(
                 sourcefolder='styles/basetheme',
-                sourcefile='styleguide.scss',
-                minify=False
+                sourcefile='styleguide.scss'
             ),
 
-            # AngularJS
-            ievvbuildstatic.npminstall.Plugin(
-                packages={
-                    # "@angular/common": "2.0.0-rc.5",
-                    # "@angular/compiler": "2.0.0-rc.5",
-                    # "@angular/core": "2.0.0-rc.5",
-                    # "@angular/platform-browser": "2.0.0-rc.5",
-                    # "@angular/platform-browser-dynamic": "2.0.0-rc.5",
-                    # "@angular/upgrade": "2.0.0-rc.5",
-                    "core-js": "^2.4.0",
-                    "reflect-metadata": "^0.1.3",
-                    "rxjs": "5.0.0-beta.6",
-                    "zone.js": "^0.6.12",
-                    "tslint": "^3.7.4",
-                    "typedoc": "^0.4.4",
-                    "typescript": "^1.8.10",
-                    "typings": "^1.0.4"
-                }
+            ievvbuildstatic.autosetup_esdoc.Plugin(),
+            ievvbuildstatic.npmrun_jsbuild.Plugin(
+                extra_import_paths=[
+                    ievvbuildstatic.filepath.SourcePath('ievv_jsbase', 'scripts', 'javascript'),
+                ]
             ),
-            ievvbuildstatic.typescriptbuild.Plugin(
-                main_sourcefile="CradminModuleLoader.ts",
-                destinationfile="django_cradmin.js",
-                typings_global_dependencies=[
-                    'dt~node@6.0.0',
-                    'dt~core-js@0.0.0']
-            ),
-            ievvbuildstatic.nodemodulescopy.Plugin(
-                sourcefiles=['zone.js/dist/zone.js', 'reflect-metadata/Reflect.js', 'core-js/client/shim.min.js'],
-            )
+
+            # # AngularJS
+            # ievvbuildstatic.npminstall.Plugin(
+            #     packages={
+            #         # "@angular/common": "2.0.0-rc.5",
+            #         # "@angular/compiler": "2.0.0-rc.5",
+            #         # "@angular/core": "2.0.0-rc.5",
+            #         # "@angular/platform-browser": "2.0.0-rc.5",
+            #         # "@angular/platform-browser-dynamic": "2.0.0-rc.5",
+            #         # "@angular/upgrade": "2.0.0-rc.5",
+            #         "core-js": "^2.4.0",
+            #         "reflect-metadata": "^0.1.3",
+            #         "rxjs": "5.0.0-beta.6",
+            #         "zone.js": "^0.6.12",
+            #         "tslint": "^3.7.4",
+            #         "typedoc": "^0.4.4",
+            #         "typescript": "^1.8.10",
+            #         "typings": "^1.0.4"
+            #     }
+            # ),
+            # ievvbuildstatic.typescriptbuild.Plugin(
+            #     main_sourcefile="CradminModuleLoader.ts",
+            #     destinationfile="django_cradmin.js",
+            #     typings_global_dependencies=[
+            #         'dt~node@6.0.0',
+            #         'dt~core-js@0.0.0']
+            # ),
+            # ievvbuildstatic.nodemodulescopy.Plugin(
+            #     sourcefiles=['zone.js/dist/zone.js', 'reflect-metadata/Reflect.js', 'core-js/client/shim.min.js'],
+            # )
+
+
         ]
     ),
     # ievvbuildstatic.config.App(
