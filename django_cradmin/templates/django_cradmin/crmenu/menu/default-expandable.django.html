@@ -2,19 +2,15 @@
 {% load i18n %}
 
 {% block list-element-attributes %}
-    cradmin_menutoggle_groupid="mainmenu"
-    cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded"
+    data-ievv-jsbase-widget="cradmin-toggleable-menu"
 {% endblock list-element-attributes %}
 
 {% block content %}
-    <div class="adminui-expandable-menu__backdrop" cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_clickable></div>
+    <div class="adminui-expandable-menu__backdrop" data-ievv-jsbase-widget="cradmin-menutoggle"></div>
     <div class="adminui-expandable-menu__content">
         <button type="button" class="adminui-expandable-menu__close"
-                cradmin_menutoggle_clickable
-                cradmin_menutoggle_groupid="mainmenu">
-            <i class="icon-close--light"
-                    cradmin_menutoggle_groupid="mainmenu"
-                    aria-hidden="true" role="presentation">
+                data-ievv-jsbase-widget="cradmin-menutoggle">
+            <i class="icon-close--light" aria-hidden="true" role="presentation">
             </i>
             <span class="screenreader-only">{% trans "Close menu" %}</span>
         </button>
@@ -22,6 +18,5 @@
         <ul class="adminui-expandable-menu__list">
             {{ block.super }}
         </ul>
-
     </div>
 {% endblock content %}

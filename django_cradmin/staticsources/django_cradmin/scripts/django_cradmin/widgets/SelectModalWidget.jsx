@@ -34,7 +34,7 @@ export default class SelectModalWidget extends AbstractWidget {
   }
 
   destroy() {
-    this.element.removeEventListener('click', this._onClickBound);
+    this.element.removeEventListener('click', this._onClick);
     if(this._modalElement) {
       ReactDOM.unmountComponentAtNode(this._modalElement);
       this._modalElement.remove();
