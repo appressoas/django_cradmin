@@ -24,6 +24,7 @@ urlpatterns = [
 
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
+    url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
     url(r'^multiselect2demo/', include(MultiselectDemoCrAdminInstance.urls())),
     url(r'^login_not_required_demo/', include(LoginNotRequiredCrAdminInstance.urls())),
