@@ -23,7 +23,6 @@ export default class ToggleableMenuWidget extends AbstractWidget {
   }
 
   onToggleMenuSignal(receivedSignalInfo) {
-    console.log('TOGGLE', receivedSignalInfo);
     this.toggle();
   }
 
