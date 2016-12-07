@@ -3,20 +3,16 @@
 
 Example: {type: isolated} Example
 
-    <header class="adminui-page-header  adminui-page-header--fill"
-            cradmin_menutoggle_groupid="mainmenu" cradmin_menutoggle_activestyle="adminui-page-header--showmenu">
+    <header class="adminui-page-header  adminui-page-header--fill">
         <div class="adminui-page-header__content">
             <a class="adminui-page-header__brand">
                 <span class="adminui-page-header__brandname">My brand</span>
             </a>
             <nav class="adminui-page-header__nav">
                 <button type="button" class="adminui-page-header__navmenutoggle"
-                        cradmin_menutoggle_clickable
-                        cradmin_menutoggle_groupid="mainmenu">
+                        data-ievv-jsbase-widget="cradmin-menutoggle">
                     Menu
-                    <i class="icon-hamburger"
-                            cradmin_menutoggle_groupid="mainmenu"
-                            aria-hidden="true" role="presentation">
+                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
                         <span aria-hidden="true" class="icon-hamburger__bar"></span>
@@ -29,16 +25,13 @@ Example: {type: isolated} Example
     <div class="adminui-page-cover"></div>
 
     <div class="adminui-expandable-menu"
-            cradmin_menutoggle_groupid="mainmenu"
-            cradmin_menutoggle_activestyle="adminui-expandable-menu--expanded">
+            data-ievv-jsbase-widget="cradmin-toggleable-menu">
         <div class="adminui-expandable-menu__backdrop"
-                cradmin_menutoggle_groupid="mainmenu"
-                cradmin_menutoggle_clickable></div>
+                data-ievv-jsbase-widget="cradmin-menutoggle"></div>
 
         <div class="adminui-expandable-menu__content">
             <button type="button" class="adminui-expandable-menu__close"
-                    cradmin_menutoggle_clickable
-                    cradmin_menutoggle_groupid="mainmenu">
+                    data-ievv-jsbase-widget="cradmin-menutoggle">
                 <i class="icon-close--light"
                         cradmin_menutoggle_groupid="mainmenu"
                         aria-hidden="true" role="presentation">
