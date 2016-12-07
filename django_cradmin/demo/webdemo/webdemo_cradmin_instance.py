@@ -4,10 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 from django_cradmin import crinstance, crmenu
 
 from django_cradmin.demo.webdemo.models import Site
-from django_cradmin.demo.webdemo.cradmin_apps import pages
-from django_cradmin.demo.webdemo.cradmin_apps import dashboard
-from django_cradmin.demo.webdemo.cradmin_apps import inviteadmins
-from django_cradmin.demo.webdemo.cradmin_apps import sharable_link
+from django_cradmin.demo.webdemo.crapps import pages
+from django_cradmin.demo.webdemo.crapps import dashboard
+from django_cradmin.demo.webdemo.crapps import inviteadmins
+from django_cradmin.demo.webdemo.crapps import sharable_link
 
 
 class WebdemoCrAdminInstance(crinstance.BaseCrAdminInstance):
