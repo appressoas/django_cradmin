@@ -143,6 +143,10 @@ Styleguide components.blocklist
             }
         }
 
+        *:last-child {
+            margin-bottom: 0;
+        }
+
         &--warning {
             background-color: $color-warning;
             color: $color-light;

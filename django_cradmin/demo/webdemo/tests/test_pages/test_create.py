@@ -1,7 +1,7 @@
 from django import test
 from model_mommy import mommy
 
-from django_cradmin.demo.webdemo.cradmin_apps import pages
+from django_cradmin.demo.webdemo.crapps import pages
 from django_cradmin import cradmin_testhelpers
 
 

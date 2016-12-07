@@ -4,7 +4,7 @@ from django.core import mail
 from django.test import TestCase
 from django_cradmin import cradmin_testhelpers
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
-from django_cradmin.demo.webdemo.cradmin_apps import inviteadmins
+from django_cradmin.demo.webdemo.crapps import inviteadmins
 from model_mommy import mommy
 
 
