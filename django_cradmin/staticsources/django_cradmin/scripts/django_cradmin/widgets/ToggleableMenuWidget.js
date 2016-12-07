@@ -36,5 +36,9 @@ export default class ToggleableMenuWidget extends AbstractWidget {
 
   destroy() {
     this.element.removeEventListener('click', this._onClick);
+    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+      `cradmin.ToggleMenu.${this.config.id}`,
+      `cradmin.ToggleableMenuWidget.${this.config.id}`
+    );
   }
 }

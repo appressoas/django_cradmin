@@ -2,6 +2,8 @@
 import SelectModalWidget from "./widgets/SelectModalWidget.jsx";
 import MenuToggleWidget from "./widgets/MenuToggleWidget";
 import ToggleableMenuWidget from "./widgets/ToggleableMenuWidget";
+import TabBarWidget from "./widgets/TabBarWidget";
+import TabPanelWidget from "./widgets/TabPanelWidget";
 
 
 export default class DjangoCradminAll {
@@ -15,6 +17,8 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-select-modal', SelectModalWidget);
     widgetRegistry.registerWidgetClass('cradmin-menutoggle', MenuToggleWidget);
     widgetRegistry.registerWidgetClass('cradmin-toggleable-menu', ToggleableMenuWidget);
+    widgetRegistry.registerWidgetClass('cradmin-tab-bar', TabBarWidget);
+    widgetRegistry.registerWidgetClass('cradmin-tab-panel', TabPanelWidget);
     widgetRegistry.initializeAllWidgetsWithinElement(document.body);
   }
 }

@@ -17,3 +17,10 @@ class SelectDemo(generic.StandaloneBaseTemplateView):
 
     def get_javascriptregistry_component_ids(self):
         return ['django_cradmin_javascript']
+
+
+class TabsDemo(generic.StandaloneBaseTemplateView):
+    template_name = 'cradmin_javascript_demos/tabs-demo.django.html'
+
+    def get_javascriptregistry_component_ids(self):
+        return ['django_cradmin_javascript']

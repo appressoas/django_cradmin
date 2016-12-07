@@ -8,8 +8,11 @@ urlpatterns = [
         name="cradmin_javascript_demos_overview"),
     url(r'^date-time-picker-demo$',
         views.DateTimePickerDemo.as_view(),
-        name="cradmin_javascript_demos_datetimepicker_demo"),
+        name="cradmin_javascript_demos_datetimepicker"),
     url(r'^select-demo$',
         views.SelectDemo.as_view(),
-        name="cradmin_javascript_demos_select_demo")
+        name="cradmin_javascript_demos_select"),
+    url(r'^tabs-demo$',
+        views.TabsDemo.as_view(),
+        name="cradmin_javascript_demos_tabs"),
 ]
