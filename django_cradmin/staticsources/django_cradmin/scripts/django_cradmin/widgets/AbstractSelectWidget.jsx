@@ -10,7 +10,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       'django_cradmin.widgets.AbstractSelectWidget');
     this.onSelectResultSignal = this.onSelectResultSignal.bind(this);
-    this._onSearchRequestedSignal = this._onSearchRequestedSignal.bind(this);
+    this.onSearchRequestedSignal = this.onSearchRequestedSignal.bind(this);
 
     this._uniquePrefix = `django_cradmin.Select.${this.widgetInstanceId}`;
     this._searchRequestedSignalName = `${this._uniquePrefix}.SearchRequested`;
@@ -18,9 +18,10 @@ export default class AbstractSelectWidget extends AbstractWidget {
     this._selectResultSignalName = `${this._uniquePrefix}.SelectResult`;
 
     this.initialValue = this._getInitialValue();
+    this.selectedValue = this.initialValue;
     this.logger.debug(`initialValue: "${this.initialValue}"`);
     this._initializeSignalHandlers();
-    if(this.initialValue != '') {
+    if(this.initialValue != null) {
       this._loadPreviewForInitialValue();
     } else {
       this._updateUiForEmptyValue();
@@ -30,6 +31,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
   getDefaultConfig() {
     return {
       valueAttribute: 'id',
+      fetchEmptySearchOnLoad: false,
       toggleElementsOnValueChange: {
         loading: [],
         hasValue: [],
@@ -50,22 +52,23 @@ export default class AbstractSelectWidget extends AbstractWidget {
   }
 
   _getInitialValue() {
+    let initialValue = null;
     if(this.config.valueTargetInputId) {
-      let initialValue = document.getElementById(this.config.valueTargetInputId).value;
-      if(initialValue != undefined && initialValue != null) {
-        return initialValue;
-      }
+      initialValue = document.getElementById(this.config.valueTargetInputId).value;
     } else if (this.config.initialValue) {
-      return this.config.initialValue;
+      initialValue = this.config.initialValue;
     }
-    return '';
+    if(initialValue == undefined || initialValue == '') {
+      initialValue = null;
+    }
+    return initialValue;
   }
 
   _initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       this._searchRequestedSignalName,
       'django_cradmin.widgets.AbstractSelectWidget',
-      this._onSearchRequestedSignal
+      this.onSearchRequestedSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       this._selectResultSignalName,
@@ -148,6 +151,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
   }
 
   _updateUiForEmptyValue() {
+    this.selectedValue = null;
     this._hideElementsById(this.config.toggleElementsOnValueChange.hasValue);
     this._hideElementsById(this.config.toggleElementsOnValueChange.loading);
     this._showElementsById(this.config.toggleElementsOnValueChange.noValue);
@@ -155,10 +159,12 @@ export default class AbstractSelectWidget extends AbstractWidget {
   }
 
   _updateUiFromResultObject(resultObject) {
+    let value = this._getValueFromResultObject(resultObject);
+    this.selectedValue = value;
     this._hideElementsById(this.config.toggleElementsOnValueChange.noValue);
     this._hideElementsById(this.config.toggleElementsOnValueChange.loading);
     this._showElementsById(this.config.toggleElementsOnValueChange.hasValue);
-    this._setValueTargetValue(this._getValueFromResultObject(resultObject));
+    this._setValueTargetValue(value);
     this._updatePreviews(resultObject);
   }
 
@@ -176,17 +182,19 @@ export default class AbstractSelectWidget extends AbstractWidget {
     return this.config.searchApi.url != undefined && this.config.searchApi.url != null;
   }
 
-  _onSearchRequestedSignal(receivedSignalInfo) {
+  onSearchRequestedSignal(receivedSignalInfo) {
     this.logger.debug(receivedSignalInfo.toString());
     const searchString = receivedSignalInfo.data;
-    if(this._useServerSideSearch()) {
-      this._performServerSideSearch(searchString);
-    } else {
-      this._performClientSideSearch(searchString);
-    }
+    this.requestSearchResults(searchString)
+      .then((resultObjectArray) => {
+        this.sendSearchCompletedSignal(resultObjectArray);
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 
-  _sendSearchCompletedSignal(resultObjectArray) {
+  sendSearchCompletedSignal(resultObjectArray) {
     this.logger.debug('Search complete. Result:', resultObjectArray);
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       this._searchCompletedSignalName,
@@ -205,41 +213,53 @@ export default class AbstractSelectWidget extends AbstractWidget {
     return false;
   }
 
-  _performClientSideSearch(searchString) {
-    const resultObjectArray = [];
-    searchString = searchString.toLowerCase();
-    for(let resultObject of this.config.clientsideSearch.data) {
-      if(this._isClientSideSearchMatch(searchString, resultObject)) {
-        resultObjectArray.push(resultObject);
+  _requestClientSideSearchResults(searchString) {
+    return new Promise((resolve, reject) => {
+      const resultObjectArray = [];
+      searchString = searchString.toLowerCase();
+      for (let resultObject of this.config.clientsideSearch.data) {
+        if (this._isClientSideSearchMatch(searchString, resultObject)) {
+          resultObjectArray.push(resultObject);
+        }
       }
-    }
-    this._sendSearchCompletedSignal(resultObjectArray);
+      resolve(resultObjectArray);
+    });
   }
 
-  _performServerSideSearch(searchString) {
-    const request = new HttpDjangoJsonRequest(this.config.searchApi.url);
-    for(let attribute of Object.keys(this.config.searchApi.staticData)) {
-      request.urlParser.queryString.set(
-        attribute, this.config.searchApi.staticData[attribute]);
+  _requestServerSideSearchResults(searchString) {
+    return new Promise((resolve, reject) => {
+      const request = new HttpDjangoJsonRequest(this.config.searchApi.url);
+      for (let attribute of Object.keys(this.config.searchApi.staticData)) {
+        request.urlParser.queryString.set(
+          attribute, this.config.searchApi.staticData[attribute]);
+      }
+      request.urlParser.queryString.set('search', searchString);
+      request.get()
+        .then((response) => {
+          resolve(response.bodydata);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  requestSearchResults(searchString='') {
+    if(this._useServerSideSearch()) {
+      return this._requestServerSideSearchResults(searchString);
+    } else {
+      return this._requestClientSideSearchResults(searchString);
     }
-    request.urlParser.queryString.set('search', searchString);
-    request.get()
-      .then((response) => {
-        this._sendSearchCompletedSignal(response.bodydata);
-      })
-      .catch((error) => {
-        throw error;
-      });
   }
 
   _requestSingleResultServerSide(value) {
-    let url = this.config.searchApi.url;
-    if(!this.config.searchApi.url.endsWith('/')) {
-      url = `${url}/`;
-    }
-    url = `${url}${value}`;
-    const request = new HttpDjangoJsonRequest(url);
     return new Promise((resolve, reject) => {
+      let url = this.config.searchApi.url;
+      if(!this.config.searchApi.url.endsWith('/')) {
+        url = `${url}/`;
+      }
+      url = `${url}${value}`;
+      const request = new HttpDjangoJsonRequest(url);
       request.get()
         .then((response) => {
           resolve(response.bodydata);
@@ -292,12 +312,21 @@ export default class AbstractSelectWidget extends AbstractWidget {
 
   initializeReactComponent() {
     this._reactWrapperElement = document.createElement('div');
+    this.addReactWrapperElementToDocument(this._reactWrapperElement);
     const reactElement = this.makeReactElement();
     ReactDOM.render(
       reactElement,
       this._reactWrapperElement
     );
-    this.addReactWrapperElementToDocument(this._reactWrapperElement);
+    if(this.config.fetchEmptySearchOnLoad) {
+    this.requestSearchResults()
+      .then((resultObjectArray) => {
+        this.sendSearchCompletedSignal(resultObjectArray);
+      })
+      .catch((error) => {
+        throw error;
+      });
+    }
   }
 
   makeReactComponentProps() {
@@ -310,6 +339,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
       searchComponentProps: this.config.componentProps.search,
       resultListComponentProps: this.config.componentProps.resultList,
       resultComponentProps: this.config.componentProps.result,
+      selectedValue: this.selectedValue
     }
   }
 

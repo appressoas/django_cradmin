@@ -6,8 +6,11 @@ export default class CradminSearchResult extends React.Component {
   static get defaultProps() {
     return {
       className: 'blocklist__item blocklist--link',
+      selectedClassName: 'blocklist__item--selected',
       titleClassName: 'blocklist__itemtitle blocklist__itemtitle--small',
-      descriptionClassName: ''
+      descriptionClassName: '',
+      isSelected: false,
+      selectCallback: null
     }
   }
 
@@ -18,10 +21,10 @@ export default class CradminSearchResult extends React.Component {
 
   handleSelect(event) {
     event.preventDefault();
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-      this.props.selectResultSignalName,
-      this.props.resultObject
-    );
+    if(this.props.selectCallback == null) {
+      throw new Error('No selectCallback specified in props.');
+    }
+    this.props.selectCallback(this.props.resultObject);
   }
 
   renderDescription() {
@@ -44,8 +47,16 @@ export default class CradminSearchResult extends React.Component {
     }
   }
 
+  get fullClassName() {
+    let className = this.props.className;
+    if(this.props.isSelected) {
+      className = `${className} ${this.props.selectedClassName}`
+    }
+    return className;
+  }
+
   render() {
-    return <a href="#" className={this.props.className}
+    return <a href="#" className={this.fullClassName}
               onClick={this.handleSelect}
               aria-label={this.ariaTitle}
               role="button">

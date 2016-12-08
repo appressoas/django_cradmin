@@ -7,6 +7,7 @@ export default class SelectEmbeddedWidget extends AbstractSelectWidget {
   getDefaultConfig() {
     const defaultConfig = super.getDefaultConfig();
     defaultConfig.componentProps.wrapper = {};
+    defaultConfig.fetchEmptySearchOnLoad = true;
     return defaultConfig;
   }
 
