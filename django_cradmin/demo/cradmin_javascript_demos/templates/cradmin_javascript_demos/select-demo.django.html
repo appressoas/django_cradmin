@@ -17,16 +17,19 @@
 {% block content %}
     <div class="adminui-page-section">
         <div class="container">
-            <div id="id_no_result_wrapper">
-                Please select a value
-            </div>
-            <div id="id_result_wrapper">
-                <h3 id="id_title"></h3>
-                <p id="id_description"></p>
+            <div id="test">
+                <div id="id_no_result_wrapper">
+                    Please select a value
+                </div>
+                <div id="id_result_wrapper">
+                    <h3 id="id_title"></h3>
+                    <p id="id_description"></p>
+                </div>
             </div>
             <input type="text" id="id_value_target" class="input" />
 
             <button type="button" class="button"
+                    aria-labelledby="test"
                     data-ievv-jsbase-widget="cradmin-select-modal" data-ievv-jsbase-widget-config='{
                         "valueTargetInputId": "id_value_target",
                         "titlePreviewId": "id_title",
@@ -34,6 +37,7 @@
                         "noValueWrapperId": "id_result_wrapper",
                         "hasValueWrapperId": "id_no_result_wrapper",
                         "result": {
+                            "valueAttribute": "value",
                             "clientsideData": [
                                 {
                                     "value": 1,

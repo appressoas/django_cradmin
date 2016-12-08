@@ -8,7 +8,7 @@ export default class IevvSelectModal extends IevvModal {
   constructor(props) {
     super(props);
     this.onSelectSignal = this.onSelectSignal.bind(this);
-    this._selectSignalName = `${this.props.uniquePrefix}.Select`
+    this._selectSignalName = `${this.props.uniquePrefix}.Select`;
     this.initializeSignalHandlers();
   }
 

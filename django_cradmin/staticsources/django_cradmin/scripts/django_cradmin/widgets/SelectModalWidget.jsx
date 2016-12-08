@@ -25,6 +25,9 @@ export default class SelectModalWidget extends AbstractWidget {
       //   placeholder: 'Søk',
       //   changeDelay: 1000
       // }
+      result: {
+        valueAttribute: 'id'
+      }
     }
   }
 
@@ -43,6 +46,7 @@ export default class SelectModalWidget extends AbstractWidget {
 
   onClose() {
     ReactDOM.unmountComponentAtNode(this._modalElement);
+    this.element.focus();
   }
 
   setValueTargetValue(value) {
@@ -60,7 +64,6 @@ export default class SelectModalWidget extends AbstractWidget {
   }
 
   _showHideBasedOnHasValue(hasValue) {
-    console.log('hasValue:', hasValue);
     if(hasValue) {
       if(this.config.hasValueWrapperId) {
         this._hideElementById(this.config.hasValueWrapperId);
@@ -97,7 +100,7 @@ export default class SelectModalWidget extends AbstractWidget {
   }
 
   _handleSelectNotNull(dataObject) {
-    this.setValueTargetValue(dataObject.value);
+    this.setValueTargetValue(dataObject[this.config.result.valueAttribute]);
     this._setPreviewTitle(dataObject);
     this._setPreviewDescription(dataObject);
   }

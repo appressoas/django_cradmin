@@ -16,7 +16,7 @@ export default class IevvSearchResultList extends React.Component {
   constructor(props) {
     super(props);
     this.onSearchSignal = this.onSearchSignal.bind(this);
-    this.state = {searchResultArray: this.props.clientsideData};
+    this.state = {resultObjectArray: this.props.clientsideData};
     this.initializeSignalHandlers();
   }
 
@@ -38,14 +38,14 @@ export default class IevvSearchResultList extends React.Component {
   onSearchSignal(receivedSignalInfo) {
       const searchString = receivedSignalInfo.data;
       this.setState({
-        searchResultArray: this.performClientSideSearch(searchString)
+        resultObjectArray: this.performClientSideSearch(searchString)
       });
   }
 
-  isClientSideSearchMatch(searchString, dataObject) {
+  isClientSideSearchMatch(searchString, resultObject) {
     for(let attribute of this.props.clientsideSearchAttributes) {
-      if(dataObject[attribute] != undefined && dataObject[attribute] != null) {
-        if(dataObject[attribute].toLowerCase().indexOf(searchString) != -1) {
+      if(resultObject[attribute] != undefined && resultObject[attribute] != null) {
+        if(resultObject[attribute].toLowerCase().indexOf(searchString) != -1) {
           return true;
         }
       }
@@ -54,14 +54,14 @@ export default class IevvSearchResultList extends React.Component {
   }
 
   performClientSideSearch(searchString) {
-    const searchResultArray = [];
+    const resultObjectArray = [];
     searchString = searchString.toLowerCase();
-    for(let dataObject of this.props.clientsideData) {
-      if(this.isClientSideSearchMatch(searchString, dataObject)) {
-        searchResultArray.push(dataObject);
+    for(let resultObject of this.props.clientsideData) {
+      if(this.isClientSideSearchMatch(searchString, resultObject)) {
+        resultObjectArray.push(resultObject);
       }
     }
-    return searchResultArray;
+    return resultObjectArray;
   }
 
   render() {
@@ -71,14 +71,14 @@ export default class IevvSearchResultList extends React.Component {
   }
 
   renderResults() {
-    const searchResults = [];
-    for(let searchResult of this.state.searchResultArray) {
+    const resultObjects = [];
+    for(let resultObject of this.state.resultObjectArray) {
       let props = {
-        data: searchResult,
+        resultObject: resultObject,
         selectSignalName: this.props.selectSignalName
       };
-      searchResults.push(<IevvSearchResult key={searchResult.value} {...props} />)
+      resultObjects.push(<IevvSearchResult key={resultObject[this.props.valueAttribute]} {...props} />);
     }
-    return searchResults;
+    return resultObjects;
   }
 }

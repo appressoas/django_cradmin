@@ -58,7 +58,7 @@ if(appconfig.is_in_production_mode) {
     })
   );
 } else {
-  // webpackConfig.devtool = 'cheap-module-eval-source-map';
+  webpackConfig.devtool = 'cheap-module-eval-source-map';
   webpackConfig.output.pathinfo = true;
 }
 
