@@ -39,9 +39,9 @@ export default class CradminSearchResultList extends React.Component {
   }
 
   _onSearchCompletedSignal(receivedSignalInfo) {
-      this.setState({
-        resultObjectArray: receivedSignalInfo.data
-      });
+    this.setState({
+      resultObjectArray: receivedSignalInfo.data.results
+    });
   }
 
   render() {

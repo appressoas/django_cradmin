@@ -186,19 +186,19 @@ export default class AbstractSelectWidget extends AbstractWidget {
     this.logger.debug(receivedSignalInfo.toString());
     const searchString = receivedSignalInfo.data;
     this.requestSearchResults(searchString)
-      .then((resultObjectArray) => {
-        this.sendSearchCompletedSignal(resultObjectArray);
+      .then((results) => {
+        this.sendSearchCompletedSignal(results);
       })
       .catch((error) => {
         throw error;
       });
   }
 
-  sendSearchCompletedSignal(resultObjectArray) {
-    this.logger.debug('Search complete. Result:', resultObjectArray);
+  sendSearchCompletedSignal(results) {
+    this.logger.debug('Search complete. Result:', results);
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       this._searchCompletedSignalName,
-      resultObjectArray
+      results
     );
   }
 
@@ -222,7 +222,10 @@ export default class AbstractSelectWidget extends AbstractWidget {
           resultObjectArray.push(resultObject);
         }
       }
-      resolve(resultObjectArray);
+      resolve({
+        count: resultObjectArray.size,
+        results: resultObjectArray
+      });
     });
   }
 
@@ -320,8 +323,8 @@ export default class AbstractSelectWidget extends AbstractWidget {
     );
     if(this.config.fetchEmptySearchOnLoad) {
     this.requestSearchResults()
-      .then((resultObjectArray) => {
-        this.sendSearchCompletedSignal(resultObjectArray);
+      .then((results) => {
+        this.sendSearchCompletedSignal(results);
       })
       .catch((error) => {
         throw error;

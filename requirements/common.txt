@@ -44,6 +44,9 @@ invoke==0.10.1
 # For model creation in tests
 model_mommy==1.2.6
 
+# Not required, but used by some demos
+djangorestframework==3.5.3
+
 coverage==4.0
 
 # Required by cradmin_kss_styleguide
