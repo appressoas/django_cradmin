@@ -18,24 +18,31 @@
     <div class="adminui-page-section">
         <div class="container">
             <div id="test">
-                <div id="id_no_result_wrapper">
+                <p id="id_loading">
+                    <em>Loading ...</em>
+                </p>
+                <p id="id_no_result_wrapper" style="display: none;">
                     Please select a value
-                </div>
-                <div id="id_result_wrapper">
-                    <h3 id="id_title"></h3>
-                    <p id="id_description"></p>
-                </div>
+                </p>
+                <p id="id_has_result_wrapper" style="display: none;">
+                    <strong id="id_title"></strong>
+                    <small id="id_description"></small>
+                </p>
             </div>
-            <input type="text" id="id_value_target" class="input" />
 
             <button type="button" class="button"
                     aria-labelledby="test"
                     data-ievv-jsbase-widget="cradmin-select-modal" data-ievv-jsbase-widget-config='{
                         "valueTargetInputId": "id_value_target",
-                        "titlePreviewId": "id_title",
-                        "descriptionPreviewId": "id_description",
-                        "noValueWrapperId": "id_result_wrapper",
-                        "hasValueWrapperId": "id_no_result_wrapper",
+                        "toggleElementsOnValueChange": {
+                            "loading": ["id_loading"],
+                            "hasValue": ["id_has_result_wrapper"],
+                            "noValue": ["id_no_result_wrapper"]
+                        },
+                        "updateElementsWithResult": {
+                            "title": ["id_title"],
+                            "description": ["id_description"]
+                        },
                         "result": {
                             "valueAttribute": "value",
                             "clientsideData": [
@@ -66,6 +73,7 @@
                     }'>
                 Open select dialog
             </button>
+            <input type="text" id="id_value_target" class="input" />
         </div>
     </div>
 {% endblock content %}

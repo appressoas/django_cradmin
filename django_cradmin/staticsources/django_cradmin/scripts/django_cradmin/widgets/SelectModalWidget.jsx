@@ -10,7 +10,7 @@ export default class SelectModalWidget extends AbstractWidget {
     this.onClose = this.onClose.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.element.addEventListener('click', this._onClick);
-    this._showHideBasedOnHasValue(this.config.initialValue);
+    this._setLoading();
   }
 
   getDefaultConfig() {
@@ -27,7 +27,13 @@ export default class SelectModalWidget extends AbstractWidget {
       // }
       result: {
         valueAttribute: 'id'
-      }
+      },
+      toggleElementsOnValueChange: {
+        loading: [],
+        hasValue: [],
+        noValue: []
+      },
+      updateElementsWithResult: {}
     }
   }
 
@@ -56,61 +62,72 @@ export default class SelectModalWidget extends AbstractWidget {
   }
 
   _hideElementById(domId) {
-    document.getElementById(domId).setAttribute('style', 'display: none');
+    const element = document.getElementById(domId);
+    if(element) {
+      element.setAttribute('style', 'display: none');
+    }
   }
 
   _showElementById(domId) {
-    document.getElementById(domId).setAttribute('style', 'display: block');
+    const element = document.getElementById(domId);
+    if(element) {
+      element.setAttribute('style', 'display: block');
+    }
   }
 
-  _showHideBasedOnHasValue(hasValue) {
-    if(hasValue) {
-      if(this.config.hasValueWrapperId) {
-        this._hideElementById(this.config.hasValueWrapperId);
-      }
-      if(this.config.noValueWrapperId) {
-        this._showElementById(this.config.noValueWrapperId);
-      }
-    } else {
-      if(this.config.noValueWrapperId) {
-        this._hideElementById(this.config.noValueWrapperId);
-      }
-      if(this.config.hasValueWrapperId) {
-        this._showElementById(this.config.hasValueWrapperId);
+  _hideElementsById(domIdArray) {
+    for(let domId of domIdArray) {
+      this._hideElementById(domId);
+    }
+  }
+
+  _showElementsById(domIdArray) {
+    for(let domId of domIdArray) {
+      this._showElementById(domId);
+    }
+  }
+
+  _updatePreviews(resultObject) {
+    for(let attribute of Object.keys(this.config.updateElementsWithResult)) {
+      let domIds = this.config.updateElementsWithResult[attribute];
+      let value = resultObject[attribute];
+      if(value != undefined && value != null) {
+        for(let domId of domIds) {
+          const element = document.getElementById(domId);
+          if(element) {
+            element.innerHTML = value;
+          }
+        }
       }
     }
   }
 
-  _setPreviewTitle(dataObject) {
-    if(this.config.titlePreviewId && dataObject.title) {
-      document.getElementById(this.config.titlePreviewId)
-        .innerHTML = dataObject.title;
-    }
-  }
-
-  _setPreviewDescription(dataObject) {
-    if(this.config.descriptionPreviewId && dataObject.description) {
-      document.getElementById(this.config.descriptionPreviewId)
-        .innerHTML = dataObject.description;
-    }
+  _setLoading() {
+    this._hideElementsById(this.config.toggleElementsOnValueChange.hasValue);
+    this._hideElementsById(this.config.toggleElementsOnValueChange.noValue);
+    this._showElementsById(this.config.toggleElementsOnValueChange.loading);
   }
 
   _handleSelectNull() {
+    this._hideElementsById(this.config.toggleElementsOnValueChange.hasValue);
+    this._hideElementsById(this.config.toggleElementsOnValueChange.loading);
+    this._showElementsById(this.config.toggleElementsOnValueChange.noValue);
     this.setValueTargetValue('');
   }
 
-  _handleSelectNotNull(dataObject) {
-    this.setValueTargetValue(dataObject[this.config.result.valueAttribute]);
-    this._setPreviewTitle(dataObject);
-    this._setPreviewDescription(dataObject);
+  _handleSelectNotNull(resultObject) {
+    this._hideElementsById(this.config.toggleElementsOnValueChange.noValue);
+    this._hideElementsById(this.config.toggleElementsOnValueChange.loading);
+    this._showElementsById(this.config.toggleElementsOnValueChange.hasValue);
+    this.setValueTargetValue(resultObject[this.config.result.valueAttribute]);
+    this._updatePreviews(resultObject);
   }
 
-  onSelect(dataObject) {
-    this._showHideBasedOnHasValue(dataObject != null);
-    if(dataObject == null) {
+  onSelect(resultObject) {
+    if(resultObject == null) {
       this._handleSelectNull();
     } else {
-      this._handleSelectNotNull(dataObject);
+      this._handleSelectNotNull(resultObject);
     }
     this.onClose();
   }
@@ -122,6 +139,7 @@ export default class SelectModalWidget extends AbstractWidget {
     props.closeCallback = this.onClose;
     props.selectCallback = this.onSelect;
     props.uniquePrefix = `ievv_jsui.Select.${this.widgetInstanceId}`;
+    props.visibleOnLoad = false;
     const reactElement = <IevvSearchModal {...props} />;
     ReactDOM.render(
       reactElement,
