@@ -17,55 +17,58 @@
 {% block content %}
     <div class="adminui-page-section">
         <div class="container">
-            <div id="test">
-                <p id="id_loading">
+            <h2>Pure client side example</h2>
+            <div id="id_clientside_aria_label">
+                <p id="id_clientside_loading">
                     <em>Loading ...</em>
                 </p>
-                <p id="id_no_result_wrapper" style="display: none;">
+                <p id="id_clientside_no_result_wrapper" style="display: none;">
                     Please select a value
                 </p>
-                <p id="id_has_result_wrapper" style="display: none;">
-                    <strong id="id_title"></strong>
-                    <small id="id_description"></small>
+                <p id="id_clientside_has_result_wrapper" style="display: none;">
+                    <strong id="id_clientside_title"></strong>
+                    <small id="id_clientside_description"></small>
                 </p>
             </div>
 
             <button type="button" class="button"
-                    aria-labelledby="test"
+                    aria-labelledby="id_clientside_aria_label"
                     data-ievv-jsbase-widget="cradmin-select-modal" data-ievv-jsbase-widget-config='{
-                        "valueTargetInputId": "id_value_target",
+                        "valueTargetInputId": "id_clientside_value_target",
                         "toggleElementsOnValueChange": {
-                            "loading": ["id_loading"],
-                            "hasValue": ["id_has_result_wrapper"],
-                            "noValue": ["id_no_result_wrapper"]
+                            "loading": ["id_clientside_loading"],
+                            "hasValue": ["id_clientside_has_result_wrapper"],
+                            "noValue": ["id_clientside_no_result_wrapper"]
                         },
                         "updateElementsWithResult": {
-                            "title": ["id_title"],
-                            "description": ["id_description"]
+                            "title": ["id_clientside_title"],
+                            "description": ["id_clientside_description"]
                         },
                         "valueAttribute": "id",
-                        "clientsideData": [
-                            {
-                                "id": 1,
-                                "title": "John",
-                                "description": "The John"
-                            },
-                            {
-                                "id": 2,
-                                "title": "Peter",
-                                "description": "Peter is coool"
-                            },
-                            {
-                                "id": 3,
-                                "title": "No description"
-                            },
-                            {
-                                "id": 4,
-                                "title": "Jane",
-                                "description": "Jane is awesome, but she no longer likes Tarzan"
-                            }
-                        ],
-                        "clientsideSearchAttributes": ["title", "description"],
+                        "clientsideSearch": {
+                            "data": [
+                                {
+                                    "id": 1,
+                                    "title": "John",
+                                    "description": "The John"
+                                },
+                                {
+                                    "id": 2,
+                                    "title": "Peter",
+                                    "description": "Peter is coool"
+                                },
+                                {
+                                    "id": 3,
+                                    "title": "No description"
+                                },
+                                {
+                                    "id": 4,
+                                    "title": "Jane",
+                                    "description": "Jane is awesome, but she no longer likes Tarzan"
+                                }
+                            ],
+                            "searchAttributes": ["title", "description"]
+                        },
                         "ui": {
                             "modal": {
                                 "cssClass": "modal modal--wide"
@@ -84,7 +87,47 @@
                     }'>
                 Open select dialog
             </button>
-            <input type="text" id="id_value_target" class="input" />
+            <input type="text" id="id_clientside_value_target" class="input" />
+        </div>
+    </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Serverside API example</h2>
+            <div id="id_serverside_aria_label">
+                <p id="id_serverside_loading">
+                    <em>Loading ...</em>
+                </p>
+                <p id="id_serverside_no_result_wrapper" style="display: none;">
+                    Please select a value
+                </p>
+                <p id="id_serverside_has_result_wrapper" style="display: none;">
+                    <strong id="id_serverside_title"></strong>
+                    <small id="id_serverside_description"></small>
+                </p>
+            </div>
+
+            <button type="button" class="button"
+                    aria-labelledby="id_serverside_aria_label"
+                    data-ievv-jsbase-widget="cradmin-select-modal" data-ievv-jsbase-widget-config='{
+                        "valueTargetInputId": "id_serverside_value_target",
+                        "toggleElementsOnValueChange": {
+                            "loading": ["id_serverside_loading"],
+                            "hasValue": ["id_serverside_has_result_wrapper"],
+                            "noValue": ["id_serverside_no_result_wrapper"]
+                        },
+                        "updateElementsWithResult": {
+                            "title": ["id_serverside_title"],
+                            "description": ["id_serverside_description"]
+                        },
+                        "searchApi": {
+                            "url": "{% url 'cradmin_javascript_demos_select_api' %}",
+                            "method": "post"
+                        }
+                    }'>
+                Open select dialog
+            </button>
+            <input type="text" id="id_serverside_value_target" class="input" />
         </div>
     </div>
 {% endblock content %}

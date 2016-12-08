@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
 import CradminSearchModal from "../components/CradminSearchModal";
+import HttpDjangoJsonRequest from 'ievv_jsbase/http/HttpDjangoJsonRequest';
+
 
 export default class SelectModalWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
@@ -32,6 +34,13 @@ export default class SelectModalWidget extends AbstractWidget {
         noValue: []
       },
       updateElementsWithResult: {},
+      clientsideSearch: {},
+      searchApi: {
+        url: null,
+        staticData: {},
+        searchParameter: "search",
+        method: "get"
+      },
       ui: {
         modal: {},
         search: {},
@@ -182,7 +191,11 @@ export default class SelectModalWidget extends AbstractWidget {
   _onSearchRequestedSignal(receivedSignalInfo) {
     this.logger.debug(receivedSignalInfo.toString());
     const searchString = receivedSignalInfo.data;
-    this._performClientSideSearch(searchString);
+    if(this.config.searchApi.url) {
+      this._performServerSideSearch(searchString);
+    } else {
+      this._performClientSideSearch(searchString);
+    }
   }
 
   _sendSearchCompletedSignal(resultObjectArray) {
@@ -194,7 +207,7 @@ export default class SelectModalWidget extends AbstractWidget {
   }
 
   _isClientSideSearchMatch(searchString, resultObject) {
-    for(let attribute of this.config.clientsideSearchAttributes) {
+    for(let attribute of this.config.clientsideSearch.searchAttributes) {
       if(resultObject[attribute] != undefined && resultObject[attribute] != null) {
         if(resultObject[attribute].toLowerCase().indexOf(searchString) != -1) {
           return true;
@@ -207,11 +220,34 @@ export default class SelectModalWidget extends AbstractWidget {
   _performClientSideSearch(searchString) {
     const resultObjectArray = [];
     searchString = searchString.toLowerCase();
-    for(let resultObject of this.config.clientsideData) {
+    for(let resultObject of this.config.clientsideSearch.data) {
       if(this._isClientSideSearchMatch(searchString, resultObject)) {
         resultObjectArray.push(resultObject);
       }
     }
     this._sendSearchCompletedSignal(resultObjectArray);
+  }
+
+  _performServerSideSearch(searchString) {
+    const request = new HttpDjangoJsonRequest(this.config.searchApi.url);
+    let data = undefined;
+    if(this.config.searchApi.method == 'get') {
+      for(let attribute of Object.keys(this.config.searchApi.staticData)) {
+        request.urlParser.queryString.set(
+          attribute, this.config.searchApi.staticData[attribute]);
+      }
+      request.urlParser.queryString.set(
+        this.config.searchApi.searchParameter, searchString);
+    } else {
+      data = Object.assign({}, this.config.searchApi.staticData);
+      data[this.config.searchApi.searchParameter] = searchString;
+    }
+    request.send(this.config.searchApi.method, data)
+      .then((response) => {
+        this._sendSearchCompletedSignal(response.bodydata);
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 }
