@@ -39,7 +39,7 @@ export default class SelectModalWidget extends AbstractWidget {
         hasValue: [],
         noValue: []
       },
-      updateElementsWithResult: {},
+      updateInnerHtmlWithResult: {},
       clientsideSearch: {},
       searchApi: {
         url: null,
@@ -138,8 +138,8 @@ export default class SelectModalWidget extends AbstractWidget {
   }
 
   _updatePreviews(resultObject) {
-    for(let attribute of Object.keys(this.config.updateElementsWithResult)) {
-      let domIds = this.config.updateElementsWithResult[attribute];
+    for(let attribute of Object.keys(this.config.updateInnerHtmlWithResult)) {
+      let domIds = this.config.updateInnerHtmlWithResult[attribute];
       let value = resultObject[attribute];
       if(value != undefined && value != null) {
         for(let domId of domIds) {
