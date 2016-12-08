@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
-import IevvSearchModal from "../components/IevvSearchModal";
+import CradminSearchModal from "../components/CradminSearchModal";
 
 export default class SelectModalWidget extends AbstractWidget {
   constructor(element) {
@@ -140,7 +140,7 @@ export default class SelectModalWidget extends AbstractWidget {
     props.selectCallback = this.onSelect;
     props.uniquePrefix = `ievv_jsui.Select.${this.widgetInstanceId}`;
     props.visibleOnLoad = false;
-    const reactElement = <IevvSearchModal {...props} />;
+    const reactElement = <CradminSearchModal {...props} />;
     ReactDOM.render(
       reactElement,
       this._modalElement

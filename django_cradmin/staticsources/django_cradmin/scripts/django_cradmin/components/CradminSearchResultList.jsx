@@ -1,8 +1,8 @@
 import React from "react";
-import IevvSearchResult from "./IevvSearchResult";
+import CradminSearchResult from "./CradminSearchResult";
 
 
-export default class IevvSearchResultList extends React.Component {
+export default class CradminSearchResultList extends React.Component {
 
   static get defaultProps() {
     return {
@@ -23,7 +23,7 @@ export default class IevvSearchResultList extends React.Component {
   initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       this.props.searchSignalName,
-      `${this.props.uniquePrefix}.IevvSearchResultList`,
+      `${this.props.uniquePrefix}.CradminSearchResultList`,
       this.onSearchSignal
     );
   }
@@ -31,7 +31,7 @@ export default class IevvSearchResultList extends React.Component {
   componentWillUnmount() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
       this.props.searchSignalName,
-      `${this.props.uniquePrefix}.IevvSearchResultList`
+      `${this.props.uniquePrefix}.CradminSearchResultList`
     );
   }
 
@@ -77,7 +77,7 @@ export default class IevvSearchResultList extends React.Component {
         resultObject: resultObject,
         selectSignalName: this.props.selectSignalName
       };
-      resultObjects.push(<IevvSearchResult key={resultObject[this.props.valueAttribute]} {...props} />);
+      resultObjects.push(<CradminSearchResult key={resultObject[this.props.valueAttribute]} {...props} />);
     }
     return resultObjects;
   }

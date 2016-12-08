@@ -1,10 +1,10 @@
 import React from "react";
-import IevvSearch from "./IevvSearch";
-import IevvSearchResultList from "./IevvSearchResultList";
-import IevvModal from "./IevvModal";
+import CradminSearch from "./CradminSearch";
+import CradminSearchResultList from "./CradminSearchResultList";
+import CradminModal from "./CradminModal";
 
 
-export default class IevvSelectModal extends IevvModal {
+export default class CradminSelectModal extends CradminModal {
   constructor(props) {
     super(props);
     this.onSelectSignal = this.onSelectSignal.bind(this);
@@ -25,8 +25,8 @@ export default class IevvSelectModal extends IevvModal {
     resultProps.selectSignalName = this._selectSignalName;
 
     return <div>
-        <IevvSearch {...searchProps} />
-        <IevvSearchResultList {...resultProps} />
+        <CradminSearch {...searchProps} />
+        <CradminSearchResultList {...resultProps} />
       </div>;
   }
 
@@ -37,7 +37,7 @@ export default class IevvSelectModal extends IevvModal {
   initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       this._selectSignalName,
-      `${this.props.uniquePrefix}.IevvSelectModal`,
+      `${this.props.uniquePrefix}.CradminSelectModal`,
       this.onSelectSignal
     );
   }
@@ -45,7 +45,7 @@ export default class IevvSelectModal extends IevvModal {
   componentWillUnmount() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
       this._selectSignalName,
-      `${this.props.uniquePrefix}.IevvSelectModal`
+      `${this.props.uniquePrefix}.CradminSelectModal`
     );
   }
 }

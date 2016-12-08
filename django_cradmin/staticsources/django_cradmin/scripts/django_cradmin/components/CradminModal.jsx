@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default class IevvModal extends React.Component {
+export default class CradminModal extends React.Component {
   static get defaultProps() {
     return {
       modalCssClass: "modal",

@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default class IevvSearchResult extends React.Component {
+export default class CradminSearchResult extends React.Component {
 
   static get defaultProps() {
     return {
