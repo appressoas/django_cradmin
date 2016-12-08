@@ -6,16 +6,16 @@ import CradminModal from "./CradminModal";
 
 export default class CradminSelectModal extends CradminModal {
   renderModalContent() {
-    const searchProps = Object.assign({}, this.props.ui.search, {
+    const searchProps = Object.assign({}, this.props.searchComponentProps, {
       searchRequestedSignalName: this.props.searchRequestedSignalName,
       autofocus: true
     });
 
-    const resultProps = Object.assign({}, this.props.ui.resultList, {
+    const resultProps = Object.assign({}, this.props.resultListComponentProps, {
       selectResultSignalName: this.props.selectResultSignalName,
       searchCompletedSignalName: this.props.searchCompletedSignalName,
       valueAttribute: this.props.valueAttribute,
-      resultUi: this.props.ui.result
+      resultComponentProps: this.props.resultComponentProps
     });
 
     return <div>
