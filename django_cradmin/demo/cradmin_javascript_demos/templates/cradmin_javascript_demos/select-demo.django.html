@@ -129,4 +129,40 @@
             <input type="text" id="id_serverside_value_target" class="input" value="2" />
         </div>
     </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Embedded</h2>
+            <div id="id_embedded_aria_label">
+                <p id="id_embedded_loading">
+                    <em>Loading ...</em>
+                </p>
+                <p id="id_embedded_no_result_wrapper" style="display: none;">
+                    Please select a value
+                </p>
+                <p id="id_embedded_has_result_wrapper" style="display: none;">
+                    <strong id="id_embedded_title"></strong>
+                    <small id="id_embedded_description"></small>
+                </p>
+            </div>
+
+            <div data-ievv-jsbase-widget="cradmin-select-embedded" data-ievv-jsbase-widget-config='{
+                        "valueTargetInputId": "id_embedded_value_target",
+                        "toggleElementsOnValueChange": {
+                            "loading": ["id_embedded_loading"],
+                            "hasValue": ["id_embedded_has_result_wrapper"],
+                            "noValue": ["id_embedded_no_result_wrapper"]
+                        },
+                        "updateInnerHtmlWithResult": {
+                            "title": ["id_embedded_title"],
+                            "description": ["id_embedded_description"]
+                        },
+                        "searchApi": {
+                            "url": "{% url 'cradmin_javascript_demos_select_api' %}"
+                        }
+                    }'>
+            </div>
+            <input type="text" id="id_embedded_value_target" class="input" value="3" />
+        </div>
+    </div>
 {% endblock content %}

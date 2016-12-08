@@ -4,6 +4,7 @@ import MenuToggleWidget from "./widgets/MenuToggleWidget";
 import ToggleableMenuWidget from "./widgets/ToggleableMenuWidget";
 import TabButtonWidget from "./widgets/TabButtonWidget";
 import TabPanelWidget from "./widgets/TabPanelWidget";
+import SelectEmbeddedWidget from "./widgets/SelectEmbeddedWidget";
 
 
 export default class DjangoCradminAll {
@@ -17,6 +18,7 @@ export default class DjangoCradminAll {
     const widgetRegistry = new window.ievv_jsbase_core.WidgetRegistrySingleton();
     // widgetRegistry.registerWidgetClass('cradmin-datetime-picker', DateTimePicker);
     widgetRegistry.registerWidgetClass('cradmin-select-modal', SelectModalWidget);
+    widgetRegistry.registerWidgetClass('cradmin-select-embedded', SelectEmbeddedWidget);
     widgetRegistry.registerWidgetClass('cradmin-menutoggle', MenuToggleWidget);
     widgetRegistry.registerWidgetClass('cradmin-toggleable-menu', ToggleableMenuWidget);
     widgetRegistry.registerWidgetClass('cradmin-tab-button', TabButtonWidget);

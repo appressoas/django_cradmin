@@ -9,9 +9,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
     super(element, widgetInstanceId);
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       'django_cradmin.widgets.AbstractSelectWidget');
-    this._onClick = this._onClick.bind(this);
-    this._onClose = this._onClose.bind(this);
-    this._onSelectResultSignal = this._onSelectResultSignal.bind(this);
+    this.onSelectResultSignal = this.onSelectResultSignal.bind(this);
     this._onSearchRequestedSignal = this._onSearchRequestedSignal.bind(this);
 
     this._uniquePrefix = `django_cradmin.Select.${this.widgetInstanceId}`;
@@ -22,7 +20,6 @@ export default class AbstractSelectWidget extends AbstractWidget {
     this.initialValue = this._getInitialValue();
     this.logger.debug(`initialValue: "${this.initialValue}"`);
     this._initializeSignalHandlers();
-    this.element.addEventListener('click', this._onClick);
     if(this.initialValue != '') {
       this._loadPreviewForInitialValue();
     } else {
@@ -73,7 +70,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       this._selectResultSignalName,
       'django_cradmin.widgets.AbstractSelectWidget',
-      this._onSelectResultSignal
+      this.onSelectResultSignal
     );
   }
 
@@ -91,16 +88,6 @@ export default class AbstractSelectWidget extends AbstractWidget {
       ReactDOM.unmountComponentAtNode(this._reactWrapperElement);
       this._reactWrapperElement.remove();
     }
-  }
-
-  _onClick(e) {
-    e.preventDefault();
-    this._initializeReactComponent();
-  }
-
-  _onClose() {
-    ReactDOM.unmountComponentAtNode(this._reactWrapperElement);
-    this.element.focus();
   }
 
   _setValueTargetValue(value) {
@@ -175,7 +162,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
     this._updatePreviews(resultObject);
   }
 
-  _onSelectResultSignal(receivedSignalInfo) {
+  onSelectResultSignal(receivedSignalInfo) {
     this.logger.debug(receivedSignalInfo.toString());
     let resultObject = receivedSignalInfo.data;
     if(resultObject == null) {
@@ -183,7 +170,6 @@ export default class AbstractSelectWidget extends AbstractWidget {
     } else {
       this._updateUiFromResultObject(resultObject);
     }
-    this._onClose();
   }
 
   _useServerSideSearch() {
@@ -300,14 +286,18 @@ export default class AbstractSelectWidget extends AbstractWidget {
       });
   }
 
-  _initializeReactComponent() {
+  addReactWrapperElementToDocument(reactWrapperElement) {
+    this.element.parentNode.insertBefore(reactWrapperElement, this.element.nextSibling);
+  }
+
+  initializeReactComponent() {
     this._reactWrapperElement = document.createElement('div');
-    document.body.appendChild(this._reactWrapperElement);
     const reactElement = this.makeReactElement();
     ReactDOM.render(
       reactElement,
       this._reactWrapperElement
     );
+    this.addReactWrapperElementToDocument(this._reactWrapperElement);
   }
 
   makeReactComponentProps() {
