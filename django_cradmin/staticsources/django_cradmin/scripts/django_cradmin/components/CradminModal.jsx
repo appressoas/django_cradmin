@@ -4,7 +4,7 @@ import React from "react";
 export default class CradminModal extends React.Component {
   static get defaultProps() {
     return {
-      modalCssClass: "modal",
+      cssClass: "modal",
       backdropCssClass: "modal__backdrop",
       contentCssClass: "modal__content",
       closeWrapperCssClass: "modal__close",
@@ -18,7 +18,7 @@ export default class CradminModal extends React.Component {
   }
 
   render() {
-    return <div className={this.props.modalCssClass}>
+    return <div className={this.props.cssClass}>
       <div className={this.props.backdropCssClass}></div>
 
       <div className={this.props.contentCssClass}>

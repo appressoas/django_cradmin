@@ -5,11 +5,11 @@ export default class CradminSearch extends React.Component {
 
   static get defaultProps() {
     return {
-      'changeDelay': 200,
-      'placeholder': 'Search ...',
-      'inputClassName': 'input input--outlined',
-      'labelClassName': 'label',
-      'autofocus': false
+      changeDelay: 200,
+      placeholder: 'Search ...',
+      inputClassName: 'input input--outlined',
+      labelClassName: 'label',
+      autofocus: false
     }
   }
 
@@ -35,7 +35,7 @@ export default class CradminSearch extends React.Component {
 
   _onChangeDelayed() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-      this.props.searchSignalName,
+      this.props.searchRequestedSignalName,
       this.state.value
     );
   }
