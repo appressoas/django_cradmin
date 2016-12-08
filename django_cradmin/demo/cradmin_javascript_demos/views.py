@@ -1,5 +1,6 @@
 import json
 
+from django.http import Http404
 from django.http import HttpResponse
 
 from django_cradmin.viewhelpers import generic
@@ -43,30 +44,43 @@ class SelectApiDemo(View):
     def filter_search(self, search_string):
         search_string = search_string.lower()
         results = []
-        for item in self.searchdata:
+        for result_dict in self.searchdata:
             string_to_search = '{}{}'.format(
-                item.get('title', ''), item.get('description', ''))
+                result_dict.get('title', ''), result_dict.get('description', ''))
             if search_string in string_to_search.lower():
-                results.append(item)
+                results.append(result_dict)
         return results
 
-    def _make_search_response(self, search_string):
+    def _make_search_response(self):
+        search_string = self.request.GET['search']
         results = self.filter_search(search_string=search_string)
         return HttpResponse(
             json.dumps(results),
             content_type='application/json; charset=utf-8'
         )
 
-    def get(self, *args, **kwargs):
-        search_string = self.request.GET['search']
-        return self._make_search_response(search_string=search_string)
+    def _get_result_by_id(self, id):
+        for result_dict in self.searchdata:
+            if str(result_dict['id']) == id:
+                return result_dict
+        raise ValueError('No item with id={!r}'.format(id))
 
-    # post is not needed, but useful for testing the "searchApi.method" argument
-    # for the widget
-    def post(self, *args, **kwargs):
-        bodydict = json.loads(self.request.body.decode('utf-8'))
-        search_string = bodydict['search']
-        return self._make_search_response(search_string=search_string)
+    def _make_get_single_response(self, id):
+        try:
+            result_dict = self._get_result_by_id(id=id)
+        except ValueError:
+            raise Http404()
+        else:
+            return HttpResponse(
+                json.dumps(result_dict),
+                content_type='application/json; charset=utf-8'
+            )
+
+    def get(self, request, id=None):
+        if id is None:
+            return self._make_search_response()
+        else:
+            return self._make_get_single_response(id=id)
 
 
 class SelectDemo(generic.StandaloneBaseTemplateView):

@@ -15,14 +15,20 @@ export default class SelectModalWidget extends AbstractWidget {
     this._onSelectResultSignal = this._onSelectResultSignal.bind(this);
     this._onSearchRequestedSignal = this._onSearchRequestedSignal.bind(this);
 
-    this.uniquePrefix = `django_cradmin.Select.${this.widgetInstanceId}`;
-    this.searchRequestedSignalName = `${this.uniquePrefix}.SearchRequested`;
-    this.searchCompletedSignalName = `${this.uniquePrefix}.SearchCompleted`;
-    this.selectResultSignalName = `${this.uniquePrefix}.SelectResult`;
+    this._uniquePrefix = `django_cradmin.Select.${this.widgetInstanceId}`;
+    this._searchRequestedSignalName = `${this._uniquePrefix}.SearchRequested`;
+    this._searchCompletedSignalName = `${this._uniquePrefix}.SearchCompleted`;
+    this._selectResultSignalName = `${this._uniquePrefix}.SelectResult`;
 
+    this.initialValue = this._getInitialValue();
+    this.logger.debug(`initialValue: "${this.initialValue}"`);
     this._initializeSignalHandlers();
     this.element.addEventListener('click', this._onClick);
-    this._setLoading();
+    if(this.initialValue != '') {
+      this._loadPreviewForInitialValue();
+    } else {
+      this._updateUiForEmptyValue();
+    }
   }
 
   getDefaultConfig() {
@@ -37,9 +43,7 @@ export default class SelectModalWidget extends AbstractWidget {
       clientsideSearch: {},
       searchApi: {
         url: null,
-        staticData: {},
-        searchParameter: "search",
-        method: "get"
+        staticData: {}
       },
       ui: {
         modal: {},
@@ -50,14 +54,26 @@ export default class SelectModalWidget extends AbstractWidget {
     }
   }
 
+  _getInitialValue() {
+    if(this.config.valueTargetInputId) {
+      let initialValue = document.getElementById(this.config.valueTargetInputId).value;
+      if(initialValue != undefined && initialValue != null) {
+        return initialValue;
+      }
+    } else if (this.config.initialValue) {
+      return this.config.initialValue;
+    }
+    return '';
+  }
+
   _initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      this.searchRequestedSignalName,
+      this._searchRequestedSignalName,
       'django_cradmin.widgets.SelectModalWidget',
       this._onSearchRequestedSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      this.selectResultSignalName,
+      this._selectResultSignalName,
       'django_cradmin.widgets.SelectModalWidget',
       this._onSelectResultSignal
     );
@@ -66,11 +82,11 @@ export default class SelectModalWidget extends AbstractWidget {
   destroy() {
     this.element.removeEventListener('click', this._onClick);
     new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      this.searchRequestedSignalName,
+      this._searchRequestedSignalName,
       'django_cradmin.widgets.SelectModalWidget'
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      this.selectResultSignalName,
+      this._selectResultSignalName,
       'django_cradmin.widgets.SelectModalWidget'
     );
     if(this._modalElement) {
@@ -136,24 +152,28 @@ export default class SelectModalWidget extends AbstractWidget {
     }
   }
 
+  _getValueFromResultObject(resultObject) {
+    return resultObject[this.config.valueAttribute];
+  }
+
   _setLoading() {
     this._hideElementsById(this.config.toggleElementsOnValueChange.hasValue);
     this._hideElementsById(this.config.toggleElementsOnValueChange.noValue);
     this._showElementsById(this.config.toggleElementsOnValueChange.loading);
   }
 
-  _handleSelectNull() {
+  _updateUiForEmptyValue() {
     this._hideElementsById(this.config.toggleElementsOnValueChange.hasValue);
     this._hideElementsById(this.config.toggleElementsOnValueChange.loading);
     this._showElementsById(this.config.toggleElementsOnValueChange.noValue);
     this.setValueTargetValue('');
   }
 
-  _handleSelectNotNull(resultObject) {
+  _updateUiFromResultObject(resultObject) {
     this._hideElementsById(this.config.toggleElementsOnValueChange.noValue);
     this._hideElementsById(this.config.toggleElementsOnValueChange.loading);
     this._showElementsById(this.config.toggleElementsOnValueChange.hasValue);
-    this.setValueTargetValue(resultObject[this.config.valueAttribute]);
+    this.setValueTargetValue(this._getValueFromResultObject(resultObject));
     this._updatePreviews(resultObject);
   }
 
@@ -161,9 +181,9 @@ export default class SelectModalWidget extends AbstractWidget {
     this.logger.debug(receivedSignalInfo.toString());
     let resultObject = receivedSignalInfo.data;
     if(resultObject == null) {
-      this._handleSelectNull();
+      this._updateUiForEmptyValue();
     } else {
-      this._handleSelectNotNull(resultObject);
+      this._updateUiFromResultObject(resultObject);
     }
     this._onClose();
   }
@@ -174,9 +194,9 @@ export default class SelectModalWidget extends AbstractWidget {
 
     const modalProps = Object.assign({}, this.config.ui.modal, {
       closeCallback: this._onClose,
-      selectResultSignalName: this.selectResultSignalName,
-      searchCompletedSignalName: this.searchCompletedSignalName,
-      searchRequestedSignalName: this.searchRequestedSignalName,
+      selectResultSignalName: this._selectResultSignalName,
+      searchCompletedSignalName: this._searchCompletedSignalName,
+      searchRequestedSignalName: this._searchRequestedSignalName,
       valueAttribute: this.config.valueAttribute,
       ui: this.config.ui
     });
@@ -188,10 +208,14 @@ export default class SelectModalWidget extends AbstractWidget {
     );
   }
 
+  _useServerSideSearch() {
+    return this.config.searchApi.url != undefined && this.config.searchApi.url != null;
+  }
+
   _onSearchRequestedSignal(receivedSignalInfo) {
     this.logger.debug(receivedSignalInfo.toString());
     const searchString = receivedSignalInfo.data;
-    if(this.config.searchApi.url) {
+    if(this._useServerSideSearch()) {
       this._performServerSideSearch(searchString);
     } else {
       this._performClientSideSearch(searchString);
@@ -201,7 +225,7 @@ export default class SelectModalWidget extends AbstractWidget {
   _sendSearchCompletedSignal(resultObjectArray) {
     this.logger.debug('Search complete. Result:', resultObjectArray);
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-      this.searchCompletedSignalName,
+      this._searchCompletedSignalName,
       resultObjectArray
     );
   }
@@ -230,24 +254,71 @@ export default class SelectModalWidget extends AbstractWidget {
 
   _performServerSideSearch(searchString) {
     const request = new HttpDjangoJsonRequest(this.config.searchApi.url);
-    let data = undefined;
-    if(this.config.searchApi.method == 'get') {
-      for(let attribute of Object.keys(this.config.searchApi.staticData)) {
-        request.urlParser.queryString.set(
-          attribute, this.config.searchApi.staticData[attribute]);
-      }
+    for(let attribute of Object.keys(this.config.searchApi.staticData)) {
       request.urlParser.queryString.set(
-        this.config.searchApi.searchParameter, searchString);
-    } else {
-      data = Object.assign({}, this.config.searchApi.staticData);
-      data[this.config.searchApi.searchParameter] = searchString;
+        attribute, this.config.searchApi.staticData[attribute]);
     }
-    request.send(this.config.searchApi.method, data)
+    request.urlParser.queryString.set('search', searchString);
+    request.get()
       .then((response) => {
         this._sendSearchCompletedSignal(response.bodydata);
       })
       .catch((error) => {
         throw error;
+      });
+  }
+
+  _requestSingleResultServerSide(value) {
+    let url = this.config.searchApi.url;
+    if(!this.config.searchApi.url.endsWith('/')) {
+      url = `${url}/`;
+    }
+    url = `${url}${value}`;
+    const request = new HttpDjangoJsonRequest(url);
+    return new Promise((resolve, reject) => {
+      request.get()
+        .then((response) => {
+          resolve(response.bodydata);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  _requestSingleResultClientSide(value) {
+    return new Promise((resolve, reject) => {
+      for(let resultObject of this.config.clientsideSearch.data) {
+        if(this._getValueFromResultObject(resultObject) == value) {
+          resolve(resultObject);
+        }
+      }
+      reject(new Error(
+        `config.clientsideSearch.data does not contain an ` +
+        `object with ${this.config.valueAttribute} = "${value}"`
+      ));
+    });
+  }
+
+  _requestSingleResult(value) {
+    if(this._useServerSideSearch()) {
+      return this._requestSingleResultServerSide(value);
+    } else {
+      return this._requestSingleResultClientSide(value);
+    }
+  }
+
+  _loadPreviewForInitialValue() {
+    this._setLoading();
+    this._requestSingleResult(this.initialValue)
+      .then((resultObject) => {
+        this.logger.debug(`Loaded data for initialValue ("${this.initialValue}"):`, resultObject);
+        this._updateUiFromResultObject(resultObject);
+      })
+      .catch((error) => {
+        this.logger.error(
+          `Failed to load data for initialValue: "${this.initialValue}". ` +
+          `Error details: ${error.toString()}`);
       });
   }
 }

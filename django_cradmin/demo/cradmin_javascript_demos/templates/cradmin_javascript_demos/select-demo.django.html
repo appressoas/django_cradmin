@@ -87,7 +87,7 @@
                     }'>
                 Open select dialog
             </button>
-            <input type="text" id="id_clientside_value_target" class="input" />
+            <input type="text" id="id_clientside_value_target" class="input" value="4" />
         </div>
     </div>
 
@@ -121,13 +121,12 @@
                             "description": ["id_serverside_description"]
                         },
                         "searchApi": {
-                            "url": "{% url 'cradmin_javascript_demos_select_api' %}",
-                            "method": "post"
+                            "url": "{% url 'cradmin_javascript_demos_select_api' %}"
                         }
                     }'>
                 Open select dialog
             </button>
-            <input type="text" id="id_serverside_value_target" class="input" />
+            <input type="text" id="id_serverside_value_target" class="input" value="2" />
         </div>
     </div>
 {% endblock content %}

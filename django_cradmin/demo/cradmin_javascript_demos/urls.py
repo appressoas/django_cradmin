@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^select-demo$',
         views.SelectDemo.as_view(),
         name="cradmin_javascript_demos_select"),
-    url(r'^select-demo-api$',
+    url(r'^select-demo-api/(?P<id>\d+)?$',
         views.SelectApiDemo.as_view(),
         name="cradmin_javascript_demos_select_api"),
     url(r'^tabs-demo$',
