@@ -25,7 +25,7 @@ export default class CradminSearchResult extends React.Component {
   }
 
   renderDescription() {
-    if(this.props.description && this.props.description != '') {
+    if(this.props.resultObject.description && this.props.resultObject.description != '') {
       return <p className={this.props.descriptionClassName}>{this.props.resultObject.description}</p>;
     } else {
       return '';

@@ -47,10 +47,10 @@ export default class CradminSearchResultList extends React.Component {
   renderResults() {
     const resultObjects = [];
     for(let resultObject of this.state.resultObjectArray) {
-      let props = {
+      let props = Object.assign({}, this.props.resultUi, {
         resultObject: resultObject,
         selectResultSignalName: this.props.selectResultSignalName
-      };
+      });
       resultObjects.push(<CradminSearchResult key={resultObject[this.props.valueAttribute]} {...props} />);
     }
     return resultObjects;

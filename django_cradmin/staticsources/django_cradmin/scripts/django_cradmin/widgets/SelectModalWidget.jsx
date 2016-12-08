@@ -33,9 +33,10 @@ export default class SelectModalWidget extends AbstractWidget {
       },
       updateElementsWithResult: {},
       ui: {
+        modal: {},
+        search: {},
         resultList: {},
-        result: {},
-        search: {}
+        result: {}
       }
     }
   }
