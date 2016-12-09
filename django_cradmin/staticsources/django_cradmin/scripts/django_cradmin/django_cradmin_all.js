@@ -16,7 +16,7 @@ import SelectedListWidget from "./widgets/SelectedListWidget";
 export default class DjangoCradminAll {
   constructor() {
     new window.ievv_jsbase_core.LoggerSingleton().setDefaultLogLevel(
-      window.ievv_jsbase_core.LOGLEVEL.DEBUG);
+      window.ievv_jsbase_core.LOGLEVEL.INFO);
     // this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
     // this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.DEBUG);
     // this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);

@@ -14,9 +14,9 @@ export default class StaticDataListWidget extends AbstractDataListWidget {
     return 'django_cradmin.widgets.StaticDataListWidget';
   }
 
-  constructor(element, widgetInstanceId) {
-    super(element, widgetInstanceId);
-  }
+  // constructor(element, widgetInstanceId) {
+  //   super(element, widgetInstanceId);
+  // }
 
   _isClientSideSearchMatch(searchString, itemData) {
     for(let attribute of this.config.searchAttributes) {
@@ -31,7 +31,7 @@ export default class StaticDataListWidget extends AbstractDataListWidget {
 
   requestItemData(key) {
     return new Promise((resolve, reject) => {
-      for(let itemData of this.dataList) {
+      for(let itemData of this.config.dataList) {
         if(this._getKeyFromItemData(itemData) == key) {
           resolve(itemData);
         }

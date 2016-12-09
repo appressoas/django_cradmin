@@ -33,13 +33,34 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _initialize(state) {
     this._initializeSignalHandlers();
     this.signalHandlersInitialized = true;
-    this._sendDataListInitializedSignal();
     this.state = {
-      data: undefined,
+      data: {
+        count: 0,
+        next: null,
+        previous: null,
+        results: []
+      },
       selectedItemsMap: new Map(),
       searchString: ''
     };
+    this._sendDataListInitializedSignal();
     this.setState(state);
+  }
+
+  _makeItemMapFromArray(itemDataArray) {
+    const itemMap = new Map();
+    for(let itemData of itemDataArray) {
+      itemMap.set(this._getKeyFromItemData(itemData), itemData);
+    }
+    return itemMap;
+  }
+
+  _requestItemDataForKeys(keys) {
+    const promises = [];
+    for(let key of keys) {
+      promises.push(this.requestItemData(key));
+    }
+    return Promise.all(promises);
   }
 
   _loadInitialState() {
@@ -47,7 +68,14 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this.requestDataList()
       .then((data) => {
         state.data = data;
-        this._initialize(state);
+        this._requestItemDataForKeys(this.config.selectedKeys)
+          .then((selectedItemsArray) => {
+            state.setSelectedItems = selectedItemsArray;
+            this._initialize(state);
+          })
+          .catch((error) => {
+            throw error;
+          });
       })
       .catch((error) => {
         throw error;
@@ -127,6 +155,10 @@ export default class AbstractDataListWidget extends AbstractWidget {
     }
     if(state.clearSelectedKeys != undefined) {
       this.state.selectedItemsMap.clear();
+      stateChanges.add('selection');
+    }
+    if(state.setSelectedItems != undefined) {
+      this.state.selectedItemsMap = this._makeItemMapFromArray(state.setSelectedItems);
       stateChanges.add('selection');
     }
 

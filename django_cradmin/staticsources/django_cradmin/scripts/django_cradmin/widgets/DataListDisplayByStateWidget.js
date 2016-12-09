@@ -52,8 +52,6 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   _onDataListInitializedSignal(receivedSignalInfo) {
     this.logger.debug('Received:', receivedSignalInfo.toString());
     this._dataListIsInitializing = false;
-    const state = receivedSignalInfo.data;
-    this._dataListCount = state.data.count;
     this._refresh();
   }
 
