@@ -210,20 +210,42 @@
 
     <div class="adminui-page-section">
         <div class="container">
-            <div data-ievv-jsbase-widget="cradmin-search-input"
-                 data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "apitest"
-                 }'></div>
-            <div data-ievv-jsbase-widget="cradmin-api-data-list"
+            <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+               data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "apitest",
+                     "showStates": ["initializing"]
+                 }'>
+                Loading
+            </p>
+            <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+               style="display: none"
+               data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "apitest",
+                     "showStates": ["noData"]
+                 }'>
+                No data!
+            </p>
+            <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                 style="display: none"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                     "showStates": ["hasData"]
                  }'>
-            </div>
-            <div data-ievv-jsbase-widget="cradmin-block-list"
-                 data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "apitest"
-                 }'>
+                <div data-ievv-jsbase-widget="cradmin-search-input"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "apitest"
+                     }'></div>
+                <div data-ievv-jsbase-widget="cradmin-api-data-list"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "apitest",
+                         "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                     }'>
+                </div>
+                <div data-ievv-jsbase-widget="cradmin-block-list"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "apitest"
+                     }'>
+                </div>
             </div>
         </div>
     </div>
