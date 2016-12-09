@@ -1,27 +1,32 @@
 import React from "react";
 
 
-export default class CradminSearch extends React.Component {
-
+export default class CradminSearchInput extends React.Component {
   static get defaultProps() {
     return {
-      changeDelay: 200,
+      changeDelay: 400,
       placeholder: 'Search ...',
       inputClassName: 'input input--outlined',
       labelClassName: 'label',
-      autofocus: false
+      autofocus: false,
+      signalNameSpace: null
     }
   }
 
   constructor(props) {
     super(props);
+    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+      'django_cradmin.components.CradminSearchInput');
+    if(this.props.signalNameSpace == null) {
+      throw new Error('The signalNameSpace prop is required.');
+    }
     this.handleChange = this.handleChange.bind(this);
-    this.state = {value: ''};
+    this.state = {searchString: ''};
   }
 
   handleChange(event) {
     this._cancelInputTimeout();
-    this.setState({value: event.target.value});
+    this.setState({searchString: event.target.value});
     this._timeoutId = window.setTimeout(
       () => {this._onChangeDelayed()},
       this.props.changeDelay);
@@ -35,8 +40,11 @@ export default class CradminSearch extends React.Component {
 
   _onChangeDelayed() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-      this.props.searchRequestedSignalName,
-      this.state.value
+      `${this.props.signalNameSpace}.SearchValueChange`,
+      this.state.searchString,
+      (sentSignalInfo) => {
+        this.logger.debug(sentSignalInfo.toString());
+      }
     );
   }
 
@@ -45,7 +53,7 @@ export default class CradminSearch extends React.Component {
       <input type="search"
                   placeholder={this.props.placeholder}
                   className={this.props.inputClassName}
-                  value={this.state.value}
+                  value={this.state.searchString}
                   autoFocus={this.props.autofocus}
                   onChange={this.handleChange} />
     </label>;

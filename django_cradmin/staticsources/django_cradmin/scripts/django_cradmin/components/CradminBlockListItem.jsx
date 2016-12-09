@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default class CradminSearchResult extends React.Component {
+export default class CradminBlockList extends React.Component {
 
   static get defaultProps() {
     return {
@@ -21,29 +21,36 @@ export default class CradminSearchResult extends React.Component {
 
   handleSelect(event) {
     event.preventDefault();
-    if(this.props.selectCallback == null) {
-      throw new Error('No selectCallback specified in props.');
+    if(this.props.isSelected) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.DeSelectItem`,
+        this.props.data
+      );
+    } else {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.SelectItem`,
+        this.props.data
+      );
     }
-    this.props.selectCallback(this.props.resultObject);
   }
 
   renderDescription() {
-    if(this.props.resultObject.description && this.props.resultObject.description != '') {
-      return <p className={this.props.descriptionClassName}>{this.props.resultObject.description}</p>;
+    if(this.props.data.description && this.props.data.description != '') {
+      return <p className={this.props.descriptionClassName}>{this.props.data.description}</p>;
     } else {
       return '';
     }
   }
 
   renderTitle() {
-    return <h3 className={this.props.titleClassName}>{this.props.resultObject.title}</h3>
+    return <h3 className={this.props.titleClassName}>{this.props.data.title}</h3>
   }
 
   get ariaTitle() {
-    if(this.props.resultObject.ariaTitle) {
-      return this.props.resultObject.ariaTitle;
+    if(this.props.data.ariaTitle) {
+      return this.props.data.ariaTitle;
     } else {
-      return this.props.resultObject.title;
+      return this.props.data.title;
     }
   }
 
