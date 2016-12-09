@@ -39,14 +39,15 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
     });
   }
 
-  requestDataList(searchString='') {
+  requestDataList(options) {
     return new Promise((resolve, reject) => {
+      options = this.makeRequestDataListOptions(options);
       const request = new HttpDjangoJsonRequest(this.config.apiUrl);
       for (let attribute of Object.keys(this.config.extraApiData)) {
         request.urlParser.queryString.set(
           attribute, this.config.extraApiData[attribute]);
       }
-      request.urlParser.queryString.set('search', searchString);
+      request.urlParser.queryString.set('search', options.searchString);
       request.get()
         .then((response) => {
           resolve(response.bodydata);

@@ -43,10 +43,11 @@ export default class StaticDataListWidget extends AbstractDataListWidget {
     });
   }
 
-  requestDataList(searchString='') {
+  requestDataList(options) {
     return new Promise((resolve, reject) => {
+      options = this.makeRequestDataListOptions(options);
       const resultItemsArray = [];
-      searchString = searchString.toLowerCase();
+      const searchString = options.searchString.toLowerCase();
       for (let itemData of this.config.dataList) {
         if (this._isClientSideSearchMatch(searchString, itemData)) {
           resultItemsArray.push(itemData);

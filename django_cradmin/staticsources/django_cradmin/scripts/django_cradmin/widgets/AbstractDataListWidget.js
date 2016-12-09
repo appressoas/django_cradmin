@@ -39,7 +39,8 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _loadInitialState() {
     const state = {
       data: null,
-      selectedItemsMap: new Map()
+      selectedItemsMap: new Map(),
+      searchString: ''
     };
     this.requestDataList()
       .then((data) => {
@@ -49,7 +50,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
       })
       .catch((error) => {
         throw error;
-      })
+      });
   }
 
   useAfterInitializeAllWidgets() {
@@ -102,6 +103,10 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this.state.data = state.data;
       stateChanges.add('data');
     }
+    if(state.searchString != undefined) {
+      this.state.searchString = state.searchString;
+      stateChanges.add('searchString');
+    }
     if(state.addSelectedItem != undefined) {
       if(!this.config.multiselect) {
         this.state.selectedItemsMap.clear();
@@ -128,6 +133,11 @@ export default class AbstractDataListWidget extends AbstractWidget {
     }
     if(stateChanges.has('selection')) {
       this.sendSelectionChangeSignal();
+    }
+    if(stateChanges.has('searchString')) {
+      this._requestDataListAndRefresh({
+        searchString: this.state.searchString
+      });
     }
   }
 
@@ -161,9 +171,11 @@ export default class AbstractDataListWidget extends AbstractWidget {
     );
   }
 
-
   _onSearchValueChangeSignal(receivedSignalInfo) {
     this.logger.debug('Received:', receivedSignalInfo.toString());
+    this.setState({
+      searchString: receivedSignalInfo.data
+    });
   }
 
   _getKeyFromItemData(itemData) {
@@ -190,7 +202,25 @@ export default class AbstractDataListWidget extends AbstractWidget {
     throw new Error('requestItemData must be implemented in subclasses of AbstractDataListWidget.');
   }
 
-  requestDataList(searchString='') {
+  requestDataList() {
     throw new Error('requestDataList must be implemented in subclasses of AbstractDataListWidget.');
+  }
+
+  makeRequestDataListOptions(options={}) {
+    return Object.assign({}, {
+      searchString: ''
+    }, options);
+  }
+
+  _requestDataListAndRefresh(options) {
+    this.requestDataList(options)
+      .then((data) => {
+        this.setState({
+          data: data
+        });
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 }

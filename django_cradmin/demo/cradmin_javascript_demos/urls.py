@@ -5,7 +5,8 @@ from django_cradmin.demo.cradmin_javascript_demos import demo_api
 from . import views
 
 apirouter = DefaultRouter()
-apirouter.register(r'fictional-figures', demo_api.FictionalFigureViewSet)
+apirouter.register(r'fictional-figures', demo_api.FictionalFigureViewSet,
+                   base_name='fictional-figures')
 
 urlpatterns = [
     url(r'^$',
