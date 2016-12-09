@@ -8,6 +8,7 @@ export default class CradminBlockList extends React.Component {
     return {
       className: 'blocklist  blocklist--tight',
       keyAttribute: 'id',
+      renderSelected: true,
       signalNameSpace: null
     }
   }
@@ -19,9 +20,7 @@ export default class CradminBlockList extends React.Component {
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
-    this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
-    this._onDataChangeSignal = this._onDataChangeSignal.bind(this);
-    this._onSelectionChangeSignal = this._onSelectionChangeSignal.bind(this);
+    this._onStateChangeSignal = this._onStateChangeSignal.bind(this);
 
     this.state = {
       dataList: [],
@@ -33,29 +32,15 @@ export default class CradminBlockList extends React.Component {
 
   initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.props.signalNameSpace}.DataListInitialized`,
+      `${this.props.signalNameSpace}.StateChange`,
       'django_cradmin.components.CradminBlockList',
-      this._onDataListInitializedSignal
-    );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.props.signalNameSpace}.DataChange`,
-      'django_cradmin.components.CradminBlockList',
-      this._onDataChangeSignal
-    );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.props.signalNameSpace}.SelectionChange`,
-      'django_cradmin.components.CradminBlockList',
-      this._onSelectionChangeSignal
+      this._onStateChangeSignal
     );
   }
 
   componentWillUnmount() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.props.signalNameSpace}.DataChange`,
-      'django_cradmin.components.CradminBlockList'
-    );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.props.signalNameSpace}.SelectionChange`,
+      `${this.props.signalNameSpace}.StateChange`,
       'django_cradmin.components.CradminBlockList'
     );
   }
@@ -66,26 +51,16 @@ export default class CradminBlockList extends React.Component {
     </div>;
   }
 
-  _onDataListInitializedSignal(receivedSignalInfo) {
+  _onStateChangeSignal(receivedSignalInfo) {
     this.logger.debug('Received:', receivedSignalInfo.toString());
-    const state = receivedSignalInfo.data;
-    this.setState({
-      dataList: state.data.results
-    });
-  }
-
-  _onDataChangeSignal(receivedSignalInfo) {
-    this.logger.debug('Received:', receivedSignalInfo.toString());
-    this.setState({
-      dataList: receivedSignalInfo.data.results
-    });
-  }
-
-  _onSelectionChangeSignal(receivedSignalInfo) {
-    this.logger.debug('Received:', receivedSignalInfo.toString());
-    this.setState({
-      selectedItemsMap: receivedSignalInfo.data.selectedItemsMap
-    });
+    const state = receivedSignalInfo.data.state;
+    const stateChanges = receivedSignalInfo.data.stateChanges;
+    if(stateChanges.has('selection') || stateChanges.has('data')) {
+      this.setState({
+        dataList: state.data.results,
+        selectedItemsMap: state.selectedItemsMap
+      });
+    }
   }
 
   renderItem(itemKey, props) {
@@ -97,6 +72,9 @@ export default class CradminBlockList extends React.Component {
     for(let itemData of this.state.dataList) {
       let itemKey = itemData[this.props.keyAttribute];
       let isSelected = this.state.selectedItemsMap.has(itemKey);
+      if(isSelected && !this.props.renderSelected) {
+        continue;
+      }
       let props = Object.assign({}, this.props.resultComponentProps, {
         data: itemData,
         isSelected: isSelected,

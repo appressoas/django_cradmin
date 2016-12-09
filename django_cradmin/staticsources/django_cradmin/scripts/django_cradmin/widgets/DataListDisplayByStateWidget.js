@@ -12,7 +12,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
 
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    this._name = `django_cradmin.widgets.DataListIsEmptyWidget.${widgetInstanceId}`;
+    this._name = `django_cradmin.widgets.DataListDisplayByStateWidget.${widgetInstanceId}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       this._name);
     if (this.config.signalNameSpace == null) {

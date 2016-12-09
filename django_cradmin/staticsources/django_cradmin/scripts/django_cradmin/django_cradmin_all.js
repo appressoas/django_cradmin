@@ -8,6 +8,7 @@ import BlockListWidget from "./widgets/BlockListWidget";
 import StaticDataListWidget from "./widgets/StaticDataListWidget";
 import ApiDataListWidget from "./widgets/ApiDataListWidget";
 import DataListDisplayByStateWidget from "./widgets/DataListDisplayByStateWidget";
+import SelectedListWidget from "./widgets/SelectedListWidget";
 // import SelectModalWidget from "./widgets/SelectModalWidget.jsx";
 // import SelectEmbeddedWidget from "./widgets/SelectEmbeddedWidget";
 
@@ -33,6 +34,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-api-data-list', ApiDataListWidget);
     widgetRegistry.registerWidgetClass('cradmin-block-list', BlockListWidget);
     widgetRegistry.registerWidgetClass('cradmin-data-list-display-by-state', DataListDisplayByStateWidget);
+    widgetRegistry.registerWidgetClass('cradmin-selected-list', SelectedListWidget);
     widgetRegistry.initializeAllWidgetsWithinElement(document.body);
   }
 }

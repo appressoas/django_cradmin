@@ -30,23 +30,24 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this.signalHandlersInitialized = false;
   }
 
-  _initialize() {
+  _initialize(state) {
     this._initializeSignalHandlers();
     this.signalHandlersInitialized = true;
     this._sendDataListInitializedSignal();
-  }
-
-  _loadInitialState() {
-    const state = {
-      data: null,
+    this.state = {
+      data: undefined,
       selectedItemsMap: new Map(),
       searchString: ''
     };
+    this.setState(state);
+  }
+
+  _loadInitialState() {
+    const state = {};
     this.requestDataList()
       .then((data) => {
         state.data = data;
-        this.state = state;
-        this._initialize();
+        this._initialize(state);
       })
       .catch((error) => {
         throw error;
@@ -117,7 +118,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
     }
     if(state.removeSelectedItem != undefined) {
       if(this.config.multiselect) {
-        this.state.selectedItemsMap.remove(
+        this.state.selectedItemsMap.delete(
           this._getKeyFromItemData(state.removeSelectedItem));
       } else {
         this.state.selectedItemsMap.clear();
@@ -128,20 +129,22 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this.state.selectedItemsMap.clear();
       stateChanges.add('selection');
     }
+
     if(stateChanges.has('data')) {
-      this.sendDataChangeSignal();
+      this._sendDataChangeSignal();
     }
     if(stateChanges.has('selection')) {
-      this.sendSelectionChangeSignal();
+      this._sendSelectionChangeSignal();
     }
     if(stateChanges.has('searchString')) {
       this._requestDataListAndRefresh({
         searchString: this.state.searchString
       });
     }
+    this._sendStateChangeSignal(stateChanges);
   }
 
-  sendDataChangeSignal() {
+  _sendDataChangeSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.DataChange`,
       this.state.data,
@@ -151,10 +154,20 @@ export default class AbstractDataListWidget extends AbstractWidget {
     );
   }
 
-  sendSelectionChangeSignal() {
+  _sendSelectionChangeSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.SelectionChange`,
       {selectedItemsMap: this.state.selectedItemsMap},
+      (sentSignalInfo) => {
+        this.logger.debug('Sent:', sentSignalInfo.toString());
+      }
+    );
+  }
+
+  _sendStateChangeSignal(stateChanges) {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.StateChange`,
+      {state: this.state, stateChanges: stateChanges},
       (sentSignalInfo) => {
         this.logger.debug('Sent:', sentSignalInfo.toString());
       }

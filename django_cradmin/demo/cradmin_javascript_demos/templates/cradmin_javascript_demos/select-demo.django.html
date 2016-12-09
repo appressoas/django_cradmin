@@ -231,19 +231,26 @@
                      "signalNameSpace": "apitest",
                      "showStates": ["hasData"]
                  }'>
+                <div data-ievv-jsbase-widget="cradmin-api-data-list"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "apitest",
+                         "multiselect": true,
+                         "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                     }'>
+                </div>
                 <div data-ievv-jsbase-widget="cradmin-search-input"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest"
                      }'></div>
-                <div data-ievv-jsbase-widget="cradmin-api-data-list"
+                <div data-ievv-jsbase-widget="cradmin-selected-list"
                      data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "apitest",
-                         "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                         "signalNameSpace": "apitest"
                      }'>
                 </div>
                 <div data-ievv-jsbase-widget="cradmin-block-list"
                      data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "apitest"
+                         "signalNameSpace": "apitest",
+                         "renderSelected": false
                      }'>
                 </div>
             </div>
