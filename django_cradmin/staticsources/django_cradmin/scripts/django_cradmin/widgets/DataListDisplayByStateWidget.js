@@ -6,7 +6,15 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     return {
       signalNameSpace: null,
       displayStyle: 'block',
-      showStates: [] // Valid values: 'initializing', 'hasData', 'noData'
+      // Valid values:
+      // - 'initializing'
+      // - 'hasData'
+      // - 'noData'
+      // - 'hasSearchString'
+      // - 'noSearchString'
+      // - 'focus'
+      // - 'blur'
+      showStates: []
     };
   }
 
@@ -18,47 +26,25 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     if (this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');
     }
-    this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
-    this._onDataChangeSignal = this._onDataChangeSignal.bind(this);
-    this._dataListIsInitializing = true;
+    this._onStateChangeSignal = this._onStateChangeSignal.bind(this);
+    this.stateSet = new Set(['initializing']);
     this._refresh();
     this.initializeSignalHandlers();
   }
 
   initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.config.signalNameSpace}.DataListInitialized`,
+      `${this.config.signalNameSpace}.StateChange`,
       this._name,
-      this._onDataListInitializedSignal
-    );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.config.signalNameSpace}.DataChange`,
-      this._name,
-      this._onDataChangeSignal
+      this._onStateChangeSignal
     );
   }
 
   destroy() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.config.signalNameSpace}.DataChange`,
+      `${this.config.signalNameSpace}.StateChange`,
       this._name
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.config.signalNameSpace}.SelectionChange`,
-      this._name
-    );
-  }
-
-  _onDataListInitializedSignal(receivedSignalInfo) {
-    this.logger.debug('Received:', receivedSignalInfo.toString());
-    this._dataListIsInitializing = false;
-    this._refresh();
-  }
-
-  _onDataChangeSignal(receivedSignalInfo) {
-    this.logger.debug('Received:', receivedSignalInfo.toString());
-    this._dataListCount = receivedSignalInfo.data.count;
-    this._refresh();
   }
 
   _display(display) {
@@ -69,16 +55,51 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     }
   }
 
-  _refresh(count) {
-    let state = 'initializing';
-    if(!this._dataListIsInitializing) {
-      if(this._dataListCount > 0) {
-        state = 'hasData';
+  _onStateChangeSignal(receivedSignalInfo) {
+    this.logger.debug('Received:', receivedSignalInfo.toString());
+    const state = receivedSignalInfo.data.state;
+    const stateChanges = receivedSignalInfo.data.stateChanges;
+
+    this.stateSet.delete('initializing');
+    if (stateChanges.has('data')) {
+      if(state.data.count > 0) {
+        this.stateSet.add('hasData');
+        this.stateSet.delete('noData');
       } else {
-        state = 'noData';
+        this.stateSet.add('noData');
+        this.stateSet.delete('hasData');
       }
     }
-    let display = this.config.showStates.indexOf(state) != -1;
+    if (stateChanges.has('searchString')) {
+      if (state.searchString.length > 0) {
+        this.stateSet.add('hasSearchString');
+        this.stateSet.delete('noSearchString');
+      } else {
+        this.stateSet.add('noSearchString');
+        this.stateSet.delete('hasSearchString');
+      }
+    }
+    if (stateChanges.has('focus')) {
+      if (state.focus) {
+        this.stateSet.add('focus');
+        this.stateSet.delete('blur');
+      } else {
+        this.stateSet.add('blur');
+        this.stateSet.delete('focus');
+      }
+    }
+    this._refresh();
+  }
+
+  _refresh() {
+    console.log(this.stateSet);
+    let display = false;
+    for(let state of this.stateSet) {
+      if(this.config.showStates.indexOf(state) != -1) {
+        display = true;
+        break;
+      }
+    }
     this._display(display);
   }
 }

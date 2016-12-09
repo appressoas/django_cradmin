@@ -8,7 +8,9 @@ export default class AbstractDataListWidget extends AbstractWidget {
       signalNameSpace: null,
       keyAttribute: 'id',
       multiselect: false,
-      selectedKeys: []
+      selectedKeys: [],
+      minimumSearchStringLength: 0,
+      initialSearchString: ''
     };
   }
 
@@ -23,6 +25,8 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._onSearchValueChangeSignal = this._onSearchValueChangeSignal.bind(this);
     this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
     this._onDeSelectItemSignal = this._onDeSelectItemSignal.bind(this);
+    this._onFocusSignal = this._onFocusSignal.bind(this);
+    this._onBlurSignal = this._onBlurSignal.bind(this);
     if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');
     }
@@ -64,18 +68,28 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _loadInitialState() {
-    const state = {};
-    this.requestDataList()
-      .then((data) => {
-        state.data = data;
-        this._requestItemDataForKeys(this.config.selectedKeys)
-          .then((selectedItemsArray) => {
-            state.setSelectedItems = selectedItemsArray;
-            this._initialize(state);
-          })
-          .catch((error) => {
-            throw error;
-          });
+    const state = {
+      searchString: this.config.initialSearchString
+    };
+    // this.requestDataList()
+    //   .then((data) => {
+    //     state.data = data;
+    //     this._requestItemDataForKeys(this.config.selectedKeys)
+    //       .then((selectedItemsArray) => {
+    //         state.setSelectedItems = selectedItemsArray;
+    //         this._initialize(state);
+    //       })
+    //       .catch((error) => {
+    //         throw error;
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     throw error;
+    //   });
+    this._requestItemDataForKeys(this.config.selectedKeys)
+      .then((selectedItemsArray) => {
+        state.setSelectedItems = selectedItemsArray;
+        this._initialize(state);
       })
       .catch((error) => {
         throw error;
@@ -106,6 +120,16 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this.name,
       this._onDeSelectItemSignal
     );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.Focus`,
+      this.name,
+      this._onFocusSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.Blur`,
+      this.name,
+      this._onBlurSignal
+    );
   }
 
   destroy() {
@@ -122,19 +146,36 @@ export default class AbstractDataListWidget extends AbstractWidget {
         `${this.config.signalNameSpace}.DeSelectItem`,
         this.name
       );
+      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+        `${this.config.signalNameSpace}.Focus`,
+        this.name
+      );
+      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+        `${this.config.signalNameSpace}.Blur`,
+        this.name
+      );
     }
   }
 
   setState(state) {
     this.logger.debug('setState', state);
     const stateChanges = new Set();
+    if(state.searchString != undefined) {
+      this.state.searchString = state.searchString;
+      if(state.searchString.length >= this.config.minimumSearchStringLength) {
+        stateChanges.add('searchString');
+      } else {
+        state.data = {
+          count: 0,
+          next: null,
+          previous: null,
+          results: []
+        }
+      }
+    }
     if(state.data != undefined) {
       this.state.data = state.data;
       stateChanges.add('data');
-    }
-    if(state.searchString != undefined) {
-      this.state.searchString = state.searchString;
-      stateChanges.add('searchString');
     }
     if(state.addSelectedItem != undefined) {
       if(!this.config.multiselect) {
@@ -160,6 +201,10 @@ export default class AbstractDataListWidget extends AbstractWidget {
     if(state.setSelectedItems != undefined) {
       this.state.selectedItemsMap = this._makeItemMapFromArray(state.setSelectedItems);
       stateChanges.add('selection');
+    }
+    if(state.focus != undefined) {
+      this.state.focus = state.focus;
+      stateChanges.add('focus');
     }
 
     if(stateChanges.has('data')) {
@@ -240,6 +285,33 @@ export default class AbstractDataListWidget extends AbstractWidget {
     const itemData = receivedSignalInfo.data;
     this.setState({
       removeSelectedItem: itemData
+    });
+  }
+
+  _cancelBlurTimer() {
+    if(this._blurTimeoutId != undefined) {
+      window.clearTimeout(this._blurTimeoutId);
+    }
+  }
+
+  _startBlurTimer(callback) {
+    this._blurTimeoutId = window.setTimeout(
+      callback,
+      100);
+  }
+
+  _onFocusSignal(receivedSignalInfo) {
+    this._cancelBlurTimer();
+    this.setState({
+      focus: true
+    });
+  }
+
+  _onBlurSignal(receivedSignalInfo) {
+    this._startBlurTimer(() => {
+      this.setState({
+        focus: false
+      });
     });
   }
 

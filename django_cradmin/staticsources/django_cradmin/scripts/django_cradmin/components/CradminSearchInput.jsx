@@ -4,31 +4,80 @@ import React from "react";
 export default class CradminSearchInput extends React.Component {
   static get defaultProps() {
     return {
-      changeDelay: 400,
+      changeDelay: 250,
       placeholder: 'Search ...',
-      inputClassName: 'input input--outlined',
-      labelClassName: 'label',
+      className: 'input input--outlined',
       autofocus: false,
-      signalNameSpace: null
+      signalNameSpace: null,
+      clearWhenItemSelected: false,
+      focusWhenItemSelected: false
     }
   }
 
   constructor(props) {
     super(props);
+    this._name = 'django_cradmin.components.CradminSearchInput';
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      'django_cradmin.components.CradminSearchInput');
+      this._name);
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
+    this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
     this.state = {searchString: ''};
+    this.initializeSignalHandlers();
+  }
+
+  initializeSignalHandlers() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.DataListInitialized`,
+      this._name,
+      this._onDataListInitializedSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.SelectItem`,
+      this._name,
+      this._onSelectItemSignal
+    );
+  }
+
+  componentWillUnmount() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+      `${this.props.signalNameSpace}.DataListInitialized`,
+      this._name
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+      `${this.props.signalNameSpace}.SelectItem`,
+      this._name
+    );
+  }
+
+  _onDataListInitializedSignal(receivedSignalInfo) {
+    if(this.props.autofocus) {
+      this.handleFocus();
+    }
+  }
+
+  _onSelectItemSignal(receivedSignalInfo) {
+    if(this.props.clearWhenItemSelected) {
+      this.setState({
+        searchString: ''
+      });
+      this._sendChangeSignal();
+    }
+    if(this.props.focusWhenItemSelected) {
+      this._inputDomElement.focus();
+    }
   }
 
   handleChange(event) {
     this._cancelInputTimeout();
     this.setState({searchString: event.target.value});
     this._timeoutId = window.setTimeout(
-      () => {this._onChangeDelayed()},
+      () => {this._sendChangeSignal()},
       this.props.changeDelay);
   }
 
@@ -38,7 +87,7 @@ export default class CradminSearchInput extends React.Component {
     }
   }
 
-  _onChangeDelayed() {
+  _sendChangeSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchValueChange`,
       this.state.searchString,
@@ -48,14 +97,25 @@ export default class CradminSearchInput extends React.Component {
     );
   }
 
+  handleFocus() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.Focus`);
+  }
+
+  handleBlur() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.Blur`);
+  }
+
   render() {
-    return <label className={this.props.labelClassName}>
-      <input type="search"
+    return <input type="search"
+                  ref={(input) => { this._inputDomElement = input; }}
                   placeholder={this.props.placeholder}
-                  className={this.props.inputClassName}
+                  className={this.props.className}
                   value={this.state.searchString}
                   autoFocus={this.props.autofocus}
-                  onChange={this.handleChange} />
-    </label>;
+                  onChange={this.handleChange}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}/>;
   }
 }

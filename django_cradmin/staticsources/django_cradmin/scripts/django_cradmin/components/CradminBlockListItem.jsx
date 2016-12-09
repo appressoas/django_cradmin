@@ -17,6 +17,8 @@ export default class CradminBlockList extends React.Component {
   constructor(props) {
     super(props);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
   }
 
   handleSelect(event) {
@@ -32,6 +34,18 @@ export default class CradminBlockList extends React.Component {
         this.props.data
       );
     }
+  }
+
+  handleFocus() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.Focus`
+    );
+  }
+
+  handleBlur() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.Blur`
+    );
   }
 
   renderDescription() {
@@ -65,6 +79,8 @@ export default class CradminBlockList extends React.Component {
   render() {
     return <a href="#" className={this.fullClassName}
               onClick={this.handleSelect}
+              onFocus={this.handleFocus}
+              onBlur={this.handleBlur}
               aria-label={this.ariaTitle}
               role="button">
       {this.renderTitle()}

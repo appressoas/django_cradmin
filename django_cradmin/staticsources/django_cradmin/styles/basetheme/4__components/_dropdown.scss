@@ -1,0 +1,35 @@
+/* Dropdown
+
+Example: {type: isolated}
+
+    <input type="text" class="input input--outlined">
+    <div class="dropdown">
+        <div class="dropdown__content">
+            Floating content here.
+        </div>
+    </div>
+    <p>
+        Just some text to ensure it is floating!
+        Aenean lacinia bibendum nulla sed consectetur. Cras justo odio,
+        dapibus ac facilisis in, egestas eget quam. Vivamus sagittis
+        lacus vel augue laoreet rutrum faucibus dolor auctor. Donec
+        id elit non mi porta gravida at eget metus. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Vestibulum id ligula porta felis euismod semper.
+        Donec id elit non mi porta gravida at eget metus.
+    </p>
+
+Styleguide components.dropdown
+*/
+.dropdown {
+    position: relative;
+    overflow: visible;
+    &__content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background-color: $color-light;
+    }
+}
