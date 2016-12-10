@@ -27,6 +27,9 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._onDeSelectItemSignal = this._onDeSelectItemSignal.bind(this);
     this._onFocusSignal = this._onFocusSignal.bind(this);
     this._onBlurSignal = this._onBlurSignal.bind(this);
+    this._onLoadMoreSignal = this._onLoadMoreSignal.bind(this);
+    this._onLoadNextPageSignal = this._onLoadNextPageSignal.bind(this);
+    this._onLoadPreviousPageSignal = this._onLoadPreviousPageSignal.bind(this);
     if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');
     }
@@ -116,6 +119,21 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this.name,
       this._onBlurSignal
     );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.LoadMore`,
+      this.name,
+      this._onLoadMoreSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.LoadNextPage`,
+      this.name,
+      this._onLoadNextPageSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.LoadPreviousPage`,
+      this.name,
+      this._onLoadPreviousPageSignal
+    );
   }
 
   destroy() {
@@ -140,6 +158,18 @@ export default class AbstractDataListWidget extends AbstractWidget {
         `${this.config.signalNameSpace}.Blur`,
         this.name
       );
+      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+        `${this.config.signalNameSpace}.LoadMore`,
+        this.name
+      );
+      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+        `${this.config.signalNameSpace}.LoadNextPage`,
+        this.name
+      );
+      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+        `${this.config.signalNameSpace}.LoadPreviousPage`,
+        this.name
+      );
     }
   }
 
@@ -162,6 +192,14 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _updateDataStateChange(stateChange, stateChangesSet) {
     if(stateChange.data != undefined) {
       this.state.data = stateChange.data;
+      stateChangesSet.add('data');
+    } else if(stateChange.appendData != undefined) {
+      for(let itemData of stateChange.appendData.results) {
+        this.state.data.results.push(itemData);
+      }
+      this.state.data.count = stateChange.appendData.count;
+      this.state.data.next = stateChange.appendData.next;
+      this.state.data.previous = stateChange.appendData.previous;
       stateChangesSet.add('data');
     }
   }
@@ -202,7 +240,6 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   setState(stateChange) {
-    this.logger.debug('setState', stateChange);
     const stateChangesSet = new Set();
     this._updateSearchStringStateChange(stateChange, stateChangesSet);
     this._updateDataStateChange(stateChange, stateChangesSet);
@@ -216,9 +253,9 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this._sendSelectionChangeSignal();
     }
     if(stateChangesSet.has('searchString')) {
-      this._requestDataListAndRefresh({
+      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
         searchString: this.state.searchString
-      });
+      }));
     }
     this._sendStateChangeSignal(stateChangesSet);
   }
@@ -317,6 +354,36 @@ export default class AbstractDataListWidget extends AbstractWidget {
     });
   }
 
+  _onLoadMoreSignal(receivedSignalInfo) {
+    if(this.state.data.next) {
+      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
+        next: true
+      }), 'appendData');
+    } else {
+      this.logger.warning('Requested LoadMore with no next page.');
+    }
+  }
+
+  _onLoadNextPageSignal(receivedSignalInfo) {
+    if(this.state.data.next) {
+      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
+        next: true
+      }), 'data');
+    } else {
+      this.logger.warning('Requested LoadNextPage with no next page.');
+    }
+  }
+
+  _onLoadPreviousPageSignal(receivedSignalInfo) {
+    if(this.state.data.previous) {
+      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
+        previous: true
+      }), 'data');
+    } else {
+      this.logger.warning('Requested LoadPreviousPage with no previous page.');
+    }
+  }
+
   requestItemData(key) {
     throw new Error('requestItemData must be implemented in subclasses of AbstractDataListWidget.');
   }
@@ -325,18 +392,18 @@ export default class AbstractDataListWidget extends AbstractWidget {
     throw new Error('requestDataList must be implemented in subclasses of AbstractDataListWidget.');
   }
 
-  makeRequestDataListOptions(options={}) {
+  makeRequestDataListOptions(overrideOptions={}) {
     return Object.assign({}, {
-      searchString: ''
-    }, options);
+      searchString: this.state.searchString
+    }, overrideOptions);
   }
 
-  _requestDataListAndRefresh(options) {
+  _requestDataListAndRefresh(options, stateChangeAttribute='data') {
     this.requestDataList(options)
       .then((data) => {
-        this.setState({
-          data: data
-        });
+        const stateChange = {};
+        stateChange[stateChangeAttribute] = data;
+        this.setState(stateChange);
       })
       .catch((error) => {
         throw error;

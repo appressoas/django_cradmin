@@ -45,7 +45,6 @@ export default class StaticDataListWidget extends AbstractDataListWidget {
 
   requestDataList(options) {
     return new Promise((resolve, reject) => {
-      options = this.makeRequestDataListOptions(options);
       const resultItemsArray = [];
       const searchString = options.searchString.toLowerCase();
       for (let itemData of this.config.dataList) {

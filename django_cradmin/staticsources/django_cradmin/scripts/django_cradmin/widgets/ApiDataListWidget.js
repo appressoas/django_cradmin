@@ -4,11 +4,10 @@ import AbstractDataListWidget from "./AbstractDataListWidget";
 
 export default class ApiDataListWidget extends AbstractDataListWidget {
 
-  getDefaultConfig() {
-    const defaultConfig = super.getDefaultConfig();
-    defaultConfig.extraApiData = {};
-    return defaultConfig;
-  }
+  // getDefaultConfig() {
+  //   const defaultConfig = super.getDefaultConfig();
+  //   return defaultConfig;
+  // }
 
   get name() {
     return 'django_cradmin.widgets.ApiDataListWidget';
@@ -41,12 +40,13 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
 
   requestDataList(options) {
     return new Promise((resolve, reject) => {
-      options = this.makeRequestDataListOptions(options);
-      const request = new HttpDjangoJsonRequest(this.config.apiUrl);
-      for (let attribute of Object.keys(this.config.extraApiData)) {
-        request.urlParser.queryString.set(
-          attribute, this.config.extraApiData[attribute]);
+      let url = this.config.apiUrl;
+      if(options.next) {
+        url = this.state.data.next;
+      } else if(options.previous) {
+        url = this.state.data.previous;
       }
+      const request = new HttpDjangoJsonRequest(url);
       request.urlParser.queryString.set('search', options.searchString);
       request.get()
         .then((response) => {

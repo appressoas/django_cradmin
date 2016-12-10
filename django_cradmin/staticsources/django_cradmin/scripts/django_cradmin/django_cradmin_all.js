@@ -9,6 +9,7 @@ import StaticDataListWidget from "./widgets/StaticDataListWidget";
 import ApiDataListWidget from "./widgets/ApiDataListWidget";
 import DataListDisplayByStateWidget from "./widgets/DataListDisplayByStateWidget";
 import SelectedListWidget from "./widgets/SelectedListWidget";
+import LoadMoreWidget from "./widgets/LoadMoreWidget";
 // import SelectModalWidget from "./widgets/SelectModalWidget.jsx";
 // import SelectEmbeddedWidget from "./widgets/SelectEmbeddedWidget";
 
@@ -16,7 +17,7 @@ import SelectedListWidget from "./widgets/SelectedListWidget";
 export default class DjangoCradminAll {
   constructor() {
     new window.ievv_jsbase_core.LoggerSingleton().setDefaultLogLevel(
-      window.ievv_jsbase_core.LOGLEVEL.DEBUG);
+      window.ievv_jsbase_core.LOGLEVEL.INFO);
     // this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
     // this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.DEBUG);
     // this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);
@@ -35,6 +36,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-block-list', BlockListWidget);
     widgetRegistry.registerWidgetClass('cradmin-data-list-display-by-state', DataListDisplayByStateWidget);
     widgetRegistry.registerWidgetClass('cradmin-selected-list', SelectedListWidget);
+    widgetRegistry.registerWidgetClass('cradmin-load-more', LoadMoreWidget);
     widgetRegistry.initializeAllWidgetsWithinElement(document.body);
   }
 }

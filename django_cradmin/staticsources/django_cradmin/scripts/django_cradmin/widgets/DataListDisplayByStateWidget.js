@@ -71,6 +71,12 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
         this.stateSet.add('currentResultIsEmpty');
         this.stateSet.delete('currentResultIsNotEmpty');
       }
+
+      if(state.data.next) {
+        this.stateSet.add('hasNextPage');
+      } else {
+        this.stateSet.delete('hasNextPage');
+      }
     }
     if(stateChanges.has('searchString')) {
       if (state.searchString.length > 0) {
