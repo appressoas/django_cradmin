@@ -248,6 +248,11 @@ export default class AbstractDataListWidget extends AbstractWidget {
     }
   }
 
+  _hasAnyFiltersOrSearchString() {
+    // TODO: Update with filters
+    return this.searchString == '';
+  }
+
   setState(stateChange) {
     const stateChangesSet = new Set();
     this._updateSearchStringStateChange(stateChange, stateChangesSet);
@@ -257,6 +262,10 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._updateLoadingStateChange(stateChange, stateChangesSet);
 
     if(stateChangesSet.has('data')) {
+      if(this.state.data.count == 0 && !this._hasAnyFiltersOrSearchString()) {
+        this.state.isEmpty = true;
+        this._sendIsEmpyDataListSignal();
+      }
       this._sendDataChangeSignal();
     }
     if(stateChangesSet.has('selection')) {
@@ -271,6 +280,12 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this._sendLoadingStateChangeSignal();
     }
     this._sendStateChangeSignal(stateChangesSet);
+  }
+
+  _sendIsEmpyDataListSignal() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.IsEmpyDataList`
+    );
   }
 
   _sendDataChangeSignal() {

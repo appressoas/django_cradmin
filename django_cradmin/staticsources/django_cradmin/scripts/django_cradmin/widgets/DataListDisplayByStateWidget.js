@@ -107,8 +107,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       }
     }
 
-    // TODO: Update with filters
-    if(state.searchString == '' && state.data.count == 0) {
+    if(state.isEmpty) {
       this.stateSet.add('empty');
       this.stateSet.delete('notEmpty');
     } else {
