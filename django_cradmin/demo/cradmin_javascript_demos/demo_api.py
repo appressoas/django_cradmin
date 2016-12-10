@@ -1,3 +1,4 @@
+import time
 from django.db import models
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
@@ -24,4 +25,5 @@ class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
                 models.Q(name__icontains=search) |
                 models.Q(about__icontains=search)
             )
+        # time.sleep(2)
         return queryset

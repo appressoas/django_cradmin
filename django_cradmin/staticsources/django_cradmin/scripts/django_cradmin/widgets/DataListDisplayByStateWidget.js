@@ -16,7 +16,9 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       // - 'blur'
       // - 'empty'
       // - 'notEmpty'
-      showStates: []
+      showStates: [],
+
+      hideStates: []
     };
   }
 
@@ -97,6 +99,14 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       }
     }
 
+    if(stateChanges.has('loading')) {
+      if (state.loading) {
+        this.stateSet.add('loading');
+      } else {
+        this.stateSet.delete('loading');
+      }
+    }
+
     // TODO: Update with filters
     if(state.searchString == '' && state.data.count == 0) {
       this.stateSet.add('empty');
@@ -105,17 +115,25 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       this.stateSet.delete('empty');
       this.stateSet.add('notEmpty');
     }
+
     this._refresh();
   }
 
   _refresh() {
     let display = false;
-    for(let state of this.stateSet) {
-      if(this.config.showStates.indexOf(state) != -1) {
+    for(let state of this.config.showStates) {
+      if(this.stateSet.has(state)) {
         display = true;
         break;
       }
     }
+    for(let state of this.config.hideStates) {
+      if(this.stateSet.has(state)) {
+        display = false;
+        break;
+      }
+    }
+    console.log(this.stateSet, this.config.hideStates);
     this._display(display);
   }
 }

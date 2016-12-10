@@ -48,10 +48,12 @@ export default class AbstractDataListWidget extends AbstractWidget {
         results: []
       },
       selectedItemsMap: new Map(),
-      searchString: ''
+      searchString: '',
+      focus: false,
+      loading: false
     };
     this._sendDataListInitializedSignal();
-    this.setState(state);
+    this.setState(state, true);
   }
 
   _makeItemMapFromArray(itemDataArray) {
@@ -233,9 +235,16 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _updateFocusStateChange(stateChange, stateChangesSet) {
-    if(stateChange.focus != undefined) {
+    if(stateChange.focus != undefined && this.state.focus != stateChange.focus) {
       this.state.focus = stateChange.focus;
       stateChangesSet.add('focus');
+    }
+  }
+
+  _updateLoadingStateChange(stateChange, stateChangesSet) {
+    if(stateChange.loading != undefined && this.state.loading != stateChange.loading) {
+      this.state.loading = stateChange.loading;
+      stateChangesSet.add('loading');
     }
   }
 
@@ -245,6 +254,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._updateDataStateChange(stateChange, stateChangesSet);
     this._updateSelectionStateChange(stateChange, stateChangesSet);
     this._updateFocusStateChange(stateChange, stateChangesSet);
+    this._updateLoadingStateChange(stateChange, stateChangesSet);
 
     if(stateChangesSet.has('data')) {
       this._sendDataChangeSignal();
@@ -257,46 +267,44 @@ export default class AbstractDataListWidget extends AbstractWidget {
         searchString: this.state.searchString
       }));
     }
+    if(stateChangesSet.has('loading')) {
+      this._sendLoadingStateChangeSignal();
+    }
     this._sendStateChangeSignal(stateChangesSet);
   }
 
   _sendDataChangeSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.DataChange`,
-      this.state.data,
-      (sentSignalInfo) => {
-        this.logger.debug('Sent:', sentSignalInfo.toString());
-      }
+      this.state.data
     );
   }
 
   _sendSelectionChangeSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.SelectionChange`,
-      {selectedItemsMap: this.state.selectedItemsMap},
-      (sentSignalInfo) => {
-        this.logger.debug('Sent:', sentSignalInfo.toString());
-      }
+      {selectedItemsMap: this.state.selectedItemsMap}
+    );
+  }
+
+  _sendLoadingStateChangeSignal() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.LoadingStateChange`,
+      this.state.loading
     );
   }
 
   _sendStateChangeSignal(stateChanges) {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.StateChange`,
-      {state: this.state, stateChanges: stateChanges},
-      (sentSignalInfo) => {
-        this.logger.debug('Sent:', sentSignalInfo.toString());
-      }
+      {state: this.state, stateChanges: stateChanges}
     );
   }
 
   _sendDataListInitializedSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.DataListInitialized`,
-      this.state,
-      (sentSignalInfo) => {
-        this.logger.debug('Sent:', sentSignalInfo.toString());
-      }
+      this.state
     );
   }
 
@@ -392,6 +400,45 @@ export default class AbstractDataListWidget extends AbstractWidget {
     throw new Error('requestDataList must be implemented in subclasses of AbstractDataListWidget.');
   }
 
+  _cancelLoadingStateTimer() {
+    if(this._loadingStateTimeoutId != undefined) {
+      window.clearTimeout(this._loadingStateTimeoutId);
+    }
+  }
+
+  _startLoadingStateTimer() {
+    this._loadingStateTimeoutId = window.setTimeout(() => {
+      this.setState({
+        loading: true
+      });
+    }, 200);
+  }
+
+  _setLoadingState() {
+    this._startLoadingStateTimer();
+  }
+  _unsetLoadingState() {
+    this._cancelLoadingStateTimer();
+    this.setState({
+      loading: false
+    });
+  }
+
+  _requestDataList(options) {
+    return new Promise((resolve, reject) => {
+      this._setLoadingState();
+      this.requestDataList(options)
+        .then((data) => {
+          this._unsetLoadingState();
+          resolve(data);
+        })
+        .catch((error) => {
+          this._unsetLoadingState();
+          reject(error);
+        });
+    });
+  }
+
   makeRequestDataListOptions(overrideOptions={}) {
     return Object.assign({}, {
       searchString: this.state.searchString
@@ -399,7 +446,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _requestDataListAndRefresh(options, stateChangeAttribute='data') {
-    this.requestDataList(options)
+    this._requestDataList(options)
       .then((data) => {
         const stateChange = {};
         stateChange[stateChangeAttribute] = data;
