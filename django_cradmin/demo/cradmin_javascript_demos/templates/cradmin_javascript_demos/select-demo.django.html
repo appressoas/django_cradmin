@@ -173,85 +173,85 @@
 
 
 
-{#    <div class="adminui-page-section">#}
-{#        <div class="container">#}
-{#            <div data-ievv-jsbase-widget="cradmin-api-data-list"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "dropdowntest",#}
-{#                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",#}
-{#                     "minimumSearchStringLength": 0,#}
-{#                     "multiselect": true#}
-{#                 }'>#}
-{#            </div>#}
-{#            <div data-ievv-jsbase-widget="cradmin-selected-list"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "dropdowntest"#}
-{#                 }'>#}
-{#            </div>#}
-{#            <div data-ievv-jsbase-widget="cradmin-search-input"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "dropdowntest",#}
-{#                     "clearWhenItemSelected": true,#}
-{#                     "focusWhenItemSelected": true#}
-{#                 }'></div>#}
-{#            <div class="dropdown"#}
-{#                 data-ievv-jsbase-widget="cradmin-data-list-display-by-state"#}
-{#                 style="display: none"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "dropdowntest",#}
-{#                     "showStates": ["focus"]#}
-{#                 }'>#}
-{#                <div class="dropdown__content">#}
-{#                    <div data-ievv-jsbase-widget="cradmin-block-list"#}
-{#                         data-ievv-jsbase-widget-config='{#}
-{#                             "signalNameSpace": "dropdowntest",#}
-{#                             "renderSelected": false#}
-{#                         }'></div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{##}
-{#    <div class="adminui-page-section">#}
-{#        <div class="container">#}
-{#            <div data-ievv-jsbase-widget="cradmin-search-input"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "statictest"#}
-{#                 }'></div>#}
-{#            <div data-ievv-jsbase-widget="cradmin-static-data-list"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "statictest",#}
-{#                     "selectedKeys": [2],#}
-{#                     "dataList": [#}
-{#                         {#}
-{#                             "id": 1,#}
-{#                             "title": "John",#}
-{#                             "description": "The John"#}
-{#                         },#}
-{#                         {#}
-{#                             "id": 2,#}
-{#                             "title": "Peter",#}
-{#                             "description": "Peter is coool"#}
-{#                         },#}
-{#                         {#}
-{#                             "id": 3,#}
-{#                             "title": "No description"#}
-{#                         },#}
-{#                         {#}
-{#                             "id": 4,#}
-{#                             "title": "Jane",#}
-{#                             "description": "Jane is awesome, but she no longer likes Tarzan"#}
-{#                         }#}
-{#                     ]#}
-{#                 }'>#}
-{#            </div>#}
-{#            <div data-ievv-jsbase-widget="cradmin-block-list"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "signalNameSpace": "statictest"#}
-{#                 }'>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+    <div class="adminui-page-section">
+        <div class="container">
+            <div data-ievv-jsbase-widget="cradmin-api-data-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "dropdowntest",
+                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "minimumSearchStringLength": 0,
+                     "multiselect": true
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-selected-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "dropdowntest"
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-search-input"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "dropdowntest",
+                     "clearWhenItemSelected": true,
+                     "focusWhenItemSelected": true
+                 }'></div>
+            <div class="dropdown"
+                 data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                 style="display: none"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "dropdowntest",
+                     "showStates": ["focus"]
+                 }'>
+                <div class="dropdown__content">
+                    <div data-ievv-jsbase-widget="cradmin-block-list"
+                         data-ievv-jsbase-widget-config='{
+                             "signalNameSpace": "dropdowntest",
+                             "renderSelected": false
+                         }'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <div data-ievv-jsbase-widget="cradmin-search-input"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "statictest"
+                 }'></div>
+            <div data-ievv-jsbase-widget="cradmin-static-data-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "statictest",
+                     "selectedKeys": [2],
+                     "dataList": [
+                         {
+                             "id": 1,
+                             "title": "John",
+                             "description": "The John"
+                         },
+                         {
+                             "id": 2,
+                             "title": "Peter",
+                             "description": "Peter is coool"
+                         },
+                         {
+                             "id": 3,
+                             "title": "No description"
+                         },
+                         {
+                             "id": 4,
+                             "title": "Jane",
+                             "description": "Jane is awesome, but she no longer likes Tarzan"
+                         }
+                     ]
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-block-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "statictest"
+                 }'>
+            </div>
+        </div>
+    </div>
 
     <div class="adminui-page-section">
         <div class="container">
