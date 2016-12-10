@@ -14,6 +14,8 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       // - 'noSearchString'
       // - 'focus'
       // - 'blur'
+      // - 'empty'
+      // - 'notEmpty'
       showStates: []
     };
   }
@@ -101,7 +103,6 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   }
 
   _refresh() {
-    console.log(this.stateSet);
     let display = false;
     for(let state of this.stateSet) {
       if(this.config.showStates.indexOf(state) != -1) {
