@@ -199,7 +199,7 @@
                  style="display: none"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "dropdowntest",
-                     "showStates": ["focus"]
+                     "showStates": ["HasFocus"]
                  }'>
                 <div class="dropdown__content">
                     <div data-ievv-jsbase-widget="cradmin-block-list"
@@ -266,7 +266,7 @@
             <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
                data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "showStates": ["initializingDataList"]
+                     "showStates": ["IsInitializingDataList"]
                  }'>
                 Loading
             </p>
@@ -274,7 +274,7 @@
                style="display: none"
                data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "showStates": ["empty"]
+                     "showStates": ["UnfilteredIsEmpty"]
                  }'>
                 Empty dataset!
             </p>
@@ -294,7 +294,8 @@
                  style="display: none"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "showStates": ["notEmpty"]
+                     "showStates": ["IsNotInitializingDataList"],
+                     "hideStates": ["UnfilteredIsEmpty"]
                  }'>
                 <div data-ievv-jsbase-widget="cradmin-selected-list"
                      data-ievv-jsbase-widget-config='{
@@ -317,8 +318,8 @@
                      class="text-center"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest",
-                         "showStates": ["hasNextPage"],
-                         "hideStates": ["loading"]
+                         "showStates": ["HasNextPage"],
+                         "hideStates": ["IsLoading"]
                      }'>
                     <button type="button" class="button"
                             data-ievv-jsbase-widget="cradmin-load-more"
@@ -332,9 +333,18 @@
                    style="display: none"
                    data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "showStates": ["loading"]
+                     "showStates": ["IsLoading"]
                  }'>
                     Loading...
+                </p>
+                <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                   style="display: none"
+                   data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "apitest",
+                     "showStates": ["FilteredIsEmpty"],
+                     "hideStates": ["IsLoading"]
+                 }'>
+                    No matches!
                 </p>
             </div>
         </div>

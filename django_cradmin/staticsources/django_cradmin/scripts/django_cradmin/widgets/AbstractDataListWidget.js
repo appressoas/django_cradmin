@@ -217,7 +217,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
 
   _hasAnyFiltersOrSearchString() {
     // TODO: Update with filters
-    return this.searchString == '';
+    return this.state.searchString != '';
   }
 
   setState(stateChange) {

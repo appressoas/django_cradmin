@@ -7,15 +7,16 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       signalNameSpace: null,
       displayStyle: 'block',
       // Valid values:
-      // - 'initializingDataList'
-      // - 'currentResultIsNotEmpty'
-      // - 'currentResultIsEmpty'
-      // - 'hasSearchString'
-      // - 'noSearchString'
-      // - 'focus'
-      // - 'blur'
-      // - 'empty'
-      // - 'notEmpty'
+      // - 'IsInitializingDataList'
+      // - 'IsNotInitializingDataList'
+      // - 'UnfilteredIsEmpty'
+      // - 'UnfilteredIsNotEmpty'
+      // - 'FilteredIsNotEmpty'
+      // - 'FilteredIsEmpty'
+      // - 'HasNextPage'
+      // - 'HasSearchString'
+      // - 'HasFocus'
+      // - 'HasNoFocus'
       showStates: [],
 
       hideStates: []
@@ -28,7 +29,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     this._name = `django_cradmin.widgets.DataListDisplayByStateWidget.${widgetInstanceId}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       this._name);
-    if (this.config.signalNameSpace == null) {
+    if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');
     }
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
@@ -46,45 +47,45 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     }
     this.stateSet = new Set();
     if(this._watchInitializingDataList()) {
-      this.stateSet.add('initializingDataList');
+      this.stateSet.add('IsInitializingDataList');
     }
     this._refresh();
     this.initializeSignalHandlers();
   }
 
   _watchIsEmpty() {
-    return this._watchedStates.has('empty');
+    return this._watchedStates.has('UnfilteredIsEmpty');
   }
 
   _watchNotEmpty() {
-    return this._watchedStates.has('notEmpty');
+    return this._watchedStates.has('UnfilteredIsNotEmpty');
   }
 
   _watchInitializingDataList() {
-    return this._watchedStates.has('initializingDataList');
+    return this._watchedStates.has('IsInitializingDataList') ||
+      this._watchedStates.has('IsNotInitializingDataList');
   }
 
   _watchResultCount() {
-    return this._watchedStates.has('currentResultIsNotEmpty') ||
-         this._watchedStates.has('currentResultIsEmpty');
+    return this._watchedStates.has('FilteredIsNotEmpty') ||
+         this._watchedStates.has('FilteredIsEmpty');
   }
 
   _watchNextPage() {
-    return this._watchedStates.has('hasNextPage');
+    return this._watchedStates.has('HasNextPage');
   }
 
   _watchSearchString() {
-    return this._watchedStates.has('hasSearchString') ||
-         this._watchedStates.has('noSearchString');
+    return this._watchedStates.has('HasSearchString');
   }
 
   _watchFocus() {
-    return this._watchedStates.has('focus') ||
-         this._watchedStates.has('blur');
+    return this._watchedStates.has('HasFocus') ||
+         this._watchedStates.has('HasNoFocus');
   }
 
   _watchLoadingStateChange() {
-    return this._watchedStates.has('loading');
+    return this._watchedStates.has('IsLoading');
   }
 
   _listenForDataListInitializedSignal() {
@@ -184,24 +185,25 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   }
 
   _onDataListInitializedSignal(receivedSignalInfo) {
-    if(this.stateSet.has('initializingDataList')) {
-      this.stateSet.delete('initializingDataList');
+    if(this.stateSet.has('IsInitializingDataList')) {
+      this.stateSet.delete('IsInitializingDataList');
+      this.stateSet.add('IsNotInitializingDataList');
       this._refresh();
     }
   }
 
   _onIsEmpyDataListSignal(receivedSignalInfo) {
-    if(!this.stateSet.has('empty')) {
-      this.stateSet.add('empty');
-      this.stateSet.delete('notEmpty');
+    if(!this.stateSet.has('UnfilteredIsEmpty')) {
+      this.stateSet.add('UnfilteredIsEmpty');
+      this.stateSet.delete('UnfilteredIsNotEmpty');
       this._refresh();
     }
   }
 
   _onNotEmpyDataListSignal(receivedSignalInfo) {
-    if(!this.stateSet.has('notEmpty')) {
-      this.stateSet.add('notEmpty');
-      this.stateSet.delete('empty');
+    if(!this.stateSet.has('UnfilteredIsNotEmpty')) {
+      this.stateSet.add('UnfilteredIsNotEmpty');
+      this.stateSet.delete('UnfilteredIsEmpty');
       this._refresh();
     }
   }
@@ -209,16 +211,16 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   _checkDataChanges(data) {
     let hasChanges = false;
     if(this._watchResultCount()) {
-      if (data.count > 0) {
-        if (!this.stateSet.has('currentResultIsNotEmpty')) {
-          this.stateSet.add('currentResultIsNotEmpty');
-          this.stateSet.delete('currentResultIsEmpty');
+      if(data.count > 0) {
+        if(!this.stateSet.has('FilteredIsNotEmpty')) {
+          this.stateSet.add('FilteredIsNotEmpty');
+          this.stateSet.delete('FilteredIsEmpty');
           hasChanges = true;
         }
       } else {
-        if (!this.stateSet.has('currentResultIsEmpty')) {
-          this.stateSet.add('currentResultIsEmpty');
-          this.stateSet.delete('currentResultIsNotEmpty');
+        if(!this.stateSet.has('FilteredIsEmpty')) {
+          this.stateSet.add('FilteredIsEmpty');
+          this.stateSet.delete('FilteredIsNotEmpty');
           hasChanges = true;
         }
       }
@@ -226,13 +228,13 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
 
     if(this._watchNextPage()) {
       if(data.next) {
-        if(!this.stateSet.has('hasNextPage')) {
-          this.stateSet.add('hasNextPage');
+        if(!this.stateSet.has('HasNextPage')) {
+          this.stateSet.add('HasNextPage');
           hasChanges = true;
         }
       } else {
-        if(this.stateSet.has('hasNextPage')) {
-          this.stateSet.delete('hasNextPage');
+        if(this.stateSet.has('HasNextPage')) {
+          this.stateSet.delete('HasNextPage');
           hasChanges = true;
         }
       }
@@ -250,16 +252,14 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
 
   _checkSearchStringChanges(searchString) {
     let hasChanges = false;
-    if (searchString.length > 0) {
-      if (!this.stateSet.has('hasSearchString')) {
-        this.stateSet.add('hasSearchString');
-        this.stateSet.delete('noSearchString');
+    if(searchString.length > 0) {
+      if(!this.stateSet.has('HasSearchString')) {
+        this.stateSet.add('HasSearchString');
         hasChanges = true;
       }
     } else {
-      if (!this.stateSet.has('noSearchString')) {
-        this.stateSet.add('noSearchString');
-        this.stateSet.delete('hasSearchString');
+      if(this.stateSet.has('HasSearchString')) {
+        this.stateSet.delete('HasSearchString');
         hasChanges = true;
       }
     }
@@ -274,31 +274,31 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   }
 
   _onFocusSignal(receivedSignalInfo) {
-    if (!this.stateSet.has('focus')) {
-      this.stateSet.add('focus');
-      this.stateSet.delete('blur');
+    if(!this.stateSet.has('HasFocus')) {
+      this.stateSet.add('HasFocus');
+      this.stateSet.delete('HasNoFocus');
       this._refresh();
     }
   }
 
   _onBlurSignal(receivedSignalInfo) {
-    if (!this.stateSet.has('blur')) {
-      this.stateSet.add('blur');
-      this.stateSet.delete('focus');
+    if(!this.stateSet.has('HasNoFocus')) {
+      this.stateSet.add('HasNoFocus');
+      this.stateSet.delete('HasFocus');
       this._refresh();
     }
   }
 
   _checkLoadingChanges(isLoading) {
     let hasChanges = false;
-    if (isLoading) {
-      if(!this.stateSet.has('loading')) {
-        this.stateSet.add('loading');
+    if(isLoading) {
+      if(!this.stateSet.has('IsLoading')) {
+        this.stateSet.add('IsLoading');
         hasChanges = true;
       }
     } else {
-      if(this.stateSet.has('loading')) {
-        this.stateSet.delete('loading');
+      if(this.stateSet.has('IsLoading')) {
+        this.stateSet.delete('IsLoading');
         hasChanges = true;
       }
     }
