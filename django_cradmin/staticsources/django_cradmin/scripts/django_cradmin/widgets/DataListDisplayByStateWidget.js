@@ -132,7 +132,6 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
         break;
       }
     }
-    console.log(this.stateSet, this.config.hideStates);
     this._display(display);
   }
 }

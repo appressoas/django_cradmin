@@ -255,6 +255,14 @@
 
     <div class="adminui-page-section">
         <div class="container">
+            <div data-ievv-jsbase-widget="cradmin-api-data-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "apitest",
+                     "multiselect": true,
+                     "selectedKeys": [1],
+                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                 }'>
+            </div>
             <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
                data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
@@ -270,20 +278,24 @@
                  }'>
                 Empty dataset!
             </p>
+            <span data-ievv-jsbase-widget="cradmin-hidden-input-list"
+               data-ievv-jsbase-widget-config='{
+                 "signalNameSpace": "apitest",
+                 "inputName": "apitest"
+             }'>
+                {% comment %}
+                    You can pre-render the hidden fields here to avoid
+                    problems when users submit the form before the javascript
+                    has finished loading.
+                {% endcomment %}
+            </span>
+
             <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
                  style="display: none"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
                      "showStates": ["notEmpty"]
                  }'>
-                <div data-ievv-jsbase-widget="cradmin-api-data-list"
-                     data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "apitest",
-                         "multiselect": true,
-                         "selectedKeys": [1],
-                         "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
-                     }'>
-                </div>
                 <div data-ievv-jsbase-widget="cradmin-selected-list"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest"
@@ -324,7 +336,6 @@
                  }'>
                     Loading...
                 </p>
-
             </div>
         </div>
     </div>
