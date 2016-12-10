@@ -27,7 +27,9 @@ export default class CradminSearchInput extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
     this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
-    this.state = {searchString: ''};
+    this.state = {
+      searchString: ''
+    };
     this.initializeSignalHandlers();
   }
 
@@ -55,9 +57,24 @@ export default class CradminSearchInput extends React.Component {
     );
   }
 
+  _handleAutoFocus(tries=0) {
+    if(tries > 2) {
+      // Give up - the element will probably not become visible
+      // within a useful amount of time.
+      return;
+    }
+    this._inputDomElement.focus();
+    if(document.activeElement != this._inputDomElement) {
+      setTimeout(() => {
+        this._handleAutoFocus(tries + 1);
+      }, 100);
+    }
+  }
+
   _onDataListInitializedSignal(receivedSignalInfo) {
     if(this.props.autofocus) {
       this.handleFocus();
+      this._handleAutoFocus();
     }
   }
 
@@ -113,7 +130,6 @@ export default class CradminSearchInput extends React.Component {
                   placeholder={this.props.placeholder}
                   className={this.props.className}
                   value={this.state.searchString}
-                  autoFocus={this.props.autofocus}
                   onChange={this.handleChange}
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}/>;
