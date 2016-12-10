@@ -9,7 +9,7 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
   //   return defaultConfig;
   // }
 
-  get name() {
+  get classPath() {
     return 'django_cradmin.widgets.ApiDataListWidget';
   }
 

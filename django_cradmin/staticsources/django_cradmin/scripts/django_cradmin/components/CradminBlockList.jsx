@@ -15,12 +15,14 @@ export default class CradminBlockList extends React.Component {
 
   constructor(props) {
     super(props);
+    this._name = 'django_cradmin.components.CradminBlockList';
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      'django_cradmin.components.CradminBlockList');
+      this._name);
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
-    this._onStateChangeSignal = this._onStateChangeSignal.bind(this);
+    this._onDataChangeSignal = this._onDataChangeSignal.bind(this);
+    this._onSelectionChangeSignal = this._onSelectionChangeSignal.bind(this);
 
     this.state = {
       dataList: [],
@@ -32,17 +34,20 @@ export default class CradminBlockList extends React.Component {
 
   initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.props.signalNameSpace}.StateChange`,
-      'django_cradmin.components.CradminBlockList',
-      this._onStateChangeSignal
+      `${this.props.signalNameSpace}.DataChange`,
+      this._name,
+      this._onDataChangeSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.SelectionChange`,
+      this._name,
+      this._onSelectionChangeSignal
     );
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.props.signalNameSpace}.StateChange`,
-      'django_cradmin.components.CradminBlockList'
-    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton()
+      .removeAllSignalsFromReceiver(this._name);
   }
 
   render() {
@@ -51,16 +56,18 @@ export default class CradminBlockList extends React.Component {
     </div>;
   }
 
-  _onStateChangeSignal(receivedSignalInfo) {
-    // this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
-    const state = receivedSignalInfo.data.state;
-    const stateChanges = receivedSignalInfo.data.stateChanges;
-    if(stateChanges.has('selection') || stateChanges.has('data')) {
-      this.setState({
-        dataList: state.data.results,
-        selectedItemsMap: state.selectedItemsMap
-      });
-    }
+  _onDataChangeSignal(receivedSignalInfo) {
+    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    this.setState({
+      dataList: receivedSignalInfo.data.results,
+    });
+  }
+
+  _onSelectionChangeSignal(receivedSignalInfo) {
+    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    this.setState({
+      selectedItemsMap: receivedSignalInfo.data.selectedItemsMap
+    });
   }
 
   renderItem(itemKey, props) {

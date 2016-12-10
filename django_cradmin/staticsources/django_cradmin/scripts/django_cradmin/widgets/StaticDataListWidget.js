@@ -10,7 +10,7 @@ export default class StaticDataListWidget extends AbstractDataListWidget {
     return defaultConfig;
   }
 
-  get name() {
+  get classPath() {
     return 'django_cradmin.widgets.StaticDataListWidget';
   }
 

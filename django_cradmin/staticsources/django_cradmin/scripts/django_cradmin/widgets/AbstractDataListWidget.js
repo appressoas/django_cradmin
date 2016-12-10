@@ -14,14 +14,11 @@ export default class AbstractDataListWidget extends AbstractWidget {
     };
   }
 
-  get name() {
-    throw new Error('Must be overridden');
-  }
-
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
+    this._name = `${this.classPath}.${widgetInstanceId}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      this.name);
+      this._name);
     this._onSearchValueChangeSignal = this._onSearchValueChangeSignal.bind(this);
     this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
     this._onDeSelectItemSignal = this._onDeSelectItemSignal.bind(this);
@@ -98,80 +95,50 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _initializeSignalHandlers() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.SearchValueChange`,
-      this.name,
+      this._name,
       this._onSearchValueChangeSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.SelectItem`,
-      this.name,
+      this._name,
       this._onSelectItemSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.DeSelectItem`,
-      this.name,
+      this._name,
       this._onDeSelectItemSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.Focus`,
-      this.name,
+      this._name,
       this._onFocusSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.Blur`,
-      this.name,
+      this._name,
       this._onBlurSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.LoadMore`,
-      this.name,
+      this._name,
       this._onLoadMoreSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.LoadNextPage`,
-      this.name,
+      this._name,
       this._onLoadNextPageSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.LoadPreviousPage`,
-      this.name,
+      this._name,
       this._onLoadPreviousPageSignal
     );
   }
 
   destroy() {
     if(this.signalHandlersInitialized) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.SearchValueChange`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.SelectItem`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.DeSelectItem`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.Focus`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.Blur`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.LoadMore`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.LoadNextPage`,
-        this.name
-      );
-      new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-        `${this.config.signalNameSpace}.LoadPreviousPage`,
-        this.name
-      );
+      new window.ievv_jsbase_core.SignalHandlerSingleton()
+        .removeAllSignalsFromReceiver(this._name);
     }
   }
 
