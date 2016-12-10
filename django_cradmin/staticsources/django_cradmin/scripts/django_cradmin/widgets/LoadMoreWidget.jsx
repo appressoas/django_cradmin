@@ -20,7 +20,7 @@ export default class LoadMoreWidget extends AbstractWidget {
     }
     this._onClick = this._onClick.bind(this);
     this._onLoadingStateChangeSignal = this._onLoadingStateChangeSignal.bind(this);
-    this._disabled = false;
+    this._isLoading = false;
     this.initializeSignalHandlers();
     this.element.addEventListener('click', this._onClick);
   }
@@ -43,15 +43,14 @@ export default class LoadMoreWidget extends AbstractWidget {
 
   _onClick(event) {
     event.preventDefault();
-    if(!this._disabled) {
-      this._disabled = true;
+    if(!this._isLoading) {
       new window.ievv_jsbase_core.SignalHandlerSingleton().send(
         `${this.config.signalNameSpace}.LoadMore`);
     }
   }
 
   _onLoadingStateChangeSignal(receivedSignalInfo) {
-    const isLoading = receivedSignalInfo.data;
-    this._disabled = isLoading;
+    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    this._isLoading = receivedSignalInfo.data;
   }
 }

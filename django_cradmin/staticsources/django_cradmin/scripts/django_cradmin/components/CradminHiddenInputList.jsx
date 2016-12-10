@@ -49,7 +49,7 @@ export default class CradminHiddenInputList extends React.Component {
 
   _onSelectionChangeSignal(receivedSignalInfo) {
     if(this.logger.isDebug) {
-      this.logger.debug('Received:', receivedSignalInfo.toString());
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     }
     this.setState({
       selectedItemsMap: receivedSignalInfo.data.selectedItemsMap

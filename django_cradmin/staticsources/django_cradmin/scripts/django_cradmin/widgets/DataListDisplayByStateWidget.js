@@ -60,7 +60,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   }
 
   _onStateChangeSignal(receivedSignalInfo) {
-    this.logger.debug('Received:', receivedSignalInfo.toString());
+    // this.logger.debug('Received:', receivedSignalInfo.toString());
     const state = receivedSignalInfo.data.state;
     const stateChanges = receivedSignalInfo.data.stateChanges;
 

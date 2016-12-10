@@ -52,7 +52,7 @@ export default class CradminBlockList extends React.Component {
   }
 
   _onStateChangeSignal(receivedSignalInfo) {
-    this.logger.debug('Received:', receivedSignalInfo.toString());
+    // this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     const state = receivedSignalInfo.data.state;
     const stateChanges = receivedSignalInfo.data.stateChanges;
     if(stateChanges.has('selection') || stateChanges.has('data')) {
