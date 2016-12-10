@@ -71,28 +71,14 @@ export default class AbstractDataListWidget extends AbstractWidget {
     const state = {
       searchString: this.config.initialSearchString
     };
-    // this.requestDataList()
-    //   .then((data) => {
-    //     state.data = data;
-    //     this._requestItemDataForKeys(this.config.selectedKeys)
-    //       .then((selectedItemsArray) => {
-    //         state.setSelectedItems = selectedItemsArray;
-    //         this._initialize(state);
-    //       })
-    //       .catch((error) => {
-    //         throw error;
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     throw error;
-    //   });
     this._requestItemDataForKeys(this.config.selectedKeys)
       .then((selectedItemsArray) => {
         state.setSelectedItems = selectedItemsArray;
         this._initialize(state);
       })
       .catch((error) => {
-        throw error;
+        this.logger.error('Failed to load config.selectedKeys:', this.config.selectedKeys, '. Error:', error.toString());
+        this._initialize(state);
       });
   }
 
@@ -157,15 +143,13 @@ export default class AbstractDataListWidget extends AbstractWidget {
     }
   }
 
-  setState(state) {
-    this.logger.debug('setState', state);
-    const stateChanges = new Set();
-    if(state.searchString != undefined) {
-      this.state.searchString = state.searchString;
-      if(state.searchString.length >= this.config.minimumSearchStringLength) {
-        stateChanges.add('searchString');
+  _updateSearchStringStateChange(stateChange, stateChangesSet) {
+    if(stateChange.searchString != undefined) {
+      this.state.searchString = stateChange.searchString;
+      if(stateChange.searchString.length >= this.config.minimumSearchStringLength) {
+        stateChangesSet.add('searchString');
       } else {
-        state.data = {
+        stateChange.data = {
           count: 0,
           next: null,
           previous: null,
@@ -173,52 +157,70 @@ export default class AbstractDataListWidget extends AbstractWidget {
         }
       }
     }
-    if(state.data != undefined) {
-      this.state.data = state.data;
-      stateChanges.add('data');
+  }
+
+  _updateDataStateChange(stateChange, stateChangesSet) {
+    if(stateChange.data != undefined) {
+      this.state.data = stateChange.data;
+      stateChangesSet.add('data');
     }
-    if(state.addSelectedItem != undefined) {
+  }
+
+  _updateSelectionStateChange(stateChange, stateChangesSet) {
+    if(stateChange.addSelectedItem != undefined) {
       if(!this.config.multiselect) {
         this.state.selectedItemsMap.clear();
       }
       this.state.selectedItemsMap.set(
-        this._getKeyFromItemData(state.addSelectedItem), state.addSelectedItem);
-      stateChanges.add('selection');
+        this._getKeyFromItemData(stateChange.addSelectedItem), stateChange.addSelectedItem);
+      stateChangesSet.add('selection');
     }
-    if(state.removeSelectedItem != undefined) {
+    if(stateChange.removeSelectedItem != undefined) {
       if(this.config.multiselect) {
         this.state.selectedItemsMap.delete(
-          this._getKeyFromItemData(state.removeSelectedItem));
+          this._getKeyFromItemData(stateChange.removeSelectedItem));
       } else {
         this.state.selectedItemsMap.clear();
       }
-      stateChanges.add('selection');
+      stateChangesSet.add('selection');
     }
-    if(state.clearSelectedKeys != undefined) {
+    if(stateChange.clearSelectedKeys != undefined) {
       this.state.selectedItemsMap.clear();
-      stateChanges.add('selection');
+      stateChangesSet.add('selection');
     }
-    if(state.setSelectedItems != undefined) {
-      this.state.selectedItemsMap = this._makeItemMapFromArray(state.setSelectedItems);
-      stateChanges.add('selection');
+    if(stateChange.setSelectedItems != undefined) {
+      this.state.selectedItemsMap = this._makeItemMapFromArray(stateChange.setSelectedItems);
+      stateChangesSet.add('selection');
     }
-    if(state.focus != undefined) {
-      this.state.focus = state.focus;
-      stateChanges.add('focus');
-    }
+  }
 
-    if(stateChanges.has('data')) {
+  _updateFocusStateChange(stateChange, stateChangesSet) {
+    if(stateChange.focus != undefined) {
+      this.state.focus = stateChange.focus;
+      stateChangesSet.add('focus');
+    }
+  }
+
+  setState(stateChange) {
+    this.logger.debug('setState', stateChange);
+    const stateChangesSet = new Set();
+    this._updateSearchStringStateChange(stateChange, stateChangesSet);
+    this._updateDataStateChange(stateChange, stateChangesSet);
+    this._updateSelectionStateChange(stateChange, stateChangesSet);
+    this._updateFocusStateChange(stateChange, stateChangesSet);
+
+    if(stateChangesSet.has('data')) {
       this._sendDataChangeSignal();
     }
-    if(stateChanges.has('selection')) {
+    if(stateChangesSet.has('selection')) {
       this._sendSelectionChangeSignal();
     }
-    if(stateChanges.has('searchString')) {
+    if(stateChangesSet.has('searchString')) {
       this._requestDataListAndRefresh({
         searchString: this.state.searchString
       });
     }
-    this._sendStateChangeSignal(stateChanges);
+    this._sendStateChangeSignal(stateChangesSet);
   }
 
   _sendDataChangeSignal() {

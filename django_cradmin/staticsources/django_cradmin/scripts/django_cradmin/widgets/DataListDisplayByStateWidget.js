@@ -8,8 +8,8 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       displayStyle: 'block',
       // Valid values:
       // - 'initializing'
-      // - 'hasData'
-      // - 'noData'
+      // - 'currentResultIsNotEmpty'
+      // - 'currentResultIsEmpty'
       // - 'hasSearchString'
       // - 'noSearchString'
       // - 'focus'
@@ -61,16 +61,16 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     const stateChanges = receivedSignalInfo.data.stateChanges;
 
     this.stateSet.delete('initializing');
-    if (stateChanges.has('data')) {
+    if(stateChanges.has('data')) {
       if(state.data.count > 0) {
-        this.stateSet.add('hasData');
-        this.stateSet.delete('noData');
+        this.stateSet.add('currentResultIsNotEmpty');
+        this.stateSet.delete('currentResultIsEmpty');
       } else {
-        this.stateSet.add('noData');
-        this.stateSet.delete('hasData');
+        this.stateSet.add('currentResultIsEmpty');
+        this.stateSet.delete('currentResultIsNotEmpty');
       }
     }
-    if (stateChanges.has('searchString')) {
+    if(stateChanges.has('searchString')) {
       if (state.searchString.length > 0) {
         this.stateSet.add('hasSearchString');
         this.stateSet.delete('noSearchString');
@@ -79,7 +79,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
         this.stateSet.delete('hasSearchString');
       }
     }
-    if (stateChanges.has('focus')) {
+    if(stateChanges.has('focus')) {
       if (state.focus) {
         this.stateSet.add('focus');
         this.stateSet.delete('blur');
@@ -87,6 +87,15 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
         this.stateSet.add('blur');
         this.stateSet.delete('focus');
       }
+    }
+
+    // TODO: Update with filters
+    if(state.searchString == '' && state.data.count == 0) {
+      this.stateSet.add('empty');
+      this.stateSet.delete('notEmpty');
+    } else {
+      this.stateSet.delete('empty');
+      this.stateSet.add('notEmpty');
     }
     this._refresh();
   }

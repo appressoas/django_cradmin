@@ -167,6 +167,12 @@
 {#        </div>#}
 {#    </div>#}
 
+
+
+
+
+
+
     <div class="adminui-page-section">
         <div class="container">
             <div data-ievv-jsbase-widget="cradmin-api-data-list"
@@ -261,7 +267,7 @@
                style="display: none"
                data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "showStates": ["noData"]
+                     "showStates": ["empty"]
                  }'>
                 No data!
             </p>
@@ -269,7 +275,7 @@
                  style="display: none"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
-                     "showStates": ["hasData"]
+                     "showStates": ["notEmpty"]
                  }'>
                 <div data-ievv-jsbase-widget="cradmin-api-data-list"
                      data-ievv-jsbase-widget-config='{
@@ -279,15 +285,15 @@
                          "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
                      }'>
                 </div>
-                <div data-ievv-jsbase-widget="cradmin-search-input"
-                     data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "apitest"
-                     }'></div>
                 <div data-ievv-jsbase-widget="cradmin-selected-list"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest"
                      }'>
                 </div>
+                <div data-ievv-jsbase-widget="cradmin-search-input"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "apitest"
+                     }'></div>
                 <div data-ievv-jsbase-widget="cradmin-block-list"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest",
