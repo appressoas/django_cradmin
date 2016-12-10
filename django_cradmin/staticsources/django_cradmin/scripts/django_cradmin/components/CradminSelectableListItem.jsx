@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default class CradminBlockList extends React.Component {
+export default class CradminSelectableList extends React.Component {
 
   static get defaultProps() {
     return {
@@ -10,7 +10,8 @@ export default class CradminBlockList extends React.Component {
       titleClassName: 'blocklist__itemtitle blocklist__itemtitle--small',
       descriptionClassName: '',
       isSelected: false,
-      selectCallback: null
+      selectCallback: null,
+      setDataListFocus: true
     }
   }
 
@@ -37,15 +38,19 @@ export default class CradminBlockList extends React.Component {
   }
 
   handleFocus() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-      `${this.props.signalNameSpace}.Focus`
-    );
+    if(this.props.setDataListFocus) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.Focus`
+      );
+    }
   }
 
   handleBlur() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-      `${this.props.signalNameSpace}.Blur`
-    );
+    if(this.props.setDataListFocus) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.Blur`
+      );
+    }
   }
 
   renderDescription() {

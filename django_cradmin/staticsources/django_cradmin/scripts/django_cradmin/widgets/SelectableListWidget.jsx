@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
-import CradminBlockList from "../components/CradminBlockList";
+import CradminSelectableList from "../components/CradminSelectableList";
 
 
-export default class BlockListWidget extends AbstractWidget {
+export default class SelectableListWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
     ReactDOM.render(
-      <CradminBlockList {...this.config} />,
+      <CradminSelectableList {...this.config} />,
       this.element
     );
   }

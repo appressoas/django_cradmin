@@ -1,21 +1,22 @@
 import React from "react";
-import CradminBlockListItem from "./CradminBlockListItem";
+import CradminSelectableListItem from "./CradminSelectableListItem";
 
 
-export default class CradminBlockList extends React.Component {
+export default class CradminSelectableList extends React.Component {
 
   static get defaultProps() {
     return {
       className: 'blocklist  blocklist--tight',
       keyAttribute: 'id',
       renderSelected: true,
-      signalNameSpace: null
+      signalNameSpace: null,
+      itemComponentProps: {}
     }
   }
 
   constructor(props) {
     super(props);
-    this._name = 'django_cradmin.components.CradminBlockList';
+    this._name = 'django_cradmin.components.CradminSelectableList';
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       this._name);
     if(this.props.signalNameSpace == null) {
@@ -71,7 +72,7 @@ export default class CradminBlockList extends React.Component {
   }
 
   renderItem(itemKey, props) {
-    return <CradminBlockListItem key={itemKey} {...props} />;
+    return <CradminSelectableListItem key={itemKey} {...props} />;
   }
 
   renderItems() {
@@ -82,7 +83,7 @@ export default class CradminBlockList extends React.Component {
       if(isSelected && !this.props.renderSelected) {
         continue;
       }
-      let props = Object.assign({}, this.props.resultComponentProps, {
+      let props = Object.assign({}, this.props.itemComponentProps, {
         data: itemData,
         isSelected: isSelected,
         signalNameSpace: this.props.signalNameSpace
