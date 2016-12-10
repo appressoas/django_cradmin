@@ -229,9 +229,14 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._updateLoadingStateChange(stateChange, stateChangesSet);
 
     if(stateChangesSet.has('data')) {
-      if(this.state.data.count == 0 && !this._hasAnyFiltersOrSearchString()) {
-        this.state.isEmpty = true;
-        this._sendIsEmpyDataListSignal();
+      if(!this._hasAnyFiltersOrSearchString()) {
+        if(this.state.data.count == 0) {
+          this.state.isEmpty = true;
+          this._sendIsEmpyDataListSignal();
+        } else if(this.state.isEmpty || this.state.isEmpty == undefined) {
+          this.state.isEmpty = false;
+          this._sendNotEmpyDataListSignal();
+        }
       }
       this._sendDataChangeSignal();
     }
@@ -252,6 +257,12 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _sendIsEmpyDataListSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.IsEmpyDataList`
+    );
+  }
+
+  _sendNotEmpyDataListSignal() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.NotEmpyDataList`
     );
   }
 
