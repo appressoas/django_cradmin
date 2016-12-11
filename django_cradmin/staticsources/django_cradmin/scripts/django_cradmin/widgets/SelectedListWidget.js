@@ -8,7 +8,7 @@ export default class SelectedListWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
     ReactDOM.render(
-      <CradminSelectedList {...this.config} />,
+      <CradminSelectedList uniqueId={widgetInstanceId} {...this.config} />,
       this.element
     );
   }

@@ -9,13 +9,14 @@ export default class CradminSelectedList extends React.Component {
       className: 'selectable-list selectable-list--inline',
       keyAttribute: 'id',
       signalNameSpace: null,
+      uniqueId: '',
       itemComponentProps: {}
     }
   }
 
   constructor(props) {
     super(props);
-    this._name = `django_cradmin.components.CradminSelectedList.${this.props.signalNameSpace}`;
+    this._name = `django_cradmin.components.CradminSelectedList.${this.props.signalNameSpace}.${this.props.uniqueId}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       'django_cradmin.components.CradminSelectedList');
     if(this.props.signalNameSpace == null) {
@@ -127,7 +128,8 @@ export default class CradminSelectedList extends React.Component {
         itemKey: itemKey,
         signalNameSpace: this.props.signalNameSpace,
         previousItemData: previousItemData,
-        nextItemData: nextItemData
+        nextItemData: nextItemData,
+        uniqueListId: this.props.uniqueId
       });
       items.push(this.renderItem(itemKey, props));
       previousItemData = itemData;

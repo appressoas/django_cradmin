@@ -17,13 +17,14 @@ export default class CradminSelectedListItem extends React.Component {
       renderMode: 'TitleAndDescription',
       focusClosestSiblingOnDeSelect: true,
       previousItemData: null,
-      nextItemData: null
+      nextItemData: null,
+      uniqueListId: ''
     }
   }
 
   constructor(props) {
     super(props);
-    this._name = `django_cradmin.components.CradminSelectedListItem.${this.props.signalNameSpace}.${this.props.itemKey}`;
+    this._name = `django_cradmin.components.CradminSelectedListItem.${this.props.signalNameSpace}.${this.props.uniqueListId}.${this.props.itemKey}`;
     this.handleDeSelect = this.handleDeSelect.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
