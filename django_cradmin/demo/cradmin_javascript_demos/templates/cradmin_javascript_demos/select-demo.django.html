@@ -190,8 +190,11 @@
                      "signalMap": {
                         "SearchDownKey": ["FocusOnFirstSelectableItem"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
+                        "FocusAfterLastSelectableItem": ["FocusOnLoadMoreButton"],
                         "SelectItem": ["FocusOnLastSelectedItem"],
-                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"]
+                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"],
+                        "LoadMore": ["FocusOnLastSelectableItem"],
+                        "LoadMoreUpKey": ["FocusOnLastSelectableItem"]
                      }
                  }'>
             </div>
@@ -227,6 +230,38 @@
                                     "useHotKeys": true
                                  }
                              }'></div>
+                        <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                             style="display: none"
+                             class="text-center"
+                             data-ievv-jsbase-widget-config='{
+                                 "signalNameSpace": "foreignkey",
+                                 "showStates": ["HasNextPage"],
+                                 "hideStates": ["IsLoading"]
+                             }'>
+                            <span data-ievv-jsbase-widget="cradmin-load-more"
+                                  data-ievv-jsbase-widget-config='{
+                                      "signalNameSpace": "foreignkey",
+                                      "label": "Last flere",
+                                      "useHotKeys": true
+                                  }'></span>
+                        </div>
+                        <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                           style="display: none"
+                           data-ievv-jsbase-widget-config='{
+                             "signalNameSpace": "foreignkey",
+                             "showStates": ["IsLoading"]
+                         }'>
+                            Loading...
+                        </p>
+                        <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                           style="display: none"
+                           data-ievv-jsbase-widget-config='{
+                             "signalNameSpace": "foreignkey",
+                             "showStates": ["FilteredIsEmpty"],
+                             "hideStates": ["IsLoading"]
+                         }'>
+                            No matches!
+                        </p>
                     </div>
                 </div>
             </div>
@@ -431,13 +466,12 @@
                          "showStates": ["HasNextPage"],
                          "hideStates": ["IsLoading"]
                      }'>
-                    <button type="button" class="button"
-                            data-ievv-jsbase-widget="cradmin-load-more"
-                            data-ievv-jsbase-widget-config='{
-                              "signalNameSpace": "apitest"
-                            }'>
-                        Load more
-                    </button>
+                    <span data-ievv-jsbase-widget="cradmin-load-more"
+                          data-ievv-jsbase-widget-config='{
+                              "signalNameSpace": "apitest",
+                              "label": "Load more"
+                          }'></span>
+
                 </div>
                 <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
                    style="display: none"

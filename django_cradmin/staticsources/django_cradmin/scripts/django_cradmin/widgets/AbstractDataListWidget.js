@@ -343,7 +343,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _startBlurTimer(callback) {
     this._blurTimeoutId = window.setTimeout(
       callback,
-      100);
+      200);
   }
 
   _onFocusSignal(receivedSignalInfo) {
