@@ -12,15 +12,22 @@ class DateTimePickerDemo(generic.StandaloneBaseTemplateView):
         return ['django_cradmin_javascript']
 
 
-class SelectDemo(generic.StandaloneBaseTemplateView):
-    template_name = 'cradmin_javascript_demos/select-demo.django.html'
+class TabsDemo(generic.StandaloneBaseTemplateView):
+    template_name = 'cradmin_javascript_demos/tabs-demo.django.html'
 
     def get_javascriptregistry_component_ids(self):
         return ['django_cradmin_javascript']
 
 
-class TabsDemo(generic.StandaloneBaseTemplateView):
-    template_name = 'cradmin_javascript_demos/tabs-demo.django.html'
+class DataListWidgetsDemo(generic.StandaloneBaseTemplateView):
+    template_name = 'cradmin_javascript_demos/data-list-widgets-demo.django.html'
+
+    def get_javascriptregistry_component_ids(self):
+        return ['django_cradmin_javascript']
+
+
+class DataListWidgetsUicontainerDemo(generic.StandaloneBaseTemplateView):
+    template_name = 'cradmin_javascript_demos/data-list-widgets-uicontainer-demo.django.html'
 
     def get_javascriptregistry_component_ids(self):
         return ['django_cradmin_javascript']
