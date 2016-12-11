@@ -1,4 +1,5 @@
 import React from "react";
+import {HotKeys} from 'react-hotkeys';
 
 
 export default class CradminSearchInput extends React.Component {
@@ -9,9 +10,7 @@ export default class CradminSearchInput extends React.Component {
       className: 'input input--outlined',
       autofocus: false,
       signalNameSpace: null,
-      clearWhenItemSelected: false,
-      focusWhenItemSelected: false,
-      focusWhenItemDeSelected: false,
+      // TODO: Get rid of useAsFocusFallback
       useAsFocusFallback: true
     }
   }
@@ -28,9 +27,9 @@ export default class CradminSearchInput extends React.Component {
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
-    this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
-    this._onDeSelectItemSignal = this._onDeSelectItemSignal.bind(this);
+    this._onClearSearchFieldSignal = this._onClearSearchFieldSignal.bind(this);
     this._onFocusOnFallbackSignal = this._onFocusOnFallbackSignal.bind(this);
+    this._onFocusOnSearchFieldSignal = this._onFocusOnSearchFieldSignal.bind(this);
     this.state = {
       searchString: ''
     };
@@ -44,14 +43,9 @@ export default class CradminSearchInput extends React.Component {
       this._onDataListInitializedSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.props.signalNameSpace}.SelectItem`,
+      `${this.props.signalNameSpace}.ClearSearchField`,
       this._name,
-      this._onSelectItemSignal
-    );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-      `${this.props.signalNameSpace}.DeSelectItem`,
-      this._name,
-      this._onDeSelectItemSignal
+      this._onClearSearchFieldSignal
     );
     if(this.props.useAsFocusFallback) {
       new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
@@ -60,6 +54,11 @@ export default class CradminSearchInput extends React.Component {
         this._onFocusOnFallbackSignal
       );
     }
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.FocusOnSearchField`,
+      this._name,
+      this._onFocusOnSearchFieldSignal
+    );
   }
 
   componentWillUnmount() {
@@ -88,25 +87,18 @@ export default class CradminSearchInput extends React.Component {
     }
   }
 
-  _onSelectItemSignal(receivedSignalInfo) {
-    if(this.props.clearWhenItemSelected) {
-      this.setState({
-        searchString: ''
-      });
-      this._sendChangeSignal();
-    }
-    if(this.props.focusWhenItemSelected) {
-      this._forceFocus();
-    }
-  }
-
-  _onDeSelectItemSignal(receivedSignalInfo) {
-    if(this.props.focusWhenItemDeSelected) {
-      this._forceFocus();
-    }
+  _onClearSearchFieldSignal(receivedSignalInfo) {
+    this.setState({
+      searchString: ''
+    });
+    this._sendChangeSignal();
   }
 
   _onFocusOnFallbackSignal(receivedSignalInfo) {
+    this._forceFocus();
+  }
+
+  _onFocusOnSearchFieldSignal(receivedSignalInfo) {
     this._forceFocus();
   }
 
@@ -144,7 +136,27 @@ export default class CradminSearchInput extends React.Component {
       `${this.props.signalNameSpace}.Blur`);
   }
 
-  render() {
+  get hotKeysMap() {
+    return {
+      'downKey': ['down']
+    };
+  }
+
+  _onDownKey() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.SearchDownKey`);
+  }
+
+  get hotKeysHandlers() {
+    return {
+      'downKey': (event) => {
+        event.preventDefault();
+        this._onDownKey();
+      },
+    }
+  }
+
+  renderInputField() {
     return <input type="search"
                   ref={(input) => { this._inputDomElement = input; }}
                   placeholder={this.props.placeholder}
@@ -153,5 +165,11 @@ export default class CradminSearchInput extends React.Component {
                   onChange={this.handleChange}
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}/>;
+  }
+
+  render() {
+    return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
+      {this.renderInputField()}
+    </HotKeys>;
   }
 }

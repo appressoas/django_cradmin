@@ -26,11 +26,13 @@ export default class CradminSelectableList extends React.Component {
     this._onDataChangeSignal = this._onDataChangeSignal.bind(this);
     this._onSelectionChangeSignal = this._onSelectionChangeSignal.bind(this);
     this._onFocusOnSelectableItemSignal = this._onFocusOnSelectableItemSignal.bind(this);
+    this._onFocusOnFirstSelectableItemSignal = this._onFocusOnFirstSelectableItemSignal.bind(this);
+    this._onFocusOnLastSelectableItemSignal = this._onFocusOnLastSelectableItemSignal.bind(this);
 
-    this.renderedItemCount = 0;
     this._focusOnItemData = null;
     this.state = {
       dataList: [],
+      renderableDataList: [],
       hasMorePages: false,
       selectedItemsMap: new Map()
     };
@@ -54,6 +56,16 @@ export default class CradminSelectableList extends React.Component {
       this._name,
       this._onFocusOnSelectableItemSignal
     );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.FocusOnFirstSelectableItem`,
+      this._name,
+      this._onFocusOnFirstSelectableItemSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.FocusOnLastSelectableItem`,
+      this._name,
+      this._onFocusOnLastSelectableItemSignal
+    );
   }
 
   componentWillUnmount() {
@@ -68,19 +80,36 @@ export default class CradminSelectableList extends React.Component {
   }
 
   _loadMoreIfNeeded() {
-    if(this.state.hasMorePages && this.renderedItemCount < this.props.loadMoreTreshold) {
+    if(this.state.hasMorePages && this.state.renderableDataList.length < this.props.loadMoreTreshold) {
       this.logger.debug('Automatically sending the LoadMore signal because we are below the loadMoreTreshold');
       new window.ievv_jsbase_core.SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.LoadMore`);
     }
   }
 
+  _makeRenderableDataList(dataList) {
+    let renderableDataList = dataList;
+    if(!this.props.renderSelected) {
+      renderableDataList = [];
+      for(let itemData of dataList) {
+        let itemKey = itemData[this.props.keyAttribute];
+        let isSelected = this.state.selectedItemsMap.has(itemKey);
+        if(!isSelected) {
+          renderableDataList.push(itemData);
+        }
+      }
+    }
+    return renderableDataList;
+  }
+
   _onDataChangeSignal(receivedSignalInfo) {
     if(this.logger.isDebug) {
       this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     }
+    const dataList = receivedSignalInfo.data.results;
     this.setState({
-      dataList: receivedSignalInfo.data.results,
+      dataList: dataList,
+      renderableDataList: this._makeRenderableDataList(dataList),
       hasMorePages: receivedSignalInfo.data.next != null
     });
     this._loadMoreIfNeeded();
@@ -91,7 +120,8 @@ export default class CradminSelectableList extends React.Component {
       this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     }
     this.setState({
-      selectedItemsMap: receivedSignalInfo.data.selectedItemsMap
+      selectedItemsMap: receivedSignalInfo.data.selectedItemsMap,
+      renderableDataList: this._makeRenderableDataList(this.state.dataList),
     });
     this._loadMoreIfNeeded();
   }
@@ -101,6 +131,27 @@ export default class CradminSelectableList extends React.Component {
       this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     }
     this._focusOnItemData = receivedSignalInfo.data;
+    this.forceUpdate();
+  }
+
+  _onFocusOnFirstSelectableItemSignal(receivedSignalInfo) {
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    }
+    if(this.state.renderableDataList.length > 0) {
+      this._focusOnItemData = this.state.renderableDataList[0];
+      this.forceUpdate();
+    }
+  }
+
+  _onFocusOnLastSelectableItemSignal(receivedSignalInfo) {
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    }
+    if(this.state.renderableDataList.length > 0) {
+      this._focusOnItemData = this.state.renderableDataList[this.state.renderableDataList.length - 1];
+      this.forceUpdate();
+    }
   }
 
   renderItem(itemKey, props) {
@@ -108,30 +159,17 @@ export default class CradminSelectableList extends React.Component {
   }
 
   renderItems() {
-    let renderableItems = this.state.dataList;
-    if(!this.props.renderSelected) {
-      renderableItems = [];
-      for(let itemData of this.state.dataList) {
-        let itemKey = itemData[this.props.keyAttribute];
-        let isSelected = this.state.selectedItemsMap.has(itemKey);
-        if(!isSelected) {
-          renderableItems.push(itemData);
-        }
-      }
-    }
-
     const items = [];
-    let renderedItemCount = 0;
     let previousItemData = null;
-    for(let index=0; index < renderableItems.length; index++) {
-      let itemData = renderableItems[index];
+    for(let index=0; index < this.state.renderableDataList.length; index++) {
+      let itemData = this.state.renderableDataList[index];
       let itemKey = itemData[this.props.keyAttribute];
       let isSelected = this.state.selectedItemsMap.has(itemKey);
 
       let nextItemData = null;
-      let isLast = index == (renderableItems.length - 1);
+      let isLast = index == (this.state.renderableDataList.length - 1);
       if(!isLast) {
-        nextItemData = renderableItems[index + 1];
+        nextItemData = this.state.renderableDataList[index + 1];
       }
 
       let props = Object.assign({
@@ -150,10 +188,8 @@ export default class CradminSelectableList extends React.Component {
         }
       }
       items.push(this.renderItem(itemKey, props));
-      renderedItemCount ++;
       previousItemData = itemData;
     }
-    this.renderedItemCount = renderedItemCount;
     this._focusOnItemData = null;
     return items;
   }

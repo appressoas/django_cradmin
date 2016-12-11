@@ -1,4 +1,5 @@
 import React from "react";
+import {HotKeys} from 'react-hotkeys';
 
 
 export default class CradminSelectableListItem extends React.Component {
@@ -22,7 +23,8 @@ export default class CradminSelectableListItem extends React.Component {
       focusClosestSiblingOnSelect: true,
       previousItemData: null,
       nextItemData: null,
-      enableTabNavigation: true
+      enableTabNavigation: true,
+      useHotKeys: false
     }
   }
 
@@ -167,7 +169,51 @@ export default class CradminSelectableListItem extends React.Component {
     }
   }
 
-  render() {
+  get hotKeysMap() {
+    return {
+      'focusPreviousItem': ['up'],
+      'focusNextItem': ['down'],
+    };
+  }
+
+  _focusPreviousItem() {
+    if(this.props.previousItemData == null) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusBeforeFirstSelectableItem`);
+    } else {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusOnSelectableItem`,
+        this.props.previousItemData
+      );
+    }
+  }
+
+  _focusNextItem() {
+    if(this.props.nextItemData == null) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusAfterLastSelectableItem`);
+    } else {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusOnSelectableItem`,
+        this.props.nextItemData
+      );
+    }
+  }
+
+  get hotKeysHandlers() {
+    return {
+      'focusPreviousItem': (event) => {
+        event.preventDefault();
+        this._focusPreviousItem();
+      },
+      'focusNextItem': (event) => {
+        event.preventDefault();
+        this._focusNextItem();
+      }
+    }
+  }
+
+  renderWrapper() {
     return <a href="#" className={this.fullClassName}
               ref={(domElement) => { this._domElement = domElement; }}
               tabIndex={this.getTabIndex()}
@@ -178,7 +224,17 @@ export default class CradminSelectableListItem extends React.Component {
               role="button">
       {this.renderIconWrapper()}
       {this.renderContent()}
-    </a>
+    </a>;
+  }
+
+  render() {
+    if(this.props.useHotKeys) {
+      return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
+        {this.renderWrapper()}
+      </HotKeys>
+    } else {
+      return this.renderWrapper();
+    }
   }
 
   componentDidUpdate() {

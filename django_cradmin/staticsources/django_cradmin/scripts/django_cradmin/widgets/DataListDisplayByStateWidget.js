@@ -30,7 +30,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     this._widgetInstanceId = widgetInstanceId;
     this._name = `django_cradmin.widgets.DataListDisplayByStateWidget.${widgetInstanceId}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      this._name);
+      'django_cradmin.widgets.DataListDisplayByStateWidget');
     if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');
     }

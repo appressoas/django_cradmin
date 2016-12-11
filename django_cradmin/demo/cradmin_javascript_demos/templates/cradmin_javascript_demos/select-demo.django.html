@@ -184,6 +184,15 @@
                      "multiselect": false
                  }'>
             </div>
+            <div data-ievv-jsbase-widget="cradmin-signal-router"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "foreignkey",
+                     "signalMap": {
+                        "SearchDownKey": ["FocusOnFirstSelectableItem"],
+                        "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"]
+                     }
+                 }'>
+            </div>
             <div data-ievv-jsbase-widget="cradmin-selected-list"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "foreignkey"
@@ -213,8 +222,10 @@
                              data-ievv-jsbase-widget-config='{
                                  "signalNameSpace": "foreignkey",
                                  "renderSelected": false,
+                                 "useHotKeys": true,
                                  "itemComponentProps": {
-                                    "enableTabNavigation": false
+                                    "enableTabNavigation": false,
+                                    "useHotKeys": true
                                  }
                              }'></div>
                     </div>
@@ -234,6 +245,16 @@
                      "multiselect": true
                  }'>
             </div>
+            <div data-ievv-jsbase-widget="cradmin-signal-router"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "manytomany",
+                     "signalMap": {
+                        "SearchDownKey": ["FocusOnFirstSelectableItem"],
+                        "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
+                        "SelectItem": ["ClearSearchField", "FocusOnSearchField"]
+                     }
+                 }'>
+            </div>
             <div data-ievv-jsbase-widget="cradmin-selected-list"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "manytomany"
@@ -241,9 +262,7 @@
             </div>
             <div data-ievv-jsbase-widget="cradmin-search-input"
                  data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "manytomany",
-                     "clearWhenItemSelected": true,
-                     "focusWhenItemSelected": true
+                     "signalNameSpace": "manytomany"
                  }'></div>
             <div class="dropdown">
                 <div class="dropdown__content"
@@ -260,7 +279,9 @@
                              "renderSelected": false,
                              "itemComponentProps": {
                                 "enableTabNavigation": false,
-                                "focusClosestSiblingOnSelect": false
+                                "focusClosestSiblingOnSelect": false,
+                                "enableTabNavigation": false,
+                                "useHotKeys": true
                              }
                          }'></div>
                 </div>
@@ -271,10 +292,10 @@
     <div class="adminui-page-section">
         <div class="container">
             <h2>Client side data</h2>
-            <p data-ievv-jsbase-widget="cradmin-search-input"
+            <div data-ievv-jsbase-widget="cradmin-search-input"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "statictest"
-                 }'></p>
+                 }'></div>
             <div data-ievv-jsbase-widget="cradmin-static-data-list"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "statictest",
@@ -366,10 +387,10 @@
                          }
                      }'>
                 </div>
-                <p data-ievv-jsbase-widget="cradmin-search-input"
+                <div data-ievv-jsbase-widget="cradmin-search-input"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest"
-                     }'></p>
+                     }'></div>
                 <div data-ievv-jsbase-widget="cradmin-selectable-list"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest",
