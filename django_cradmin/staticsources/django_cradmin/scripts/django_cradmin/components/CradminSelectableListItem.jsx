@@ -23,7 +23,7 @@ export default class CradminSelectableListItem extends React.Component {
       focusClosestSiblingOnSelect: true,
       previousItemData: null,
       nextItemData: null,
-      enableTabNavigation: true,
+      disableTabNavigation: false,
       useHotKeys: false
     }
   }
@@ -180,10 +180,10 @@ export default class CradminSelectableListItem extends React.Component {
   }
 
   getTabIndex() {
-    if(this.props.enableTabNavigation) {
-      return "0";
-    } else {
+    if(this.props.disableTabNavigation) {
       return "-1";
+    } else {
+      return "0";
     }
   }
 

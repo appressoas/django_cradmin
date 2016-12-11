@@ -9,7 +9,8 @@ export default class LoadMoreButton extends React.Component {
       label: 'Load more',
       className: 'button',
       signalNameSpace: null,
-      useHotKeys: false
+      useHotKeys: false,
+      disableTabNavigation: false
     }
   }
 
@@ -77,7 +78,7 @@ export default class LoadMoreButton extends React.Component {
   }
 
   _onFocusOnLoadMoreButtonSignal(receivedSignalInfo) {
-    this.logger.info(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     DomUtilities.forceFocus(this._buttonDomElement);
   }
 
@@ -111,6 +112,14 @@ export default class LoadMoreButton extends React.Component {
     }
   }
 
+  getTabIndex() {
+    if(this.props.disableTabNavigation) {
+      return "-1";
+    } else {
+      return "0";
+    }
+  }
+
   renderButtonContent() {
     return this.props.label;
   }
@@ -122,7 +131,8 @@ export default class LoadMoreButton extends React.Component {
                   value={this.state.searchString}
                   onClick={this._onClick}
                   onFocus={this._onFocus}
-                  onBlur={this._onBlur}>
+                  onBlur={this._onBlur}
+                  tabIndex={this.getTabIndex()}>
       {this.renderButtonContent()}
     </button>;
   }
