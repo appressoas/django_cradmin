@@ -70,20 +70,18 @@ export default class CradminSelectedListItem extends React.Component {
     return <div className={this.props.contentClassName}>
       {this.renderTitle()}
       {this.renderDescription()}
-    </div>
+    </div>;
   }
 
   renderContentModeTitleOnly() {
     return <div className={this.props.contentClassName}>
-      {this.renderTitle()}
-      {this.renderDescription()}
-    </div>
+      {this.props.data.title}
+    </div>;
   }
 
   renderContentModeHtml() {
-    return <div className={this.props.contentClassName}>
-      {this.renderTitle()}
-    </div>
+    return <div className={this.props.contentClassName}
+                dangerouslySetInnerHTML={{__html: this.props.data.html}}></div>;
   }
 
   renderContent() {
