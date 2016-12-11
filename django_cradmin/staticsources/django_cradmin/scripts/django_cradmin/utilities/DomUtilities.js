@@ -32,4 +32,12 @@ export default class DomUtilities {
     };
     _forceFocus(0);
   }
+
+  static show(element, displayStyle="block") {
+    element.setAttribute('style', `display: ${displayStyle}`);
+  }
+
+  static hide(element) {
+    element.setAttribute('style', `display: none`);
+  }
 }

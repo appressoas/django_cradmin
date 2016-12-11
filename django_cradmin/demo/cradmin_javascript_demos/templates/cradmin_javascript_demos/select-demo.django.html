@@ -31,10 +31,15 @@
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "foreignkey",
                      "signalMap": {
-                        "SearchDownKey": ["FocusOnFirstSelectableItem"],
+                        "SearchDownKey": ["ShowPopup", "FocusOnFirstSelectableItem"],
+                        "SearchValueChangeNotEmpty": ["ShowPopup"],
+                        "SearchEnterKey": ["ShowPopup"],
+                        "SearchEscapeKey": ["HidePopup"],
+                        "SearchValueChangeEmpty": ["HidePopup"],
+                        "LostFocus": ["HidePopup"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
                         "FocusAfterLastSelectableItem": ["FocusOnLoadMoreButton"],
-                        "SelectItem": ["FocusOnLastSelectedItem"],
+                        "SelectItem": ["FocusOnLastSelectedItem", "HidePopup", "ClearSearchField"],
                         "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"],
                         "LoadMore": ["FocusOnLastSelectableItem"],
                         "LoadMoreUpKey": ["FocusOnLastSelectableItem"]
@@ -58,10 +63,9 @@
                 <div class="dropdown">
                     <div class="dropdown__content"
                          style="display: none"
-                         data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                         data-ievv-jsbase-widget="cradmin-popup"
                          data-ievv-jsbase-widget-config='{
-                             "signalNameSpace": "foreignkey",
-                             "showStates": ["HasFocus"]
+                             "signalNameSpace": "foreignkey"
                          }'>
                         <div data-ievv-jsbase-widget="cradmin-selectable-list"
                              data-ievv-jsbase-widget-config='{
@@ -241,7 +245,8 @@
                         "SearchDownKey": ["FocusOnFirstSelectableItem"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
                         "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"],
-                        "CouldNotFocusOnClosestSelectableItem": ["FocusOnSearchField"]
+                        "CouldNotFocusOnClosestSelectableItem": ["FocusOnSearchField"],
+                        "LoadMore": ["FocusOnLastSelectableItem"]
                      }
                  }'>
             </div>

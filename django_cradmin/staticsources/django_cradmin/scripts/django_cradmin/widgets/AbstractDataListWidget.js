@@ -293,6 +293,13 @@ export default class AbstractDataListWidget extends AbstractWidget {
     );
   }
 
+  _sendLostFocusSignal() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.LostFocus`,
+      this.state.loading
+    );
+  }
+
   _sendStateChangeSignal(stateChanges) {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.StateChange`,
@@ -358,6 +365,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this.setState({
         focus: false
       });
+      this._sendLostFocusSignal();
     });
   }
 

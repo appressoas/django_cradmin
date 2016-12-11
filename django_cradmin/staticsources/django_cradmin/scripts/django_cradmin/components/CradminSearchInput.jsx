@@ -77,10 +77,20 @@ export default class CradminSearchInput extends React.Component {
 
   handleChange(event) {
     this._cancelInputTimeout();
-    this.setState({searchString: event.target.value});
+    const searchString = event.target.value;
+    this.setState({searchString: searchString});
     this._timeoutId = window.setTimeout(
       () => {this._sendChangeSignal()},
       this.props.changeDelay);
+    if(searchString.length > 0) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.SearchValueChangeNotEmpty`,
+        this.state.searchString);
+    } else {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.SearchValueChangeEmpty`,
+        this.state.searchString);
+    }
   }
 
   _cancelInputTimeout() {
@@ -92,11 +102,7 @@ export default class CradminSearchInput extends React.Component {
   _sendChangeSignal() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchValueChange`,
-      this.state.searchString,
-      (sentSignalInfo) => {
-        this.logger.debug(sentSignalInfo.toString());
-      }
-    );
+      this.state.searchString);
   }
 
   handleFocus() {
@@ -111,7 +117,9 @@ export default class CradminSearchInput extends React.Component {
 
   get hotKeysMap() {
     return {
-      'downKey': ['down']
+      'downKey': ['down'],
+      'enterKey': ['enter'],
+      'escapeKey': ['escape']
     };
   }
 
@@ -120,11 +128,29 @@ export default class CradminSearchInput extends React.Component {
       `${this.props.signalNameSpace}.SearchDownKey`);
   }
 
+  _onEnterKey() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.SearchEnterKey`);
+  }
+
+  _onEscapeKey() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.SearchEscapeKey`);
+  }
+
   get hotKeysHandlers() {
     return {
       'downKey': (event) => {
         event.preventDefault();
         this._onDownKey();
+      },
+      'enterKey': (event) => {
+        event.preventDefault();
+        this._onEnterKey();
+      },
+      'escapeKey': (event) => {
+        event.preventDefault();
+        this._onEscapeKey();
       },
     }
   }

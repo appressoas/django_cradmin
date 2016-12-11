@@ -12,6 +12,7 @@ import DataListDisplayByStateWidget from "./widgets/DataListDisplayByStateWidget
 import LoadMoreWidget from "./widgets/LoadMoreWidget";
 import HiddenInputListWidget from "./widgets/HiddenInputListWidget";
 import SignalRouterWidget from "./widgets/SignalRouterWidget";
+import PopUpWidget from "./widgets/PopUpWidget";
 
 
 export default class DjangoCradminAll {
@@ -37,6 +38,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-load-more', LoadMoreWidget);
     widgetRegistry.registerWidgetClass('cradmin-hidden-input-list', HiddenInputListWidget);
     widgetRegistry.registerWidgetClass('cradmin-signal-router', SignalRouterWidget);
+    widgetRegistry.registerWidgetClass('cradmin-popup', PopUpWidget);
     widgetRegistry.initializeAllWidgetsWithinElement(document.body);
   }
 }

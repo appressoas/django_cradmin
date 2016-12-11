@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
+import DomUtilities from "../utilities/DomUtilities";
 
 
 export default class DataListDisplayByStateWidget extends AbstractWidget {
@@ -358,9 +359,9 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
 
   _display(display) {
     if(display) {
-      this.element.setAttribute('style', `display: ${this.config.displayStyle}`);
+      DomUtilities.show(this.element, this.config.displayStyle);
     } else {
-      this.element.setAttribute('style', 'display: none');
+      DomUtilities.hide(this.element);
     }
   }
 
