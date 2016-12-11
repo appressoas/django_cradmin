@@ -1,4 +1,5 @@
 import React from "react";
+import DomUtilities from "../utilities/DomUtilities";
 
 
 export default class CradminSelectedListItem extends React.Component {
@@ -15,7 +16,6 @@ export default class CradminSelectedListItem extends React.Component {
       ariaTitlePrefix: 'Deselect',
       renderMode: 'TitleAndDescription',
       focusClosestSiblingOnDeSelect: true,
-      focus: false,
       previousItemData: null,
       nextItemData: null
     }
@@ -23,7 +23,23 @@ export default class CradminSelectedListItem extends React.Component {
 
   constructor(props) {
     super(props);
+    this._name = `django_cradmin.components.CradminSelectedListItem.${this.props.signalNameSpace}.${this.props.itemKey}`;
     this.handleDeSelect = this.handleDeSelect.bind(this);
+    this._onFocusOnSelectedItemSignal = this._onFocusOnSelectedItemSignal.bind(this);
+    this.initializeSignalHandlers();
+  }
+
+  initializeSignalHandlers() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.FocusOnSelectedItem.${this.props.itemKey}`,
+      this._name,
+      this._onFocusOnSelectedItemSignal
+    );
+  }
+
+  componentWillUnmount() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton()
+      .removeAllSignalsFromReceiver(this._name);
   }
 
   handleDeSelect(event) {
@@ -39,9 +55,7 @@ export default class CradminSelectedListItem extends React.Component {
       }
       if(closestSiblingData == null) {
         new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-          `${this.props.signalNameSpace}.FocusOnFallback`,
-          closestSiblingData
-        );
+          `${this.props.signalNameSpace}.CouldNotFocusOnClosestSelectedItem`);
       } else {
         new window.ievv_jsbase_core.SignalHandlerSingleton().send(
           `${this.props.signalNameSpace}.FocusOnDeSelectableItem`,
@@ -49,7 +63,10 @@ export default class CradminSelectedListItem extends React.Component {
         );
       }
     }
+  }
 
+  _onFocusOnSelectedItemSignal() {
+    DomUtilities.forceFocus(this._domElement);
   }
 
   get ariaTitle() {
@@ -127,11 +144,5 @@ export default class CradminSelectedListItem extends React.Component {
       {this.renderContent()}
       {this.renderIconWrapper()}
     </a>
-  }
-
-  componentDidUpdate() {
-    if(this.props.focus) {
-      this._domElement.focus();
-    }
   }
 }

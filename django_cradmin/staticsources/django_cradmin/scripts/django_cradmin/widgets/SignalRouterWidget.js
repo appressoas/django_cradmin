@@ -45,7 +45,9 @@ export default class SignalRouterWidget extends AbstractWidget {
 
   _onRouteSignal(receivedSignalInfo) {
     if(this.logger.isInfo) {
-      this.logger.info(receivedSignalInfo.toString(), receivedSignalInfo.data);
+      this.logger.info(
+        receivedSignalInfo.toString(), receivedSignalInfo.data,
+        'Sending:', this.signalMap.get(receivedSignalInfo.signalName));
     }
     for(let signalName of this.signalMap.get(receivedSignalInfo.signalName)) {
       this._signalHandler.send(`${this.config.signalNameSpace}.${signalName}`);

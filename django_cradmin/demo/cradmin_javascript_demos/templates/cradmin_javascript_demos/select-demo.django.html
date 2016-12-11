@@ -189,7 +189,9 @@
                      "signalNameSpace": "foreignkey",
                      "signalMap": {
                         "SearchDownKey": ["FocusOnFirstSelectableItem"],
-                        "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"]
+                        "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
+                        "SelectItem": ["FocusOnLastSelectedItem"],
+                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"]
                      }
                  }'>
             </div>
@@ -205,10 +207,7 @@
                  }'>
                 <div data-ievv-jsbase-widget="cradmin-search-input"
                      data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "foreignkey",
-                         "clearWhenItemSelected": true,
-                         "focusWhenItemDeSelected": true,
-                         "autofocus": true
+                         "signalNameSpace": "foreignkey"
                      }'></div>
                 <div class="dropdown">
                     <div class="dropdown__content"
@@ -256,7 +255,8 @@
                      "signalMap": {
                         "SearchDownKey": ["FocusOnFirstSelectableItem"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
-                        "SelectItem": ["ClearSearchField", "FocusOnSearchField"]
+                        "SelectItem": ["ClearSearchField", "FocusOnSearchField"],
+                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"]
                      }
                  }'>
             </div>
@@ -356,6 +356,17 @@
                      "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
                  }'>
             </div>
+            <div data-ievv-jsbase-widget="cradmin-signal-router"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "apitest",
+                     "signalMap": {
+                        "SearchDownKey": ["FocusOnFirstSelectableItem"],
+                        "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
+                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"],
+                        "CouldNotFocusOnClosestSelectableItem": ["FocusOnSearchField"]
+                     }
+                 }'>
+            </div>
             <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
                data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
@@ -407,7 +418,8 @@
                          "signalNameSpace": "apitest",
                          "renderSelected": false,
                          "itemComponentProps": {
-                             "renderMode": "TitleAndDescription"
+                             "renderMode": "TitleAndDescription",
+                             "useHotKeys": true
                          }
                      }'>
                 </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import {HotKeys} from 'react-hotkeys';
+import DomUtilities from "../utilities/DomUtilities";
 
 
 export default class CradminSearchInput extends React.Component {
@@ -10,8 +11,6 @@ export default class CradminSearchInput extends React.Component {
       className: 'input input--outlined',
       autofocus: false,
       signalNameSpace: null,
-      // TODO: Get rid of useAsFocusFallback
-      useAsFocusFallback: true
     }
   }
 
@@ -28,7 +27,6 @@ export default class CradminSearchInput extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
     this._onClearSearchFieldSignal = this._onClearSearchFieldSignal.bind(this);
-    this._onFocusOnFallbackSignal = this._onFocusOnFallbackSignal.bind(this);
     this._onFocusOnSearchFieldSignal = this._onFocusOnSearchFieldSignal.bind(this);
     this.state = {
       searchString: ''
@@ -47,13 +45,6 @@ export default class CradminSearchInput extends React.Component {
       this._name,
       this._onClearSearchFieldSignal
     );
-    if(this.props.useAsFocusFallback) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
-        `${this.props.signalNameSpace}.FocusOnFallback`,
-        this._name,
-        this._onFocusOnFallbackSignal
-      );
-    }
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnSearchField`,
       this._name,
@@ -66,24 +57,10 @@ export default class CradminSearchInput extends React.Component {
       .removeAllSignalsFromReceiver(this._name);
   }
 
-  _forceFocus(tries=0) {
-    if(tries > 2) {
-      // Give up - the element will probably not become visible
-      // within a useful amount of time.
-      return;
-    }
-    this._inputDomElement.focus();
-    if(document.activeElement != this._inputDomElement) {
-      setTimeout(() => {
-        this._forceFocus(tries + 1);
-      }, 100);
-    }
-  }
-
   _onDataListInitializedSignal(receivedSignalInfo) {
     if(this.props.autofocus) {
       this.handleFocus();
-      this._forceFocus();
+      DomUtilities.forceFocus(this._inputDomElement);
     }
   }
 
@@ -94,12 +71,8 @@ export default class CradminSearchInput extends React.Component {
     this._sendChangeSignal();
   }
 
-  _onFocusOnFallbackSignal(receivedSignalInfo) {
-    this._forceFocus();
-  }
-
   _onFocusOnSearchFieldSignal(receivedSignalInfo) {
-    this._forceFocus();
+    DomUtilities.forceFocus(this._inputDomElement);
   }
 
   handleChange(event) {

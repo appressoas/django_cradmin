@@ -1,5 +1,6 @@
 import React from "react";
-import {HotKeys} from 'react-hotkeys';
+import {HotKeys} from "react-hotkeys";
+import DomUtilities from "../utilities/DomUtilities";
 
 
 export default class CradminSelectableListItem extends React.Component {
@@ -19,7 +20,6 @@ export default class CradminSelectableListItem extends React.Component {
       selectCallback: null,
       setDataListFocus: true,
       renderMode: 'TitleAndDescription',
-      focus: false,
       focusClosestSiblingOnSelect: true,
       previousItemData: null,
       nextItemData: null,
@@ -30,9 +30,25 @@ export default class CradminSelectableListItem extends React.Component {
 
   constructor(props) {
     super(props);
+    this._name = `django_cradmin.components.CradminSelectableListItem.${this.props.signalNameSpace}.${this.props.itemKey}`;
     this.handleSelect = this.handleSelect.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this._onFocusOnSelectableItemSignal = this._onFocusOnSelectableItemSignal.bind(this);
+    this.initializeSignalHandlers();
+  }
+
+  initializeSignalHandlers() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.FocusOnSelectableItem.${this.props.itemKey}`,
+      this._name,
+      this._onFocusOnSelectableItemSignal
+    );
+  }
+
+  componentWillUnmount() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton()
+      .removeAllSignalsFromReceiver(this._name);
   }
 
   handleSelect(event) {
@@ -54,9 +70,7 @@ export default class CradminSelectableListItem extends React.Component {
         }
         if(closestSiblingData == null) {
           new window.ievv_jsbase_core.SignalHandlerSingleton().send(
-            `${this.props.signalNameSpace}.FocusOnFallback`,
-            closestSiblingData
-          );
+            `${this.props.signalNameSpace}.CouldNotFocusOnClosestSelectableItem`);
         } else {
           new window.ievv_jsbase_core.SignalHandlerSingleton().send(
             `${this.props.signalNameSpace}.FocusOnSelectableItem`,
@@ -65,6 +79,10 @@ export default class CradminSelectableListItem extends React.Component {
         }
       }
     }
+  }
+
+  _onFocusOnSelectableItemSignal() {
+    DomUtilities.forceFocus(this._domElement);
   }
 
   handleFocus() {
@@ -234,12 +252,6 @@ export default class CradminSelectableListItem extends React.Component {
       </HotKeys>
     } else {
       return this.renderWrapper();
-    }
-  }
-
-  componentDidUpdate() {
-    if(this.props.focus) {
-      this._domElement.focus();
     }
   }
 }

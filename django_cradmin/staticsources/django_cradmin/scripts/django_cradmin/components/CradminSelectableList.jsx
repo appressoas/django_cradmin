@@ -176,21 +176,28 @@ export default class CradminSelectableList extends React.Component {
         focusClosestSiblingOnSelect: !this.props.renderSelected
       }, this.props.itemComponentProps, {
         data: itemData,
+        itemKey: itemKey,
         isSelected: isSelected,
         signalNameSpace: this.props.signalNameSpace,
-        focus: false,
         previousItemData: previousItemData,
         nextItemData: nextItemData
       });
-      if(this._focusOnItemData != null) {
-        if(this._focusOnItemData[this.props.keyAttribute] == itemKey) {
-          props.focus = true;
-        }
-      }
       items.push(this.renderItem(itemKey, props));
       previousItemData = itemData;
     }
-    this._focusOnItemData = null;
     return items;
+  }
+
+  _sendFocusOnItemSignal(itemData) {
+    const itemKey = itemData[this.props.keyAttribute];
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.FocusOnSelectableItem.${itemKey}`);
+  }
+
+  componentDidUpdate() {
+    if(this._focusOnItemData != null) {
+      this._sendFocusOnItemSignal(this._focusOnItemData);
+      this._focusOnItemData = null;
+    }
   }
 }
