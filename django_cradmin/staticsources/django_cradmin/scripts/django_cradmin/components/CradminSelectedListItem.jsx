@@ -25,6 +25,8 @@ export default class CradminSelectedListItem extends React.Component {
     super(props);
     this._name = `django_cradmin.components.CradminSelectedListItem.${this.props.signalNameSpace}.${this.props.itemKey}`;
     this.handleDeSelect = this.handleDeSelect.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
     this._onFocusOnSelectedItemSignal = this._onFocusOnSelectedItemSignal.bind(this);
     this.initializeSignalHandlers();
   }
@@ -62,6 +64,22 @@ export default class CradminSelectedListItem extends React.Component {
           closestSiblingData
         );
       }
+    }
+  }
+
+  handleFocus() {
+    if(this.props.setDataListFocus) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.Focus`
+      );
+    }
+  }
+
+  handleBlur() {
+    if(this.props.setDataListFocus) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.Blur`
+      );
     }
   }
 
@@ -139,6 +157,8 @@ export default class CradminSelectedListItem extends React.Component {
     return <a href="#" className={this.props.className}
               ref={(domElement) => { this._domElement = domElement; }}
               onClick={this.handleDeSelect}
+              onFocus={this.handleFocus}
+              onBlur={this.handleBlur}
               aria-label={this.ariaTitle}
               role="button">
       {this.renderContent()}
