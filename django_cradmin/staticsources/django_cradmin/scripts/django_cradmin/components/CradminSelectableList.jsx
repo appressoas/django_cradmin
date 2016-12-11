@@ -10,7 +10,8 @@ export default class CradminSelectableList extends React.Component {
       keyAttribute: 'id',
       renderSelected: true,
       signalNameSpace: null,
-      itemComponentProps: {}
+      itemComponentProps: {},
+      loadMoreTreshold: 3
     }
   }
 
@@ -25,8 +26,10 @@ export default class CradminSelectableList extends React.Component {
     this._onDataChangeSignal = this._onDataChangeSignal.bind(this);
     this._onSelectionChangeSignal = this._onSelectionChangeSignal.bind(this);
 
+    this.renderedItemCount = 0;
     this.state = {
       dataList: [],
+      hasMorePages: false,
       selectedItemsMap: new Map()
     };
 
@@ -57,18 +60,33 @@ export default class CradminSelectableList extends React.Component {
     </div>;
   }
 
+  _loadMoreIfNeeded() {
+    if(this.state.hasMorePages && this.renderedItemCount < this.props.loadMoreTreshold) {
+      this.logger.debug('Automatically sending the LoadMore signal because we are below the loadMoreTreshold');
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.LoadMore`);
+    }
+  }
+
   _onDataChangeSignal(receivedSignalInfo) {
-    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    }
     this.setState({
       dataList: receivedSignalInfo.data.results,
+      hasMorePages: receivedSignalInfo.data.next != null
     });
+    this._loadMoreIfNeeded();
   }
 
   _onSelectionChangeSignal(receivedSignalInfo) {
-    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    }
     this.setState({
       selectedItemsMap: receivedSignalInfo.data.selectedItemsMap
     });
+    this._loadMoreIfNeeded();
   }
 
   renderItem(itemKey, props) {
@@ -77,6 +95,7 @@ export default class CradminSelectableList extends React.Component {
 
   renderItems() {
     const items = [];
+    let renderedItemCount = 0;
     for(let itemData of this.state.dataList) {
       let itemKey = itemData[this.props.keyAttribute];
       let isSelected = this.state.selectedItemsMap.has(itemKey);
@@ -89,7 +108,9 @@ export default class CradminSelectableList extends React.Component {
         signalNameSpace: this.props.signalNameSpace
       });
       items.push(this.renderItem(itemKey, props));
+      renderedItemCount ++;
     }
+    this.renderedItemCount = renderedItemCount;
     return items;
   }
 }

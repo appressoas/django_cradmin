@@ -51,7 +51,9 @@ export default class CradminSelectedList extends React.Component {
   }
 
   _onSelectionChangeSignal(receivedSignalInfo) {
-    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    }
     this.setState({
       selectedItemsMap: receivedSignalInfo.data.selectedItemsMap
     });
