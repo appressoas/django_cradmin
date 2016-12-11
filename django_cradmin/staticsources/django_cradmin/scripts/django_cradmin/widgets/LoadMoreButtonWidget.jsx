@@ -4,7 +4,7 @@ import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
 import CradminLoadMoreButton from "../components/CradminLoadMoreButton";
 
 
-export default class LoadMoreWidget extends AbstractWidget {
+export default class LoadMoreButtonWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
     ReactDOM.render(

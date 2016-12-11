@@ -9,7 +9,7 @@ import SelectedListWidget from "./widgets/SelectedListWidget";
 import StaticDataListWidget from "./widgets/StaticDataListWidget";
 import ApiDataListWidget from "./widgets/ApiDataListWidget";
 import DataListDisplayByStateWidget from "./widgets/DataListDisplayByStateWidget";
-import LoadMoreWidget from "./widgets/LoadMoreWidget";
+import LoadMoreButtonWidget from "./widgets/LoadMoreButtonWidget";
 import HiddenInputListWidget from "./widgets/HiddenInputListWidget";
 import SignalRouterWidget from "./widgets/SignalRouterWidget";
 import PopUpWidget from "./widgets/PopUpWidget";
@@ -37,7 +37,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-data-list-display-by-state', DataListDisplayByStateWidget);
     widgetRegistry.registerWidgetClass('cradmin-selectable-list', SelectableListWidget);
     widgetRegistry.registerWidgetClass('cradmin-selected-list', SelectedListWidget);
-    widgetRegistry.registerWidgetClass('cradmin-load-more', LoadMoreWidget);
+    widgetRegistry.registerWidgetClass('cradmin-load-more-button', LoadMoreButtonWidget);
     widgetRegistry.registerWidgetClass('cradmin-hidden-input-list', HiddenInputListWidget);
     widgetRegistry.registerWidgetClass('cradmin-signal-router', SignalRouterWidget);
     widgetRegistry.registerWidgetClass('cradmin-popup', PopUpWidget);

@@ -57,6 +57,8 @@ export default class LoadMoreButton extends React.Component {
     if(!this.state.isLoading) {
       new window.ievv_jsbase_core.SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.LoadMore`);
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.LoadMoreButtonClick`);
     }
   }
 
