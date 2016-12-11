@@ -5,13 +5,18 @@ export default class CradminSelectableList extends React.Component {
 
   static get defaultProps() {
     return {
-      className: 'blocklist__item blocklist--link',
-      selectedClassName: 'blocklist__item--selected',
-      titleClassName: 'blocklist__itemtitle blocklist__itemtitle--small',
+      className: 'selectable-list__item',
+      selectedClassName: 'selectable-list__item--selected',
+      contentClassName: 'selectable-list__itemcontent',
+      renderIcon: false,
+      iconWrapperClassName: 'selectable-list__icon',
+      selectedIconClassName: 'icon-check--light',
+      titleTagName: 'strong',
+      titleClassName: 'selectable-list__itemtitle',
       descriptionClassName: '',
       isSelected: false,
       selectCallback: null,
-      setDataListFocus: true
+      setDataListFocus: true,
     }
   }
 
@@ -53,17 +58,6 @@ export default class CradminSelectableList extends React.Component {
     }
   }
 
-  renderDescription() {
-    if(this.props.data.description && this.props.data.description != '') {
-      return <p className={this.props.descriptionClassName}>{this.props.data.description}</p>;
-    } else {
-      return '';
-    }
-  }
-
-  renderTitle() {
-    return <h3 className={this.props.titleClassName}>{this.props.data.title}</h3>
-  }
 
   get ariaTitle() {
     if(this.props.data.ariaTitle) {
@@ -81,6 +75,45 @@ export default class CradminSelectableList extends React.Component {
     return className;
   }
 
+  renderTitle() {
+    return React.createElement(this.props.titleTagName, {
+      className: this.props.titleClassName
+    }, this.props.data.title);
+  }
+
+  renderDescription() {
+    if(this.props.data.description && this.props.data.description != '') {
+      return <span className={this.props.descriptionClassName}>{this.props.data.description}</span>;
+    } else {
+      return '';
+    }
+  }
+
+  renderIcon() {
+    if(this.props.isSelected) {
+      return <i className={this.props.selectedIconClassName} />;
+    } else {
+      return '';
+    }
+  }
+
+  renderIconWrapper() {
+    if(this.props.renderIcon) {
+      return <div className={this.props.iconWrapperClassName}>
+        {this.renderIcon()}
+      </div>;
+    } else {
+      return '';
+    }
+  }
+
+  renderContent() {
+    return <div className={this.props.contentClassName}>
+      {this.renderTitle()}
+      {this.renderDescription()}
+    </div>
+  }
+
   render() {
     return <a href="#" className={this.fullClassName}
               onClick={this.handleSelect}
@@ -88,8 +121,8 @@ export default class CradminSelectableList extends React.Component {
               onBlur={this.handleBlur}
               aria-label={this.ariaTitle}
               role="button">
-      {this.renderTitle()}
-      {this.renderDescription()}
+      {this.renderIconWrapper()}
+      {this.renderContent()}
     </a>
   }
 }

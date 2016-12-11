@@ -214,10 +214,10 @@
 
     <div class="adminui-page-section">
         <div class="container">
-            <div data-ievv-jsbase-widget="cradmin-search-input"
+            <p data-ievv-jsbase-widget="cradmin-search-input"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "statictest"
-                 }'></div>
+                 }'></p>
             <div data-ievv-jsbase-widget="cradmin-static-data-list"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "statictest",
@@ -247,7 +247,10 @@
             </div>
             <div data-ievv-jsbase-widget="cradmin-selectable-list"
                  data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "statictest"
+                     "signalNameSpace": "statictest",
+                     "itemComponentProps": {
+                        "renderIcon": true
+                     }
                  }'>
             </div>
         </div>

@@ -6,7 +6,7 @@ export default class CradminSelectableList extends React.Component {
 
   static get defaultProps() {
     return {
-      className: 'blocklist  blocklist--tight',
+      className: 'selectable-list',
       keyAttribute: 'id',
       renderSelected: true,
       signalNameSpace: null,
