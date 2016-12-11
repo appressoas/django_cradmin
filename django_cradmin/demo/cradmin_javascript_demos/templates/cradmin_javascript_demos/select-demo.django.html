@@ -128,7 +128,7 @@
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "manytomany",
                      "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "minimumSearchStringLength": 1,
+                     "minimumSearchStringLength": 0,
                      "multiselect": true
                  }'>
             </div>
@@ -136,10 +136,18 @@
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "manytomany",
                      "signalMap": {
-                        "SearchDownKey": ["FocusOnFirstSelectableItem"],
+                        "SearchDownKey": ["ShowPopup", "FocusOnFirstSelectableItem"],
+                        "SearchValueChangeNotEmpty": ["ShowPopup"],
+                        "SearchEnterKey": ["ShowPopup"],
+                        "SearchEscapeKey": ["HidePopup"],
+                        "SearchValueChangeEmpty": ["HidePopup"],
+                        "LostFocus": ["HidePopup"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
-                        "SelectItem": ["ClearSearchField", "FocusOnSearchField"],
-                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"]
+                        "FocusAfterLastSelectableItem": ["FocusOnLoadMoreButton"],
+                        "CouldNotFocusOnClosestSelectedItem": ["FocusOnSearchField"],
+                        "CouldNotFocusOnClosestSelectableItem": ["FocusOnSearchField"],
+                        "LoadMore": ["FocusOnLastSelectableItem"],
+                        "LoadMoreUpKey": ["FocusOnLastSelectableItem"]
                      }
                  }'>
             </div>
@@ -155,22 +163,53 @@
             <div class="dropdown">
                 <div class="dropdown__content"
                      style="display: none"
-                     data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                     data-ievv-jsbase-widget="cradmin-popup"
                      data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "manytomany",
-                         "showStates": ["HasSearchString"],
-                         "hideStates": ["HasNoFocus"]
+                         "signalNameSpace": "manytomany"
                      }'>
                     <div data-ievv-jsbase-widget="cradmin-selectable-list"
                          data-ievv-jsbase-widget-config='{
                              "signalNameSpace": "manytomany",
                              "renderSelected": false,
+                             "useHotKeys": true,
                              "itemComponentProps": {
                                 "disableTabNavigation": true,
-                                "focusClosestSiblingOnSelect": false,
                                 "useHotKeys": true
                              }
                          }'></div>
+                    <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                         style="display: none"
+                         class="text-center"
+                         data-ievv-jsbase-widget-config='{
+                             "signalNameSpace": "manytomany",
+                             "showStates": ["HasNextPage"],
+                             "hideStates": ["IsLoading"]
+                         }'>
+                        <span data-ievv-jsbase-widget="cradmin-load-more"
+                              data-ievv-jsbase-widget-config='{
+                                  "signalNameSpace": "manytomany",
+                                  "label": "Last flere",
+                                  "useHotKeys": true,
+                                  "disableTabNavigation": true
+                              }'></span>
+                    </div>
+                    <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                       style="display: none"
+                       data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "manytomany",
+                         "showStates": ["IsLoading"]
+                     }'>
+                        Loading...
+                    </p>
+                    <p data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                       style="display: none"
+                       data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "manytomany",
+                         "showStates": ["FilteredIsEmpty"],
+                         "hideStates": ["IsLoading"]
+                     }'>
+                        No matches!
+                    </p>
                 </div>
             </div>
             <span data-ievv-jsbase-widget="cradmin-hidden-input-list"
@@ -178,7 +217,6 @@
                              "signalNameSpace": "manytomany",
                              "inputName": "themanytomany",
                              "inputType": "hidden"}'></span>
-
         </div>
     </div>
 

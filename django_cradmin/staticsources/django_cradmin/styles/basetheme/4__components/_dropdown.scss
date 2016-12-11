@@ -32,6 +32,7 @@ Styleguide components.dropdown
         left: 0;
         right: 0;
         width: 100%;
+        z-index: $level-1;
         background-color: $color-light;
         //border: 10px solid green;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
