@@ -1,4 +1,8 @@
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
+import makeCustomError from "ievv_jsbase/makeCustomError";
+
+
+let CancelledDataRequest = makeCustomError('CancelledDataRequest');
 
 
 export default class AbstractDataListWidget extends AbstractWidget {
@@ -27,6 +31,8 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._onLoadMoreSignal = this._onLoadMoreSignal.bind(this);
     this._onLoadNextPageSignal = this._onLoadNextPageSignal.bind(this);
     this._onLoadPreviousPageSignal = this._onLoadPreviousPageSignal.bind(this);
+    this._dataRequestId = 0;
+    this._isLoadingDataList = false;
     if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');
     }
@@ -356,33 +362,37 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _onLoadMoreSignal(receivedSignalInfo) {
-    if(this.state.data.next) {
-      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
-        next: true
-      }), 'appendData');
-    } else {
-      this.logger.warning('Requested LoadMore with no next page.');
+    if(this._isLoadingDataList) {
+      this.logger.warning('Requested LoadMore while loading data.');
+      return;
     }
+    if(!this.state.data.next) {
+      this.logger.warning('Requested LoadMore with no next page.');
+      return;
+    }
+    this._requestDataListAndRefresh(this.makeRequestDataListOptions({
+      next: true
+    }), 'appendData');
   }
 
   _onLoadNextPageSignal(receivedSignalInfo) {
-    if(this.state.data.next) {
-      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
-        next: true
-      }), 'data');
-    } else {
+    if(!this.state.data.next) {
       this.logger.warning('Requested LoadNextPage with no next page.');
+      return;
     }
+    this._requestDataListAndRefresh(this.makeRequestDataListOptions({
+      next: true
+    }), 'data');
   }
 
   _onLoadPreviousPageSignal(receivedSignalInfo) {
-    if(this.state.data.previous) {
-      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
-        previous: true
-      }), 'data');
-    } else {
+    if(!this.state.data.previous) {
       this.logger.warning('Requested LoadPreviousPage with no previous page.');
+      return;
     }
+    this._requestDataListAndRefresh(this.makeRequestDataListOptions({
+      previous: true
+    }), 'data');
   }
 
   requestItemData(key) {
@@ -419,13 +429,25 @@ export default class AbstractDataListWidget extends AbstractWidget {
 
   _requestDataList(options) {
     return new Promise((resolve, reject) => {
+      const dataRequestId = ++this._dataRequestId;
+      // this.logger.debug(`Requesting data ${dataRequestId}`, options);
+      this._isLoadingDataList = true;
       this._setLoadingState();
       this.requestDataList(options)
         .then((data) => {
+          this._isLoadingDataList = false;
           this._unsetLoadingState();
-          resolve(data);
+          if(this._dataRequestId == dataRequestId) {
+            resolve(data);
+          } else {
+            reject(new CancelledDataRequest(
+              `Data list request ${dataRequestId} was cancelled.`, {
+                options: options
+              }));
+          }
         })
         .catch((error) => {
+          this._isLoadingDataList = false;
           this._unsetLoadingState();
           reject(error);
         });
@@ -446,7 +468,11 @@ export default class AbstractDataListWidget extends AbstractWidget {
         this.setState(stateChange);
       })
       .catch((error) => {
-        throw error;
+        if(error instanceof CancelledDataRequest) {
+          this.logger.warning(error.toString(), error.options);
+        } else {
+          throw error;
+        }
       });
   }
 }

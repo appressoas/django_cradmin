@@ -21,7 +21,8 @@ export default class CradminSelectableListItem extends React.Component {
       focus: false,
       focusClosestSiblingOnSelect: true,
       previousItemData: null,
-      nextItemData: null
+      nextItemData: null,
+      enableTabNavigation: true
     }
   }
 
@@ -158,10 +159,18 @@ export default class CradminSelectableListItem extends React.Component {
     }
   }
 
+  getTabIndex() {
+    if(this.props.enableTabNavigation) {
+      return "0";
+    } else {
+      return "-1";
+    }
+  }
 
   render() {
     return <a href="#" className={this.fullClassName}
               ref={(domElement) => { this._domElement = domElement; }}
+              tabIndex={this.getTabIndex()}
               onClick={this.handleSelect}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}

@@ -175,35 +175,93 @@
 
     <div class="adminui-page-section">
         <div class="container">
+            <h2>ForeignKey select</h2>
             <div data-ievv-jsbase-widget="cradmin-api-data-list"
                  data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "dropdowntest",
+                     "signalNameSpace": "foreignkey",
                      "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
                      "minimumSearchStringLength": 0,
+                     "multiselect": false
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-selected-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "foreignkey"
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "foreignkey",
+                     "showStates": ["HasNoSelectedItems"]
+                 }'>
+                <div data-ievv-jsbase-widget="cradmin-search-input"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "foreignkey",
+                         "clearWhenItemSelected": true,
+                         "focusWhenItemDeSelected": true,
+                         "autofocus": true
+                     }'></div>
+                <div class="dropdown">
+                    <div class="dropdown__content"
+                         style="display: none"
+                         data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                         data-ievv-jsbase-widget-config='{
+                             "signalNameSpace": "foreignkey",
+                             "showStates": ["HasFocus"]
+                         }'>
+                        <div data-ievv-jsbase-widget="cradmin-selectable-list"
+                             data-ievv-jsbase-widget-config='{
+                                 "signalNameSpace": "foreignkey",
+                                 "renderSelected": false,
+                                 "itemComponentProps": {
+                                    "enableTabNavigation": false
+                                 }
+                             }'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Many-to-many select</h2>
+            <div data-ievv-jsbase-widget="cradmin-api-data-list"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "manytomany",
+                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "minimumSearchStringLength": 1,
                      "multiselect": true
                  }'>
             </div>
             <div data-ievv-jsbase-widget="cradmin-selected-list"
                  data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "dropdowntest"
+                     "signalNameSpace": "manytomany"
                  }'>
             </div>
             <div data-ievv-jsbase-widget="cradmin-search-input"
                  data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "dropdowntest"
+                     "signalNameSpace": "manytomany",
+                     "clearWhenItemSelected": true,
+                     "focusWhenItemSelected": true
                  }'></div>
-            <div class="dropdown"
-                 data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
-                 style="display: none"
-                 data-ievv-jsbase-widget-config='{
-                     "signalNameSpace": "dropdowntest",
-                     "showStates": ["HasFocus"]
-                 }'>
-                <div class="dropdown__content">
+            <div class="dropdown">
+                <div class="dropdown__content"
+                     style="display: none"
+                     data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+                     data-ievv-jsbase-widget-config='{
+                         "signalNameSpace": "manytomany",
+                         "showStates": ["HasSearchString"],
+                         "hideStates": ["HasNoFocus"]
+                     }'>
                     <div data-ievv-jsbase-widget="cradmin-selectable-list"
                          data-ievv-jsbase-widget-config='{
-                             "signalNameSpace": "dropdowntest",
-                             "renderSelected": false
+                             "signalNameSpace": "manytomany",
+                             "renderSelected": false,
+                             "itemComponentProps": {
+                                "enableTabNavigation": false,
+                                "focusClosestSiblingOnSelect": false
+                             }
                          }'></div>
                 </div>
             </div>
@@ -212,6 +270,7 @@
 
     <div class="adminui-page-section">
         <div class="container">
+            <h2>Client side data</h2>
             <p data-ievv-jsbase-widget="cradmin-search-input"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "statictest"
@@ -256,6 +315,7 @@
 
     <div class="adminui-page-section">
         <div class="container">
+            <h2>Fancy</h2>
             <div data-ievv-jsbase-widget="cradmin-api-data-list"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "apitest",
@@ -308,8 +368,7 @@
                 </div>
                 <p data-ievv-jsbase-widget="cradmin-search-input"
                      data-ievv-jsbase-widget-config='{
-                         "signalNameSpace": "apitest",
-                         "autofocus": true
+                         "signalNameSpace": "apitest"
                      }'></p>
                 <div data-ievv-jsbase-widget="cradmin-selectable-list"
                      data-ievv-jsbase-widget-config='{

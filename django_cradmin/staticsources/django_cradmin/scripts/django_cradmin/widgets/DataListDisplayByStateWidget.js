@@ -17,6 +17,8 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
       // - 'HasSearchString'
       // - 'HasFocus'
       // - 'HasNoFocus'
+      // - 'HasSelectedItems'
+      // - 'HasNoSelectedItems'
       showStates: [],
 
       hideStates: []
@@ -40,6 +42,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     this._onFocusSignal = this._onFocusSignal.bind(this);
     this._onBlurSignal = this._onBlurSignal.bind(this);
     this._onLoadingStateChangeSignal = this._onLoadingStateChangeSignal.bind(this);
+    this._onSelectionChangeSignal = this._onSelectionChangeSignal.bind(this);
 
     this._watchedStates = new Set(this.config.showStates);
     for(let hideState of this.config.hideStates) {
@@ -88,6 +91,11 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     return this._watchedStates.has('IsLoading');
   }
 
+  _watchSelectionChangeCount() {
+    return this._watchedStates.has('HasSelectedItems') ||
+         this._watchedStates.has('HasNoSelectedItems');
+  }
+
   _listenForDataListInitializedSignal() {
     return this._watchInitializingDataList();
   }
@@ -118,6 +126,10 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
 
   _listenForLoadingStateChangeSignal() {
     return this._watchLoadingStateChange();
+  }
+
+  _listenForSelectionChangeSignal() {
+    return this._watchSelectionChangeCount();
   }
 
   initializeSignalHandlers() {
@@ -175,6 +187,13 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
         `${this.config.signalNameSpace}.LoadingStateChange`,
         this._name,
         this._onLoadingStateChangeSignal
+      );
+    }
+    if(this._listenForSelectionChangeSignal()) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+        `${this.config.signalNameSpace}.SelectionChange`,
+        this._name,
+        this._onSelectionChangeSignal
       );
     }
   }
@@ -308,6 +327,31 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   _onLoadingStateChangeSignal(receivedSignalInfo) {
     const isLoading = receivedSignalInfo.data;
     if(this._checkLoadingChanges(isLoading)) {
+      this._refresh();
+    }
+  }
+
+  _checkSelectionChanges(selectedItemsMap) {
+    let hasChanges = false;
+    if(selectedItemsMap.size == 0) {
+      if(!this.stateSet.has('HasNoSelectedItems')) {
+        this.stateSet.add('HasNoSelectedItems');
+        this.stateSet.delete('HasSelectedItems');
+        hasChanges = true;
+      }
+    } else {
+      if(!this.stateSet.has('HasSelectedItems')) {
+        this.stateSet.add('HasSelectedItems');
+        this.stateSet.delete('HasNoSelectedItems');
+        hasChanges = true;
+      }
+    }
+    return hasChanges;
+  }
+
+  _onSelectionChangeSignal(receivedSignalInfo) {
+    const selectedItemsMap = receivedSignalInfo.data.selectedItemsMap;
+    if(this._checkSelectionChanges(selectedItemsMap)) {
       this._refresh();
     }
   }
