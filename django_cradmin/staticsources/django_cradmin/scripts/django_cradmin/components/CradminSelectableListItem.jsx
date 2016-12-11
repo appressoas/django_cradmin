@@ -1,7 +1,7 @@
 import React from "react";
 
 
-export default class CradminSelectableList extends React.Component {
+export default class CradminSelectableListItem extends React.Component {
 
   static get defaultProps() {
     return {
@@ -17,7 +17,11 @@ export default class CradminSelectableList extends React.Component {
       isSelected: false,
       selectCallback: null,
       setDataListFocus: true,
-      renderMode: 'TitleAndDescription'
+      renderMode: 'TitleAndDescription',
+      focus: false,
+      focusClosestSiblingOnSelect: true,
+      previousItemData: null,
+      nextItemData: null
     }
   }
 
@@ -40,6 +44,23 @@ export default class CradminSelectableList extends React.Component {
         `${this.props.signalNameSpace}.SelectItem`,
         this.props.data
       );
+      if(this.props.focusClosestSiblingOnSelect) {
+        let closestSiblingData = this.props.nextItemData;
+        if(closestSiblingData == null) {
+          closestSiblingData = this.props.previousItemData;
+        }
+        if(closestSiblingData == null) {
+          new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+            `${this.props.signalNameSpace}.FocusOnFallback`,
+            closestSiblingData
+          );
+        } else {
+          new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+            `${this.props.signalNameSpace}.FocusOnSelectableItem`,
+            closestSiblingData
+          );
+        }
+      }
     }
   }
 
@@ -58,7 +79,6 @@ export default class CradminSelectableList extends React.Component {
       );
     }
   }
-
 
   get ariaTitle() {
     if(this.props.data.ariaTitle) {
@@ -141,6 +161,7 @@ export default class CradminSelectableList extends React.Component {
 
   render() {
     return <a href="#" className={this.fullClassName}
+              ref={(domElement) => { this._domElement = domElement; }}
               onClick={this.handleSelect}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
@@ -149,5 +170,11 @@ export default class CradminSelectableList extends React.Component {
       {this.renderIconWrapper()}
       {this.renderContent()}
     </a>
+  }
+
+  componentDidUpdate() {
+    if(this.props.focus) {
+      this._domElement.focus();
+    }
   }
 }

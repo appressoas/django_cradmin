@@ -10,15 +10,16 @@ export default class CradminSearchInput extends React.Component {
       autofocus: false,
       signalNameSpace: null,
       clearWhenItemSelected: false,
-      focusWhenItemSelected: false
+      focusWhenItemSelected: false,
+      useAsFocusFallback: true
     }
   }
 
   constructor(props) {
     super(props);
-    this._name = 'django_cradmin.components.CradminSearchInput';
+    this._name = `django_cradmin.components.CradminSearchInput.${this.props.signalNameSpace}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      this._name);
+      'django_cradmin.components.CradminSearchInput');
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
@@ -27,6 +28,7 @@ export default class CradminSearchInput extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
     this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
+    this._onFocusOnFallbackSignal = this._onFocusOnFallbackSignal.bind(this);
     this.state = {
       searchString: ''
     };
@@ -44,17 +46,18 @@ export default class CradminSearchInput extends React.Component {
       this._name,
       this._onSelectItemSignal
     );
+    if(this.props.useAsFocusFallback) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+        `${this.props.signalNameSpace}.FocusOnFallback`,
+        this._name,
+        this._onFocusOnFallbackSignal
+      );
+    }
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.props.signalNameSpace}.DataListInitialized`,
-      this._name
-    );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
-      `${this.props.signalNameSpace}.SelectItem`,
-      this._name
-    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton()
+      .removeAllSignalsFromReceiver(this._name);
   }
 
   _handleAutoFocus(tries=0) {
@@ -88,6 +91,10 @@ export default class CradminSearchInput extends React.Component {
     if(this.props.focusWhenItemSelected) {
       this._inputDomElement.focus();
     }
+  }
+
+  _onFocusOnFallbackSignal(receivedSignalInfo) {
+    this._inputDomElement.focus();
   }
 
   handleChange(event) {

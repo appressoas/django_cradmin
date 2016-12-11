@@ -13,7 +13,11 @@ export default class CradminSelectedListItem extends React.Component {
       titleClassName: 'selectable-list__itemtitle',
       descriptionClassName: '',
       ariaTitlePrefix: 'Deselect',
-      renderMode: 'TitleAndDescription'
+      renderMode: 'TitleAndDescription',
+      focusClosestSiblingOnDeSelect: true,
+      focus: false,
+      previousItemData: null,
+      nextItemData: null
     }
   }
 
@@ -28,6 +32,24 @@ export default class CradminSelectedListItem extends React.Component {
       `${this.props.signalNameSpace}.DeSelectItem`,
       this.props.data
     );
+    if(this.props.focusClosestSiblingOnDeSelect) {
+      let closestSiblingData = this.props.previousItemData;
+      if(closestSiblingData == null) {
+        closestSiblingData = this.props.nextItemData;
+      }
+      if(closestSiblingData == null) {
+        new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+          `${this.props.signalNameSpace}.FocusOnFallback`,
+          closestSiblingData
+        );
+      } else {
+        new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+          `${this.props.signalNameSpace}.FocusOnDeSelectableItem`,
+          closestSiblingData
+        );
+      }
+    }
+
   }
 
   get ariaTitle() {
@@ -98,11 +120,18 @@ export default class CradminSelectedListItem extends React.Component {
 
   render() {
     return <a href="#" className={this.props.className}
+              ref={(domElement) => { this._domElement = domElement; }}
               onClick={this.handleDeSelect}
               aria-label={this.ariaTitle}
               role="button">
       {this.renderContent()}
       {this.renderIconWrapper()}
     </a>
+  }
+
+  componentDidUpdate() {
+    if(this.props.focus) {
+      this._domElement.focus();
+    }
   }
 }
