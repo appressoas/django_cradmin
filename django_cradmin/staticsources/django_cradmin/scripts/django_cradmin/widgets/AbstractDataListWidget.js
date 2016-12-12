@@ -222,7 +222,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _hasAnyFiltersOrSearchString() {
-    // TODO: Update with filters
+    // TODO: Handle filters
     return this.state.searchString != '';
   }
 
@@ -464,6 +464,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
 
   makeRequestDataListOptions(overrideOptions={}) {
     return Object.assign({}, {
+      // TODO: Handle filters
       searchString: this.state.searchString
     }, overrideOptions);
   }
