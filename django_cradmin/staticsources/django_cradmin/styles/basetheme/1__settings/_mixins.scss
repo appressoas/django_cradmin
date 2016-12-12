@@ -111,7 +111,7 @@
 // Spaced text
 @mixin spaced-text {
     @include font(base, bold);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 

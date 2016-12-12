@@ -24,10 +24,6 @@ h3,
     word-wrap: break-word;
     margin: 0;
     margin-bottom: vertical-space($spacing);
-
-    @include min-width(md) {
-        margin-bottom: vertical-space($spacing, 1.2);
-    }
 }
 
 h1,
@@ -54,6 +50,12 @@ h3,
 .h3,
 %h3 {
     @include font-size(large);
+
+    margin-bottom: vertical-space($spacing--small);
+
+    @include min-width(md) {
+        margin-bottom: vertical-space($spacing--small);
+    }
 }
 
 h4,
@@ -64,10 +66,10 @@ h4,
 
     word-wrap: break-word;
     margin: 0;
-    margin-bottom: vertical-space($spacing);
+    margin-bottom: vertical-space($spacing--small);
 
     @include min-width(md) {
-        margin-bottom: vertical-space($spacing, 1.2);
+        margin-bottom: vertical-space($spacing--small);
     }
 }
 
@@ -82,7 +84,7 @@ p:not(:empty) + h4,
 ul + h2,
 ul + h3,
 ul + h4 {
-    margin-top: vertical-space($spacing--large);
+    margin-top: vertical-space($spacing, 1.2);
 }
 
 
