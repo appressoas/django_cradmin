@@ -375,7 +375,7 @@ Styleguide components.selectable-list
     &__itemtitle {
         display: block;
         @include font(base, bold);
-        @include font-size(medium);
+        @include font-size(small);
         margin-bottom: 0;
     }
 
