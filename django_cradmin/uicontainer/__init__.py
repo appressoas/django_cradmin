@@ -15,3 +15,4 @@ from . import fieldwrapper  # noqa
 from . import fieldset  # noqa
 from . import layout  # noqa
 from . import foreignkeyfield  # noqa
+from . import manytomanyfield  # noqa

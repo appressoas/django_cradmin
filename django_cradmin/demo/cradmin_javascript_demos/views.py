@@ -37,7 +37,8 @@ class DemoForm(forms.ModelForm):
         model = FictionalFigureCollection
         fields = [
             'name',
-            'primary_fictional_figure'
+            'primary_fictional_figure',
+            'promoted_fictional_figures'
         ]
 
 
@@ -58,6 +59,12 @@ class DataListWidgetsUicontainerDemo(formview.StandaloneFormView):
             uicontainer.fieldwrapper.FieldWrapper(
                 fieldname='primary_fictional_figure',
                 field_renderable=uicontainer.foreignkeyfield.Dropdown(
+                    api_url=self.get_fictional_figures_api_url()
+                )
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='promoted_fictional_figures',
+                field_renderable=uicontainer.manytomanyfield.Dropdown(
                     api_url=self.get_fictional_figures_api_url()
                 )
             ),
