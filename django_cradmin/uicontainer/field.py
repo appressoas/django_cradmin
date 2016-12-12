@@ -37,6 +37,10 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         return False
 
     @property
+    def fieldname(self):
+        return self.field_wrapper_renderable.fieldname
+
+    @property
     def autofocus(self):
         """
         Get the value for the autofocus attribute of the html element.

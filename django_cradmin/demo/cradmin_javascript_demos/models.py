@@ -7,3 +7,15 @@ class FictionalFigure(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class FictionalFigureCollection(models.Model):
+    name = models.CharField(max_length=255)
+    primary_fictional_figure = models.ForeignKey(
+        FictionalFigure, related_name='+')
+    secondary_fictional_figure = models.ForeignKey(
+        FictionalFigure, related_name='+',
+        null=True, blank=True)
+    promoted_fictional_figures = models.ManyToManyField(
+        FictionalFigure,
+        blank=True)
