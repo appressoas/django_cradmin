@@ -99,7 +99,6 @@ export default class TabButtonWidget extends AbstractWidget {
     const widgetRegistry = new window.ievv_jsbase_core.WidgetRegistrySingleton();
     const tabPanelElement = document.getElementById(this._tabPanelDomId);
     const tabPanelWidget = widgetRegistry.getWidgetInstanceFromElement(tabPanelElement);
-    console.log(tabPanelWidget);
     const isActive = this._hasActiveClass();
     tabPanelWidget.initializeFromTabButton(isActive, this._domId);
     if(isActive) {
