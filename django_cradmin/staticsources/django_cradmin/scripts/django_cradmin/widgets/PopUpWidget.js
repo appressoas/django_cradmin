@@ -40,16 +40,18 @@ export default class PopUpWidget extends AbstractWidget {
   }
 
   _onShowPopupSignal(receivedSignalInfo) {
-    if(this.logger.isInfo) {
-      this.logger.info(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     }
     DomUtilities.show(this.element);
+    document.body.classList.add('fill-view-height');
   }
 
   _onHidePopupSignal(receivedSignalInfo) {
-    if(this.logger.isInfo) {
-      this.logger.info(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    if(this.logger.isDebug) {
+      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     }
     DomUtilities.hide(this.element);
+    document.body.classList.remove('fill-view-height');
   }
 }

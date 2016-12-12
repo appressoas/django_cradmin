@@ -29,3 +29,16 @@ html,
 body {
     overflow-x: hidden;
 }
+
+
+/*
+Workaround for javascript widgets that float elements
+on pages where the body is not as high as the actual
+view height.
+
+The widgets should add this class when shown, and remove it
+afterwards.
+ */
+body.fill-view-height {
+    min-height: 100vh;
+}

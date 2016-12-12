@@ -87,7 +87,8 @@ export default class LoadMoreButton extends React.Component {
   get hotKeysMap() {
     return {
       'upKey': ['up'],
-      'downKey': ['down']
+      'downKey': ['down'],
+      'escapeKey': ['escape']
     };
   }
 
@@ -101,6 +102,11 @@ export default class LoadMoreButton extends React.Component {
       `${this.props.signalNameSpace}.LoadMoreDownKey`);
   }
 
+  _onEscapeKey() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.LoadMoreEscapeKey`);
+  }
+
   get hotKeysHandlers() {
     return {
       'upKey': (event) => {
@@ -110,6 +116,10 @@ export default class LoadMoreButton extends React.Component {
       'downKey': (event) => {
         event.preventDefault();
         this._onDownKey();
+      },
+      'escapeKey': (event) => {
+        event.preventDefault();
+        this._onEscapeKey();
       },
     }
   }

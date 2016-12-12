@@ -191,6 +191,7 @@ export default class CradminSelectableListItem extends React.Component {
     return {
       'focusPreviousItem': ['up'],
       'focusNextItem': ['down'],
+      'escapeKey': ['escape']
     };
   }
 
@@ -218,6 +219,11 @@ export default class CradminSelectableListItem extends React.Component {
     }
   }
 
+  _onEscapeKey() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.props.signalNameSpace}.SelectableItemEscapeKey`);
+  }
+
   get hotKeysHandlers() {
     return {
       'focusPreviousItem': (event) => {
@@ -227,6 +233,11 @@ export default class CradminSelectableListItem extends React.Component {
       'focusNextItem': (event) => {
         event.preventDefault();
         this._focusNextItem();
+      },
+      'escapeKey': (event) => {
+        event.preventDefault();
+        console.log('ESC');
+        this._onEscapeKey();
       }
     }
   }
