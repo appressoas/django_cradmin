@@ -10,6 +10,9 @@ class Dropdown(field.BaseFieldRenderable):
         self._overridden_api_url = api_url
         super(Dropdown, self).__init__(**kwargs)
 
+    def should_render_as_child_of_label(self):
+        return False
+
     def get_default_api_url(self):
         return None
 

@@ -6,7 +6,7 @@ export default class CradminSelectedList extends React.Component {
 
   static get defaultProps() {
     return {
-      className: 'selectable-list selectable-list--inline',
+      className: 'selectable-list selectable-list--inline selectable-list--nomargin',
       keyAttribute: 'id',
       signalNameSpace: null,
       uniqueId: '',

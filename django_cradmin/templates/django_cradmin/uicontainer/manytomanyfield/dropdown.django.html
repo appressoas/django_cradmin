@@ -30,11 +30,26 @@
          }
      }'>
 </div>
-<div data-ievv-jsbase-widget="cradmin-selected-list"
+<div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
      data-ievv-jsbase-widget-config='{
-         "signalNameSpace": "{{ me.fieldname }}"
+         "signalNameSpace": "{{ me.fieldname }}",
+         "showStates": ["HasSelectedItems"]
      }'>
+    <div data-ievv-jsbase-widget="cradmin-selected-list"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "{{ me.fieldname }}"
+         }'>
+    </div>
 </div>
+{% if me.no_items_selected_message %}
+    <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "{{ me.fieldname }}",
+             "showStates": ["HasNoSelectedItems"]
+         }'>
+        {{ no_items_selected_message }}
+    </div>
+{% endif %}
 <div data-ievv-jsbase-widget="cradmin-search-input"
      data-ievv-jsbase-widget-config='{
          "signalNameSpace": "{{ me.fieldname }}",

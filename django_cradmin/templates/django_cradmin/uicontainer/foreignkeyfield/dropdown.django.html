@@ -30,10 +30,16 @@
          }
      }'>
 </div>
-<div data-ievv-jsbase-widget="cradmin-selected-list"
+<div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
      data-ievv-jsbase-widget-config='{
-         "signalNameSpace": "{{ me.fieldname }}"
+         "signalNameSpace": "{{ me.fieldname }}",
+         "showStates": ["HasSelectedItems"]
      }'>
+    <div data-ievv-jsbase-widget="cradmin-selected-list"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "{{ me.fieldname }}"
+         }'>
+    </div>
 </div>
 <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
      data-ievv-jsbase-widget-config='{
