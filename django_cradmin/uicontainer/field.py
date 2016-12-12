@@ -345,6 +345,9 @@ class Field(BaseFieldRenderable):
         else:
             return 'input'
 
+    def get_default_bem_variant_list(self):
+        return ['outlined']
+
     def get_default_test_css_class_suffixes_list(self):
         return super(Field, self).get_default_test_css_class_suffixes_list() + [
             'djangowidget-{}'.format(self.django_widget.__class__.__name__.lower())
