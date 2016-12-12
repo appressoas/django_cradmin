@@ -1,5 +1,6 @@
 import React from "react";
 import DomUtilities from "../utilities/DomUtilities";
+import {HotKeys} from "react-hotkeys";
 
 
 export default class CradminSelectedListItem extends React.Component {
@@ -18,7 +19,8 @@ export default class CradminSelectedListItem extends React.Component {
       focusClosestSiblingOnDeSelect: true,
       previousItemData: null,
       nextItemData: null,
-      uniqueListId: ''
+      uniqueListId: '',
+      useHotKeys: false
     }
   }
 
@@ -45,12 +47,12 @@ export default class CradminSelectedListItem extends React.Component {
       .removeAllSignalsFromReceiver(this._name);
   }
 
-  handleDeSelect(event) {
-    event.preventDefault();
+  _deselectItem() {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.DeSelectItem`,
       this.props.data
     );
+
     if(this.props.focusClosestSiblingOnDeSelect) {
       let closestSiblingData = this.props.previousItemData;
       if(closestSiblingData == null) {
@@ -66,6 +68,11 @@ export default class CradminSelectedListItem extends React.Component {
         );
       }
     }
+  }
+
+  handleDeSelect(event) {
+    event.preventDefault();
+    this._deselectItem();
   }
 
   handleFocus() {
@@ -154,7 +161,46 @@ export default class CradminSelectedListItem extends React.Component {
     }
   }
 
-  render() {
+  _focusPreviousItem() {
+    if(this.props.previousItemData == null) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusBeforeFirstSelectableItem`);
+    } else {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusOnSelectableItem`,
+        this.props.previousItemData
+      );
+    }
+  }
+
+  _focusNextItem() {
+    if(this.props.nextItemData == null) {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusAfterLastSelectableItem`);
+    } else {
+      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        `${this.props.signalNameSpace}.FocusOnSelectableItem`,
+        this.props.nextItemData
+      );
+    }
+  }
+
+  get hotKeysMap() {
+    return {
+      'deselect': ['delete', 'backspace']
+    };
+  }
+
+  get hotKeysHandlers() {
+    return {
+      'deselect': (event) => {
+        event.preventDefault();
+        this._deselectItem();
+      }
+    }
+  }
+
+  renderWrapper() {
     return <a href="#" className={this.props.className}
               ref={(domElement) => { this._domElement = domElement; }}
               onClick={this.handleDeSelect}
@@ -165,5 +211,15 @@ export default class CradminSelectedListItem extends React.Component {
       {this.renderContent()}
       {this.renderIconWrapper()}
     </a>
+  }
+
+  render() {
+    if(this.props.useHotKeys) {
+      return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
+        {this.renderWrapper()}
+      </HotKeys>
+    } else {
+      return this.renderWrapper();
+    }
   }
 }

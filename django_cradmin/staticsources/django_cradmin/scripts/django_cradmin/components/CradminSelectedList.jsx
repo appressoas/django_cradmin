@@ -63,11 +63,6 @@ export default class CradminSelectedList extends React.Component {
       .removeAllSignalsFromReceiver(this._name);
   }
 
-  render() {
-    return <div className={this.props.className}>
-      {this.renderItems()}
-    </div>;
-  }
 
   _onSelectionChangeSignal(receivedSignalInfo) {
     if(this.logger.isDebug) {
@@ -135,6 +130,12 @@ export default class CradminSelectedList extends React.Component {
       previousItemData = itemData;
     }
     return items;
+  }
+
+  render() {
+    return <div className={this.props.className}>
+      {this.renderItems()}
+    </div>;
   }
 
   _sendFocusOnItemSignal(itemData) {
