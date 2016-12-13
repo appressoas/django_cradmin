@@ -136,6 +136,12 @@ ol {
 
             &--phone:before {
                 @extend %icon-phone--primary;
+                left: 1px;
+            }
+
+            &--address:before {
+                @extend %icon-address--primary;
+                left: 3px;
             }
         }
     }
