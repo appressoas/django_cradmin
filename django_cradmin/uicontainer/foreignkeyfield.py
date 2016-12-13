@@ -6,8 +6,12 @@ from . import field
 class Dropdown(field.BaseFieldRenderable):
     template_name = 'django_cradmin/uicontainer/foreignkeyfield/dropdown.django.html'
 
-    def __init__(self, api_url=None, **kwargs):
+    def __init__(self, api_url=None,
+                 no_items_selected_message=None,
+                 filters=None, **kwargs):
         self._overridden_api_url = api_url
+        self._overridden_no_items_selected_message = no_items_selected_message
+        self._overridden_filters = filters
         super(Dropdown, self).__init__(**kwargs)
 
     def should_render_as_child_of_label(self):
@@ -27,3 +31,26 @@ class Dropdown(field.BaseFieldRenderable):
             raise ValueError('api_url is required. Provide it as a kwargs, or '
                              'override get_default_api_url().')
         return api_url
+
+    def get_default_no_items_selected_message(self):
+        return None
+
+    @property
+    def no_items_selected_message(self):
+        return self._overridden_no_items_selected_message \
+               or self.get_default_no_items_selected_message()
+
+    def get_default_filters(self):
+        return {}
+
+    @property
+    def filters(self):
+        return self._overridden_filters or self.get_default_filters() or {}
+
+    @property
+    def selected_keys(self):
+        value = self.bound_formfield.value()
+        if value is None:
+            return []
+        else:
+            return [value]

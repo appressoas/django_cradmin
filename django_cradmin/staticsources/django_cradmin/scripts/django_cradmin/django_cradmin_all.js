@@ -6,6 +6,7 @@ import TabPanelWidget from "./widgets/TabPanelWidget";
 import SearchInputWidget from "./widgets/SearchInputWidget";
 import SelectableListWidget from "./widgets/SelectableListWidget";
 import SelectedListWidget from "./widgets/SelectedListWidget";
+import HtmlListWidget from "./widgets/HtmlListWidget";
 import StaticDataListWidget from "./widgets/StaticDataListWidget";
 import ApiDataListWidget from "./widgets/ApiDataListWidget";
 import DataListDisplayByStateWidget from "./widgets/DataListDisplayByStateWidget";
@@ -38,6 +39,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-data-list-display-by-state', DataListDisplayByStateWidget);
     widgetRegistry.registerWidgetClass('cradmin-selectable-list', SelectableListWidget);
     widgetRegistry.registerWidgetClass('cradmin-selected-list', SelectedListWidget);
+    widgetRegistry.registerWidgetClass('cradmin-html-list', HtmlListWidget);
     widgetRegistry.registerWidgetClass('cradmin-load-more-button', LoadMoreButtonWidget);
     widgetRegistry.registerWidgetClass('cradmin-hidden-input-list', HiddenInputListWidget);
     widgetRegistry.registerWidgetClass('cradmin-signal-router', SignalRouterWidget);
