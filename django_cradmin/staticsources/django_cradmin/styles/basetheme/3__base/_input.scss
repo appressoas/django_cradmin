@@ -115,6 +115,6 @@ Styleguide 3.1
     }
 
     &--error {
-        background-color: tint(color(primary), 70%);
+        border-color: color(primary);
     }
 }

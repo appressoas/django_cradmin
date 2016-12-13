@@ -897,6 +897,33 @@ Styleguide 4
     }
 }
 
+.icon-address,
+%icon-address {
+    @include icon(11, 5, 12px, 18px);
+
+    &--light {
+        @include icon(11, 6, 12px, 18px);
+    }
+
+    &--primary {
+        @include icon(11, 7, 12px, 18px);
+    }
+
+    &--secondary {
+        @include icon(11, 8, 12px, 18px);
+    }
+}
+
+.icon-error,
+%icon-error {
+    @include icon(1, 9, 18px, 15px);
+}
+
+.icon-info,
+%icon-info {
+    @include icon(2, 9, 14px, 14px);
+}
+
 .icon-middle {
     position: relative;
     top: -0.08em;
