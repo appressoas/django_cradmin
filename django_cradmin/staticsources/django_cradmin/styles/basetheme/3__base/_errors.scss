@@ -1,16 +1,34 @@
 /* Error messages
 
-Example:
+Example: Error
     <p class="error">Look, I'm an error message!</p>
 
-Styleguide 3.6
+Example: Info
+    <p class="error  error--info">Look, I'm an info message!</p>
+
+Styleguide 3.messages
 */
 .error {
+    @extend %animation-fall-down;
+    animation-delay: 150ms;
     @include font(base);
-    @include font-size(small);
+    @include font-size(xsmall);
+    padding-top: vertical-space();
+    margin-bottom: vertical-space($spacing);
+    color: color(primary);
 
-    padding: $spacing--small $spacing;
-    margin-bottom: $vertical-rythm--spacing;
-    color: $color-light;
-    background-color: color(primary);
+    &:before {
+        @extend %icon-error;
+        content: '';
+        margin-right: $unit;
+    }
+
+    &--info {
+        color: $color-text;
+
+        &:before {
+            @extend %icon-info;
+            margin-top: 0.05em;
+        }
+    }
 }
