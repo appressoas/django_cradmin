@@ -142,6 +142,7 @@ ol {
             &--address:before {
                 @extend %icon-address--primary;
                 left: 3px;
+                top: 0.2em;
             }
         }
     }
