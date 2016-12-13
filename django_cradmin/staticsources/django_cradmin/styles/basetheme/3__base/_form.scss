@@ -3,8 +3,8 @@
     position: relative;
     text-align: left;
     margin-bottom: vertical-space($spacing--large); //$vertical-rythm--spacing * 2;
-    padding-top: vertical-space($spacing--large);
-    padding-bottom: vertical-space($spacing--large);
+    padding-top: vertical-space($spacing, 1.6);
+    padding-bottom: vertical-space($spacing, 1.6);
     box-shadow: $shadow-level-1;
     background-color: $color-light;
 
@@ -19,6 +19,7 @@
     &__title {
         @include font(header, bold);
         @include font-size(xlarge);
+        display: block;
         color: color(primary);
 
         // Legend reset
