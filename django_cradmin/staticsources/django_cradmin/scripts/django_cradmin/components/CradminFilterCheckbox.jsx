@@ -79,7 +79,6 @@ export default class CradminFilterCheckbox extends React.Component {
     event.preventDefault();
     const filtersMapPatch = new Map();
     filtersMapPatch.set(this.props.filterKey, !this.state.value);
-    console.log('Change', filtersMapPatch);
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.PatchFilters`,
       filtersMapPatch);
@@ -96,7 +95,7 @@ export default class CradminFilterCheckbox extends React.Component {
   }
 
   _onFiltersChangeSignal(receivedSignalInfo) {
-    this.logger.info(receivedSignalInfo.toString(), receivedSignalInfo.data);
+    this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
     const filtersMap = receivedSignalInfo.data;
     this._setValueFromFiltersMap(filtersMap);
   }

@@ -67,7 +67,6 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
   requestDataList(options) {
     return new Promise((resolve, reject) => {
       let url = this.config.apiUrl;
-      console.log(options);
       if(options.next) {
         url = this.state.data.next;
       } else if(options.previous) {
@@ -76,7 +75,9 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
       const request = new HttpDjangoJsonRequest(url);
       request.urlParser.queryString.set('search', options.searchString);
       this.addFiltersToQueryString(options.filtersMap, request.urlParser.queryString);
-      console.log(request.urlParser.buildUrl());
+      if(this.logger.isDebug) {
+        this.logger.debug('Requesting data list from API:', request.urlParser.buildUrl());
+      }
       request.get()
         .then((response) => {
           resolve(response.bodydata);
