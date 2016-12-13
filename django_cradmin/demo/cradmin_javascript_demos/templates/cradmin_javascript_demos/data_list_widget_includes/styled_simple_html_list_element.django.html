@@ -1,0 +1,10 @@
+<a class="blocklist__item blocklist__item--link">
+    <h2 class="blocklist__itemtitle">{{ fictional_figure.name }}</h2>
+    <p>
+        {% if fictional_figure.about %}
+            {{ fictional_figure.about }}
+        {% else %}
+            --
+        {% endif %}
+    </p>
+</a>
