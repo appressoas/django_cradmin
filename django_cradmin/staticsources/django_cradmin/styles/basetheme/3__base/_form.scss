@@ -1,6 +1,7 @@
 .form {
     @include container(xtight);
     position: relative;
+    text-align: left;
     margin-bottom: vertical-space($spacing--large); //$vertical-rythm--spacing * 2;
     padding-top: vertical-space($spacing--large);
     padding-bottom: vertical-space($spacing--large);
