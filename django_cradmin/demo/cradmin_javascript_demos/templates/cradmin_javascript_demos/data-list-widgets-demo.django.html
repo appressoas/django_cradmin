@@ -31,6 +31,8 @@
                         "SearchValueChangeNotEmpty": ["ShowPopup"],
                         "SearchEnterKey": ["ShowPopup"],
                         "SearchEscapeKey": ["HidePopup"],
+                        "SelectableItemEscapeKey": ["HidePopup", "FocusOnSearchField"],
+                        "LoadMoreEscapeKey": ["HidePopup", "FocusOnSearchField"],
                         "SearchValueChangeEmpty": ["HidePopup"],
                         "LostFocus": ["HidePopup"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
@@ -136,6 +138,8 @@
                         "SearchValueChangeNotEmpty": ["ShowPopup"],
                         "SearchEnterKey": ["ShowPopup"],
                         "SearchEscapeKey": ["HidePopup"],
+                        "SelectableItemEscapeKey": ["HidePopup", "FocusOnSearchField"],
+                        "LoadMoreEscapeKey": ["HidePopup", "FocusOnSearchField"],
                         "SearchValueChangeEmpty": ["HidePopup"],
                         "LostFocus": ["HidePopup"],
                         "FocusBeforeFirstSelectableItem": ["FocusOnSearchField"],
@@ -363,7 +367,10 @@
                      "signalNameSpace": "apitest",
                      "multiselect": true,
                      "selectedKeys": [1],
-                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                     "apiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "filters": {
+                        "is_godlike": "true"
+                     }
                  }'>
             </div>
             <div data-ievv-jsbase-widget="cradmin-signal-router"
@@ -412,6 +419,13 @@
                      "showStates": ["IsNotInitializingDataList"],
                      "hideStates": ["UnfilteredIsEmpty"]
                  }'>
+                <div data-ievv-jsbase-widget="cradmin-filter-checkbox"
+                     data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "apitest",
+                     "filterKey": "is_godlike",
+                     "label": "Is godlike?"
+                 }'>
+                </div>
                 <div data-ievv-jsbase-widget="cradmin-selected-list"
                      data-ievv-jsbase-widget-config='{
                          "signalNameSpace": "apitest",

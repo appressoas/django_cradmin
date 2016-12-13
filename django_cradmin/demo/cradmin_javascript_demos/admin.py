@@ -8,10 +8,14 @@ class FictionalFigureAdmin(admin.ModelAdmin):
     list_display = [
         'name',
         'about',
+        'is_godlike',
     ]
     search_fields = [
         'name',
         'about'
+    ]
+    list_filter = [
+        'is_godlike',
     ]
 
 

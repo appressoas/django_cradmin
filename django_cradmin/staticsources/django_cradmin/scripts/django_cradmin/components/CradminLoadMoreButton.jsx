@@ -3,7 +3,7 @@ import {HotKeys} from 'react-hotkeys';
 import DomUtilities from "../utilities/DomUtilities";
 
 
-export default class LoadMoreButton extends React.Component {
+export default class CradminLoadMoreButton extends React.Component {
   static get defaultProps() {
     return {
       label: 'Load more',
@@ -16,9 +16,9 @@ export default class LoadMoreButton extends React.Component {
 
   constructor(props) {
     super(props);
-    this._name = `django_cradmin.components.LoadMoreButton.${this.props.signalNameSpace}`;
+    this._name = `django_cradmin.components.CradminLoadMoreButton.${this.props.signalNameSpace}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      'django_cradmin.components.LoadMoreButton');
+      'django_cradmin.components.CradminLoadMoreButton');
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
