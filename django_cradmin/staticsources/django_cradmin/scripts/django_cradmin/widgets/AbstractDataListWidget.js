@@ -14,7 +14,8 @@ export default class AbstractDataListWidget extends AbstractWidget {
       multiselect: false,
       selectedKeys: [],
       minimumSearchStringLength: 0,
-      initialSearchString: ''
+      initialSearchString: '',
+      filters: {}
     };
   }
 
@@ -40,6 +41,14 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this.signalHandlersInitialized = false;
   }
 
+  _objectToMap(object) {
+    const map = new Map();
+    for(let key of Object.keys(object)) {
+      map.set(key, object[key]);
+    }
+    return map;
+  }
+
   _initialize(state) {
     this._initializeSignalHandlers();
     this.signalHandlersInitialized = true;
@@ -52,6 +61,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
       },
       selectedItemsMap: new Map(),
       searchString: '',
+      filtersMap: this._objectToMap(this.config.filters),
       focus: false,
       loading: false
     };
@@ -164,6 +174,19 @@ export default class AbstractDataListWidget extends AbstractWidget {
     }
   }
 
+  _updateFiltersStateChange(stateChange, stateChangesSet) {
+    if(stateChange.setFilters != undefined) {
+      this.state.filtersMap = this._objectToMap(stateChange.setFilters);
+      stateChangesSet.add('filters');
+    }
+    if(stateChange.mergeFilters != undefined) {
+      for(let filterKey of Object.keys(stateChange.mergeFilters)) {
+        this.state.filtersMap.set(filterKey, stateChange.mergeFilters[filterKey]);
+      }
+      stateChangesSet.add('filters');
+    }
+  }
+
   _updateDataStateChange(stateChange, stateChangesSet) {
     if(stateChange.data != undefined) {
       this.state.data = stateChange.data;
@@ -222,13 +245,13 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _hasAnyFiltersOrSearchString() {
-    // TODO: Handle filters
-    return this.state.searchString != '';
+    return this.state.searchString != '' && this.state.filtersMap.size == 0;
   }
 
-  setState(stateChange) {
+  setState(stateChange, initial=false) {
     const stateChangesSet = new Set();
     this._updateSearchStringStateChange(stateChange, stateChangesSet);
+    this._updateFiltersStateChange(stateChange, stateChangesSet);
     this._updateDataStateChange(stateChange, stateChangesSet);
     this._updateSelectionStateChange(stateChange, stateChangesSet);
     this._updateFocusStateChange(stateChange, stateChangesSet);
@@ -249,10 +272,8 @@ export default class AbstractDataListWidget extends AbstractWidget {
     if(stateChangesSet.has('selection')) {
       this._sendSelectionChangeSignal();
     }
-    if(stateChangesSet.has('searchString')) {
-      this._requestDataListAndRefresh(this.makeRequestDataListOptions({
-        searchString: this.state.searchString
-      }));
+    if(stateChangesSet.has('searchString') || stateChangesSet.has('filters')) {
+      this._requestDataListAndRefresh(this.makeRequestDataListOptions());
     }
     if(stateChangesSet.has('loading')) {
       this._sendLoadingStateChangeSignal();
@@ -464,7 +485,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
 
   makeRequestDataListOptions(overrideOptions={}) {
     return Object.assign({}, {
-      // TODO: Handle filters
+      filtersMap: this.state.filtersMap,
       searchString: this.state.searchString
     }, overrideOptions);
   }

@@ -25,5 +25,9 @@ class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
                 models.Q(name__icontains=search) |
                 models.Q(about__icontains=search)
             )
+        if 'is_godlike' in self.request.query_params:
+            is_godlike = self.request.query_params.get('is_godlike') == 'true'
+            queryset = queryset.filter(is_godlike=is_godlike)
+
         # time.sleep(2)
         return queryset
