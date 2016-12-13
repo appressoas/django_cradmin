@@ -25,6 +25,8 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       this._name);
     this._onSearchValueChangeSignal = this._onSearchValueChangeSignal.bind(this);
+    this._onSetFiltersSignal = this._onSetFiltersSignal.bind(this);
+    this._onPatchFiltersSignal = this._onPatchFiltersSignal.bind(this);
     this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
     this._onDeSelectItemSignal = this._onDeSelectItemSignal.bind(this);
     this._onFocusSignal = this._onFocusSignal.bind(this);
@@ -115,6 +117,16 @@ export default class AbstractDataListWidget extends AbstractWidget {
       this._onSearchValueChangeSignal
     );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.SetFilters`,
+      this._name,
+      this._onSetFiltersSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.config.signalNameSpace}.PatchFilters`,
+      this._name,
+      this._onPatchFiltersSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.SelectItem`,
       this._name,
       this._onSelectItemSignal
@@ -175,13 +187,13 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _updateFiltersStateChange(stateChange, stateChangesSet) {
-    if(stateChange.setFilters != undefined) {
-      this.state.filtersMap = this._objectToMap(stateChange.setFilters);
+    if(stateChange.filtersMap != undefined) {
+      this.state.filtersMap = stateChange.filtersMap;
       stateChangesSet.add('filters');
     }
-    if(stateChange.mergeFilters != undefined) {
-      for(let filterKey of Object.keys(stateChange.mergeFilters)) {
-        this.state.filtersMap.set(filterKey, stateChange.mergeFilters[filterKey]);
+    if(stateChange.filtersMapPatch != undefined) {
+      for(let [filterKey, filterValue] of stateChange.filtersMapPatch) {
+        this.state.filtersMap.set(filterKey, filterValue);
       }
       stateChangesSet.add('filters');
     }
@@ -278,6 +290,9 @@ export default class AbstractDataListWidget extends AbstractWidget {
     if(stateChangesSet.has('loading')) {
       this._sendLoadingStateChangeSignal();
     }
+    if(stateChangesSet.has('filters')) {
+      this._sendFiltersChangeSignal();
+    }
     this._sendStateChangeSignal(stateChangesSet);
   }
 
@@ -297,6 +312,13 @@ export default class AbstractDataListWidget extends AbstractWidget {
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.DataChange`,
       this.state.data
+    );
+  }
+
+  _sendFiltersChangeSignal() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.FiltersChange`,
+      this.state.filtersMap
     );
   }
 
@@ -339,6 +361,20 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this.logger.debug('Received:', receivedSignalInfo.toString());
     this.setState({
       searchString: receivedSignalInfo.data
+    });
+  }
+
+  _onSetFiltersSignal(receivedSignalInfo) {
+    this.logger.debug('Received:', receivedSignalInfo.toString());
+    this.setState({
+      filtersMap: receivedSignalInfo.data
+    });
+  }
+
+  _onPatchFiltersSignal(receivedSignalInfo) {
+    this.logger.debug('Received:', receivedSignalInfo.toString());
+    this.setState({
+      filtersMapPatch: receivedSignalInfo.data
     });
   }
 
