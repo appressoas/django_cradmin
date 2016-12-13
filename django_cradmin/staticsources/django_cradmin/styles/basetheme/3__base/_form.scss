@@ -2,6 +2,11 @@
     @include container(xtight);
     position: relative;
     margin-bottom: vertical-space($spacing--large); //$vertical-rythm--spacing * 2;
+    padding-top: vertical-space($spacing--large);
+    padding-bottom: vertical-space($spacing--large);
+    border-radius: $border-radius;
+    box-shadow: $shadow-level-1;
+    background-color: $color-light;
 
     &__section {
         margin-bottom: vertical-space($spacing, 1.2);
@@ -32,11 +37,6 @@
     }
 
     &__item {
-        &.animate {
-            @extend %animation-fall-down;
-            @include animation-delay(8, 40ms);
-        }
-
         display: block;
         width: 100%;
         margin-bottom: vertical-space($spacing);
@@ -82,12 +82,12 @@
     }
 
     &__message {
-        &.animate {
+        border: $border-width solid color(neutral, light);
+        padding: vertical-space(3) #{$spacing--small + $border-width} vertical-space();
+
+        &.ng-enter {
             @extend %animation-fall-down;
         }
-
-        border: $border-width solid color(neutral, light);
-        padding: vertical-space() #{$spacing--small + $border-width};
 
         &.ng-leave {
             @extend %animation-fade-out-up;

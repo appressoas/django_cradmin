@@ -914,6 +914,16 @@ Styleguide 4
     }
 }
 
+.icon-error,
+%icon-error {
+    @include icon(1, 9, 18px, 15px);
+}
+
+.icon-info,
+%icon-info {
+    @include icon(2, 9, 14px, 14px);
+}
+
 .icon-middle {
     position: relative;
     top: -0.08em;
