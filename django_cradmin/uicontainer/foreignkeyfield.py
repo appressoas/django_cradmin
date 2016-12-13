@@ -46,3 +46,11 @@ class Dropdown(field.BaseFieldRenderable):
     @property
     def filters(self):
         return self._overridden_filters or self.get_default_filters() or {}
+
+    @property
+    def selected_keys(self):
+        value = self.bound_formfield.value()
+        if value is None:
+            return []
+        else:
+            return [value]
