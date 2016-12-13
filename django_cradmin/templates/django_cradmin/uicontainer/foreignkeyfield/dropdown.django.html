@@ -6,7 +6,8 @@
          "signalNameSpace": "{{ me.fieldname }}",
          "apiUrl": "{{ me.api_url }}",
          "minimumSearchStringLength": 0,
-         "multiselect": false
+         "multiselect": false,
+         "filters": {% cradmin_jsonencode me.filters %}
      }'>
 </div>
 <div data-ievv-jsbase-widget="cradmin-signal-router"
@@ -49,6 +50,15 @@
          "signalNameSpace": "{{ me.fieldname }}",
          "showStates": ["HasNoSelectedItems"]
      }'>
+    {% if me.no_items_selected_message %}
+        <div data-ievv-jsbase-widget="cradmin-data-list-display-by-state"
+             data-ievv-jsbase-widget-config='{
+                 "signalNameSpace": "{{ me.fieldname }}",
+                 "showStates": ["HasNoSelectedItems"]
+             }'>
+            {{ no_items_selected_message }}
+        </div>
+    {% endif %}
     <div data-ievv-jsbase-widget="cradmin-search-input"
          data-ievv-jsbase-widget-config='{
              "signalNameSpace": "{{ me.fieldname }}",

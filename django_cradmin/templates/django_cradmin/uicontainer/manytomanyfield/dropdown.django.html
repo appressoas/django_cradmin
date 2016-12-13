@@ -6,7 +6,8 @@
          "signalNameSpace": "{{ me.fieldname }}",
          "apiUrl": "{{ me.api_url }}",
          "minimumSearchStringLength": 0,
-         "multiselect": true
+         "multiselect": true,
+         "filters": {% cradmin_jsonencode me.filters %}
      }'>
 </div>
 <div data-ievv-jsbase-widget="cradmin-signal-router"
