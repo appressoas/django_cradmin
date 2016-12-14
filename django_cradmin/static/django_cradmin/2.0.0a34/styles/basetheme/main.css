@@ -440,8 +440,8 @@ Styleguide 1.8
           animation: fade-in 2s cubic-bezier(0, 0, 0.1, 1) both; }
 
 .animation-fall-down,
-.form__item.animate,
-.form__message.animate,
+.form__message.ng-enter,
+.error,
 .adminui-page-section--collapsable-sm .adminui-page-section__title,
 .adminui-page-section--collapsable-sm .adminui-page-section__content {
   -webkit-animation: fall-down 400ms linear both;
@@ -1243,6 +1243,9 @@ Example: `.list .list--contact`; Contact list
         <li class="list__item  list__item--email">
             <a href="mailto:edina.ringdal@arbeiderpartiet.no">edina.ringdal@arbeiderpartiet.no</a>
         </li>
+        <li class="list__item  list__item--address">
+            <a href="https://maps.google.no/maps?f=q&source=s_q&hl=no&geocode=&q=Stortinget&aq=&sll=59.914562,10.749653&sspn=0.036099,0.077162&vpsrc=6&ie=UTF8&hq=stortingen&hnear=&ll=59.913133,10.742043&spn=0.004513,0.009645&t=m&z=17&iwloc=A&cid=18144128272286456866">Stortinget</a>
+        </li>
     </ul>
 
 Styleguide 2.list
@@ -1306,6 +1309,11 @@ ol {
       border-radius: 0;
       top: 0.32em;
       border: 0; }
+    .list--contact .list__item--phone:before {
+      left: 1px; }
+    .list--contact .list__item--address:before {
+      left: 3px;
+      top: 0.2em; }
 
 /*
 Icons
@@ -2632,6 +2640,60 @@ Styleguide 4
     background-position: -900px -700px;
     background-repeat: no-repeat; }
 
+.icon-address {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 18px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -1000px -400px;
+  background-repeat: no-repeat; }
+  .icon-address--light {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 18px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1000px -500px;
+    background-repeat: no-repeat; }
+  .icon-address--primary,
+  .list--contact .list__item--address:before {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 18px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1000px -600px;
+    background-repeat: no-repeat; }
+  .icon-address--secondary {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 18px;
+    background-image: url("../../media/images/sprite.svg");
+    background-position: -1000px -700px;
+    background-repeat: no-repeat; }
+
+.icon-error,
+.error:before {
+  display: inline-block;
+  vertical-align: top;
+  width: 18px;
+  height: 15px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: 0px -800px;
+  background-repeat: no-repeat; }
+
+.icon-info,
+.error--info:before {
+  display: inline-block;
+  vertical-align: top;
+  width: 14px;
+  height: 14px;
+  background-image: url("../../media/images/sprite.svg");
+  background-position: -100px -800px;
+  background-repeat: no-repeat; }
+
 .icon-middle {
   position: relative;
   top: -0.08em;
@@ -3019,7 +3081,7 @@ Styleguide 3.1
   .input--outlined {
     border: 3px solid #cbcbca; }
   .input--error {
-    background-color: #cdded8; }
+    border-color: #57917E; }
 
 /*
 Select
@@ -3153,7 +3215,11 @@ Styleguide 3.3
   padding-right: 12px;
   max-width: 620px;
   position: relative;
-  margin-bottom: 63px; }
+  margin-bottom: 63px;
+  padding-top: 63px;
+  padding-bottom: 63px;
+  box-shadow: 0 0 20px rgba(30, 30, 30, 0.06);
+  background-color: #fff; }
   @media (min-width: 440px) {
     .form {
       padding-left: 24px;
@@ -3162,6 +3228,9 @@ Styleguide 3.3
     .form {
       padding-left: 60px;
       padding-right: 60px; } }
+  @media (min-width: 720px) {
+    .form {
+      border-radius: 5px; } }
   .form__section {
     margin-bottom: 35px; }
   .form__title {
@@ -3187,33 +3256,6 @@ Styleguide 3.3
     display: block;
     width: 100%;
     margin-bottom: 28px; }
-    .form__item.animate {
-      -webkit-animation-delay: 360ms;
-              animation-delay: 360ms; }
-      .form__item.animate:nth-child(1) {
-        -webkit-animation-delay: 40ms;
-                animation-delay: 40ms; }
-      .form__item.animate:nth-child(2) {
-        -webkit-animation-delay: 80ms;
-                animation-delay: 80ms; }
-      .form__item.animate:nth-child(3) {
-        -webkit-animation-delay: 120ms;
-                animation-delay: 120ms; }
-      .form__item.animate:nth-child(4) {
-        -webkit-animation-delay: 160ms;
-                animation-delay: 160ms; }
-      .form__item.animate:nth-child(5) {
-        -webkit-animation-delay: 200ms;
-                animation-delay: 200ms; }
-      .form__item.animate:nth-child(6) {
-        -webkit-animation-delay: 240ms;
-                animation-delay: 240ms; }
-      .form__item.animate:nth-child(7) {
-        -webkit-animation-delay: 280ms;
-                animation-delay: 280ms; }
-      .form__item.animate:nth-child(8) {
-        -webkit-animation-delay: 320ms;
-                animation-delay: 320ms; }
     .form__item--split {
       margin-left: 6px;
       margin-right: 6px; }
@@ -3238,8 +3280,9 @@ Styleguide 3.3
       .form__split--tight .form__item--split:last-child {
         margin-right: 0; }
   .form__message {
+    border-radius: 5px;
     border: 3px solid #cbcbca;
-    padding: 7px 15px; }
+    padding: 21px 15px 7px; }
     .form__message.ng-leave {
       position: absolute;
       width: 100%; }
@@ -3604,23 +3647,34 @@ Styleguide 5.1
 
 /* Error messages
 
-Example:
+Example: Error
     <p class="error">Look, I'm an error message!</p>
 
-Styleguide 3.6
+Example: Info
+    <p class="error  error--info">Look, I'm an info message!</p>
+
+Styleguide 3.messages
 */
 .error {
+  -webkit-animation-delay: 150ms;
+          animation-delay: 150ms;
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 19px;
-  line-height: 28px;
-  padding: 12px 24px;
+  font-size: 15px;
+  line-height: 21px;
+  padding-top: 7px;
   margin-bottom: 28px;
-  color: #fff;
-  background-color: #57917E; }
+  color: #57917E; }
   @media screen and (min-width: 720px) {
     .error {
-      font-size: 21px;
-      line-height: 28px; } }
+      font-size: 16px;
+      line-height: 21px; } }
+  .error:before {
+    content: '';
+    margin-right: 6px; }
+  .error--info {
+    color: #1e1e1e; }
+    .error--info:before {
+      margin-top: 0.05em; }
 
 /* Modal
 

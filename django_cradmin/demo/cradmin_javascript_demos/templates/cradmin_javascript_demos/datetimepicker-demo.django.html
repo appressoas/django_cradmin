@@ -22,109 +22,147 @@
 
     <h1>Woopeeee</h1>
 
-    <div data-ievv-jsbase-widget="cradmin-datetime-picker" data-ievv-jsbase-widget-config='
-    {
-      "month_screenreader_text":"Select month",
-      "date_label_text":"",
-      "minuteselect_values":[
-        0,
-        5,
-        10,
-        15,
-        20,
-        25,
-        30,
-        35,
-        40,
-        45,
-        50,
-        55,
-        59
-      ],
-      "preview_change_animation_duration_milliseconds":2000,
-      "usebuttonlabel":"Use",
-      "triggerbuttonid":"id_publishing_time_triggerbutton",
-      "usebutton_arialabel_prefix":"Confirm that you want to select",
-      "dayofmonthtablecell_momentjs_format":"D",
-      "back_to_datepicker_screenreader_text":"Return to date picker",
-      "buttonlabel_novalue":"Select a date/time",
-      "dayofmonthselect_momentjs_format":"DD",
-      "hourselect_momentjs_format":"HH",
-      "hide_animation_duration_milliseconds":150,
-      "close_screenreader_text":"Close date picker without changing the value",
-      "previewid":"id_publishing_time_preview",
-      "destinationfieldid":"id_publishing_time",
-      "hourselect_values":[
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23
-      ],
-      "destinationfield_momentjs_format":"YYYY-MM-DD HH:mm",
-      "maximum_datetime":"2030-12-05 21:40",
-      "required":false,
-      "dateselector_table_screenreader_caption":"Select date. Navigate with the arrow keys or tab, jump up to the month selector with the page up key and back to this table with the page down key.",
-      "yearselect_values":[
-        2016,
-        2017,
-        2018,
-        2019,
-        2020,
-        2021,
-        2022,
-        2023,
-        2024,
-        2025,
-        2026,
-        2027,
-        2028,
-        2029
-      ],
-      "preview_change_animation_cssclass":null,
-      "include_time":true,
-      "close_icon":"fa fa-times",
-      "day_screenreader_text":"Select day",
-      "now_button_text":"Now",
-      "time_label_text":"Time",
-      "minute_screenreader_text":"Select minute",
-      "today_button_text":"Today",
-      "monthselect_momentjs_format":"MMM",
-      "previewtemplateid":"id_publishing_time_previewtemplate",
-      "today_label_text":"today",
-      "hour_screenreader_text":"Select hour",
-      "back_icon":"fa fa-chevron-left",
-      "clear_button_text":"Clear",
-      "yearselect_momentjs_format":"YYYY",
-      "now":"2016-11-22T12:09:41.600433+01:00",
-      "year_screenreader_text":"Select year",
-      "minuteselect_momentjs_format":"mm",
-      "buttonlabel":"Change date/time",
-      "no_value_preview_text":"",
-      "usebutton_arialabel_momentjs_format":"LL",
-      "minimum_datetime":"2016-11-22 11:09",
-      "selected_day_label_text":"selected",
-      "timeselector_datepreview_momentjs_format":"LL"
-    }
-    '></div>
+    {# this is the new, simpler attempt. #}
+    <div data-ievv-jsbase-widget="cradmin-dateselector-year"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "simpledatepickertestthingy",
+             "labelCssClass": "select",
+             "extraSelectProperties": {
+                "aria-label": "Year"
+             }
+         }'>
+    </div>
+    <div data-ievv-jsbase-widget="cradmin-dateselector-month"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "simpledatepickertestthingy",
+             "labelCssClass": "select",
+             "extraSelectProperties": {
+                "aria-label": "Month"
+             }
+         }'>
+    </div>
+    <div data-ievv-jsbase-widget="cradmin-dateselector-day"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "simpledatepickertestthingy",
+             "labelCssClass": "select",
+             "extraSelectProperties": {
+                "aria-label": "Day"
+             }
+         }'>
+    </div>
+    <div data-ievv-jsbase-widget="cradmin-dateselector-hidden-iso"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "simpledatepickertestthingy",
+             "labelCssClass": "select",
+             "extraSelectProperties": {
+                "aria-label": "Day"
+             }
+         }'>
+    </div>
 
+    {# Here follows the defunct, complicated datepicker thingy.. #}
+{#    <div data-ievv-jsbase-widget="cradmin-datetime-picker" data-ievv-jsbase-widget-config='#}
+{#    {#}
+{#      "month_screenreader_text":"Select month",#}
+{#      "date_label_text":"",#}
+{#      "minuteselect_values":[#}
+{#        0,#}
+{#        5,#}
+{#        10,#}
+{#        15,#}
+{#        20,#}
+{#        25,#}
+{#        30,#}
+{#        35,#}
+{#        40,#}
+{#        45,#}
+{#        50,#}
+{#        55,#}
+{#        59#}
+{#      ],#}
+{#      "preview_change_animation_duration_milliseconds":2000,#}
+{#      "usebuttonlabel":"Use",#}
+{#      "triggerbuttonid":"id_publishing_time_triggerbutton",#}
+{#      "usebutton_arialabel_prefix":"Confirm that you want to select",#}
+{#      "dayofmonthtablecell_momentjs_format":"D",#}
+{#      "back_to_datepicker_screenreader_text":"Return to date picker",#}
+{#      "buttonlabel_novalue":"Select a date/time",#}
+{#      "dayofmonthselect_momentjs_format":"DD",#}
+{#      "hourselect_momentjs_format":"HH",#}
+{#      "hide_animation_duration_milliseconds":150,#}
+{#      "close_screenreader_text":"Close date picker without changing the value",#}
+{#      "previewid":"id_publishing_time_preview",#}
+{#      "destinationfieldid":"id_publishing_time",#}
+{#      "hourselect_values":[#}
+{#        0,#}
+{#        1,#}
+{#        2,#}
+{#        3,#}
+{#        4,#}
+{#        5,#}
+{#        6,#}
+{#        7,#}
+{#        8,#}
+{#        9,#}
+{#        10,#}
+{#        11,#}
+{#        12,#}
+{#        13,#}
+{#        14,#}
+{#        15,#}
+{#        16,#}
+{#        17,#}
+{#        18,#}
+{#        19,#}
+{#        20,#}
+{#        21,#}
+{#        22,#}
+{#        23#}
+{#      ],#}
+{#      "destinationfield_momentjs_format":"YYYY-MM-DD HH:mm",#}
+{#      "maximum_datetime":"2030-12-05 21:40",#}
+{#      "required":false,#}
+{#      "dateselector_table_screenreader_caption":"Select date. Navigate with the arrow keys or tab, jump up to the month selector with the page up key and back to this table with the page down key.",#}
+{#      "yearselect_values":[#}
+{#        2016,#}
+{#        2017,#}
+{#        2018,#}
+{#        2019,#}
+{#        2020,#}
+{#        2021,#}
+{#        2022,#}
+{#        2023,#}
+{#        2024,#}
+{#        2025,#}
+{#        2026,#}
+{#        2027,#}
+{#        2028,#}
+{#        2029#}
+{#      ],#}
+{#      "preview_change_animation_cssclass":null,#}
+{#      "include_time":true,#}
+{#      "close_icon":"fa fa-times",#}
+{#      "day_screenreader_text":"Select day",#}
+{#      "now_button_text":"Now",#}
+{#      "time_label_text":"Time",#}
+{#      "minute_screenreader_text":"Select minute",#}
+{#      "today_button_text":"Today",#}
+{#      "monthselect_momentjs_format":"MMM",#}
+{#      "previewtemplateid":"id_publishing_time_previewtemplate",#}
+{#      "today_label_text":"today",#}
+{#      "hour_screenreader_text":"Select hour",#}
+{#      "back_icon":"fa fa-chevron-left",#}
+{#      "clear_button_text":"Clear",#}
+{#      "yearselect_momentjs_format":"YYYY",#}
+{#      "now":"2016-11-22T12:09:41.600433+01:00",#}
+{#      "year_screenreader_text":"Select year",#}
+{#      "minuteselect_momentjs_format":"mm",#}
+{#      "buttonlabel":"Change date/time",#}
+{#      "no_value_preview_text":"",#}
+{#      "usebutton_arialabel_momentjs_format":"LL",#}
+{#      "minimum_datetime":"2016-11-22 11:09",#}
+{#      "selected_day_label_text":"selected",#}
+{#      "timeselector_datepreview_momentjs_format":"LL"#}
+{#    }#}
+{#    '></div>#}
 {% endblock content %}

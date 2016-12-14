@@ -17,15 +17,19 @@ import PopUpWidget from "./widgets/PopUpWidget";
 import ShowPopupOnClickWidget from "./widgets/ShowPopupOnClickWidget";
 import HidePopupOnClickWidget from "./widgets/HidePopupOnClickWidget";
 import FilterCheckboxFilter from "./widgets/FilterCheckboxWidget";
+import DateSelectorYearWidget from './widgets/DateSelectorYearWidget'
+import DateSelectorMonthWidget from './widgets/DateSelectorMonthWidget'
+import DateSelectorDayWidget from './widgets/DateSelectorDayWidget'
+import DateSelectorHiddenIsoDateWidget from './widgets/DateSelectorHiddenIsoDateWidget'
 
 
 export default class DjangoCradminAll {
   constructor() {
     new window.ievv_jsbase_core.LoggerSingleton().setDefaultLogLevel(
-      window.ievv_jsbase_core.LOGLEVEL.INFO);
-    // this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
-    // this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.DEBUG);
-    // this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);
+      window.ievv_jsbase_core.LOGLEVEL.DEBUG);
+     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
+     this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.DEBUG);
+     this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);
 
     const widgetRegistry = new window.ievv_jsbase_core.WidgetRegistrySingleton();
     // widgetRegistry.registerWidgetClass('cradmin-datetime-picker', DateTimePicker);
@@ -47,6 +51,10 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-show-popup', ShowPopupOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-hide-popup', HidePopupOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-filter-checkbox', FilterCheckboxFilter);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-year', DateSelectorYearWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-month', DateSelectorMonthWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-day', DateSelectorDayWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-hidden-iso', DateSelectorHiddenIsoDateWidget);
     widgetRegistry.initializeAllWidgetsWithinElement(document.body);
   }
 }
