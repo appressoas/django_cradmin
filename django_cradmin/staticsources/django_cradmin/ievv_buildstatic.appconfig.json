@@ -1,7 +1,7 @@
 {
   "appname": "django_cradmin",
-  "destinationfolder": "/Users/espenak/code/django_cradmin/django_cradmin/static/django_cradmin/2.0.0a34",
-  "is_in_production_mode": false,
+  "destinationfolder": "/Users/espenak/code/django_cradmin/django_cradmin/static/django_cradmin/2.0.0a35",
+  "is_in_production_mode": true,
   "keep_temporary_files": false,
   "npmrun_jsbuild": {
     "import_paths": [
@@ -9,5 +9,5 @@
     ]
   },
   "sourcefolder": "/Users/espenak/code/django_cradmin/django_cradmin/staticsources/django_cradmin",
-  "version": "2.0.0a34"
+  "version": "2.0.0a35"
 }
