@@ -36,6 +36,10 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
     You never use this on its own outside a
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
+    def __init__(self, text=None, **kwargs):
+        self._overridden_label_text = text
+        super(Label, self).__init__(**kwargs)
+
     def should_include_for_attribute(self):
         return self.field_wrapper_renderable.field_renderable.should_have_for_attribute_on_label()
 
@@ -62,6 +66,8 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
 
     @property
     def label_text(self):
+        if self._overridden_label_text:
+            return self._overridden_label_text
         bound_formfield = self.field_wrapper_renderable.bound_formfield
         if bound_formfield.field.label:
             return bound_formfield.field.label
