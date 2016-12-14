@@ -50,7 +50,10 @@ class Dropdown(field.BaseFieldRenderable):
     @property
     def selected_keys(self):
         value = self.bound_formfield.value()
-        if value is None:
+        if not value:
             return []
         else:
-            return [value]
+            if isinstance(value, (list, tuple)):
+                return list(value)
+            else:
+                return [value]
