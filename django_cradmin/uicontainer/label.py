@@ -1,3 +1,5 @@
+from django.utils.translation import pgettext_lazy
+
 from . import form_mixins
 from . import container
 
@@ -80,6 +82,19 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
             return self.field_wrapper_renderable.field_renderable
         else:
             return None
+
+    @property
+    def required(self):
+        return self.field_wrapper_renderable.bound_formfield.field.required
+
+    @property
+    def include_optional_text(self):
+        return True
+
+    @property
+    def optional_text(self):
+        return pgettext_lazy('django_cradmin optional form field label suffix',
+                             'optional')
 
 
 class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
