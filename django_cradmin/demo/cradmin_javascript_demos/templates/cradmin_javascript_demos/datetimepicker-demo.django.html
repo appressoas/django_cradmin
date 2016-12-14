@@ -20,44 +20,48 @@
 
 {% block content %}
 
-    <h1>Woopeeee</h1>
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Date/time example</h2>
 
-    {# this is the new, simpler attempt. #}
-    <div data-ievv-jsbase-widget="cradmin-dateselector-year"
-         data-ievv-jsbase-widget-config='{
-             "signalNameSpace": "simpledatepickertestthingy",
-             "labelCssClass": "select",
-             "extraSelectProperties": {
-                "aria-label": "Year"
-             }
-         }'>
-    </div>
-    <div data-ievv-jsbase-widget="cradmin-dateselector-month"
-         data-ievv-jsbase-widget-config='{
-             "signalNameSpace": "simpledatepickertestthingy",
-             "labelCssClass": "select",
-             "extraSelectProperties": {
-                "aria-label": "Month"
-             }
-         }'>
-    </div>
-    <div data-ievv-jsbase-widget="cradmin-dateselector-day"
-         data-ievv-jsbase-widget-config='{
-             "signalNameSpace": "simpledatepickertestthingy",
-             "labelCssClass": "select",
-             "extraSelectProperties": {
-                "aria-label": "Day"
-             }
-         }'>
-    </div>
-    <div data-ievv-jsbase-widget="cradmin-dateselector-hidden-iso"
-         data-ievv-jsbase-widget-config='{
-             "signalNameSpace": "simpledatepickertestthingy",
-             "labelCssClass": "select",
-             "extraSelectProperties": {
-                "aria-label": "Day"
-             }
-         }'>
+            {# this is the new, simpler attempt. #}
+            <div data-ievv-jsbase-widget="cradmin-dateselector-year"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "simpledatepickertestthingy",
+                     "labelCssClass": "select",
+                     "extraSelectProperties": {
+                        "aria-label": "Year"
+                     }
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-dateselector-month"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "simpledatepickertestthingy",
+                     "labelCssClass": "select",
+                     "extraSelectProperties": {
+                        "aria-label": "Month"
+                     }
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-dateselector-day"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "simpledatepickertestthingy",
+                     "labelCssClass": "select",
+                     "extraSelectProperties": {
+                        "aria-label": "Day"
+                     }
+                 }'>
+            </div>
+            <div data-ievv-jsbase-widget="cradmin-dateselector-hidden-iso"
+                 data-ievv-jsbase-widget-config='{
+                     "signalNameSpace": "simpledatepickertestthingy",
+                     "labelCssClass": "select",
+                     "extraSelectProperties": {
+                        "aria-label": "Day"
+                     }
+                 }'>
+            </div>
+        </div>
     </div>
 
     {# Here follows the defunct, complicated datepicker thingy.. #}
