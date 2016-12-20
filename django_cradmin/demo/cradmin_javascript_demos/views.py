@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.urls import reverse
 
 from django_cradmin import uicontainer
@@ -102,3 +104,19 @@ class DataListWidgetsUicontainerDemo(formview.StandaloneFormView):
 
     def get_success_url(self):
         return self.request.path
+
+
+class AutoSubmitFormAfterCountdownDemoView(generic.StandaloneBaseTemplateView):
+    template_name = 'cradmin_javascript_demos/auto-submit-form-after-countdown.django.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AutoSubmitFormAfterCountdownDemoView, self).get_context_data(**kwargs)
+        context['timeout_seconds'] = 3
+        return context
+
+    def get_javascriptregistry_component_ids(self):
+        return ['django_cradmin_javascript']
+
+    def post(self, *args, **kwargs):
+        messages.info(self.request, 'Submitted form!')
+        return redirect(self.request.path)

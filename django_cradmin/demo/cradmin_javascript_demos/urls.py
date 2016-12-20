@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^tabs-demo$',
         views.TabsDemo.as_view(),
         name="cradmin_javascript_demos_tabs"),
+    url(r'^auto-submit-form-after-countdown$',
+        views.AutoSubmitFormAfterCountdownDemoView.as_view(),
+        name="cradmin_auto_submit_form_after_countdown_demo"),
     url(r'^api/',
         include(apirouter.urls, namespace='cradmin_javascript_demos_api')),
 ]
