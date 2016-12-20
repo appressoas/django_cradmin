@@ -322,7 +322,19 @@ Styleguide components.selectable-list
         background-color: $color-light;
 
         &--bordered {
+            border-radius: 0;
             border-bottom: $border-width--small solid $color-text;
+
+            &:first-of-type {
+                border-top-left-radius: $border-radius;
+                border-top-right-radius: $border-radius;
+            }
+
+            &:last-of-type {
+                border: 0;
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
         }
 
         &:hover,
