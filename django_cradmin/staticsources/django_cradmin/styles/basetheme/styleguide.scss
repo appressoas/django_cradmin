@@ -1,8 +1,8 @@
 @import 'main';
 @import 'pygments';
 
-$kss-header-height: $vertical-rythm * 4;
-$kss-controls-height: $vertical-rythm--medium;
+$kss-header-height: vertical-space(50px);
+$kss-controls-height: vertical-space(20px);
 
 .kss-content {
     padding-top: $kss-header-height + $kss-controls-height + $vertical-rythm--spacing;
@@ -84,6 +84,7 @@ $kss-controls-height: $vertical-rythm--medium;
             margin-top: ($vertical-rythm--spacing / 2);
             margin-bottom: ($vertical-rythm--spacing / 2);
         }
+
         &--level1 {
             @include font-size(small);
             @include font(base, normal);
@@ -102,14 +103,17 @@ $kss-controls-height: $vertical-rythm--medium;
             @include font(header, bold);
             @include font-size(large);
         }
+
         &--level1 {
             @include font-size(small);
         }
 
-        &:hover {
+        &:hover,
+        &:focus {
             color: color(primary);
         }
     }
+
     &__ref {
         @include font(header, normal);
         @include font-size(xsmall);
@@ -126,6 +130,7 @@ $kss-controls-height: $vertical-rythm--medium;
     top: $kss-header-height;
     width: 100%;
     height: $kss-controls-height;
+    line-height: $kss-controls-height + 2;
     background-color: color(neutral, light);
     box-shadow: 0 1px 0 shade(color(neutral, light), 15%);
 
@@ -138,12 +143,12 @@ $kss-controls-height: $vertical-rythm--medium;
     }
 
     &__sizer {
-        @include font-size(xsmall);
+        @include font-size(xsmall, true);
+        line-height: inherit;
         display: flex;
         justify-content: space-between;
         margin: 0 auto;
         height: $kss-controls-height;
-        line-height: $kss-controls-height;
         padding-left: $unit;
         padding-right: $unit;
         border: 0;

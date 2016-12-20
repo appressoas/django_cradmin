@@ -122,24 +122,22 @@ Example: Color variants
 Styleguide components.blocklist
 */
 .blocklist {
-    .blocklist__item {
+    &__item {
         display: block;
         margin-bottom: $vertical-rythm--spacing;
-        background-color: rgba(color(neutral), 0.2);
         padding: $vertical-rythm--spacing $spacing;
+        border-radius: $border-radius;
+        background-color: $color-light;
 
         &--link {
-            border-bottom: $border-width solid $color-links;
+            border: 0;
             color: $color-text;
             text-decoration: none;
-            &:hover {
-                color: $color-text;
-                text-decoration: none;
-            }
 
             &:hover,
             &:focus {
-                border-color: $color-links--hover;
+                color: $color-links--hover;
+                text-decoration: none;
             }
         }
 
@@ -163,11 +161,11 @@ Styleguide components.blocklist
         }
     }
 
-    .blocklist__itemtitle {
+    &__itemtitle {
         margin-bottom: $vertical-rythm;
 
         &:last-child {
-            margin-bottom: 0;
+            margin-bottom: -4px; // Optical adjustment
         }
 
         @include font-size(large);
@@ -187,8 +185,8 @@ Styleguide components.blocklist
 
     &--tight {
         .blocklist__item {
-            margin-bottom: $vertical-rythm;
-            padding: $vertical-rythm $spacing--small;
+            margin-bottom: $border-width;
+            padding: vertical-space($spacing--small) $spacing;
         }
     }
 }

@@ -34,31 +34,31 @@ Styleguide 1.8
     }
 
     &-fade-in-down {
-        animation: fade-in-down 300ms $swift-out both;
+        animation: fade-in-down 150ms $swift-out both;
     }
 
     &-fade-in-up {
-        animation: fade-in-up 300ms $swift-out both;
+        animation: fade-in-up 200ms $swift-out both;
     }
 
     &-fade-out {
-        animation: fade-out 300ms ease-out both;
+        animation: fade-out 300ms ease-in both;
     }
 
     &-fade-out-slow {
-        animation: fade-out 800ms ease-out both;
+        animation: fade-out 800ms ease-in both;
     }
 
     &-fade-out-up {
-        animation: fade-out-up 100ms ease-out both;
+        animation: fade-out-up 100ms ease-in both;
     }
 
     &-fade-out-down {
-        animation: fade-out-down 500ms ease-out forwards;
+        animation: fade-out-down 500ms ease-in forwards;
     }
 
     &-fade-out-right {
-        animation: fade-out-right 300ms ease-out both;
+        animation: fade-out-right 300ms ease-in both;
     }
 
     &-fade-in-slow {
@@ -83,12 +83,8 @@ Styleguide 1.8
 }
 
 @keyframes fade-in {
-    0% {
+    from {
         opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
     }
 }
 
@@ -98,32 +94,25 @@ Styleguide 1.8
         opacity: 0;
     }
 
-    100% {
-        transform: translateY(0);
-        opacity: 1;
+    60% {
+        opacity: 0.3;
+        transform: translateY(10px);
     }
 }
 
 @keyframes fade-in-up {
-    0% {
+    from {
         transform: translateY(120px);
         opacity: 0;
     }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
-@keyframes fade-out {
-    0% {
-        opacity: 1;
-    }
 
-    100% {
+@keyframes fade-out {
+    to {
         opacity: 0;
     }
 }
+
 @keyframes fade-out-down {
     0% {
         opacity: 1;
@@ -140,23 +129,14 @@ Styleguide 1.8
 }
 
 @keyframes fade-out-up {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    100% {
+    to {
         transform: translateY(-30px);
         opacity: 0;
     }
 }
 
 @keyframes fade-out-right {
-    0% {
-        opacity: 1;
-    }
-
-    100% {
+    to {
         transform: translateX(30%);
         opacity: 0;
     }
