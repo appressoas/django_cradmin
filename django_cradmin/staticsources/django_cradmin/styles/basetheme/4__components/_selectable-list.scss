@@ -305,9 +305,9 @@ Example: {type: isolated} Inline item content is always single line - ellipsis f
 Styleguide components.selectable-list
 */
 .selectable-list {
-    margin-bottom: $vertical-rythm--spacing;
     display: flex;
     flex-direction: column;
+    margin-bottom: vertical-space($spacing, 1.2);
 
     &__item {
         display: flex;
@@ -315,43 +315,42 @@ Styleguide components.selectable-list
         flex-wrap: nowrap;
         align-items: center;
         margin: 0;
-        background-color: rgba(color(neutral), 0.2);
-        border: none;
+        border: 0;
+        cursor: pointer;
+        outline: none;
+        border-radius: $border-radius;
+        background-color: $color-light;
 
         &--bordered {
             border-bottom: $border-width--small solid $color-text;
         }
 
-        &:hover, &:focus {
-            background-color: $color-links--hover;
-            color: $color-light;
-        }
-
-        &:hover {
-            cursor: pointer;
-        }
-
+        &:hover,
         &:focus {
-            outline: none;
+            color: $color-light;
+            background-color: $color-links--hover;
         }
 
         &--selected {
-            background-color: color(neutral, dark);
             color: $color-light;
+            background-color: color(secondary, dark);
         }
     }
 
     &__icon {
+        display: inline-block;
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 15px;
-        display: inline-block;
-        height: 15px;
+        height: 20px;
         overflow: visible;
         text-align: center;
+        transform: scale(0.6);
+
         &:first-child {
             margin-left: $spacing--small;
         }
+
         &:last-child {
             margin-right: $spacing--small;
         }
@@ -359,12 +358,14 @@ Styleguide components.selectable-list
 
     &__itemcontent {
         flex-grow: 1;
-        padding: $vertical-rythm $spacing--small;
+        padding: vertical-space() $spacing--small;
+
         & > * {
             &:first-child {
                 margin-top: 0;
                 padding-top: 0;
             }
+
             &:last-child {
                 padding-bottom: 0;
                 margin-bottom: 0;
@@ -373,9 +374,9 @@ Styleguide components.selectable-list
     }
 
     &__itemtitle {
-        display: block;
         @include font(base, bold);
-        @include font-size(small);
+        @include font-size(xsmall);
+        display: block;
         margin-bottom: 0;
     }
 
@@ -383,16 +384,19 @@ Styleguide components.selectable-list
         @include min-width(md) {
             flex-direction: row;
             flex-wrap: wrap;
-            margin-bottom: ($vertical-rythm--spacing - $unit);
+            margin-bottom: vertical-space($spacing--large);
+
             .selectable-list__item {
-                //display: inline-block;
                 margin: 0 $unit $unit 0;
+
                 &:first-child {
                     margin-left: 0;
                 }
             }
+
             .selectable-list__itemcontent {
-                &, & > * {
+                &,
+                & > * {
                     white-space: nowrap;
                     max-width: map-get($breakpoints, xs);
                     overflow: hidden;
@@ -404,6 +408,7 @@ Styleguide components.selectable-list
 
     &--inline-center {
         @extend .selectable-list--inline;
+
         @include min-width(md) {
             justify-content: center;
         }

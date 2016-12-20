@@ -108,23 +108,44 @@ Styleguide components.tabs
 
 .tabs {
     &__tab-list {
+        position: relative;
         display: flex;
-        border-bottom: $border-width solid color(primary, dark);
+        border-bottom: $border-width solid color(secondary, dark);
+
+        &:after {
+            @include full-width;
+            content: '';
+            position: absolute;
+            display: block;
+            height: $border-width;
+            bottom: -($border-width);
+            background-color: color(secondary, dark);
+        }
     }
 
     &__tab {
+        @include font(base, bold);
         display: block;
         text-align: center;
-        flex-grow: 1;
-        padding: $spacing--small;
+        padding: vertical-space() $spacing;
         border: 0;
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        margin-right: $border-width;
 
         &:hover,
-        &:focus,
-        &:active,
+        &:focus {
+            color: $color-text;
+            background-color: color(neutral);
+        }
+
         &--active {
-            background-color: color(primary, dark);
-            color: color-contrast(color(primary, dark));
+            &,
+            &:hover,
+            &:focus {
+                color: color-contrast(color(secondary, dark));
+                background-color: color(secondary, dark);
+            }
         }
     }
 
