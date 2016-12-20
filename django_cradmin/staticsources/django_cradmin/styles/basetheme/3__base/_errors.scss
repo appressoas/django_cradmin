@@ -31,4 +31,8 @@ Styleguide 3.messages
             margin-top: 0.05em;
         }
     }
+
+    &.ng-leave {
+        animation: 0;
+    }
 }

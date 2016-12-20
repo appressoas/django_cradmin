@@ -57,6 +57,7 @@ Styleguide 3.3
     select {
         @include font(base, bold);
         font-size: inherit;
+        line-height: 1;
 
         // Reset
         -webkit-appearance: none;
