@@ -52,6 +52,7 @@ Example: {type: isolated} Example
 
 Styleguide components.adminui.adminui-expandable-menu
 */
+
 .adminui-expandable-menu {
     position: fixed;
     display: none;
@@ -73,11 +74,7 @@ Styleguide components.adminui.adminui-expandable-menu
         right: 0;
         top: 0;
         bottom: 0;
-        background-color: rgba(255, 255, 255, .3);
-        display: none;
-        @include min-width(lg) {
-            display: block;
-        }
+        background-color: rgba(white, 0.85);
     }
 
     &__close {
@@ -91,26 +88,28 @@ Styleguide components.adminui.adminui-expandable-menu
     }
 
     &__content {
+        animation: adminui-expandable-menu-open 300ms $swift-out both;
+
         position: fixed;
         z-index: $level-3;
         padding-top: 80px;
         right: 0;
         top: 0;
         bottom: 0;
-        width: 100%;
-        background-color: color(primary, base);
+        width: 400px;
+        max-width: 100%;
         color: $color-light;
-        @include min-width(lg) {
-            width: 50%;
-        }
+        background-color: color(secondary, dark);
     }
 
     &__list {
-        padding: 0 $spacing 0 $spacing;
+        padding: 0 vertical-space($spacing);
     }
 
     &__listitem {
-        margin-bottom: $vertical-rythm;
+        animation: adminui-expandable-menu-item 300ms $swift-out both;
+        @include animation-delay(8, 60ms, 80ms);
+        margin-bottom: vertical-space();
     }
 
     &__link {
@@ -126,5 +125,19 @@ Styleguide components.adminui.adminui-expandable-menu
             color: $color-light;
             border-color: $color-light;
         }
+    }
+}
+
+@keyframes adminui-expandable-menu-open {
+    from {
+        transform: translateX(100%) skewX(5deg);
+        opacity: 0;
+    }
+}
+
+@keyframes adminui-expandable-menu-item {
+    from {
+        transform: translateX(100px) skewX(5deg);
+        opacity: 0;
     }
 }

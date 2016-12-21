@@ -115,26 +115,24 @@ Example: {type: isolated} Compact variant with navigation buttons and menu toggl
 Styleguide components.adminui.adminui-page-header
 */
 .adminui-page-header {
-    padding: $vertical-rythm 0;
-    color: $color-light;
-    width: 100%;
+    position: relative;
     top: 0;
-    background-color: color(primary, dark);
-
-
-    @include min-width(md) {
-        padding: #{$vertical-rythm--medium} 0;
-        //height: $header-height;
-    }
+    width: 100%;
+    padding: vertical-space($spacing--small) 0;
+    color: $color-light;
+    background-color: color(primary);
 
     &--compact {
         @include min-width(md) {
-            padding: #{$vertical-rythm} 0;
+            padding: vertical-space($spacing--small) 0;
         }
     }
 
     &__content {
         @include container(wide);
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
     }
 
     &__brand {
@@ -155,8 +153,7 @@ Styleguide components.adminui.adminui-page-header
 
     &__nav {
         position: relative;
-        top: 1px;
-        float: right;
+        top: -1px;
     }
 
     &__navlink {
@@ -204,8 +201,8 @@ Styleguide components.adminui.adminui-page-header
         }
     }
 
-    //&--showmenu {
+    // &--showmenu {
     //    position: fixed;
     //    z-index: $level-4;
-    //}
+    // }
 }

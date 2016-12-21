@@ -29,5 +29,6 @@ Styleguide components.blocklist-header
         @extend .button--compact;
         @include font-size(smallcaps, true);
         margin: 0;
+        width: auto;
     }
 }
