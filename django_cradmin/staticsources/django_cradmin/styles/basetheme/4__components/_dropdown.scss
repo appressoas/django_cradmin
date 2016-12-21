@@ -23,19 +23,21 @@ Example: {type: isolated}
 
 Styleguide components.dropdown
 */
+
 .dropdown {
     position: relative;
     overflow: visible;
+
     &__content {
         position: absolute;
+        z-index: $level-1;
         top: 0;
         left: 0;
         right: 0;
         width: 100%;
-        z-index: $level-1;
-        background-color: $color-light;
-        //border: 10px solid green;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         margin-bottom: $spacing;
+        border-radius: $border-radius;
+        box-shadow: $shadow-level-3;
+        background-color: $color-light;
     }
 }

@@ -369,6 +369,7 @@ Styleguide components.selectable-list
     }
 
     &__itemcontent {
+        @include font-size(xsmall);
         flex-grow: 1;
         padding: vertical-space() $spacing--small;
 

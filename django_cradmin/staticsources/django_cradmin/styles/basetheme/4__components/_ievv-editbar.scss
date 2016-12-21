@@ -1,0 +1,66 @@
+/* Ievv editbar
+
+Example: {type: isolated}
+    <nav class="ievv-editbar">
+        <a href="" class="ievv-editbar__action  ievv-editbar__action--promoted">
+            Rediger
+        </a>
+        <a href="" class="ievv-editbar__action  ievv-editbar__action--promoted">
+            Se publisert
+        </a>
+        <a href="" class="ievv-editbar__action">
+            Avpubliser
+        </a>
+        <a href="" class="ievv-editbar__action">
+            Slett
+        </a>
+    </nav>
+
+
+Styleguide components.ievv-editbar
+*/
+
+.ievv-editbar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-right: $border-width;
+    padding-bottom: $border-width;
+
+    &__action {
+        @extend .button;
+        @extend .button--compact;
+        @extend .button--light;
+        margin-right: -($border-width);
+        margin-bottom: $border-width;
+        border-radius: 0;
+        width: 50%;
+
+        &:nth-of-type(odd) {
+            border-top-left-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
+        }
+
+        &:nth-of-type(even) {
+            border-top-right-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+        }
+
+        @include min-width(md) {
+            width: auto;
+
+            &:not(:first-child) {
+                border-radius: 0;
+            }
+
+            &:last-child {
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+        }
+
+        &--promoted {
+            @extend .button--light-fill;
+        }
+    }
+}
