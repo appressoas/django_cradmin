@@ -4,7 +4,9 @@ import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
  * Run ``window.print()`` on click widget.
  *
  * @example
-
+ * <button type="button" data-ievv-jsbase-widget="cradmin-print-on-click">
+ *     Print
+ * </button>
  */
 export default class PrintOnClickWidget extends AbstractWidget {
   constructor(element) {

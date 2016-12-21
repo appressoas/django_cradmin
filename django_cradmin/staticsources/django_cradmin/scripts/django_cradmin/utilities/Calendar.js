@@ -111,7 +111,7 @@ class CalendarMonth {
   _buildPrefixedDays() {
     if (this.month.firstDayOfMonth.weekday() > 0) {
       let momentObject;
-      for (let index = 1; index <= this.month.firstDayOfMonth.weekday()) {
+      for (let index = 1; index <= this.month.firstDayOfMonth.weekday(); index++) {
         momentObject = this.month.firstDayOfMonth.clone().subtract({
           days: index
         });

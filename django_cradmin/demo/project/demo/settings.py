@@ -298,7 +298,6 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
                 sourcefile='styleguide.scss'
             ),
 
-            ievvbuildstatic.autosetup_esdoc.Plugin(),
             ievvbuildstatic.npmrun_jsbuild.Plugin(
                 extra_import_paths=[
                     ievvbuildstatic.filepath.SourcePath('ievv_jsbase', 'scripts', 'javascript'),
