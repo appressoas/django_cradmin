@@ -120,3 +120,10 @@ class AutoSubmitFormAfterCountdownDemoView(generic.StandaloneBaseTemplateView):
     def post(self, *args, **kwargs):
         messages.info(self.request, 'Submitted form!')
         return redirect(self.request.path)
+
+
+class PrintOnClickDemoView(generic.StandaloneBaseTemplateView):
+    template_name = 'cradmin_javascript_demos/print-on-click.django.html'
+
+    def get_javascriptregistry_component_ids(self):
+        return ['django_cradmin_javascript']

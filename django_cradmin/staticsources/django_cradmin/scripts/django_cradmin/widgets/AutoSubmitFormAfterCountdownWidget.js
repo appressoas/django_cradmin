@@ -1,7 +1,7 @@
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
 
 /**
- * Autosumit form widget.
+ * Autosubmit form after a timeout widget.
  *
  * @example
  * <form action="/test" method="post">
