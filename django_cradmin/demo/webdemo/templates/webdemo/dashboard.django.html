@@ -1,6 +1,11 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load i18n %}
 {% load static %}
+{% load cradmin_tags %}
+
+{% block title %}
+    Dashboard - {{ request.cradmin_role.name }}
+{% endblock title %}
 
 {% block page-cover-title %}
     Dashboard
@@ -8,7 +13,7 @@
 
 {% block page-cover-content %}
     {{ block.super }}
-    <p class="adminui-page-cover__description">
+    <p class="adminui-page-cover__description{% cradmin_test_css_class 'subtitle' %}">
         For {{ request.cradmin_role.name }}
     </p>
 {% endblock page-cover-content %}
@@ -16,7 +21,7 @@
 {% block content %}
     <section class="adminui-page-section  adminui-page-section--center-lg">
         <div class="container">
-            <p>
+            <p class="{% cradmin_test_css_class 'welcome-message' %}">
                 Welcome to the django cradmin demo!
             </p>
         </div>
