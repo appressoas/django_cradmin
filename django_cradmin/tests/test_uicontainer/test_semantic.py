@@ -46,6 +46,16 @@ class TestLink(test.TestCase):
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('a')['href'], 'http://example.com')
 
+    def test_no_target(self):
+        container = uicontainer.semantic.Link().bootstrap()
+        selector = htmls.S(container.render())
+        self.assertFalse(selector.one('a').hasattribute('target'))
+
+    def test_with_target(self):
+        container = uicontainer.semantic.Link(target='_blank').bootstrap()
+        selector = htmls.S(container.render())
+        self.assertEqual(selector.one('a')['target'], '_blank')
+
 
 class TestStrong(test.TestCase):
     def test_sanity(self):

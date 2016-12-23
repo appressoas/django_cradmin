@@ -15,15 +15,18 @@ class Link(convenience.AbstractWithOptionalEscapedText):
     """
     Renders a ``<a>``.
     """
-    def __init__(self, href=False, **kwargs):
+    def __init__(self, href=False, target=False, **kwargs):
         """
 
         Args:
             href: The href attribute value. If this is ``False``
                 (the default), no href attribute is rendered.
+            target: The target attribute value. If this is ``False``
+                (the default), no target attribute is rendered.
             **kwargs: Kwargs for :class:`django_cradmin.uicontainer.convenience.AbstractWithOptionalEscapedText`.
         """
         self.href = href
+        self.target = target
         super(Link, self).__init__(**kwargs)
 
     def get_default_html_tag(self):
@@ -32,6 +35,7 @@ class Link(convenience.AbstractWithOptionalEscapedText):
     def get_html_element_attributes(self):
         attributes = super(Link, self).get_html_element_attributes()
         attributes['href'] = self.href
+        attributes['target'] = self.target
         return attributes
 
 
