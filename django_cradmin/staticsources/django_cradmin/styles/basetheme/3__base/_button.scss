@@ -86,7 +86,6 @@ Styleguide 3.button
     position: relative;
     display: block;
     width: 100%;
-    max-width: calc(100vw - #{$spacing--small * 2});
     padding: $unit $spacing--small;
     border-radius: $border-radius;
 

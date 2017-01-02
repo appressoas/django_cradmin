@@ -68,6 +68,7 @@ Styleguide components.adminui.adminui-expandable-menu
     }
 
     &__backdrop {
+        @extend %animation-fade-in;
         position: fixed;
         z-index: $level-2;
         left: 0;
