@@ -452,6 +452,19 @@ class Field(BaseFieldRenderable):
         return self.render_bound_formfield_as_widget()
 
 
+class Select(Field):
+    template_name = 'django_cradmin/uicontainer/field/select.django.html'
+
+    def get_default_bem_block_or_element(self):
+        return 'select'
+
+    def get_default_html_tag(self):
+        return 'label'
+
+    def get_default_bem_variant_list(self):
+        return ['outlined', 'block']
+
+
 class HiddenField(Field):
     """
     Just like :class:`.Field`, but renders as
