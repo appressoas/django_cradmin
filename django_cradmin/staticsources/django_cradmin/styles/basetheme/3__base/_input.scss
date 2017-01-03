@@ -120,4 +120,8 @@ Styleguide form.3:input
     &--error {
         border-color: color(primary);
     }
+
+    &--no-margin {
+        margin: 0;
+    }
 }
