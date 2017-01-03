@@ -1,11 +1,11 @@
 /* Form layout
 
 Example: {type: isolated}
-    <form class="form" ng-controller="becomeMember">
+    <form class="form">
         <div class="form__section">
             <p class="form__split">
                 <label class="form__item  form__item--split">
-                    Fornavn
+                    First name
                     <input
                         type="text"
                         class="input  input--outlined"
@@ -15,7 +15,7 @@ Example: {type: isolated}
                     />
                 </label>
                 <label class="form__item  form__item--split">
-                    Etternavn
+                    Last name
                     <input
                         type="text"
                         class="input  input--outlined"
@@ -27,7 +27,7 @@ Example: {type: isolated}
             </p>
 
             <label class="form__item">
-                E-post
+                Email
                 <input
                     type="email"
                     class="input  input--outlined"
@@ -38,7 +38,7 @@ Example: {type: isolated}
             </label>
 
             <label class="form__item">
-                Telefon
+                Phone
                 <input
                     type="tel"
                     class="input  input--outlined  input--half"
@@ -49,7 +49,7 @@ Example: {type: isolated}
             </label>
 
             <label class="form__item">
-                Postnummer
+                ZIP-number
                 <input
                     type="text"
                     class="input  input--outlined  input--xsmall"
@@ -64,10 +64,12 @@ Example: {type: isolated}
             </label>
         </div>
 
-        <button type="submit" class="button  button--primary-fill  button--block">Bli frivillig</button>
+        <button type="submit" class="button  button--primary-fill  button--block">
+            Join
+        </button>
     </form>
 
-Styleguide 3.formlayout
+Styleguide form.formlayout
 */
 
 .form {

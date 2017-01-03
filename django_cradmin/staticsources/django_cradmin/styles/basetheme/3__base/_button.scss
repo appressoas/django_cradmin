@@ -4,23 +4,23 @@ Buttons
 In most cases you should not use the button class for links. Use either `<button>` or `<input type="submit" />`
 when using buttons. <strong>Never</strong> use `<span>`, `<div>` or elements without a semantic meaning as buttons.
 
-Example: {type: isolated} The default button
+Example: The default button
     <button type="button" class="button">Button</button>
     <button type="button" class="button  button--fill">Button</button>
 
-Example: {type: isolated} For primary actions, use this only to separate from other actions.
+Example: For primary actions, use this only to separate from other actions.
     <button type="button" class="button  button--primary">Button</button>
     <button type="button" class="button  button--primary-fill">Button</button>
 
-Example: {type: isolated} For secondary actions, don't overuse.
+Example: For secondary actions, don't overuse.
     <button type="button" class="button  button--secondary">Button</button>
     <button type="button" class="button  button--secondary-fill">Button</button>
 
-Example: {type: isolated} For actions that need's to stand out on red or dark blue background.
+Example: For actions that need's to stand out on red or dark blue background.
     <button type="button" class="button  button--light">Button</button>
     <button type="button" class="button  button--light-fill">Button</button>
 
-Example: {type: isolated} This is some modifiers you can add (PS: Can be combined)
+Example: This is some modifiers you can add (PS: Can be combined)
     <button type="button" class="button  button--block">
         Make it 100% width of whatever container
     </button>
@@ -32,7 +32,7 @@ Example: {type: isolated} This is some modifiers you can add (PS: Can be combine
     <br>
     <button type="button" class="button" disabled>Disabled button</button>
 
-Styleguide 3.button
+Styleguide form.2:buttons
 */
 
 @mixin button-modifier($b-name, $b-main, $b-text, $b-hover, $b-text-hover: false) {

@@ -177,6 +177,14 @@ $kss-controls-height: vertical-space(20px);
 .kss-description {
     margin-bottom: $vertical-rythm--spacing;
     // max-width: $container-width--tight;
+
+    code {
+        white-space: nowrap;
+    }
+
+    ul {
+        @extend %list;
+    }
 }
 
 .kss-section {

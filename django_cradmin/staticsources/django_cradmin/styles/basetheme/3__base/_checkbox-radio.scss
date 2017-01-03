@@ -6,59 +6,81 @@
 - `light` - Make it light, only use on darker backgrounds
 - `spaceless` - Remove spaces to the right and underneath
 
-Example: {type: isolated} Checkbox default
+Example: Checkbox default
     <label class="checkbox">
-        <input type="checkbox" />
+        <input type="checkbox">
         <span class="checkbox__control-indicator"></span>
         Yes
     </label>
     <label class="checkbox">
-        <input type="checkbox" />
+        <input type="checkbox">
         <span class="checkbox__control-indicator"></span>
         No
     </label>
 
-Example: {type: isolated} Checkbox light
+Example: Checkbox light
     <label class="checkbox  checkbox--light">
-        <input type="checkbox" />
+        <input type="checkbox">
         <span class="checkbox__control-indicator"></span>
         Yes
     </label>
     <label class="checkbox  checkbox--light">
-        <input type="checkbox" />
+        <input type="checkbox">
         <span class="checkbox__control-indicator"></span>
         No
     </label>
 
-Example: {type: isolated} Checkbox block
+Example: Checkbox block
     <label class="checkbox  checkbox--block">
-        <input type="checkbox" />
+        <input type="checkbox">
         <span class="checkbox__control-indicator"></span>
         Yes
     </label>
     <label class="checkbox  checkbox--block">
-        <input type="checkbox" />
+        <input type="checkbox">
         <span class="checkbox__control-indicator"></span>
         No
     </label>
 
-Example: {type: isolated} Checkbox inline
+Example: Checkbox inline
     <p>
         Look, I'm mixed with
         <label class="checkbox  checkbox--inline">
-            <input type="checkbox" />
+            <input type="checkbox">
             <span class="checkbox__control-indicator"></span>
             Yes
         </label>
         <label class="checkbox  checkbox--inline">
-            <input type="checkbox" />
+            <input type="checkbox">
             <span class="checkbox__control-indicator"></span>
             No
         </label>
         text
     </p>
 
-Styleguide 3.4
+Example: {type: isolated} In a group with label and aria
+    <p class="label" id="id_label">Which of these are true?</p>
+    <label class="checkbox  checkbox--block" id="id_choice1_label">
+        <input type="checkbox" name="thechoices"
+            aria-labelledby="id_label id_choice1_label">
+        <span class="checkbox__control-indicator"></span>
+        The earth is round
+    </label>
+    <label class="checkbox  checkbox--block" id="id_choice2_label">
+        <input type="checkbox" name="thechoices"
+            aria-labelledby="id_label id_choice2_label">
+        <span class="checkbox__control-indicator"></span>
+        The earth is a disc that rides on the back of a giant turtle
+    </label>
+    <label class="checkbox  checkbox--block" id="id_choice3_label">
+        <input type="checkbox" name="thechoices"
+            aria-labelledby="id_label id_choice3_label">
+        <span class="checkbox__control-indicator"></span>
+        Armageddon is coming
+    </label>
+
+
+Styleguide form.4:checkbox
 */
 
 /* Radio
@@ -69,59 +91,92 @@ Styleguide 3.4
 - `light` - Make it light, only use on darker backgrounds
 - `spaceless` - Remove spaces to the right and underneath
 
-Example: {type: isolated} Radio default
+Example: Radio default
     <label class="radio">
-        <input type="radio" name="styleguide" />
+        <input type="radio" name="styleguide">
         <span class="radio__control-indicator"></span>
         Yes
     </label>
     <label class="radio">
-        <input type="radio" name="styleguide" />
+        <input type="radio" name="styleguide">
         <span class="radio__control-indicator"></span>
         No
     </label>
 
-Example: {type: isolated} Checkbox light
+Example: Radio light
     <label class="radio  radio--light">
-        <input type="radio" name="styleguide" />
+        <input type="radio" name="styleguide">
         <span class="radio__control-indicator"></span>
         Yes
     </label>
     <label class="radio  radio--light">
-        <input type="radio" name="styleguide" />
+        <input type="radio" name="styleguide">
         <span class="radio__control-indicator"></span>
         No
     </label>
 
-Example: {type: isolated} Radio block
+Example: Radio block
     <label class="radio  radio--block">
-        <input type="radio" name="styleguide" />
+        <input type="radio" name="styleguide">
         <span class="radio__control-indicator"></span>
         Yes
     </label>
     <label class="radio  radio--block">
-        <input type="radio" name="styleguide" />
+        <input type="radio" name="styleguide">
         <span class="radio__control-indicator"></span>
         No
     </label>
 
-Example: {type: isolated} Checkbox inline
+Example: Radio inline
     <p>
         Look, I'm mixed with
         <label class="radio  radio--inline">
-            <input type="radio" name="styleguide" />
+            <input type="radio" name="styleguide">
             <span class="radio__control-indicator"></span>
             Yes
         </label>
         <label class="radio  radio--inline">
-            <input type="radio" name="styleguide" />
+            <input type="radio" name="styleguide">
             <span class="radio__control-indicator"></span>
             No
         </label>
         text
     </p>
 
-Styleguide 3.5
+
+Example: {type: isolated} In a group with label and aria
+    <div role="radiogroup" aria-describedby="id_label">
+        <p class="label" id="id_label">Are you good?</p>
+        <label class="radio  radio--block">
+            <input type="radio" name="myradio">
+            <span class="radio__control-indicator"></span>
+            Yes
+        </label>
+        <label class="radio  radio--block">
+            <input type="radio" name="myradio">
+            <span class="radio__control-indicator"></span>
+            No
+        </label>
+    </div>
+
+
+Example: {type: isolated} With label and aria - without a wrapper element
+    <p class="label" id="id_label">Are you good?</p>
+    <label class="radio  radio--block" id="id_myradio1_label">
+        <input type="radio" name="myradio"
+            aria-labelledby="id_label id_myradio1_label">
+        <span class="radio__control-indicator"></span>
+        Yes
+    </label>
+    <label class="radio  radio--block" id="id_myradio2_label">
+        <input type="radio" name="myradio"
+            aria-labelledby="id_label id_myradio2_label">
+        <span class="radio__control-indicator"></span>
+        No
+    </label>
+
+
+Styleguide form.4:radio
 */
 .radio,
 .checkbox {

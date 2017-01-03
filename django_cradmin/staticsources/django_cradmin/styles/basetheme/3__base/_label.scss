@@ -11,23 +11,27 @@ Example: Label
 
     <p>Look, <label class="label  label--inline">I'm a inline label</label>!!!</p>
 
-    <label class="label  label--spaceless">
-        I have less spacing under...
+    <label class="label  label--spaced">
+        I have more spacing below me. The same spacing as a .fieldwrapper.
     </label>
 
-Styleguide 3.label
+Styleguide form.2:label
 */
 
 .label {
     display: block;
-    margin-bottom: $vertical-rythm--spacing;
-}
-
-.label--inline {
-    display: inline;
-    margin: 0;
-}
-
-.label--spaceless {
     margin-bottom: $unit;
+
+    &--inline {
+        display: inline;
+        margin: 0;
+    }
+
+    &--spaced {
+        margin-bottom: $vertical-rythm--spacing;
+        .input {
+            margin-bottom: 0;
+        }
+    }
+
 }

@@ -3,50 +3,50 @@ Inputs
 
 Use the class `.input` to add styling to input fields
 
-Example: {type: isolated} Standard input
+Example: Standard input
     <label>
         Standard input
         <input type="text" placeholder="I set the standard" class="input" />
     </label>
 
-Example: {type: isolated} Error input
+Example: Error input
     <label>
         I'm a error input!
         <input type="text" placeholder="Omg!" class="input  input--error" />
     </label>
 
-Example: {type: isolated} Inline input
+Example: Inline input
     <label>
         Look,
         <input class="input  input--inline" type="text" placeholder="I'm inline!!" />
         Wuut?
     </label>
 
-Example: {type: isolated} Outlined input
+Example: Outlined input
     <label>
         Outlined input
         <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
     </label>
 
-Example: {type: isolated} Smaller input
+Example: Smaller input
     <label>
         Small input
         <input type="text" placeholder="I'm tiny!" class="input input--small" />
     </label>
 
-Example: {type: isolated} Standard textarea
+Example: Standard textarea
     <label>
         I'm a textarea
         <textarea placeholder="I more got space!" class="input"></textarea>
     </label>
 
-Example: {type: isolated} Textarea with error
+Example: Textarea with error
     <label>
         I'm a textarea with error!
         <textarea placeholder="Why? :'('" class="input  input--error"></textarea>
     </label>
 
-Example: {type: isolated} Textarea with outlines
+Example: Textarea with outlines
     <label>
         I got the outlines!
         <textarea placeholder="Look, outlines!" class="input  input--outlined"></textarea>
@@ -58,7 +58,7 @@ Example: {type: isolated} Textarea that grows
         <textarea class="input" placeholder="You can type alot on me!" auto-grow></textarea>
     </label>
 
-Styleguide 3.1
+Styleguide form.3:input
 */
 
 .input {
@@ -76,6 +76,7 @@ Styleguide 3.1
     border-radius: $border-radius;
     border: $border-width solid $color-light;
     background-color: $color-light;
+    margin-bottom: $unit;
 
     &:focus {
         border-color: color(secondary, dark);
@@ -96,6 +97,7 @@ Styleguide 3.1
         width: auto;
         min-width: 160px;
         padding: $unit $spacing--small;
+        margin: 0;
     }
 
     &--half {
