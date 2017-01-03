@@ -1,4 +1,4 @@
-from django.utils.translation import pgettext_lazy
+from django.utils.translation import pgettext_lazy, pgettext
 
 from . import form_mixins
 from . import container
@@ -21,7 +21,20 @@ class AbstractLabel(container.AbstractContainerRenderable):
 
     @property
     def label_text(self):
+        """
+        The label text.
+
+        Must be overridden in subclasses.
+        """
         raise NotImplementedError()
+
+    @property
+    def label_text_aria_suffix(self):
+        """
+        If this returns a non-empty value, we render this after the label
+        text in a ``<span>`` with class ``screenreader-only``.
+        """
+        return None
 
     @property
     def field_renderable(self):
@@ -125,6 +138,18 @@ class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
     @property
     def label_text(self):
         return self.subwidget_field_renderable.label_text
+
+    @property
+    def label_text_aria_suffix(self):
+        label_renderable = self.field_wrapper_renderable.label_renderable
+        field_label = getattr(label_renderable, 'label_text', None)
+        if field_label:
+            return '- {prefix} {field_label}'.format(
+                prefix=pgettext('uicontainer label aria text prefix',
+                                'Choice for'),
+                field_label=field_label)
+        else:
+            return None
 
     @property
     def field_renderable(self):
