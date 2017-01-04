@@ -344,7 +344,8 @@ class BaseCrAdminInstance(object):
             viewname (str): The name of the view within the app.
             args (list): Args for the view
             kwargs (dict): Keyword args for the view.
-            roleid: The roleid.
+            roleid: The roleid. Defaults to the ID of the current role
+                (or None if there is no current role).
         """
         kwargs = {
             'instanceid': self.id,
@@ -371,7 +372,8 @@ class BaseCrAdminInstance(object):
             appname (str): The name of the app.
             args (list): Args for the view
             kwargs (dict): Keyword args for the view.
-            roleid: The roleid.
+            roleid: The roleid. Defaults to the ID of the current role
+                (or None if there is no current role).
         """
         return self.reverse_url(appname, viewname=crapp.INDEXVIEW_NAME, roleid=roleid,
                                 args=args, kwargs=kwargs)
