@@ -51,8 +51,9 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
     You never use this on its own outside a
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
-    def __init__(self, text=None, **kwargs):
+    def __init__(self, text=None, include_optional_text=True, **kwargs):
         self._overridden_label_text = text
+        self._include_optional_text = include_optional_text
         super(Label, self).__init__(**kwargs)
 
     def should_include_for_attribute(self):
@@ -67,7 +68,10 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
         """
         Default BEM block is ``label``.
         """
-        return 'label'
+        if self.field_wrapper_renderable.field_renderable.is_checkbox_input_widget():
+            return 'checkbox'
+        else:
+            return 'label'
 
     @property
     def for_attribute(self):
@@ -102,12 +106,18 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
 
     @property
     def include_optional_text(self):
-        return True
+        if self.field_wrapper_renderable.field_renderable.is_checkbox_input_widget():
+            return False
+        else:
+            return self.include_optional_text
 
     @property
     def optional_text(self):
         return pgettext_lazy('django_cradmin optional form field label suffix',
                              'optional')
+
+    def should_show_text_after_field(self):
+        return self.field_wrapper_renderable.field_renderable.is_checkbox_input_widget()
 
 
 class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
