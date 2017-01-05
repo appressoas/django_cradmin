@@ -64,11 +64,18 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
             field_dom_id=self.field_wrapper_renderable.field_renderable.dom_id
         )
 
+    def field_is_checkbox_input_widget(self):
+        field_renderable = self.field_wrapper_renderable.field_renderable
+        if hasattr(field_renderable, 'is_checkbox_input_widget'):
+            return field_renderable.is_checkbox_input_widget()
+        else:
+            return False
+
     def get_default_bem_block_or_element(self):
         """
         Default BEM block is ``label``.
         """
-        if self.field_wrapper_renderable.field_renderable.is_checkbox_input_widget():
+        if self.field_is_checkbox_input_widget():
             return 'checkbox'
         else:
             return 'label'
@@ -106,7 +113,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
 
     @property
     def include_optional_text(self):
-        if self.field_wrapper_renderable.field_renderable.is_checkbox_input_widget():
+        if self.field_is_checkbox_input_widget():
             return False
         else:
             return self.include_optional_text
@@ -117,7 +124,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
                              'optional')
 
     def should_show_text_after_field(self):
-        return self.field_wrapper_renderable.field_renderable.is_checkbox_input_widget()
+        return self.field_is_checkbox_input_widget()
 
 
 class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
