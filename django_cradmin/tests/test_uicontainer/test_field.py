@@ -250,8 +250,7 @@ class TestFieldBooleanFieldRendering(test.TestCase, formtest_mixins.SingleFormRe
     def test_css_classes_sanity(self):
         selector = self.single_field_formrenderable_htmls(field=forms.BooleanField())
         self.assertEqual(selector.one('input[name="testfield"]').cssclasses_set,
-                         {'input', 'input--outlined',
-                          'test-uicontainer-field',
+                         {'test-uicontainer-field',
                           'test-djangowidget-checkboxinput'})
 
 
