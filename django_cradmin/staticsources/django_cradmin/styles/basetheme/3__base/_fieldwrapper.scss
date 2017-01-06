@@ -1,0 +1,111 @@
+/* Form field wrapper
+
+When laying out your form you have two options for spacing:
+
+- Simple fields with just a label containing an input can use ``label label--standalone``.
+- More complex fields with help text, messages and complex fields
+  need to use ``fieldwrapper``.
+
+Example: Basics
+
+    <div class="fieldwrapper">
+        <label class="label" for="id_myfield">
+            Standard input
+        </label>
+        <input type="text" placeholder="I set the standard"
+            id="id_myfield"
+            class="input input--fieldwrapper-item" />
+        <p class="help-text help-text--fieldwrapper-item">
+            Vestibulum id ligula porta felis euismod semper.
+            Nullam id dolor id nibh ultricies vehicula ut id elit.
+        </p>
+    </div>
+
+    <div class="fieldwrapper">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+    </div>
+
+    <div class="fieldwrapper">
+        <label class="label">
+            I'm a textarea
+            <textarea placeholder="I more got space!" class="input"></textarea>
+        </label>
+        <p class="help-text  help-text--fieldwrapper-item">
+            Donec sed odio dui.
+        </p>
+    </div>
+
+Example: {type: isolated} More complex example
+
+    <div class="container">
+        <div class="fieldwrapper">
+            <p class="label">Are you good?</p>
+            <label class="radio  radio--block">
+                <input type="radio" name="myradio">
+                <span class="radio__control-indicator"></span>
+                Yes
+            </label>
+            <label class="radio  radio--block">
+                <input type="radio" name="myradio">
+                <span class="radio__control-indicator"></span>
+                No
+            </label>
+            <label class="radio  radio--block">
+                <input type="radio" name="myradio">
+                <span class="radio__control-indicator"></span>
+                Maybe
+            </label>
+            <p class="help-text  help-text--fieldwrapper-item">
+                Donec sed odio dui.
+            </p>
+        </div>
+
+        <fieldset class="fieldset">
+            <div class="fieldwrapper">
+                <legend class="legend">Which of these statements are true?</legend>
+                <label class="checkbox  checkbox--block">
+                    <input type="checkbox" />
+                    <span class="checkbox__control-indicator"></span>
+                    CSS is better than SASS
+                </label>
+                <label class="checkbox  checkbox--block">
+                    <input type="checkbox" />
+                    <span class="checkbox__control-indicator"></span>
+                    SASS is a superset of CSS
+                </label>
+                <label class="checkbox  checkbox--block">
+                    <input type="checkbox" />
+                    <span class="checkbox__control-indicator"></span>
+                    SASS is a programming language
+                </label>
+                <p class="help-text  help-text--fieldwrapper-item">
+                    Donec sed odio dui.
+                </p>
+            </div>
+        </fieldset>
+
+        <div class="fieldwrapper">
+            <p class="label" id="id_the_select_label">Are you good?</p>
+            <label class="select  select--block">
+                <select aria-labelledby="id_the_select_label">
+                    <option>Yes</option>
+                    <option>No</option>
+                    <option>Maybe</option>
+                </select>
+            </label>
+            <p class="help-text  help-text--fieldwrapper-item">
+                Donec sed odio dui.
+            </p>
+        </div>
+    </div>
+
+Styleguide form.7:fieldwrapper
+*/
+
+
+.fieldwrapper {
+    margin-bottom: $vertical-rythm--spacing;
+}

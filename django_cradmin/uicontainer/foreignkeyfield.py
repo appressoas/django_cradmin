@@ -8,7 +8,8 @@ class Dropdown(field.BaseFieldRenderable):
 
     def __init__(self, api_url=None,
                  no_items_selected_message=None,
-                 filters=None, **kwargs):
+                 filters=None,
+                 **kwargs):
         self._overridden_api_url = api_url
         self._overridden_no_items_selected_message = no_items_selected_message
         self._overridden_filters = filters

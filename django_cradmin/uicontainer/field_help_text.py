@@ -14,7 +14,7 @@ class BaseHelpTextRenderable(container.AbstractContainerRenderable, form_mixins.
     """
 
     def get_default_bem_block_or_element(self):
-        return 'formfield-help-text'
+        return 'help-text'
 
 
 class AutomaticHelpText(BaseHelpTextRenderable):

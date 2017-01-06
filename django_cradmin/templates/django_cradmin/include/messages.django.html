@@ -2,17 +2,17 @@
 {% load cradmin_tags %}
 
 {% if messages %}
-    <div id="id_django_cradmin_messages" role="complementary" class="blocklist  blocklist--tight{% cradmin_test_css_class 'djangomessages' %}">
+    <div id="id_django_cradmin_messages" role="complementary" class="{% cradmin_test_css_class 'djangomessages' %}">
         {% for message in messages %}
-            <p class="blocklist__item
+            <p class="message
                         {% if message.tags == "error" %}
-                            blocklist__item--warning
+                            message--error
                         {% elif message.tags == "warning" %}
-                            blocklist__item--warning
+                            message--error
                         {% elif message.tags == "info" %}
-                            blocklist__item--info
+                            message--info
                         {% elif message.tags == "success" %}
-                            blocklist__item--success
+                            message--info
                         {% endif %}
                         {% cradmin_test_css_class message.tags %}
                     "

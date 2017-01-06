@@ -100,7 +100,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
 
         Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
         """
-        return messagescontainer.MessagesContainer(
+        return messagescontainer.CompactMessagesContainer(
             test_css_class_suffixes_list=['field-messages']
         )
 
@@ -138,10 +138,8 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         """
         return self.formrenderable.form[self.fieldname]
 
-    # def get_default_css_classes_list(self):
-    #     css_classes = super(FieldWrapper, self).get_default_css_classes_list()
-    #     css_classes.append('field')
-    #     return css_classes
+    def get_default_bem_block_or_element(self):
+        return 'fieldwrapper'
 
 
 # class NoWrapperElementFieldWrapper(FieldWrapper):

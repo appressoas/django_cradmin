@@ -10,6 +10,17 @@ Example: Default
         </select>
     </label>
 
+Example: Block
+
+    <label class="select  select--block">
+        <select aria-label="Kategori">
+            <option>alle tema</option>
+            <option>arbeid og næring</option>
+            <option>...</option>
+        </select>
+    </label>
+    <p class="help-text">I am a help text</p>
+
 Example: Outlined
     <label class="select  select--outlined">
         <select aria-label="Kategori">
@@ -41,7 +52,7 @@ Example: Adaptable
         ...OMG!
     </p>
 
-Styleguide 3.3
+Styleguide form.5:select
 */
 
 .select {
@@ -153,6 +164,11 @@ Styleguide 3.3
 
     &--small {
         width: $input-small;
+    }
+
+    &--block {
+        display: block;
+        margin-bottom: $unit;
     }
 }
 

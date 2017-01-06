@@ -305,6 +305,12 @@ class Field(BaseFieldRenderable):
         """
         return isinstance(self.django_widget, forms.Select)
 
+    def is_checkbox_input_widget(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django.forms.widgets.CheckboxInput`.
+        """
+        return isinstance(self.django_widget, forms.CheckboxInput)
+
     def should_render_as_subwidgets(self):
         """
         Returns True if we should render using :meth:`.make_subwidget_renderable`.
@@ -340,7 +346,7 @@ class Field(BaseFieldRenderable):
         """
         Default BEM block is ``input``.
         """
-        if self.is_select_widget():
+        if self.is_select_widget() or self.is_checkbox_input_widget():
             return None
         else:
             return 'input'
@@ -450,6 +456,19 @@ class Field(BaseFieldRenderable):
     @property
     def rendered_field(self):
         return self.render_bound_formfield_as_widget()
+
+
+class Select(Field):
+    template_name = 'django_cradmin/uicontainer/field/select.django.html'
+
+    def get_default_bem_block_or_element(self):
+        return 'select'
+
+    def get_default_html_tag(self):
+        return 'label'
+
+    def get_default_bem_variant_list(self):
+        return ['outlined', 'block']
 
 
 class HiddenField(Field):

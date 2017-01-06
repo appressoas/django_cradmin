@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-14 04:36+0100\n"
+"POT-Creation-Date: 2017-01-03 11:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -435,6 +435,10 @@ msgstr ""
 msgid "Invalid email address: %(email)s"
 msgstr ""
 
+#: sortable/models.py:203
+msgid "Sort index"
+msgstr ""
+
 #: templates/django_cradmin/acemarkdown/widget.django.html:12
 msgid "Heading 1"
 msgstr ""
@@ -489,7 +493,7 @@ msgstr ""
 msgid "Code block"
 msgstr ""
 
-#: templates/django_cradmin/crmenu/menu/default-expandable.django.html:19
+#: templates/django_cradmin/crmenu/menu/default-expandable.django.html:15
 msgid "Close menu"
 msgstr ""
 
@@ -555,6 +559,17 @@ msgstr ""
 msgid "Please select what you would like to edit"
 msgstr ""
 
+#: templates/django_cradmin/uicontainer/foreignkeyfield/dropdown.django.html:97
+#: templates/django_cradmin/uicontainer/manytomanyfield/dropdown.django.html:92
+#: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:45
+msgid "Load more"
+msgstr ""
+
+#: templates/django_cradmin/uicontainer/foreignkeyfield/dropdown.django.html:108
+#: templates/django_cradmin/uicontainer/manytomanyfield/dropdown.django.html:103
+msgid "Loading"
+msgstr ""
+
 #: templates/django_cradmin/viewhelpers/formview/within_role_delete_view.django.html:25
 msgid "Cancel"
 msgstr ""
@@ -562,10 +577,6 @@ msgstr ""
 #: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:40
 #: templates/django_cradmin/viewhelpers/multiselect2view/base.django.html:37
 msgid "Loading ..."
-msgstr ""
-
-#: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:45
-msgid "Load more"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/includes/pager.django.html:28
@@ -671,6 +682,26 @@ msgstr ""
 #: templates/django_cradmin/widgets/modelchoice.django.html:25
 #: widgets/modelchoice.py:34
 msgid "Select ..."
+msgstr ""
+
+#: uicontainer/foreignkeyfield.py:26
+msgctxt "django_cradmin foreignkey Dropdown placeholder"
+msgid "Search to find and select an item ..."
+msgstr ""
+
+#: uicontainer/label.py:110
+msgctxt "django_cradmin optional form field label suffix"
+msgid "optional"
+msgstr ""
+
+#: uicontainer/label.py:149
+msgctxt "uicontainer label aria text prefix"
+msgid "Choice for"
+msgstr ""
+
+#: uicontainer/manytomanyfield.py:25
+msgctxt "django_cradmin foreignkey Dropdown placeholder"
+msgid "Search to find and select items ..."
 msgstr ""
 
 #: viewhelpers/formview/create_update_view_mixin.py:216
