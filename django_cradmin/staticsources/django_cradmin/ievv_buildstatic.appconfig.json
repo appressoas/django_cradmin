@@ -1,13 +1,13 @@
 {
   "appname": "django_cradmin",
-  "destinationfolder": "/Users/espenak/code/django_cradmin/django_cradmin/static/django_cradmin/2.0.0a42",
+  "destinationfolder": "/Users/toij/code/django_cradmin/django_cradmin/static/django_cradmin/2.0.0a43",
   "is_in_production_mode": true,
   "keep_temporary_files": false,
   "npmrun_jsbuild": {
     "import_paths": [
-      "/Users/espenak/.virtualenvs/django_cradmin/lib/python3.5/site-packages/ievv_opensource/ievv_jsbase/staticsources/ievv_jsbase/scripts/javascript"
+      "/Users/toij/.virtualenvs/django_cradmin/lib/python3.5/site-packages/ievv_opensource/ievv_jsbase/staticsources/ievv_jsbase/scripts/javascript"
     ]
   },
-  "sourcefolder": "/Users/espenak/code/django_cradmin/django_cradmin/staticsources/django_cradmin",
-  "version": "2.0.0a42"
+  "sourcefolder": "/Users/toij/code/django_cradmin/django_cradmin/staticsources/django_cradmin",
+  "version": "2.0.0a43"
 }
