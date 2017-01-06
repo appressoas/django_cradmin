@@ -183,16 +183,40 @@ class MessageContainer(convenience.AbstractWithOptionalEscapedText):
         ]
 
 
+class CompactMessageContainer(MessageContainer):
+    """
+    Single message container - compact version.
+    """
+    def get_default_bem_variant_list(self):
+        variants = super(CompactMessageContainer, self).get_default_bem_variant_list()
+        variants.append('compact')
+        return variants
+
+
 class MessagesContainer(AbstractMessageContainerMixin,
                         container.AbstractContainerRenderable):
     """
     Messages container - contains zero or more :class:`.MessageContainer`.
     """
+    def get_message_container_class(self, level):
+        return MessageContainer
+
     def create_message_container(self, level, text='', **kwargs):
-        return MessageContainer(level=level, text=text, **kwargs)
+        message_container_class = self.get_message_container_class(level=level)
+        return message_container_class(level=level, text=text, **kwargs)
 
     def get_default_bem_block_or_element(self):
         return 'container'
 
     def get_default_bem_variant_list(self):
         return ['tight']
+
+
+class CompactMessagesContainer(MessagesContainer):
+    """
+    Same as :class:`.MessagesContainer` except that it uses
+    :class:`.CompactMessageContainer` instead of :class:`.MessageContainer`
+    for the messages.
+    """
+    def get_message_container_class(self, level):
+        return CompactMessageContainer

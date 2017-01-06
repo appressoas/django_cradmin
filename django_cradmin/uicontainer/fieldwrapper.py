@@ -100,7 +100,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
 
         Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
         """
-        return messagescontainer.MessagesContainer(
+        return messagescontainer.CompactMessagesContainer(
             test_css_class_suffixes_list=['field-messages']
         )
 
