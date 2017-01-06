@@ -1,4 +1,5 @@
-from . import blocklist
+from . import container
+from . import convenience
 
 
 class UnsupportedMessageLevel(Exception):
@@ -139,13 +140,16 @@ class AbstractMessageContainerMixin(object):
         return self
 
 
-class MessageContainer(blocklist.BlocklistItem):
+class MessageContainer(convenience.AbstractWithOptionalEscapedText):
     """
     Single message container.
-
-    This is a very thin extension of :class:`django_cradmin.uicontainer.blocklist.BlocklistItem`
-    that just adds unit test css classes.
     """
+    level_to_variant_map = {
+        'warning': 'error',
+        'info': 'info',
+        'success': 'info',
+    }
+
     def __init__(self, level, **kwargs):
         """
         Args:
@@ -155,13 +159,23 @@ class MessageContainer(blocklist.BlocklistItem):
         self.level = level
         super(MessageContainer, self).__init__(**kwargs)
 
+    def get_default_html_tag(self):
+        return 'p'
+
+    def get_default_bem_block_or_element(self):
+        return 'message'
+
     def get_default_bem_variant_list(self):
         """
         Default BEM variant set to the level kwarg for :meth:`.__init__`.
 
         So this assumes that a variant matching the level exists.
         """
-        return [self.level]
+        level_variant = self.level_to_variant_map.get(self.level)
+        if level_variant:
+            return [level_variant]
+        else:
+            return []
 
     def get_default_test_css_class_suffixes_list(self):
         return super(MessageContainer, self).get_default_test_css_class_suffixes_list() + [
@@ -169,19 +183,16 @@ class MessageContainer(blocklist.BlocklistItem):
         ]
 
 
-class MessagesContainer(AbstractMessageContainerMixin, blocklist.Blocklist):
+class MessagesContainer(AbstractMessageContainerMixin,
+                        container.AbstractContainerRenderable):
     """
     Messages container - contains zero or more :class:`.MessageContainer`.
-
-    This is a very thin extension of :class:`django_cradmin.uicontainer.blocklist.Blocklist`
-    that:
-
-    - Changes the default variant to :obj:`~django_cradmin.uicontainer.blocklist.Blocklist.VARIANT_TIGHT`.
-    - Implements :class:`.AbstractMessageContainerMixin` with
-      :class:`.MessageContainer` as the message container.
     """
     def create_message_container(self, level, text='', **kwargs):
         return MessageContainer(level=level, text=text, **kwargs)
+
+    def get_default_bem_block_or_element(self):
+        return 'container'
 
     def get_default_bem_variant_list(self):
         return ['tight']

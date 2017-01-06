@@ -29,7 +29,7 @@ class TestMessagesContainer(test.TestCase):
             .bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('.test-messages').cssclasses_set,
-                         {'blocklist', 'blocklist--tight', 'test-messages'})
+                         {'container', 'container--tight', 'test-messages'})
 
     def test_add_message(self):
         container = uicontainer.messagescontainer.MessagesContainer(
@@ -38,7 +38,7 @@ class TestMessagesContainer(test.TestCase):
             .add_message(level='info', text='test')\
             .bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('.blocklist__item').alltext_normalized,
+        self.assertEqual(selector.one('.message').alltext_normalized,
                          'test')
 
     def test_add_warning(self):
@@ -48,7 +48,7 @@ class TestMessagesContainer(test.TestCase):
             .add_warning(text='test')\
             .bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('.blocklist__item.blocklist__item--warning').alltext_normalized,
+        self.assertEqual(selector.one('.message.message--error').alltext_normalized,
                          'test')
 
     def test_add_success(self):
@@ -58,7 +58,7 @@ class TestMessagesContainer(test.TestCase):
             .add_success(text='test')\
             .bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('.blocklist__item.blocklist__item--success').alltext_normalized,
+        self.assertEqual(selector.one('.message.message--info').alltext_normalized,
                          'test')
 
     def test_add_info(self):
@@ -68,5 +68,5 @@ class TestMessagesContainer(test.TestCase):
             .add_info(text='test')\
             .bootstrap()
         selector = htmls.S(container.render())
-        self.assertEqual(selector.one('.blocklist__item.blocklist__item--info').alltext_normalized,
+        self.assertEqual(selector.one('.message.message--info').alltext_normalized,
                          'test')
