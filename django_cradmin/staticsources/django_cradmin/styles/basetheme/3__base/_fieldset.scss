@@ -23,9 +23,10 @@ Styleguide form.8:fieldset
 .fieldset {
     @extend %clearfix;
     padding: vertical-space($spacing)  $spacing  vertical-space($spacing--small);
-    margin-bottom: vertical-space($spacing);
+    margin-bottom: vertical-space($spacing--small);
     border-radius: $border-radius;
     background-color: $color-light;
+    // border: $border-style;
 
 
     &--subtle {
@@ -46,6 +47,10 @@ Styleguide form.8:fieldset
             width: 100%;
             float: left;
             margin-bottom: vertical-space($spacing);
+
+            & + .fieldwrapper {
+                margin-top: vertical-space($spacing, 2.2);
+            }
         }
     }
 }

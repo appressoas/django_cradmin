@@ -107,5 +107,6 @@ Styleguide form.7:fieldwrapper
 
 
 .fieldwrapper {
+    @extend %clearfix;
     margin-bottom: $vertical-rythm--spacing;
 }
