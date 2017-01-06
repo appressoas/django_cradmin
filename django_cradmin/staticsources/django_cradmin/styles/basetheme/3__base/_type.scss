@@ -21,9 +21,12 @@ h3,
 .h3,
 %h3 {
     @include font(header, bold);
-    word-wrap: break-word;
     margin: 0;
     margin-bottom: vertical-space($spacing);
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 h1,
@@ -31,7 +34,10 @@ h1,
 %h1 {
     @include font(header, bold);
     @include font-size(xxxlarge);
-    word-wrap: break-word;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
 
     strong { // TODO?
         @include font(header, bold);
