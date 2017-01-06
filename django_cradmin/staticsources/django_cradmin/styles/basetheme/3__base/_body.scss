@@ -30,6 +30,10 @@ body {
     overflow-x: hidden;
 }
 
+main {
+    min-height: calc(100vh - 440px);
+}
+
 
 /*
 Workaround for javascript widgets that float elements
