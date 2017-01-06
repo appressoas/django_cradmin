@@ -22,14 +22,36 @@ Styleguide form.8:fieldset
 
 .fieldset {
     @extend %clearfix;
+    padding: vertical-space($spacing)  $spacing  vertical-space($spacing--small);
+    margin-bottom: vertical-space($spacing);
+    border-radius: $border-radius;
+    background-color: $color-light;
+
+
+    &--subtle {
+        margin-bottom: 0;
+        padding: 0;
+        border-radius: 0;
+        background-color: transparent;
+    }
 
     &--spaced {
-        margin-bottom: $vertical-rythm--spacing;
+        margin-bottom: vertical-space($spacing);
+    }
+
+    &:not(.fieldset--subtle) {
+        .legend {
+            @include font(header, bold);
+            @include font-size(large);
+            width: 100%;
+            float: left;
+            margin-bottom: vertical-space($spacing);
+        }
     }
 }
 
 .legend {
     @extend %clearfix;
     @extend %h4;
-    margin-bottom: $vertical-rythm;
+    margin-bottom: vertical-space();
 }

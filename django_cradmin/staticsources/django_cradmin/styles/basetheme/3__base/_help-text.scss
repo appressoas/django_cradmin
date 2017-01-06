@@ -16,5 +16,7 @@ Styleguide form.6:help-text
 .help-text {
     @include font(base);
     @include font-size(xsmall);
-    margin-bottom: $unit;
+    color: $color-muted;
+    margin-top: vertical-space();
+    margin-bottom: vertical-space();
 }
