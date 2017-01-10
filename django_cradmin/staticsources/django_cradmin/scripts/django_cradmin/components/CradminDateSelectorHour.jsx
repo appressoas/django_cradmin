@@ -7,8 +7,9 @@ export default class CradminDateSelectorHour extends React.Component {
     return {
       signalNameSpace: null,
       inputClassName: 'input input--inline-xxsmall input--outlined',
+      inputType: 'number',
       extraInputAttributes: {},
-      initialHour: 0
+      initialHour: 0,
     };
   }
 
@@ -63,6 +64,10 @@ export default class CradminDateSelectorHour extends React.Component {
   render() {
     return (
       <input value={this.state.value || ""}
+             type={this.props.inputType}
+             min="0"
+             max="24"
+             step="1"
              onChange={this._handleValueChange}
              className={this.props.inputClassName}
               {...this.props.extraInputAttributes}>

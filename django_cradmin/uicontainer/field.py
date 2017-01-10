@@ -546,8 +546,8 @@ class Date(Field):
             "labelCssClass": "select select--outlined",
             "labelText": ugettext('Day'),
             "initialDay": initial_day,
-            "extraSelectProperties": {
-                "aria-label": ugettext('Day')
+            "extraSelectAttributes": {
+                "aria-label": ugettext('Day'),
             }
         }
 
@@ -562,7 +562,7 @@ class Date(Field):
             "labelText": ugettext('Month'),
             "initialMonth": initial_month,
             "monthLabels": self.get_month_labels(),
-            "extraSelectProperties": {
+            "extraSelectAttributes": {
                 "aria-label": ugettext('Month')
             }
         }
@@ -577,7 +577,7 @@ class Date(Field):
             "labelCssClass": "select select--outlined",
             "labelText": ugettext('Year'),
             "initialYear": initial_year,
-            "extraSelectProperties": {
+            "extraSelectAttributes": {
                 "aria-label": ugettext('Year')
             }
         }
@@ -623,6 +623,9 @@ class DateTime(Date):
             "extraInputAttributes": {
                 "placeholder": pgettext(
                     'hour input placeholder',
+                    'Hour'),
+                "aria-label": pgettext(
+                    'hour input aria label',
                     'Hour')
             }
         }
@@ -639,6 +642,9 @@ class DateTime(Date):
             "extraInputAttributes": {
                 "placeholder": pgettext(
                     'minute input placeholder',
+                    'Minute'),
+                "aria-label": pgettext(
+                    'minute input aria label',
                     'Minute')
             }
         }

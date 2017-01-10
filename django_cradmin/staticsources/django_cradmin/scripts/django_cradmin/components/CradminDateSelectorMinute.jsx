@@ -7,6 +7,7 @@ export default class CradminDateSelectorMinute extends React.Component {
     return {
       signalNameSpace: null,
       inputClassName: 'input input--inline-xxsmall input--outlined',
+      inputType: 'number',
       extraInputAttributes: {},
       initialMinute: 0
     };
@@ -63,6 +64,10 @@ export default class CradminDateSelectorMinute extends React.Component {
   render() {
     return (
       <input value={this.state.value || ""}
+             type={this.props.inputType}
+             min="0"
+             max="59"
+             step="1"
              onChange={this._handleValueChange}
              className={this.props.inputClassName}
               {...this.props.extraInputAttributes}>
