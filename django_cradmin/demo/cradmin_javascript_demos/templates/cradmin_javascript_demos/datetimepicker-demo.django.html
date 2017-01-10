@@ -24,7 +24,6 @@
         <div class="container">
             <h2>Date/time example</h2>
 
-            {# this is the new, simpler attempt. #}
             <span data-ievv-jsbase-widget="cradmin-dateselector-day"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "simpledatepickertestthingy",
@@ -58,7 +57,8 @@
             <span data-ievv-jsbase-widget="cradmin-dateselector-hidden-iso"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "simpledatepickertestthingy",
-                     "inputType": "text"
+                     "inputType": "hidden",
+                     "inputName": "myfield"
                  }'>
             </span>
         </div>

@@ -1,6 +1,12 @@
 from __future__ import unicode_literals
 
+import json
+from xml.sax.saxutils import quoteattr
+
+import datetime
 from django import forms
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext, pgettext
 
 from . import container
 from . import form_mixins
@@ -39,6 +45,10 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
     @property
     def fieldname(self):
         return self.field_wrapper_renderable.fieldname
+
+    @property
+    def value(self):
+        return self.bound_formfield.value()
 
     @property
     def autofocus(self):
@@ -459,6 +469,11 @@ class Field(BaseFieldRenderable):
 
 
 class Select(Field):
+    """
+    Renders ``<select>`` wrapped in a label with
+    the ``select select--outlined select--block`` css
+    classes.
+    """
     template_name = 'django_cradmin/uicontainer/field/select.django.html'
 
     def get_default_bem_block_or_element(self):
@@ -479,3 +494,113 @@ class HiddenField(Field):
     @property
     def rendered_field(self):
         return self.bound_formfield.as_hidden(attrs=self.field_attributes_dict)
+
+
+class Date(Field):
+    """
+    Date input field rendered as 3 styled selects.
+
+    This requires the cradmin javascript, so you will typically need
+    to add::
+
+        def get_javascriptregistry_component_ids(self):
+            return ['django_cradmin_javascript']
+
+    to your views (assuming the use one of the ``django_cradmin.viewhelpers``
+    views).
+    """
+    template_name = 'django_cradmin/uicontainer/field/date.django.html'
+
+    string_datetime_formats = [
+        '%Y-%m-%d',
+        '%Y-%m-%d %H:%M',
+        '%Y-%m-%d %H:%M:%S',
+        '%Y-%m-%dT%H:%M',
+        '%Y-%m-%dT%H:%M:%S',
+    ]
+
+    def get_month_labels(self):
+        return [
+            pgettext('monthname', 'Jan'),
+            pgettext('monthname', 'Feb'),
+            pgettext('monthname', 'Mar'),
+            pgettext('monthname', 'Apr'),
+            pgettext('monthname', 'May'),
+            pgettext('monthname', 'Jun'),
+            pgettext('monthname', 'Jul'),
+            pgettext('monthname', 'Aug'),
+            pgettext('monthname', 'Sep'),
+            pgettext('monthname', 'Oct'),
+            pgettext('monthname', 'Nov'),
+            pgettext('monthname', 'Des')
+        ]
+
+    def make_day_widget_config_dict(self, date_object):
+        if date_object:
+            initial_day = date_object.day
+        else:
+            initial_day = None
+        return {
+            "signalNameSpace": self.fieldname,
+            "labelCssClass": "select",
+            "labelText": ugettext('Day'),
+            "initialDay": initial_day,
+            "extraSelectProperties": {
+                "aria-label": ugettext('Day')
+            }
+        }
+
+    def make_month_widget_config_dict(self, date_object):
+        if date_object:
+            initial_month = date_object.month
+        else:
+            initial_month = None
+        return {
+            "signalNameSpace": self.fieldname,
+            "labelCssClass": "select",
+            "labelText": ugettext('Month'),
+            "initialMonth": initial_month,
+            "monthLabels": self.get_month_labels(),
+            "extraSelectProperties": {
+                "aria-label": ugettext('Month')
+            }
+        }
+
+    def make_year_widget_config_dict(self, date_object):
+        if date_object:
+            initial_year = date_object.year
+        else:
+            initial_year = None
+        return {
+            "signalNameSpace": self.fieldname,
+            "labelCssClass": "select",
+            "labelText": ugettext('Year'),
+            "currentYear": initial_year,
+            "extraSelectProperties": {
+                "aria-label": ugettext('Year')
+            }
+        }
+
+    def _quoted_json(self, dct):
+        return mark_safe(quoteattr(json.dumps(dct)))
+
+    def make_date_object_from_string(self, isodate):
+        for datetime_format in self.string_datetime_formats:
+            try:
+                return datetime.datetime.strptime(isodate, datetime_format)
+            except ValueError:
+                pass
+        return None
+
+    def get_context_data(self, **kwargs):
+        context = super(Date, self).get_context_data(**kwargs)
+        date_object = self.value
+        if date_object and isinstance(date_object, str):
+            date_object = self.make_date_object_from_string(isodate=date_object)
+        context['day_widget_config_json'] = self._quoted_json(
+            self.make_day_widget_config_dict(date_object=date_object))
+        context['month_widget_config_json'] = self._quoted_json(
+            self.make_month_widget_config_dict(date_object=date_object))
+        context['year_widget_config_json'] = self._quoted_json(
+            self.make_year_widget_config_dict(date_object=date_object))
+        return context

@@ -7,6 +7,7 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
     return {
       signalNameSpace: null,
       inputType: 'hidden',
+      inputName: null,
       initialDay: null,
       initialMonth: null,
       initialYear: null,
@@ -90,6 +91,10 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
   }
 
   render() {
-    return <input type={this.props.inputType} value={this.state.value}/>;
+    return <input
+      type={this.props.inputType}
+      name={this.props.inputName}
+      value={this.state.value}
+    />;
   }
 }
