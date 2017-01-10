@@ -515,8 +515,6 @@ class Date(Field):
         '%Y-%m-%d',
         '%Y-%m-%d %H:%M',
         '%Y-%m-%d %H:%M:%S',
-        '%Y-%m-%dT%H:%M',
-        '%Y-%m-%dT%H:%M:%S',
     ]
 
     def get_month_labels(self):
@@ -535,9 +533,9 @@ class Date(Field):
             pgettext('monthname', 'Des')
         ]
 
-    def make_day_widget_config_dict(self, date_object):
-        if date_object:
-            initial_day = date_object.day
+    def make_day_widget_config_dict(self, datetime_object):
+        if datetime_object:
+            initial_day = datetime_object.day
         else:
             initial_day = None
         return {
@@ -550,9 +548,9 @@ class Date(Field):
             }
         }
 
-    def make_month_widget_config_dict(self, date_object):
-        if date_object:
-            initial_month = date_object.month
+    def make_month_widget_config_dict(self, datetime_object):
+        if datetime_object:
+            initial_month = datetime_object.month
         else:
             initial_month = None
         return {
@@ -566,16 +564,16 @@ class Date(Field):
             }
         }
 
-    def make_year_widget_config_dict(self, date_object):
-        if date_object:
-            initial_year = date_object.year
+    def make_year_widget_config_dict(self, datetime_object):
+        if datetime_object:
+            initial_year = datetime_object.year
         else:
             initial_year = None
         return {
             "signalNameSpace": self.fieldname,
             "labelCssClass": "select",
             "labelText": ugettext('Year'),
-            "currentYear": initial_year,
+            "initialYear": initial_year,
             "extraSelectProperties": {
                 "aria-label": ugettext('Year')
             }
@@ -584,7 +582,7 @@ class Date(Field):
     def _quoted_json(self, dct):
         return mark_safe(quoteattr(json.dumps(dct)))
 
-    def make_date_object_from_string(self, isodate):
+    def make_datetime_object_from_string(self, isodate):
         for datetime_format in self.string_datetime_formats:
             try:
                 return datetime.datetime.strptime(isodate, datetime_format)
@@ -594,13 +592,47 @@ class Date(Field):
 
     def get_context_data(self, **kwargs):
         context = super(Date, self).get_context_data(**kwargs)
-        date_object = self.value
-        if date_object and isinstance(date_object, str):
-            date_object = self.make_date_object_from_string(isodate=date_object)
+        datetime_object = self.value
+        if datetime_object and isinstance(datetime_object, str):
+            datetime_object = self.make_datetime_object_from_string(isodate=datetime_object)
+        context['datetime_object'] = datetime_object
         context['day_widget_config_json'] = self._quoted_json(
-            self.make_day_widget_config_dict(date_object=date_object))
+            self.make_day_widget_config_dict(datetime_object=datetime_object))
         context['month_widget_config_json'] = self._quoted_json(
-            self.make_month_widget_config_dict(date_object=date_object))
+            self.make_month_widget_config_dict(datetime_object=datetime_object))
         context['year_widget_config_json'] = self._quoted_json(
-            self.make_year_widget_config_dict(date_object=date_object))
+            self.make_year_widget_config_dict(datetime_object=datetime_object))
+        return context
+
+
+class DateTime(Date):
+    template_name = 'django_cradmin/uicontainer/field/datetime.django.html'
+
+    def make_hour_widget_config_dict(self, datetime_object):
+        if datetime_object:
+            initial_hour = datetime_object.hour
+        else:
+            initial_hour = None
+        return {
+            "signalNameSpace": self.fieldname,
+            "initialHour": initial_hour
+        }
+
+    def make_minute_widget_config_dict(self, datetime_object):
+        if datetime_object:
+            initial_minute = datetime_object.minute
+        else:
+            initial_minute = None
+        return {
+            "signalNameSpace": self.fieldname,
+            "initialMinute": initial_minute
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super(DateTime, self).get_context_data(**kwargs)
+        datetime_object = context['datetime_object']
+        context['hour_widget_config_json'] = self._quoted_json(
+            self.make_hour_widget_config_dict(datetime_object=datetime_object))
+        context['minute_widget_config_json'] = self._quoted_json(
+            self.make_minute_widget_config_dict(datetime_object=datetime_object))
         return context

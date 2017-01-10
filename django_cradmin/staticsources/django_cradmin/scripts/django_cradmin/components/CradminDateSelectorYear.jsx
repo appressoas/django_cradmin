@@ -4,15 +4,15 @@ import ReactDOM from "react-dom";
 
 export default class CradminDateSelectorYear extends React.Component {
   static get defaultProps() {
-    let currentYear = new Date().getUTCFullYear();
+    let initialYear = new Date().getUTCFullYear();
     return {
       signalNameSpace: null,
       labelCssClass: "",
       extraSelectProperties: {},
       labelText: "Year",
-      minYear: currentYear - 10,
-      maxYear: currentYear + 50,
-      currentYear: currentYear
+      minYear: initialYear - 10,
+      maxYear: initialYear + 50,
+      initialYear: initialYear
     };
   }
 
@@ -42,7 +42,7 @@ export default class CradminDateSelectorYear extends React.Component {
       return;
     }
     this.setState({disabled: false});
-    this._sendDateUpdateSignal(this.props.currentYear)
+    this._sendDateUpdateSignal(this.props.initialYear)
   }
 
   _sendDateUpdateSignal(newYear) {
@@ -84,7 +84,7 @@ export default class CradminDateSelectorYear extends React.Component {
   render() {
     return (
       <label className={this.props.labelCssClass}>
-        <select value={this.state.value}
+        <select value={this.state.value || 0}
                 onChange={this._handleYearChange}
                 disabled={this.state.disabled}
                 {...this.props.extraSelectProperties}>

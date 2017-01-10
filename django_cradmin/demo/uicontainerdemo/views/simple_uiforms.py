@@ -21,7 +21,8 @@ class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
 
     def get_initial(self):
         return {
-            'birth_date': datetime.date(2016, 3, 1)
+            'birth_date': datetime.date(2016, 3, 1),
+            'disabled_datetime': datetime.datetime(2019, 12, 24, 18, 20)
         }
 
     def get_form_renderable(self):
@@ -35,7 +36,9 @@ class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
                             fieldname='birth_date',
                             field_renderable=uicontainer.field.Date()),
                         uicontainer.fieldwrapper.FieldWrapper(
-                            fieldname='disabled_datetime'),
+                            fieldname='disabled_datetime',
+                            field_renderable=uicontainer.field.DateTime()
+                        ),
                         uicontainer.button.SubmitPrimary(text='Submit form'),
                     ]
                 )

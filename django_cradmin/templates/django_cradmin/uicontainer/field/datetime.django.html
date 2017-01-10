@@ -1,0 +1,23 @@
+{% extends "./date.django.html" %}
+{% load i18n %}
+{% load cradmin_tags %}
+
+{% block widgets %}
+    {{ block.super }}
+    <span data-ievv-jsbase-widget="cradmin-dateselector-hour"
+         data-ievv-jsbase-widget-config={{ hour_widget_config_json }}>
+    </span>
+    <span data-ievv-jsbase-widget="cradmin-dateselector-minute"
+         data-ievv-jsbase-widget-config={{ minute_widget_config_json }}>
+    </span>
+{% endblock widgets %}
+
+{% block hiddenfield %}
+    <span data-ievv-jsbase-widget="cradmin-dateselector-hidden-isodatetime"
+         data-ievv-jsbase-widget-config='{
+             "signalNameSpace": "{{ me.fieldname }}",
+             "inputType": "text",
+             "inputName": "{{ me.fieldname }}"
+         }'>
+    </span>
+{% endblock hiddenfield %}

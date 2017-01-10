@@ -23,6 +23,9 @@ import DateSelectorDayWidget from './widgets/DateSelectorDayWidget'
 import DateSelectorHiddenIsoDateWidget from './widgets/DateSelectorHiddenIsoDateWidget'
 import AutoSubmitFormAfterCountdownWidget from "./widgets/AutoSubmitFormAfterCountdownWidget";
 import PrintOnClickWidget from "./widgets/PrintOnClickWidget";
+import DateSelectorHourWidget from "./widgets/DateSelectorHourWidget";
+import DateSelectorMinuteWidget from "./widgets/DateSelectorMinuteWidget";
+import DateSelectorHiddenIsoDateTimeWidget from "./widgets/DateSelectorHiddenIsoDateTimeWidget";
 
 
 export default class DjangoCradminAll {
@@ -56,7 +59,10 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-dateselector-year', DateSelectorYearWidget);
     widgetRegistry.registerWidgetClass('cradmin-dateselector-month', DateSelectorMonthWidget);
     widgetRegistry.registerWidgetClass('cradmin-dateselector-day', DateSelectorDayWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-hidden-iso', DateSelectorHiddenIsoDateWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-hour', DateSelectorHourWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-minute', DateSelectorMinuteWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-hidden-isodate', DateSelectorHiddenIsoDateWidget);
+    widgetRegistry.registerWidgetClass('cradmin-dateselector-hidden-isodatetime', DateSelectorHiddenIsoDateTimeWidget);
     widgetRegistry.registerWidgetClass('cradmin-auto-submit-form-after-countdown', AutoSubmitFormAfterCountdownWidget);
     widgetRegistry.registerWidgetClass('cradmin-print-on-click', PrintOnClickWidget);
 

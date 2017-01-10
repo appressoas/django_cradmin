@@ -25,18 +25,23 @@ export default class CradminDateSelectorDay extends React.Component {
       value: this.props.initialDay,
       year: this.props.initialYear,
       month: this.props.initialMonth,
-      // disabled: this.props.initialYear == null || this.props.initialMonth == null
+      disabled: true
     };
-
     this.state.daysInMonth = this._calculateDaysInMonth(this.state)['daysInMonth'];
 
-    this._sendDateUpdateSignal = this._sendDateUpdateSignal.bind(this);
+    this._handleDayChange = this._handleDayChange.bind(this);
     this._onMonthValueChangeSignal = this._onMonthValueChangeSignal.bind(this);
     this._onYearValueChangeSignal = this._onYearValueChangeSignal.bind(this);
+    this._postInit = this._postInit.bind(this);
     this._initializeSignalHandlers();
   }
 
   _initializeSignalHandlers() {
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.initializeValues`,
+      this._name,
+      this._postInit
+    );
     new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MonthValueChange`,
       this._name,
@@ -49,13 +54,13 @@ export default class CradminDateSelectorDay extends React.Component {
     );
   }
 
-  // _checkIfYearAndMonthIsValid() {
-  //   this.setState((prevState, props) => {
-  //     return {
-  //       disabled: prevState.year == null || prevState.month == null
-  //     }
-  //   })
-  // }
+  _postInit() {
+    if (!this.state.disabled) {
+      return;
+    }
+    this.setState({disabled: false});
+    this._sendDateUpdateSignal(this.props.initialDay)
+  }
 
   _calculateDaysInMonth(stateObject) {
     let daysInMonth = 31;
@@ -75,12 +80,6 @@ export default class CradminDateSelectorDay extends React.Component {
   }
 
   _updateDate() {
-    // this._checkIfYearAndMonthIsValid();
-
-    // if (this.state.disabled) {
-    //   return;
-    // }
-
     this.setState((prevState, props) => {
       return this._calculateDaysInMonth(prevState);
     });
@@ -100,10 +99,8 @@ export default class CradminDateSelectorDay extends React.Component {
     this._updateDate();
   }
 
-  _sendDateUpdateSignal(event) {
-    let newDay = event.target.value;
+  _sendDateUpdateSignal(newDay) {
     this.setState({value: newDay});
-
     new window.ievv_jsbase_core.SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.DayValueChange`, newDay, (info) => {
         if (this.logger.isDebug) {
@@ -112,22 +109,27 @@ export default class CradminDateSelectorDay extends React.Component {
       });
   }
 
+  _handleDayChange(event) {
+    let newDay = event.target.value;
+    this._sendDateUpdateSignal(newDay);
+  }
+
   render() {
-    let yearOptions = [
+    let dayOptions = [
       <option key={`${this._name}.dayOption.0`} value={0}>{this.props.labelText}</option>
     ];
     for (let day = 1; day <= this.state.daysInMonth; day++) {
-      yearOptions.push(
+      dayOptions.push(
         <option key={`${this._name}.dayOption.${day}`} value={day}>{day}</option>
       );
     }
 
     return (
       <label className={this.props.labelCssClass}>
-        <select value={this.state.value}
-                onChange={this._sendDateUpdateSignal}
+        <select value={this.state.value || 0}
+                onChange={this._handleDayChange}
                 {...this.props.extraSelectProperties}>
-          {yearOptions}
+          {dayOptions}
         </select>
       </label>
     )

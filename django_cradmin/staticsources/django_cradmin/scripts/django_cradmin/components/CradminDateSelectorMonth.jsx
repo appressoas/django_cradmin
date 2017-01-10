@@ -89,7 +89,7 @@ export default class CradminDateSelectorMonth extends React.Component {
   render() {
     return (
       <label className={this.props.labelCssClass}>
-        <select value={this.state.value}
+        <select value={this.state.value || 0}
                 onChange={this._handleMonthChange}
                 disabled={this.state.disabled}
                 {...this.props.extraSelectProperties}>
