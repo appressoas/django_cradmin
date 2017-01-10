@@ -1,4 +1,5 @@
 import datetime
+
 from django.utils import timezone
 
 
@@ -19,3 +20,11 @@ def default_timezone_datetime(*args, **kwargs):
     """
     return make_aware_in_default_timezone(
         datetime.datetime(*args, **kwargs))
+
+
+def simplified_isoformat_datetime(datetime_object):
+    return datetime_object.strftime('%Y-%m-%d %H:%M')
+
+
+def now_simplified_isoformat():
+    return simplified_isoformat_datetime(timezone.now())
