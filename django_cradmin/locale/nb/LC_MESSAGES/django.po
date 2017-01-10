@@ -6,13 +6,14 @@
 # Espen Angell Kristiansen <espen@appresso.no>, 2015-2017
 # espengetz <espen@inrupt.no>, 2015
 # Magne Westlie <magne@appresso.no>, 2016
+# Tor Ivar Johansen <tor@appresso.no>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-03 11:55+0100\n"
-"PO-Revision-Date: 2017-01-03 10:58+0000\n"
-"Last-Translator: Espen Angell Kristiansen <espen@appresso.no>\n"
+"POT-Creation-Date: 2017-01-10 18:56+0100\n"
+"PO-Revision-Date: 2017-01-10 18:02+0000\n"
+"Last-Translator: Tor Ivar Johansen <tor@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -563,6 +564,10 @@ msgstr "Konfigurer forhåndsvisningen"
 msgid "Please select what you would like to edit"
 msgstr "Velg hva du vil redigere"
 
+#: templates/django_cradmin/uicontainer/field/datetime.django.html:17
+msgid "Time:"
+msgstr "Tid:"
+
 #: templates/django_cradmin/uicontainer/foreignkeyfield/dropdown.django.html:97
 #: templates/django_cradmin/uicontainer/manytomanyfield/dropdown.django.html:92
 #: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:45
@@ -688,17 +693,109 @@ msgstr "Gå"
 msgid "Select ..."
 msgstr "Velg ..."
 
+#: uicontainer/field.py:525
+msgctxt "monthname"
+msgid "Jan"
+msgstr "Jan."
+
+#: uicontainer/field.py:526
+msgctxt "monthname"
+msgid "Feb"
+msgstr "Feb."
+
+#: uicontainer/field.py:527
+msgctxt "monthname"
+msgid "Mar"
+msgstr "Mar."
+
+#: uicontainer/field.py:528
+msgctxt "monthname"
+msgid "Apr"
+msgstr "Apr."
+
+#: uicontainer/field.py:529
+msgctxt "monthname"
+msgid "May"
+msgstr "Mai."
+
+#: uicontainer/field.py:530
+msgctxt "monthname"
+msgid "Jun"
+msgstr "Jun."
+
+#: uicontainer/field.py:531
+msgctxt "monthname"
+msgid "Jul"
+msgstr "Jul."
+
+#: uicontainer/field.py:532
+msgctxt "monthname"
+msgid "Aug"
+msgstr "Aug."
+
+#: uicontainer/field.py:533
+msgctxt "monthname"
+msgid "Sep"
+msgstr "Sep."
+
+#: uicontainer/field.py:534
+msgctxt "monthname"
+msgid "Oct"
+msgstr "Okt."
+
+#: uicontainer/field.py:535
+msgctxt "monthname"
+msgid "Nov"
+msgstr "Nov."
+
+#: uicontainer/field.py:536
+msgctxt "monthname"
+msgid "Des"
+msgstr "Des."
+
+#: uicontainer/field.py:547 uicontainer/field.py:550
+msgid "Day"
+msgstr "Dag"
+
+#: uicontainer/field.py:562 uicontainer/field.py:566
+msgid "Month"
+msgstr "Måned"
+
+#: uicontainer/field.py:578 uicontainer/field.py:581
+msgid "Year"
+msgstr "År"
+
+#: uicontainer/field.py:626
+msgctxt "hour input placeholder"
+msgid "Hour"
+msgstr "Time"
+
+#: uicontainer/field.py:629
+msgctxt "hour input aria label"
+msgid "Hour"
+msgstr "Time"
+
+#: uicontainer/field.py:645
+msgctxt "minute input placeholder"
+msgid "Minute"
+msgstr "Minutt"
+
+#: uicontainer/field.py:648
+msgctxt "minute input aria label"
+msgid "Minute"
+msgstr "Minutt"
+
 #: uicontainer/foreignkeyfield.py:26
 msgctxt "django_cradmin foreignkey Dropdown placeholder"
 msgid "Search to find and select an item ..."
 msgstr "Søk for å finne og velge ..."
 
-#: uicontainer/label.py:110
+#: uicontainer/label.py:124
 msgctxt "django_cradmin optional form field label suffix"
 msgid "optional"
 msgstr "ikke påkrevet"
 
-#: uicontainer/label.py:149
+#: uicontainer/label.py:166
 msgctxt "uicontainer label aria text prefix"
 msgid "Choice for"
 msgstr "Valg for"
