@@ -6,8 +6,8 @@ export default class CradminDateSelectorMinute extends React.Component {
   static get defaultProps() {
     return {
       signalNameSpace: null,
-      inputClassName: 'input input--inline',
-      extraInputProperties: {},
+      inputClassName: 'input input--inline-xxsmall input--outlined',
+      extraInputAttributes: {},
       initialMinute: 0
     };
   }
@@ -65,7 +65,7 @@ export default class CradminDateSelectorMinute extends React.Component {
       <input value={this.state.value || ""}
              onChange={this._handleValueChange}
              className={this.props.inputClassName}
-              {...this.props.extraInputProperties}>
+              {...this.props.extraInputAttributes}>
       </input>
     )
   }

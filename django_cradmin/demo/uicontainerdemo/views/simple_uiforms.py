@@ -19,11 +19,11 @@ class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
     def get_pagetitle(self):
         return 'Simple uicontainer demo'
 
-    def get_initial(self):
-        return {
-            'birth_date': datetime.date(2016, 3, 1),
-            'disabled_datetime': datetime.datetime(2019, 12, 24, 18, 20)
-        }
+    # def get_initial(self):
+    #     return {
+    #         'birth_date': datetime.date(2016, 3, 1),
+    #         'disabled_datetime': datetime.datetime(2019, 12, 24, 18, 20)
+    #     }
 
     def get_form_renderable(self):
         return uicontainer.form.Form(

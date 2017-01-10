@@ -4,56 +4,64 @@ Inputs
 Use the class `.input` to add styling to input fields
 
 Example: Standard input
-    <label>
+    <label class="label">
         Standard input
         <input type="text" placeholder="I set the standard" class="input" />
     </label>
 
 Example: Error input
-    <label>
+    <label class="label">
         I'm a error input!
         <input type="text" placeholder="Omg!" class="input  input--error" />
     </label>
 
 Example: Inline input
-    <label>
+    <label class="label">
         Look,
         <input class="input  input--inline" type="text" placeholder="I'm inline!!" />
         Wuut?
     </label>
 
 Example: Outlined input
-    <label>
+    <label class="label">
         Outlined input
         <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
     </label>
 
 Example: Smaller input
-    <label>
+    <label class="label">
         Small input
         <input type="text" placeholder="I'm tiny!" class="input input--small" />
     </label>
 
+Example: Extra small inline input - suitable for time input and similar
+    <label class="label">
+        Time:
+        <input type="text" placeholder="Hour" class="input input--inline-xxsmall" />
+        :
+        <input type="text" placeholder="Minute" class="input input--inline-xxsmall" />
+    </label>
+
 Example: Standard textarea
-    <label>
+    <label class="label">
         I'm a textarea
         <textarea placeholder="I more got space!" class="input"></textarea>
     </label>
 
 Example: Textarea with error
-    <label>
+    <label class="label">
         I'm a textarea with error!
         <textarea placeholder="Why? :'('" class="input  input--error"></textarea>
     </label>
 
 Example: Textarea with outlines
-    <label>
+    <label class="label">
         I got the outlines!
         <textarea placeholder="Look, outlines!" class="input  input--outlined"></textarea>
     </label>
 
 Example: {type: isolated} Textarea that grows
-    <label>
+    <label class="label">
         I'm a textarea that can grow
         <textarea class="input" placeholder="You can type alot on me!" auto-grow></textarea>
     </label>
@@ -101,6 +109,15 @@ Styleguide form.3:input
         margin: 0;
     }
 
+    &--inline-xxsmall {
+        @include font-size(small);
+        display: inline-block;
+        width: $unit * 16;
+        min-width: $unit * 5;
+        padding: $unit $spacing--small;
+        margin: 0;
+    }
+
     &--half {
         width: calc(50% - #{$spacing--small});
     }
@@ -111,6 +128,10 @@ Styleguide form.3:input
 
     &--xsmall {
         width: $unit * 20;
+    }
+
+    &--xxsmall {
+        width: $unit * 16;
     }
 
     &--outlined {

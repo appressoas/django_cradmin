@@ -6,8 +6,8 @@ export default class CradminDateSelectorDay extends React.Component {
   static get defaultProps() {
     return {
       signalNameSpace: null,
-      labelCssClass: "",
-      extraSelectProperties: {},
+      labelCssClass: "select select--outlined",
+      extraSelectAttributes: {},
       labelText: "Day",
       initialYear: null,
       initialMonth: null,
@@ -128,7 +128,7 @@ export default class CradminDateSelectorDay extends React.Component {
       <label className={this.props.labelCssClass}>
         <select value={this.state.value || 0}
                 onChange={this._handleDayChange}
-                {...this.props.extraSelectProperties}>
+                {...this.props.extraSelectAttributes}>
           {dayOptions}
         </select>
       </label>

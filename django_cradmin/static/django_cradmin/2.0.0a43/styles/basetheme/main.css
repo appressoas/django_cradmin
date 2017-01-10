@@ -3135,56 +3135,64 @@ Inputs
 Use the class `.input` to add styling to input fields
 
 Example: Standard input
-    <label>
+    <label class="label">
         Standard input
         <input type="text" placeholder="I set the standard" class="input" />
     </label>
 
 Example: Error input
-    <label>
+    <label class="label">
         I'm a error input!
         <input type="text" placeholder="Omg!" class="input  input--error" />
     </label>
 
 Example: Inline input
-    <label>
+    <label class="label">
         Look,
         <input class="input  input--inline" type="text" placeholder="I'm inline!!" />
         Wuut?
     </label>
 
 Example: Outlined input
-    <label>
+    <label class="label">
         Outlined input
         <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
     </label>
 
 Example: Smaller input
-    <label>
+    <label class="label">
         Small input
         <input type="text" placeholder="I'm tiny!" class="input input--small" />
     </label>
 
+Example: Extra small inline input - suitable for time input and similar
+    <label class="label">
+        Time:
+        <input type="text" placeholder="Hour" class="input input--inline-xxsmall" />
+        :
+        <input type="text" placeholder="Minute" class="input input--inline-xxsmall" />
+    </label>
+
 Example: Standard textarea
-    <label>
+    <label class="label">
         I'm a textarea
         <textarea placeholder="I more got space!" class="input"></textarea>
     </label>
 
 Example: Textarea with error
-    <label>
+    <label class="label">
         I'm a textarea with error!
         <textarea placeholder="Why? :'('" class="input  input--error"></textarea>
     </label>
 
 Example: Textarea with outlines
-    <label>
+    <label class="label">
         I got the outlines!
         <textarea placeholder="Look, outlines!" class="input  input--outlined"></textarea>
     </label>
 
 Example: {type: isolated} Textarea that grows
-    <label>
+    <label class="label">
         I'm a textarea that can grow
         <textarea class="input" placeholder="You can type alot on me!" auto-grow></textarea>
     </label>
@@ -3233,12 +3241,26 @@ Styleguide form.3:input
       .input--inline {
         font-size: 21px;
         line-height: 28px; } }
+  .input--inline-xxsmall {
+    font-size: 19px;
+    line-height: 28px;
+    display: inline-block;
+    width: 96px;
+    min-width: 30px;
+    padding: 6px 12px;
+    margin: 0; }
+    @media screen and (min-width: 720px) {
+      .input--inline-xxsmall {
+        font-size: 21px;
+        line-height: 28px; } }
   .input--half {
     width: calc(50% - 12px); }
   .input--small {
     width: 216px; }
   .input--xsmall {
     width: 120px; }
+  .input--xxsmall {
+    width: 96px; }
   .input--outlined {
     border: 3px solid #cbcbca; }
   .input--error {
@@ -4920,6 +4942,105 @@ Styleguide components.dropdown
     border-radius: 5px;
     box-shadow: 0 2px 6px rgba(30, 30, 30, 0.3);
     background-color: #fff; }
+
+/* Date input
+
+
+Example:
+
+    <div class="dateinput">
+        <label class="select select--outlined">
+            <select>
+                <option value="0">Day</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <!-- options for the rest of the days of a month -->
+            </select>
+        </label>
+        <label class="select select--outlined">
+            <select>
+                <option value="0">Month</option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <!-- options for the rest of the months -->
+            </select>
+        </label>
+        <label class="select select--outlined">
+            <select>
+                <option value="0">Year</option>
+                <option value="1">2015</option>
+                <option value="1">2016</option>
+                <option value="1">2017</option>
+                <option value="1">2018</option>
+                <option value="1">2019</option>
+                <option value="1">2020</option>
+                <!-- options for more years -->
+            </select>
+        </label>
+    </div>
+
+
+Styleguide components.dateinput
+*/
+.dateinput {
+  margin-bottom: 6px; }
+
+/* Date and time input
+
+
+Example:
+
+    <div class="datetimeinput">
+        <div class="datetimeinput__date">
+            <label class="select select--outlined">
+                <select>
+                    <option value="0">Day</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <!-- options for the rest of the days of a month -->
+                </select>
+            </label>
+            <label class="select select--outlined">
+                <select>
+                    <option value="0">Month</option>
+                    <option value="1">Jan</option>
+                    <option value="2">Feb</option>
+                    <option value="3">Mar</option>
+                    <!-- options for the rest of the months -->
+                </select>
+            </label>
+            <label class="select select--outlined">
+                <select>
+                    <option value="0">Year</option>
+                    <option value="1">2015</option>
+                    <option value="1">2016</option>
+                    <option value="1">2017</option>
+                    <option value="1">2018</option>
+                    <option value="1">2019</option>
+                    <option value="1">2020</option>
+                    <!-- options for more years -->
+                </select>
+            </label>
+        </div>
+        <div class="datetimeinput__time">
+            Time:
+            <input class="input input--outlined input--inline-xxsmall"
+                placeholder="Hour">
+            <input class="input input--outlined input--inline-xxsmall"
+                placeholder="Minute">
+        </div>
+    </div>
+
+
+Styleguide components.datetimeinput
+*/
+.datetimeinput {
+  margin-bottom: 6px; }
+  .datetimeinput__date {
+    margin-bottom: 6px; }
 
 /* AdminUI breadcrumb
 

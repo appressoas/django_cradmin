@@ -517,6 +517,9 @@ class Date(Field):
         '%Y-%m-%d %H:%M:%S',
     ]
 
+    def should_render_as_child_of_label(self):
+        return False
+
     def get_month_labels(self):
         return [
             pgettext('monthname', 'Jan'),
@@ -540,7 +543,7 @@ class Date(Field):
             initial_day = None
         return {
             "signalNameSpace": self.fieldname,
-            "labelCssClass": "select",
+            "labelCssClass": "select select--outlined",
             "labelText": ugettext('Day'),
             "initialDay": initial_day,
             "extraSelectProperties": {
@@ -555,7 +558,7 @@ class Date(Field):
             initial_month = None
         return {
             "signalNameSpace": self.fieldname,
-            "labelCssClass": "select",
+            "labelCssClass": "select select--outlined",
             "labelText": ugettext('Month'),
             "initialMonth": initial_month,
             "monthLabels": self.get_month_labels(),
@@ -571,7 +574,7 @@ class Date(Field):
             initial_year = None
         return {
             "signalNameSpace": self.fieldname,
-            "labelCssClass": "select",
+            "labelCssClass": "select select--outlined",
             "labelText": ugettext('Year'),
             "initialYear": initial_year,
             "extraSelectProperties": {
@@ -615,7 +618,13 @@ class DateTime(Date):
             initial_hour = None
         return {
             "signalNameSpace": self.fieldname,
-            "initialHour": initial_hour
+            "initialHour": initial_hour,
+            "inputClassName": 'input input--inline-xxsmall input--outlined',
+            "extraInputAttributes": {
+                "placeholder": pgettext(
+                    'hour input placeholder',
+                    'Hour')
+            }
         }
 
     def make_minute_widget_config_dict(self, datetime_object):
@@ -625,7 +634,13 @@ class DateTime(Date):
             initial_minute = None
         return {
             "signalNameSpace": self.fieldname,
-            "initialMinute": initial_minute
+            "initialMinute": initial_minute,
+            "inputClassName": 'input input--inline-xxsmall input--outlined',
+            "extraInputAttributes": {
+                "placeholder": pgettext(
+                    'minute input placeholder',
+                    'Minute')
+            }
         }
 
     def get_context_data(self, **kwargs):
