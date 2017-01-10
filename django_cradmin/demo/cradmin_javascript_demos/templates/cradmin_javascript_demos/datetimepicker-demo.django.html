@@ -25,16 +25,16 @@
             <h2>Date/time example</h2>
 
             {# this is the new, simpler attempt. #}
-            <div data-ievv-jsbase-widget="cradmin-dateselector-year"
+            <span data-ievv-jsbase-widget="cradmin-dateselector-day"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "simpledatepickertestthingy",
                      "labelCssClass": "select",
                      "extraSelectProperties": {
-                        "aria-label": "Year"
+                        "aria-label": "Day"
                      }
                  }'>
-            </div>
-            <div data-ievv-jsbase-widget="cradmin-dateselector-month"
+            </span>
+            <span data-ievv-jsbase-widget="cradmin-dateselector-month"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "simpledatepickertestthingy",
                      "labelCssClass": "select",
@@ -42,25 +42,22 @@
                         "aria-label": "Month"
                      }
                  }'>
-            </div>
-            <div data-ievv-jsbase-widget="cradmin-dateselector-day"
+            </span>
+            <span data-ievv-jsbase-widget="cradmin-dateselector-year"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "simpledatepickertestthingy",
                      "labelCssClass": "select",
                      "extraSelectProperties": {
-                        "aria-label": "Day"
+                        "aria-label": "År"
                      }
                  }'>
-            </div>
-            <div data-ievv-jsbase-widget="cradmin-dateselector-hidden-iso"
+            </span>
+            <span data-ievv-jsbase-widget="cradmin-dateselector-hidden-iso"
                  data-ievv-jsbase-widget-config='{
                      "signalNameSpace": "simpledatepickertestthingy",
-                     "labelCssClass": "select",
-                     "extraSelectProperties": {
-                        "aria-label": "Day"
-                     }
+                     "inputType": "text"
                  }'>
-            </div>
+            </span>
         </div>
     </div>
 

@@ -22,8 +22,7 @@ export default class DateSelectorYearWidget extends AbstractWidget {
   }
 
   afterInitializeAllWidgets() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(`${this.config.signalNameSpace}.initializeValues`, null, (info) => {
-      console.log(`Initialize all date-widgets:\n\t${info}`);
-    });
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.initializeValues`);
   }
 }

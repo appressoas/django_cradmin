@@ -25,7 +25,7 @@ export default class CradminDateSelectorDay extends React.Component {
       value: this.props.initialDay,
       year: this.props.initialYear,
       month: this.props.initialMonth,
-      disabled: this.props.initialYear == null || this.props.initialMonth == null
+      // disabled: this.props.initialYear == null || this.props.initialMonth == null
     };
 
     this.state.daysInMonth = this._calculateDaysInMonth(this.state)['daysInMonth'];
@@ -33,7 +33,7 @@ export default class CradminDateSelectorDay extends React.Component {
     this._sendDateUpdateSignal = this._sendDateUpdateSignal.bind(this);
     this._onMonthValueChangeSignal = this._onMonthValueChangeSignal.bind(this);
     this._onYearValueChangeSignal = this._onYearValueChangeSignal.bind(this);
-    this._initializeSignalHandlers()
+    this._initializeSignalHandlers();
   }
 
   _initializeSignalHandlers() {
@@ -49,30 +49,37 @@ export default class CradminDateSelectorDay extends React.Component {
     );
   }
 
-  _checkIfYearAndMonthIsValid() {
-    this.setState((prevState, props) => {
-      return {
-        disabled: prevState.year == null || prevState.month == null
-      }
-    })
-  }
+  // _checkIfYearAndMonthIsValid() {
+  //   this.setState((prevState, props) => {
+  //     return {
+  //       disabled: prevState.year == null || prevState.month == null
+  //     }
+  //   })
+  // }
 
   _calculateDaysInMonth(stateObject) {
-    let date = new Date(Date.UTC(stateObject.year, stateObject.month+1, 0));
+    let daysInMonth = 31;
+    let value = 0;
+    if(stateObject.year != null && stateObject.month != null) {
+      let date = new Date(Date.UTC(stateObject.year, stateObject.month + 1, 0));
+      daysInMonth = date.getUTCDate();
+    }
+    if(stateObject.value != null) {
+      value = stateObject.value;
+    }
 
-    let daysInMonth = date.getUTCDate();
     return {
       daysInMonth: daysInMonth,
-      value: stateObject.value <= daysInMonth ? stateObject.value : daysInMonth
+      value: value <= daysInMonth ? value : daysInMonth
     };
   }
 
   _updateDate() {
-    this._checkIfYearAndMonthIsValid();
+    // this._checkIfYearAndMonthIsValid();
 
-    if (this.state.disabled) {
-      return;
-    }
+    // if (this.state.disabled) {
+    //   return;
+    // }
 
     this.setState((prevState, props) => {
       return this._calculateDaysInMonth(prevState);
@@ -107,11 +114,11 @@ export default class CradminDateSelectorDay extends React.Component {
 
   render() {
     let yearOptions = [
-      <option key={`${this._name}.yearOption.0`} value={0}>{this.props.labelText}</option>
+      <option key={`${this._name}.dayOption.0`} value={0}>{this.props.labelText}</option>
     ];
     for (let day = 1; day <= this.state.daysInMonth; day++) {
       yearOptions.push(
-        <option key={`${this._name}.yearOption.${day}`} value={day}>{day}</option>
+        <option key={`${this._name}.dayOption.${day}`} value={day}>{day}</option>
       );
     }
 
@@ -119,7 +126,6 @@ export default class CradminDateSelectorDay extends React.Component {
       <label className={this.props.labelCssClass}>
         <select value={this.state.value}
                 onChange={this._sendDateUpdateSignal}
-                disabled={this.state.disabled}
                 {...this.props.extraSelectProperties}>
           {yearOptions}
         </select>

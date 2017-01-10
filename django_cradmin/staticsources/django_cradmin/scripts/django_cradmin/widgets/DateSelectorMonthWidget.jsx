@@ -22,8 +22,7 @@ export default class DateSelectorMonthWidget extends AbstractWidget {
   }
 
   afterInitializeAllWidgets() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(`${this.config.signalNameSpace}.initializeValues`, null, (info) => {
-      console.log(`I haz initialized stuffs!:\n\t${info}`);
-    });
+    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.initializeValues`);
   }
 }

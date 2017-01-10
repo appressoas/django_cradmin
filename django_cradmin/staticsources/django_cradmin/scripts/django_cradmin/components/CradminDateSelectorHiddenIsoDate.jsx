@@ -6,10 +6,10 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
   static get defaultProps() {
     return {
       signalNameSpace: null,
-      inputAttributes: {},
+      inputType: 'hidden',
       initialDay: null,
       initialMonth: null,
-      initialYear: null
+      initialYear: null,
     };
   }
 
@@ -56,13 +56,15 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
   _updateStateValue(stateObject) {
     let invalid = stateObject.day == null || stateObject.year == null || stateObject.month == null;
     let date = null;
+    let value = '';
     if (!invalid) {
       date = new Date(Date.UTC(stateObject.year, stateObject.month, stateObject.day));
+      value = date.toISOString().split('T')[0];
     }
 
     return {
       invalid: invalid,
-      value: invalid ? "" : date.toISOString()
+      value: value
     };
   }
 
@@ -88,6 +90,6 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
   }
 
   render() {
-    return <input {...this.props.inputAttributes} type="hidden" value={this.state.value}/>
+    return <input type={this.props.inputType} value={this.state.value}/>;
   }
 }
