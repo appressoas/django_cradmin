@@ -158,7 +158,7 @@ Styleguide form.5:select
             @include font(base, normal);
             @include font-size(small);
             padding: #{$unit + $border-width} #{$spacing--small + $border-width};
-            padding-right: 28px;
+            padding-right: 34px;
         }
     }
 
