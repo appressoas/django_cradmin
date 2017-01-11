@@ -188,6 +188,7 @@ Styleguide form.4:radio
     margin-bottom: $vertical-rythm;
     margin-right: $spacing;
     cursor: pointer;
+    clear: left;
 
     input[type='radio'],
     input[type='checkbox'] {
