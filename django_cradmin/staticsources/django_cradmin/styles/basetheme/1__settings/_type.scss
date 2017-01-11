@@ -3,6 +3,7 @@ Fonts
 
 1. Base font: <div class="sg-font-base">Fallback: </div>
 2. Header font: <div class="sg-font-header">Fallback: </div>
+2. Mono font – mostly for numbers: <div class="sg-font-mono">Fallback: </div>
 
 - Never use other fonts than these.
 - Never specify `font-family` anywhere, use the include method.
@@ -13,6 +14,7 @@ Example: {syntax: scss, preview: false} Use these includes when a font is needed
     @include font(header, bold);
     @include font(base);
     @include font(base, bold);
+    @include font(mono);
 
 Styleguide 2.1
 */
@@ -39,7 +41,7 @@ $fonts: (
         font: $font-base-font,
         fallback: $font-base-fallback,
         normal: $font-base-normal,
-        bold: $font-base-bold
+        bold: $font-base-normal
     ),
     header: (
         font: $font-header-font,

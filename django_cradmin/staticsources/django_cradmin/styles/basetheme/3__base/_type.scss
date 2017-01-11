@@ -2,7 +2,7 @@
 
 Make sure headers represent semantic hierarchy of the page. For pure styling use these classes instead of ruining the hierarchy: `.h1`, `.h2`, `.h3`, `.h4`
 
-Example: {isolated: true}
+Example: {type: isolated}
     <h1>Header 1</h1>
     <h2>Header 2</h2>
     <h3>Header 3</h3>
@@ -101,12 +101,12 @@ ul + h4 {
 
 /* Paragraphs
 
-Example: {isolated: true} Default paragraphs
+Example: {type: isolated} Default paragraphs
     <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
     <p>Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
     <p>The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
 
-Example: {isolated: true} Preamble
+Example: {type: isolated} Preamble
     <p class="preamble">We are going to make placeholder text great again. Greater than ever before. Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot.</p>
 
 Styleguide 2.4
@@ -140,7 +140,7 @@ p,
 
 /* Other type styles
 
-Example: {isolated: true} Strong, italic, muted, alignments, small caps
+Example: {type: isolated} Strong, italic, muted, alignments, small caps
     <p><strong>Strong text</strong></p>
     <p class="italic">Italic text</p>
     <p class="text-muted">Muted text.</p>
