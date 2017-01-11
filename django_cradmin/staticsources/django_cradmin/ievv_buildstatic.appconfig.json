@@ -1,6 +1,6 @@
 {
   "appname": "django_cradmin",
-  "destinationfolder": "/Users/toij/code/django_cradmin/django_cradmin/static/django_cradmin/2.0.0a44",
+  "destinationfolder": "/Users/toij/code/django_cradmin/django_cradmin/static/django_cradmin/2.0.0a45",
   "is_in_production_mode": true,
   "keep_temporary_files": false,
   "npmrun_jsbuild": {
@@ -9,5 +9,5 @@
     ]
   },
   "sourcefolder": "/Users/toij/code/django_cradmin/django_cradmin/staticsources/django_cradmin",
-  "version": "2.0.0a44"
+  "version": "2.0.0a45"
 }
