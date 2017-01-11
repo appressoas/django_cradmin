@@ -69,7 +69,8 @@ ol {
     }
 }
 
-%list, .list {
+%list,
+.list {
     margin-bottom: $vertical-rythm--spacing;
     text-align: left;
 
@@ -124,6 +125,7 @@ ol {
 
     &--contact {
         .list__item {
+            @include hyphens;
             margin-bottom: vertical-space();
 
             &:before {

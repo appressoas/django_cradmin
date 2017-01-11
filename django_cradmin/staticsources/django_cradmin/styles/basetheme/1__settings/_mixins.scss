@@ -260,3 +260,10 @@
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
+// Hyphens
+@mixin hyphens {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
