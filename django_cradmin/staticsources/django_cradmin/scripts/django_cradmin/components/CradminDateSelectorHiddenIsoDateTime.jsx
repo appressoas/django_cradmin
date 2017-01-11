@@ -4,24 +4,24 @@ import CradminDateSelectorHiddenIsoDate from "./CradminDateSelectorHiddenIsoDate
 
 
 export default class CradminDateSelectorHiddenIsoDateTime extends CradminDateSelectorHiddenIsoDate {
+  static get defaultProps() {
+    let defaultProps = super.defaultProps;
+    defaultProps.initialHour = 0;
+    defaultProps.initialMinute = 0;
+    return defaultProps;
+  }
+
   makeInitialState() {
     let initialState = super.makeInitialState();
-    initialState.hour = null;
-    initialState.minute = null;
+    initialState.hour = this.props.initialHour;
+    initialState.minute = this.props.initialMinute;
     return initialState;
   }
 
-  isInvalid(stateObject) {
-    let invalid = super.isInvalid(stateObject)
-      || stateObject.hour == null
-      || stateObject.minute == null;
-    return invalid;
-  }
-
-  makeValueFromStateObject(stateObject) {
+  makeValueFromStateObject() {
     let date = new Date(Date.UTC(
-      stateObject.year, stateObject.month, stateObject.day,
-      stateObject.hour, stateObject.minute));
+      this.state.year, this.state.month, this.state.day,
+      this.state.hour, this.state.minute));
     return date.toISOString().split('.')[0].replace('T', ' ');
   }
 
@@ -43,11 +43,9 @@ export default class CradminDateSelectorHiddenIsoDateTime extends CradminDateSel
 
   _onHourValueChangeSignal(receivedSignalInfo) {
     this.setState({hour: receivedSignalInfo.data});
-    this.updateDate();
   }
 
   _onMinuteValueChangeSignal(receivedSignalInfo) {
     this.setState({minute: receivedSignalInfo.data});
-    this.updateDate();
   }
 }

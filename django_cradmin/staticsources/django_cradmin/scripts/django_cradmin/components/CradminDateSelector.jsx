@@ -7,6 +7,7 @@ import CradminDateSelectorHour from "./CradminDateSelectorHour";
 import CradminDateSelectorMinute from "./CradminDateSelectorMinute";
 import CradminDateSelectorHiddenIsoDate from "./CradminDateSelectorHiddenIsoDate";
 import CradminDateSelectorHiddenIsoDateTime from "./CradminDateSelectorHiddenIsoDateTime";
+import CradminDateSelectorHiddenIsoTime from "./CradminDateSelectorHiddenIsoTime";
 
 export default class CradminDateSelector extends React.Component {
   static get defaultProps() {
@@ -20,7 +21,13 @@ export default class CradminDateSelector extends React.Component {
       monthFieldProps: {},
       yearFieldProps: {},
       hourFieldProps: {},
-      minuteFieldProps: {}
+      minuteFieldProps: {},
+
+      initialDay: null,
+      initialMonth: null,
+      initialYear: null,
+      initialMinute: 0,
+      initialHour: 0
     };
   }
 
@@ -28,15 +35,28 @@ export default class CradminDateSelector extends React.Component {
     if(this.props.includeDate && this.props.includeTime) {
       return <CradminDateSelectorHiddenIsoDateTime
         signalNameSpace={this.props.signalNameSpace}
+        initialDay={this.props.initialDay}
+        initialMonth={this.props.initialMonth}
+        initialYear={this.props.initialYear}
         {...this.props.resultFieldProps}
       />;
     } else if(this.props.includeDate) {
       return <CradminDateSelectorHiddenIsoDate
         signalNameSpace={this.props.signalNameSpace}
+        initialDay={this.props.initialDay}
+        initialMonth={this.props.initialMonth}
+        initialYear={this.props.initialYear}
+        initialHour={this.props.initialHour}
+        initialMinute={this.props.initialMinute}
         {...this.props.resultFieldProps}
       />;
     } else {
-      throw new Error('EEEK');
+      return <CradminDateSelectorHiddenIsoTime
+        signalNameSpace={this.props.signalNameSpace}
+        initialHour={this.props.initialHour}
+        initialMinute={this.props.initialMinute}
+        {...this.props.resultFieldProps}
+      />;
     }
   }
 
@@ -91,6 +111,7 @@ export default class CradminDateSelector extends React.Component {
     return <CradminDateSelectorHour
       key="hour"
       signalNameSpace={this.props.signalNameSpace}
+      initialValue={this.props.initialHour}
       {...this.props.hourFieldProps} />;
   }
 
@@ -103,6 +124,7 @@ export default class CradminDateSelector extends React.Component {
     return <CradminDateSelectorMinute
       key="minute"
       signalNameSpace={this.props.signalNameSpace}
+      initialValue={this.props.initialMinute}
       {...this.props.minuteFieldProps} />;
   }
 

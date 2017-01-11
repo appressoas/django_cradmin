@@ -29,10 +29,6 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
       'django_cradmin.components.CradminDateSelectorHiddenIsoDate');
 
     this.state = this.makeInitialState();
-    let valueObject = this._makeValue(this.state);
-    this.state.value = valueObject.value;
-    this.state.invalid = valueObject.invalid;
-
     this._onDayValueChangeSignal = this._onDayValueChangeSignal.bind(this);
     this._onMonthValueChangeSignal = this._onMonthValueChangeSignal.bind(this);
     this._onYearValueChangeSignal = this._onYearValueChangeSignal.bind(this);
@@ -57,56 +53,38 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
     );
   }
 
-  isInvalid(stateObject) {
-    return stateObject.day == null
-      || stateObject.year == null
-      || stateObject.month == null;
+  isInvalid() {
+    return this.state.day == null
+      || this.state.year == null
+      || this.state.month == null;
   }
 
-  makeValueFromStateObject(stateObject) {
-      let date = new Date(Date.UTC(stateObject.year, stateObject.month, stateObject.day));
+  makeValueFromStateObject() {
+      let date = new Date(Date.UTC(this.state.year, this.state.month, this.state.day));
       return date.toISOString().split('T')[0];
-  }
-
-  _makeValue(stateObject) {
-    let invalid = this.isInvalid(stateObject);
-    let value = '';
-    if (!invalid) {
-      value = this.makeValueFromStateObject(stateObject);
-    }
-
-    return {
-      invalid: invalid,
-      value: value
-    };
-  }
-
-  updateDate() {
-    this.setState((prevState, props) => {
-      return this._makeValue(prevState);
-    })
   }
 
   _onDayValueChangeSignal(receivedSignalInfo) {
     this.setState({day: receivedSignalInfo.data});
-    this.updateDate();
   }
 
   _onMonthValueChangeSignal(receivedSignalInfo) {
     this.setState({month: receivedSignalInfo.data});
-    this.updateDate();
   }
 
   _onYearValueChangeSignal(receivedSignalInfo) {
     this.setState({year: receivedSignalInfo.data});
-    this.updateDate();
   }
 
   render() {
+    let value = '';
+    if(!this.isInvalid()) {
+      value = this.makeValueFromStateObject();
+    }
     return <input
       type={this.props.inputType}
       name={this.props.inputName}
-      value={this.state.value}
+      value={value}
     />;
   }
 }
