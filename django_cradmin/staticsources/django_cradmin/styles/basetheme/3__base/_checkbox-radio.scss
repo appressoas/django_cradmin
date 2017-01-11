@@ -204,14 +204,16 @@ Styleguide form.4:radio
             }
         }
 
-        &:checked ~ .checkbox__label,
-        &:checked ~ .radio__label {
-            // @extend strong;
-        }
-
         &:focus ~ .checkbox__control-indicator,
         &:focus ~ .radio__control-indicator {
             border-color: color(primary, dark);
+        }
+    }
+
+    &:hover {
+        .checkbox__control-indicator,
+        .radio__control-indicator {
+            border-color: color(primary);
         }
     }
 
@@ -224,7 +226,7 @@ Styleguide form.4:radio
         width: $unit * 4;
         height: $unit * 4;
 
-        border-radius: 0;
+        border-radius: $border-radius;
         background-color: $color-light;
         border: $border-width solid color(neutral);
 
@@ -317,12 +319,6 @@ Styleguide form.4:radio
         }
     }
 
-    &:hover {
-        .checkbox__control-indicator {
-            border-color: color(primary);
-        }
-    }
-
     &--light {
         .checkbox__control-indicator {
             background-color: $color-light;
@@ -335,12 +331,6 @@ Styleguide form.4:radio
 }
 
 .radio {
-    &:hover {
-        .radio__control-indicator {
-            border-color: color(neutral);
-        }
-    }
-
     &__control-indicator {
         border-radius: 50%;
 
