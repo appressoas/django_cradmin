@@ -87,7 +87,6 @@ Example: {type: isolated} Datetime
                     min="0"
                     max="24"
                     step="1"
-                    max-length="2"
                     placeholder="00"
                 />
                 <span class="dateinput__separator">:</span>
@@ -97,7 +96,6 @@ Example: {type: isolated} Datetime
                     min="0"
                     max="24"
                     step="1"
-                    max-length="2"
                     placeholder="00"
                 />
             </label>
