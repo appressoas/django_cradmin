@@ -7,7 +7,6 @@ export default class CradminDateSelectorYear extends React.Component {
     let initialYear = new Date().getUTCFullYear();
     return {
       signalNameSpace: null,
-      labelCssClass: "select select--outlined",
       extraSelectAttributes: {},
       labelText: "Year",
       minYear: initialYear - 10,
@@ -83,14 +82,12 @@ export default class CradminDateSelectorYear extends React.Component {
 
   render() {
     return (
-      <label className={this.props.labelCssClass}>
-        <select value={this.state.value || 0}
-                onChange={this._handleYearChange}
-                disabled={this.state.disabled}
-                {...this.props.extraSelectAttributes}>
-          {this.renderOptions()}
-        </select>
-      </label>
+      <select value={this.state.value || 0}
+              onChange={this._handleYearChange}
+              disabled={this.state.disabled}
+              {...this.props.extraSelectAttributes}>
+        {this.renderOptions()}
+      </select>
     )
   }
 }

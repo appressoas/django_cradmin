@@ -6,7 +6,6 @@ export default class CradminDateSelectorMonth extends React.Component {
   static get defaultProps() {
     return {
       signalNameSpace: null,
-      labelCssClass: "select select--outlined",
       extraSelectAttributes: {},
       labelText: "Month",
       monthLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
@@ -88,14 +87,12 @@ export default class CradminDateSelectorMonth extends React.Component {
 
   render() {
     return (
-      <label className={this.props.labelCssClass}>
-        <select value={this.state.value || 0}
-                onChange={this._handleMonthChange}
-                disabled={this.state.disabled}
-                {...this.props.extraSelectAttributes}>
-          {this.renderOptions()}
-        </select>
-      </label>
+      <select value={this.state.value || 0}
+              onChange={this._handleMonthChange}
+              disabled={this.state.disabled}
+              {...this.props.extraSelectAttributes}>
+        {this.renderOptions()}
+      </select>
     )
   }
 }

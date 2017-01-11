@@ -1,13 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 
 export default class CradminDateSelectorHour extends React.Component {
   static get defaultProps() {
     return {
       signalNameSpace: null,
-      inputClassName: 'input input--inline-xxsmall input--outlined',
+      inputClassName: 'dateinput__input',
       inputType: 'number',
+      placeholder: '00',
       extraInputAttributes: {},
       initialHour: 0,
     };
@@ -62,16 +62,14 @@ export default class CradminDateSelectorHour extends React.Component {
   }
 
   render() {
-    return (
-      <input value={this.state.value || ""}
-             type={this.props.inputType}
-             min="0"
-             max="24"
-             step="1"
-             onChange={this._handleValueChange}
-             className={this.props.inputClassName}
-              {...this.props.extraInputAttributes}>
-      </input>
-    )
+    return <input value={this.state.value || ""}
+                  type={this.props.inputType}
+                  min="0"
+                  max="24"
+                  step="1"
+                  onChange={this._handleValueChange}
+                  className={this.props.inputClassName}
+                  placeholder={this.props.placeholder}
+                  {...this.props.extraInputAttributes}/>;
   }
 }
