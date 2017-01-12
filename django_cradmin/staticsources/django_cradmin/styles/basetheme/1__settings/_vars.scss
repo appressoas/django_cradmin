@@ -67,10 +67,11 @@ By default you should never specify heights without variables. If the spacing is
 
 There is a system that creates proper line heights for text. **Never interfer with line-height's neither, since they are essentials to keep a good verticla rhythm.**
 
-# Use these variables for vertical spacings:
-- `$vertical-rythm` - For smaller spacing
-- `$vertical-rythm--spacing` - For default spacings.
-- Pro tip: `$vertical-rythm--spacing * X` - if you need more space
+# Use this function for setting any vertical spacing:
+- `vertical-space(2)` – Plain numbers selects that amount of vertical spaces
+- `vertical-space(20px)` – **px**-numbers select the closest match above the number
+- `vertical-space($spacing)` – Spacing variables is perfered over pixelvalues
+- `vertical-space(20px, 1.2)` – The other argument is to add extra increment if needed _(Simular to `20px * 1.2`)_
 
 Styleguide 1.6
 */
