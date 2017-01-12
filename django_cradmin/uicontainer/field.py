@@ -496,26 +496,27 @@ class HiddenField(Field):
         return self.bound_formfield.as_hidden(attrs=self.field_attributes_dict)
 
 
-class Date(Field):
-    """
-    Date input field rendered as 3 styled selects.
-
-    This requires the cradmin javascript, so you will typically need
-    to add::
-
-        def get_javascriptregistry_component_ids(self):
-            return ['django_cradmin_javascript']
-
-    to your views (assuming the use one of the ``django_cradmin.viewhelpers``
-    views).
-    """
+class AbstractDate(Field):
     template_name = 'django_cradmin/uicontainer/field/date.django.html'
 
     string_datetime_formats = [
         '%Y-%m-%d',
         '%Y-%m-%d %H:%M',
         '%Y-%m-%d %H:%M:%S',
+        '%H:%M',
+        '%H:%M:%S',
     ]
+
+    def __init__(self, debug=False, **kwargs):
+        """
+
+        Args:
+            debug (boolean): If this is ``True``, we render the input field
+                as a text input instead of a hidden input.
+            **kwargs: Kwargs for :class:`.Field`.
+        """
+        self.debug = debug
+        super(AbstractDate, self).__init__(**kwargs)
 
     def should_render_as_child_of_label(self):
         return False
@@ -536,124 +537,195 @@ class Date(Field):
             pgettext('monthname', 'Des')
         ]
 
-    def make_day_widget_config_dict(self, datetime_object):
-        if datetime_object:
-            initial_day = datetime_object.day
-        else:
-            initial_day = None
+    def make_day_field_props(self):
         return {
-            "signalNameSpace": self.fieldname,
-            "labelCssClass": "select select--outlined",
             "labelText": ugettext('Day'),
-            "initialDay": initial_day,
             "extraSelectAttributes": {
                 "aria-label": ugettext('Day'),
             }
         }
 
-    def make_month_widget_config_dict(self, datetime_object):
-        if datetime_object:
-            initial_month = datetime_object.month
-        else:
-            initial_month = None
+    def make_month_field_props(self):
         return {
-            "signalNameSpace": self.fieldname,
-            "labelCssClass": "select select--outlined",
             "labelText": ugettext('Month'),
-            "initialMonth": initial_month,
             "monthLabels": self.get_month_labels(),
             "extraSelectAttributes": {
                 "aria-label": ugettext('Month')
             }
         }
 
-    def make_year_widget_config_dict(self, datetime_object):
-        if datetime_object:
-            initial_year = datetime_object.year
-        else:
-            initial_year = None
+    def make_year_field_props(self):
         return {
-            "signalNameSpace": self.fieldname,
-            "labelCssClass": "select select--outlined",
             "labelText": ugettext('Year'),
-            "initialYear": initial_year,
             "extraSelectAttributes": {
                 "aria-label": ugettext('Year')
             }
         }
 
+    def make_hour_field_props(self):
+        return {
+            "extraSelectAttributes": {
+                "aria-label": ugettext('Hour')
+            }
+        }
+
+    def make_minute_field_props(self):
+        return {
+            "extraSelectAttributes": {
+                "aria-label": ugettext('Minute')
+            }
+        }
+
+    def make_result_field_props(self):
+        if self.debug:
+            input_type = 'text'
+        else:
+            input_type = 'hidden'
+        return {
+            "inputName": self.fieldname,
+            "inputType": input_type,
+        }
+
+    def make_initial_values_dict(self, value_object):
+        initial_values_dict = {}
+        if isinstance(value_object, (datetime.date, datetime.datetime)):
+            initial_values_dict.update({
+                'initialDay': value_object.day,
+                'initialMonth': value_object.month,
+                'initialYear': value_object.year,
+            })
+        if isinstance(value_object, (datetime.time, datetime.datetime)):
+            initial_values_dict.update({
+                'initialHour': value_object.hour,
+                'initialMinute': value_object.minute
+            })
+        print(self.fieldname, initial_values_dict)
+
+        return initial_values_dict
+
+    def get_initial_values(self):
+        value = self.value
+        print(self.fieldname, value)
+        if value and isinstance(value, str):
+            value = self.make_value_object_from_string(value_string=value)
+        if value:
+            return self.make_initial_values_dict(value_object=value)
+        return None
+
+    def make_widget_config_dict(self):
+        config_dict = {
+            "signalNameSpace": self.fieldname,
+            "resultFieldProps": self.make_result_field_props(),
+            "dayFieldProps": self.make_day_field_props(),
+            "monthFieldProps": self.make_month_field_props(),
+            "yearFieldProps": self.make_year_field_props(),
+            "hourFieldProps": self.make_hour_field_props(),
+            "minuteFieldProps": self.make_minute_field_props(),
+        }
+        initial_values = self.get_initial_values()
+        if initial_values:
+            config_dict.update(initial_values)
+        return config_dict
+
     def _quoted_json(self, dct):
         return mark_safe(quoteattr(json.dumps(dct)))
 
-    def make_datetime_object_from_string(self, isodate):
+    def make_value_object_from_string(self, value_string):
         for datetime_format in self.string_datetime_formats:
             try:
-                return datetime.datetime.strptime(isodate, datetime_format)
+                return datetime.datetime.strptime(value_string,
+                                                  datetime_format)
             except ValueError:
                 pass
         return None
 
     def get_context_data(self, **kwargs):
-        context = super(Date, self).get_context_data(**kwargs)
-        datetime_object = self.value
-        if datetime_object and isinstance(datetime_object, str):
-            datetime_object = self.make_datetime_object_from_string(isodate=datetime_object)
-        context['datetime_object'] = datetime_object
-        context['day_widget_config_json'] = self._quoted_json(
-            self.make_day_widget_config_dict(datetime_object=datetime_object))
-        context['month_widget_config_json'] = self._quoted_json(
-            self.make_month_widget_config_dict(datetime_object=datetime_object))
-        context['year_widget_config_json'] = self._quoted_json(
-            self.make_year_widget_config_dict(datetime_object=datetime_object))
+        context = super(AbstractDate, self).get_context_data(**kwargs)
+        context['widget_config_json'] = self._quoted_json(
+            self.make_widget_config_dict())
         return context
 
 
-class DateTime(Date):
-    template_name = 'django_cradmin/uicontainer/field/datetime.django.html'
+class Date(AbstractDate):
+    """
+    Date input field renderable.
 
-    def make_hour_widget_config_dict(self, datetime_object):
-        if datetime_object:
-            initial_hour = datetime_object.hour
-        else:
-            initial_hour = None
-        return {
-            "signalNameSpace": self.fieldname,
-            "initialHour": initial_hour,
-            "inputClassName": 'input input--inline-xxsmall input--outlined',
-            "extraInputAttributes": {
-                "placeholder": pgettext(
-                    'hour input placeholder',
-                    'Hour'),
-                "aria-label": pgettext(
-                    'hour input aria label',
-                    'Hour')
-            }
-        }
+    This requires the cradmin javascript, so you will typically need
+    to add::
 
-    def make_minute_widget_config_dict(self, datetime_object):
-        if datetime_object:
-            initial_minute = datetime_object.minute
-        else:
-            initial_minute = None
-        return {
-            "signalNameSpace": self.fieldname,
-            "initialMinute": initial_minute,
-            "inputClassName": 'input input--inline-xxsmall input--outlined',
-            "extraInputAttributes": {
-                "placeholder": pgettext(
-                    'minute input placeholder',
-                    'Minute'),
-                "aria-label": pgettext(
-                    'minute input aria label',
-                    'Minute')
-            }
-        }
+        def get_javascriptregistry_component_ids(self):
+            return ['django_cradmin_javascript']
 
-    def get_context_data(self, **kwargs):
-        context = super(DateTime, self).get_context_data(**kwargs)
-        datetime_object = context['datetime_object']
-        context['hour_widget_config_json'] = self._quoted_json(
-            self.make_hour_widget_config_dict(datetime_object=datetime_object))
-        context['minute_widget_config_json'] = self._quoted_json(
-            self.make_minute_widget_config_dict(datetime_object=datetime_object))
-        return context
+    to your views (assuming the use one of the ``django_cradmin.viewhelpers``
+    views).
+
+    Examples:
+
+        Basic example::
+
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='birth_date',
+                field_renderable=uicontainer.field.Date())
+    """
+    def make_widget_config_dict(self):
+        widget_config_dict = super(Date, self).make_widget_config_dict()
+        widget_config_dict['includeDate'] = True
+        widget_config_dict['includeTime'] = False
+        return widget_config_dict
+
+
+class DateTime(AbstractDate):
+    """
+    DateTime input field renderable.
+
+    This requires the cradmin javascript, so you will typically need
+    to add::
+
+        def get_javascriptregistry_component_ids(self):
+            return ['django_cradmin_javascript']
+
+    to your views (assuming the use one of the ``django_cradmin.viewhelpers``
+    views).
+
+    Examples:
+
+        Basic example::
+
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='publishing_datetime',
+                field_renderable=uicontainer.field.DateTime())
+    """
+    def make_widget_config_dict(self):
+        widget_config_dict = super(DateTime, self).make_widget_config_dict()
+        widget_config_dict['includeDate'] = True
+        widget_config_dict['includeTime'] = True
+        return widget_config_dict
+
+
+class Time(AbstractDate):
+    """
+    Time input field renderable.
+
+    This requires the cradmin javascript, so you will typically need
+    to add::
+
+        def get_javascriptregistry_component_ids(self):
+            return ['django_cradmin_javascript']
+
+    to your views (assuming the use one of the ``django_cradmin.viewhelpers``
+    views).
+
+    Examples:
+
+        Basic example::
+
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='current_time',
+                field_renderable=uicontainer.field.Time())
+    """
+
+    def make_widget_config_dict(self):
+        widget_config_dict = super(Time, self).make_widget_config_dict()
+        widget_config_dict['includeDate'] = False
+        widget_config_dict['includeTime'] = True
+        return widget_config_dict

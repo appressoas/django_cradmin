@@ -11,6 +11,7 @@ class SimpleForm(forms.Form):
     name = forms.CharField(required=False)
     birth_date = forms.DateField(required=False)
     disabled_datetime = forms.DateTimeField(required=False)
+    my_time_field = forms.TimeField(required=False)
 
 
 class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
@@ -19,11 +20,12 @@ class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
     def get_pagetitle(self):
         return 'Simple uicontainer demo'
 
-    # def get_initial(self):
-    #     return {
-    #         'birth_date': datetime.date(2016, 3, 1),
-    #         'disabled_datetime': datetime.datetime(2019, 12, 24, 18, 20)
-    #     }
+    def get_initial(self):
+        return {
+            'birth_date': datetime.date(2016, 3, 1),
+            'disabled_datetime': datetime.datetime(2019, 12, 24, 18, 20),
+            'my_time_field': datetime.time(2, 9),
+        }
 
     def get_form_renderable(self):
         return uicontainer.form.Form(
@@ -38,6 +40,10 @@ class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
                         uicontainer.fieldwrapper.FieldWrapper(
                             fieldname='disabled_datetime',
                             field_renderable=uicontainer.field.DateTime()
+                        ),
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='my_time_field',
+                            field_renderable=uicontainer.field.Time()
                         ),
                         uicontainer.button.SubmitPrimary(text='Submit form'),
                     ]
