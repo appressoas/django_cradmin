@@ -205,12 +205,6 @@ class MessagesContainer(AbstractMessageContainerMixin,
         message_container_class = self.get_message_container_class(level=level)
         return message_container_class(level=level, text=text, **kwargs)
 
-    def get_default_bem_block_or_element(self):
-        return 'container'
-
-    def get_default_bem_variant_list(self):
-        return ['tight']
-
 
 class CompactMessagesContainer(MessagesContainer):
     """
