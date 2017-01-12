@@ -17,15 +17,8 @@ import PopUpWidget from "./widgets/PopUpWidget";
 import ShowPopupOnClickWidget from "./widgets/ShowPopupOnClickWidget";
 import HidePopupOnClickWidget from "./widgets/HidePopupOnClickWidget";
 import FilterCheckboxFilter from "./widgets/FilterCheckboxWidget";
-import DateSelectorYearWidget from './widgets/DateSelectorYearWidget'
-import DateSelectorMonthWidget from './widgets/DateSelectorMonthWidget'
-import DateSelectorDayWidget from './widgets/DateSelectorDayWidget'
-import DateSelectorHiddenIsoDateWidget from './widgets/DateSelectorHiddenIsoDateWidget'
 import AutoSubmitFormAfterCountdownWidget from "./widgets/AutoSubmitFormAfterCountdownWidget";
 import PrintOnClickWidget from "./widgets/PrintOnClickWidget";
-import DateSelectorHourWidget from "./widgets/DateSelectorHourWidget";
-import DateSelectorMinuteWidget from "./widgets/DateSelectorMinuteWidget";
-import DateSelectorHiddenIsoDateTimeWidget from "./widgets/DateSelectorHiddenIsoDateTimeWidget";
 import DateSelectorWidget from "./widgets/DateSelectorWidget";
 
 
@@ -57,14 +50,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-show-popup', ShowPopupOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-hide-popup', HidePopupOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-filter-checkbox', FilterCheckboxFilter);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-year', DateSelectorYearWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-month', DateSelectorMonthWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-day', DateSelectorDayWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-hour', DateSelectorHourWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-minute', DateSelectorMinuteWidget);
     widgetRegistry.registerWidgetClass('cradmin-dateselector', DateSelectorWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-hidden-isodate', DateSelectorHiddenIsoDateWidget);
-    widgetRegistry.registerWidgetClass('cradmin-dateselector-hidden-isodatetime', DateSelectorHiddenIsoDateTimeWidget);
     widgetRegistry.registerWidgetClass('cradmin-auto-submit-form-after-countdown', AutoSubmitFormAfterCountdownWidget);
     widgetRegistry.registerWidgetClass('cradmin-print-on-click', PrintOnClickWidget);
 
