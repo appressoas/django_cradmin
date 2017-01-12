@@ -10,7 +10,7 @@ export default class CradminDateSelectorDay extends React.Component {
       labelText: "Day",
       initialYear: null,
       initialMonth: null,
-      initialDay: 0
+      initialValue: 0
     };
   }
 
@@ -21,7 +21,7 @@ export default class CradminDateSelectorDay extends React.Component {
       'django_cradmin.components.CradminDateSelectorDay');
 
     this.state = {
-      value: this.props.initialDay,
+      value: this.props.initialValue,
       year: this.props.initialYear,
       month: this.props.initialMonth,
       disabled: true
@@ -58,7 +58,7 @@ export default class CradminDateSelectorDay extends React.Component {
       return;
     }
     this.setState({disabled: false});
-    this._sendDateUpdateSignal(this.props.initialDay)
+    this._sendDateUpdateSignal(this.props.initialValue)
   }
 
   _calculateDaysInMonth(stateObject) {

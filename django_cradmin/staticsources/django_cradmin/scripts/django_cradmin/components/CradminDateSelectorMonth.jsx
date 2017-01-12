@@ -10,7 +10,7 @@ export default class CradminDateSelectorMonth extends React.Component {
       labelText: "Month",
       monthLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
       useLabels: true,
-      initialMonth: new Date().getUTCMonth()
+      initialValue: new Date().getUTCMonth()
     }
   }
 
@@ -44,7 +44,7 @@ export default class CradminDateSelectorMonth extends React.Component {
     }
     this.logger.debug(`month, afterinitializeall...`);
     this.setState({disabled: false});
-    this._sendDateUpdateSignal(this.props.initialMonth);
+    this._sendDateUpdateSignal(this.props.initialValue);
   }
 
   _sendDateUpdateSignal(newMonth) {

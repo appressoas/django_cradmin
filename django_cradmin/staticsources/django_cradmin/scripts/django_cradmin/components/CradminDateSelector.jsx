@@ -25,7 +25,7 @@ export default class CradminDateSelector extends React.Component {
 
       initialDay: null,
       initialMonth: null,
-      initialYear: null,
+      initialYear: new Date().getUTCFullYear(),
       initialMinute: 0,
       initialHour: 0
     };
@@ -64,6 +64,7 @@ export default class CradminDateSelector extends React.Component {
     return <label key="day" className="dateinput__select">
       <CradminDateSelectorDay
         signalNameSpace={this.props.signalNameSpace}
+        initialValue={this.props.initialDay}
         {...this.props.dayFieldProps} />
     </label>;
   }
@@ -72,6 +73,7 @@ export default class CradminDateSelector extends React.Component {
     return <label key="month" className="dateinput__select">
       <CradminDateSelectorMonth
         signalNameSpace={this.props.signalNameSpace}
+        initialValue={this.props.initialMonth}
         {...this.props.monthFieldProps} />
     </label>;
   }
@@ -80,6 +82,7 @@ export default class CradminDateSelector extends React.Component {
     return <label key="year" className="dateinput__select">
       <CradminDateSelectorYear
         signalNameSpace={this.props.signalNameSpace}
+        initialValue={this.props.initialYear}
         {...this.props.yearFieldProps} />
     </label>;
   }

@@ -85,6 +85,7 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
       type={this.props.inputType}
       name={this.props.inputName}
       value={value}
+      readOnly
     />;
   }
 }
