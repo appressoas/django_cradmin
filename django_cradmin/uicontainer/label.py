@@ -86,7 +86,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
             if self.field_wrapper_renderable.field_renderable.should_render_as_child_of_label():
                 return False
             else:
-                return self.field_wrapper_renderable.field_renderable.dom_id
+                return self.field_wrapper_renderable.field_renderable.label_for_dom_id
         else:
             return False
 

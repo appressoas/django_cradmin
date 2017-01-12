@@ -51,6 +51,10 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         return self.bound_formfield.value()
 
     @property
+    def label_for_dom_id(self):
+        return self.dom_id
+
+    @property
     def autofocus(self):
         """
         Get the value for the autofocus attribute of the html element.
@@ -537,11 +541,18 @@ class AbstractDate(Field):
             pgettext('monthname', 'Des')
         ]
 
+    def make_aria_label(self, subfield_label):
+        label_renderable = self.field_wrapper_renderable.label_renderable
+        label_text = getattr(label_renderable, 'label_text', '')
+        if label_text:
+            return '{} - {}'.format(subfield_label, label_text)
+        return subfield_label
+
     def make_day_field_props(self):
         return {
             "labelText": ugettext('Day'),
             "extraSelectAttributes": {
-                "aria-label": ugettext('Day'),
+                "aria-label": self.make_aria_label(ugettext('Day'))
             }
         }
 
@@ -550,7 +561,7 @@ class AbstractDate(Field):
             "labelText": ugettext('Month'),
             "monthLabels": self.get_month_labels(),
             "extraSelectAttributes": {
-                "aria-label": ugettext('Month')
+                "aria-label": self.make_aria_label(ugettext('Month'))
             }
         }
 
@@ -558,21 +569,21 @@ class AbstractDate(Field):
         return {
             "labelText": ugettext('Year'),
             "extraSelectAttributes": {
-                "aria-label": ugettext('Year')
+                "aria-label": self.make_aria_label(ugettext('Year'))
             }
         }
 
     def make_hour_field_props(self):
         return {
-            "extraSelectAttributes": {
-                "aria-label": ugettext('Hour')
+            "extraInputAttributes": {
+                "aria-label": self.make_aria_label(ugettext('Hour'))
             }
         }
 
     def make_minute_field_props(self):
         return {
-            "extraSelectAttributes": {
-                "aria-label": ugettext('Minute')
+            "extraInputAttributes": {
+                "aria-label": self.make_aria_label(ugettext('Minute'))
             }
         }
 
@@ -599,13 +610,10 @@ class AbstractDate(Field):
                 'initialHour': value_object.hour,
                 'initialMinute': value_object.minute
             })
-        print(self.fieldname, initial_values_dict)
-
         return initial_values_dict
 
     def get_initial_values(self):
         value = self.value
-        print(self.fieldname, value)
         if value and isinstance(value, str):
             value = self.make_value_object_from_string(value_string=value)
         if value:
@@ -673,6 +681,15 @@ class Date(AbstractDate):
         widget_config_dict['includeTime'] = False
         return widget_config_dict
 
+    @property
+    def label_for_dom_id(self):
+        return '{}_daysubfield'.format(self.dom_id)
+
+    def make_day_field_props(self):
+        props = super(Date, self).make_day_field_props()
+        props['extraSelectAttributes']['id'] = self.label_for_dom_id
+        return props
+
 
 class DateTime(AbstractDate):
     """
@@ -695,6 +712,16 @@ class DateTime(AbstractDate):
                 fieldname='publishing_datetime',
                 field_renderable=uicontainer.field.DateTime())
     """
+
+    @property
+    def label_for_dom_id(self):
+        return '{}_daysubfield'.format(self.dom_id)
+
+    def make_day_field_props(self):
+        props = super(DateTime, self).make_day_field_props()
+        props['extraSelectAttributes']['id'] = self.label_for_dom_id
+        return props
+
     def make_widget_config_dict(self):
         widget_config_dict = super(DateTime, self).make_widget_config_dict()
         widget_config_dict['includeDate'] = True
@@ -723,6 +750,15 @@ class Time(AbstractDate):
                 fieldname='current_time',
                 field_renderable=uicontainer.field.Time())
     """
+
+    @property
+    def label_for_dom_id(self):
+        return '{}_hoursubfield'.format(self.dom_id)
+
+    def make_hour_field_props(self):
+        props = super(Time, self).make_hour_field_props()
+        props['extraInputAttributes']['id'] = self.label_for_dom_id
+        return props
 
     def make_widget_config_dict(self):
         widget_config_dict = super(Time, self).make_widget_config_dict()
