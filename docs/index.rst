@@ -39,6 +39,7 @@ Writing tests
 .. toctree::
    :maxdepth: 2
 
+   writing_tests_guide
    cradmin_testhelpers
 
 
