@@ -41,7 +41,7 @@ Then we add the database model and queryset for our ``CrAdminInstance``. This is
             return models.Question.objects.all()
 
 
-How to write tests for the crinstance? Follow this link to the writing tests guide.
+How to write tests for the crinstance? Follow this link to the :ref:`writing_tests_guide`.
 
 Building a basic cradmin view
 -----------------------------
