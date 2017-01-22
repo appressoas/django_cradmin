@@ -45,7 +45,7 @@ To add new data, you just need to do add data to the database manually, or progr
 
 Adding data manually (I.E.: Using the Django admin UI)
 ======================================================
-To add data manually, you should first run thr ``recreate_devdb`` management
+To add data manually, you should first run the ``recreate_devdb`` management
 command to make sure you start out with the current up-to-date dataset. Then you
 can use the web-UI or the Django shell to add data. Finally, run::
 
