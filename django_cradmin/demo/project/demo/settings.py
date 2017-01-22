@@ -91,7 +91,7 @@ INSTALLED_APPS = (
     'ievv_opensource.ievv_jsbase',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
