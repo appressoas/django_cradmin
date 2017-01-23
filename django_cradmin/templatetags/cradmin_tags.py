@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 import json
-from xml.sax.saxutils import quoteattr
 
 import django_cradmin
 from django import template
@@ -214,7 +213,7 @@ def cradmin_url(context, instanceid=None, appname=None, roleid=None, viewname=cr
 
             {% load cradmin_tags %}
 
-            <a href='{% cradmin_instance_url instanceid="my_cradmin_instance" appname="pages"
+            <a href='{% cradmin_url instanceid="my_cradmin_instance" appname="pages"
             roleid=10 viewname="edit" %}'>
                 Edit
             </a>
@@ -225,7 +224,7 @@ def cradmin_url(context, instanceid=None, appname=None, roleid=None, viewname=cr
 
             {% load cradmin_tags %}
 
-            <a href='{% cradmin_instance_url instanceid="my_cradmin_instance" appname="pages"
+            <a href='{% cradmin_url instanceid="my_cradmin_instance" appname="pages"
             roleid=10 viewname="list" mode="advanced" orderby="name" %}'>
                 Show advanced pages listing ordered by name
             </a>
