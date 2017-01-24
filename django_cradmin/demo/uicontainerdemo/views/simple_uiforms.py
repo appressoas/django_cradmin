@@ -12,6 +12,7 @@ class SimpleForm(forms.Form):
     birth_date = forms.DateField(required=False)
     disabled_datetime = forms.DateTimeField(required=False)
     my_time_field = forms.TimeField(required=False)
+    demo_type = forms.ChoiceField(required=False)
 
 
 class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
@@ -28,12 +29,18 @@ class SimpleUiContainerView(viewhelpers.formview.WithinRoleFormView):
         }
 
     def get_form_renderable(self):
+        demo_form = self.get_form()
+        demo_form.fields['demo_type'].choices = [(1, 'Foo'), (2, 'Bar')]
         return uicontainer.form.Form(
-            form=self.get_form(),
+            form=demo_form,
             children=[
                 uicontainer.layout.AdminuiPageSectionTight(
                     children=[
                         uicontainer.fieldwrapper.FieldWrapper(fieldname='name'),
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='demo_type',
+                            field_renderable=uicontainer.field.Select()
+                        ),
                         uicontainer.fieldwrapper.FieldWrapper(
                             fieldname='birth_date',
                             field_renderable=uicontainer.field.Date()),
