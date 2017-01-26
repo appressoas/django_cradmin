@@ -2,10 +2,6 @@ from django.db import models, connections
 
 
 class NullsLastQuery(models.sql.query.Query):
-    """
-    Query that uses custom compiler,
-    to utilize PostgreSQL feature of setting position of NULL records
-    """
     def get_compiler(self, using=None, connection=None):
         if using is None and connection is None:
             raise ValueError("Need either using or connection")
@@ -16,21 +12,25 @@ class NullsLastQuery(models.sql.query.Query):
         from django.db.models.sql.compiler import SQLCompiler
 
         class NullsLastSQLCompiler(SQLCompiler):
-            def get_ordering(self):
-                result, group_by = super(NullsLastSQLCompiler, self).get_ordering()
-                if self.connection.vendor == 'postgresql' and result:
-                    result = [line + " NULLS LAST" for line in result]
-                return result, group_by
+            def get_order_by(self):
+                results = super(NullsLastSQLCompiler, self).get_order_by()
+
+                if self.connection.vendor == 'postgresql' and results:
+                    results = [(result[0],
+                                (result[1][0] + " NULLS LAST",) + result[1][1:])
+                               for result in results]
+
+                return results
 
         return NullsLastSQLCompiler(self, connection, using)
 
 
-class NullsLastQuerySet(models.query.QuerySet):
-    def __init__(self, model=None, query=None, using=None):
-        super(NullsLastQuerySet, self).__init__(model, query, using)
+class NullsLastQuerySet(models.QuerySet):
+    def __init__(self, model=None, query=None, using=None, hints=None):
+        super(NullsLastQuerySet, self).__init__(model, query, using, hints)
         self.query = query or NullsLastQuery(self.model)
 
 
 class NullsLastManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return NullsLastQuerySet(self.model, using=self._db)
