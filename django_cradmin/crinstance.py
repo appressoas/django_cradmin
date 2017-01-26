@@ -356,7 +356,14 @@ class BaseCrAdminInstance(object):
         }
         if self.roleclass:
             if roleid is None:
-                roleid = self.get_roleid(self.request.cradmin_role)
+                try:
+                    roleid = self.get_roleid(self.request.cradmin_role)
+                except AttributeError as raisedexception:
+                    error_message = 'For crinstance id="{}" appname="{}" and viewname="{}", {}'.format(
+                        self.id, appname, viewname, raisedexception
+                    )
+                    raise AttributeError(error_message)
+
             kwargs['roleid'] = roleid
         return reverse_cradmin_url(**kwargs)
 
@@ -536,7 +543,6 @@ class BaseCrAdminInstance(object):
         else:
             urls.append(url('^$', cls.get_instance_frontpage_view(),
                             name=cls.id))
-
         return urls
 
     def add_extra_instance_variables_to_request(self, request):

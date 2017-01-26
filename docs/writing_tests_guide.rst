@@ -2,6 +2,7 @@
 Writing tests - writing tests for cradmin instances and apps
 ############################################################
 
+.. _writing_tests_guide:
 
 Writing tests for a CrInstance
 ==============================
