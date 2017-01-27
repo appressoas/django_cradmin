@@ -28,8 +28,11 @@ export default class CradminSearchInput extends React.Component {
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
     this._onClearSearchFieldSignal = this._onClearSearchFieldSignal.bind(this);
     this._onFocusOnSearchFieldSignal = this._onFocusOnSearchFieldSignal.bind(this);
+    this._onMoveItemStartedSignal = this._onMoveItemStartedSignal.bind(this);
+    this._onMoveItemCompleteSignal = this._onMoveItemCompleteSignal.bind(this);
     this.state = {
-      searchString: ''
+      searchString: '',
+      disabled: false
     };
     this.initializeSignalHandlers();
   }
@@ -50,11 +53,33 @@ export default class CradminSearchInput extends React.Component {
       this._name,
       this._onFocusOnSearchFieldSignal
     );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.MoveItemStarted`,
+      this._name,
+      this._onMoveItemStartedSignal
+    );
+    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      `${this.props.signalNameSpace}.MoveItemComplete`,
+      this._name,
+      this._onMoveItemCompleteSignal
+    );
   }
 
   componentWillUnmount() {
     new window.ievv_jsbase_core.SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
+  }
+
+  _onMoveItemStartedSignal() {
+    this.setState({
+      disabled: true
+    });
+  }
+
+  _onMoveItemCompleteSignal() {
+    this.setState({
+      disabled: false
+    });
   }
 
   _onDataListInitializedSignal(receivedSignalInfo) {
@@ -157,6 +182,7 @@ export default class CradminSearchInput extends React.Component {
 
   renderInputField() {
     return <input type="search"
+                  disabled={this.state.disabled}
                   ref={(input) => { this._inputDomElement = input; }}
                   placeholder={this.props.placeholder}
                   className={this.props.className}

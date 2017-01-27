@@ -105,6 +105,10 @@ export default class SortableCradminHtmlList extends React.Component {
     });
   }
 
+  _sendMoveStartedSignal() {
+    this.signalHandler.send(`${this.props.signalNameSpace}.MoveItemStarted`);
+  }
+
   _moveItem(from_index, to_index) {
     if(to_index < 0) {
       throw new Error('Can not move a result item to an index smaller than 0');
@@ -119,6 +123,9 @@ export default class SortableCradminHtmlList extends React.Component {
       throw new Error(
         `Can not move item with key=${itemKey}. We are already in the ` +
         `process of moving the item with key=${this.state.isMovingItemKey}.`);
+    }
+    if(this.state.isMovingItemKey == null) {
+      this._sendMoveStartedSignal();
     }
 
     this._cancelMoveTimer();
