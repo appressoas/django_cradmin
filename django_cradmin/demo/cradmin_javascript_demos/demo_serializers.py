@@ -31,7 +31,8 @@ class FictionalFigureSerializer(serializers.ModelSerializer):
 
     def _get_simple_html(self, fictional_figure):
         html = format_html(
-            '<strong>{name}</strong>',
+            '<strong>#{id} {name}</strong>',
+            id=fictional_figure.id,
             name=fictional_figure.name)
         if fictional_figure.about:
             html += format_html(

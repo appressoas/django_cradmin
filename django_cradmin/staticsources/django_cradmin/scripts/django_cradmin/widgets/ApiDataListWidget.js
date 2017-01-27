@@ -87,4 +87,30 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
         });
     });
   }
+
+  moveItem(movingItemKey, moveBeforeItemKey) {
+    if(!this.config.moveApiUrl) {
+      throw new Error('Move support requires the moveApiUrl config.');
+    }
+    return new Promise((resolve, reject) => {
+      let url = this.config.moveApiUrl;
+      const request = new HttpDjangoJsonRequest(url);
+      const requestData = {
+        moving_object_id: movingItemKey,
+        move_before_object_id: moveBeforeItemKey
+      };
+      if(this.logger.isDebug) {
+        this.logger.debug(
+          `Requesting move with a HTTP POST request to ${url} with the following request data:`,
+          requestData);
+      }
+      request.post(requestData)
+        .then((response) => {
+          resolve(response.bodydata);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }

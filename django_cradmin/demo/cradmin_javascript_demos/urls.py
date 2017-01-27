@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^print-on-click$',
         views.PrintOnClickDemoView.as_view(),
         name="cradmin_print_on_click_demo"),
+    url(r'^api/move-fictional-figures$',
+        demo_api.FictionalFigureMoveView.as_view(),
+        name='cradmin_move_fictional_figures_api'),
     url(r'^api/',
         include(apirouter.urls, namespace='cradmin_javascript_demos_api')),
 ]

@@ -9,6 +9,7 @@ class FictionalFigureAdmin(admin.ModelAdmin):
         'name',
         'about',
         'is_godlike',
+        'sort_index',
     ]
     search_fields = [
         'name',

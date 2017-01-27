@@ -24,11 +24,13 @@ export default class AbstractDataListWidget extends AbstractWidget {
     this._name = `${this.classPath}.${widgetInstanceId}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
       this._name);
+    this.signalHandler = new window.ievv_jsbase_core.SignalHandlerSingleton();
     this._onSearchValueChangeSignal = this._onSearchValueChangeSignal.bind(this);
     this._onSetFiltersSignal = this._onSetFiltersSignal.bind(this);
     this._onPatchFiltersSignal = this._onPatchFiltersSignal.bind(this);
     this._onSelectItemSignal = this._onSelectItemSignal.bind(this);
     this._onDeSelectItemSignal = this._onDeSelectItemSignal.bind(this);
+    this._onMoveItemSignal = this._onMoveItemSignal.bind(this);
     this._onFocusSignal = this._onFocusSignal.bind(this);
     this._onBlurSignal = this._onBlurSignal.bind(this);
     this._onLoadMoreSignal = this._onLoadMoreSignal.bind(this);
@@ -111,52 +113,57 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.SearchValueChange`,
       this._name,
       this._onSearchValueChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.SetFilters`,
       this._name,
       this._onSetFiltersSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.PatchFilters`,
       this._name,
       this._onPatchFiltersSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.SelectItem`,
       this._name,
       this._onSelectItemSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.DeSelectItem`,
       this._name,
       this._onDeSelectItemSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
+      `${this.config.signalNameSpace}.MoveItem`,
+      this._name,
+      this._onMoveItemSignal
+    );
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.Focus`,
       this._name,
       this._onFocusSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.Blur`,
       this._name,
       this._onBlurSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.LoadMore`,
       this._name,
       this._onLoadMoreSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.LoadNextPage`,
       this._name,
       this._onLoadNextPageSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    this.signalHandler.addReceiver(
       `${this.config.signalNameSpace}.LoadPreviousPage`,
       this._name,
       this._onLoadPreviousPageSignal
@@ -165,7 +172,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
 
   destroy() {
     if(this.signalHandlersInitialized) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton()
+      this.signalHandler
         .removeAllSignalsFromReceiver(this._name);
     }
   }
@@ -297,61 +304,61 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _sendIsEmpyDataListSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.IsEmpyDataList`
     );
   }
 
   _sendNotEmpyDataListSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.NotEmpyDataList`
     );
   }
 
   _sendDataChangeSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.DataChange`,
       this.state.data
     );
   }
 
   _sendFiltersChangeSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.FiltersChange`,
       this.state.filtersMap
     );
   }
 
   _sendSelectionChangeSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.SelectionChange`,
       {selectedItemsMap: this.state.selectedItemsMap}
     );
   }
 
   _sendLoadingStateChangeSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.LoadingStateChange`,
       this.state.loading
     );
   }
 
   _sendLostFocusSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.LostFocus`,
       this.state.loading
     );
   }
 
   _sendStateChangeSignal(stateChanges) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.StateChange`,
       {state: this.state, stateChanges: stateChanges}
     );
   }
 
   _sendDataListInitializedSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    this.signalHandler.send(
       `${this.config.signalNameSpace}.DataListInitialized`,
       this.state
     );
@@ -395,6 +402,38 @@ export default class AbstractDataListWidget extends AbstractWidget {
     const itemData = receivedSignalInfo.data;
     this.setState({
       removeSelectedItem: itemData
+    });
+  }
+
+  /**
+   * Called to perform the actual API call that updates the move.
+   * For client side move, this may or may not make sense to handle.
+   *
+   * Calls the moveItem() method to perform the actual move.
+   */
+  _onMoveItemSignal(receivedSignalInfo) {
+    this.logger.debug('Received:', receivedSignalInfo.toString(),
+      receivedSignalInfo.data);
+    this.moveItem(
+        receivedSignalInfo.data.movingItemKey,
+        receivedSignalInfo.data.moveBeforeItemKey)
+      .then((result) => {
+        this.setState({
+          moveItemInProgress: false
+        });
+        this.signalHandler.send(
+          `${this.config.signalNameSpace}.MoveItemComplete`,
+          receivedSignalInfo.data
+        );
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  moveItem(movingItemKey, moveBeforeItemKey) {
+    return new Promise((resolve, reject) => {
+      resolve();
     });
   }
 

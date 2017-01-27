@@ -5,9 +5,14 @@ class FictionalFigure(models.Model):
     name = models.CharField(max_length=255)
     about = models.TextField(null=False, blank=True, default='')
     is_godlike = models.BooleanField(default=False)
+    sort_index = models.PositiveIntegerField(
+        null=True, blank=True, default=None)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['sort_index', 'name']
 
 
 class FictionalFigureCollection(models.Model):

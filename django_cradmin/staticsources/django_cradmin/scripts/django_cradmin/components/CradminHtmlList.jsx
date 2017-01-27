@@ -6,7 +6,8 @@ export default class CradminHtmlList extends React.Component {
 
   static get defaultProps() {
     return {
-      className: 'selectable-list',
+      className: '',
+      itemClassName: '',
       keyAttribute: 'id',
       signalNameSpace: null,
       htmlAttribute: 'html',
