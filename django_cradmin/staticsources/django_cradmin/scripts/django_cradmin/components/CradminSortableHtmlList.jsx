@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import CradminMoveButton from "./CradminMoveButton";
 
 
-export default class SortableCradminHtmlList extends React.Component {
+export default class CradminSortableHtmlList extends React.Component {
 
   static get defaultProps() {
     return {
@@ -34,13 +34,18 @@ export default class SortableCradminHtmlList extends React.Component {
     this._onMoveItemUpSignal = this._onMoveItemUpSignal.bind(this);
     this._onMoveItemDownSignal = this._onMoveItemDownSignal.bind(this);
     this._onMoveItemCompleteSignal = this._onMoveItemCompleteSignal.bind(this);
+    this._onSearchValueChangeEmptySignal = this._onSearchValueChangeEmptySignal.bind(this);
+    this._onSearchValueChangeNotEmptySignal = this._onSearchValueChangeNotEmptySignal.bind(this);
+    this._onLoadingStateChangeSignal = this._onLoadingStateChangeSignal.bind(this);
     this.signalHandler = new window.ievv_jsbase_core.SignalHandlerSingleton();
 
     this.state = {
       dataList: [],
       isMovingItemKey: null,
       isCallingMoveApi: false,
-      hasMorePages: false
+      hasMorePages: false,
+      hasSearchValue: false,
+      dataListIsLoading: false
     };
 
     this.initializeSignalHandlers();
@@ -67,10 +72,44 @@ export default class SortableCradminHtmlList extends React.Component {
       this._name,
       this._onMoveItemCompleteSignal
     );
+    this.signalHandler.addReceiver(
+      `${this.props.signalNameSpace}.SearchValueChangeEmpty`,
+      this._name,
+      this._onSearchValueChangeEmptySignal
+    );
+    this.signalHandler.addReceiver(
+      `${this.props.signalNameSpace}.SearchValueChangeNotEmpty`,
+      this._name,
+      this._onSearchValueChangeNotEmptySignal
+    );
+    this.signalHandler.addReceiver(
+      `${this.props.signalNameSpace}.LoadingStateChange`,
+      this._name,
+      this._onLoadingStateChangeSignal
+    );
   }
 
   componentWillUnmount() {
     this.signalHandler.removeAllSignalsFromReceiver(this._name);
+  }
+
+  _onSearchValueChangeEmptySignal(receivedSignalInfo) {
+    this.setState({
+      hasSearchValue: false
+    });
+  }
+
+  _onSearchValueChangeNotEmptySignal(receivedSignalInfo) {
+    this.setState({
+      hasSearchValue: true
+    });
+  }
+
+  _onLoadingStateChangeSignal(receivedSignalInfo) {
+    const isLoading = receivedSignalInfo.data;
+    this.setState({
+      dataListIsLoading: isLoading
+    });
   }
 
   // _getDataListDebugArray() {
@@ -204,10 +243,10 @@ export default class SortableCradminHtmlList extends React.Component {
   }
 
   canMoveItem(itemData) {
-    return !this.state.isCallingMoveApi && (
-      this.state.isMovingItemKey == null ||
-      this.state.isMovingItemKey == itemData[this.props.keyAttribute]
-    );
+    return !this.state.isCallingMoveApi &&
+        !this.state.dataListIsLoading &&
+        !this.state.hasSearchValue &&
+        (this.state.isMovingItemKey == null || this.state.isMovingItemKey == itemData[this.props.keyAttribute]);
   }
 
   renderMoveUpButton(itemIndex, itemData) {
