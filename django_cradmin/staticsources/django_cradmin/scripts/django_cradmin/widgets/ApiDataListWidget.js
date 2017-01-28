@@ -47,7 +47,11 @@ export default class ApiDataListWidget extends AbstractDataListWidget {
       } else if(filterValueType == 'number') {
         queryString.set(filterKey, filterValue.toString());
       } else if(filterValueType == 'array' || filterValueType == 'set') {
-        queryString.setIterable(filterKey, filterValue);
+        let values = [];
+        for(let value of filterValue) {
+          values.push(`${value}`);
+        }
+        queryString.setIterable(filterKey, values);
       } else if(filterValueType == 'boolean') {
         if(filterValue) {
           queryString.set(filterKey, 'true');
