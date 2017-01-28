@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
-import CradminSortableHtmlList from "../components/CradminSortableHtmlList";
+import CradminHtmlListWithMovableItems from "../components/CradminHtmlListWithMovableItems";
 
 
-export default class SortableHtmlListWidget extends AbstractWidget {
+export default class HtmlListWithMovableItemsWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
     ReactDOM.render(
-      <CradminSortableHtmlList {...this.config} />,
+      <CradminHtmlListWithMovableItems {...this.config} />,
       this.element
     );
   }

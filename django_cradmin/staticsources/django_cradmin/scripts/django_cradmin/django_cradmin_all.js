@@ -20,7 +20,7 @@ import FilterCheckboxFilter from "./widgets/FilterCheckboxWidget";
 import AutoSubmitFormAfterCountdownWidget from "./widgets/AutoSubmitFormAfterCountdownWidget";
 import PrintOnClickWidget from "./widgets/PrintOnClickWidget";
 import DateSelectorWidget from "./widgets/DateSelectorWidget";
-import SortableHtmlListWidget from "./widgets/SortableHtmlListWidget";
+import HtmlListWithMovableItemsWidget from "./widgets/HtmlListWithMovableItemsWidget";
 
 
 export default class DjangoCradminAll {
@@ -44,7 +44,7 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-selectable-list', SelectableListWidget);
     widgetRegistry.registerWidgetClass('cradmin-selected-list', SelectedListWidget);
     widgetRegistry.registerWidgetClass('cradmin-html-list', HtmlListWidget);
-    widgetRegistry.registerWidgetClass('cradmin-sortable-html-list', SortableHtmlListWidget);
+    widgetRegistry.registerWidgetClass('cradmin-html-list-with-movable-items', HtmlListWithMovableItemsWidget);
     widgetRegistry.registerWidgetClass('cradmin-load-more-button', LoadMoreButtonWidget);
     widgetRegistry.registerWidgetClass('cradmin-hidden-input-list', HiddenInputListWidget);
     widgetRegistry.registerWidgetClass('cradmin-signal-router', SignalRouterWidget);

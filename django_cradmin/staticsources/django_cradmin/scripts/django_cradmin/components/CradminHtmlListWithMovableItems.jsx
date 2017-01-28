@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import CradminMoveButton from "./CradminMoveButton";
 
 
-export default class CradminSortableHtmlList extends React.Component {
+export default class CradminHtmlListWithMovableItems extends React.Component {
 
   static get defaultProps() {
     return {
