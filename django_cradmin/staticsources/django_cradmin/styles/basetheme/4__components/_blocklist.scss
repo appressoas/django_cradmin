@@ -216,6 +216,7 @@ Styleguide components.blocklist
         flex-direction: column;
         justify-content: space-between;
         flex: 0 0 60px;
+        min-height: 100px;
 
         &--only-down {
             justify-content: flex-end;
