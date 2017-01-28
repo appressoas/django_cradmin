@@ -94,21 +94,19 @@
 
 {% block body %}
     {{ block.super }}
-    <section class="adminui-page-section adminui-page-section--tight adminui-page-section--center">
-        <p>
-            <a href="/superuser/" class="btn btn-default btn-block btn-lg">
-                Cradmin superuser UI
-            </a>
-        </p>
-        <p>
-            <a href="/styleguide/" class="btn btn-default btn-block btn-lg">
+    <section class="adminui-page-section adminui-page-section--center">
+        <div class="container">
+            <a href="/styleguide/" class="button button--compact">
                 Styleguides
             </a>
-        </p>
-        <p>
-            <a href="/djangoadmin/" class="btn btn-default btn-block btn-lg">
+            <a href="/djangoadmin/" class="button button--compact">
                 Django admin UI
             </a>
-        </p>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'cradmin-authenticate-logout' %}?next=/" class="button button--compact button--fill">
+                    Log out
+                </a>
+            {% endif %}
+        </div>
     </section>
 {% endblock body %}

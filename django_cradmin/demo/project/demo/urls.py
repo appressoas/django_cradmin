@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.views import static
 
 from django_cradmin.demo.listfilterdemo.cradmin import ListfilterDemoCrAdminInstance
@@ -13,6 +14,7 @@ from django_cradmin.demo.project.demo.views.demo_overview import DemoView
 from django_cradmin.demo.uicontainerdemo.cradmin import UIContainerDemoCrAdminInstance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 
+admin.site.login = login_required(admin.site.login)
 
 urlpatterns = [
     url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),

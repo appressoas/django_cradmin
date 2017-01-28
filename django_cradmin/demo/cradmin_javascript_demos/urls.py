@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.routers import DefaultRouter
 
 from django_cradmin.demo.cradmin_javascript_demos import demo_api
@@ -16,7 +17,7 @@ urlpatterns = [
         views.DateTimePickerDemo.as_view(),
         name="cradmin_javascript_demos_datetimepicker"),
     url(r'^datalistwidgets$',
-        views.DataListWidgetsDemo.as_view(),
+        ensure_csrf_cookie(views.DataListWidgetsDemo.as_view()),
         name="cradmin_javascript_demos_datalistwidgets"),
     url(r'^datalistwidgets-uicontainer$',
         views.DataListWidgetsUicontainerDemo.as_view(),
