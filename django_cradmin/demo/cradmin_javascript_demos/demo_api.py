@@ -36,7 +36,10 @@ class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
-class MoveInputSerializer(serializers.Serializer):
+class MoveSerializer(serializers.Serializer):
+    """
+    Serializer for :class:`.FictionalFigureMoveView`.
+    """
     moving_object_id = serializers.IntegerField(required=True)
     move_before_object_id = serializers.IntegerField(
         required=True, allow_null=True)
@@ -49,16 +52,16 @@ class FictionalFigureMoveView(GenericAPIView):
     def get_queryset(self):
         return FictionalFigure.objects.all()
 
-    def __make_ok_response(self, instance):
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
-    def __get_moving_object(self, pk):
+    def __get_fictionalfigure_object(self, pk):
         if pk is None:
             return None
         return self.get_queryset().get(pk=pk)
 
     def __set_sortindex(self, moving_object, move_before_object):
+        """
+        HINT: You can save having to implement sort by using the
+        sortable models. Refer to sortable.rst in the docs for more info.
+        """
         fictional_figures = FictionalFigure.objects.order_by('sort_index', 'name')
         index = 0
         for fictional_figure in fictional_figures:
@@ -76,12 +79,12 @@ class FictionalFigureMoveView(GenericAPIView):
             moving_object.save()
 
     def post(self, request, **kwargs):
-        inputserializer = MoveInputSerializer(data=self.request.data)
-        inputserializer.is_valid(raise_exception=True)
-        moving_object = self.__get_moving_object(
-            pk=inputserializer.validated_data['moving_object_id'])
-        move_before_object = self.__get_moving_object(
-            pk=inputserializer.validated_data['move_before_object_id'])
+        serializer = MoveSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        moving_object = self.__get_fictionalfigure_object(
+            pk=serializer.validated_data['moving_object_id'])
+        move_before_object = self.__get_fictionalfigure_object(
+            pk=serializer.validated_data['move_before_object_id'])
         self.__set_sortindex(moving_object=moving_object,
                              move_before_object=move_before_object)
-        return Response(inputserializer.data)
+        return Response(serializer.data)
