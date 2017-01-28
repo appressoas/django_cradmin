@@ -1,7 +1,8 @@
 from django.db import models, connections
+from django.db.models import sql
 
 
-class NullsLastQuery(models.sql.query.Query):
+class NullsLastQuery(sql.Query):
     def get_compiler(self, using=None, connection=None):
         if using is None and connection is None:
             raise ValueError("Need either using or connection")
@@ -29,8 +30,3 @@ class NullsLastQuerySet(models.QuerySet):
     def __init__(self, model=None, query=None, using=None, hints=None):
         super(NullsLastQuerySet, self).__init__(model, query, using, hints)
         self.query = query or NullsLastQuery(self.model)
-
-
-class NullsLastManager(models.Manager):
-    def get_queryset(self):
-        return NullsLastQuerySet(self.model, using=self._db)

@@ -1,12 +1,14 @@
 from __future__ import unicode_literals
-from builtins import range
+
 from builtins import object
+from builtins import range
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db import transaction
 from django.utils.translation import ugettext_lazy
 
-from django_cradmin.utils.nulls_last_queryset import NullsLastManager, NullsLastQuerySet
+from django_cradmin.utils.nulls_last_queryset import NullsLastQuerySet
 
 
 class SortableQuerySetBase(NullsLastQuerySet):
@@ -16,17 +18,11 @@ class SortableQuerySetBase(NullsLastQuerySet):
     You must use this as a base class if you want to create
     a custom queryset class for models extending :class:`.SortableBase`.
     """
-
-
-class SortableManagerBase(NullsLastManager):
-    """
-    Manager for :class:`.SortableBase`.
-    """
     parent_attribute = None
 
     def _get_filtered_by_parentobject_queryset(self, parentobject):
         filter_kwargs = {self.parent_attribute: parentobject}
-        return self.get_queryset().filter(**filter_kwargs).order_by('sort_index')
+        return self.filter(**filter_kwargs).order_by('sort_index')
 
     def _get_siblings_queryset(self, item):
         """
@@ -187,9 +183,6 @@ class SortableManagerBase(NullsLastManager):
         """
         self.sort_before(item, sort_before_id=None)
 
-    def get_query_set(self):
-        return SortableQuerySetBase(self.model, using=self._db)
-
 
 def validate_sort_index(value):
     if value < 0:
@@ -198,7 +191,7 @@ def validate_sort_index(value):
 
 class SortableBase(models.Model):
     """
-    Used with :class:`.SortableManagerBase` to make models sortable.
+    Used with :class:`.SortableQuerySetBase` to make models sortable.
     """
 
     #: Sort index - ``0`` or higher.
