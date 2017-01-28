@@ -11,6 +11,7 @@ from django.urls import reverse
 
 from django_cradmin import crapp
 from django_cradmin import crsettings
+from django_cradmin import renderable
 from django_cradmin.crinstance import reverse_cradmin_url
 
 register = template.Library()
@@ -368,3 +369,20 @@ def cradmin_test_css_class(suffix):
         return '  test-{}  '.format(suffix)
     else:
         return ''
+
+
+@register.simple_tag
+def cradmin_join_css_classes_list(css_classes_list):
+    """
+    Joins a list of css classes.
+
+    Args:
+        css_classes_list (list): List or other iterable of css class strings.
+
+    Examples:
+
+        Simple example::
+
+            {% cradmin_join_css_classes_list my_list_of_css_classes %}
+    """
+    return renderable.join_css_classes_list(css_classes_list)
