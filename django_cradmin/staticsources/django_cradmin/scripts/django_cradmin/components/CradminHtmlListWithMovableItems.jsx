@@ -7,18 +7,18 @@ export default class CradminHtmlListWithMovableItems extends React.Component {
 
   static get defaultProps() {
     return {
-      keyAttribute: 'id',
       signalNameSpace: null,
+      keyAttribute: 'id',
       htmlAttribute: 'html',
-      loadMoreTreshold: 6,
+      loadMoreTreshold: 3,
       moveApiCallDelayMilliseconds: 2000,
 
       className: 'blocklist',
-      itemClassName: 'blocklist__movable-item-wrapper',
+      itemWrapperClassName: 'blocklist__movable-item-wrapper',
 
-      itemContentClassName: 'blocklist__item blocklist__item--movable',
-      itemContentTagName: 'div',
-      itemContentUrlAttribute: 'url',  // Only used if itemContentTagName is "a"
+      itemClassName: 'blocklist__item blocklist__item--movable',
+      itemTagName: 'div',
+      itemUrlAttribute: 'url',  // Only used if itemTagName is "a"
 
       itemMoveBarClassName: 'blocklist__movesidebar',
       itemMoveBarClassNameFirst: 'blocklist__movesidebar blocklist__movesidebar--only-down',
@@ -33,9 +33,9 @@ export default class CradminHtmlListWithMovableItems extends React.Component {
 
   constructor(props) {
     super(props);
-    this._name = `django_cradmin.components.CradminHtmlList.${this.props.signalNameSpace}`;
+    this._name = `django_cradmin.components.CradminHtmlListWithMovableItems.${this.props.signalNameSpace}`;
     this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
-      'django_cradmin.components.CradminHtmlList');
+      'django_cradmin.components.CradminHtmlListWithMovableItems');
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
@@ -241,18 +241,18 @@ export default class CradminHtmlListWithMovableItems extends React.Component {
   }
 
   getItemUrl(itemData) {
-    return itemData[this.props.itemContentUrlAttribute];
+    return itemData[this.props.itemUrlAttribute];
   }
 
-  renderItemContent(itemData) {
-    let itemContentProps = {
+  renderItem(itemData) {
+    let itemProps = {
       dangerouslySetInnerHTML: {__html: itemData[this.props.htmlAttribute]},
-      className: this.props.itemContentClassName
+      className: this.props.itemClassName
     };
-    if(this.props.itemContentTagName == 'a') {
-      itemContentProps['href'] = this.getItemUrl(itemData);
+    if(this.props.itemTagName == 'a') {
+      itemProps['href'] = this.getItemUrl(itemData);
     }
-    return React.createElement(this.props.itemContentTagName, itemContentProps);
+    return React.createElement(this.props.itemTagName, itemProps);
   }
 
   canMoveItem(itemData) {
@@ -301,9 +301,9 @@ export default class CradminHtmlListWithMovableItems extends React.Component {
     </div>;
   }
 
-  renderItem(itemKey, itemData, itemIndex) {
-    return <div key={itemKey} className={this.props.itemClassName}>
-      {this.renderItemContent(itemData)}
+  renderItemWrapper(itemKey, itemData, itemIndex) {
+    return <div key={itemKey} className={this.props.itemWrapperClassName}>
+      {this.renderItem(itemData)}
       {this.renderMoveBar(itemIndex, itemData)}
     </div>;
   }
@@ -313,7 +313,7 @@ export default class CradminHtmlListWithMovableItems extends React.Component {
     let itemIndex = 0;
     for(let itemData of this.state.dataList) {
       let itemKey = itemData[this.props.keyAttribute];
-      items.push(this.renderItem(itemKey, itemData, itemIndex));
+      items.push(this.renderItemWrapper(itemKey, itemData, itemIndex));
       itemIndex ++;
     }
     return items;

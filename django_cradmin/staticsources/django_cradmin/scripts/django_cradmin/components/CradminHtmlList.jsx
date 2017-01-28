@@ -6,13 +6,14 @@ export default class CradminHtmlList extends React.Component {
 
   static get defaultProps() {
     return {
+      signalNameSpace: null,
+      keyAttribute: 'id',
+      htmlAttribute: 'html',
+      loadMoreTreshold: 3,
+
       className: 'blocklist',
       itemClassName: 'blocklist__item',
-      keyAttribute: 'id',
-      signalNameSpace: null,
-      htmlAttribute: 'html',
-      wrapContentsHtmlTagName: 'div',
-      loadMoreTreshold: 3
+      wrapContentsHtmlTagName: 'div'
     }
   }
 
