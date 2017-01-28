@@ -7,18 +7,27 @@ export default class CradminSortableHtmlList extends React.Component {
 
   static get defaultProps() {
     return {
-      className: '',
-      itemClassName: '',
-      itemContentClassName: '',
-      itemSortContainerClassName: '',
-      sortUpButtonClassName: 'button',
-      sortDownButtonClassName: 'button',
       keyAttribute: 'id',
       signalNameSpace: null,
       htmlAttribute: 'html',
-      wrapContentsHtmlTagName: 'div',
       loadMoreTreshold: 6,
-      moveApiCallDelayMilliseconds: 2000
+      moveApiCallDelayMilliseconds: 2000,
+
+      className: 'blocklist',
+      itemClassName: 'blocklist__movable-item-wrapper',
+
+      itemContentClassName: 'blocklist__item blocklist__item--movable',
+      itemContentTagName: 'div',
+      itemContentUrlAttribute: 'url',  // Only used if itemContentTagName is "a"
+
+      itemMoveBarClassName: 'blocklist__movesidebar',
+      itemMoveBarClassNameFirst: 'blocklist__movesidebar blocklist__movesidebar--only-down',
+      itemMoveBarClassNameLast: 'blocklist__movesidebar blocklist__movesidebar--only-up',
+      moveUpButtonClassName: 'blocklist__movebutton',
+      moveUpButtonIconClassName: 'icon icon-chevron-up--light',
+      moveDownButtonClassName: 'blocklist__movebutton',
+      moveDownButtonIconClassName: 'icon icon-chevron-down--light',
+
     }
   }
 
@@ -231,15 +240,19 @@ export default class CradminSortableHtmlList extends React.Component {
     this._loadMoreIfNeeded();
   }
 
+  getItemUrl(itemData) {
+    return itemData[this.props.itemContentUrlAttribute];
+  }
 
   renderItemContent(itemData) {
-    return React.createElement(
-      this.props.wrapContentsHtmlTagName,
-      {
-        className: this.props.itemContentClassName,
-        dangerouslySetInnerHTML: {__html: itemData[this.props.htmlAttribute]}
-      }
-    );
+    let itemContentProps = {
+      dangerouslySetInnerHTML: {__html: itemData[this.props.htmlAttribute]},
+      className: this.props.itemContentClassName
+    };
+    if(this.props.itemContentTagName == 'a') {
+      itemContentProps['href'] = this.getItemUrl(itemData);
+    }
+    return React.createElement(this.props.itemContentTagName, itemContentProps);
   }
 
   canMoveItem(itemData) {
@@ -251,28 +264,38 @@ export default class CradminSortableHtmlList extends React.Component {
 
   renderMoveUpButton(itemIndex, itemData) {
     if(itemIndex > 0 && this.canMoveItem(itemData)) {
-      return <CradminMoveButton className={this.props.sortUpButtonClassName}
+      return <CradminMoveButton className={this.props.moveUpButtonClassName}
                                 signalNameSpace={this.props.signalNameSpace}
                                 itemIndex={itemIndex}
                                 moveDirection="Up"
-                                label="Up"/>;
+                                iconClassName={this.props.moveUpButtonIconClassName}/>;
     }
     return '';
   }
 
   renderMoveDownButton(itemIndex, itemData) {
     if(itemIndex < (this.state.dataList.length - 1) && this.canMoveItem(itemData)) {
-      return <CradminMoveButton className={this.props.sortDownButtonClassName}
+      return <CradminMoveButton className={this.props.moveDownButtonClassName}
                          signalNameSpace={this.props.signalNameSpace}
                          itemIndex={itemIndex}
                          moveDirection="Down"
-                         label="Down"/>;
+                         iconClassName={this.props.moveDownButtonIconClassName}/>;
     }
     return '';
   }
 
-  renderItemSortContainer(itemIndex, itemData) {
-    return <div className={this.props.itemSortContainerClassName}>
+  makeMoveBarClassName(itemIndex) {
+    if(itemIndex == 0) {
+      return this.props.itemMoveBarClassNameFirst;
+    } else if(itemIndex == (this.state.dataList.length - 1)) {
+      return this.props.itemMoveBarClassNameLast;
+    } else {
+      return this.props.itemMoveBarClassName;
+    }
+  }
+
+  renderMoveBar(itemIndex, itemData) {
+    return <div className={this.makeMoveBarClassName(itemIndex)}>
       {this.renderMoveUpButton(itemIndex, itemData)}
       {this.renderMoveDownButton(itemIndex, itemData)}
     </div>;
@@ -281,7 +304,7 @@ export default class CradminSortableHtmlList extends React.Component {
   renderItem(itemKey, itemData, itemIndex) {
     return <div key={itemKey} className={this.props.itemClassName}>
       {this.renderItemContent(itemData)}
-      {this.renderItemSortContainer(itemIndex, itemData)}
+      {this.renderMoveBar(itemIndex, itemData)}
     </div>;
   }
 

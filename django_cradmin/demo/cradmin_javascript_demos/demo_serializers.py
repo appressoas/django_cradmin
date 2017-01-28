@@ -1,29 +1,26 @@
-from django.template.loader import render_to_string
 from django.utils.html import format_html
 from rest_framework import serializers
 
+from django_cradmin import renderable
 from django_cradmin.demo.cradmin_javascript_demos.models import FictionalFigure
-from django_cradmin.renderable import AbstractRenderableWithCss
 
 
-class StyledHtmlRenderable(AbstractRenderableWithCss):
+class StyledHtmlRenderable(renderable.AbstractRenderable):
     template_name = 'cradmin_javascript_demos/data_list_widget_includes/styled_simple_html_list_element.django.html'
 
     def __init__(self, fictional_figure):
         self.fictional_figure = fictional_figure
-
-    def get_css_classes_list(self):
-        return ['blocklist__item', 'blocklist__item--link']
 
 
 class FictionalFigureSerializer(serializers.ModelSerializer):
     title = serializers.ReadOnlyField(source='name')
     description = serializers.ReadOnlyField(source='about')
     html = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = FictionalFigure
-        fields = ('id', 'title', 'description', 'html')
+        fields = ('id', 'title', 'description', 'html', 'url')
 
     def _get_styled_html(self, fictional_figure):
         renderable = StyledHtmlRenderable(fictional_figure=fictional_figure)
@@ -50,3 +47,6 @@ class FictionalFigureSerializer(serializers.ModelSerializer):
             return self._get_simple_html(fictional_figure)
 
         raise Exception("Invalid html_format: {!r}".format(html_format))
+
+    def get_url(self, fictional_figure):
+        return '#'

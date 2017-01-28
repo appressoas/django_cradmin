@@ -1,5 +1,7 @@
 
-/* List of block elements
+/* Blocklist
+
+List of block elements.
 
 
 Example: Basic block list
@@ -66,7 +68,7 @@ Example: List of links
 
 
 Example: With buttons
-    <section class="blocklist">
+    <div class="blocklist">
         <section class="blocklist__item">
             <h2 class="blocklist__itemtitle">Element 1</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
@@ -82,11 +84,11 @@ Example: With buttons
                 <button class="button">Preview</button>
             </p>
         </section>
-    </section>
+    </div>
 
 
 Example: With tighter spacing
-    <section class="blocklist blocklist--tight">
+    <div class="blocklist blocklist--tight">
         <section class="blocklist__item">
             <h2 class="blocklist__itemtitle">Element 1</h2>
             <p>Inceptos Tristique Bibendum Parturient</p>
@@ -99,7 +101,48 @@ Example: With tighter spacing
             <h2 class="blocklist__itemtitle">Element 3</h2>
             <p>Pellentesque Cursus Adipiscing</p>
         </section>
-    </section>
+    </div>
+
+
+
+Example: With sidebar for moving items
+    <div class="blocklist">
+        <section class="blocklist__movable-item-wrapper">
+            <div class="blocklist__item  blocklist__item--movable">
+                <h2 class="blocklist__itemtitle">Element 1</h2>
+                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+            </div>
+            <div class="blocklist__movesidebar  blocklist__movesidebar--only-down">
+                <button class="blocklist__movebutton" aria-label="Move Element 1 down">
+                    <span class="icon icon-chevron-down--light" aria-hidden="true">
+                </button>
+            </div>
+        </section>
+        <section class="blocklist__movable-item-wrapper">
+            <div class="blocklist__item  blocklist__item--movable">
+                <h2 class="blocklist__itemtitle">Element 2</h2>
+                <p>Tristique Vestibulum Purus</p>
+            </div>
+            <div class="blocklist__movesidebar">
+                <button class="blocklist__movebutton" aria-label="Move Element 2 up">
+                    <span class="icon icon-chevron-up--light" aria-hidden="true">
+                </button>
+                <button class="blocklist__movebutton" aria-label="Move Element 2 down">
+                    <span class="icon icon-chevron-down--light" aria-hidden="true">
+                </button>
+            </div>
+        </section>
+        <section class="blocklist__movable-item-wrapper">
+            <div class="blocklist__item  blocklist__item--movable">
+                Hello world
+            </div>
+            <div class="blocklist__movesidebar  blocklist__movesidebar--only-up">
+                <button class="blocklist__movebutton" aria-label="Move Hello world up">
+                    <span class="icon icon-chevron-up--light" aria-hidden="true">
+                </button>
+            </div>
+        </section>
+    </div>
 
 
 Styleguide components.blocklist
@@ -127,6 +170,12 @@ Styleguide components.blocklist
         *:last-child {
             margin-bottom: 0;
         }
+
+        &--movable {
+            flex: 1 1 auto;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
     }
 
     &__itemtitle {
@@ -151,9 +200,57 @@ Styleguide components.blocklist
         }
     }
 
+    &__movable-item-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    &__movesidebar {
+        border-radius: 0 $border-radius $border-radius 0;
+        overflow: hidden;
+        margin-bottom: $vertical-rythm--spacing;
+        //width: $spacing--large;
+        background-color: color(secondary, dark);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 0 0 60px;
+
+        &--only-down {
+            justify-content: flex-end;
+        }
+        &--only-up {
+            justify-content: flex-start;
+        }
+    }
+
+    &__movebutton {
+        @extend .button;
+        @extend .button--secondary-fill;
+        border: none;
+        border-radius: 0;
+        padding: 10px 0;
+        min-height: 50px;
+        margin: 0;
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: color(secondary, base);
+            color: $color-light;
+        }
+
+        .icon {
+            vertical-align: middle;
+        }
+    }
+
     &--tight {
+        .blocklist__movesidebar,
         .blocklist__item {
             margin-bottom: $border-width;
+        }
+        .blocklist__item {
             padding: vertical-space($spacing--small) $spacing;
         }
     }

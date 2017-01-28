@@ -5,11 +5,12 @@ import DomUtilities from "../utilities/DomUtilities";
 export default class CradminMoveButton extends React.Component {
   static get defaultProps() {
     return {
-      label: '',
+      iconClassName: '',
       className: 'button',
       moveDirection: null,
       itemIndex: null,
-      signalNameSpace: null
+      signalNameSpace: null,
+      ariaLabel: ''
     }
   }
 
@@ -39,13 +40,14 @@ export default class CradminMoveButton extends React.Component {
   }
 
   renderButtonContent() {
-    return this.props.label;
+    return <span className={this.props.iconClassName} aria-hidden="true"/>;
   }
 
   render() {
     return <button type="button"
                    className={this.props.className}
-                   onClick={this.onClick}>
+                   onClick={this.onClick}
+                   aria-label={this.props.ariaLabel}>
       {this.renderButtonContent()}
     </button>;
   }
