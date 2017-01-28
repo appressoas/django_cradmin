@@ -29,7 +29,7 @@ class TestMessagesContainer(test.TestCase):
             .bootstrap()
         selector = htmls.S(container.render())
         self.assertEqual(selector.one('.test-messages').cssclasses_set,
-                         {'container', 'container--tight', 'test-messages'})
+                         {'test-messages'})
 
     def test_add_message(self):
         container = uicontainer.messagescontainer.MessagesContainer(
