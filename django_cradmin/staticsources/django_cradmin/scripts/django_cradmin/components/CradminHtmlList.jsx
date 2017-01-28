@@ -24,8 +24,7 @@ export default class CradminHtmlList extends React.Component {
   makeInitialState() {
     return {
       dataList: [],
-      hasMorePages: false,
-      dataListIsLoading: false
+      hasMorePages: false
     }
   }
 

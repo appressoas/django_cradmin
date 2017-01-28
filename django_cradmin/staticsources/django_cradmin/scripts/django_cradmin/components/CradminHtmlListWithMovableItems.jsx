@@ -31,7 +31,8 @@ export default class CradminHtmlListWithMovableItems extends CradminHtmlList {
     initialState = Object.assign({}, initialState,  {
       isMovingItemKey: null,
       isCallingMoveApi: false,
-      hasSearchValue: false
+      hasSearchValue: false,
+      dataListIsLoading: false
     });
     return initialState;
   }
@@ -186,26 +187,6 @@ export default class CradminHtmlListWithMovableItems extends CradminHtmlList {
       isCallingMoveApi: false,
       isMovingItemKey: null
     });
-  }
-
-  _loadMoreIfNeeded() {
-    if(this.state.hasMorePages && this.state.dataList.length < this.props.loadMoreTreshold) {
-      this.logger.debug('Automatically sending the LoadMore signal because we are below the loadMoreTreshold');
-      this.signalHandler.send(
-        `${this.props.signalNameSpace}.LoadMore`);
-    }
-  }
-
-  _onDataChangeSignal(receivedSignalInfo) {
-    if(this.logger.isDebug) {
-      this.logger.debug(receivedSignalInfo.toString(), receivedSignalInfo.data);
-    }
-    const dataList = receivedSignalInfo.data.results;
-    this.setState({
-      dataList: dataList,
-      hasMorePages: receivedSignalInfo.data.next != null
-    });
-    this._loadMoreIfNeeded();
   }
 
   canMoveItem(itemData) {
