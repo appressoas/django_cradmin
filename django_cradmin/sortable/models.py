@@ -3,6 +3,7 @@ from builtins import range
 from builtins import object
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db import transaction
 from django.utils.translation import ugettext_lazy
 
 from django_cradmin.utils.nulls_last_queryset import NullsLastManager, NullsLastQuerySet
@@ -27,15 +28,13 @@ class SortableManagerBase(NullsLastManager):
         filter_kwargs = {self.parent_attribute: parentobject}
         return self.get_queryset().filter(**filter_kwargs).order_by('sort_index')
 
-    def _get_siblings_queryset(self, item, ignore_none=True):
+    def _get_siblings_queryset(self, item):
         """
         Get the queryset for all the items with the same parent as the given
         item.
         """
         parentobject = getattr(item, self.parent_attribute)
         queryset = self._get_filtered_by_parentobject_queryset(parentobject)
-        if ignore_none:
-            queryset = queryset.exclude(sort_index=None)
         return queryset
 
     def _get_last_sortindex_within_parentobject(self, item):
@@ -63,14 +62,14 @@ class SortableManagerBase(NullsLastManager):
         """
         Used by sort_before to increase the sort_index of all items in the given range
         """
-        increase_index_for_items = [itm.id for itm in items[from_index:to_index]]
+        increase_index_for_items = [item.id for item in items[from_index:to_index]]
         queryset.filter(id__in=increase_index_for_items).update(sort_index=models.F('sort_index') + distance)
 
     def __decrease_sort_index_in_range(self, queryset, items, from_index, to_index, distance=1):
         """
         Used by sort_before to decrease the sort_index of all items in the given range
         """
-        decrease_index_for_items = [itm.id for itm in items[from_index:to_index]]
+        decrease_index_for_items = [item.id for item in items[from_index:to_index]]
         queryset.filter(id__in=decrease_index_for_items).update(sort_index=models.F('sort_index') - distance)
 
     def __fix_sort_order(self, item, sort_before_id):
@@ -99,17 +98,21 @@ class SortableManagerBase(NullsLastManager):
         original_item_index = None
         for index in range(0, len(itemsqueryset)):
             current_item = itemsqueryset[index]
-            if index < current_item.sort_index:
-                # Found gap, need to move rest of list <size-of-gap> step(s) down
-                self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
-                                                    len(itemsqueryset),
-                                                    current_item.sort_index - index)
-                itemsqueryset = self._get_siblings_queryset(item).all()
-            if index > current_item.sort_index:
-                # Found duplicate sort_index, need to move rest of list one step up
-                self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
-                                                    len(itemsqueryset))
-                itemsqueryset = self._get_siblings_queryset(item).all()
+            if current_item.sort_index is None:
+                current_item.sort_index = index
+                current_item.save()
+            else:
+                if index < current_item.sort_index:
+                    # Found gap, need to move rest of list <size-of-gap> step(s) down
+                    self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
+                                                        len(itemsqueryset),
+                                                        current_item.sort_index - index)
+                    itemsqueryset = self._get_siblings_queryset(item).all()
+                if index > current_item.sort_index:
+                    # Found duplicate sort_index, need to move rest of list one step up
+                    self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
+                                                        len(itemsqueryset))
+                    itemsqueryset = self._get_siblings_queryset(item).all()
 
             if item.id == current_item.id:
                 original_item_index = current_item.sort_index
@@ -163,16 +166,18 @@ class SortableManagerBase(NullsLastManager):
         Fetches all items in the same container, and makes changes in the ordering.
         Only the required updates are made.
         """
-        itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(item, sort_before_id)
+        with transaction.atomic():
+            itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(
+                item, sort_before_id)
 
-        if detected_item_sort_index is None:
-            self.__sort_last(itemsqueryset=itemsqueryset, item=item,
-                             original_item_index=original_item_index)
-        else:
-            self.__sort_not_last(itemsqueryset=itemsqueryset,
-                                 item=item,
-                                 detected_item_sort_index=detected_item_sort_index,
+            if detected_item_sort_index is None:
+                self.__sort_last(itemsqueryset=itemsqueryset, item=item,
                                  original_item_index=original_item_index)
+            else:
+                self.__sort_not_last(itemsqueryset=itemsqueryset,
+                                     item=item,
+                                     detected_item_sort_index=detected_item_sort_index,
+                                     original_item_index=original_item_index)
 
     def sort_last(self, item):
         """
