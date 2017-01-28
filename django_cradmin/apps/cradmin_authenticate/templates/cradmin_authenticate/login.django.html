@@ -17,10 +17,12 @@ login
     {{ block.super }}
 
     {% if DJANGO_CRADMIN_FORGOTPASSWORD_URL %}
-        <p id="cradmin_authenticate_login_forgotpasswordlink">
-            <a href="{{ DJANGO_CRADMIN_FORGOTPASSWORD_URL }}">
-                {% trans "Forgot your password?" %}
-            </a>
-        </p>
+        <div class="adminui-page-section adminui-page-section--center">
+            <p id="cradmin_authenticate_login_forgotpasswordlink">
+                <a href="{{ DJANGO_CRADMIN_FORGOTPASSWORD_URL }}">
+                    {% trans "Forgot your password?" %}
+                </a>
+            </p>
+        </div>
     {% endif %}
 {% endblock content %}
