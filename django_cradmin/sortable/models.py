@@ -20,27 +20,31 @@ class SortableQuerySetBase(NullsLastQuerySet):
     """
     parent_attribute = None
 
-    def _get_filtered_by_parentobject_queryset(self, parentobject):
+    def _get_filtered_by_parentobject_queryset(self, parentobject, none_values_order_by):
         filter_kwargs = {self.parent_attribute: parentobject}
-        return self.filter(**filter_kwargs).order_by('sort_index')
+        order_by = ['sort_index']
+        if none_values_order_by:
+            order_by.extend(none_values_order_by)
+        return self.filter(**filter_kwargs).order_by(*order_by)
 
-    def _get_siblings_queryset(self, item):
+    def _get_siblings_queryset(self, item, none_values_order_by):
         """
         Get the queryset for all the items with the same parent as the given
         item.
         """
         parentobject = getattr(item, self.parent_attribute)
-        queryset = self._get_filtered_by_parentobject_queryset(parentobject)
+        queryset = self._get_filtered_by_parentobject_queryset(
+            parentobject, none_values_order_by)
         return queryset
 
-    def _get_last_sortindex_within_parentobject(self, item):
-        lastitem = self._get_siblings_queryset(item).last()
+    def _get_last_sortindex_within_parentobject(self, item, none_values_order_by):
+        lastitem = self._get_siblings_queryset(item, none_values_order_by).last()
         if lastitem:
             return lastitem.sort_index + 1
         else:
             return 0
 
-    def set_newitem_sort_index_to_last(self, item):
+    def set_newitem_sort_index_to_last(self, item, none_values_order_by=None):
         """
         Sets ``item.sort_index`` to the sort_index of the last item
         in the parent + 1. Does not save.
@@ -52,7 +56,8 @@ class SortableQuerySetBase(NullsLastQuerySet):
                              'when creating new items. sort_index or pk is something '
                              'other than None, which indicates that this is not a new '
                              'item - thus the ValueError.')
-        item.sort_index = self._get_last_sortindex_within_parentobject(item)
+        item.sort_index = self._get_last_sortindex_within_parentobject(
+            item, none_values_order_by)
 
     def __increase_sort_index_in_range(self, queryset, items, from_index, to_index, distance=1):
         """
@@ -68,7 +73,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
         decrease_index_for_items = [item.id for item in items[from_index:to_index]]
         queryset.filter(id__in=decrease_index_for_items).update(sort_index=models.F('sort_index') - distance)
 
-    def __fix_sort_order(self, item, sort_before_id):
+    def __fix_sort_order(self, item, sort_before_id, none_values_order_by):
         """
         Iterate over all the items and remove any gaps, fix any duplicate
         sort indexes and find the correct sort index for the item.
@@ -89,7 +94,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
               be the same as ``item.sort_index`` if the item has been moved up or
               down because of gaps or duplicate sort indexes.
         """
-        itemsqueryset = self._get_siblings_queryset(item)
+        itemsqueryset = self._get_siblings_queryset(item, none_values_order_by)
         detected_item_sort_index = None
         original_item_index = None
         for index in range(0, len(itemsqueryset)):
@@ -103,12 +108,12 @@ class SortableQuerySetBase(NullsLastQuerySet):
                     self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                         len(itemsqueryset),
                                                         current_item.sort_index - index)
-                    itemsqueryset = self._get_siblings_queryset(item).all()
+                    itemsqueryset = self._get_siblings_queryset(item, none_values_order_by).all()
                 if index > current_item.sort_index:
                     # Found duplicate sort_index, need to move rest of list one step up
                     self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
                                                         len(itemsqueryset))
-                    itemsqueryset = self._get_siblings_queryset(item).all()
+                    itemsqueryset = self._get_siblings_queryset(item, none_values_order_by).all()
 
             if item.id == current_item.id:
                 original_item_index = current_item.sort_index
@@ -154,7 +159,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
             return
         item.save()
 
-    def sort_before(self, item, sort_before_id):
+    def sort_before(self, item, sort_before_id, none_values_order_by=None):
         """
         Sort a given item before the item with id `sort_before_id`,
         or last if `sort_before_id` is ``None``.
@@ -164,7 +169,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
         """
         with transaction.atomic():
             itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(
-                item, sort_before_id)
+                item, sort_before_id, none_values_order_by)
 
             if detected_item_sort_index is None:
                 self.__sort_last(itemsqueryset=itemsqueryset, item=item,
@@ -175,13 +180,14 @@ class SortableQuerySetBase(NullsLastQuerySet):
                                      detected_item_sort_index=detected_item_sort_index,
                                      original_item_index=original_item_index)
 
-    def sort_last(self, item):
+    def sort_last(self, item, none_values_order_by=None):
         """
         Just a shortcut for::
 
             self.sort_before(item, sort_before_id=None)
         """
-        self.sort_before(item, sort_before_id=None)
+        self.sort_before(item, sort_before_id=None,
+                         none_values_order_by=none_values_order_by)
 
 
 def validate_sort_index(value):

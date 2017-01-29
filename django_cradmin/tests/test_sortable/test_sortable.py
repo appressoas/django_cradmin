@@ -42,7 +42,7 @@ class TestSortableItem(test.TestCase):
         reordered = [si.id for si in SortableItem.objects.all().order_by('sort_index')]
         self.assertEquals(reordered, [i2.id, i3.id, i4.id, i5.id, i6.id, i1.id])
 
-    def test_sort_item_last_handles_none(self):
+    def test_sort_last_handles_none(self):
         container = self._create_container()
         other_item1 = mommy.make(SortableItem,
                                  container=container,
@@ -60,6 +60,31 @@ class TestSortableItem(test.TestCase):
         self.assertEqual(other_item1.sort_index, 0)
         self.assertEqual(other_item2.sort_index, 1)
         self.assertEqual(moving_item.sort_index, 2)
+
+    def test_sort_before_handles_none(self):
+        container = self._create_container()
+        other_item1 = mommy.make(SortableItem,
+                                 container=container,
+                                 name='a',
+                                 sort_index=None)
+        other_item2 = mommy.make(SortableItem,
+                                 container=container,
+                                 name='b',
+                                 sort_index=None)
+        other_item3 = mommy.make(SortableItem,
+                                 container=container,
+                                 name='c',
+                                 sort_index=None)
+        moving_item = mommy.make(SortableItem, container=container, sort_index=None)
+        SortableItem.objects.sort_before(moving_item, other_item1.id)
+        other_item1.refresh_from_db()
+        other_item2.refresh_from_db()
+        other_item3.refresh_from_db()
+        moving_item.refresh_from_db()
+        self.assertEqual(moving_item.sort_index, 0)
+        self.assertEqual(other_item1.sort_index, 1)
+        self.assertEqual(other_item2.sort_index, 2)
+        self.assertEqual(other_item3.sort_index, 3)
 
     def test_sort_item_3_last(self):
         i1, i2, i3, i4, i5, i6 = self._create_items(6)
