@@ -11,7 +11,9 @@ from functools import wraps
 from django_cradmin.registry import cradmin_instance_registry
 
 
-def has_access_to_cradmin_instance(cradmin_instance_id, view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
+def has_access_to_cradmin_instance(cradmin_instance_id, view_function,
+                                   redirect_field_name=REDIRECT_FIELD_NAME,
+                                   login_url=None):
     """
     Decorator for django_cradmin views.
 

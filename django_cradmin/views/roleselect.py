@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
+
+from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView
-from django.http import HttpResponseRedirect
 
 from django_cradmin import javascriptregistry
-from django_cradmin.registry import cradmin_instance_registry
 
 
 class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView):

@@ -1,9 +1,6 @@
-from django.contrib.auth import get_user_model
-from django_cradmin.demo.webdemo.models import PageTag, Page
+from django_cradmin.demo.webdemo.models import Page
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin.viewhelpers import listbuilderview
-from django_cradmin.viewhelpers import listfilter
-from django_cradmin.viewhelpers.listfilter.basefilters.single import abstractradio
 
 from . import mixins
 

@@ -19,7 +19,7 @@ class IevvJsUiDemoComponent(javascriptregistry.component.AbstractJsComponent):
         return [
             self.get_static_url(path.format(version=self._get_version()))
             for path in path_patterns
-            ]
+        ]
 
     def get_sourceurls(self):
         return self._versioned_static_urls([
