@@ -38,6 +38,7 @@
 /django_cradmin/demo/custom_theme_demo/staticsources/custom_theme_demo/node_modules/
 /django_cradmin/demo/custom_theme_demo/staticsources/custom_theme_demo/package.json
 /django_cradmin/demo/custom_theme_demo/static/
+/django_cradmin/staticsources/django_cradmin/ievv_buildstatic.appconfig.json
 
 yarn-error.log
 npm-debug.log
