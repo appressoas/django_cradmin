@@ -980,6 +980,7 @@ Styleguide 4
     &__bar {
         display: block;
         height: $border-width;
+        border-radius: $border-radius;
         width: 100%;
         margin-bottom: ($border-width * 2);
         background-color: color(primary);
