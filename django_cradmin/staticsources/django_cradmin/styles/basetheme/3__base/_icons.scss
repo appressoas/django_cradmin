@@ -985,32 +985,34 @@ Styleguide 4
         margin-bottom: ($border-width * 2);
         background-color: color(primary);
 
-        transform-origin: left center;
-        transition: all 0.3s $swift-out;
+        transform-origin: 55% center;
+        transition: all 150ms $swift-out;
 
         &:first-child {
-            transform-origin: left bottom;
+            transform-origin: right center;
         }
 
         &:last-child {
-            transform-origin: left top;
+            transform-origin: right center;
             margin-bottom: 0;
         }
     }
 
     &--close {
-        transform: rotate(-360deg);
+        // transform: rotate(-360deg);
 
         .icon-hamburger__bar {
             background-color: $color-light;
-            transform: scaleX(0.9);
+            transform: scale(0, 0.2);
 
             &:first-child {
-                transform: rotate(-45deg) scaleX(0.6) translate(-12px, 6px);
+                opacity: 1;
+                transform: rotate(-45deg); // translate(-12px, 6px);
             }
 
             &:last-child {
-                transform: rotate(45deg) scaleX(0.6) translate(-12px, -6px);
+                opacity: 1;
+                transform: rotate(45deg); // translate(-12px, -6px);
             }
         }
     }
