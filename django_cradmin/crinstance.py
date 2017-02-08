@@ -265,7 +265,8 @@ class BaseCrAdminInstance(object):
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        menu_renderable = self.main_menu_renderable_class(cradmin_instance=self)
+        menu_renderable = self.main_menu_renderable_class(request=self.request,
+                                                          cradmin_instance=self)
         menu_renderable.extend(self.get_main_menu_item_renderables())
         return menu_renderable
 
@@ -287,7 +288,8 @@ class BaseCrAdminInstance(object):
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        menu_renderable = self.expandable_menu_renderable_class(cradmin_instance=self)
+        menu_renderable = self.expandable_menu_renderable_class(request=self.request,
+                                                                cradmin_instance=self)
         menu_renderable.extend(self.get_expandable_menu_item_renderables())
         return menu_renderable
 
