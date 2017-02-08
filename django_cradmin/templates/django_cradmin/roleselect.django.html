@@ -9,7 +9,7 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    {% if roles.exists %}
+    {% if rolecount > 0 %}
         {% block has_roles_section %}
             <div class="adminui-page-section">
                 <div class="container  container--tight">

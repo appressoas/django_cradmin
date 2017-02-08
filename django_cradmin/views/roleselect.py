@@ -62,8 +62,8 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
         If you want to do something more eloborate, you can do one of the following:
 
         - Use a HttpResonseRedirect to redirect to some other view/url.
-        - Call :meth:`.get_multiple_roles_response`. The template for this
-          view (``django_cradmin/roleselect.django.html``) has a
+        - Call ``return self.get_multiple_roles_response(*args, **kwargs)``.
+          The template for this view (``django_cradmin/roleselect.django.html``) has a
           ``no_roles_section`` block. You can extend this template and
           override this block to display a custom message. You must, of course,
           set this new template as the :obj:`~.RoleSelectView.template_name`.
@@ -104,5 +104,6 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
     def get_context_data(self, **kwargs):
         context = super(RoleSelectView, self).get_context_data(**kwargs)
         context['pagetitle'] = self.get_pagetitle()
+        context['rolecount'] = self.get_queryset().count()
         self.add_javascriptregistry_component_ids_to_context(context=context)
         return context
