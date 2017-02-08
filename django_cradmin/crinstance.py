@@ -466,18 +466,29 @@ class BaseCrAdminInstance(object):
         return None
 
     @classmethod
+    def get_roleselect_viewclass(cls):
+        """
+        Get the viewclass for the roleselect view.
+
+        See :meth:`.get_roleselect_view`.
+
+        Returns:
+            django.views.View: Defaults to :class:`django_cradmin.views.roleselect.RoleSelectView`,
+                but any subclass of :class:`django.views.View` can be used.
+        """
+        return roleselect.RoleSelectView
+
+    @classmethod
     def get_roleselect_view(cls):
         """
-        The view for selecting role.
+        Get the view for selecting role.
 
-        Defaults to::
+        Instanciates the view class returned by :meth:`get_roleselect_viewclass`,
+        and decorates the view with
+        :func:`django_cradmin.decorators.has_access_to_cradmin_instance`.
 
-            from django_cradmin.views import roleselect
-            from django.contrib.auth.decorators import login_required
-            return login_required(roleselect.RoleSelectView.as_view())
-
-        If you want to provide your own role select view, you can simply implement
-        it here. Another option is to extend RoleSelectView and override the ``template_name``.
+        You should not need to override this, override :meth:`.get_roleselect_viewclass`
+        instead.
 
         Note:
 
@@ -485,7 +496,7 @@ class BaseCrAdminInstance(object):
             where ``<cradmin instance id>`` is :obj:`.id`. You can reverse the URL of
             this view with :meth:`.get_instance_frontpage_url`.
         """
-        return has_access_to_cradmin_instance(cls.id, roleselect.RoleSelectView.as_view())
+        return has_access_to_cradmin_instance(cls.id, cls.get_roleselect_viewclass().as_view())
 
     @classmethod
     def get_instance_frontpage_view(cls):
