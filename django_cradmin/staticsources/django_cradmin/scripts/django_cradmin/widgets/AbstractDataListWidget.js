@@ -264,7 +264,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
   }
 
   _hasAnyFiltersOrSearchString() {
-    return this.state.searchString != '' && this.state.filtersMap.size == 0;
+    return this.state.searchString != '' || this.state.filtersMap.size > 0;
   }
 
   setState(stateChange, initial=false) {
