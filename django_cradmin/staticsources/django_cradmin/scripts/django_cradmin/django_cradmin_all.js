@@ -17,6 +17,8 @@ import PopUpWidget from "./widgets/PopUpWidget";
 import ShowPopupOnClickWidget from "./widgets/ShowPopupOnClickWidget";
 import HidePopupOnClickWidget from "./widgets/HidePopupOnClickWidget";
 import FilterCheckboxFilter from "./widgets/FilterCheckboxWidget";
+import FilterRadioButtonWidget from "./widgets/FilterRadioButtonWidget";
+import FilterRadioButtonWithCustomChoiceWidget from "./widgets/FilterRadioButtonWithCustomChoiceWidget";
 import AutoSubmitFormAfterCountdownWidget from "./widgets/AutoSubmitFormAfterCountdownWidget";
 import PrintOnClickWidget from "./widgets/PrintOnClickWidget";
 import DateSelectorWidget from "./widgets/DateSelectorWidget";
@@ -52,6 +54,8 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-show-popup', ShowPopupOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-hide-popup', HidePopupOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-filter-checkbox', FilterCheckboxFilter);
+    widgetRegistry.registerWidgetClass('cradmin-filter-radio-button', FilterRadioButtonWidget);
+    widgetRegistry.registerWidgetClass('cradmin-filter-radio-button-with-custom-choice', FilterRadioButtonWithCustomChoiceWidget);
     widgetRegistry.registerWidgetClass('cradmin-dateselector', DateSelectorWidget);
     widgetRegistry.registerWidgetClass('cradmin-auto-submit-form-after-countdown', AutoSubmitFormAfterCountdownWidget);
     widgetRegistry.registerWidgetClass('cradmin-print-on-click', PrintOnClickWidget);

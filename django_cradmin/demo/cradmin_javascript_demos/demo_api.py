@@ -31,6 +31,13 @@ class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
             is_godlike = self.request.query_params.get('is_godlike') == 'true'
             queryset = queryset.filter(is_godlike=is_godlike)
 
+        if 'rating' in self.request.query_params:
+            try:
+                rating = int(self.request.query_params.get('rating'))
+            except ValueError:
+                rating = 0
+            queryset = queryset.filter(rating__gte=rating)
+
         # time.sleep(2)
         return queryset
 

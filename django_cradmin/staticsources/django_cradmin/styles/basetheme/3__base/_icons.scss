@@ -1012,7 +1012,7 @@ Styleguide 4
 
             &:last-child {
                 opacity: 1;
-                transform: rotate(45deg); // translate(-12px, -6px);
+                transform: rotate(45deg) translateX(0.5px); // translate(-12px, -6px);
             }
         }
     }
