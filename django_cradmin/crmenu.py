@@ -78,7 +78,8 @@ class AbstractMenuRenderable(listbuilder.base.List):
     (see :meth:`django_cradmin.renderable.AbstractRenderable.get_template_name`)
     and write your own HTML.
     """
-    def __init__(self, cradmin_instance):
+    def __init__(self, request, cradmin_instance):
+        self.request = request
         self.cradmin_instance = cradmin_instance
         super(AbstractMenuRenderable, self).__init__()
 
