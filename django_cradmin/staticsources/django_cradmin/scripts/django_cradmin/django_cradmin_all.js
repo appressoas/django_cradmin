@@ -23,6 +23,8 @@ import AutoSubmitFormAfterCountdownWidget from "./widgets/AutoSubmitFormAfterCou
 import PrintOnClickWidget from "./widgets/PrintOnClickWidget";
 import DateSelectorWidget from "./widgets/DateSelectorWidget";
 import HtmlListWithMovableItemsWidget from "./widgets/HtmlListWithMovableItemsWidget";
+import GeoLocationWidget from './widgets/GeoLocationWidget';
+import GeoLocationFilterWidget from './widgets/GeoLocationFilterWidget';
 
 
 export default class DjangoCradminAll {
@@ -59,6 +61,8 @@ export default class DjangoCradminAll {
     widgetRegistry.registerWidgetClass('cradmin-dateselector', DateSelectorWidget);
     widgetRegistry.registerWidgetClass('cradmin-auto-submit-form-after-countdown', AutoSubmitFormAfterCountdownWidget);
     widgetRegistry.registerWidgetClass('cradmin-print-on-click', PrintOnClickWidget);
+    widgetRegistry.registerWidgetClass('cradmin-geolocation', GeoLocationWidget);
+    widgetRegistry.registerWidgetClass('cradmin-geolocation-filter', GeoLocationFilterWidget);
 
     if (document.readyState != 'loading'){
       widgetRegistry.initializeAllWidgetsWithinElement(document.body);

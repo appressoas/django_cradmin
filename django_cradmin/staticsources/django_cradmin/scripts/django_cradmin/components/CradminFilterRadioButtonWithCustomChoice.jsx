@@ -22,6 +22,7 @@ export default class CradminFilterRadioButtonWithCustomChoice extends CradminFil
 
   constructor(props) {
     super(props);
+    this._name = `django_cradmin.components.CradminFilterRadioButtonWithCustomChoice.${this.props.signalNameSpace}`;
     this._onCustomInputChange = this._onCustomInputChange.bind(this);
   }
 
