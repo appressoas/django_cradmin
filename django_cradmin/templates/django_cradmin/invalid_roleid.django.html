@@ -6,5 +6,11 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    <p>{% trans "The requested role does not exist." %}</p>
+    <div class="adminui-page-section adminui-page-section--center">
+        <div class="container">
+            <p class="message message--error">
+                {% trans "The requested role does not exist." %}
+            </p>
+        </div>
+    </div>
 {% endblock content %}

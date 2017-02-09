@@ -220,7 +220,8 @@ class BaseCrAdminInstance(object):
                 ``django_cradmin/invalid_roleid.django.html``.
         """
         return render(self.request, 'django_cradmin/invalid_roleid.django.html', {
-            'roleid': roleid
+            'roleid': roleid,
+            'cradmin_javascriptregistry_component_ids': []
         })
 
     def get_role_from_rolequeryset(self, role):
