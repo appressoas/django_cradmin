@@ -32,17 +32,13 @@
 
 *.sqlite3
 
+ievv_buildstatic.appconfig.json
 
 /django_cradmin/staticsources/django_cradmin/node_modules/
 /django_cradmin/staticsources/django_cradmin/built_docs/
 /django_cradmin/demo/custom_theme_demo/staticsources/custom_theme_demo/node_modules/
 /django_cradmin/demo/custom_theme_demo/staticsources/custom_theme_demo/package.json
 /django_cradmin/demo/custom_theme_demo/static/
-/django_cradmin/staticsources/django_cradmin/ievv_buildstatic.appconfig.json
-
-/django_cradmin/apps/django_cradmin_js/staticsources/django_cradmin_js/node_modules/
-/django_cradmin/apps/django_cradmin_js/staticsources/django_cradmin_js/lib/
-/django_cradmin/apps/django_cradmin_js/staticsources/django_cradmin_js/ievv_buildstatic.appconfig.json
 
 yarn-error.log
 npm-debug.log

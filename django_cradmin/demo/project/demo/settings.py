@@ -46,7 +46,7 @@ INSTALLED_APPS = (
     'rest_framework',
 
     # Required by django cradmin
-    'django_cradmin.appconfig.CradminWithStyleguideAppConfig',
+    'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_invite',
     'django_cradmin.apps.cradmin_email',
     'django_cradmin.apps.django_cradmin_js',
+    'django_cradmin.apps.django_cradmin_styles.apps.WithStyleguideAppConfig',
     'django_cradmin.uicontainer',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
@@ -285,7 +286,7 @@ IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
 
 IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ievvbuildstatic.config.App(
-        appname='django_cradmin',
+        appname='django_cradmin_styles',
         version=django_cradmin.__version__,
         # keep_temporary_files=True,
         plugins=[
@@ -358,6 +359,6 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 }
 
 
-DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/{version}/styles/basetheme/main.css'.format(
+DJANGO_CRADMIN_THEME_PATH = 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
     version=django_cradmin.__version__
 )
