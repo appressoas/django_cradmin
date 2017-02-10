@@ -15,6 +15,7 @@ Getting started
    :maxdepth: 2
 
    install
+   newbie
    gettingstartedguide
 
 
