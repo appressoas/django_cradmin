@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import typeDetect from 'ievv_jsbase/utils/typeDetect.js'
+import typeDetect from 'ievv_jsbase/lib/utils/typeDetect'
 
 
 export default class CradminFilterRadioButton extends React.Component {

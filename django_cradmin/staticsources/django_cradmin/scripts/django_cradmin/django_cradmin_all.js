@@ -1,4 +1,7 @@
 // import DateTimePicker from "./DateTimePicker";
+import "babel-polyfill";
+import "ievv_jsbase/lib/polyfill/all";
+
 import MenuToggleWidget from "./widgets/MenuToggleWidget";
 import ToggleableMenuWidget from "./widgets/ToggleableMenuWidget";
 import TabButtonWidget from "./widgets/TabButtonWidget";
@@ -74,11 +77,4 @@ export default class DjangoCradminAll {
   }
 }
 
-function ready(fn) {
-  if (document.readyState != 'loading'){
-    fn();
-  } else {
-    document.addEventListener('DOMContentLoaded', fn);
-  }
-}
 new DjangoCradminAll();

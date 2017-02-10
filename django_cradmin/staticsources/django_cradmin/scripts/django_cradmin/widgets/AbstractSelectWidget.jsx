@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
-import HttpDjangoJsonRequest from 'ievv_jsbase/http/HttpDjangoJsonRequest';
+import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest';
 
 
 export default class AbstractSelectWidget extends AbstractWidget {

@@ -1,4 +1,4 @@
-import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
+import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 
 
 export default class GeoLocationFilterWidget extends AbstractWidget {

@@ -1,5 +1,5 @@
-import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
-import makeCustomError from "ievv_jsbase/makeCustomError";
+import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import makeCustomError from "ievv_jsbase/lib/makeCustomError";
 
 
 let CancelledDataRequest = makeCustomError('CancelledDataRequest');

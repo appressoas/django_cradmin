@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
+import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminHtmlListWithMovableItems from "../components/CradminHtmlListWithMovableItems";
 
 

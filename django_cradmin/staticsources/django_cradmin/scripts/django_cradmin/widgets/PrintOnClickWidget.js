@@ -1,4 +1,4 @@
-import AbstractWidget from "ievv_jsbase/widget/AbstractWidget";
+import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 
 /**
  * Run ``window.print()`` on click widget.

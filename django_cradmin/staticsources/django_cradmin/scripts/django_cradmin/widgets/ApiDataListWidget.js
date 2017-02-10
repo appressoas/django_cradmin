@@ -1,5 +1,5 @@
-import HttpDjangoJsonRequest from 'ievv_jsbase/http/HttpDjangoJsonRequest';
-import typeDetect from 'ievv_jsbase/utils/typeDetect';
+import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest';
+import typeDetect from 'ievv_jsbase/lib/utils/typeDetect';
 import AbstractDataListWidget from "./AbstractDataListWidget";
 
 

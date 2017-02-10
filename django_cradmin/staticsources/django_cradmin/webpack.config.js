@@ -2,11 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 const appconfig = require("./ievv_buildstatic.appconfig.json");
 
-const import_paths = [path.resolve(__dirname, 'node_modules')];
-Array.prototype.push.apply(import_paths, appconfig.npmrun_jsbuild.import_paths);
+// const import_paths = [path.resolve(__dirname, 'node_modules')];
+// Array.prototype.push.apply(import_paths, appconfig.npmrun_jsbuild.import_paths);
 
-const include = appconfig.npmrun_jsbuild.import_paths.slice();
-include.push(path.resolve(__dirname, "scripts/django_cradmin"));
+// const include = appconfig.npmrun_jsbuild.import_paths.slice();
+// include.push(path.resolve(__dirname, "scripts/django_cradmin"));
 
 const webpackConfig = {
   entry: path.resolve(__dirname, 'scripts/django_cradmin/django_cradmin_all.js'),
@@ -16,7 +16,7 @@ const webpackConfig = {
     target: 'web'
   },
   resolve: {
-    root: import_paths,
+    root: [path.resolve(__dirname, 'node_modules')],
     extensions: [".js", ".jsx", ""]
   },
   resolveLoader: {
@@ -31,7 +31,7 @@ const webpackConfig = {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        include: include,
+        include: [path.resolve(__dirname, "scripts/django_cradmin")],
         query: {
           presets: [
             'babel-preset-es2015',
