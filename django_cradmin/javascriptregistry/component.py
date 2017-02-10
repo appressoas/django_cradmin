@@ -144,11 +144,6 @@ class CradminJavascript(AbstractJsComponent):
     def get_component_id(cls):
         return 'django_cradmin_javascript'
 
-    def get_dependencies(self):
-        return [
-            'ievv_jsbase_core',
-        ]
-
     def get_sourceurls(self):
         return [
             self.get_static_url('django_cradmin/{version}/scripts/django_cradmin_all.js'.format(
