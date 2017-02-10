@@ -13,7 +13,7 @@
     "babel-preset-react": "^6.16.0",
     "esdoc": "^0.4.8",
     "esdoc-importpath-plugin": "^0.0.1",
-    "ievv_jsbase": "^1.0.1",
+    "ievv_jsbase": "^1.0.2",
     "jest": "^18.1.0",
     "json-loader": "^0.5.4",
     "moment": "^2.17.1",
