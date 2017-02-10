@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_register_account',
     'django_cradmin.apps.cradmin_invite',
     'django_cradmin.apps.cradmin_email',
+    'django_cradmin.apps.django_cradmin_js',
     'django_cradmin.uicontainer',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
@@ -297,7 +298,13 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
                 sourcefolder='styles/basetheme',
                 sourcefile='styleguide.scss'
             ),
-
+        ]
+    ),
+    ievvbuildstatic.config.App(
+        appname='django_cradmin_js',
+        version=django_cradmin.__version__,
+        # keep_temporary_files=True,
+        plugins=[
             ievvbuildstatic.npmrun_jsbuild.Plugin(),
         ]
     ),
