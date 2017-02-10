@@ -2,12 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest';
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 export default class AbstractSelectWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.widgets.AbstractSelectWidget');
     this.onSelectResultSignal = this.onSelectResultSignal.bind(this);
     this.onSearchRequestedSignal = this.onSearchRequestedSignal.bind(this);

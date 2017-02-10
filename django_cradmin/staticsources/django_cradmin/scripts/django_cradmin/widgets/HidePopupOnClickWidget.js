@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 export default class HidePopupOnClickWidget extends AbstractWidget {
   getDefaultConfig() {
@@ -11,7 +12,7 @@ export default class HidePopupOnClickWidget extends AbstractWidget {
     super(element, widgetInstanceId);
     this._widgetInstanceId = widgetInstanceId;
     this._name = `django_cradmin.widgets.HidePopupOnClickWidget.${widgetInstanceId}`;
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.widgets.HidePopupOnClickWidget');
     if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');

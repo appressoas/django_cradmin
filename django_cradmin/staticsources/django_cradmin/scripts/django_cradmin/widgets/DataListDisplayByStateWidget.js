@@ -1,5 +1,6 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import DomUtilities from "../utilities/DomUtilities";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 export default class DataListDisplayByStateWidget extends AbstractWidget {
@@ -30,7 +31,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
     super(element, widgetInstanceId);
     this._widgetInstanceId = widgetInstanceId;
     this._name = `django_cradmin.widgets.DataListDisplayByStateWidget.${widgetInstanceId}`;
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.widgets.DataListDisplayByStateWidget');
     if(this.config.signalNameSpace == null) {
       throw new Error('The signalNameSpace config is required.');

@@ -1,4 +1,5 @@
 import React from "react";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 export default class CradminHiddenInputList extends React.Component {
@@ -15,7 +16,7 @@ export default class CradminHiddenInputList extends React.Component {
   constructor(props) {
     super(props);
     this._name = 'django_cradmin.components.CradminHiddenInputList';
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       this._name);
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');

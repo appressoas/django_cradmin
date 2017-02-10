@@ -1,6 +1,6 @@
 import React from "react";
 import {HotKeys} from 'react-hotkeys';
-import DomUtilities from "../utilities/DomUtilities";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 export default class CradminFilterCheckbox extends React.Component {
@@ -20,7 +20,7 @@ export default class CradminFilterCheckbox extends React.Component {
   constructor(props) {
     super(props);
     this._name = `django_cradmin.components.CradminFilterCheckbox.${this.props.signalNameSpace}`;
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.components.CradminFilterCheckbox');
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');

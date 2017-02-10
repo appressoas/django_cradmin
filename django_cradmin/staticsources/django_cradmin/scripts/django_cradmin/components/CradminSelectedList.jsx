@@ -1,5 +1,6 @@
 import React from "react";
 import CradminSelectedListItem from "./CradminSelectedListItem";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 export default class CradminSelectedList extends React.Component {
@@ -17,7 +18,7 @@ export default class CradminSelectedList extends React.Component {
   constructor(props) {
     super(props);
     this._name = `django_cradmin.components.CradminSelectedList.${this.props.signalNameSpace}.${this.props.uniqueId}`;
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.components.CradminSelectedList');
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');

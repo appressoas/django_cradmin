@@ -2,6 +2,7 @@
 import "babel-polyfill";
 import "ievv_jsbase/lib/polyfill/all";
 
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import MenuToggleWidget from "./widgets/MenuToggleWidget";
 import ToggleableMenuWidget from "./widgets/ToggleableMenuWidget";
 import TabButtonWidget from "./widgets/TabButtonWidget";
@@ -32,9 +33,9 @@ import GeoLocationFilterWidget from './widgets/GeoLocationFilterWidget';
 
 export default class DjangoCradminAll {
   constructor() {
-    new window.ievv_jsbase_core.LoggerSingleton().setDefaultLogLevel(
+    new LoggerSingleton().setDefaultLogLevel(
       window.ievv_jsbase_core.LOGLEVEL.INFO);
-    // this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
+    // this.logger = new LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
     // this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.INFO);
     // this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);
 

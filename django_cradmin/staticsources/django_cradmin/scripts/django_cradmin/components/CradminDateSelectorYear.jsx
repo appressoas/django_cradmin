@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 export default class CradminDateSelectorYear extends React.Component {
@@ -18,7 +19,7 @@ export default class CradminDateSelectorYear extends React.Component {
   constructor(props) {
     super(props);
     this._name = `django_cradmin.components.CradminDateSelectorYear.${this.props.signalNameSpace}`;
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.components.CradminDateSelectorYear');
 
     this._handleYearChange = this._handleYearChange.bind(this);

@@ -1,5 +1,6 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import ElementCreator from "./utilities/ElementCreator";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 import moment from 'moment';
 
@@ -7,7 +8,7 @@ import moment from 'moment';
 export default class DateTimePicker extends AbstractWidget {
   constructor(element) {
     super(element);
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger("ievv_jsui.DateTimePicker");
+    this.logger = new LoggerSingleton().getLogger("ievv_jsui.DateTimePicker");
     this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.DEBUG);
 
     this._initializeCalendarCoordinators();

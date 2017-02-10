@@ -1,5 +1,6 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import makeCustomError from "ievv_jsbase/lib/makeCustomError";
+import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 
 
 let CancelledDataRequest = makeCustomError('CancelledDataRequest');
@@ -22,7 +23,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
     this._name = `${this.classPath}.${widgetInstanceId}`;
-    this.logger = new window.ievv_jsbase_core.LoggerSingleton().getLogger(
+    this.logger = new LoggerSingleton().getLogger(
       this._name);
     this.signalHandler = new window.ievv_jsbase_core.SignalHandlerSingleton();
     this._onSearchValueChangeSignal = this._onSearchValueChangeSignal.bind(this);
