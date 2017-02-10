@@ -24,3 +24,4 @@ prune django_cradmin/staticsources/django_cradmin/package.json
 prune django_cradmin/staticsources/django_cradmin/typings.json
 prune django_cradmin/static/django_cradmin/bower_components
 prune django_cradmin/demo
+prune django_cradmin/apps/django_cradmin_js/staticsources/
