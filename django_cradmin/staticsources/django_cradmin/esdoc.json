@@ -7,6 +7,19 @@
   "includes": [
     "\\.(js|es6|jsx)$"
   ],
+  "plugins": [
+    {
+      "name": "esdoc-importpath-plugin",
+      "option": {
+        "replaces": [
+          {
+            "from": "^scripts/",
+            "to": "lib/"
+          }
+        ]
+      }
+    }
+  ],
   "index": "esdoc/index.md",
   "source": "scripts",
   "title": "django_cradmin"
