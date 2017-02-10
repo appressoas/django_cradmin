@@ -1,4 +1,4 @@
-import ElementCreator from "../../utilities/ElementCreator";
+import ElementCreator from "../ElementCreator";
 
 describe('ElementCreator', () => {
   it('ElementCreator.renderElement() plain element', () => {
