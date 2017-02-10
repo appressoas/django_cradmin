@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest';
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class AbstractSelectWidget extends AbstractWidget {
@@ -66,12 +67,12 @@ export default class AbstractSelectWidget extends AbstractWidget {
   }
 
   _initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       this._searchRequestedSignalName,
       'django_cradmin.widgets.AbstractSelectWidget',
       this.onSearchRequestedSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       this._selectResultSignalName,
       'django_cradmin.widgets.AbstractSelectWidget',
       this.onSelectResultSignal
@@ -80,11 +81,11 @@ export default class AbstractSelectWidget extends AbstractWidget {
 
   destroy() {
     this.element.removeEventListener('click', this._onClick);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+    new SignalHandlerSingleton().removeReceiver(
       this._searchRequestedSignalName,
       'django_cradmin.widgets.AbstractSelectWidget'
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+    new SignalHandlerSingleton().removeReceiver(
       this._selectResultSignalName,
       'django_cradmin.widgets.AbstractSelectWidget'
     );
@@ -197,7 +198,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
 
   sendSearchCompletedSignal(results) {
     this.logger.debug('Search complete. Result:', results);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       this._searchCompletedSignalName,
       results
     );

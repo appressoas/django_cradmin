@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminDateSelector from "../components/CradminDateSelector";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class DateSelectorWidget extends AbstractWidget {
@@ -22,7 +23,7 @@ export default class DateSelectorWidget extends AbstractWidget {
   }
 
   afterInitializeAllWidgets() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.initializeValues`);
   }
 }

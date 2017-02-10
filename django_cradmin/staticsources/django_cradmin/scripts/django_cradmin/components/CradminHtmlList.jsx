@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminHtmlList extends React.Component {
@@ -37,7 +38,7 @@ export default class CradminHtmlList extends React.Component {
     if(this.props.signalNameSpace == null) {
       throw new Error('The signalNameSpace prop is required.');
     }
-    this.signalHandler = new window.ievv_jsbase_core.SignalHandlerSingleton();
+    this.signalHandler = new SignalHandlerSingleton();
     this.state = this.makeInitialState();
     this.initializeSignalHandlers();
   }

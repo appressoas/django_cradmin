@@ -1,6 +1,7 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class DataListDisplayByStateWidget extends AbstractWidget {
@@ -136,63 +137,63 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
 
   initializeSignalHandlers() {
     if(this._listenForDataListInitializedSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.DataListInitialized`,
         this._name,
         this._onDataListInitializedSignal
       );
     }
     if(this._listenForIsEmpyDataListSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.IsEmpyDataList`,
         this._name,
         this._onIsEmpyDataListSignal
       );
     }
     if(this._listenForNotEmpyDataListSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.NotEmpyDataList`,
         this._name,
         this._onNotEmpyDataListSignal
       );
     }
     if(this._listenForDataChangeSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.DataChange`,
         this._name,
         this._onDataChangeSignal
       );
     }
     if(this._listenForSearchValueChangeSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.SearchValueChange`,
         this._name,
         this._onSearchValueChangeSignal
       );
     }
     if(this._listenForFocusSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.Focus`,
         this._name,
         this._onFocusSignal
       );
     }
     if(this._listenForBlurSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.Blur`,
         this._name,
         this._onBlurSignal
       );
     }
     if(this._listenForLoadingStateChangeSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.LoadingStateChange`,
         this._name,
         this._onLoadingStateChangeSignal
       );
     }
     if(this._listenForSelectionChangeSignal()) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+      new SignalHandlerSingleton().addReceiver(
         `${this.config.signalNameSpace}.SelectionChange`,
         this._name,
         this._onSelectionChangeSignal
@@ -201,7 +202,7 @@ export default class DataListDisplayByStateWidget extends AbstractWidget {
   }
 
   destroy() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeAllSignalsFromReceiver(
+    new SignalHandlerSingleton().removeAllSignalsFromReceiver(
       this._name);
   }
 

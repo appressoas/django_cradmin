@@ -1,6 +1,7 @@
 import React from "react";
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminMoveButton extends React.Component {
@@ -29,7 +30,7 @@ export default class CradminMoveButton extends React.Component {
     if(this.props.itemIndex == null) {
       throw new Error('The itemIndex prop is required.');
     }
-    this.signalHandler = new window.ievv_jsbase_core.SignalHandlerSingleton();
+    this.signalHandler = new SignalHandlerSingleton();
     this.onClick = this.onClick.bind(this);
   }
 

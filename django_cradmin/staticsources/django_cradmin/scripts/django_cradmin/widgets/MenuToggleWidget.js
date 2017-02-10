@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 export default class MenuToggleWidget extends AbstractWidget {
   constructor(element) {
@@ -15,7 +16,7 @@ export default class MenuToggleWidget extends AbstractWidget {
 
   _onClick(e) {
     e.preventDefault();
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `cradmin.ToggleMenu.${this.config.id}`
     );
   }

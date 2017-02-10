@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import NumberFormat from "../utilities/NumberFormat";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminDateSelectorHiddenIsoTime extends React.Component {
@@ -34,12 +35,12 @@ export default class CradminDateSelectorHiddenIsoTime extends React.Component {
   initializeSignalHandlers() {
     this._onHourValueChangeSignal = this._onHourValueChangeSignal.bind(this);
     this._onMinuteValueChangeSignal = this._onMinuteValueChangeSignal.bind(this);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.HourValueChange`,
       this._name,
       this._onHourValueChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MinuteValueChange`,
       this._name,
       this._onMinuteValueChangeSignal

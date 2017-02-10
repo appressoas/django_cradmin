@@ -1,6 +1,7 @@
 import React from "react";
 import NumberFormat from "../utilities/NumberFormat";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminDateSelectorInput extends React.Component {
@@ -48,7 +49,7 @@ export default class CradminDateSelectorInput extends React.Component {
   }
 
   _sendDateUpdateSignal(newValue) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.${this.signalName}`, newValue);
   }
 

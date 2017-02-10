@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminDateSelectorYear extends React.Component {
@@ -30,7 +31,7 @@ export default class CradminDateSelectorYear extends React.Component {
   }
 
   _initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.initializeValues`,
       this._name,
       this._postInit
@@ -52,7 +53,7 @@ export default class CradminDateSelectorYear extends React.Component {
       newYear = null;
     }
 
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.YearValueChange`, newYear, (info) => {
         if (this.logger.isDebug) {
           this.logger.debug(`Update year: \n\tNew year: ${newYear}\n\t${info}`);

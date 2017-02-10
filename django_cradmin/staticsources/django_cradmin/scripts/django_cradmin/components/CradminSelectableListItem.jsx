@@ -1,6 +1,7 @@
 import React from "react";
 import {HotKeys} from "react-hotkeys";
 import DomUtilities from "../utilities/DomUtilities";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminSelectableListItem extends React.Component {
@@ -39,7 +40,7 @@ export default class CradminSelectableListItem extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnSelectableItem.${this.props.itemKey}`,
       this._name,
       this._onFocusOnSelectableItemSignal
@@ -47,19 +48,19 @@ export default class CradminSelectableListItem extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
   handleSelect(event) {
     event.preventDefault();
     if(this.props.isSelected) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.DeSelectItem`,
         this.props.data
       );
     } else {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.SelectItem`,
         this.props.data
       );
@@ -69,10 +70,10 @@ export default class CradminSelectableListItem extends React.Component {
           closestSiblingData = this.props.previousItemData;
         }
         if(closestSiblingData == null) {
-          new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+          new SignalHandlerSingleton().send(
             `${this.props.signalNameSpace}.CouldNotFocusOnClosestSelectableItem`);
         } else {
-          new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+          new SignalHandlerSingleton().send(
             `${this.props.signalNameSpace}.FocusOnSelectableItem`,
             closestSiblingData
           );
@@ -87,7 +88,7 @@ export default class CradminSelectableListItem extends React.Component {
 
   handleFocus() {
     if(this.props.setDataListFocus) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.Focus`
       );
     }
@@ -95,7 +96,7 @@ export default class CradminSelectableListItem extends React.Component {
 
   handleBlur() {
     if(this.props.setDataListFocus) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.Blur`
       );
     }
@@ -189,10 +190,10 @@ export default class CradminSelectableListItem extends React.Component {
 
   _focusPreviousItem() {
     if(this.props.previousItemData == null) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusBeforeFirstSelectableItem`);
     } else {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusOnSelectableItem`,
         this.props.previousItemData
       );
@@ -201,10 +202,10 @@ export default class CradminSelectableListItem extends React.Component {
 
   _focusNextItem() {
     if(this.props.nextItemData == null) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusAfterLastSelectableItem`);
     } else {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusOnSelectableItem`,
         this.props.nextItemData
       );
@@ -212,7 +213,7 @@ export default class CradminSelectableListItem extends React.Component {
   }
 
   _onEscapeKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SelectableItemEscapeKey`);
   }
 

@@ -1,6 +1,7 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class PopUpWidget extends AbstractWidget {
@@ -21,7 +22,7 @@ export default class PopUpWidget extends AbstractWidget {
     }
     this._onShowPopupSignal = this._onShowPopupSignal.bind(this);
     this._onHidePopupSignal = this._onHidePopupSignal.bind(this);
-    this._signalHandler = new window.ievv_jsbase_core.SignalHandlerSingleton();
+    this._signalHandler = new SignalHandlerSingleton();
     this.initializeSignalHandlers();
   }
 

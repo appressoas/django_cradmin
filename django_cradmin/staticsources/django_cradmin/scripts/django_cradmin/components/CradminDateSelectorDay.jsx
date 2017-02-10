@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminDateSelectorDay extends React.Component {
@@ -37,17 +38,17 @@ export default class CradminDateSelectorDay extends React.Component {
   }
 
   _initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.initializeValues`,
       this._name,
       this._postInit
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MonthValueChange`,
       this._name,
       this._onMonthValueChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.YearValueChange`,
       this._name,
       this._onYearValueChangeSignal
@@ -101,7 +102,7 @@ export default class CradminDateSelectorDay extends React.Component {
 
   _sendDateUpdateSignal(newDay) {
     this.setState({value: newDay});
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.DayValueChange`, newDay, (info) => {
         if (this.logger.isDebug) {
           this.logger.debug(`Update day: \n\tNew day: ${newDay}\n\t${info}`);

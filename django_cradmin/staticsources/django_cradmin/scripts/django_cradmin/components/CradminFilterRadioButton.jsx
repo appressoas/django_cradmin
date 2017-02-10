@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import typeDetect from 'ievv_jsbase/lib/utils/typeDetect';
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminFilterRadioButton extends React.Component {
@@ -64,12 +65,12 @@ export default class CradminFilterRadioButton extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.DataListInitialized`,
       this._name,
       this._onDataListInitializedSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FiltersChange`,
       this._name,
       this._onFiltersChangeSignal
@@ -97,14 +98,14 @@ export default class CradminFilterRadioButton extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
   _sendChangeSignal() {
     const filtersMapPatch = new Map();
     filtersMapPatch.set(this.props.filterKey, this.changeToValue);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.PatchFilters`,
       filtersMapPatch);
   }
@@ -116,12 +117,12 @@ export default class CradminFilterRadioButton extends React.Component {
   }
 
   _onFocus(event) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Focus`);
   }
 
   _onBlur(event) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Blur`);
   }
 

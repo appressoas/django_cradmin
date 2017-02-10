@@ -1,5 +1,6 @@
 import React from "react";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminHiddenInputList extends React.Component {
@@ -34,7 +35,7 @@ export default class CradminHiddenInputList extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.SelectionChange`,
       this._name,
       this._onSelectionChangeSignal
@@ -42,7 +43,7 @@ export default class CradminHiddenInputList extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+    new SignalHandlerSingleton().removeReceiver(
       `${this.props.signalNameSpace}.SelectionChange`,
       this._name
     );

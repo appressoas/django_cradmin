@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class GeoLocationWidget extends AbstractWidget {
@@ -21,14 +22,14 @@ export default class GeoLocationWidget extends AbstractWidget {
   }
 
   locationSuccess(position){
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.GeoLocationUpdate`,
       position);
   }
 
   locationError(error) {
     if (error.code == PositionError.code.PERMISSION_DENIED){
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.GeoLocationPermissionDenied`,
       position);
     }

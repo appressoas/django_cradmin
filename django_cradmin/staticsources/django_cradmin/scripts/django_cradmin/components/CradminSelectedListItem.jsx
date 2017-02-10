@@ -1,6 +1,7 @@
 import React from "react";
 import DomUtilities from "../utilities/DomUtilities";
 import {HotKeys} from "react-hotkeys";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminSelectedListItem extends React.Component {
@@ -35,7 +36,7 @@ export default class CradminSelectedListItem extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnSelectedItem.${this.props.itemKey}`,
       this._name,
       this._onFocusOnSelectedItemSignal
@@ -43,12 +44,12 @@ export default class CradminSelectedListItem extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
   _deselectItem() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.DeSelectItem`,
       this.props.data
     );
@@ -59,10 +60,10 @@ export default class CradminSelectedListItem extends React.Component {
         closestSiblingData = this.props.nextItemData;
       }
       if(closestSiblingData == null) {
-        new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        new SignalHandlerSingleton().send(
           `${this.props.signalNameSpace}.CouldNotFocusOnClosestSelectedItem`);
       } else {
-        new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+        new SignalHandlerSingleton().send(
           `${this.props.signalNameSpace}.FocusOnDeSelectableItem`,
           closestSiblingData
         );
@@ -77,7 +78,7 @@ export default class CradminSelectedListItem extends React.Component {
 
   handleFocus() {
     if(this.props.setDataListFocus) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.Focus`
       );
     }
@@ -85,7 +86,7 @@ export default class CradminSelectedListItem extends React.Component {
 
   handleBlur() {
     if(this.props.setDataListFocus) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.Blur`
       );
     }
@@ -163,10 +164,10 @@ export default class CradminSelectedListItem extends React.Component {
 
   _focusPreviousItem() {
     if(this.props.previousItemData == null) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusBeforeFirstSelectableItem`);
     } else {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusOnSelectableItem`,
         this.props.previousItemData
       );
@@ -175,10 +176,10 @@ export default class CradminSelectedListItem extends React.Component {
 
   _focusNextItem() {
     if(this.props.nextItemData == null) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusAfterLastSelectableItem`);
     } else {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.FocusOnSelectableItem`,
         this.props.nextItemData
       );

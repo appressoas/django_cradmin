@@ -1,6 +1,7 @@
 import React from "react";
 import {HotKeys} from 'react-hotkeys';
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminFilterCheckbox extends React.Component {
@@ -41,12 +42,12 @@ export default class CradminFilterCheckbox extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.DataListInitialized`,
       this._name,
       this._onDataListInitializedSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FiltersChange`,
       this._name,
       this._onFiltersChangeSignal
@@ -71,7 +72,7 @@ export default class CradminFilterCheckbox extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
@@ -79,18 +80,18 @@ export default class CradminFilterCheckbox extends React.Component {
     event.preventDefault();
     const filtersMapPatch = new Map();
     filtersMapPatch.set(this.props.filterKey, !this.state.value);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.PatchFilters`,
       filtersMapPatch);
   }
 
   _onFocus(event) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Focus`);
   }
 
   _onBlur(event) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Blur`);
   }
 

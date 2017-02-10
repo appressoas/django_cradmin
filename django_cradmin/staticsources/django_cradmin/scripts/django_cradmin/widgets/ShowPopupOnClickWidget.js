@@ -1,5 +1,6 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 export default class ShowPopupOnClickWidget extends AbstractWidget {
   getDefaultConfig() {
@@ -28,7 +29,7 @@ export default class ShowPopupOnClickWidget extends AbstractWidget {
   _onClick(event) {
     console.log('CLICK');
     event.preventDefault();
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.ShowPopup`);
   }
 }

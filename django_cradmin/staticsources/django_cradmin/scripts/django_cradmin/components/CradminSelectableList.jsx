@@ -1,6 +1,7 @@
 import React from "react";
 import CradminSelectableListItem from "./CradminSelectableListItem";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminSelectableList extends React.Component {
@@ -42,27 +43,27 @@ export default class CradminSelectableList extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.DataChange`,
       this._name,
       this._onDataChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.SelectionChange`,
       this._name,
       this._onSelectionChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnSelectableItem`,
       this._name,
       this._onFocusOnSelectableItemSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnFirstSelectableItem`,
       this._name,
       this._onFocusOnFirstSelectableItemSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnLastSelectableItem`,
       this._name,
       this._onFocusOnLastSelectableItemSignal
@@ -70,7 +71,7 @@ export default class CradminSelectableList extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
@@ -83,7 +84,7 @@ export default class CradminSelectableList extends React.Component {
   _loadMoreIfNeeded() {
     if(this.state.hasMorePages && this.state.renderableDataList.length < this.props.loadMoreTreshold) {
       this.logger.debug('Automatically sending the LoadMore signal because we are below the loadMoreTreshold');
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.LoadMore`);
     }
   }
@@ -191,7 +192,7 @@ export default class CradminSelectableList extends React.Component {
 
   _sendFocusOnItemSignal(itemData) {
     const itemKey = itemData[this.props.keyAttribute];
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.FocusOnSelectableItem.${itemKey}`);
   }
 

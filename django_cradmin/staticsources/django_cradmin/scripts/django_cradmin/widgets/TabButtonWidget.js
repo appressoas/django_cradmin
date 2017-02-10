@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 export default class TabButtonWidget extends AbstractWidget {
   getDefaultConfig() {
@@ -24,7 +25,7 @@ export default class TabButtonWidget extends AbstractWidget {
   }
 
   _initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `cradmin.ActivateTab.${this.config.id}`,
       `cradmin.TabButtonWidget.${this.config.id}.${this._tabPanelDomId}`,
       this._onActivateTabSignal
@@ -33,7 +34,7 @@ export default class TabButtonWidget extends AbstractWidget {
 
   destroy() {
     this.element.removeEventListener('click', this._onClickTabButton);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+    new SignalHandlerSingleton().removeReceiver(
       `cradmin.ActivateTab.${this.config.id}`,
       `cradmin.TabButtonWidget.${this.config.id}.${this._tabPanelDomId}`
     );
@@ -45,7 +46,7 @@ export default class TabButtonWidget extends AbstractWidget {
   }
 
   _sendActivateTabSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `cradmin.ActivateTab.${this.config.id}`,
       {tabPanelDomId: this._tabPanelDomId}
     );

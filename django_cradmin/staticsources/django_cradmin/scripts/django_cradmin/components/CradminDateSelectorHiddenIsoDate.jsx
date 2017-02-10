@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminDateSelectorHiddenIsoDate extends React.Component {
@@ -37,17 +38,17 @@ export default class CradminDateSelectorHiddenIsoDate extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.DayValueChange`,
       this._name,
       this._onDayValueChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MonthValueChange`,
       this._name,
       this._onMonthValueChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.YearValueChange`,
       this._name,
       this._onYearValueChangeSignal

@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 export default class ToggleableMenuWidget extends AbstractWidget {
   getDefaultConfig() {
@@ -15,7 +16,7 @@ export default class ToggleableMenuWidget extends AbstractWidget {
   }
 
   _initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `cradmin.ToggleMenu.${this.config.id}`,
       `cradmin.ToggleableMenuWidget.${this.config.id}`,
       this.onToggleMenuSignal
@@ -36,7 +37,7 @@ export default class ToggleableMenuWidget extends AbstractWidget {
 
   destroy() {
     this.element.removeEventListener('click', this._onClick);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().removeReceiver(
+    new SignalHandlerSingleton().removeReceiver(
       `cradmin.ToggleMenu.${this.config.id}`,
       `cradmin.ToggleableMenuWidget.${this.config.id}`
     );

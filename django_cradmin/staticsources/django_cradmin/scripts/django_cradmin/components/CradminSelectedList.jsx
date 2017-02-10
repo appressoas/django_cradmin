@@ -1,6 +1,7 @@
 import React from "react";
 import CradminSelectedListItem from "./CradminSelectedListItem";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminSelectedList extends React.Component {
@@ -37,22 +38,22 @@ export default class CradminSelectedList extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.SelectionChange`,
       this._name,
       this._onSelectionChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnDeSelectableItem`,
       this._name,
       this._onFocusOnDeSelectableItemSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnFirstSelectedItem`,
       this._name,
       this._onFocusOnFirstSelectedItemSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnLastSelectedItem`,
       this._name,
       this._onFocusOnLastSelectedItemSignal
@@ -60,7 +61,7 @@ export default class CradminSelectedList extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
@@ -141,7 +142,7 @@ export default class CradminSelectedList extends React.Component {
 
   _sendFocusOnItemSignal(itemData) {
     const itemKey = itemData[this.props.keyAttribute];
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.FocusOnSelectedItem.${itemKey}`);
   }
 

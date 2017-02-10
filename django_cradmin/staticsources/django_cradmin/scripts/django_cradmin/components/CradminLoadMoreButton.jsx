@@ -2,6 +2,7 @@ import React from "react";
 import {HotKeys} from 'react-hotkeys';
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminLoadMoreButton extends React.Component {
@@ -36,12 +37,12 @@ export default class CradminLoadMoreButton extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.LoadingStateChange`,
       this._name,
       this._onLoadingStateChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnLoadMoreButton`,
       this._name,
       this._onFocusOnLoadMoreButtonSignal
@@ -49,27 +50,27 @@ export default class CradminLoadMoreButton extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
   _onClick(event) {
     event.preventDefault();
     if(!this.state.isLoading) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.LoadMore`);
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.LoadMoreButtonClick`);
     }
   }
 
   _onFocus(event) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Focus`);
   }
 
   _onBlur(event) {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Blur`);
   }
 
@@ -94,17 +95,17 @@ export default class CradminLoadMoreButton extends React.Component {
   }
 
   _onUpKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.LoadMoreUpKey`);
   }
 
   _onDownKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.LoadMoreDownKey`);
   }
 
   _onEscapeKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.LoadMoreEscapeKey`);
   }
 

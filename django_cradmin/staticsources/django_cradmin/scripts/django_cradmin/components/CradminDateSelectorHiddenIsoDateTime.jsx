@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import CradminDateSelectorHiddenIsoDate from "./CradminDateSelectorHiddenIsoDate";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminDateSelectorHiddenIsoDateTime extends CradminDateSelectorHiddenIsoDate {
@@ -29,12 +30,12 @@ export default class CradminDateSelectorHiddenIsoDateTime extends CradminDateSel
     super.initializeSignalHandlers();
     this._onHourValueChangeSignal = this._onHourValueChangeSignal.bind(this);
     this._onMinuteValueChangeSignal = this._onMinuteValueChangeSignal.bind(this);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.HourValueChange`,
       this._name,
       this._onHourValueChangeSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MinuteValueChange`,
       this._name,
       this._onMinuteValueChangeSignal

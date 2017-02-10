@@ -2,6 +2,7 @@ import React from "react";
 import {HotKeys} from 'react-hotkeys';
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class CradminSearchInput extends React.Component {
@@ -39,27 +40,27 @@ export default class CradminSearchInput extends React.Component {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.DataListInitialized`,
       this._name,
       this._onDataListInitializedSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.ClearSearchField`,
       this._name,
       this._onClearSearchFieldSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.FocusOnSearchField`,
       this._name,
       this._onFocusOnSearchFieldSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MoveItemStarted`,
       this._name,
       this._onMoveItemStartedSignal
     );
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.props.signalNameSpace}.MoveItemComplete`,
       this._name,
       this._onMoveItemCompleteSignal
@@ -67,7 +68,7 @@ export default class CradminSearchInput extends React.Component {
   }
 
   componentWillUnmount() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 
@@ -109,11 +110,11 @@ export default class CradminSearchInput extends React.Component {
       () => {this._sendChangeSignal()},
       this.props.changeDelay);
     if(searchString.length > 0) {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.SearchValueChangeNotEmpty`,
         this.state.searchString);
     } else {
-      new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+      new SignalHandlerSingleton().send(
         `${this.props.signalNameSpace}.SearchValueChangeEmpty`,
         this.state.searchString);
     }
@@ -126,18 +127,18 @@ export default class CradminSearchInput extends React.Component {
   }
 
   _sendChangeSignal() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchValueChange`,
       this.state.searchString);
   }
 
   handleFocus() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Focus`);
   }
 
   handleBlur() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.Blur`);
   }
 
@@ -150,17 +151,17 @@ export default class CradminSearchInput extends React.Component {
   }
 
   _onDownKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchDownKey`);
   }
 
   _onEnterKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchEnterKey`);
   }
 
   _onEscapeKey() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchEscapeKey`);
   }
 

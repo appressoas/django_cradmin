@@ -1,4 +1,5 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
 export default class GeoLocationFilterWidget extends AbstractWidget {
@@ -18,7 +19,7 @@ export default class GeoLocationFilterWidget extends AbstractWidget {
   }
 
   initializeSignalHandlers() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton().addReceiver(
+    new SignalHandlerSingleton().addReceiver(
       `${this.config.signalNameSpace}.GeoLocationUpdate`,
       this._name,
       this._onGeoLocationUpdate
@@ -31,13 +32,13 @@ export default class GeoLocationFilterWidget extends AbstractWidget {
     const filtersMapPatch = new Map();
     filtersMapPatch.set(this.config.latitudeFilterKey, positionObject.coords.latitude);
     filtersMapPatch.set(this.config.longitudeFilterKey, positionObject.coords.longitude);
-    new window.ievv_jsbase_core.SignalHandlerSingleton().send(
+    new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.PatchFilters`,
       filtersMapPatch);
   }
 
   destroy() {
-    new window.ievv_jsbase_core.SignalHandlerSingleton()
+    new SignalHandlerSingleton()
       .removeAllSignalsFromReceiver(this._name);
   }
 }
