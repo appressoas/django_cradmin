@@ -1,5 +1,6 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
+import WidgetRegistrySingleton from "ievv_jsbase/lib/widget/WidgetRegistrySingleton";
 
 export default class TabButtonWidget extends AbstractWidget {
   getDefaultConfig() {
@@ -97,7 +98,7 @@ export default class TabButtonWidget extends AbstractWidget {
   }
 
   afterInitializeAllWidgets() {
-    const widgetRegistry = new window.ievv_jsbase_core.WidgetRegistrySingleton();
+    const widgetRegistry = new WidgetRegistrySingleton();
     const tabPanelElement = document.getElementById(this._tabPanelDomId);
     const tabPanelWidget = widgetRegistry.getWidgetInstanceFromElement(tabPanelElement);
     const isActive = this._hasActiveClass();

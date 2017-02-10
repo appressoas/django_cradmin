@@ -29,6 +29,7 @@ import DateSelectorWidget from "./widgets/DateSelectorWidget";
 import HtmlListWithMovableItemsWidget from "./widgets/HtmlListWithMovableItemsWidget";
 import GeoLocationWidget from './widgets/GeoLocationWidget';
 import GeoLocationFilterWidget from './widgets/GeoLocationFilterWidget';
+import WidgetRegistrySingleton from "ievv_jsbase/lib/widget/WidgetRegistrySingleton";
 
 
 export default class DjangoCradminAll {
@@ -39,7 +40,7 @@ export default class DjangoCradminAll {
     // this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.INFO);
     // this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);
 
-    const widgetRegistry = new window.ievv_jsbase_core.WidgetRegistrySingleton();
+    const widgetRegistry = new WidgetRegistrySingleton();
     // widgetRegistry.registerWidgetClass('cradmin-datetime-picker', DateTimePicker);
     widgetRegistry.registerWidgetClass('cradmin-menutoggle', MenuToggleWidget);
     widgetRegistry.registerWidgetClass('cradmin-toggleable-menu', ToggleableMenuWidget);
