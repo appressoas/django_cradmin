@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'django_cradmin.demo.uicontainerdemo',
 
     #: Demo for creating a custom cradmin theme
-    'django_cradmin.demo.custom_theme_demo',
+    # 'django_cradmin.demo.custom_theme_demo',
 
     #: Demo for the javascript components
     'django_cradmin.demo.cradmin_javascript_demos',
