@@ -348,6 +348,9 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
     'default': ievvdevrun.config.RunnableThreadList(
         ievvdevrun.runnables.django_runserver.RunnableThread(),
     ),
+    'default-port-9001': ievvdevrun.config.RunnableThreadList(
+        ievvdevrun.runnables.django_runserver.RunnableThread(port=9001),
+    ),
     'design': ievvdevrun.config.RunnableThreadList(
         ievvdevrun.runnables.django_runserver.RunnableThread(),
         ievvdevrun.runnables.ievv_buildstatic.RunnableThread(),
