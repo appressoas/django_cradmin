@@ -3,6 +3,8 @@ import "babel-polyfill";
 import "ievv_jsbase/lib/polyfill/all";
 
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
+import LOGLEVEL from "ievv_jsbase/lib/log/loglevel";
+import WidgetRegistrySingleton from "ievv_jsbase/lib/widget/WidgetRegistrySingleton";
 import MenuToggleWidget from "./widgets/MenuToggleWidget";
 import ToggleableMenuWidget from "./widgets/ToggleableMenuWidget";
 import TabButtonWidget from "./widgets/TabButtonWidget";
@@ -29,13 +31,11 @@ import DateSelectorWidget from "./widgets/DateSelectorWidget";
 import HtmlListWithMovableItemsWidget from "./widgets/HtmlListWithMovableItemsWidget";
 import GeoLocationWidget from './widgets/GeoLocationWidget';
 import GeoLocationFilterWidget from './widgets/GeoLocationFilterWidget';
-import WidgetRegistrySingleton from "ievv_jsbase/lib/widget/WidgetRegistrySingleton";
 
 
 export default class DjangoCradminAll {
   constructor() {
-    new LoggerSingleton().setDefaultLogLevel(
-      window.ievv_jsbase_core.LOGLEVEL.INFO);
+    new LoggerSingleton().setDefaultLogLevel(LOGLEVEL.INFO);
     // this.logger = new LoggerSingleton().getLogger("ievv_jsui_demoapp.DjangoCradminAll");
     // this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.INFO);
     // this.logger.debug(`I am a DjangoCradminAll, and I am aliiiiive!`);

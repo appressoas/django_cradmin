@@ -9,7 +9,6 @@ export default class DateTimePicker extends AbstractWidget {
   constructor(element) {
     super(element);
     this.logger = new LoggerSingleton().getLogger("ievv_jsui.DateTimePicker");
-    this.logger.setLogLevel(window.ievv_jsbase_core.LOGLEVEL.DEBUG);
 
     this._initializeCalendarCoordinators();
 
