@@ -17,7 +17,7 @@
     "babel-preset-react": "^6.16.0",
     "esdoc": "^0.4.8",
     "esdoc-importpath-plugin": "^0.0.1",
-    "jest": "^17.0.2",
+    "jest": "^18.1.0",
     "json-loader": "^0.5.4",
     "moment": "^2.17.1",
     "react-hotkeys": "^0.9.0",
@@ -30,9 +30,14 @@
     "jsbuild": "webpack --config webpack.config.js",
     "jsbuild-production": "webpack --config webpack.config.js -p",
     "jsbuild-watch": "webpack --config webpack.config.js --watch",
-    "test": "jest",
+    "test": "jest --verbose --no-cache",
     "test-debug": "jest --debug",
     "test-watch": "jest --watch"
   },
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "jest": {
+    "transform": {
+      ".*": "./config/jest/transform.js"
+    }
+  }
 }
