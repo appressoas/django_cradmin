@@ -9,3 +9,5 @@ yarn.lock
 esdoc.json
 esdoc/
 *.tgz
+webpack.config.js
+ievv_buildstatic.appconfig.json
