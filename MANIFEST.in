@@ -13,9 +13,9 @@ recursive-include django_cradmin *.woff2
 recursive-include django_cradmin *.svg
 recursive-include django_cradmin *.otf
 prune django_cradmin/demo
-prune django_cradmin/apps/django_cradmin_js/staticsources/
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/node_modules/
+prune django_cradmin/apps/django_cradmin_js/staticsources
+prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/node_modules
 prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/yarn.lock
 prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/package.json
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/mediasources/
+prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/mediasources
 prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/ievv_buildstatic.appconfig.json
