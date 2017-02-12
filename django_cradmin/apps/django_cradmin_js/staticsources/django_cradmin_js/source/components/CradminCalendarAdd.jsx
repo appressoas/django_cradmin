@@ -5,6 +5,9 @@ import ObjectManager from "ievv_jsbase/lib/utils/ObjectManager";
 import CradminDateSelector from "./CradminDateSelector";
 
 
+/**
+ * Renders a UI for adding entries to a calendar.
+ */
 export default class CradminCalendarAdd extends React.Component {
 
   static get defaultProps() {
@@ -22,14 +25,25 @@ export default class CradminCalendarAdd extends React.Component {
     }
     this.logger = new LoggerSingleton().getLogger(
       'django_cradmin.components.CradminCalendarAdd');
-    this._dateSelectorProps = ObjectManager.mergeAndClone(this.props.dateSelectorProps, {
-      signalNameSpace: this.props.signalNameSpace
+    this._fromDateSelectorProps = ObjectManager.mergeAndClone(this.props.dateSelectorProps, {
+      signalNameSpace: `${this.props.signalNameSpace}.FromDateTime`
     });
+    this._toDateSelectorProps = ObjectManager.mergeAndClone(this.props.dateSelectorProps, {
+      signalNameSpace: `${this.props.signalNameSpace}.ToDateTime`
+    });
+  }
+
+  renderDateSelectors() {
+    return <div>
+      <CradminDateSelector {...this._fromDateSelectorProps}/>
+      &mdash;
+      <CradminDateSelector {...this._toDateSelectorProps}/>
+    </div>;
   }
 
   render() {
     return <div className={this.props.className}>
-      <CradminDateSelector {...this._dateSelectorProps}/>
+      {this.renderDateSelectors()}
     </div>;
   }
 }
