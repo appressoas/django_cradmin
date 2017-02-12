@@ -38,6 +38,8 @@ export default class CradminDateSelector extends React.Component {
         initialDay={this.props.initialDay}
         initialMonth={this.props.initialMonth}
         initialYear={this.props.initialYear}
+        initialHour={this.props.initialHour}
+        initialMinute={this.props.initialMinute}
         {...this.props.resultFieldProps}
       />;
     } else if(this.props.includeDate) {
@@ -46,8 +48,6 @@ export default class CradminDateSelector extends React.Component {
         initialDay={this.props.initialDay}
         initialMonth={this.props.initialMonth}
         initialYear={this.props.initialYear}
-        initialHour={this.props.initialHour}
-        initialMinute={this.props.initialMinute}
         {...this.props.resultFieldProps}
       />;
     } else {
