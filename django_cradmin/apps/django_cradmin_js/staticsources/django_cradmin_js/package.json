@@ -23,7 +23,7 @@
   "license": "BSD-3-Clause",
   "name": "django_cradmin_js",
   "scripts": {
-    "build": "babel source --presets=babel-preset-es2015,babel-preset-react --out-dir lib",
+    "build": "rm -rf lib && babel source --presets=babel-preset-es2015,babel-preset-react --out-dir lib",
     "clean": "rm -rf lib built_docs",
     "build-docs": "esdoc -c esdoc.json",
     "jsbuild": "webpack --config webpack.config.js",
