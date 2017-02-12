@@ -23,8 +23,7 @@ $ yarn add django_cradmin_js --dev
 
 
 ## Release a new version
-
-## Release a new version
+(for people with publish permissions for the npm package)
 
 1. Build:
 
