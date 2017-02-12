@@ -5,8 +5,6 @@ import re
 
 from django.contrib.staticfiles.templatetags import staticfiles
 
-import django_cradmin
-
 COMPONENT_ID_REGEX = re.compile(r'^[a-z][a-z0-9_]*[a-z0-9]$')
 
 

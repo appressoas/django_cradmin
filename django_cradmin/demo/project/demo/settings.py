@@ -90,7 +90,6 @@ INSTALLED_APPS = (
 
     'ievv_opensource.ievvtasks_development',
     'ievv_opensource.ievvtasks_common',
-    'ievv_opensource.ievv_jsbase',
 )
 
 MIDDLEWARE = (
