@@ -12,10 +12,11 @@ recursive-include django_cradmin *.woff
 recursive-include django_cradmin *.woff2
 recursive-include django_cradmin *.svg
 recursive-include django_cradmin *.otf
+recursive-include django_cradmin *.scss
 prune django_cradmin/demo
-prune django_cradmin/apps/django_cradmin_js/staticsources
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/node_modules
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/yarn.lock
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/package.json
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/mediasources
-prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/ievv_buildstatic.appconfig.json
+prune django_cradmin/apps/django_cradmin_js/staticsources/
+prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/node_modules/
+prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/mediasources/
+exclude django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/yarn.lock
+exclude django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/package.json
+exclude django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/ievv_buildstatic.appconfig.json
