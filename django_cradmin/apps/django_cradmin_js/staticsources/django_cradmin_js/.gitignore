@@ -1,0 +1,4 @@
+/node_modules/
+/lib/
+/built_docs/
+*.tgz

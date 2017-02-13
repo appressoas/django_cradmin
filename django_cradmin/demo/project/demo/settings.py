@@ -46,7 +46,7 @@ INSTALLED_APPS = (
     'rest_framework',
 
     # Required by django cradmin
-    'django_cradmin.appconfig.CradminWithStyleguideAppConfig',
+    'django_cradmin',
     'django_cradmin.apps.cradmin_imagearchive',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
@@ -56,6 +56,8 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_register_account',
     'django_cradmin.apps.cradmin_invite',
     'django_cradmin.apps.cradmin_email',
+    'django_cradmin.apps.django_cradmin_js',
+    'django_cradmin.apps.django_cradmin_styles.apps.WithStyleguideAppConfig',
     'django_cradmin.uicontainer',
     'crispy_forms',
     'sorl.thumbnail',  # Required by cradmin_imagearchive
@@ -81,14 +83,13 @@ INSTALLED_APPS = (
     'django_cradmin.demo.uicontainerdemo',
 
     #: Demo for creating a custom cradmin theme
-    'django_cradmin.demo.custom_theme_demo',
+    # 'django_cradmin.demo.custom_theme_demo',
 
     #: Demo for the javascript components
     'django_cradmin.demo.cradmin_javascript_demos',
 
     'ievv_opensource.ievvtasks_development',
     'ievv_opensource.ievvtasks_common',
-    'ievv_opensource.ievv_jsbase',
 )
 
 MIDDLEWARE = (
@@ -284,7 +285,7 @@ IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
 
 IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ievvbuildstatic.config.App(
-        appname='django_cradmin',
+        appname='django_cradmin_styles',
         version=django_cradmin.__version__,
         # keep_temporary_files=True,
         plugins=[
@@ -297,44 +298,14 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
                 sourcefolder='styles/basetheme',
                 sourcefile='styleguide.scss'
             ),
-
-            ievvbuildstatic.npmrun_jsbuild.Plugin(
-                extra_import_paths=[
-                    ievvbuildstatic.filepath.SourcePath('ievv_jsbase', 'scripts', 'javascript'),
-                ]
-            ),
-
-            # # AngularJS
-            # ievvbuildstatic.npminstall.Plugin(
-            #     packages={
-            #         # "@angular/common": "2.0.0-rc.5",
-            #         # "@angular/compiler": "2.0.0-rc.5",
-            #         # "@angular/core": "2.0.0-rc.5",
-            #         # "@angular/platform-browser": "2.0.0-rc.5",
-            #         # "@angular/platform-browser-dynamic": "2.0.0-rc.5",
-            #         # "@angular/upgrade": "2.0.0-rc.5",
-            #         "core-js": "^2.4.0",
-            #         "reflect-metadata": "^0.1.3",
-            #         "rxjs": "5.0.0-beta.6",
-            #         "zone.js": "^0.6.12",
-            #         "tslint": "^3.7.4",
-            #         "typedoc": "^0.4.4",
-            #         "typescript": "^1.8.10",
-            #         "typings": "^1.0.4"
-            #     }
-            # ),
-            # ievvbuildstatic.typescriptbuild.Plugin(
-            #     main_sourcefile="CradminModuleLoader.ts",
-            #     destinationfile="django_cradmin.js",
-            #     typings_global_dependencies=[
-            #         'dt~node@6.0.0',
-            #         'dt~core-js@0.0.0']
-            # ),
-            # ievvbuildstatic.nodemodulescopy.Plugin(
-            #     sourcefiles=['zone.js/dist/zone.js', 'reflect-metadata/Reflect.js', 'core-js/client/shim.min.js'],
-            # )
-
-
+        ]
+    ),
+    ievvbuildstatic.config.App(
+        appname='django_cradmin_js',
+        version=django_cradmin.__version__,
+        # keep_temporary_files=True,
+        plugins=[
+            ievvbuildstatic.npmrun_jsbuild.Plugin(),
         ]
     ),
     # ievvbuildstatic.config.App(
@@ -376,6 +347,9 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
     'default': ievvdevrun.config.RunnableThreadList(
         ievvdevrun.runnables.django_runserver.RunnableThread(),
     ),
+    'default-port-9001': ievvdevrun.config.RunnableThreadList(
+        ievvdevrun.runnables.django_runserver.RunnableThread(port=9001),
+    ),
     'design': ievvdevrun.config.RunnableThreadList(
         ievvdevrun.runnables.django_runserver.RunnableThread(),
         ievvdevrun.runnables.ievv_buildstatic.RunnableThread(),
@@ -387,6 +361,6 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 }
 
 
-DJANGO_CRADMIN_THEME_PATH = 'django_cradmin/{version}/styles/basetheme/main.css'.format(
+DJANGO_CRADMIN_THEME_PATH = 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
     version=django_cradmin.__version__
 )

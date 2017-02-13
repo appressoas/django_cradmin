@@ -5,8 +5,6 @@ import re
 
 from django.contrib.staticfiles.templatetags import staticfiles
 
-import django_cradmin
-
 COMPONENT_ID_REGEX = re.compile(r'^[a-z][a-z0-9_]*[a-z0-9]$')
 
 
@@ -113,45 +111,3 @@ class AbstractJsComponent(object):
         Javascript components are considered equal if their :attr:`~.AbstractJsComponent.component_id` match.
         """
         return other.component_id == self.component_id
-
-
-# class CradminAngular1(AbstractJsComponent):
-#     def get_target_domelement_selector(self):
-#         raise NotImplementedError()
-#
-#     def get_head_sourceurls(self):
-#         return [
-#             self.get_static_url('django_cradmin/dist/vendor/cradmin-vendorjs.js'),
-#             self.get_static_url('django_cradmin/dist/js/cradmin.min.js'),
-#         ]
-#
-#     def get_angularjs_modules(self):
-#         return []
-#
-#     def get_angularjs_modules_json(self):
-#         return json.dumps(self.get_angularjs_modules())
-#
-#     def get_javascript_code_after_sourceurls(self):
-#         return render_to_string('django_cradmin/utils/jsregistry/cradmin-angular1-jscomponent.django.js',
-#                                 request=self.request,
-#                                 context={
-#                                     'me': self
-#                                 })
-
-
-class CradminJavascript(AbstractJsComponent):
-    @classmethod
-    def get_component_id(cls):
-        return 'django_cradmin_javascript'
-
-    def get_dependencies(self):
-        return [
-            'ievv_jsbase_core',
-        ]
-
-    def get_sourceurls(self):
-        return [
-            self.get_static_url('django_cradmin/{version}/scripts/django_cradmin_all.js'.format(
-                version=django_cradmin.__version__
-            ))
-        ]

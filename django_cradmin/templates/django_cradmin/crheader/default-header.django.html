@@ -1,14 +1,6 @@
 {% extends "django_cradmin/crheader/base.django.html" %}
 {% load cradmin_tags %}
 
-{% block outer-wrapper-element-attributes %}
-    {{ block.super }}
-    {% if me.include_menutoggle_javascript %}
-        cradmin_menutoggle_groupid="mainmenu"
-        cradmin_menutoggle_activestyle="{{ me.bem_block }}--showmenu"
-    {% endif %}
-{% endblock outer-wrapper-element-attributes %}
-
 {% block content %}
     <div class="{{ me.bem_block }}__content">
         {% block content-inner %}
