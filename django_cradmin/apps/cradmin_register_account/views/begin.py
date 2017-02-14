@@ -21,15 +21,14 @@ class BeginRegisterAccountView(FormView, javascriptregistry.viewmixin.Standalone
     def get_context_data(self, **kwargs):
         context = super(BeginRegisterAccountView, self).get_context_data(**kwargs)
         self.add_javascriptregistry_component_ids_to_context(context=context)
+        form = context['form']
+        context['form_renderable'] = form.get_form_renderable()
         context['DJANGO_CRADMIN_SITENAME'] = settings.DJANGO_CRADMIN_SITENAME
         return context
 
     def get_success_url(self):
-        return reverse('cradmin-register-account-email-sent')
-
-    def get_next_url(self):
         """
-        Get the next url to go to after the account has been activated.
+        Get the next url to go to after the user has been created.
 
         Defaults to the ``DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL``, falling back to
         the ``LOGIN_URL`` setting.
@@ -39,14 +38,6 @@ class BeginRegisterAccountView(FormView, javascriptregistry.viewmixin.Standalone
         else:
             return getattr(settings, 'DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL', settings.LOGIN_URL)
 
-    def send_activation_email(self, user):
-        activation_email = ActivationEmail(
-            request=self.request,
-            user=user,
-            next_url=self.get_next_url())
-        activation_email.send()
-
     def form_valid(self, form):
-        user = form.save()
-        self.send_activation_email(user)
+        form.save()
         return super(BeginRegisterAccountView, self).form_valid(form)

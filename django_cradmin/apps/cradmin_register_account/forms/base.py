@@ -1,12 +1,13 @@
 from __future__ import unicode_literals
+
 from builtins import object
-from crispy_forms import layout
-from crispy_forms.helper import FormHelper
+
+from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
-from django import forms
-from django_cradmin.crispylayouts import PrimarySubmitLg
+
+from django_cradmin import uicontainer
 
 
 class AbstractCreateAccountForm(forms.ModelForm):
@@ -16,40 +17,12 @@ class AbstractCreateAccountForm(forms.ModelForm):
     Subclasses **must** override:
 
     - :meth:`~.AbstractCreateAccountForm.set_password`.
-    - :meth:`~.AbstractCreateAccountForm.deactivate_user`.
+    - :meth:`~.AbstractCreateAccountForm.get_field_renderables`.
     """
-
-    #: Used to add custom attributes like angularjs directives to the form.
-    #: See :meth:`.get_form_attributes`.
-    form_attributes = {}
 
     class Meta(object):
         model = get_user_model()
         fields = []
-
-    def __init__(self, *args, **kwargs):
-        super(AbstractCreateAccountForm, self).__init__(*args, **kwargs)
-        self.helper = self.get_formhelper()
-
-    def get_formhelper(self):
-        """
-        Get a :class:`crispy_forms.helper.FormHelper`.
-
-        You normally do not need to override this directly. Instead
-        you should override:
-
-        - :meth:`.get_field_layout`.
-        - :meth:`.get_hidden_fields`
-        """
-        helper = FormHelper()
-        layoutargs = list(self.get_field_layout()) + list(self.get_button_layout()) + list(self.get_hidden_fields())
-        helper.layout = layout.Layout(*layoutargs)
-        helper.form_action = '#'
-        form_id = self.get_form_id()
-        if form_id:
-            helper.form_id = form_id
-        helper.attrs = self.get_form_attributes()
-        return helper
 
     def get_submit_button_label(self):
         """
@@ -58,65 +31,6 @@ class AbstractCreateAccountForm(forms.ModelForm):
         Override this to provide a custom label.
         """
         return _('Sign up for %(sitename)s') % {'sitename': settings.DJANGO_CRADMIN_SITENAME}
-
-    def get_button_layout(self):
-        """
-        Get the button layout. This is added to the crispy form layout.
-        """
-        return [
-            PrimarySubmitLg('submit-register', self.get_submit_button_label()),
-        ]
-
-    def get_form_attributes(self):
-        """
-        You can add custom attributes to the form via this method.
-
-        This is set as the ``attrs``-attribute of the crispy FormHelper
-        created in :meth:`.get_formhelper`.
-
-        Defaults to :obj:`.form_attributes`.
-
-        Returns:
-            A dictionary to set any kind of form attributes. Underscores in
-            keys are translated into hyphens.
-        """
-        return self.form_attributes
-
-    def get_form_id(self):
-        """
-        Returns the ID to set on the DOM element for the form.
-
-        Defaults to `"django_cradmin_register_account_form"`.
-        """
-        return 'django_cradmin_register_account_form'
-
-    def get_field_layout(self):
-        """
-        Get a list/tuple of fields. These are added to a ``crispy_forms.layout.Layout``.
-
-        Must be overridden.
-
-        Simple example::
-
-            from django.views.generic import FormView
-            from crispy_forms import layout
-
-            class MyForm(AbstractCreateAccountForm):
-                def get_field_layout(self):
-                    return [
-                        layout.Div('name', 'username')
-                    ]
-        """
-
-    def get_hidden_fields(self):
-        """
-        Get hidden fields for the form.
-
-        Returns:
-            An iterable of :class:`crispy_forms.layout.Hidden` objects.
-            Defaults to an empty list.
-        """
-        return []
 
     def set_password(self, user):
         """
@@ -138,24 +52,6 @@ class AbstractCreateAccountForm(forms.ModelForm):
         """
         raise NotImplementedError()
 
-    def deactivate_user(self, user):
-        """
-        Mark the ``user`` as inactive.
-
-        **Must** be overridden in subclasses.
-
-        Should not save the user, only set it as inactive.
-
-        Example:
-            Basic example that works with the default django user model::
-
-                class MyCreateAccountForm(AbstractCreateAccountForm):
-                    ...
-                    def deactivate_user(self, user):
-                        user.is_active = False
-        """
-        raise NotImplementedError()
-
     def set_extra_user_attributes(self, user):
         """
         Override this to set extra user attributes in addition to
@@ -163,10 +59,48 @@ class AbstractCreateAccountForm(forms.ModelForm):
         :meth:`~.AbstractCreateAccountForm.set_password`.
         """
 
+    def get_field_renderables(self):
+        """
+        Get field renderables.
+
+        Must be overridden in subclasses.
+
+        Returns:
+            list: List of :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
+        """
+        raise NotImplementedError()
+
+    def get_submit_button_renderables(self):
+        return [
+            uicontainer.button.SubmitPrimary(text=self.get_submit_button_label())
+        ]
+
+    def get_form_renderable(self):
+        """
+        Get a :class:`django_cradmin.renderable.AbstractRenderable` that renders
+        the form.
+
+        This will typically be a :doc:`uicontainer` tree containing a
+        :class:`django_cradmin.uicontainer.form.Form`, but it can be any
+        AbstractRenderable. Not using a :class:`django_cradmin.uicontainer.form.Form`
+        (or a subclass of it) is fairly complex when it comes to handling error
+        messages and form rendering, so it is generally not recommended.
+
+        Returns:
+            django_cradmin.renderable.AbstractRenderable: The renderable object.
+        """
+        return uicontainer.form.Form(
+            form=self,
+            children=[
+                uicontainer.layout.AdminuiPageSectionTight(
+                    children=self.get_field_renderables() + self.get_submit_button_renderables()
+                )
+            ]
+        ).bootstrap()
+
     def save(self, commit=True):
         user = super(AbstractCreateAccountForm, self).save(commit=False)
         self.set_password(user)
-        self.deactivate_user(user)
         self.set_extra_user_attributes(user)
         user.full_clean()
         if commit:

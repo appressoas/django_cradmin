@@ -36,7 +36,7 @@ class FormViewMixin:
         (or a subclass of it) is fairly complex when it comes to handling error
         messages and form rendering, so it is generally not recommended.
 
-        See :meth:`django_cradmin.viewhelpers.formview.formview.FormView` for examples.
+        See :meth:`django_cradmin.viewhelpers.formview.formview.WithinRoleFormView` for examples.
 
         Returns:
             django_cradmin.renderable.AbstractRenderable: The renderable object.
