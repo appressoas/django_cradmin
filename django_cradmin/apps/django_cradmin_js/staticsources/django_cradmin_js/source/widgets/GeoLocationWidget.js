@@ -28,7 +28,7 @@ export default class GeoLocationWidget extends AbstractWidget {
   }
 
   locationError(error) {
-    if (error.code == PositionError.code.PERMISSION_DENIED){
+    if (error.code == 1) { // 1 = PERMISSION_DENIED
       new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.GeoLocationPermissionDenied`,
       position);
