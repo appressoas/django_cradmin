@@ -2,17 +2,28 @@
 {% load static %}
 
 {% block title %}
-    Select a demo
+    Javascript demos
 {% endblock title %}
 
 {% block page-cover-title %}
-    Select a demo
+    Javascript demos
 {% endblock page-cover-title %}
+
+{% block page-cover-content %}
+    {{ block.super }}
+    <p class="page-cover__description">
+        Code for these demos are in
+        <strong class="adminui-page-cover__strong">
+            django_cradmin/demo/cradmin_javascript_demos
+        </strong>
+    </p>
+{% endblock page-cover-content %}
 
 
 {% block content %}
     <div class="adminui-page-section">
         <div class="container container--tight">
+            <h2>Plain javascript demos</h2>
             <nav class="blocklist  blocklist--tight">
                 <a class="blocklist__item blocklist__item--link"
                         href="{% url 'cradmin_javascript_demos_datetimepicker' %}">
@@ -23,20 +34,32 @@
                     Data list widgets demo
                 </a>
                 <a class="blocklist__item blocklist__item--link"
-                        href="{% url 'cradmin_javascript_demos_datalistwidgets_uicontainer' %}">
-                    Data list widgets uicontainer demo
-                </a>
-                <a class="blocklist__item blocklist__item--link"
                         href="{% url 'cradmin_javascript_demos_tabs' %}">
                     Tabs demo
                 </a>
                 <a class="blocklist__item blocklist__item--link"
                         href="{% url 'cradmin_auto_submit_form_after_countdown_demo' %}">
-                    Auto submit form after countdown widget demo
+                    Auto submit form after countdown widget
                 </a>
                 <a class="blocklist__item blocklist__item--link"
                         href="{% url 'cradmin_print_on_click_demo' %}">
-                    window.print() on click demo
+                    window.print() on click widget
+                </a>
+                <a class="blocklist__item blocklist__item--link"
+                        href="{% url 'cradmin_javascript_demos_geolocation' %}">
+                    geolocation widget
+                </a>
+            </nav>
+        </div>
+
+    </div>
+    <div class="adminui-page-section">
+        <div class="container container--tight">
+            <h2>uicontainer javascript demos</h2>
+            <nav class="blocklist  blocklist--tight">
+                <a class="blocklist__item blocklist__item--link"
+                        href="{% url 'cradmin_javascript_demos_datalistwidgets_uicontainer' %}">
+                    Data list widgets uicontainer demo
                 </a>
             </nav>
         </div>

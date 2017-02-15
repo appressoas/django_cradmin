@@ -34,6 +34,13 @@ class DataListWidgetsDemo(generic.StandaloneBaseTemplateView):
         return ['django_cradmin_javascript']
 
 
+class JavascriptDemoView(generic.StandaloneBaseTemplateView):
+    template_name = None
+
+    def get_javascriptregistry_component_ids(self):
+        return ['django_cradmin_javascript']
+
+
 class DemoForm(forms.ModelForm):
     class Meta:
         model = FictionalFigureCollection

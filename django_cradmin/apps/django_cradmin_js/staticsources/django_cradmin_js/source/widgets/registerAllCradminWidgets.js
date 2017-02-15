@@ -25,6 +25,7 @@ import DateSelectorWidget from "./DateSelectorWidget";
 import HtmlListWithMovableItemsWidget from "./HtmlListWithMovableItemsWidget";
 import GeoLocationWidget from './GeoLocationWidget';
 import GeoLocationFilterWidget from './GeoLocationFilterWidget';
+import GeoLocationDebugWidget from "./GeoLocationDebugWidget";
 
 
 /**
@@ -58,5 +59,6 @@ export default function registerAllCradminWidgets() {
     widgetRegistry.registerWidgetClass('cradmin-auto-submit-form-after-countdown', AutoSubmitFormAfterCountdownWidget);
     widgetRegistry.registerWidgetClass('cradmin-print-on-click', PrintOnClickWidget);
     widgetRegistry.registerWidgetClass('cradmin-geolocation', GeoLocationWidget);
+    widgetRegistry.registerWidgetClass('cradmin-geolocation-debug', GeoLocationDebugWidget);
     widgetRegistry.registerWidgetClass('cradmin-geolocation-filter', GeoLocationFilterWidget);
 }

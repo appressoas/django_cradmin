@@ -13,6 +13,10 @@ urlpatterns = [
     url(r'^$',
         views.Overview.as_view(),
         name="cradmin_javascript_demos_overview"),
+    url(r'^geolocation-demo$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/geolocation-demo.django.html'),
+        name="cradmin_javascript_demos_geolocation"),
     url(r'^date-time-picker-demo$',
         views.DateTimePickerDemo.as_view(),
         name="cradmin_javascript_demos_datetimepicker"),
