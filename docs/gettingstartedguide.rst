@@ -185,9 +185,49 @@ Testing the view
 ----------------
 Before we add the cradmin_instance to the project urls and watch our work on localhost, we need to test that it behaves
 as intended. Before we do this, it is time for you to stretch your legs and rest your eyes for 10 minutes. Okay, now
-that you are refreshed, we can take a look a first look at the
+that you are refreshed, we can take a look a first look at the :class:`django_cradmin.cradmin_testhelpers.TestCaseMixin`
+in CRadmin. For now lets keep it simple and just mock a get request for our view to be sure that the title on our html
+page is the same as the account_name for an instance of
+:class:`django_cradmin.demo.cradmin_gettingstarted.models.Account` which is returned by the ``get_titletext_for_role``
+in our ``gettingstarted_cradmin_instance_py`` file.
+
+Our test file for the index view looks like this::
+
+    from django.conf import settings
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
+    from django_cradmin.demo.cradmin_gettingstarted.crapps import AccountIndexView
 
 
+    class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        """"""
+        viewclass = AccountIndexView
+The viewclass is just which view you want to test. Next step is to add a method in our test class which checks if the
+title is what we want it to be::
+
+    def test_get_title(self):
+        account = mommy.make('cradmin_gettingstarted.Account', account_name='My account')
+        mommy.make(
+            'cradmin_gettingstarted.AccountAdministrator',
+            account=account,
+            user=mommy.make(settings.AUTH_USER_MODEL)
+        )
+        mockresponse = self.mock_getrequest(
+            htmls_selector=True,
+            cradmin_role=account
+        )
+        mockresponse.selector.prettyprint()
+        page_title = mockresponse.selector.one('title').alltext_normalized
+        self.assertEqual(account.account_name, page_title)
+Okay, here a lot of things is going on. So lets take it one step at the time. First the modles which we need is created
+by mommy. Next we mock a get request where the cradmin role is the account created by mommy, and htmls_selector is True.
+``Htmls selector`` is used to easy get hold of CSS selectors so we can check their values. In the next line prettyprint
+is called, and this is actually not needed since all it does is to print out the html file in you monitor. It's just a
+cool functionality often used to easily see different tag names and css classes before finish writing the test. Normaly
+we delete the prettyprint line. Anyway, the next line is where we get the page title, and add the ``alltext_normalized``
+so we can compare a string with a string. Finally we check if the account name is equal to the html title.
 
 We begin by creating the file ``cradmin_question.py`` in the views folder of our ``polls`` app. In this file we
 add this content::
