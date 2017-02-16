@@ -13,4 +13,18 @@ class TestGettingStartedCradminInstance(TestCase):
         mockrequest = mock.MagicMock()
         mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
         cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
-        self.assertEqual(0, len(cradmin_instance.get_rolequeryset().all()))
+        self.assertEqual(0, cradmin_instance.get_rolequeryset().count())
+
+    def test_user_is_in_rolequeryset(self):
+        user = mommy.make(settings.AUTH_USER_MODEL)
+        account = mommy.make('cradmin_gettingstarted.Account')
+        mommy.make(
+            'cradmin_gettingstarted.AccountAdministrator',
+            account=account,
+            user=user
+        )
+        mockrequest = mock.MagicMock()
+        mockrequest.user = user
+        cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
+        self.assertEqual(1, cradmin_instance.get_rolequeryset().count())
+
