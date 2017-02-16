@@ -122,11 +122,72 @@ Likewise, ``get_rolequersyet`` should not be empty when an ``user`` is connected
             cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
             self.assertEqual(1, cradmin_instance.get_rolequeryset().count())
 
-Building a basic cradmin view
------------------------------
+Building an index view for Account
+----------------------------------
 We have now set up a ``CrAdminInstance`` and connected it to a model, but it doesn't quite work yet. To make it work
 we must first connect it to a :class:`django_cradmin.crapp.App`. In cradmin, the apps are essentially your views.
 This is where you define the urls, layout and content of the various pages in your cradmin interface.
+
+First we create a module called ``crapps`` which will hold all of our cradmin applications. Inside here, we create a
+file called ``account_index.py``. The Project structure will look something like ::
+
+    cradmin_gettingstarted
+        crapps
+            init.py
+            account_index.py
+        migrations
+        tests
+        init.py
+        gettingstarted_cradmin_instance.py
+        models.py
+Inside the ``account_index.py`` file we add this content::
+
+    from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
+
+    class AccountIndexView(WithinRoleTemplateView):
+        template_name = 'cradmin_gettingstarted/account.index.django.html'
+
+There are many different viewhelpers in CRadmin suthing different purposes. However, to view an account we need an
+user which is an administrator for that account, thus we use the ``WithinRoleTemplateView`` as super for our index view.
+
+Then in the ``__init__.py`` file inside the crapps folder we add the url to the view as this::
+
+    from django_cradmin import crapp
+    from django_cradmin.demo.cradmin_gettingstarted.crapps.account_index import AccountIndexView
+
+
+    class App(crapp.App):
+        appurls = [
+            crapp.Url(r'^$', AccountIndexView.as_view(), name=crapp.INDEXVIEW_NAME)
+        ]
+Since this is a getting started guide we do not chose to use any built in templates inside cradmin expect the base,
+but rather take the time to create an html file insde the template folder. There are different cradmin html files
+you can extend. In this example we need to extend the ``django_cradmin/base.django.html`` html file. Further we add
+blocks which shows the title and content. So our ``account_index.django.html`` file will look like this::
+
+    {% extends "django_cradmin/base.django.html" %}
+
+    {% block title %}
+        {{ request.cradmin_role.account_name }}
+    {% endblock title %}
+
+    {% block content %}
+
+    {% endblock content %}
+Now, as you can see in the title block we are requesting the account name for the cradmin_role. To make this work we
+need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role` in our
+``gettingstarted_cradmin_instance.py`` file and tell it to return the account name, like this::
+
+    def get_titletext_for_role(self, role):
+        return role.account_name
+
+Testing the view
+----------------
+Before we add the cradmin_instance to the project urls and watch our work on localhost, we need to test that it behaves
+as intended. Before we do this, it is time for you to stretch your legs and rest your eyes for 10 minutes. Okay, now
+that you are refreshed, we can take a look a first look at the
+
+
 
 We begin by creating the file ``cradmin_question.py`` in the views folder of our ``polls`` app. In this file we
 add this content::
