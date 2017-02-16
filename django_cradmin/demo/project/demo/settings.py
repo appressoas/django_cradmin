@@ -69,6 +69,7 @@ INSTALLED_APPS = (
     'django_cradmin.demo.project.demo',
 
     # The advanced demo
+    'django_cradmin.demo.cradmin_gettingstarted',
     'django_cradmin.demo.webdemo',
     'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
