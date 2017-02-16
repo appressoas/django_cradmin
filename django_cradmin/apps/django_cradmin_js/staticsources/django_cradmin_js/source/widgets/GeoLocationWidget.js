@@ -1,7 +1,9 @@
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
-
+/**
+ * Geolocation widget.
+ */
 export default class GeoLocationWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
@@ -10,7 +12,11 @@ export default class GeoLocationWidget extends AbstractWidget {
     if (this.config.signalNameSpace == null) {
       throw Error("signalNameSpace is required!");
     }
-    this.getLocation();
+    if(navigator && navigator.geolocation) {
+      this.getLocation();
+    } else {
+      this.handleBrowserWithoutGeolocationSupport();
+    }
   }
 
   getDefaultConfig() {
@@ -28,11 +34,18 @@ export default class GeoLocationWidget extends AbstractWidget {
   }
 
   locationError(error) {
-    if (error.code == PositionError.code.PERMISSION_DENIED){
+    if (error.code == 1) { // 1 = PERMISSION_DENIED
       new SignalHandlerSingleton().send(
-      `${this.config.signalNameSpace}.GeoLocationPermissionDenied`,
-      position);
+        `${this.config.signalNameSpace}.GeoLocationPermissionDenied`);
+    } else if(error.code == 2) { // 2 = POSITION_UNAVAILABLE
+      new SignalHandlerSingleton().send(
+        `${this.config.signalNameSpace}.GeoLocationUnavailable`);
+    } else if(error.code == 3) { // 3 = TIMEOUT
+      new SignalHandlerSingleton().send(
+        `${this.config.signalNameSpace}.GeoLocationTimeout`);
     }
+    new SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.GeoLocationError`, error);
   }
 
   getLocation() {
@@ -44,6 +57,11 @@ export default class GeoLocationWidget extends AbstractWidget {
     } else {
       navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationError, options);
     }
+  }
+
+  handleBrowserWithoutGeolocationSupport() {
+    new SignalHandlerSingleton().send(
+      `${this.config.signalNameSpace}.GeoLocationNotSupported`);
   }
 
   destroy() {
