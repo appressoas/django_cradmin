@@ -6,7 +6,10 @@ class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
     roleclass = Account
 
     def get_rolequeryset(self):
-        return Account.objects.all()
+        queryset = Account.objects.all()
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(account_user=self.request.user)
+        return queryset
 
     def get_titletext_for_role(self, role):
         pass

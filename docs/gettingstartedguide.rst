@@ -26,16 +26,25 @@ Setting up the models
 =====================
 The models.py file looks like this in the beginning::
 
+    from django.conf import settings
+    from django.db import models
+
+
     class Account(models.Model):
         """
         The account which works as the cradmin_role.
         """
+
+        #: The name of the account which create, edit and delete messages
         account_name = models.CharField(
             blank=False,
             null=False,
             max_length=50,
             verbose_name='Account name'
         )
+
+        #: A user which have access to an account. A user may have many accounts and an account may have one or more users
+        account_user = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
         def __str__(self):
             return self.account_name
@@ -45,8 +54,13 @@ The models.py file looks like this in the beginning::
         """
         A user which is an administrator for the :class:`.Account`."
         """
+
+        #: A user with privileges for handling an :class:`.Account`
         administrator = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+        #: The :class:`.Account` in question to which be administrated
         account = models.ForeignKey(Account)
+
 
 Setting up a CRadmin interface
 ==============================
@@ -69,10 +83,14 @@ file now looks like this::
         roleclass = Account
 
         def get_rolequeryset(self):
-            return Account.objects.all()
+            queryset = Account.objects.all()
+            if not self.request.user.is_superuser:
+                queryset = queryset.filter(account_user=self.request.user)
+            return queryset
 
-So far we return all Account objects, so when you test it you will not get an empty rolequeryset as shown in
-:ref:`writing_tests_guide`, but a length of one of the rolequeryset.
+When we make a query now and request an account without setting an ``account_user`` the rolequeryset will be empty as
+shown in the :ref:`writing_tests_guide`. To be sure the ``get_rolequeryset`` works as intended, lets write a test where
+the ``get_rolequeryset`` is not empty.
 
 
 Building a basic cradmin view

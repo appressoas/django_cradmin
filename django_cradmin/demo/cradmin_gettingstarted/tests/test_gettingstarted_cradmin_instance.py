@@ -8,9 +8,9 @@ from django_cradmin.demo.cradmin_gettingstarted.gettingstarted_cradmin_instance 
 
 
 class TestGettingStartedCradminInstance(TestCase):
-    def test_rolequeryset_not_empy_when_non_superuser_is_administrator_for_account(self):
+    def test_none_super_user_makes_empty_rolequeryset(self):
         mommy.make('cradmin_gettingstarted.Account')
         mockrequest = mock.MagicMock()
         mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
         cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
-        self.assertEqual(1, len(cradmin_instance.get_rolequeryset().all()))
+        self.assertEqual(0, len(cradmin_instance.get_rolequeryset().all()))
