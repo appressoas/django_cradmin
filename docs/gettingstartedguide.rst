@@ -44,9 +44,6 @@ The models.py file looks like this in the beginning::
             verbose_name='Account name'
         )
 
-        #: A user which have access to an account. A user may have many accounts and an account may have one or more users
-        account_user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-
         def __str__(self):
             return self.account_name
 
@@ -57,24 +54,24 @@ The models.py file looks like this in the beginning::
         """
 
         #: A user with privileges for handling an :class:`.Account`
-        administrator = models.ForeignKey(settings.AUTH_USER_MODEL)
+        user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
         #: The :class:`.Account` in question to which be administrated
         account = models.ForeignKey(Account)
 
 
+
 Setting up a CRadmin interface
 ==============================
 
-Setting database model
-----------------------
-We begin by creating the file ``gettingstarted_cradmin_instance.py`` with the class ``CrAdminInstance``, which will
+Setting database model and connect the model with CRadmin instance
+------------------------------------------------------------------
+We begin by creating the file ``gettingstarted_cradmin_instance.py`` with the class ``BaseCrAdminInstance``, which will
 contain our main CRadmin configuration. This class will inherit from
-:class:`django_cradmin.crinstance.BaseCrArminInstance`. Then we add the database model and queryset for our
-``CrAdminInstance``. This is done by overriding the variable
-:obj:`django_cradmin.crinstance.BaseCrAdminInstance.roleclass` and the function
+:class:`django_cradmin.crinstance`. Then we add the database model and queryset for our ``CrAdminInstance``.
+This is done by overriding the variable :obj:`django_cradmin.crinstance.BaseCrAdminInstance.roleclass` and the function
 :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_rolequeryset`. Our ``gettingstarted_cradmin_instance.py``
-file now looks like this::
+file looks like this::
 
     from django_cradmin import crinstance
     from django_cradmin.demo.cradmin_gettingstarted.models import Account
@@ -86,13 +83,44 @@ file now looks like this::
         def get_rolequeryset(self):
             queryset = Account.objects.all()
             if not self.request.user.is_superuser:
-                queryset = queryset.filter(account_user=self.request.user)
+                queryset = queryset.filter(accountadministrator__user=self.request.user)
             return queryset
 
-When we make a query now and request an account without setting an ``account_user`` the rolequeryset will be empty as
-shown in the :ref:`writing_tests_guide`. To be sure the ``get_rolequeryset`` works as intended, lets write a test where
-the ``get_rolequeryset`` is not empty.
+When we make a query now and request an account without setting an ``user`` in
+:class:`django_cradmin.demo.cradmin_gettingstarted.models.AccountAdministrator` and connecting this ``user`` to the
+:class:`django_cradmin.demo.cradmin_gettingstarted.models.Account` the rolequeryset will be empty.
+Likewise, ``get_rolequersyet`` should not be empty when an ``user`` is connected to the
+:class:`django_cradmin.demo.cradmin_gettingstarted.models.Account`. Lets write two tests to confirm this theory::
 
+    from unittest import mock
+
+    from django.conf import settings
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin.demo.cradmin_gettingstarted.gettingstarted_cradmin_instance import GettingStartedCradminInstance
+
+
+    class TestGettingStartedCradminInstance(TestCase):
+        def test_none_super_user_makes_empty_rolequeryset(self):
+            mommy.make('cradmin_gettingstarted.Account')
+            mockrequest = mock.MagicMock()
+            mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
+            cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
+            self.assertEqual(0, cradmin_instance.get_rolequeryset().count())
+
+        def test_user_is_in_rolequeryset(self):
+            user = mommy.make(settings.AUTH_USER_MODEL)
+            account = mommy.make('cradmin_gettingstarted.Account')
+            mommy.make(
+                'cradmin_gettingstarted.AccountAdministrator',
+                account=account,
+                user=user
+            )
+            mockrequest = mock.MagicMock()
+            mockrequest.user = user
+            cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
+            self.assertEqual(1, cradmin_instance.get_rolequeryset().count())
 
 Building a basic cradmin view
 -----------------------------
