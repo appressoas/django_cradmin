@@ -15,9 +15,6 @@ class Account(models.Model):
         verbose_name='Account name'
     )
 
-    #: A user which have access to an account. A user may have many accounts and an account may have one or more users
-    account_user = models.ManyToManyField(settings.AUTH_USER_MODEL)
-
     def __str__(self):
         return self.account_name
 
@@ -28,7 +25,7 @@ class AccountAdministrator(models.Model):
     """
 
     #: A user with privileges for handling an :class:`.Account`
-    administrator = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: The :class:`.Account` in question to which be administrated
     account = models.ForeignKey(Account)
