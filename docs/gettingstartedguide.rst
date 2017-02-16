@@ -18,10 +18,35 @@ Introduction
 With this project we aim to make the admin interface easier to use, prettier to look at, and more flexible than the
 original admin interface in Django.
 
-This guide will give a small introduction to some basic usage of CRadmin, based on the
-`Django poll tutorial <https://docs.djangoproject.com/en/1.7/intro/tutorial01/>`_. All commands in this tutorial
-assume that you are in the ``polls`` directory of this project (the same place where ``models.py`` is placed).
+First you create a Django app inside you project, just like you always do in Django, and create your models and do some
+simple testing to get started on that part. In this guide we will create a message system where you can write messages
+as an administrator with the correct role and look at messages written by other as a common user without a special role.
 
+Setting up the models
+=====================
+The models.py file looks like this in the beginning::
+
+    class Account(models.Model):
+        """
+        The account which works as the cradmin_role.
+        """
+        account_name = models.CharField(
+            blank=False,
+            null=False,
+            max_length=50,
+            verbose_name='Account name'
+        )
+
+        def __str__(self):
+            return self.account_name
+
+
+    class AccountAdministrator(models.Model):
+        """
+        A user which is an administrator for the :class:`.Account`."
+        """
+        administrator = models.ForeignKey(settings.AUTH_USER_MODEL)
+        account = models.ForeignKey(Account)
 
 Setting up a CRadmin interface
 ==============================
