@@ -53,25 +53,27 @@ Setting up a CRadmin interface
 
 Setting database model
 ----------------------
-We begin by creating the file ``cradmin.py`` with the class ``CrAdminInstance``, which will contain our main CRadmin
-configuration. This class will inherit from :class:`django_cradmin.crinstance.BaseCrArminInstance`.
-Then we add the database model and queryset for our ``CrAdminInstance``. This is done by overriding the variable
+We begin by creating the file ``gettingstarted_cradmin_instance.py`` with the class ``CrAdminInstance``, which will
+contain our main CRadmin configuration. This class will inherit from
+:class:`django_cradmin.crinstance.BaseCrArminInstance`. Then we add the database model and queryset for our
+``CrAdminInstance``. This is done by overriding the variable
 :obj:`django_cradmin.crinstance.BaseCrAdminInstance.roleclass` and the function
-:func:`django_cradmin.crinstance.BaseCrAdminInstance.get_rolequeryset`. Our ``cradmin.py`` file now looks like this::
+:func:`django_cradmin.crinstance.BaseCrAdminInstance.get_rolequeryset`. Our ``gettingstarted_cradmin_instance.py``
+file now looks like this::
 
     from django_cradmin import crinstance
-    from . import models
-    from .views import cradmin_question
+    from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
-    class CrAdminInstance(crinstance.BaseCrAdminInstance):
-        roleclass = models.Question
+    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+        roleclass = Account
 
         def get_rolequeryset(self):
-            return models.Question.objects.all()
+            return Account.objects.all()
 
+So far we return all Account objects, so when you test it you will not get an empty rolequeryset as shown in
+:ref:`writing_tests_guide`, but a length of one of the rolequeryset.
 
-How to write tests for the crinstance? Follow this link to the :ref:`writing_tests_guide`.
 
 Building a basic cradmin view
 -----------------------------
