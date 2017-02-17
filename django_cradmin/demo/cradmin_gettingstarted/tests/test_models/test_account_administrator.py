@@ -13,5 +13,5 @@ class TestAccountAdministratorModel(test.TestCase):
 
     def test_has_expected_attributes(self):
         my_object = mommy.make('cradmin_gettingstarted.AccountAdministrator')
-        self.assertTrue(hasattr(my_object, 'administrator'))
+        self.assertTrue(hasattr(my_object, 'user'))
         self.assertTrue(hasattr(my_object, 'account'))

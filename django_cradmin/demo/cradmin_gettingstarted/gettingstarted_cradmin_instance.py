@@ -6,6 +6,7 @@ from django_cradmin.demo.cradmin_gettingstarted.models import Account
 class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
     id = 'gettingstarted'
     roleclass = Account
+    rolefrontpage_appname = 'index'
 
     apps = [
         ('index', crapps.App)

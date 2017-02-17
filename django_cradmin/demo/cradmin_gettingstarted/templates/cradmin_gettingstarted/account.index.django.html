@@ -5,5 +5,8 @@
 {% endblock title %}
 
 {% block content %}
+    {% for account in accounts %}
+        {{ account }}
+    {% endfor %}
 
 {% endblock content %}
