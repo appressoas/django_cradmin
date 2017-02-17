@@ -251,6 +251,75 @@ and then you add the following to include the urls::
         url(r'^gettingstarted/', include(GettingStartedCradminInstance.urls())),
     ]
 
+Create an Account and display account name in html
+==================================================
+Now is a good time to add the models to your ``admin.py`` file. This way you can create an account and
+add a user to that account. Now since we are using rolebased accesscontrol we need to add login functionality so the
+account created in Django admin will show up in you template. CRadmin has an easy way to get login and logout up and
+running in no time. All you need to do is to add the following in your project settings::
+
+    INSTALLED_APPS = (
+        # ...
+        'django_cradmin',
+        'django_cradmin.apps.cradmin_authenticate',
+    )
+And in your urls.py file for the project you add::
+
+    urlpatterns = patterns(
+        # ...
+        url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
+        # ...
+    )
+Cradmin instance
+----------------
+As you may have read, the :class:`django_cradmin.crinstance.BaseCrAdminInstance` requires a ``rolefrontpage_appname``
+so it know which app is your frontpage. CRadmin calls this ``INDEXVIEW_NAME``, and we sat this name in the ``__ini__``
+file when we added the appurls. So your ``gettingstarted_cradmin_instance`` file should now look like this::
+
+    from django_cradmin import crinstance
+    from django_cradmin.demo.cradmin_gettingstarted import crapps
+    from django_cradmin.demo.cradmin_gettingstarted.models import Account
+
+
+    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+        id = 'gettingstarted'
+        roleclass = Account
+        rolefrontpage_appname = 'index'
+
+        apps = [
+            ('index', crapps.App)
+        ]
+
+        def get_rolequeryset(self):
+            queryset = Account.objects.all()
+            if not self.request.user.is_superuser:
+                queryset = queryset.filter(accountadministrator__user=self.request.user)
+            return queryset
+
+        def get_titletext_for_role(self, role):
+            return role.account_name
+Index view
+----------
+In the ``account_index.py`` file we need to add some context data. Since we just have one ``AccountAdministrator``
+connected to one ``Account``, we can just return all Account objects. Our ``account_index`` file will now look something
+like this::
+
+    from django_cradmin.demo.cradmin_gettingstarted.models import Account
+    from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
+
+
+    class AccountIndexView(WithinRoleTemplateView):
+        template_name = 'cradmin_gettingstarted/account.index.django.html'
+
+        def __get_accounts(self):
+            return Account.objects.all()
+
+        def get_context_data(self, **kwargs):
+            context = super(AccountIndexView, self).get_context_data()
+            context['accounts'] = self.__get_accounts()
+            return context
+In the template file we use Django built-in template tags to get a hold of the context data.
+
 
 We begin by creating the file ``cradmin_question.py`` in the views folder of our ``polls`` app. In this file we
 add this content::

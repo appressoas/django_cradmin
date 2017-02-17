@@ -1,6 +1,4 @@
-from django.db.models import Prefetch
-
-from django_cradmin.demo.cradmin_gettingstarted.models import Account, AccountAdministrator
+from django_cradmin.demo.cradmin_gettingstarted.models import Account
 from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
 
