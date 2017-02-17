@@ -300,9 +300,9 @@ file when we added the appurls. So your ``gettingstarted_cradmin_instance`` file
             return role.account_name
 Index view
 ----------
-In the ``account_index.py`` file we need to add some context data. Since we just have one ``AccountAdministrator``
-connected to one ``Account``, we can just return all Account objects. Our ``account_index`` file will now look something
-like this::
+In the ``account_index.py`` file we need to add some context data. We return all AccountAdministrator objects to the
+index where the account is the same as the cradmin role, and write tests to confirm that the method ``get_rolequeryset``
+handles the filtration on a level of satifaction. Our ``account_index`` file will now look something like this::
 
     from django_cradmin.demo.cradmin_gettingstarted.models import Account
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
@@ -311,14 +311,62 @@ like this::
     class AccountIndexView(WithinRoleTemplateView):
         template_name = 'cradmin_gettingstarted/account.index.django.html'
 
-        def __get_accounts(self):
-            return Account.objects.all()
+        def __get_account_admin(self):
+            return AccountAdministrator.objects.filter(account=self.request.cradmin_role)
 
         def get_context_data(self, **kwargs):
             context = super(AccountIndexView, self).get_context_data()
             context['accounts'] = self.__get_accounts()
             return context
-In the template file we use Django built-in template tags to get a hold of the context data.
+Test view
+_________
+First we add a new block to our template so that the Account name shows as a h1 tag for the page and we load the
+cradmin_tags which we will use in testing::
+
+    {% extends "django_cradmin/base.django.html" %}
+    {% load cradmin_tags %}
+
+    {% block title %}
+        {{ request.cradmin_role.account_name }}
+    {% endblock title %}
+
+    {% block page-cover-title %}
+        {{ request.cradmin_role.account_name }}
+    {% endblock page-cover-title %}
+
+Cradmin uses ``cradmin_test_css_class`` as class for html tags. When we do this you can still change other classes on
+your tags without have to change anything in your tests. In the ``base.django.html`` which we extends in our template
+there is already a test CSS class for the page-cover-title block, so that test-css-class would work without loading the
+cradmin tags.
+We can now write a test to confirm that the cover title is equal to our Account name. Add a test in your
+``test_account_index``::
+
+    def test_get_heading(self):
+        account = mommy.make('cradmin_gettingstarted.Account', account_name='Test Account')
+        mommy.make(
+            'cradmin_gettingstarted.AccountAdministrator',
+            account=account,
+            user=mommy.make(settings.AUTH_USER_MODEL)
+        )
+        mockresponse = self.mock_http200_getrequest_htmls(
+            cradmin_role=account
+        )
+        self.assertTrue(mockresponse.selector.one('.test-primary-h1'))
+        heading = mockresponse.selector.one('.test-primary-h1').alltext_normalized
+        self.assertEqual(account.account_name, heading)
+Here we use a new build in mock method which expects a 200 response from the get request, thus the test fails if another
+status code than 200 is return. Further we do not need to say that ``html_selectors=True``. We check that the
+``cradmin_test_css_class`` named "test-primary-h1" exists and that is value is equal to the name of the Account.
+
+
+
+
+
+
+
+
+
+
 
 
 We begin by creating the file ``cradmin_question.py`` in the views folder of our ``polls`` app. In this file we
