@@ -12,7 +12,9 @@
 {% block page-cover-content %}
     {{ block.super }}
     <p class="adminui-page-cover__description">
-        <a href="#" class="button button--light-fill">New Account</a>
+        <a href='{% cradmin_appurl viewname="create" %}' class="button button--light-fill">
+            New Account
+        </a>
     </p>
 {% endblock page-cover-content %}
 
