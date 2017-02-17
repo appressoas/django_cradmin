@@ -397,6 +397,39 @@ In the ``test_account_index`` file we can now write a test where only one of two
         admin_email = mockresponse.selector.one('.test-account-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
 
+Create a new account
+====================
+If you now go to Django Admin and add another account for the same user. After that you go to root of you localhost and
+you will see you now can choose which account you would like to edit. This page is created by CRadmin without us doing
+anything else than a bit inheritance in our view. But it´s a bit unpractical to go into Django admin and create a new
+account, so lets add a Create button on our ``account_index.django.html`` file which points to a new view. We use
+the same CRadmin instance and add the url in the __ini__ file. We better organize this in a manner which make sens, we
+need to create a new module in our ``crapps`` module, and name this ``account``. We also move the content from our old
+``__init__`` file to the newly created ``__init__`` file. Finally we need to update the import in our
+``gettingstarted__cradmin_instance`` file. Finally we implement the new crapps structur in our test module, and update
+the import in our ``test_account_index.py`` file as well. So our new project structure now looks something like this::
+
+    cradmin_gettingstarted
+        crapps
+            account
+                __init__.py (move appurls to this file)
+                account_index.py
+        __init__.py (no appurls in here anymore)
+        templates
+        tests
+            test_crapps
+                test_account
+                    __init__.py
+                    test_account_index.py
+            __init__.py
+            test_gettingstarted_cradmin_instance.py
+        __init__.py
+        admin.py
+        gettingstarted_cradmin_instance (remeber to update imports here)
+        models.py
+
+Add Create button
+-----------------
 
 
 

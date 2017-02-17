@@ -1,5 +1,5 @@
 from django_cradmin import crinstance
-from django_cradmin.demo.cradmin_gettingstarted import crapps
+from django_cradmin.demo.cradmin_gettingstarted.crapps import account
 from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
@@ -9,7 +9,7 @@ class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
     rolefrontpage_appname = 'index'
 
     apps = [
-        ('index', crapps.App)
+        ('index', account.App)
     ]
 
     def get_rolequeryset(self):

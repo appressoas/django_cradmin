@@ -3,12 +3,12 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_gettingstarted.crapps import AccountIndexView
+from django_cradmin.demo.cradmin_gettingstarted.crapps import account
 
 
 class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
-    viewclass = AccountIndexView
+    viewclass = account.AccountIndexView
 
     def test_get_title(self):
         account = mommy.make('cradmin_gettingstarted.Account', account_name='My account')
