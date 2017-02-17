@@ -1,9 +1,15 @@
 from django_cradmin import crinstance
+from django_cradmin.demo.cradmin_gettingstarted import crapps
 from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
 class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+    id = 'gettingstarted'
     roleclass = Account
+
+    apps = [
+        ('index', crapps.App)
+    ]
 
     def get_rolequeryset(self):
         queryset = Account.objects.all()

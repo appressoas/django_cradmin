@@ -226,8 +226,31 @@ by mommy. Next we mock a get request where the cradmin role is the account creat
 ``Htmls selector`` is used to easy get hold of CSS selectors so we can check their values. In the next line prettyprint
 is called, and this is actually not needed since all it does is to print out the html file in you monitor. It's just a
 cool functionality often used to easily see different tag names and css classes before finish writing the test. Normaly
-we delete the prettyprint line. Anyway, the next line is where we get the page title, and add the ``alltext_normalized``
-so we can compare a string with a string. Finally we check if the account name is equal to the html title.
+we delete the prettyprint line to prevent alot of printing in terminal when running tests. Anyway, the next line is
+where we get the page title, and add the ``alltext_normalized`` so we can compare a string with a string. Finally we
+check if the account name is equal to the html title.
+
+Setting up urls
+===============
+Now we are ready to see our index view on localhost. First we need to connect our new app, the index view, with the
+CRadmin instance. This is done by adding the following code in the ``gettingstarted_cradmin_instance`` file::
+
+    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+        roleclass = Account
+
+        apps = [
+            ('index', crapps.App)
+        ]
+Project urls
+____________
+Now that we have told CRadmin to read the url in our crapps __init__ file, we need to tell our Django project to include
+the cradmin instance. So in the file for all your project urls, you import the ``gettingstarted_cradmin_instance`` file
+and then you add the following to include the urls::
+
+    urlpatterns = [
+        url(r'^gettingstarted/', include(GettingStartedCradminInstance.urls())),
+    ]
+
 
 We begin by creating the file ``cradmin_question.py`` in the views folder of our ``polls`` app. In this file we
 add this content::
