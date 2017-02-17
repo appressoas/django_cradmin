@@ -357,7 +357,45 @@ We can now write a test to confirm that the cover title is equal to our Account 
 Here we use a new build in mock method which expects a 200 response from the get request, thus the test fails if another
 status code than 200 is return. Further we do not need to say that ``html_selectors=True``. We check that the
 ``cradmin_test_css_class`` named "test-primary-h1" exists and that is value is equal to the name of the Account.
+Next we want to test if the name of an account which we are not the administrator off, shows up in the template. You can
+test this with cradmin instances or right in the template. I`m gonna choose the latter since we're looping over all
+account in the html file. So in the ``account_index.django.html`` template we add some code to make it look a tad nicer
+and a ``cradmin_tes_css_class``::
 
+    {% block content %}
+        <section class="adminui-page-section  adminui-page-section--center-lg">
+            <div class="container">
+                <div class="blocklist blocklist--tight">
+                    {% for account in account_admin %}
+                        <section class="blocklist__item">
+                            <h2 class="blocklist__itemtitle">Account Administrator</h2>
+                            <p class="{% cradmin_test_css_class 'account-user-email' %}">{{ account.user.email }}</p>
+                        </section>
+                    {% endfor %}
+                </div>
+            </div><!-- end container-->
+        </section>
+    {% endblock content %}
+In the ``test_account_index`` file we can now write a test where only one of two users first name should show::
+
+    def test_only_account_where_user_is_admin_shows_on_page(self):
+        account_one = mommy.make('cradmin_gettingstarted.Account', account_name='Wrong role account')
+        account_two= mommy.make('cradmin_gettingstarted.Account', account_name='Right role account')
+        mommy.make(
+            'cradmin_gettingstarted.AccountAdministrator',
+            account=account_one,
+            user=mommy.make(settings.AUTH_USER_MODEL, email='not_me@example.com')
+        )
+        mommy.make(
+            'cradmin_gettingstarted.AccountAdministrator',
+            account=account_two,
+            user=mommy.make(settings.AUTH_USER_MODEL, email='me@example.com')
+        )
+        mockresponse = self.mock_http200_getrequest_htmls(
+            cradmin_role=account_two)
+        self.assertTrue(mockresponse.selector.one('.test-account-user-email'))
+        admin_email = mockresponse.selector.one('.test-account-user-email').alltext_normalized
+        self.assertEqual('me@example.com', admin_email)
 
 
 

@@ -3,7 +3,7 @@ from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
 
 class AccountIndexView(WithinRoleTemplateView):
-    template_name = 'cradmin_gettingstarted/account.index.django.html'
+    template_name = 'cradmin_gettingstarted/account_index.django.html'
 
     def __get_account_admin(self):
         return AccountAdministrator.objects.filter(account=self.request.cradmin_role)
