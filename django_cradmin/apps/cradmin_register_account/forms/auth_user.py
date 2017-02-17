@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.contrib.auth import get_user_model
+
+from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_register_account.forms.base import AbstractCreateAccountWithPasswordForm
 
 
@@ -55,15 +57,22 @@ class AuthUserCreateAccountForm(AbstractCreateAccountWithPasswordForm):
                 code='not_unique_email')
         return email
 
-    def deactivate_user(self, user):
-        user.is_active = False
-
-    def get_field_layout(self):
+    def get_field_renderables(self):
         return [
-            'username',
-            'email',
-            'password1',
-            'password2',
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='username',
+                field_renderable=uicontainer.field.Field(autofocus=True)
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_renderable=uicontainer.field.Field(autofocus=True)
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password1'
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password2'
+            ),
         ]
 
 
@@ -93,9 +102,16 @@ class AuthUserCreateAccountAutoUsernameForm(AuthUserCreateAccountForm):
     def set_extra_user_attributes(self, user):
         self.set_username(user)
 
-    def get_field_layout(self):
+    def get_field_renderables(self):
         return [
-            'email',
-            'password1',
-            'password2',
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='email',
+                field_renderable=uicontainer.field.Field(autofocus=True)
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password1'
+            ),
+            uicontainer.fieldwrapper.FieldWrapper(
+                fieldname='password2'
+            ),
         ]

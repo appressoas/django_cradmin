@@ -88,7 +88,7 @@ class TestAbstractAcceptInviteView(TestCase):
         self.assertTrue(selector.exists('button#django_cradmin_invite_accept_as_button'))
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_register_account_button')['href'],
-            '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')
+            '/cradmin_register_account/?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_as_different_user_button')['href'],
             '/cradmin_authenticate/logout?'
@@ -118,7 +118,7 @@ class TestAbstractAcceptInviteView(TestCase):
             '/accounts/login/?next=http%3A%2F%2Ftestserver%2Ftest')
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_register_account_button')['href'],
-            '/cradmin_register_account/begin?next=http%3A%2F%2Ftestserver%2Ftest')
+            '/cradmin_register_account/?next=http%3A%2F%2Ftestserver%2Ftest')
 
         self.assertEqual(
             selector.one('#django_cradmin_invite_accept_login_button').alltext_normalized,
