@@ -397,6 +397,97 @@ In the ``test_account_index`` file we can now write a test where only one of two
         admin_email = mockresponse.selector.one('.test-admin-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
 
+Edit Account
+============
+Now that we can see the index page for each account connected to the administrator, lets add a view to update the
+Account. We can do this by using a ``modelform`` in Django. First we create a file named ``edit_account.py`` in account
+crapps (this is where our ``account_index.py`` file lives). Then we write an mixin class so that we can use the same
+form when we edit an exisitng account and later on when we want to create a new account for the administrator. Our
+``edit_account.py`` file will now loook something like::
+
+    from django_cradmin import uicontainer
+    from django_cradmin.demo.cradmin_gettingstarted.models import Account
+    from django_cradmin.viewhelpers import formview
+
+
+    class AccountCreateUpdateMixin(object):
+        model = Account
+        roleid_field = 'account'
+        fields = [
+            'account_name'
+        ]
+
+        def get_form_renderable(self):
+            return uicontainer.layout.AdminuiPageSectionTight(
+                children=[
+                    uicontainer.form.Form(
+                        form=self.get_form(),
+                        children=[
+                            uicontainer.fieldwrapper.FieldWrapper('account_name'),
+                            uicontainer.button.SubmitPrimary(
+                                text='Save')
+                        ]
+                    )
+                ]
+            ).bootstrap()
+
+
+    class AccountUpdateView(AccountCreateUpdateMixin, formview.WithinRoleUpdateView):
+        """"""
+        def get_queryset_for_role(self):
+            return Account.objects.filter(id=self.request.cradmin_role.pk)
+First we import uicontainer from django_cradmin, which is used to render the form with the cradmin layout. In the
+:class:`django_cradmin.demo.cradmin_gettingstarted.crapps.account.edit_account.AccountCreateUpdateMixin` we choose the
+model which are form is going to handle, and choose fields. Further we add a ``roleid_filed`` as "account". This is
+described in :class:`django_cradmin.viewhelpers.formview.create_update_view_mixin.CreateUpdateViewMixin` and is the
+current role, which in our case is "account". When we render the form we add a submit button to save the Account after
+changing the account name. In the
+:class:`django_cradmin.demo.cradmin_gettingstarted.crapps.account.edit_account.AccountUpdateView` we use the super
+:class:`django_cradmin.viewhelpers.formview.updateview.WithinRoleUpdateView` and overwrites the method where we query
+the role and filter the objects on the PK to our current cradmin_role. We add a new url in the ``__init__.py`` file
+inside our account crapps::
+
+    from django_cradmin import crapp
+    from django_cradmin.demo.cradmin_gettingstarted.crapps.account import account_index
+    from django_cradmin.demo.cradmin_gettingstarted.crapps.account import edit_account
+
+
+    class App(crapp.App):
+        appurls = [
+            crapp.Url(
+                r'^$',
+                account_index.AccountIndexView.as_view(),
+                name=crapp.INDEXVIEW_NAME
+            ),
+            crapp.Url(
+                r'^edit/(?P<pk>\d+)$',
+                edit_account.AccountUpdateView.as_view(),
+                name='edit'
+            )
+        ]
+We do not create a new template for this edit view, but rather use the built-in html in CRadmin. So in our
+``account_index.django.html`` file we add a new section inside the for-loop which already gives the name for the account
+administrator::
+
+    <section class="blocklist__item">
+        <h2 class="blocklist__itemtitle">Edit Account</h2>
+        <a href='{% cradmin_appurl viewname="edit" pk=admin.account.id %}' class="button  button--primary">
+            Change name
+        </a>
+    </section>
+Here we use CRadmin template tag ``cradmin_appurl`` which reverse the view named "edit" and we pass the PK of our
+current account. Now it's time to test our UpdateView for the Account.
+
+Test Edit Account
+-----------------
+
+
+
+
+
+
+
+
 Create a new account
 ====================
 If you now go to Django Admin and add another account for the same user. After that you go to root of you localhost and
