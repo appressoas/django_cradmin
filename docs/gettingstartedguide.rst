@@ -579,8 +579,8 @@ like this after a refactor::
         crapps
             account_adminui
                 __init__.py (here is our urls)
-                account_index.py
-                edit_account.py
+                account_index_view.py
+                edit_account_view.py
             __init__.py
         migrations
         templates

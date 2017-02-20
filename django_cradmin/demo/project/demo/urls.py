@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import static
 
+from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances.gettingstarted_cradmin_instance import GettingStartedCradminInstance
 from django_cradmin.demo.listfilterdemo.cradmin import ListfilterDemoCrAdminInstance
 from django_cradmin.demo.login_not_required_demo.cradmin import LoginNotRequiredCrAdminInstance
 from django_cradmin.demo.multiselect2demo.cradmin import MultiselectDemoCrAdminInstance
@@ -13,7 +14,6 @@ from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
 from django_cradmin.demo.project.demo.views.demo_overview import DemoView
 from django_cradmin.demo.uicontainerdemo.cradmin import UIContainerDemoCrAdminInstance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
-from django_cradmin.demo.cradmin_gettingstarted.gettingstarted_cradmin_instance import GettingStartedCradminInstance
 
 admin.site.login = login_required(admin.site.login)
 

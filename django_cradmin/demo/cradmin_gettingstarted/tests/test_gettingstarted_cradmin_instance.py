@@ -4,7 +4,7 @@ from django.conf import settings
 from django.test import TestCase
 from model_mommy import mommy
 
-from django_cradmin.demo.cradmin_gettingstarted.gettingstarted_cradmin_instance import GettingStartedCradminInstance
+from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances.gettingstarted_cradmin_instance import GettingStartedCradminInstance
 
 
 class TestGettingStartedCradminInstance(TestCase):

@@ -3,12 +3,12 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import edit_account
+from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import edit_account_view
 from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
 class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
-    viewclass = edit_account.AccountUpdateView
+    viewclass = edit_account_view.AccountUpdateView
 
     def test_get_form_renderable(self):
         account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
