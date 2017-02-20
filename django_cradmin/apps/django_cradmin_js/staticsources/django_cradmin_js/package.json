@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "ievv_jsbase": "^1.0.2",
+    "ievv_jsbase": "^1.0.4",
     "moment": "^2.17.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
@@ -41,6 +41,10 @@
     "transform": {
       ".*": "./config/jest/transform.js"
     },
-    "moduleFileExtensions": ["js", "json", "jsx"]
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx"
+    ]
   }
 }

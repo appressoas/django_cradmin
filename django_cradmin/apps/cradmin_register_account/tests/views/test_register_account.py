@@ -1,23 +1,24 @@
 from __future__ import unicode_literals
+
+import htmls
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-import htmls
 
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user
 
 
-class TestBeginRegisterAccountView(TestCase):
+class TestRegisterAccountView(TestCase):
     def setUp(self):
-        self.url = reverse('cradmin-register-account-begin')
+        self.url = reverse('cradmin-register-account')
 
     def test_get(self):
         response = self.client.get(self.url)
         selector = htmls.S(response.content)
-        self.assertTrue(selector.exists('form#django_cradmin_register_account_form'))
-        self.assertEquals(selector.one('h1').alltext_normalized, 'Create your Testsite account')
-        self.assertEquals(selector.one('title').alltext_normalized, 'Create your Testsite account')
+        self.assertEquals(selector.one('.test-primary-h1').alltext_normalized,
+                          'Create your Testsite account')
+        self.assertEquals(selector.one('title').alltext_normalized,
+                          'Create your Testsite account')
         self.assertTrue(selector.exists('input[type="email"][name="email"]'))
         self.assertTrue(selector.exists('input[type="text"][name="username"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password1"]'))
@@ -34,9 +35,9 @@ class TestBeginRegisterAccountView(TestCase):
         })
         self.assertEqual(response.status_code, 200)
         selector = htmls.S(response.content)
-        self.assertIn(
-            'Account with this email address already exists',
-            selector.one('form#django_cradmin_register_account_form').alltext_normalized)
+        self.assertEqual(
+            selector.one('#id_email_wrapper .message--error').alltext_normalized,
+            'Account with this email address already exists.')
 
     def test_post_passwords_not_matching(self):
         response = self.client.post(self.url, {
@@ -49,19 +50,7 @@ class TestBeginRegisterAccountView(TestCase):
         selector = htmls.S(response.content)
         self.assertIn(
             'The passwords do not match',
-            selector.one('form#django_cradmin_register_account_form').alltext_normalized)
-
-    def test_post_creates_token(self):
-        self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
-        self.client.post(self.url, {
-            'username': 'test',
-            'password1': 'test',
-            'password2': 'test',
-            'email': 'test@example.com'
-        })
-        self.assertEqual(GenericTokenWithMetadata.objects.count(), 1)
-        token = GenericTokenWithMetadata.objects.first()
-        self.assertIsNotNone(token.expiration_datetime)
+            selector.one('.test-form-globalmessages').alltext_normalized)
 
     def test_post_creates_user(self):
         self.assertEqual(get_user_model().objects.count(), 0)
@@ -80,35 +69,32 @@ class TestBeginRegisterAccountView(TestCase):
 
     def test_post_next_url_as_querystring_argument(self):
         self.assertEqual(get_user_model().objects.count(), 0)
-        self.client.post('{}?next=/next'.format(self.url), {
+        response = self.client.post('{}?next=/next'.format(self.url), {
             'username': 'test',
             'password1': 'test',
             'password2': 'test',
             'email': 'test@example.com'
         })
-        token = GenericTokenWithMetadata.objects.first()
-        self.assertEqual(token.metadata['next_url'], '/next')
+        self.assertEqual(response['location'], '/next')
 
     def test_post_next_url_as_django_cradmin_register_account_redirect_url_setting(self):
         self.assertEqual(get_user_model().objects.count(), 0)
         with self.settings(DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL='/redirect'):
-            self.client.post(self.url, {
+            response = self.client.post(self.url, {
                 'username': 'test',
                 'password1': 'test',
                 'password2': 'test',
                 'email': 'test@example.com'
             })
-        token = GenericTokenWithMetadata.objects.first()
-        self.assertEqual(token.metadata['next_url'], '/redirect')
+        self.assertEqual(response['location'], '/redirect')
 
     def test_post_next_url_as_login_url_setting(self):
         self.assertEqual(get_user_model().objects.count(), 0)
         with self.settings(LOGIN_URL='/login'):
-            self.client.post(self.url, {
+            response = self.client.post(self.url, {
                 'username': 'test',
                 'password1': 'test',
                 'password2': 'test',
                 'email': 'test@example.com'
             })
-        token = GenericTokenWithMetadata.objects.first()
-        self.assertEqual(token.metadata['next_url'], '/login')
+        self.assertEqual(response['location'], '/login')

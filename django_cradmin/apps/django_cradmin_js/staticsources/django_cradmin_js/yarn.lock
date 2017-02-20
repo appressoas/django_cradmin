@@ -1657,9 +1657,9 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
-ievv_jsbase@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-1.0.2.tgz#31a9cd729257b675ea6616e82c2edf1c80ecee22"
+ievv_jsbase@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-1.0.4.tgz#df4c62450d772abe87cb36c780877ae62000ae5a"
   dependencies:
     htmlparser2 "^3.9.2"
 

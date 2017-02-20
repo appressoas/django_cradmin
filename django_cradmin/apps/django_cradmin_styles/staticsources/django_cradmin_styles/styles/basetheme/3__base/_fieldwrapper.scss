@@ -102,6 +102,39 @@ Example: {type: isolated} More complex example
         </div>
     </div>
 
+
+Example: --compact
+
+    <div class="fieldwrapper  fieldwrapper--compact">
+        <label class="label" for="id_myfield">
+            Standard input
+        </label>
+        <input type="text" placeholder="I set the standard"
+            id="id_myfield"
+            class="input input--fieldwrapper-item" />
+        <p class="help-text help-text--fieldwrapper-item">
+            Vestibulum id ligula porta felis euismod semper.
+            Nullam id dolor id nibh ultricies vehicula ut id elit.
+        </p>
+    </div>
+
+    <div class="fieldwrapper  fieldwrapper--compact">
+        <label class="label">
+            Standard input
+            <input type="text" placeholder="I set the standard" class="input" />
+        </label>
+    </div>
+
+    <div class="fieldwrapper  fieldwrapper--compact">
+        <label class="label">
+            I'm a textarea
+            <textarea placeholder="I more got space!" class="input"></textarea>
+        </label>
+        <p class="help-text  help-text--fieldwrapper-item">
+            Donec sed odio dui.
+        </p>
+    </div>
+
 Styleguide form.7:fieldwrapper
 */
 
@@ -109,4 +142,8 @@ Styleguide form.7:fieldwrapper
 .fieldwrapper {
     @extend %clearfix;
     margin-bottom: $vertical-rythm--spacing;
+
+    &--compact {
+        margin-bottom: $vertical-rythm;
+    }
 }

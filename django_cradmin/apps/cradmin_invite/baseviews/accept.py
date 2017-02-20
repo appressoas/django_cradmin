@@ -142,10 +142,10 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         Should have some way of returning the user to this view after
         the user has been created.
 
-        Defaults to the ``cradmin-register-account-begin`` view in
+        Defaults to the ``cradmin-register-account`` view in
         ``django_cradmin.apps.cradmin_register_account``.
         """
-        return self.add_next_argument_to_url(reverse('cradmin-register-account-begin'))
+        return self.add_next_argument_to_url(reverse('cradmin-register-account'))
 
     def get_login_url(self):
         """
