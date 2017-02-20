@@ -3,7 +3,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_gettingstarted.crapps.account import edit_account
+from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import edit_account
 from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 

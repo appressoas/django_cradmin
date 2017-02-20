@@ -1,6 +1,6 @@
 from django_cradmin import crapp
-from django_cradmin.demo.cradmin_gettingstarted.crapps.account import account_index
-from django_cradmin.demo.cradmin_gettingstarted.crapps.account import edit_account
+from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import account_index
+from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import edit_account
 
 
 class App(crapp.App):
