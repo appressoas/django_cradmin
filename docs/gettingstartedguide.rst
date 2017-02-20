@@ -599,9 +599,11 @@ like this after a refactor::
         admin.py
         gettingstarted_cradmin_instance.py
         models.py
-If you now go to Django Admin and add another account for the same user. After that you go to root of you localhost,
-you will see you now can choose which account you would like to edit. This page is created by CRadmin without us doing
-anything else than a bit inheritance in our view.
+If you now go to Django Admin, add another account for the same user and than go to "localhost/gettingstarted" in your
+browser, you will see you now can choose which account you would like to edit. This page is created by CRadmin without
+us doing anything else than a bit inheritance in our view. What I want to do is to have the option for a logged in user
+to either choose an existing account or create a new account. For this we need to overwrite the template which now shows
+the accounts which you administrate.
 
 
 
