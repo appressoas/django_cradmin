@@ -480,13 +480,90 @@ current account. Now it's time to test our UpdateView for the Account.
 
 Test Edit Account
 -----------------
+We want to test at least three different senarios. The first is a get request to check that he form is rendered with the
+name of our current account. The second is a 200 postrequest if the new account name is empty. And finally we want to
+check that a post request with a new account name updates the current Account object and gives us a 302 Found
+redirects::
+
+    from django.conf import settings
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
+    from django_cradmin.demo.cradmin_gettingstarted.crapps.account import edit_account
+    from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
+    class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        viewclass = edit_account.AccountUpdateView
 
+        def test_get_form_renderable(self):
+            account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+            mommy.make(
+                'cradmin_gettingstarted.AccountAdministrator',
+                account=account,
+                user=mommy.make(settings.AUTH_USER_MODEL)
+            )
+            mockresponse = self.mock_http200_getrequest_htmls(
+                cradmin_role=account,
+                viewkwargs={'pk': account.id}
+            )
+            self.assertTrue(mockresponse.selector.one('#id_account_name'))
+            form_account_name = mockresponse.selector.one('#id_account_name').get('value')
+            self.assertEqual(account.account_name, form_account_name)
 
+        def test_post_without_required_account_name(self):
+            account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+            mommy.make(
+                'cradmin_gettingstarted.AccountAdministrator',
+                account=account,
+                user=mommy.make(settings.AUTH_USER_MODEL)
+            )
+            mockresponse = self.mock_http200_postrequest_htmls(
+                cradmin_role=account,
+                viewkwargs={'pk': account.id},
+                requestkwargs={
+                    'data': {
+                        'account_name': ''
+                    }
+                }
+            )
+            self.assertTrue(mockresponse.selector.one('#id_account_name_wrapper'))
+            warning_message = mockresponse.selector.one('#id_account_name_wrapper .test-warning-message').alltext_normalized
+            self.assertEqual('This field is required.', warning_message)
 
-
-
+        def test_post_with_required_account_name_updates_db(self):
+            """Should get a 302 Found redirects and have one Account object in database with a new name"""
+            account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+            mommy.make(
+                'cradmin_gettingstarted.AccountAdministrator',
+                account=account,
+                user=mommy.make(settings.AUTH_USER_MODEL)
+            )
+            accounts_in_db = Account.objects.all()
+            self.assertEqual(1, accounts_in_db.count())
+            self.mock_http302_postrequest(
+                cradmin_role=account,
+                viewkwargs={'pk': account.id},
+                requestkwargs={
+                    'data': {
+                        'account_name': 'The idol'
+                    }
+                }
+            )
+            accounts_in_db = Account.objects.all()
+            self.assertEqual(1, accounts_in_db.count())
+            get_account_from_db = Account.objects.filter(pk=account.id).get()
+            self.assertEqual('The idol', get_account_from_db.account_name)
+As you remember form earlier test, when we use methods such as
+:meth:`django_cradmin.cradmin_testhelpers.TestCaseMixin.mock_http200_getrequest_htmls` we do not need to write an assert
+equal for the status code, since this checked for us by CRadmin. Further the htmls lets us fetch tags using
+CSS selectors. To pass the PK of our account we use the ``viewkwargs`` variable which passes the id of our account to
+the view. Further does the variable ``requestkwargs`` set the data we want to pass with the form when pressing the save
+button. In our case, this is just the name of the account. In the second test we want to check that a warning message
+is displayed to the user if account name is empty. Here we use the htmls to fetch the value of a html tag with an id. In
+the last test we count the number of Account objects in database before and after posting the form, and checks that our
+account has been given the new name we passed with the form.
 
 Create a new account
 ====================
