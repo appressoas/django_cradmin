@@ -300,24 +300,34 @@ file when we added the appurls. So your ``gettingstarted_cradmin_instance`` file
             return role.account_name
 Index view
 ----------
-In the ``account_index.py`` file we need to add some context data. We return all AccountAdministrator objects to the
-index where the account is the same as the cradmin role, and write tests to confirm that the method ``get_rolequeryset``
-handles the filtration on a level of satifaction. Our ``account_index`` file will now look something like this::
+In the ``account_index.py`` file we need to add some context data. First let us create a property so we can have names
+which matches what we have build so far. As you remember, our CRadmin roleclass is Account. By creating a property named
+account and have it return a request for the cradmin_role, we get the account as role. Now you don't need to do it this
+way. I recon it makes more sense and gives the code a tad increased readability. Nevertheless, we get to context
+variables which is used in our template. One for the account and one for the account administrator::
 
     from django_cradmin.demo.cradmin_gettingstarted.models import Account
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
 
     class AccountIndexView(WithinRoleTemplateView):
-        template_name = 'cradmin_gettingstarted/account.index.django.html'
+    template_name = 'cradmin_gettingstarted/account_index.django.html'
 
-        def __get_account_admin(self):
-            return AccountAdministrator.objects.filter(account=self.request.cradmin_role)
+    @property
+    def account(self):
+        return self.request.cradmin_role
 
-        def get_context_data(self, **kwargs):
-            context = super(AccountIndexView, self).get_context_data()
-            context['accounts'] = self.__get_accounts()
-            return context
+    def __get_account(self):
+        return self.account
+
+    def __get_account_admin(self):
+        return AccountAdministrator.objects.get(pk=self.account.id)
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountIndexView, self).get_context_data()
+        context['account_admin'] = self.__get_account_admin()
+        context['account'] = self.__get_account()
+        return context
 Test view
 _________
 First we add a new block to our template so that the Account name shows as a h1 tag for the page and we load the
@@ -366,12 +376,10 @@ and a ``cradmin_tes_css_class``::
         <section class="adminui-page-section  adminui-page-section--center-lg">
             <div class="container">
                 <div class="blocklist blocklist--tight">
-                    {% for admin in account_admin %}
-                        <section class="blocklist__item">
-                            <h2 class="blocklist__itemtitle">Account Administrator</h2>
-                            <p class="{% cradmin_test_css_class 'admin-user-email' %}">{{ admin.user.email }}</p>
-                        </section>
-                    {% endfor %}
+                    <section class="blocklist__item">
+                    <h2 class="blocklist__itemtitle">Account administrator</h2>
+                    <p class="{% cradmin_test_css_class 'admin-user-email' %}">{{ account_admin.user.email }}</p>
+                </section>
                 </div>
             </div><!-- end container-->
         </section>
@@ -445,12 +453,7 @@ changing the account name. In the
 :class:`django_cradmin.demo.cradmin_gettingstarted.crapps.account.edit_account.AccountUpdateView` we use the super
 :class:`django_cradmin.viewhelpers.formview.updateview.WithinRoleUpdateView` and overwrites the method where we query
 the role and filter the objects on the PK to our current cradmin_role. We add a new url in the ``__init__.py`` file
-inside our account crapps::
-
-    from django_cradmin import crapp
-    from django_cradmin.demo.cradmin_gettingstarted.crapps.account import account_index
-    from django_cradmin.demo.cradmin_gettingstarted.crapps.account import edit_account
-
+inside our crapps::
 
     class App(crapp.App):
         appurls = [
@@ -466,7 +469,7 @@ inside our account crapps::
             )
         ]
 We do not create a new template for this edit view, but rather use the built-in html in CRadmin. So in our
-``account_index.django.html`` file we add a new section inside the for-loop which already gives the name for the account
+``account_index.django.html`` file we add a new section after the one which gives the name for the account
 administrator::
 
     <section class="blocklist__item">
