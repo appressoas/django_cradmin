@@ -366,10 +366,10 @@ and a ``cradmin_tes_css_class``::
         <section class="adminui-page-section  adminui-page-section--center-lg">
             <div class="container">
                 <div class="blocklist blocklist--tight">
-                    {% for account in account_admin %}
+                    {% for admin in account_admin %}
                         <section class="blocklist__item">
                             <h2 class="blocklist__itemtitle">Account Administrator</h2>
-                            <p class="{% cradmin_test_css_class 'account-user-email' %}">{{ account.user.email }}</p>
+                            <p class="{% cradmin_test_css_class 'admin-user-email' %}">{{ admin.user.email }}</p>
                         </section>
                     {% endfor %}
                 </div>
@@ -393,8 +393,8 @@ In the ``test_account_index`` file we can now write a test where only one of two
         )
         mockresponse = self.mock_http200_getrequest_htmls(
             cradmin_role=account_two)
-        self.assertTrue(mockresponse.selector.one('.test-account-user-email'))
-        admin_email = mockresponse.selector.one('.test-account-user-email').alltext_normalized
+        self.assertTrue(mockresponse.selector.one('.test-admin-user-email'))
+        admin_email = mockresponse.selector.one('.test-admin-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
 
 Create a new account

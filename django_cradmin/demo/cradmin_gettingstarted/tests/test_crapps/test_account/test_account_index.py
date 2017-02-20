@@ -3,12 +3,12 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_gettingstarted.crapps import account
+from django_cradmin.demo.cradmin_gettingstarted.crapps.account import account_index
 
 
 class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
-    viewclass = account.AccountIndexView
+    viewclass = account_index.AccountIndexView
 
     def test_get_title(self):
         account = mommy.make('cradmin_gettingstarted.Account', account_name='My account')
@@ -53,8 +53,8 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         )
         mockresponse = self.mock_http200_getrequest_htmls(
             cradmin_role=account_two)
-        self.assertTrue(mockresponse.selector.one('.test-account-user-email'))
-        admin_email = mockresponse.selector.one('.test-account-user-email').alltext_normalized
+        self.assertTrue(mockresponse.selector.one('.test-admin-user-email'))
+        admin_email = mockresponse.selector.one('.test-admin-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
 
 
