@@ -5,43 +5,43 @@
 Example: {type: isolated}
     <div class="container">
         <div class="fieldrow">
-            <label class="form__item  fieldrow__column">
+            <label class="fieldrow__column">
                 First name
                 <input type="text" class="input input--outlined">
             </label>
-            <label class="form__item  fieldrow__column">
+            <label class="fieldrow__column">
                 Last name
                 <input type="text" class="input input--outlined">
             </label>
         </div>
         <div class="fieldrow">
-            <label class="form__item  fieldrow__column fieldrow__column--xtight">
+            <label class="fieldrow__column fieldrow__column--xtight">
                 Postcode
                 <input type="text" class="input input--outlined">
             </label>
-            <label class="form__item  fieldrow__column fieldrow__column--wide">
+            <label class="fieldrow__column fieldrow__column--wide">
                 City
                 <input type="text" class="input input--outlined">
             </label>
         </div>
         <div class="fieldrow">
-            <label class="form__item  fieldrow__column fieldrow__column--xtight">
+            <label class="fieldrow__column fieldrow__column--xtight">
                 xtight
                 <input type="text" class="input input--outlined">
             </label>
-            <label class="form__item  fieldrow__column fieldrow__column--tight">
+            <label class="fieldrow__column fieldrow__column--tight">
                 tight
                 <input type="text" class="input input--outlined">
             </label>
-            <label class="form__item  fieldrow__column">
+            <label class="fieldrow__column">
                 default
                 <input type="text" class="input input--outlined">
             </label>
-            <label class="form__item  fieldrow__column fieldrow__column--wide">
+            <label class="fieldrow__column fieldrow__column--wide">
                 wide
                 <input type="text" class="input input--outlined">
             </label>
-            <label class="form__item  fieldrow__column fieldrow__column--xwide">
+            <label class="fieldrow__column fieldrow__column--xwide">
                 xwide
                 <input type="text" class="input input--outlined">
             </label>
