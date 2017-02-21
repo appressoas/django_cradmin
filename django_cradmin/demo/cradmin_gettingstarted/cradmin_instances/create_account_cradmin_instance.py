@@ -13,4 +13,7 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
     ]
 
     def has_access(self):
-        return True
+        if self.request.user.is_acuthenticated:
+            return True
+        else:
+            raise Http404(Exception)
