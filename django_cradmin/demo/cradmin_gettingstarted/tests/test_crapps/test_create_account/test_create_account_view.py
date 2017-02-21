@@ -8,19 +8,19 @@ from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
 class TestCreateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
-    viewclass = create_account_view.AccountCreateView
+    viewclass = create_account_view.CreateAccountView
 
     def __get_cradmin_role(self):
         return mommy.make(settings.AUTH_USER_MODEL)
 
     def test_get_render_form(self):
-        self.mock_http200_getrequest_htmls(
+        mockresponse = self.mock_http200_getrequest_htmls(
             cradmin_role=self.__get_cradmin_role()
         )
+        mockresponse.selector.prettyprint()
 
     def test_post_form(self):
         self.mock_http302_postrequest(
-            cradmin_role=self.__get_cradmin_role(),
             requestkwargs={
                 'data': {
                     'account_name': 'Flaming Youth'

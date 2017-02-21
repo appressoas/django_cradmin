@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.http import Http404
 
 from django_cradmin import crinstance
@@ -20,5 +18,5 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
         else:
             raise Http404(Exception)
 
-    def get_rolequeryset(self):
-        pass
+    def reverse_url(self, appname, viewname, args=None, kwargs=None, roleid=None):
+        return super(NoRoleCrAdminInstance, self).reverse_url()
