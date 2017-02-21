@@ -129,9 +129,13 @@ queryset returned one object from the database when we connected the two. So far
 
 Building an index view for Account
 ----------------------------------
-We have now set up a ``CrAdminInstance`` and connected it to a model, but it doesn't quite work yet. To make it work
-we must first connect it to a :class:`django_cradmin.crapp.App`. In cradmin, the apps are essentially your views.
-This is where you define the urls, layout and content of the various pages in your cradmin interface.
+Our main goal for now is to create an indexview or a dashboard if you prefer, which will give us some information about
+the Account we are currently holding. The next step to make this happen is to connect the ``cramdin_instance`` with a
+CRadmin application. These apps lives inside a module named ``crapps`` in our Django App. A full documentation for the
+CRadmin app can be read the in the class documentation :class:`django_cradmin.crapp.App`.
+
+In CRadmin the apps are essentially our views. This is where we define the urls, layout and content of the various
+pages for our CRadmin interface.
 
 First we create a module called ``crapps`` which will hold all of our cradmin applications. Inside here, we create a
 file called ``account_index.py``. The Project structure will look something like ::
@@ -145,6 +149,11 @@ file called ``account_index.py``. The Project structure will look something like
         init.py
         gettingstarted_cradmin_instance.py
         models.py
+The file named ``account_index.py`` will contain a class which is a sub of the ``WithinRoleTemplateView``. This view
+is used when you extends the ``django_cradmin/base.django.html`` template and it inherit from Djangos generic
+templateview. As the name suggests, our ``WithinRoleTemplateView`` is used when you have a role, as we sat in the
+cradmin instance file to the class Account.
+
 Inside the ``account_index.py`` file we add this content::
 
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
@@ -152,10 +161,15 @@ Inside the ``account_index.py`` file we add this content::
     class AccountIndexView(WithinRoleTemplateView):
         template_name = 'cradmin_gettingstarted/account.index.django.html'
 
-There are many different viewhelpers in CRadmin suthing different purposes. However, to view an account we need an
-user which is an administrator for that account, thus we use the ``WithinRoleTemplateView`` as super for our index view.
+You could choose to use the built-in template in CRadmin, hence not setting a template name. However, we want to show
+you some functionality which is done in the template, thus we create our own and put in the template folder for our
+Django project, just as we always do.
 
-Then in the ``__init__.py`` file inside the crapps folder we add the url to the view as this::
+Eventhough it is common practice to not put code in an ``__init__.py``file, we put our crapp.App class in here. This
+makes it possible to load different urls from our CRadmin application in an easy way. Besides all of our crapps modules
+are selfcontained, so being outside the CRadmin app we either import the whole shabang or we don't import it at all.
+
+So in the ``__init__.py`` file inside the crapps folder we add the url to the view as this::
 
     from django_cradmin import crapp
     from django_cradmin.demo.cradmin_gettingstarted.crapps.account_index import AccountIndexView
@@ -165,10 +179,8 @@ Then in the ``__init__.py`` file inside the crapps folder we add the url to the 
         appurls = [
             crapp.Url(r'^$', AccountIndexView.as_view(), name=crapp.INDEXVIEW_NAME)
         ]
-Since this is a getting started guide we do not chose to use any built in templates inside cradmin expect the base,
-but rather take the time to create an html file insde the template folder. There are different cradmin html files
-you can extend. In this example we need to extend the ``django_cradmin/base.django.html`` html file. Further we add
-blocks which shows the title and content. So our ``account_index.django.html`` file will look like this::
+As mentioned earlier we want to use our own template, so I have created a file named ``account_index.django.html`` and
+put inside the Django applications template folder with the following content::
 
     {% extends "django_cradmin/base.django.html" %}
 
@@ -185,7 +197,6 @@ need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_t
 
     def get_titletext_for_role(self, role):
         return role.account_name
-
 Testing the view
 ----------------
 Before we add the cradmin_instance to the project urls and watch our work on localhost, we need to test that it behaves
