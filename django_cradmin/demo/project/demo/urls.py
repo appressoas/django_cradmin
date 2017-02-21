@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import static
 
-from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances.gettingstarted_cradmin_instance import GettingStartedCradminInstance
+from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances import gettingstarted_cradmin_instance
 from django_cradmin.demo.listfilterdemo.cradmin import ListfilterDemoCrAdminInstance
 from django_cradmin.demo.login_not_required_demo.cradmin import LoginNotRequiredCrAdminInstance
 from django_cradmin.demo.multiselect2demo.cradmin import MultiselectDemoCrAdminInstance
@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^cradmin_email/', include('django_cradmin.apps.cradmin_email.urls')),
 
     url(r'^djangoadmin/', include(admin.site.urls)),
-    url(r'^gettingstarted/', include(GettingStartedCradminInstance.urls())),
+    url(r'^gettingstarted/admin/', include(gettingstarted_cradmin_instance.GettingStartedCradminInstance.urls())),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
