@@ -1,13 +1,13 @@
 from __future__ import unicode_literals
 
-from django.utils.translation import ugettext_lazy as _
+from django.http import Http404
 
-from django_cradmin import crinstance, crmenu
+from django_cradmin import crinstance
 from django_cradmin.demo.cradmin_gettingstarted import views
 
 
 class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
-    id = 'no_role_demo'
+    id = 'no_role'
     rolefrontpage_appname = 'dashboard'
 
     apps = [
@@ -15,11 +15,10 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
     ]
 
     def has_access(self):
-        return True
+        if self.request.user.is_authenticated:
+            return True
+        else:
+            raise Http404(Exception)
 
-    def get_menu_item_renderables(self):
-        return [
-            crmenu.NavLinkItemRenderable(
-                label=_('Dashboard'), url=self.appindex_url('dashboard'),
-                is_active=self.request.cradmin_app.appname == 'dashboard'),
-        ]
+    def get_rolequeryset(self):
+        pass

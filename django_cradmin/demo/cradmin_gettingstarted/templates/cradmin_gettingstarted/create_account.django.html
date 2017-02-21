@@ -1,0 +1,22 @@
+{% extends "django_cradmin/base.django.html" %}
+
+{% block title %}
+    Create account
+{% endblock title %}
+
+{% block page-cover-title %}
+    Hello you without a role
+{% endblock page-cover-title %}
+
+{% block content %}
+    <section class="adminui-page-section  adminui-page-section--center-lg">
+        <div class="container">
+            <div class="blocklist blocklist--tight">
+                <section class="blocklist__item">
+                    <h2 class="blocklist__itemtitle">Account Administrator</h2>
+                    <p>{{ account_admin }}</p>
+                </section>
+            </div>
+        </div><!-- End container -->
+    </section>
+{% endblock content %}
