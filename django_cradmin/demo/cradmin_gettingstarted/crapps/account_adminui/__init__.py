@@ -14,5 +14,5 @@ class App(crapp.App):
             r'^edit/(?P<pk>\d+)$',
             edit_account_view.AccountUpdateView.as_view(),
             name='edit'
-        )
+        ),
     ]
