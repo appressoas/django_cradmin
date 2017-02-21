@@ -13,10 +13,4 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
     ]
 
     def has_access(self):
-        if self.request.user.is_authenticated:
-            return True
-        else:
-            raise Http404(Exception)
-
-    def reverse_url(self, appname, viewname, args=None, kwargs=None, roleid=None):
-        return super(NoRoleCrAdminInstance, self).reverse_url()
+        return True
