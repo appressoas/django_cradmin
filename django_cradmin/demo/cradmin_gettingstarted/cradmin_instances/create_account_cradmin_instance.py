@@ -1,10 +1,25 @@
-from django_cradmin import crinstance
+from __future__ import unicode_literals
+
+from django.utils.translation import ugettext_lazy as _
+
+from django_cradmin import crinstance, crmenu
+from django_cradmin.demo.cradmin_gettingstarted import views
 
 
-class CreateAccountCradminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
-    id = 'account_create'
-    rolefrontpage_appname = 'default'
+class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
+    id = 'no_role_demo'
+    rolefrontpage_appname = 'dashboard'
 
     apps = [
-        'deault',
+        ('dashboard', views.App),
     ]
+
+    def has_access(self):
+        return True
+
+    def get_menu_item_renderables(self):
+        return [
+            crmenu.NavLinkItemRenderable(
+                label=_('Dashboard'), url=self.appindex_url('dashboard'),
+                is_active=self.request.cradmin_app.appname == 'dashboard'),
+        ]
