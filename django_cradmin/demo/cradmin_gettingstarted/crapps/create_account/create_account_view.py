@@ -1,3 +1,4 @@
+from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
 from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import mixins
 from django_cradmin.demo.cradmin_gettingstarted.models import AccountAdministrator
@@ -18,8 +19,9 @@ class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCrea
         return self.new_account
 
     def get_success_url(self):
+        # return self.request.cradmin_app.reverse_appindexurl()
         return reverse_cradmin_url(
             instanceid='gettingstarted',
-            appname='index',
+            appname='account_admin',
             roleid=self.new_account.id
         )

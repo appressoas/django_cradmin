@@ -6,10 +6,10 @@ from django_cradmin.demo.cradmin_gettingstarted.models import Account
 class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
     id = 'gettingstarted'
     roleclass = Account
-    rolefrontpage_appname = 'index'
+    rolefrontpage_appname = 'account_admin'
 
     apps = [
-        ('index', account_adminui.App)
+        ('account_admin', account_adminui.App)
     ]
 
     def get_rolequeryset(self):
