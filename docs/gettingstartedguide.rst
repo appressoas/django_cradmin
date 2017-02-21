@@ -19,13 +19,14 @@ Introduction
 With this project we aim to make the admin interface easier to use, prettier to look at, and more flexible than the
 original admin interface in Django.
 
-First you create a Django app inside you project, just like you always do in Django, and create your models and do some
-simple testing to get started on that part. In this guide we will create a message system where you can write messages
-as an administrator with the correct role and look at messages written by other as a common user without a special role.
+
+In this guide we will create a message system where you can write messages as an administrator with the correct role
+and look at messages written by other as a common user without a special role.
 
 Setting up the models
-=====================
-The models.py file looks like this in the beginning::
+---------------------
+First you create a Django app inside your project, just like you always do in Django, and create your models and do
+some model testing to get started on that part. The models.py file looks like this in the beginning::
 
     from django.conf import settings
     from django.db import models
@@ -63,15 +64,18 @@ The models.py file looks like this in the beginning::
 
 Setting up a CRadmin interface
 ==============================
+One central part of the interface is the ``cramdin_instance``. In this file we connect our CRadmin apps, known as
+``crapps``. Further we can render different kind of menus, header and footer. A full explenation of the methods and
+functionality which is possible with a ``cradmin_instance`` can be read in class documentation
+:class:`django_cradmin.crinstance.BaseCrAdminInstance`
 
-Setting database model and connect the model with CRadmin instance
-------------------------------------------------------------------
-We begin by creating the file ``gettingstarted_cradmin_instance.py`` with the class ``BaseCrAdminInstance``, which will
-contain our main CRadmin configuration. This class will inherit from
-:class:`django_cradmin.crinstance`. Then we add the database model and queryset for our ``CrAdminInstance``.
-This is done by overriding the variable :obj:`django_cradmin.crinstance.BaseCrAdminInstance.roleclass` and the function
-:func:`django_cradmin.crinstance.BaseCrAdminInstance.get_rolequeryset`. Our ``gettingstarted_cradmin_instance.py``
-file looks like this::
+Setting database model and connect the model with the CRadmin instance
+----------------------------------------------------------------------
+We begin by creating the file ``gettingstarted_cradmin_instance.py`` which is a subclass of
+``BaseCrAdminInstance`` and it will contain our main CRadmin configuration.
+By overriding the variable ``roleclass`` and method ``get_rolequeryset`` we add a databasemodel as the roleclass and
+decides which objects to be returned from the database. Our ``gettingstarted_cradmin_instance.py`` file looks like
+this::
 
     from django_cradmin import crinstance
     from django_cradmin.demo.cradmin_gettingstarted.models import Account
@@ -85,12 +89,10 @@ file looks like this::
             if not self.request.user.is_superuser:
                 queryset = queryset.filter(accountadministrator__user=self.request.user)
             return queryset
-
-When we make a query now and request an account without setting an ``user`` in
-:class:`django_cradmin.demo.cradmin_gettingstarted.models.AccountAdministrator` and connecting this ``user`` to the
-:class:`django_cradmin.demo.cradmin_gettingstarted.models.Account` the rolequeryset will be empty.
-Likewise, ``get_rolequersyet`` should not be empty when an ``user`` is connected to the
-:class:`django_cradmin.demo.cradmin_gettingstarted.models.Account`. Lets write two tests to confirm this theory::
+Here we have defined a roleclass and returned all Account objects in the database which have an user defined in
+the class AccountAdministrator. So if we query an Account which is not connected to an AccountAdministrator, the
+``get_rolequeryset`` should be empty. Likewise, the ``get_rolequeryset`` should not be empty when a user is connected to
+the Account class through the AccountAdministrator. Lets write two tests to check if this theory holds water::
 
     from unittest import mock
 
@@ -121,6 +123,9 @@ Likewise, ``get_rolequersyet`` should not be empty when an ``user`` is connected
             mockrequest.user = user
             cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
             self.assertEqual(1, cradmin_instance.get_rolequeryset().count())
+As the tests shows, our queryset is empty when the Account is not connected to an AccountAdministrator. Further, the
+queryset returned one object from the database when we connected the two. So far so good.
+
 
 Building an index view for Account
 ----------------------------------
@@ -284,10 +289,10 @@ file when we added the appurls. So your ``gettingstarted_cradmin_instance`` file
     class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
         id = 'gettingstarted'
         roleclass = Account
-        rolefrontpage_appname = 'index'
+        rolefrontpage_appname = 'account_admin'
 
         apps = [
-            ('index', crapps.App)
+            ('account_admin', crapps.App)
         ]
 
         def get_rolequeryset(self):
