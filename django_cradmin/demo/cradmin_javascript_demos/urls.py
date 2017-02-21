@@ -17,25 +17,34 @@ urlpatterns = [
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/geolocation-demo.django.html'),
         name="cradmin_javascript_demos_geolocation"),
+    url(r'^rotating-placeholder',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/rotating-placeholder.django.html'),
+        name="cradmin_javascript_demos_rotating_placeholder"),
     url(r'^date-time-picker-demo$',
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/datetimepicker-demo.django.html'),
         name="cradmin_javascript_demos_datetimepicker"),
+    url(r'^tabs-demo$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/tabs-demo.django.html'),
+        name="cradmin_javascript_demos_tabs"),
+    url(r'^print-on-click$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/print-on-click.django.html'),
+        name="cradmin_print_on_click_demo"),
     url(r'^datalistwidgets$',
-        ensure_csrf_cookie(views.DataListWidgetsDemo.as_view()),
+        ensure_csrf_cookie(views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/data-list-widgets-demo.django.html')),
         name="cradmin_javascript_demos_datalistwidgets"),
+
     url(r'^datalistwidgets-uicontainer$',
         views.DataListWidgetsUicontainerDemo.as_view(),
         name="cradmin_javascript_demos_datalistwidgets_uicontainer"),
-    url(r'^tabs-demo$',
-        views.TabsDemo.as_view(),
-        name="cradmin_javascript_demos_tabs"),
     url(r'^auto-submit-form-after-countdown$',
         views.AutoSubmitFormAfterCountdownDemoView.as_view(),
         name="cradmin_auto_submit_form_after_countdown_demo"),
-    url(r'^print-on-click$',
-        views.PrintOnClickDemoView.as_view(),
-        name="cradmin_print_on_click_demo"),
+
     url(r'^api/move-fictional-figures$',
         demo_api.FictionalFigureMoveView.as_view(),
         name='cradmin_move_fictional_figures_api'),

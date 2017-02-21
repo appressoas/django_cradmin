@@ -26,6 +26,7 @@ import HtmlListWithMovableItemsWidget from "./HtmlListWithMovableItemsWidget";
 import GeoLocationWidget from './GeoLocationWidget';
 import GeoLocationFilterWidget from './GeoLocationFilterWidget';
 import GeoLocationDebugWidget from "./GeoLocationDebugWidget";
+import RotatingPlaceholderWidget from "./RotatingPlaceholderWidget";
 
 
 /**
@@ -61,4 +62,5 @@ export default function registerAllCradminWidgets() {
     widgetRegistry.registerWidgetClass('cradmin-geolocation', GeoLocationWidget);
     widgetRegistry.registerWidgetClass('cradmin-geolocation-debug', GeoLocationDebugWidget);
     widgetRegistry.registerWidgetClass('cradmin-geolocation-filter', GeoLocationFilterWidget);
+    widgetRegistry.registerWidgetClass('cradmin-rotating-placeholder', RotatingPlaceholderWidget);
 }
