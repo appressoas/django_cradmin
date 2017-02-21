@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.http import Http404
 
 from django_cradmin import crinstance
-from django_cradmin.demo.cradmin_gettingstarted import views
+from django_cradmin.demo.cradmin_gettingstarted.crapps import create_account
 
 
 class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
@@ -11,7 +11,7 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
     rolefrontpage_appname = 'dashboard'
 
     apps = [
-        ('dashboard', views.App),
+        ('dashboard', create_account.App),
     ]
 
     def has_access(self):
