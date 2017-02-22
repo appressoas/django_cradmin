@@ -450,12 +450,21 @@ In the ``test_account_index`` file we can now write a test where only one of two
         self.assertEqual('me@example.com', admin_email)
 
 
-Create an Account and display account name in html
-==================================================
-Now is a good time to add the models to your ``admin.py`` file. This way you can create an account and
-add a user to that account. Now since we are using rolebased accesscontrol we need to add login functionality so the
-account created in Django admin will show up in you template. CRadmin has an easy way to get login and logout up and
-running in no time. All you need to do is to add the following in your project settings::
+Moving on to Localhost
+----------------------
+We have tested the functioanlity we have created so far, and everything seems to be working as wanted. The time
+has come to see our result on localhost. If you haven't done it yet, please add the models to your ``admin.py`` file.
+Fire up localhost and go to Djangoadmin and create an Account and an AccountAdministrator. If you have the same url
+patterns as suggested in this tutorial, you should see the template at `localhost/gettingstarted`. Another thing worth
+checking out is to add a second Account in Djangoadmin for the AccountAdministrator. If you then go back to
+`localhost/gettingstarted` you should see a view where you can choose which account you want to edit. This view is
+automaticly added by CRadmin.
+
+Login Functionality in CRadmin
+==============================
+So far we have a view with no security when it comes to demanding that the user is logged in before checking out an
+account. Therefore the next step is to create a login view in CRadmin. This is easily done by adding
+``django_cradmin.app.cradmin_authenticate`` to your installed apps for the Django project and include its urls::
 
     INSTALLED_APPS = (
         # ...
@@ -470,6 +479,9 @@ And in your urls.py file for the project you add::
         url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
         # ...
     )
+
+Now when you go to `localhost/gettingstarted` a view asking for email and password should show up. If you want to read
+more about `cradmin_authenticate`, check out our documentation :ref:`cradmin_authenticate`
 
 Edit Account
 ============

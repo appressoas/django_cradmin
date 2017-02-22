@@ -1,3 +1,5 @@
+.. _cradmin_authenticate:
+
 #############################################
 `cradmin_authenticate` --- Login/logout views
 #############################################
