@@ -11,7 +11,10 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = account_index_view.AccountIndexView
 
     def test_get_title(self):
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='My account')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='My account'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,

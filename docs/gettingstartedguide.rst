@@ -197,13 +197,30 @@ need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_t
         return role.account_name
 Testing the view
 ----------------
-Before we add the cradmin_instance to the project urls and watch our work on localhost, we need to test that it behaves
-as intended. Before we do this, it is time for you to stretch your legs and rest your eyes for 10 minutes. Okay, now
-that you are refreshed, we can take a look a first look at the :class:`django_cradmin.cradmin_testhelpers.TestCaseMixin`
-in CRadmin. For now lets keep it simple and just mock a get request for our view to be sure that the title on our html
-page is the same as the account_name for an instance of
-:class:`django_cradmin.demo.cradmin_gettingstarted.models.Account` which is returned by the ``get_titletext_for_role``
-in our ``gettingstarted_cradmin_instance_py`` file.
+Before we contiune our work, let us take a short break. Go outside, stretch our legs and get some fresh air.
+
+Now that we feel refreshed, it is time to test the recent work. CRadmin has test helpers to make testing work fast and
+easy. We consider it very important to test code, so it is equally important to have tools which makes the testing go
+smoothly. We will start simple and explain some basic functionality for testing with CRadmin. If you want to read more
+about testing in CRadmin, go over to the class documentation :class:`django_cradmin.cradmin_testhelpers.TestCaseMixin`.
+
+
+We have the same structure in our tests module as we have for our Django App, meaning inside the tests directory there
+is a new module named ``test_crapps``. Inside here we put the file ``test_account_index.py``::
+
+    tests
+        test_crapps
+            __init__.py
+            test_account_index.py
+        __init__.py
+        test_gettingstarted_cradmin_instance.py
+
+
+The first thing we're going to test is if the account name for an instance of our Account model is displayed in the
+template. We create a test class which is a subclass of both ``TestCase`` and ``cradmin_testhelpers.TestCaseMixin``. In
+this class we tell which view we want to test. Further we write a method to check the html title in the template, where
+we create both an Account and an AccountAdministrator with mommy. Further we mock a get request by using functionality
+from CRadmin.
 
 Our test file for the index view looks like this::
 
@@ -212,17 +229,17 @@ Our test file for the index view looks like this::
     from model_mommy import mommy
 
     from django_cradmin import cradmin_testhelpers
-    from django_cradmin.demo.cradmin_gettingstarted.crapps import AccountIndexView
 
 
     class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         """"""
         viewclass = AccountIndexView
-The viewclass is just which view you want to test. Next step is to add a method in our test class which checks if the
-title is what we want it to be::
 
     def test_get_title(self):
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='My account')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='My account'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,
@@ -235,14 +252,17 @@ title is what we want it to be::
         mockresponse.selector.prettyprint()
         page_title = mockresponse.selector.one('title').alltext_normalized
         self.assertEqual(account.account_name, page_title)
-Okay, here a lot of things is going on. So lets take it one step at the time. First the modles which we need is created
-by mommy. Next we mock a get request where the cradmin role is the account created by mommy, and htmls_selector is True.
-``Htmls selector`` is used to easy get hold of CSS selectors so we can check their values. In the next line prettyprint
-is called, and this is actually not needed since all it does is to print out the html file in you monitor. It's just a
-cool functionality often used to easily see different tag names and css classes before finish writing the test. Normaly
-we delete the prettyprint line to prevent alot of printing in terminal when running tests. Anyway, the next line is
-where we get the page title, and add the ``alltext_normalized`` so we can compare a string with a string. Finally we
-check if the account name is equal to the html title.
+In the ``self.mock_get_request`` hmtls selector is True and the CRadmin role is our newly created account. Htmls
+is created by us to make it easy to use CSS selectors with HTML in unittests. The line
+``mockresponse.selector.prettyprint()`` writes the template out to your terminal. Normally this is NOT pushed up to
+GitHub or wherever you store you code. It's just a tool making it easy for a developer to see the whole template with
+all its CSS classes and HTML tags. The line ``page_title = mockresponse.selector.one('title').alltext_normalized``
+fetches the templates title. We tell the HTMLS that we expect just one instance of a title and that we want all the text
+appear with normalize whitespace, meaning all text within this element and all child elements has the string stripped
+of whitespaces in both ends and all consecutive whitespace characters is repleced with a single space. If we want to
+just get the text within a element, we use ``text_normalized`` instead. For this example, I think both would work.
+Nevertheless, we now have fetched the title from our template and can do a assert equal to see if it matches
+the account name.
 
 Setting up urls
 ===============
