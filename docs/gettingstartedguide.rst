@@ -264,26 +264,51 @@ just get the text within a element, we use ``text_normalized`` instead. For this
 Nevertheless, we now have fetched the title from our template and can do a assert equal to see if it matches
 the account name.
 
-Setting up urls
-===============
-Now we are ready to see our index view on localhost. First we need to connect our new app, the index view, with the
-CRadmin instance. This is done by adding the following code in the ``gettingstarted_cradmin_instance`` file::
+Project urls
+------------
+Earlier on we wrote a reg-ex for our index view in the ``__init__.py`` file within our CRadmin application(crapps). The
+next url releated step is to tell our Django project to include this url. The file we now need to open is the one
+containing the projects url patterns. In here we include the urls from our CRadmin instance::
+
+    urlpatterns = [
+        url(r'^gettingstarted/', include(GettingStartedCradminInstance.urls())),
+    ]
+
+Apps in our CRadmin instance
+----------------------------
+The next step is to tell the CRadmin instance to include our CRadmin application, which is done by importing the class
+App from the ``__init__.py`` file where our reg-ex is written. Our ``gettingstarted_cradmin_instance.py`` looks like
+this::
 
     class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
         roleclass = Account
 
         apps = [
-            ('index', crapps.App)
+            ('account_admin', crapps.App)
         ]
-Project urls
-____________
-Now that we have told CRadmin to read the url in our crapps __init__ file, we need to tell our Django project to include
-the cradmin instance. So in the file for all your project urls, you import the ``gettingstarted_cradmin_instance`` file
-and then you add the following to include the urls::
+The string `account_admin` is the name given of the CRadmin application(crapps). This name is used in several different
+ways, like setting which crapps is the frontpage application and when creating links in a template. While we have the
+CRadmin instance file open, lets add a few more elements. First we need to decide which crapps is our frontpage, since
+we only have one CRadmin application so far, it's an easy choice. Further we need to give the CRadmin instance an id.
+Our ``gettingstarted_cradmin_instance.py`` file will now look like this::
 
-    urlpatterns = [
-        url(r'^gettingstarted/', include(GettingStartedCradminInstance.urls())),
-    ]
+    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+        id = 'gettingstarted'
+        roleclass = Account
+        rolefrontpage_appname = 'account_admin'
+
+        apps = [
+            ('account_admin', crapps.App)
+        ]
+
+        def get_rolequeryset(self):
+            queryset = Account.objects.all()
+            if not self.request.user.is_superuser:
+                queryset = queryset.filter(accountadministrator__user=self.request.user)
+            return queryset
+
+        def get_titletext_for_role(self, role):
+            return role.account_name
 
 Create an Account and display account name in html
 ==================================================
@@ -304,34 +329,7 @@ And in your urls.py file for the project you add::
         url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
         # ...
     )
-Cradmin instance
-----------------
-As you may have read, the :class:`django_cradmin.crinstance.BaseCrAdminInstance` requires a ``rolefrontpage_appname``
-so it know which app is your frontpage. CRadmin calls this ``INDEXVIEW_NAME``, and we sat this name in the ``__ini__``
-file when we added the appurls. So your ``gettingstarted_cradmin_instance`` file should now look like this::
 
-    from django_cradmin import crinstance
-    from django_cradmin.demo.cradmin_gettingstarted import crapps
-    from django_cradmin.demo.cradmin_gettingstarted.models import Account
-
-
-    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
-        id = 'gettingstarted'
-        roleclass = Account
-        rolefrontpage_appname = 'account_admin'
-
-        apps = [
-            ('account_admin', crapps.App)
-        ]
-
-        def get_rolequeryset(self):
-            queryset = Account.objects.all()
-            if not self.request.user.is_superuser:
-                queryset = queryset.filter(accountadministrator__user=self.request.user)
-            return queryset
-
-        def get_titletext_for_role(self, role):
-            return role.account_name
 Index view
 ----------
 In the ``account_index.py`` file we need to add some context data. First let us create a property so we can have names
