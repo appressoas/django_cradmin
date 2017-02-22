@@ -142,9 +142,9 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         return 'fieldwrapper'
 
 
-# class NoWrapperElementFieldWrapper(FieldWrapper):
-#     """
-#     Same as :class:`.FieldWrapper` except that it does not include the wrapper
-#     element.
-#     """
-#     template_name = 'django_cradmin/uicontainer/fieldwrapper_no_wrapper_element.django.html'
+class NoWrapperElementFieldWrapper(FieldWrapper):
+    """
+    Same as :class:`.FieldWrapper` except that it does not include the wrapper
+    element.
+    """
+    template_name = 'django_cradmin/uicontainer/fieldwrapper_no_wrapper_element.django.html'

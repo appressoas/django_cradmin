@@ -512,10 +512,24 @@ class HiddenField(Field):
     """
     Just like :class:`.Field`, but renders as
     a ``<input type="hidden">``.
+
+    Typically rendered within a :class:`django_cradmin.uicontainer.fieldwrapper.NoWrapperElementFieldWrapper`.
+
+    Examples:
+
+        Basic example::
+
+            uicontainer.fieldwrapper.NoWrapperElementFieldWrapper(
+                fieldname='myfield',
+                field_renderable=uicontainer.field.HiddenField()
+            )
     """
     @property
     def rendered_field(self):
         return self.bound_formfield.as_hidden(attrs=self.field_attributes_dict)
+
+    def get_default_bem_block_or_element(self):
+        return None
 
 
 class AbstractDate(Field):
