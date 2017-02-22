@@ -139,28 +139,28 @@ In CRadmin the apps are essentially our views. This is where we define the urls,
 pages for our CRadmin interface.
 
 First we create a module called ``crapps`` which will hold all of our cradmin applications. Inside here, we create a
-file called ``account_index.py``. The Project structure will look something like ::
+file called ``account_dashboard.py``. The Project structure will look something like ::
 
     cradmin_gettingstarted
         crapps
             init.py
-            account_index.py
+            account_dashboard.py
         migrations
         tests
         init.py
         gettingstarted_cradmin_instance.py
         models.py
 
-The file named ``account_index.py`` will contain a class which is a sub of the ``WithinRoleTemplateView``. This view
+The file named ``account_dashboard.py`` will contain a class which is a sub of the ``WithinRoleTemplateView``. This view
 is used when you extends the ``django_cradmin/base.django.html`` template which inherit from Djangos generic
 templateview. As the name suggests, our ``WithinRoleTemplateView`` is used when you have a role, as we sat in the
 cradmin instance file to the class Account.
 
-Inside the ``account_index.py`` file we add this content::
+Inside the ``account_dashboard.py`` file we add this content::
 
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
-    class AccountIndexView(WithinRoleTemplateView):
+    class AccountDashboardView(WithinRoleTemplateView):
         template_name = 'cradmin_gettingstarted/account.index.django.html'
 
 You could choose to use the built-in template in CRadmin, hence not setting a template name. However, we want to show
@@ -178,10 +178,10 @@ So in the ``__init__.py`` file inside the crapps folder we add the url to the vi
 
     class App(crapp.App):
         appurls = [
-            crapp.Url(r'^$', AccountIndexView.as_view(), name=crapp.INDEXVIEW_NAME)
+            crapp.Url(r'^$', AccountDashboardView.as_view(), name=crapp.INDEXVIEW_NAME)
         ]
 
-As mentioned earlier we want to use our own template, so I have created a file named ``account_index.django.html`` which
+As mentioned earlier we want to use our own template, so I have created a file named ``account_dashboard.django.html`` which
 is placed inside the Django applications template folder with the following content::
 
     {% extends "django_cradmin/base.django.html" %}
@@ -212,12 +212,12 @@ about testing in CRadmin, go over to the class documentation :class:`django_crad
 
 
 We have the same structure in our tests module as we have for our Django App, meaning inside the tests directory there
-is a new module named ``test_crapps``. Inside here we put the file ``test_account_index.py``::
+is a new module named ``test_crapps``. Inside here we put the file ``test_account_dashboard.py``::
 
     tests
         test_crapps
             __init__.py
-            test_account_index.py
+            test_account_dashboard.py
         __init__.py
         test_gettingstarted_cradmin_instance.py
 
@@ -239,7 +239,7 @@ Our test file for the index view looks like this::
 
     class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         """"""
-        viewclass = AccountIndexView
+        viewclass = AccountDashboardView
 
     def test_get_title(self):
         account = mommy.make(
@@ -326,14 +326,14 @@ access control, lets create a property named account and have it return the CRad
 when calling for `self.account`. This is not something which you have to do, it's something which the author of this
 document prefer to do to keep track of what is going on.
 
-Our ``account_index.py`` file now looks something like this::
+Our ``account_dashboard.py`` file now looks something like this::
 
     from django_cradmin.demo.cradmin_gettingstarted.models import Account
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
 
-    class AccountIndexView(WithinRoleTemplateView):
-        template_name = 'cradmin_gettingstarted/account_index.django.html'
+    class AccountDashboardView(WithinRoleTemplateView):
+        template_name = 'cradmin_gettingstarted/account_dashboard.django.html'
 
         @property
         def account(self):
@@ -346,7 +346,7 @@ Our ``account_index.py`` file now looks something like this::
             return AccountAdministrator.objects.get(pk=self.account.id)
 
         def get_context_data(self, **kwargs):
-            context = super(AccountIndexView, self).get_context_data()
+            context = super(AccountDashboardView, self).get_context_data()
             context['account_admin'] = self.__get_account_admin()
             context['account'] = self.__get_account()
             return context
@@ -378,7 +378,7 @@ First we add a page cover title block in our template::
         {{ request.cradmin_role.account_name }}
     {% endblock page-cover-title %}
 
-Then in our ``test_account_index.py`` file we add a method which tests if we fetch the account name and sets it as a
+Then in our ``test_account_dashboard.py`` file we add a method which tests if we fetch the account name and sets it as a
 primary heading::
 
     def test_get_heading(self):
@@ -405,7 +405,7 @@ check if the normalized text from the template is equal to the account name.
 
 Now let us add a blocklist item to our template in the content block. We are using CRadmin CSS classes to get a good
 admin layout. Further we add a `cradmin_test_css_class` which we are going to use in our test when we check if the
-users email is equal to the account administrator's email. We expand our ``account_index.django.html`` file with the
+users email is equal to the account administrator's email. We expand our ``account_dashboard.django.html`` file with the
 following::
 
     {% block content %}
@@ -421,7 +421,7 @@ following::
         </section>
     {% endblock content %}
 
-In the ``test_account_index`` file we can now write a test where only one of two users email should show in the template
+In the ``test_account_dashboard`` file we can now write a test where only one of two users email should show in the template
 ::
 
     def test_only_account_where_user_is_admin_shows_on_page(self):
@@ -494,14 +494,14 @@ CRadmin which extends Djangos views. When we want to edit an account, the view i
 
 Since we now have more than one file inside our CRadmin application(crapps) module, it is time to create a new module
 within our `crapps` module, and call it `account_adminui`. Put ``__init__.py`` file with our urls and the file
-``account_index_view.py`` inside the new module. Rerun all tests to be sure everyting works as intended with the new
+``account_dashboard_view.py`` inside the new module. Rerun all tests to be sure everyting works as intended with the new
 crapps structure::
 
     cradmin_gettingstarted
         crapps
             account_adminui
                 __init__.py
-                account_index_view.py
+                account_dashboard_view.py
                 edit_account_view.py
                 mixins.py
             __init__.py
@@ -555,7 +555,7 @@ We add a new url in the ``__init__.py`` file inside our account adminui crapps::
         appurls = [
             crapp.Url(
                 r'^$',
-                account_index.AccountIndexView.as_view(),
+                account_dashboard.AccountDashboardView.as_view(),
                 name=crapp.INDEXVIEW_NAME
             ),
             crapp.Url(
@@ -568,10 +568,10 @@ We add a new url in the ``__init__.py`` file inside our account adminui crapps::
 The template
 ------------
 We do not create a new template for this edit view, but rather use the built-in CRadmin template. So in our
-``account_index.django.html`` file we add a new blocklist section after the one which gives the name for the account
+``account_dashboard.django.html`` file we add a new blocklist section after the one which gives the name for the account
 administrator. To make our button work we need to tell the `href` to look for a view within the current CRadmin
 instance. This is done by using Django template tags syntax. We also pass along the id of the current account as the
-pk, which is accessible from the `get_context_data` method in our ``account_index_view.py`` file. A full explenation
+pk, which is accessible from the `get_context_data` method in our ``account_dashboard_view.py`` file. A full explenation
 about CRadmin template tags can be read at :ref:`cradmin_tags` ::
 
     <section class="blocklist__item">
@@ -681,7 +681,7 @@ like this::
         test_crapps
             test_account_adminui
                 __init__.py
-                test_account_index_view.py
+                test_account_dashboard_view.py
                 test_edit_account_view.py
             __init__.py
         test_models
