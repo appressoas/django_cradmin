@@ -11,7 +11,10 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = edit_account_view.AccountUpdateView
 
     def test_get_form_renderable(self):
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Charisma'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,
@@ -26,7 +29,10 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(account.account_name, form_account_name)
 
     def test_post_without_required_account_name(self):
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Charisma'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,
@@ -47,7 +53,10 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
 
     def test_post_with_required_account_name_updates_db(self):
         """Should get a 302 Found redirects and have one Account object in database with a new name"""
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Charisma'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,

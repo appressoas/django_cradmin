@@ -483,16 +483,35 @@ And in your urls.py file for the project you add::
 Now when you go to `localhost/gettingstarted` a view asking for email and password should show up. If you want to read
 more about `cradmin_authenticate`, check out our documentation :ref:`cradmin_authenticate`
 
-Edit Account
-============
-Now that we can see the index page for each account connected to the administrator, lets add a view to update the
-Account. We can do this by using a ``modelform`` in Django. First we create a file named ``edit_account.py`` in account
-crapps (this is where our ``account_index.py`` file lives). Then we write an mixin class so that we can use the same
-form when we edit an exisitng account and later on when we want to create a new account for the administrator. Our
-``edit_account.py`` file will now loook something like::
+Create an Edit View for Account
+===============================
+The main goal for this part of the tutorial is to create functionality which allows us to change the name of an existing
+account. We're goning to use a mixin class which holds our form and uses CRadmin uicontainer to render the form. Further
+will our view class have a super class from CRadmin. As mentioned earlier there are different formview classes in
+CRadmin which extends Djangos views. When we want to edit an account, the view is a subclass of the CRadmin class
+``WithinRoleUpdateView``. This view is a modelform view.
+
+
+Since we now have more than one file inside our CRadmin application(crapps) module, it is time to create a new module
+within our `crapps` module, and call it `account_adminui`. Put ``__init__.py`` file with our urls and the file
+``account_index_view.py`` inside the new module. Rerun all tests to be sure everyting works as intended with the new
+crapps structure::
+
+    cradmin_gettingstarted
+        crapps
+            account_adminui
+                __init__.py
+                account_index_view.py
+                edit_account_view.py
+                mixins.py
+            __init__.py
+
+Mixins
+------
+In our mixins file we import uicontainer and formview from CRadmin, and render a form based on the Account class. We
+also needs to tell CRadmin the role, which in our case is Account. The mixin file will look something like this::
 
     from django_cradmin import uicontainer
-    from django_cradmin.demo.cradmin_gettingstarted.models import Account
     from django_cradmin.viewhelpers import formview
 
 
@@ -517,22 +536,20 @@ form when we edit an exisitng account and later on when we want to create a new 
                 ]
             ).bootstrap()
 
+The View
+--------
+The file ``edit_account_view.py`` overrides the method `get_queryset_for_role` where we filter on the pk of the current
+CRadmin role. Since our CRadmin role is account, you could argue that we filter on the pk for the account we are
+currently lookin at. The ``edit_account_view.py`` file looks something like ::
 
-    class AccountUpdateView(AccountCreateUpdateMixin, formview.WithinRoleUpdateView):
+    class AccountUpdateView(mixins.AccountCreateUpdateMixin, formview.WithinRoleUpdateView):
         """"""
         def get_queryset_for_role(self):
             return Account.objects.filter(id=self.request.cradmin_role.pk)
 
-First we import uicontainer from django_cradmin, which is used to render the form with the cradmin layout. In the
-:class:`django_cradmin.demo.cradmin_gettingstarted.crapps.account.edit_account.AccountCreateUpdateMixin` we choose the
-model which are form is going to handle, and choose fields. Further we add a ``roleid_filed`` as "account". This is
-described in :class:`django_cradmin.viewhelpers.formview.create_update_view_mixin.CreateUpdateViewMixin` and is the
-current role, which in our case is "account". When we render the form we add a submit button to save the Account after
-changing the account name. In the
-:class:`django_cradmin.demo.cradmin_gettingstarted.crapps.account.edit_account.AccountUpdateView` we use the super
-:class:`django_cradmin.viewhelpers.formview.updateview.WithinRoleUpdateView` and overwrites the method where we query
-the role and filter the objects on the PK to our current cradmin_role. We add a new url in the ``__init__.py`` file
-inside our crapps::
+The url
+-------
+We add a new url in the ``__init__.py`` file inside our account adminui crapps::
 
     class App(crapp.App):
         appurls = [
@@ -548,41 +565,52 @@ inside our crapps::
             )
         ]
 
-We do not create a new template for this edit view, but rather use the built-in html in CRadmin. So in our
-``account_index.django.html`` file we add a new section after the one which gives the name for the account
-administrator::
+The template
+------------
+We do not create a new template for this edit view, but rather use the built-in CRadmin template. So in our
+``account_index.django.html`` file we add a new blocklist section after the one which gives the name for the account
+administrator. To make our button work we need to tell the `href` to look for a view within the current CRadmin
+instance. This is done by using Django template tags syntax. We also pass along the id of the current account as the
+pk, which is accessible from the `get_context_data` method in our ``account_index_view.py`` file. A full explenation
+about CRadmin template tags can be read at :ref:`cradmin_tags` ::
 
     <section class="blocklist__item">
         <h2 class="blocklist__itemtitle">Edit Account</h2>
-        <a href='{% cradmin_appurl viewname="edit" pk=admin.account.id %}' class="button  button--primary">
+        <a href='{% cradmin_appurl viewname="edit" pk=account.id %}' class="button  button--primary">
             Change name
         </a>
     </section>
 
-Here we use CRadmin template tag ``cradmin_appurl`` which reverse the view named "edit" and we pass the PK of our
-current account. Now it's time to test our UpdateView for the Account.
+This is all the code neded to be able to change the account name in our edit view. Before we start testing, it is again
+time to look at the clock and see if you have been infront of the screen for 60 minutes. If yes, take som fresh air and
+stretch those legs of yours.
 
-Test Edit Account
------------------
-We want to test at least three different senarios. The first is a get request to check that he form is rendered with the
-name of our current account. The second is a 200 postrequest if the new account name is empty. And finally we want to
-check that a post request with a new account name updates the current Account object and gives us a 302 Found
-redirects::
+Test Edit Account View
+----------------------
+There are several scenarios which you could test for an edit view. We are going to test three of those. First if the
+form is rendered with the name of the current account. Second, we try to post the form but leave the new account name
+empty. This means we should get a response code of 200. Finally we post the form with a new account name for the current
+Account object. Here we should get a 302 Found redirects response.
+
+We need to set the account id as a pk when testing, and this is done with ``viewkwargs``. Further we
+need to pass the account name when we post the form, and this is done with ``requestkwargs``. Beside this there is
+nothing new in our test methods. Our file ``test_edit_account.py`` looks something like this.::
 
     from django.conf import settings
     from django.test import TestCase
     from model_mommy import mommy
 
     from django_cradmin import cradmin_testhelpers
-    from django_cradmin.demo.cradmin_gettingstarted.crapps.account import edit_account
-    from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
     class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
-        viewclass = edit_account.AccountUpdateView
+        viewclass = edit_account_view.AccountUpdateView
 
         def test_get_form_renderable(self):
-            account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+            account = mommy.make(
+                'cradmin_gettingstarted.Account',
+                account_name='Charisma'
+            )
             mommy.make(
                 'cradmin_gettingstarted.AccountAdministrator',
                 account=account,
@@ -597,7 +625,10 @@ redirects::
             self.assertEqual(account.account_name, form_account_name)
 
         def test_post_without_required_account_name(self):
-            account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+            account = mommy.make(
+                'cradmin_gettingstarted.Account',
+                account_name='Charisma'
+            )
             mommy.make(
                 'cradmin_gettingstarted.AccountAdministrator',
                 account=account,
@@ -618,7 +649,10 @@ redirects::
 
         def test_post_with_required_account_name_updates_db(self):
             """Should get a 302 Found redirects and have one Account object in database with a new name"""
-            account = mommy.make('cradmin_gettingstarted.Account', account_name='Charisma')
+            account = mommy.make(
+                'cradmin_gettingstarted.Account',
+                account_name='Charisma'
+            )
             mommy.make(
                 'cradmin_gettingstarted.AccountAdministrator',
                 account=account,
@@ -640,101 +674,28 @@ redirects::
             get_account_from_db = Account.objects.filter(pk=account.id).get()
             self.assertEqual('The idol', get_account_from_db.account_name)
 
-As you remember form earlier test, when we use methods such as
-:meth:`django_cradmin.cradmin_testhelpers.TestCaseMixin.mock_http200_getrequest_htmls` we do not need to write an assert
-equal for the status code, since this checked for us by CRadmin. Further the htmls lets us fetch tags using
-CSS selectors. To pass the PK of our account we use the ``viewkwargs`` variable which passes the id of our account to
-the view. Further does the variable ``requestkwargs`` set the data we want to pass with the form when pressing the save
-button. In our case, this is just the name of the account. In the second test we want to check that a warning message
-is displayed to the user if account name is empty. Here we use the htmls to fetch the value of a html tag with an id. In
-the last test we count the number of Account objects in database before and after posting the form, and checks that our
-account has been given the new name we passed with the form.
+Since we changed the structure in our crapps module, I have updated the structur of the tests module, so it now looks
+like this::
+
+    tests
+        test_crapps
+            test_account_adminui
+                __init__.py
+                test_account_index_view.py
+                test_edit_account_view.py
+            __init__.py
+        test_models
+            __init__.py
+            test_account.py
+            test_account_administrator.py
+        __init__.py
+        test_gettingstarted_cradmin_instance.py
 
 Create a new account
 ====================
-First I want to clean up a bit in our project structur, both for my own sanity and for you who reads this guide so we
-are on the same page. Keep in mind that we now want to make it possible for an account administrator to add a new
-account to administrate. So our crapps need a name which reflects this. The project structur should now look something
-like this after a refactor::
-
-    cradmin_gettingstarted
-        crapps
-            account_adminui
-                __init__.py (here is our urls)
-                account_index_view.py
-                edit_account_view.py
-            __init__.py
-        migrations
-        templates
-            cradmin_gettingstarted
-                account_index.django.html
-        tests
-            test_account_adminut
-                __init__.py
-                test_account_index.py
-                test_edit_account.py
-            test_models
-               __init__.py
-                test_account.py
-                test_account_administrator.py
-        __init__.py
-        admin.py
-        gettingstarted_cradmin_instance.py
-        models.py
 
 If you now go to Django Admin, add another account for the same user and than go to "localhost/gettingstarted" in your
 browser, you will see you now can choose which account you would like to edit. This page is created by CRadmin without
 us doing anything else than a bit inheritance in our view. What I want to do is to have the option for a logged in user
 to either choose an existing account or create a new account. For this we need to overwrite the template which now shows
 the accounts which you administrate.
-
-
-
-
-
-
-
-
-
-
-
-
-We begin by creating the file ``cradmin_question.py`` in the views folder of our ``polls`` app. In this file we
-add this content::
-
-    from django_cradmin import crapp
-    from django_cradmin.viewhelpers import objecttable
-    from polls import models
-
-
-    class QuestionListView(objecttable.ObjectTableView):
-        model = models.Question
-        columns = ['question_text']
-
-        def get_queryset_for_role(self, role):
-            return models.Question.objects.all()
-
-
-    class App(crapp.App):
-        appurls = [
-            crapp.Url(r'^$', QuestionListView.as_view(), name=crapp.INDEXVIEW_NAME)
-        ]
-
-This code snippet defines a :class:`django_cradmin.crapp.App`` instance with a :class:`django_cradmin.crapp.Url`
-pointing to a :class:`django_cradmin.viewhelpers.objecttable.ObjectTableView`.
-
-The ``App`` is essentially just a place where we define the urls for our cradmin views, and the ``ObjectTableView`` is a
-view for presenting a list of objects as a table. In our ``ObjectTableView``, ``QuestionListView``, we define the bare
-minimum for a ``ObjectTableView``:
-
- - ``model``: the Django model we read data from
- - :obj:`django_cradmin.viewhelpers.objecttable.ObjectTableView.columns`: what columns should each row contain. In this case
-   we simply entered a model-value from ``Question``; ``question_text``.
- - :func:`django_cradmin.viewhelpers.objecttable.ObjectTableView.get_queryset_for_role()`: define the queryset that should be
-   returned for the list.
-
-You should now have a list of all questions in the database, but this is not particularily useful on its own, so
-now it's time to add some functionality to our view!
-
-Adding and editing objects
---------------------------

@@ -2,6 +2,7 @@
 Template tags
 #############
 
+.. _cradmin_tags:
 
 ************
 cradmin_tags
