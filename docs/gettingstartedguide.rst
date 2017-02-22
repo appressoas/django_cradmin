@@ -21,7 +21,10 @@ original admin interface in Django.
 
 
 In this guide we will create a message system where you can write messages as an administrator with the correct role
-and look at messages written by other as a common user without a special role.
+and look at messages written by other as a common user without a special role. We do not show you where from where we
+import project file since this application is build inside CRadmin alongside aother applications made for demo purpose.
+Hence, your project sturcture will not look like ours. However, when we import from external libraries or from CRadmin
+itself, we will show it.
 
 Setting up the models
 ---------------------
@@ -30,7 +33,6 @@ some model testing to get started on that part. The models.py file looks like th
 
     from django.conf import settings
     from django.db import models
-
 
     class Account(models.Model):
         """
@@ -72,14 +74,12 @@ functionality which is possible with a ``cradmin_instance`` can be read in class
 Setting database model and connect the model with the CRadmin instance
 ----------------------------------------------------------------------
 We begin by creating the file ``gettingstarted_cradmin_instance.py`` which is a subclass of
-``BaseCrAdminInstance`` and it will contain our main CRadmin configuration.
-By overriding the variable ``roleclass`` and method ``get_rolequeryset`` we add a databasemodel as the roleclass and
-decides which objects to be returned from the database. Our ``gettingstarted_cradmin_instance.py`` file looks like
-this::
+``BaseCrAdminInstance`` and it will contain our main CRadmin configuration. For now we place this file at the same level
+as our models.py file. By overriding the variable ``roleclass`` and method ``get_rolequeryset`` we add a databasemodel
+as the roleclass and decides which objects to be returned from the database. Our ``gettingstarted_cradmin_instance.py``
+file looks like this::
 
     from django_cradmin import crinstance
-    from django_cradmin.demo.cradmin_gettingstarted.models import Account
-
 
     class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
         roleclass = Account
@@ -90,18 +90,17 @@ this::
                 queryset = queryset.filter(accountadministrator__user=self.request.user)
             return queryset
 Here we have defined a roleclass and returned all Account objects in the database which have an user defined in
-the class AccountAdministrator. So if we query an Account which is not connected to an AccountAdministrator, the
-``get_rolequeryset`` should be empty. Likewise, the ``get_rolequeryset`` should not be empty when a user is connected to
-the Account class through the AccountAdministrator. Lets write two tests to check if this theory holds water::
+the class AccountAdministrator. If you are logged in as a superuser, all Accounts will be returne. So if we query an
+Account which is not connected to an AccountAdministrator, the ``get_rolequeryset`` should be empty. Likewise, the
+``get_rolequeryset`` should not be empty when a user is connected to the Account class through the AccountAdministrator.
+Lets write two tests to check if this theory holds water. For most of the tests we`ll be using mommy, and for some tests
+we also use MagicMock::
 
     from unittest import mock
 
     from django.conf import settings
     from django.test import TestCase
     from model_mommy import mommy
-
-    from django_cradmin.demo.cradmin_gettingstarted.gettingstarted_cradmin_instance import GettingStartedCradminInstance
-
 
     class TestGettingStartedCradminInstance(TestCase):
         def test_none_super_user_makes_empty_rolequeryset(self):
@@ -150,7 +149,7 @@ file called ``account_index.py``. The Project structure will look something like
         gettingstarted_cradmin_instance.py
         models.py
 The file named ``account_index.py`` will contain a class which is a sub of the ``WithinRoleTemplateView``. This view
-is used when you extends the ``django_cradmin/base.django.html`` template and it inherit from Djangos generic
+is used when you extends the ``django_cradmin/base.django.html`` template which inherit from Djangos generic
 templateview. As the name suggests, our ``WithinRoleTemplateView`` is used when you have a role, as we sat in the
 cradmin instance file to the class Account.
 
@@ -165,22 +164,21 @@ You could choose to use the built-in template in CRadmin, hence not setting a te
 you some functionality which is done in the template, thus we create our own and put in the template folder for our
 Django project, just as we always do.
 
-Eventhough it is common practice to not put code in an ``__init__.py``file, we put our crapp.App class in here. This
+Eventhough it is common practice to not put code in an ``__init__.py``file, we put our ``crapp.App`` class in here. This
 makes it possible to load different urls from our CRadmin application in an easy way. Besides all of our crapps modules
 are selfcontained, so being outside the CRadmin app we either import the whole shabang or we don't import it at all.
 
 So in the ``__init__.py`` file inside the crapps folder we add the url to the view as this::
 
     from django_cradmin import crapp
-    from django_cradmin.demo.cradmin_gettingstarted.crapps.account_index import AccountIndexView
 
 
     class App(crapp.App):
         appurls = [
             crapp.Url(r'^$', AccountIndexView.as_view(), name=crapp.INDEXVIEW_NAME)
         ]
-As mentioned earlier we want to use our own template, so I have created a file named ``account_index.django.html`` and
-put inside the Django applications template folder with the following content::
+As mentioned earlier we want to use our own template, so I have created a file named ``account_index.django.html`` which
+is placed inside the Django applications template folder with the following content::
 
     {% extends "django_cradmin/base.django.html" %}
 
