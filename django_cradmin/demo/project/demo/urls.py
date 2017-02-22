@@ -28,7 +28,7 @@ urlpatterns = [
 
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^gettingstarted/admin/', include(gettingstarted_cradmin_instance.GettingStartedCradminInstance.urls())),
-    url(r'^gettingstarted/', include(create_account_cradmin_instance.NoRoleCrAdminInstance.urls())),
+    url(r'^gettingstarted/', include(create_account_cradmin_instance.CreateAccountCrAdminInstance.urls())),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
