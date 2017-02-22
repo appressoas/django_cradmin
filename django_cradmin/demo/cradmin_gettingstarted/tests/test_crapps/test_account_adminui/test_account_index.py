@@ -28,7 +28,10 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(account.account_name, page_title)
 
     def test_get_heading(self):
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='Test Account')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Test Account'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,
@@ -42,8 +45,14 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(account.account_name, heading)
 
     def test_only_account_where_user_is_admin_shows_on_page(self):
-        account_one = mommy.make('cradmin_gettingstarted.Account', account_name='Wrong role account')
-        account_two= mommy.make('cradmin_gettingstarted.Account', account_name='Right role account')
+        account_one = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Wrong role account'
+        )
+        account_two= mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Right role account'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account_one,

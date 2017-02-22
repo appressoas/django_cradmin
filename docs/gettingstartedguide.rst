@@ -89,6 +89,7 @@ file looks like this::
             if not self.request.user.is_superuser:
                 queryset = queryset.filter(accountadministrator__user=self.request.user)
             return queryset
+
 Here we have defined a roleclass and returned all Account objects in the database which have an user defined in
 the class AccountAdministrator. If you are logged in as a superuser, all Accounts will be returne. So if we query an
 Account which is not connected to an AccountAdministrator, the ``get_rolequeryset`` should be empty. Likewise, the
@@ -122,6 +123,7 @@ we also use MagicMock::
             mockrequest.user = user
             cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
             self.assertEqual(1, cradmin_instance.get_rolequeryset().count())
+
 As the tests shows, our queryset is empty when the Account is not connected to an AccountAdministrator. Further, the
 queryset returned one object from the database when we connected the two. So far so good.
 
@@ -148,6 +150,7 @@ file called ``account_index.py``. The Project structure will look something like
         init.py
         gettingstarted_cradmin_instance.py
         models.py
+
 The file named ``account_index.py`` will contain a class which is a sub of the ``WithinRoleTemplateView``. This view
 is used when you extends the ``django_cradmin/base.django.html`` template which inherit from Djangos generic
 templateview. As the name suggests, our ``WithinRoleTemplateView`` is used when you have a role, as we sat in the
@@ -177,6 +180,7 @@ So in the ``__init__.py`` file inside the crapps folder we add the url to the vi
         appurls = [
             crapp.Url(r'^$', AccountIndexView.as_view(), name=crapp.INDEXVIEW_NAME)
         ]
+
 As mentioned earlier we want to use our own template, so I have created a file named ``account_index.django.html`` which
 is placed inside the Django applications template folder with the following content::
 
@@ -189,12 +193,14 @@ is placed inside the Django applications template folder with the following cont
     {% block content %}
 
     {% endblock content %}
+
 Now, as you can see in the title block we are requesting the account name for the cradmin_role. To make this work we
 need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role` in our
 ``gettingstarted_cradmin_instance.py`` file and tell it to return the account name, like this::
 
     def get_titletext_for_role(self, role):
         return role.account_name
+
 Testing the view
 ----------------
 Before we contiune our work, let us take a short break. Go outside, stretch our legs and get some fresh air.
@@ -252,6 +258,7 @@ Our test file for the index view looks like this::
         mockresponse.selector.prettyprint()
         page_title = mockresponse.selector.one('title').alltext_normalized
         self.assertEqual(account.account_name, page_title)
+
 In the ``self.mock_get_request`` hmtls selector is True and the CRadmin role is our newly created account. Htmls
 is created by us to make it easy to use CSS selectors with HTML in unittests. The line
 ``mockresponse.selector.prettyprint()`` writes the template out to your terminal. Normally this is NOT pushed up to
@@ -286,6 +293,7 @@ this::
         apps = [
             ('account_admin', crapps.App)
         ]
+
 The string `account_admin` is the name given of the CRadmin application(crapps). This name is used in several different
 ways, like setting which crapps is the frontpage application and when creating links in a template. While we have the
 CRadmin instance file open, lets add a few more elements. First we need to decide which crapps is our frontpage, since
@@ -310,60 +318,54 @@ Our ``gettingstarted_cradmin_instance.py`` file will now look like this::
         def get_titletext_for_role(self, role):
             return role.account_name
 
-Create an Account and display account name in html
-==================================================
-Now is a good time to add the models to your ``admin.py`` file. This way you can create an account and
-add a user to that account. Now since we are using rolebased accesscontrol we need to add login functionality so the
-account created in Django admin will show up in you template. CRadmin has an easy way to get login and logout up and
-running in no time. All you need to do is to add the following in your project settings::
+Enhance our Index View
+----------------------
+So far our index view does very little, so lets expand it by fetching the Account and the user which is the Account
+Administrator and get this as context data used in our template. To make it a tad more easy to work with rolebased
+access control, lets create a property named account and have it return the CRadmin role. Doing this gives us the role
+when calling for `self.account`. This is not something which you have to do, it's something which the author of this
+document prefer to do to keep track of what is going on.
 
-    INSTALLED_APPS = (
-        # ...
-        'django_cradmin',
-        'django_cradmin.apps.cradmin_authenticate',
-    )
-And in your urls.py file for the project you add::
-
-    urlpatterns = patterns(
-        # ...
-        url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
-        # ...
-    )
-
-Index view
-----------
-In the ``account_index.py`` file we need to add some context data. First let us create a property so we can have names
-which matches what we have build so far. As you remember, our CRadmin roleclass is Account. By creating a property named
-account and have it return a request for the cradmin_role, we get the account as role. Now you don't need to do it this
-way. I recon it makes more sense and gives the code a tad increased readability. Nevertheless, we get to context
-variables which is used in our template. One for the account and one for the account administrator::
+Our ``account_index.py`` file now looks something like this::
 
     from django_cradmin.demo.cradmin_gettingstarted.models import Account
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
 
     class AccountIndexView(WithinRoleTemplateView):
-    template_name = 'cradmin_gettingstarted/account_index.django.html'
+        template_name = 'cradmin_gettingstarted/account_index.django.html'
 
-    @property
-    def account(self):
-        return self.request.cradmin_role
+        @property
+        def account(self):
+            return self.request.cradmin_role
 
-    def __get_account(self):
-        return self.account
+        def __get_account(self):
+            return self.account
 
-    def __get_account_admin(self):
-        return AccountAdministrator.objects.get(pk=self.account.id)
+        def __get_account_admin(self):
+            return AccountAdministrator.objects.get(pk=self.account.id)
 
-    def get_context_data(self, **kwargs):
-        context = super(AccountIndexView, self).get_context_data()
-        context['account_admin'] = self.__get_account_admin()
-        context['account'] = self.__get_account()
-        return context
-Test view
-_________
-First we add a new block to our template so that the Account name shows as a h1 tag for the page and we load the
-cradmin_tags which we will use in testing::
+        def get_context_data(self, **kwargs):
+            context = super(AccountIndexView, self).get_context_data()
+            context['account_admin'] = self.__get_account_admin()
+            context['account'] = self.__get_account()
+            return context
+
+Test the View and Expand the Template
+-------------------------------------
+Now that we have written some more code, it is time to do some testing. Oh yeah, if you now have been infront of your
+screen for the last 60 minutes, please do stretch your legs and get some fresh air before continuing.
+
+In these tests we are gonna do one test which is more or less the same test as we did when checking the templates title.
+The reason why we do almost the same test one more time is to show some of the smooth functionality in CRadmin. We are
+gonna use the ``cradmin_test_css_class`` which is CSS classes only shown in a test environment. In the page cover title
+block which we soon add to our template, CRadmin has already added a test css class for us, named `test-primary-h1`.
+Another CRadmin test functionality we are going to use is the ``mock_http200_getrequest_htmls``. This method does two
+things which we want to point out at this time. First, it automaticly assert the status code, so if we get any other
+status code than 200 give a test failure. Second, we do not need to say `htmls_selector=True` since is implemented in
+the method.
+
+First we add a page cover title block in our template::
 
     {% extends "django_cradmin/base.django.html" %}
     {% load cradmin_tags %}
@@ -376,15 +378,14 @@ cradmin_tags which we will use in testing::
         {{ request.cradmin_role.account_name }}
     {% endblock page-cover-title %}
 
-Cradmin uses ``cradmin_test_css_class`` as class for html tags. When we do this you can still change other classes on
-your tags without have to change anything in your tests. In the ``base.django.html`` which we extends in our template
-there is already a test CSS class for the page-cover-title block, so that test-css-class would work without loading the
-cradmin tags.
-We can now write a test to confirm that the cover title is equal to our Account name. Add a test in your
-``test_account_index``::
+Then in our ``test_account_index.py`` file we add a method which tests if we fetch the account name and sets it as a
+primary heading::
 
     def test_get_heading(self):
-        account = mommy.make('cradmin_gettingstarted.Account', account_name='Test Account')
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Test Account'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account,
@@ -396,13 +397,16 @@ We can now write a test to confirm that the cover title is equal to our Account 
         self.assertTrue(mockresponse.selector.one('.test-primary-h1'))
         heading = mockresponse.selector.one('.test-primary-h1').alltext_normalized
         self.assertEqual(account.account_name, heading)
-Here we use a new build in mock method which expects a 200 response from the get request, thus the test fails if another
-status code than 200 is return. Further we do not need to say that ``html_selectors=True``. We check that the
-``cradmin_test_css_class`` named "test-primary-h1" exists and that is value is equal to the name of the Account.
-Next we want to test if the name of an account which we are not the administrator off, shows up in the template. You can
-test this with cradmin instances or right in the template. I`m gonna choose the latter since we're looping over all
-account in the html file. So in the ``account_index.django.html`` template we add some code to make it look a tad nicer
-and a ``cradmin_tes_css_class``::
+
+If you use the prettyprint() functionality as explained in the first test, you will see there is a CSS class named
+`test-primary-h1`. In the test we first checks that this CSS class exists, so we konw that the loading of CRadmin tags
+works as intended in our template. Then we remove whitespaces and strips the string by normalizing the text. Last we
+check if the normalized text from the template is equal to the account name.
+
+Now let us add a blocklist item to our template in the content block. We are using CRadmin CSS classes to get a good
+admin layout. Further we add a `cradmin_test_css_class` which we are going to use in our test when we check if the
+users email is equal to the account administrator's email. We expand our ``account_index.django.html`` file with the
+following::
 
     {% block content %}
         <section class="adminui-page-section  adminui-page-section--center-lg">
@@ -416,11 +420,19 @@ and a ``cradmin_tes_css_class``::
             </div><!-- end container-->
         </section>
     {% endblock content %}
-In the ``test_account_index`` file we can now write a test where only one of two users first name should show::
+
+In the ``test_account_index`` file we can now write a test where only one of two users email should show in the template
+::
 
     def test_only_account_where_user_is_admin_shows_on_page(self):
-        account_one = mommy.make('cradmin_gettingstarted.Account', account_name='Wrong role account')
-        account_two= mommy.make('cradmin_gettingstarted.Account', account_name='Right role account')
+        account_one = mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Wrong role account'
+        )
+        account_two= mommy.make(
+            'cradmin_gettingstarted.Account',
+            account_name='Right role account'
+        )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
             account=account_one,
@@ -436,6 +448,28 @@ In the ``test_account_index`` file we can now write a test where only one of two
         self.assertTrue(mockresponse.selector.one('.test-admin-user-email'))
         admin_email = mockresponse.selector.one('.test-admin-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
+
+
+Create an Account and display account name in html
+==================================================
+Now is a good time to add the models to your ``admin.py`` file. This way you can create an account and
+add a user to that account. Now since we are using rolebased accesscontrol we need to add login functionality so the
+account created in Django admin will show up in you template. CRadmin has an easy way to get login and logout up and
+running in no time. All you need to do is to add the following in your project settings::
+
+    INSTALLED_APPS = (
+        # ...
+        'django_cradmin',
+        'django_cradmin.apps.cradmin_authenticate',
+    )
+
+And in your urls.py file for the project you add::
+
+    urlpatterns = patterns(
+        # ...
+        url(r'^authenticate/', include('django_cradmin.apps.cradmin_authenticate.urls')),
+        # ...
+    )
 
 Edit Account
 ============
@@ -476,6 +510,7 @@ form when we edit an exisitng account and later on when we want to create a new 
         """"""
         def get_queryset_for_role(self):
             return Account.objects.filter(id=self.request.cradmin_role.pk)
+
 First we import uicontainer from django_cradmin, which is used to render the form with the cradmin layout. In the
 :class:`django_cradmin.demo.cradmin_gettingstarted.crapps.account.edit_account.AccountCreateUpdateMixin` we choose the
 model which are form is going to handle, and choose fields. Further we add a ``roleid_filed`` as "account". This is
@@ -500,6 +535,7 @@ inside our crapps::
                 name='edit'
             )
         ]
+
 We do not create a new template for this edit view, but rather use the built-in html in CRadmin. So in our
 ``account_index.django.html`` file we add a new section after the one which gives the name for the account
 administrator::
@@ -510,6 +546,7 @@ administrator::
             Change name
         </a>
     </section>
+
 Here we use CRadmin template tag ``cradmin_appurl`` which reverse the view named "edit" and we pass the PK of our
 current account. Now it's time to test our UpdateView for the Account.
 
@@ -590,6 +627,7 @@ redirects::
             self.assertEqual(1, accounts_in_db.count())
             get_account_from_db = Account.objects.filter(pk=account.id).get()
             self.assertEqual('The idol', get_account_from_db.account_name)
+
 As you remember form earlier test, when we use methods such as
 :meth:`django_cradmin.cradmin_testhelpers.TestCaseMixin.mock_http200_getrequest_htmls` we do not need to write an assert
 equal for the status code, since this checked for us by CRadmin. Further the htmls lets us fetch tags using
@@ -631,6 +669,7 @@ like this after a refactor::
         admin.py
         gettingstarted_cradmin_instance.py
         models.py
+
 If you now go to Django Admin, add another account for the same user and than go to "localhost/gettingstarted" in your
 browser, you will see you now can choose which account you would like to edit. This page is created by CRadmin without
 us doing anything else than a bit inheritance in our view. What I want to do is to have the option for a logged in user
