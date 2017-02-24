@@ -726,9 +726,10 @@ created and placed in the right module, our project structure will look like thi
 CRadmin instance
 ----------------
 In our new CRadmin instance file ``create_account_cradmin_instance.py`` we need to inherit from the cradmin instance
-class named `NoRoleMixin` and overwrite the method `has_acces` so it returns True if the user is authenticated. Further
-we use the class `BaseCrAdminInstance` as a super. We give our CRadmin instance an id, and sets the name of which crapps
-to be our rolefrontpage. ::
+class named `NoRoleMixin` and overwrite the method `has_acces` so it returns True if the user is authenticated. We don't
+need to override this method since CRadmin handles it for us. But since this is a getting started guide it is important
+to show some of the behind scene action. Further we alos use the class `BaseCrAdminInstance` as a super. We give our
+CRadmin instance an id, and sets the name of which crapps to be our rolefrontpage. ::
 
     from django.http import Http404
 
@@ -746,8 +747,6 @@ to be our rolefrontpage. ::
         def has_access(self):
             if self.request.user.is_authenticated:
                 return True
-            else:
-                raise Http404(Exception)
 
 Dashboard view
 --------------
@@ -812,5 +811,83 @@ CSS style classes used in CRadmin, go to `localhost/styleguide`.
         </section>
     {% endblock content %}
 
-REMEMBER TO ADD CRINSTANCES TO URLS.PY IN TESTS
+Crapp Urls
+----------
+In our ``__init__.py`` within our newly created crapps (create_account) we set our new urls. ::
 
+    from django_cradmin import crapp
+
+
+    class App(crapp.App):
+        appurls = [
+            crapp.Url(
+                r'^$',
+                CreateAccountDashboardView.as_view(),
+                name=crapp.INDEXVIEW_NAME),
+            crapp.Url(
+                r'^create-account$',
+                create_account_view.CreateAccountView.as_view(),
+                name='create_account'
+            ),
+        ]
+
+Test CRadmin instance
+---------------------
+In this test case we do a simple test just to make sure a none super user has access to the page, and one test to see if
+an anonymous user don't have access.
+::
+
+    from unittest import mock
+
+    from django.conf import settings
+    from django.test import TestCase
+    from model_mommy import mommy
+
+
+    class TestCreateAccountCradminInstance(TestCase):
+        def test_none_super_user_has_access(self):
+            mockrequest = mock.MagicMock()
+            mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
+            cradmin_instance = CreateAccountCrAdminInstance(request=mockrequest)
+            self.assertTrue(cradmin_instance.has_access())
+
+        def test_unauthenticated_user_no_access(self):
+            mockrequest = mock.MagicMock()
+            mockrequest.user = AnonymousUser()
+            crinstance = CreateAccountCrAdminInstance(request=mockrequest)
+            self.assertFalse(mockrequest.user.is_authenticated())
+            self.assertFalse(crinstance.has_access())
+
+Test Create Account Dashboard
+-----------------------------
+In this test we want to see if the template shows the correct content based on if a user if logged in or not. One could
+argue that it is unneccassary to have this test in the template since we already have an test on the CRadmin instance.
+However urls are a source to many a evil, so there is nothing wrong with another layer of security. Here we are using
+the CRadmin css test classes to be sure that our tests passes regardless of what kind of other CSS classes you need to
+have in the template.
+::
+
+    import mock
+    from django.test import TestCase
+
+    from django_cradmin import cradmin_testhelpers
+
+
+    class TestCreateAccountDashboard(TestCase, cradmin_testhelpers.TestCaseMixin):
+        viewclass = create_account.CreateAccountDashboardView
+
+        def test_not_logged_in_user_gets_error_message(self):
+            mockresponse = self.mock_http200_getrequest_htmls()
+            self.assertTrue(mockresponse.selector.one('.test-not-authenticated-user'))
+            error_message = mockresponse.selector.one('.test-not-authenticated-user').text_normalized
+            self.assertEqual('You need to be logged in as a registered user to get access.', error_message)
+
+        def test_logged_in_user_email_in_template(self):
+            request_user = mock.MagicMock()
+            request_user.email = 'mail@example.com'
+            mockresponse = self.mock_http200_getrequest_htmls(
+                requestuser=request_user
+            )
+            self.assertTrue(mockresponse.selector.one('.test-authenticated-user'))
+            email_in_template = mockresponse.selector.one('.test-authenticated-user').text_normalized
+            self.assertEqual(request_user.email, email_in_template)

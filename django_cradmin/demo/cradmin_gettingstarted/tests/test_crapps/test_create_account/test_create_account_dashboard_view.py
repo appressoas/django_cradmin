@@ -1,7 +1,5 @@
 import mock
-from django.conf import settings
 from django.test import TestCase
-from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
 from django_cradmin.demo.cradmin_gettingstarted.crapps import create_account

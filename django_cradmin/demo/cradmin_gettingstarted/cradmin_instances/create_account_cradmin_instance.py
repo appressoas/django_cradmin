@@ -15,5 +15,3 @@ class CreateAccountCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdmi
     def has_access(self):
         if self.request.user.is_authenticated:
             return True
-        else:
-            raise Http404(Exception)
