@@ -16,10 +16,18 @@ class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCrea
         )
         account_administrator.full_clean()
         account_administrator.save()
+        print('*'*88)
+        print('Saved account admin')
+        print('*'*88)
+
         return self.new_account
 
     def get_success_url(self):
         # return self.request.cradmin_app.reverse_appindexurl()
+        print('*'*88)
+        print('Start get success url')
+        print('*'*88)
+        print(self.new_account)
         return reverse_cradmin_url(
             instanceid='gettingstarted',
             appname='account_admin',
