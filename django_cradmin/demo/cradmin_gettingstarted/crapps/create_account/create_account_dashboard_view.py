@@ -3,7 +3,7 @@ from django_cradmin import viewhelpers
 from django_cradmin.demo.cradmin_gettingstarted.models import AccountAdministrator
 
 
-class CreateAccountDashboardView(viewhelpers.generic.WithinRoleTemplateView):
+class CreateAccountDashboardView(viewhelpers.generic.StandaloneBaseTemplateView):
     template_name = 'cradmin_gettingstarted/create_account_dashboard.django.html'
 
     def __get_user(self):

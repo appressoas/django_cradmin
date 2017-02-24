@@ -687,6 +687,130 @@ Create a new account
 
 If you now go to Django Admin, add another account for the same user and than go to "localhost/gettingstarted" in your
 browser, you will see you now can choose which account you would like to edit. This page is created by CRadmin without
-us doing anything else than a bit inheritance in our view. What I want to do is to have the option for a logged in user
-to either choose an existing account or create a new account. For this we need to overwrite the template which now shows
-the accounts which you administrate.
+us doing anything else than a bit inheritance in our view. However, having to go to djangoadmin for creating new
+accounts is not userfriendly. Now we are going to create functionality which lets an authenticated user create a new
+account. Now there are several ways to create needed functionality. We are going to create a new CRadmin instance which
+don't require a role and make this our new hompepage. Furthermore we will create a new CRadmin application with the
+dashboard view for our new homepage and a view for creating a new instance of the account object. Thus, we also need to
+restructure our project layout a little bit with a new module for our cradmin instances. So when all our new files are
+created and placed in the right module, our project structure will look like this ::
+
+    cradmin_gettingstarted
+        cradmin_instances
+            __init__.py
+            account_admin_cradmin_instance.py
+            create_account_cradmin_instance.py
+        crapps
+            account_adminui (no changes here)
+            create_account
+                __init__.py
+                create_account_dashboard_view.py
+                create_account_view.py
+            __init__.py
+        templates
+            cradmin_gettingstarted
+                account_dashboard.django.html
+                create_account_dashboard.django.html
+        tests
+            test_cradmin_instances
+                __init__.py
+                test_account_admin_cradmin_instance.py
+                test_create_account_cradmin_instance.py
+            test_crapps
+                test_account_adminui (no changes here)
+                test_create_account
+                    __init__.py
+                    test_create_account_dashboard_view.py
+                    test_create_account_view.py
+
+CRadmin instance
+----------------
+In our new CRadmin instance file ``create_account_cradmin_instance.py`` we need to inherit from the cradmin instance
+class named `NoRoleMixin` and overwrite the method `has_acces` so it returns True if the user is authenticated. Further
+we use the class `BaseCrAdminInstance` as a super. We give our CRadmin instance an id, and sets the name of which crapps
+to be our rolefrontpage. ::
+
+    from django.http import Http404
+
+    from django_cradmin import crinstance
+
+
+    class CreateAccountCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
+        id = 'create_account'
+        rolefrontpage_appname = 'dashboard'
+
+        apps = [
+            ('dashboard', create_account.App),
+        ]
+
+        def has_access(self):
+            if self.request.user.is_authenticated:
+                return True
+            else:
+                raise Http404(Exception)
+
+Dashboard view
+--------------
+Next we move on to the file ``create_account_dashboard_view`` within our crapps named `create_account`. Since we are now
+working with a CRadmin instance which don't require a role and it pretty much stands alone, it makes sense to use the
+`StandaloneBaseTemplateView` for our dashboard view. We tell the view which template we want to use and return context
+with an authenticated user's email. ::
+
+
+    from django_cradmin import viewhelpers
+
+
+    class CreateAccountDashboardView(viewhelpers.generic.StandaloneBaseTemplateView):
+        template_name = 'cradmin_gettingstarted/create_account_dashboard.django.html'
+
+        def __get_user(self):
+            if self.request.user.is_authenticated:
+                user_email = self.request.user.email
+                return user_email
+
+        def get_context_data(self, **kwargs):
+            context = super(CreateAccountDashboardView, self).get_context_data()
+            context['user'] = self.__get_user()
+            return context
+
+Dahsboard template
+------------------
+In the template we now have to extend the ``django_cradmin/standalone-base.django.html`` since our view is a
+`StandaloneBaseTemplateView`. Further the template consists of an if tests which handles an empty context from the view.
+Again we are adding both CRadmin CSS style classes and CRadmin test css classes. If you want to check out the base
+CSS style classes used in CRadmin, go to `localhost/styleguide`.
+::
+
+    {% extends "django_cradmin/standalone-base.django.html" %}
+    {% load cradmin_tags %}
+
+    {% block page-cover-title %}
+        Welcome
+    {% endblock page-cover-title %}
+
+    {% block content %}
+        <section class="adminui-page-section  adminui-page-section--center-lg">
+            <div class="container">
+                {% if user %}
+                    <div class="blocklist blocklist--tight">
+                        <section class="blocklist__item">
+                            <h2 class="blocklist__itemtitle">Logged in as</h2>
+                            <p class="{% cradmin_test_css_class 'authenticated-user' %}">{{ user }}</p>
+                        </section>
+                    </div>
+                {% else %}
+                    <div class="blocklist blocklist--tight">
+                        <section class="blocklist__item">
+                            <h2 class="blocklist__itemtitle">Not a authenticated user</h2>
+                            <p class="message message--error {% cradmin_test_css_class 'not-authenticated-user' %}">
+                                You need to be logged in as a registered user to get access.
+                            </p>
+                        </section>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    {% endblock content %}
+
+REMEMBER TO ADD CRINSTANCES TO URLS.PY IN TESTS
+
