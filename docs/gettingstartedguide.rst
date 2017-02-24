@@ -73,15 +73,15 @@ functionality which is possible with a ``cradmin_instance`` can be read in class
 
 Setting database model and connect the model with the CRadmin instance
 ----------------------------------------------------------------------
-We begin by creating the file ``gettingstarted_cradmin_instance.py`` which is a subclass of
+We begin by creating the file ``account_admin_cradmin_instance.py`` which is a subclass of
 ``BaseCrAdminInstance`` and it will contain our main CRadmin configuration. For now we place this file at the same level
 as our models.py file. By overriding the variable ``roleclass`` and method ``get_rolequeryset`` we add a databasemodel
-as the roleclass and decides which objects to be returned from the database. Our ``gettingstarted_cradmin_instance.py``
+as the roleclass and decides which objects to be returned from the database. Our ``account_admin_cradmin_instance.py``
 file looks like this::
 
     from django_cradmin import crinstance
 
-    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+    class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
         roleclass = Account
 
         def get_rolequeryset(self):
@@ -103,12 +103,12 @@ we also use MagicMock::
     from django.test import TestCase
     from model_mommy import mommy
 
-    class TestGettingStartedCradminInstance(TestCase):
+    class Testaccount_adminCradminInstance(TestCase):
         def test_none_super_user_makes_empty_rolequeryset(self):
             mommy.make('cradmin_gettingstarted.Account')
             mockrequest = mock.MagicMock()
             mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
-            cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
+            cradmin_instance = AccountAdminCradminInstance(request=mockrequest)
             self.assertEqual(0, cradmin_instance.get_rolequeryset().count())
 
         def test_user_is_in_rolequeryset(self):
@@ -121,7 +121,7 @@ we also use MagicMock::
             )
             mockrequest = mock.MagicMock()
             mockrequest.user = user
-            cradmin_instance = GettingStartedCradminInstance(request=mockrequest)
+            cradmin_instance = AccountAdminCradminInstance(request=mockrequest)
             self.assertEqual(1, cradmin_instance.get_rolequeryset().count())
 
 As the tests shows, our queryset is empty when the Account is not connected to an AccountAdministrator. Further, the
@@ -148,7 +148,7 @@ file called ``account_dashboard.py``. The Project structure will look something 
         migrations
         tests
         init.py
-        gettingstarted_cradmin_instance.py
+        account_admin_cradmin_instance.py
         models.py
 
 The file named ``account_dashboard.py`` will contain a class which is a sub of the ``WithinRoleTemplateView``. This view
@@ -196,7 +196,7 @@ is placed inside the Django applications template folder with the following cont
 
 Now, as you can see in the title block we are requesting the account name for the cradmin_role. To make this work we
 need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role` in our
-``gettingstarted_cradmin_instance.py`` file and tell it to return the account name, like this::
+``account_admin_cradmin_instance.py`` file and tell it to return the account name, like this::
 
     def get_titletext_for_role(self, role):
         return role.account_name
@@ -219,7 +219,7 @@ is a new module named ``test_crapps``. Inside here we put the file ``test_accoun
             __init__.py
             test_account_dashboard.py
         __init__.py
-        test_gettingstarted_cradmin_instance.py
+        test_account_admin_cradmin_instance.py
 
 
 The first thing we're going to test is if the account name for an instance of our Account model is displayed in the
@@ -278,16 +278,16 @@ next url releated step is to tell our Django project to include this url. The fi
 containing the projects url patterns. In here we include the urls from our CRadmin instance::
 
     urlpatterns = [
-        url(r'^gettingstarted/', include(GettingStartedCradminInstance.urls())),
+        url(r'^gettingstarted/', include(AccountAdminCradminInstance.urls())),
     ]
 
 Apps in our CRadmin instance
 ----------------------------
 The next step is to tell the CRadmin instance to include our CRadmin application, which is done by importing the class
-App from the ``__init__.py`` file where our reg-ex is written. Our ``gettingstarted_cradmin_instance.py`` looks like
+App from the ``__init__.py`` file where our reg-ex is written. Our ``account_admin_cradmin_instance.py`` looks like
 this::
 
-    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
+    class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
         roleclass = Account
 
         apps = [
@@ -298,10 +298,10 @@ The string `account_admin` is the name given of the CRadmin application(crapps).
 ways, like setting which crapps is the frontpage application and when creating links in a template. While we have the
 CRadmin instance file open, lets add a few more elements. First we need to decide which crapps is our frontpage, since
 we only have one CRadmin application so far, it's an easy choice. Further we need to give the CRadmin instance an id.
-Our ``gettingstarted_cradmin_instance.py`` file will now look like this::
+Our ``account_admin_cradmin_instance.py`` file will now look like this::
 
-    class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
-        id = 'gettingstarted'
+    class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
+        id = 'account_admin'
         roleclass = Account
         rolefrontpage_appname = 'account_admin'
 
@@ -680,7 +680,7 @@ like this::
             test_account.py
             test_account_administrator.py
         __init__.py
-        test_gettingstarted_cradmin_instance.py
+        test_account_admin_cradmin_instance.py
 
 Create a new account
 ====================

@@ -20,7 +20,7 @@ class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCrea
 
     def get_success_url(self):
         return reverse_cradmin_url(
-            instanceid='gettingstarted',
+            instanceid='account_admin',
             appname='account_admin',
             roleid=self.new_account.id
         )

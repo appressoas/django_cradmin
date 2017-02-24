@@ -3,8 +3,8 @@ from django_cradmin.demo.cradmin_gettingstarted.crapps import account_adminui
 from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
-class GettingStartedCradminInstance(crinstance.BaseCrAdminInstance):
-    id = 'gettingstarted'
+class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
+    id = 'account_admin'
     roleclass = Account
     rolefrontpage_appname = 'account_admin'
 
