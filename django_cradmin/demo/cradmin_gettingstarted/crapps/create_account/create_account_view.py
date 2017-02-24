@@ -1,4 +1,3 @@
-from django_cradmin import crapp
 from django_cradmin.crinstance import reverse_cradmin_url
 from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import mixins
 from django_cradmin.demo.cradmin_gettingstarted.models import AccountAdministrator

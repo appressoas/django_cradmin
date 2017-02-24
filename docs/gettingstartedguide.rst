@@ -891,3 +891,74 @@ have in the template.
             self.assertTrue(mockresponse.selector.one('.test-authenticated-user'))
             email_in_template = mockresponse.selector.one('.test-authenticated-user').text_normalized
             self.assertEqual(request_user.email, email_in_template)
+
+Create Account View
+-------------------
+In our view for creating a new account we use the same modelform as for creating an account, thus inheriting from the
+`AccountCreateUpdateMixin`. Furthermore we also inherit from `WithinRoleCreateView`. We set the `roleid_field` here to
+`create_account` which is the id to the CRadmin instance for create account. The first method is overriding the
+`save_object` method and here we create and save an AccountAdministrator at the same time as an Account is created.
+Now in the method `get_success_url` we want to be taken to the ``AccountDashboardView``. This view lives inside our
+other CRadmin instance, so we need to return the `reverse_cradmin_url` and pass along the cradmin instance id of where
+we want to go and which app within the Cradmin instance we want to go to. Since we want to go to a place which demands a
+role, we also pass the role id. When doing this, we can go from one CRadmin instance without a role to another CRadmin
+instance which have a role. ::
+
+    from django_cradmin.crinstance import reverse_cradmin_url
+    from django_cradmin.viewhelpers import formview
+
+
+    class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCreateView):
+        roleid_field = 'create_account'
+
+        def save_object(self, form, commit=True):
+            self.new_account = super(CreateAccountView, self).save_object(form, commit)
+            account_administrator = AccountAdministrator(
+                user=self.request.user,
+                account=self.new_account
+            )
+            account_administrator.full_clean()
+            account_administrator.save()
+            return self.new_account
+
+        def get_success_url(self):
+            return reverse_cradmin_url(
+                instanceid='account_admin',
+                appname='account_admin',
+                roleid=self.new_account.id
+            )
+
+Test Create Account View
+------------------------
+Contiune here by checking if these tests are okay. Should you really get to see the template when not being an
+authenticated user? Same for second test, should not `requestuser` be a must in the post request?
+::
+
+    import mock
+    from django.conf import settings
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
+    from django_cradmin.demo.cradmin_gettingstarted.models import Account
+
+
+    class TestCreateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        viewclass = create_account_view.CreateAccountView
+
+        def test_get_render_form(self):
+            mockrespone = self.mock_http200_getrequest_htmls()
+            self.assertEqual(mockrespone.selector.one('#id_account_name_label').text_normalized, 'Account name')
+
+        def test_post_form(self):
+            self.mock_http302_postrequest(
+                requestkwargs={
+                    'data': {
+                        'account_name': 'Flaming Youth'
+                    }
+                }
+            )
+            account_in_db = Account.objects.all()
+            new_account = Account.objects.filter(account_name='Flaming Youth').get()
+            self.assertEqual(1, account_in_db.count())
+            self.assertEqual('Flaming Youth', new_account.account_name)
