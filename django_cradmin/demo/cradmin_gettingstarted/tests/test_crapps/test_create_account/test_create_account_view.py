@@ -16,15 +16,7 @@ class TestCreateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(mockrespone.selector.one('#id_account_name_label').text_normalized, 'Account name')
 
     def test_post_form(self):
-        account = mommy.make(
-            'cradmin_gettingstarted.Account'
-        )
-        user = mommy.make(settings.AUTH_USER_MODEL, email='mail@example.com')
-        mockresponse = self.mock_http302_postrequest(
-            # cradmin_role=user,
-            # cradmin_instance='create_account',
-            # cradmin_app='account_admin',
-            requestuser=user,
+        self.mock_http302_postrequest(
             requestkwargs={
                 'data': {
                     'account_name': 'Flaming Youth'
@@ -32,4 +24,6 @@ class TestCreateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
             }
         )
         account_in_db = Account.objects.all()
+        new_account = Account.objects.filter(account_name='Flaming Youth').get()
         self.assertEqual(1, account_in_db.count())
+        self.assertEqual('Flaming Youth', new_account.account_name)
