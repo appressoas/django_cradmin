@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
 
+from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances import create_account_cradmin_instance
+from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances import gettingstarted_cradmin_instance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 
 urlpatterns = [
@@ -12,4 +14,6 @@ urlpatterns = [
     # Demo apps
     url(r'^webdemoadmin/', include(WebdemoCrAdminInstance.urls())),
     url(r'^webdemo/', include('django_cradmin.demo.webdemo.urls')),
+    url(r'^gettingstarted/', include(create_account_cradmin_instance.CreateAccountCrAdminInstance.urls())),
+    url(r'^gettingstarted/admin/', include(gettingstarted_cradmin_instance.GettingStartedCradminInstance.urls())),
 ]
