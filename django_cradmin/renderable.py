@@ -140,3 +140,85 @@ class AbstractRenderableWithCss(AbstractRenderable):
                       "- use the AbstractRenderableWithCss.css_classes property instead.",
                       DeprecationWarning)
         return self.css_classes
+
+
+class AbstractBemRenderable(AbstractRenderable):
+    """
+    Base class for renderables that uses BEM (http://getbem.com/)
+    for their CSS class naming.
+
+    This is an alternative to :class:`.AbstractRenderableWithCss`
+    that makes it much more natural to work with BEM.
+    """
+    def __init__(self, bem_block=None, bem_element=None, bem_variant_list=None):
+        """
+
+        Args:
+            bem_block (str): Get the BEM block. Can not be supplied if ``bem_element`` is supplied.
+            bem_element (str): Get the BEM element. Can not be supplied if ``bem_block`` is supplied.
+            bem_variant_list (list): Get a list of BEM variants for the block/element.
+                You do not include the block/element, just the part after ``--``.
+        """
+        if bem_block and bem_element:
+            raise ValueError('Can not specify both bem_block and bem_element arguments.')
+        if bem_element and '__' not in bem_element:
+            raise ValueError('bem_element must contain __')
+        self._bem_block = bem_block
+        self._bem_element = bem_element
+        self._bem_variant_list = bem_variant_list or []
+
+    def get_test_css_class_suffixes_list(self):
+        """
+        List of css class suffixes to include when running automatic tests.
+
+        These suffixes are filtered through the
+        :func:`~django_cradmin.templatetags.cradmin_tags.cradmin_test_css_class`
+        template tag.
+        """
+        return []
+
+    @property
+    def bem_block_or_element(self):
+        """
+        Returns :meth:`.get_bem_block` falling back to :meth:`.get_bem_element`.
+        """
+        return self.get_bem_block() or self.get_bem_element()
+
+    def get_bem_block(self):
+        """
+        Get the bem block string.
+        """
+        return self._bem_block
+
+    def get_bem_element(self):
+        """
+        Get the bem element string.
+        """
+        return self._bem_element
+
+    def get_bem_variant_list(self):
+        """
+        Get a list of BEM variants.
+
+        You do not include the block/element, just the part after ``--``.
+        """
+        return self._bem_variant_list
+
+    @property
+    def css_classes(self):
+        """
+        Get css classes as a string.
+
+        You should not override this, override :meth:`.get_bem_block` / :meth:`.get_bem_element`
+        and :meth:`.get_bem_variant_list` instead.
+        """
+        from django_cradmin.templatetags import cradmin_tags  # Avoid circular import
+        css_classes = []
+        if self.bem_block_or_element:
+            css_classes = [self.bem_block_or_element]
+            css_classes.extend(['{}--{}'.format(self.bem_block_or_element, variant)
+                                for variant in self.get_bem_variant_list()])
+        if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
+            for css_class_suffix in self.get_test_css_class_suffixes_list():
+                css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
+        return join_css_classes_list(css_classes)

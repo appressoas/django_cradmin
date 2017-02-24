@@ -332,11 +332,14 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         If you override this method, *remember to call super* to get
         the attributes set in the superclass.
         """
-        return {
+        html_element_attributes = {
             'role': self.role,
             'id': self.dom_id,
             'class': self.css_classes or False,  # Fall back to false to avoid class=""
         }
+        if self._html_element_attributes:
+            html_element_attributes.update(self._html_element_attributes)
+        return html_element_attributes
 
     @property
     def html_element_attributes_string(self):
@@ -345,10 +348,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         the ``html_element_attributes`` kwarg for :meth:`.__init__`
         encoded as a string using :func:`django.forms.utils.flatatt`.
         """
-        html_element_attributes = dict(self.get_html_element_attributes())
-        if self._html_element_attributes:
-            html_element_attributes.update(self._html_element_attributes)
-        return flatatt(html_element_attributes)
+        return flatatt(self.get_html_element_attributes())
 
     def get_default_css_classes_list(self):
         """

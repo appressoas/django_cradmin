@@ -80,13 +80,24 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         """
         return self._overridden_placeholder or self.get_default_placeholder()
 
-    def get_html_element_attributes(self):
-        attributes = super(BaseFieldRenderable, self).get_html_element_attributes()
-        attributes.update({
+    def get_field_element_attributes(self):
+        """
+        Get the attributes of the field element.
+
+        Useful if you create a subclass where the template wraps the field
+        in another element. You can then use :meth:`.get_html_element_attributes`
+        to get the attributes of the wrapper element, and override this
+        to set attributes on the field. See :class:`.Select` for an example.
+
+        Defaults to :meth:`.get_html_element_attributes` with placeholder
+        and autofocus added.
+        """
+        field_element_attributes = dict(self.get_html_element_attributes())
+        field_element_attributes.update({
             'autofocus': self.autofocus,
             'placeholder': self.placeholder,
         })
-        return attributes
+        return field_element_attributes
 
     def should_have_for_attribute_on_label(self):
         """
@@ -121,7 +132,7 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
     def field_attributes_dict(self):
         attributes_dict = {}
         attributes_dict = self.bound_formfield.build_widget_attrs(attributes_dict)
-        attributes_dict.update(self.get_html_element_attributes())
+        attributes_dict.update(self.get_field_element_attributes())
         return attributes_dict
 
 
@@ -351,10 +362,7 @@ class Field(BaseFieldRenderable):
 
         Used by :class:`django_cradmin.uicontainer.label.Label`.
         """
-        return not (self.should_render_as_subwidgets()
-                    or self.is_select_widget()
-                    or self.is_select_multiple_widget()
-                    or not self.field_wrapper_renderable.label_renderable.should_render)
+        return False
 
     def get_default_bem_block_or_element(self):
         """
@@ -489,15 +497,39 @@ class Select(Field):
     def get_default_bem_variant_list(self):
         return ['outlined', 'block']
 
+    def get_html_element_attributes(self):
+        html_element_attributes = super(Select, self).get_html_element_attributes()
+        html_element_attributes.pop('id')
+        return html_element_attributes
+
+    def get_field_element_attributes(self):
+        return {
+            'id': self.dom_id
+        }
+
 
 class HiddenField(Field):
     """
     Just like :class:`.Field`, but renders as
     a ``<input type="hidden">``.
+
+    Typically rendered within a :class:`django_cradmin.uicontainer.fieldwrapper.NoWrapperElementFieldWrapper`.
+
+    Examples:
+
+        Basic example::
+
+            uicontainer.fieldwrapper.NoWrapperElementFieldWrapper(
+                fieldname='myfield',
+                field_renderable=uicontainer.field.HiddenField()
+            )
     """
     @property
     def rendered_field(self):
         return self.bound_formfield.as_hidden(attrs=self.field_attributes_dict)
+
+    def get_default_bem_block_or_element(self):
+        return None
 
 
 class AbstractDate(Field):
