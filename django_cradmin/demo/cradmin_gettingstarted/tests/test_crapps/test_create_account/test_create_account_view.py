@@ -1,3 +1,4 @@
+import mock
 from django.conf import settings
 from django.test import TestCase
 from model_mommy import mommy
@@ -10,17 +11,20 @@ from django_cradmin.demo.cradmin_gettingstarted.models import Account
 class TestCreateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = create_account_view.CreateAccountView
 
-    def __get_cradmin_role(self):
-        return mommy.make(settings.AUTH_USER_MODEL)
-
     def test_get_render_form(self):
-        mockresponse = self.mock_http200_getrequest_htmls(
-            cradmin_role=self.__get_cradmin_role()
-        )
-        mockresponse.selector.prettyprint()
+        mockrespone = self.mock_http200_getrequest_htmls()
+        self.assertEqual(mockrespone.selector.one('#id_account_name_label').text_normalized, 'Account name')
 
     def test_post_form(self):
-        self.mock_http302_postrequest(
+        account = mommy.make(
+            'cradmin_gettingstarted.Account'
+        )
+        user = mommy.make(settings.AUTH_USER_MODEL, email='mail@example.com')
+        mockresponse = self.mock_http302_postrequest(
+            # cradmin_role=user,
+            # cradmin_instance='create_account',
+            # cradmin_app='account_admin',
+            requestuser=user,
             requestkwargs={
                 'data': {
                     'account_name': 'Flaming Youth'
