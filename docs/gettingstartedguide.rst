@@ -161,7 +161,7 @@ Inside the ``account_dashboard.py`` file we add this content::
     from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
     class AccountDashboardView(WithinRoleTemplateView):
-        template_name = 'cradmin_gettingstarted/account.index.django.html'
+        template_name = 'cradmin_gettingstarted/account.dashboard.django.html'
 
 You could choose to use the built-in template in CRadmin, hence not setting a template name. However, we want to show
 you some functionality which is done in the template, thus we create our own and put in the template folder for our
@@ -321,10 +321,8 @@ Our ``gettingstarted_cradmin_instance.py`` file will now look like this::
 Enhance our Index View
 ----------------------
 So far our index view does very little, so lets expand it by fetching the Account and the user which is the Account
-Administrator and get this as context data used in our template. To make it a tad more easy to work with rolebased
-access control, lets create a property named account and have it return the CRadmin role. Doing this gives us the role
-when calling for `self.account`. This is not something which you have to do, it's something which the author of this
-document prefer to do to keep track of what is going on.
+Administrator and get this as context data used in our template. We use our `cradmin_role` to get the Account object,
+and filter eith the id of the `cradmin_role` to filter the AccountAdministrator objects.
 
 Our ``account_dashboard.py`` file now looks something like this::
 
@@ -335,20 +333,13 @@ Our ``account_dashboard.py`` file now looks something like this::
     class AccountDashboardView(WithinRoleTemplateView):
         template_name = 'cradmin_gettingstarted/account_dashboard.django.html'
 
-        @property
-        def account(self):
-            return self.request.cradmin_role
-
-        def __get_account(self):
-            return self.account
-
         def __get_account_admin(self):
-            return AccountAdministrator.objects.get(pk=self.account.id)
+        return AccountAdministrator.objects.get(pk=self.request.cradmin_role.id)
 
         def get_context_data(self, **kwargs):
             context = super(AccountDashboardView, self).get_context_data()
             context['account_admin'] = self.__get_account_admin()
-            context['account'] = self.__get_account()
+            context['account'] = self.request.cradmin_role
             return context
 
 Test the View and Expand the Template
