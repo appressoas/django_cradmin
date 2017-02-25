@@ -910,6 +910,7 @@ instance which have a role. ::
 
     class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCreateView):
         roleid_field = 'create_account'
+        template_name = 'cradmin_gettingstarted/crapps/create_account/create_account.django.html'
 
         def save_object(self, form, commit=True):
             self.new_account = super(CreateAccountView, self).save_object(form, commit)
@@ -928,10 +929,50 @@ instance which have a role. ::
                 roleid=self.new_account.id
             )
 
+Create Account Template
+-----------------------
+You can use the template provided from CRadmin, or if you want to change one or more elements in the template you can
+create a html file extends ``django_cradmin/viewhelpers/formview/within_role_create_view.django.html``. I wanted to
+override the brand name in header and replace it with something which made a tad more sense for our application. ::
+
+    {% extends "django_cradmin/viewhelpers/formview/within_role_create_view.django.html" %}
+
+    {% block header %}
+        <header id="id_django_cradmin_page_header" class="adminui-page-header">
+            <div class="adminui-page-header__content">
+                <span class="adminui-page-header__brand">
+                    <span class="adminui-page-header__brandname">
+                        Getting started
+                    </span>
+                </span>
+            </div>
+        </header>
+    {% endblock header %}
+
+If you just want to override the page heading you would rather override the method `get_pageheading` in our view class
+``create_account_view``. For a full explenation about the methods which you can override for a form template, look
+at the files ``viewhelpers/formview``.
+
+This time we don't add a if test which checks if the user is authenticated, but just use the CRadmin log in
+authentication we implemented earlier.
+
+I have restructred our template folder so it better matches our crapps structure. ::
+
+    templates
+        cradmin_gettingstarted
+            crapps
+                account_adminui
+                    account_dashboard.django.html
+                create_account
+                    create_account.django.html
+                    create_account_dashboard.django.html
+
 Test Create Account View
 ------------------------
-Contiune here by checking if these tests are okay. Should you really get to see the template when not being an
-authenticated user? Same for second test, should not `requestuser` be a must in the post request?
+We write two tests for our `create account view` in a new file named ``test_create_account_view`` within our module
+``teset_create_account``. One test is to see if the form renders as intended and one test which checks that a new
+instance of the Account object is saved once in the database with the name we entered in the form. When passing along
+form data in CRadmin tests, we use the `requestkwargs` as shown below.
 ::
 
     import mock
