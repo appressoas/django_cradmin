@@ -6,6 +6,7 @@ from django_cradmin.viewhelpers import formview
 
 class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCreateView):
     roleid_field = 'create_account'
+    template_name = 'cradmin_gettingstarted/crapps/create_account/create_account.django.html'
 
     def save_object(self, form, commit=True):
         self.new_account = super(CreateAccountView, self).save_object(form, commit)

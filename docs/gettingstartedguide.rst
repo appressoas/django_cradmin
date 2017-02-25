@@ -962,3 +962,4 @@ authenticated user? Same for second test, should not `requestuser` be a must in 
             new_account = Account.objects.filter(account_name='Flaming Youth').get()
             self.assertEqual(1, account_in_db.count())
             self.assertEqual('Flaming Youth', new_account.account_name)
+

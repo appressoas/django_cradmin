@@ -4,7 +4,7 @@ from django_cradmin.demo.cradmin_gettingstarted.models import AccountAdministrat
 
 
 class CreateAccountDashboardView(viewhelpers.generic.StandaloneBaseTemplateView):
-    template_name = 'cradmin_gettingstarted/create_account_dashboard.django.html'
+    template_name = 'cradmin_gettingstarted/crapps/create_account/create_account_dashboard.django.html'
 
     def __get_user(self):
         if self.request.user.is_authenticated:
