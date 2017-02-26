@@ -1004,3 +1004,39 @@ form data in CRadmin tests, we use the `requestkwargs` as shown below.
             self.assertEqual(1, account_in_db.count())
             self.assertEqual('Flaming Youth', new_account.account_name)
 
+Add links
+---------
+The last thing we need to do before moving on to next part of this guide is to add some links in our templates so a user
+can move a little bit back and forth. In the demo `Webdemo` we show you how to create menues with CRadmin. So we are
+going to use the `a`-tag styled as buttons and using our CRadmin instances as `href`.
+
+Lets start with the template ``create_account_dashboard.django.html``. We just add two buttons under the users email.
+The first button takes the user to a view within the current CRadmin instance by using the template tag
+``cradmin_appurl 'view name'``. ::
+
+    <a class="button button--secondary-fill button--compact href="{% cradmin_appurl 'create_account' %}">
+        Create new Account
+    </a>
+
+The second link to be added is going to take the user to our other CRadmin instance. To make this happen we use the
+template tag ``cradmin_instanceroot_url instanceid=''``. We can take the user to the root of the CRadmin instance
+`account_admin` which will either display a list of accounts to choose from or the administrator page for an account if
+the user has just one account. ::
+
+   <a class="button button--secondary-fill button--compact"
+       href="{% cradmin_instanceroot_url instanceid='account_admin'%}">
+        My Accounts
+    </a>
+
+The other template we need to add links to is the ``account_dashboard.django.html`` file. Here we need to take the user
+from the CRadmin instance `account_admin` to the CRadmin instance `create_account`. There are several ways to put this
+link. I just added it underneath the account name, in the page cover content block. ::
+
+    {% block page-cover-content %}
+        {{ block.super }}
+        <a class="button button--compact"
+           href="{% cradmin_instanceroot_url instanceid='create_account' %}">
+            Back to start page
+        </a>
+    {% endblock %}
+
