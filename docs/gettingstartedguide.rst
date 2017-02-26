@@ -726,10 +726,11 @@ created and placed in the right module, our project structure will look like thi
 CRadmin instance
 ----------------
 In our new CRadmin instance file ``create_account_cradmin_instance.py`` we need to inherit from the cradmin instance
-class named `NoRoleMixin` and overwrite the method `has_acces` so it returns True if the user is authenticated. We don't
-need to override this method since CRadmin handles it for us. But since this is a getting started guide it is important
-to show some of the behind scene action. Further we alos use the class `BaseCrAdminInstance` as a super. We give our
-CRadmin instance an id, and sets the name of which crapps to be our rolefrontpage. ::
+class named `NoRoleMixin` and overwrite the method `has_access` so it returns True if the user is authenticated.
+Strictly speaking, we do not need to override the `has_access`method, since the super class `NoRoleMixin` already
+returns True if the user is authenticated. But since this is a getting started guide it is important to show some of
+the behind scene action. Further we alos use the class `BaseCrAdminInstance` as a super. We give our CRadmin instance
+an id, and sets the name of which crapps to be our rolefrontpage. ::
 
     from django.http import Http404
 
@@ -776,9 +777,11 @@ Dahsboard template
 ------------------
 In the template we now have to extend the ``django_cradmin/standalone-base.django.html`` since our view is a
 `StandaloneBaseTemplateView`. Further the template consists of an if tests which handles an empty context from the view.
-Again we are adding both CRadmin CSS style classes and CRadmin test css classes. If you want to check out the base
-CSS style classes used in CRadmin, go to `localhost/styleguide`.
-::
+This if test is not really needed since we already have implemented the CRadmin authenticate application, and this
+secure that only logged in users gets access to this template. However, we want to show some possibilities with an if
+test in a template and how CRadmin test css classes can be used for testing that a user gets different information
+depending on being logged in or not. If you want to check out the base CSS style classes used in CRadmin, go to
+`localhost/styleguide`. ::
 
     {% extends "django_cradmin/standalone-base.django.html" %}
     {% load cradmin_tags %}
@@ -860,12 +863,9 @@ an anonymous user don't have access.
 
 Test Create Account Dashboard
 -----------------------------
-In this test we want to see if the template shows the correct content based on if a user if logged in or not. One could
-argue that it is unneccassary to have this test in the template since we already have an test on the CRadmin instance.
-However urls are a source to many a evil, so there is nothing wrong with another layer of security. Here we are using
-the CRadmin css test classes to be sure that our tests passes regardless of what kind of other CSS classes you need to
-have in the template.
-::
+In this test we want to see if the template shows the correct content based on if a user if logged in or not. Here we
+are using the CRadmin css test classes to be sure that our tests passes regardless of what kind of other CSS classes
+you need to have in the template. ::
 
     import mock
     from django.test import TestCase
@@ -894,7 +894,7 @@ have in the template.
 
 Create Account View
 -------------------
-In our view for creating a new account we use the same modelform as for creating an account, thus inheriting from the
+In our view for creating a new account we use the same modelform as for editing an account, thus inheriting from the
 `AccountCreateUpdateMixin`. Furthermore we also inherit from `WithinRoleCreateView`. We set the `roleid_field` here to
 `create_account` which is the id to the CRadmin instance for create account. The first method is overriding the
 `save_object` method and here we create and save an AccountAdministrator at the same time as an Account is created.
@@ -932,8 +932,8 @@ instance which have a role. ::
 Create Account Template
 -----------------------
 You can use the template provided from CRadmin, or if you want to change one or more elements in the template you can
-create a html file extends ``django_cradmin/viewhelpers/formview/within_role_create_view.django.html``. I wanted to
-override the brand name in header and replace it with something which made a tad more sense for our application. ::
+create a html file which extends ``django_cradmin/viewhelpers/formview/within_role_create_view.django.html``. I wanted
+to override the brand name in header and replace it with something which made a tad more sense for our application. ::
 
     {% extends "django_cradmin/viewhelpers/formview/within_role_create_view.django.html" %}
 
@@ -951,10 +951,7 @@ override the brand name in header and replace it with something which made a tad
 
 If you just want to override the page heading you would rather override the method `get_pageheading` in our view class
 ``create_account_view``. For a full explenation about the methods which you can override for a form template, look
-at the files ``viewhelpers/formview``.
-
-This time we don't add a if test which checks if the user is authenticated, but just use the CRadmin log in
-authentication we implemented earlier.
+at the files in the folder ``viewhelpers/formview``.
 
 I have restructred our template folder so it better matches our crapps structure. ::
 
@@ -970,7 +967,7 @@ I have restructred our template folder so it better matches our crapps structure
 Test Create Account View
 ------------------------
 We write two tests for our `create account view` in a new file named ``test_create_account_view`` within our module
-``teset_create_account``. One test is to see if the form renders as intended and one test which checks that a new
+``test_create_account``. One test is to see if the form renders as intended and one test which checks that a new
 instance of the Account object is saved once in the database with the name we entered in the form. When passing along
 form data in CRadmin tests, we use the `requestkwargs` as shown below.
 ::
@@ -1008,10 +1005,10 @@ Add links
 ---------
 The last thing we need to do before moving on to next part of this guide is to add some links in our templates so a user
 can move a little bit back and forth. In the demo `Webdemo` we show you how to create menues with CRadmin. So we are
-going to use the `a`-tag styled as buttons and using our CRadmin instances as `href`.
+going to use the `a` -tag styled as buttons and using our CRadmin instances as `href`.
 
-Lets start with the template ``create_account_dashboard.django.html``. We just add two buttons under the users email.
-The first button takes the user to a view within the current CRadmin instance by using the template tag
+Lets start with the template ``create_account_dashboard.django.html``. We add two buttons under the users email. The
+first button takes the user to a view within the current CRadmin instance by using the template tag
 ``cradmin_appurl 'view name'``. ::
 
     <a class="button button--secondary-fill button--compact href="{% cradmin_appurl 'create_account' %}">
@@ -1029,7 +1026,7 @@ the user has just one account. ::
     </a>
 
 The other template we need to add links to is the ``account_dashboard.django.html`` file. Here we need to take the user
-from the CRadmin instance `account_admin` to the CRadmin instance `create_account`. There are several ways to put this
+from the CRadmin instance `account_admin` to the CRadmin instance `create_account`. There are several places to put this
 link. I just added it underneath the account name, in the page cover content block. ::
 
     {% block page-cover-content %}
@@ -1040,3 +1037,5 @@ link. I just added it underneath the account name, in the page cover content blo
         </a>
     {% endblock %}
 
+Delete Account View
+===================
