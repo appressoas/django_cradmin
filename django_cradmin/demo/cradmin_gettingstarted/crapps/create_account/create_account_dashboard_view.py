@@ -4,6 +4,9 @@ from django_cradmin.demo.cradmin_gettingstarted.models import AccountAdministrat
 
 
 class CreateAccountDashboardView(viewhelpers.generic.StandaloneBaseTemplateView):
+    """
+    Dashboard for the Cradmin instance `create_account`
+    """
     template_name = 'cradmin_gettingstarted/crapps/create_account/create_account_dashboard.django.html'
 
     def __get_user(self):

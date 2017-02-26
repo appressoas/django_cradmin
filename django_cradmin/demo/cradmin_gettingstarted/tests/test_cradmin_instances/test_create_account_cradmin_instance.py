@@ -10,6 +10,10 @@ from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances\
 
 
 class TestCreateAccountCradminInstance(TestCase):
+    """
+    Tests that only authenticated users has access to CRamin instance
+    """
+
     def test_none_super_user_has_access(self):
         mockrequest = mock.MagicMock()
         mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)

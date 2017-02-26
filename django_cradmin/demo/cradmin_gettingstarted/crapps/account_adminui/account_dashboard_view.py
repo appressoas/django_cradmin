@@ -3,6 +3,9 @@ from django_cradmin.viewhelpers.generic import WithinRoleTemplateView
 
 
 class AccountDashboardView(WithinRoleTemplateView):
+    """
+    View for the dahsboard of the Account Admin ui.
+    """
     template_name = 'cradmin_gettingstarted/crapps/account_adminui/account_dashboard.django.html'
 
     def __get_account_admin(self):

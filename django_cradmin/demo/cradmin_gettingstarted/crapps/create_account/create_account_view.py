@@ -5,6 +5,11 @@ from django_cradmin.viewhelpers import formview
 
 
 class CreateAccountView(mixins.AccountCreateUpdateMixin, formview.WithinRoleCreateView):
+    """
+    View where an Account is created and saved.
+    When saving an Account, it also creates and AccountAdministrator for that account.
+    Reverse to the CRadmin instance `account_admin`.
+    """
     roleid_field = 'create_account'
     template_name = 'cradmin_gettingstarted/crapps/create_account/create_account.django.html'
 

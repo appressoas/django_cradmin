@@ -3,6 +3,9 @@ from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
 
 class AccountCreateUpdateMixin(object):
+    """
+    Mixin class which renders the form used update and create view in the Account Admin ui.
+    """
     model = Account
     roleid_field = 'account'
     fields = [

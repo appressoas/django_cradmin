@@ -9,6 +9,10 @@ from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances\
 
 
 class TestAccountAdminCradminInstance(TestCase):
+    """
+    Tests if the rolequery set behavies as wanted
+    """
+
     def test_none_super_user_makes_empty_rolequeryset(self):
         mommy.make('cradmin_gettingstarted.Account')
         mockrequest = mock.MagicMock()
