@@ -27,8 +27,13 @@
                 </section>
                 <section class="blocklist__item">
                     <h2 class="blocklist__itemtitle">Edit Account</h2>
-                    <a href='{% cradmin_appurl viewname="edit" pk=account.id %}' class="button button--primary">
+                    <a class="button button--primary button--compact"
+                       href='{% cradmin_appurl viewname="edit" pk=account.id %}'>
                         Change name
+                    </a>
+                    <a class="button button--secondary button--compact"
+                       href="{% cradmin_appurl viewname='delete' pk=account.id %}">
+                        Delete
                     </a>
                 </section>
             </div>
