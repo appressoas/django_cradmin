@@ -9,6 +9,14 @@
     {{ request.cradmin_role.account_name }}
 {% endblock page-cover-title %}
 
+{% block page-cover-content %}
+    {{ block.super }}
+    <a class="button button--compact"
+       href="{% cradmin_instanceroot_url instanceid='create_account' %}">
+        Back to start page
+    </a>
+{% endblock %}
+
 {% block content %}
     <section class="adminui-page-section  adminui-page-section--center-lg">
         <div class="container">
