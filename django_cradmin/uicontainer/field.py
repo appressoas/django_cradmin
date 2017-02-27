@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
+import datetime
 import json
 from xml.sax.saxutils import quoteattr
 
-import datetime
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext, pgettext
@@ -312,6 +312,12 @@ class Field(BaseFieldRenderable):
         """
         return isinstance(self.django_widget, forms.RadioSelect)
 
+    def is_checkbox_widget(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django.forms.widgets.CheckboxInput`.
+        """
+        return isinstance(self.django_widget, forms.CheckboxInput)
+
     def is_checkbox_select_multiple_widget(self):
         """
         Returns ``True`` if the field widget is a :class:`django.forms.widgets.CheckboxSelectMultiple`.
@@ -362,6 +368,12 @@ class Field(BaseFieldRenderable):
 
         Used by :class:`django_cradmin.uicontainer.label.Label`.
         """
+        if self.should_render_as_subwidgets() \
+                or self.is_checkbox_widget() \
+                or self.is_select_widget() \
+                or self.is_select_multiple_widget() \
+                or not self.field_wrapper_renderable.label_renderable.should_render:
+            return True
         return False
 
     def get_default_bem_block_or_element(self):
