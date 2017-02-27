@@ -101,13 +101,27 @@ ul + h4 {
 
 /* Paragraphs
 
-Example: {type: isolated} Default paragraphs
+Example: Default paragraphs
     <p>Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
     <p>Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
     <p>The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
 
-Example: {type: isolated} Preamble
-    <p class="preamble">We are going to make placeholder text great again. Greater than ever before. Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot.</p>
+Example: Tight paragraphs
+    <p class="paragraph paragraph--tight">Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    <p class="paragraph paragraph--tight">Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
+    <p class="paragraph paragraph--tight">The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
+
+Example: Extra tight paragraphs
+    <p class="paragraph paragraph--xtight">Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    <p class="paragraph paragraph--xtight">Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
+    <p class="paragraph paragraph--xtight">The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
+
+Example: Other elements styled as paragraphs
+    <ul>
+        <li class="paragraph">Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</li>
+        <li class="paragraph">Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</li>
+        <li class="paragraph">The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</li>
+    </ul>
 
 Styleguide 2.4
 */
@@ -121,6 +135,26 @@ p,
     }
 }
 
+.paragraph {
+    &--tight {
+        margin-bottom: vertical-space($spacing--small);
+    }
+    &--xtight {
+        margin-bottom: vertical-space($unit);
+    }
+}
+
+/** Preamble
+
+Example: Preamble
+    <p class="preamble">
+        We are going to make placeholder text great again.
+        Greater than ever before. Lorem Ipsum's father was
+        with Lee Harvey Oswald prior to Oswald's being, you know, shot.
+    </p>
+
+Styleguide 2.5
+*/
 .preamble {
     @include font(base, bold);
 
@@ -148,7 +182,7 @@ Example: {type: isolated} Strong, italic, muted, alignments, small caps
     <p class="text-right">Right aligned text</p>
     <p><strong class="text-smallcaps">Small capsed text</strong> can be useful to introduse a paragraph sometimes</p>
 
-Styleguide 2.5
+Styleguide 2.6
 */
 strong,
 .strong,
