@@ -13,6 +13,7 @@ New to CRadmin
 ==============
 If you are new to CRadmin we advice you to read :ref:`newbieguide` before advancing.
 
+.. _gettingstarted:
 
 Introduction
 ============
@@ -1135,3 +1136,8 @@ multiple instances of the Account object. ::
 
 The last test to do now is to run all our tests, to make sure everything we have created works together. If we run all
 our tests with Coverage, we also see how much of our code which is actually tested by our TestCases.
+
+
+Tutorial Part Two
+=================
+Let us continue with part two of the tutorial where we add messages to our application :ref:`gettingstarted_part_two`
