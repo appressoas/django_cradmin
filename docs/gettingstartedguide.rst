@@ -40,7 +40,7 @@ some model testing to get started on that part. The models.py file looks like th
         """
 
         #: The name of the account which create, edit and delete messages
-        account_name = models.CharField(
+        name = models.CharField(
             blank=False,
             null=False,
             max_length=50,
@@ -48,7 +48,7 @@ some model testing to get started on that part. The models.py file looks like th
         )
 
         def __str__(self):
-            return self.account_name
+            return self.name
 
 
     class AccountAdministrator(models.Model):
@@ -187,7 +187,7 @@ is placed inside the Django applications template folder with the following cont
     {% extends "django_cradmin/base.django.html" %}
 
     {% block title %}
-        {{ request.cradmin_role.account_name }}
+        {{ request.cradmin_role.name }}
     {% endblock title %}
 
     {% block content %}
@@ -199,7 +199,7 @@ need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_t
 ``account_admin_cradmin_instance.py`` file and tell it to return the account name, like this::
 
     def get_titletext_for_role(self, role):
-        return role.account_name
+        return role.name
 
 Testing the view
 ----------------
@@ -244,7 +244,7 @@ Our test file for the index view looks like this::
     def test_get_title(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='My account'
+            name='My account'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -257,7 +257,7 @@ Our test file for the index view looks like this::
         )
         mockresponse.selector.prettyprint()
         page_title = mockresponse.selector.one('title').alltext_normalized
-        self.assertEqual(account.account_name, page_title)
+        self.assertEqual(account.name, page_title)
 
 In the ``self.mock_get_request`` hmtls selector is True and the CRadmin role is our newly created account. Htmls
 is created by us to make it easy to use CSS selectors with HTML in unittests. The line
@@ -316,7 +316,7 @@ Our ``account_admin_cradmin_instance.py`` file will now look like this::
             return queryset
 
         def get_titletext_for_role(self, role):
-            return role.account_name
+            return role.name
 
 Enhance our Index View
 ----------------------
@@ -362,11 +362,11 @@ First we add a page cover title block in our template::
     {% load cradmin_tags %}
 
     {% block title %}
-        {{ request.cradmin_role.account_name }}
+        {{ request.cradmin_role.name }}
     {% endblock title %}
 
     {% block page-cover-title %}
-        {{ request.cradmin_role.account_name }}
+        {{ request.cradmin_role.name }}
     {% endblock page-cover-title %}
 
 Then in our ``test_account_dashboard.py`` file we add a method which tests if we fetch the account name and sets it as a
@@ -375,7 +375,7 @@ primary heading::
     def test_get_heading(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Test Account'
+            name='Test Account'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -387,7 +387,7 @@ primary heading::
         )
         self.assertTrue(mockresponse.selector.one('.test-primary-h1'))
         heading = mockresponse.selector.one('.test-primary-h1').alltext_normalized
-        self.assertEqual(account.account_name, heading)
+        self.assertEqual(account.name, heading)
 
 If you use the prettyprint() functionality as explained in the first test, you will see there is a CSS class named
 `test-primary-h1`. In the test we first checks that this CSS class exists, so we konw that the loading of CRadmin tags
@@ -418,11 +418,11 @@ In the ``test_account_dashboard`` file we can now write a test where only one of
     def test_only_account_where_user_is_admin_shows_on_page(self):
         account_one = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Wrong role account'
+            name='Wrong role account'
         )
         account_two= mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Right role account'
+            name='Right role account'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -510,7 +510,7 @@ also needs to tell CRadmin the role, which in our case is Account. The mixin fil
         model = Account
         roleid_field = 'account'
         fields = [
-            'account_name'
+            'name'
         ]
 
         def get_form_renderable(self):
@@ -519,7 +519,7 @@ also needs to tell CRadmin the role, which in our case is Account. The mixin fil
                     uicontainer.form.Form(
                         form=self.get_form(),
                         children=[
-                            uicontainer.fieldwrapper.FieldWrapper('account_name'),
+                            uicontainer.fieldwrapper.FieldWrapper('name'),
                             uicontainer.button.SubmitPrimary(
                                 text='Save')
                         ]
@@ -600,7 +600,7 @@ nothing new in our test methods. Our file ``test_edit_account.py`` looks somethi
         def test_get_form_renderable(self):
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
-                account_name='Charisma'
+                name='Charisma'
             )
             mommy.make(
                 'cradmin_gettingstarted.AccountAdministrator',
@@ -611,14 +611,14 @@ nothing new in our test methods. Our file ``test_edit_account.py`` looks somethi
                 cradmin_role=account,
                 viewkwargs={'pk': account.id}
             )
-            self.assertTrue(mockresponse.selector.one('#id_account_name'))
-            form_account_name = mockresponse.selector.one('#id_account_name').get('value')
-            self.assertEqual(account.account_name, form_account_name)
+            self.assertTrue(mockresponse.selector.one('#id_name'))
+            form_name = mockresponse.selector.one('#id_name').get('value')
+            self.assertEqual(account.name, form_name)
 
-        def test_post_without_required_account_name(self):
+        def test_post_without_required_name(self):
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
-                account_name='Charisma'
+                name='Charisma'
             )
             mommy.make(
                 'cradmin_gettingstarted.AccountAdministrator',
@@ -630,19 +630,19 @@ nothing new in our test methods. Our file ``test_edit_account.py`` looks somethi
                 viewkwargs={'pk': account.id},
                 requestkwargs={
                     'data': {
-                        'account_name': ''
+                        'name': ''
                     }
                 }
             )
-            self.assertTrue(mockresponse.selector.one('#id_account_name_wrapper'))
-            warning_message = mockresponse.selector.one('#id_account_name_wrapper .test-warning-message').alltext_normalized
+            self.assertTrue(mockresponse.selector.one('#id_name_wrapper'))
+            warning_message = mockresponse.selector.one('#id_name_wrapper .test-warning-message').alltext_normalized
             self.assertEqual('This field is required.', warning_message)
 
-        def test_post_with_required_account_name_updates_db(self):
+        def test_post_with_required_name_updates_db(self):
             """Should get a 302 Found redirects and have one Account object in database with a new name"""
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
-                account_name='Charisma'
+                name='Charisma'
             )
             mommy.make(
                 'cradmin_gettingstarted.AccountAdministrator',
@@ -656,14 +656,14 @@ nothing new in our test methods. Our file ``test_edit_account.py`` looks somethi
                 viewkwargs={'pk': account.id},
                 requestkwargs={
                     'data': {
-                        'account_name': 'The idol'
+                        'name': 'The idol'
                     }
                 }
             )
             accounts_in_db = Account.objects.all()
             self.assertEqual(1, accounts_in_db.count())
             get_account_from_db = Account.objects.filter(pk=account.id).get()
-            self.assertEqual('The idol', get_account_from_db.account_name)
+            self.assertEqual('The idol', get_account_from_db.name)
 
 Since we changed the structure in our crapps module, I have updated the structur of the tests module, so it now looks
 like this::
@@ -986,20 +986,20 @@ form data in CRadmin tests, we use the `requestkwargs` as shown below.
 
         def test_get_render_form(self):
             mockrespone = self.mock_http200_getrequest_htmls()
-            self.assertEqual(mockrespone.selector.one('#id_account_name_label').text_normalized, 'Account name')
+            self.assertEqual(mockrespone.selector.one('#id_name_label').text_normalized, 'Account name')
 
         def test_post_form(self):
             self.mock_http302_postrequest(
                 requestkwargs={
                     'data': {
-                        'account_name': 'Flaming Youth'
+                        'name': 'Flaming Youth'
                     }
                 }
             )
             account_in_db = Account.objects.all()
-            new_account = Account.objects.filter(account_name='Flaming Youth').get()
+            new_account = Account.objects.filter(name='Flaming Youth').get()
             self.assertEqual(1, account_in_db.count())
-            self.assertEqual('Flaming Youth', new_account.account_name)
+            self.assertEqual('Flaming Youth', new_account.name)
 
 Add links
 ---------
@@ -1097,7 +1097,7 @@ multiple instances of the Account object. ::
         def test_get_sanity(self):
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
-                account_name='My Account'
+                name='My Account'
             )
             mockresponse = self.mock_http200_getrequest_htmls(
                 cradmin_role=account,
@@ -1109,7 +1109,7 @@ multiple instances of the Account object. ::
         def test_post_sanity_with_one_account(self):
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
-                account_name='Another Account'
+                name='Another Account'
             )
             self.assertEqual(1, Account.objects.count())
             self.mock_http302_postrequest(
@@ -1120,7 +1120,7 @@ multiple instances of the Account object. ::
         def test_post_sanity_with_multiple_accounts(self):
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
-                account_name='Delete me'
+                name='Delete me'
             )
             mommy.make(
                 'cradmin_gettingstarted.Account',
@@ -1130,7 +1130,7 @@ multiple instances of the Account object. ::
             self.mock_http302_postrequest(
                 cradmin_role=account
             )
-            self.assertFalse(Account.objects.filter(account_name='Delete me'))
+            self.assertFalse(Account.objects.filter(name='Delete me'))
             self.assertEqual(10, Account.objects.count())
 
 The last test to do now is to run all our tests, to make sure everything we have created works together. If we run all

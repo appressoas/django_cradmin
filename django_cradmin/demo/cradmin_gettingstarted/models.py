@@ -8,7 +8,7 @@ class Account(models.Model):
     """
 
     #: The name of the account which create, edit and delete messages
-    account_name = models.CharField(
+    name = models.CharField(
         blank=False,
         null=False,
         max_length=50,
@@ -16,7 +16,7 @@ class Account(models.Model):
     )
 
     def __str__(self):
-        return self.account_name
+        return self.name
 
 
 class AccountAdministrator(models.Model):

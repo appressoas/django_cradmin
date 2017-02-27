@@ -13,7 +13,7 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_get_title(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='My account'
+            name='My account'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -25,12 +25,12 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
             cradmin_role=account
         )
         page_title = mockresponse.selector.one('title').alltext_normalized
-        self.assertEqual(account.account_name, page_title)
+        self.assertEqual(account.name, page_title)
 
     def test_get_heading(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Test Account'
+            name='Test Account'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -42,16 +42,16 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         )
         self.assertTrue(mockresponse.selector.one('.test-primary-h1'))
         heading = mockresponse.selector.one('.test-primary-h1').alltext_normalized
-        self.assertEqual(account.account_name, heading)
+        self.assertEqual(account.name, heading)
 
     def test_only_account_where_user_is_admin_shows_on_page(self):
         account_one = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Wrong role account'
+            name='Wrong role account'
         )
         account_two= mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Right role account'
+            name='Right role account'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',

@@ -13,7 +13,7 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_get_form_renderable(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Charisma'
+            name='Charisma'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -24,14 +24,14 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
             cradmin_role=account,
             viewkwargs={'pk': account.id}
         )
-        self.assertTrue(mockresponse.selector.one('#id_account_name'))
-        form_account_name = mockresponse.selector.one('#id_account_name').get('value')
-        self.assertEqual(account.account_name, form_account_name)
+        self.assertTrue(mockresponse.selector.one('#id_name'))
+        form_account_name = mockresponse.selector.one('#id_name').get('value')
+        self.assertEqual(account.name, form_account_name)
 
-    def test_post_without_required_account_name(self):
+    def test_post_without_required_name(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Charisma'
+            name='Charisma'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -43,19 +43,19 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
             viewkwargs={'pk': account.id},
             requestkwargs={
                 'data': {
-                    'account_name': ''
+                    'name': ''
                 }
             }
         )
-        self.assertTrue(mockresponse.selector.one('#id_account_name_wrapper'))
-        warning_message = mockresponse.selector.one('#id_account_name_wrapper .test-warning-message').alltext_normalized
+        self.assertTrue(mockresponse.selector.one('#id_name_wrapper'))
+        warning_message = mockresponse.selector.one('#id_name_wrapper .test-warning-message').alltext_normalized
         self.assertEqual('This field is required.', warning_message)
 
-    def test_post_with_required_account_name_updates_db(self):
+    def test_post_with_required_name_updates_db(self):
         """Should get a 302 Found redirects and have one Account object in database with a new name"""
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Charisma'
+            name='Charisma'
         )
         mommy.make(
             'cradmin_gettingstarted.AccountAdministrator',
@@ -69,11 +69,11 @@ class TestUpdateAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
             viewkwargs={'pk': account.id},
             requestkwargs={
                 'data': {
-                    'account_name': 'The idol'
+                    'name': 'The idol'
                 }
             }
         )
         accounts_in_db = Account.objects.all()
         self.assertEqual(1, accounts_in_db.count())
         get_account_from_db = Account.objects.filter(pk=account.id).get()
-        self.assertEqual('The idol', get_account_from_db.account_name)
+        self.assertEqual('The idol', get_account_from_db.name)

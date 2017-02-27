@@ -13,8 +13,8 @@ class TestAccountModel(test.TestCase):
 
     def test_has_expected_attributes(self):
         my_object = mommy.make('cradmin_gettingstarted.Account')
-        self.assertTrue(hasattr(my_object, 'account_name'))
+        self.assertTrue(hasattr(my_object, 'name'))
 
     def test_str_method(self):
-        my_object = mommy.make('cradmin_gettingstarted.Account', account_name='foo')
+        my_object = mommy.make('cradmin_gettingstarted.Account', name='foo')
         self.assertEqual('foo', str(my_object))

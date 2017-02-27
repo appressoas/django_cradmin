@@ -9,7 +9,7 @@ class AccountCreateUpdateMixin(object):
     model = Account
     roleid_field = 'account'
     fields = [
-        'account_name'
+        'name'
     ]
 
     def get_form_renderable(self):
@@ -18,7 +18,7 @@ class AccountCreateUpdateMixin(object):
                 uicontainer.form.Form(
                     form=self.get_form(),
                     children=[
-                        uicontainer.fieldwrapper.FieldWrapper('account_name'),
+                        uicontainer.fieldwrapper.FieldWrapper('name'),
                         uicontainer.button.SubmitPrimary(
                             text='Save')
                     ]

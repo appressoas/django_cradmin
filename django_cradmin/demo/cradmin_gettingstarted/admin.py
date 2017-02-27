@@ -6,7 +6,7 @@ from django_cradmin.demo.cradmin_gettingstarted.models import Account, AccountAd
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
     list_display = [
-        'account_name'
+        'name'
     ]
 
 

@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='Account',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('account_name', models.CharField(max_length=50, verbose_name='Account name')),
+                ('name', models.CharField(max_length=50, verbose_name='Account name')),
             ],
         ),
         migrations.CreateModel(

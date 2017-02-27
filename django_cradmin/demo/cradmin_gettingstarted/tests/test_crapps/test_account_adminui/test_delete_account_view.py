@@ -13,7 +13,7 @@ class TestDeleteAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_get_sanity(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='My Account'
+            name='My Account'
         )
         mockresponse = self.mock_http200_getrequest_htmls(
             cradmin_role=account,
@@ -25,7 +25,7 @@ class TestDeleteAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_post_sanity_with_one_account(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Another Account'
+            name='Another Account'
         )
         self.assertEqual(1, Account.objects.count())
         self.mock_http302_postrequest(
@@ -36,7 +36,7 @@ class TestDeleteAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_post_sanity_with_multiple_accounts(self):
         account = mommy.make(
             'cradmin_gettingstarted.Account',
-            account_name='Delete me'
+            name='Delete me'
         )
         mommy.make(
             'cradmin_gettingstarted.Account',
@@ -46,5 +46,5 @@ class TestDeleteAccountView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.mock_http302_postrequest(
             cradmin_role=account
         )
-        self.assertFalse(Account.objects.filter(account_name='Delete me'))
+        self.assertFalse(Account.objects.filter(name='Delete me'))
         self.assertEqual(10, Account.objects.count())
