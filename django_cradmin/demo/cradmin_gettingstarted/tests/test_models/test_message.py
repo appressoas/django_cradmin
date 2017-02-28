@@ -16,7 +16,6 @@ class TestMessageModel(test.TestCase):
         self.assertTrue(hasattr(my_object, 'title'))
         self.assertTrue(hasattr(my_object, 'account'))
         self.assertTrue(hasattr(my_object, 'body'))
-        self.assertTrue(hasattr(my_object, 'tag'))
         self.assertTrue(hasattr(my_object, 'creation_time'))
         self.assertTrue(hasattr(my_object, 'number_of_likes'))
 

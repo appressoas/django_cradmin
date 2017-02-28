@@ -26,23 +26,9 @@ class AccountAdministrator(models.Model):
     account = models.ForeignKey(Account)
 
 
-class Tag(models.Model):
-    """
-    Tag used to label a message with a certain topic
-    """
-
-    #: The tag used on a message for categorization and search
-    tag = models.SlugField()
-
-    def __str__(self):
-        return self.tag
-
-
 class Message(models.Model):
     """
     The message is created by logged in user in adminui and can be seen by anyone in the publicui.
-
-    It is possible to search on tags and author which is the user in :class:`.AccountAdministrator`
 
     Number of likes on a post can be both negative or positive.
     """
@@ -55,9 +41,6 @@ class Message(models.Model):
 
     #: The main text of a message
     body = models.TextField(max_length=255)
-
-    #: A message should be categorized by topic or topics. Helps improve searching and listing
-    tags = models.ManyToManyField(Tag)
 
     #: The time a user posted the message is auto set to the time when the message was added
     creation_time = models.DateTimeField(auto_now_add=True)
