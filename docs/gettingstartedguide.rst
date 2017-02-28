@@ -64,6 +64,9 @@ some model testing to get started on that part. The models.py file looks like th
         account = models.ForeignKey(Account)
 
 
+Django Admin
+------------
+Go to Django admin and create an Account and connect this account with a new Account Administrator
 
 Setting up a CRadmin interface
 ==============================
