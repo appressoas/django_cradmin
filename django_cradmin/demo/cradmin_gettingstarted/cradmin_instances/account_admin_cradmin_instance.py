@@ -24,4 +24,4 @@ class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
         return queryset
 
     def get_titletext_for_role(self, role):
-        return role.account_name
+        return role.name
