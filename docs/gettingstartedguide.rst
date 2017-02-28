@@ -64,10 +64,6 @@ some model testing to get started on that part. The models.py file looks like th
         account = models.ForeignKey(Account)
 
 
-Django Admin
-------------
-Go to Django admin and create an Account and connect this account with a new Account Administrator
-
 Setting up a CRadmin interface
 ==============================
 One central part of the interface is the ``cramdin_instance``. In this file we connect our CRadmin apps, known as
