@@ -8,7 +8,7 @@ class AccountDeleteView(formview.WithinRoleDeleteView):
     """
     model = Account
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return self.request.cradmin_role
 
     def get_queryset_for_role(self):

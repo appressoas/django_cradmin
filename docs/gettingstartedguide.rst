@@ -1049,7 +1049,11 @@ file within our `account_admin` crapps, we add the url. ::
             name='delete'
         )
 
-Next we create a ``delete_account_view.py`` file in the same crapps and add the following content. ::
+Next we create a ``delete_account_view.py`` file in the same crapps. Here we use the "get_object" method from the
+``SingleObjectMixin`` class, which requires that we pass the value for a queryset to have the right signature, to get
+the Account object we want to delete. Further we implement the abstract method "get_queryset_for_role" from the super
+class. Both methods returns the same object, so you can actually pass the "get_queryset_for_role" method in this
+example. However, this may not always be the case. ::
 
     from django_cradmin.viewhelpers import formview
 
@@ -1058,11 +1062,11 @@ Next we create a ``delete_account_view.py`` file in the same crapps and add the 
         """"""
         model = Account
 
-        def get_object(self):
+        def get_object(self, queryset=None):
             return self.request.cradmin_role
 
         def get_queryset_for_role(self):
-            return Account.objects.filter(id=self.request.cradmin_role)
+            return Account.objects.filter(id=self.request.cradmin_role.pk)
 
 After creating the view we move on to the template file ``account_dashboard.django.html`` and add a button so the user
 can delete an Account. ::
