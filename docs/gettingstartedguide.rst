@@ -334,7 +334,7 @@ Our ``account_dashboard.py`` file now looks something like this::
         template_name = 'cradmin_gettingstarted/account_dashboard.django.html'
 
         def __get_account_admin(self):
-        return AccountAdministrator.objects.get(pk=self.request.cradmin_role.id)
+        return AccountAdministrator.objects.get(pk=self.request.user.id)
 
         def get_context_data(self, **kwargs):
             context = super(AccountDashboardView, self).get_context_data()
