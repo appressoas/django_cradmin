@@ -8,11 +8,12 @@ class AccountDashboardView(WithinRoleTemplateView):
     """
     template_name = 'cradmin_gettingstarted/crapps/account_adminui/account_dashboard.django.html'
 
-    def __get_account_admin(self):
-        return AccountAdministrator.objects.get(pk=self.request.cradmin_role.id)
+    def _get_account_administrator(self):
+        account = self.request.cradmin_role
+        return AccountAdministrator.objects.get(account=account)
 
     def get_context_data(self, **kwargs):
         context = super(AccountDashboardView, self).get_context_data()
-        context['account_admin'] = self.__get_account_admin()
+        context['account_admin'] = self._get_account_administrator()
         context['account'] = self.request.cradmin_role
         return context

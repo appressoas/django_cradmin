@@ -68,23 +68,3 @@ class TestAccountIndexView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertTrue(mockresponse.selector.one('.test-admin-user-email'))
         admin_email = mockresponse.selector.one('.test-admin-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

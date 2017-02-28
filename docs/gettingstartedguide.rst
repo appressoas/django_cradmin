@@ -321,8 +321,8 @@ Our ``account_admin_cradmin_instance.py`` file will now look like this::
 Enhance our Index View
 ----------------------
 So far our index view does very little, so lets expand it by fetching the Account and the user which is the Account
-Administrator and get this as context data used in our template. We use our `cradmin_role` to get the Account object,
-and filter eith the id of the `cradmin_role` to filter the AccountAdministrator objects.
+Administrator and get this as context data used in our template. We use our `cradmin_role` to get the Account object.
+Further we use the CRadmin role of the current account to get the Account Administrator.
 
 Our ``account_dashboard.py`` file now looks something like this::
 
@@ -333,12 +333,13 @@ Our ``account_dashboard.py`` file now looks something like this::
     class AccountDashboardView(WithinRoleTemplateView):
         template_name = 'cradmin_gettingstarted/account_dashboard.django.html'
 
-        def __get_account_admin(self):
-        return AccountAdministrator.objects.get(pk=self.request.user.id)
+        def _get_account_administrator(self):
+            account = self.request.cradmin_role
+            return AccountAdministrator.objects.get(account=account)
 
         def get_context_data(self, **kwargs):
             context = super(AccountDashboardView, self).get_context_data()
-            context['account_admin'] = self.__get_account_admin()
+            context['account_admin'] = self._get_account_administrator()
             context['account'] = self.request.cradmin_role
             return context
 
