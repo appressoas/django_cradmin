@@ -5,3 +5,7 @@
 Expand Account model with message
 ==================================
 This document contiunes the work done in :ref:`gettingstarted`.
+
+Test
+----
+.. literalinclude:: /../django_cradmin/demo/listfilterdemo/views/personlist.py
