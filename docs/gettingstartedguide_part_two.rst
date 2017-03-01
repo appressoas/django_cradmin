@@ -96,4 +96,48 @@ If you have added a message or two in Django admin, you will see them at `localh
 
 Expanding the listview for public messages
 ==========================================
-In the last chapter we rendered a listview using pretty much just built in template and functionality in CRadmin.
+In the last chapter we rendered a listview using pretty much just built in template and functionality in CRadmin. Now we
+are going to expand our view and create our own template with a bit more functionality than what basic CRadmin offers.
+However, we are not going to create something totaly new. Everything we are going to use already lives inside CRadmin.
+
+How lists works in CRadmin
+--------------------------
+
+
+Value Render Class
+------------------
+We are going to create a new class in the ``message_list_view_.py`` file which will render the value of each item in the
+list. The render class gets the value for each item in the lists. The view class, displays the list with all its values
+in the template. ::
+
+    class MessageItemValue(listbuilder.itemvalue.TitleDescription):
+        """Get values for items in the list"""
+
+        valuealias = 'message'
+
+        def get_description(self):
+            return self.message.body
+
+The class we use as super, `TitleDescription` is one of several classes which render item values for a list. We want to
+get a hold of the body of a message and display it in the template. Now we could use context and a for-loop in our
+template which would work out fine in views which just shows one list where each element shall be displayed the
+same way. However, if you have multiple lists where some of them again contained new lists, you will end up with a lot
+of loops in the template and a not-easy-to-read code. Thus, increasing probalility for bugs and decreasing testability.
+In CRadmin the class ``AbstractRenderable`` sets `me` to be `self` in the context data. Further is the item value,
+wether being a list of lists or a list of single objects, refered to as `value`. This means in the template we can write
+`me.value` to show the message. Further we can use `self.value` in the view class to work with a message. Again, this
+would work fine in our example. However, if we have several lists of different objects, it would be hard to keep track
+of which object we are currently working with. So solve this problem we set `valuealias` which overrides `value`. So in
+the method `get_description` we can return the body of the message with `self.message.body`. To make our view use this
+functionality we add `value_renderer_class = MessageItemValue` underneath the model. ::
+
+    class MessageListBuilderView(listbuilderview.View):
+        """Builds the list for the view"""
+        model = Message
+        value_renderer_class = MessageItemValue
+        template_name = 'cradmin_gettingstarted/crapps/publicui/message_list.django.html'
+
+Create message list template
+----------------------------
+In the template folder I have created a new html file which we for us to use.
+
