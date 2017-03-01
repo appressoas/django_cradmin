@@ -12,6 +12,3 @@ class MessagePublicUiCradminInstance(crinstance.NoRoleNoLoginCrAdminInstance):
 
     def get_rolequeryset(self):
         pass
-
-
-

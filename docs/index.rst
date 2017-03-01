@@ -17,6 +17,8 @@ Getting started
    install
    newbie
    gettingstartedguide
+   gettingstartedguide_part_two
+
 
 
 ***********
