@@ -14,7 +14,7 @@ from django_cradmin.demo.login_not_required_demo.cradmin import LoginNotRequired
 from django_cradmin.demo.multiselect2demo.cradmin import MultiselectDemoCrAdminInstance
 from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
 from django_cradmin.demo.project.demo.views.demo_overview import DemoView
-from django_cradmin.demo.uicontainerdemo.cradmin import UIContainerDemoCrAdminInstance
+from django_cradmin.demo.uicontainerdemo.uicontainerdemo_cradmin_instance import UIContainerDemoCrAdminInstance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 
 admin.site.login = login_required(admin.site.login)
