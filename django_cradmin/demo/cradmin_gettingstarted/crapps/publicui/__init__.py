@@ -6,6 +6,6 @@ class App(crapp.App):
     appurls = [
         crapp.Url(
             r'^$',
-            message_list_view.MessageListView.as_view(),
+            message_list_view.MessageListBuilderView.as_view(),
             name=crapp.INDEXVIEW_NAME)
     ]

@@ -1,13 +1,38 @@
 from django_cradmin import viewhelpers
+from django_cradmin.crinstance import reverse_cradmin_url
 from django_cradmin.demo.cradmin_gettingstarted.models import Message
+from django_cradmin.viewhelpers import listbuilder, listbuilderview
 
 
-class MessageListView(viewhelpers.generic.WithinRoleTemplateView):
-    """View for showing messages in publicui"""
+class MessageItemValue(listbuilder.itemvalue.TitleDescription):
+    """Get values for items in the list"""
 
-    template_name = 'cradmin_gettingstarted/crapps/publicui/message_list.django.html'
+    valuealias = 'message'
 
-    def get_context_data(self, **kwargs):
-        context = super(MessageListView, self).get_context_data(**kwargs)
-        context['messages'] = Message.objects.all().order_by('creation_time')
-        return context
+    def get_title(self):
+        return self.message.title
+
+    def get_description(self):
+        return self.message.body
+
+
+class MessageItemFrameLink(listbuilder.itemframe.Link):
+    """Make each frame around the list itmes a link"""
+
+    def get_url(self):
+        return reverse_cradmin_url(instanceid='cr_public_message', appname='public_message')
+
+
+class MessageListBuilderView(listbuilderview.View):
+    """Builds the list for the view"""
+    model = Message
+    value_renderer_class = MessageItemValue
+    frame_renderer_class = MessageItemFrameLink
+    # template_name = 'cradmin_gettingstarted/crapps/publicui/message_list.django.html'
+    # paginate_by = 1
+
+    def get_queryset_for_role(self):
+        return Message.objects.all()
+
+    # def paginate_queryset(self, queryset, page_size):
+    #     return Message.objects.all()

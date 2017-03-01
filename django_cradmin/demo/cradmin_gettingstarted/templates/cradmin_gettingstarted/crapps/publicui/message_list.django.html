@@ -15,17 +15,18 @@
     <section class="adminui-page-section">
         <div class="container container--wide">
             <div class="blocklist">
-                {% for message in messages %}
-                    <section class="blocklist__item">
-                        <h2 class="blocklist__itemtitle {% cradmin_test_css_class 'public-message-title' %}">
-                            {{ message.title }}
-                        </h2>
-                        <p>Posted by {{ message.account }} on {{ message.creation_time }}</p>
-                        <p class="{% cradmin_test_css_class 'public-message-body' %}">
-                            {{ message.body }}
-                        </p>
-                    </section>
-                {% endfor %}
+                {% cradmin_render_renderable listbuilder_list %}
+{#                {% for message in messages %}#}
+{#                    <section class="blocklist__item">#}
+{#                        <h2 class="blocklist__itemtitle {% cradmin_test_css_class 'public-message-title' %}">#}
+{#                            {{ message.title }}#}
+{#                        </h2>#}
+{#                        <p>Posted by {{ message.account }} on {{ message.creation_time }}</p>#}
+{#                        <p class="{% cradmin_test_css_class 'public-message-body' %}">#}
+{#                            {{ message.body }}#}
+{#                        </p>#}
+{#                    </section>#}
+{#                {% endfor %}#}
             </div>
         </div>
     </section>
