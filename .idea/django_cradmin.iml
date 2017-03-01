@@ -51,6 +51,7 @@
         <option value="$MODULE_DIR$/django_cradmin/apps/cradmin_kss_styleguide/templates" />
         <option value="$MODULE_DIR$/django_cradmin/demo/cradmin_javascript_demos/templates" />
         <option value="$MODULE_DIR$/django_cradmin/demo/uicontainerdemo/templates" />
+        <option value="$MODULE_DIR$/django_cradmin/demo/cradmin_gettingstarted/templates" />
       </list>
     </option>
   </component>
