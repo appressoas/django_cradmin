@@ -104,16 +104,20 @@ How lists works in CRadmin
 --------------------------
 
 
-Value Render Class
-------------------
-We are going to create a new class in the ``message_list_view_.py`` file which will render the value of each item in the
-list. The render class gets the value for each item in the lists. The view class, displays the list with all its values
-in the template. ::
+Item Value Listbuilder
+----------------------
+We are going to expand our ``message_list_view_.py`` with a listbuilder class and add functionality to our view class.
+The listbuilder class `MessageItemValue` builds what we are going to see in our view and gives each item in the list
+some values, while the class `MessageListBuilderView` is the view for showing what we have build. Since we need to do
+some customization, we need to create a template for both classes in the ``message_list_view.py`` file.
+
+Our `MessageItemValue` class looks like this. ::
 
     class MessageItemValue(listbuilder.itemvalue.TitleDescription):
         """Get values for items in the list"""
 
         valuealias = 'message'
+        template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder.django.html'
 
         def get_description(self):
             return self.message.body
@@ -121,15 +125,29 @@ in the template. ::
 The class we use as super, `TitleDescription` is one of several classes which render item values for a list. We want to
 get a hold of the body of a message and display it in the template. Now we could use context and a for-loop in our
 template which would work out fine in views which just shows one list where each element shall be displayed the
-same way. However, if you have multiple lists where some of them again contained new lists, you will end up with a lot
+same way. However, if you have multiple lists where some of them again containes new lists, you will end up with a lot
 of loops in the template and a not-easy-to-read code. Thus, increasing probalility for bugs and decreasing testability.
-In CRadmin the class ``AbstractRenderable`` sets `me` to be `self` in the context data. Further is the item value,
+In CRadmin the class ``AbstractRenderable`` sets `me` to be `self` in the context data. Therefor is the item value,
 wether being a list of lists or a list of single objects, refered to as `value`. This means in the template we can write
 `me.value` to show the message. Further we can use `self.value` in the view class to work with a message. Again, this
 would work fine in our example. However, if we have several lists of different objects, it would be hard to keep track
 of which object we are currently working with. So solve this problem we set `valuealias` which overrides `value`. So in
-the method `get_description` we can return the body of the message with `self.message.body`. To make our view use this
-functionality we add `value_renderer_class = MessageItemValue` underneath the model. ::
+the method `get_description` we can return the body of the message with `self.message.body`.
+
+Listbuilder template
+--------------------
+When displaying the list of messages in the template we want to show the account which posted the message and the
+timestamp. We do this by overriding the block ``description-content``. Here we must call super to get a hold of the code
+written in the template which we extends. When we call the super block the template will show the message body which we
+returned in the ``get_description`` method. Further we add a p-tag to show the account name and timestamp. As you can
+see we use the `valuealias` to get a hold of the instance of the message object.
+
+.. literalinclude:: /../django_cradmin/demo/cradmin_gettingstarted/templates/cradmin_gettingstarted/crapps/publicui/message_listbuilder.django.html
+
+Listbuilder View
+----------------
+We expaned our existing view by telling which value render class we want to use, which is our listbuilder class where we
+sat the item value. Further we set the template name. ::
 
     class MessageListBuilderView(listbuilderview.View):
         """Builds the list for the view"""
@@ -137,7 +155,17 @@ functionality we add `value_renderer_class = MessageItemValue` underneath the mo
         value_renderer_class = MessageItemValue
         template_name = 'cradmin_gettingstarted/crapps/publicui/message_list.django.html'
 
-Create message list template
-----------------------------
-In the template folder I have created a new html file which we for us to use.
+Listbuilder View Template
+-------------------------
+In this template we extend the defualt listbuilderview template in CRadmin and add some new content in the title and
+page-cover-title block. Further I don't want the content in the ``block messages`` to be seen. This has nothing to do
+with the message object we are working with. It is where messages such as `Created new account` or `Deleted account` is
+shown.
+
+In the ``block content`` I have styled a section and a div with some standard CSS classes which you find at
+`localhost/styleguide`. Further we need to add a div with the class `blocklist`. Within this div-tag we use a CRadmin
+tag called ``cradmin_render_renderable`` and tell it to render ``listbuilder_list``. CRadmin will render the template
+we created for our listbuilder with the item values we have decided.
+
+.. literalinclude:: /../django_cradmin/demo/cradmin_gettingstarted/templates/cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html
 
