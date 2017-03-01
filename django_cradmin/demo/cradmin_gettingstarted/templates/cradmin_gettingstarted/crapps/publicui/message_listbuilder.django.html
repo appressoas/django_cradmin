@@ -1,0 +1,9 @@
+{% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
+{% load cradmin_tags %}
+
+{% block description-content %}
+    {{ block.super }}
+    <p>
+        Posted by: {{ me.message.account }} at {{ me.message.creation_time }}
+    </p>
+{% endblock description-content %}

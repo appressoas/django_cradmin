@@ -1,0 +1,23 @@
+{% extends 'django_cradmin/viewhelpers/listbuilderview/default.django.html' %}
+{% load cradmin_tags %}
+
+{% block title %}
+    Gettingstarted
+{% endblock title  %}
+
+{% block page-cover-title %}
+    Messages
+{% endblock page-cover-title %}
+
+{% block messages %}{% endblock messages %}
+
+{% block content %}
+    <section class="adminui-page-section">
+        <div class="container container--wide">
+            <div class="blocklist">
+                {% cradmin_render_renderable listbuilder_list %}
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
