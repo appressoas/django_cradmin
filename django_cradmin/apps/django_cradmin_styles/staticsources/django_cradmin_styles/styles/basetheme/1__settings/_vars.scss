@@ -9,7 +9,7 @@ Media queries are **only** ment for the mobile first approach; Which means you d
 3. `lg: 960px`, - Large and up
 4. `xl: 1240px` - Extra large and up
 
-Styleguide 1.4
+Styleguide basic.2:breakpoints
 */
 $breakpoints: (
     xs: 440px, // Small and up
@@ -46,7 +46,7 @@ Never refer to a pixel-size for padding, margin or simular.
 
 If you space out content it's often best to use `$indention`. This way we can create consistent aligning for texts.
 
-Styleguide 1.5
+Styleguide basic.3:spacing
 */
 $unit: 6px !default;
 $spacing--xlarge: $unit * 40 !default; // TODO: Reduce this a bit and add a new for this big...
@@ -73,7 +73,7 @@ There is a system that creates proper line heights for text. **Never interfer wi
 - `vertical-space($spacing)` – Spacing variables is perfered over pixelvalues
 - `vertical-space(20px, 1.2)` – The other argument is to add extra increment if needed _(Simular to `20px * 1.2`)_
 
-Styleguide 1.6
+Styleguide basic.4:vertical-rhythm
 */
 $vertical-rythm: 7px !default; // TODO: Responsive? REM?
 $vertical-rythm--medium: ($vertical-rythm * 3) !default;
@@ -82,14 +82,25 @@ $vertical-rythm--spacing: ($vertical-rythm--medium) + $vertical-rythm !default;
 
 /* Borders
 
-TODO: Make some documentation...
+For borders, use one of the following variables,
+and prefer the ``*-style`` variables:
 
-Styleguide 1.7
+- `$border-width` - Default border width.
+- `$border-width--small` - Small/thin border width.
+- `$border-radius` - Use when setting border-radius.
+- `$border-style` - Default border style. Examples:
+    - ``border: $border-style;``
+    - ``border-top: $border-style;``
+- `$border-style` - Small/thin border style. Examples:
+    - ``border: $border-style--small;``
+    - ``border-top: $border-style--small;``
+
+Styleguide basic.5:borders
 */
 $border-width: 3px !default;
 $border-width--small: 2px !default;
 
-$border-radius: 5px;
+$border-radius: 5px !default;
 
 
 // Border style

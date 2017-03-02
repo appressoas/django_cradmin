@@ -1,3 +1,4 @@
+
 /*
 Fonts
 
@@ -16,110 +17,82 @@ Example: {syntax: scss, preview: false} Use these includes when a font is needed
     @include font(base, bold);
     @include font(mono);
 
-Styleguide 2.1
+Styleguide type.1:fonts
 */
 
-// TODO: Should remove all these variables, it's better to just override the map itself
-$font-base-font: Roboto, "Helvetica Neue" !default;
-$font-base-fallback: Arial, sans-serif !default;
-$font-base-normal: 400 !default;
-$font-base-bold: 700 !default;
-
-$font-header-font: Georgia !default;
-$font-header-fallback: sans-serif !default;
-$font-header-normal: 400 !default;
-$font-header-bold: 700 !default;
+// NEVER use these variables. Use the $fonts map, and override the entire
+// font map to change fonts.
+$__font-base: Roboto, "Helvetica Neue";
+$__font-monospace: "Lucida Console", "Monaco";
 
 $fonts: (
     base: (
-        font: $font-base-font,
-        fallback: $font-base-fallback,
-        normal: $font-base-normal,
-        bold: $font-base-bold
+        font: $__font-base,
+        fallback: sans-serif,
+        normal: 400,
+        bold: 700
     ),
     mono: (
-        font: $font-base-font,
-        fallback: $font-base-fallback,
-        normal: $font-base-normal,
-        bold: $font-base-normal
+        font: $__font-monospace,
+        fallback: monospace,
+        normal: 400,
+        bold: 400
     ),
     header: (
-        font: $font-header-font,
-        fallback: $font-header-fallback,
-        normal: $font-header-normal,
-        bold: $font-header-bold
+        font: Georgia,
+        fallback: sans-serif,
+        normal: 400,
+        bold: 700
     )
 ) !default;
 
 /* Font sizes
 
-Font sizes should be consistant, therefor never refer to a specific font size anywhere in the css.
+Font sizes should be consistent, therefor never refer to a specific
+font size anywhere in the css.
 
 # Just refer to the following sizes:
 
-1. `xsmall` - Rare cases where the font needs tro be smaller than usual</li>
-1. `small` - The default font size</li>
-1. `medium` - For small headers and preamble text</li>
-1. `large` - For headers</li>
-1. `xlarge` - For headers</li>
-1. `xxlarge` - For headers, use with care</li>
+1. `xsmall` - Rare cases where the font needs tro be smaller than usual
+1. `small` - The default font size
+1. `medium` - For small headers and preamble text
+1. `large` - For headers
+1. `xlarge` - For headers
+1. `xxlarge` - For headers, use with care
 
-Styleguide 2.2
+Styleguide type.2:font-sizes
 */
-
-// TODO: Should remove all these variables, it's better to just override the map itself
-$font-size-xsmall-base: 15px !default;
-$font-size-xsmall-md: ($font-size-xsmall-base + 1) !default;
-
-$font-size-small-base: (19px, 1.4) !default;
-$font-size-small-md: 21px !default;
-
-$font-size-medium-base: 22px !default;
-$font-size-medium-md: 24px !default;
-
-$font-size-large-base: 26px !default;
-$font-size-large-md: 32px !default;
-
-$font-size-xlarge-base: 34px !default;
-$font-size-xlarge-md: 42px !default;
-
-$font-size-xxlarge-base: 48px !default;
-$font-size-xxlarge-md: round($font-size-xxlarge-base * 1.25) !default;
-$font-size-xxlarge-lg: round($font-size-xxlarge-md * 1.24) !default;
-$font-size-xxlarge-xl: round($font-size-xxlarge-lg * 1.11) !default;
 
 $font-size: (
     xsmall: (
-        base: $font-size-xsmall-base,
-        md: $font-size-xsmall-md,
+        base: 15px,
+        md: 16px,
     ),
     small: (
-        base: $font-size-small-base,
-        md: $font-size-small-md,
+        base: (19px, 1.4),
+        md: 21px,
     ),
     medium: (
-        base: $font-size-medium-base,
-        md: $font-size-medium-base,
+        base: 22px,
+        md: 24px,
     ),
     large: (
-        base: $font-size-large-base,
-        md: $font-size-large-md,
+        base: 26px,
+        md: 32px,
     ),
     xlarge: (
-        base: $font-size-xlarge-base,
-        md: $font-size-xlarge-md,
+        base: 34px,
+        md: 42px,
     ),
     xxlarge: (
-        base: $font-size-xxlarge-base,
-        md: $font-size-xxlarge-md,
-        lg: $font-size-xxlarge-lg,
-        xl: $font-size-xxlarge-xl,
+        base: 30px,
+        xs: 40px,
+        md: 47px
     ),
     xxxlarge: (
-        base: $font-size-xxlarge-base,
-        md: $font-size-xxlarge-md,
-        lg: $font-size-xxlarge-lg,
-        xl: $font-size-xxlarge-xl,
+        base: 38px,
+        xs: 48px,
+        md: 60px
     ),
     smallcaps: (
         base: 0.78em

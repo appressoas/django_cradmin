@@ -227,7 +227,6 @@ Styleguide form.4:radio
         width: $unit * 4;
         height: $unit * 4;
 
-        border-radius: $border-radius;
         background-color: $color-light;
         border: $border-width solid color(neutral);
 
@@ -305,6 +304,10 @@ Styleguide form.4:radio
         width: $unit * 5;
         height: $unit * 5;
         line-height: 1;
+
+        // When $border-radius it too high, checkboxes look like
+        // radio buttons unless we do something like this
+        border-radius: min($border-radius, 5px);
 
         border: $border-width solid color(neutral);
         background-color: $color-light;
