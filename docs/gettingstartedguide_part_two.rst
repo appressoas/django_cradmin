@@ -14,7 +14,7 @@ This document contiunes the work done in :ref:`gettingstarted`.
 Easy show messages in template
 ==============================
 In this chapter we are going to create a new crapps named `publicui` which will have a listview for messages written by
-`Account` with a little code as possbile.
+an account with a little code as possbile.
 
 Model
 -----
@@ -47,9 +47,9 @@ Model
 
 CRadmin Instance
 ----------------
-In the folder `cradmin_instances` we create a new file which will hold the public instances of messages. I have named
+In the folder ``cradmin_instances`` we create a new file which will hold the public instances of messages. I have named
 the file ``message_publicui_cradmin_instance.py``. To create a CRadmin instance which is public require no role nor any
-login. This may be not correct since we also have implemented the CRadmin authentication, so if you try to look at any
+login. This may not be correct since we also have implemented the CRadmin authentication, so if you try to look at any
 page on localhost without being logged in, you will be promted to log in before gaining access to the page. However, we
 will create a CRadmin instance which require neither log in nor a role. Beside this the CRadmin instance is just like
 the once we have created.
@@ -59,8 +59,8 @@ the once we have created.
 
 Crapps
 ------
-In the ``crapps`` folder we create a new module names ``publicui``. Inside this module we add the file
-``message_list_view.py``. To just make all messages in the system show up in a template, we can use the template
+In the ``crapps`` folder we create a new module named ``publicui``. Inside this module we add the file
+``message_list_view.py``. To just make all messages in the system show up in a template, we can use the templates
 provided by CRadmin. Here we need to implement the method `get_queryset_for_role`, and since this is a view inside the
 public UI we can return all messages. ::
 
@@ -96,18 +96,19 @@ If you have added a message or two in Django admin, you will see them at `localh
 
 Expanding the listview for public messages
 ==========================================
-In the last chapter we rendered a listview using pretty much just built in template and functionality in CRadmin. Now we
-are going to expand our view and create our own template with a bit more functionality than what basic CRadmin offers.
-However, we are not going to create something totaly new. Everything we are going to use already lives inside CRadmin.
+In the last chapter we rendered a listview using pretty much just built in templates and functionality in CRadmin. Now
+we are going to expand our view and create our own template with a bit more functionality than what basic CRadmin
+offers. However, we are not going to create something totaly new. Almost everything we're going to use already lives
+inside CRadmin.
 
 Item Value Listbuilder
 ----------------------
-We are going to expand our ``message_list_view_.py`` with a listbuilder class and add functionality to our view class.
-The listbuilder class `MessageItemValue` builds what we are going to see in our view and gives each item in the list
-some values, while the class `MessageListBuilderView` is the view for showing what we have build. Since we need to do
-some customization, we need to create a template for both classes in the ``message_list_view.py`` file.
+We are going to a listbuilder class in the ``message_list_view_.py`` file and add functionality to our existing view
+class. The listbuilder class ``MessageItemValue`` builds what we are going to see in our view and gives each item in the
+list some values, while the class ``MessageListBuilderView`` is the view for showing what we have build. Since we need
+to do some customization, we need to create a template for both classes.
 
-Our `MessageItemValue` class looks like this. ::
+We start the work by writing the listbuilder item value class. ::
 
     class MessageItemValue(listbuilder.itemvalue.TitleDescription):
         """Get values for items in the list"""
@@ -118,26 +119,24 @@ Our `MessageItemValue` class looks like this. ::
         def get_description(self):
             return self.message.body
 
-The class we use as super, `TitleDescription` is one of several classes which render item values for a list. We want to
-get a hold of the body of a message and display it in the template. Now we could use context and a for-loop in our
-template which would work out fine in views which just shows one list where each element shall be displayed the
-same way. However, if you have multiple lists where some of them again containes new lists, you will end up with a lot
-of loops in the template and a not-easy-to-read code. Thus, increasing probalility for bugs and decreasing testability.
-In CRadmin the class ``AbstractRenderable`` sets `me` to be `self` in the context data. Therefor is the item value,
-wether being a list of lists or a list of single objects, refered to as `value`. This means in the template we can write
-`me.value` to show the message. Further we can use `self.value` in the view class to work with a message. Again, this
-would work fine in our example. However, if we have several lists of different objects, it would be hard to keep track
-of which object we are currently working with. So solve this problem we set `valuealias` which overrides `value`. So in
-the method `get_description` we can return the body of the message with `self.message.body`.
+We want to get a hold of the message body and display it in the template. We use the super ``TitleDescription`` which is
+one of several classes which render item values for a list. When overriding the method ``get_description`` we can return
+the body of a message. As you can see we use the valuealias to get a hold of the message. In CRadmin the class
+``AbstractRenderable`` sets `me` to be `self` in the context data. Therefore is the item value, wether being a list of
+lists or a list of single objects, refered to as ``value``. This means we can write ``me.value`` in the template to show
+the message. Further we can use `self.value` in the view class to work with a message. In our example where we just work
+with one list object, it may not be nesseccary to use an alias for value. However, if we have several lists of
+different objects, it would be hard to keep track of which object we are currently working with. So solve this problem
+we set ``valuealias`` which overrides ``value``.
 
-Listbuilder template
---------------------
+Item Value Template
+-------------------
 When displaying the list of messages in the template we want to show the account which posted the message and the
 timestamp. We do this by overriding the block ``description-content``. Here we must call super to get a hold of the code
 written in the template which we extends. When we call the super block the template will show the message body which we
 returned in the ``get_description`` method. Further we add a p-tag to show the account name and timestamp. As you can
-see we use the `valuealias` to get a hold of the instance of the message object. Here we can do it as difficult or as
-easy we want to. In this tutorial we just a span with a CRadmin test css class around the account name. ::
+see we use the ``valuealias`` to get a hold of the instance of the message object. Here we can do it as difficult or as
+easy we want to. In this tutorial we just use a span with a CRadmin test css class around the account name. ::
 
     {% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
     {% load cradmin_tags %}
@@ -152,8 +151,8 @@ easy we want to. In this tutorial we just a span with a CRadmin test css class a
 
 Listbuilder View
 ----------------
-We expaned our existing view by telling which value render class we want to use, which is our listbuilder class where we
-sat the item value. Further we set the template name. ::
+The next step is to tell our listbuilder view to use our newly create value render class and to decide which template
+we want for our view. ::
 
     class MessageListBuilderView(listbuilderview.View):
         """Builds the list for the view"""
@@ -164,14 +163,14 @@ sat the item value. Further we set the template name. ::
 Listbuilder View Template
 -------------------------
 In this template we extend the defualt listbuilderview template in CRadmin and add some new content in the title and
-page-cover-title block. Further I don't want the content in the ``block messages`` to be seen. This has nothing to do
-with the message object we are working with. It is where messages such as `Created new account` or `Deleted account` is
-shown.
+page-cover-title block. Further we can hide the content in the ``block messages`` by adding the block without calling
+the super. The ``block message`` has nothing to do with the message objects we are working with. It is where messages
+such as `Created new account` or `Deleted account` is shown.
 
-In the ``block content`` I have styled a section and a div with some standard CSS classes which you find at
-`localhost/styleguide`. Further we need to add a div with the class `blocklist`. Within this div-tag we use a CRadmin
-tag called ``cradmin_render_renderable`` and tell it to render ``listbuilder_list``. CRadmin will render the template
-we created for our listbuilder with the item values we have decided. ::
+In the ``block content`` we use the standard standard CSS classes which you find at `localhost/styleguide` on the html-
+tags. Further we need to add a div with the class ``blocklist`` where all the messages will be shown. Within this
+div-tag we use a CRadmin tag called ``cradmin_render_renderable`` and tell it to render ``listbuilder_list``. CRadmin
+will now render the template we created for our listbuilder view with the item values we have decided. ::
 
     {% extends 'django cradmin/viewhelpers/listbuilderview/default.django.html' %}
     {% load cradmin_tags %}
@@ -196,23 +195,22 @@ we created for our listbuilder with the item values we have decided. ::
          </section>
     {% endblock content %}
 
-Test public listview
+Test Public Listview
 --------------------
-Now that we have created one functionality it is time to do some tests. As always there are several scenarios to test,
+Now that we have created more functionality it is time to do some tests. As always there are several scenarios to test,
 and we have to choose what to test. The point is to write a little code and than test it, or write the test first
 and than the code. Either way, testing during development is important and should be done continuous for each bit of
 code which does something. As you may have noticed we have not written any integration tests seeing if CRadmin is
 working as intended with Django. This kind of testing is allready done in CRadmin, leaving unittesting to us.
 
-So I have chosen to test three things for our list view. First see if it displayes just one message and that the
-description title is equal to the message's title. Second test involves several messages and
-checks that the body of a each message is shown in the template. The third test is for what we did in the template
-``message_listbuilder.django.html`` and just checks if the account name which wrote the message is shown when the
-view renderes the list.
+So let's chose three things to test for our list view. First see if it displayes just one message and that the
+description title is equal to the message's title. Second test involves several messages and checks that the body of a
+each message is shown in the template. The third test is for what we did in the template
+``message_listbuilder.django.html`` and just checks if the account name which wrote the message is shown in template.
 
-So far we have used the hmtls selector `one`. When displaying several messages in a template we need to use the htmls
-selector `list` and count the number of times a CSS class occour, which should be equal to the number of messages mommy
-makes. The tests is added in the file ``test_messages_list_view.py`` inside a new ``test_publicui`` module. ::
+So far we have used the hmtls selector ``one``. When displaying several messages in a template we need to use the htmls
+selector ``list`` and count the number of times a CSS class occour, which should be equal to the number of messages
+mommy makes. The tests is added in the file ``test_messages_list_view.py`` inside a new ``test_publicui`` module. ::
 
     from django.test import TestCase
     from model_mommy import mommy
@@ -255,12 +253,12 @@ makes. The tests is added in the file ``test_messages_list_view.py`` inside a ne
             name_in_template = mockresponse.selector.one('.test-listbuilder-posted-by-account').text_normalized
             self.assertEqual(account.name, name_in_template)
 
-As you probarly remember you can use `mockresponse.selector.prettyprint()` to print the tempate in your terminal and
+As you probarly remember you can use ``mockresponse.selector.prettyprint()`` to print the template in your terminal and
 find which tests css classes used in CRadmin if you have a mock request with htmls.
 
 Make list item a link
 ---------------------
-The plan is to later on making a detail view in the public UI so one can get more information about each message.
+The plan is to later on make a detail view in the public UI so one can get more information about each message.
 Therefore we need to make each list element a link. For the time being the link will just take us to the list view. To
 make this happen we will use the Link class in ``listbuilder.itemframe` and use the methode ``get_url``. This method
 will return ``cradmin_reverse_url`` where we set the id of the CRadmin instance and the app name. In our case the id is
@@ -311,9 +309,9 @@ messages we want to show on one page by adding the value to the variable `pagina
 Template improvement
 --------------------
 In our template we need to add a if test for the pagination. Further we also need a if test if there is no messages in
-the system. For the latter we use the CRadmin `listbuilder_list` which is what we told to be rendered with the
-CRadmin tag `cradmin_render_renderable`. If the `listbuilder_list` is empty we just display information about this in
-the ``block messages`` above the content. Our ``message_listbuilder_view.django.html`` file now looks like this. ::
+the system. For the latter we use the CRadmin ``listbuilder_list`` which is what we told to be rendered with the
+CRadmin tag ``cradmin_render_renderable``. If the ``listbuilder_list`` is empty we just display information about this
+in the ``block messages`` above the content. Our ``message_listbuilder_view.django.html`` file now looks like this. ::
 
     {% extends 'django_cradmin/viewhelpers/listbuilderview/default.django.html' %}
     {% load cradmin_tags %}
@@ -391,9 +389,9 @@ added two CRadmin test css classes which we use in our test. ::
         self.assertEqual('No messages in system', no_messages_html_text)
 
 As you can see the tests just checks that the expected text is displayed in the template based on the number of
-messages in the system. In both tests we use the `text_normalixed` since the text is shown in the html-tag which has a
+messages in the system. In both tests we use the ``text_normalized`` since the text is shown in the html-tag which has a
 CRadmin test css class. If the html-tag displaying the text was a child of the tag which had a CRadmin css test class,
-we would use `alltext_normalized` to fetch the text from the template.
+we would use ``alltext_normalized`` to fetch the text from the template.
 
 Do you remember to take a break from the screen and stretch you body?
 
