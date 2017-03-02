@@ -17,7 +17,7 @@ Example: {syntax: scss, preview: false} Use these includes when a font is needed
     @include font(base, bold);
     @include font(mono);
 
-Styleguide 2.1
+Styleguide type.1:fonts
 */
 
 // NEVER use these variables. Use the $fonts map, and override the entire
@@ -60,7 +60,7 @@ font size anywhere in the css.
 1. `xlarge` - For headers
 1. `xxlarge` - For headers, use with care
 
-Styleguide 2.2
+Styleguide type.2:font-sizes
 */
 
 $font-size: (
