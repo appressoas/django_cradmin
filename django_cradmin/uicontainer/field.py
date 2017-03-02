@@ -358,9 +358,9 @@ class Field(BaseFieldRenderable):
 
         Used by :class:`django_cradmin.uicontainer.label.Label`.
 
-        Defaults to :meth:`.should_render_as_subwidgets`.
+        Defaults to :meth:`.should_render_as_child_of_label`.
         """
-        return not self.should_render_as_subwidgets()
+        return not self.should_render_as_child_of_label()
 
     def should_render_as_child_of_label(self):
         """
@@ -368,11 +368,7 @@ class Field(BaseFieldRenderable):
 
         Used by :class:`django_cradmin.uicontainer.label.Label`.
         """
-        if self.should_render_as_subwidgets() \
-                or self.is_checkbox_widget() \
-                or self.is_select_widget() \
-                or self.is_select_multiple_widget() \
-                or not self.field_wrapper_renderable.label_renderable.should_render:
+        if self.is_checkbox_widget():
             return True
         return False
 
