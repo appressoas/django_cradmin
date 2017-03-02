@@ -49,30 +49,5 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_if_no_messages_in_system(self):
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertTrue(mockresponse.selector.one('.test-no-messages'))
-        no_messages_html_text = mockresponse.selector.one('.test-no-messages').alltext_normalized
+        no_messages_html_text = mockresponse.selector.one('.test-no-messages').text_normalized
         self.assertEqual('No messages in system', no_messages_html_text)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

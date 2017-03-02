@@ -268,8 +268,8 @@ Template improvement
 --------------------
 In our template we need to add a if test for the pagination. Further we also need a if test if there is no messages in
 the system. For the latter we use the CRadmin `listbuilder_list` which is what we told to be rendered with the
-CRadmin tag `cradmin_render_renderable`. If the `listbuilder_list` is empty we just display a blocklist element which
-says there is no messages in the system. Our ``message_listbuilder_view.django.html`` file now looks like this. ::
+CRadmin tag `cradmin_render_renderable`. If the `listbuilder_list` is empty we just display information about this in
+the ``block messages`` above the content. Our ``message_listbuilder_view.django.html`` file now looks like this. ::
 
     {% extends 'django_cradmin/viewhelpers/listbuilderview/default.django.html' %}
     {% load cradmin_tags %}
@@ -311,13 +311,7 @@ says there is no messages in the system. Our ``message_listbuilder_view.django.h
                         </div>
                     {% endif %}
                 {% else %}
-                    <div class="blocklist">
-                        <section class="blocklist_item {% cradmin_test_css_class 'no-messages' %}">
-                            <h2 class="blocklist__itemtitle blocklist__itemtitle--large">
-                                No messages in system
-                            </h2>
-                        </section>
-                    </div>
+                    <p class="message {% cradmin_test_css_class 'no-messages' %}"> No messages in system</p>
                 {% endif %}
             </div>
         </section>
@@ -347,14 +341,13 @@ there is added two CRadmin test css classes which we use in our test. ::
     def test_if_no_messages_in_system(self):
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertTrue(mockresponse.selector.one('.test-no-messages'))
-        no_messages_html_text = mockresponse.selector.one('.test-no-messages').alltext_normalized
+        no_messages_html_text = mockresponse.selector.one('.test-no-messages').text_normalized
         self.assertEqual('No messages in system', no_messages_html_text)
 
 As you can see the tests just checks that the expected text is displayed in the template based on the number of
-messages in the system. In the first test we use `text_normalized` to the the text from the template, since the text is
-here shown in the html-tag which has a CRadmin test css class. In the second test the text we want to fecth from the
-template is in a html-tag which is a child of the tag which have the CRadmin test css class. Therefore we need to use
-`alltext_normalized` to fetch the text.
+messages in the system. In both tests we use the `text_normalixed` since the text is shown in the html-tag which has a
+CRadmin test css class. If the html-tag displaying the text was a child of the tag which had a CRadmin css test class,
+we would use ``alltext_normalized` to fetch the text from the template.
 
 Do you remember to take a break from the screen and stretch you body?
 
