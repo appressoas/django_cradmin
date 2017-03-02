@@ -25,7 +25,7 @@ class MessageListBuilderView(listbuilderview.View):
 
     model = Message
     value_renderer_class = MessageItemValue
-    # frame_renderer_class = MessageItemFrameLink
+    frame_renderer_class = MessageItemFrameLink
     template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html'
     # paginate_by = 1
 

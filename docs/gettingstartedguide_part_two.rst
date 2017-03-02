@@ -182,7 +182,7 @@ description title is equal to the message's title. Second tests involves several
 in the class ``MessageItemValue`` and in the template ``message_listbuilder.django.html`` does what we want it to do.
 So far we have used the hmtls selector `one`. When displaying several messages in a template we need to use the htmls
 selector `list` and count the number of times a CSS class occur, which should be equal to the number of messages mommy
-makes. ::
+makes. The tests is added in the file ``test_messages_list_view.py`` inside a new ``test_publicui`` module. ::
 
     from django.test import TestCase
     from model_mommy import mommy
@@ -213,4 +213,40 @@ makes. ::
 
 As you probarly remember you can use `mockresponse.selector.prettyprint()` to print the tempate in your terminal and
 find which tests css classes used in CRadmin if you have a mock request with htmls.
+
+Make list item a link
+---------------------
+The plan is to later on making a detail view in the public UI so one can get more information about each message.
+Therefore we need to make each list element a link. For the time being the link will just take us to the list view. To
+make this happen we will use the Link class in ``listbuilder.itemframe` and use the methode ``get_url``. This method
+will return ``cradmin_reverse_url`` where we set the id of the CRadmin instance and the app name. In our case the id is
+`cr_public_message` and the appname is `public_message`, as written in the CRadmin instance file for the public UI. ::
+
+    class MessageItemFrameLink(listbuilder.itemframe.Link):
+        """Make each frame around the list itmes a link"""
+
+        def get_url(self):
+            return reverse_cradmin_url(instanceid='cr_public_message', appname='public_message')
+
+In our listbuilder view we set the ``frame_renderer_class`` to be our newly created Link class. ::
+
+    class MessageListBuilderView(listbuilderview.View):
+        """Builds the list for the view"""
+
+        model = Message
+        value_renderer_class = MessageItemValue
+        frame_renderer_class = MessageItemFrameLink
+
+Test item frame and link
+------------------------
+Since we will change the link url later on, all we tests for now is if it renders. Lets write the test in our
+``test_message_list_view.py`` file. ::
+
+        def test_item_frame_and_link_from_listbuilder(self):
+            mommy.make('cradmin_gettingstarted.Message')
+            mockresponse = self.mock_http200_getrequest_htmls()
+            render_item_frame = mockresponse.selector.one('.test-cradmin-listbuilder-item-frame-renderer')
+            listbuilder_link = mockresponse.selector.one('.test-cradmin-listbuilder-link')
+            self.assertTrue(render_item_frame)
+            self.assertTrue(listbuilder_link)
 

@@ -25,3 +25,11 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
         messages_in_template = mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description')
         self.assertEqual(5, len(messages_in_template))
+
+    def test_item_frame_and_link_from_listbuilder(self):
+        mommy.make('cradmin_gettingstarted.Message')
+        mockresponse = self.mock_http200_getrequest_htmls()
+        render_item_frame = mockresponse.selector.one('.test-cradmin-listbuilder-item-frame-renderer')
+        listbuilder_link = mockresponse.selector.one('.test-cradmin-listbuilder-link')
+        self.assertTrue(render_item_frame)
+        self.assertTrue(listbuilder_link)
