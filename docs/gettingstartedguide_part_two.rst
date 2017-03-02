@@ -165,21 +165,44 @@ shown.
 In the ``block content`` I have styled a section and a div with some standard CSS classes which you find at
 `localhost/styleguide`. Further we need to add a div with the class `blocklist`. Within this div-tag we use a CRadmin
 tag called ``cradmin_render_renderable`` and tell it to render ``listbuilder_list``. CRadmin will render the template
-we created for our listbuilder with the item values we have decided.
+we created for our listbuilder with the item values we have decided. ::
 
-.. literalinclude:: /../django_cradmin/demo/cradmin_gettingstarted/templates/cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html
+    {% extends 'django cradmin/viewhelpers/listbuilderview/default.django.html' %}
+    {% load cradmin_tags %}
+
+    {% block title %}
+        Gettingstarted
+    {% endblock title  %}
+
+    {% block page-cover-title %}
+        Messages
+    {% endblock page-cover-title %}
+
+    {% block messages %}{% endblock messages %}
+
+    {% block content %}
+         <section class="adminui-page-section">
+             <div class="container container--wide">
+                 <div class="blocklist">
+                     {% cradmin_render_renderable listbuilder_list %}
+                 </div>
+             </div>
+         </section>
+    {% endblock content %}
 
 Test public listview
 --------------------
 Now that we have created one functionality it is time to do some tests. As always there are several scenarios to test,
-and we have to choose what to test first. The point is to write a little code and than test it, or write the test first
-and than the code. Either way, testing during development is important and should be done continuerly for each bit of
+and we have to choose what to test. The point is to write a little code and than test it, or write the test first
+and than the code. Either way, testing during development is important and should be done continuous for each bit of
 code which does something. As you may have noticed we have not written any integration tests seeing if CRadmin is
 working as intended with Django. This kind of testing is allready done in CRadmin, leaving unittesting to us.
 
-So I have chosen to test two things for our list view. First see if it displayes just one message and that the
-description title is equal to the message's title. Second tests involves several messages and checks that the we wrote
-in the class ``MessageItemValue`` and in the template ``message_listbuilder.django.html`` does what we want it to do.
+So I have chosen to test three things for our list view. First see if it displayes just one message and that the
+description title is equal to the message's title. Second test involves several messages and
+checks that the body of a each message is shown in the template. The third test checks if the Account which wrote the
+message is the Account name shown in the template.
+
 So far we have used the hmtls selector `one`. When displaying several messages in a template we need to use the htmls
 selector `list` and count the number of times a CSS class occur, which should be equal to the number of messages mommy
 makes. The tests is added in the file ``test_messages_list_view.py`` inside a new ``test_publicui`` module. ::
@@ -322,11 +345,11 @@ the ``block messages`` above the content. Our ``message_listbuilder_view.django.
 
 Test pagination
 ---------------
-It is again time to write some tests to see if both the pagination works as expected and if that the if test for no
-messages works. Now, I take it for granted that Django writes tests for their code, so there is no need for deep tests
-of the pagination. On the other side, we want to be sure that we have implemented the pagination correctly in both the
-view and in the template. Thus, a test for handling a certain amount of messages should be written. In the template
-there is added two CRadmin test css classes which we use in our test. ::
+It is again time to write some tests to see if both the pagination works as expected and if the if test for no messages
+works. Now, I take it for granted that Django writes tests for their code, so there is no need for deep tests of the
+pagination. On the other side, we want to be sure that we have implemented the pagination correctly in both the view
+and in the template. Thus, a test for handling a certain amount of messages should be written. In the template there is
+added two CRadmin test css classes which we use in our test. ::
 
     def test_pagination(self):
         """
@@ -349,7 +372,7 @@ there is added two CRadmin test css classes which we use in our test. ::
 As you can see the tests just checks that the expected text is displayed in the template based on the number of
 messages in the system. In both tests we use the `text_normalixed` since the text is shown in the html-tag which has a
 CRadmin test css class. If the html-tag displaying the text was a child of the tag which had a CRadmin css test class,
-we would use ``alltext_normalized` to fetch the text from the template.
+we would use `alltext_normalized` to fetch the text from the template.
 
 Do you remember to take a break from the screen and stretch you body?
 

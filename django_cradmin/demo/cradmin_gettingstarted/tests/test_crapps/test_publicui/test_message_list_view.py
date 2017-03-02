@@ -26,6 +26,37 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         messages_in_template = mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description')
         self.assertEqual(5, len(messages_in_template))
 
+    def test_account_name_displayed_in_message_description(self):
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            name='My Account'
+        )
+        mommy.make(
+            'cradmin_gettingstarted.Message',
+            account=account
+        )
+        mockresponse = self.mock_http200_getrequest_htmls()
+        self.assertTrue(mockresponse.selector.one('.test-listbuilder-account-name'))
+        name_in_template = mockresponse.selector.one('.test-listbuilder-account-name').text_normalized
+        self.assertEqual(account.name, name_in_template)
+
+    def test_correct_account_name_when_several_accounts(self):
+        account = mommy.make(
+            'cradmin_gettingstarted.Account',
+            name='My Account'
+        )
+        mommy.make('cradmin_gettingstarted.Account', _quantity=10)
+        mommy.make(
+            'cradmin_gettingstarted.Message',
+            account=account
+        )
+        mockresponse = self.mock_http200_getrequest_htmls()
+        mockresponse.selector.prettyprint()
+        self.assertTrue(mockresponse.selector.one('.test-listbuilder-account-name'))
+
+
+
+
     def test_item_frame_and_link_from_listbuilder(self):
         mommy.make('cradmin_gettingstarted.Message')
         mockresponse = self.mock_http200_getrequest_htmls()

@@ -3,7 +3,14 @@
 
 {% block description-content %}
     {{ block.super }}
-    <p>
-        Posted by: {{ me.message.account }} at {{ me.message.creation_time }}
+    <p class="account-id-{{ me.message.account_id }}">
+        Posted by:
+        <span class="{% cradmin_test_css_class 'listbuilder-account-name' %}">
+            {{ me.message.account }}
+        </span>
+        at
+        <span class="{% cradmin_test_css_class 'listbuilder-message-creation-time' %}">
+            {{ me.message.creation_time }}
+        </span>
     </p>
 {% endblock description-content %}
