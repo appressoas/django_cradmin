@@ -14,9 +14,38 @@
 {% block content %}
     <section class="adminui-page-section">
         <div class="container container--wide">
-            <div class="blocklist">
-                {% cradmin_render_renderable listbuilder_list %}
-            </div>
+            {% if listbuilder_list %}
+                <div class="blocklist">
+                    {% cradmin_render_renderable listbuilder_list %}
+                </div>
+                {% if is_paginated %}
+                    <div class="pagination">
+                        <span class="page-links">
+                            {% if page_obj.has_previous %}
+                                <a href="/gettingstarted/messages?page={{ page_obj.previous_page_number }}">
+                                    << previous
+                                </a>
+                            {% endif %}
+                            <span class="page-current {% cradmin_test_css_class 'number-of-pages' %} ">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            {% if page_obj.has_next %}
+                                <a href="/gettingstarted/messages?page={{ page_obj.next_page_number }}">
+                                    next >>
+                                </a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="blocklist">
+                    <section class="blocklist_item {% cradmin_test_css_class 'no-messages' %}">
+                        <h2 class="blocklist__itemtitle blocklist__itemtitle--large">
+                            No messages in system
+                        </h2>
+                    </section>
+                </div>
+            {% endif %}
         </div>
     </section>
 

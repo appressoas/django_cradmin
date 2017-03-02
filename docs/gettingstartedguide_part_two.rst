@@ -250,3 +250,113 @@ Since we will change the link url later on, all we tests for now is if it render
             self.assertTrue(render_item_frame)
             self.assertTrue(listbuilder_link)
 
+Pagination in public message list
+=================================
+In this example we use the Pagination in Django. In our class ``MessageListBuilderView`` we just add the number of
+messages we want to show on one page by adding the value to the variable `paginate_by`. ::
+
+    class MessageListBuilderView(listbuilderview.View):
+        """Builds the list for the view"""
+
+        model = Message
+        value_renderer_class = MessageItemValue
+        frame_renderer_class = MessageItemFrameLink
+        template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html'
+        paginate_by = 10
+
+Template improvement
+--------------------
+In our template we need to add a if test for the pagination. Further we also need a if test if there is no messages in
+the system. For the latter we use the CRadmin `listbuilder_list` which is what we told to be rendered with the
+CRadmin tag `cradmin_render_renderable`. If the `listbuilder_list` is empty we just display a blocklist element which
+says there is no messages in the system. Our ``message_listbuilder_view.django.html`` file now looks like this. ::
+
+    {% extends 'django_cradmin/viewhelpers/listbuilderview/default.django.html' %}
+    {% load cradmin_tags %}
+
+    {% block title %}
+        Gettingstarted
+    {% endblock title  %}
+
+    {% block page-cover-title %}
+        Messages
+    {% endblock page-cover-title %}
+
+    {% block messages %}{% endblock messages %}
+
+    {% block content %}
+        <section class="adminui-page-section">
+            <div class="container container--wide">
+                {% if listbuilder_list %}
+                    <div class="blocklist">
+                        {% cradmin_render_renderable listbuilder_list %}
+                    </div>
+                    {% if is_paginated %}
+                        <div class="pagination">
+                            <span class="page-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="/gettingstarted/messages?page={{ page_obj.previous_page_number }}">
+                                        << previous
+                                    </a>
+                                {% endif %}
+                                <span class="page-current {% cradmin_test_css_class 'number-of-pages' %} ">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </span>
+                                {% if page_obj.has_next %}
+                                    <a href="/gettingstarted/messages?page={{ page_obj.next_page_number }}">
+                                        next >>
+                                    </a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="blocklist">
+                        <section class="blocklist_item {% cradmin_test_css_class 'no-messages' %}">
+                            <h2 class="blocklist__itemtitle blocklist__itemtitle--large">
+                                No messages in system
+                            </h2>
+                        </section>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+    {% endblock content %}
+
+Test pagination
+---------------
+It is again time to write some tests to see if both the pagination works as expected and if that the if test for no
+messages works. Now, I take it for granted that Django writes tests for their code, so there is no need for deep tests
+of the pagination. On the other side, we want to be sure that we have implemented the pagination correctly in both the
+view and in the template. Thus, a test for handling a certain amount of messages should be written. In the template
+there is added two CRadmin test css classes which we use in our test. ::
+
+    def test_pagination(self):
+        """
+        Paginate_by is sat to 10 in
+        :class:`django_cradmin.demo.cradmin_gettingstarted.crapps.publicui.message_list_view.MessageListBuilderView`.
+        If this value is changed you must update text in self.assertEqual for test to pass.
+        """
+        mommy.make('cradmin_gettingstarted.Message', _quantity=1000)
+        mockresponse = self.mock_http200_getrequest_htmls()
+        self.assertTrue(mockresponse.selector.one('.test-number-of-pages'))
+        number_of_pages_html_text = mockresponse.selector.one('.test-number-of-pages').text_normalized
+        self.assertEqual('Page 1 of 100.', number_of_pages_html_text)
+
+    def test_if_no_messages_in_system(self):
+        mockresponse = self.mock_http200_getrequest_htmls()
+        self.assertTrue(mockresponse.selector.one('.test-no-messages'))
+        no_messages_html_text = mockresponse.selector.one('.test-no-messages').alltext_normalized
+        self.assertEqual('No messages in system', no_messages_html_text)
+
+As you can see the tests just checks that the expected text is displayed in the template based on the number of
+messages in the system. In the first test we use `text_normalized` to the the text from the template, since the text is
+here shown in the html-tag which has a CRadmin test css class. In the second test the text we want to fecth from the
+template is in a html-tag which is a child of the tag which have the CRadmin test css class. Therefore we need to use
+`alltext_normalized` to fetch the text.
+
+Do you remember to take a break from the screen and stretch you body?
+
+Create our own CSS class for public message list view
+=====================================================

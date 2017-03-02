@@ -33,3 +33,46 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         listbuilder_link = mockresponse.selector.one('.test-cradmin-listbuilder-link')
         self.assertTrue(render_item_frame)
         self.assertTrue(listbuilder_link)
+
+    def test_pagination(self):
+        """
+        Paginate_by is sat to 10 in
+        :class:`django_cradmin.demo.cradmin_gettingstarted.crapps.publicui.message_list_view.MessageListBuilderView`.
+        If this value is changed you must update text in self.assertEqual for test to pass.
+        """
+        mommy.make('cradmin_gettingstarted.Message', _quantity=1000)
+        mockresponse = self.mock_http200_getrequest_htmls()
+        self.assertTrue(mockresponse.selector.one('.test-number-of-pages'))
+        number_of_pages_html_text = mockresponse.selector.one('.test-number-of-pages').text_normalized
+        self.assertEqual('Page 1 of 100.', number_of_pages_html_text)
+
+    def test_if_no_messages_in_system(self):
+        mockresponse = self.mock_http200_getrequest_htmls()
+        self.assertTrue(mockresponse.selector.one('.test-no-messages'))
+        no_messages_html_text = mockresponse.selector.one('.test-no-messages').alltext_normalized
+        self.assertEqual('No messages in system', no_messages_html_text)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
