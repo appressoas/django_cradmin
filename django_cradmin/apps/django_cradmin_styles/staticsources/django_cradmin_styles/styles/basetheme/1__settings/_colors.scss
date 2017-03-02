@@ -30,33 +30,35 @@
 Styleguide basic.1:colors
 */
 
-$color-primary-base: #57917E !default;
-$color-secondary-base: #58758D !default;
-$color-neutral-base: mix(#f5f4f0, #393939, 50%) !default;
+// NEVER use these variables. Use the $colors map, and override the entire
+// $colors map to change colors.
+$__color-primary-base: #57917E;
+$__color-secondary-base: #58758D;
+$__color-neutral-base: mix(#f5f4f0, #393939, 50%);
 
 $colors: (
     primary: (
-        base: $color-primary-base,
-        dark: shade($color-primary-base, 20%)
+        base: $__color-primary-base,
+        dark: shade($__color-primary-base, 20%)
     ),
     secondary: (
-        base: $color-secondary-base,
-        dark: shade($color-secondary-base, 20%)
+        base: $__color-secondary-base,
+        dark: shade($__color-secondary-base, 20%)
     ),
     neutral: (
-        xlight: tint($color-neutral-base, 91%),
-        light: tint($color-neutral-base, 50%),
-        base: $color-neutral-base,
-        dark: shade($color-neutral-base, 20%),
-        xdark: shade($color-neutral-base, 80%)
+        xlight: tint($__color-neutral-base, 91%),
+        light: tint($__color-neutral-base, 50%),
+        base: $__color-neutral-base,
+        dark: shade($__color-neutral-base, 20%),
+        xdark: shade($__color-neutral-base, 80%)
     )
 ) !default;
 
 $color-light: #fff !default;
 $color-dark: color(neutral, xdark) !default;
-$color-warning: mix(red, $color-neutral-base, 60%) !default;
-$color-success: mix(green, $color-neutral-base, 60%) !default;
-$color-info: mix(#ffce00, $color-neutral-base, 90%) !default;
+$color-warning: mix(red, $__color-neutral-base, 60%) !default;
+$color-success: mix(green, $__color-neutral-base, 60%) !default;
+$color-info: mix(#ffce00, $__color-neutral-base, 90%) !default;
 
 
 // Specific colors.
