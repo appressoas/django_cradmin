@@ -1,6 +1,8 @@
 {% comment %}
     Base template for guide templates.
-{% endcomment %}<!DOCTYPE html>
+{% endcomment %}{% spaceless %}
+    {% load cradmin_javascriptregistry_tags %}
+{% endspaceless %}<!DOCTYPE html>
 <html {% block html_element_attributes %}lang="en"{% endblock %}>
     <head>
         <meta charset="utf-8">
@@ -12,10 +14,10 @@
         {% block styles %}
             <link href='{{ styleguideconfig.get_cssurl_for_styleguide }}' rel="stylesheet">
         {% endblock styles %}
+        {% block javascriptregistry-head %}
+            {% cradmin_javascriptregistry_head %}
+        {% endblock javascriptregistry-head %}
 
-        {% block javascript %}
-            {# Override this to add javascript #}
-        {% endblock javascript %}
     </head>
     <body class="{% block bodyclass %}kss-content{% endblock %}">
         {% block nav %}{% endblock nav %}
@@ -26,5 +28,9 @@
         </main>
 
         {% block end-of-body %}{% endblock end-of-body %}
+
+        {% block javascriptregistry-end-of-body %}
+            {% cradmin_javascriptregistry_end_of_body %}
+        {% endblock javascriptregistry-end-of-body %}
     </body>
 </html>
