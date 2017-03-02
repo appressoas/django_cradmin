@@ -25,7 +25,7 @@ class GuideListView(viewhelpers.generic.StandaloneBaseTemplateView):
         return context
 
 
-class GuideView(TemplateView):
+class GuideView(TemplateView, javascriptregistry.viewmixin.MinimalViewMixin):
     template_name = 'cradmin_kss_styleguide/styleguideview/guide.django.html'
 
     def get_styleguideconfig(self):
@@ -46,5 +46,5 @@ class GuideView(TemplateView):
         styleguideconfig = self.get_styleguideconfig()
         context['styleguideconfig'] = styleguideconfig
         context['kss_styleguide'] = styleguideconfig.make_kss_styleguide()
-        context['cradmin_javascriptregistry_component_ids'] = self.styleguideconfig.javascript_component_ids
+        self.add_javascriptregistry_component_ids_to_context(context)
         return context
