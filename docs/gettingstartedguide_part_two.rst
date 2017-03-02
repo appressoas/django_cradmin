@@ -100,10 +100,6 @@ In the last chapter we rendered a listview using pretty much just built in templ
 are going to expand our view and create our own template with a bit more functionality than what basic CRadmin offers.
 However, we are not going to create something totaly new. Everything we are going to use already lives inside CRadmin.
 
-How lists works in CRadmin
---------------------------
-
-
 Item Value Listbuilder
 ----------------------
 We are going to expand our ``message_list_view_.py`` with a listbuilder class and add functionality to our view class.
@@ -140,9 +136,19 @@ When displaying the list of messages in the template we want to show the account
 timestamp. We do this by overriding the block ``description-content``. Here we must call super to get a hold of the code
 written in the template which we extends. When we call the super block the template will show the message body which we
 returned in the ``get_description`` method. Further we add a p-tag to show the account name and timestamp. As you can
-see we use the `valuealias` to get a hold of the instance of the message object.
+see we use the `valuealias` to get a hold of the instance of the message object. Here we can do it as difficult or as
+easy we want to. In this tutorial we just a span with a CRadmin test css class around the account name. ::
 
-.. literalinclude:: /../django_cradmin/demo/cradmin_gettingstarted/templates/cradmin_gettingstarted/crapps/publicui/message_listbuilder.django.html
+    {% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
+    {% load cradmin_tags %}
+
+    {% block description-content %}
+        {{ block.super }}
+        <p>
+            Posted by: <span class="{% cradmin_test_css_class 'listbuilder-posted-by-account' %}">
+            {{ me.message.account }}</span> at {{ me.message.creation_time }}
+        </p>
+    {% endblock description-content %}
 
 Listbuilder View
 ----------------
@@ -200,11 +206,12 @@ working as intended with Django. This kind of testing is allready done in CRadmi
 
 So I have chosen to test three things for our list view. First see if it displayes just one message and that the
 description title is equal to the message's title. Second test involves several messages and
-checks that the body of a each message is shown in the template. The third test checks if the Account which wrote the
-message is the Account name shown in the template.
+checks that the body of a each message is shown in the template. The third test is for what we did in the template
+``message_listbuilder.django.html`` and just checks if the account name which wrote the message is shown when the
+view renderes the list.
 
 So far we have used the hmtls selector `one`. When displaying several messages in a template we need to use the htmls
-selector `list` and count the number of times a CSS class occur, which should be equal to the number of messages mommy
+selector `list` and count the number of times a CSS class occour, which should be equal to the number of messages mommy
 makes. The tests is added in the file ``test_messages_list_view.py`` inside a new ``test_publicui`` module. ::
 
     from django.test import TestCase
@@ -233,6 +240,20 @@ makes. The tests is added in the file ``test_messages_list_view.py`` inside a ne
             self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
             messages_in_template = mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description')
             self.assertEqual(5, len(messages_in_template))
+
+        def test_account_name_displayed_in_message_description(self):
+            account = mommy.make(
+                'cradmin_gettingstarted.Account',
+                name='My Account'
+            )
+            mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=account
+            )
+            mockresponse = self.mock_http200_getrequest_htmls()
+            self.assertTrue(mockresponse.selector.one('.test-listbuilder-posted-by-account'))
+            name_in_template = mockresponse.selector.one('.test-listbuilder-posted-by-account').text_normalized
+            self.assertEqual(account.name, name_in_template)
 
 As you probarly remember you can use `mockresponse.selector.prettyprint()` to print the tempate in your terminal and
 find which tests css classes used in CRadmin if you have a mock request with htmls.
