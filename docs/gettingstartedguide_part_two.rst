@@ -311,7 +311,9 @@ the ``block messages`` above the content. Our ``message_listbuilder_view.django.
                         </div>
                     {% endif %}
                 {% else %}
-                    <p class="message {% cradmin_test_css_class 'no-messages' %}"> No messages in system</p>
+                    <p class="text-center message message--info {% cradmin_test_css_class 'no-messages' %}">
+                        No messages in system
+                    </p>
                 {% endif %}
             </div>
         </section>
