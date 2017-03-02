@@ -395,5 +395,10 @@ we would use ``alltext_normalized`` to fetch the text from the template.
 
 Do you remember to take a break from the screen and stretch you body?
 
+Admin UI for Messages
+=====================
+
+
 Create our own CSS class for public message list view
 =====================================================
+This should be in a later part
