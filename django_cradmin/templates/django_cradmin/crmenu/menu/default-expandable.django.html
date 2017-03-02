@@ -3,19 +3,20 @@
 
 {% block list-element-attributes %}
     data-ievv-jsbase-widget="cradmin-toggleable-menu"
+    data-ievv-jsbase-widget-config='{"activeCssClass": "{{ me.bem_block }}--expanded"}'
 {% endblock list-element-attributes %}
 
 {% block content %}
-    <div class="adminui-expandable-menu__backdrop" data-ievv-jsbase-widget="cradmin-menutoggle"></div>
-    <div class="adminui-expandable-menu__content">
-        <button type="button" class="adminui-expandable-menu__close"
+    <div class="{{ me.bem_block }}__backdrop" data-ievv-jsbase-widget="cradmin-menutoggle"></div>
+    <div class="{{ me.bem_block }}__content">
+        <button type="button" class="{{ me.bem_block }}__close"
                 data-ievv-jsbase-widget="cradmin-menutoggle">
             <i class="icon-close--light" aria-hidden="true" role="presentation">
             </i>
             <span class="screenreader-only">{% trans "Close menu" %}</span>
         </button>
 
-        <ul class="adminui-expandable-menu__list">
+        <ul class="{{ me.bem_block }}__list">
             {{ block.super }}
         </ul>
     </div>

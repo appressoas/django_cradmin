@@ -50,10 +50,14 @@ class ExpandableMenuItem(BaseMenuLinkRenderable):
     """
     template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-item.django.html'
 
+    @property
+    def bem_block(self):
+        return 'adminui-expandable-menu'
+
     def get_base_css_classes_list(self):
-        css_classes = ['adminui-expandable-menu__link']
+        css_classes = ['{}__link'.format(self.bem_block)]
         if self.is_active:
-            css_classes.append('adminui-expandable-menu__link--active')
+            css_classes.append('{}__link--active'.format(self.bem_block))
         return css_classes
 
 
@@ -127,5 +131,9 @@ class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
     def get_wrapper_htmltag_id(self):
         return 'id_django_cradmin_menu_expandable'
 
+    @property
+    def bem_block(self):
+        return 'adminui-expandable-menu'
+
     def get_base_css_classes_list(self):
-        return ['adminui-expandable-menu']
+        return [self.bem_block]
