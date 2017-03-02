@@ -22,6 +22,7 @@ class MessageItemFrameLink(listbuilder.itemframe.Link):
 
 class MessageListBuilderView(listbuilderview.View):
     """Builds the list for the view"""
+
     model = Message
     value_renderer_class = MessageItemValue
     # frame_renderer_class = MessageItemFrameLink

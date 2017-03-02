@@ -169,3 +169,48 @@ we created for our listbuilder with the item values we have decided.
 
 .. literalinclude:: /../django_cradmin/demo/cradmin_gettingstarted/templates/cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html
 
+Test public listview
+--------------------
+Now that we have created one functionality it is time to do some tests. As always there are several scenarios to test,
+and we have to choose what to test first. The point is to write a little code and than test it, or write the test first
+and than the code. Either way, testing during development is important and should be done continuerly for each bit of
+code which does something. As you may have noticed we have not written any integration tests seeing if CRadmin is
+working as intended with Django. This kind of testing is allready done in CRadmin, leaving unittesting to us.
+
+So I have chosen to test two things for our list view. First see if it displayes just one message and that the
+description title is equal to the message's title. Second tests involves several messages and checks that the we wrote
+in the class ``MessageItemValue`` and in the template ``message_listbuilder.django.html`` does what we want it to do.
+So far we have used the hmtls selector `one`. When displaying several messages in a template we need to use the htmls
+selector `list` and count the number of times a CSS class occur, which should be equal to the number of messages mommy
+makes. ::
+
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
+
+
+    class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        viewclass = message_list_view.MessageListBuilderView
+
+        def get_message_title_when_one_message(self):
+            message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                title='A message',
+                body='Here is the body',
+            )
+            mockresponse = self.mock_http200_getrequest_htmls()
+            self.assertTrue(mockresponse.selector.one('.test-cradmin-listbuilder-title-description__title'))
+            title = mockresponse.selector.one('.test-cradmin-listbuilder-title-description__title').text_normalized
+            self.assertEqual(message.title, title)
+
+        def test_number_of_messages_in_html(self):
+            mommy.make('cradmin_gettingstarted.Message', _quantity=5)
+            mockresponse = self.mock_http200_getrequest_htmls()
+            self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
+            messages_in_template = mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description')
+            self.assertEqual(5, len(messages_in_template))
+
+As you probarly remember you can use `mockresponse.selector.prettyprint()` to print the tempate in your terminal and
+find which tests css classes used in CRadmin if you have a mock request with htmls.
+
