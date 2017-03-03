@@ -132,22 +132,22 @@ we set ``valuealias`` which overrides ``value``.
 Item Value Template
 -------------------
 When displaying the list of messages in the template we want to show the account which posted the message and the
-timestamp. We do this by overriding the block ``description-content``. Here we must call super to get a hold of the code
-written in the template which we extends. When we call the super block the template will show the message body which we
-returned in the ``get_description`` method. Further we add a p-tag to show the account name and timestamp. As you can
-see we use the ``valuealias`` to get a hold of the instance of the message object. Here we can do it as difficult or as
-easy we want to. In this tutorial we just use a span with a CRadmin test css class around the account name. ::
+timestamp. This can be done with the ``block below-description``. If you look in the html file which we extends, you´ll
+see that the block is empty by default, so there is no need to call super. In this example we put everything inside a
+p-tag and add a span-tag for a CRadmin test css class used for testing the account name. An alternative is to remove the
+span-tag and add a CRadmin test css class in the p-tag and test both account name and timestamp. As you can see we use
+the ``valuealias`` to get a hold of the instance of the message object. ::
 
     {% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
     {% load cradmin_tags %}
 
-    {% block description-content %}
-        {{ block.super }}
+    {% block below-description %}
         <p>
             Posted by: <span class="{% cradmin_test_css_class 'listbuilder-posted-by-account' %}">
-            {{ me.message.account }}</span> at {{ me.message.creation_time }}
+            {{ me.message.account }}</span>
+            at {{ me.message.creation_time }}
         </p>
-    {% endblock description-content %}
+    {% endblock below-description %}
 
 Listbuilder View
 ----------------
