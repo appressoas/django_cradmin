@@ -1,11 +1,10 @@
 {% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
 {% load cradmin_tags %}
 
-{% block description-content %}
-    {{ block.super }}
+{% block below-description %}
     <p>
         Posted by: <span class="{% cradmin_test_css_class 'listbuilder-posted-by-account' %}">
         {{ me.message.account }}</span>
         at {{ me.message.creation_time }}
     </p>
-{% endblock description-content %}
+{% endblock below-description %}

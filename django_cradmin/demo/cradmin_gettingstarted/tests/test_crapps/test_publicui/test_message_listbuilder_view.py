@@ -56,6 +56,7 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         """
         mommy.make('cradmin_gettingstarted.Message', _quantity=1000)
         mockresponse = self.mock_http200_getrequest_htmls()
+        mockresponse.selector.prettyprint()
         self.assertTrue(mockresponse.selector.one('.test-number-of-pages'))
         number_of_pages_html_text = mockresponse.selector.one('.test-number-of-pages').text_normalized
         self.assertEqual('Page 1 of 100.', number_of_pages_html_text)
