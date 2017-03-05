@@ -356,10 +356,26 @@ Since we will change the link url later on, all we tests for now is if it render
             self.assertTrue(render_item_frame)
             self.assertTrue(listbuilder_link)
 
-Do you remember to take a break from the screen and stretch you body?
+Do you remember to take a break from the screen and stretch your body?
+
+Public Message Detail View
+==========================
+Now it is time to create a detail view which is shown when a user clicks any message in our listview of messages. Inside
+the detailview one should be able to see the whole message and number of likes.
+
+Add CRadmin menu
+----------------
+Back to list of messages. Messages created by the user which created the message in the detail view.
 
 Admin UI for Messages
 =====================
+In this chapter we are going to add functionality needed to create a message without going to the Django admin. There
+are several ways we can approach this, for instance we can create one or several views for messages within our exisiting
+account admin UI CRadmin application, rename the public UI application to message UI application with both public and
+admin views inside or we can create a new new CRadmin application with it's own CRadmin instance. Offcourse are there
+pros and cons to all solutions. Further there is solutions not mentioned here. However, since a message has a foreign
+key to an account, there is a logical point allowing the CRadmin instance of the account admin Cradmin application being
+in charge of handling message creation, editing and deletion.
 
 
 Create our own CSS class for public message list view
