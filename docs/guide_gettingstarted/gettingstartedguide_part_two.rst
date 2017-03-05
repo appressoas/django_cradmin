@@ -34,13 +34,13 @@ Model
     title = models.CharField(max_length=15)
 
     #: The main text of a message
-    body = models.TextField(max_length=255)
+    body = models.TextField()
 
     #: The time a user posted the message is auto set to the time when the message was added
     creation_time = models.DateTimeField(auto_now_add=True)
 
     #: How many people has liked the message. Can be a negative integer
-    number_of_likes = models.IntegerField()
+    number_of_likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -131,15 +131,24 @@ we set ``valuealias`` which overrides ``value``.
 
 Item Value Template
 -------------------
+In the template we don't want the whole textfield of the message to show. If we use truncatechars in the
+``block description-content`` without calling super, we can put new content in the existing p-tag. To get a hold of the
+message body we just call ``me.get_description`` and add the length where we want to truncate the textfield. Now we
+have overridden the content given by CRadmin as a default for the ``block description-content``, but we still use the
+default CRadmin html-tags within the block.
+
 When displaying the list of messages in the template we want to show the account which posted the message and the
 timestamp. This can be done with the ``block below-description``. If you look in the html file which we extends, you´ll
-see that the block is empty by default, so there is no need to call super. In this example we put everything inside a
-p-tag and add a span-tag for a CRadmin test css class used for testing the account name. An alternative is to remove the
-span-tag and add a CRadmin test css class in the p-tag and test both account name and timestamp. As you can see we use
-the ``valuealias`` to get a hold of the instance of the message object. ::
+see that the block is empty by default, so we have to create the needed html-tags. In this example we put everything
+inside a p-tag and add a span-tag for a CRadmin test css class used for testing the account name. An alternative is to
+remove the span-tag and add a CRadmin test css class in the p-tag and test both account name and timestamp. ::
 
     {% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
     {% load cradmin_tags %}
+
+    {% block description-content %}
+        {{ me.get_description|truncatechars:"100" }}
+    {% endblock description-content %}
 
     {% block below-description %}
         <p>
@@ -220,11 +229,16 @@ and than the code. Either way, testing during development is important and shoul
 code which does something. As you may have noticed we have not written any integration tests seeing if CRadmin is
 working as intended with Django. This kind of testing is allready done in CRadmin, leaving unittesting to us.
 
-So let's chose four things to test for our list view. First see if it displayes just one message and that the
+So let's chose five things to test for our list view. First see if it displayes just one message and that the
 description title is equal to the message's title. Second test involves several messages and checks that the body of a
 each message is shown in the template. The third test is to check if the ``block message`` get our content when there
-are no messages in the system. The fourth and final test for this section is for what we did in the template
+are no messages in the system. The fourth test for this section is for what we did in the template
 ``message_listbuilder.django.html`` and just checks if the account name which wrote the message is shown in template.
+The fith and final test find the length of the message body in the template and checks if it is equal to what we said
+in the template's ``block description-content``.
+
+Since we use two templates in one test class, we add some comments making it easier to remember what we did when we
+look at the code in the future and make it easier for other to understand what we have done.
 
 So far we have used the hmtls selector ``one``. When displaying several messages in a template we need to use the htmls
 selector ``list`` and count the number of times a CSS class occour, which should be equal to the number of messages
@@ -237,9 +251,14 @@ mommy makes. The tests is added in the file ``test_messages_list_view.py`` insid
 
 
     class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        """
+        This test class uses two templates, which together gives the public UI for a list of messages in the system.
+        We have created both a template for the listbuilder item values and one for the listbuilder view.
+        """
         viewclass = message_list_view.MessageListBuilderView
 
         def get_message_title_when_one_message(self):
+            """Test for template ``message_listbuilder_view.django.html"""
             message = mommy.make(
                 'cradmin_gettingstarted.Message',
                 title='A message',
@@ -251,6 +270,7 @@ mommy makes. The tests is added in the file ``test_messages_list_view.py`` insid
             self.assertEqual(message.title, title)
 
         def test_number_of_messages_in_html(self):
+            """Test for template ``message_listbuilder_view.django.html"""
             mommy.make('cradmin_gettingstarted.Message', _quantity=5)
             mockresponse = self.mock_http200_getrequest_htmls()
             self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
@@ -258,12 +278,16 @@ mommy makes. The tests is added in the file ``test_messages_list_view.py`` insid
             self.assertEqual(5, len(messages_in_template))
 
         def test_no_message_in_system_information(self):
+            """Test for template ``message_listbuilder_view.django.html"""
             mockresponse = self.mock_http200_getrequest_htmls()
             self.assertTrue(mockresponse.selector.one('.test-no-messages'))
             template_message = mockresponse.selector.one('.test-no-messages').text_normalized
             self.assertEqual('No messages in system', template_message)
 
         def test_account_name_displayed_in_message_description(self):
+            """
+            This test checks the ``block below-description`` in the template ``message_listbuilder.django.html``.
+            """
             account = mommy.make(
                 'cradmin_gettingstarted.Account',
                 name='My Account'
@@ -276,6 +300,22 @@ mommy makes. The tests is added in the file ``test_messages_list_view.py`` insid
             self.assertTrue(mockresponse.selector.one('.test-listbuilder-posted-by-account'))
             name_in_template = mockresponse.selector.one('.test-listbuilder-posted-by-account').text_normalized
             self.assertEqual(account.name, name_in_template)
+
+        def test_message_content_truncatechars(self):
+            """
+            In this test we checks the ``block description-content`` which is written in the template
+            ``message_listbuilder.django.html``.
+            """
+            message_content = 'IM' * 255
+            mommy.make(
+                'cradmin_gettingstarted.Message',
+                body=message_content
+            )
+            mockresponse = self.mock_http200_getrequest_htmls()
+            self.assertTrue(mockresponse.selector.one('.test-cradmin-listbuilder-title-description__description'))
+            template_message_body = mockresponse.selector.one(
+                '.test-cradmin-listbuilder-title-description__description').text_normalized
+            self.assertEqual(100, len(template_message_body))
 
 As you probarly remember you can use ``mockresponse.selector.prettyprint()`` to print the template in your terminal and
 find which tests css classes used in CRadmin if you have a mock request with htmls.

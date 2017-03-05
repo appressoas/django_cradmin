@@ -40,13 +40,13 @@ class Message(models.Model):
     title = models.CharField(max_length=15)
 
     #: The main text of a message
-    body = models.TextField(max_length=255)
+    body = models.TextField()
 
     #: The time a user posted the message is auto set to the time when the message was added
     creation_time = models.DateTimeField(auto_now_add=True)
 
     #: How many people has liked the message. Can be a negative integer
-    number_of_likes = models.IntegerField()
+    number_of_likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title

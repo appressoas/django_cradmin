@@ -1,6 +1,10 @@
 {% extends 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html' %}
 {% load cradmin_tags %}
 
+{% block description-content %}
+    {{ me.get_description|truncatechars:"100" }}
+{% endblock description-content %}
+
 {% block below-description %}
     <p>
         Posted by: <span class="{% cradmin_test_css_class 'listbuilder-posted-by-account' %}">
