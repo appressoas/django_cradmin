@@ -16,8 +16,8 @@ class MessageItemValue(listbuilder.itemvalue.TitleDescription):
 class MessageItemFrameLink(listbuilder.itemframe.Link):
     """Make each frame around the list itmes a link"""
 
-    def get_url(self):
-        return reverse_cradmin_url(instanceid='cr_public_message', appname='public_message')
+    def get_url(self, **kwargs):
+        return reverse_cradmin_url(instanceid='cr_public_message', appname='detail')
 
 
 class MessageListBuilderView(listbuilderview.View):
