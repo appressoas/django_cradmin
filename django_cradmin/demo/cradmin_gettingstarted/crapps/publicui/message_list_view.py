@@ -27,7 +27,6 @@ class MessageListBuilderView(listbuilderview.View):
     value_renderer_class = MessageItemValue
     frame_renderer_class = MessageItemFrameLink
     template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html'
-    paginate_by = 10
 
     def get_queryset_for_role(self):
         return Message.objects.all()
