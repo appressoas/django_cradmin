@@ -4,6 +4,8 @@ Tutorial
 
 .. warning:: This guide is under development, and does not work at this time.
 
+.. _gettingstarted:
+
 Install
 =======
 If you have not already done so, please follow the steps in the :ref:`installguide` guide before continuing.
@@ -13,7 +15,6 @@ New to CRadmin
 ==============
 If you are new to CRadmin we advice you to read :ref:`newbieguide` before advancing.
 
-.. _gettingstarted:
 
 Introduction
 ============

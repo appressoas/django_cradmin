@@ -16,8 +16,7 @@ Getting started
 
    install
    newbie
-   gettingstartedguide
-   gettingstartedguide_part_two
+   guide_gettingstarted/index
 
 
 
