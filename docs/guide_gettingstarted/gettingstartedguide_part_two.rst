@@ -386,7 +386,7 @@ like this ::
                 }
             )
 
-Url in init file
+Url in Init File
 ----------------
 In the ``__init__.pt`` file within our CRadmin application ``publicui`` we add the url with an pk and set the viewname
 equal to what we used for the ``get_url`` method. ::
@@ -408,7 +408,11 @@ Message Detail View
 Next we create a file named ``message_detail_view`` in our CRadmin application ``publicui``. Here we create a a class
 which inherit from CRadmins ``DetailView``. There is also an ``DetailRoleView`` class you can use as super if there is
 a role in question, for instance if we create a detail view for messages in our ``account_admin`` crapps. Nevertheless,
-we use the ``DetailView`` as a super, so our detail view class looks like this ::
+we use the ``DetailView`` as a super. We override the method ``get_queryset_for_role``, which may seems a tad backwards
+sicne there is no role for this CRadmin instance. If you check the super classes to the ``DetailView`` which we inherit
+from, you will find that it is recommended that we override ``get_queryset_for_role``. So that is what we do. To get a
+hold of the message, we just ask for the object, which gives us something to work with in the template.
+::
 
     from django_cradmin import viewhelpers
     from django_cradmin.demo.cradmin_gettingstarted.models import Message
@@ -425,7 +429,6 @@ we use the ``DetailView`` as a super, so our detail view class looks like this :
         def get_context_data(self, **kwargs):
             context = super(MessageDetailView, self).get_context_data(**kwargs)
             context['message'] = self.get_object()
-            print(context)
             return context
 
 Detail Template
@@ -457,15 +460,16 @@ wrote the message. Further we add some CRadmin test css classes for our tests. T
                     Posted by: {{ message.account }}
                 </p>
                 <p class="paragraph paragraph--xtight"> Time: {{ message.creation_time }}</p>
-                <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'public-detail-likes' %}">
+                <p class="{% cradmin_test_css_class 'public-detail-likes' %}">
                     Likes: {{ message.number_of_likes }}
                 </p>
             </div>
         </section>
     {% endblock content %}
 
-In the p-tags which shows the message owne, time of creation and number of likes we use the classes ``paragraph`` and
-``paragraph--xtight`` to decrease white space between the the paragraphs coming after the message's body.
+In the p-tags which shows the message owner, time of creation and number of likes we use the classes ``paragraph`` and
+``paragraph--xtight`` to decrease white space between the the paragraphs coming after the message's body. Now this CSS
+class decreases the white space below the paragraph, so there is no need to add the CSS class in the last p-tag.
 
 Test Detail View
 ----------------
@@ -503,7 +507,7 @@ there is easier to get the more complicated parts to run without errors. We know
 point.
 
 This time we test the primary title in the template, who posted the message and if the number of likes can both be a
-psotive number and a negative number.
+positive number and a negative number.
 ::
 
     from django.test import TestCase
@@ -566,7 +570,7 @@ psotive number and a negative number.
 
 Easy Change the Urls for CRadmin Instances
 ==========================================
-In you CRadmin instance for public UI we have the following name for our application ::
+In you CRadmin instance for public UI we have an apps with the name ``public_message``.  ::
 
     apps = [
         ('public_message', publicui.App),

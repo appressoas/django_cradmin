@@ -18,7 +18,7 @@
                 Posted by: {{ message.account }}
             </p>
             <p class="paragraph paragraph--xtight"> Time: {{ message.creation_time }}</p>
-            <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'public-detail-likes' %}">
+            <p class="{% cradmin_test_css_class 'public-detail-likes' %}">
                 Likes: {{ message.number_of_likes }}
             </p>
         </div>
