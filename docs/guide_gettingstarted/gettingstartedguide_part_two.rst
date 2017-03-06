@@ -420,7 +420,7 @@ hold of the message, we just ask for the object, which gives us something to wor
 
     class MessageDetailView(viewhelpers.detail.DetailView):
         """"""
-        template_name = 'cradmin_gettingstarted/crapps/publicui/message_detail.django.html'
+        template_name = 'cradmin_gettingstarted/crapps/publicui/message_detail_view.django.html'
 
         def get_queryset_for_role(self):
             """"""
@@ -433,7 +433,7 @@ hold of the message, we just ask for the object, which gives us something to wor
 
 Detail Template
 ---------------
-In our template folder we create a html file named ``message_detail.django.html`` which extends
+In our template folder we create a html file named ``message_detail_view.django.html`` which extends
 ``django_cradmin/base.django.html``. In the template we add blocks for title, page cover title and content. Inside the
 content block we add which details we want to show for a message. There is not much more info here than in the list
 view, than again the user now can see the whole message and number of likes beside the timestamp and account name which
