@@ -9,6 +9,8 @@ class TestMessageDetailView(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = MessageDetailView
 
     def test_wtf(self):
-        mommy.make('cradmin_gettingstarted.Message')
-        mockresponse = self.mock_http200_getrequest_htmls()
+        message = mommy.make('cradmin_gettingstarted.Message')
+        mockresponse = self.mock_http200_getrequest_htmls(
+            viewkwargs={'pk': message.pk}
+        )
         mockresponse.selector.prettyprint()

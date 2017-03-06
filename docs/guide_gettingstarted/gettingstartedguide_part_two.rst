@@ -363,6 +363,41 @@ Public Message Detail View
 Now it is time to create a detail view which is shown when a user clicks any message in our listview of messages. Inside
 the detailview one should be able to see the whole message and number of likes.
 
+Easy Browser Url Change
+-----------------------
+In you CRadmin instance for public UI we have the following name for our application ::
+
+    apps = [
+        ('public_message', publicui.App),
+    ]
+
+If we don't add another apps to the list, the url in the browser will be extended with the viewname (`detail` in this
+case) and the pk of the message. The url looks like this in the browser
+``http://localhost/gettingstarted/messages/detail/1``. However, if you have a project where you want to have more
+specified broweser urls. Let us say we want an url which says ``messages/public/detail/1``. All we need to do is to add
+a new name and point it to the correct init file for the view in the ``apps`` list in CRadmin instance. ::
+
+    apps = [
+        ('public_message', publicui.App),
+        ('public', publicui.App)
+    ]
+
+We update our ``get_url`` method in the ``MessageItemFrameLink`` class so it uses the new application name ::
+
+    def get_url(self):
+        return reverse_cradmin_url(
+            instanceid='cr_public_message',
+            appname='public',
+            viewname='detail',
+            kwargs={
+                'pk': self.message.id
+            }
+        )
+
+When we now go to the detial view for a message, the url in the browser reads
+``http://localhost/gettingstarted/messages/public/detail/1``. Now, we are going to stick with the url
+``http://localhost/gettingstarted/messages/detail/1`` in our further work.
+
 Add CRadmin menu
 ----------------
 Back to list of messages. Messages created by the user which created the message in the detail view.

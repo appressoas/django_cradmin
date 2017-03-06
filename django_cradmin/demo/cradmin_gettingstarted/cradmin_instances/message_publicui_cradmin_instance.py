@@ -7,8 +7,7 @@ class MessagePublicUiCradminInstance(crinstance.NoRoleNoLoginCrAdminInstance):
     rolefrontpage_appname = 'public_message'
 
     apps = [
-        ('public_message', publicui.App),
-        ('detail', publicui.App)
+        ('public_message', publicui.App)
     ]
 
     def get_rolequeryset(self):
