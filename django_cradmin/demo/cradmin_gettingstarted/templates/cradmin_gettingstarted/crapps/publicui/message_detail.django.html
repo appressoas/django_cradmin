@@ -1,6 +1,26 @@
 {% extends 'django_cradmin/base.django.html' %}
+{% load cradmin_tags %}
+
+{% block title  %}
+    Message details
+{% endblock title %}
+
+{% block page-cover-title %}
+    Message Details
+{% endblock page-cover-title %}
 
 {% block content %}
-    {{ message }}
-    {{ message.body }}
+    <section class="adminui-page-section">
+        <div class="container container--tight">
+            <h2>{{ message }}</h2>
+            <p>{{ message.body }}</p>
+            <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'public-detail-posted-by' %}">
+                Posted by: {{ message.account }}
+            </p>
+            <p class="paragraph paragraph--xtight"> Time: {{ message.creation_time }}</p>
+            <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'public-detail-likes' %}">
+                Likes: {{ message.number_of_likes }}
+            </p>
+        </div>
+    </section>
 {% endblock content %}
