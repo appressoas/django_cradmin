@@ -361,7 +361,84 @@ Do you remember to take a break from the screen and stretch your body?
 Public Message Detail View
 ==========================
 Now it is time to create a detail view which is shown when a user clicks any message in our listview of messages. Inside
-the detailview one should be able to see the whole message and number of likes.
+the detailview one should be able to see the whole message and number of likes. To make the detail view work we need
+to update the class ``MessageItemFrameLink``, add an url to the detail view in the ``__init__.py`` file, create a new
+detail view and decide which template to use.
+
+Item Frame Link
+---------------
+As you remember we have already created an item frame link around each message in our list view. We now need to tell
+that this link should point to the detail view. We can use a ``valuealias`` to set the pk in kwargs in our url. Further
+we set the CRadmin instance id, application name and view name. Our ``MessageItemFrameLink`` class now looks something
+like this ::
+
+    class MessageItemFrameLink(listbuilder.itemframe.Link):
+        """Make each frame around the list itmes a link"""
+        valuealias = 'message'
+
+        def get_url(self):
+            return reverse_cradmin_url(
+                instanceid='cr_public_message',
+                appname='public_message',
+                viewname='detail',
+                kwargs={
+                    'pk': self.message.id
+                }
+            )
+
+Url in init file
+----------------
+In the ``__init__.pt`` file within our CRadmin application ``publicui`` we add the url with an pk and set the viewname
+equal to what we used for the ``get_url`` method. ::
+
+    class App(crapp.App):
+    appurls = [
+        crapp.Url(
+            r'^$',
+            message_list_view.MessageListBuilderView.as_view(),
+            name=crapp.INDEXVIEW_NAME),
+        crapp.Url(
+            r'^detail/(?P<pk>\d+)$',
+            message_detail_view.MessageDetailView.as_view(),
+            name='detail')
+    ]
+
+Message Detail View
+-------------------
+Next we create a file named ``message_detail_view`` in our CRadmin application ``publicui``. Here we create a a class
+which inherit from CRadmins ``DetailView``. There is also an ``DetailRoleView`` class you can use as super if there is
+a role in question, for instance if we create a detail view for messages in our ``account_admin`` crapps. Nevertheless,
+we use the ``DetailView`` as a super, so our detail view class looks like this ::
+
+    from django_cradmin import viewhelpers
+    from django_cradmin.demo.cradmin_gettingstarted.models import Message
+
+
+    class MessageDetailView(viewhelpers.detail.DetailView):
+        """"""
+        template_name = 'cradmin_gettingstarted/crapps/publicui/message_detail.django.html'
+
+        def get_queryset_for_role(self):
+            """"""
+            return Message.objects.all()
+
+        def get_context_data(self, **kwargs):
+            context = super(MessageDetailView, self).get_context_data(**kwargs)
+            context['message'] = self.get_object()
+            print(context)
+            return context
+
+Detail Template
+---------------
+In our template folder we create a html file named ``message_detail.django.html`` which extends
+``django_cradmin/base.django.html``.
+
+Test Detail View
+----------------
+We need to test the detail view shows the correct message, and that our item frame link works as intended. This means
+we need to add a new test in in the file ``test_message_list_view.py`` file and create a new file within the same folder
+and name it ``test_message_detail_view.py``.
+
 
 Easy Browser Url Change
 -----------------------

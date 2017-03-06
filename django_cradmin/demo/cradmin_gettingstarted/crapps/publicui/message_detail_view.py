@@ -12,6 +12,5 @@ class MessageDetailView(viewhelpers.detail.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MessageDetailView, self).get_context_data(**kwargs)
-        context['the_object'] = self.get_object()
-        print(context)
+        context['message'] = self.get_object()
         return context
