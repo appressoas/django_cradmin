@@ -72,11 +72,14 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
             '.test-cradmin-listbuilder-title-description__description').text_normalized
         self.assertEqual(100, len(template_message_body))
 
-    def test_item_frame_and_link_from_listbuilder(self):
+    def test_listbuilder_link_href_sanity(self):
         """Test for template ``message_listbuilder_view.django.html"""
-        mommy.make('cradmin_gettingstarted.Message')
-        mockresponse = self.mock_http200_getrequest_htmls()
-        render_item_frame = mockresponse.selector.one('.test-cradmin-listbuilder-item-frame-renderer')
+        message = mommy.make('cradmin_gettingstarted.Message')
+        mockresponse = self.mock_http200_getrequest_htmls(
+            viewkwargs={'pk': message.id}
+        )
         listbuilder_link = mockresponse.selector.one('.test-cradmin-listbuilder-link')
-        self.assertTrue(render_item_frame)
         self.assertTrue(listbuilder_link)
+        href_in_template = mockresponse.selector.one('.test-cradmin-listbuilder-item-frame-renderer')['href']
+        expected_href = '/gettingstarted/messages/detail/{}'.format(message.id)
+        self.assertEqual(expected_href, href_in_template)
