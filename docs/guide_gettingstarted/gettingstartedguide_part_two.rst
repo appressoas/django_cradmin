@@ -431,7 +431,41 @@ we use the ``DetailView`` as a super, so our detail view class looks like this :
 Detail Template
 ---------------
 In our template folder we create a html file named ``message_detail.django.html`` which extends
-``django_cradmin/base.django.html``.
+``django_cradmin/base.django.html``. In the template we add blocks for title, page cover title and content. Inside the
+content block we add which details we want to show for a message. There is not much more info here than in the list
+view, than again the user now can see the whole message and number of likes beside the timestamp and account name which
+wrote the message. Further we add some CRadmin test css classes for our tests. The detail view template looks like this.
+::
+
+    {% extends 'django_cradmin/base.django.html' %}
+    {% load cradmin_tags %}
+
+    {% block title  %}
+        Message details
+    {% endblock title %}
+
+    {% block page-cover-title %}
+        Message Details
+    {% endblock page-cover-title %}
+
+    {% block content %}
+        <section class="adminui-page-section">
+            <div class="container container--tight">
+                <h2>{{ message }}</h2>
+                <p>{{ message.body }}</p>
+                <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'public-detail-posted-by' %}">
+                    Posted by: {{ message.account }}
+                </p>
+                <p class="paragraph paragraph--xtight"> Time: {{ message.creation_time }}</p>
+                <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'public-detail-likes' %}">
+                    Likes: {{ message.number_of_likes }}
+                </p>
+            </div>
+        </section>
+    {% endblock content %}
+
+In the p-tags which shows the message owne, time of creation and number of likes we use the classes ``paragraph`` and
+``paragraph--xtight`` to decrease white space between the the paragraphs coming after the message's body.
 
 Test Detail View
 ----------------

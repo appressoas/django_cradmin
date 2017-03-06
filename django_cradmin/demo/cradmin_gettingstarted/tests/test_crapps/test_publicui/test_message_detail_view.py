@@ -28,6 +28,7 @@ class TestMessageDetailView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual('Posted by: {}'.format(message.account), posted_by)
 
     def test_number_of_likes_positive_sanity(self):
+        """A positive number should be shown in template"""
         account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
         message = mommy.make(
             'cradmin_gettingstarted.Message',
@@ -42,6 +43,7 @@ class TestMessageDetailView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
 
     def test_number_of_likes_negative_sanity(self):
+        """A neagative number should be shown in template"""
         account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
         message = mommy.make(
             'cradmin_gettingstarted.Message',
