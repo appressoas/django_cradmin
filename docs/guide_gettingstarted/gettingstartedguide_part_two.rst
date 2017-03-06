@@ -569,7 +569,7 @@ positive number and a negative number.
             self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
 
 Easy Change the Urls for CRadmin Applications
-=============================================
+---------------------------------------------
 In you CRadmin instance for public UI we have an apps with the name ``public_message``. In our App class within the
 ``__init__.py`` file we have an url with the name ``crapp.INDEXVIEW_NAME``. This points to the url defined in our
 project url for the CRadmin instance. In this cause the url for the CRadmin instance is ``gettingstarted/messages``.
@@ -603,7 +603,7 @@ We update our ``get_url`` method in the ``MessageItemFrameLink`` class so it use
             }
         )
 
-When we now go to the detial view for a message, the url in the browser reads
+When we now go to the detail view for a message, the url in the browser reads
 ``http://localhost/gettingstarted/messages/public/detail/1``. Now, we are going to stick with the url
 ``http://localhost/gettingstarted/messages/detail/1`` in our further work.
 
