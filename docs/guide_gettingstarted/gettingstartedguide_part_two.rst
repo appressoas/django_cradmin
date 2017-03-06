@@ -496,8 +496,76 @@ After rewriting both method name and content, the test now looks like this.
         expected_href = '/gettingstarted/messages/detail/{}'.format(message.id)
         self.assertEqual(expected_href, href_in_template)
 
-Easy Browser Url Change
------------------------
+In our new test file ``test_message_deatil_view.py`` which is inside the test module ``test_publicui``, we create a new
+test class and add the methods of what we want to test. As usually you may want to test something different than what
+we test in this guide. The point is to write some code and test it. When we test the more simple parts of our code,
+there is easier to get the more complicated parts to run without errors. We know the structure behind works up to some
+point.
+
+This time we test the primary title in the template, who posted the message and if the number of likes can both be a
+psotive number and a negative number.
+::
+
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
+
+
+    class TestMessageDetailView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        viewclass = MessageDetailView
+
+        def test_primary_h1(self):
+            message = mommy.make('cradmin_gettingstarted.Message')
+            mockresponse = self.mock_http200_getrequest_htmls(
+                viewkwargs={'pk': message.pk}
+            )
+            self.assertTrue(mockresponse.selector.one('.test-primary-h1'))
+            h1_in_template = mockresponse.selector.one('.test-primary-h1').text_normalized
+            self.assertEqual('Message Details', h1_in_template)
+
+        def test_posted_by_sanity(self):
+            account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
+            message = mommy.make('cradmin_gettingstarted.Message', account=account)
+            mockresponse = self.mock_http200_getrequest_htmls(
+                viewkwargs={'pk': message.id}
+            )
+            self.assertTrue(mockresponse.selector.one('.test-public-detail-posted-by'))
+            posted_by = mockresponse.selector.one('.test-public-detail-posted-by').text_normalized
+            self.assertEqual('Posted by: {}'.format(message.account), posted_by)
+
+        def test_number_of_likes_positive_sanity(self):
+            """A positive number should be shown in template"""
+            account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
+            message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=account,
+                number_of_likes=100
+            )
+            mockresponse = self.mock_http200_getrequest_htmls(
+                viewkwargs={'pk': message.id}
+            )
+            self.assertTrue(mockresponse.selector.one('.test-public-detail-likes'))
+            likes = mockresponse.selector.one('.test-public-detail-likes').text_normalized
+            self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
+
+        def test_number_of_likes_negative_sanity(self):
+            """A neagative number should be shown in template"""
+            account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
+            message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=account,
+                number_of_likes=-10000
+            )
+            mockresponse = self.mock_http200_getrequest_htmls(
+                viewkwargs={'pk': message.id}
+            )
+            self.assertTrue(mockresponse.selector.one('.test-public-detail-likes'))
+            likes = mockresponse.selector.one('.test-public-detail-likes').text_normalized
+            self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
+
+Easy Change the Urls for CRadmin Instances
+==========================================
 In you CRadmin instance for public UI we have the following name for our application ::
 
     apps = [
@@ -532,7 +600,7 @@ When we now go to the detial view for a message, the url in the browser reads
 ``http://localhost/gettingstarted/messages/detail/1`` in our further work.
 
 Add CRadmin menu
-----------------
+================
 Back to list of messages. Messages created by the user which created the message in the detail view.
 
 Admin UI for Messages
