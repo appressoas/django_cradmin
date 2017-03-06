@@ -469,10 +469,32 @@ In the p-tags which shows the message owne, time of creation and number of likes
 
 Test Detail View
 ----------------
-We need to test the detail view shows the correct message, and that our item frame link works as intended. This means
-we need to add a new test in in the file ``test_message_list_view.py`` file and create a new file within the same folder
-and name it ``test_message_detail_view.py``.
+We test that the detail view shows the message information as intended, and that our item frame link has the
+correct href. This means we need to rewrite the item link test method in the file ``test_message_list_view.py`` file
+and create a new file within the same folder and name it ``test_message_detail_view.py``.
 
+Lest start with rewriting the test for item frame link. In this test we fetch the href after a get request and compare
+the result to what we should get looking at our new constructed url. From the project urls we should get
+``/gettingstarted``. From the CRadmin application we're working with, we should get ``/messages``. From our view we
+should get the view name and id of the message ``/detail/<id_as_integer>``. When we use a real url, we may ran into
+trouble down the line when there is changes in our project. So solve this problem we could use MagicMock to mock both
+the CRadmin application and to add something to the expected url. However, we are not going to introduce MagicMock in
+this tutorial. So we will stick to our real url.
+
+After rewriting both method name and content, the test now looks like this.
+::
+
+    def test_listbuilder_link_href_sanity(self):
+        """Test for template ``message_listbuilder_view.django.html"""
+        message = mommy.make('cradmin_gettingstarted.Message')
+        mockresponse = self.mock_http200_getrequest_htmls(
+            viewkwargs={'pk': message.id}
+        )
+        listbuilder_link = mockresponse.selector.one('.test-cradmin-listbuilder-link')
+        self.assertTrue(listbuilder_link)
+        href_in_template = mockresponse.selector.one('.test-cradmin-listbuilder-item-frame-renderer')['href']
+        expected_href = '/gettingstarted/messages/detail/{}'.format(message.id)
+        self.assertEqual(expected_href, href_in_template)
 
 Easy Browser Url Change
 -----------------------
