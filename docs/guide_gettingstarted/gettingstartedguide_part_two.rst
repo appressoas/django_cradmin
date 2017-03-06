@@ -568,19 +568,23 @@ positive number and a negative number.
             likes = mockresponse.selector.one('.test-public-detail-likes').text_normalized
             self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
 
-Easy Change the Urls for CRadmin Instances
-==========================================
-In you CRadmin instance for public UI we have an apps with the name ``public_message``.  ::
+Easy Change the Urls for CRadmin Applications
+=============================================
+In you CRadmin instance for public UI we have an apps with the name ``public_message``. In our App class within the
+``__init__.py`` file we have an url with the name ``crapp.INDEXVIEW_NAME``. This points to the url defined in our
+project url for the CRadmin instance. In this cause the url for the CRadmin instance is ``gettingstarted/messages``.
+::
 
     apps = [
         ('public_message', publicui.App),
     ]
 
-If we don't add another apps to the list, the url in the browser will be extended with the viewname (`detail` in this
-case) and the pk of the message. The url looks like this in the browser
+When we add a new regular expression for a detail view and name it ``detail`` in the ``__init__.py`` file, the name
+``detail`` along with the pk will be added to the url for the CRadmin instance. The url looks like this in the browser
 ``http://localhost/gettingstarted/messages/detail/1``. However, if you have a project where you want to have more
-specified broweser urls. Let us say we want an url which says ``messages/public/detail/1``. All we need to do is to add
-a new name and point it to the correct init file for the view in the ``apps`` list in CRadmin instance. ::
+specified browser urls there is an easy way to get a new url. Let us say we want an url which says
+``messages/public/detail/1``. All we need to do is to add a new name and point it to the correct App class for the
+view in the ``apps`` list in the CRadmin instance. ::
 
     apps = [
         ('public_message', publicui.App),
