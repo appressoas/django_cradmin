@@ -1,3 +1,5 @@
+.. _create_an_edit_view_for_account:
+
 Create an Edit View for Account
 ===============================
 The main goal for this part of the tutorial is to create functionality which allows us to change the name of an existing
@@ -205,3 +207,7 @@ like this::
             test_account_administrator.py
         __init__.py
         test_account_admin_cradmin_instance.py
+
+Next Chapter
+------------
+TODO

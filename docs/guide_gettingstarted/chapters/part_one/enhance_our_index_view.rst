@@ -1,3 +1,5 @@
+.. _enhance_our_index_view:
+
 Enhance our Index View
 ======================
 So far our index view does very little, so lets expand it by fetching the Account and the user which is the Account
@@ -120,3 +122,7 @@ In the ``test_account_dashboard`` file we can now write a test where only one of
         self.assertTrue(mockresponse.selector.one('.test-admin-user-email'))
         admin_email = mockresponse.selector.one('.test-admin-user-email').alltext_normalized
         self.assertEqual('me@example.com', admin_email)
+
+Next Chapter
+------------
+Continue to :ref:`moving_on_to_localhost`

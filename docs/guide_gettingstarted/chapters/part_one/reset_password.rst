@@ -26,3 +26,7 @@ Localhost
 ---------
 If you now go to ``gettingstarted/resetpassword/begin`` a view asks you to enter your email and start the process of
 reseting the password.
+
+Next Chapter
+------------
+TODO

@@ -1,3 +1,5 @@
+.. _admin_ui_for_messages:
+
 Admin UI for Messages
 =====================
 In this chapter we are going to add functionality needed to create a message without going to the Django admin. There

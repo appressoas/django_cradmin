@@ -1,3 +1,5 @@
+.. _dashboard_view_for_account:
+
 Dashboard View for Account
 ==========================
 Our main goal for now is to create a dashboard view, or index view if you prefer, which will give us some information about
@@ -189,3 +191,7 @@ Our ``account_admin_cradmin_instance.py`` file will now look like this::
 
         def get_titletext_for_role(self, role):
             return role.name
+
+Next Chapter
+------------
+Continut to :ref:`enhance_our_index_view`

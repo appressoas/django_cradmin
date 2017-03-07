@@ -1,3 +1,5 @@
+.. _easy_change_cradmin_application_urls:
+
 Easy Change Cradmin Application Urls
 ====================================
 In you CRadmin instance for public UI we have an apps with the name ``public_message``. In our App class within the
@@ -36,3 +38,6 @@ We update our ``get_url`` method in the ``MessageItemFrameLink`` class so it use
 When we now go to the detail view for a message, the url in the browser reads
 ``http://localhost/gettingstarted/messages/public/detail/1``. Now, we are going to stick with the url
 ``http://localhost/gettingstarted/messages/detail/1`` in our further work.
+
+Next Chapter
+------------

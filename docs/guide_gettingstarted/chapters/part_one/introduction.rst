@@ -52,3 +52,7 @@ some model testing to get started on that part. The models.py file looks like th
 
         #: The :class:`.Account` in question to which be administrated
         account = models.ForeignKey(Account)
+
+Next Chapter
+------------
+Continue to :ref:`setting_up_first_cradmin_instance`

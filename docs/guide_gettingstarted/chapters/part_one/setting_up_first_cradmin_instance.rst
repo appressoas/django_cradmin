@@ -1,3 +1,5 @@
+.. _setting_up_first_cradmin_instance:
+
 Setting up the First CRadmin Instance
 =====================================
 One central part of the interface is the ``cramdin_instance``. In this file we connect our CRadmin apps, known as
@@ -60,3 +62,7 @@ we also use MagicMock::
 
 As the tests shows, our queryset is empty when the Account is not connected to an AccountAdministrator. Further, the
 queryset returned one object from the database when we connected the two. So far so good.
+
+Next Chapter
+------------
+Continut to :ref:`dashboard_view_for_account`

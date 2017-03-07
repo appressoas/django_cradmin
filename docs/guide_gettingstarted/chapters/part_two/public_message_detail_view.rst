@@ -1,3 +1,5 @@
+.. _public_message_detail_view:
+
 Public Message Detail View
 ==========================
 Now it is time to create a detail view which is shown when a user clicks any message in our listview of messages. Inside
@@ -207,3 +209,7 @@ positive number and a negative number.
             self.assertTrue(mockresponse.selector.one('.test-public-detail-likes'))
             likes = mockresponse.selector.one('.test-public-detail-likes').text_normalized
             self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
+
+Next Chapter
+------------
+TODO

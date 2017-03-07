@@ -1,3 +1,5 @@
+.. _create_a_new_account:
+
 Create a New Account
 ====================
 
@@ -207,3 +209,7 @@ you need to have in the template. ::
             self.assertTrue(mockresponse.selector.one('.test-authenticated-user'))
             email_in_template = mockresponse.selector.one('.test-authenticated-user').text_normalized
             self.assertEqual(request_user.email, email_in_template)
+
+Next Chapter
+------------
+TODO

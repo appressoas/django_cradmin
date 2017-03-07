@@ -1,3 +1,5 @@
+.. _delete_account:
+
 Delete Account
 ==============
 The last view we're creating in this first part of our getting started tutorial is a delete view. This works pretty much
@@ -160,3 +162,7 @@ reverse CRadmin url of a CRadmin instance. ::
 
 The last test to do now is to run all our tests, to make sure everything we have created works together. If we run all
 our tests with Coverage, we also see how much of our code which is actually tested by our TestCases.
+
+Next Chapter
+------------
+TODO

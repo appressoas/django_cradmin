@@ -87,3 +87,7 @@ The last thing we need is to add the CRadmin instance urls to our Django project
 Localhost
 ---------
 If you have added a message or two in Django admin, you will see them at `localhist/gettingstarted/messages`.
+
+Next Chapter
+------------
+TODO

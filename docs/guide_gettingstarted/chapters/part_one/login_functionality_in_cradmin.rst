@@ -1,3 +1,5 @@
+.. _login_functionality_in_cradmin:
+
 Login Functionality in CRadmin
 ==============================
 So far we have a view with no security when it comes to demanding that the user is logged in before checking out an
@@ -18,5 +20,10 @@ And in your urls.py file for the project you add::
         # ...
     )
 
-Now when you go to `localhost/gettingstarted` a view asking for email and password should show up. If you want to read
-more about `cradmin_authenticate`, check out our documentation :ref:`cradmin_authenticate`
+Now when you go to `localhost/gettingstarted` a view asking for email and password should show up. As you can see at
+the login page there is also functionality if you have forgotten your password. If you want to read more about
+`cradmin_authenticate`, check out our documentation :ref:`cradmin_authenticate`.
+
+Next Chapter
+------------
+Continue to :ref:`reset_password`.

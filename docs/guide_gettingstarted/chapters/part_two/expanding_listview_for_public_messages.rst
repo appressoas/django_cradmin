@@ -1,3 +1,5 @@
+.. _expanding_listview_for_public_messages:
+
 Expanding Listview for Public Messages
 ======================================
 In the last chapter we rendered a listview using pretty much just built in templates and functionality in CRadmin. Now
@@ -261,3 +263,7 @@ Since we will change the link url later on, all we tests for now is if it render
             self.assertTrue(listbuilder_link)
 
 Do you remember to take a break from the screen and stretch your body?
+
+Next Chapter
+------------
+TODO

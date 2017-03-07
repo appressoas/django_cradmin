@@ -1,3 +1,5 @@
+.. _create_account_view:
+
 Create Account View
 ===================
 In our view for creating a new account we use the same modelform as for editing an account, thus inheriting from the
@@ -142,3 +144,7 @@ link. I just added it underneath the account name, in the page cover content blo
             Back to start page
         </a>
     {% endblock %}
+
+Next Chapter
+------------
+TODO
