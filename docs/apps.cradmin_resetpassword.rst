@@ -1,3 +1,5 @@
+.. _cradmin_resetpassword:
+
 #####################################################
 `cradmin_resetpassword` --- A password reset workflow
 #####################################################

@@ -12,6 +12,7 @@ Tutorial Part One
    enhance_our_index_view
    moving_on_to_localhost
    login_functionality_in_cradmin
+   reset_password
    create_an_edit_view_for_account
    create_a_new_account
    create_account_view

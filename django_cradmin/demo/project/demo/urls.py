@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^gettingstarted/', include(create_account_cradmin_instance.CreateAccountCrAdminInstance.urls())),
     url(r'^gettingstarted/admin/', include(account_admin_cradmin_instance.AccountAdminCradminInstance.urls())),
     url(r'^gettingstarted/messages/', include(message_publicui_cradmin_instance.MessagePublicUiCradminInstance.urls())),
+    url(r'^gettingstarted/resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
