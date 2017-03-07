@@ -9,5 +9,5 @@ Tutorial Part Two
    expanding_listview_for_public_messages
    public_message_detail_view
    easy_change_cradmin_app_urls
-   cradmin_menu_in_message_list_view
+   cradmin_menu_account_admin
    admin_ui_for_messages
