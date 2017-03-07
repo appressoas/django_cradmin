@@ -1,5 +1,7 @@
 .. warning:: This guide is under development, and does not work at this time.
 
+.. _gettingstarted_part_one:
+
 Introduction
 ============
 If you have not already done so, please follow the steps in the :ref:`installguide` guide before continuing.
