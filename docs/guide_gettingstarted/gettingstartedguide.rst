@@ -28,7 +28,7 @@ import project file since this application is build inside CRadmin alongside aot
 Hence, your project sturcture will not look like ours. However, when we import from external libraries or from CRadmin
 itself, we will show it.
 
-Setting up the models
+Setting up the Models
 ---------------------
 First you create a Django app inside your project, just like you always do in Django, and create your models and do
 some model testing to get started on that part. The models.py file looks like this in the beginning::
@@ -65,15 +65,13 @@ some model testing to get started on that part. The models.py file looks like th
         account = models.ForeignKey(Account)
 
 
-Setting up a CRadmin interface
+Setting up a CRadmin Interface
 ==============================
 One central part of the interface is the ``cramdin_instance``. In this file we connect our CRadmin apps, known as
 ``crapps``. Further we can render different kind of menus, header and footer. A full explenation of the methods and
 functionality which is possible with a ``cradmin_instance`` can be read in class documentation
 :class:`django_cradmin.crinstance.BaseCrAdminInstance`
 
-Setting database model and connect the model with the CRadmin instance
-----------------------------------------------------------------------
 We begin by creating the file ``account_admin_cradmin_instance.py`` which is a subclass of
 ``BaseCrAdminInstance`` and it will contain our main CRadmin configuration. For now we place this file at the same level
 as our models.py file. By overriding the variable ``roleclass`` and method ``get_rolequeryset`` we add a databasemodel
@@ -91,6 +89,8 @@ file looks like this::
                 queryset = queryset.filter(accountadministrator__user=self.request.user)
             return queryset
 
+Test CRadmin Instance
+---------------------
 Here we have defined a roleclass and returned all Account objects in the database which have an user defined in
 the class AccountAdministrator. If you are logged in as a superuser, all Accounts will be returne. So if we query an
 Account which is not connected to an AccountAdministrator, the ``get_rolequeryset`` should be empty. Likewise, the
@@ -128,10 +128,9 @@ we also use MagicMock::
 As the tests shows, our queryset is empty when the Account is not connected to an AccountAdministrator. Further, the
 queryset returned one object from the database when we connected the two. So far so good.
 
-
-Building an index view for Account
-----------------------------------
-Our main goal for now is to create an indexview or a dashboard if you prefer, which will give us some information about
+Dashboard View for Account
+==========================
+Our main goal for now is to create a dashboard view, or index view if you prefer, which will give us some information about
 the Account we are currently holding. The next step to make this happen is to connect the ``cramdin_instance`` with a
 CRadmin application. These apps lives inside a module named ``crapps`` in our Django App. A full documentation for the
 CRadmin app can be read the in the class documentation :class:`django_cradmin.crapp.App`.
@@ -182,6 +181,8 @@ So in the ``__init__.py`` file inside the crapps folder we add the url to the vi
             crapp.Url(r'^$', AccountDashboardView.as_view(), name=crapp.INDEXVIEW_NAME)
         ]
 
+Template for Account Dashboard
+------------------------------
 As mentioned earlier we want to use our own template, so I have created a file named ``account_dashboard.django.html`` which
 is placed inside the Django applications template folder with the following content::
 
@@ -202,7 +203,7 @@ need to implement the :func:`django_cradmin.crinstance.BaseCrAdminInstance.get_t
     def get_titletext_for_role(self, role):
         return role.name
 
-Testing the view
+Testing the View
 ----------------
 Before we contiune our work, let us take a short break. Go outside, stretch our legs and get some fresh air.
 
@@ -229,7 +230,7 @@ this class we tell which view we want to test. Further we write a method to chec
 we create both an Account and an AccountAdministrator with mommy. Further we mock a get request by using functionality
 from CRadmin.
 
-Our test file for the index view looks like this::
+Our test file for the account dashboard view looks like this::
 
     from django.conf import settings
     from django.test import TestCase
@@ -320,7 +321,7 @@ Our ``account_admin_cradmin_instance.py`` file will now look like this::
             return role.name
 
 Enhance our Index View
-----------------------
+======================
 So far our index view does very little, so lets expand it by fetching the Account and the user which is the Account
 Administrator and get this as context data used in our template. We use our `cradmin_role` to get the Account object.
 Further we use the CRadmin role of the current account to get the Account Administrator.
@@ -444,7 +445,7 @@ In the ``test_account_dashboard`` file we can now write a test where only one of
 
 
 Moving on to Localhost
-----------------------
+======================
 We have tested the functioanlity we have created so far, and everything seems to be working as wanted. The time
 has come to see our result on localhost. If you haven't done it yet, please add the models to your ``admin.py`` file.
 Fire up localhost and go to Djangoadmin and create an Account and an AccountAdministrator. If you have the same url
@@ -836,7 +837,7 @@ In our ``__init__.py`` within our newly created crapps (create_account) we set o
             ),
         ]
 
-Test CRadmin instance
+Test CRadmin Instance
 ---------------------
 In this test case we do a simple test just to make sure a none super user has access to the page, and one test to see if
 an anonymous user don't have access.
@@ -895,7 +896,7 @@ you need to have in the template. ::
             self.assertEqual(request_user.email, email_in_template)
 
 Create Account View
--------------------
+===================
 In our view for creating a new account we use the same modelform as for editing an account, thus inheriting from the
 `AccountCreateUpdateMixin`. Furthermore we also inherit from `WithinRoleCreateView`. We set the `roleid_field` here to
 `create_account` which is the id to the CRadmin instance for create account. The first method is overriding the
@@ -1003,8 +1004,8 @@ form data in CRadmin tests, we use the `requestkwargs` as shown below.
             self.assertEqual(1, account_in_db.count())
             self.assertEqual('Flaming Youth', new_account.name)
 
-Add links
----------
+Add Links in Template
+---------------------
 The last thing we need to do before moving on to next part of this guide is to add some links in our templates so a user
 can move a little bit back and forth. In the demo `Webdemo` we show you how to create menues with CRadmin. So we are
 going to use the `a` -tag styled as buttons and using our CRadmin instances as `href`.
@@ -1051,8 +1052,8 @@ file within our ``account_admin`` crapps, we add the url. ::
             name='delete'
         )
 
-Delete view
------------
+Delete Account View
+-------------------
 Next we create a ``delete_account_view.py`` file in the same crapps. Here we use the ``get_object`` method from the
 ``SingleObjectMixin`` class, which requires that we pass the value for a queryset to have the right signature to get
 the Account object we want to delete. Further we implement the abstract method ``get_queryset_for_role`` from the super
@@ -1081,8 +1082,8 @@ id. ::
         def get_success_url(self):
             return reverse_cradmin_url(instanceid='create_account', appname='dashboard')
 
-Template
---------
+Delete Account Template
+-----------------------
 After creating the view we move on to the template file ``account_dashboard.django.html`` and add a button so the user
 can delete an Account. ::
 
@@ -1098,8 +1099,8 @@ can delete an Account. ::
         </a>
     </section>
 
-Teste Delete
-------------
+Test Delete Account View
+------------------------
 Finally we write some tests to check that our new functionality works as intended. We need three sanity checks and
 two tests for the success url. The first sanity test confirm that the name of our Account is shown in a get request.
 The second sanity test is for deleting an Account when the there is just one Account in the database. The third sanity test checks if the right Account is deleted when we have a database with

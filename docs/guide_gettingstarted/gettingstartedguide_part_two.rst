@@ -16,8 +16,8 @@ Easy show messages in template
 In this chapter we are going to create a new crapps named `publicui` which will have a listview for messages written by
 an account with a little code as possbile.
 
-Model
------
+Message Model
+-------------
  First we create a new model named `Message`. ::
 
     class Message(models.Model):
@@ -45,8 +45,8 @@ Model
     def __str__(self):
         return self.title
 
-CRadmin Instance
-----------------
+CRadmin Instance for Message
+----------------------------
 In the folder ``cradmin_instances`` we create a new file which will hold the public instances of messages. I have named
 the file ``message_publicui_cradmin_instance.py``. To create a CRadmin instance which is public require no role nor any
 login. This may not be correct since we also have implemented the CRadmin authentication, so if you try to look at any
@@ -57,8 +57,8 @@ the once we have created.
 .. literalinclude:: /../django_cradmin/demo/cradmin_gettingstarted/cradmin_instances/message_publicui_cradmin_instance.py
 
 
-Crapps
-------
+CRadmin Application for Message
+-------------------------------
 In the ``crapps`` folder we create a new module named ``publicui``. Inside this module we add the file
 ``message_list_view.py``. To just make all messages in the system show up in a template, we can use the templates
 provided by CRadmin. Here we need to implement the method `get_queryset_for_role`, and since this is a view inside the
@@ -94,7 +94,7 @@ Localhost
 ---------
 If you have added a message or two in Django admin, you will see them at `localhist/gettingstarted/messages`.
 
-Expanding the listview for public messages
+Expanding the listview for Public Messages
 ==========================================
 In the last chapter we rendered a listview using pretty much just built in templates and functionality in CRadmin. Now
 we are going to expand our view and create our own template with a bit more functionality than what basic CRadmin
@@ -320,7 +320,7 @@ mommy makes. The tests is added in the file ``test_messages_list_view.py`` insid
 As you probarly remember you can use ``mockresponse.selector.prettyprint()`` to print the template in your terminal and
 find which tests css classes used in CRadmin if you have a mock request with htmls.
 
-Make list item a link
+Make List Item a Link
 ---------------------
 The plan is to later on make a detail view in the public UI so one can get more information about each message.
 Therefore we need to make each list element a link. For the time being the link will just take us to the list view. To
@@ -343,7 +343,7 @@ In our listbuilder view we set the ``frame_renderer_class`` to be our newly crea
         value_renderer_class = MessageItemValue
         frame_renderer_class = MessageItemFrameLink
 
-Test item frame and link
+Test Item Frame and Link
 ------------------------
 Since we will change the link url later on, all we tests for now is if it renders. Lets write the test in our
 ``test_message_list_view.py`` file. ::
@@ -431,8 +431,8 @@ hold of the message, we just ask for the object, which gives us something to wor
             context['message'] = self.get_object()
             return context
 
-Detail Template
----------------
+Message Detail Template
+-----------------------
 In our template folder we create a html file named ``message_detail_view.django.html`` which extends
 ``django_cradmin/base.django.html``. In the template we add blocks for title, page cover title and content. Inside the
 content block we add which details we want to show for a message. There is not much more info here than in the list
@@ -471,8 +471,8 @@ In the p-tags which shows the message owner, time of creation and number of like
 ``paragraph--xtight`` to decrease white space between the the paragraphs coming after the message's body. Now this CSS
 class decreases the white space below the paragraph, so there is no need to add the CSS class in the last p-tag.
 
-Test Detail View
-----------------
+Test Message Detail View
+------------------------
 We test that the detail view shows the message information as intended, and that our item frame link has the
 correct href. This means we need to rewrite the item link test method in the file ``test_message_list_view.py`` file
 and create a new file within the same folder and name it ``test_message_detail_view.py``.
@@ -569,7 +569,7 @@ positive number and a negative number.
             self.assertEqual('Likes: {}'.format(message.number_of_likes), likes)
 
 Easy Change the Urls for CRadmin Applications
----------------------------------------------
+=============================================
 In you CRadmin instance for public UI we have an apps with the name ``public_message``. In our App class within the
 ``__init__.py`` file we have an url with the name ``crapp.INDEXVIEW_NAME``. This points to the url defined in our
 project url for the CRadmin instance. In this cause the url for the CRadmin instance is ``gettingstarted/messages``.
