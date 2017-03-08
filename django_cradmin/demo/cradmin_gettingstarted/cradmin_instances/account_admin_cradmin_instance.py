@@ -4,6 +4,7 @@ from django_cradmin import crinstance
 from django_cradmin import crmenu
 from django_cradmin.demo.cradmin_gettingstarted.crapps import account_adminui
 from django_cradmin.demo.cradmin_gettingstarted.crapps import create_account
+from django_cradmin.demo.cradmin_gettingstarted.crapps import messages
 from django_cradmin.demo.cradmin_gettingstarted.crapps import publicui
 from django_cradmin.demo.cradmin_gettingstarted.models import Account
 
@@ -21,12 +22,9 @@ class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
     apps = [
         ('account_admin', account_adminui.App),
         ('new_account', create_account.App),
-        ('public_messages', publicui.App)
+        ('public_messages', publicui.App),
+        ('messages', messages.App)
     ]
-
-    @property
-    def cradmin_instance(self):
-        return
 
     def get_rolequeryset(self):
         queryset = Account.objects.all()

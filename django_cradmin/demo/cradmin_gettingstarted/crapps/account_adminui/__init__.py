@@ -2,6 +2,7 @@ from django_cradmin import crapp
 from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import account_dashboard_view
 from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import delete_account_view
 from django_cradmin.demo.cradmin_gettingstarted.crapps.account_adminui import edit_account_view
+from django_cradmin.demo.cradmin_gettingstarted.crapps.messages import create_message_view
 
 
 class App(crapp.App):

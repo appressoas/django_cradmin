@@ -1,15 +1,16 @@
 from django_cradmin import uicontainer
-from django_cradmin.demo.cradmin_gettingstarted.models import Account
+from django_cradmin.demo.cradmin_gettingstarted.models import Message
 
 
-class AccountCreateUpdateMixin(object):
+class MessageCreateUpdateMixin(object):
     """
-    Mixin class which renders the form used update and create view in the Account Admin ui.
+    Mixin class for create and edit view for messages in account admin UI
     """
-    model = Account
+    model = Message
     roleid_field = 'account'
     fields = [
-        'name'
+        'title',
+        'body'
     ]
 
     def get_form_renderable(self):
@@ -18,7 +19,8 @@ class AccountCreateUpdateMixin(object):
                 uicontainer.form.Form(
                     form=self.get_form(),
                     children=[
-                        uicontainer.fieldwrapper.FieldWrapper('name'),
+                        uicontainer.fieldwrapper.FieldWrapper('title'),
+                        uicontainer.fieldwrapper.FieldWrapper('body'),
                         uicontainer.button.SubmitPrimary(
                             text='Save')
                     ]
