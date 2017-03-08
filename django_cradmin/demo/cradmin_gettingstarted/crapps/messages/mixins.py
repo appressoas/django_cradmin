@@ -27,3 +27,8 @@ class MessageCreateUpdateMixin(object):
                 )
             ]
         ).bootstrap()
+
+
+class MessagesQuerysetForRoleMixin(object):
+    def get_queryset_for_role(self):
+        return Message.objects.filter(account=self.request.cradmin_role).order_by('-creation_time')

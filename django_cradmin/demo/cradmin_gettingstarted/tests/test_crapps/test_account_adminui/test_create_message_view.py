@@ -2,7 +2,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_gettingstarted.crapps.messages.create_message_view import CreateMessageView
+from django_cradmin.demo.cradmin_gettingstarted.crapps.messages.message_edit_views import CreateMessageView
 from django_cradmin.demo.cradmin_gettingstarted.models import Message
 
 

@@ -15,7 +15,7 @@ class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
     The rolequeryset returns all the accounts conncted to a user which is an AccountAdministrator.
     """
 
-    id = 'account_admin'
+    id = 'account_instance'
     roleclass = Account
     rolefrontpage_appname = 'account_admin'
 

@@ -6,8 +6,8 @@ from django_cradmin.viewhelpers import listbuilder, listbuilderview
 class MessageItemValue(listbuilder.itemvalue.TitleDescription):
     """Get values for items in the list"""
 
-    valuealias = 'message'
     template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder.django.html'
+    valuealias = 'message'
 
     def get_description(self):
         return self.message.body
