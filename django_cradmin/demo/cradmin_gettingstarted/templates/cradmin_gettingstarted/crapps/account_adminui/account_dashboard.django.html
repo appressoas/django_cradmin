@@ -33,8 +33,20 @@
                        href='{% cradmin_appurl viewname="edit" pk=account.id %}'>
                         Change name
                     </a>
-                    <a class="button button--secondary button--compact"
+                    <a class="button button--compact"
                        href="{% cradmin_appurl viewname='delete' pk=account.id %}">
+                        Delete
+                    </a>
+                </section>
+                <section class="blocklist__item">
+                    <h2 class="blocklist__itemtitle">My Messages</h2>
+                    <a class="button button--primary button--compact" href="">
+                        New
+                    </a>
+                    <a class="button button--secondary button--compact" href="">
+                        Edit
+                    </a>
+                    <a class="button button--compact" href="">
                         Delete
                     </a>
                 </section>
