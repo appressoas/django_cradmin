@@ -54,7 +54,7 @@ the once we have created.
 CRadmin Application for Message
 -------------------------------
 In the ``crapps`` folder we create a new module named ``publicui``. Inside this module we add the file
-``message_list_view.py``. To just make all messages in the system show up in a template, we can use the templates
+``public_message_list_view.py``. To just make all messages in the system show up in a template, we can use the templates
 provided by CRadmin. Here we need to implement the method `get_queryset_for_role`, and since this is a view inside the
 public UI we can return all messages. ::
 
@@ -74,7 +74,7 @@ In our ``__init__.py`` file for the publicui crapps, we add the url as we did ea
         appurls = [
             crapp.Url(
                 r'^$',
-                message_list_view.MessageListBuilderView.as_view(),
+                public_message_list_view.MessageListBuilderView.as_view(),
                 name=crapp.INDEXVIEW_NAME)
         ]
 

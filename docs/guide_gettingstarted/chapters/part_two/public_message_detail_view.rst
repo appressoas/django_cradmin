@@ -41,13 +41,13 @@ equal to what we used for the ``get_url`` method. ::
             name=crapp.INDEXVIEW_NAME),
         crapp.Url(
             r'^detail/(?P<pk>\d+)$',
-            message_detail_view.MessageDetailView.as_view(),
+            public_message_detail_view.MessageDetailView.as_view(),
             name='detail')
     ]
 
 Message Detail View
 -------------------
-Next we create a file named ``message_detail_view`` in our CRadmin application ``publicui``. Here we create a a class
+Next we create a file named ``public_message_detail_view`` in our CRadmin application ``publicui``. Here we create a a class
 which inherit from CRadmins ``DetailView``. There is also an ``DetailRoleView`` class you can use as super if there is
 a role in question, for instance if we create a detail view for messages in our ``account_admin`` crapps. Nevertheless,
 we use the ``DetailView`` as a super. We override the method ``get_queryset_for_role``, which may seems a tad backwards
@@ -62,7 +62,7 @@ hold of the message, we just ask for the object, which gives us something to wor
 
     class MessageDetailView(viewhelpers.detail.DetailView):
         """"""
-        template_name = 'cradmin_gettingstarted/crapps/publicui/message_detail_view.django.html'
+        template_name = 'cradmin_gettingstarted/crapps/publicui/public_message_detail_view.django.html'
 
         def get_queryset_for_role(self):
             """"""
@@ -75,7 +75,7 @@ hold of the message, we just ask for the object, which gives us something to wor
 
 Message Detail Template
 -----------------------
-In our template folder we create a html file named ``message_detail_view.django.html`` which extends
+In our template folder we create a html file named ``public_message_detail_view.django.html`` which extends
 ``django_cradmin/base.django.html``. In the template we add blocks for title, page cover title and content. Inside the
 content block we add which details we want to show for a message. There is not much more info here than in the list
 view, than again the user now can see the whole message and number of likes beside the timestamp and account name which
@@ -117,7 +117,7 @@ Test Message Detail View
 ------------------------
 We test that the detail view shows the message information as intended, and that our item frame link has the
 correct href. This means we need to rewrite the item link test method in the file ``test_message_list_view.py`` file
-and create a new file within the same folder and name it ``test_message_detail_view.py``.
+and create a new file within the same folder and name it ``test_public_message_detail_view.py``.
 
 Lest start with rewriting the test for item frame link. In this test we fetch the href after a get request and compare
 the result to what we should get looking at our new constructed url. From the project urls we should get

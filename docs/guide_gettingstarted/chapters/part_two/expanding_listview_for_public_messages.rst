@@ -9,7 +9,7 @@ inside CRadmin.
 
 Item Value Listbuilder
 ----------------------
-We are going to a listbuilder class in the ``message_list_view_.py`` file and add functionality to our existing view
+We are going to a listbuilder class in the ``public_message_list_view_.py`` file and add functionality to our existing view
 class. The listbuilder class ``MessageItemValue`` builds what we are going to see in our view and gives each item in the
 list some values, while the class ``MessageListBuilderView`` is the view for showing what we have build. Since we need
 to do some customization, we need to create a template for both classes.
@@ -161,7 +161,7 @@ mommy makes. The tests is added in the file ``test_messages_list_view.py`` insid
         This test class uses two templates, which together gives the public UI for a list of messages in the system.
         We have created both a template for the listbuilder item values and one for the listbuilder view.
         """
-        viewclass = message_list_view.MessageListBuilderView
+        viewclass = public_message_list_view.MessageListBuilderView
 
         def get_message_title_when_one_message(self):
             """Test for template ``message_listbuilder_view.django.html"""
@@ -252,7 +252,7 @@ In our listbuilder view we set the ``frame_renderer_class`` to be our newly crea
 Test Item Frame and Link
 ------------------------
 Since we will change the link url later on, all we tests for now is if it renders. Lets write the test in our
-``test_message_list_view.py`` file. ::
+``test_public_message_list_view.py`` file. ::
 
         def test_item_frame_and_link_from_listbuilder(self):
             mommy.make('cradmin_gettingstarted.Message')

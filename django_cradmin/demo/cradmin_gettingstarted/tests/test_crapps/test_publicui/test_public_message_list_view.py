@@ -2,7 +2,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_gettingstarted.crapps.publicui import message_list_view
+from django_cradmin.demo.cradmin_gettingstarted.crapps.publicui import public_message_list_view
 
 
 class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
@@ -10,10 +10,10 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
     This test class uses two templates, which together gives the public UI for a list of messages in the system.
     We have created both a template for the listbuilder item values and one for the listbuilder view.
     """
-    viewclass = message_list_view.MessageListBuilderView
+    viewclass = public_message_list_view.MessageListBuilderView
 
     def get_message_title_when_one_message(self):
-        """Test for template ``message_listbuilder_view.django.html"""
+        """Test for template ``public_message_listbuilder_view.django.html"""
         message = mommy.make(
             'cradmin_gettingstarted.Message',
             title='A message',
@@ -25,7 +25,7 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(message.title, title)
 
     def test_number_of_messages_in_html(self):
-        """Test for template ``message_listbuilder_view.django.html"""
+        """Test for template ``public_message_listbuilder_view.django.html"""
         mommy.make('cradmin_gettingstarted.Message', _quantity=5)
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
@@ -33,7 +33,7 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(5, len(messages_in_template))
 
     def test_no_message_in_system_information(self):
-        """Test for template ``message_listbuilder_view.django.html"""
+        """Test for template ``public_message_listbuilder_view.django.html"""
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertTrue(mockresponse.selector.one('.test-no-messages'))
         template_message = mockresponse.selector.one('.test-no-messages').text_normalized
@@ -41,7 +41,7 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
 
     def test_account_name_displayed_in_message_description(self):
         """
-        This test checks the ``block below-description`` in the template ``message_listbuilder.django.html``.
+        This test checks the ``block below-description`` in the template ``public_message_listbuilder.django.html``.
         """
         account = mommy.make(
             'cradmin_gettingstarted.Account',
@@ -59,7 +59,7 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
     def test_message_content_truncatechars(self):
         """
         In this test we checks the ``block description-content`` which is written in the template
-        ``message_listbuilder.django.html``.
+        ``public_message_listbuilder.django.html``.
         """
         message_content = 'IM' * 255
         mommy.make(
@@ -73,7 +73,7 @@ class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(100, len(template_message_body))
 
     def test_listbuilder_link_href_sanity(self):
-        """Test for template ``message_listbuilder_view.django.html"""
+        """Test for template ``public_message_listbuilder_view.django.html"""
         message = mommy.make('cradmin_gettingstarted.Message')
         mockresponse = self.mock_http200_getrequest_htmls(
             viewkwargs={'pk': message.id}

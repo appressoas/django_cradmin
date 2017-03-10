@@ -6,7 +6,7 @@ from django_cradmin.viewhelpers import listbuilder, listbuilderview
 class MessageItemValue(listbuilder.itemvalue.TitleDescription):
     """Get values for items in the list"""
 
-    template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder.django.html'
+    template_name = 'cradmin_gettingstarted/crapps/publicui/public_message_listbuilder.django.html'
     valuealias = 'message'
 
     def get_description(self):
@@ -34,7 +34,7 @@ class MessageListBuilderView(listbuilderview.View):
     model = Message
     value_renderer_class = MessageItemValue
     frame_renderer_class = MessageItemFrameLink
-    template_name = 'cradmin_gettingstarted/crapps/publicui/message_listbuilder_view.django.html'
+    template_name = 'cradmin_gettingstarted/crapps/publicui/public_message_listbuilder_view.django.html'
 
     def get_queryset_for_role(self):
         return Message.objects.all()
