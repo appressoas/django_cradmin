@@ -10,4 +10,4 @@ Tutorial Part Two
    public_message_detail_view
    easy_change_cradmin_app_urls
    cradmin_menu_account_admin
-   admin_ui_for_messages
+   admin_for_messages

@@ -177,47 +177,286 @@ description with the timestamp for creation of the message.
 Tests for Admin Messages
 ------------------------
 We want to test if form and list renders as we want, if a new message is saved in the database and connected to the
-correct account, if an edited message is updated in the database and if we delete the correct message.
+correct account, if an edited message is updated in the database and if we delete the correct message. Besides this
+we're going to write some tests to check that a warning message is shown in template if we try to create or edit a
+message without all the required fields.
+
+Eventhough we have all our views in two files within the ``messages`` crapps, we're going to use four test files. This
+makes our code easy to read and easier to find future bugs.
+
+First we create a new test module named ``test_messages`` within our ``test_crapps`` module. In the ``test_messages``
+we create the following four files: ``test_message_create_view``, ``test_message_delete_view``,
+``test_message_edit_view`` and ``test_message_list_view``.
+
+Test Message List View
+""""""""""""""""""""""
+The order which we tests these views really don't matter, so let's just start with the list view. In the file
+``test_message_list_view`` we first add an Account in the method setUp, since we need a CRadmin role for all our tests.
+Further we write three get tests, one for the rendering the page, one for rendering the list and finally one for
+rendering the item value for a list element.
+::
+
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
 
 
+    class TestMessageListView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        """
+        Simple Message Listbuilder View tests for the CRadmin application 'messages'
+        """
+        viewclass = MessageListBuilderView
+
+        def setUp(self):
+            self.account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
+
+        def test_get_render_form_sanity(self):
+            mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=self.account)
+            self.assertEqual('Messages',mockresponse.selector.one('title').text_normalized)
+            self.assertEqual('Messages', mockresponse.selector.one('.test-primary-h1').text_normalized)
+
+        def test_render_list_sanity(self):
+            mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=self.account,
+                _quantity=5
+            )
+            mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=self.account)
+            message_list = mockresponse.selector.list('.test-cradmin-listbuilder-item-value-renderer')
+            self.assertEqual(5, len(message_list))
+
+        def test_render_item_value_sanity(self):
+            my_message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=self.account,
+                title='Hello World',
+                body='Life is beatiful'
+            )
+            mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=self.account)
+            self.assertTrue(mockresponse.selector.one('.test-cradmin-listbuilder-title-description__title'))
+            self.assertTrue(mockresponse.selector.one('.test-cradmin-listbuilder-title-description__description'))
+            message_title = mockresponse.selector.one('.test-cradmin-listbuilder-title-description__title').text_normalized
+            message_body = mockresponse.selector.one(
+                '.test-cradmin-listbuilder-title-description__description').text_normalized
+            self.assertEqual(my_message.title, message_title)
+            self.assertEqual(my_message.body, message_body)
+
+Test Message Edit View
+""""""""""""""""""""""
+In the file ``test_message_edit_view`` we're creating class methods which tests if the title of the page is as expected,
+if we get a message when the required fields have no value and that we get redirected when we update a message with
+values for the required fields. If you remember from earlier testing, CRadmin automaticly tests if the response code is
+200 if we use ``self.mock_http200_......``. The same goes for all ``self.mock....`` which have a status code number in
+them. In the last test below we still checks the status code as an example of what is going on behind the scenes.
+In the setUp method we also add a message since we need this in all our tests. Further we use the ``viewkwargs`` to pass
+along the id of the message we want to edit, while the ``requestkwargs`` sets a new value to the fields.
+::
+
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
 
 
+    class TestMessageEditView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        """
+        Simple Edit Message View tests for the CRadmin application 'messages'
+        """
+        viewclass = message_edit_views.MessageEditView
+
+        def setUp(self):
+            self.account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
+            self.message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=self.account,
+                title='Hello World',
+                body='Life is Beatiful'
+            )
+
+        def test_get_view_title_sanity(self):
+            mockresponse = self.mock_http200_getrequest_htmls(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id}
+            )
+            self.assertTrue(mockresponse.selector.one('.test-primary-h1'))
+            view_title = mockresponse.selector.one('.test-primary-h1').text_normalized
+            self.assertTrue('Edit message', view_title)
+
+        def test_post_without_required_field_title(self):
+            mockresponse = self.mock_http200_postrequest_htmls(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id},
+                requestkwargs={
+                    'data': {
+                        'title': '',
+                        'body': 'A body'
+                    }
+                }
+            )
+            self.assertTrue(mockresponse.selector.one('#id_title_wrapper'))
+            self.assertEqual('This field is required.',
+                             mockresponse.selector.one('#id_title_wrapper .test-warning-message').alltext_normalized)
+
+        def test_post_without_required_field_body(self):
+            mockresponse = self.mock_http200_postrequest_htmls(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id},
+                requestkwargs={
+                    'data': {
+                        'title': 'A title',
+                        'body': ''
+                    }
+                }
+            )
+            self.assertTrue(mockresponse.selector.one('#id_body_wrapper'))
+            self.assertEqual('This field is required.',
+                             mockresponse.selector.one('#id_body_wrapper .test-warning-message').alltext_normalized)
+
+        def test_post_message_sanity(self):
+            mockresponse = self.mock_http302_postrequest(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id},
+                requestkwargs={
+                    'data': {
+                        'title': 'Hello Space',
+                        'body': 'But you cannot hear me, can you?'
+                    }
+                }
+            )
+            self.assertEqual(302, mockresponse.response.status_code)
+            self.assertEqual(1, Message.objects.all().count())
+
+Test Message Delete View
+""""""""""""""""""""""""
+Here we use the setUp method create an Account and a message we will work with in all tests. What we checks in these
+tests is that we get the template, that we get a confirm question before deleting a message and that the correct message
+is delete.
+::
+
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
 
 
+    class TestMessageDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        """
+        Simple Delete Message View tests for the CRadmin application 'messages'
+        """
+        viewclass = message_edit_views.MessageDeleteView
+
+        def setUp(self):
+            self.account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
+            self.message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                title='My message',
+                account=self.account
+            )
+
+        def test_get_form_sanity(self):
+            mockresponse = self.mock_http200_getrequest_htmls(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id}
+            )
+            self.assertEqual('Confirm delete', mockresponse.selector.one('title').text_normalized)
+            self.assertEqual('Confirm delete', mockresponse.selector.one('.test-primary-h1').text_normalized)
+
+        def test_deleteview_question_sanity(self):
+            mockresponse = self.mock_http200_getrequest_htmls(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id}
+            )
+            self.assertTrue(mockresponse.selector.one('#id_deleteview_question'))
+            question = mockresponse.selector.one('#id_deleteview_question').alltext_normalized
+            self.assertEqual('Are you sure you want to delete "{}"?'.format(self.message.title), question)
+
+        def test_message_deleted_sanity(self):
+            another_message = mommy.make(
+                'cradmin_gettingstarted.Message',
+                account=self.account,
+                title='Delete me not'
+            )
+            self.assertEqual(2, Message.objects.all().count())
+            self.mock_http302_postrequest(
+                cradmin_role=self.account,
+                viewkwargs={'pk': self.message.id}
+            )
+            self.assertEqual(1, Message.objects.all().count())
+            self.assertFalse(Message.objects.filter(pk=self.message.id))
+            self.assertTrue(Message.objects.get(pk=another_message.id))
+
+Test Message Create View
+""""""""""""""""""""""""
+In our last test file ``test_message_create_view`` we checks that the form renders as wanted, that we get a warning
+message if one of the required fileds have no value and that we are sucessfull in creating a new message when all
+required fields have a value.
+::
 
 
+    from django.test import TestCase
+    from model_mommy import mommy
+
+    from django_cradmin import cradmin_testhelpers
+    from django_cradmin.demo.cradmin_gettingstarted.crapps.messages import message_edit_views
+    from django_cradmin.demo.cradmin_gettingstarted.models import Message
 
 
+    class TestMessageCreateView(TestCase, cradmin_testhelpers.TestCaseMixin):
+        """
+        Simple Create Message View tests for the CRadmin application 'messages'
+        """
+        viewclass = message_edit_views.CreateMessageView
 
+        def setUp(self):
+            self.account = mommy.make('cradmin_gettingstarted.Account', name='My Account')
 
+        def get_form_title_sanity(self):
+            mockresponse = self.mock_http200_getrequest_htmls(
+                cradmin_role=self.account
+            )
+            self.assertEqual('Create message', mockresponse.selector.one('.test-primary-h1').text_normalized)
 
+        def test_post_form_without_required_title(self):
+            mockresponse = self.mock_http200_postrequest_htmls(
+                cradmin_role=self.account,
+                requestkwargs={
+                    'data': {
+                        'title': '',
+                        'body': 'Iron Maiden'
+                    }
+                }
+            )
+            self.assertTrue(mockresponse.selector.one('#id_title_wrapper'))
+            self.assertEqual('This field is required.',
+                             mockresponse.selector.one('#id_title_wrapper .test-warning-message').alltext_normalized)
 
+        def test_post_form_without_required_body(self):
+            mockresponse = self.mock_http200_postrequest_htmls(
+                cradmin_role=self.account,
+                requestkwargs={
+                    'data': {
+                        'title': 'Metallica',
+                        'body': ''
+                    }
+                }
+            )
+            self.assertTrue(mockresponse.selector.one('#id_body_wrapper'))
+            self.assertEqual('This field is required.',
+                             mockresponse.selector.one('#id_body_wrapper .test-warning-message').alltext_normalized)
 
+        def test_post_form_success(self):
+            self.mock_http302_postrequest(
+                cradmin_role=self.account,
+                requestkwargs={
+                    'data': {
+                        'title': 'Metal Forever',
+                        'body': 'Yeah!'
+                    }
+                }
+            )
+            self.assertEqual(1, Message.objects.all().count())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Next Chapter
+------------
+TODO

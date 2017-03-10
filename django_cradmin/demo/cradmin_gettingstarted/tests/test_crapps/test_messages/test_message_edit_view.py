@@ -3,6 +3,7 @@ from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
 from django_cradmin.demo.cradmin_gettingstarted.crapps.messages import message_edit_views
+from django_cradmin.demo.cradmin_gettingstarted.models import Message
 
 
 class TestMessageEditView(TestCase, cradmin_testhelpers.TestCaseMixin):
@@ -71,3 +72,4 @@ class TestMessageEditView(TestCase, cradmin_testhelpers.TestCaseMixin):
             }
         )
         self.assertEqual(302, mockresponse.response.status_code)
+        self.assertEqual(1, Message.objects.all().count())

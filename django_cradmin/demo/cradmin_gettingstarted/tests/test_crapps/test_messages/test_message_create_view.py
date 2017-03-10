@@ -60,24 +60,3 @@ class TestMessageCreateView(TestCase, cradmin_testhelpers.TestCaseMixin):
             }
         )
         self.assertEqual(1, Message.objects.all().count())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
