@@ -175,7 +175,7 @@ we only have one CRadmin application so far, it's an easy choice. Further we nee
 Our ``account_admin_cradmin_instance.py`` file will now look like this::
 
     class AccountAdminCradminInstance(crinstance.BaseCrAdminInstance):
-        id = 'account_admin'
+        id = 'account_instance'
         roleclass = Account
         rolefrontpage_appname = 'account_admin'
 

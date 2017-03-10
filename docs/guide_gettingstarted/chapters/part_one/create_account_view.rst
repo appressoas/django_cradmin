@@ -125,11 +125,11 @@ first button takes the user to a view within the current CRadmin instance by usi
 
 The second link to be added is going to take the user to our other CRadmin instance. To make this happen we use the
 template tag ``cradmin_instanceroot_url instanceid=''``. We can take the user to the root of the CRadmin instance
-`account_admin` which will either display a list of accounts to choose from or the administrator page for an account if
+`account_instance` which will either display a list of accounts to choose from or the administrator page for an account if
 the user has just one account. ::
 
    <a class="button button--secondary-fill button--compact"
-       href="{% cradmin_instanceroot_url instanceid='account_admin'%}">
+       href="{% cradmin_instanceroot_url instanceid='account_instance'%}">
         My Accounts
     </a>
 
