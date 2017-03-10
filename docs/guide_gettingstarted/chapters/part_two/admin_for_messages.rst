@@ -5,19 +5,23 @@ Admin for Messages
 In this chapter we want to add functionality which let us create new messages and edit or delete existing ones. We are
 going to use the existing CRadmin instance ``AccountAdminCradminInstance`` to hold our new CRadmin application.
 
-CRadmin comes with an easy to use template for creating a list of all messages created by an account. Buttons for
-create, edit and delete are automaticly added for us. However we need to override one block in the template to publish
-the timestamp on a message, just as we did when creating our public UI for messages. Keep in mind this is a getting
-started guide, meaning the structure of our project's applications can be done smoother. For instance coulde the
-application messages hold views for both public and admin UI. We could even use one template showing content based
-on the role or if a user is logged in. On the other side can the chosen structure provide an easy to use guide for the
-different parts of CRadmin without digging for far to long in our code.
+When we have a model like message where we need to create new ones and edit or delete existing ones, CRadmin comes with
+an easy to use template for creating a list of all the object instances with clickable buttons. Basicly we can just
+use use a modelform, set the item value, build the list and create three views which with super classes to make it all
+work. However we need to override one block in the template to get the whole body of a message as an item value. To do
+this we override the method ``get_description`` in the item value class. Further we will create our own template so
+we can add some context below the description. This work is somewhat similar to what we did when we created our public
+UI. If we build a message application for other purposes than a getting started guide the structure of crapps and
+CRadmin instances would probarly look somewhat different. For instance could the we build one crapps for messages, and
+use the views for both admin UI and public UI. We could alos use just one template with an if test and display based
+on the role of the user or if the user is logged in or not. When we chose to rather rewrite some code and have the
+project structure we have, it is to create an guide where you can easily find different functionality in CRadmin without
+digging for far to long. Okay, back to the an Admin for messages.
 
-Let us start creating what we need to make a list of all messages with the options to edit, delete and create a new
-message.
+We start with creating a CRadmin instance.
 
-CRadmin Instance
-----------------
+CRadmin Instance for Admin Messages
+-----------------------------------
 We add an application to the list of apps in the ``AccountAdminCradminInstance`` and call it ``messages``. ::
 
         apps = [
@@ -27,8 +31,8 @@ We add an application to the list of apps in the ``AccountAdminCradminInstance``
             ('messages', messages.App)
         ]
 
-Crapps
-------
+Crapps for Admin Messages
+-------------------------
 Next we add a new module named ``messages`` within our crapps module. Inside here we need three files, one for the
 edite, delete and create views, one for the list view and one mixins file.
 
@@ -122,8 +126,8 @@ super classes. As you see in the code snippet below we use our mixin classes and
     class MessageDeleteView(mixins.MessagesQuerysetForRoleMixin, formview.WithinRoleDeleteView):
         """"""
 
-Urls
-----
+Urls for Admin Messages
+-----------------------
 Next we need to set the urls for our CRadmin application. So in the ``__init__.py`` file within our messages crapps, we
 add our appurls like we did for the other crapps. Now to make our template work as intended it is important to give our
 views names which our template expects to recive. Meaning a create view is named create, an edit view is named edit and
@@ -157,11 +161,10 @@ a delete view is named delete.
             )
         ]
 
-Template
---------
-Our template extends the ``edit-delete`` CRadmin template, and all we want is to fill the block below the description
-with the timestamp for creation of the message.
-
+Template for Admin Messages
+---------------------------
+Our template extends the ``edit-delete,django.html`` CRadmin template, and all we want is to fill the block below the
+description with the timestamp for creation of the message.
 ::
 
     {% extends "django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html" %}
@@ -171,5 +174,49 @@ with the timestamp for creation of the message.
         Posted: {{ me.message.creation_time }}
     {% endblock below-description %}
 
-Tests
------
+Tests for Admin Messages
+------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
