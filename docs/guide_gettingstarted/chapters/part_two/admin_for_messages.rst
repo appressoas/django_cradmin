@@ -176,7 +176,8 @@ description with the timestamp for creation of the message.
 
 Tests for Admin Messages
 ------------------------
-
+We want to test if form and list renders as we want, if a new message is saved in the database and connected to the
+correct account, if an edited message is updated in the database and if we delete the correct message.
 
 
 
