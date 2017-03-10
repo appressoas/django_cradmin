@@ -1,6 +1,5 @@
 {% extends "django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html" %}
-{% load cradmin_tags %}
 
 {% block below-description %}
-    Posted: {{ me.message.creation_time }}
+    <span>Posted: {{ me.message.creation_time }}</span>
 {% endblock below-description %}
