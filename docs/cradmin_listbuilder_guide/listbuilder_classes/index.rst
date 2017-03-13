@@ -3,4 +3,4 @@
 .. toctree::
    :maxdepth: 2
 
-   view_mixin_classes
+   all_classes
