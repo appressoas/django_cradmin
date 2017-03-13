@@ -16,7 +16,7 @@ Getting started
 
    install
    newbie
-   guide_gettingstarted/index
+   cradmin_gettingstarted_guide/index
 
 
 ***********
@@ -26,7 +26,7 @@ Listbuilder
 .. toctree::
     :maxdepth: 2
 
-    cradmin_listbuilder_demo/index
+    cradmin_listbuilder_guide/index
 
 
 ***********
