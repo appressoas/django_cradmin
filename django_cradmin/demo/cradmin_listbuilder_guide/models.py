@@ -2,8 +2,11 @@ from django.db import models
 
 
 class Artist(models.Model):
-    """"""
+    """
+    An Artist can be both a solo artist or a band with two or more members.
+    """
 
+    #: The stage name for an solo artist or a band
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -11,10 +14,14 @@ class Artist(models.Model):
 
 
 class Album(models.Model):
-    """"""
+    """
+    An album contains several :class:`.Song`'s and is released by an :class:`.Artist`.
+    """
 
+    #: The artist which released the album
     artist = models.ForeignKey(Artist)
 
+    #: The title of the album
     title = models.CharField(max_length=255)
 
     def __str__(self):
@@ -22,10 +29,14 @@ class Album(models.Model):
 
 
 class Song(models.Model):
-    """"""
+    """
+    A song is created by an :class:`.Artist` and given out on an :class:`.Album`.
+    """
 
+    #: The album which contains the song
     album = models.ForeignKey(Album)
 
+    #: The title of the song
     title = models.CharField(max_length=255)
 
     def __str__(self):

@@ -17,9 +17,9 @@ lists. The next part of this tutorial will be in more in depth details about met
 CRadmin.
 
 
-===========
-Models File
-===========
+======
+Models
+======
 When we create the models there is one thing we must keep in mind, and that is the verbose name. As you know Django
 sets this to the field name if we don't specific otherwise. In CRadmin the class
 :class:`django_cradmin.viewhelpers.listbuilderview.View` expects you to set the model class to display in our list. When
@@ -31,13 +31,20 @@ It really doesn't matter what kind of models we use when learning the listbuilde
 to generate nested lists. For instance can you use persons and family relations, cars with manufactor, models and types
 or bands, albums and songs. In this guide we choose the latter.
 
+.. note::
+    In this guide we don't reconsider if a song is written by someone else but the artist, nor if a band consists of
+    four members and just one or two band members wrote the song. We are not creating an application which shall be
+    used in real life. The point being to create lists of different kind.
+
+Our models file may look something like this:
+
 .. literalinclude:: /../django_cradmin/demo/cradmin_listbuilder_guide/models.py
 
 Test Models
 -----------
-To be sure everything works as inteded, please do write some simple tests for each model class here you checks for
+To be sure everything works as inteded, please do write some simple tests for each model class where you check
 instanciation, that the instance has the expected attributes and the __str__ method. A good practice is to create a
-template which you can use each time when changing some names.
+template which you can use each time.
 
 
 
