@@ -19,6 +19,15 @@ Getting started
    guide_gettingstarted/index
 
 
+***********
+Listbuilder
+***********
+
+.. toctree::
+    :maxdepth: 2
+
+    cradmin_listbuilder_demo/index
+
 
 ***********
 Viewhelpers
