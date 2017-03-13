@@ -11,11 +11,11 @@ If you are new to CRadmin we advice you to read :ref:`newbieguide` before advanc
 With this project we aim to make the admin interface easier to use, prettier to look at, and more flexible than the
 original admin interface in Django.
 
-In this guide we will create a message system where you can write messages as an administrator with the correct role
-and look at messages written by other as a common user without a special role. We do not show you where from where we
-import project file since this application is build inside CRadmin alongside aother applications made for demo purpose.
-Hence, your project sturcture will not look like ours. However, when we import from external libraries or from CRadmin
-itself, we will show it.
+In this guide we will create a message system where you can write messages as an administrator (with the correct role)
+and where a common user without a special role can read the messages.
+
+.. note::
+    About project structure and imports: We do not show you from where we import the project files since this application is build inside CRadmin alongside other applications made for demo purposes. Hence, your project structure will not look like ours. However, when we import from external libraries or from CRadmin itself, we will show it.
 
 Setting up the Models
 ---------------------
