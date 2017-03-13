@@ -68,11 +68,14 @@ INSTALLED_APPS = (
     # Just here to get the demo overview view.
     'django_cradmin.demo.project.demo',
 
-    # The advanced demo
+    # The getting started guide
     'django_cradmin.demo.cradmin_gettingstarted',
+
+    # The advanced demo
     'django_cradmin.demo.webdemo',
     'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
+    'django_cradmin.demo.cradmin_listbuilder_guide',
 
     # Demo for listfilter
     'django_cradmin.demo.listfilterdemo',
