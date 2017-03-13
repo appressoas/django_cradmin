@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',  # Required by cradmin_imagearchive
 
     # Demo apps
+    'django_cradmin.demo.cradmin_listbuilder_guide',
     'django_cradmin.demo.cradmin_gettingstarted',
     'django_cradmin.demo.webdemo',
     'django_cradmin.demo.listfilterdemo',
