@@ -45,6 +45,9 @@ To be sure everything works as inteded, please do write some simple tests for ea
 instanciation, that the instance has the expected attributes and the __str__ method. A good practice is to create a
 template which you can use each time.
 
+Next Chapter
+============
+TODO
 
 
 
