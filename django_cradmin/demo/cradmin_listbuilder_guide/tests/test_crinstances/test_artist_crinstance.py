@@ -12,13 +12,23 @@ class TestArtistCradminInstance(TestCase):
     """"""
 
     def test_no_superuser_returns_empty_rolequeryset(self):
+        """Expects empty role queryset when user is not superuser"""
         mommy.make('cradmin_listbuilder_guide.Artist')
         mockrequest = mock.MagicMock()
         mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
         crinstance = artist_crinstance.ArtistCradminInstance(request=mockrequest)
         self.assertEqual(0, crinstance.get_rolequeryset().count())
 
+    def test_superuser_is_in_rolequeryset(self):
+        """Expects one user in rolequeryset even when the superuser is not admin for artist"""
+        mommy.make('cradmin_listbuilder_guide.Artist')
+        mockrequest = mock.MagicMock()
+        mockrequest.user.is_superuser = mommy.make(settings.AUTH_USER_MODEL)
+        crinstance = artist_crinstance.ArtistCradminInstance(request=mockrequest)
+        self.assertEqual(1, crinstance.get_rolequeryset().count())
+
     def test_one_user_is_in_rolequeryset(self):
+        """Expects one user in rolequeryset even when the Artist have two admins"""
         user = mommy.make(settings.AUTH_USER_MODEL)
         user_two = mommy.make(settings.AUTH_USER_MODEL)
         mommy.make('cradmin_listbuilder_guide.Artist', admins=[user, user_two])
