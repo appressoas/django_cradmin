@@ -10,10 +10,9 @@ functionality for lists in CRadmin in an easy way.
 This tutorial requires a basic understanding of CRadmin. If you are new to CRadmin, please do the
 :ref:`index_gettingstarted` guide before continuing.
 
-We start by creating the some models wich we later on will use to create object instances in our lists. After that we
-start by giving a high level overlook of the classes and how they are connected together in CRadmin when we work with
-lists. The next part of this tutorial will be in more in depth details about methods and opportunities for lists in
-CRadmin.
+We start by creating the some models wich we later on will use to create object instances in our lists. Next we create
+the CRadmin applications and instances basics. After that we take a high level overlook of the classes and how they are
+connected together in CRadmin when we work with lists.
 
 
 ======
