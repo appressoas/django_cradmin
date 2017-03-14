@@ -4,3 +4,4 @@
    :maxdepth: 2
 
    main_dashboard
+   artist_dashboard
