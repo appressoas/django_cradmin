@@ -93,6 +93,7 @@ Lists classes
 The Row list class :class:`django_cradmin.viewhelpers.listbuilder.lists.RowList` uses the base List class as a super,
 and it's purpose is to allow a creation of a row list instead of the standard list.
 
+
 Item Value Classes
 ------------------
 There are several item value classes which more or less fulfills out basic needs. However, when we work on more complex
@@ -107,6 +108,47 @@ We have the following item value classes
 * EditDelete
 * EditDeleteWithPreview
 * EditDeleteWithArchiveImage
+
+FocusBox
+""""""""
+This class uses :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer` as super, and is a good default
+class to use when setting the structure of views. It renders a item value in a styled focus box.
+
+TitleDescription
+""""""""""""""""
+This class extends the FocusBox with methods and a template for title and enhanced description. The title is the value
+by default while the description is None. The template has several blocks which we can override.
+
+UseThis
+"""""""
+This class extends the TitleDescription with a ``Use this`` button and CSS class. Further it has it's own template with
+several blocks which we can override.
+
+EditDelete
+""""""""""
+This class extends the TitleDescription and has a template which adds buttons for ``Edit`` and ``Delete``. This makes
+it very easy to create a view for working with objects. The ``EditDelete`` class expects the edit view to be named
+``edit`` and the delete view to be named ``delete``, which it gets from the :class:`django_cradmin.crapp.App`. The view
+is called with ``self.value.id``. If we need to override this functionality it is done it the block ``editbutton-url``
+for the edit view and in the ``deletebutton-url`` for the delete view.
+
+EditDelteWithPreview
+""""""""""""""""""""
+This class extends the EditDelete class and the EditDeleteWithPreviewMixin class. Basicly it is a short cut for adding
+a preview button alongside the edit and delete buttons. Just as the EditDelete class if gets the view name from the
+current CRadmin application class and expects the preview view to be named ``preview``.
+
+EditDeleteWithArchiveImage
+""""""""""""""""""""""""""
+This class extends the EditDelete class and uses a template which extends the template used by the EditDelete class.
+Basiculy it allows you to add a image from the CRadmin archive and scale it. It also comes with a fallback for image
+size.
+
+EditDeleteWithArchiveImageAndPreview
+""""""""""""""""""""""""""""""""""""
+This class is a shortcut for creating a view with both preview and an image, thus extending both the
+EditDeleteWithArchiveImage and the EditDelteWithPreview classes.
+
 
 Item Frame Classes
 ------------------
