@@ -1,4 +1,4 @@
-.. _all_classes:
+.. _listbuilder_all_classes:
 
 ===========
 The Classes
