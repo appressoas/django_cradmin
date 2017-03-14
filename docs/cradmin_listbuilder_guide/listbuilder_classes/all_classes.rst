@@ -152,48 +152,14 @@ EditDeleteWithArchiveImage and the EditDelteWithPreview classes.
 
 Item Frame Classes
 ------------------
+There are two item frame classes which either provides some space around each item in a list of items, or provides
+the space and sets the whole frame as a link.
 
+DefaultSpacingItemFrame
+"""""""""""""""""""""""
+This class extends the :class:`django_cradmin.viewhelpers.listbuilder.base.ItemFrameRenderer` and renders a fram which
+adds space around each item in the list.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Link
+""""
+This class extends the DefaultSpacingItemFrame and renders the frame as a link.
