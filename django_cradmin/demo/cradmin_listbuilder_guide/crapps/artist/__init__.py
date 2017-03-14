@@ -6,7 +6,7 @@ class App(crapp.App):
     appurls = [
         crapp.Url(
             r'^$',
-            artist_dashboard.ArtistBashboard.as_view(),
+            artist_dashboard.ArtistBashboardView.as_view(),
             name=crapp.INDEXVIEW_NAME
         )
     ]
