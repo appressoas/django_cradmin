@@ -6,8 +6,13 @@ from django_cradmin.demo.cradmin_listbuilder_guide.models import Artist, Album, 
 @admin.register(Artist)
 class ArtistAdmin(admin.ModelAdmin):
     list_display = [
-        'name'
+        'name',
+        'admins_as_string'
     ]
+
+    def admins_as_string(self, obj):
+        return ', '.join([user.username for user in obj.admins.all()])
+    admins_as_string.short_description = "Admins"
 
 
 @admin.register(Album)

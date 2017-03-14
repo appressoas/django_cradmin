@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -8,6 +9,9 @@ class Artist(models.Model):
 
     #: The stage name for an solo artist or a band
     name = models.CharField(max_length=255)
+
+    #: The user or users which are administrators of the artist
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def __str__(self):
         return self.name

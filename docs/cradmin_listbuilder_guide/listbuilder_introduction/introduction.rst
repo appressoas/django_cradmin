@@ -34,6 +34,9 @@ or bands, albums and songs. In this guide we choose the latter.
     four members and just one or two band members wrote the song. We are not creating an application which shall be
     used in real life. The point being to create lists of different kind.
 
+We use a ManyToMany relation for the administrators of the Artist, since we believe this mirrors real life in a better
+way where maybe all members of a band would have the privileges to add albums and songs for the band in a database.
+
 Our models file may look something like this:
 
 .. literalinclude:: /../django_cradmin/demo/cradmin_listbuilder_guide/models.py
