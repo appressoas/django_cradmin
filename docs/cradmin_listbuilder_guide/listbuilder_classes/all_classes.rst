@@ -9,6 +9,22 @@ In this chapter we will give an high level overlook of the structure of classes,
 together in CRadmin. You can read the :doc:`CRadmin list API <../../viewhelpers_listbuilder>` to get more information
 and details about the methods and functionality.
 
+CSS and BEM
+===========
+CRadmin aims for easy-to-read and reusable code. These principle also applys to CSS classes. One problem with CSS is
+tha lacking of scope. Another is the lacking modularity. Offcourse if the quantity of HTML pages is rather small you
+don't need a lot of CSS classes, making it easier to get a grip of the site's CSS. CRadmin uses BEM to structure the
+CSS. BEM stands for Block Element Modifier and has strict rules for namegiving. Eventhough BEM is somewhat odd to
+look at, the benefits of having block styles which don't depend on other elements on a page, reusabale CSS and a good
+structure overshadows the odd syntax. Furthermore, BEM makes it easier to understand the inheritance in CSS and
+improves participation from different developers even in the late stages of a project. We will look further into BEM
+and how to add our own CSS classes in CRadmin later on. For now we just need to understand the high level concepts.
+One or more of CRadmins abstract renderable classes is always used when we're creating list views. When it comes to
+CSS we have two main choices, inheritance from an abstract renderable class which uses CSS in an old fashion way, or
+inheritance from a abstract renderable class which uses CSS with BEM.
+Read more about `BEM <http://getbem.com/introduction/>`_.
+
+
 View Classes
 ============
 The listbuilder view functionality in CRadmin consits of the following CRadmin classes:
@@ -89,13 +105,13 @@ for items in a list.
 
 
 Lists classes
--------------
+=============
 The Row list class :class:`django_cradmin.viewhelpers.listbuilder.lists.RowList` uses the base List class as a super,
 and it's purpose is to allow a creation of a row list instead of the standard list.
 
 
 Item Value Classes
-------------------
+==================
 There are several item value classes which more or less fulfills out basic needs. However, when we work on more complex
 structures we most likely ends up with writing our own subclasses of the class
 :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer`.
@@ -151,7 +167,7 @@ EditDeleteWithArchiveImage and the EditDelteWithPreview classes.
 
 
 Item Frame Classes
-------------------
+==================
 There are two item frame classes which either provides some space around each item in a list of items, or provides
 the space and sets the whole frame as a link.
 
@@ -163,3 +179,7 @@ adds space around each item in the list.
 Link
 """"
 This class extends the DefaultSpacingItemFrame and renders the frame as a link.
+
+Next Chapter
+============
+TODO
