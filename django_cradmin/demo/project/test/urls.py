@@ -3,6 +3,7 @@ from django.conf.urls import include, url
 from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances import create_account_cradmin_instance
 from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances import account_admin_cradmin_instance
 from django_cradmin.demo.cradmin_gettingstarted.cradmin_instances import message_publicui_cradmin_instance
+from django_cradmin.demo.cradmin_listbuilder_guide.cradmin_instances import artist_crinstance
 from django_cradmin.demo.webdemo.webdemo_cradmin_instance import WebdemoCrAdminInstance
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     url(r'^gettingstarted/', include(create_account_cradmin_instance.CreateAccountCrAdminInstance.urls())),
     url(r'^gettingstarted/admin/', include(account_admin_cradmin_instance.AccountAdminCradminInstance.urls())),
     url(r'^gettingstarted/messages/', include(message_publicui_cradmin_instance.MessagePublicUiCradminInstance.urls())),
+    url(r'^listbuilderguide/artist', include(artist_crinstance.ArtistCradminInstance.urls()))
 ]
