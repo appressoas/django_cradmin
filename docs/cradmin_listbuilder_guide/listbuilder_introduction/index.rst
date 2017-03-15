@@ -6,3 +6,4 @@
    introduction
    setting_up_dashboards
    project_structure
+   add_artist

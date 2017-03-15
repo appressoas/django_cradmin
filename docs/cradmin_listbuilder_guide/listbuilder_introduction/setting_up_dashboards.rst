@@ -57,9 +57,9 @@ crapps album, artist and song, it is placed in the ``main_dashboard.py`` file fo
 
 CRadmin Instances
 =================
-THe CRadmin instance *main_crinstance* has to super classes, firt the NoRoleMixin and than the BaseCrAdminInstance.
-Furthere is has an id of *main_crinstance*. Otherwise it just passes the method for rolequeryset and we set the apps
-just like in any other CRadmin instance.
+The CRadmin instance *main_crinstance* has to super classes, first the NoRoleMixin and than the BaseCrAdminInstance.
+Further it has an id of *main_crinstance*. Otherwise it just passes the method for rolequeryset and we set the apps
+just like in any other CRadmin instance and checks if the user is logged in using the ``has_access``method.
 
 Our artist CRadmin instance looks like:
 ::

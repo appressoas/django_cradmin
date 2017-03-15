@@ -77,18 +77,3 @@ class TestArtistCreateView(TestCase, cradmin_testhelpers.TestCaseMixin):
         admin = admins[0]
         # is the user an admin
         self.assertEqual(mockuser.user, admin)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
