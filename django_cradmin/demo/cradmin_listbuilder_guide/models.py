@@ -4,13 +4,13 @@ from django.db import models
 
 class Artist(models.Model):
     """
-    An Artist can be both a solo artist or a band with two or more members.
+    An Artist can be both a solo artist_app or a band with two or more members.
     """
 
-    #: The stage name for an solo artist or a band
+    #: The stage name for an solo artist_app or a band
     name = models.CharField(max_length=255)
 
-    #: The user or users which are administrators of the artist
+    #: The user or users which are administrators of the artist_app
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Album(models.Model):
     An album contains several :class:`.Song`'s and is released by an :class:`.Artist`.
     """
 
-    #: The artist which released the album
+    #: The artist_app which released the album
     artist = models.ForeignKey(Artist)
 
     #: The title of the album

@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='album',
-            name='artist',
+            name='artist_app',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cradmin_listbuilder_guide.Artist'),
         ),
     ]

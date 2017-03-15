@@ -2,7 +2,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps.artist import artist_dashboard
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.artist_app import artist_dashboard
 
 
 class TestArtistDashboardView(TestCase, cradmin_testhelpers.TestCaseMixin):

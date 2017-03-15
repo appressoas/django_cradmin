@@ -34,5 +34,5 @@ class SongAdmin(admin.ModelAdmin):
     def written_by(self, written_by):
         return written_by.album.artist
 
-    # possible to sort by artist
+    # possible to sort by artist_app
     written_by.admin_order_field = 'album__artist'

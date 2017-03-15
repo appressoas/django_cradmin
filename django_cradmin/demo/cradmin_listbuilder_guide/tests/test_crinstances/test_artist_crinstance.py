@@ -20,7 +20,7 @@ class TestArtistCradminInstance(TestCase):
         self.assertEqual(0, crinstance.get_rolequeryset().count())
 
     def test_superuser_is_in_rolequeryset(self):
-        """Expects one user in rolequeryset even when the superuser is not admin for artist"""
+        """Expects one user in rolequeryset even when the superuser is not admin for artist_app"""
         mommy.make('cradmin_listbuilder_guide.Artist')
         mockrequest = mock.MagicMock()
         mockrequest.user.is_superuser = mommy.make(settings.AUTH_USER_MODEL)
