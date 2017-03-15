@@ -1,5 +1,17 @@
 {% extends 'django_cradmin/base.django.html' %}
+{% load cradmin_tags %}
 
 {% block page-cover-title %}
     Dashboard for {{ request.cradmin_role }}
 {% endblock page-cover-title %}
+
+{% block content %}
+    <section class="adminui-page-section">
+        <div class="container container--tight">
+            <a class="button button--compact button--primary"
+               href="{% cradmin_instance_url appname='albums' viewname='create' %}">
+                New Album
+            </a>
+        </div>
+    </section>
+{% endblock content %}

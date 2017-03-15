@@ -191,6 +191,11 @@ As usually we test our work for at least it's sanity.
             # is the user an admin
             self.assertEqual(mockuser.user, admin)
 
+Add Album
+=========
+We will use the same principle as shown above for creating a new album. The only difference is that we use the existing
+app in the CRadmin instance *artist_crinstance*.
+
 Next Chapter
 ============
 TODO
