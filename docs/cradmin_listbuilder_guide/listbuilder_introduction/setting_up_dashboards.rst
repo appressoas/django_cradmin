@@ -183,4 +183,4 @@ Test Artist Dashboard View
 
 Next Chapter
 ============
-TODO
+Continue to :ref:`listbuilder_project_structure`
