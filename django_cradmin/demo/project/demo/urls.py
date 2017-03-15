@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^gettingstarted/messages/', include(message_publicui_cradmin_instance.MessagePublicUiCradminInstance.urls())),
     url(r'^gettingstarted/resetpassword/', include('django_cradmin.apps.cradmin_resetpassword.urls')),
     url(r'^listbuilderguide/', include(main_crinstance.MainCradminInstance.urls())),
-    url(r'^listbuilderguide/artist_app', include(artist_crinstance.ArtistCradminInstance.urls())),
+    url(r'^listbuilderguide/artist/', include(artist_crinstance.ArtistCradminInstance.urls())),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
