@@ -26,10 +26,14 @@ perform testing our project structure looks like this:
         main_dashboard.py
     templates
         cradmin_listbuilder_guide
-            album_dashbaord.django.hmtl
-            artist_dashboard.django.html
-            main_dashboard.django.html
-            song_dashboard.django.html
+            crapps
+                album_app
+                    album_dashbaord.django.hmtl
+                artist_app
+                    artist_dashboard.django.html
+                song_app
+                    song_dashboard.django.html
+                main_dashboard.django.html
     tests
         tests_crapps
             test_adlbum_app

@@ -25,7 +25,7 @@ Our three dashboard views for artist, album and song all extends the *WithinRole
 
 
     class ArtistBashboardView(viewhelpers.generic.WithinRoleTemplateView):
-        template_name = 'cradmin_listbuilder_guide/artist_dashboard.django.html'
+        template_name = 'cradmin_listbuilder_guide/crapps/artist_app/artist_dashboard.django.html'
 
 Template
 --------

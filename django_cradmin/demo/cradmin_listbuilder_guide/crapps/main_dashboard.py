@@ -3,7 +3,7 @@ from django_cradmin import viewhelpers
 
 
 class MainDashboardView(viewhelpers.generic.StandaloneBaseTemplateView):
-    template_name = 'cradmin_listbuilder_guide/main_dashboard.django.html'
+    template_name = 'cradmin_listbuilder_guide/crapps/main_dashboard.django.html'
 
 
 class App(crapp.App):
