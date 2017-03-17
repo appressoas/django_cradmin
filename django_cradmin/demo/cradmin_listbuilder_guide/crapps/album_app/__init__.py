@@ -1,6 +1,7 @@
 from django_cradmin import crapp
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.album_app import album_create_view
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.album_app import album_dashboard
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.album_app import album_delete_view
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.album_app import album_edit_view
 
 
@@ -20,5 +21,10 @@ class App(crapp.App):
             r'^edit/(?P<pk>\d+)$',
             album_edit_view.AlbumEditView.as_view(),
             name='edit'
+        ),
+        crapp.Url(
+            r'^delete/(?P<pk>\d+)$',
+            album_delete_view.AlbumDeleteView.as_view(),
+            name='delete'
         )
     ]
