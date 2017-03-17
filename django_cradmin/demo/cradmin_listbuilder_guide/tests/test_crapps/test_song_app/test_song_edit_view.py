@@ -78,32 +78,3 @@ class TestSongEditView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(10, songs_in_db.count())
         self.assertTrue(Song.objects.filter(title='Ace of Spades').get())
         self.assertFalse(Song.objects.filter(title='Aces High'))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,3 +7,4 @@
    setting_up_dashboards
    project_structure
    create_views
+   edit_views
