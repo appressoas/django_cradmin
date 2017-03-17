@@ -17,8 +17,8 @@ class SongCreateView(viewhelpers.formview.WithinRoleCreateView):
                 uicontainer.form.Form(
                     form=self.get_form(),
                     children={
-                        uicontainer.foreignkeyfield.Dropdown('album'),
                         uicontainer.fieldwrapper.FieldWrapper('title'),
+                        uicontainer.fieldwrapper.FieldWrapper('album'),
                         uicontainer.button.SubmitPrimary(
                             text='Save'
                         )
