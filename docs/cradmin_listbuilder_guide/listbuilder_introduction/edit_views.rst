@@ -37,20 +37,24 @@ which renders the form used by both the create and update view, and one class wi
         ]
 
         def get_form_renderable(self):
-            return uicontainer.layout.AdminuiPageSectionTight(
-                children=[
-                    uicontainer.form.Form(
-                        form=self.get_form(),
-                        children={
-                            uicontainer.fieldwrapper.FieldWrapper('title'),
-                            uicontainer.fieldwrapper.FieldWrapper('album'),
-                            uicontainer.button.SubmitPrimary(
-                                text='Save'
-                            )
-                        }
-                    )
-                ]
-            ).bootstrap()
+        return uicontainer.layout.AdminuiPageSectionTight(
+            children=[
+                uicontainer.form.Form(
+                    form=self.get_form(),
+                    children={
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='title'),
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='album',
+                            field_renderable=uicontainer.field.Select()
+                        ),
+                        uicontainer.button.SubmitPrimary(
+                            text='Save'
+                        )
+                    }
+                )
+            ]
+        ).bootstrap()
 
 
     class SongQuerysetForRoleMixin(object):

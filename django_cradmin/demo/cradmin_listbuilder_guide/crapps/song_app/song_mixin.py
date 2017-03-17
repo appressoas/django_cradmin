@@ -17,8 +17,12 @@ class SongCreateEditMixin(object):
                 uicontainer.form.Form(
                     form=self.get_form(),
                     children={
-                        uicontainer.fieldwrapper.FieldWrapper('title'),
-                        uicontainer.fieldwrapper.FieldWrapper('album'),
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='title'),
+                        uicontainer.fieldwrapper.FieldWrapper(
+                            fieldname='album',
+                            field_renderable=uicontainer.field.Select()
+                        ),
                         uicontainer.button.SubmitPrimary(
                             text='Save'
                         )
