@@ -2,6 +2,7 @@ from django_cradmin import crapp
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_create_view
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_dashboard
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_delete_view
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_edit_delete_listview
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_edit_view
 
 
@@ -9,7 +10,7 @@ class App(crapp.App):
     appurls = [
         crapp.Url(
             r'^$',
-            song_dashboard.SingleDashboardView.as_view(),
+            song_edit_delete_listview.SongListBuilderView.as_view(),
             name=crapp.INDEXVIEW_NAME
         ),
         crapp.Url(
