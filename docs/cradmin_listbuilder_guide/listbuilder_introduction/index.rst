@@ -8,3 +8,5 @@
    project_structure
    create_views
    edit_views
+   delete_views
+r
