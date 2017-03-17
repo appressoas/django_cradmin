@@ -6,6 +6,7 @@ from django_cradmin.demo.cradmin_listbuilder_guide.models import Artist, Album, 
 @admin.register(Artist)
 class ArtistAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'name',
         'admins_as_string'
     ]
@@ -18,6 +19,7 @@ class ArtistAdmin(admin.ModelAdmin):
 @admin.register(Album)
 class AlbumModel(admin.ModelAdmin):
     list_display = [
+        'id',
         'artist',
         'title'
     ]
@@ -26,6 +28,7 @@ class AlbumModel(admin.ModelAdmin):
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'title',
         'album',
         'written_by'
