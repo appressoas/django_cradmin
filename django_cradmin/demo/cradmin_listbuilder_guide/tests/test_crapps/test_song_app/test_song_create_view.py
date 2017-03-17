@@ -91,3 +91,18 @@ class TestSongCreateView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(1, songs_in_db)
         album_song = Song.objects.select_related('album').get(id=album.id)
         self.assertEqual(album_song.album, album)
+
+    def test_add_song_to_correct_album_when_multiple_albums_from_same_artist(self):
+        album = mommy.make('cradmin_listbuilder_guide.Album', title='Black Rain', artist=self.artist)
+        mommy.make('cradmin_listbuilder_guide.Album', artist=self.artist, _quantity=10)
+        self.mock_http302_postrequest(
+            cradmin_role=self.artist,
+            viewkwargs={'pk': album.id},
+            requestkwargs={
+                'data': {
+                    'title': 'On album',
+                    'album': album.id
+                }
+            }
+        )
+        self.assertTrue(Song.objects.filter(album=album, title='On album').get())
