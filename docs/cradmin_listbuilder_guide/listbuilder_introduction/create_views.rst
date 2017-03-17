@@ -1,8 +1,8 @@
-.. _listbuilderguide_add_artist:
+.. _listbuilderguide_create_viewst:
 
-==========
-Add Artist
-==========
+============
+Create Views
+============
 
 We need the opportunity to add artists from our main dashboard, so we dont have to go to the Django Admin each time we
 want to create a new artist. This means we will go from a view with no role to a view with a role. Eventhough this is
@@ -195,6 +195,13 @@ Add Album
 =========
 We will use the same principle as shown above for creating a new album. The only difference is that we use the existing
 app in the CRadmin instance *artist_crinstance*.
+
+Add Song
+========
+When it comes to making a view for adding new songs, we do this just as we did in the views for creating an artist and
+an album. Now we have the foreign key from song to album, and CRadmin handles this for us with the uicontainer. The
+result is a dropdown in our create view which let us choose the album to hold the song. Remember to test that the song
+does get on the correct album.
 
 Next Chapter
 ============
