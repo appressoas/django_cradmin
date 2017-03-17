@@ -1,32 +1,9 @@
-from django.contrib.auth.models import User
-
-from django_cradmin import uicontainer
 from django_cradmin import viewhelpers
 from django_cradmin.crinstance import reverse_cradmin_url
-from django_cradmin.demo.cradmin_listbuilder_guide.models import Artist
-from django_cradmin.templatetags.cradmin_tags import cradmin_url
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.artist_app.artist_mixin import ArtistCreateEditMixin
 
 
-class ArtistCreateView(viewhelpers.formview.WithinRoleCreateView):
-    model = Artist
-    roleid_field = 'artist'
-    fields = [
-        'name'
-    ]
-
-    def get_form_renderable(self):
-        return uicontainer.layout.AdminuiPageSectionTight(
-            children=[
-                uicontainer.form.Form(
-                    form=self.get_form(),
-                    children=[
-                        uicontainer.fieldwrapper.FieldWrapper('name'),
-                        uicontainer.button.SubmitPrimary(
-                            text='Save')
-                    ]
-                )
-            ]
-        ).bootstrap()
+class ArtistCreateView(ArtistCreateEditMixin, viewhelpers.formview.WithinRoleCreateView):
 
     def save_object(self, form, commit=True):
         self.artist = super(ArtistCreateView, self).save_object(form, commit)
