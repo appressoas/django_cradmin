@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import ugettext_lazy
 
 
 class Album(models.Model):
@@ -36,6 +37,10 @@ class Song(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta(object):
+        verbose_name = ugettext_lazy('Song')
+        verbose_name_plural = ugettext_lazy('Songs')
 
 
 class AlbumAdministrator(models.Model):
