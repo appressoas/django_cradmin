@@ -1,27 +1,15 @@
 from django.contrib import admin
 
-from django_cradmin.demo.cradmin_listbuilder_guide.models import Artist, Album, Song
-
-
-@admin.register(Artist)
-class ArtistAdmin(admin.ModelAdmin):
-    list_display = [
-        'id',
-        'name',
-        'admins_as_string'
-    ]
-
-    def admins_as_string(self, obj):
-        return ', '.join([user.username for user in obj.admins.all()])
-    admins_as_string.short_description = "Admins"
+from django_cradmin.demo.cradmin_listbuilder_guide.models import Album, Song, AlbumAdministrator
 
 
 @admin.register(Album)
 class AlbumModel(admin.ModelAdmin):
     list_display = [
         'id',
-        'artist',
-        'title'
+        'released_by',
+        'title',
+        'year'
     ]
 
 
@@ -31,11 +19,15 @@ class SongAdmin(admin.ModelAdmin):
         'id',
         'title',
         'album',
-        'written_by'
+        'written_by',
+        'time'
     ]
 
-    def written_by(self, written_by):
-        return written_by.album.artist
 
-    # possible to sort by artist_app
-    written_by.admin_order_field = 'album__artist'
+@admin.register(AlbumAdministrator)
+class AlbumAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'user',
+        'album'
+    ]

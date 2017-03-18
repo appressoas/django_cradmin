@@ -14,9 +14,6 @@ class TestSongModel(test.TestCase):
     def test_has_expected_attributes(self):
         my_object = mommy.make('cradmin_listbuilder_guide.Song')
         self.assertTrue(hasattr(my_object, 'title'))
-        self.assertTrue(hasattr(my_object, 'album'))
-        self.assertTrue(hasattr(my_object, 'written_by'))
-        self.assertTrue(hasattr(my_object, 'time'))
 
     def test_str_method(self):
         my_object = mommy.make('cradmin_listbuilder_guide.Song', title='foo')
