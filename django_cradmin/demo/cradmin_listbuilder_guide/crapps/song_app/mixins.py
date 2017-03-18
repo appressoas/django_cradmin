@@ -37,6 +37,6 @@ class SongCreateUpdateFormMixin(object):
         ).bootstrap()
 
 
-class SongCreateUpdateRolequeryMixin(object):
+class SongRolequeryMixin(object):
     def get_queryset_for_role(self):
         return Song.objects.filter(album=self.request.cradmin_role)

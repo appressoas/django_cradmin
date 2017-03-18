@@ -32,7 +32,6 @@ class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
                 'data': self.__form_data(title='')
             }
         )
-        mockresponse.selector.prettyprint()
         self.assertTrue(mockresponse.selector.one('.test-warning-message'))
 
     def test_warning_message_no_written_by_field(self):
