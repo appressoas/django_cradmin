@@ -4,3 +4,4 @@
     :maxdepth: 2
 
     models
+    test_models

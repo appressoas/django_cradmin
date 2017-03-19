@@ -4,3 +4,4 @@
     :maxdepth: 2
 
     edit_delete_views
+    test_edit_delete_views

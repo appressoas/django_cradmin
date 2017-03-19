@@ -22,10 +22,6 @@ looks like this.
         """"""
         id = 'listbuilder_crinstance'
         roleclass = Album
-        rolefrontpage_appname = ''
-        apps = [
-            ()
-        ]
 
         def get_titletext_for_role(self, role):
             pass
@@ -35,6 +31,10 @@ looks like this.
             if not self.request.user.is_superuser:
                 queryset = queryset.filter(albumadministrator__user=self.request.user)
             return queryset
+
+Test CRadmin Instance
+---------------------
+.. literalinclude:: /../django_cradmin/demo/cradmin_listbuilder_guide/tests/test_listbuilder_crinstance.py
 
 Next Chapter
 ------------
