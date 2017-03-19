@@ -32,7 +32,7 @@ class Song(models.Model):
     # there are often several people writing a song
     written_by = models.CharField(max_length=100, default='')
 
-    #: The length of the song
+    #: The length of the song as a whole number
     time = models.PositiveIntegerField()
 
     def __str__(self):
