@@ -120,8 +120,20 @@ Further we extend the CRadmin viewhelper class ``WithinRoleDeleteView``.
 List View
 ---------
 The next step to make a html page with functionality for create, edit and delete object insances is to build item
-values and to build the list view. The CRadmin lisbuilder itemvalue class ``EditDelete``
-:class:`django_cradmin.viewhelpers.listbuilder.itemvalue.EditDelete`
+values and to build the list view. Our class ``SongItemValue`` extends the CRadmin listbuilder item value class
+:class:`django_cradmin.viewhelpers.listbuilder.itemvalue.EditDelete`. What this does is to easily render a box with
+and edit and delete button for each item in our list. Another usefull element is the ``valuealias``. We override the
+default value attribute to make it easier working with objects in our views or templates. As you can see below we set
+the valuealias attribute to be *song*. In our method we can than use ``self.song....`` and in a template we can than
+use ``me.song...``. The valuealias is inherit from the CRadmin viewhelper class
+:class:`django_cradmin.viewhelpers.listbuilder.base.AbstractItemRenderer`.
+
+The class ``SongListbuilderView`` extends three other classes. First we need the correct Song object instances for the
+CRadmin role, which is found in our mixins file. Second we want to the ability to add new Songs to an album, so we
+use the CRadmin class ``ViewCreateButtonMixin``. Finally we extends the CRadmin class
+:class:`django_cradmin.viewhelpers.listbuilderview.View` which gives us what we need for a standard Django list view
+pluss extra CRadmin functionality, like handling roles. In the ``SongListbuilderView`` class we set the model and which
+class we want to use for rendering the item values for our list.
 ::
 
     from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app.mixins import SongRolequeryMixin
@@ -143,6 +155,19 @@ values and to build the list view. The CRadmin lisbuilder itemvalue class ``Edit
         model = Song
         value_renderer_class = SongItemValue
 
-Valuealias
-""""""""""
-When taking a look at the EditDelete bla bla bla
+
+Next Chapter
+------------
+TODO
+
+
+
+
+
+
+
+
+
+
+
+
