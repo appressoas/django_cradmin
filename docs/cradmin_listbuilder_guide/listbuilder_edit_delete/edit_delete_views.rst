@@ -155,6 +155,51 @@ class we want to use for rendering the item values for our list.
         model = Song
         value_renderer_class = SongItemValue
 
+Crapp Urls
+----------
+The next thing we need is to add the urls for our newly created views to the class App, so that our CRadmin instance
+class can find the urls and include them. We put our appurls inside the init file of our CRadmin application
+``edit_delete_app``.
+
+CRadmin listbuilder expects that the different views uses the name index, create, edit and delete. As you remember
+from out Getting Started tutorial the index view name is given by ``crapp.INDEXVIEW_NAME``. When we extended the
+CRadmin class ``EditDelete`` for our item value class, we got two methods which gets the viewname within the current
+:class:`django_cradmin.crapp.App` to go to either for editing or deleting. Since these methods returns either ``edit``
+or ``delete`` by default it is recommended we use the same names for our views to keep the structure uniformly. If
+there is a need to override this, we can use the template block ``editbutton-url`` or ``deletebutton-url``.
+
+::
+
+    from django_cradmin import crapp
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_create_view
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_delete_view
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_edit_delete_listview
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_edit_view
+
+
+    class App(crapp.App):
+        appurls = [
+            crapp.Url(
+                r'^$',
+                song_edit_delete_listview.SongListbuilderView.as_view(),
+                name=crapp.INDEXVIEW_NAME
+            ),
+            crapp.Url(
+                r'^create$',
+                song_create_view.SongCreateView.as_view(),
+                name='create'
+            ),
+            crapp.Url(
+                r'^edit/(?P<pk>\d+)$',
+                song_edit_view.SongEditView.as_view(),
+                name='edit'
+            ),
+            crapp.Url(
+                r'^delete/(?P<pk>\d+)$',
+                song_delete_view.SongDeleteView.as_view(),
+                name='delete'
+            )
+        ]
 
 Next Chapter
 ------------

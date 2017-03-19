@@ -4,5 +4,3 @@
     :maxdepth: 2
 
     edit_delete_views
-
-r
