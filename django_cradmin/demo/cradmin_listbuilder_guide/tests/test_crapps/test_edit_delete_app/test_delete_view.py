@@ -2,7 +2,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps.song_app import song_delete_view
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import song_delete_view
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 
 

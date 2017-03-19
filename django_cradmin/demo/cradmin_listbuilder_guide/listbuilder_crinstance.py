@@ -1,5 +1,5 @@
 from django_cradmin import crinstance
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps import song_app
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_app
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
 
 
@@ -9,7 +9,7 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
     roleclass = Album
     rolefrontpage_appname = 'songs'
     apps = [
-        ('songs', song_app.App)
+        ('songs', edit_delete_app.App)
     ]
 
     def get_titletext_for_role(self, role):
