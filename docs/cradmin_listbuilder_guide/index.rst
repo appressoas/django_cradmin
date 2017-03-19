@@ -7,6 +7,6 @@ Listbuilder Tutorial
 .. toctree::
    :maxdepth: 2
 
-   listbuilder_introduction/index
+   listbuilder_introduction
    listbuilder_classes/index
 
