@@ -7,6 +7,7 @@ from django_cradmin.viewhelpers import listbuilderview
 
 class PreviewSongItemValue(listbuilder.itemvalue.EditDeleteWithPreview):
     """"""
+    template_name = "cradmin_listbuilder_guide/edit_delete_preview_app/item_value.django.html"
     valuealias = 'song'
 
     def get_description(self):
