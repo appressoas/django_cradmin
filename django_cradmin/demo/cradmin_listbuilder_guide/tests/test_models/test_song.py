@@ -5,6 +5,7 @@ from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 
 
 class TestSongModel(test.TestCase):
+    """Simple creation, attributes and str test of model"""
 
     def test_simple_create_success(self):
         self.assertEqual(0, Song.objects.count())

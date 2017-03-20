@@ -10,6 +10,7 @@ class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = song_create_view.SongCreateView
 
     def test_render_form_sanity(self):
+        """Is the primary h1 as axpected"""
         mockresponse = self.mock_http200_getrequest_htmls()
         expected_value = 'Create Song'
         self.assertEqual(expected_value, mockresponse.selector.one('title').text_normalized)
@@ -17,6 +18,7 @@ class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(expected_value, mockresponse.selector.one('.test-primary-h1').text_normalized)
 
     def __form_data(self, **data):
+        """Helper class when passing data for request"""
         if 'title' not in data:
             data['title'] = 'Dolly'
         if 'written_by' not in data:
@@ -26,7 +28,7 @@ class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
         return data
 
     def test_warning_message_no_title_field(self):
-        """Does one warning message appear when no title"""
+        """Does warning message css class appear when no value in field"""
         mockresponse = self.mock_http200_postrequest_htmls(
             requestkwargs={
                 'data': self.__form_data(title='')
@@ -35,6 +37,7 @@ class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertTrue(mockresponse.selector.one('.test-warning-message'))
 
     def test_warning_message_no_written_by_field(self):
+        """Does warning message css class appear when no value in field"""
         mockresponse = self.mock_http200_postrequest_htmls(
             requestkwargs={
                 'data': self.__form_data(written_by='')
@@ -43,6 +46,7 @@ class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertTrue(mockresponse.selector.one('.test-warning-message'))
 
     def test_warning_message_no_time_field(self):
+        """Does warning message css class appear when no value in field"""
         mockresponse = self.mock_http200_postrequest_htmls(
             requestkwargs={
                 'data': self.__form_data(time='')

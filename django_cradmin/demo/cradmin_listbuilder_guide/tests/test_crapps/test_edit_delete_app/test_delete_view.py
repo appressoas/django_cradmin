@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from model_mommy import mommy
 
@@ -11,6 +12,7 @@ class TestSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = song_delete_view.SongDeleteView
 
     def __cradmin_role(self):
+        """Cradmin role used to get access for deletion"""
         return mommy.make('cradmin_listbuilder_guide.Album')
 
     def test_render_page_sanity(self):
@@ -27,6 +29,7 @@ class TestSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(expected_question, actual_question)
 
     def test_delete_sanity(self):
+        """Should get a 302 redirect after deletion"""
         album = self.__cradmin_role()
         song = mommy.make('cradmin_listbuilder_guide.Song', album=album)
         self.mock_http302_postrequest(
@@ -35,6 +38,7 @@ class TestSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
         )
 
     def test_correct_song_deleted(self):
+        """Only one Song should be deleted from an album with several songs"""
         album = self.__cradmin_role()
         mommy.make('cradmin_listbuilder_guide.Song', album=album, _quantity=9)
         song = mommy.make('cradmin_listbuilder_guide.Song', album=album, title='Killers')
@@ -42,7 +46,9 @@ class TestSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
             cradmin_role=album,
             viewkwargs={'pk': song.id}
         )
-        self.assertFalse(Song.objects.filter(title='Killers'))
+        with self.assertRaises(ObjectDoesNotExist):
+            self.assertTrue(Song.objects.filter(title='Killers').get())
+        self.assertEqual(9, Song.objects.all().count())
 
 
 

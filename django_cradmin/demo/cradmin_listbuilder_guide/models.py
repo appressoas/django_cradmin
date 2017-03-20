@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy
 
 
 class Album(models.Model):
-    """"""
+    """The class which serves as role for CRadmin. Is a simple illustration of a album with music"""
 
     #: The title of the album
     title = models.CharField(max_length=100)
@@ -20,7 +20,7 @@ class Album(models.Model):
 
 
 class Song(models.Model):
-    """"""
+    """A song which is on an album"""
 
     #: The album which contains the song
     album = models.ForeignKey(Album)
@@ -44,7 +44,7 @@ class Song(models.Model):
 
 
 class AlbumAdministrator(models.Model):
-    """"""
+    """The user which can add songs to an album"""
 
     #: The user which is an administrator
     user = models.ForeignKey(settings.AUTH_USER_MODEL)

@@ -5,7 +5,7 @@ from django_cradmin.viewhelpers import listbuilderview
 
 
 class SongItemValue(listbuilder.itemvalue.EditDelete):
-    """"""
+    """Sets item value for view"""
     valuealias = 'song'
 
     def get_description(self):
@@ -13,6 +13,6 @@ class SongItemValue(listbuilder.itemvalue.EditDelete):
 
 
 class SongListbuilderView(SongRolequeryMixin, listbuilderview.ViewCreateButtonMixin, listbuilderview.View):
-    """"""
+    """Build the list view with item"""
     model = Song
     value_renderer_class = SongItemValue

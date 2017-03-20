@@ -6,6 +6,7 @@ from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
 
 
 class TestAlbumModel(test.TestCase):
+    """Simple creation, attributes and str test of model"""
 
     def test_simple_create_success(self):
         self.assertEqual(0, Album.objects.count())
