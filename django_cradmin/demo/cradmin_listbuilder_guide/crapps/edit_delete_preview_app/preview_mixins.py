@@ -2,8 +2,8 @@ from django_cradmin import uicontainer
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 
 
-class SongCreateUpdateFormMixin(object):
-    """Used to render form for create and edit view"""
+class EditDeletePreviewFormMixin(object):
+    """Mixin class used for form rendering"""
     model = Song
     roleid_field = 'album'
     fields = [
@@ -32,11 +32,12 @@ class SongCreateUpdateFormMixin(object):
                         )
                     ]
                 )
+
             ]
         ).bootstrap()
 
 
-class SongRolequeryMixin(object):
-    """Used to make sure only users with the correct role gets access to objects"""
+class EditDeletePreviewRolequeryMixin(object):
+    """Mixin class for role query"""
     def get_queryset_for_role(self):
         return Song.objects.filter(album=self.request.cradmin_role)
