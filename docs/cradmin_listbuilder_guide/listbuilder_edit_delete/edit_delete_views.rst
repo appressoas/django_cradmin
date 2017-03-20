@@ -12,8 +12,9 @@ Structure of Modules and Files
 ------------------------------
 We use the standard CRadmin project structure for this application, meaning we have a *crapps* module inside our Django
 Application. In the *crapps* we add a new module with an easy to read name. In this guide the CRadmin application
-(crapps) is named *edit_delete_app*. Inside our new CRadmin application we add files which contents our views and a
-mixins file for code which is needed by more than one view.
+(crapps) is named *edit_delete_app*. Since we are now buidling eith the viewhelper class *EditDelete*.
+Inside our new CRadmin application we add files which contents our views and a mixins file for code which is needed
+by more than one view.
 
 
 Mixins File For Song Application
@@ -119,13 +120,12 @@ Further we extend the CRadmin viewhelper class ``WithinRoleDeleteView``.
 
 List View
 ---------
-The next step to make a html page with functionality for create, edit and delete object insances is to build item
-values and to build the list view. Our class ``SongItemValue`` extends the CRadmin listbuilder item value class
-:class:`django_cradmin.viewhelpers.listbuilder.itemvalue.EditDelete`. What this does is to easily render a box with
-and edit and delete button for each item in our list. Another usefull element is the ``valuealias``. We override the
-default value attribute to make it easier working with objects in our views or templates. As you can see below we set
-the valuealias attribute to be *song*. In our method we can than use ``self.song....`` and in a template we can than
-use ``me.song...``. The valuealias is inherit from the CRadmin viewhelper class
+The next step is to build item values and the list view. Our class ``SongItemValue`` extends the CRadmin listbuilder
+item value class :class:`django_cradmin.viewhelpers.listbuilder.itemvalue.EditDelete`. What this does is to easily
+render a box with and edit and delete button for each item in our list. Another usefull element is the ``valuealias``.
+We override the default value attribute to make it easier working with objects in our views or templates. As you can
+see below we set the valuealias attribute to be *song*. In our method we can than use ``self.song....`` and in a
+template we can than use ``me.song...``. The valuealias is inherit from the CRadmin viewhelper class
 :class:`django_cradmin.viewhelpers.listbuilder.base.AbstractItemRenderer`.
 
 The class ``SongListbuilderView`` extends three other classes. First we need the correct Song object instances for the
@@ -164,9 +164,9 @@ class can find the urls and include them. We put our appurls inside the init fil
 CRadmin listbuilder expects that the different views uses the name index, create, edit and delete. As you remember
 from out Getting Started tutorial the index view name is given by ``crapp.INDEXVIEW_NAME``. When we extended the
 CRadmin class ``EditDelete`` for our item value class, we got two methods which gets the viewname within the current
-:class:`django_cradmin.crapp.App` to go to either for editing or deleting. Since these methods returns either ``edit``
-or ``delete`` by default it is recommended we use the same names for our views to keep the structure uniformly. If
-there is a need to override this, we can use the template block ``editbutton-url`` or ``deletebutton-url``.
+:class:`django_cradmin.crapp.App`. Since these methods returns either ``edit`` or ``delete`` by default it is
+recommended we use the same names for our views to keep the structure uniformly. If there is a need to override this,
+we can use the template block ``editbutton-url`` or ``deletebutton-url``.
 
 ::
 

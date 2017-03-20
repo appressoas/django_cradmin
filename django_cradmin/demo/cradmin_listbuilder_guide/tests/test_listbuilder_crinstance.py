@@ -19,7 +19,7 @@ class TestListbuilderCradminInstance(TestCase):
     def test_user_in_rolequeryset_sanity(self):
         user = mommy.make(settings.AUTH_USER_MODEL)
         album = mommy.make('cradmin_listbuilder_guide.Album')
-        admin = mommy.make(
+        mommy.make(
             'cradmin_listbuilder_guide.AlbumAdministrator',
             user=user,
             album=album

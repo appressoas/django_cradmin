@@ -5,23 +5,27 @@ The Classes
 ===========
 On a higher level the CRadmin listbuilder have two different type of classes which either participate in giving values
 to the list items or builds the list. Further we have a third kind of class which handels the frame around each item.
-In this chapter we will give an high level overlook of the structure of classes, what they do and how they are connected
-together in CRadmin. You can read the :doc:`CRadmin list API <../../viewhelpers_listbuilder>` to get more information
+All three classes is located in the viewhelpers department in CRadmin. Actualy is most of the classes we use for our
+views a viewhelper. In this chapter we will give an high level overlook of the structure of classes, what they do and
+how they are connected together in CRadmin.
+
+You can read the :doc:`CRadmin list API <../../viewhelpers_listbuilder>` to get more information
 and details about the methods and functionality.
 
 CSS and BEM
 ===========
 CRadmin aims for easy-to-read and reusable code. These principle also applys to CSS classes. One problem with CSS is
 tha lacking of scope. Another is the lacking modularity. Offcourse if the quantity of HTML pages is rather small you
-don't need a lot of CSS classes, making it easier to get a grip of the site's CSS. CRadmin uses BEM to structure the
-CSS. BEM stands for Block Element Modifier and has strict rules for namegiving. Eventhough BEM is somewhat odd to
-look at, the benefits of having block styles which don't depend on other elements on a page, reusabale CSS and a good
-structure overshadows the odd syntax. Furthermore, BEM makes it easier to understand the inheritance in CSS and
-improves participation from different developers even in the late stages of a project. We will look further into BEM
-and how to add our own CSS classes in CRadmin later on. For now we just need to understand the high level concepts.
-One or more of CRadmins abstract renderable classes is always used when we're creating list views. When it comes to
-CSS we have two main choices, inheritance from an abstract renderable class which uses CSS in an old fashion way, or
-inheritance from a abstract renderable class which uses CSS with BEM.
+don't need a lot of CSS classes, making it easier to get a grip of the site's CSS.
+
+CRadmin uses BEM to structure the CSS. BEM stands for Block Element Modifier and has strict rules for namegiving.
+Eventhough BEM is somewhat odd to look at, the benefits of having block styles which don't depend on other elements
+on a page, reusabale CSS and a good structure overshadows the odd syntax. Furthermore, BEM makes it easier to
+understand the inheritance in CSS and improves participation from different developers even in the late stages of a
+project. CRadmin offers us to add our own CSS classes, both with and without using BEM. However we will not look into
+that functionality in this guide, but rather concentrate to understand BEM in CRadmin on a high level. We will use the
+CRadmin CSS BEM classes when we create our own templates later on in this guide.
+
 Read more about `BEM <http://getbem.com/introduction/>`_.
 
 
@@ -40,10 +44,10 @@ when we work with lists.
 
 ViewMixin Class
 """""""""""""""
-This class do not have a super, but is a super to the Cradmin View class. It is possible to implement this class
-directly and skip the CRadmin View class if you overwrite some methods. It is in this class we set the template name
-for our view. There is alos possible to customize the template by overriding methods such as hiding the page header, by
-changing boolean variables.
+This mixin class does not have a super, but serves as a support the the CRadmin View class. Howevere it is possible to
+implement this class directly and skip the CRadmin View class if you overwrite some methods. It is in this class we set
+the template name for our view. There is also possible to customize the template by overriding methods such as hiding
+the page header, by changing boolean variables rather than working with blocks in the template.
 
 ViewCreateButtonMixin Class
 """""""""""""""""""""""""""
@@ -53,10 +57,10 @@ ViewMixin this class do not have a super.
 
 View Class
 """"""""""
-Very often this is the class we use as a super when working with lists in a template, since it be default inherit from
-the ViewMixin class. This class gives us the context data, the model we're working with and it is here we set the
+Very often this is the class we use as a super when working with lists in a template. The class inherity from the
+ViewMixin class. This class gives us the context data, the model we're working with and it is here we set the
 queryset for the role. Further the class has functionality such as hiding the menu by overriding the default value of
-a boolean variable. This makes it easy when we don't want a user to accidently click out of the current view.
+a boolean variable. This makes it easy to prevent a user from accidently clicking out of the current view.
 
 
 Listbuilder Classes
@@ -64,7 +68,7 @@ Listbuilder Classes
 When it comes to the listbuilder classes in CRadmin, there is some abstract classes which we normally don't use
 directly. For most cases we use the :class:`django_cradmin.viewhelpers.listbuilder.base.List` to build the HTML
 lists or other kind of lists we want to create. However in some rather rare cases you will find it easier to write a
-new List class. CRadmin allows this as you are not restricted to use the
+new List class, thus using the abstract classes. CRadmin allows this as you are not restricted to use the
 :class:`django_cradmin.viewhelpers.listbuilder.base.List`. Further we have a set of base classes which works as super
 for functionality such as item value and item frame.
 
@@ -96,7 +100,7 @@ ItemValueRenderer we can also add a list of our own base css classes used to sty
 
 List
 """"
-This class :class:`django_cradmin.renderable.AbstractRenderableWithCss` as a super, and is usually the class we use
+This class has :class:`django_cradmin.renderable.AbstractRenderableWithCss` as a super, and is usually the class we use
 as a super when we want to render a list. It can be used in both an very easy manner and for more complex structures.
 It is here we decide which template we want to use for building the list. The CRadmin class List gets an iterator, which
 is used to iter over items in the list. We can both append and extend the list with methods from this class. Further
@@ -124,11 +128,12 @@ We have the following item value classes
 * EditDelete
 * EditDeleteWithPreview
 * EditDeleteWithArchiveImage
+* EditDeleteWithArchiveImageAndPreview
 
 FocusBox
 """"""""
 This class uses :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer` as super, and is a good default
-class to use when setting the structure of views. It renders a item value in a styled focus box.
+class to use when setting the structure of views. It renders an item value in a styled focus box.
 
 TitleDescription
 """"""""""""""""
@@ -157,7 +162,7 @@ current CRadmin application class and expects the preview view to be named ``pre
 EditDeleteWithArchiveImage
 """"""""""""""""""""""""""
 This class extends the EditDelete class and uses a template which extends the template used by the EditDelete class.
-Basiculy it allows you to add a image from the CRadmin archive and scale it. It also comes with a fallback for image
+Basicly it allows you to add an image from the CRadmin archive and scale it. It also comes with a fallback for image
 size.
 
 EditDeleteWithArchiveImageAndPreview

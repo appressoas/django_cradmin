@@ -8,18 +8,10 @@ This guide assume you have a basic understanding of CRadmin. If you are uncertai
 please read the :ref:`gettingstarted_part_one`.
 
 Guid Content
-============
-In this guide we start by giving an overview of the listbuilder functionality before given a description of the most
-common classes used when creating different kind of lists in CRadmin. The next part is building different kind of lists
-in CRadmin.
+------------
+This guide will take you through the most common classes used when working with list views in CRadmin and we will
+build CRamin applications to show list view functionality.
 
-Overview
-========
-Write holistic introduction about Listbuilder. Keep this on a high level with general principle to let the reader get
-an overview.
-
-CRadmin instances and Applications
-==================================
-The listbuilder functionality in CRadmin relay on the use of one or more CRadmin instances, and one or more CRadmin
-applications.
-
+Next Chapter
+------------
+TODO
