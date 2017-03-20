@@ -3,13 +3,13 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import song_delete_view
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import edit_views
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 
 
 class TestSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
-    viewclass = song_delete_view.SongDeleteView
+    viewclass = edit_views.EditDeleteSongDeleteView
 
     def __cradmin_role(self):
         """Cradmin role used to get access for deletion"""

@@ -1,5 +1,4 @@
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_preview_app.preview_mixins import \
-    EditDeletePreviewRolequeryMixin
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.crapps_mixin import mixins
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin.viewhelpers import listbuilderview
@@ -14,7 +13,7 @@ class PreviewSongItemValue(listbuilder.itemvalue.EditDeleteWithPreview):
         return 'Written by {}'.format(self.song.written_by)
 
 
-class PreviewSongListbuilderView(EditDeletePreviewRolequeryMixin,
+class PreviewSongListbuilderView(mixins.SongRolequeryMixin,
                                  listbuilderview.ViewCreateButtonMixin,
                                  listbuilderview.View):
     """"""

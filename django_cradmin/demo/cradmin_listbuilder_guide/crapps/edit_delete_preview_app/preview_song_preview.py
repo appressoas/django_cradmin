@@ -1,9 +1,5 @@
-import json
-
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy
 
-from django_cradmin.crispylayouts import PrimarySubmit, DefaultSubmit
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 from django_cradmin.viewhelpers.formview import PreviewMixin
 from django_cradmin.viewhelpers.generic import WithinRoleTemplateView

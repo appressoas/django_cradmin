@@ -2,12 +2,12 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import song_create_view
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import edit_views
 
 
 class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
-    viewclass = song_create_view.SongCreateView
+    viewclass = edit_views.EditDeleteSongCreateView
 
     def test_render_form_sanity(self):
         """Is the primary h1 as axpected"""

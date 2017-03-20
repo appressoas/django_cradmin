@@ -2,12 +2,12 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from django_cradmin import cradmin_testhelpers
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import song_edit_delete_listview
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import listview
 
 
 class TestSongEditDelteListview(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
-    viewclass = song_edit_delete_listview.SongListbuilderView
+    viewclass = listview.SongListbuilderView
 
     def test_render_no_songs_message(self):
         """If no songs on album, a message should appear"""
