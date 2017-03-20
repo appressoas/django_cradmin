@@ -5,6 +5,7 @@ from django_cradmin import crmenu
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_preview_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import focus_box_app
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps import title_description_app
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
 
 
@@ -14,9 +15,10 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
     roleclass = Album
     rolefrontpage_appname = 'songs'
     apps = [
+        ('focus_box', focus_box_app.App),
+        ('title_description', title_description_app.App),
         ('songs', edit_delete_app.App),
         ('preview', edit_delete_preview_app.App),
-        ('focus_box', focus_box_app.App)
     ]
 
     def get_titletext_for_role(self, role):
@@ -31,6 +33,16 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
     def get_expandable_menu_item_renderables(self):
         return [
             crmenu.ExpandableMenuItem(
+                label=ugettext_lazy('Focus Box Demo'),
+                url=self.appindex_url('focus_box'),
+                is_active=self.request.cradmin_app.appname == 'focus_box'
+            ),
+            crmenu.ExpandableMenuItem(
+                label=ugettext_lazy('Title Description Demo'),
+                url=self.appindex_url('title_description'),
+                is_active=self.request.cradmin_app.appname == 'title_description'
+            ),
+            crmenu.ExpandableMenuItem(
                 label=ugettext_lazy('Edit Delete Demo'),
                 url=self.appindex_url('songs'),
                 is_active=self.request.cradmin_app.appname == 'songs'
@@ -39,10 +51,5 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
                 label=ugettext_lazy('Edit Delete Preview Demo'),
                 url=self.appindex_url('preview'),
                 is_active=self.request.cradmin_app.appname == 'preview'
-            ),
-            crmenu.ExpandableMenuItem(
-                label=ugettext_lazy('Focus Box Demo'),
-                url=self.appindex_url('focus_box'),
-                is_active=self.request.cradmin_app.appname == 'focus_box'
             )
         ]
