@@ -3,8 +3,8 @@ from django.utils.translation import ugettext_lazy
 from django_cradmin import crinstance
 from django_cradmin import crmenu
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_app
-from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_preview_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import focus_box_app
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps import template_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import title_description_app
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
 
@@ -18,7 +18,7 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
         ('focus_box', focus_box_app.App),
         ('title_description', title_description_app.App),
         ('songs', edit_delete_app.App),
-        ('preview', edit_delete_preview_app.App),
+        ('template', template_app.App),
     ]
 
     def get_titletext_for_role(self, role):
@@ -48,8 +48,8 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
                 is_active=self.request.cradmin_app.appname == 'songs'
             ),
             crmenu.ExpandableMenuItem(
-                label=ugettext_lazy('Edit Delete Preview Demo'),
-                url=self.appindex_url('preview'),
-                is_active=self.request.cradmin_app.appname == 'preview'
+                label=ugettext_lazy('Own Template Demo'),
+                url=self.appindex_url('template'),
+                is_active=self.request.cradmin_app.appname == 'template'
             )
         ]
