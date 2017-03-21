@@ -7,7 +7,7 @@ from django_cradmin.viewhelpers import listbuilderview
 
 class TemplateItemValue(listbuilder.base.ItemValueRenderer):
     """"""
-    template_name = 'cradmin_listbuilder_guide/template_app/my_great_template.django.html'
+    template_name = 'cradmin_listbuilder_guide/template_app/my_great_item_value.django.html'
     valuealias = 'song'
 
 
