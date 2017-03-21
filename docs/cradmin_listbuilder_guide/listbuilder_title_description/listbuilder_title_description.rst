@@ -41,6 +41,26 @@ In our listbuilder view class we decide the model and which class should render 
         model = Song
         value_renderer_class = TitleDescriptionItemValue
 
+App Urls
+--------
+In our Cradmin application init file we add the url for our index view to the list of appurls.
+::
+
+    from django_cradmin import crapp
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps.title_description_app import title_description_listview
+
+
+    class App(crapp.App):
+        """"""
+        appurls = [
+            crapp.Url(
+                r'^$',
+                title_description_listview.TitleDescriptionListbuilderView.as_view(),
+                name=crapp.INDEXVIEW_NAME
+            )
+        ]
+
+
 Test Title Description Listview
 -------------------------------
 As with the Focus Boc testing, there is not really much to test here. However we want to make sure the view renders our
@@ -89,6 +109,55 @@ is shown in the template.
             self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
             song_list = mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description')
             self.assertTrue(2, len(song_list))
+
+Update CRadmin Instance
+-----------------------
+To make our new CRadmin application be include in our CRadmin instance, we add it to the list of apps. Further is the
+index url of the new application added to the expandable menu. After implementation, the CRadmin instance may look
+somethin like this:
+
+::
+
+    from django.utils.translation import ugettext_lazy
+
+    from django_cradmin import crinstance
+    from django_cradmin import crmenu
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps import focus_box_app
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps import title_description_app
+    from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
+
+
+    class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
+        """"""
+        id = 'listbuilder_crinstance'
+        roleclass = Album
+        rolefrontpage_appname = 'focus_box'
+        apps = [
+            ('focus_box', focus_box_app.App),
+            ('title_description', title_description_app.App),
+        ]
+
+        def get_titletext_for_role(self, role):
+            pass
+
+        def get_rolequeryset(self):
+            queryset = Album.objects.all()
+            if not self.request.user.is_superuser:
+                queryset = queryset.filter(albumadministrator__user=self.request.user)
+            return queryset
+
+        def get_expandable_menu_item_renderables(self):
+            return [
+                crmenu.ExpandableMenuItem(
+                    label=ugettext_lazy('Focus Box Demo'),
+                    url=self.appindex_url('focus_box'),
+                    is_active=self.request.cradmin_app.appname == 'focus_box'
+                ),
+                crmenu.ExpandableMenuItem(
+                    label=ugettext_lazy('Title Description Demo'),
+                    url=self.appindex_url('title_description'),
+                    is_active=self.request.cradmin_app.appname == 'title_description'
+                )
 
 Next Chapter
 ------------

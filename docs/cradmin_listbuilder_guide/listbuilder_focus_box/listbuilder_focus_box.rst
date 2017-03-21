@@ -93,7 +93,7 @@ In our CRadmin application init file, we set the url for our new list view.
 Update CRadmin Instance
 -----------------------
 We need to add the Focus Box application to our CRadmin instance to make it show. As explained in the Getting Started
-tutorial we set the name of which application we want to have as our homepage and we add the focua box application to
+tutorial we set the name of which application we want to have as our homepage and we add the focus box application to
 the list of apps. In this guide we also add each app to the expandable menu so it's easy for the user to jump between
 the different applications.
 
