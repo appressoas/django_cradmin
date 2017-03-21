@@ -36,7 +36,10 @@ Test CRadmin Instance
 ---------------------
 When testing our CRadmin instance we want to make sure the role queryset behaves as intended. For this case we should
 test both if the role queryset is empty and that is it not empty.
+
 .. literalinclude:: /../django_cradmin/demo/cradmin_listbuilder_guide/tests/test_listbuilder_crinstance.py
+
+Remember to include the CRadmin instance urls to your project urls.
 
 Next Chapter
 ------------

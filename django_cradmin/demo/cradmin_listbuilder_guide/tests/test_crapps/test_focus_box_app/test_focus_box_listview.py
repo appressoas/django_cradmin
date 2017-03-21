@@ -22,7 +22,7 @@ class TestFocusBoxListView(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertEqual(20, len(song_list))
 
     def test_empty_list(self):
-        """Should be an empty list when wrong cradmin role"""
+        """Should be an empty list when an album have no songs"""
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=self.__set_cradmin_role())
         self.assertTrue(mockresponse.selector.one('.test-cradmin-no-items-message'))
         self.assertEqual('No songs', mockresponse.selector.one('.test-cradmin-no-items-message').alltext_normalized)

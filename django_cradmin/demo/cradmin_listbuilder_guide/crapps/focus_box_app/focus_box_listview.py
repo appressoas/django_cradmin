@@ -6,7 +6,6 @@ from django_cradmin.viewhelpers import listbuilderview
 
 class FocusBoxSongItemValue(listbuilder.itemvalue.FocusBox):
     """"""
-    valuealias = 'song'
 
 
 class FocusBoxSongListbuilderView(mixins.SongRolequeryMixin, listbuilderview.View):
