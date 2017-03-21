@@ -21,7 +21,7 @@ Mixins File For Song Application
 --------------------------------
 In the mixins file we have created two classes, *SongCreateUpdateFormMixin* and *SongRolequeryMixin*. The form mixin
 class will be used by CRadmin viewhelper classes which extends the Django modelform functionality, so we need to set
-which model we want to use. We also set the field for role id to the role we are using, which is Album. The last thin
+which model we want to use. We also set the field for role id to the role we are using, which is Album. The last thing
 our form mixin class contains is the method ``get_form_renderable`` which is the name CRadmin uses when it renders a
 form. Inside this method we just return the CRadmin ``uicontainer``.
 
