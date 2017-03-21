@@ -201,6 +201,64 @@ we can use the template block ``editbutton-url`` or ``deletebutton-url``.
             )
         ]
 
+Update CRadmin Instance
+-----------------------
+Now we need to update our CRadmin instance with the new CRadmin application. It might be a good idea to change which
+crapps the user should get to first, to make it easy to add new object instances from the home page. We do this by
+changin the ``rolefrontpage_appname``. Further we add the new index url to the expandable menu. The CRadmin instance
+may look something like this:
+
+::
+
+    from django.utils.translation import ugettext_lazy
+
+    from django_cradmin import crinstance
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_app
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps import focus_box_app
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps import title_description_app
+    from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
+
+
+    class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
+        """"""
+        id = 'listbuilder_crinstance'
+        roleclass = Album
+        rolefrontpage_appname = 'songs'
+        apps = [
+            ('focus_box', focus_box_app.App),
+            ('title_description', title_description_app.App),
+            ('songs', edit_delete_app.App),
+        ]
+
+        def get_titletext_for_role(self, role):
+            pass
+
+        def get_rolequeryset(self):
+            queryset = Album.objects.all()
+            if not self.request.user.is_superuser:
+                queryset = queryset.filter(albumadministrator__user=self.request.user)
+            return queryset
+
+        def get_expandable_menu_item_renderables(self):
+            return [
+                crmenu.ExpandableMenuItem(
+                    label=ugettext_lazy('Focus Box Demo'),
+                    url=self.appindex_url('focus_box'),
+                    is_active=self.request.cradmin_app.appname == 'focus_box'
+                ),
+                crmenu.ExpandableMenuItem(
+                    label=ugettext_lazy('Title Description Demo'),
+                    url=self.appindex_url('title_description'),
+                    is_active=self.request.cradmin_app.appname == 'title_description'
+                ),
+                crmenu.ExpandableMenuItem(
+                    label=ugettext_lazy('Edit Delete Demo'),
+                    url=self.appindex_url('songs'),
+                    is_active=self.request.cradmin_app.appname == 'songs'
+                )
+            ]
+
+
 Next Chapter
 ------------
 TODO
