@@ -15,4 +15,5 @@ class TemplateListbuilderView(mixins.SongRolequeryMixin, listbuilderview.View):
     """"""
     model = Song
     value_renderer_class = TemplateItemValue
+    template_name = 'cradmin_listbuilder_guide/template_app/my_great_listbuilder.django.html'
 
