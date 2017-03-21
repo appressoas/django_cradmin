@@ -12,5 +12,6 @@ Listbuilder Tutorial
    listbuilder_models/index
    listbuilder_crinstance/index
    listbuilder_focus_box/index
+   listbuilder_title_description/index
    listbuilder_edit_delete/index
 
