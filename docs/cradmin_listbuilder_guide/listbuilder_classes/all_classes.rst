@@ -126,9 +126,6 @@ We have the following item value classes
 * TitleDescription
 * UseThis
 * EditDelete
-* EditDeleteWithPreview
-* EditDeleteWithArchiveImage
-* EditDeleteWithArchiveImageAndPreview
 
 FocusBox
 """"""""
@@ -140,10 +137,6 @@ TitleDescription
 This class extends the FocusBox with methods and a template for title and enhanced description. The title is the value
 by default while the description is None. The template has several blocks which we can override.
 
-UseThis
-"""""""
-This class extends the TitleDescription with a ``Use this`` button and CSS class. Further it has it's own template with
-several blocks which we can override.
 
 EditDelete
 """"""""""
@@ -152,24 +145,6 @@ it very easy to create a view for working with objects. The ``EditDelete`` class
 ``edit`` and the delete view to be named ``delete``, which it gets from the :class:`django_cradmin.crapp.App`. The view
 is called with ``self.value.id``. If we need to override this functionality it is done it the block ``editbutton-url``
 for the edit view and in the ``deletebutton-url`` for the delete view.
-
-EditDelteWithPreview
-""""""""""""""""""""
-This class extends the EditDelete class and the EditDeleteWithPreviewMixin class. Basicly it is a short cut for adding
-a preview button alongside the edit and delete buttons. Just as the EditDelete class if gets the view name from the
-current CRadmin application class and expects the preview view to be named ``preview``.
-
-EditDeleteWithArchiveImage
-""""""""""""""""""""""""""
-This class extends the EditDelete class and uses a template which extends the template used by the EditDelete class.
-Basicly it allows you to add an image from the CRadmin archive and scale it. It also comes with a fallback for image
-size.
-
-EditDeleteWithArchiveImageAndPreview
-""""""""""""""""""""""""""""""""""""
-This class is a shortcut for creating a view with both preview and an image, thus extending both the
-EditDeleteWithArchiveImage and the EditDelteWithPreview classes.
-
 
 Item Frame Classes
 ==================
