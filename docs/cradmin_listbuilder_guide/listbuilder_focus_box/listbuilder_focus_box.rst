@@ -72,6 +72,68 @@ In this example all we want to test is if the list is rendered as expected.
             self.assertTrue(mockresponse.selector.one('.test-cradmin-no-items-message'))
             self.assertEqual('No songs', mockresponse.selector.one('.test-cradmin-no-items-message').alltext_normalized)
 
+App Url
+-------
+In our CRadmin application init file, we set the url for our new list view.
+::
+
+    from django_cradmin import crapp
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps.focus_box_app import focus_box_listview
+
+
+    class App(crapp.App):
+        appurls = [
+            crapp.Url(
+                r'^$',
+                focus_box_listview.FocusBoxSongListbuilderView.as_view(),
+                name=crapp.INDEXVIEW_NAME
+            )
+        ]
+
+Update CRadmin Instance
+-----------------------
+We need to add the Focus Box application to our CRadmin instance to make it show. As explained in the Getting Started
+tutorial we set the name of which application we want to have as our homepage and we add the focua box application to
+the list of apps. In this guide we also add each app to the expandable menu so it's easy for the user to jump between
+the different applications.
+
+::
+
+    from django.utils.translation import ugettext_lazy
+
+    from django_cradmin import crinstance
+    from django_cradmin import crmenu
+    from django_cradmin.demo.cradmin_listbuilder_guide.crapps import focus_box_app
+    from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
+
+
+    class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
+        """"""
+        id = 'listbuilder_crinstance'
+        roleclass = Album
+        rolefrontpage_appname = 'focus_box'
+        apps = [
+            ('focus_box', focus_box_app.App)
+        ]
+
+        def get_titletext_for_role(self, role):
+            pass
+
+        def get_rolequeryset(self):
+            queryset = Album.objects.all()
+            if not self.request.user.is_superuser:
+                queryset = queryset.filter(albumadministrator__user=self.request.user)
+            return queryset
+
+        def get_expandable_menu_item_renderables(self):
+            return [
+                crmenu.ExpandableMenuItem(
+                    label=ugettext_lazy('Focus Box Demo'),
+                    url=self.appindex_url('focus_box'),
+                    is_active=self.request.cradmin_app.appname == 'focus_box'
+                )
+If you now go to Django Admin and add an album with an administrator and create some songs to that album, you should see
+a list of songs.
 Next Chapter
 ------------
 TODO
