@@ -14,4 +14,5 @@ Listbuilder Tutorial
    listbuilder_focus_box/index
    listbuilder_title_description/index
    listbuilder_edit_delete/index
+   listbuilder_template/index
 
