@@ -1,2 +1,15 @@
 {% extends 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html' %}
+{% load cradmin_tags %}
 
+{% block content  %}
+    <h3 class="{% cradmin_test_css_class 'song-heading' %}">{{ me.song.title }}</h3>
+    {% block extra_info %}
+        {% block extra_info_content %}
+            {% for key, value in me.get_extra_info.items %}
+                <p class="paragraph paragraph--xtight {% cradmin_test_css_class 'extra-info-content' %}">
+                    {{ key }}: {{ value }}
+                </p>
+            {% endfor %}
+        {% endblock extra_info_content %}
+    {% endblock extra_info %}
+{% endblock content %}
