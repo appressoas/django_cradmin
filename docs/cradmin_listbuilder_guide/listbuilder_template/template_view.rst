@@ -13,7 +13,7 @@ which build the list view. In the class for item value we extend the class
 :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer` and tell it to use our template instead of the
 default CRadmin template. Further we set the valuealias to be song, so we can use ``me.song`` in the template.
 
-Our listbuilderview class inherts the rolequeyset for a mixin file in this example and extends the View class from
+Our listbuilderview class inherits the rolequeyset for a mixin file in this example and extends the View class from
 listbuilderview. Further we set the model, which class to render the item value and which template we want to use.
 
 ::

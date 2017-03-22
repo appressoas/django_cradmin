@@ -7,7 +7,7 @@ class App(crapp.App):
     appurls = [
         crapp.Url(
             r'^$',
-            listview.SongListbuilderView.as_view(),
+            listview.EditDeleteSongListbuilderView.as_view(),
             name=crapp.INDEXVIEW_NAME
         ),
         crapp.Url(

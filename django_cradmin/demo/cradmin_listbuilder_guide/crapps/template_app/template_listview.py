@@ -25,12 +25,10 @@ class TemplateListbuilderView(mixins.SongRolequeryMixin, listbuilderview.View):
     template_name = 'cradmin_listbuilder_guide/template_app/my_great_listbuilderview.django.html'
 
     def __get_album(self):
-        queryset = Album.objects.all()
-        queryset = queryset.filter(id=self.request.cradmin_role.id).get()
+        queryset = Album.objects.filter(id=self.request.cradmin_role.id).get()
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(TemplateListbuilderView, self).get_context_data(**kwargs)
         context['album'] = self.__get_album()
         return context
-

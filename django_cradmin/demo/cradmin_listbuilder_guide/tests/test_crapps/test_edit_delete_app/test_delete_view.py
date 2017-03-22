@@ -7,7 +7,7 @@ from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Song
 
 
-class TestSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
+class TestEditDeleteSongDeleteView(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
     viewclass = edit_views.EditDeleteSongDeleteView
 

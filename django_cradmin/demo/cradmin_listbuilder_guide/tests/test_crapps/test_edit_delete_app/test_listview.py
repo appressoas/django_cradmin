@@ -7,7 +7,7 @@ from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import
 
 class TestSongEditDelteListview(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
-    viewclass = listview.SongListbuilderView
+    viewclass = listview.EditDeleteSongListbuilderView
 
     def test_render_no_songs_message(self):
         """If no songs on album, a message should appear"""

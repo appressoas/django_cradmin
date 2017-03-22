@@ -5,9 +5,8 @@ The Classes
 ===========
 On a higher level the CRadmin listbuilder have two different type of classes which either participate in giving values
 to the list items or builds the list. Further we have a third kind of class which handels the frame around each item.
-All three classes is located in the viewhelpers department in CRadmin. Actualy is most of the classes we use for our
-views a viewhelper. In this chapter we will give an high level overlook of the structure of classes, what they do and
-how they are connected together in CRadmin.
+These classes is all located in the viewhelpers department in CRadmin. In this chapter we will give a high level
+overlook of the structure of classes, what they do and how they are connected together in CRadmin.
 
 You can read the :doc:`CRadmin list API <../../viewhelpers_listbuilder>` to get more information
 and details about the methods and functionality.
@@ -15,7 +14,7 @@ and details about the methods and functionality.
 CSS and BEM
 ===========
 CRadmin aims for easy-to-read and reusable code. These principle also applys to CSS classes. One problem with CSS is
-tha lacking of scope. Another is the lacking modularity. Offcourse if the quantity of HTML pages is rather small you
+the lacking of scope. Another is the lacking modularity. Offcourse if the quantity of HTML pages is rather small you
 don't need a lot of CSS classes, making it easier to get a grip of the site's CSS.
 
 CRadmin uses BEM to structure the CSS. BEM stands for Block Element Modifier and has strict rules for namegiving.
@@ -23,8 +22,8 @@ Eventhough BEM is somewhat odd to look at, the benefits of having block styles w
 on a page, reusabale CSS and a good structure overshadows the odd syntax. Furthermore, BEM makes it easier to
 understand the inheritance in CSS and improves participation from different developers even in the late stages of a
 project. CRadmin offers us to add our own CSS classes, both with and without using BEM. However we will not look into
-that functionality in this guide, but rather concentrate to understand BEM in CRadmin on a high level. We will use the
-CRadmin CSS BEM classes when we create our own templates later on in this guide.
+that functionality in this guide, but rather concentrate to understand BEM in CRadmin on a high level. If you look at
+the styleguide for CRadmin ``localhost/styelguide`` you find examples on how BEM is organized in CRadmin.
 
 Read more about `BEM <http://getbem.com/introduction/>`_.
 
@@ -46,8 +45,8 @@ ViewMixin Class
 """""""""""""""
 This mixin class does not have a super, but serves as a support the the CRadmin View class. Howevere it is possible to
 implement this class directly and skip the CRadmin View class if you overwrite some methods. It is in this class we set
-the template name for our view. There is also possible to customize the template by overriding methods such as hiding
-the page header, by changing boolean variables rather than working with blocks in the template.
+the template name for our view. It is also possible to customize the template by changing value of booleans which again
+overrides methods rather than working with blocks in the template.
 
 ViewCreateButtonMixin Class
 """""""""""""""""""""""""""
@@ -57,7 +56,7 @@ ViewMixin this class do not have a super.
 
 View Class
 """"""""""
-Very often this is the class we use as a super when working with lists in a template. The class inherity from the
+Very often this is the class we use as a super when working with lists in a template. The class inherit from the
 ViewMixin class. This class gives us the context data, the model we're working with and it is here we set the
 queryset for the role. Further the class has functionality such as hiding the menu by overriding the default value of
 a boolean variable. This makes it easy to prevent a user from accidently clicking out of the current view.

@@ -4,7 +4,7 @@ from django_cradmin.viewhelpers import listbuilder
 from django_cradmin.viewhelpers import listbuilderview
 
 
-class SongItemValue(listbuilder.itemvalue.EditDelete):
+class EditDeleteSongItemValue(listbuilder.itemvalue.EditDelete):
     """Sets item value for view"""
     valuealias = 'song'
 
@@ -12,7 +12,7 @@ class SongItemValue(listbuilder.itemvalue.EditDelete):
         return 'Written by {}'.format(self.song.written_by)
 
 
-class SongListbuilderView(SongRolequeryMixin, listbuilderview.ViewCreateButtonMixin, listbuilderview.View):
+class EditDeleteSongListbuilderView(SongRolequeryMixin, listbuilderview.ViewCreateButtonMixin, listbuilderview.View):
     """Build the list view with item"""
     model = Song
-    value_renderer_class = SongItemValue
+    value_renderer_class = EditDeleteSongItemValue

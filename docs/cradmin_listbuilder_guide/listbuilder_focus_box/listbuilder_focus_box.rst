@@ -132,8 +132,10 @@ the different applications.
                     url=self.appindex_url('focus_box'),
                     is_active=self.request.cradmin_app.appname == 'focus_box'
                 )
+
 If you now go to Django Admin and add an album with an administrator and create some songs to that album, you should see
 a list of songs.
+
 Next Chapter
 ------------
 TODO

@@ -3,7 +3,7 @@
 ============================
 Template For Listbuilderview
 ============================
-In the last chapter we worked on the templated for how to list item value, now we will work with the template for
+In the last chapter we worked on the template for how to list item value, now we will work with the template for
 the view itself.
 
 Customizing the page heading
@@ -25,8 +25,7 @@ listbuilder view class looks like this:
     template_name = 'cradmin_listbuilder_guide/template_app/my_great_listbuilderview.django.html'
 
     def __get_album(self):
-        queryset = Album.objects.all()
-        queryset = queryset.filter(id=self.request.cradmin_role.id).get()
+        queryset = Album.objects.filter(id=self.request.cradmin_role.id).get()
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -36,7 +35,7 @@ listbuilder view class looks like this:
 
 Updating the Template
 """""""""""""""""""""
-Our template ``my_great_listbuilderview.django.html`` extends a template which have several block we can override. To
+Our template ``my_great_listbuilderview.django.html`` extends a template which have several blocks we can override. To
 get a new page heading we need to override the block heading and make it return the album we got from the context data
 in our listbuilder view class. As you see below, this is pretty much as working with any other Django template.
 ::
@@ -51,8 +50,8 @@ Testing the ListbuilderView
 """""""""""""""""""""""""""
 We create a new test class eventhough it uses the same viewclass as the testing done for the item value template, we
 want to keep them apart since the content is rendered in different templates. So the first test is a check that our
-page is rendered with the new page heading when everything is sane. In the second test we checks that the page heading
-contents the album title when a user is administrator for two albums. Thus, checking our new method in the class
+page is rendered with the new page heading when everything is sane. In the second test we checks that album title is in
+the page heading a user is administrator for two albums,  thus, checking our new method in the class
 ``TemplateListbuilderView``
 ::
 

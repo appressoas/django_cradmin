@@ -63,7 +63,7 @@ In our Cradmin application init file we add the url for our index view to the li
 
 Test Title Description Listview
 -------------------------------
-As with the Focus Boc testing, there is not really much to test here. However we want to make sure the view renders our
+As with the Focus Box testing, there is not really much to test here. However we want to make sure the view renders our
 list as expected and that there is a message shown if an album has no songs. Finally we want to test if our description
 is shown in the template.
 

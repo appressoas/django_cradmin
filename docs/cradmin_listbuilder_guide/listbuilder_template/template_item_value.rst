@@ -3,7 +3,7 @@
 =======================
 Template For Item Value
 =======================
-We will demonstrate two ways to add our own content to the template which renders the item value. In the our class
+We will demonstrate two ways to add our own content to the template which renders the item value. In our class
 ``TemplateItemValue`` we add a new method which return a dict of extra information about the song object.
 
 ::
@@ -24,8 +24,8 @@ Next we move over to the template and write some tags to get it in good order. F
 we can add our own test CSS classes. As you can see in the code below we don't call the super for the content block,
 because we want the song title to be a heading. In the html-tag <h3> we add a CRadmin test CSS class and say that the
 heading should be the title of the song. This is one way to add extra content to a template. Strictly speaking, we
-have done pretty much just what the listbuilder class ``TitleDescription`` does, expect it uses a h2 tag as a blocklist
-title, while we use use a h3 tag.
+have done pretty much just what the listbuilder class ``TitleDescription`` does with a method, expect it uses a h2
+tag as a blocklist title, while we use use a h3 tag.
 
 Next we add two blocks, named ``extra_info`` and ``extra_info_content``. In the block we loop over the items in the
 dict we return in the method ``get_extra_info`` and put both the key and value of each item in a p-tag which is extra
@@ -53,8 +53,8 @@ now looks like this:
 Testing our Code
 ----------------
 In these tests we want to make sure the extented template we created works as inteded, both if there are songs in the
-database and without any songs. This is done in the second and third test. As you can see in the second test,
-*test_render_list_sanity*, we use the CRadmin test CSS classes we added in the template.
+database and without any songs. As you can see in the second test, *test_render_list_sanity*, we use the CRadmin test
+CSS classes we added in the template.
 ::
 
     from django.test import TestCase

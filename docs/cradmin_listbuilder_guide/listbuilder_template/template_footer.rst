@@ -3,7 +3,7 @@
 ======
 Footer
 ======
-If you want to add a template footer you have to create a class which inheris from the CRadmin class
+If you want to add a template footer you have to create a class which inherits from the CRadmin class
 :class:`django_cradmin.crfooter.AbstractFooter` and say which template you want to use. Next you need to tell the
 CRadmin instance to use the new footer class by adding its name to the variable ``footer_renderable_class``. The
 method ``get_footer_renderable`` in a CRadmin instance defaults to the value of ``footer_renderable_class``. Finally

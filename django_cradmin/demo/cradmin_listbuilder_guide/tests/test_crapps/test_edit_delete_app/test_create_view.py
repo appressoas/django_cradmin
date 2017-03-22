@@ -5,12 +5,12 @@ from django_cradmin import cradmin_testhelpers
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.edit_delete_app import edit_views
 
 
-class TestSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
+class TestEditDeleteSongView(TestCase, cradmin_testhelpers.TestCaseMixin):
     """"""
     viewclass = edit_views.EditDeleteSongCreateView
 
     def test_render_form_sanity(self):
-        """Is the primary h1 as axpected"""
+        """Is the primary h1 as expected"""
         mockresponse = self.mock_http200_getrequest_htmls()
         expected_value = 'Create Song'
         self.assertEqual(expected_value, mockresponse.selector.one('title').text_normalized)

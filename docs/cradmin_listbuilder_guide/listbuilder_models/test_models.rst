@@ -3,7 +3,7 @@
 ===============
 Test Our Models
 ===============
-We do some standard testing of the models to to sure everything works out as intendend. This kind of testing if
+We do some standard testing of the models to make sure everything works out as intendend. This kind of testing if
 important to have done before we start to add more methods and logic for a model. In PyCharm you can create your own
 templates to use for this kind of testing, which decreases the amount of typing.
 

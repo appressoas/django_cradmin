@@ -11,7 +11,7 @@ class TestListbuilderCradminInstance(TestCase):
     """"""
 
     def test_empty_rolequeryset_sanity(self):
-        """Should return empty role queryset since use is not album admin"""
+        """Should return empty role queryset since user is not album admin"""
         mockrequest = mock.MagicMock()
         mockrequest.user = mommy.make(settings.AUTH_USER_MODEL)
         crinstance = ListbuilderCradminInstance(request=mockrequest)
