@@ -61,28 +61,3 @@ class TestListbuilderViewTemplate(TestCase, cradmin_testhelpers.TestCaseMixin):
         expected_h1 = 'Songs on album {}'.format(album.title)
         actual_h1 = mockresponse.selector.one('.test-primary-h1').text_normalized
         self.assertEqual(expected_h1, actual_h1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

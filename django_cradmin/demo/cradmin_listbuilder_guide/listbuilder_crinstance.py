@@ -6,6 +6,7 @@ from django_cradmin.demo.cradmin_listbuilder_guide.crapps import edit_delete_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import focus_box_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import template_app
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps import title_description_app
+from django_cradmin.demo.cradmin_listbuilder_guide.crapps.template_app.footer import TemplateFooter
 from django_cradmin.demo.cradmin_listbuilder_guide.crapps.template_app.header import TemplateHeader
 from django_cradmin.demo.cradmin_listbuilder_guide.models import Album
 
@@ -16,6 +17,7 @@ class ListbuilderCradminInstance(crinstance.BaseCrAdminInstance):
     roleclass = Album
     rolefrontpage_appname = 'songs'
     header_renderable_class = TemplateHeader
+    footer_renderable_class = TemplateFooter
     apps = [
         ('focus_box', focus_box_app.App),
         ('title_description', title_description_app.App),
