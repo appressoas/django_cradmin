@@ -15,7 +15,6 @@ Getting started
    :maxdepth: 2
 
    install
-   newbie
    cradmin_gettingstarted_guide/index
 
 

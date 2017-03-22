@@ -6,8 +6,6 @@ Introduction
 ============
 If you have not already done so, please follow the steps in the :ref:`installguide` guide before continuing.
 
-If you are new to CRadmin we advice you to read :ref:`newbieguide` before advancing.
-
 With this project we aim to make the admin interface easier to use, prettier to look at, and more flexible than the
 original admin interface in Django.
 
