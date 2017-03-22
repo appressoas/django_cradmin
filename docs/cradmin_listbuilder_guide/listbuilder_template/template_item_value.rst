@@ -1,8 +1,8 @@
 .. _listbuilder_template_item_value:
 
-==================================
-Content in Template For Item Value
-==================================
+=======================
+Template For Item Value
+=======================
 We will demonstrate two ways to add our own content to the template which renders the item value. In the our class
 ``TemplateItemValue`` we add a new method which return a dict of extra information about the song object.
 

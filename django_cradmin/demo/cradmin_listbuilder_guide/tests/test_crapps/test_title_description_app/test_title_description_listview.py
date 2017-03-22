@@ -34,7 +34,6 @@ class TestTitleDescriptionListview(TestCase, cradmin_testhelpers.TestCaseMixin):
         mommy.make('cradmin_listbuilder_guide.Song', album=album, written_by='Donald Duck')
         mommy.make('cradmin_listbuilder_guide.Song', album=album, written_by='Dolly Duck')
         mockresponse = self.mock_http200_getrequest_htmls(cradmin_role=album)
-        mockresponse.selector.prettyprint()
         self.assertTrue(mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description'))
         song_list = mockresponse.selector.list('.test-cradmin-listbuilder-title-description__description')
         self.assertTrue(2, len(song_list))
