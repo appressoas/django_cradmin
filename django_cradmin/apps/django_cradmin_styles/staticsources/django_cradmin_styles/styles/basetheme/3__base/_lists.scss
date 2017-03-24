@@ -74,7 +74,7 @@ ol {
     margin-bottom: $vertical-rythm--spacing;
     text-align: left;
 
-    & > li {
+    & > li, .list__item {
         position: relative;
         padding-left: $indention--sm;
         margin-bottom: 0;
@@ -100,7 +100,7 @@ ol {
     }
 
     &--large {
-        & > li {
+        & > li, .list__item {
             margin-bottom: $vertical-rythm;
 
             @include min-width(md) {
@@ -110,7 +110,7 @@ ol {
     }
 
     &--links {
-        & > li {
+        & > li, .list__item {
             margin-bottom: vertical-space();
 
             &:before {

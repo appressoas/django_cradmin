@@ -4,4 +4,10 @@
             display: inline;
         }
     }
+
+    &--no-focus-outline {
+        &:focus {
+            outline: none;
+        }
+    }
 }
