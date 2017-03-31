@@ -101,6 +101,9 @@ export default class CradminDateSelectorDay extends React.Component {
   }
 
   _sendDateUpdateSignal(newDay) {
+    if(newDay == 0) {
+      newDay = null;
+    }
     this.setState({value: newDay});
     new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.DayValueChange`, newDay, (info) => {
