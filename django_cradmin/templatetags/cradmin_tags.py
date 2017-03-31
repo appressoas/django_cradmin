@@ -386,3 +386,43 @@ def cradmin_join_css_classes_list(css_classes_list):
             {% cradmin_join_css_classes_list my_list_of_css_classes %}
     """
     return renderable.join_css_classes_list(css_classes_list)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_render_header(context, headername='default', include_context=True, **kwargs):
+    """
+    Render a header.
+
+    Args:
+        context: template context.
+        headername (list): List or other iterable of css class strings.
+            Sent to :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_header_renderable`
+            to get the header.
+        include_context: Forwarded to :func:`.cradmin_render_renderable`.
+        **kwargs: Forwarded to :func:`.cradmin_render_renderable`.
+
+    Examples:
+
+        Render the default header::
+
+            {% cradmin_render_header %}
+            ... or ...
+            {% cradmin_render_header headername='default' %}
+
+        Render a custom header::
+
+            {% cradmin_render_header headername='myheader' %}
+
+        The last example assumes that you have overridden
+        :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_header_renderable`
+        to handle this headername as an argument.
+    """
+    request = context['request']
+    cradmin_instance = request.cradmin_instance
+    header_renderable = cradmin_instance.get_header_renderable(headername=headername)
+    if header_renderable:
+        return cradmin_render_renderable(context, header_renderable,
+                                         include_context=include_context,
+                                         **kwargs)
+    else:
+        return ''

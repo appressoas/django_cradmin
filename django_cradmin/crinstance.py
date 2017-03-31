@@ -300,7 +300,7 @@ class BaseCrAdminInstance(object):
             self._expandable_menu_renderable_cached = self.get_expandable_menu_renderable()
         return self._expandable_menu_renderable_cached
 
-    def get_header_renderable(self):
+    def get_header_renderable(self, headername='default'):
         """
         Get the header renderable for this cradmin instance.
 
