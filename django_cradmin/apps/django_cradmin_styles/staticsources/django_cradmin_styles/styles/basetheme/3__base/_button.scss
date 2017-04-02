@@ -20,6 +20,11 @@ Example: For actions that need's to stand out on red or dark blue background.
     <button type="button" class="button  button--light">Button</button>
     <button type="button" class="button  button--light-fill">Button</button>
 
+Example: Button with icon
+    <button type="button" class="button">
+        <span class="icon-chevron-right button__icon"></span>
+    </button>
+
 Example: This is some modifiers you can add (PS: Can be combined)
     <button type="button" class="button  button--block">
         Make it 100% width of whatever container
@@ -76,7 +81,7 @@ Styleguide form.2:buttons
 }
 
 
-.button {
+@mixin button() {
     @include spaced-text;
     @include font(base, bold);
     @include font-size(xsmall);
@@ -100,31 +105,12 @@ Styleguide form.2:buttons
         display: inline-block;
         white-space: nowrap;
         width: auto;
-        padding: $spacing--small;
+        padding: #{$spacing--small - $border-width} #{$indention - $border-width};
     }
 
     &[disabled] {
         pointer-events: none;
         opacity: 0.4;
-    }
-
-    &__icon {
-        position: relative;
-        vertical-align: middle;
-        top: -2px;
-        margin-right: $unit;
-
-        &--non-hover {
-            display: inline-block;
-        }
-
-        &--hover {
-            display: none;
-        }
-
-        &--first {
-            margin-left: -($unit);
-        }
     }
 
     &:hover,
@@ -146,6 +132,53 @@ Styleguide form.2:buttons
     &:focus {
         z-index: 2;
     }
+}
+
+
+@mixin button--compact() {
+    @include font-size(xsmall);
+    padding: $unit $spacing--small;
+}
+
+
+@mixin button--block() {
+    display: block;
+    width: 100%;
+}
+
+
+@mixin button--spaced() {
+    @include min-width(md) {
+        margin-left: $spacing--small;
+        margin-right: $spacing--small;
+    }
+}
+
+@mixin button__icon() {
+    position: relative;
+    vertical-align: middle;
+    top: -2px;
+    margin-right: $unit;
+
+    &--non-hover {
+        display: inline-block;
+    }
+
+    &--hover {
+        display: none;
+    }
+
+    &--first {
+        margin-left: -($unit);
+    }
+}
+
+.button {
+    @include button();
+
+    &__icon {
+        @include button__icon();
+    }
 
     &--fill {
         color: $color-light;
@@ -159,10 +192,6 @@ Styleguide form.2:buttons
             border-color: color(neutral, dark);
             background-color: transparent;
         }
-    }
-
-    @include min-width(md) {
-        padding: #{$spacing--small - $border-width} #{$indention - $border-width};
     }
 
     @include button-modifier(
@@ -193,22 +222,18 @@ Styleguide form.2:buttons
     }
 
     &--spaced {
-        @include min-width(md) {
-            margin-left: $spacing--small;
-            margin-right: $spacing--small;
-        }
+        @include button--spaced();
     }
 
     &--block {
-        display: block;
-        width: 100%;
+        @include button--block();
     }
 
     &--compact {
-        @include font-size(xsmall);
-        padding: $unit $spacing--small;
+        @include button--compact();
     }
 
+    // TODO: Should not be here - should be a general css class just like screenreader-only!
     &--hidden-in-print {
         @media print {
             display: none;
