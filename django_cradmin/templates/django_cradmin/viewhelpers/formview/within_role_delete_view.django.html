@@ -1,5 +1,6 @@
 {% extends "django_cradmin/base.django.html" %}
 {% load i18n %}
+{% load cradmin_tags %}
 
 {% block title %}
     {{ pagetitle }}
@@ -13,9 +14,9 @@
     <div class="adminui-page-section  adminui-page-section--center  adminui-page-section--focus">
         <div class="container">
             {% block deletequestion %}
-                <div id="id_deleteview_question">
-                    <p>{{ confirm_message }}</p>
-                </div>
+                <p class="{% cradmin_test_css_class 'confirm-message' %}">
+                    {{ confirm_message }}
+                </p>
             {% endblock deletequestion %}
             {% block delete-form %}
                 <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">
