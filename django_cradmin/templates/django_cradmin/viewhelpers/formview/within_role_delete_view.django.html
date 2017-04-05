@@ -10,17 +10,13 @@
 {% endblock page-cover-title %}
 
 {% block content %}
-    <div class="adminui-page-section  adminui-page-section--center">
+    <div class="adminui-page-section  adminui-page-section--center  adminui-page-section--focus">
         <div class="container">
             {% block deletequestion %}
                 <div id="id_deleteview_question">
                     <p>{{ confirm_message }}</p>
                 </div>
             {% endblock deletequestion %}
-        </div>
-    </div>
-    <div class="adminui-page-section  adminui-page-section--center">
-        <div class="container">
             {% block delete-form %}
                 <form action="{{ request.build_absolute_uri }}" method="post" class="django-cradmin-form">
                     {% csrf_token %}
