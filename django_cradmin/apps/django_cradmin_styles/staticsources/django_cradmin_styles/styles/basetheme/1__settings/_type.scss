@@ -64,6 +64,10 @@ Styleguide type.2:font-sizes
 */
 
 $font-size: (
+    xxsmall: (
+        base: 12px,
+        md: 13px,
+    ),
     xsmall: (
         base: 15px,
         md: 16px,
