@@ -98,7 +98,7 @@ class AbstractTestCaseMixin(object):
         """
         return mommy.make(settings.AUTH_USER_MODEL)
 
-    def make_minimal_request(self, method, requestkwargs=None):
+    def make_minimal_request(self, method, requestkwargs=None, httpheaders=None):
         """
         Make a minimal request object.
 
@@ -109,6 +109,7 @@ class AbstractTestCaseMixin(object):
                 included in the dict. The data you can include in this
                 dict is the same as for the get, post, ... methods on
                 :class:`.django.test.Client` (depends on the ``method`` kwarg).
+            httpheaders: (dict): Extra http headers needed.
 
         Returns:
             The created request object.
@@ -118,6 +119,8 @@ class AbstractTestCaseMixin(object):
         }
         if requestkwargs:
             requestkwargs_full.update(requestkwargs)
+        if httpheaders:
+            requestkwargs_full.update(httpheaders)
         request = getattr(self.make_requestfactory(), method)(**requestkwargs_full)
         return request
 
@@ -176,6 +179,7 @@ class AbstractTestCaseMixin(object):
                      messagesmock=None,
                      sessionmock=None,
                      requestattributes=None,
+                     httpheaders=None,
                      requestkwargs=None,
                      viewkwargs=None,
                      expected_statuscode=None,
@@ -186,6 +190,8 @@ class AbstractTestCaseMixin(object):
 
         Parameters:
             method: The http method (get, post, ...).
+            httpheaders: (httpheaders): Forwarded to :meth:`.make_minimal_request`.
+                Extra HTTP headers to be added to request.META.
             requestkwargs: (dict): Forwarded to :meth:`.make_minimal_request`.
 
             cradmin_role: The request.cradmin_role to use. Defaults to mock.MagicMock().
@@ -210,7 +216,8 @@ class AbstractTestCaseMixin(object):
                 to ``False``.
         """
         request = self.make_minimal_request(method=method,
-                                            requestkwargs=requestkwargs)
+                                            requestkwargs=requestkwargs,
+                                            httpheaders=httpheaders)
         if requestattributes:
             for key, value in requestattributes.items():
                 setattr(request, key, value)
@@ -305,6 +312,26 @@ class TestCaseMixin(AbstractTestCaseMixin):
                     })
                     self.assertEqual(mockresponse.response.status_code, 302)
 
+        Adding optional HTTP headers if needed::
+
+            from django_cradmin import cradmin_testhelpers
+
+            class TestMyView(TestCase, cradmin_testhelpers.TestCaseMixin):
+                viewclass = MyView
+
+                def test_post_with_optional_httpheaders(self):
+                    self.mock_postrequest(
+                        cradmin_instance=cradmin_instance,
+                        httpheaders={
+                            'HTTP_REFERER': 'http://www.http-referent.com'
+                        },
+                        requestkwargs={
+                            'data': {
+                                'name': 'Jane Doe',
+                                'age': 24
+                            }
+                        })
+                    self.assertEqual(mockresponse.response.status_code, 302)
 
         Views that take arguments::
 
