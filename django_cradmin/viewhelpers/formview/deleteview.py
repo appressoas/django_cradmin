@@ -31,6 +31,14 @@ class DeleteViewMixin:
         """
         return self.get_action_label()
 
+    def get_cancel_button_label(self):
+        """
+        The label of the cancel button.
+
+        Defaults to :meth:`.get_action_label`.
+        """
+        return ugettext_lazy('Cancel')
+
     def get_object_preview(self):
         """
         The preview of the object. Used when asking the user if he/she wants to
@@ -86,6 +94,7 @@ class DeleteViewMixin:
         context['pagetitle'] = self.get_pagetitle()
         context['confirm_message'] = self.get_confirm_message()
         context['delete_button_label'] = self.get_delete_button_label()
+        context['cancel_button_label'] = self.get_cancel_button_label()
 
     def delete(self, request, *args, **kwargs):
         object_preview = self.get_object_preview()
