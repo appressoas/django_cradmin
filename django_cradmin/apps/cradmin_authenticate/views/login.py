@@ -2,6 +2,8 @@ from django.contrib import auth
 from django.contrib.auth import authenticate, get_user_model
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.http import QueryDict
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django import forms
 from django_cradmin import uicontainer
@@ -206,7 +208,7 @@ class LoginView(formview.StandaloneFormView):
             self._inital_email_value = self.get_initial_email_value()
         return self._inital_email_value
 
-    def get_form_renderable(self):
+    def get_form_field_renderables(self):
         form_class = self.get_form_class()
         autofocus_password_field = False
         if self.initial_email_value:
@@ -236,12 +238,14 @@ class LoginView(formview.StandaloneFormView):
             uicontainer.button.SubmitPrimary(
                 text=ugettext_lazy('Sign in')),
         ])
+        return formchildren
 
+    def get_form_renderable(self):
         return uicontainer.layout.AdminuiPageSectionTight(
             children=[
                 uicontainer.form.Form(
                     form=self.get_form(),
-                    children=formchildren
+                    children=self.get_form_field_renderables()
                 )
             ]
         ).bootstrap()
@@ -251,8 +255,9 @@ class LoginView(formview.StandaloneFormView):
         Returns the redirect-url after login-success. This will either be the ``next`` field in ``request.GET``
         if present, or ``settings.LOGIN_REDIRECT_URL`` if not.
         """
-        if 'next' in self.request.GET:
-            return self.request.GET['next']
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
         else:
             return settings.LOGIN_REDIRECT_URL
 
@@ -272,4 +277,7 @@ class LoginView(formview.StandaloneFormView):
         context = super(LoginView, self).get_context_data(**kwargs)
         context['DJANGO_CRADMIN_FORGOTPASSWORD_URL'] = getattr(
             settings, 'DJANGO_CRADMIN_FORGOTPASSWORD_URL', None)
+        next_querystring = QueryDict(mutable=True)
+        next_querystring['next'] = self.request.GET.get('next')
+        context['next_querystring'] = mark_safe(next_querystring.urlencode())
         return context

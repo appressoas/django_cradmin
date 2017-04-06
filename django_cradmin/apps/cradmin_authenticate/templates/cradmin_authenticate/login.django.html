@@ -9,20 +9,21 @@
     {% trans "Sign in" %}
 {% endblock page-cover-title %}
 
-{% block global-bodyclass %}
-login
-{% endblock global-bodyclass %}
 
 {% block content %}
     {{ block.super }}
 
-    {% if DJANGO_CRADMIN_FORGOTPASSWORD_URL %}
-        <div class="adminui-page-section adminui-page-section--center">
-            <p id="cradmin_authenticate_login_forgotpasswordlink">
-                <a href="{{ DJANGO_CRADMIN_FORGOTPASSWORD_URL }}">
-                    {% trans "Forgot your password?" %}
-                </a>
-            </p>
-        </div>
-    {% endif %}
+    {% block forgotpassword %}
+        {% if DJANGO_CRADMIN_FORGOTPASSWORD_URL %}
+            <div class="adminui-page-section adminui-page-section--center">
+                <div class="container">
+                    <p id="cradmin_authenticate_login_forgotpasswordlink">
+                        <a href="{{ DJANGO_CRADMIN_FORGOTPASSWORD_URL }}">
+                            {% trans "Forgot your password?" %}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock forgotpassword %}
 {% endblock content %}
