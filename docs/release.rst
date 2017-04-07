@@ -4,14 +4,18 @@ How to release a new version of cradmin
 
 .. note:: This assumes you have permission to release cradmin to pypi.
 
-1. Remove the ``django_cradmin/static/django_cradmin/<version>/`` directory.
-   You find the version in ``django_cradmin/version.json``.
+1. Remove the ``django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/<version>/``
+   and ``django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/<version>/``
+   directories.
+   You find the current version in ``django_cradmin/version.json``.
 2. Update ``django_cradmin/version.json``.
 3. Run::
 
     $ ievv buildstatic --production
 
-4. Add the new ``django_cradmin/static/django_cradmin/<version>/`` directory to GIT.
+4. Add the new ``django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/<version>/``
+   and ``django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/<version>/``
+   directories to GIT.
 5. Commit.
 6. Tag the commit with ``<version>``.
 7. Push (``git push && git push --tags``).
