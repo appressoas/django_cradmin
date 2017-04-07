@@ -333,6 +333,25 @@ class TestCaseMixin(AbstractTestCaseMixin):
                         })
                     self.assertEqual(mockresponse.response.status_code, 302)
 
+        Customizing the request.body, if e.g you have created a view that works as an API that handles POST with
+        data. This data will in most cases be JSON. If this is not done through a form, but javascript,
+        the data will end up in request.body, and not request.POST. To have this functionality when testing,
+        simply add the data you want to _body in requestattributes. request._body is the actual attribute, and
+        request.body is a property::
+
+            from django_cradmin import cradmin_testhelpers
+
+            class TestMyView(TestCase, cradmin_testhelpers.TestCaseMixin):
+                viewclass = MyView
+
+                def test_post_with_optional_httpheaders(self):
+                    self.mock_postrequest(
+                        cradmin_instance=cradmin_instance,
+                        requestattributes={
+                            '_body': b'{'key': 'value'}'
+                        })
+                    self.assertEqual(mockresponse.response.status_code, 302)
+
         Views that take arguments::
 
             from django_cradmin import cradmin_testhelpers
