@@ -195,6 +195,27 @@ input[type='radio'] {
     padding: 0;
 }
 
+// Range resets
+input[type='range'] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+    }
+    &:focus {
+        outline: none;
+    }
+    &::-ms-track {
+        width: 100%;
+        cursor: pointer;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+}
+
 // TODO: Figure out if this is needed
 sub,
 sup {
