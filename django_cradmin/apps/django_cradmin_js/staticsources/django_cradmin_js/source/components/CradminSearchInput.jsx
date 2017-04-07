@@ -85,6 +85,7 @@ export default class CradminSearchInput extends React.Component {
   }
 
   _onDataListInitializedSignal(receivedSignalInfo) {
+    this.setState({searchString: receivedSignalInfo.data.searchString});
     if(this.props.autofocus) {
       this.handleFocus();
       DomUtilities.forceFocus(this._inputDomElement);

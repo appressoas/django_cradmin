@@ -58,7 +58,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
   _initialize(state) {
     this._initializeSignalHandlers();
     this.signalHandlersInitialized = true;
-    this.state = {
+    this.state = Object.assign({}, {
       data: {
         count: 0,
         next: null,
@@ -70,7 +70,7 @@ export default class AbstractDataListWidget extends AbstractWidget {
       filtersMap: this._objectToMap(this.config.filters),
       focus: false,
       loading: false
-    };
+    }, state);
     this._sendDataListInitializedSignal();
     this.setState(state, true);
   }
