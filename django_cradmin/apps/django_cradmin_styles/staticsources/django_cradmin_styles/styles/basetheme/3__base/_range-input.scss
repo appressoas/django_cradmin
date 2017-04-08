@@ -319,7 +319,7 @@ Styleguide form.6:rangeinput
         $hover-border-color: color(secondary, dark),
         $hover-background-color: color(secondary, dark));
 
-    &--large {
+    &.range-input--large {
         min-height: vertical-space(7);
         @include range-input-track-size(
             $height: vertical-space(2),
@@ -333,7 +333,7 @@ Styleguide form.6:rangeinput
             $hover-width: vertical-space(7));
     }
 
-    &--light {
+    &.range-input--light {
         @include range-input-track-color(
             $background-color: color(neutral, light),
             $focus-background-color: color(neutral, light));
