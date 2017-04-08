@@ -69,18 +69,18 @@ Example: Within a fieldwrapper
 Styleguide form.6:rangeinput
 */
 
-@mixin range-input-track-color($background-color, $focus-background-color) {
+@mixin range-input-track-color($background, $focus-background) {
 
     /* WebKit/Blink - and for certain styles Edge */
     &::-webkit-slider-runnable-track {
-        background: $background-color;
+        background: $background;
         border: none;
     }
 
 
     /* Firefox */
     &::-moz-range-track {
-        background: $background-color;
+        background: $background;
         border: none;
     }
 
@@ -92,31 +92,31 @@ Styleguide form.6:rangeinput
         color: transparent;
     }
     &::-ms-fill-lower {
-        background: $background-color;
+        background: $background;
         border: none;
     }
     &::-ms-fill-upper {
-        background: $background-color;
+        background: $background;
         border: none;
     }
 
     &:focus {
         /* WebKit/Blink - and for certain styles Edge */
         &::-webkit-slider-runnable-track {
-            background: $focus-background-color;
+            background: $focus-background;
         }
 
         /* Firefox */
         &::-moz-range-track {
-            background: $focus-background-color;
+            background: $focus-background;
         }
 
         /* IE/Edge */
         &::-ms-fill-lower {
-            background: $focus-background-color;
+            background: $focus-background;
         }
         &::-ms-fill-upper {
-            background: $focus-background-color;
+            background: $focus-background;
         }
 
     }
@@ -157,17 +157,17 @@ Styleguide form.6:rangeinput
 
 @mixin range-input-thumb-color(
     $border-color,
-    $background-color,
+    $background,
     $hover-border-color,
-    $hover-background-color
+    $hover-background
 ) {
     /* WebKit/Blink - and for certain styles Edge */
     &::-webkit-slider-thumb {
         border-color: $border-color;
         border-style: solid;
-        background: $background-color;
+        background: $background;
         &:hover, &:active {
-            background: $hover-background-color;
+            background: $hover-background;
             border-color: $hover-border-color;
         }
     }
@@ -176,9 +176,9 @@ Styleguide form.6:rangeinput
     &::-moz-range-thumb {
         border-color: $border-color;
         border-style: solid;
-        background: $background-color;
+        background: $background;
         &:hover, &:active {
-            background: $hover-background-color;
+            background: $hover-background;
             border-color: $hover-border-color;
         }
     }
@@ -189,14 +189,14 @@ Styleguide form.6:rangeinput
         border-style: solid;
         background: color(neutral, dark);
         &:hover, &:active {
-            background: $hover-background-color;
+            background: $hover-background;
             border-color: $hover-border-color;
         }
     }
 
     &:focus {
         &::-webkit-slider-thumb {
-            background: $hover-background-color;
+            background: $hover-background;
             border-color: $hover-border-color;
         }
     }
@@ -311,13 +311,13 @@ Styleguide form.6:rangeinput
         $hover-width: vertical-space(5));
 
     @include range-input-track-color(
-        $background-color: color(neutral, light),
-        $focus-background-color: color(neutral, light));
+        $background: color(neutral, light),
+        $focus-background: color(neutral, light));
     @include range-input-thumb-color(
         $border-color: color(neutral, dark),
-        $background-color: color(neutral, light),
+        $background: color(neutral, light),
         $hover-border-color: color(secondary, dark),
-        $hover-background-color: color(secondary, dark));
+        $hover-background: color(secondary, dark));
 
     &.range-input--large {
         min-height: vertical-space(7);
@@ -335,12 +335,12 @@ Styleguide form.6:rangeinput
 
     &.range-input--light {
         @include range-input-track-color(
-            $background-color: color(neutral, light),
-            $focus-background-color: color(neutral, light));
+            $background: color(neutral, light),
+            $focus-background: color(neutral, light));
         @include range-input-thumb-color(
             $border-color: $color-light,
-            $background-color: color(neutral, light),
+            $background: color(neutral, light),
             $hover-border-color: $color-light,
-            $hover-background-color: $color-light);
+            $hover-background: $color-light);
     }
 }
