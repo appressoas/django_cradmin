@@ -8,6 +8,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext, pgettext
 
+from django_cradmin.widgets import rangeinput
 from . import container
 from . import form_mixins
 from . import label
@@ -312,6 +313,12 @@ class Field(BaseFieldRenderable):
         """
         return isinstance(self.django_widget, forms.RadioSelect)
 
+    def is_range_widget(self):
+        """
+        Returns ``True`` if the field widget is a :class:`django_cradmin.widgets.rangeinput.RangeInput`.
+        """
+        return isinstance(self.django_widget, rangeinput.RangeInput)
+
     def is_checkbox_widget(self):
         """
         Returns ``True`` if the field widget is a :class:`django.forms.widgets.CheckboxInput`.
@@ -378,6 +385,8 @@ class Field(BaseFieldRenderable):
         """
         if self.is_select_widget() or self.is_checkbox_input_widget():
             return None
+        elif self.is_range_widget():
+            return 'range-input'
         else:
             return 'input'
 
