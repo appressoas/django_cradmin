@@ -430,4 +430,8 @@ Styleguide components.selectable-list
     &--nomargin {
         margin-bottom: 0;
     }
+
+    &--compact {
+        margin-bottom: vertical-space();
+    }
 }
