@@ -116,7 +116,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
         if self.field_is_checkbox_input_widget():
             return False
         else:
-            return self.include_optional_text
+            return self._include_optional_text
 
     @property
     def optional_text(self):
