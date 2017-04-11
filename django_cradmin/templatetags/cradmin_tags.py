@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
 import json
+from xml.sax.saxutils import quoteattr
+
+from django.utils.safestring import mark_safe
 
 import django_cradmin
 from django import template
@@ -250,23 +253,23 @@ def cradmin_jsonencode(json_serializable_pythonobject):
     return json.dumps(json_serializable_pythonobject)
 
 
-# @register.simple_tag
-# def cradmin_jsonencode_html_attribute_value(json_serializable_pythonobject):
-#     """
-#     Template tag that converts a json serializable object
-#     to a json encoded string and quotes it for use as an attribute value.
-#
-#     Examples:
-#
-#         Typical usage::
-#
-#             {% load cradmin_tags %}
-#
-#             <div data-something={% cradmin_jsonencode_html_attribute_value serializableobject %}></div>
-#
-#         Notice that we do not add ``"`` around the value - that is done automatically.
-#     """
-#     return quoteattr(json.dumps(json_serializable_pythonobject))
+@register.simple_tag
+def cradmin_jsonencode_html_attribute_value(json_serializable_pythonobject):
+    """
+    Template tag that converts a json serializable object
+    to a json encoded string and quotes it for use as an attribute value.
+
+    Examples:
+
+        Typical usage::
+
+            {% load cradmin_tags %}
+
+            <div data-something={% cradmin_jsonencode_html_attribute_value serializableobject %}></div>
+
+        Notice that we do not add ``"`` around the value - that is done automatically.
+    """
+    return mark_safe(quoteattr(json.dumps(json_serializable_pythonobject)))
 
 
 @register.simple_tag(takes_context=True)
