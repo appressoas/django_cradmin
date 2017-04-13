@@ -198,6 +198,21 @@
     border: 0;
 }
 
+// Invisible in print.
+@mixin hidden-in-print {
+    @media print {
+        display: none !important;
+    }
+}
+
+// Only visible in print.
+@mixin display-block-only-in-print {
+    display: none !important;
+    @media print {
+        display: block;
+    }
+}
+
 // Container
 @mixin container($size: null, $no-padding: false) {
     $width-modifier: 0;

@@ -1,0 +1,18 @@
+/* Print optimizations
+
+Example: {type: isolated} Hidden when printing
+
+    <span class="hidden-in-print">
+        This is not visible when printing
+    </span>
+
+Styleguide screen.print
+*/
+
+.hidden-in-print {
+    @include hidden-in-print;
+}
+
+.visible-only-in-print {
+    @include display-block-only-in-print;
+}
