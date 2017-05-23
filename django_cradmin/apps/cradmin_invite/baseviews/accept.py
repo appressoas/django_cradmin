@@ -131,7 +131,7 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         return '{url}?{arguments}'.format(
             url=url,
             arguments=urlencode({
-                'next': next_url
+                'next': str(next_url)
             })
         )
 

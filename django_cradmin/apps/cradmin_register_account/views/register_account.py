@@ -34,7 +34,10 @@ class RegisterAccountView(FormView, javascriptregistry.viewmixin.StandaloneBaseV
         if 'next' in self.request.GET:
             return self.request.GET['next']
         else:
-            return getattr(settings, 'DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL', settings.LOGIN_URL)
+            return str(getattr(
+                settings,
+                'DJANGO_CRADMIN_REGISTER_ACCOUNT_REDIRECT_URL',
+                settings.LOGIN_URL))
 
     def form_valid(self, form):
         self.created_user = form.save()
