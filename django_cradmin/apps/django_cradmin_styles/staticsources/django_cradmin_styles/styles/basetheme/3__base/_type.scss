@@ -116,6 +116,11 @@ Example: Extra tight paragraphs
     <p class="paragraph paragraph--xtight">Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
     <p class="paragraph paragraph--xtight">The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
 
+Example: Paragraphs without margin
+    <p class="paragraph paragraph--no-margin">Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</p>
+    <p class="paragraph paragraph--no-margin">Look at that text! Would anyone use that? Can you imagine that, the text of your next webpage?!</p>
+    <p class="paragraph paragraph--no-margin">The best taco bowls are made in Trump Tower Grill. I love Hispanics! Lorem Ispum is a choke artist. It chokes!</p>
+
 Example: Other elements styled as paragraphs
     <ul>
         <li class="paragraph">Lorem Ipsum's father was with Lee Harvey Oswald prior to Oswald's being, you know, shot. I think the only difference between me and the other placeholder text is that I’m more honest and my words are more beautiful. An ‘extremely credible source’ has called my office and told me that Barack Obama’s placeholder text is a fraud. I’m the best thing that ever happened to placeholder text.</li>
@@ -136,11 +141,15 @@ p,
 }
 
 .paragraph {
+    display: block;
     &--tight {
         margin-bottom: vertical-space($spacing--small);
     }
     &--xtight {
         margin-bottom: vertical-space($unit);
+    }
+    &--no-margin {
+        margin-bottom: 0;
     }
 }
 
