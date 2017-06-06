@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-10 18:56+0100\n"
+"POT-Creation-Date: 2017-06-06 11:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: appconfig.py:8
-msgid "Django CRadmin"
-msgstr ""
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:7
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:11
@@ -56,7 +52,7 @@ msgstr ""
 
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:5
 #: apps/cradmin_authenticate/templates/cradmin_authenticate/login.django.html:9
-#: apps/cradmin_authenticate/views/login.py:237
+#: apps/cradmin_authenticate/views/login.py:239
 #: apps/cradmin_invite/baseviews/accept.py:63
 msgid "Sign in"
 msgstr ""
@@ -74,31 +70,31 @@ msgstr ""
 msgid "Sign back in"
 msgstr ""
 
-#: apps/cradmin_authenticate/views/login.py:32
-#: apps/cradmin_authenticate/views/login.py:42
+#: apps/cradmin_authenticate/views/login.py:34
+#: apps/cradmin_authenticate/views/login.py:44
 msgid "Password"
 msgstr ""
 
-#: apps/cradmin_authenticate/views/login.py:38
+#: apps/cradmin_authenticate/views/login.py:40
 msgid "This account is inactive."
 msgstr ""
 
-#: apps/cradmin_authenticate/views/login.py:90
 #: apps/cradmin_authenticate/views/login.py:92
+#: apps/cradmin_authenticate/views/login.py:94
 msgid "Username"
 msgstr ""
 
-#: apps/cradmin_authenticate/views/login.py:93
+#: apps/cradmin_authenticate/views/login.py:95
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
 
-#: apps/cradmin_authenticate/views/login.py:118
 #: apps/cradmin_authenticate/views/login.py:120
+#: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_resetpassword/views/begin.py:49
 msgid "Email"
 msgstr ""
 
-#: apps/cradmin_authenticate/views/login.py:121
+#: apps/cradmin_authenticate/views/login.py:123
 msgid "Your email and password didn't match. Please try again."
 msgstr ""
 
@@ -161,7 +157,7 @@ msgid "Accept as %(user)s"
 msgstr ""
 
 #: apps/cradmin_invite/baseviews/accept.py:51
-#: apps/cradmin_register_account/forms/base.py:60
+#: apps/cradmin_register_account/forms/base.py:33
 #, python-format
 msgid "Sign up for %(sitename)s"
 msgstr ""
@@ -209,26 +205,20 @@ msgstr ""
 msgid "Open example in new window"
 msgstr ""
 
-#: apps/cradmin_register_account/forms/auth_user.py:54
+#: apps/cradmin_register_account/forms/auth_user.py:56
 msgid "Account with this email address already exists."
 msgstr ""
 
-#: apps/cradmin_register_account/forms/base.py:190
+#: apps/cradmin_register_account/forms/base.py:124
 msgid "Type your password"
 msgstr ""
 
-#: apps/cradmin_register_account/forms/base.py:195
+#: apps/cradmin_register_account/forms/base.py:129
 msgid "Type your password one more time"
 msgstr ""
 
-#: apps/cradmin_register_account/forms/base.py:230
+#: apps/cradmin_register_account/forms/base.py:164
 msgid "The passwords do not match."
-msgstr ""
-
-#: apps/cradmin_register_account/templates/cradmin_register_account/begin.django.html:6
-#: apps/cradmin_register_account/templates/cradmin_register_account/begin.django.html:10
-#, python-format
-msgid "Create your %(sitename)s account"
 msgstr ""
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:7
@@ -246,6 +236,12 @@ msgstr ""
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:20
 msgid "If you do not see the email, check your junk folder."
+msgstr ""
+
+#: apps/cradmin_register_account/templates/cradmin_register_account/register_account.django.html:6
+#: apps/cradmin_register_account/templates/cradmin_register_account/register_account.django.html:10
+#, python-format
+msgid "Create your %(sitename)s account"
 msgstr ""
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/base.django.html:5
@@ -421,7 +417,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: crmenu.py:67
+#: crmenu.py:71
 msgctxt "cradmin default header menu toggle label"
 msgid "Menu"
 msgstr ""
@@ -435,7 +431,7 @@ msgstr ""
 msgid "Invalid email address: %(email)s"
 msgstr ""
 
-#: sortable/models.py:203
+#: sortable/models.py:207
 msgid "Sort index"
 msgstr ""
 
@@ -493,7 +489,7 @@ msgstr ""
 msgid "Code block"
 msgstr ""
 
-#: templates/django_cradmin/crmenu/menu/default-expandable.django.html:15
+#: templates/django_cradmin/crmenu/menu/default-expandable.django.html:16
 msgid "Close menu"
 msgstr ""
 
@@ -534,7 +530,7 @@ msgstr ""
 msgid "Invalid role"
 msgstr ""
 
-#: templates/django_cradmin/invalid_roleid.django.html:9
+#: templates/django_cradmin/invalid_roleid.django.html:12
 msgid "The requested role does not exist."
 msgstr ""
 
@@ -572,10 +568,6 @@ msgstr ""
 #: templates/django_cradmin/uicontainer/foreignkeyfield/dropdown.django.html:108
 #: templates/django_cradmin/uicontainer/manytomanyfield/dropdown.django.html:103
 msgid "Loading"
-msgstr ""
-
-#: templates/django_cradmin/viewhelpers/formview/within_role_delete_view.django.html:25
-msgid "Cancel"
 msgstr ""
 
 #: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:40
@@ -688,101 +680,93 @@ msgstr ""
 msgid "Select ..."
 msgstr ""
 
-#: uicontainer/field.py:525
+#: uicontainer/field.py:579
 msgctxt "monthname"
 msgid "Jan"
 msgstr ""
 
-#: uicontainer/field.py:526
+#: uicontainer/field.py:580
 msgctxt "monthname"
 msgid "Feb"
 msgstr ""
 
-#: uicontainer/field.py:527
+#: uicontainer/field.py:581
 msgctxt "monthname"
 msgid "Mar"
 msgstr ""
 
-#: uicontainer/field.py:528
+#: uicontainer/field.py:582
 msgctxt "monthname"
 msgid "Apr"
 msgstr ""
 
-#: uicontainer/field.py:529
+#: uicontainer/field.py:583
 msgctxt "monthname"
 msgid "May"
 msgstr ""
 
-#: uicontainer/field.py:530
+#: uicontainer/field.py:584
 msgctxt "monthname"
 msgid "Jun"
 msgstr ""
 
-#: uicontainer/field.py:531
+#: uicontainer/field.py:585
 msgctxt "monthname"
 msgid "Jul"
 msgstr ""
 
-#: uicontainer/field.py:532
+#: uicontainer/field.py:586
 msgctxt "monthname"
 msgid "Aug"
 msgstr ""
 
-#: uicontainer/field.py:533
+#: uicontainer/field.py:587
 msgctxt "monthname"
 msgid "Sep"
 msgstr ""
 
-#: uicontainer/field.py:534
+#: uicontainer/field.py:588
 msgctxt "monthname"
 msgid "Oct"
 msgstr ""
 
-#: uicontainer/field.py:535
+#: uicontainer/field.py:589
 msgctxt "monthname"
 msgid "Nov"
 msgstr ""
 
-#: uicontainer/field.py:536
+#: uicontainer/field.py:590
 msgctxt "monthname"
 msgid "Des"
 msgstr ""
 
-#: uicontainer/field.py:547 uicontainer/field.py:550
+#: uicontainer/field.py:602 uicontainer/field.py:604
 msgid "Day"
 msgstr ""
 
-#: uicontainer/field.py:562 uicontainer/field.py:566
+#: uicontainer/field.py:610 uicontainer/field.py:613
 msgid "Month"
 msgstr ""
 
-#: uicontainer/field.py:578 uicontainer/field.py:581
+#: uicontainer/field.py:619 uicontainer/field.py:621
 msgid "Year"
 msgstr ""
 
-#: uicontainer/field.py:626
-msgctxt "hour input placeholder"
+#: uicontainer/field.py:628
 msgid "Hour"
 msgstr ""
 
-#: uicontainer/field.py:629
-msgctxt "hour input aria label"
-msgid "Hour"
-msgstr ""
-
-#: uicontainer/field.py:645
-msgctxt "minute input placeholder"
-msgid "Minute"
-msgstr ""
-
-#: uicontainer/field.py:648
-msgctxt "minute input aria label"
+#: uicontainer/field.py:635
 msgid "Minute"
 msgstr ""
 
 #: uicontainer/foreignkeyfield.py:26
 msgctxt "django_cradmin foreignkey Dropdown placeholder"
 msgid "Search to find and select an item ..."
+msgstr ""
+
+#: uicontainer/form.py:151
+msgid "Please fix the errors below."
 msgstr ""
 
 #: uicontainer/label.py:124
@@ -818,12 +802,16 @@ msgstr ""
 msgid "Confirm delete"
 msgstr ""
 
-#: viewhelpers/formview/deleteview.py:46
+#: viewhelpers/formview/deleteview.py:40
+msgid "Cancel"
+msgstr ""
+
+#: viewhelpers/formview/deleteview.py:54
 #, python-format
 msgid "Are you sure you want to delete \"%(object_preview)s\"?"
 msgstr ""
 
-#: viewhelpers/formview/deleteview.py:64
+#: viewhelpers/formview/deleteview.py:72
 #, python-format
 msgid "Deleted \"%(what)s\""
 msgstr ""
@@ -945,7 +933,7 @@ msgctxt "multiselect2 target renderer"
 msgid "(None)"
 msgstr ""
 
-#: views/roleselect.py:14
+#: views/roleselect.py:29
 msgid "What would you like to edit?"
 msgstr ""
 
