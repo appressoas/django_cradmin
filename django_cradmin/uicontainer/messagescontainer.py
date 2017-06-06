@@ -214,3 +214,7 @@ class CompactMessagesContainer(MessagesContainer):
     """
     def get_message_container_class(self, level):
         return CompactMessageContainer
+
+
+class AdminUiPageSectionMessagesContainer(MessagesContainer):
+    template_name = 'django_cradmin/uicontainer/messagescontainer/adminui_page_section_messages.django.html'
