@@ -2,9 +2,12 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import HttpResponse
-from django.shortcuts import resolve_url
+from django.http import QueryDict
+from django.shortcuts import resolve_url, redirect
+from django.urls import reverse
 from django.utils.encoding import force_str
 from functools import wraps
 
@@ -34,6 +37,9 @@ def has_access_to_cradmin_instance(cradmin_instance_id, view_function,
             request=request)
         if cradmin_instance.has_access():
             request.cradmin_instance = cradmin_instance
+            # Check if two-factor authentication is required
+            if cradmin_instance.get_two_factor_auth_viewname():
+                return two_factor_required(view_function)(request, *args, **kwargs)
             return view_function(request, *args, **kwargs)
         elif request.user.is_authenticated():
             raise PermissionDenied()
@@ -89,3 +95,24 @@ def cradminview(view_function):
         return response
 
     return wrapper
+
+
+def two_factor_required(view_function, viewname=None):
+    """
+    Decorator for django_cradmin views.
+
+    Adds the support for two-factor authentication.
+    Will redirect the user to the implemented two-factor authentication view specified in
+    settings with `DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME` unless `two_factor_verified` has been
+    added to the session data (this must be handled in the two-factor authentication view).
+    """
+    @wraps(view_function)
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated() and not request.session.get('two_factor_verified'):
+            url = reverse(viewname or settings.DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME)
+            querystring = QueryDict(mutable=True)
+            querystring['next'] = request.get_full_path()
+            url = '{}?{}'.format(url, querystring.urlencode())
+            return redirect(url)
+        return view_function(request, *args, **kwargs)
+    return login_required(wrapper)
