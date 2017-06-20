@@ -4,10 +4,10 @@ How to release a new version of cradmin
 
 .. note:: This assumes you have permission to release cradmin to pypi.
 
-1. Remove the ``django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/<version>/``
-   and ``django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/<version>/``
-   directories.
-   You find the current version in ``django_cradmin/version.json``.
+1. Remove the previous built static files::
+
+    $ git rm -r django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
+
 2. Update ``django_cradmin/version.json``.
 3. Run::
 
