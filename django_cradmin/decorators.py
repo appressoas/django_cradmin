@@ -1,15 +1,16 @@
 from __future__ import unicode_literals
 
+from functools import wraps
+
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied, ImproperlyConfigured
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import HttpResponse
 from django.http import QueryDict
 from django.shortcuts import resolve_url, redirect
 from django.urls import reverse
 from django.utils.encoding import force_str
-from functools import wraps
 
 from django_cradmin.registry import cradmin_instance_registry
 

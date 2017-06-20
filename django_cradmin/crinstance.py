@@ -8,10 +8,10 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.utils.html import format_html
 from django.views import View
+
 from django_cradmin import crheader
 from django_cradmin import crmenu
-from django_cradmin.decorators import has_access_to_cradmin_instance, two_factor_required
-
+from django_cradmin.decorators import has_access_to_cradmin_instance
 from . import crapp
 from .registry import cradmin_instance_registry
 from .views import roleselect
