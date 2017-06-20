@@ -10,7 +10,7 @@ from django.utils.html import format_html
 from django.views import View
 from django_cradmin import crheader
 from django_cradmin import crmenu
-from django_cradmin.decorators import has_access_to_cradmin_instance
+from django_cradmin.decorators import has_access_to_cradmin_instance, two_factor_required
 
 from . import crapp
 from .registry import cradmin_instance_registry
@@ -435,6 +435,16 @@ class BaseCrAdminInstance(object):
         """
         return self.request.user.is_authenticated()
 
+    def get_two_factor_auth_viewname(self):
+        """
+        Get the two-factor authentication view specified in settings with
+        ``DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME``
+
+        Returns:
+            The viewname if specified in settings, else it returns ``None``.
+        """
+        return getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME', None)
+
     def get_foreignkeyselectview_url(self, model_class):
         """
         Get foreign key select view URL for the given model class.
@@ -648,6 +658,9 @@ class NoLoginMixin(object):
         We give any user access to this instance, including unauthenticated users.
         """
         return True
+
+    def get_two_factor_auth_viewname(self):
+        return None
 
 
 class NoRoleNoLoginCrAdminInstance(NoRoleMixin, NoLoginMixin, BaseCrAdminInstance):
