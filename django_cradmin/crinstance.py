@@ -443,7 +443,7 @@ class BaseCrAdminInstance(object):
         Returns:
             The viewname if specified in settings, else it returns ``None``.
         """
-        return getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME', None)
+        return getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None)
 
     def get_foreignkeyselectview_url(self, model_class):
         """
