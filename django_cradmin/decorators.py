@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied, ImproperlyConfigured
 from django.http import HttpResponse
 from django.http import QueryDict
 from django.shortcuts import resolve_url, redirect
@@ -97,19 +97,21 @@ def cradminview(view_function):
     return wrapper
 
 
-def two_factor_required(view_function, viewname=None):
+def two_factor_required(view_function, urlname=None):
     """
     Decorator for django_cradmin views.
 
     Adds the support for two-factor authentication.
     Will redirect the user to the implemented two-factor authentication view specified in
-    settings with `DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME` unless `two_factor_verified` has been
+    settings with `DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME` unless `two_factor_verified` has been
     added to the session data (this must be handled in the two-factor authentication view).
     """
+    urlname = urlname or getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None)
+
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated() and not request.session.get('two_factor_verified'):
-            url = reverse(viewname or getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None))
+        if urlname and not request.session.get('two_factor_verified'):
+            url = reverse(getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None))
             querystring = QueryDict(mutable=True)
             querystring['next'] = request.get_full_path()
             url = '{}?{}'.format(url, querystring.urlencode())
