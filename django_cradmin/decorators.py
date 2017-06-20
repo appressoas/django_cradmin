@@ -109,7 +109,7 @@ def two_factor_required(view_function, viewname=None):
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
         if request.user.is_authenticated() and not request.session.get('two_factor_verified'):
-            url = reverse(viewname or settings.DJANGO_CRADMIN_TWO_FACTOR_AUTH_VIEWNAME)
+            url = reverse(viewname or getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None))
             querystring = QueryDict(mutable=True)
             querystring['next'] = request.get_full_path()
             url = '{}?{}'.format(url, querystring.urlencode())
