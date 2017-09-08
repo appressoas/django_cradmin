@@ -57,7 +57,8 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
         super(Label, self).__init__(**kwargs)
 
     def should_include_for_attribute(self):
-        return self.field_wrapper_renderable.field_renderable.should_have_for_attribute_on_label()
+        return self.field_wrapper_renderable.field_renderable.should_have_for_attribute_on_label() and \
+            not self.field_wrapper_renderable.field_renderable.should_render_as_child_of_label()
 
     def get_default_dom_id(self):
         return '{field_dom_id}_label'.format(
@@ -83,10 +84,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
     @property
     def for_attribute(self):
         if self.should_include_for_attribute():
-            if self.field_wrapper_renderable.field_renderable.should_render_as_child_of_label():
-                return False
-            else:
-                return self.field_wrapper_renderable.field_renderable.label_for_dom_id
+            return self.field_wrapper_renderable.field_renderable.label_for_dom_id
         else:
             return False
 

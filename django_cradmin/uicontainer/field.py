@@ -5,6 +5,7 @@ import json
 from xml.sax.saxutils import quoteattr
 
 from django import forms
+from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext, pgettext
 
@@ -12,6 +13,7 @@ from django_cradmin.widgets import rangeinput
 from . import container
 from . import form_mixins
 from . import label
+from . import utils
 
 
 class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.FieldWrapperRenderableChildMixin):
@@ -147,7 +149,10 @@ class SubWidgetField(BaseFieldRenderable):
 
     @property
     def label_text(self):
-        return self.django_subwidget.choice_label
+        if utils.has_template_based_form_rendering():
+            return self.django_subwidget.get('label', '')
+        else:
+            return self.django_subwidget.choice_label
 
     def can_have_children(self):
         return False
@@ -155,17 +160,49 @@ class SubWidgetField(BaseFieldRenderable):
     @property
     def field_attributes_dict(self):
         attributes_dict = {}
-        attributes_dict.update(self.django_subwidget.attrs)
+        if utils.has_template_based_form_rendering():
+            attrs = self.django_subwidget.get('attrs', {})
+        else:
+            attrs = self.django_subwidget.attrs
+        attributes_dict.update(attrs)
         attributes_dict.update(self.get_html_element_attributes())
         if self.dom_id:
-            attributes_dict['id'] = '{dom_id}_{index_in_parent}'.format(
-                dom_id=self.dom_id,
-                index_in_parent=self.index_in_parent)
+            if utils.has_template_based_form_rendering():
+                attributes_dict['id'] = self.dom_id
+            else:
+                attributes_dict['id'] = '{dom_id}_{index_in_parent}'.format(
+                    dom_id=self.dom_id,
+                    index_in_parent=self.index_in_parent)
         return attributes_dict
 
     @property
     def rendered_subwidget(self):
-        return self.django_subwidget.tag(attrs=self.field_attributes_dict)
+        if utils.has_template_based_form_rendering():
+            renderer = get_default_renderer()
+            widget = self.bound_formfield.field.widget
+            attrs = self.field_attributes_dict
+            attrs['id'] = self.dom_id
+
+            option = widget.create_option(
+                name=self.django_subwidget['name'],
+                value=self.django_subwidget.get('value', None),
+                label=self.django_subwidget.get('label'),
+                selected=self.django_subwidget['selected'],
+                index=self.index_in_parent,
+                subindex=None,
+                attrs=self.field_attributes_dict
+            )
+            return mark_safe(renderer.render(
+                template_name=self.django_subwidget['template_name'],
+                context={
+                    'widget': option
+                }))
+            # return render_to_string(
+            #     template_name=self.django_subwidget['template_name'],
+            #     context=self.django_subwidget
+            # )
+        else:
+            return self.django_subwidget.tag(attrs=self.field_attributes_dict)
 
 
 class Field(BaseFieldRenderable):
@@ -375,7 +412,7 @@ class Field(BaseFieldRenderable):
 
         Used by :class:`django_cradmin.uicontainer.label.Label`.
         """
-        if self.is_checkbox_widget():
+        if self.is_checkbox_widget() or self.should_render_as_subwidgets():
             return True
         return False
 

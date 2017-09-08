@@ -265,7 +265,14 @@ class TestFieldChoiceFieldRendering(test.TestCase, formtest_mixins.SingleFormRen
         self.assertEqual('id_testfield', selector.one('select[name="testfield"]')['id'])
 
     def test_choicefield_select_required(self):
-        selector = self.single_field_formrenderable_htmls(field=forms.ChoiceField(choices=[('a', 'A')]))
+        selector = self.single_field_formrenderable_htmls(field=forms.ChoiceField(
+            choices=[
+                # NOTE: Django 1.11+ does not render required unless the first option
+                #       has no value, since it is invalid HTML to have a select that
+                #       can not have blank value be required
+                ('', 'A'),
+                ('b', 'B')
+            ]))
         self.assertTrue(selector.one('select[name="testfield"]').hasattribute('required'))
 
     def test_choicefield_select_not_required(self):
