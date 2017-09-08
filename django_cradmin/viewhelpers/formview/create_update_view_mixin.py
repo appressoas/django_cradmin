@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core import serializers
 from django.utils.translation import ugettext_lazy
-from django_cradmin import automodelform
 
 from . import formviewmixin
 from . import previewmixin
@@ -36,34 +35,6 @@ class CreateUpdateViewMixin(previewmixin.PreviewMixin,
         Defaults to :obj:`~.CreateUpdateViewMixin.model`.
         """
         return self.model
-
-    def make_default_form_class(self):
-        """
-        Make a ModelForm class with the model set to
-        :meth:`.get_model_class` and the fields set to
-        :meth:`.get_model_fields`.
-        """
-        me = self
-
-        class Form(automodelform.ModelForm):
-            class Meta:
-                model = me.get_model_class()
-                fields = me.get_model_fields()
-
-        return Form
-
-    def get_form_class(self):
-        if self.form_class:
-            return self.form_class
-        else:
-            return self.make_default_form_class()
-
-    def get_form_kwargs(self):
-        kwargs = super(CreateUpdateViewMixin, self).get_form_kwargs()
-        form_class = self.get_form_class()
-        if issubclass(form_class, automodelform.ModelForm):
-            kwargs['view'] = self
-        return kwargs
 
     def get_model_fields(self):
         """
