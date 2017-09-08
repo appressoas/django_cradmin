@@ -24,6 +24,7 @@ class TestDelete(TestCase):
 
         request = self.factory.get('/test')
         request.cradmin_app = mock.MagicMock()
+        request.cradmin_instance = mock.MagicMock()
         response = SimpleDeleteView.as_view()(request, pk=10)
         response.render()
         selector = htmls.S(response.content)
@@ -33,7 +34,7 @@ class TestDelete(TestCase):
             selector.one('h1.test-primary-h1').alltext_normalized,
             'Confirm delete')
         self.assertEqual(
-            selector.one('#id_deleteview_question').alltext_normalized,
+            selector.one('.test-confirm-message').alltext_normalized,
             'Are you sure you want to delete "Simple Test Item"?')
 
     def test_post(self):
