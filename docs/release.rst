@@ -13,9 +13,10 @@ How to release a new version of cradmin
 
     $ ievv buildstatic --production
 
-4. Add the new ``django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/<version>/``
-   and ``django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/<version>/``
-   directories to GIT.
+4: Run::
+
+    $ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
+
 5. Commit.
 6. Tag the commit with ``<version>``.
 7. Push (``git push && git push --tags``).
