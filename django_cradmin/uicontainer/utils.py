@@ -1,5 +1,10 @@
-import django
+try:
+    import django.forms.renderers
+except ImportError:
+    _has_template_based_form_rendering = False
+else:
+    _has_template_based_form_rendering = True
 
 
 def has_template_based_form_rendering():
-    return django.VERSION[0:3] >= (1, 11, 0)
+    return _has_template_based_form_rendering

@@ -5,7 +5,7 @@ import json
 from xml.sax.saxutils import quoteattr
 
 from django import forms
-from django.forms.renderers import get_default_renderer
+
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext, pgettext
 
@@ -14,6 +14,9 @@ from . import container
 from . import form_mixins
 from . import label
 from . import utils
+
+if utils.has_template_based_form_rendering():
+    from django.forms.renderers import get_default_renderer
 
 
 class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.FieldWrapperRenderableChildMixin):
