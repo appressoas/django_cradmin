@@ -21,8 +21,9 @@ class ComplexForm(forms.Form):
         required=False,
         choices=[(1, 'Choice 1'), (2, 'Choice2'), (2, 'Choice3')],
         widget=forms.RadioSelect())
-    select_multiple = forms.ChoiceField(
+    select_multiple = forms.TypedMultipleChoiceField(
         required=False,
+        coerce=int,
         choices=[(1, 'Choice 1'), (2, 'Choice2'), (2, 'Choice3')],
         widget=forms.CheckboxSelectMultiple())
 
@@ -108,6 +109,9 @@ class ComplextUiFormsView(viewhelpers.formview.WithinRoleFormView):
 
     # def get_javascriptregistry_component_ids(self):
     #     return ['django_cradmin_javascript']
+
+    def form_invalid(self, form):
+        return super(ComplextUiFormsView, self).form_invalid(form)
 
     def form_valid(self, form):
         messages.success(self.request,
