@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.template import Library
 from django_cradmin import javascriptregistry
+from django_cradmin.javascriptregistry.default_componentids import get_default_component_ids
 from django_cradmin.utils import cradmin_collections
 
 register = Library()
@@ -11,15 +12,15 @@ class JavascriptRegistryTemplateTagError(Exception):
 
 
 def _get_components_from_context(context):
-    if 'cradmin_javascriptregistry_component_ids' not in context:
-        raise JavascriptRegistryTemplateTagError(
-            'The cradmin_javascriptregistry_component_ids variable is not in the '
-            'template context.')  # TODO mention the view class mixin
     if 'request' not in context:
         raise JavascriptRegistryTemplateTagError(
             'The request variable is not in the template context. '
             'You can get this using the "django.template.context_processors.request" context processor.')
-    component_ids = context['cradmin_javascriptregistry_component_ids']
+    if 'cradmin_javascriptregistry_component_ids' in context:
+        component_ids = context['cradmin_javascriptregistry_component_ids']
+    else:
+        component_ids = get_default_component_ids()
+
     request = context['request']
     registry = javascriptregistry.Registry.get_instance()
     components = registry.get_component_objects(request=request, component_ids=component_ids)

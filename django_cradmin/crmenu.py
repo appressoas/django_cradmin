@@ -9,7 +9,8 @@ from django_cradmin.viewhelpers import listbuilder
 class BaseMenuLinkRenderable(renderable.AbstractRenderableWithCss):
     template_name = 'django_cradmin/crmenu/menuitem/link.django.html'
 
-    def __init__(self, label, url, is_active=False):
+    def __init__(self, label, url, is_active=False,
+                 bem_variant_list=None):
         """
         Parameters:
             label: A label shown in the menu.
@@ -19,6 +20,37 @@ class BaseMenuLinkRenderable(renderable.AbstractRenderableWithCss):
         self.label = label
         self.url = url
         self.is_active = is_active
+        self.bem_variant_list = bem_variant_list or self.get_default_bem_variant_list()
+
+    def get_bem_block(self):
+        return 'adminui-page-header'
+
+    def get_bem_element(self):
+        return None
+
+    def _get_full_bem_block(self):
+        return '{}__{}'.format(self.get_bem_block(), self.get_bem_element())
+
+    def get_default_bem_variant_list(self):
+        return []
+
+    def get_active_css_class_list(self):
+        if not self.get_bem_element():
+            return []
+        return [
+            '{}--active'.format(self.get_bem_element())
+        ]
+
+    def get_base_css_classes_list(self):
+        if not self.get_bem_element():
+            return []
+        full_bem_element = self._get_full_bem_block()
+        css_classes = [full_bem_element]
+        for variant in self.bem_variant_list:
+            css_classes.append('{}--{}'.format(full_bem_element, variant))
+        if self.is_active:
+            css_classes.extend(self.get_active_css_class_list())
+        return css_classes
 
 
 class NavLinkItemRenderable(BaseMenuLinkRenderable):
@@ -27,21 +59,24 @@ class NavLinkItemRenderable(BaseMenuLinkRenderable):
 
 
     """
-    def get_base_css_classes_list(self):
-        css_classes = ['adminui-page-header__navlink']
-        if self.is_active:
-            css_classes.append('adminui-page-header__navlink--active')
-        return css_classes
+    def get_bem_element(self):
+        return 'navlink'
 
 
 class NavLinkButtonItemRenderable(NavLinkItemRenderable):
     """
     Use this to add links styled as a button to the main menu.
     """
-    def get_base_css_classes_list(self):
-        css_classes = super(NavLinkButtonItemRenderable, self).get_base_css_classes_list()
-        css_classes.append('adminui-page-header__navlink--button')
-        return css_classes
+    # def get_base_css_classes_list(self):
+    #     css_classes = super(NavLinkButtonItemRenderable, self).get_base_css_classes_list()
+    #     css_classes.append('adminui-page-header__navlink--button')
+    #     return css_classes
+
+    def get_bem_element(self):
+        return 'navlink'
+
+    def get_default_bem_variant_list(self):
+        return ['button']
 
 
 class ExpandableMenuItem(BaseMenuLinkRenderable):
@@ -50,15 +85,17 @@ class ExpandableMenuItem(BaseMenuLinkRenderable):
     """
     template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-item.django.html'
 
-    @property
-    def bem_block(self):
+    def get_bem_block(self):
         return 'adminui-expandable-menu'
 
-    def get_base_css_classes_list(self):
-        css_classes = ['{}__link'.format(self.bem_block)]
-        if self.is_active:
-            css_classes.append('{}__link--active'.format(self.bem_block))
-        return css_classes
+    def get_bem_element(self):
+        return 'link'
+
+    def get_list_element_bem_element(self):
+        return 'listitem'
+
+    def get_list_item_css_class(self):
+        return '{}__{}'.format(self.get_bem_block(), self.get_list_element_bem_element())
 
 
 class MenuToggleItemItemRenderable(renderable.AbstractRenderableWithCss):
@@ -82,7 +119,7 @@ class AbstractMenuRenderable(listbuilder.base.List):
     (see :meth:`django_cradmin.renderable.AbstractRenderable.get_template_name`)
     and write your own HTML.
     """
-    def __init__(self, request, cradmin_instance):
+    def __init__(self, request, cradmin_instance=None):
         self.request = request
         self.cradmin_instance = cradmin_instance
         super(AbstractMenuRenderable, self).__init__()

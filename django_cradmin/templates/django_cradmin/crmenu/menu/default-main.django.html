@@ -3,5 +3,9 @@
 
 {% block content %}
     {{ block.super }}
-    {% cradmin_render_renderable me.get_menutoggle_renderable %}
+    {% with menutoggle_renderable=me.get_menutoggle_renderable %}
+        {% if menutoggle_renderable %}
+            {% cradmin_render_renderable menutoggle_renderable %}
+        {% endif %}
+    {% endwith %}
 {% endblock content %}

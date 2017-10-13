@@ -2,8 +2,24 @@ from django_cradmin import renderable
 
 
 class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
-    def __init__(self, cradmin_instance):
+    """
+    Abstract base class for headers.
+
+    You will typically want to use/extend :class:`.DefaultHeaderRenderable`
+    instead of this unless you have some special needs.
+    """
+    def __init__(self, cradmin_instance=None, request=None):
+        """
+
+        Args:
+            cradmin_instance (django_cradmin.crinstance.BaseCrAdminInstance): A
+                cradmin instance object or ``None``.
+            request: Not needed if you provide cradmin_instance.
+        """
         self.cradmin_instance = cradmin_instance
+        self.request = request
+        if not request and cradmin_instance:
+            self.request = cradmin_instance.request
 
     def get_wrapper_htmltag(self):
         """
@@ -14,13 +30,16 @@ class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
         return 'header'
 
     def get_wrapper_htmltag_id(self):
+        """
+        Get the ID of the wrapper html tag.
+        """
         return 'id_django_cradmin_page_header'
-
-    def include_menutoggle_javascript(self):
-        return False
 
 
 class DefaultHeaderRenderable(AbstractHeaderRenderable):
+    """
+    The default header renderable class.
+    """
     template_name = 'django_cradmin/crheader/default-header.django.html'
 
     @property
@@ -29,6 +48,12 @@ class DefaultHeaderRenderable(AbstractHeaderRenderable):
 
     @property
     def bem_variants_list(self):
+        """
+        Get a list of BEM variants.
+
+        These are added to the CSS classes prefixed with :meth:`bem_block`
+        followed by ``--`` (``<bem_block>--<variant>``).
+        """
         return []
 
     def expand_bem_variants_list(self):
@@ -38,5 +63,16 @@ class DefaultHeaderRenderable(AbstractHeaderRenderable):
     def get_base_css_classes_list(self):
         return [self.bem_block] + self.expand_bem_variants_list()
 
-    def include_menutoggle_javascript(self):
-        return False
+    def get_main_menu_rendereable(self):
+        """
+        Get the main menu renderable.
+
+        Returns :meth:`django_cradmin.crinstance.BaseCrAdminInstance.main_menu_renderable`
+        if we have a ``cradmin_instance``, otherwise this returns ``None``.
+
+        You can safely override this, and you will typically want to
+        do so if you use the :setting:`DJANGO_CRADMIN_DEFAULT_HEADER_CLASS`.
+        """
+        if self.cradmin_instance:
+            return self.cradmin_instance.main_menu_renderable
+        return None

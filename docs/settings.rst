@@ -72,6 +72,46 @@ tag is not included unless this is ``True``. Should only be ``True`` when runnin
 automatic tests. Defaults to ``False``.
 
 
+
+.. setting:: DJANGO_CRADMIN_DEFAULT_HEADER_CLASS
+
+DJANGO_CRADMIN_DEFAULT_HEADER_CLASS
+===================================
+The default header class rendered in the header block of
+the base template for all cradmin view templates (standalone-base-internal.django.html).
+If this is ``None``, or not specified (the default), we do not render
+a header.
+
+Must be the string path to a subclass of
+:class:`django_cradmin.crheader.AbstractHeaderRenderable`.
+
+
+
+
+.. setting:: DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS
+
+DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS
+=======================================
+The default expandable menu class rendered at the end of ``<body>`` by
+the base template for all cradmin view templates (standalone-base-internal.django.html).
+If this is ``None``, or not specified (the default), we do not render
+an expandable menu.
+
+Must be the string path to a subclass of
+:class:`django_cradmin.crmenu.AbstractMenuRenderable`.
+
+
+.. setting:: DJANGO_CRADMIN_DEFAULT_STATIC_COMPONENT_IDS
+
+DJANGO_CRADMIN_DEFAULT_STATIC_COMPONENT_IDS
+===========================================
+List of static components registered with the
+:class:`django_cradmin.javascriptregistry.registry.Registry` singleton
+that should be available by default in all templates extending
+the ``standalone-base-internal.django.html`` template unless
+something else is specified by the view or cradmin instance.
+
+
 **********
 imageutils
 **********

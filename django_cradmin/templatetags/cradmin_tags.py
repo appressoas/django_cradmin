@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 
 import json
+import posixpath
 from xml.sax.saxutils import quoteattr
 
+from django.utils.module_loading import import_string
 from django.utils.safestring import mark_safe
 
 import django_cradmin
@@ -429,3 +431,59 @@ def cradmin_render_header(context, headername='default', include_context=True, *
                                          **kwargs)
     else:
         return ''
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_render_default_header(context):
+    """
+    Render the default header specified via the
+    :setting:DJANGO_CRADMIN_DEFAULT_HEADER_CLASS`
+    setting.
+    """
+    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_HEADER_CLASS', None):
+        return ''
+
+    header_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_HEADER_CLASS)
+    header_renderable = header_class(cradmin_instance=None,
+                                     request=context.get('request', None))
+    return cradmin_render_renderable(context, header_renderable,
+                                     include_context=True)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_render_default_expandable_menu(context):
+    """
+    Render the default header specified via the
+    :setting:DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS`
+    setting.
+    """
+    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS', None):
+        return ''
+
+    menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS)
+    menu_renderable = menu_class(cradmin_instance=None,
+                                 request=context.get('request', None))
+    return cradmin_render_renderable(context, menu_renderable,
+                                     include_context=True)
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_theme_static(context, path, absolute=False):
+    """
+    Works just like the ``{% static %}`` template tag,
+    except that it expects ``path`` to be relative to the
+    path specified in the :setting:`DJANGO_CRADMIN_THEME_PREFIX`
+    setting.
+
+    Args:
+        path (str): The path to lookup.
+        absolute (bool): Should we create an absolute url including the domain?
+            Defaults to ``False``.
+    """
+    staticpath = posixpath.join(settings.DJANGO_CRADMIN_THEME_PREFIX, path)
+    full_path = static(staticpath)
+    if absolute:
+        url = context['request'].build_absolute_uri(full_path)
+    else:
+        url = full_path
+    return url

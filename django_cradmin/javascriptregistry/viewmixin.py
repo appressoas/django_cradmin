@@ -1,3 +1,6 @@
+from django_cradmin.javascriptregistry.default_componentids import get_default_component_ids
+
+
 class MinimalViewMixin(object):
     """
     Views that use the javascriptregistry template tags must
@@ -22,7 +25,7 @@ class MinimalViewMixin(object):
     """
 
     def get_javascriptregistry_component_ids(self):
-        return []
+        return get_default_component_ids()
 
     def add_javascriptregistry_component_ids_to_context(self, context):
         """
@@ -50,7 +53,7 @@ class StandaloneBaseViewMixin(MinimalViewMixin):
         if getattr(self.request, 'cradmin_instance', None):
             return self.request.cradmin_instance.get_default_javascriptregistry_component_ids()
         else:
-            return []
+            return super(StandaloneBaseViewMixin, self).get_javascriptregistry_component_ids()
 
 
 class WithinRoleViewMixin(StandaloneBaseViewMixin):
@@ -61,4 +64,4 @@ class WithinRoleViewMixin(StandaloneBaseViewMixin):
         if getattr(self.request, 'cradmin_instance', None):
             return self.request.cradmin_instance.get_default_within_role_javascriptregistry_component_ids()
         else:
-            return []
+            return super(WithinRoleViewMixin, self).get_javascriptregistry_component_ids()

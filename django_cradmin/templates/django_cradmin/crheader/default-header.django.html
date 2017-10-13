@@ -16,9 +16,11 @@
             {% endblock brand %}
 
             {% block main-menu %}
-                {% if request.cradmin_instance.main_menu_renderable %}
-                    {% cradmin_render_renderable request.cradmin_instance.main_menu_renderable %}
-                {% endif %}
+                {% with main_menu_renderable=me.get_main_menu_rendereable %}
+                    {% if main_menu_renderable %}
+                        {% cradmin_render_renderable main_menu_renderable %}
+                    {% endif %}
+                {% endwith %}
             {% endblock main-menu %}
         {% endblock content-inner %}
     </div>

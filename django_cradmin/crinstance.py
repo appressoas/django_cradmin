@@ -12,6 +12,7 @@ from django.views import View
 from django_cradmin import crheader
 from django_cradmin import crmenu
 from django_cradmin.decorators import has_access_to_cradmin_instance
+from django_cradmin.javascriptregistry.default_componentids import get_default_component_ids
 from . import crapp
 from .registry import cradmin_instance_registry
 from .views import roleselect
@@ -622,9 +623,7 @@ class BaseCrAdminInstance(object):
 
         Defaults to ``['django_cradmin_javascript']``.
         """
-        return [
-            'django_cradmin_javascript'
-        ]
+        return get_default_component_ids()
 
     def get_default_within_role_javascriptregistry_component_ids(self):
         """

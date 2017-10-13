@@ -12,5 +12,4 @@ def cradmin_logoutview(request, template_name='cradmin_authenticate/logout.djang
         next_page=next_page,
         extra_context={
             'LOGIN_URL': str(settings.LOGIN_URL),
-            'cradmin_javascriptregistry_component_ids': []
         })

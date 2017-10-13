@@ -67,6 +67,7 @@
                     A common header for many pages. This is not part of the ``<main>``
                     content of the page, so you should not add your H1 here.
                 {% endcomment %}
+                {% cradmin_render_default_header %}
             {% endblock header %}
 
             {% block main %}
@@ -110,6 +111,7 @@
                     If you have a toggleable menu, put the hidden part of the menu in this block.
                     The button that toggles the menu is typically added to the ``header`` block.
                 {% endcomment %}
+                {% cradmin_render_default_expandable_menu %}
             {% endblock toggleable-menu %}
         {% endblock body %}
 
