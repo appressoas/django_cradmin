@@ -1,0 +1,32 @@
+/* Messages
+
+Used to list multiple messages, typically save success messages, and error messages
+just below the page-cover.
+
+
+Example: {type: isolated}
+
+    <div class="messages" style="margin-bottom: 30px;"> <!-- the style is just for the styleguide rendering -->
+        <div class="container container--wide">
+            <p class="message message--error">Look, I'm an error message!</p>
+            <p class="message message--info">Look, I'm an info message!</p>
+        </div>
+    </div>
+
+Styleguide components.messages
+*/
+.messages {
+    background-color: $color-light;
+    padding-top: $spacing;
+    padding-bottom: $spacing;
+    border-bottom: $border-width solid color(neutral, light);
+
+    .message {
+        padding: 0;
+        &:first-child {
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
