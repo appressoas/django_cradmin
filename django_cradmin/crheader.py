@@ -63,7 +63,7 @@ class DefaultHeaderRenderable(AbstractHeaderRenderable):
     def get_base_css_classes_list(self):
         return [self.bem_block] + self.expand_bem_variants_list()
 
-    def get_main_menu_rendereable(self):
+    def get_main_menu_renderable(self):
         """
         Get the main menu renderable.
 
