@@ -209,12 +209,26 @@ Styleguide layout.adminui.adminui-page-header
         }
 
         &--button {
-            //@include min-width(lg) {
-            //    display: inline-block;
-            //}
-            //margin-top: -2px;
-            padding: #{$unit + 1px} $spacing--small $unit;
-            border: $border-style;
+            @include button();
+            @include font-size(xsmall);
+            color: color(primary);
+            border-color: $color-light;
+            background-color: $color-light;
+            padding: $unit $spacing--small;
+            margin-bottom: 0;
+
+            @include min-width(md) {
+                padding: $unit $spacing--small;
+            }
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: $color-light;
+                background-color: transparent;
+                border: $border-width solid $color-light;
+            }
+
         }
 
         &--active,
