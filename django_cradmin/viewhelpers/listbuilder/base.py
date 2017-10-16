@@ -131,6 +131,15 @@ class List(AbstractRenderableWithCss):
     def __len__(self):
         return len(self.renderable_list)
 
+    def insert(self, index, renderable):
+        if index < len(self.renderable_list):
+            self.renderable_list.insert(index, renderable)
+        else:
+            self.append(renderable)
+
+    def prepend(self, renderable):
+        self.renderable_list.insert(0, renderable)
+
     def append(self, renderable):
         """
         Appends an item to the list.
