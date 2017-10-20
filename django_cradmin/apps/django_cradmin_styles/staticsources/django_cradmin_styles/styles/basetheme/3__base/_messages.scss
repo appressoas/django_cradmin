@@ -16,13 +16,18 @@ Example: {type: isolated}
 Styleguide components.messages
 */
 .messages {
-    background-color: $color-light;
+    background-color: tint($color-info, 90%);
     padding-top: $spacing;
     padding-bottom: $spacing;
-    border-bottom: $border-width solid color(neutral, light);
+    @include container(wide);
+
+    &--tight {
+        @include container(tight);
+    }
 
     .message {
         padding: 0;
+        color: $color-text;
         &:last-child {
             margin-bottom: 0;
         }
