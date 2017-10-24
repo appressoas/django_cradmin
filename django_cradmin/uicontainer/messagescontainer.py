@@ -201,6 +201,9 @@ class MessagesContainer(AbstractMessageContainerMixin,
     def get_message_container_class(self, level):
         return MessageContainer
 
+    def get_default_bem_block_or_element(self):
+        return 'messages'
+
     def create_message_container(self, level, text='', **kwargs):
         message_container_class = self.get_message_container_class(level=level)
         return message_container_class(level=level, text=text, **kwargs)
@@ -210,10 +213,14 @@ class CompactMessagesContainer(MessagesContainer):
     """
     Same as :class:`.MessagesContainer` except that it uses
     :class:`.CompactMessageContainer` instead of :class:`.MessageContainer`
-    for the messages.
+    for the messages, and that it has no css class for the wrapper element
+    by default.
     """
     def get_message_container_class(self, level):
         return CompactMessageContainer
+
+    def get_default_bem_block_or_element(self):
+        return None
 
 
 class AdminUiPageSectionMessagesContainer(MessagesContainer):
