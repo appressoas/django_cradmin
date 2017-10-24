@@ -7,7 +7,7 @@ just below the page-cover.
 Example: {type: isolated}
 
     <div class="messages" style="margin-bottom: 30px;"> <!-- the style is just for the styleguide rendering -->
-        <div class="container container--wide">
+        <div class="messages__content">
             <p class="message message--error">Look, I'm an error message!</p>
             <p class="message message--info">Look, I'm an info message!</p>
         </div>
@@ -19,10 +19,9 @@ Styleguide components.messages
     background-color: tint($color-info, 90%);
     padding-top: $spacing;
     padding-bottom: $spacing;
-    @include container(wide);
 
-    &--tight {
-        @include container(tight);
+    &__content {
+        @include container(wide);
     }
 
     .message {

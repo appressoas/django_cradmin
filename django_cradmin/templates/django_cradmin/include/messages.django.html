@@ -11,34 +11,36 @@
 {% if messages %}
     <div id="id_django_cradmin_messages" role="complementary"
             class="{% if messages_cssclass %}{{ messages_cssclass }}{% else %}messages{% endif %}{% cradmin_test_css_class 'djangomessages' %}">
-        {% for message in messages %}
-            <p class="message
+        <div class="{% if messages_content_cssclass %}{{ messages_content_cssclass }}{% else %}messages__content{% endif %}">
+            {% for message in messages %}
+                <p class="message
+                            {% if message.tags == "error" %}
+                                message--error
+                            {% elif message.tags == "warning" %}
+                                message--error
+                            {% elif message.tags == "info" %}
+                                message--info
+                            {% elif message.tags == "success" %}
+                                message--info
+                            {% endif %}
+                            {% cradmin_test_css_class message.tags %}
+                        "
+                        role="alertdialog">
+                    <span class="screenreader-only">
                         {% if message.tags == "error" %}
-                            message--error
+                            {% trans "Error" %}
                         {% elif message.tags == "warning" %}
-                            message--error
+                            {% trans "Warning" %}
                         {% elif message.tags == "info" %}
-                            message--info
+                            {% trans "Info" %}
                         {% elif message.tags == "success" %}
-                            message--info
+                            {% trans "Success" %}
                         {% endif %}
-                        {% cradmin_test_css_class message.tags %}
-                    "
-                    role="alertdialog">
-                <span class="screenreader-only">
-                    {% if message.tags == "error" %}
-                        {% trans "Error" %}
-                    {% elif message.tags == "warning" %}
-                        {% trans "Warning" %}
-                    {% elif message.tags == "info" %}
-                        {% trans "Info" %}
-                    {% elif message.tags == "success" %}
-                        {% trans "Success" %}
-                    {% endif %}
-                    :
-                </span>
-                {{ message }}
-            </p>
-        {% endfor %}
+                        :
+                    </span>
+                    {{ message }}
+                </p>
+            {% endfor %}
+        </div>
     </div>
 {% endif %}

@@ -193,23 +193,30 @@ class CompactMessageContainer(MessageContainer):
         return variants
 
 
-class MessagesContainer(AbstractMessageContainerMixin,
-                        container.AbstractContainerRenderable):
+class PlainMessagesContainer(AbstractMessageContainerMixin,
+                             container.AbstractContainerRenderable):
     """
     Messages container - contains zero or more :class:`.MessageContainer`.
     """
     def get_message_container_class(self, level):
         return MessageContainer
 
-    def get_default_bem_block_or_element(self):
-        return 'messages'
-
     def create_message_container(self, level, text='', **kwargs):
         message_container_class = self.get_message_container_class(level=level)
         return message_container_class(level=level, text=text, **kwargs)
 
 
-class CompactMessagesContainer(MessagesContainer):
+class MessagesContainer(PlainMessagesContainer):
+    """
+    Messages container - contains zero or more :class:`.MessageContainer`.
+    """
+    template_name = 'django_cradmin/uicontainer/messagescontainer/messagescontainer.django.html'
+
+    def get_default_bem_block_or_element(self):
+        return 'messages'
+
+
+class CompactMessagesContainer(PlainMessagesContainer):
     """
     Same as :class:`.MessagesContainer` except that it uses
     :class:`.CompactMessageContainer` instead of :class:`.MessageContainer`
@@ -223,5 +230,5 @@ class CompactMessagesContainer(MessagesContainer):
         return None
 
 
-class AdminUiPageSectionMessagesContainer(MessagesContainer):
+class AdminUiPageSectionMessagesContainer(PlainMessagesContainer):
     template_name = 'django_cradmin/uicontainer/messagescontainer/adminui_page_section_messages.django.html'

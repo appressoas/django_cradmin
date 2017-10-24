@@ -1,0 +1,7 @@
+{% extends "django_cradmin/uicontainer/container.django.html" %}
+
+{% block content %}
+    <div class="{% if me.get_bem_block_or_element %}{{ me.get_bem_block_or_element }}__content{% endif %}">
+        {{ block.super }}
+    </div>
+{% endblock content %}
