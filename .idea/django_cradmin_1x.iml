@@ -7,7 +7,6 @@
         <option name="settingsModule" value="django_cradmin/demo/project/settingsproxy.py" />
         <option name="manageScript" value="manage.py" />
         <option name="environment" value="&lt;map/&gt;" />
-        <option name="commandsToSkip" value="" />
       </configuration>
     </facet>
   </component>
@@ -15,6 +14,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="django_cradmin_1x" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="$MODULE_DIR$/requirements/python3.txt" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

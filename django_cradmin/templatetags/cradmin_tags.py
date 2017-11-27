@@ -226,7 +226,7 @@ def cradmin_render_menu(context):
     """
     request = context['request']
     if hasattr(request, 'cradmin_instance'):
-        return request.cradmin_instance.get_menu().render(context)
+        return request.cradmin_instance.get_menu().render(context.flatten())
     return ''
 
 
