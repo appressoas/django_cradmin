@@ -26,6 +26,11 @@ class AceMarkdownWidget(forms.widgets.Textarea):
         return render_to_string(
             self.template_name, {
                 'textarea': textarea,
-                'directiveconfig': json.dumps(self.directiveconfig)
+                'directiveconfig': json.dumps(self.directiveconfig),
+                'widget': {
+                    'name': name,
+                    'value': value,
+                    'attrs': attrs
+                }
             }
         )

@@ -72,5 +72,5 @@
         {% endblock toolbar %}
     </div>
     <div django-cradmin-acemarkdown-editor></div>
-    {{ textarea|safe }}
+    {% include "django/forms/widgets/textarea.html" %}
 </div>

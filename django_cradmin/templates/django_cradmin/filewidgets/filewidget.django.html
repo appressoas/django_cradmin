@@ -10,7 +10,7 @@
             <span class="fa fa_external_link"></span>
         </a>
     {% endif %}
-    {{ input_html|safe }}
+    {% include "django/forms/widgets/input.html" %}
     {% if clearable %}
         <div class="django-cradmin-filewidget-clear"
                ng-show="cradmin_filefield_has_value">

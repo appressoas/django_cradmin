@@ -3,7 +3,7 @@
 
 <div id="id_cradmin_{{ classname_lower }}_{{ fieldname }}"
      class="django-cradmin-datepicker {{ extra_css_classes }}">
-    {{ field|safe }}
+    {% include "django/forms/widgets/input.html" %}
     <p class="django-cradmin-datepicker-preview-and-button-para">
         <span id="{{ previewid }}" class="django-cradmin-datepicker-preview">
             {# Contents is added by the AngularJS directive #}

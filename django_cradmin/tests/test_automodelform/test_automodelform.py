@@ -101,7 +101,6 @@ class TestModelForm(test.TestCase):
                 fields = ['datefield_with_default']
 
         selector = htmls.S(MyModelForm().as_ul())
-        print(selector.prettify())
         self.assertNotEqual(
             '',
             selector.one('input[type="text"][name="datefield_with_default"]')['value'])

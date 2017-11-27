@@ -54,15 +54,20 @@ class ImageWidget(forms.ClearableFileInput):
         else:
             return None
 
-    def get_context_data(self, input_html, imageurl, name):
+    def get_context_data(self, imageurl, name, value, attrs):
         return {
-            'input_html': input_html,
             'imageurl': imageurl,
             'clear_checkbox_name': self.clear_checkbox_name(name),
             'clearable': self.clearable,
             'preview_imagetype': self.preview_imagetype,
             'preview_fallback_options': self.preview_fallback_options,
-            'preview_css_styles': ';'.join(self.get_preview_css_styles())
+            'preview_css_styles': ';'.join(self.get_preview_css_styles()),
+            'widget': {
+                'type': 'file',
+                'name': name,
+                'value': value,
+                'attrs': attrs
+            }
         }
 
     def render(self, name, value, attrs=None):
@@ -71,13 +76,13 @@ class ImageWidget(forms.ClearableFileInput):
         if self.accept:
             attrs['accept'] = self.accept
         attrs['cradmin-filefield-value'] = value or ''
-        input_html = forms.FileInput.render(self, name, value, attrs)
         imagepath = getattr(value, 'name', None)
         imageurl = self.build_preview_url(imagepath)
         context_data = self.get_context_data(
-            input_html=input_html,
             imageurl=imageurl,
-            name=name)
+            name=name,
+            value=value,
+            attrs=attrs)
         output = render_to_string(self.template_name, context_data, request=self.request)
         return mark_safe(output)
 
@@ -108,7 +113,7 @@ class FileWidget(forms.ClearableFileInput):
         if self.accept:
             attrs['accept'] = self.accept
         attrs['cradmin-filefield-value'] = value or ''
-        input_html = forms.FileInput.render(self, name, value, attrs)
+        # input_html = forms.FileInput.render(self, name, value, attrs)
         file_path = getattr(value, 'name', None)
         if file_path:
             file_name = posixpath.basename(file_path)
@@ -116,11 +121,17 @@ class FileWidget(forms.ClearableFileInput):
             file_name = None
 
         output = render_to_string(self.template_name, {
-            'input_html': input_html,
+            # 'input_html': input_html,
             'file_path': file_path,
             'file_name': file_name,
             'MEDIA_URL': settings.MEDIA_URL,
             'clear_checkbox_name': self.clear_checkbox_name(name),
             'clearable': self.clearable,
+            'widget': {
+                'type': 'file',
+                'name': name,
+                'value': value,
+                'attrs': attrs
+            }
         })
         return mark_safe(output)

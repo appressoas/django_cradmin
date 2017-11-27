@@ -480,7 +480,7 @@ class DatePickerWidget(widgets.TextInput):
         """
         return ''
 
-    def get_context_data(self, fieldid, rendered_field, fieldname, value):
+    def get_context_data(self, fieldid, rendered_field, fieldname, value, attrs):
         """
         Get context data for the template used by :meth:`.render` to render the widget.
 
@@ -504,6 +504,12 @@ class DatePickerWidget(widgets.TextInput):
             'previewtemplateid': previewtemplateid,
             'preview_angularjs_template': self.__get_preview_angularjs_template(),
             'extra_css_classes': self.get_extra_css_classes(),
+            'widget': {
+                'type': 'text',
+                'name': fieldname,
+                'value': value,
+                'attrs': attrs
+            }
         }
 
     def get_field_attributes(self, attributes):
@@ -530,7 +536,8 @@ class DatePickerWidget(widgets.TextInput):
             fieldid=fieldid,
             rendered_field=rendered_field,
             fieldname=name,
-            value=value
+            value=value,
+            attrs=attrs
         ))
 
     #

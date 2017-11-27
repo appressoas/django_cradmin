@@ -33,7 +33,7 @@
     </div>
 
     <div class="django-cradmin-filewidget-field-and-overlay-wrapper" django-cradmin-filefield-overlay>
-        {{ input_html|safe }}
+        {% include "django/forms/widgets/input.html" %}
         <a class="btn btn-default django-cradmin-filewidget-fieldoverlay" href="#">
             {% if imageurl %}
                 {% trans "Replace image ..." %}

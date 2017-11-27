@@ -23,7 +23,10 @@ class TestMultiSelectView(TestCase):
                 item2.pk = 10
                 item3 = mock.MagicMock()
                 item3.pk = 12
-                queryset.filter.return_value = [item1, item2, item3]
+                all_queryset = mock.MagicMock()
+                all_queryset.filter.return_value = [item1, item2, item3]
+                queryset.all.return_value = all_queryset
+
                 return queryset
 
             def object_selection_valid(self):
@@ -90,7 +93,9 @@ class TestMultiSelectFormView(TestCase):
                 queryset = mock.MagicMock()
                 item1 = mock.MagicMock()
                 item1.pk = 1
-                queryset.filter.return_value = [item1]
+                all_queryset = mock.MagicMock()
+                all_queryset.filter.return_value = [item1]
+                queryset.all.return_value = all_queryset
                 return queryset
 
             def get_field_layout(self):
@@ -122,7 +127,9 @@ class TestMultiSelectFormView(TestCase):
                 queryset = mock.MagicMock()
                 item1 = mock.MagicMock()
                 item1.pk = 1
-                queryset.filter.return_value = [item1]
+                all_queryset = mock.MagicMock()
+                all_queryset.filter.return_value = [item1]
+                queryset.all.return_value = all_queryset
                 return queryset
 
             def get_field_layout(self):
@@ -155,7 +162,9 @@ class TestMultiSelectFormView(TestCase):
                 queryset = mock.MagicMock()
                 item1 = mock.MagicMock()
                 item1.pk = 1
-                queryset.filter.return_value = [item1]
+                all_queryset = mock.MagicMock()
+                all_queryset.filter.return_value = [item1]
+                queryset.all.return_value = all_queryset
                 return queryset
 
             def form_valid(self, form):
@@ -181,7 +190,9 @@ class TestMultiSelectFormView(TestCase):
                 queryset = mock.MagicMock()
                 item1 = mock.MagicMock()
                 item1.pk = 1
-                queryset.filter.return_value = [item1]
+                all_queryset = mock.MagicMock()
+                all_queryset.filter.return_value = [item1]
+                queryset.all.return_value = all_queryset
                 return queryset
 
             def get_success_url(self):

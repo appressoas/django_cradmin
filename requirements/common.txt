@@ -3,7 +3,7 @@
 #Django==1.10b1
 Django==1.11.5
 
-django-crispy-forms==1.6.0
+django-crispy-forms==1.7.0
 Pillow==2.8.1
 sorl-thumbnail==12.3
 pytz==2014.10
