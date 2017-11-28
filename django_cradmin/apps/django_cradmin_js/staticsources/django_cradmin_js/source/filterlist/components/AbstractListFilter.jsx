@@ -1,13 +1,16 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import PropTypes from 'prop-types';
-
-import AbstractList from "./AbstractList"
+import React from 'react'
+import PropTypes from 'prop-types'
+import { FILTER_ROLE_FILTER } from './filterListConstants'
 
 export default class AbstractListFilter extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    renderAtLocation: PropTypes.string.isRequired
+    renderAtLocation: PropTypes.string.isRequired,
+    role: PropTypes.string
+  }
+
+  static defaultProps = {
+    role: null
   }
 
   static requiresApiResponseData () {
