@@ -1,0 +1,29 @@
+{% extends "django_cradmin/standalone-base.django.html" %}
+{% load static %}
+
+{% block title %}
+    Filterlist demo
+{% endblock title %}
+
+{% block page-cover-title %}
+    Filterlist demo
+{% endblock page-cover-title %}
+
+{% block page-cover-content %}
+    {{ block.super }}
+{% endblock page-cover-content %}
+
+
+{% block content %}
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>cradmin-filterlist widget</h2>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                 }'>
+
+            </div>
+        </div>
+    </section>
+{% endblock content %}

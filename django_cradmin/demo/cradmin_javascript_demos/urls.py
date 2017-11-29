@@ -33,6 +33,10 @@ urlpatterns = [
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/print-on-click.django.html'),
         name="cradmin_print_on_click_demo"),
+    url(r'^filterlist$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/filterlist/filterlist-demo.django.html'),
+        name="cradmin_javascript_demos_filterlist"),
     url(r'^datalistwidgets$',
         ensure_csrf_cookie(views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/data-list-widgets-demo.django.html')),

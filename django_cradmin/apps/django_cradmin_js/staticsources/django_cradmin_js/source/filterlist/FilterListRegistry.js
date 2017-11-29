@@ -37,6 +37,30 @@ export default class FilterListRegistrySingleton {
   }
 
   /**
+   * Register a list component class in the registry.
+   *
+   * @param {string} alias The alias for the list class.
+   * @param {AbstractListFilter} listComponent The item class.
+   */
+  registerListComponent (alias, listComponent) {
+    this._itemComponentMap.set(alias, listComponent)
+  }
+
+  /**
+   * Remove list component class from registry.
+   *
+   * @param alias The alias that the list component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerListComponent}.
+   */
+  removeListComponent (alias) {
+    this._itemComponentMap.delete(alias)
+  }
+
+  getListComponent (alias) {
+    return this._itemComponentMap.get(alias)
+  }
+
+  /**
    * Register a filter component class in the registry.
    *
    * @param {string} alias The alias for the filter class.
@@ -84,25 +108,7 @@ export default class FilterListRegistrySingleton {
     this._itemComponentMap.delete(alias)
   }
 
-  /**
-   * Register a search component class in the registry.
-   *
-   * @param {string} alias The alias for the search class.
-   *    Makes it possible to use a JSON serializable object
-   *    to define this search for a list.
-   * @param {AbstractListFilter} searchComponent The search class.
-   */
-  registerSearchComponent (alias, searchComponent) {
-    this._searchComponentMap.set(alias, searchComponent)
-  }
-
-  /**
-   * Remove search component class from registry.
-   *
-   * @param alias The alias that the search class was registered with
-   *      by using {@link FilterListRegistrySingleton#registerSearchComponent}.
-   */
-  removeSearchComponent (alias) {
-    this._searchComponentMap.delete(alias)
+  getItemComponent (alias) {
+    return this._itemComponentMap.get(alias)
   }
 }
