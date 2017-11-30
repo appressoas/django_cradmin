@@ -1,9 +1,8 @@
 import AbstractList from './AbstractList'
 
 export default class List extends AbstractList {
-
-  constructor (props) {
-    super(props)
+  get listClassName () {
+    return 'blocklist'
   }
 
   componentDidMount () {

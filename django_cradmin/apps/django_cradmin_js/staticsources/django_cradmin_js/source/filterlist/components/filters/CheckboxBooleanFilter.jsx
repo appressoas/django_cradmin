@@ -16,9 +16,6 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
     return defaultProps
   }
 
-  static filterHttpRequest (httpRequest, filterState) {
-
-  }
 
   setupBoundMethods () {
     super.setupBoundMethods()
@@ -27,17 +24,17 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
     this.onBlur = this.onBlur.bind(this);
   }
 
-  onChange(event) {
+  onChange (event) {
     this.setFilterValue(!this.props.value)
   }
 
-  onFocus(event) {
+  onFocus (event) {
   }
 
-  onBlur(event) {
+  onBlur (event) {
   }
 
-  renderLabel() {
+  renderLabel () {
     return this.props.label;
   }
 
@@ -49,7 +46,7 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
     return 'checkbox checkbox--block'
   }
 
-  render() {
+  render () {
     return <label className={this.labelClassName}>
       <input type="checkbox"
              checked={this.props.value}

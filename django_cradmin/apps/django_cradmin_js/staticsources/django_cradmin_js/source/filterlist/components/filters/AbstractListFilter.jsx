@@ -39,8 +39,8 @@ export default class AbstractListFilter extends React.Component {
     }
   }
 
-  static filterHttpRequest (httpRequest, filterState) {
-
+  static filterHttpRequest (httpRequest, name, value) {
+    httpRequest.urlParser.queryString.set(name, value)
   }
 
   constructor(props) {

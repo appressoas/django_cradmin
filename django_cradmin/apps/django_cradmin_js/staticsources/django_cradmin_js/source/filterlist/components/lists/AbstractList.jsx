@@ -2,7 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
-import { RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT } from '../../filterListConstants'
+import {
+  RENDER_LOCATION_BOTTOM, RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT,
+  RENDER_LOCATION_TOP
+} from '../../filterListConstants'
 import AbstractListItem from '../items/AbstractListItem'
 
 /*
@@ -58,6 +61,7 @@ export default class AbstractList extends React.Component {
   constructor(props) {
     super(props)
     this.setupBoundMethods()
+    this._filterApiUpdateTimeoutId = null
     this.filterListRegistry = new FilterListRegistrySingleton()
     this.state = this.getInitialState()
     this._filterSpecCache = new Map();
@@ -128,16 +132,43 @@ export default class AbstractList extends React.Component {
     return filterSpec
   }
 
+  get filterApiUpdateDelayMilliseconds () {
+    return 200
+  }
+
+  _stopFilterApiUpdateTimer () {
+    if (this._filterApiUpdateTimeoutId) {
+      window.clearTimeout(this._filterApiUpdateTimeoutId)
+    }
+  }
+
+  _startFilterApiUpdateTimer () {
+    this._filterApiUpdateTimeoutId = window.setTimeout(() => {
+      this.loadFromApiOnFilterChange()
+    }, this.filterApiUpdateDelayMilliseconds)
+  }
+
   _getStateVariableNameForFilter (filterName) {
     return `filterstate_${filterName}`
   }
 
-  setFilterValue (filterName, value) {
-    if(value === undefined) {
+  _setFilterValueInState (filterName, value, onComplete=() => {}) {
+    if (value === undefined) {
       value = null
     }
     this.setState({
       [this._getStateVariableNameForFilter(filterName)]: value
+    }, onComplete)
+  }
+
+  setFilterValue (filterName, value, noDelay=false) {
+    this._stopFilterApiUpdateTimer()
+    this._setFilterValueInState(filterName, value, () => {
+      if (noDelay) {
+        this.loadFromApiOnFilterChange()
+      } else {
+        this._startFilterApiUpdateTimer()
+      }
     })
   }
 
@@ -155,7 +186,8 @@ export default class AbstractList extends React.Component {
         throw new Error(
           `Multiple filters with the same name: ${filterSpec.props.name}`)
       }
-      this.setFilterValue(filterSpec.props.name, filterSpec.initialValue)
+      this._setFilterValueInState(filterSpec.props.name, filterSpec.initialValue)
+
       if(!filterSpecCache.has(filterSpec.props.location)) {
         filterSpecCache.set(filterSpec.props.location, [])
       }
@@ -246,7 +278,7 @@ export default class AbstractList extends React.Component {
       'the getItemComponentClass() method.')
   }
 
-  getItemComponentProps(listItemData) {
+  getItemComponentProps (listItemData) {
     const listItemId = this.getIdFromListItemData(listItemData)
     return Object.assign({}, listItemData, {
       key: listItemId,
@@ -263,8 +295,9 @@ export default class AbstractList extends React.Component {
 
   filterListItemsHttpRequest (httpRequest) {
     for(let filterSpec of this.getAllFilters()) {
-      const filterState = {}  // TODO: Get from somewhere
-      filterSpec.componentClass.filterHttpRequest(httpRequest, filterState)
+      const value = this.getFilterValue(filterSpec.props.name)
+      filterSpec.componentClass.filterHttpRequest(
+        httpRequest, filterSpec.props.name, value)
     }
   }
 
@@ -325,7 +358,7 @@ export default class AbstractList extends React.Component {
    * @returns {object} Pagination state object defining the current pagination
    *    state.
    */
-  makePaginationStateFromHttpResponse(httpResponse) {
+  makePaginationStateFromHttpResponse (httpResponse) {
     return {
       page: httpResponse.bodydata.page
     }
@@ -336,7 +369,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {object|null} Pagination options.
    */
-  getFirstPagePaginationOptions() {
+  getFirstPagePaginationOptions () {
     return {}
   }
 
@@ -347,7 +380,7 @@ export default class AbstractList extends React.Component {
    * @returns {object|null} Pagination options. If this returns
    *    null, it means that there are no "next" page.
    */
-  getNextPagePaginationOptions() {
+  getNextPagePaginationOptions () {
     if (this.state.currentPaginationOptions) {
       if(this.this.state.currentPaginationOptions.next === null) {
         return null
@@ -443,7 +476,6 @@ export default class AbstractList extends React.Component {
    */
   makeNewItemsDataArrayFromApiResponse (httpResponse, clearOldItems) {
     const newItemsArray = this.getItemsArrayFromHttpResponse(httpResponse)
-    let listItemsDataArray;
     if(clearOldItems) {
       return newItemsArray
     } else {
@@ -529,6 +561,10 @@ export default class AbstractList extends React.Component {
       })
   }
 
+  loadFromApiOnFilterChange () {
+    this.loadFirstPageFromApi()
+  }
+
   /**
    * Load more items from the API.
    *
@@ -608,27 +644,27 @@ export default class AbstractList extends React.Component {
   //
 
   get leftColumnClassName () {
-    return `${this.props.className}__leftcolumn`
+    return `${this.props.bemBlock}__leftcolumn`
   }
 
   get centerColumnClassName () {
-    return `${this.props.className}__centercolumn`
+    return `${this.props.bemBlock}__centercolumn`
   }
 
   get rightColumnClassName () {
-    return `${this.props.className}__rightcolumn`
+    return `${this.props.bemBlock}__rightcolumn`
   }
 
   get topBarClassName () {
-    return `${this.props.className}__topbar`
+    return `${this.props.bemBlock}__topbar`
   }
 
   get listClassName () {
-    return `${this.props.className}__list`
+    return `${this.props.bemBlock}__list`
   }
 
   get bottomBarClassName () {
-    return `${this.props.className}__bottombar`
+    return `${this.props.bemBlock}__bottombar`
   }
 
   //
@@ -677,7 +713,9 @@ export default class AbstractList extends React.Component {
   renderFiltersAtLocation (location) {
     const renderedFilters = []
     for (let filterSpec of this.getFiltersAtLocation(location)) {
-      renderedFilters.push(this.renderFilter(filterSpec))
+      if (this.shouldRenderFilter(filterSpec)) {
+        renderedFilters.push(this.renderFilter(filterSpec))
+      }
     }
     return renderedFilters
   }
@@ -697,7 +735,7 @@ export default class AbstractList extends React.Component {
   }
 
   renderTopBarContent () {
-    return null
+    return this.renderFiltersAtLocation(RENDER_LOCATION_TOP)
   }
 
   renderTopBar () {
@@ -711,7 +749,7 @@ export default class AbstractList extends React.Component {
   }
 
   renderBottomBarContent () {
-    return null
+    return this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM)
   }
 
   renderBottomBar () {
@@ -725,7 +763,7 @@ export default class AbstractList extends React.Component {
   }
 
   renderRightColumnContent () {
-    return null
+    return this.renderFiltersAtLocation(RENDER_LOCATION_RIGHT)
   }
 
   renderRightColumn () {
