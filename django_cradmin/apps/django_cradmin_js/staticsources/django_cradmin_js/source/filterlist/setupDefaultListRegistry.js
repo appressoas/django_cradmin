@@ -1,16 +1,18 @@
 import FilterListRegistry from './FilterListRegistry'
 import List from './components/lists/List'
-import BaseListItem from './components/items/BaseListItem'
+import IdOnlyListItem from './components/items/IdOnlyListItem'
+import CheckboxBooleanFilter from './components/filters/CheckboxBooleanFilter'
 
 export function setupDefaultListRegistryListComponents(registry) {
-  registry.registerListComponent('list', List)
+  registry.registerListComponent('List', List)
 }
 
 export function setupDefaultListRegistryFilterComponents(registry) {
+  registry.registerFilterComponent('CheckboxBoolean', CheckboxBooleanFilter)
 }
 
 export function setupDefaultListRegistryItemComponents(registry) {
-  registry.registerItemComponent('base', BaseListItem)
+  registry.registerItemComponent('IdOnly', IdOnlyListItem)
 }
 
 export default function setupDefaultListRegistry() {

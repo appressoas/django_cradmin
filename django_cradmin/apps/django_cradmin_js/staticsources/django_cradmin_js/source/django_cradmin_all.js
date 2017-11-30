@@ -6,6 +6,7 @@ import LOGLEVEL from "ievv_jsbase/lib/log/loglevel"
 import WidgetRegistrySingleton from "ievv_jsbase/lib/widget/WidgetRegistrySingleton"
 import registerAllCradminWidgets from "./widgets/registerAllCradminWidgets"
 import setupDefaultListRegistry from './filterlist/setupDefaultListRegistry'
+import 'ievv_jsbase/lib/utils/i18nFallbacks';
 
 export default class DjangoCradminAll {
   constructor () {

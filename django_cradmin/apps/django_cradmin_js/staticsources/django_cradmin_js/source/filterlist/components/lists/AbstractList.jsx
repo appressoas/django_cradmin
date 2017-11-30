@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
-import { RENDER_LOCATION_RIGHT } from '../../filterListConstants'
+import { RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT } from '../../filterListConstants'
 import AbstractListItem from '../items/AbstractListItem'
 
 /*
@@ -50,17 +50,25 @@ export default class AbstractList extends React.Component {
       bemBlock: 'filterlist',
       filters: [],
       idAttribute: 'id',
-      itemComponent: 'base'
+      itemComponent: 'IdOnly'
       // updateHttpMethod: 'post'
     }
   }
 
   constructor(props) {
     super(props)
+    this.setupBoundMethods()
     this.filterListRegistry = new FilterListRegistrySingleton()
-    this._filterSpecCache = null;
-    this._initializeFilters()
     this.state = this.getInitialState()
+    this._filterSpecCache = new Map();
+  }
+
+  componentDidMount () {
+    this._initializeFilters()
+  }
+
+  setupBoundMethods () {
+    this.setFilterValue = this.setFilterValue.bind(this)
   }
 
   /**
@@ -73,6 +81,7 @@ export default class AbstractList extends React.Component {
   getInitialState () {
     return {
       listItemsDataArray: [],
+      isLoadingItemsFromApi: false,
       currentPaginationOptions: null
     }
   }
@@ -83,6 +92,11 @@ export default class AbstractList extends React.Component {
    */
   getDefaultFilterLocation () {
     return RENDER_LOCATION_RIGHT
+  }
+
+  isLoading () {
+    // TODO: Include state variables for update too
+    return this.state.isLoadingItemsFromApi
   }
 
 
@@ -98,13 +112,13 @@ export default class AbstractList extends React.Component {
     } else {
       filterSpec.componentClass = filterSpec.component
     }
-    if(!filterSpec.location) {
-      filterSpec.location = this.getDefaultFilterLocation()
-    }
     if(!filterSpec.props) {
       throw new Error(
         `Filter component=${filterSpec.component} is missing required ` +
         `attribute "props".`)
+    }
+    if(!filterSpec.props.location) {
+      filterSpec.props.location = this.getDefaultFilterLocation()
     }
     if(!filterSpec.props.name) {
       throw new Error(
@@ -114,15 +128,21 @@ export default class AbstractList extends React.Component {
     return filterSpec
   }
 
-  _getStateVariableNameForFilter(filterName) {
+  _getStateVariableNameForFilter (filterName) {
     return `filterstate_${filterName}`
   }
 
-  setFilterState(filterName, value) {
+  setFilterValue (filterName, value) {
     if(value === undefined) {
       value = null
     }
-    this.state[this._getStateVariableNameForFilter(filterName)] = value
+    this.setState({
+      [this._getStateVariableNameForFilter(filterName)]: value
+    })
+  }
+
+  getFilterValue (filterName) {
+    return this.state[this._getStateVariableNameForFilter(filterName)]
   }
 
   _initializeFilters () {
@@ -131,15 +151,15 @@ export default class AbstractList extends React.Component {
     for(let filterSpec of this.props.filters) {
       filterSpec = this.parseFilterSpec(filterSpec)
       allFilters.push(filterSpec)
-      if(!filterSpecCache.has(filterSpec.location)) {
-        filterSpecCache.set(filterSpec.location, [])
-      }
       if(this.state[this._getStateVariableNameForFilter(filterSpec.props.name)] !== undefined) {
         throw new Error(
           `Multiple filters with the same name: ${filterSpec.props.name}`)
       }
-      this.setFilterState(filterSpec.props.name, filterSpec.initialValue)
-      filterSpecCache.get(filterSpec.location).push(filterSpec)
+      this.setFilterValue(filterSpec.props.name, filterSpec.initialValue)
+      if(!filterSpecCache.has(filterSpec.props.location)) {
+        filterSpecCache.set(filterSpec.props.location, [])
+      }
+      filterSpecCache.get(filterSpec.props.location).push(filterSpec)
     }
     filterSpecCache.set('all', allFilters)
     this._filterSpecCache = filterSpecCache
@@ -150,7 +170,7 @@ export default class AbstractList extends React.Component {
    * filters in a subclass.
    */
   getFiltersAtLocation (location) {
-    return this._filterSpecCache.get(location)
+    return this._filterSpecCache.get(location) || []
   }
 
   /**
@@ -175,8 +195,16 @@ export default class AbstractList extends React.Component {
     return true
   }
 
-  getFilterProps (filterSpec) {
+  getFilterComponentClass (filterSpec) {
+    return filterSpec.componentClass
+  }
 
+  getFilterComponentProps(filterSpec) {
+    return Object.assign({}, filterSpec.props, {
+      setFilterValueCallback: this.setFilterValue,
+      value: this.getFilterValue(filterSpec.props.name),
+      key: filterSpec.props.name
+    })
   }
 
 
@@ -220,7 +248,7 @@ export default class AbstractList extends React.Component {
 
   getItemComponentProps(listItemData) {
     const listItemId = this.getIdFromListItemData(listItemData)
-    return Object.assign(listItemData, {
+    return Object.assign({}, listItemData, {
       key: listItemId,
       isSelected: this.itemIsSelected(listItemData),
       listItemId: listItemId
@@ -270,8 +298,15 @@ export default class AbstractList extends React.Component {
     return httpRequest.get()
   }
 
+  setLoadItemsFromApiErrorMessage (error) {
+    this.setState({
+      loadItemsFromApiError: window.gettext('Failed to load list items from the server.')
+    })
+  }
+
   handleGetListItemsFromApiRequestError (error) {
-    console.error('Error:', error.toString());
+    console.error('Error:', error.toString())
+    this.setLoadItemsFromApiErrorMessage(error)
   }
 
   /**
@@ -417,7 +452,7 @@ export default class AbstractList extends React.Component {
   }
 
   /**
-   * Make react state variables from a HTTP response.
+   * Make react state variables from a successful load items from API HTTP response.
    *
    * You should normally not need to override this method.
    * It should normally be enough to override
@@ -433,8 +468,9 @@ export default class AbstractList extends React.Component {
    * @param clearOldItems See {@link makeNewItemsDataArrayFromApiResponse}.
    * @returns {object}
    */
-  makeStateFromLoadItemsApiResponse(httpResponse, paginationOptions, clearOldItems) {
+  makeStateFromLoadItemsApiSuccessResponse(httpResponse, paginationOptions, clearOldItems) {
     return {
+      isLoadingItemsFromApi: false,
       listItemsDataArray: this.makeNewItemsDataArrayFromApiResponse(
         httpResponse, clearOldItems),
       currentPaginationOptions: paginationOptions,
@@ -460,17 +496,21 @@ export default class AbstractList extends React.Component {
    */
   loadItemsFromApi (paginationOptions, clearOldItems) {
     return new Promise((resolve, reject) => {
-      this.makeListItemsHttpRequest(paginationOptions)
-        .then((httpResponse) => {
-          resolve({
-            httpResponse: httpResponse,
-            newState: this.makeStateFromLoadItemsApiResponse(
-              httpResponse, paginationOptions, clearOldItems)
+      this.setState({
+        isLoadingItemsFromApi: true
+      }, () => {
+        this.makeListItemsHttpRequest(paginationOptions)
+          .then((httpResponse) => {
+            resolve({
+              httpResponse: httpResponse,
+              newState: this.makeStateFromLoadItemsApiSuccessResponse(
+                httpResponse, paginationOptions, clearOldItems)
+            })
           })
-        })
-        .catch((error) => {
-          reject(error)
-        })
+          .catch((error) => {
+            reject(error)
+          })
+      })
     })
   }
 
@@ -482,7 +522,6 @@ export default class AbstractList extends React.Component {
   loadFirstPageFromApi () {
     this.loadItemsFromApi(this.getFirstPagePaginationOptions(), true)
       .then((result) => {
-        console.log('newState', result.newState)
         this.setState(result.newState)
       })
       .catch((error) => {
@@ -598,12 +637,15 @@ export default class AbstractList extends React.Component {
   //
   //
 
-  renderLeftColumn () {
-    return null
-  }
-
-  renderTopBar () {
-    return null
+  renderLoadingIndicator () {
+    return <span className='loading-indicator' key={'loadingIndicator'}>
+      <span className='loading-indicator__indicator'/>
+      <span className='loading-indicator__indicator'/>
+      <span className='loading-indicator__indicator'/>
+      <span className='loading-indicator__text'>
+        {window.gettext('Loading ...')}
+      </span>
+    </span>
   }
 
   renderListItem(listItemData) {
@@ -621,32 +663,111 @@ export default class AbstractList extends React.Component {
   }
 
   renderList () {
-    return <div className={this.listClassName}>
+    return <div className={this.listClassName} key={'itemList'}>
       {this.renderListItems()}
     </div>
   }
 
-  renderBottomBar () {
+  renderFilter (filterSpec) {
+    return React.createElement(
+      this.getFilterComponentClass(filterSpec),
+      this.getFilterComponentProps(filterSpec))
+  }
+
+  renderFiltersAtLocation (location) {
+    const renderedFilters = []
+    for (let filterSpec of this.getFiltersAtLocation(location)) {
+      renderedFilters.push(this.renderFilter(filterSpec))
+    }
+    return renderedFilters
+  }
+
+  renderLeftColumnContent () {
+    return this.renderFiltersAtLocation(RENDER_LOCATION_LEFT)
+  }
+
+  renderLeftColumn () {
+    const content = this.renderLeftColumnContent()
+    if (content) {
+      return <div className={this.leftColumnClassName} key={'leftColumn'}>
+        {content}
+      </div>
+    }
     return null
   }
 
-  renderCenterColumn () {
-    return <div className={this.centerColumnClassName}>
-      {this.renderTopBar()}
-      {this.renderList()}
-      {this.renderBottomBar()}
-    </div>
+  renderTopBarContent () {
+    return null
+  }
+
+  renderTopBar () {
+    const content = this.renderTopBarContent()
+    if (content) {
+      return <div className={this.topBarClassName} key={'topBar'}>
+        {content}
+      </div>
+    }
+    return null
+  }
+
+  renderBottomBarContent () {
+    return null
+  }
+
+  renderBottomBar () {
+    const content = this.renderBottomBarContent()
+    if (content) {
+      return <div className={this.bottomBarClassName} key={'bottomBar'}>
+        {content}
+      </div>
+    }
+    return null
+  }
+
+  renderRightColumnContent () {
+    return null
   }
 
   renderRightColumn () {
+    const content = this.renderRightColumnContent()
+    if (content) {
+      return <div className={this.rightColumnClassName} key={'rightColumn'}>
+        {content}
+      </div>
+    }
     return null
+  }
+
+  renderCenterColumnContent () {
+    const centerColumnContent = [
+      this.renderTopBar(),
+    ]
+    if (this.isLoading()) {
+      centerColumnContent.push(this.renderLoadingIndicator())
+    } else {
+      centerColumnContent.push(this.renderList())
+    }
+    centerColumnContent.push(this.renderBottomBar())
+    return centerColumnContent
+  }
+
+  renderCenterColumn () {
+    return <div className={this.centerColumnClassName} key={'centerColumn'}>
+      {this.renderCenterColumnContent()}
+    </div>
+  }
+
+  renderContent () {
+    return [
+      this.renderLeftColumn(),
+      this.renderCenterColumn(),
+      this.renderRightColumn()
+    ]
   }
 
   render () {
     return <div className={this.props.bemBlock}>
-      {this.renderLeftColumn()}
-      {this.renderCenterColumn()}
-      {this.renderRightColumn()}
+      {this.renderContent()}
     </div>
   }
 }

@@ -20,7 +20,16 @@
             <h2>cradmin-filterlist widget</h2>
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
-                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "filters": [{
+                        "component": "CheckboxBoolean",
+                        "props": {
+                          "name": "is_godlike",
+                          "label": "Is godlike?",
+                          "location": "left"
+                        },
+                        "initialValue": true
+                     }]
                  }'>
 
             </div>
