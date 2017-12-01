@@ -6,7 +6,6 @@ import {
   RENDER_LOCATION_BOTTOM, RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT,
   RENDER_LOCATION_TOP
 } from '../../filterListConstants'
-import AbstractListItem from '../items/AbstractListItem'
 
 /*
 <AbstractList
@@ -31,11 +30,8 @@ export default class AbstractList extends React.Component {
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
-      filters: PropTypes.array,
-      itemComponent: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.instanceOf(AbstractListItem)
-      ]),
+      filterSpecs: PropTypes.array,
+      itemSpec: PropTypes.object,
       idAttribute: PropTypes.string
       // updateHttpMethod: (props, propName, componentName) => {
       //   if(!props[propName] || !/^(post|put)$/.test(props[propName])) {
@@ -51,9 +47,11 @@ export default class AbstractList extends React.Component {
   static get defaultProps () {
     return {
       bemBlock: 'filterlist',
-      filters: [],
+      filterSpecs: [],
       idAttribute: 'id',
-      itemComponent: 'IdOnly'
+      itemSpec: {
+        'component': 'IdOnly'
+      }
       // updateHttpMethod: 'post'
     }
   }
@@ -64,11 +62,18 @@ export default class AbstractList extends React.Component {
     this._filterApiUpdateTimeoutId = null
     this.filterListRegistry = new FilterListRegistrySingleton()
     this.state = this.getInitialState()
-    this._filterSpecCache = new Map()
+    this.filterSpecCache = new Map()
+    this.cachedItemSpec = null
   }
 
   componentDidMount () {
-    this._initializeFilters()
+    this.refreshItemSpec(this.props.itemSpec)
+    this.refreshFiltersCache(this.props.filterSpecs)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.refreshItemSpec(nextProps.itemSpec)
+    this.refreshFiltersCache(nextProps.filterSpecs)
   }
 
   setupBoundMethods () {
@@ -109,23 +114,24 @@ export default class AbstractList extends React.Component {
   //
   //
 
-  parseFilterSpec (filterSpec) {
-    if (typeof filterSpec.component === 'string') {
-      filterSpec.componentClass = this.filterListRegistry.getFilterComponent(filterSpec.component)
+  makeFilterSpec (rawFilterSpec) {
+    const filterSpec = Object.assign({}, rawFilterSpec)
+    if (typeof rawFilterSpec.component === 'string') {
+      filterSpec.componentClass = this.filterListRegistry.getFilterComponent(rawFilterSpec.component)
     } else {
-      filterSpec.componentClass = filterSpec.component
+      filterSpec.componentClass = rawFilterSpec.component
     }
-    if (!filterSpec.props) {
+    if (!rawFilterSpec.props) {
       throw new Error(
-        `Filter component=${filterSpec.component} is missing required ` +
+        `Filter component=${rawFilterSpec.component} is missing required ` +
         `attribute "props".`)
     }
-    if (!filterSpec.props.location) {
+    if (!rawFilterSpec.props.location) {
       filterSpec.props.location = this.getDefaultFilterLocation()
     }
-    if (!filterSpec.props.name) {
+    if (!rawFilterSpec.props.name) {
       throw new Error(
-        `Filter component=${filterSpec.component} is missing required ` +
+        `Filter component=${rawFilterSpec.component} is missing required ` +
         `attribute "props.name".`)
     }
     return filterSpec
@@ -175,11 +181,11 @@ export default class AbstractList extends React.Component {
     return this.state[this._getStateVariableNameForFilter(filterName)]
   }
 
-  _initializeFilters () {
+  refreshFiltersCache (rawFilterSpecs) {
     const filterSpecCache = new Map()
     const allFilters = []
-    for (let filterSpec of this.props.filters) {
-      filterSpec = this.parseFilterSpec(filterSpec)
+    for (let rawFilterSpec of rawFilterSpecs) {
+      const filterSpec = this.makeFilterSpec(rawFilterSpec)
       allFilters.push(filterSpec)
       if (this.state[this._getStateVariableNameForFilter(filterSpec.props.name)] !== undefined) {
         throw new Error(
@@ -193,19 +199,19 @@ export default class AbstractList extends React.Component {
       filterSpecCache.get(filterSpec.props.location).push(filterSpec)
     }
     filterSpecCache.set('all', allFilters)
-    this._filterSpecCache = filterSpecCache
+    this.filterSpecCache = filterSpecCache
   }
 
   /**
-   * Can be overriden if you need to ignore props.filters, and customize
+   * Can be overriden if you need to ignore props.filterSpecs, and customize
    * filters in a subclass.
    */
   getFiltersAtLocation (location) {
-    return this._filterSpecCache.get(location) || []
+    return this.filterSpecCache.get(location) || []
   }
 
   /**
-   * Can be overriden if you need to ignore props.filters, and customize
+   * Can be overriden if you need to ignore props.filterSpecs, and customize
    * filters in a subclass.
    */
   getAllFilters () {
@@ -244,6 +250,34 @@ export default class AbstractList extends React.Component {
   //
   //
 
+  /**
+   * Make
+   * @returns {*}
+   */
+  refreshItemSpec (rawItemSpec) {
+    const cachedItemSpec = Object.assign({}, rawItemSpec)
+    if (cachedItemSpec.component) {
+      if (typeof cachedItemSpec.component === 'string') {
+        cachedItemSpec.componentClass = this.filterListRegistry.getItemComponent(cachedItemSpec.component)
+        if (!cachedItemSpec.componentClass) {
+          throw new Error(
+            `Could not find a filterlist item component class registered for ` +
+            `alias "${cachedItemSpec.component}"`)
+        }
+      } else {
+        cachedItemSpec.componentClass = cachedItemSpec.component
+      }
+    } else {
+      throw new Error(
+        'You must specify the "props.itemSpec", or override ' +
+        'the refreshItemSpec() method.')
+    }
+    if (!cachedItemSpec.props) {
+      cachedItemSpec.props = {}
+    }
+    this.cachedItemSpec = cachedItemSpec
+  }
+
   itemIsSelected (listItemData) {
     return false
   }
@@ -258,27 +292,12 @@ export default class AbstractList extends React.Component {
   }
 
   getItemComponentClass (listItemData) {
-    if (this.props.itemComponent) {
-      if (typeof this.props.itemComponent === 'string') {
-        const itemComponentClass = this.filterListRegistry.getItemComponent(this.props.itemComponent)
-        if (itemComponentClass) {
-          return itemComponentClass
-        }
-        throw new Error(
-          `Could not find a filterlist item component class registered for ` +
-          `alias "${this.props.itemComponent}"`)
-      } else {
-        return this.props.itemComponent
-      }
-    }
-    throw new Error(
-      'You must specify the "itemComponent" prop, or override ' +
-      'the getItemComponentClass() method.')
+    return this.cachedItemSpec.componentClass
   }
 
   getItemComponentProps (listItemData) {
     const listItemId = this.getIdFromListItemData(listItemData)
-    return Object.assign({}, listItemData, {
+    return Object.assign({}, listItemData, this.cachedItemSpec.props, {
       key: listItemId,
       isSelected: this.itemIsSelected(listItemData),
       listItemId: listItemId

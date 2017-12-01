@@ -21,8 +21,10 @@
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "itemComponent": "TitleDescription",
-                     "filters": [{
+                     "itemSpec": {
+                        "component": "TitleDescription"
+                     },
+                     "filterSpecs": [{
                         "component": "CheckboxBoolean",
                         "props": {
                           "name": "is_godlike",
