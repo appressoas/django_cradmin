@@ -9,18 +9,22 @@ import {
 
 /*
 <AbstractList
-  filters={[
+  filterSpecs={[
     {
-      "component": "AmountFilter",
-      "props": {
-        "name": "max_amount",
-        "location": "left"
+      component: "AmountFilter",
+      props: {
+        "name: "max_amount",
+        location: "left"
       },
-      "initialValue": 10
+      initialValue: 10
     }
   ]}
-  itemComponent={'MyItem'}
-/>
+  itemSpec={{
+    component: "MyItem",
+    props: {
+      myprop: 10
+    }
+  }} />
 */
 
 export default class AbstractList extends React.Component {
@@ -64,10 +68,10 @@ export default class AbstractList extends React.Component {
     this.state = this.getInitialState()
     this.filterSpecCache = new Map()
     this.cachedItemSpec = null
+    this.refreshItemSpec(this.props.itemSpec)
   }
 
   componentDidMount () {
-    this.refreshItemSpec(this.props.itemSpec)
     this.refreshFiltersCache(this.props.filterSpecs)
   }
 
@@ -203,7 +207,7 @@ export default class AbstractList extends React.Component {
   }
 
   /**
-   * Can be overriden if you need to ignore props.filterSpecs, and customize
+   * Can be overridden if you need to ignore props.filterSpecs, and customize
    * filters in a subclass.
    */
   getFiltersAtLocation (location) {
@@ -211,7 +215,7 @@ export default class AbstractList extends React.Component {
   }
 
   /**
-   * Can be overriden if you need to ignore props.filterSpecs, and customize
+   * Can be overridden if you need to ignore props.filterSpecs, and customize
    * filters in a subclass.
    */
   getAllFilters () {
@@ -224,7 +228,7 @@ export default class AbstractList extends React.Component {
    * Perfect place to hook in things like "show advanced" filters etc.
    * in subclasses.
    *
-   * @param filter The filter we want to determine if should be rendered.
+   * @param filterSpec The filter we want to determine if should be rendered.
    * @returns {boolean} `true` to render the filter, and `false` to not render
    *    the filter. Defaults to `true` if not overridden.
    */
