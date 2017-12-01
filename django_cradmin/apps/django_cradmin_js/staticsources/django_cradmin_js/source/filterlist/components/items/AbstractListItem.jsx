@@ -22,5 +22,7 @@ export default class AbstractListItem extends React.Component {
   //   super(props)
   // }
 
-
+  componentWillReceiveProps (nextProps) {
+    console.log('NEW props', this.props, nextProps)
+  }
 }

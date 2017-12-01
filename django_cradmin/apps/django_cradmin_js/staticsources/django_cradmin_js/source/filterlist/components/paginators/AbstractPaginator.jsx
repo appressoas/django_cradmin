@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 export default class AbstractPaginator extends React.Component {
   static get propTypes () {
     return {
-      paginationState: PropTypes.object.isRequired,
 
       // Function to call to load more items from the API
       // See {@link AbstractList#loadMoreItemsFromApi}
@@ -23,7 +22,10 @@ export default class AbstractPaginator extends React.Component {
       loadSpecificPageFromApi: PropTypes.func,
 
       hasNextPage: PropTypes.bool,
-      hasPreviousPage: PropTypes.bool
+      hasPreviousPage: PropTypes.bool,
+      totalItemCount: PropTypes.number,
+      currentPage: PropTypes.number,
+      totalPageCount: PropTypes.number
     }
   }
 

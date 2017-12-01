@@ -368,13 +368,15 @@ export default class AbstractList extends React.Component {
   getPaginatorComponentProps () {
     return Object.assign({}, {
       key: 'paginator',
-      paginationState: this.state.paginationState,
       loadMoreItemsFromApi: this.loadMoreItemsFromApi,
       loadNextPageFromApi: this.loadNextPageFromApi,
       loadPreviousPageFromApi: this.loadPreviousPageFromApi,
       loadSpecificPageFromApi: this.loadSpecificPageFromApi,
       hasNextPage: this.hasNextPaginationPage(),
-      hasPreviousPage: this.hasPreviousPaginationPage()
+      hasPreviousPage: this.hasPreviousPaginationPage(),
+      currentPage: this.getCurrentPaginationPage(),
+      totalPageCount: this.getPaginationPageCount(),
+      totalItemCount: this.getTotalListItemCount()
     }, this.cachedPaginatorSpec.props)
   }
 
@@ -543,6 +545,10 @@ export default class AbstractList extends React.Component {
    * @returns {int|null}
    */
   getPaginationPageCount () {
+    return null
+  }
+
+  getTotalListItemCount () {
     return this.state.paginationState.count
   }
 
