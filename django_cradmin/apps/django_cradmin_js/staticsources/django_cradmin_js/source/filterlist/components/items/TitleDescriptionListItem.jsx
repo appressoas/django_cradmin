@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import AbstractListItem from './AbstractListItem'
 
 export default class TitleDescriptionListItem extends AbstractListItem {
-  static get propTypes() {
+  static get propTypes () {
     const propTypes = super.propTypes
     propTypes.title = PropTypes.string.isRequired
     propTypes.description = PropTypes.string.isRequired

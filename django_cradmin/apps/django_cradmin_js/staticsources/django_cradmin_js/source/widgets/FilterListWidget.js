@@ -5,7 +5,7 @@ import FilterListRegistry from '../filterlist/FilterListRegistry'
 
 
 export default class FilterListWidget extends AbstractWidget {
-  getDefaultConfig() {
+  getDefaultConfig () {
     return {
       component: 'List'
     }

@@ -25,7 +25,7 @@ import AbstractListItem from '../items/AbstractListItem'
 */
 
 export default class AbstractList extends React.Component {
-  static get propTypes() {
+  static get propTypes () {
     return {
       bemBlock: PropTypes.string,
       getItemsApiUrl: PropTypes.string.isRequired,
@@ -58,13 +58,13 @@ export default class AbstractList extends React.Component {
     }
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.setupBoundMethods()
     this._filterApiUpdateTimeoutId = null
     this.filterListRegistry = new FilterListRegistrySingleton()
     this.state = this.getInitialState()
-    this._filterSpecCache = new Map();
+    this._filterSpecCache = new Map()
   }
 
   componentDidMount () {
@@ -103,7 +103,6 @@ export default class AbstractList extends React.Component {
     return this.state.isLoadingItemsFromApi
   }
 
-
   //
   //
   // Filters
@@ -111,20 +110,20 @@ export default class AbstractList extends React.Component {
   //
 
   parseFilterSpec (filterSpec) {
-    if(typeof filterSpec.component === 'string') {
+    if (typeof filterSpec.component === 'string') {
       filterSpec.componentClass = this.filterListRegistry.getFilterComponent(filterSpec.component)
     } else {
       filterSpec.componentClass = filterSpec.component
     }
-    if(!filterSpec.props) {
+    if (!filterSpec.props) {
       throw new Error(
         `Filter component=${filterSpec.component} is missing required ` +
         `attribute "props".`)
     }
-    if(!filterSpec.props.location) {
+    if (!filterSpec.props.location) {
       filterSpec.props.location = this.getDefaultFilterLocation()
     }
-    if(!filterSpec.props.name) {
+    if (!filterSpec.props.name) {
       throw new Error(
         `Filter component=${filterSpec.component} is missing required ` +
         `attribute "props.name".`)
@@ -152,7 +151,7 @@ export default class AbstractList extends React.Component {
     return `filterstate_${filterName}`
   }
 
-  _setFilterValueInState (filterName, value, onComplete=() => {}) {
+  _setFilterValueInState (filterName, value, onComplete = () => {}) {
     if (value === undefined) {
       value = null
     }
@@ -161,7 +160,7 @@ export default class AbstractList extends React.Component {
     }, onComplete)
   }
 
-  setFilterValue (filterName, value, noDelay=false) {
+  setFilterValue (filterName, value, noDelay = false) {
     this._stopFilterApiUpdateTimer()
     this._setFilterValueInState(filterName, value, () => {
       if (noDelay) {
@@ -179,16 +178,16 @@ export default class AbstractList extends React.Component {
   _initializeFilters () {
     const filterSpecCache = new Map()
     const allFilters = []
-    for(let filterSpec of this.props.filters) {
+    for (let filterSpec of this.props.filters) {
       filterSpec = this.parseFilterSpec(filterSpec)
       allFilters.push(filterSpec)
-      if(this.state[this._getStateVariableNameForFilter(filterSpec.props.name)] !== undefined) {
+      if (this.state[this._getStateVariableNameForFilter(filterSpec.props.name)] !== undefined) {
         throw new Error(
           `Multiple filters with the same name: ${filterSpec.props.name}`)
       }
       this._setFilterValueInState(filterSpec.props.name, filterSpec.initialValue)
 
-      if(!filterSpecCache.has(filterSpec.props.location)) {
+      if (!filterSpecCache.has(filterSpec.props.location)) {
         filterSpecCache.set(filterSpec.props.location, [])
       }
       filterSpecCache.get(filterSpec.props.location).push(filterSpec)
@@ -231,14 +230,13 @@ export default class AbstractList extends React.Component {
     return filterSpec.componentClass
   }
 
-  getFilterComponentProps(filterSpec) {
+  getFilterComponentProps (filterSpec) {
     return Object.assign({}, filterSpec.props, {
       setFilterValueCallback: this.setFilterValue,
       value: this.getFilterValue(filterSpec.props.name),
       key: filterSpec.props.name
     })
   }
-
 
   //
   //
@@ -294,7 +292,7 @@ export default class AbstractList extends React.Component {
   //
 
   filterListItemsHttpRequest (httpRequest) {
-    for(let filterSpec of this.getAllFilters()) {
+    for (let filterSpec of this.getAllFilters()) {
       const value = this.getFilterValue(filterSpec.props.name)
       filterSpec.componentClass.filterHttpRequest(
         httpRequest, filterSpec.props.name, value)
@@ -323,23 +321,23 @@ export default class AbstractList extends React.Component {
     httpRequest.urlParser.queryString.setValuesFromObject(paginationOptions)
   }
 
-  makeListItemsHttpRequest(paginationOptions) {
-    const httpRequestClass = this.getHttpRequestClass()
-    const httpRequest = new httpRequestClass(this.props.getItemsApiUrl)
+  makeListItemsHttpRequest (paginationOptions) {
+    const HttpRequestClass = this.getHttpRequestClass()
+    const httpRequest = new HttpRequestClass(this.props.getItemsApiUrl)
     this.filterListItemsHttpRequest(httpRequest)
     this.paginateListItemsHttpRequest(httpRequest, paginationOptions)
     return httpRequest.get()
   }
 
-  setLoadItemsFromApiErrorMessage (error) {
+  setLoadItemsFromApiErrorMessage (errorObject) {
     this.setState({
       loadItemsFromApiError: window.gettext('Failed to load list items from the server.')
     })
   }
 
-  handleGetListItemsFromApiRequestError (error) {
-    console.error('Error:', error.toString())
-    this.setLoadItemsFromApiErrorMessage(error)
+  handleGetListItemsFromApiRequestError (errorObjet) {
+    console.error('Error:', errorObjet.toString())
+    this.setLoadItemsFromApiErrorMessage(errorObjet)
   }
 
   /**
@@ -382,7 +380,7 @@ export default class AbstractList extends React.Component {
    */
   getNextPagePaginationOptions () {
     if (this.state.currentPaginationOptions) {
-      if(this.this.state.currentPaginationOptions.next === null) {
+      if (this.this.state.currentPaginationOptions.next === null) {
         return null
       }
       return {
@@ -399,9 +397,9 @@ export default class AbstractList extends React.Component {
    * @returns {object|null} Pagination options. If this returns
    *    null, it means that there are no "previous" page.
    */
-  getPreviousPagePaginationOptions() {
+  getPreviousPagePaginationOptions () {
     if (this.state.currentPaginationOptions) {
-      if(this.this.state.currentPaginationOptions.previous === null) {
+      if (this.this.state.currentPaginationOptions.previous === null) {
         return null
       }
       return {
@@ -418,7 +416,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {object} Pagination options
    */
-  getSpecificPagePaginationOptions(pageNumber) {
+  getSpecificPagePaginationOptions (pageNumber) {
     return {
       page: pageNumber
     }
@@ -433,7 +431,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {int|null}
    */
-  getPaginationPageCount() {
+  getPaginationPageCount () {
     return null
   }
 
@@ -442,7 +440,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {boolean}
    */
-  hasPreviousPage() {
+  hasPreviousPage () {
     return this.getPreviousPagePaginationOptions() !== null
   }
 
@@ -451,7 +449,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {boolean}
    */
-  hasNextPage() {
+  hasNextPage () {
     return this.getNextPagePaginationOptions() !== null
   }
 
@@ -461,7 +459,7 @@ export default class AbstractList extends React.Component {
    * @param httpResponse The HTTP response. Will always be a
    *    subclass of HttpResponse from the ievv_jsbase library.
    */
-  getItemsArrayFromHttpResponse(httpResponse) {
+  getItemsArrayFromHttpResponse (httpResponse) {
     return httpResponse.bodydata.results
   }
 
@@ -476,7 +474,7 @@ export default class AbstractList extends React.Component {
    */
   makeNewItemsDataArrayFromApiResponse (httpResponse, clearOldItems) {
     const newItemsArray = this.getItemsArrayFromHttpResponse(httpResponse)
-    if(clearOldItems) {
+    if (clearOldItems) {
       return newItemsArray
     } else {
       return this.state.listItemsDataArray.concat(newItemsArray)
@@ -500,7 +498,7 @@ export default class AbstractList extends React.Component {
    * @param clearOldItems See {@link makeNewItemsDataArrayFromApiResponse}.
    * @returns {object}
    */
-  makeStateFromLoadItemsApiSuccessResponse(httpResponse, paginationOptions, clearOldItems) {
+  makeStateFromLoadItemsApiSuccessResponse (httpResponse, paginationOptions, clearOldItems) {
     return {
       isLoadingItemsFromApi: false,
       listItemsDataArray: this.makeNewItemsDataArrayFromApiResponse(
@@ -675,16 +673,16 @@ export default class AbstractList extends React.Component {
 
   renderLoadingIndicator () {
     return <span className='loading-indicator' key={'loadingIndicator'}>
-      <span className='loading-indicator__indicator'/>
-      <span className='loading-indicator__indicator'/>
-      <span className='loading-indicator__indicator'/>
+      <span className='loading-indicator__indicator' />
+      <span className='loading-indicator__indicator' />
+      <span className='loading-indicator__indicator' />
       <span className='loading-indicator__text'>
         {window.gettext('Loading ...')}
       </span>
     </span>
   }
 
-  renderListItem(listItemData) {
+  renderListItem (listItemData) {
     return React.createElement(
       this.getItemComponentClass(listItemData),
       this.getItemComponentProps(listItemData))
@@ -692,7 +690,7 @@ export default class AbstractList extends React.Component {
 
   renderListItems () {
     const renderedListItems = []
-    for(let listItemData of this.state.listItemsDataArray) {
+    for (let listItemData of this.state.listItemsDataArray) {
       renderedListItems.push(this.renderListItem(listItemData))
     }
     return renderedListItems
@@ -778,7 +776,7 @@ export default class AbstractList extends React.Component {
 
   renderCenterColumnContent () {
     const centerColumnContent = [
-      this.renderTopBar(),
+      this.renderTopBar()
     ]
     if (this.isLoading()) {
       centerColumnContent.push(this.renderLoadingIndicator())
