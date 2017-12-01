@@ -23,7 +23,8 @@ export default class LoadMorePaginator extends AbstractPaginator {
     this.onClick = this.onClick.bind(this)
   }
 
-  onClick () {
+  onClick (e) {
+    e.preventDefault()
     this.props.loadMoreItemsFromApi()
   }
 

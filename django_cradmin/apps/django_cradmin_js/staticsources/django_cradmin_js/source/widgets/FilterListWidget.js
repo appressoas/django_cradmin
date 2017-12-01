@@ -1,8 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import FilterListRegistry from '../filterlist/FilterListRegistry'
-
 
 export default class FilterListWidget extends AbstractWidget {
   getDefaultConfig () {
@@ -29,7 +28,7 @@ export default class FilterListWidget extends AbstractWidget {
     ReactDOM.render(
       reactElement,
       this.element
-    );
+    )
   }
 
   destroy () {

@@ -589,12 +589,13 @@ export default class AbstractList extends React.Component {
    *    displayed in the list.
    * @returns {[]} An array containing raw data for list items.
    */
-  makeNewItemsDataArrayFromApiResponse (httpResponse, clearOldItems) {
+  makeNewItemsDataArrayFromApiResponse (prevState, props, httpResponse, clearOldItems) {
     const newItemsArray = this.getItemsArrayFromHttpResponse(httpResponse)
     if (clearOldItems) {
       return newItemsArray
     } else {
-      return this.state.listItemsDataArray.concat(newItemsArray)
+      prevState.listItemsDataArray.push(...newItemsArray)
+      return prevState.listItemsDataArray
     }
   }
 
@@ -615,13 +616,20 @@ export default class AbstractList extends React.Component {
    * @param clearOldItems See {@link makeNewItemsDataArrayFromApiResponse}.
    * @returns {object}
    */
-  makeStateFromLoadItemsApiSuccessResponse (httpResponse, paginationOptions, clearOldItems) {
+  makeStateFromLoadItemsApiSuccessResponse (prevState, props, httpResponse, paginationOptions, clearOldItems) {
     return {
       isLoadingItemsFromApi: false,
       listItemsDataArray: this.makeNewItemsDataArrayFromApiResponse(
-        httpResponse, clearOldItems),
+        prevState, props, httpResponse, clearOldItems),
       paginationState: this.makePaginationStateFromHttpResponse(httpResponse, paginationOptions)
     }
+  }
+
+  updateStateFromLoadItemsApiSuccessResponse (httpResponse, paginationOptions, clearOldItems) {
+    this.setState((prevState, props) => {
+      return this.makeStateFromLoadItemsApiSuccessResponse(
+        prevState, props, httpResponse, paginationOptions, clearOldItems)
+    })
   }
 
   /**
@@ -637,21 +645,16 @@ export default class AbstractList extends React.Component {
    * instead of calling this method directly.
    *
    * @param paginationOptions
-   * @param clearOldItems
    * @returns {Promise}
    */
-  loadItemsFromApi (paginationOptions, clearOldItems) {
+  loadItemsFromApi (paginationOptions) {
     return new Promise((resolve, reject) => {
       this.setState({
         isLoadingItemsFromApi: true
       }, () => {
         this.makeListItemsHttpRequest(paginationOptions)
           .then((httpResponse) => {
-            resolve({
-              httpResponse: httpResponse,
-              newState: this.makeStateFromLoadItemsApiSuccessResponse(
-                httpResponse, paginationOptions, clearOldItems)
-            })
+            resolve(httpResponse)
           })
           .catch((error) => {
             reject(error)
@@ -666,9 +669,11 @@ export default class AbstractList extends React.Component {
    * Loaded items replace the current items in the list.
    */
   loadFirstPageFromApi () {
-    this.loadItemsFromApi(this.getFirstPagePaginationOptions(), true)
-      .then((result) => {
-        this.setState(result.newState)
+    const paginationOptions = this.getFirstPagePaginationOptions()
+    this.loadItemsFromApi(paginationOptions)
+      .then((httpResponse) => {
+        this.updateStateFromLoadItemsApiSuccessResponse(
+          httpResponse, paginationOptions, true)
       })
       .catch((error) => {
         this.handleGetListItemsFromApiRequestError(error)
@@ -688,9 +693,11 @@ export default class AbstractList extends React.Component {
    * Loaded items are appended at the end of the list.
    */
   loadMoreItemsFromApi () {
-    this.loadItemsFromApi(this.getNextPagePaginationOptions(), false)
-      .then((result) => {
-        this.setState(result.newState)
+    const paginationOptions = this.getNextPagePaginationOptions()
+    this.loadItemsFromApi(paginationOptions)
+      .then((httpResponse) => {
+        this.updateStateFromLoadItemsApiSuccessResponse(
+          httpResponse, paginationOptions, false)
       })
       .catch((error) => {
         this.handleGetListItemsFromApiRequestError(error)
@@ -706,9 +713,11 @@ export default class AbstractList extends React.Component {
    * Loaded items replace the current items in the list.
    */
   loadNextPageFromApi () {
-    this.loadItemsFromApi(this.getNextPagePaginationOptions(), true)
-      .then((result) => {
-        this.setState(result.newState)
+    const paginationOptions = this.getNextPagePaginationOptions()
+    this.loadItemsFromApi(paginationOptions)
+      .then((httpResponse) => {
+        this.updateStateFromLoadItemsApiSuccessResponse(
+          httpResponse, paginationOptions, true)
       })
       .catch((error) => {
         this.handleGetListItemsFromApiRequestError(error)
@@ -724,9 +733,11 @@ export default class AbstractList extends React.Component {
    * Loaded items replace the current items in the list.
    */
   loadPreviousPageFromApi () {
-    this.loadItemsFromApi(this.getPreviousPagePaginationOptions(), true)
-      .then((result) => {
-        this.setState(result.newState)
+    const paginationOptions = this.getPreviousPagePaginationOptions()
+    this.loadItemsFromApi(paginationOptions)
+      .then((httpResponse) => {
+        this.updateStateFromLoadItemsApiSuccessResponse(
+          httpResponse, paginationOptions, true)
       })
       .catch((error) => {
         this.handleGetListItemsFromApiRequestError(error)
@@ -742,9 +753,11 @@ export default class AbstractList extends React.Component {
    * Loaded items replace the current items in the list.
    */
   loadSpecificPageFromApi (pageNumber) {
-    this.loadItemsFromApi(this.getSpecificPagePaginationOptions(pageNumber), true)
-      .then((result) => {
-        this.setState(result.newState)
+    const paginationOptions = this.getSpecificPagePaginationOptions(pageNumber)
+    this.loadItemsFromApi(paginationOptions)
+      .then((httpResponse) => {
+        this.updateStateFromLoadItemsApiSuccessResponse(
+          httpResponse, paginationOptions, true)
       })
       .catch((error) => {
         this.handleGetListItemsFromApiRequestError(error)

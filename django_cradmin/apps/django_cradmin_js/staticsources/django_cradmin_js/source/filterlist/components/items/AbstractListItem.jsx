@@ -1,6 +1,6 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import PropTypes from 'prop-types';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 
 export default class AbstractListItem extends React.Component {
   static get propTypes () {
@@ -16,13 +16,5 @@ export default class AbstractListItem extends React.Component {
     return {
       listItemId: null
     }
-  }
-
-  // constructor(props) {
-  //   super(props)
-  // }
-
-  componentWillReceiveProps (nextProps) {
-    console.log('NEW props', this.props, nextProps)
   }
 }
