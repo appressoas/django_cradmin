@@ -17,7 +17,18 @@
 {% block content %}
     <section class="adminui-page-section">
         <div class="container">
-            <h2>cradmin-filterlist widget</h2>
+            <h2>Simple</h2>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
+                 }'>
+
+            </div>
+        </div>
+    </section>
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Custom items and filters</h2>
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",

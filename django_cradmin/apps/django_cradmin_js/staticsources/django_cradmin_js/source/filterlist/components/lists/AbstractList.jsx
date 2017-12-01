@@ -39,7 +39,7 @@ export default class AbstractList extends React.Component {
       idAttribute: PropTypes.string.isRequired,
       filterSpecs: PropTypes.array,
       itemSpec: PropTypes.object.isRequired,
-      paginatorSpec: PropTypes.object.isRequired,
+      paginatorSpec: PropTypes.object,
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
@@ -335,8 +335,9 @@ export default class AbstractList extends React.Component {
   //
 
   refreshPaginatorSpec (rawPaginatorSpec) {
-    let cachedPaginatorSpec = Object.assign({}, rawPaginatorSpec)
-    if (cachedPaginatorSpec) {
+    let cachedPaginatorSpec = null
+    if (rawPaginatorSpec) {
+      cachedPaginatorSpec = Object.assign({}, rawPaginatorSpec)
       if (cachedPaginatorSpec.component) {
         if (typeof cachedPaginatorSpec.component === 'string') {
           cachedPaginatorSpec.componentClass = this.filterListRegistry.getPaginatorComponent(cachedPaginatorSpec.component)
@@ -356,8 +357,6 @@ export default class AbstractList extends React.Component {
       if (!cachedPaginatorSpec.props) {
         cachedPaginatorSpec.props = {}
       }
-    } else {
-      cachedPaginatorSpec = null
     }
     this.cachedPaginatorSpec = cachedPaginatorSpec
   }
