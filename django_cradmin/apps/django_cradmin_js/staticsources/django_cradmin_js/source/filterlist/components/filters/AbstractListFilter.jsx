@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class AbstractListFilter extends React.Component {
-  static get propTypes() {
+  static get propTypes () {
     return {
       name: PropTypes.string.isRequired,
 
@@ -43,17 +43,10 @@ export default class AbstractListFilter extends React.Component {
     httpRequest.urlParser.queryString.set(name, value)
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.setupBoundMethods()
-    // this.state = this.getInitialState()
   }
-
-  // getInitialState () {
-  //   return {
-  //     value: this.props.value
-  //   }
-  // }
 
   setupBoundMethods () {
     this.setFilterValue = this.setFilterValue.bind(this)
@@ -62,11 +55,4 @@ export default class AbstractListFilter extends React.Component {
   setFilterValue (value) {
     this.props.setFilterValueCallback(this.props.name, value)
   }
-
-  // componentWillReceiveProps (nextProps) {
-  //   console.log('nextProps', nextProps)
-  //   this.setState({
-  //     value: nextProps.value
-  //   })
-  // }
 }

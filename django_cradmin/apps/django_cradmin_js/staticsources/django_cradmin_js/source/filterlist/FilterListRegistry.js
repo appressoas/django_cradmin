@@ -28,12 +28,14 @@ export default class FilterListRegistrySingleton {
     this._filterComponentMap = new Map()
     this._itemComponentMap = new Map()
     this._searchComponentMap = new Map()
+    this._paginatorComponentMap = new Map()
   }
 
   clear () {
     this._filterComponentMap.clear()
     this._itemComponentMap.clear()
     this._searchComponentMap.clear()
+    this._paginatorComponentMap.clear()
   }
 
   /**
@@ -110,5 +112,31 @@ export default class FilterListRegistrySingleton {
 
   getItemComponent (alias) {
     return this._itemComponentMap.get(alias)
+  }
+
+  /**
+   * Register a paginator component class in the registry.
+   *
+   * @param {string} alias The alias for the paginator class.
+   *    Makes it possible to use a JSON serializable object
+   *    to define this paginator for a list.
+   * @param {AbstractListFilter} paginatorComponent The paginator class.
+   */
+  registerPaginatorComponent (alias, paginatorComponent) {
+    this._paginatorComponentMap.set(alias, paginatorComponent)
+  }
+
+  /**
+   * Remove paginator component class from registry.
+   *
+   * @param alias The alias that the paginator class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerPaginatorComponent}.
+   */
+  removePaginatorComponent (alias) {
+    this._paginatorComponentMap.delete(alias)
+  }
+
+  getPaginatorComponent (alias) {
+    return this._paginatorComponentMap.get(alias)
   }
 }

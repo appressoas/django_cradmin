@@ -24,19 +24,26 @@ import {
     props: {
       myprop: 10
     }
-  }} />
+  }}
+  paginatorSpec={{
+    component: "MyPaginator",
+    props: {
+      myLabel: "Load some more items!"
+    }
+  }}/>
 */
 
 export default class AbstractList extends React.Component {
   static get propTypes () {
     return {
-      bemBlock: PropTypes.string,
+      idAttribute: PropTypes.string.isRequired,
+      filterSpecs: PropTypes.array,
+      itemSpec: PropTypes.object.isRequired,
+      paginatorSpec: PropTypes.object.isRequired,
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
-      filterSpecs: PropTypes.array,
-      itemSpec: PropTypes.object,
-      idAttribute: PropTypes.string
+      bemBlock: PropTypes.string.isRequired
       // updateHttpMethod: (props, propName, componentName) => {
       //   if(!props[propName] || !/^(post|put)$/.test(props[propName])) {
       //     return new Error(
@@ -55,6 +62,9 @@ export default class AbstractList extends React.Component {
       idAttribute: 'id',
       itemSpec: {
         'component': 'IdOnly'
+      },
+      paginatorSpec: {
+        'component': 'LoadMore'
       }
       // updateHttpMethod: 'post'
     }
@@ -68,7 +78,9 @@ export default class AbstractList extends React.Component {
     this.state = this.getInitialState()
     this.filterSpecCache = new Map()
     this.cachedItemSpec = null
+    this.cachedPaginatorSpec = null
     this.refreshItemSpec(this.props.itemSpec)
+    this.refreshPaginatorSpec(this.props.paginatorSpec)
   }
 
   componentDidMount () {
@@ -77,11 +89,16 @@ export default class AbstractList extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     this.refreshItemSpec(nextProps.itemSpec)
+    this.refreshPaginatorSpec(nextProps.paginatorSpec)
     this.refreshFiltersCache(nextProps.filterSpecs)
   }
 
   setupBoundMethods () {
     this.setFilterValue = this.setFilterValue.bind(this)
+    this.loadMoreItemsFromApi = this.loadMoreItemsFromApi.bind(this)
+    this.loadNextPageFromApi = this.loadNextPageFromApi.bind(this)
+    this.loadPreviousPageFromApi = this.loadPreviousPageFromApi.bind(this)
+    this.loadSpecificPageFromApi = this.loadSpecificPageFromApi.bind(this)
   }
 
   /**
@@ -95,7 +112,7 @@ export default class AbstractList extends React.Component {
     return {
       listItemsDataArray: [],
       isLoadingItemsFromApi: false,
-      currentPaginationOptions: null
+      paginationState: {}
     }
   }
 
@@ -255,8 +272,7 @@ export default class AbstractList extends React.Component {
   //
 
   /**
-   * Make
-   * @returns {*}
+   * Refresh this.cachedItemSpec.
    */
   refreshItemSpec (rawItemSpec) {
     const cachedItemSpec = Object.assign({}, rawItemSpec)
@@ -295,6 +311,10 @@ export default class AbstractList extends React.Component {
       'or override the getIdFromListItemData() method.')
   }
 
+  shouldRenderListItem (listItemData) {
+    return true
+  }
+
   getItemComponentClass (listItemData) {
     return this.cachedItemSpec.componentClass
   }
@@ -306,6 +326,57 @@ export default class AbstractList extends React.Component {
       isSelected: this.itemIsSelected(listItemData),
       listItemId: listItemId
     })
+  }
+
+  //
+  //
+  // Paginator
+  //
+  //
+
+  refreshPaginatorSpec (rawPaginatorSpec) {
+    let cachedPaginatorSpec = Object.assign({}, rawPaginatorSpec)
+    if (cachedPaginatorSpec) {
+      if (cachedPaginatorSpec.component) {
+        if (typeof cachedPaginatorSpec.component === 'string') {
+          cachedPaginatorSpec.componentClass = this.filterListRegistry.getPaginatorComponent(cachedPaginatorSpec.component)
+          if (!cachedPaginatorSpec.componentClass) {
+            throw new Error(
+              `Could not find a filterlist paginator component class registered for ` +
+              `alias "${cachedPaginatorSpec.component}"`)
+          }
+        } else {
+          cachedPaginatorSpec.componentClass = cachedPaginatorSpec.component
+        }
+      } else {
+        throw new Error(
+          'You must specify the "props.paginatorSpec", or override ' +
+          'the refreshPaginatorSpec() method.')
+      }
+      if (!cachedPaginatorSpec.props) {
+        cachedPaginatorSpec.props = {}
+      }
+    } else {
+      cachedPaginatorSpec = null
+    }
+    this.cachedPaginatorSpec = cachedPaginatorSpec
+  }
+
+  getPaginatorComponentClass () {
+    return this.cachedPaginatorSpec.componentClass
+  }
+
+  getPaginatorComponentProps () {
+    return Object.assign({}, {
+      key: 'paginator',
+      paginationState: this.state.paginationState,
+      loadMoreItemsFromApi: this.loadMoreItemsFromApi,
+      loadNextPageFromApi: this.loadNextPageFromApi,
+      loadPreviousPageFromApi: this.loadPreviousPageFromApi,
+      loadSpecificPageFromApi: this.loadSpecificPageFromApi,
+      hasNextPage: this.hasNextPaginationPage(),
+      hasPreviousPage: this.hasPreviousPaginationPage()
+    }, this.cachedPaginatorSpec.props)
   }
 
   //
@@ -341,7 +412,9 @@ export default class AbstractList extends React.Component {
    * @param paginationOptions
    */
   paginateListItemsHttpRequest (httpRequest, paginationOptions) {
-    httpRequest.urlParser.queryString.setValuesFromObject(paginationOptions)
+    if (paginationOptions) {
+      httpRequest.urlParser.queryString.setValuesFromObject(paginationOptions)
+    }
   }
 
   makeListItemsHttpRequest (paginationOptions) {
@@ -376,12 +449,21 @@ export default class AbstractList extends React.Component {
    *
    * @param httpResponse The HTTP response. Will always be a
    *    subclass of HttpResponse from the ievv_jsbase library.
+   * @param paginationOptions The pagination options that was sent to
+   *    the HTTP request.
    * @returns {object} Pagination state object defining the current pagination
    *    state.
    */
-  makePaginationStateFromHttpResponse (httpResponse) {
+  makePaginationStateFromHttpResponse (httpResponse, paginationOptions) {
+    let page = 1
+    if (paginationOptions && paginationOptions.page) {
+      page = paginationOptions.page
+    }
     return {
-      page: httpResponse.bodydata.page
+      page: page,
+      next: httpResponse.bodydata.next,
+      previous: httpResponse.bodydata.previous,
+      count: httpResponse.bodydata.count
     }
   }
 
@@ -391,7 +473,14 @@ export default class AbstractList extends React.Component {
    * @returns {object|null} Pagination options.
    */
   getFirstPagePaginationOptions () {
-    return {}
+    return null
+  }
+
+  getCurrentPaginationPage () {
+    if (this.state.paginationState && this.state.paginationState.page) {
+      return this.state.paginationState.page
+    }
+    return 1
   }
 
   /**
@@ -402,15 +491,15 @@ export default class AbstractList extends React.Component {
    *    null, it means that there are no "next" page.
    */
   getNextPagePaginationOptions () {
-    if (this.state.currentPaginationOptions) {
-      if (this.this.state.currentPaginationOptions.next === null) {
+    if (this.state.paginationState) {
+      if (this.state.paginationState.next === null) {
         return null
       }
       return {
-        page: this.state.currentPaginationOptions.page + 1
+        page: this.getCurrentPaginationPage() + 1
       }
     }
-    return {}
+    return null
   }
 
   /**
@@ -421,15 +510,15 @@ export default class AbstractList extends React.Component {
    *    null, it means that there are no "previous" page.
    */
   getPreviousPagePaginationOptions () {
-    if (this.state.currentPaginationOptions) {
-      if (this.this.state.currentPaginationOptions.previous === null) {
+    if (this.state.paginationState) {
+      if (this.state.paginationState.previous === null) {
         return null
       }
       return {
-        page: this.state.currentPaginationOptions.page - 1
+        page: this.getCurrentPaginationPage() - 1
       }
     }
-    return {}
+    return null
   }
 
   /**
@@ -455,7 +544,7 @@ export default class AbstractList extends React.Component {
    * @returns {int|null}
    */
   getPaginationPageCount () {
-    return null
+    return this.state.paginationState.count
   }
 
   /**
@@ -463,7 +552,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {boolean}
    */
-  hasPreviousPage () {
+  hasPreviousPaginationPage () {
     return this.getPreviousPagePaginationOptions() !== null
   }
 
@@ -472,7 +561,7 @@ export default class AbstractList extends React.Component {
    *
    * @returns {boolean}
    */
-  hasNextPage () {
+  hasNextPaginationPage () {
     return this.getNextPagePaginationOptions() !== null
   }
 
@@ -526,8 +615,7 @@ export default class AbstractList extends React.Component {
       isLoadingItemsFromApi: false,
       listItemsDataArray: this.makeNewItemsDataArrayFromApiResponse(
         httpResponse, clearOldItems),
-      currentPaginationOptions: paginationOptions,
-      paginationState: this.makePaginationStateFromHttpResponse(httpResponse)
+      paginationState: this.makePaginationStateFromHttpResponse(httpResponse, paginationOptions)
     }
   }
 
@@ -705,6 +793,15 @@ export default class AbstractList extends React.Component {
     </span>
   }
 
+  renderPaginator () {
+    if (!this.cachedPaginatorSpec) {
+      return null
+    }
+    return React.createElement(
+      this.getPaginatorComponentClass(),
+      this.getPaginatorComponentProps())
+  }
+
   renderListItem (listItemData) {
     return React.createElement(
       this.getItemComponentClass(listItemData),
@@ -714,7 +811,9 @@ export default class AbstractList extends React.Component {
   renderListItems () {
     const renderedListItems = []
     for (let listItemData of this.state.listItemsDataArray) {
-      renderedListItems.push(this.renderListItem(listItemData))
+      if (this.shouldRenderListItem(listItemData)) {
+        renderedListItems.push(this.renderListItem(listItemData))
+      }
     }
     return renderedListItems
   }
@@ -770,7 +869,10 @@ export default class AbstractList extends React.Component {
   }
 
   renderBottomBarContent () {
-    return this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM)
+    return [
+      ...this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM),
+      this.renderPaginator()
+    ]
   }
 
   renderBottomBar () {
