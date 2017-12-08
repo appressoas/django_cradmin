@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='django_cradmin',
+    name='django-cradmin',
     description='A role based admin UI for Django that produces a user friendly and beautiful UI.',
     version='1.2.0',
     url='https://github.com/appressoas/django_cradmin',
