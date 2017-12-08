@@ -46,6 +46,11 @@ export default class AbstractListFilter extends React.Component {
   constructor (props) {
     super(props)
     this.setupBoundMethods()
+    this.state = this.getInitialState()
+  }
+
+  getInitialState () {
+    return {}
   }
 
   setupBoundMethods () {

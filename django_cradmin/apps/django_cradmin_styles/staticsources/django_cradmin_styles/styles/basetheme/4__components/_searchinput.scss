@@ -16,12 +16,13 @@ Example:
 Example: Within a label
 
     <label class="label">
-        <span class="searchinput">
+        Search:
+        <div class="searchinput">
             <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
             <button type="button" class="searchinput__clearbutton" title="clear search input">
                 <span class="icon-close" aria-hidden="true"></span>
             </button>
-        </span>
+        </div>
     </label>
 
 Example: Inline

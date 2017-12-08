@@ -159,7 +159,7 @@ export default class AbstractList extends React.Component {
   }
 
   get filterApiUpdateDelayMilliseconds () {
-    return 200
+    return 300
   }
 
   _stopFilterApiUpdateTimer () {

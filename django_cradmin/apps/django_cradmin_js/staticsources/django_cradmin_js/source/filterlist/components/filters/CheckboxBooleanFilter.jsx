@@ -55,6 +55,6 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
              onBlur={this.onBlur}/>
       <span className={this.indicatorClassName} />
       {this.renderLabel()}
-    </label>;
+    </label>
   }
 }

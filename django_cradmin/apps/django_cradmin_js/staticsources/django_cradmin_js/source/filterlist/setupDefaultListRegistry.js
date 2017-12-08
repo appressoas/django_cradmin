@@ -4,6 +4,7 @@ import IdOnlyListItem from './components/items/IdOnlyListItem'
 import CheckboxBooleanFilter from './components/filters/CheckboxBooleanFilter'
 import TitleDescriptionListItem from './components/items/TitleDescriptionListItem'
 import LoadMorePaginator from './components/paginators/LoadMorePaginator'
+import SearchFilter from './components/filters/SearchFilter'
 
 export function setupDefaultListRegistryListComponents (registry) {
   registry.registerListComponent('List', List)
@@ -11,6 +12,7 @@ export function setupDefaultListRegistryListComponents (registry) {
 
 export function setupDefaultListRegistryFilterComponents (registry) {
   registry.registerFilterComponent('CheckboxBoolean', CheckboxBooleanFilter)
+  registry.registerFilterComponent('Search', SearchFilter)
 }
 
 export function setupDefaultListRegistryItemComponents (registry) {
