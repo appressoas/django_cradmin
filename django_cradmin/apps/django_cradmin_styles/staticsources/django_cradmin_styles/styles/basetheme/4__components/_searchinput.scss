@@ -1,0 +1,63 @@
+/* Searchinput
+
+You will need to add javascript to actually get the clear button to clear
+the field. The recommended behavior is to clear the field, and set focus
+on the search input element after clearing the field.
+
+Example:
+
+    <div class="searchinput">
+        <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
+        <button type="button" class="searchinput__clearbutton" title="clear search input">
+            <span class="icon-close" aria-hidden="true"></span>
+        </button>
+    </div>
+
+Example: Within a label
+
+    <label class="label">
+        <span class="searchinput">
+            <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
+            <button type="button" class="searchinput__clearbutton" title="clear search input">
+                <span class="icon-close" aria-hidden="true"></span>
+            </button>
+        </span>
+    </label>
+
+Example: Inline
+
+    <label class="label">
+        Look, I
+        <span class="searchinput searchinput--inline">
+            <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
+            <button type="button" class="searchinput__clearbutton" title="clear search input">
+                <span class="icon-close" aria-hidden="true"></span>
+            </button>
+        </span>
+        am inline!
+    </label>
+
+Styleguide components.searchinput
+*/
+.searchinput {
+    position: relative;
+    display: block;
+
+    &__input {
+        padding-right: $spacing * 2;
+    }
+
+    &__clearbutton {
+        position: absolute;
+        right: $spacing;
+        top: vertical-space(3);
+    }
+
+    &--inline {
+        display: inline-block;
+        width: auto;
+        min-width: 160px;
+        //padding: $unit $spacing--small;
+        margin: 0;
+    }
+}
