@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import AbstractListChild from '../AbstractListChild'
 
-export default class AbstractListFilter extends React.Component {
+export default class AbstractListFilter extends AbstractListChild {
   static get propTypes () {
-    return {
+    return Object.assign(super.propTypes, {
       name: PropTypes.string.isRequired,
 
       // The filter does not control where it is rendered,
@@ -29,14 +30,14 @@ export default class AbstractListFilter extends React.Component {
       // value in the {@link AbstractList} state, which will lead to
       // a re-render of the filter with new value prop.
       value: PropTypes.any
-    }
+    })
   }
 
   static get defaultProps () {
-    return {
+    return Object.assign(super.defaultProps, {
       isStatic: false,
       value: null
-    }
+    })
   }
 
   static filterHttpRequest (httpRequest, name, value) {

@@ -55,7 +55,9 @@ export default class SearchFilter extends AbstractSearchFilter {
     return <button type="button"
                    className={this.clearButtonClassName}
                    title={this.clearButtonTitle}
-                   onClick={this.onClickClearButton}>
+                   onClick={this.onClickClearButton}
+                   onBlur={this.onBlur}
+                   onFocus={this.onFocus}>
       {this.renderClearButtonIcon()}
     </button>
   }
@@ -66,7 +68,9 @@ export default class SearchFilter extends AbstractSearchFilter {
                   placeholder={this.placeholder}
                   className={this.searchInputClassName}
                   value={this.stringValue}
-                  onChange={this.onChange} />
+                  onChange={this.onChange}
+                  onBlur={this.onBlur}
+                  onFocus={this.onFocus}/>
   }
 
   render () {

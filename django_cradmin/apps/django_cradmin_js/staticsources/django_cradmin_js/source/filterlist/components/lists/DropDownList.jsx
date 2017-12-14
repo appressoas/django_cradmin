@@ -49,6 +49,15 @@ export default class DropDownList extends AbstractList {
     return props
   }
 
+  // makeStateFromLoadItemsApiSuccessResponse (prevState, props, httpResponse, paginationOptions, clearOldItems) {
+  //   const newState = super.makeStateFromLoadItemsApiSuccessResponse(
+  //     prevState, props, httpResponse, paginationOptions, clearOldItems)
+  //   if (clearOldItems) {
+  //     newState.isExpanded = true
+  //   }
+  //   return newState
+  // }
+
   renderBody () {
     if (this.state.isExpanded) {
       const body = super.renderBody()

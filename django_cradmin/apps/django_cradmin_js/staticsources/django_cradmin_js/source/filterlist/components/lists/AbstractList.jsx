@@ -74,6 +74,7 @@ export default class AbstractList extends React.Component {
     super(props)
     this.setupBoundMethods()
     this._filterApiUpdateTimeoutId = null
+    this._blurTimeoutId = null
     this.filterListRegistry = new FilterListRegistrySingleton()
     this.state = this.getInitialState()
     this.filterSpecCache = new Map()
@@ -99,6 +100,8 @@ export default class AbstractList extends React.Component {
     this.loadNextPageFromApi = this.loadNextPageFromApi.bind(this)
     this.loadPreviousPageFromApi = this.loadPreviousPageFromApi.bind(this)
     this.loadSpecificPageFromApi = this.loadSpecificPageFromApi.bind(this)
+    this.onChildBlur = this.onChildBlur.bind(this)
+    this.onChildFocus = this.onChildFocus.bind(this)
   }
 
   /**
@@ -112,7 +115,8 @@ export default class AbstractList extends React.Component {
     return {
       listItemsDataArray: [],
       isLoadingItemsFromApi: false,
-      paginationState: {}
+      paginationState: {},
+      hasFocus: false
     }
   }
 
@@ -127,6 +131,45 @@ export default class AbstractList extends React.Component {
   isLoading () {
     // TODO: Include state variables for update too
     return this.state.isLoadingItemsFromApi
+  }
+
+  //
+  //
+  // Focus/blur
+  //
+  //
+
+  _stopBlurTimer () {
+    if (this._blurTimeoutId) {
+      window.clearTimeout(this._blurTimeoutId)
+    }
+  }
+
+  onBlurTimerTimeout () {
+    this.setState({
+      hasFocus: false
+    })
+  }
+
+  get blurTimerTimeout () {
+    return 200
+  }
+
+  _startBlurTimer () {
+    this._blurTimeoutId = window.setTimeout(() => {
+      this.onBlurTimerTimeout()
+    }, this.blurTimerTimeout)
+  }
+
+  onChildBlur (childInfo) {
+    this._startBlurTimer()
+  }
+
+  onChildFocus (childInfo) {
+    this._stopBlurTimer()
+    this.setState({
+      hasFocus: true
+    })
   }
 
   //
@@ -259,6 +302,8 @@ export default class AbstractList extends React.Component {
 
   getFilterComponentProps (filterSpec) {
     return Object.assign({}, filterSpec.props, {
+      blurCallback: this.onChildBlur,
+      focusCallback: this.onChildFocus,
       setFilterValueCallback: this.setFilterValue,
       value: this.getFilterValue(filterSpec.props.name),
       key: filterSpec.props.name
