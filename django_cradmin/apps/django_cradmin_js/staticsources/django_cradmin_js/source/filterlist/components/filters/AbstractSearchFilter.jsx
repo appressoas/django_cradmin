@@ -27,7 +27,6 @@ export default class AbstractSearchFilter extends AbstractListFilter {
   constructor (props) {
     super(props)
     this.placeholderRotateTimeoutId = null
-    this.searchChangeTimeoutId = null
   }
 
   componentWillReceiveProps (nextProps) {

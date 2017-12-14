@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
 import {
-  RENDER_LOCATION_BOTTOM, RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT,
+  RENDER_LOCATION_BOTTOM, RENDER_LOCATION_HEADER, RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT,
   RENDER_LOCATION_TOP
 } from '../../filterListConstants'
 
@@ -493,7 +493,7 @@ export default class AbstractList extends React.Component {
    */
   getNextPagePaginationOptions () {
     if (this.state.paginationState) {
-      if (this.state.paginationState.next === null) {
+      if (!this.state.paginationState.next) {
         return null
       }
       return {
@@ -769,6 +769,13 @@ export default class AbstractList extends React.Component {
   // Css classes
   //
   //
+  get headerClassName () {
+    return `${this.props.bemBlock}__header`
+  }
+
+  get bodyClassName () {
+    return `${this.props.bemBlock}__body`
+  }
 
   get leftColumnClassName () {
     return `${this.props.bemBlock}__leftcolumn`
@@ -855,6 +862,9 @@ export default class AbstractList extends React.Component {
         renderedFilters.push(this.renderFilter(filterSpec))
       }
     }
+    if(renderedFilters.length === 0) {
+      return null
+    }
     return renderedFilters
   }
 
@@ -888,7 +898,7 @@ export default class AbstractList extends React.Component {
 
   renderBottomBarContent () {
     return [
-      ...this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM),
+      ...this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM) || [],
       this.renderPaginator()
     ]
   }
@@ -936,7 +946,7 @@ export default class AbstractList extends React.Component {
     </div>
   }
 
-  renderContent () {
+  renderBodyContent () {
     return [
       this.renderLeftColumn(),
       this.renderCenterColumn(),
@@ -944,9 +954,26 @@ export default class AbstractList extends React.Component {
     ]
   }
 
+  renderBody () {
+    return <div className={this.bodyClassName}>
+      {this.renderBodyContent()}
+    </div>
+  }
+
+  renderHeaderContent () {
+    return this.renderFiltersAtLocation(RENDER_LOCATION_HEADER)
+  }
+
+  renderHeader () {
+    return <div className={this.headerClassName}>
+      {this.renderHeaderContent()}
+    </div>
+  }
+
   render () {
     return <div className={this.props.bemBlock}>
-      {this.renderContent()}
+      {this.renderHeader()}
+      {this.renderBody()}
     </div>
   }
 }

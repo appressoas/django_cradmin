@@ -8,8 +8,17 @@ Example:
 
     <div class="searchinput">
         <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
-        <button type="button" class="searchinput__clearbutton" title="clear search input">
+        <button type="button" class="searchinput__button" title="clear search input">
             <span class="icon-close" aria-hidden="true"></span>
+        </button>
+    </div>
+
+Example: Dropdown icon
+
+    <div class="searchinput">
+        <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
+        <button type="button" class="searchinput__button" title="Expand">
+            <span class="icon-chevron-down" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -19,7 +28,7 @@ Example: Within a label
         Search:
         <div class="searchinput">
             <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
-            <button type="button" class="searchinput__clearbutton" title="clear search input">
+            <button type="button" class="searchinput__button" title="clear search input">
                 <span class="icon-close" aria-hidden="true"></span>
             </button>
         </div>
@@ -31,7 +40,7 @@ Example: Inline
         Look, I
         <span class="searchinput searchinput--inline">
             <input type="text" placeholder="Search ..." class="searchinput__input  input  input--outlined" />
-            <button type="button" class="searchinput__clearbutton" title="clear search input">
+            <button type="button" class="searchinput__button" title="clear search input">
                 <span class="icon-close" aria-hidden="true"></span>
             </button>
         </span>
@@ -48,10 +57,18 @@ Styleguide components.searchinput
         padding-right: $spacing * 2;
     }
 
-    &__clearbutton {
+    &__button {
         position: absolute;
-        right: $spacing;
-        top: vertical-space(3);
+        right: $unit * 2;
+        //top: vertical-space(3);
+        top: $unit;
+        bottom: $unit;
+        //height: 100%;
+        //height: 40px;
+        width: $unit * 6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     &--inline {
@@ -60,5 +77,9 @@ Styleguide components.searchinput
         min-width: 160px;
         //padding: $unit $spacing--small;
         margin: 0;
+
+        .searchinput__input {
+            margin: 0;
+        }
     }
 }

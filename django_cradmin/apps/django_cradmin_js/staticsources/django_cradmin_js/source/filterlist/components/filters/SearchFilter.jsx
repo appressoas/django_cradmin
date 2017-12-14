@@ -40,7 +40,7 @@ export default class SearchFilter extends AbstractSearchFilter {
   }
 
   get clearButtonClassName () {
-    return 'searchinput__clearbutton'
+    return 'searchinput__button'
   }
 
   get clearButtonIconClassName () {
