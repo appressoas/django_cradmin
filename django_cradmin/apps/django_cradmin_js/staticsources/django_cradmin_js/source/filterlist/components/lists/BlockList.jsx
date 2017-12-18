@@ -1,6 +1,6 @@
 import AbstractList from './AbstractList'
 
-export default class List extends AbstractList {
+export default class BlockList extends AbstractList {
   get listClassName () {
     return 'blocklist'
   }

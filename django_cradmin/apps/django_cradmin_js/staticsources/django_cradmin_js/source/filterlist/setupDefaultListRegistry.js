@@ -1,5 +1,5 @@
 import FilterListRegistry from './FilterListRegistry'
-import List from './components/lists/List'
+import BlockList from './components/lists/BlockList'
 import IdOnlyListItem from './components/items/IdOnlyListItem'
 import CheckboxBooleanFilter from './components/filters/CheckboxBooleanFilter'
 import TitleDescriptionListItem from './components/items/TitleDescriptionListItem'
@@ -7,10 +7,13 @@ import LoadMorePaginator from './components/paginators/LoadMorePaginator'
 import SearchFilter from './components/filters/SearchFilter'
 import DropDownList from './components/lists/DropDownList'
 import DropDownSearchFilter from './components/filters/DropDownSearchFilter'
+import SelectableTitleDescriptionListItem from './components/items/SelectableTitleDescriptionListItem'
+import SelectableList from './components/lists/SelectableList'
 
 export function setupDefaultListRegistryListComponents (registry) {
-  registry.registerListComponent('List', List)
+  registry.registerListComponent('BlockList', BlockList)
   registry.registerListComponent('DropDownList', DropDownList)
+  registry.registerListComponent('SelectableList', SelectableList)
 }
 
 export function setupDefaultListRegistryFilterComponents (registry) {
@@ -22,6 +25,7 @@ export function setupDefaultListRegistryFilterComponents (registry) {
 export function setupDefaultListRegistryItemComponents (registry) {
   registry.registerItemComponent('IdOnly', IdOnlyListItem)
   registry.registerItemComponent('TitleDescription', TitleDescriptionListItem)
+  registry.registerItemComponent('SelectableTitleDescription', SelectableTitleDescriptionListItem)
 }
 
 export function setupDefaultListRegistryPaginatorComponents (registry) {

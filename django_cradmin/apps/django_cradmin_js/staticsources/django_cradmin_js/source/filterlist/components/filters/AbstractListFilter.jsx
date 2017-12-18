@@ -46,7 +46,6 @@ export default class AbstractListFilter extends AbstractListChild {
 
   constructor (props) {
     super(props)
-    this.setupBoundMethods()
     this.state = this.getInitialState()
   }
 
@@ -55,6 +54,7 @@ export default class AbstractListFilter extends AbstractListChild {
   }
 
   setupBoundMethods () {
+    super.setupBoundMethods()
     this.setFilterValue = this.setFilterValue.bind(this)
   }
 

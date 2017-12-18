@@ -20,18 +20,10 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onChange = this.onChange.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
   }
 
   onChange (event) {
     this.setFilterValue(!this.props.value)
-  }
-
-  onFocus (event) {
-  }
-
-  onBlur (event) {
   }
 
   renderLabel () {

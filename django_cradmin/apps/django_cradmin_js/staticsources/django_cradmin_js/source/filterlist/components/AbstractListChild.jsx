@@ -19,8 +19,18 @@ export default class AbstractListChild extends React.Component {
     }
   }
 
+  constructor (props) {
+    super(props)
+    this.setupBoundMethods()
+  }
+
   getBlurFocusCallbackInfo () {
     return this.props
+  }
+
+  setupBoundMethods () {
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   }
 
   onBlur () {

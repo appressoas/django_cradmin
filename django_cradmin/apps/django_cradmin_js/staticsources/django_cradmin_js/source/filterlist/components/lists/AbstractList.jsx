@@ -4,7 +4,7 @@ import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
 import {
   RENDER_LOCATION_BOTTOM, RENDER_LOCATION_HEADER, RENDER_LOCATION_LEFT, RENDER_LOCATION_RIGHT,
-  RENDER_LOCATION_TOP
+  RENDER_LOCATION_TOP, SINGLESELECT, MULTISELECT
 } from '../../filterListConstants'
 
 /*
@@ -41,9 +41,12 @@ export default class AbstractList extends React.Component {
       itemSpec: PropTypes.object.isRequired,
       paginatorSpec: PropTypes.object,
       getItemsApiUrl: PropTypes.string.isRequired,
+      getItemsApiIdsQueryStringArgument: PropTypes.string,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
-      bemBlock: PropTypes.string.isRequired
+      bemBlock: PropTypes.string.isRequired,
+      selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null])
+      // initiallySelectedItemIds: PropTypes.array
       // updateHttpMethod: (props, propName, componentName) => {
       //   if(!props[propName] || !/^(post|put)$/.test(props[propName])) {
       //     return new Error(
@@ -60,6 +63,9 @@ export default class AbstractList extends React.Component {
       bemBlock: 'filterlist',
       filterSpecs: [],
       idAttribute: 'id',
+      getItemsApiIdsQueryStringArgument: 'id',
+      selectMode: null,
+      // initiallySelectedItemIds: [],
       itemSpec: {
         'component': 'IdOnly'
       },
@@ -102,6 +108,12 @@ export default class AbstractList extends React.Component {
     this.loadSpecificPageFromApi = this.loadSpecificPageFromApi.bind(this)
     this.onChildBlur = this.onChildBlur.bind(this)
     this.onChildFocus = this.onChildFocus.bind(this)
+    this.loadMissingSelectedItemDataFromApi = this.loadMissingSelectedItemDataFromApi.bind(this)
+    this.selectItem = this.selectItem.bind(this)
+    this.selectItems = this.selectItems.bind(this)
+    this.deselectItem = this.deselectItem.bind(this)
+    this.deselectItems = this.deselectItems.bind(this)
+    this.deselectAllItems = this.deselectAllItems.bind(this)
   }
 
   /**
@@ -114,9 +126,13 @@ export default class AbstractList extends React.Component {
   getInitialState () {
     return {
       listItemsDataArray: [],
+      listItemsDataMap: new Map(),
       isLoadingItemsFromApi: false,
       paginationState: {},
-      hasFocus: false
+      hasFocus: false,
+      selectedListItemsMap: new Map(),
+      loadSelectedItemsFromApiError: null,
+      loadItemsFromApiError: null
     }
   }
 
@@ -169,6 +185,172 @@ export default class AbstractList extends React.Component {
     this._stopBlurTimer()
     this.setState({
       hasFocus: true
+    })
+  }
+
+  //
+  //
+  // Single and multiselect
+  //
+  //
+
+  get isSingleSelectMode () {
+    return this.props.selectMode === SINGLESELECT
+  }
+
+  get isMultiselectMode () {
+    return this.props.selectMode === MULTISELECT
+  }
+
+  itemIsSelected (listItemId) {
+    return this.state.selectedListItemsMap.has(listItemId)
+  }
+
+  selectItem (listItemId) {
+    this.selectItems([listItemId])
+  }
+
+  selectItems (listItemIds) {
+    if (listItemIds.length > 1 && this.isSingleSelectMode) {
+      throw new Error('Can not select multiple items in single select mode')
+    }
+    if (this.isSingleSelectMode) {
+      this.deselectAllItems()
+    }
+    this.setState((prevState, props) => {
+      const selectedListItemsMap = prevState.selectedListItemsMap
+      for (let listItemId of listItemIds) {
+        let listItemData = null
+        if (prevState.listItemsDataMap.has(listItemId)) {
+          listItemData = prevState.listItemsDataMap.get(listItemId)
+        }
+        selectedListItemsMap.set(listItemId, listItemData)
+      }
+      return {
+        selectedListItemsMap: selectedListItemsMap
+      }
+    }, this.loadMissingSelectedItemDataFromApi)
+  }
+
+  deselectItem (listItemId) {
+    this.deselectItems([listItemId])
+  }
+
+  deselectItems (listItemIds) {
+    this.setState((prevState, props) => {
+      const selectedListItemsMap = prevState.selectedListItemsMap
+      for (let listItemId of listItemIds) {
+        selectedListItemsMap.delete(listItemId)
+      }
+      return {
+        selectedListItemsMap: selectedListItemsMap
+      }
+    })
+  }
+
+  deselectAllItems () {
+    this.setState({
+      selectedListItemsMap: new Map()
+    })
+  }
+
+  getSelectedItemIdsWithMissingItemData () {
+    const selectedItemIdsWithMissingItemData = []
+    for (let [listItemId, listItemData] of this.state.selectedListItemsMap) {
+      if (listItemData === null) {
+        selectedItemIdsWithMissingItemData.push(listItemId)
+      }
+    }
+    return selectedItemIdsWithMissingItemData
+  }
+
+  filterLoadSelectedItemDataFromApiRequest (httpRequest, listItemIds) {
+    httpRequest.urlParser.queryString.setIterable(
+      this.props.getItemsApiIdsQueryStringArgument,
+      listItemIds)
+  }
+
+  _loadSelectedItemDataFromApi (listItemIds, paginationOptions, selectedItemDataArray) {
+    return new Promise((resolve, reject) => {
+      const httpRequest = this.makeListItemsHttpRequest(paginationOptions, false)
+      this.filterLoadSelectedItemDataFromApiRequest(httpRequest, listItemIds)
+      httpRequest.get()
+        .then((httpResponse) => {
+          const itemDataArray = this.getItemsArrayFromHttpResponse(httpResponse)
+          selectedItemDataArray.push(...itemDataArray)
+
+          // Load more paginated pages if needed
+          const paginationState = this.makePaginationStateFromHttpResponse(
+            httpResponse, paginationOptions)
+          const nextPaginationOptions = this.getNextPagePaginationOptions(
+            paginationState)
+          if (this.hasNextPaginationPage(paginationState)) {
+            this._loadSelectedItemDataFromApi(listItemIds, nextPaginationOptions, selectedItemDataArray)
+              .then(() => {
+                resolve()
+              })
+              .catch((error) => {
+                reject(error)
+              })
+          } else {
+            resolve()
+          }
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  setLoadMissingSelectedItemDataFromApiErrorMessage (errorObject) {
+    this.setState({
+      loadSelectedItemsFromApiError: window.gettext('Failed to load selected list items from the server.')
+    })
+  }
+
+  clearLoadMissingSelectedItemDataFromApiErrorMessage () {
+    if (this.state.loadSelectedItemsFromApiError !== null) {
+      this.setState({
+        loadSelectedItemsFromApiError: null
+      })
+    }
+  }
+
+  handleLoadMissingSelectedItemDataFromApiError (errorObject) {
+    console.error('Error:', errorObject.toString())
+    this.setLoadMissingSelectedItemDataFromApiErrorMessage(errorObject)
+  }
+
+  loadMissingSelectedItemDataFromApi () {
+    if (this.state.isLoadingSelectedItemDataApi) {
+      // Do not allow this to run in parallel
+      setTimeout(this.loadMissingSelectedItemDataFromApi, 20)
+      return
+    }
+    this.clearLoadMissingSelectedItemDataFromApiErrorMessage()
+    this.setState({
+      isLoadingSelectedItemDataApi: true
+    }, () => {
+      const selectedItemDataArray = []
+      this._loadSelectedItemDataFromApi(
+        this.getSelectedItemIdsWithMissingItemData(),
+        this.getFirstPagePaginationOptions(),
+        selectedItemDataArray)
+        .then(() => {
+          this.setState((prevState, props) => {
+            const selectedListItemsMap = prevState.selectedListItemsMap
+            for (let listItemData of selectedItemDataArray) {
+              const listItemId = this.getIdFromListItemData(listItemData)
+              selectedListItemsMap.set(listItemId, listItemData)
+            }
+            return {
+              selectedListItemsMap: selectedListItemsMap
+            }
+          })
+        })
+        .catch((error) => {
+          this.handleLoadMissingSelectedItemDataFromApiError(error)
+        })
     })
   }
 
@@ -343,10 +525,6 @@ export default class AbstractList extends React.Component {
     this.cachedItemSpec = cachedItemSpec
   }
 
-  itemIsSelected (listItemData) {
-    return false
-  }
-
   getIdFromListItemData (listItemData) {
     if (this.props.idAttribute) {
       return listItemData[this.props.idAttribute]
@@ -368,8 +546,12 @@ export default class AbstractList extends React.Component {
     const listItemId = this.getIdFromListItemData(listItemData)
     return Object.assign({}, listItemData, this.cachedItemSpec.props, {
       key: listItemId,
-      isSelected: this.itemIsSelected(listItemData),
-      listItemId: listItemId
+      isSelected: this.itemIsSelected(listItemId),
+      listItemId: listItemId,
+      selectItemCallback: this.selectItem,
+      selectItemsCallback: this.selectItems,
+      deselectItemCallback: this.deselectItem,
+      deselectItemsCallback: this.deselectItems,
     })
   }
 
@@ -463,12 +645,14 @@ export default class AbstractList extends React.Component {
     }
   }
 
-  makeListItemsHttpRequest (paginationOptions) {
+  makeListItemsHttpRequest (paginationOptions, filter=true) {
     const HttpRequestClass = this.getHttpRequestClass()
     const httpRequest = new HttpRequestClass(this.props.getItemsApiUrl)
-    this.filterListItemsHttpRequest(httpRequest)
+    if (filter) {
+      this.filterListItemsHttpRequest(httpRequest)
+    }
     this.paginateListItemsHttpRequest(httpRequest, paginationOptions)
-    return httpRequest.get()
+    return httpRequest
   }
 
   setLoadItemsFromApiErrorMessage (errorObject) {
@@ -477,9 +661,17 @@ export default class AbstractList extends React.Component {
     })
   }
 
-  handleGetListItemsFromApiRequestError (errorObjet) {
-    console.error('Error:', errorObjet.toString())
-    this.setLoadItemsFromApiErrorMessage(errorObjet)
+  clearLoadItemsFromApiErrorMessage () {
+    if (this.state.loadItemsFromApiError !== null) {
+      this.setState({
+        loadItemsFromApiError: null
+      })
+    }
+  }
+
+  handleGetListItemsFromApiRequestError (errorObject) {
+    console.error('Error:', errorObject.toString())
+    this.setLoadItemsFromApiErrorMessage(errorObject)
   }
 
   /**
@@ -536,9 +728,12 @@ export default class AbstractList extends React.Component {
    * @returns {object|null} Pagination options. If this returns
    *    null, it means that there are no "next" page.
    */
-  getNextPagePaginationOptions () {
-    if (this.state.paginationState) {
-      if (!this.state.paginationState.next) {
+  getNextPagePaginationOptions (paginationState=null) {
+    if(paginationState === null) {
+      paginationState = this.state.paginationState
+    }
+    if (paginationState) {
+      if (!paginationState.next) {
         return null
       }
       return {
@@ -611,8 +806,8 @@ export default class AbstractList extends React.Component {
    *
    * @returns {boolean}
    */
-  hasNextPaginationPage () {
-    return this.getNextPagePaginationOptions() !== null
+  hasNextPaginationPage (paginationState=null) {
+    return this.getNextPagePaginationOptions(paginationState) !== null
   }
 
   /**
@@ -634,13 +829,25 @@ export default class AbstractList extends React.Component {
    *    displayed in the list.
    * @returns {[]} An array containing raw data for list items.
    */
-  makeNewItemsDataArrayFromApiResponse (prevState, props, httpResponse, clearOldItems) {
+  makeNewItemsStateFromApiResponse (prevState, props, httpResponse, clearOldItems) {
     const newItemsArray = this.getItemsArrayFromHttpResponse(httpResponse)
+    let listItemsDataArray;
+    let listItemsDataMap;
     if (clearOldItems) {
-      return newItemsArray
+      listItemsDataMap = new Map()
+      listItemsDataArray = newItemsArray
     } else {
       prevState.listItemsDataArray.push(...newItemsArray)
-      return prevState.listItemsDataArray
+      listItemsDataArray = prevState.listItemsDataArray
+      listItemsDataMap = prevState.listItemsDataMap
+    }
+    for(let listItemData of newItemsArray) {
+      const listItemId = this.getIdFromListItemData(listItemData)
+      listItemsDataMap.set(listItemId, listItemData)
+    }
+    return {
+      listItemsDataArray: listItemsDataArray,
+      listItemsDataMap: listItemsDataMap
     }
   }
 
@@ -649,7 +856,7 @@ export default class AbstractList extends React.Component {
    *
    * You should normally not need to override this method.
    * It should normally be enough to override
-   * {@link makeNewItemsDataArrayFromApiResponse}
+   * {@link makeNewItemsStateFromApiResponse}
    * and {@link makePaginationStateFromHttpResponse}
    *
    * @param httpResponse The HTTP response. Will always be a
@@ -658,14 +865,16 @@ export default class AbstractList extends React.Component {
    *    with {@link getNextPagePaginationOptions},
    *    {@link getNextPagePaginationOptions}, {@link getPreviousPagePaginationOptions}
    *    or {@link getSpecificPagePaginationOptions}.
-   * @param clearOldItems See {@link makeNewItemsDataArrayFromApiResponse}.
+   * @param clearOldItems See {@link makeNewItemsStateFromApiResponse}.
    * @returns {object}
    */
   makeStateFromLoadItemsApiSuccessResponse (prevState, props, httpResponse, paginationOptions, clearOldItems) {
+    const newItemsState = this.makeNewItemsStateFromApiResponse(
+        prevState, props, httpResponse, clearOldItems)
     return {
       isLoadingItemsFromApi: false,
-      listItemsDataArray: this.makeNewItemsDataArrayFromApiResponse(
-        prevState, props, httpResponse, clearOldItems),
+      listItemsDataArray: newItemsState.listItemsDataArray,
+      listItemsDataMap: newItemsState.listItemsDataMap,
       paginationState: this.makePaginationStateFromHttpResponse(httpResponse, paginationOptions)
     }
   }
@@ -694,10 +903,11 @@ export default class AbstractList extends React.Component {
    */
   loadItemsFromApi (paginationOptions) {
     return new Promise((resolve, reject) => {
+      this.clearLoadItemsFromApiErrorMessage()
       this.setState({
         isLoadingItemsFromApi: true
       }, () => {
-        this.makeListItemsHttpRequest(paginationOptions)
+        this.makeListItemsHttpRequest(paginationOptions).get()
           .then((httpResponse) => {
             resolve(httpResponse)
           })
