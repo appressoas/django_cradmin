@@ -4,18 +4,20 @@ import PropTypes from 'prop-types'
 export default class AbstractListChild extends React.Component {
   static get propTypes () {
     return {
-      // Function that is used to notify blur events
-      blurCallback: PropTypes.func.isRequired,
+      // The render area for this child.
+      // Must be one of RENDER_AREA_HEADER or RENDER_AREA_BODY.
+      // Needed for focus handling in cases with dropdowns etc.
+      renderArea: PropTypes.string.isRequired,
 
-      // Function that is used to notify focus events
-      focusCallback: PropTypes.func.isRequired
+      // An object of ChildExposedApi
+      childExposedApi: PropTypes.object.isRequired
     }
   }
 
   static get defaultProps () {
     return {
-      blurCallback: null,
-      focusCallback: null
+      renderArea: null,
+      childExposedApi: null
     }
   }
 
@@ -24,20 +26,55 @@ export default class AbstractListChild extends React.Component {
     this.setupBoundMethods()
   }
 
-  getBlurFocusCallbackInfo () {
-    return this.props
-  }
-
   setupBoundMethods () {
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
   }
 
+  /**
+   * See {@link AbstractListChild#onBlur} and {@link AbstractListChild#onFocus}.
+   *
+   * @return {{}} An object with information about this component relevant
+   *    for blur/focus management.
+   */
+  getBlurFocusCallbackInfo () {
+    return {
+      renderArea: this.props.renderArea
+    }
+  }
+
+  /**
+   * Should be called when the component looses focus.
+   *
+   * By default this calls AbstractFilterList#onChildBlur with the
+   * information from AbstractListChild#getBlurFocusCallbackInfo.
+   */
   onBlur () {
-    this.props.blurCallback(this.getBlurFocusCallbackInfo())
+    this.props.childExposedApi.onChildBlur(this.getBlurFocusCallbackInfo())
   }
 
+  /**
+   * Should be called when the component gains focus.
+   *
+   * By default this calls AbstractFilterList#onChildFocus with the
+   * information from AbstractListChild#getBlurFocusCallbackInfo.
+   */
   onFocus () {
-    this.props.focusCallback(this.getBlurFocusCallbackInfo())
+    this.props.childExposedApi.onChildFocus(this.getBlurFocusCallbackInfo())
+  }
+
+  /**
+   * Make props for child components that is also a subclass
+   * of AbstractListChild.
+   *
+   * @param extraProps Extra props. These will override any props
+   *    set by default.
+   * @returns {{}} Object with child component props.
+   */
+  makeChildComponentProps (extraProps) {
+    return Object.assign({
+      renderArea: this.props.renderArea,
+      childExposedApi: this.props.childExposedApi
+    }, extraProps)
   }
 }

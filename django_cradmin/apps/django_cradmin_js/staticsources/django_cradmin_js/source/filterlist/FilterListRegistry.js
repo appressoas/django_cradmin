@@ -29,6 +29,7 @@ export default class FilterListRegistrySingleton {
     this._itemComponentMap = new Map()
     this._searchComponentMap = new Map()
     this._paginatorComponentMap = new Map()
+    this._layoutComponentMap = new Map()
   }
 
   clear () {
@@ -36,6 +37,7 @@ export default class FilterListRegistrySingleton {
     this._itemComponentMap.clear()
     this._searchComponentMap.clear()
     this._paginatorComponentMap.clear()
+    this._layoutComponentMap.clear()
   }
 
   /**
@@ -120,7 +122,7 @@ export default class FilterListRegistrySingleton {
    * @param {string} alias The alias for the paginator class.
    *    Makes it possible to use a JSON serializable object
    *    to define this paginator for a list.
-   * @param {AbstractListFilter} paginatorComponent The paginator class.
+   * @param {AbstractPaginator} paginatorComponent The paginator class.
    */
   registerPaginatorComponent (alias, paginatorComponent) {
     this._paginatorComponentMap.set(alias, paginatorComponent)
@@ -138,5 +140,31 @@ export default class FilterListRegistrySingleton {
 
   getPaginatorComponent (alias) {
     return this._paginatorComponentMap.get(alias)
+  }
+
+  /**
+   * Register a layout component class in the registry.
+   *
+   * @param {string} alias The alias for the layout class.
+   *    Makes it possible to use a JSON serializable object
+   *    to define this layout for a list.
+   * @param {AbstractLayout} layoutComponent The layout class.
+   */
+  registerLayoutComponent (alias, layoutComponent) {
+    this._layoutComponentMap.set(alias, layoutComponent)
+  }
+
+  /**
+   * Remove layout component class from registry.
+   *
+   * @param alias The alias that the layout class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerLayoutComponent}.
+   */
+  removeLayoutComponent (alias) {
+    this._layoutComponentMap.delete(alias)
+  }
+
+  getLayoutComponent (alias) {
+    return this._layoutComponentMap.get(alias)
   }
 }

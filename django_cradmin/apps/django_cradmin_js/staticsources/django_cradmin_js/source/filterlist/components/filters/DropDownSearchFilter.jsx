@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractSearchFilter from './AbstractSearchFilter'
+import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
 export default class DropDownSearchFilter extends AbstractSearchFilter {
   static get propTypes() {

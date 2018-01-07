@@ -20,10 +20,6 @@ export default class AbstractListFilter extends AbstractListChild {
       // but render is not used.
       isStatic: PropTypes.bool,
 
-      // Function that the filter calls to update its state.
-      // Takes the name of the filter, and a value.
-      setFilterValueCallback: PropTypes.func.isRequired,
-
       // The value of the filter.
       // This is changed using {@link AbstractListFilter#setFilterValue},
       // which uses the setFilterValueCallback prop to update the filter
@@ -59,6 +55,6 @@ export default class AbstractListFilter extends AbstractListChild {
   }
 
   setFilterValue (value) {
-    this.props.setFilterValueCallback(this.props.name, value)
+    this.props.childExposedApi.setFilterValue(this.props.name, value)
   }
 }

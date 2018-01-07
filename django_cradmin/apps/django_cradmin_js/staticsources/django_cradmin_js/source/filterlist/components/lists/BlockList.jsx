@@ -1,12 +1,9 @@
 import AbstractList from './AbstractList'
 
 export default class BlockList extends AbstractList {
-  get listClassName () {
-    return 'blocklist'
-  }
-
-  componentDidMount () {
-    super.componentDidMount()
-    this.loadFirstPageFromApi()
+  static get defaultProps () {
+    return Object.assign(super.defaultProps, {
+      bemBlock: 'blocklist'
+    })
   }
 }

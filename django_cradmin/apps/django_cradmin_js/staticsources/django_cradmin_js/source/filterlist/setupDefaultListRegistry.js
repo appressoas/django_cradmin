@@ -9,6 +9,11 @@ import DropDownList from './components/lists/DropDownList'
 import DropDownSearchFilter from './components/filters/DropDownSearchFilter'
 import SelectableTitleDescriptionListItem from './components/items/SelectableTitleDescriptionListItem'
 import SelectableList from './components/lists/SelectableList'
+import ThreeColumnLayout from './components/layout/ThreeColumnLayout'
+
+export function setupDefaultListRegistryLayoutComponents (registry) {
+  registry.registerListComponent('ThreeColumnLayout', ThreeColumnLayout)
+}
 
 export function setupDefaultListRegistryListComponents (registry) {
   registry.registerListComponent('BlockList', BlockList)
@@ -34,6 +39,7 @@ export function setupDefaultListRegistryPaginatorComponents (registry) {
 
 export default function setupDefaultListRegistry () {
   const registry = new FilterListRegistry()
+  setupDefaultListRegistryLayoutComponents(registry)
   setupDefaultListRegistryListComponents(registry)
   setupDefaultListRegistryFilterComponents(registry)
   setupDefaultListRegistryItemComponents(registry)

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractPaginator from './AbstractPaginator'
+import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
 export default class LoadMorePaginator extends AbstractPaginator {
   static get propTypes () {
