@@ -3,15 +3,17 @@ import PropTypes from 'prop-types'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import AbstractListChild from '../AbstractListChild'
 import LoadingIndicator from '../../../components/LoadingIndicator'
+import { RENDER_AREA_HEADER } from '../../filterListConstants'
 
 export default class AbstractLayout extends AbstractListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       cachedPaginatorSpec: PropTypes.object.isRequired,
       cachedListSpec: PropTypes.object.isRequired,
+      cachedItemSpec: PropTypes.object.isRequired,
       listItemsDataArray: PropTypes.array.isRequired,
-      listItemsDataMap: PropTypes.map.isRequired,
-      selectedListItemsMap: PropTypes.map.isRequired,
+      listItemsDataMap: PropTypes.instanceOf(Map).isRequired,
+      selectedListItemsMap: PropTypes.instanceOf(Map).isRequired,
       isLoadingNewItemsFromApi: PropTypes.bool.isRequired,
       isLoadingMoreItemsFromApi: PropTypes.bool.isRequired
     })
@@ -20,6 +22,8 @@ export default class AbstractLayout extends AbstractListChild {
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
       cachedPaginatorSpec: null,
+      cachedListSpec: null,
+      cachedItemSpec: null,
       listItemsDataArray: [],
       listItemsDataMap: new Map(),
       selectedListItemsMap: new Map(),
@@ -34,8 +38,8 @@ export default class AbstractLayout extends AbstractListChild {
   //
   //
 
-  renderLoadingIndicator () {
-    return <LoadingIndicator/>
+  renderLoadingIndicator (keySuffix='') {
+    return <LoadingIndicator key={`loadingIndicator${keySuffix}`}/>
   }
 
   getPaginatorComponentClass () {
@@ -64,12 +68,18 @@ export default class AbstractLayout extends AbstractListChild {
   getListComponentProps () {
     return this.makeChildComponentProps(Object.assign({
       key: 'list',
-      cachedItemSpec: this.props.cachedItemSpec
+      cachedItemSpec: this.props.cachedItemSpec,
+      listItemsDataArray: this.props.listItemsDataArray,
+      selectedListItemsMap: this.props.selectedListItemsMap
     }, this.props.cachedListSpec.props))
   }
 
+  renderAreaIsHeader () {
+    return this.props.renderArea === RENDER_AREA_HEADER
+  }
+
   renderList () {
-    if (!this.cachedListSpec) {
+    if (!this.props.cachedListSpec || this.renderAreaIsHeader()) {
       return null
     }
     return React.createElement(
@@ -109,7 +119,7 @@ export default class AbstractLayout extends AbstractListChild {
   }
 
   getFiltersAtLocation (location) {
-    this.props.childExposedApi.getFiltersAtLocation(this.props.renderArea, location)
+    return this.props.childExposedApi.getFiltersAtLocation(this.props.renderArea, location)
   }
 
   renderFiltersAtLocation (location) {

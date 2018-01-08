@@ -10,11 +10,7 @@ export default class AbstractListItem extends AbstractListChild {
         PropTypes.string,
         PropTypes.number
       ]).isRequired,
-      isSelected: PropTypes.bool,
-      selectItemCallback: PropTypes.func.isRequired,
-      selectItemsCallback: PropTypes.func.isRequired,
-      deselectItemCallback: PropTypes.func.isRequired,
-      deselectItemsCallback: PropTypes.func.isRequired
+      isSelected: PropTypes.bool
     }
   }
 

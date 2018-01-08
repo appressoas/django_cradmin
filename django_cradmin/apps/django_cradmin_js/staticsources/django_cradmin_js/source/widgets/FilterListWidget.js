@@ -6,7 +6,7 @@ import FilterListRegistry from '../filterlist/FilterListRegistry'
 export default class FilterListWidget extends AbstractWidget {
   getDefaultConfig () {
     return {
-      component: 'BlockList'
+      component: 'PageNumberPagination'
     }
   }
 
@@ -16,15 +16,15 @@ export default class FilterListWidget extends AbstractWidget {
     if (!this.config.component) {
       throw new Error('The "component" config is required')
     }
-    const listComponentClass = registry.getListComponent(this.config.component)
-    if (!listComponentClass) {
+    const filterListComponentClass = registry.getFilterListComponent(this.config.component)
+    if (!filterListComponentClass) {
       throw new Error(
-        `No filterlist list component registered for ` +
+        `No filterlist component registered for ` +
         `the "${this.config.component}" alias.`)
     }
 
     delete this.config.component
-    const reactElement = React.createElement(listComponentClass, this.config)
+    const reactElement = React.createElement(filterListComponentClass, this.config)
     ReactDOM.render(
       reactElement,
       this.element

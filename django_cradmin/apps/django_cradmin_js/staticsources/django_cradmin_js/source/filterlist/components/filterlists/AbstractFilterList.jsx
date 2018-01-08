@@ -54,6 +54,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator'
 export class ChildExposedApi {
   constructor (filterListObject) {
     this.filterListObject = filterListObject
+    this.setupBoundMethods()
   }
 
   setupBoundMethods () {
@@ -68,6 +69,7 @@ export class ChildExposedApi {
     this.deselectItems = this.filterListObject.deselectItems.bind(this.filterListObject)
     this.deselectAllItems = this.filterListObject.deselectAllItems.bind(this.filterListObject)
     this.itemIsSelected = this.filterListObject.itemIsSelected.bind(this.filterListObject)
+    this.getIdFromListItemData = this.filterListObject.getIdFromListItemData.bind(this.filterListObject)
 
     this.getFiltersAtLocation = this.filterListObject.getFiltersAtLocation.bind(this.filterListObject)
     this.getAllFilters = this.filterListObject.getAllFilters.bind(this.filterListObject)
@@ -110,6 +112,7 @@ export default class AbstractFilterList extends React.Component {
       idAttribute: PropTypes.string.isRequired,
       className: PropTypes.string.isRequired,
       selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null]),
+      autoLoadFirstPage: PropTypes.bool.isRequired,
 
       getItemsApiUrl: PropTypes.string.isRequired,
       getItemsApiIdsQueryStringArgument: PropTypes.string,
@@ -141,6 +144,7 @@ export default class AbstractFilterList extends React.Component {
       idAttribute: 'id',
       className: 'filterlistX',
       selectMode: null,
+      autoLoadFirstPage: true,
 
       getItemsApiUrl: null,
       getItemsApiIdsQueryStringArgument: 'id', // TODO: Should be optional and default to null - get by ID if not provided
@@ -148,10 +152,13 @@ export default class AbstractFilterList extends React.Component {
       submitSelectedItemsApiUrl: null,  // TODO: Does this make sense? What if we have multiple actions?
       // updateHttpMethod: 'post'
 
+      // initiallySelectedItemIds: [],
+
       headerFilterSpecs: [],
       bodyFilterSpecs: [],
-
-      // initiallySelectedItemIds: [],
+      listSpec: {
+        'component': 'BlockList'
+      },
       headerSpec: {
         'component': 'ThreeColumnLayout'
       },
@@ -195,6 +202,9 @@ export default class AbstractFilterList extends React.Component {
 
   componentDidMount () {
     this.refreshFiltersCache(this.props.headerFilterSpecs, this.props.bodyFilterSpecs)
+    if (this.props.autoLoadFirstPage) {
+      this.loadFirstPageFromApi()
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -484,11 +494,13 @@ export default class AbstractFilterList extends React.Component {
   }
 
   refreshHeaderSpec (rawHeaderSpec) {
-    this.cachedHeaderSpec = this.makeLayoutSpec('headerSpec', 'refreshHeaderSpec')
+    this.cachedHeaderSpec = this.makeLayoutSpec(
+      rawHeaderSpec, 'headerSpec', 'refreshHeaderSpec')
   }
 
   refreshBodySpec (rawBodySpec) {
-    this.cachedBodySpec = this.makeLayoutSpec('bodySpec', 'refreshBodySpec')
+    this.cachedBodySpec = this.makeLayoutSpec(
+      rawBodySpec, 'bodySpec', 'refreshBodySpec')
   }
 
   //
@@ -633,7 +645,7 @@ export default class AbstractFilterList extends React.Component {
    */
   getFiltersAtLocation (renderArea, location) {
     if (!this.filterSpecCache.has(renderArea)) {
-      throw new Error(`Invalid renderArea: "${renderArea}".`)
+      return []
     }
     return this.filterSpecCache.get(renderArea).get(location) || []
   }
@@ -780,7 +792,8 @@ export default class AbstractFilterList extends React.Component {
    *
    * @param httpRequest A HTTP request object. Will always be an
    *    object of the class returned by {@link getHttpRequestClass}
-   * @param paginationOptions
+   * @param {{}} paginationOptions The default implementation sets
+   *    the provided options as querystring arguments.
    */
   paginateListItemsHttpRequest (httpRequest, paginationOptions) {
     if (paginationOptions) {
@@ -842,12 +855,26 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Get pagination options for the first paginated page.
    *
-   * @returns {object|null} Pagination options.
+   * The returned options are used with
+   * {@link AbstractFilterList#paginateListItemsHttpRequest}
+   * when requesting the first page from the API.
+   *
+   * @param {{}} paginationState The paginationState generated
+   *     by {@link AbstractFilterList#makePaginationStateFromHttpResponse}
+   * @returns {object|null} Pagination options. If this returns `null`,
+   *     it means that no pagination options are needed to fetch the
+   *     first page.
    */
   getFirstPagePaginationOptions (paginationState) {
     return null
   }
 
+  /**
+   * Get the current pagination page number.
+   * @param {{}} paginationState The paginationState generated
+   *     by {@link AbstractFilterList#makePaginationStateFromHttpResponse}
+   * @returns {number}
+   */
   getCurrentPaginationPage (paginationState) {
     return 1
   }
@@ -1150,6 +1177,7 @@ export default class AbstractFilterList extends React.Component {
       childExposedApi: this.childExposedApi,
       cachedPaginatorSpec: this.cachedPaginatorSpec,
       cachedListSpec: this.cachedListSpec,
+      cachedItemSpec: this.cachedItemSpec,
       listItemsDataArray: this.state.listItemsDataArray,
       listItemsDataMap: this.state.listItemsDataMap,
       selectedListItemsMap: this.state.selectedListItemsMap,

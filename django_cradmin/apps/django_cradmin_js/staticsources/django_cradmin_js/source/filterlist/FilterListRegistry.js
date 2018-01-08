@@ -25,6 +25,8 @@ export default class FilterListRegistrySingleton {
   }
 
   _initialize () {
+    this._filterListComponentMap = new Map()
+    this._listComponentMap = new Map()
     this._filterComponentMap = new Map()
     this._itemComponentMap = new Map()
     this._searchComponentMap = new Map()
@@ -33,11 +35,37 @@ export default class FilterListRegistrySingleton {
   }
 
   clear () {
+    this._filterListComponentMap.clear()
+    this._listComponentMap.clear()
     this._filterComponentMap.clear()
     this._itemComponentMap.clear()
     this._searchComponentMap.clear()
     this._paginatorComponentMap.clear()
     this._layoutComponentMap.clear()
+  }
+
+  /**
+   * Register a filterlist component class in the registry.
+   *
+   * @param {string} alias The alias for the filterlist class.
+   * @param {AbstractFilterList} filterListComponent The item class.
+   */
+  registerFilterListComponent (alias, filterListComponent) {
+    this._filterListComponentMap.set(alias, filterListComponent)
+  }
+
+  /**
+   * Remove filterlist component class from registry.
+   *
+   * @param alias The alias that the filterlist component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerFilterListComponent}.
+   */
+  removeFilterListComponent (alias) {
+    this._filterListComponentMap.delete(alias)
+  }
+
+  getFilterListComponent (alias) {
+    return this._filterListComponentMap.get(alias)
   }
 
   /**
@@ -47,7 +75,7 @@ export default class FilterListRegistrySingleton {
    * @param {AbstractListFilter} listComponent The item class.
    */
   registerListComponent (alias, listComponent) {
-    this._itemComponentMap.set(alias, listComponent)
+    this._listComponentMap.set(alias, listComponent)
   }
 
   /**
@@ -57,11 +85,11 @@ export default class FilterListRegistrySingleton {
    *      by using {@link FilterListRegistrySingleton#registerListComponent}.
    */
   removeListComponent (alias) {
-    this._itemComponentMap.delete(alias)
+    this._listComponentMap.delete(alias)
   }
 
   getListComponent (alias) {
-    return this._itemComponentMap.get(alias)
+    return this._listComponentMap.get(alias)
   }
 
   /**

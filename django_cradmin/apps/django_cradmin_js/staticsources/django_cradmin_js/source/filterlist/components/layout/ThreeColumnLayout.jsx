@@ -77,10 +77,14 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   renderBottomBarContent () {
-    return [
-      ...this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM) || [],
-      this.renderPaginator()
-    ]
+    const bottomBarContent = this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM) || []
+    if (!this.renderAreaIsHeader()) {
+      bottomBarContent.push(this.renderPaginator())
+    }
+    if (bottomBarContent.length > 0) {
+      return bottomBarContent
+    }
+    return null
   }
 
   renderBottomBar () {
@@ -111,10 +115,13 @@ export default class ThreeColumnLayout extends AbstractLayout {
     const centerColumnContent = [
       this.renderTopBar()
     ]
-    if (this.props.isLoading()) {
-      centerColumnContent.push(this.renderLoadingIndicator())
+    if (this.props.isLoadingNewItemsFromApi) {
+      centerColumnContent.push(this.renderLoadingIndicator('new'))
     } else {
       centerColumnContent.push(this.renderList())
+      if(this.props.isLoadingMoreItemsFromApi) {
+        centerColumnContent.push(this.renderLoadingIndicator('more'))
+      }
     }
     centerColumnContent.push(this.renderBottomBar())
     return centerColumnContent

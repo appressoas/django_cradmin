@@ -1,9 +1,14 @@
+import React from 'react'
 import AbstractList from './AbstractList'
 
 export default class BlockList extends AbstractList {
-  static get defaultProps () {
-    return Object.assign(super.defaultProps, {
-      bemBlock: 'blocklist'
-    })
+  get bemBlock () {
+    return 'blocklist'
+  }
+
+  render () {
+    return <div className={this.bemBlock}>
+      {this.renderListItems()}
+    </div>
   }
 }

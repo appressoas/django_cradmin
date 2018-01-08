@@ -10,9 +10,14 @@ import DropDownSearchFilter from './components/filters/DropDownSearchFilter'
 import SelectableTitleDescriptionListItem from './components/items/SelectableTitleDescriptionListItem'
 import SelectableList from './components/lists/SelectableList'
 import ThreeColumnLayout from './components/layout/ThreeColumnLayout'
+import { PageNumberPaginationFilterList } from './components/filterlists/PageNumberPaginationFilterList'
+
+export function setupDefaultListRegistryFilterListComponents (registry) {
+  registry.registerFilterListComponent('PageNumberPagination', PageNumberPaginationFilterList)
+}
 
 export function setupDefaultListRegistryLayoutComponents (registry) {
-  registry.registerListComponent('ThreeColumnLayout', ThreeColumnLayout)
+  registry.registerLayoutComponent('ThreeColumnLayout', ThreeColumnLayout)
 }
 
 export function setupDefaultListRegistryListComponents (registry) {
@@ -39,6 +44,7 @@ export function setupDefaultListRegistryPaginatorComponents (registry) {
 
 export default function setupDefaultListRegistry () {
   const registry = new FilterListRegistry()
+  setupDefaultListRegistryFilterListComponents(registry)
   setupDefaultListRegistryLayoutComponents(registry)
   setupDefaultListRegistryListComponents(registry)
   setupDefaultListRegistryFilterComponents(registry)
