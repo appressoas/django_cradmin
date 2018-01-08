@@ -41,6 +41,10 @@ export default class AbstractSearchFilter extends AbstractListFilter {
     }
   }
 
+  componentWillUnmount () {
+    this.cancelPlaceholderRotation()
+  }
+
   getInitialState () {
     return {
       currentPlaceholderIndex: 0

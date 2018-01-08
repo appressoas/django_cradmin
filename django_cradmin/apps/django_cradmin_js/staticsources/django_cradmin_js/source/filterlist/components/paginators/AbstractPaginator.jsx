@@ -1,44 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import AbstractListChild from '../AbstractListChild'
 
-export default class AbstractPaginator extends React.Component {
+export default class AbstractPaginator extends AbstractListChild {
   static get propTypes () {
-    return {
-
-      // Function to call to load more items from the API
-      // See {@link AbstractList#loadMoreItemsFromApi}
-      loadMoreItemsFromApi: PropTypes.func,
-
-      // Function to call to load next page from the API
-      // See {@link AbstractList#loadNextPageFromApi}
-      loadNextPageFromApi: PropTypes.func,
-
-      // Function to call to load previous page from the API
-      // See {@link AbstractList#loadPreviousPageFromApi}
-      loadPreviousPageFromApi: PropTypes.func,
-
-      // Function to call to load a specific page from the API
-      // See {@link AbstractList#loadSpecificPageFromApi}
-      loadSpecificPageFromApi: PropTypes.func,
-
-      hasNextPage: PropTypes.bool,
-      hasPreviousPage: PropTypes.bool,
-      totalItemCount: PropTypes.number,
-      currentPage: PropTypes.number,
-      totalPageCount: PropTypes.number
-    }
+    return Object.assign(super.propTypes, {
+      // Not normally something used by a paginator, but needed
+      // to trigger re-render when the list changes
+      listItemsDataArray: PropTypes.array.isRequired
+    })
   }
 
   static get defaultProps () {
-    return {
-      currentPaginationOptions: null,
-      loadMoreItemsFromApi: null,
-      loadNextPageFromApi: null,
-      loadPreviousPageFromApi: null,
-      loadSpecificPageFromApi: null,
-      hasNextPage: false,
-      hasPreviousPage: false
-    }
+    return Object.assign(super.defaultProps, {
+      listItemsDataArray: null
+    })
   }
 
   constructor (props) {

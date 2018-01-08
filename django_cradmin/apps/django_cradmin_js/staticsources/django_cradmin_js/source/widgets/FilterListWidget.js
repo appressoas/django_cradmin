@@ -6,7 +6,7 @@ import FilterListRegistry from '../filterlist/FilterListRegistry'
 export default class FilterListWidget extends AbstractWidget {
   getDefaultConfig () {
     return {
-      component: 'PageNumberPagination'
+      component: 'PageNumberPaginationFilterList'
     }
   }
 

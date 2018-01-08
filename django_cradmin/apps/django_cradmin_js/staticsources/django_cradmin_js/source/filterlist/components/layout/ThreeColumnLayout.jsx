@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  RENDER_LOCATION_BOTTOM,
+  RENDER_LOCATION_BOTTOM, RENDER_LOCATION_CENTER,
   RENDER_LOCATION_LEFT,
   RENDER_LOCATION_RIGHT,
   RENDER_LOCATION_TOP
@@ -49,7 +49,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
   //
 
   renderLeftColumnContent () {
-    return this.renderFiltersAtLocation(RENDER_LOCATION_LEFT)
+    return this.renderComponentsAtLocation(RENDER_LOCATION_LEFT)
   }
 
   renderLeftColumn () {
@@ -63,7 +63,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   renderTopBarContent () {
-    return this.renderFiltersAtLocation(RENDER_LOCATION_TOP)
+    return this.renderComponentsAtLocation(RENDER_LOCATION_TOP)
   }
 
   renderTopBar () {
@@ -77,14 +77,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   renderBottomBarContent () {
-    const bottomBarContent = this.renderFiltersAtLocation(RENDER_LOCATION_BOTTOM) || []
-    if (!this.renderAreaIsHeader()) {
-      bottomBarContent.push(this.renderPaginator())
-    }
-    if (bottomBarContent.length > 0) {
-      return bottomBarContent
-    }
-    return null
+    return this.renderComponentsAtLocation(RENDER_LOCATION_BOTTOM) || []
   }
 
   renderBottomBar () {
@@ -98,7 +91,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   renderRightColumnContent () {
-    return this.renderFiltersAtLocation(RENDER_LOCATION_RIGHT)
+    return this.renderComponentsAtLocation(RENDER_LOCATION_RIGHT)
   }
 
   renderRightColumn () {
@@ -118,7 +111,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
     if (this.props.isLoadingNewItemsFromApi) {
       centerColumnContent.push(this.renderLoadingIndicator('new'))
     } else {
-      centerColumnContent.push(this.renderList())
+      centerColumnContent.push(...this.renderComponentsAtLocation(RENDER_LOCATION_CENTER, []))
       if(this.props.isLoadingMoreItemsFromApi) {
         centerColumnContent.push(this.renderLoadingIndicator('more'))
       }

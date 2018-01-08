@@ -32,25 +32,33 @@
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "itemSpec": {
-                        "component": "TitleDescription"
-                     },
-                     "bodyFilterSpecs": [{
-                        "component": "CheckboxBoolean",
-                        "props": {
-                          "name": "is_godlike",
-                          "label": "Is godlike?",
-                          "location": "left"
-                        },
-                        "initialValue": true
-                     }, {
-                        "component": "Search",
-                        "props": {
-                          "name": "search",
-                          "location": "left",
-                          "placeholder": ["God", "Time", "wizard"]
-                        }
-                     }]
+                     "body": {
+                        "component": "ThreeColumnLayout",
+                        "layout": [{
+                          "component": "SearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"]
+                          }
+                        }, {
+                          "component": "CheckboxBooleanFilter",
+                          "props": {
+                            "name": "is_godlike",
+                            "label": "Is godlike?"
+                          },
+                          "initialValue": true
+                        }, {
+                          "component": "BlockList",
+                          "itemSpec": {
+                            "component": "TitleDescriptionItem"
+                          }
+                        }, {
+                          "component": "LoadMorePaginator",
+                          "props": {
+                            "label": "Load some more items!"
+                          }
+                        }]
+                     }
                  }'>
 
             </div>
@@ -64,7 +72,7 @@
 {#                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",#}
 {#                     "component": "DropDownList",#}
 {#                     "itemSpec": {#}
-{#                        "component": "TitleDescription"#}
+{#                        "component": "TitleDescriptionItem"#}
 {#                     },#}
 {#                     "filterSpecs": [{#}
 {#                        "component": "DropDownSearch",#}
@@ -91,34 +99,34 @@
 {#            </p>#}
 {#        </div>#}
 {#    </section>#}
-    <section class="adminui-page-section">
-        <div class="container">
-            <h2>Selectable list</h2>
-            <div data-ievv-jsbase-widget="cradmin-filterlist"
-                 data-ievv-jsbase-widget-config='{
-                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "selectMode": "multi",
-                     "listSpec": {
-                        "component": "SelectableList"
-                     },
-                     "itemSpec": {
-                        "component": "SelectableTitleDescription"
-                     },
-                     "bodyFilterSpecs": [{
-                        "component": "Search",
-                        "props": {
-                          "name": "search",
-                          "location": "top",
-                          "placeholder": ["God", "Time", "wizard"]
-                        }
-                     }]
-                 }'>
-
-            </div>
-
-            <p>
-                Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-            </p>
-        </div>
-    </section>
+{#    <section class="adminui-page-section">#}
+{#        <div class="container">#}
+{#            <h2>Selectable list</h2>#}
+{#            <div data-ievv-jsbase-widget="cradmin-filterlist"#}
+{#                 data-ievv-jsbase-widget-config='{#}
+{#                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",#}
+{#                     "selectMode": "multi",#}
+{#                     "listSpec": {#}
+{#                        "component": "SelectableList"#}
+{#                     },#}
+{#                     "itemSpec": {#}
+{#                        "component": "SelectableTitleDescription"#}
+{#                     },#}
+{#                     "bodyFilterSpecs": [{#}
+{#                        "component": "Search",#}
+{#                        "props": {#}
+{#                          "name": "search",#}
+{#                          "location": "top",#}
+{#                          "placeholder": ["God", "Time", "wizard"]#}
+{#                        }#}
+{#                     }]#}
+{#                 }'>#}
+{##}
+{#            </div>#}
+{##}
+{#            <p>#}
+{#                Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.#}
+{#            </p>#}
+{#        </div>#}
+{#    </section>#}
 {% endblock content %}

@@ -4,13 +4,14 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import AbstractListChild from '../AbstractListChild'
 import LoadingIndicator from '../../../components/LoadingIndicator'
 import { RENDER_AREA_HEADER } from '../../filterListConstants'
+import AbstractListFilter from '../filters/AbstractListFilter'
+import AbstractList from '../lists/AbstractList'
+import AbstractPaginator from '../paginators/AbstractPaginator'
 
 export default class AbstractLayout extends AbstractListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
-      cachedPaginatorSpec: PropTypes.object.isRequired,
-      cachedListSpec: PropTypes.object.isRequired,
-      cachedItemSpec: PropTypes.object.isRequired,
+      layout: PropTypes.object.isRequired,
       listItemsDataArray: PropTypes.array.isRequired,
       listItemsDataMap: PropTypes.instanceOf(Map).isRequired,
       selectedListItemsMap: PropTypes.instanceOf(Map).isRequired,
@@ -21,10 +22,8 @@ export default class AbstractLayout extends AbstractListChild {
 
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
-      cachedPaginatorSpec: null,
-      cachedListSpec: null,
-      cachedItemSpec: null,
-      listItemsDataArray: [],
+      layout: null,
+      listItemsDataArray: null,
       listItemsDataMap: new Map(),
       selectedListItemsMap: new Map(),
       isLoadingNewItemsFromApi: false,
@@ -42,96 +41,114 @@ export default class AbstractLayout extends AbstractListChild {
     return <LoadingIndicator key={`loadingIndicator${keySuffix}`}/>
   }
 
-  getPaginatorComponentClass () {
-    return this.props.cachedPaginatorSpec.componentClass
-  }
+  // getPaginatorComponentClass () {
+  //   return this.props.cachedPaginatorSpec.componentClass
+  // }
+  //
+  // getPaginatorComponentProps () {
+  //   return this.makeChildComponentProps(Object.assign({
+  //     key: 'paginator',
+  //   }, this.props.cachedPaginatorSpec.props))
+  // }
 
-  getPaginatorComponentProps () {
-    return this.makeChildComponentProps(Object.assign({
-      key: 'paginator',
-    }, this.props.cachedPaginatorSpec.props))
-  }
+  // renderPaginator () {
+  //   if (!this.cachedPaginatorSpec) {
+  //     return null
+  //   }
+  //   return React.createElement(
+  //     this.getPaginatorComponentClass(),
+  //     this.getPaginatorComponentProps())
+  // }
 
-  renderPaginator () {
-    if (!this.cachedPaginatorSpec) {
-      return null
-    }
-    return React.createElement(
-      this.getPaginatorComponentClass(),
-      this.getPaginatorComponentProps())
-  }
-
-  getListComponentClass () {
-    return this.props.cachedListSpec.componentClass
-  }
-
-  getListComponentProps () {
-    return this.makeChildComponentProps(Object.assign({
-      key: 'list',
-      cachedItemSpec: this.props.cachedItemSpec,
-      listItemsDataArray: this.props.listItemsDataArray,
-      selectedListItemsMap: this.props.selectedListItemsMap
-    }, this.props.cachedListSpec.props))
-  }
+  // getListComponentClass () {
+  //   return this.props.cachedListSpec.componentClass
+  // }
+  //
+  // getListComponentProps () {
+  //   return this.makeChildComponentProps(Object.assign({
+  //     key: 'list',
+  //     cachedItemSpec: this.props.cachedItemSpec,
+  //     listItemsDataArray: this.props.listItemsDataArray,
+  //     selectedListItemsMap: this.props.selectedListItemsMap
+  //   }, this.props.cachedListSpec.props))
+  // }
 
   renderAreaIsHeader () {
     return this.props.renderArea === RENDER_AREA_HEADER
   }
 
-  renderList () {
-    if (!this.props.cachedListSpec || this.renderAreaIsHeader()) {
-      return null
-    }
-    return React.createElement(
-      this.getListComponentClass(),
-      this.getListComponentProps())
-  }
+  // renderList () {
+  //   if (!this.props.cachedListSpec || this.renderAreaIsHeader()) {
+  //     return null
+  //   }
+  //   return React.createElement(
+  //     this.getListComponentClass(),
+  //     this.getListComponentProps())
+  // }
 
   /**
-   * Determine if a filter should be rendered.
+   * Determine if a component should be rendered.
    *
    * Perfect place to hook in things like "show advanced" filters etc.
    * in subclasses.
    *
-   * @param cachedFilterSpec The filter we want to determine if should be rendered.
+   * @param componentSpec The filter we want to determine if should be rendered.
    * @returns {boolean} `true` to render the filter, and `false` to not render
    *    the filter. Returns `true` by default.
    */
-  shouldRenderFilter (cachedFilterSpec) {
+  shouldRenderComponent (componentSpec) {
     return true
   }
 
-  getFilterComponentClass (cachedFilterSpec) {
-    return cachedFilterSpec.componentClass
+  getFilterComponentProps (componentSpec) {
+    return {
+      value: this.props.childExposedApi.getFilterValue(componentSpec.props.name)
+    }
   }
 
-  getFilterComponentProps (cachedFilterSpec) {
-    return this.makeChildComponentProps(Object.assign(cachedFilterSpec.props, {
-      value: this.props.childExposedApi.getFilterValue(cachedFilterSpec.props.name),
-      key: cachedFilterSpec.props.name
-    }))
+  getListComponentProps (componentSpec) {
+    return {
+      listItemsDataArray: this.props.listItemsDataArray,
+      selectedListItemsMap: this.props.selectedListItemsMap
+    }
   }
 
-  renderFilter (cachedFilterSpec) {
+  getPaginatorComponentProps (componentSpec) {
+    return {
+      listItemsDataArray: this.props.listItemsDataArray
+    }
+  }
+
+  getComponentProps (componentSpec) {
+    let extraProps = {}
+    if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
+      extraProps = this.getFilterComponentProps(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
+      extraProps = this.getListComponentProps(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
+      extraProps = this.getPaginatorComponentProps(componentSpec)
+    }
+    return this.makeChildComponentProps(Object.assign(componentSpec.props, {
+      key: componentSpec.props.uniqueComponentKey
+    }, extraProps))
+  }
+
+  renderComponent (componentSpec) {
     return React.createElement(
-      this.getFilterComponentClass(cachedFilterSpec),
-      this.getFilterComponentProps(cachedFilterSpec))
+      componentSpec.componentClass,
+      this.getComponentProps(componentSpec))
   }
 
-  getFiltersAtLocation (location) {
-    return this.props.childExposedApi.getFiltersAtLocation(this.props.renderArea, location)
-  }
-
-  renderFiltersAtLocation (location) {
-    const renderedFilters = []
-    for (let cachedFilterSpec of this.getFiltersAtLocation(location)) {
-      if (this.shouldRenderFilter(cachedFilterSpec)) {
-        renderedFilters.push(this.renderFilter(cachedFilterSpec))
+  renderComponentsAtLocation (location, fallback=null) {
+    const renderedComponents = []
+    for (let componentSpec of this.props.layout.getComponentsAtLocation(location)) {
+      if (this.shouldRenderComponent(componentSpec)) {
+        renderedComponents.push(this.renderComponent(componentSpec))
       }
     }
-    if(renderedFilters.length === 0) {
-      return null
+    if(renderedComponents.length === 0) {
+      return fallback
     }
-    return renderedFilters
+    return renderedComponents
   }
 }

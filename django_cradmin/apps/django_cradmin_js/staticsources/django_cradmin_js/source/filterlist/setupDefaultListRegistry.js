@@ -13,7 +13,7 @@ import ThreeColumnLayout from './components/layout/ThreeColumnLayout'
 import { PageNumberPaginationFilterList } from './components/filterlists/PageNumberPaginationFilterList'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
-  registry.registerFilterListComponent('PageNumberPagination', PageNumberPaginationFilterList)
+  registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
 }
 
 export function setupDefaultListRegistryLayoutComponents (registry) {
@@ -27,19 +27,19 @@ export function setupDefaultListRegistryListComponents (registry) {
 }
 
 export function setupDefaultListRegistryFilterComponents (registry) {
-  registry.registerFilterComponent('CheckboxBoolean', CheckboxBooleanFilter)
-  registry.registerFilterComponent('Search', SearchFilter)
-  registry.registerFilterComponent('DropDownSearch', DropDownSearchFilter)
+  registry.registerFilterComponent('CheckboxBooleanFilter', CheckboxBooleanFilter)
+  registry.registerFilterComponent('SearchFilter', SearchFilter)
+  registry.registerFilterComponent('DropDownSearchFilter', DropDownSearchFilter)
 }
 
 export function setupDefaultListRegistryItemComponents (registry) {
-  registry.registerItemComponent('IdOnly', IdOnlyListItem)
-  registry.registerItemComponent('TitleDescription', TitleDescriptionListItem)
-  registry.registerItemComponent('SelectableTitleDescription', SelectableTitleDescriptionListItem)
+  registry.registerItemComponent('IdOnlyItem', IdOnlyListItem)
+  registry.registerItemComponent('TitleDescriptionItem', TitleDescriptionListItem)
+  registry.registerItemComponent('SelectableTitleDescriptionItem', SelectableTitleDescriptionListItem)
 }
 
 export function setupDefaultListRegistryPaginatorComponents (registry) {
-  registry.registerPaginatorComponent('LoadMore', LoadMorePaginator)
+  registry.registerPaginatorComponent('LoadMorePaginator', LoadMorePaginator)
 }
 
 export default function setupDefaultListRegistry () {

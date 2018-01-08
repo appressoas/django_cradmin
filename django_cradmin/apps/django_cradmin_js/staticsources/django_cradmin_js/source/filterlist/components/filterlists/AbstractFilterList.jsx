@@ -3,59 +3,36 @@ import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
 import {
-  MULTISELECT, RENDER_AREA_ALL, RENDER_AREA_BODY, RENDER_AREA_HEADER, RENDER_LOCATION_RIGHT, RENDER_LOCATION_TOP,
+  MULTISELECT, RENDER_AREA_ALL, RENDER_AREA_BODY, RENDER_AREA_HEADER, RENDER_LOCATION_CENTER,
   SINGLESELECT
 } from '../../filterListConstants'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'
+import ComponentCache from '../../ComponentCache'
 
 
 /*
 <AbstractList
-  headerFilterSpecs={[
-    {
+  body: {
+    component: "ThreeColumnLayout",
+    layout: [{
       component: "SearchFilter",
       props: {
         name: "search"
       }
-    }
-  ]}
-  bodyFilterSpecs={[
-    {
-      component: "AmountFilter",
+    }, {
+      component: "BlockList",
+      itemSpec: {
+        component: "TitleDescriptionItem"
+      }
+    }, {
+      component: "LoadMorePaginator",
       props: {
-        name: "max_amount",
-        location: "left"
-      },
-      initialValue: 10
-    }
-  ]}
-  layout: {
-    header: [{
-
-    }],
-    body: [{
-
+        label: "Load some more items!"
+      }
     }]
-  },
-  headerSpec={
-    component: "StackedLayout"
   }
-  bodySpec={
-    component: "ThreeColumnLayout"
-  }
-  itemSpec={{
-    component: "MyItem",
-    props: {
-      myprop: 10
-    }
-  }}
-  paginatorSpec={{
-    component: "MyPaginator",
-    props: {
-      myLabel: "Load some more items!"
-    }
-  }}/>
+  />
 */
 
 
@@ -79,8 +56,6 @@ export class ChildExposedApi {
     this.itemIsSelected = this.filterListObject.itemIsSelected.bind(this.filterListObject)
     this.getIdFromListItemData = this.filterListObject.getIdFromListItemData.bind(this.filterListObject)
 
-    this.getFiltersAtLocation = this.filterListObject.getFiltersAtLocation.bind(this.filterListObject)
-    this.getAllFilters = this.filterListObject.getAllFilters.bind(this.filterListObject)
     this.setFilterValue = this.filterListObject.setFilterValue.bind(this.filterListObject)
     this.getFilterValue = this.filterListObject.getFilterValue.bind(this.filterListObject)
 
@@ -97,19 +72,19 @@ export class ChildExposedApi {
   }
 
   hasPreviousPaginationPage () {
-    return this._hasPreviousPaginationPage(this.filterListObject.paginationState)
+    return this._hasPreviousPaginationPage(this.filterListObject.state.paginationState)
   }
 
   hasNextPaginationPage () {
-    return this._hasNextPaginationPage(this.filterListObject.paginationState)
+    return this._hasNextPaginationPage(this.filterListObject.state.paginationState)
   }
 
   getPaginationPageCount () {
-    return this._getPaginationPageCount(this.filterListObject.paginationState)
+    return this._getPaginationPageCount(this.filterListObject.state.paginationState)
   }
 
   getTotalListItemCount () {
-    return this._getTotalListItemCount(this.filterListObject.paginationState)
+    return this._getTotalListItemCount(this.filterListObject.state.paginationState)
   }
 }
 
@@ -127,13 +102,8 @@ export default class AbstractFilterList extends React.Component {
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
 
-      headerFilterSpecs: PropTypes.array,
-      bodyFilterSpecs: PropTypes.array,
-      headerSpec: PropTypes.object,
-      bodySpec: PropTypes.object.isRequired,
-      itemSpec: PropTypes.object.isRequired,
-      listSpec: PropTypes.object.isRequired,
-      paginatorSpec: PropTypes.object,
+      header: PropTypes.object,
+      body: PropTypes.object
 
       // initiallySelectedItemIds: PropTypes.array
       // updateHttpMethod: (props, propName, componentName) => {
@@ -158,24 +128,20 @@ export default class AbstractFilterList extends React.Component {
       getItemsApiIdsQueryStringArgument: 'id', // TODO: Should be optional and default to null - get by ID if not provided
       updateSingleItemSortOrderApiUrl: null,
       submitSelectedItemsApiUrl: null,  // TODO: Does this make sense? What if we have multiple actions?
-      // updateHttpMethod: 'post'
-
-      // initiallySelectedItemIds: [],
-
-      headerFilterSpecs: [],
-      bodyFilterSpecs: [],
-      listSpec: {
-        'component': 'BlockList'
-      },
-      headerSpec: null,
-      bodySpec: {
-        'component': 'ThreeColumnLayout'
-      },
-      itemSpec: {
-        'component': 'IdOnly'
-      },
-      paginatorSpec: {
-        'component': 'LoadMore'
+      header: null,
+      body: {
+        component: "ThreeColumnLayout",
+        layout: [{
+          component: "BlockList",
+          itemSpec: {
+            component: "IdOnlyItem",
+            props: {
+              myprop: 10
+            }
+          }
+        }, {
+          component: "LoadMorePaginator"
+        }]
       }
     }
   }
@@ -194,12 +160,6 @@ export default class AbstractFilterList extends React.Component {
     this.cachedItemSpec = null
     this.cachedListSpec = null
     this.cachedPaginatorSpec = null
-
-    this.refreshHeaderSpec(this.props.headerSpec)
-    this.refreshBodySpec(this.props.bodySpec)
-    this.refreshItemSpec(this.props.itemSpec)
-    this.refreshListSpec(this.props.listSpec)
-    this.refreshPaginatorSpec(this.props.paginatorSpec)
   }
 
   makeChildExposedApi () {
@@ -207,19 +167,14 @@ export default class AbstractFilterList extends React.Component {
   }
 
   componentDidMount () {
-    this.refreshFiltersCache(this.props.headerFilterSpecs, this.props.bodyFilterSpecs)
+    this.refreshComponentCache(this.props.header, this.props.body)
     if (this.props.autoLoadFirstPage) {
       this.loadFirstPageFromApi()
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    this.refreshHeaderSpec(nextProps.headerSpec)
-    this.refreshBodySpec(nextProps.bodySpec)
-    this.refreshItemSpec(nextProps.itemSpec)
-    this.refreshListSpec(nextProps.listSpec)
-    this.refreshPaginatorSpec(nextProps.paginatorSpec)
-    this.refreshFiltersCache(nextProps.headerFilterSpecs, nextProps.bodyFilterSpecs)
+    this.refreshComponentCache(nextProps.header, nextProps.body)
   }
 
   setupBoundMethods () {
@@ -252,12 +207,38 @@ export default class AbstractFilterList extends React.Component {
       listItemsDataMap: new Map(),
       isLoadingNewItemsFromApi: false,
       isLoadingMoreItemsFromApi: false,
+      componentCache: new ComponentCache(),
       paginationState: {},
       hasFocus: false,
       selectedListItemsMap: new Map(),
       loadSelectedItemsFromApiError: null,
       loadItemsFromApiError: null
     }
+  }
+
+  setInitialFilterValuesInState (filterSpecs) {
+    for (let filterSpec of filterSpecs) {
+      this._setFilterValueInState(filterSpec.props.name, filterSpec.initialValue)
+    }
+  }
+
+  makeComponentCache (rawHeaderSpec, rawBodySpec) {
+    const componentCache = new ComponentCache()
+    if (rawHeaderSpec) {
+      componentCache.setHeader(rawHeaderSpec, this.getDefaultHeaderComponentLocation())
+    }
+    if (rawBodySpec) {
+      componentCache.setBody(rawBodySpec, this.getDefaultBodyComponentLocation())
+    }
+    return componentCache
+  }
+
+  refreshComponentCache (rawHeaderSpec, rawBodySpec) {
+    const componentCache = this.makeComponentCache(rawHeaderSpec, rawBodySpec)
+    this.setInitialFilterValuesInState(componentCache.filterMap.values())
+    this.setState({
+      componentCache: componentCache
+    })
   }
 
   //
@@ -472,52 +453,6 @@ export default class AbstractFilterList extends React.Component {
 
   //
   //
-  // Header / body specs
-  //
-  //
-
-  makeLayoutSpec (rawLayoutSpec, propName, methodName) {
-    let cachedLayoutSpec = null
-    if (rawLayoutSpec) {
-      cachedLayoutSpec = Object.assign({}, rawLayoutSpec)
-      if (cachedLayoutSpec.component) {
-        if (typeof cachedLayoutSpec.component === 'string') {
-          cachedLayoutSpec.componentClass = this.filterListRegistry.getLayoutComponent(cachedLayoutSpec.component)
-          if (!cachedLayoutSpec.componentClass) {
-            throw new Error(
-              `Could not find a filterlist layout component class registered for ` +
-              `alias "${cachedLayoutSpec.component}"`)
-          }
-        } else {
-          cachedLayoutSpec.componentClass = cachedLayoutSpec.component
-        }
-      } else {
-        throw new Error(
-          `You must specify the "props.${propName}", or override ` +
-          `the ${methodName}() method.`)
-      }
-      if (!cachedLayoutSpec.props) {
-        cachedLayoutSpec.props = {}
-      }
-    }
-    return cachedLayoutSpec
-  }
-
-  refreshHeaderSpec (rawHeaderSpec) {
-    if (rawHeaderSpec === null) {
-      return null
-    }
-    this.cachedHeaderSpec = this.makeLayoutSpec(
-      rawHeaderSpec, 'headerSpec', 'refreshHeaderSpec')
-  }
-
-  refreshBodySpec (rawBodySpec) {
-    this.cachedBodySpec = this.makeLayoutSpec(
-      rawBodySpec, 'bodySpec', 'refreshBodySpec')
-  }
-
-  //
-  //
   // Filters
   //
   //
@@ -604,100 +539,20 @@ export default class AbstractFilterList extends React.Component {
     return this.state[this._getStateVariableNameForFilter(filterName)]
   }
 
-  _refreshSingleAreaFilterSpecs(allFilters, filterSpecCache, defaultLocation, area, rawFilterSpecs) {
-    const areaFilterMap = new Map()
-    for (let rawFilterSpec of rawFilterSpecs) {
-      const filterSpec = this.makeFilterSpec(rawFilterSpec, defaultLocation)
-      allFilters.push(filterSpec)
-      if (this.state[this._getStateVariableNameForFilter(filterSpec.props.name)] !== undefined) {
-        throw new Error(
-          `Multiple filters with the same name: ${filterSpec.props.name}`)
-      }
-      this._setFilterValueInState(filterSpec.props.name, filterSpec.initialValue)
-
-      if (!areaFilterMap.has(filterSpec.props.location)) {
-        areaFilterMap.set(filterSpec.props.location, [])
-      }
-      areaFilterMap.get(filterSpec.props.location).push(filterSpec)
-    }
-    filterSpecCache.set(area, areaFilterMap)
-  }
-
-  refreshFiltersCache (rawHeaderFilterSpecs, rawBodyFilterSpecs) {
-    const allFilters = []
-    const filterSpecCache = new Map()
-    this._refreshSingleAreaFilterSpecs(
-      allFilters, filterSpecCache, this.getDefaultHeaderFilterLocation(),
-      RENDER_AREA_HEADER, rawHeaderFilterSpecs)
-    this._refreshSingleAreaFilterSpecs(
-      allFilters, filterSpecCache, this.getDefaultBodyFilterLocation(),
-      RENDER_AREA_BODY, rawBodyFilterSpecs)
-    filterSpecCache.set('all', allFilters)
-    this.filterSpecCache = filterSpecCache
+  /**
+   * Get the default render location for filters
+   * that does not specify a location.
+   */
+  getDefaultHeaderComponentLocation () {
+    return RENDER_LOCATION_CENTER
   }
 
   /**
    * Get the default render location for filters
    * that does not specify a location.
    */
-  getDefaultHeaderFilterLocation () {
-    return RENDER_LOCATION_TOP
-  }
-
-  /**
-   * Get the default render location for filters
-   * that does not specify a location.
-   */
-  getDefaultBodyFilterLocation () {
-    return RENDER_LOCATION_RIGHT
-  }
-
-  /**
-   * Can be overridden if you need to ignore props.headerFilterSpecs and
-   * props.bodyFilterSpecs, and customize filters in a subclass.
-   */
-  getFiltersAtLocation (renderArea, location) {
-    if (!this.filterSpecCache.has(renderArea)) {
-      return []
-    }
-    return this.filterSpecCache.get(renderArea).get(location) || []
-  }
-
-  /**
-   * Can be overridden if you need to ignore props.headerFilterSpecs and
-   * props.bodyFilterSpecs, and customize filters in a subclass.
-   *
-   * @return An array of filter specs parsed by {@link AbstractFilterList#makeFilterSpec}
-   */
-  getAllFilters () {
-    return this.filterSpecCache.get(RENDER_AREA_ALL)
-  }
-
-  /**
-   * Refresh this.cachedListSpec.
-   */
-  refreshListSpec (rawListSpec) {
-    const cachedListSpec = Object.assign({}, rawListSpec)
-    if (cachedListSpec.component) {
-      if (typeof cachedListSpec.component === 'string') {
-        cachedListSpec.componentClass = this.filterListRegistry.getListComponent(cachedListSpec.component)
-        if (!cachedListSpec.componentClass) {
-          throw new Error(
-            `Could not find a filterlist list component class registered for ` +
-            `alias "${cachedListSpec.component}"`)
-        }
-      } else {
-        cachedListSpec.componentClass = cachedListSpec.component
-      }
-    } else {
-      throw new Error(
-        'You must specify the "props.list", or override ' +
-        'the refreshListSpec() method.')
-    }
-    if (!cachedListSpec.props) {
-      cachedListSpec.props = {}
-    }
-    this.cachedListSpec = cachedListSpec
+  getDefaultBodyComponentLocation () {
+    return RENDER_LOCATION_CENTER
   }
 
   //
@@ -705,33 +560,6 @@ export default class AbstractFilterList extends React.Component {
   // List items
   //
   //
-
-  /**
-   * Refresh this.cachedItemSpec.
-   */
-  refreshItemSpec (rawItemSpec) {
-    const cachedItemSpec = Object.assign({}, rawItemSpec)
-    if (cachedItemSpec.component) {
-      if (typeof cachedItemSpec.component === 'string') {
-        cachedItemSpec.componentClass = this.filterListRegistry.getItemComponent(cachedItemSpec.component)
-        if (!cachedItemSpec.componentClass) {
-          throw new Error(
-            `Could not find a filterlist item component class registered for ` +
-            `alias "${cachedItemSpec.component}"`)
-        }
-      } else {
-        cachedItemSpec.componentClass = cachedItemSpec.component
-      }
-    } else {
-      throw new Error(
-        'You must specify the "props.itemSpec", or override ' +
-        'the refreshItemSpec() method.')
-    }
-    if (!cachedItemSpec.props) {
-      cachedItemSpec.props = {}
-    }
-    this.cachedItemSpec = cachedItemSpec
-  }
 
   getIdFromListItemData (listItemData) {
     if (this.props.idAttribute) {
@@ -744,45 +572,12 @@ export default class AbstractFilterList extends React.Component {
 
   //
   //
-  // Paginator
-  //
-  //
-
-  refreshPaginatorSpec (rawPaginatorSpec) {
-    let cachedPaginatorSpec = null
-    if (rawPaginatorSpec) {
-      cachedPaginatorSpec = Object.assign({}, rawPaginatorSpec)
-      if (cachedPaginatorSpec.component) {
-        if (typeof cachedPaginatorSpec.component === 'string') {
-          cachedPaginatorSpec.componentClass = this.filterListRegistry.getPaginatorComponent(cachedPaginatorSpec.component)
-          if (!cachedPaginatorSpec.componentClass) {
-            throw new Error(
-              `Could not find a filterlist paginator component class registered for ` +
-              `alias "${cachedPaginatorSpec.component}"`)
-          }
-        } else {
-          cachedPaginatorSpec.componentClass = cachedPaginatorSpec.component
-        }
-      } else {
-        throw new Error(
-          'You must specify the "props.paginatorSpec", or override ' +
-          'the refreshPaginatorSpec() method.')
-      }
-      if (!cachedPaginatorSpec.props) {
-        cachedPaginatorSpec.props = {}
-      }
-    }
-    this.cachedPaginatorSpec = cachedPaginatorSpec
-  }
-
-  //
-  //
   // HTTP requests
   //
   //
 
   filterListItemsHttpRequest (httpRequest) {
-    for (let filterSpec of this.getAllFilters()) {
+    for (let filterSpec of this.state.componentCache.filterMap.values()) {
       const value = this.getFilterValue(filterSpec.props.name)
       filterSpec.componentClass.filterHttpRequest(
         httpRequest, filterSpec.props.name, value)
@@ -1188,9 +983,6 @@ export default class AbstractFilterList extends React.Component {
   getLayoutComponentProps (extraProps={}) {
     return Object.assign({
       childExposedApi: this.childExposedApi,
-      cachedPaginatorSpec: this.cachedPaginatorSpec,
-      cachedListSpec: this.cachedListSpec,
-      cachedItemSpec: this.cachedItemSpec,
       listItemsDataArray: this.state.listItemsDataArray,
       listItemsDataMap: this.state.listItemsDataMap,
       selectedListItemsMap: this.state.selectedListItemsMap,
@@ -1199,41 +991,35 @@ export default class AbstractFilterList extends React.Component {
     }, extraProps)
   }
 
-  getHeaderComponentClass () {
-    return this.cachedHeaderSpec.componentClass
-  }
-
   getHeaderComponentProps () {
-    return this.getLayoutComponentProps({
-      renderArea: RENDER_AREA_HEADER
-    })
+    return this.getLayoutComponentProps(
+      Object.assign(this.state.componentCache.header.props, {
+        renderArea: RENDER_AREA_HEADER
+      }))
   }
 
   renderHeader () {
-    if (this.cachedHeaderSpec === null) {
+    if (!this.state.componentCache.header) {
       return null
     }
     return React.createElement(
-      this.getHeaderComponentClass(),
+      this.state.componentCache.header.componentClass,
       this.getHeaderComponentProps())
   }
 
-  getBodyComponentClass () {
-    return this.cachedBodySpec.componentClass
-  }
-
   getBodyComponentProps () {
-    return this.getLayoutComponentProps({
-      renderArea: RENDER_AREA_BODY
-    })
+    return this.getLayoutComponentProps(
+      Object.assign(this.state.componentCache.body.props, {
+        renderArea: RENDER_AREA_BODY
+      }))
   }
 
   renderBody () {
-    if (!this.cachedBodySpec) {
+    if (!this.state.componentCache.body) {
       return null
     }
     return React.createElement(
-      this.getBodyComponentClass(),
+      this.state.componentCache.body.componentClass,
       this.getBodyComponentProps())
   }
 

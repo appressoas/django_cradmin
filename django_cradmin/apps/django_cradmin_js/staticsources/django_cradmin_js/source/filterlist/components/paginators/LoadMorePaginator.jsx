@@ -6,7 +6,6 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
 export default class LoadMorePaginator extends AbstractPaginator {
   static get propTypes () {
     const propTypes = super.propTypes
-    propTypes.loadMoreItemsFromApi = PropTypes.func.isRequired
     propTypes.className = PropTypes.string.isRequired
     propTypes.label = PropTypes.string.isRequired
     return propTypes
@@ -26,7 +25,7 @@ export default class LoadMorePaginator extends AbstractPaginator {
 
   onClick (e) {
     e.preventDefault()
-    this.props.loadMoreItemsFromApi()
+    this.props.childExposedApi.loadMoreItemsFromApi()
   }
 
   renderLoadMoreButton () {
@@ -39,7 +38,7 @@ export default class LoadMorePaginator extends AbstractPaginator {
   }
 
   render () {
-    if (this.props.hasNextPage) {
+    if (this.props.childExposedApi.hasNextPaginationPage()) {
       return this.renderLoadMoreButton()
     }
     return null

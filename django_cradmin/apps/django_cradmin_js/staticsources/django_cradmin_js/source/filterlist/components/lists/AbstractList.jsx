@@ -5,7 +5,7 @@ import AbstractListChild from '../AbstractListChild'
 export default class AbstractList extends AbstractListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
-      cachedItemSpec: PropTypes.object.isRequired,
+      itemSpec: PropTypes.object.isRequired,
       listItemsDataArray: PropTypes.array.isRequired,
       selectedListItemsMap: PropTypes.instanceOf(Map).isRequired
     })
@@ -13,7 +13,7 @@ export default class AbstractList extends AbstractListChild {
 
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
-      cachedItemSpec: null,
+      itemSpec: null,
       selectedListItemsMap: null,
       listItemsDataArray: null
     })
@@ -24,12 +24,12 @@ export default class AbstractList extends AbstractListChild {
   }
 
   getItemComponentClass (listItemData) {
-    return this.props.cachedItemSpec.componentClass
+    return this.props.itemSpec.componentClass
   }
 
   getItemComponentProps (listItemData) {
     const listItemId = this.props.childExposedApi.getIdFromListItemData(listItemData)
-    return this.makeChildComponentProps(Object.assign(listItemData, this.props.cachedItemSpec.props, {
+    return this.makeChildComponentProps(Object.assign(listItemData, this.props.itemSpec.props, {
       key: listItemId,
       isSelected: this.props.childExposedApi.itemIsSelected(listItemId),
       listItemId: listItemId
