@@ -994,7 +994,8 @@ export default class AbstractFilterList extends React.Component {
   getHeaderComponentProps () {
     return this.getLayoutComponentProps(
       Object.assign(this.state.componentCache.header.props, {
-        renderArea: RENDER_AREA_HEADER
+        renderArea: RENDER_AREA_HEADER,
+        key: 'header'
       }))
   }
 
@@ -1010,7 +1011,8 @@ export default class AbstractFilterList extends React.Component {
   getBodyComponentProps () {
     return this.getLayoutComponentProps(
       Object.assign(this.state.componentCache.body.props, {
-        renderArea: RENDER_AREA_BODY
+        renderArea: RENDER_AREA_BODY,
+        key: 'body'
       }))
   }
 

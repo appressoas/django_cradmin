@@ -46,7 +46,7 @@
                             "name": "is_godlike",
                             "label": "Is godlike?"
                           },
-                          "initialValue": true
+                          "initialValue": false
                         }, {
                           "component": "BlockList",
                           "itemSpec": {
@@ -99,34 +99,45 @@
 {#            </p>#}
 {#        </div>#}
 {#    </section>#}
-{#    <section class="adminui-page-section">#}
-{#        <div class="container">#}
-{#            <h2>Selectable list</h2>#}
-{#            <div data-ievv-jsbase-widget="cradmin-filterlist"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",#}
-{#                     "selectMode": "multi",#}
-{#                     "listSpec": {#}
-{#                        "component": "SelectableList"#}
-{#                     },#}
-{#                     "itemSpec": {#}
-{#                        "component": "SelectableTitleDescription"#}
-{#                     },#}
-{#                     "bodyFilterSpecs": [{#}
-{#                        "component": "Search",#}
-{#                        "props": {#}
-{#                          "name": "search",#}
-{#                          "location": "top",#}
-{#                          "placeholder": ["God", "Time", "wizard"]#}
-{#                        }#}
-{#                     }]#}
-{#                 }'>#}
-{##}
-{#            </div>#}
-{##}
-{#            <p>#}
-{#                Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.#}
-{#            </p>#}
-{#        </div>#}
-{#    </section>#}
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Selectable list</h2>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "selectMode": "multi",
+                     "body": {
+                        "component": "ThreeColumnLayout",
+                        "layout": [{
+                          "component": "SearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"]
+                          }
+                        }, {
+                          "component": "CheckboxBooleanFilter",
+                          "props": {
+                            "name": "is_godlike",
+                            "label": "Is godlike?"
+                          },
+                          "initialValue": false
+                        }, {
+                          "component": "SelectableList",
+                          "itemSpec": {
+                            "component": "SelectableTitleDescriptionItem"
+                          }
+                        }, {
+                          "component": "LoadMorePaginator"
+                        }]
+                     }
+
+                 }'>
+
+            </div>
+
+            <p>
+                Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+            </p>
+        </div>
+    </section>
 {% endblock content %}

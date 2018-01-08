@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import AbstractListChild from '../AbstractListChild'
 import LoadingIndicator from '../../../components/LoadingIndicator'
-import { RENDER_AREA_HEADER } from '../../filterListConstants'
 import AbstractListFilter from '../filters/AbstractListFilter'
 import AbstractList from '../lists/AbstractList'
 import AbstractPaginator from '../paginators/AbstractPaginator'
@@ -37,66 +36,77 @@ export default class AbstractLayout extends AbstractListChild {
   //
   //
 
-  renderLoadingIndicator (keySuffix='') {
-    return <LoadingIndicator key={`loadingIndicator${keySuffix}`}/>
+  renderLoadingIndicator () {
+    return <LoadingIndicator key={`loadingIndicator`}/>
   }
 
-  // getPaginatorComponentClass () {
-  //   return this.props.cachedPaginatorSpec.componentClass
-  // }
-  //
-  // getPaginatorComponentProps () {
-  //   return this.makeChildComponentProps(Object.assign({
-  //     key: 'paginator',
-  //   }, this.props.cachedPaginatorSpec.props))
-  // }
-
-  // renderPaginator () {
-  //   if (!this.cachedPaginatorSpec) {
-  //     return null
-  //   }
-  //   return React.createElement(
-  //     this.getPaginatorComponentClass(),
-  //     this.getPaginatorComponentProps())
-  // }
-
-  // getListComponentClass () {
-  //   return this.props.cachedListSpec.componentClass
-  // }
-  //
-  // getListComponentProps () {
-  //   return this.makeChildComponentProps(Object.assign({
-  //     key: 'list',
-  //     cachedItemSpec: this.props.cachedItemSpec,
-  //     listItemsDataArray: this.props.listItemsDataArray,
-  //     selectedListItemsMap: this.props.selectedListItemsMap
-  //   }, this.props.cachedListSpec.props))
-  // }
-
-  renderAreaIsHeader () {
-    return this.props.renderArea === RENDER_AREA_HEADER
+  /**
+   * Used by {@link AbstractLayout#shouldRenderComponent} when
+   * the provided componentSpec.componentClass is a subclass
+   * of {@link AbstractListFilter}.
+   *
+   * By default this returns `true`.
+   *
+   * @param componentSpec
+   * @returns {boolean}
+   */
+  shouldRenderFilterComponent (componentSpec) {
+    return true
   }
 
-  // renderList () {
-  //   if (!this.props.cachedListSpec || this.renderAreaIsHeader()) {
-  //     return null
-  //   }
-  //   return React.createElement(
-  //     this.getListComponentClass(),
-  //     this.getListComponentProps())
-  // }
+  /**
+   * Used by {@link AbstractLayout#shouldRenderComponent} when
+   * the provided componentSpec.componentClass is a subclass
+   * of {@link AbstractList}.
+   *
+   * By default this returns `true`.
+   *
+   * @param componentSpec The component we want to determine if should be rendered.
+   * @returns {boolean} `true` to render the component, and `false` to not render
+   *    the component.
+   */
+  shouldRenderListComponent (componentSpec) {
+    return true
+  }
+
+  /**
+   * Used by {@link AbstractLayout#shouldRenderComponent} when
+   * the provided componentSpec.componentClass is a subclass
+   * of {@link AbstractPaginator}.
+   *
+   * By default this returns `true` unless we are loading a new list
+   * of items from the API (which typically happens when a filter is changed).
+   *
+   * @param componentSpec The component we want to determine if should be rendered.
+   * @returns {boolean} `true` to render the component, and `false` to not render
+   *    the component.
+   */
+  shouldRenderPaginatorComponent (componentSpec) {
+    return !this.props.isLoadingNewItemsFromApi
+  }
 
   /**
    * Determine if a component should be rendered.
    *
    * Perfect place to hook in things like "show advanced" filters etc.
-   * in subclasses.
+   * in subclasses, but you will normally want to override one of
+   * {@link AbstractLayout#shouldRenderFilterComponent},
+   * {@link AbstractLayout#shouldRenderListComponent} or
+   * {@link AbstractLayout#shouldRenderPaginatorComponent} instead
+   * of this method.
    *
-   * @param componentSpec The filter we want to determine if should be rendered.
-   * @returns {boolean} `true` to render the filter, and `false` to not render
-   *    the filter. Returns `true` by default.
+   * @param componentSpec The component we want to determine if should be rendered.
+   * @returns {boolean} `true` to render the component, and `false` to not render
+   *    the component.
    */
   shouldRenderComponent (componentSpec) {
+    if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
+      return this.shouldRenderFilterComponent(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
+      return this.shouldRenderListComponent(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
+      return this.shouldRenderPaginatorComponent(componentSpec)
+    }
     return true
   }
 

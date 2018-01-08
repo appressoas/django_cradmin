@@ -108,13 +108,9 @@ export default class ThreeColumnLayout extends AbstractLayout {
     const centerColumnContent = [
       this.renderTopBar()
     ]
-    if (this.props.isLoadingNewItemsFromApi) {
-      centerColumnContent.push(this.renderLoadingIndicator('new'))
-    } else {
-      centerColumnContent.push(...this.renderComponentsAtLocation(RENDER_LOCATION_CENTER, []))
-      if(this.props.isLoadingMoreItemsFromApi) {
-        centerColumnContent.push(this.renderLoadingIndicator('more'))
-      }
+    centerColumnContent.push(...this.renderComponentsAtLocation(RENDER_LOCATION_CENTER, []))
+    if (this.props.isLoadingNewItemsFromApi || this.props.isLoadingMoreItemsFromApi) {
+      centerColumnContent.push(this.renderLoadingIndicator())
     }
     centerColumnContent.push(this.renderBottomBar())
     return centerColumnContent
