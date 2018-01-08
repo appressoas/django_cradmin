@@ -4820,6 +4820,10 @@ Styleguide components.blocklist
             flex: 1 1 auto;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
+  .blocklist__item--neutral-xlight {
+    background-color: #f6f6f5; }
+  .blocklist__item--neutral-light {
+    background-color: #cbcbca; }
 
 .blocklist__itemtitle {
   margin-bottom: 7px;
@@ -4957,6 +4961,27 @@ Example: {type: isolated} Basics
                 </div>
             </li>
             <li class="selectable-list__item" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 3
+                </div>
+            </li>
+        </ul>
+    </div>
+
+Example: {type: isolated} Neutral light items
+    <div class="container">
+        <ul class="selectable-list">
+            <li class="selectable-list__item selectable-list__item--neutral-light" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 1
+                </div>
+            </li>
+            <li class="selectable-list__item selectable-list__item--neutral-light" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 2
+                </div>
+            </li>
+            <li class="selectable-list__item selectable-list__item--neutral-light" tabindex="0">
                 <div class="selectable-list__itemcontent">
                     Element 3
                 </div>
@@ -5265,6 +5290,10 @@ Styleguide components.selectable-list
     outline: none;
     border-radius: 5px;
     background-color: #fff; }
+    .selectable-list__item--neutral-xlight {
+      background-color: #f6f6f5; }
+    .selectable-list__item--neutral-light {
+      background-color: #cbcbca; }
     .selectable-list__item--bordered {
       border-radius: 0;
       border-bottom: 2px solid #1e1e1e; }
@@ -5520,6 +5549,69 @@ Example: {type: isolated}
         </p>
     </div>
 
+Example: {type: isolated} --spaced
+
+    <div class="container">
+        <input type="text" class="input input--outlined">
+        <div class="dropdown">
+            <div class="dropdown__content dropdown__content--spaced">
+                Floating content here.
+            </div>
+        </div>
+        <p>
+            Just some text to ensure it is floating!
+            Aenean lacinia bibendum nulla sed consectetur. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Vivamus sagittis
+            lacus vel augue laoreet rutrum faucibus dolor auctor. Donec
+            id elit non mi porta gravida at eget metus. Morbi leo
+            risus, porta ac consectetur ac, vestibulum at eros.
+            Vestibulum id ligula porta felis euismod semper.
+            Donec id elit non mi porta gravida at eget metus.
+        </p>
+    </div>
+
+Example: {type: isolated} --spaced-sm
+
+    <div class="container">
+        <input type="text" class="input input--outlined">
+        <div class="dropdown">
+            <div class="dropdown__content dropdown__content--spaced-sm">
+                Floating content here.
+            </div>
+        </div>
+        <p>
+            Just some text to ensure it is floating!
+            Aenean lacinia bibendum nulla sed consectetur. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Vivamus sagittis
+            lacus vel augue laoreet rutrum faucibus dolor auctor. Donec
+            id elit non mi porta gravida at eget metus. Morbi leo
+            risus, porta ac consectetur ac, vestibulum at eros.
+            Vestibulum id ligula porta felis euismod semper.
+            Donec id elit non mi porta gravida at eget metus.
+        </p>
+    </div>
+
+Example: {type: isolated} --spaced-lg
+
+    <div class="container">
+        <input type="text" class="input input--outlined">
+        <div class="dropdown">
+            <div class="dropdown__content dropdown__content--spaced-lg">
+                Floating content here.
+            </div>
+        </div>
+        <p>
+            Just some text to ensure it is floating!
+            Aenean lacinia bibendum nulla sed consectetur. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Vivamus sagittis
+            lacus vel augue laoreet rutrum faucibus dolor auctor. Donec
+            id elit non mi porta gravida at eget metus. Morbi leo
+            risus, porta ac consectetur ac, vestibulum at eros.
+            Vestibulum id ligula porta felis euismod semper.
+            Donec id elit non mi porta gravida at eget metus.
+        </p>
+    </div>
+
 Styleguide components.dropdown
 */
 .dropdown {
@@ -5536,6 +5628,12 @@ Styleguide components.dropdown
     border-radius: 5px;
     box-shadow: 0 2px 6px rgba(30, 30, 30, 0.3);
     background-color: #fff; }
+    .dropdown__content--spaced {
+      padding: 24px; }
+    .dropdown__content--spaced-sm {
+      padding: 12px; }
+    .dropdown__content--spaced-lg {
+      padding: 60px; }
 
 /* Date and time inputs
 

@@ -6,6 +6,12 @@ export default class BlockList extends AbstractList {
     return 'blocklist'
   }
 
+  getItemComponentProps (listItemData) {
+    const props = super.getItemComponentProps(listItemData)
+    props.bemBlock = this.bemBlock
+    return props
+  }
+
   render () {
     return <div className={this.bemBlock}>
       {this.renderListItems()}

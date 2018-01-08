@@ -131,7 +131,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   render () {
-    return <div className={this.props.className}>
+    return <div className={this.props.bemBlock}>
       {this.renderContent()}
     </div>
   }

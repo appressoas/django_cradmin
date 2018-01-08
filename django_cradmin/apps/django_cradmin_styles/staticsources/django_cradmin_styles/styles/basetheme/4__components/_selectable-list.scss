@@ -25,6 +25,27 @@ Example: {type: isolated} Basics
         </ul>
     </div>
 
+Example: {type: isolated} Neutral light items
+    <div class="container">
+        <ul class="selectable-list">
+            <li class="selectable-list__item selectable-list__item--neutral-light" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 1
+                </div>
+            </li>
+            <li class="selectable-list__item selectable-list__item--neutral-light" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 2
+                </div>
+            </li>
+            <li class="selectable-list__item selectable-list__item--neutral-light" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 3
+                </div>
+            </li>
+        </ul>
+    </div>
+
 Example: {type: isolated} Title for each item
     <div class="container">
         <ul class="selectable-list">
@@ -320,6 +341,14 @@ Styleguide components.selectable-list
         outline: none;
         border-radius: $border-radius;
         background-color: $color-light;
+
+        &--neutral-xlight {
+            background-color: color(neutral, xlight)
+        }
+
+        &--neutral-light {
+            background-color: color(neutral, light)
+        }
 
         &--bordered {
             border-radius: 0;

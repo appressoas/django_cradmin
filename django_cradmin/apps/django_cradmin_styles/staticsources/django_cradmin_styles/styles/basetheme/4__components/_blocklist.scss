@@ -176,6 +176,14 @@ Styleguide components.blocklist
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
         }
+
+        &--neutral-xlight {
+            background-color: color(neutral, xlight)
+        }
+
+        &--neutral-light {
+            background-color: color(neutral, light)
+        }
     }
 
     &__itemtitle {

@@ -69,6 +69,11 @@ export class ChildExposedApi {
 
     this.onChildFocus = this.filterListObject.onChildFocus.bind(this.filterListObject)
     this.onChildBlur = this.filterListObject.onChildBlur.bind(this.filterListObject)
+
+    this.disableComponentGroup = this.filterListObject.disableComponentGroup.bind(this.filterListObject)
+    this.enableComponentGroup = this.filterListObject.enableComponentGroup.bind(this.filterListObject)
+    this.toggleComponentGroup = this.filterListObject.toggleComponentGroup.bind(this.filterListObject)
+    this.componentGroupIsEnabled = this.filterListObject.componentGroupIsEnabled.bind(this.filterListObject)
   }
 
   hasPreviousPaginationPage () {
@@ -134,10 +139,7 @@ export default class AbstractFilterList extends React.Component {
         layout: [{
           component: "BlockList",
           itemSpec: {
-            component: "IdOnlyItem",
-            props: {
-              myprop: 10
-            }
+            component: "IdOnlyItem"
           }
         }, {
           component: "LoadMorePaginator"
@@ -178,20 +180,7 @@ export default class AbstractFilterList extends React.Component {
   }
 
   setupBoundMethods () {
-    this.setFilterValue = this.setFilterValue.bind(this)
-    this.getFilterValue = this.getFilterValue.bind(this)
-    this.loadMoreItemsFromApi = this.loadMoreItemsFromApi.bind(this)
-    this.loadNextPageFromApi = this.loadNextPageFromApi.bind(this)
-    this.loadPreviousPageFromApi = this.loadPreviousPageFromApi.bind(this)
-    this.loadSpecificPageFromApi = this.loadSpecificPageFromApi.bind(this)
-    this.onChildBlur = this.onChildBlur.bind(this)
-    this.onChildFocus = this.onChildFocus.bind(this)
     this.loadMissingSelectedItemDataFromApi = this.loadMissingSelectedItemDataFromApi.bind(this)
-    this.selectItem = this.selectItem.bind(this)
-    this.selectItems = this.selectItems.bind(this)
-    this.deselectItem = this.deselectItem.bind(this)
-    this.deselectItems = this.deselectItems.bind(this)
-    this.deselectAllItems = this.deselectAllItems.bind(this)
   }
 
   /**
@@ -212,7 +201,8 @@ export default class AbstractFilterList extends React.Component {
       hasFocus: false,
       selectedListItemsMap: new Map(),
       loadSelectedItemsFromApiError: null,
-      loadItemsFromApiError: null
+      loadItemsFromApiError: null,
+      enabledComponentGroups: new Set()
     }
   }
 
@@ -239,6 +229,68 @@ export default class AbstractFilterList extends React.Component {
     this.setState({
       componentCache: componentCache
     })
+  }
+
+  //
+  //
+  // Component groups
+  //
+  //
+
+  /**
+   * Disable a component group.
+   *
+   * @param {string} group The group to disable.
+   */
+  disableComponentGroup (group) {
+    this.setState((prevState) => {
+      const enabledComponentGroups = new Set(prevState.enabledComponentGroups)
+      enabledComponentGroups.delete(group)
+      return {
+        enabledComponentGroups: enabledComponentGroups
+      }
+    })
+  }
+
+  /**
+   * Enable a component group.
+   *
+   * @param {string} group The group to enable.
+   */
+  enableComponentGroup (group) {
+    this.setState((prevState) => {
+      const enabledComponentGroups = new Set(prevState.enabledComponentGroups)
+      enabledComponentGroups.add(group)
+      return {
+        enabledComponentGroups: enabledComponentGroups
+      }
+    })
+  }
+
+  /**
+   * Is a component group enabled?
+   *
+   * @param {string} group The group to check.
+   * @return {bool} Is the component group enabled?
+   */
+  componentGroupIsEnabled (group) {
+    if (group === null) {
+      return true
+    }
+    return this.state.enabledComponentGroups.has(group)
+  }
+
+  /**
+   * Toggle a component group between disabled/enabled.
+   *
+   * @param {string} group The group to enable/disable.
+   */
+  toggleComponentGroup (group) {
+    if (this.componentGroupIsEnabled(group)) {
+      this.disableComponentGroup(group)
+    } else {
+      this.enableComponentGroup(group)
+    }
   }
 
   //
@@ -303,10 +355,10 @@ export default class AbstractFilterList extends React.Component {
   }
 
   selectItems (listItemIds) {
-    if (listItemIds.length > 1 && this.isSingleSelectMode()) {
-      throw new Error('Can not select multiple items in single select mode')
+    if (listItemIds.length > 1 && !this.isMultiSelectMode()) {
+      throw new Error('Can not select multiple items unless selectMode is "multi".')
     }
-    if (this.isSingleSelectMode()) {
+    if (!this.isMultiSelectMode()) {
       this.deselectAllItems()
     }
     this.setState((prevState, props) => {
@@ -980,19 +1032,30 @@ export default class AbstractFilterList extends React.Component {
       })
   }
 
-  getLayoutComponentProps (extraProps={}) {
+  //
+  //
+  // Rendering
+  //
+  //
+
+  getAreaComponentProps (extraProps={}) {
     return Object.assign({
       childExposedApi: this.childExposedApi,
       listItemsDataArray: this.state.listItemsDataArray,
       listItemsDataMap: this.state.listItemsDataMap,
       selectedListItemsMap: this.state.selectedListItemsMap,
+      enabledComponentGroups: this.state.enabledComponentGroups,
       isLoadingNewItemsFromApi: this.state.isLoadingNewItemsFromApi,
       isLoadingMoreItemsFromApi: this.state.isLoadingMoreItemsFromApi
     }, extraProps)
   }
 
+  shouldRenderComponentArea (componentArea) {
+    return this.componentGroupIsEnabled(componentArea.props.componentGroup)
+  }
+
   getHeaderComponentProps () {
-    return this.getLayoutComponentProps(
+    return this.getAreaComponentProps(
       Object.assign(this.state.componentCache.header.props, {
         renderArea: RENDER_AREA_HEADER,
         key: 'header'
@@ -1003,13 +1066,16 @@ export default class AbstractFilterList extends React.Component {
     if (!this.state.componentCache.header) {
       return null
     }
+    if (!this.shouldRenderComponentArea(this.state.componentCache.header)) {
+      return null
+    }
     return React.createElement(
       this.state.componentCache.header.componentClass,
       this.getHeaderComponentProps())
   }
 
   getBodyComponentProps () {
-    return this.getLayoutComponentProps(
+    return this.getAreaComponentProps(
       Object.assign(this.state.componentCache.body.props, {
         renderArea: RENDER_AREA_BODY,
         key: 'body'
@@ -1018,6 +1084,9 @@ export default class AbstractFilterList extends React.Component {
 
   renderBody () {
     if (!this.state.componentCache.body) {
+      return null
+    }
+    if (!this.shouldRenderComponentArea(this.state.componentCache.body)) {
       return null
     }
     return React.createElement(

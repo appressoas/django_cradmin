@@ -14,6 +14,7 @@ export default class AbstractLayout extends AbstractListChild {
       listItemsDataArray: PropTypes.array.isRequired,
       listItemsDataMap: PropTypes.instanceOf(Map).isRequired,
       selectedListItemsMap: PropTypes.instanceOf(Map).isRequired,
+      enabledComponentGroups: PropTypes.instanceOf(Set).isRequired,
       isLoadingNewItemsFromApi: PropTypes.bool.isRequired,
       isLoadingMoreItemsFromApi: PropTypes.bool.isRequired
     })
@@ -23,10 +24,11 @@ export default class AbstractLayout extends AbstractListChild {
     return Object.assign(super.defaultProps, {
       layout: null,
       listItemsDataArray: null,
-      listItemsDataMap: new Map(),
-      selectedListItemsMap: new Map(),
+      listItemsDataMap: null,
+      selectedListItemsMap: null,
+      enabledComponentGroups: null,
       isLoadingNewItemsFromApi: false,
-      isLoadingMoreItemsFromApi: false
+      isLoadingMoreItemsFromApi: false,
     })
   }
 
@@ -100,6 +102,11 @@ export default class AbstractLayout extends AbstractListChild {
    *    the component.
    */
   shouldRenderComponent (componentSpec) {
+    if (componentSpec.props.componentGroup !== null) {
+      if (!this.props.childExposedApi.componentGroupIsEnabled(componentSpec.props.componentGroup)) {
+        return false
+      }
+    }
     if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
       return this.shouldRenderFilterComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
@@ -112,7 +119,8 @@ export default class AbstractLayout extends AbstractListChild {
 
   getFilterComponentProps (componentSpec) {
     return {
-      value: this.props.childExposedApi.getFilterValue(componentSpec.props.name)
+      value: this.props.childExposedApi.getFilterValue(componentSpec.props.name),
+      enabledComponentGroups: this.props.enabledComponentGroups
     }
   }
 

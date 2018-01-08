@@ -38,23 +38,29 @@
                           "component": "SearchFilter",
                           "props": {
                             "name": "search",
+                            "location": "left",
                             "placeholder": ["God", "Time", "wizard"]
                           }
                         }, {
                           "component": "CheckboxBooleanFilter",
                           "props": {
                             "name": "is_godlike",
+                            "location": "right",
                             "label": "Is godlike?"
                           },
                           "initialValue": false
                         }, {
                           "component": "BlockList",
                           "itemSpec": {
-                            "component": "TitleDescriptionItem"
+                            "component": "TitleDescriptionItem",
+                            "props": {
+                              "titleBemVariants": ["small"]
+                            }
                           }
                         }, {
                           "component": "LoadMorePaginator",
                           "props": {
+                            "location": "top",
                             "label": "Load some more items!"
                           }
                         }]
@@ -64,41 +70,53 @@
             </div>
         </div>
     </section>
-{#    <section class="adminui-page-section">#}
-{#        <div class="container">#}
-{#            <h2>Dropdown list</h2>#}
-{#            <div data-ievv-jsbase-widget="cradmin-filterlist"#}
-{#                 data-ievv-jsbase-widget-config='{#}
-{#                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",#}
-{#                     "component": "DropDownList",#}
-{#                     "itemSpec": {#}
-{#                        "component": "TitleDescriptionItem"#}
-{#                     },#}
-{#                     "filterSpecs": [{#}
-{#                        "component": "DropDownSearch",#}
-{#                        "props": {#}
-{#                          "name": "search",#}
-{#                          "location": "header",#}
-{#                          "placeholder": ["God", "Time", "wizard"]#}
-{#                        }#}
-{#                     }, {#}
-{#                        "component": "CheckboxBoolean",#}
-{#                        "props": {#}
-{#                          "name": "is_godlike",#}
-{#                          "label": "Is godlike?",#}
-{#                          "location": "left"#}
-{#                        },#}
-{#                        "initialValue": true#}
-{#                     }]#}
-{#                 }'>#}
-{##}
-{#            </div>#}
-{##}
-{#            <p>#}
-{#                Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.#}
-{#            </p>#}
-{#        </div>#}
-{#    </section>#}
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Dropdown list</h2>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "header": {
+                        "component": "ThreeColumnLayout",
+                        "layout": [{
+                          "component": "DropDownSearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"]
+                          }
+                        }, {
+                          "component": "CheckboxBooleanFilter",
+                          "props": {
+                            "name": "is_godlike",
+                            "label": "Is godlike?"
+                          },
+                          "initialValue": false
+                        }]
+                     },
+                     "body": {
+                        "component": "ThreeColumnDropDownLayout",
+                        "props": {
+                            "componentGroup": "expandable"
+                        },
+                        "layout": [{
+                          "component": "BlockList",
+                          "itemSpec": {
+                            "component": "TitleDescriptionItem",
+                            "props": {
+                              "bemVariants": ["neutral-light"]
+                            }
+                          }
+                        }, {
+                          "component": "LoadMorePaginator"
+                        }]
+                     }
+                 }'>
+            </div>
+            <p>
+                Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+            </p>
+        </div>
+    </section>
     <section class="adminui-page-section">
         <div class="container">
             <h2>Selectable list</h2>
@@ -130,9 +148,7 @@
                           "component": "LoadMorePaginator"
                         }]
                      }
-
                  }'>
-
             </div>
 
             <p>

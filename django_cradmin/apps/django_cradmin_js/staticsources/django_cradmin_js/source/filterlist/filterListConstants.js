@@ -10,3 +10,6 @@ export const RENDER_LOCATION_BOTTOM = 'bottom'
 
 export const SINGLESELECT = 'single'
 export const MULTISELECT = 'multi'
+
+export const COMPONENT_GROUP_EXPANDABLE = 'expandable'
+export const COMPONENT_GROUP_ADVANCED = 'advanced'

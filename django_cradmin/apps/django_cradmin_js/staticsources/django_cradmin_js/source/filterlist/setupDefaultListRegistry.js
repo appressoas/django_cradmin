@@ -5,12 +5,12 @@ import CheckboxBooleanFilter from './components/filters/CheckboxBooleanFilter'
 import TitleDescriptionListItem from './components/items/TitleDescriptionListItem'
 import LoadMorePaginator from './components/paginators/LoadMorePaginator'
 import SearchFilter from './components/filters/SearchFilter'
-import DropDownList from './components/lists/DropDownList'
 import DropDownSearchFilter from './components/filters/DropDownSearchFilter'
 import SelectableTitleDescriptionListItem from './components/items/SelectableTitleDescriptionListItem'
 import SelectableList from './components/lists/SelectableList'
 import ThreeColumnLayout from './components/layout/ThreeColumnLayout'
 import { PageNumberPaginationFilterList } from './components/filterlists/PageNumberPaginationFilterList'
+import ThreeColumnDropDownLayout from './components/layout/ThreeColumnDropDownLayout'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
   registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
@@ -18,11 +18,11 @@ export function setupDefaultListRegistryFilterListComponents (registry) {
 
 export function setupDefaultListRegistryLayoutComponents (registry) {
   registry.registerLayoutComponent('ThreeColumnLayout', ThreeColumnLayout)
+  registry.registerLayoutComponent('ThreeColumnDropDownLayout', ThreeColumnDropDownLayout)
 }
 
 export function setupDefaultListRegistryListComponents (registry) {
   registry.registerListComponent('BlockList', BlockList)
-  registry.registerListComponent('DropDownList', DropDownList)
   registry.registerListComponent('SelectableList', SelectableList)
 }
 

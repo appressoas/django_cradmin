@@ -2,21 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractSearchFilter from './AbstractSearchFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
+import { COMPONENT_GROUP_EXPANDABLE } from '../../filterListConstants'
 
 export default class DropDownSearchFilter extends AbstractSearchFilter {
   static get propTypes() {
     const propTypes = super.propTypes
     propTypes.label = PropTypes.string
-    propTypes.expandCollapseToggleCallback = PropTypes.func.isRequired
-    propTypes.isExpanded = PropTypes.bool.isRequired
     return propTypes
   }
 
   static get defaultProps () {
     const defaultProps = super.defaultProps
     defaultProps.label = null
-    defaultProps.expandCollapseToggleCallback = null
-    defaultProps.isExpanded = false
     return defaultProps
   }
 
@@ -25,13 +22,16 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
     this.onClickExpandCollapseButton = this.onClickExpandCollapseButton.bind(this)
   }
 
+  isExpanded () {
+    return this.props.childExposedApi.componentGroupIsEnabled(COMPONENT_GROUP_EXPANDABLE)
+  }
+
   onClickExpandCollapseButton () {
-    this.props.expandCollapseToggleCallback()
-    if (this.props.isExpanded) {
+    this.props.childExposedApi.toggleComponentGroup(COMPONENT_GROUP_EXPANDABLE)
+    if (this.isExpanded()) {
       this.getSearchInputRef().focus()
     }
   }
-
 
   getSearchInputRef () {
     return this._searchInputRef
@@ -62,7 +62,7 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   }
 
   get clearButtonIconClassName () {
-    if (this.props.isExpanded) {
+    if (this.isExpanded()) {
       return 'icon-chevron-up'
     } else {
       return 'icon-chevron-down'

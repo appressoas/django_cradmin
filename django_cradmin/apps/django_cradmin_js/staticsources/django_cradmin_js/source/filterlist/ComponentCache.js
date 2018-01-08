@@ -106,6 +106,9 @@ export default class ComponentCache {
     if (!componentSpec.props) {
       componentSpec.props = {}
     }
+    if (!componentSpec.props.componentGroup) {
+      componentSpec.props.componentGroup = null
+    }
     if (typeof componentSpec.component === 'string') {
       componentSpec.componentClass = this.getClassForComponentString(componentSpec)
     } else {
