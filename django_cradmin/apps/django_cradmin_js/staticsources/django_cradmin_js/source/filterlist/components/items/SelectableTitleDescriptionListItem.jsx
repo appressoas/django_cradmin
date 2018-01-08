@@ -17,9 +17,9 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
 
   onClick () {
     if (this.props.isSelected) {
-      this.props.deselectItemCallback(this.props.listItemId)
+      this.props.childExposedApi.deselectItem(this.props.listItemId)
     } else {
-      this.props.selectItemCallback(this.props.listItemId)
+      this.props.childExposedApi.selectItem(this.props.listItemId)
     }
   }
 

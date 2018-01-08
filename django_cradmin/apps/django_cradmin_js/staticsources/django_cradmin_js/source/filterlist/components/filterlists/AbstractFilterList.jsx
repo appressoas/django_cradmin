@@ -30,6 +30,14 @@ import LoadingIndicator from '../../../components/LoadingIndicator'
       initialValue: 10
     }
   ]}
+  layout: {
+    header: [{
+
+    }],
+    body: [{
+
+    }]
+  },
   headerSpec={
     component: "StackedLayout"
   }
@@ -121,7 +129,7 @@ export default class AbstractFilterList extends React.Component {
 
       headerFilterSpecs: PropTypes.array,
       bodyFilterSpecs: PropTypes.array,
-      headerSpec: PropTypes.object.isRequired,
+      headerSpec: PropTypes.object,
       bodySpec: PropTypes.object.isRequired,
       itemSpec: PropTypes.object.isRequired,
       listSpec: PropTypes.object.isRequired,
@@ -159,9 +167,7 @@ export default class AbstractFilterList extends React.Component {
       listSpec: {
         'component': 'BlockList'
       },
-      headerSpec: {
-        'component': 'ThreeColumnLayout'
-      },
+      headerSpec: null,
       bodySpec: {
         'component': 'ThreeColumnLayout'
       },
@@ -427,6 +433,10 @@ export default class AbstractFilterList extends React.Component {
   }
 
   loadMissingSelectedItemDataFromApi () {
+    const itemIdsWithMissingData = this.getSelectedItemIdsWithMissingItemData()
+    if (itemIdsWithMissingData.length === 0) {
+      return
+    }
     if (this.state.isLoadingSelectedItemDataFromApi) {
       // Do not allow this to run in parallel
       setTimeout(this.loadMissingSelectedItemDataFromApi, 20)
@@ -438,7 +448,7 @@ export default class AbstractFilterList extends React.Component {
     }, () => {
       const selectedItemDataArray = []
       this._loadSelectedItemDataFromApi(
-        this.getSelectedItemIdsWithMissingItemData(),
+        itemIdsWithMissingData,
         this.getFirstPagePaginationOptions(this.state.paginationState),
         selectedItemDataArray)
         .then(() => {
@@ -449,7 +459,7 @@ export default class AbstractFilterList extends React.Component {
               selectedListItemsMap.set(listItemId, listItemData)
             }
             return {
-              selectedListItemsMap: selectedListItemsMap,
+              // selectedListItemsMap: selectedListItemsMap,
               isLoadingSelectedItemDataFromApi: false
             }
           })
@@ -494,6 +504,9 @@ export default class AbstractFilterList extends React.Component {
   }
 
   refreshHeaderSpec (rawHeaderSpec) {
+    if (rawHeaderSpec === null) {
+      return null
+    }
     this.cachedHeaderSpec = this.makeLayoutSpec(
       rawHeaderSpec, 'headerSpec', 'refreshHeaderSpec')
   }
@@ -1197,7 +1210,7 @@ export default class AbstractFilterList extends React.Component {
   }
 
   renderHeader () {
-    if (!this.cachedHeaderSpec) {
+    if (this.cachedHeaderSpec === null) {
       return null
     }
     return React.createElement(
