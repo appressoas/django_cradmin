@@ -38,7 +38,7 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   }
 
   renderLabel () {
-    return this.props.label;
+    return this.props.label
   }
 
   get labelClassName () {
