@@ -12,7 +12,7 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
 
   setupBoundMethods () {
     super.setupBoundMethods()
-    this.onClick = this.onClick.bind(this);
+    this.onClick = this.onClick.bind(this)
   }
 
   onClick () {
@@ -74,9 +74,11 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
   }
 
   render () {
-    return <div className={this.className} tabIndex={0}
-        aria-selected={this.props.isSelected}
-        onClick={this.onClick}>
+    return <div
+      className={this.className}
+      tabIndex={0}
+      aria-selected={this.props.isSelected}
+      onClick={this.onClick}>
       {this.renderIconWrapper()}
       {this.renderContent()}
     </div>
