@@ -25,6 +25,12 @@ export default class AbstractListFilter extends AbstractFilterListChild {
    * @return {Object}
    * @property {string} name The name of the filter.
    *    This is required, and defaults to `null`.
+   *    **Must be be provided in spec**.
+   * @property {bool} isStatic If this is `true`, the filter is not rendered,
+   *    but API requests is always filtered by the value specified for the
+   *    filter in the `initialValue` attribute of the spec for the filter.
+   *    Defaults to `false`.
+   *    **Can be used in spec**.
    * @property {string} location The location where the filter is rendered.
    *    In advanced cases, you may want to render the filter
    *    differently depending on the location, but this is generally
@@ -35,11 +41,9 @@ export default class AbstractListFilter extends AbstractFilterListChild {
    *    {@link RENDER_LOCATION_BOTTOM} or {@link RENDER_LOCATION_CENTER}.
    *
    *    This is required, and defaults to `null`.
-   * @property {bool} isStatic If this is `true`, the filter is not rendered,
-   *    but API requests is always filtered by the value specified for the
-   *    filter in the `initialValue` of the spec for the filter.
-   *    Defaults to `false`.
+   *    **Can be used in spec**.
    * @property {*} value The current value of the filter.
+   *    _Provided automatically by the parent component_.
    */
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
@@ -73,6 +77,10 @@ export default class AbstractListFilter extends AbstractFilterListChild {
 
   /**
    * Get the initial state for the filter.
+   *
+   * Ment to be overridden in subclasses to provide a uniform
+   * way of setting initial state for filters that require state.
+   *
    * @returns {{}}
    */
   getInitialState () {
