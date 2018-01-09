@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
-import AbstractListChild from '../AbstractListChild'
+import AbstractFilterListChild from '../AbstractFilterListChild'
 import LoadingIndicator from '../../../components/LoadingIndicator'
 import AbstractListFilter from '../filters/AbstractListFilter'
 import AbstractList from '../lists/AbstractList'
 import AbstractPaginator from '../paginators/AbstractPaginator'
 
-export default class AbstractLayout extends AbstractListChild {
+export default class AbstractLayout extends AbstractFilterListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       layout: PropTypes.object.isRequired,

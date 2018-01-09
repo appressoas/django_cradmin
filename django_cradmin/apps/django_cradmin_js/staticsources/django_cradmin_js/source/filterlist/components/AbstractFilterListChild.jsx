@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 /**
  * Base class for all child components of {@link AbstractFilterList}.
  *
- * See {@link AbstractListChild#defaultProps} for documentation about
+ * See {@link AbstractFilterListChild#defaultProps} for documentation about
  * props and their defaults.
  */
-export default class AbstractListChild extends React.Component {
+export default class AbstractFilterListChild extends React.Component {
   static get propTypes () {
     return {
       renderArea: PropTypes.string.isRequired,
@@ -54,7 +54,7 @@ export default class AbstractListChild extends React.Component {
   }
 
   /**
-   * See {@link AbstractListChild#onBlur} and {@link AbstractListChild#onFocus}.
+   * See {@link AbstractFilterListChild#onBlur} and {@link AbstractFilterListChild#onFocus}.
    *
    * @return {{}} An object with information about this component relevant
    *    for blur/focus management.
@@ -69,7 +69,7 @@ export default class AbstractListChild extends React.Component {
    * Should be called when the component looses focus.
    *
    * By default this calls AbstractFilterList#onChildBlur with the
-   * information from AbstractListChild#getBlurFocusCallbackInfo.
+   * information from AbstractFilterListChild#getBlurFocusCallbackInfo.
    */
   onBlur () {
     this.props.childExposedApi.onChildBlur(this.getBlurFocusCallbackInfo())
@@ -79,7 +79,7 @@ export default class AbstractListChild extends React.Component {
    * Should be called when the component gains focus.
    *
    * By default this calls AbstractFilterList#onChildFocus with the
-   * information from AbstractListChild#getBlurFocusCallbackInfo.
+   * information from AbstractFilterListChild#getBlurFocusCallbackInfo.
    */
   onFocus () {
     this.props.childExposedApi.onChildFocus(this.getBlurFocusCallbackInfo())
@@ -87,7 +87,7 @@ export default class AbstractListChild extends React.Component {
 
   /**
    * Make props for child components that is also a subclass
-   * of AbstractListChild.
+   * of AbstractFilterListChild.
    *
    * @param extraProps Extra props. These will override any props
    *    set by default.

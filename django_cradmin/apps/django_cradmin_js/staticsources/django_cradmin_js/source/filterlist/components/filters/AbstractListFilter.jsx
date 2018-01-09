@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractListChild from '../AbstractListChild'
+import AbstractFilterListChild from '../AbstractFilterListChild'
 
 /**
  * Base class for filter components.
@@ -8,7 +8,7 @@ import AbstractListChild from '../AbstractListChild'
  * See {@link AbstractListFilter#defaultProps} for documentation about
  * props and their defaults.
  */
-export default class AbstractListFilter extends AbstractListChild {
+export default class AbstractListFilter extends AbstractFilterListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       name: PropTypes.string.isRequired,
@@ -20,7 +20,7 @@ export default class AbstractListFilter extends AbstractListChild {
 
   /**
    * Get default props. Extends the default props
-   * from {@link AbstractListChild#defaultProps}.
+   * from {@link AbstractFilterListChild#defaultProps}.
    *
    * @return {Object}
    * @property {string} name The name of the filter.
@@ -82,7 +82,7 @@ export default class AbstractListFilter extends AbstractListChild {
   /**
    * Setup bound methods.
    *
-   * Calls {@link AbstractListChild#setupBoundMethods}, and
+   * Calls {@link AbstractFilterListChild#setupBoundMethods}, and
    * binds {@link AbstractListFilter#setFilterValue}
    * to ``this` by default, but you can override this
    * method to bind more methods. In that case, ensure

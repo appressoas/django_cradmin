@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractListChild from '../AbstractListChild'
+import AbstractFilterListChild from '../AbstractFilterListChild'
 
-export default class AbstractList extends AbstractListChild {
+export default class AbstractList extends AbstractFilterListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       itemSpec: PropTypes.object.isRequired,

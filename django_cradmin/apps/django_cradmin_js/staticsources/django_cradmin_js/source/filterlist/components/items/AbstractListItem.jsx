@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import AbstractListChild from '../AbstractListChild'
+import AbstractFilterListChild from '../AbstractFilterListChild'
 
-export default class AbstractListItem extends AbstractListChild {
+export default class AbstractListItem extends AbstractFilterListChild {
   static get propTypes () {
     return {
       listItemId: PropTypes.oneOfType([

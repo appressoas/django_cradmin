@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractListChild from '../AbstractListChild'
+import AbstractFilterListChild from '../AbstractFilterListChild'
 
-export default class AbstractPaginator extends AbstractListChild {
+export default class AbstractPaginator extends AbstractFilterListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       // Not normally something used by a paginator, but needed
