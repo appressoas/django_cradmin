@@ -77,7 +77,6 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
       onChange={this.onChange}
       onFocus={this.onFocus}
       onBlur={this.onBlur} />
-
   }
 
   render () {
