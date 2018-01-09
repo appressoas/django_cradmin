@@ -45,6 +45,19 @@ export default class SearchFilter extends AbstractSearchFilter {
     return propTypes
   }
 
+  /**
+   * Get default props. Extends the default props
+   * from {@link AbstractSearchFilter.defaultProps}.
+   *
+   * @return {Object}
+   * @property {string} label An optional label for the search field.
+   *    Defaults to empty string.
+   *    **Can be used in spec**.
+   * @property {[string]} inputBemVariants Array of BEM variants
+   *    for the search input element.
+   *    Defaults to `['outlined']`.
+   *    **Can be used in spec**.
+   */
   static get defaultProps () {
     const defaultProps = super.defaultProps
     defaultProps.label = null
