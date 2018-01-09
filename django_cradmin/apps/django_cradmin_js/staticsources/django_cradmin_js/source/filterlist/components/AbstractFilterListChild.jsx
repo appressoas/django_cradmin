@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 /**
  * Base class for all child components of {@link AbstractFilterList}.
  *
- * See {@link AbstractFilterListChild#defaultProps} for documentation about
+ * See {@link AbstractFilterListChild.defaultProps} for documentation for
  * props and their defaults.
  */
 export default class AbstractFilterListChild extends React.Component {
@@ -22,10 +22,13 @@ export default class AbstractFilterListChild extends React.Component {
    * @return {Object}
    * @property {string} renderArea The area the component is rendered within.
    *    Will normally be one of {@link RENDER_AREA_HEADER} or {@link RENDER_AREA_BODY}.
+   *    _Provided automatically by the parent component_.
    * @property {ChildExposedApi} childExposedApi Object with public methods from
    *    {@link AbstractFilterList}.
+   *    _Provided automatically by the parent component_.
    * @property {string|null} componentGroup The group this component belongs to.
    *    See {@link AbstractFilterList#toggleComponentGroup}.
+   *    **Can be used in spec**.
    */
   static get defaultProps () {
     return {

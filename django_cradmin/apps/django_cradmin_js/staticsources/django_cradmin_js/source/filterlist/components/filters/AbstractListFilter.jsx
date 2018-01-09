@@ -5,7 +5,7 @@ import AbstractFilterListChild from '../AbstractFilterListChild'
 /**
  * Base class for filter components.
  *
- * See {@link AbstractListFilter#defaultProps} for documentation about
+ * See {@link AbstractListFilter.defaultProps} for documentation for
  * props and their defaults.
  */
 export default class AbstractListFilter extends AbstractFilterListChild {
@@ -14,13 +14,13 @@ export default class AbstractListFilter extends AbstractFilterListChild {
       name: PropTypes.string.isRequired,
       location: PropTypes.string.isRequired,
       isStatic: PropTypes.bool,
-      value: PropTypes.any,
+      value: PropTypes.any
     })
   }
 
   /**
    * Get default props. Extends the default props
-   * from {@link AbstractFilterListChild#defaultProps}.
+   * from {@link AbstractFilterListChild.defaultProps}.
    *
    * @return {Object}
    * @property {string} name The name of the filter.
