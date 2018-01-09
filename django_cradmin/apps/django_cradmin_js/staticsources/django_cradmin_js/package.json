@@ -5,8 +5,7 @@
     "prop-types": "^15.6.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-hotkeys": "^0.9.0",
-    "standard": "^10.0.3"
+    "react-hotkeys": "^0.9.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -19,10 +18,12 @@
     "enzyme": "^2.7.1",
     "esdoc": "^0.4.8",
     "esdoc-importpath-plugin": "^0.0.1",
+    "eslint-config-standard": "^11.0.0-beta.0",
     "jest": "^18.1.0",
     "json-loader": "^0.5.4",
     "react-addons-test-utils": "^15.4.2",
     "react-test-renderer": "^15.4.1",
+    "standard": "^10.0.3",
     "webpack": "^1.13.3"
   },
   "license": "BSD-3-Clause",
