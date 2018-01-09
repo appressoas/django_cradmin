@@ -207,6 +207,9 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Disable a component group.
    *
+   * See {@link AbstractFilterList#toggleComponentGroup} for more info
+   * about component groups.
+   *
    * @param {string} group The group to disable.
    */
   disableComponentGroup (group) {
@@ -221,6 +224,9 @@ export default class AbstractFilterList extends React.Component {
 
   /**
    * Enable a component group.
+   *
+   * See {@link AbstractFilterList#toggleComponentGroup} for more info
+   * about component groups.
    *
    * @param {string} group The group to enable.
    */
@@ -237,6 +243,9 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Is a component group enabled?
    *
+   * See {@link AbstractFilterList#toggleComponentGroup} for more info
+   * about component groups.
+   *
    * @param {string} group The group to check.
    * @return {bool} Is the component group enabled?
    */
@@ -249,6 +258,18 @@ export default class AbstractFilterList extends React.Component {
 
   /**
    * Toggle a component group between disabled/enabled.
+   *
+   * A component group is just a string that any component
+   * in `body` or `header` can set via their `componentGroup`
+   * prop. You can then use this method, {@link AbstractFilterList#enableComponentGroup}
+   * or {@link AbstractFilterList#disableComponentGroup} to enable/disable
+   * rendering of a whole group of components. This is perfect
+   * for things like dropdowns, toggle advanced filters, etc.
+   *
+   * We provide the {@link COMPONENT_GROUP_EXPANDABLE} and
+   * {@link COMPONENT_GROUP_ADVANCED} constants, and you
+   * should use these (or their values in case of purely configuring
+   * through JSON input) unless you have needs not covered by them.
    *
    * @param {string} group The group to enable/disable.
    */
@@ -763,9 +784,6 @@ export default class AbstractFilterList extends React.Component {
    * pagination options ({@link getNextPagePaginationOptions},
    * {@link getPreviousPagePaginationOptions}, ...).
    *
-   * The default implementation assumes that a page number is available
-   * in ``httpRequest.bodydata.page``.
-   *
    * @param httpResponse The HTTP response. Will always be a
    *    subclass of HttpResponse from the ievv_jsbase library.
    * @param paginationOptions The pagination options that was sent to
@@ -784,8 +802,8 @@ export default class AbstractFilterList extends React.Component {
    * {@link AbstractFilterList#paginateListItemsHttpRequest}
    * when requesting the first page from the API.
    *
-   * @param {{}} paginationState The paginationState generated
-   *     by {@link AbstractFilterList#makePaginationStateFromHttpResponse}
+   * @param {int} paginationState The current pagination state.
+   *    See {@link AbstractFilterList#makePaginationStateFromHttpResponse}
    * @returns {object|null} Pagination options. If this returns `null`,
    *     it means that no pagination options are needed to fetch the
    *     first page.
@@ -796,8 +814,9 @@ export default class AbstractFilterList extends React.Component {
 
   /**
    * Get the current pagination page number.
-   * @param {{}} paginationState The paginationState generated
-   *     by {@link AbstractFilterList#makePaginationStateFromHttpResponse}
+   *
+   * @param {int} paginationState The current pagination state.
+   *    See {@link AbstractFilterList#makePaginationStateFromHttpResponse}
    * @returns {number}
    */
   getCurrentPaginationPage (paginationState) {
@@ -808,6 +827,8 @@ export default class AbstractFilterList extends React.Component {
    * Get pagination options for the next page relative to the
    * currently active page.
    *
+   * @param {int} paginationState The current pagination state.
+   *    See {@link AbstractFilterList#makePaginationStateFromHttpResponse}
    * @returns {object|null} Pagination options. If this returns
    *    null, it means that there are no "next" page.
    */
@@ -819,6 +840,8 @@ export default class AbstractFilterList extends React.Component {
    * Get pagination options for the previous page relative to the
    * currently active page.
    *
+   * @param {int} paginationState The current pagination state.
+   *    See {@link AbstractFilterList#makePaginationStateFromHttpResponse}
    * @returns {object|null} Pagination options. If this returns
    *    null, it means that there are no "previous" page.
    */
@@ -829,7 +852,9 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Get pagination options for a specific page number.
    *
-   * @param {int} pageNumber The page number
+   * @param {int} pageNumber The page number.
+   * @param {int} paginationState The current pagination state.
+   *    See {@link AbstractFilterList#makePaginationStateFromHttpResponse}
    *
    * @returns {object} Pagination options
    */
@@ -893,13 +918,20 @@ export default class AbstractFilterList extends React.Component {
   }
 
   /**
+   * Make new items state from API response.
+   *
+   * Parses the HTTP response, and returns an object
+   * with new state variables for the list items.
+   *
+   * @param {{}} prevState The current state.
+   * @param {{}} props The current props.
    * @param httpResponse The HTTP response. Will always be a
    *    subclass of HttpResponse from the ievv_jsbase library.
    * @param clearOldItems If this is ``true``, we replace the
    *    items displayed in the list with the items from the response.
    *    If it is ``false``, we append the new items to the items
    *    displayed in the list.
-   * @returns {[]} An array containing raw data for list items.
+   * @returns {{}} New state variables for the list items.
    */
   makeNewItemsStateFromApiResponse (prevState, props, httpResponse, clearOldItems) {
     const newItemsArray = this.getItemsArrayFromHttpResponse(httpResponse)
@@ -931,6 +963,8 @@ export default class AbstractFilterList extends React.Component {
    * {@link makeNewItemsStateFromApiResponse}
    * and {@link makePaginationStateFromHttpResponse}
    *
+   * @param {{}} prevState The current state.
+   * @param {{}} props The current props.
    * @param httpResponse The HTTP response. Will always be a
    *    subclass of HttpResponse from the ievv_jsbase library.
    * @param paginationOptions Pagination options normally created
@@ -982,7 +1016,8 @@ export default class AbstractFilterList extends React.Component {
    *
    * instead of calling this method directly.
    *
-   * @param paginationOptions
+   * @param {{}} paginationOptions Paginator options.
+   * @param {bool} clearOldItems
    * @returns {Promise}
    */
   loadItemsFromApi (paginationOptions, clearOldItems) {

@@ -1,23 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+/**
+ * Base class for all child components of {@link AbstractFilterList}.
+ *
+ * See {@link AbstractListChild#defaultProps} for documentation about
+ * props and their defaults.
+ */
 export default class AbstractListChild extends React.Component {
   static get propTypes () {
     return {
-      // The render area for this child.
-      // Must be one of RENDER_AREA_HEADER or RENDER_AREA_BODY.
-      // Needed for focus handling in cases with dropdowns etc.
       renderArea: PropTypes.string.isRequired,
-
-      // An object of ChildExposedApi
-      childExposedApi: PropTypes.object.isRequired
+      childExposedApi: PropTypes.object.isRequired,
+      componentGroup: PropTypes.string
     }
   }
 
+  /**
+   * Get default props.
+   *
+   * @return {Object}
+   * @property {string} renderArea The area the component is rendered within.
+   *    Will normally be one of {@link RENDER_AREA_HEADER} or {@link RENDER_AREA_BODY}.
+   * @property {ChildExposedApi} childExposedApi Object with public methods from
+   *    {@link AbstractFilterList}.
+   * @property {string|null} componentGroup The group this component belongs to.
+   *    See {@link AbstractFilterList#toggleComponentGroup}.
+   */
   static get defaultProps () {
     return {
       renderArea: null,
-      childExposedApi: null
+      childExposedApi: null,
+      componentGroup: null
     }
   }
 

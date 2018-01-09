@@ -223,7 +223,7 @@ export default class ComponentCache {
    *
    * @param {{}} componentSpec
    */
-  cleanPaginatorSpec (componentSpec,) {
+  cleanPaginatorSpec (componentSpec) {
   }
 
   /**
