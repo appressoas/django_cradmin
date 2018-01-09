@@ -18,7 +18,7 @@ export default class TitleDescriptionListItem extends AbstractListItem {
     return Object.assign(super.defaultProps, {
       bemBlock: 'blocklist',
       bemVariants: [],
-      titleBemVariants: [],
+      titleBemVariants: []
     })
   }
 
