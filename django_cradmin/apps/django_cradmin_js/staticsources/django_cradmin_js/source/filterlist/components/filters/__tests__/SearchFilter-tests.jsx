@@ -1,8 +1,9 @@
 /* eslint-env jest */
 import React from 'react'
-import { shallow } from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import { renderFilter } from '../testHelpers'
 import SearchFilter from '../SearchFilter'
+import {ChildExposedApiMock} from '../../filterlists/testHelpers'
 
 function render (props = {}) {
   return renderFilter(SearchFilter, props)
@@ -23,4 +24,15 @@ test('label prop', () => {
     label: 'Test label'
   }))
   expect(component.text()).toEqual('Test label')
+})
+
+test('click clear clears filter value', () => {
+  const childExposedApi = new ChildExposedApiMock(true)
+  const component = mount(render({
+    name: 'search',
+    value: 'Test',
+    childExposedApi: childExposedApi
+  }))
+  component.find('button').simulate('click')
+  expect(childExposedApi.setFilterValue).toBeCalledWith('search', '')
 })
