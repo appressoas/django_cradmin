@@ -3,13 +3,16 @@ import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
 import {
-  MULTISELECT, RENDER_AREA_ALL, RENDER_AREA_BODY, RENDER_AREA_HEADER, RENDER_LOCATION_CENTER,
+  MULTISELECT,
+  RENDER_AREA_BODY,
+  RENDER_AREA_HEADER,
+  RENDER_LOCATION_CENTER,
   SINGLESELECT
 } from '../../filterListConstants'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'
 import ComponentCache from '../../ComponentCache'
-
+import ChildExposedApi from './ChildExposedApi'
 
 /*
 <AbstractList
@@ -34,65 +37,6 @@ import ComponentCache from '../../ComponentCache'
   }
   />
 */
-
-
-export class ChildExposedApi {
-  constructor (filterListObject) {
-    this.filterListObject = filterListObject
-    this.setupBoundMethods()
-  }
-
-  setupBoundMethods () {
-    this.loadMoreItemsFromApi = this.filterListObject.loadMoreItemsFromApi.bind(this.filterListObject)
-    this.loadNextPageFromApi = this.filterListObject.loadNextPageFromApi.bind(this.filterListObject)
-    this.loadPreviousPageFromApi = this.filterListObject.loadPreviousPageFromApi.bind(this.filterListObject)
-    this.loadSpecificPageFromApi = this.filterListObject.loadSpecificPageFromApi.bind(this.filterListObject)
-
-    this.selectItem = this.filterListObject.selectItem.bind(this.filterListObject)
-    this.selectItems = this.filterListObject.selectItems.bind(this.filterListObject)
-    this.deselectItem = this.filterListObject.deselectItem.bind(this.filterListObject)
-    this.deselectItems = this.filterListObject.deselectItems.bind(this.filterListObject)
-    this.deselectAllItems = this.filterListObject.deselectAllItems.bind(this.filterListObject)
-    this.itemIsSelected = this.filterListObject.itemIsSelected.bind(this.filterListObject)
-    this.getIdFromListItemData = this.filterListObject.getIdFromListItemData.bind(this.filterListObject)
-
-    this.setFilterValue = this.filterListObject.setFilterValue.bind(this.filterListObject)
-    this.getFilterValue = this.filterListObject.getFilterValue.bind(this.filterListObject)
-
-    this.isSingleSelectMode = this.filterListObject.isSingleSelectMode.bind(this.filterListObject)
-    this.isMultiSelectMode = this.filterListObject.isMultiSelectMode.bind(this.filterListObject)
-
-    this._hasPreviousPaginationPage = this.filterListObject.hasPreviousPaginationPage.bind(this.filterListObject)
-    this._hasNextPaginationPage = this.filterListObject.hasNextPaginationPage.bind(this.filterListObject)
-    this._getPaginationPageCount = this.filterListObject.getPaginationPageCount.bind(this.filterListObject)
-    this._getTotalListItemCount = this.filterListObject.getTotalListItemCount.bind(this.filterListObject)
-
-    this.onChildFocus = this.filterListObject.onChildFocus.bind(this.filterListObject)
-    this.onChildBlur = this.filterListObject.onChildBlur.bind(this.filterListObject)
-
-    this.disableComponentGroup = this.filterListObject.disableComponentGroup.bind(this.filterListObject)
-    this.enableComponentGroup = this.filterListObject.enableComponentGroup.bind(this.filterListObject)
-    this.toggleComponentGroup = this.filterListObject.toggleComponentGroup.bind(this.filterListObject)
-    this.componentGroupIsEnabled = this.filterListObject.componentGroupIsEnabled.bind(this.filterListObject)
-  }
-
-  hasPreviousPaginationPage () {
-    return this._hasPreviousPaginationPage(this.filterListObject.state.paginationState)
-  }
-
-  hasNextPaginationPage () {
-    return this._hasNextPaginationPage(this.filterListObject.state.paginationState)
-  }
-
-  getPaginationPageCount () {
-    return this._getPaginationPageCount(this.filterListObject.state.paginationState)
-  }
-
-  getTotalListItemCount () {
-    return this._getTotalListItemCount(this.filterListObject.state.paginationState)
-  }
-}
-
 
 export default class AbstractFilterList extends React.Component {
   static get propTypes () {
@@ -164,6 +108,13 @@ export default class AbstractFilterList extends React.Component {
     this.cachedPaginatorSpec = null
   }
 
+  /**
+   * Make a {@link ChildExposedApi} object.
+   *
+   * See {@link ChildExposedApi} for more details.
+   *
+   * @returns {ChildExposedApi}
+   */
   makeChildExposedApi () {
     return new ChildExposedApi(this)
   }
@@ -196,7 +147,7 @@ export default class AbstractFilterList extends React.Component {
       listItemsDataMap: new Map(),
       isLoadingNewItemsFromApi: false,
       isLoadingMoreItemsFromApi: false,
-      componentCache: new ComponentCache(),
+      componentCache: this.makeEmptyComponentCache(),
       paginationState: {},
       hasFocus: false,
       selectedListItemsMap: new Map(),
@@ -212,8 +163,24 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
-  makeComponentCache (rawHeaderSpec, rawBodySpec) {
-    const componentCache = new ComponentCache()
+  /**
+   * Make an empty component cache.
+   *
+   * @returns {ComponentCache} An object of {@link ComponentCache} or a subclass.
+   */
+  makeEmptyComponentCache () {
+    return new ComponentCache()
+  }
+
+  /**
+   * Make a {@link ComponentCache} object.
+   *
+   * @param rawHeaderSpec
+   * @param rawBodySpec
+   * @returns {ComponentCache}
+   */
+  buildComponentCache (rawHeaderSpec, rawBodySpec) {
+    const componentCache = this.makeEmptyComponentCache()
     if (rawHeaderSpec) {
       componentCache.setHeader(rawHeaderSpec, this.getDefaultHeaderComponentLocation())
     }
@@ -224,7 +191,7 @@ export default class AbstractFilterList extends React.Component {
   }
 
   refreshComponentCache (rawHeaderSpec, rawBodySpec) {
-    const componentCache = this.makeComponentCache(rawHeaderSpec, rawBodySpec)
+    const componentCache = this.buildComponentCache(rawHeaderSpec, rawBodySpec)
     this.setInitialFilterValuesInState(componentCache.filterMap.values())
     this.setState({
       componentCache: componentCache
@@ -338,22 +305,55 @@ export default class AbstractFilterList extends React.Component {
   //
   //
 
+  /**
+   * Is `props.selectMode === 'single'`?
+   *
+   * WARNING: The default value for `props.selectMode` is `null`,
+   * which means that this method returns `false` by default.
+   * This means that you normally want to use {@link AbstractFilterList#isMultiSelectMode}
+   * instead of this method unless you work with 3 states of selectMode
+   * (no select (null), singleselect and multiselect)
+   *
+   * @returns {boolean}
+   */
   isSingleSelectMode () {
     return this.props.selectMode === SINGLESELECT
   }
 
+  /**
+   * Is `props.selectMode === 'multi'`?
+   *
+   * @returns {boolean}
+   */
   isMultiSelectMode () {
     return this.props.selectMode === MULTISELECT
   }
 
+  /**
+   * Is the provided `listItemId` selected?
+   *
+   * @param listItemId The ID of a list item.
+   * @returns {boolean}
+   */
   itemIsSelected (listItemId) {
     return this.state.selectedListItemsMap.has(listItemId)
   }
 
+  /**
+   * Select an item.
+   *
+   * @param listItemId The ID of a list item.
+   */
   selectItem (listItemId) {
     this.selectItems([listItemId])
   }
 
+  /**
+   * Select multiple items.
+   *
+   * @param {[]} listItemIds Array of list item IDs. The array can not have more
+   *    than 1 item unless {@link AbstractFilterList#isMultiSelectMode} is `true`.
+   */
   selectItems (listItemIds) {
     if (listItemIds.length > 1 && !this.isMultiSelectMode()) {
       throw new Error('Can not select multiple items unless selectMode is "multi".')
@@ -376,10 +376,20 @@ export default class AbstractFilterList extends React.Component {
     }, this.loadMissingSelectedItemDataFromApi)
   }
 
+  /**
+   * Deselect an item.
+   *
+   * @param listItemId The ID of a list item.
+   */
   deselectItem (listItemId) {
     this.deselectItems([listItemId])
   }
 
+  /**
+   * Deselect multiple items.
+   *
+   * @param {[]} listItemIds Array of list item IDs.
+   */
   deselectItems (listItemIds) {
     this.setState((prevState, props) => {
       const selectedListItemsMap = prevState.selectedListItemsMap
@@ -392,6 +402,9 @@ export default class AbstractFilterList extends React.Component {
     })
   }
 
+  /**
+   * Deselect all selected items.
+   */
   deselectAllItems () {
     this.setState({
       selectedListItemsMap: new Map()
@@ -510,44 +523,19 @@ export default class AbstractFilterList extends React.Component {
   //
 
   /**
-   * Make a filterSpec from a rawFilterSpec.
+   * Get the delay after changing a filter value until
+   * we make the API request. This avoids extra API requests
+   * when users change many filter values fast (I.E.: search, or
+   * clicking many checkboxes fast).
    *
-   * Validates the provided filterSpec, and ensures that
-   * the returned filterSpec has a javascript class
-   * in the componentClass property. This means that if
-   * rawFilterSpec.component is a string, we will lookup
-   * the class using {@link FilterListRegistrySingleton#getFilterComponent}.
+   * If a new filter value is set before this delay is
+   * exceeded, the delay is reset and a new delay is started.
    *
-   * @param rawFilterSpec {{}} The raw filterSpec.
-   * @param defaultLocation {string} The fallback value for the location if
-   *    is not specified in rawFilterSpec.
-   * @returns {{}} That is guaranteed to have the following attributes: componentClass,
-   *    location, name.
+   * @returns {number} Number of milliseconds to wait before
+   *    making the API request on filter value change.
+   *    Defaults to `300`.
    */
-  makeFilterSpec (rawFilterSpec, defaultLocation) {
-    const filterSpec = Object.assign({}, rawFilterSpec)
-    if (typeof rawFilterSpec.component === 'string') {
-      filterSpec.componentClass = this.filterListRegistry.getFilterComponent(rawFilterSpec.component)
-    } else {
-      filterSpec.componentClass = rawFilterSpec.component
-    }
-    if (!rawFilterSpec.props) {
-      throw new Error(
-        `Filter component=${rawFilterSpec.component} is missing required ` +
-        `attribute "props".`)
-    }
-    if (!rawFilterSpec.props.location) {
-      filterSpec.props.location = defaultLocation
-    }
-    if (!rawFilterSpec.props.name) {
-      throw new Error(
-        `Filter component=${rawFilterSpec.component} is missing required ` +
-        `attribute "props.name".`)
-    }
-    return filterSpec
-  }
-
-  get filterApiUpdateDelayMilliseconds () {
+  get filterApiDelayMilliseconds () {
     return 300
   }
 
@@ -560,7 +548,7 @@ export default class AbstractFilterList extends React.Component {
   _startFilterApiUpdateTimer () {
     this._filterApiUpdateTimeoutId = window.setTimeout(() => {
       this.loadFromApiOnFilterChange()
-    }, this.filterApiUpdateDelayMilliseconds)
+    }, this.filterApiDelayMilliseconds)
   }
 
   _getStateVariableNameForFilter (filterName) {
@@ -576,6 +564,14 @@ export default class AbstractFilterList extends React.Component {
     }, onComplete)
   }
 
+  /**
+   * Set the value of a filter.
+   * @param filterName The name of the filter.
+   * @param value The new filter value.
+   * @param {bool} noDelay Perform the API request immediately if
+   *    this is `true` (see {@link AbstractFilterList#filterApiDelayMilliseconds}).
+   *    Defaults to `false`.
+   */
   setFilterValue (filterName, value, noDelay = false) {
     this._stopFilterApiUpdateTimer()
     this._setFilterValueInState(filterName, value, () => {
@@ -587,6 +583,12 @@ export default class AbstractFilterList extends React.Component {
     })
   }
 
+  /**
+   * Get the current value of a filter.
+   *
+   * @param filterName The name of the filter.
+   * @returns Value of the filter.
+   */
   getFilterValue (filterName) {
     return this.state[this._getStateVariableNameForFilter(filterName)]
   }
@@ -613,6 +615,12 @@ export default class AbstractFilterList extends React.Component {
   //
   //
 
+  /**
+   * Get the ID of a list item from the item data.
+   *
+   * @param {{}} listItemData The list item data.
+   * @returns {*} The ID of the list item.
+   */
   getIdFromListItemData (listItemData) {
     if (this.props.idAttribute) {
       return listItemData[this.props.idAttribute]
@@ -628,6 +636,15 @@ export default class AbstractFilterList extends React.Component {
   //
   //
 
+  /**
+   * Filter a list items HTTP request.
+   *
+   * Calls {@link AbstractListFilter#filterHttpRequest}
+   * on all filters.
+   *
+   * @param httpRequest The HTTP request.
+   *    An object of the class returned by {@link AbstractListFilter#getHttpRequestClass}
+   */
   filterListItemsHttpRequest (httpRequest) {
     for (let filterSpec of this.state.componentCache.filterMap.values()) {
       const value = this.getFilterValue(filterSpec.props.name)
@@ -661,6 +678,16 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
+  /**
+   * Make list items HTTP request.
+   *
+   * @param {{}} paginationOptions Paginator options.
+   * @param {bool} filter Should we filter the HTTP request using
+   *    {@link AbstractListFilter#filterListItemsHttpRequest}?
+   *    Defaults to `true`.
+   * @returns {*} HTTP request object. An instance of the
+   *    class returned by {@link AbstractListFilter#getHttpRequestClass}.
+   */
   makeListItemsHttpRequest (paginationOptions, filter=true) {
     const HttpRequestClass = this.getHttpRequestClass()
     const httpRequest = new HttpRequestClass(this.props.getItemsApiUrl)
@@ -671,12 +698,40 @@ export default class AbstractFilterList extends React.Component {
     return httpRequest
   }
 
+  /**
+   * Get a human readable and user friendly load
+   * items from API request error message.
+   *
+   * @param {Error} errorObject
+   */
+  getLoadItemsFromApiErrorMessage (errorObject) {
+    return window.gettext('Failed to load list items from the server.')
+  }
+
+  /**
+   * Update state with data about an error from a
+   * load items from API http request.
+   *
+   * You normally want to override
+   * {@link AbstractListFilter#getLoadItemsFromApiErrorMessage}
+   * instead of this method unless you are changing the error handling
+   * completely.
+   *
+   * If you override this, you will need to also
+   * override {@link AbstractListFilter#clearLoadItemsFromApiErrorMessage}.
+   *
+   * @param {Error} errorObject
+   */
   setLoadItemsFromApiErrorMessage (errorObject) {
     this.setState({
-      loadItemsFromApiError: window.gettext('Failed to load list items from the server.')
+      loadItemsFromApiError: this.getLoadItemsFromApiErrorMessage(errorObject)
     })
   }
 
+  /**
+   * Clear the error messages set by
+   * {@link AbstractListFilter#setLoadItemsFromApiErrorMessage}.
+   */
   clearLoadItemsFromApiErrorMessage () {
     if (this.state.loadItemsFromApiError !== null) {
       this.setState({
@@ -685,6 +740,16 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
+  /**
+   * Handle a failed load items from API http request.
+   *
+   * You normally want to override
+   * {@link AbstractListFilter#getLoadItemsFromApiErrorMessage}
+   * instead of this method unless you are changing the error handling
+   * completely.
+   *
+   * @param {Error} errorObject
+   */
   handleGetListItemsFromApiRequestError (errorObject) {
     console.error('Error:', errorObject.toString())
     this.setLoadItemsFromApiErrorMessage(errorObject)
@@ -887,6 +952,17 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
+  /**
+   * Update state from load items API success response.
+   *
+   * Called by all the `load*FromApi` methods.
+   *
+   * @param httpResponse The HTTP response object.
+   * @param {{}} paginationOptions The pagination options used by the HTTP request.
+   * @param {bool} clearOldItems Should we clear old list items and replace
+   *    them with the items in the response. If this is `false`, we should
+   *    append the new items.
+   */
   updateStateFromLoadItemsApiSuccessResponse (httpResponse, paginationOptions, clearOldItems) {
     this.setState((prevState, props) => {
       return this.makeStateFromLoadItemsApiSuccessResponse(
@@ -947,6 +1023,12 @@ export default class AbstractFilterList extends React.Component {
       })
   }
 
+  /**
+   * Called when filter values changes to load new items from the API.
+   *
+   * By default, this is just an alias for
+   * {@link AbstractFilterList#loadFirstPageFromApi}.
+   */
   loadFromApiOnFilterChange () {
     this.loadFirstPageFromApi()
   }
@@ -1038,6 +1120,16 @@ export default class AbstractFilterList extends React.Component {
   //
   //
 
+  /**
+   * Get props for an area component.
+   *
+   * Used by {@link AbstractFilterList#getHeaderComponentProps}
+   * and {@link AbstractFilterList#getBodyComponentProps}.
+   *
+   * @param {{}} extraProps Extra props to set in addition to the props
+   *    set by this method.
+   * @returns {{}} Props for the area component.
+   */
   getAreaComponentProps (extraProps={}) {
     return Object.assign({
       childExposedApi: this.childExposedApi,
@@ -1050,10 +1142,24 @@ export default class AbstractFilterList extends React.Component {
     }, extraProps)
   }
 
+  /**
+   * Should we render the provided component area?
+   *
+   * Uses {@link AbstractFilterList#componentGroupIsEnabled} to determine
+   * if the component should be rendered.
+   *
+   * @param {ComponentArea} componentArea A component area (header or body).
+   * @returns {bool}
+   */
   shouldRenderComponentArea (componentArea) {
     return this.componentGroupIsEnabled(componentArea.props.componentGroup)
   }
 
+  /**
+   * Get props for the header component.
+   *
+   * @returns {{}} Props for the header component.
+   */
   getHeaderComponentProps () {
     return this.getAreaComponentProps(
       Object.assign(this.state.componentCache.header.props, {
@@ -1062,6 +1168,11 @@ export default class AbstractFilterList extends React.Component {
       }))
   }
 
+  /**
+   * Render the header component.
+   *
+   * @returns {null|React.Element}
+   */
   renderHeader () {
     if (!this.state.componentCache.header) {
       return null
@@ -1074,6 +1185,11 @@ export default class AbstractFilterList extends React.Component {
       this.getHeaderComponentProps())
   }
 
+  /**
+   * Get props for the body component.
+   *
+   * @returns {{}} Props for the body component.
+   */
   getBodyComponentProps () {
     return this.getAreaComponentProps(
       Object.assign(this.state.componentCache.body.props, {
@@ -1082,6 +1198,11 @@ export default class AbstractFilterList extends React.Component {
       }))
   }
 
+  /**
+   * Render the body component.
+   *
+   * @returns {null|React.Element}
+   */
   renderBody () {
     if (!this.state.componentCache.body) {
       return null

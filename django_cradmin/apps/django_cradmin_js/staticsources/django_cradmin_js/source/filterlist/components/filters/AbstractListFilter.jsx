@@ -36,6 +36,18 @@ export default class AbstractListFilter extends AbstractListChild {
     })
   }
 
+  /**
+   * Filter the provided HTTP request.
+   *
+   * Defaults to setting `<name>=<value>` is the querystring.
+   * Non-trivial filters will need to override this.
+   *
+   * @param httpRequest The HTTP request.
+   *    An object of the class returned by {@link AbstractListFilter#getHttpRequestClass}
+   * @param name The name of the filter. Will be the same as
+   *    `props.name`.
+   * @param value The current value of the filter.
+   */
   static filterHttpRequest (httpRequest, name, value) {
     httpRequest.urlParser.queryString.set(name, value)
   }
@@ -45,15 +57,35 @@ export default class AbstractListFilter extends AbstractListChild {
     this.state = this.getInitialState()
   }
 
+  /**
+   * Get the initial state for the filter.
+   * @returns {{}}
+   */
   getInitialState () {
     return {}
   }
 
+  /**
+   * Setup bound methods.
+   *
+   * Binds {@link AbstractListFilter#setFilterValue}
+   * to ``this` by default, but you can override this
+   * method to bind more methods. In that case, ensure
+   * you call `super.setupBoundMethods()`!
+   */
   setupBoundMethods () {
     super.setupBoundMethods()
     this.setFilterValue = this.setFilterValue.bind(this)
   }
 
+  /**
+   * Set the value of the filter.
+   *
+   * If you set complex objects as value (array, object, map, set, ...),
+   * you will need to override {@link AbstractListFilter#filterHttpRequest}.
+   *
+   * @param value The value to set.
+   */
   setFilterValue (value) {
     this.props.childExposedApi.setFilterValue(this.props.name, value)
   }
