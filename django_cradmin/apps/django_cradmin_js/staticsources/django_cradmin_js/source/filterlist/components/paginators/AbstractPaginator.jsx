@@ -16,11 +16,4 @@ export default class AbstractPaginator extends AbstractListChild {
       listItemsDataArray: null
     })
   }
-
-  constructor (props) {
-    super(props)
-    this.setupBoundMethods()
-  }
-
-  setupBoundMethods () {}
 }

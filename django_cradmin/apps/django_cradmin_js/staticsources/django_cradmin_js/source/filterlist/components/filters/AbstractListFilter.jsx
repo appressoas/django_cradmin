@@ -82,7 +82,8 @@ export default class AbstractListFilter extends AbstractListChild {
   /**
    * Setup bound methods.
    *
-   * Binds {@link AbstractListFilter#setFilterValue}
+   * Calls {@link AbstractListChild#setupBoundMethods}, and
+   * binds {@link AbstractListFilter#setFilterValue}
    * to ``this` by default, but you can override this
    * method to bind more methods. In that case, ensure
    * you call `super.setupBoundMethods()`!
