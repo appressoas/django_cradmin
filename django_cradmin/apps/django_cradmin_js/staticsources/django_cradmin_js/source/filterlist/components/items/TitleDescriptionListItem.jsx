@@ -9,8 +9,8 @@ export default class TitleDescriptionListItem extends AbstractListItem {
       title: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       bemBlock: PropTypes.string.isRequired,
-      bemVariants: PropTypes.array.isRequired,
-      titleBemVariants: PropTypes.array.isRequired
+      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titleBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
     })
   }
 

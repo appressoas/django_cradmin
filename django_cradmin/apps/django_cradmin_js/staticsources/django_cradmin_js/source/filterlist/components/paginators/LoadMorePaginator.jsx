@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractPaginator from './AbstractPaginator'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
+import BemUtilities from '../../../utilities/BemUtilities'
 
 /**
  * Load more paginator.
@@ -19,7 +20,8 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
  *    "component": "LoadMorePaginator",
  *    "props": {
  *       "label": "Load some more items!",
- *       "className": "button button--primary",
+ *       "bemBlock": "custombutton",
+ *       "bemVariants": ["large", "dark"],
  *       "location": "left"
  *    }
  * }
@@ -27,7 +29,8 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
 export default class LoadMorePaginator extends AbstractPaginator {
   static get propTypes () {
     const propTypes = super.propTypes
-    propTypes.className = PropTypes.string.isRequired
+    propTypes.bemBlock = PropTypes.string.isRequired
+    propTypes.bemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
     propTypes.label = PropTypes.string.isRequired
     return propTypes
   }
@@ -37,9 +40,11 @@ export default class LoadMorePaginator extends AbstractPaginator {
    * from {@link AbstractPaginator.defaultProps}.
    *
    * @return {Object}
-   * @property {string} className The CSS class name
-   *    for the rendered button.
+   * @property {string} bemBlock The BEM block for the button.
    *    This is required, and defaults to `'button'`.
+   *    **Can be used in spec**.
+   * @property {[string]} bemVariants The BEM variants for the button as an array of strings.
+   *    Defaults to empty array.
    *    **Can be used in spec**.
    * @property {string} label The label of the button.
    *    This is required, and defaults to `'Load more'` (marked for translation).
@@ -47,7 +52,8 @@ export default class LoadMorePaginator extends AbstractPaginator {
    */
   static get defaultProps () {
     const defaultProps = super.defaultProps
-    defaultProps.className = 'button'
+    defaultProps.bemBlock = 'button'
+    defaultProps.bemVariants = []
     defaultProps.label = window.gettext('Load more')
     return defaultProps
   }
@@ -57,6 +63,10 @@ export default class LoadMorePaginator extends AbstractPaginator {
     this.onClick = this.onClick.bind(this)
   }
 
+  get className () {
+    return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
+  }
+
   onClick (e) {
     e.preventDefault()
     this.props.childExposedApi.loadMoreItemsFromApi()
@@ -64,7 +74,7 @@ export default class LoadMorePaginator extends AbstractPaginator {
 
   renderLoadMoreButton () {
     return <button type={'button'}
-      className={this.props.className}
+      className={this.className}
       onClick={this.onClick}
     >
       {this.props.label}

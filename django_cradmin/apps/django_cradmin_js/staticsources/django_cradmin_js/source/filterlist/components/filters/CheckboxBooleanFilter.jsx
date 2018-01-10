@@ -81,8 +81,8 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
 
   render () {
     return <label className={this.labelClassName}>
-      <span className={this.indicatorClassName} />
       {this.renderInput()}
+      <span className={this.indicatorClassName} />
       {this.renderLabel()}
     </label>
   }

@@ -41,12 +41,20 @@ test('Default className', () => {
   expect(component.prop('className')).toBe('button')
 })
 
-test('Custom className', () => {
+test('Custom bemBlock', () => {
   const component = shallow(render({
     childExposedApi: makeChildExposedApiMock(true),
-    className: 'myclass'
+    bemBlock: 'myblock'
   }))
-  expect(component.prop('className')).toBe('myclass')
+  expect(component.prop('className')).toBe('myblock')
+})
+
+test('Custom bemVariants', () => {
+  const component = shallow(render({
+    childExposedApi: makeChildExposedApiMock(true),
+    bemVariants: ['large', 'dark']
+  }))
+  expect(component.prop('className')).toBe('button button--large button--dark')
 })
 
 test('Default label', () => {

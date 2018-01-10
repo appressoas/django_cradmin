@@ -1,13 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractListItem from './AbstractListItem'
+import BemUtilities from '../../../utilities/BemUtilities'
 
 export default class SelectableTitleDescriptionListItem extends AbstractListItem {
   static get propTypes () {
-    const propTypes = super.propTypes
-    propTypes.title = PropTypes.string.isRequired
-    propTypes.description = PropTypes.string.isRequired
-    return propTypes
+    return Object.assign(super.propTypes, {
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      bemBlock: PropTypes.string.isRequired,
+      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      titleBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      contentBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
+    })
+  }
+
+  static get defaultProps () {
+    return Object.assign(super.defaultProps, {
+      bemBlock: 'selectable-list',
+      bemVariants: [],
+      titleBemVariants: [],
+      contentBemVariants: []
+    })
   }
 
   setupBoundMethods () {
@@ -24,11 +38,12 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
   }
 
   get className () {
-    let className = 'selectable-list__item'
+    const bemVariants = [...this.props.bemVariants]
     if (this.props.isSelected) {
-      className = `${className} selectable-list__item--selected`
+      bemVariants.push('selected')
     }
-    return className
+    return BemUtilities.buildBemElement(
+      this.props.bemBlock, 'item', bemVariants)
   }
 
   get iconWrapperClassName () {
@@ -40,11 +55,13 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
   }
 
   get contentClassName () {
-    return 'selectable-list__itemcontent'
+    return BemUtilities.buildBemElement(
+      this.props.bemBlock, 'itemcontent', this.props.contentBemVariants)
   }
 
   get titleClassName () {
-    return 'selectable-list__itemtitle'
+    return BemUtilities.buildBemElement(
+      this.props.bemBlock, 'itemtitle', this.props.titleBemVariants)
   }
 
   get descriptionClassName () {

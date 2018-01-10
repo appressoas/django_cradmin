@@ -6,7 +6,7 @@ import BemUtilities from '../../../utilities/BemUtilities'
 export default class ThreeColumnDropDownLayout extends ThreeColumnLayout {
   static get propTypes () {
     return Object.assign(super.propTypes, {
-      dropdownContentBemVariants: PropTypes.array.isRequired,
+      dropdownContentBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
     })
   }
 

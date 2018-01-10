@@ -76,31 +76,32 @@
                      "header": {
                         "component": "ThreeColumnLayout",
                         "layout": [{
-                          "component": "DropDownSearchFilter",
-                          "props": {
-                            "name": "search",
-                            "placeholder": ["God", "Time", "wizard"]
-                          }
-                        }, {
                           "component": "CheckboxBooleanFilter",
                           "props": {
                             "name": "is_godlike",
                             "label": "Is godlike?"
                           },
                           "initialValue": false
+                        }, {
+                          "component": "DropDownSearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"]
+                          }
                         }]
                      },
                      "body": {
                         "component": "ThreeColumnDropDownLayout",
                         "props": {
-                            "componentGroup": "expandable"
+                            "componentGroup": "expandable",
+                            "dropdownContentBemVariants": []
                         },
                         "layout": [{
-                          "component": "BlockList",
+                          "component": "SelectableList",
                           "itemSpec": {
-                            "component": "TitleDescriptionItem",
+                            "component": "SelectableTitleDescriptionItem",
                             "props": {
-                              "bemVariants": ["neutral-light"]
+                              "bemVariants": ["neutral-light", "bordered"]
                             }
                           }
                         }, {

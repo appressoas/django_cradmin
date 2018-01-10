@@ -14,7 +14,7 @@ import BemUtilities from '../../../utilities/BemUtilities'
  * {
  *    "component": "SearchFilter",
  *    "props": {
- *      "name": "search",
+ *      "name": "search"
  *    }
  * }
  *
@@ -41,7 +41,7 @@ export default class SearchFilter extends AbstractSearchFilter {
   static get propTypes () {
     const propTypes = super.propTypes
     propTypes.label = PropTypes.string
-    propTypes.inputBemVariants = PropTypes.array
+    propTypes.inputBemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
     return propTypes
   }
 
@@ -98,7 +98,7 @@ export default class SearchFilter extends AbstractSearchFilter {
   }
 
   renderClearButtonIcon () {
-    return <span className={this.clearButtonIconClassName} aria-hidden="true"/>
+    return <span className={this.clearButtonIconClassName} aria-hidden='true' />
   }
 
   renderClearButton () {

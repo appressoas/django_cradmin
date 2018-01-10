@@ -6,6 +6,12 @@ export default class SelectableList extends AbstractList {
     return 'selectable-list'
   }
 
+  getItemComponentProps (listItemData) {
+    const props = super.getItemComponentProps(listItemData)
+    props.bemBlock = this.bemBlock
+    return props
+  }
+
   render () {
     return <div className={this.bemBlock}>
       {this.renderListItems()}
