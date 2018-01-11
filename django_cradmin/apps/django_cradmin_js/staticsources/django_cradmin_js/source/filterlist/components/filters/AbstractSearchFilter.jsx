@@ -59,7 +59,6 @@ export default class AbstractSearchFilter extends AbstractListFilter {
   }
 
   componentWillUnmount () {
-    console.log('componentWillUnmount')
     this.cancelPlaceholderRotation()
   }
 

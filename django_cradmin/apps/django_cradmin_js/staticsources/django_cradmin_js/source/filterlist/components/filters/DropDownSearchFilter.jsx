@@ -76,17 +76,46 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onClickExpandCollapseButton = this.onClickExpandCollapseButton.bind(this)
+    this.onClickInputField = this.onClickInputField.bind(this)
   }
 
   isExpanded () {
     return this.props.childExposedApi.componentGroupIsEnabled(COMPONENT_GROUP_EXPANDABLE)
   }
 
-  onClickExpandCollapseButton () {
+  toggleExpandableComponentGroup () {
     this.props.childExposedApi.toggleComponentGroup(COMPONENT_GROUP_EXPANDABLE)
-    if (this.isExpanded()) {
-      this.getSearchInputRef().focus()
-    }
+  }
+
+  enableExpandableComponentGroup () {
+    this.props.childExposedApi.enableComponentGroup(COMPONENT_GROUP_EXPANDABLE)
+  }
+
+  disableExpandableComponentGroup () {
+    this.props.childExposedApi.disableComponentGroup(COMPONENT_GROUP_EXPANDABLE)
+  }
+
+  onClickExpandCollapseButton () {
+    // const willBeExpanded = !this.isExpanded()
+    // if (willBeExpanded) {
+    //   this.getSearchInputRef().focus()
+    // } else {
+    //   this._labelRef.focus()
+    // }
+    this.toggleExpandableComponentGroup()
+  }
+
+  onClickInputField () {
+    // this.enableExpandableComponentGroup()
+  }
+
+  onFocus () {
+    this.enableExpandableComponentGroup()
+    super.onFocus()
+  }
+
+  onBlur () {
+    super.onBlur()
   }
 
   getSearchInputRef () {
@@ -151,6 +180,9 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
       placeholder={this.placeholder}
       className={this.searchInputClassName}
       value={this.stringValue}
+      onClick={this.onClickInputField}
+      onFocus={this.onFocus}
+      onBlur={this.onFocus}
       onChange={this.onChange} />
   }
 

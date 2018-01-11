@@ -31,5 +31,6 @@ export class ChildExposedApiMock {
     this.enableComponentGroup = jest.fn()
     this.toggleComponentGroup = jest.fn()
     this.componentGroupIsEnabled = jest.fn()
+    this.componentGroupsIsEnabled = jest.fn()
   }
 }

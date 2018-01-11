@@ -11,7 +11,7 @@ import {
 } from '../../filterListConstants'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'
-import ComponentCache from '../../ComponentCache'
+import {ComponentCache} from '../../ComponentCache'
 import ChildExposedApi from './ChildExposedApi'
 
 /*
@@ -246,7 +246,7 @@ export default class AbstractFilterList extends React.Component {
    * See {@link AbstractFilterList#toggleComponentGroup} for more info
    * about component groups.
    *
-   * @param {string} group The group to check.
+   * @param {string|null} group The group to check. If this is null, we always return `true`.
    * @return {bool} Is the component group enabled?
    */
   componentGroupIsEnabled (group) {
@@ -254,6 +254,24 @@ export default class AbstractFilterList extends React.Component {
       return true
     }
     return this.state.enabledComponentGroups.has(group)
+  }
+
+  /**
+   * Is all the provided component groups enabled?
+   *
+   * @param {[string]|null} groups
+   * @return {bool} Is all the component groups enabled?
+   */
+  componentGroupsIsEnabled (groups) {
+    if (groups === null) {
+      return true
+    }
+    for (let group of groups) {
+      if (!this.componentGroupIsEnabled(group)) {
+        return false
+      }
+    }
+    return true
   }
 
   /**
@@ -1180,14 +1198,14 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Should we render the provided component area?
    *
-   * Uses {@link AbstractFilterList#componentGroupIsEnabled} to determine
+   * Uses {@link AbstractFilterList#componentGroupsIsEnabled} to determine
    * if the component should be rendered.
    *
    * @param {ComponentArea} componentArea A component area (header or body).
    * @returns {bool}
    */
   shouldRenderComponentArea (componentArea) {
-    return this.componentGroupIsEnabled(componentArea.props.componentGroup)
+    return this.componentGroupsIsEnabled(componentArea.props.componentGroups)
   }
 
   /**

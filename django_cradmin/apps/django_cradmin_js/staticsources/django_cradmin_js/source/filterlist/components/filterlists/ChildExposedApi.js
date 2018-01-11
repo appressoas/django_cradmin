@@ -84,6 +84,7 @@ export default class ChildExposedApi {
     this.enableComponentGroup = this.filterListObject.enableComponentGroup.bind(this.filterListObject)
     this.toggleComponentGroup = this.filterListObject.toggleComponentGroup.bind(this.filterListObject)
     this.componentGroupIsEnabled = this.filterListObject.componentGroupIsEnabled.bind(this.filterListObject)
+    this.componentGroupsIsEnabled = this.filterListObject.componentGroupsIsEnabled.bind(this.filterListObject)
   }
 
   hasPreviousPaginationPage () {

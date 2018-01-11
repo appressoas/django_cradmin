@@ -2,6 +2,9 @@ import AbstractListFilter from './components/filters/AbstractListFilter'
 import AbstractPaginator from './components/paginators/AbstractPaginator'
 import AbstractList from './components/lists/AbstractList'
 import FilterListRegistrySingleton from './FilterListRegistry'
+import PrettyFormat from 'ievv_jsbase/lib/utils/PrettyFormat'
+import AbstractListItem from './components/items/AbstractListItem'
+import AbstractLayout from './components/layout/AbstractLayout'
 
 /**
  * Defines the component layout within a {@link ComponentArea}.
@@ -91,6 +94,130 @@ export class ComponentArea {
   }
 }
 
+export class AbstractComponentSpec {
+  constructor (componentClass, rawComponentSpec) {
+    /**
+     * An instance of {@link FilterListRegistrySingleton} for convenience.
+     *
+     * @type {FilterListRegistrySingleton}
+     */
+    this.filterListRegistry = new FilterListRegistrySingleton()
+    this._componentClass = componentClass
+    this._componentSpec = Object.assign({}, rawComponentSpec)
+  }
+
+  _makeUniqueComponentKeyPrefix () {
+    return this.componentClassName
+  }
+
+  _makeUniqueComponentKey (componentCache) {
+    const suffix = componentCache.makeUniqueComponentKey(componentCache)
+    return `${this._makeUniqueComponentKeyPrefix()}-${suffix}`
+  }
+
+  _raiseMissingRequiredAttributeError (attribute) {
+    throw new Error(
+      `${this.componentClassName} Missing required attribute "${attribute}": ${this.prettyFormatRawComponentSpec()}`)
+  }
+
+  clean (componentCache) {
+    if (!this._componentSpec.props) {
+      this._componentSpec.props = {}
+    }
+    if (!this._componentSpec.props.componentGroups) {
+      this._componentSpec.props.componentGroups = null
+    }
+    this._componentSpec.props.uniqueComponentKey = this._makeUniqueComponentKey(componentCache)
+  }
+
+  prettyFormatRawComponentSpec () {
+    return new PrettyFormat().toString()
+  }
+
+  get componentClass () {
+    return this._componentClass
+  }
+
+  get componentClassName () {
+    return this.componentClass.name
+  }
+
+  get props () {
+    return this._componentSpec.props
+  }
+}
+
+export class LayoutComponentSpec extends AbstractComponentSpec {
+  clean (componentCache) {
+    super.clean(componentCache)
+    if (!this._componentSpec.layout) {
+      this._raiseMissingRequiredAttributeError('layout')
+    }
+  }
+
+  get layout () {
+    return this._componentSpec.layout
+  }
+}
+
+export class ListItemComponentSpec extends AbstractComponentSpec {
+}
+
+export class AbstractLayoutChildComponentSpec extends AbstractComponentSpec {
+  clean (componentCache, defaultLocation) {
+    super.clean(componentCache)
+    if (!this._componentSpec.props.location) {
+      this._componentSpec.props.location = defaultLocation
+    }
+  }
+}
+
+export class ListComponentSpec extends AbstractLayoutChildComponentSpec {
+  clean (componentCache, defaultLocation) {
+    super.clean(componentCache, defaultLocation)
+    if (!this._componentSpec.itemSpec) {
+      this._raiseMissingRequiredAttributeError('itemSpec')
+    }
+    const itemComponentSpec = componentCache.makeComponentSpec(this._componentSpec.itemSpec)
+    itemComponentSpec.clean(componentCache)
+    if (!(itemComponentSpec instanceof ListItemComponentSpec)) {
+      throw new Error(`Invalid child component of a list: ${itemComponentSpec.componentClassName}`)
+    }
+    this._componentSpec.props.itemSpec = itemComponentSpec
+  }
+}
+
+export class FilterComponentSpec extends AbstractLayoutChildComponentSpec {
+  _makeUniqueComponentKeyPrefix () {
+    return `${this.componentClassName}-${this.props.name}`
+  }
+
+  clean (componentCache, defaultLocation) {
+    super.clean(componentCache, defaultLocation)
+    if (!this._componentSpec.props.name) {
+      this._raiseMissingRequiredAttributeError('props.name')
+    }
+    if (componentCache.filterMap.has(this.filterName)) {
+      throw new Error(`Multiple filters with the same name: ${this.filterName}`)
+    }
+    if (this._componentSpec.initialValue === undefined) {
+      this._componentSpec.initialValue = null
+    }
+    componentCache.filterMap.set(this.filterName, this)
+  }
+
+  get filterName () {
+    return this.props.name
+  }
+
+  get initialValue () {
+    return this._componentSpec.initialValue
+  }
+}
+
+export class PaginatorComponentSpec extends AbstractLayoutChildComponentSpec {
+}
+
 /**
  * Parser for the `body` and `header` props for {@link AbstractFilterList}.
  *
@@ -107,7 +234,7 @@ export class ComponentArea {
  * class. The other methods can be overridden in subclasses, but
  * should normally not be called outside the class.
  */
-export default class ComponentCache {
+export class ComponentCache {
   constructor () {
     /**
      * An instance of {@link FilterListRegistrySingleton} for convenience.
@@ -144,86 +271,11 @@ export default class ComponentCache {
     /**
      * Internal counter of the number of layout components.
      *
-     * Used by {@link ComponentCache#makeUniqueLayoutComponentKey}.
+     * Used by {@link ComponentCache#makeUniqueComponentKey}.
      *
      * @type {number}
      */
-    this.layoutComponentCount = 0
-  }
-
-  /**
-   * Clean a filter spec.
-   *
-   * Called by {@link ComponentCache#cleanLayoutChildComponentSpec}
-   * after it has cleaned the common stuff for all layout components.
-   *
-   * This means that the responsibility of this method
-   * is to clean attributes specific to specs for
-   * {@link AbstractListFilter}.
-   *
-   * @param {{}} componentSpec
-   */
-  cleanFilterSpec (componentSpec) {
-    if (!componentSpec.props.name) {
-      throw new Error(
-        `Filter component=${componentSpec.component} is missing required ` +
-        `attribute "props.name".`)
-    }
-    if (this.filterMap.has(componentSpec.props.name)) {
-      throw new Error(`Multiple filters with the same name: ${componentSpec.props.name}`)
-    }
-    this.filterMap.set(componentSpec.props.name, componentSpec)
-  }
-
-  /**
-   * Clean an item spec.
-   *
-   * The responsibility of this method
-   * is to clean attributes specific to specs for
-   * {@link AbstractListItem}.
-   *
-   * @param {{}} componentSpec
-   */
-  cleanItemSpec (componentSpec) {
-  }
-
-  /**
-   * Clean a list spec.
-   *
-   * Called by {@link ComponentCache#cleanLayoutChildComponentSpec}
-   * after it has cleaned the common stuff for all layout components.
-   *
-   * This means that the responsibility of this method
-   * is to clean attributes specific to specs for
-   * {@link AbstractList}.
-   *
-   * @param {{}} componentSpec
-   */
-  cleanListSpec (componentSpec) {
-    if (!componentSpec.itemSpec) {
-      throw new Error(
-        `Component ${componentSpec.component} is missing ` +
-        `required attribute "itemSpec".`)
-    }
-    const itemSpec = Object.assign({}, componentSpec.itemSpec)
-    this.cleanComponentSpec(itemSpec)
-    this.cleanItemSpec(itemSpec)
-    componentSpec.props.itemSpec = itemSpec
-  }
-
-  /**
-   * Clean a paginator spec.
-   *
-   * Called by {@link ComponentCache#cleanLayoutChildComponentSpec}
-   * after it has cleaned the common stuff for all layout components.
-   *
-   * This means that the responsibility of this method
-   * is to clean attributes specific to specs for
-   * {@link AbstractPaginator}.
-   *
-   * @param {{}} componentSpec
-   */
-  cleanPaginatorSpec (componentSpec) {
+    this.componentCount = 0
   }
 
   /**
@@ -258,85 +310,48 @@ export default class ComponentCache {
     return componentClass
   }
 
-  /**
-   * Clean a component spec.
-   *
-   * Used by both {@link ComponentCache#cleanLayoutChildComponentSpec},
-   * {@link ComponentCache#cleanItemSpec} and {@link ComponentCache#cleanAreaSpec}.
-   *
-   * Ensures that:
-   *
-   * - `componentSpec.props.componentGroup` is always set (to null if not defined).
-   * - `componentSpec.componentClass`.
-   *
-   * @param componentSpec
-   */
-  cleanComponentSpec (componentSpec) {
-    if (!componentSpec.props) {
-      componentSpec.props = {}
-    }
-    if (!componentSpec.props.componentGroup) {
-      componentSpec.props.componentGroup = null
-    }
+  getComponentClass (componentSpec) {
     if (typeof componentSpec.component === 'string') {
-      componentSpec.componentClass = this.getClassForComponentString(componentSpec.component)
+      return this.getClassForComponentString(componentSpec.component)
     } else {
-      componentSpec.componentClass = componentSpec.component
+      return componentSpec.component
     }
   }
 
   /**
-   * Make the value for `props.uniqueComponentKey` for
-   * layout components.
+   * Make a unique key for a component.
    *
-   * @param {{}} componentSpec
    * @returns {string}
    */
-  makeUniqueLayoutComponentKey (componentSpec) {
-    return `layoutComponent-${this.layoutComponentCount}`
+  makeUniqueComponentKey () {
+    const key = this.componentCount
+    this.componentCount ++
+    return `${key}`
   }
 
-  /**
-   * Clean a layout child component spec (filters, lists, paginators, ...).
-   *
-   * @param {{}} rawComponentSpec The raw component spec.
-   * @param {string} defaultLocation The default location.
-   * @returns {{}} The cleaned component spec.
-   */
-  cleanLayoutChildComponentSpec (rawComponentSpec, defaultLocation) {
-    const componentSpec = Object.assign({}, rawComponentSpec)
-    this.cleanComponentSpec(componentSpec)
-    if (!componentSpec.props.location) {
-      componentSpec.props.location = defaultLocation
-    }
-    componentSpec.props.uniqueComponentKey = this.makeUniqueLayoutComponentKey(componentSpec)
-    if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
-      this.cleanFilterSpec(componentSpec)
-    } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
-      this.cleanListSpec(componentSpec)
-    } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
-      this.cleanPaginatorSpec(componentSpec)
+  getComponentSpecClass (componentClass) {
+    if (componentClass.prototype instanceof AbstractListFilter) {
+      return FilterComponentSpec
+    } else if (componentClass.prototype instanceof AbstractList) {
+      return ListComponentSpec
+    } else if (componentClass.prototype instanceof AbstractPaginator) {
+      return PaginatorComponentSpec
+    } else if (componentClass.prototype instanceof AbstractListItem) {
+      return ListItemComponentSpec
+    } else if (componentClass.prototype instanceof AbstractLayout) {
+      return LayoutComponentSpec
     } else {
       throw new Error(
-        `Invalid component: "${componentSpec.component}". ` +
+        `Invalid component: "${componentClass.name}". ` +
         `Must be a subclass of AbstractListFilter, AbstractList ` +
         `or AbstractPaginator.`)
     }
-    return componentSpec
   }
 
-  /**
-   * Clean area component spec.
-   *
-   * @param componentSpec
-   */
-  cleanAreaSpec (componentSpec) {
-    this.cleanComponentSpec(componentSpec)
-    if (!componentSpec.layout) {
-      throw new Error(
-        `"${componentSpec.component}" is missing required ` +
-        `attribute "layout".`)
-    }
+  makeComponentSpec (rawComponentSpec) {
+    const componentClass = this.getComponentClass(rawComponentSpec)
+    const ComponentSpecClass = this.getComponentSpecClass(componentClass)
+    return new ComponentSpecClass(componentClass, rawComponentSpec)
   }
 
   /**
@@ -347,13 +362,16 @@ export default class ComponentCache {
    * @returns {ComponentArea}
    */
   makeComponentArea (rawAreaSpec, defaultLocation) {
-    const componentSpec = Object.assign({}, rawAreaSpec)
-    this.cleanAreaSpec(componentSpec)
+    const componentSpec = this.makeComponentSpec(rawAreaSpec)
+    componentSpec.clean(this)
     const componentArea = new ComponentArea(componentSpec)
-    for (let rawComponentSpec of componentSpec.layout) {
-      componentArea.layout.add(
-        this.cleanLayoutChildComponentSpec(rawComponentSpec, defaultLocation))
-      this.layoutComponentCount ++
+    for (let rawChildComponentSpec of componentSpec.layout) {
+      const childComponentSpec = this.makeComponentSpec(rawChildComponentSpec)
+      if (!(childComponentSpec instanceof AbstractLayoutChildComponentSpec)) {
+        throw new Error(`Invalid child component of a layout: ${childComponentSpec.componentClassName}`)
+      }
+      childComponentSpec.clean(this, defaultLocation)
+      componentArea.layout.add(childComponentSpec)
     }
     return componentArea
   }

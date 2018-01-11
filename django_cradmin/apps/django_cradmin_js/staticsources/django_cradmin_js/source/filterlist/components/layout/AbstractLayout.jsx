@@ -28,7 +28,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
       selectedListItemsMap: null,
       enabledComponentGroups: null,
       isLoadingNewItemsFromApi: false,
-      isLoadingMoreItemsFromApi: false,
+      isLoadingMoreItemsFromApi: false
     })
   }
 
@@ -39,7 +39,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
   //
 
   renderLoadingIndicator () {
-    return <LoadingIndicator key={`loadingIndicator`}/>
+    return <LoadingIndicator key={`loadingIndicator`} />
   }
 
   /**
@@ -101,11 +101,9 @@ export default class AbstractLayout extends AbstractFilterListChild {
    * @returns {boolean} `true` to render the component, and `false` to not render
    *    the component.
    */
-  shouldRenderComponent (componentSpec) {
-    if (componentSpec.props.componentGroup !== null) {
-      if (!this.props.childExposedApi.componentGroupIsEnabled(componentSpec.props.componentGroup)) {
-        return false
-      }
+  shouldRenderComponent (componentSpec, componentProps) {
+    if (!this.props.childExposedApi.componentGroupsIsEnabled(componentProps.componentGroups)) {
+      return false
     }
     if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
       return this.shouldRenderFilterComponent(componentSpec)
@@ -137,6 +135,16 @@ export default class AbstractLayout extends AbstractFilterListChild {
     }
   }
 
+  getComponentGroupsForChildComponent (componentSpec) {
+    if (this.props.componentGroups === null) {
+      return componentSpec.props.componentGroups
+    }
+    if (componentSpec.props.componentGroups === null) {
+      return this.props.componentGroups
+    }
+    return this.props.componentGroups.concat(componentSpec.props.componentGroups)
+  }
+
   getComponentProps (componentSpec) {
     let extraProps = {}
     if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
@@ -146,25 +154,25 @@ export default class AbstractLayout extends AbstractFilterListChild {
     } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
       extraProps = this.getPaginatorComponentProps(componentSpec)
     }
-    return this.makeChildComponentProps(Object.assign(componentSpec.props, {
-      key: componentSpec.props.uniqueComponentKey
+    return this.makeChildComponentProps(Object.assign({}, componentSpec.props, {
+      key: componentSpec.props.uniqueComponentKey,
+      componentGroups: this.getComponentGroupsForChildComponent(componentSpec)
     }, extraProps))
   }
 
-  renderComponent (componentSpec) {
-    return React.createElement(
-      componentSpec.componentClass,
-      this.getComponentProps(componentSpec))
+  renderComponent (componentSpec, componentProps) {
+    return React.createElement(componentSpec.componentClass, componentProps)
   }
 
-  renderComponentsAtLocation (location, fallback=null) {
+  renderComponentsAtLocation (location, fallback = null) {
     const renderedComponents = []
     for (let componentSpec of this.props.layout.getComponentsAtLocation(location)) {
-      if (this.shouldRenderComponent(componentSpec)) {
-        renderedComponents.push(this.renderComponent(componentSpec))
+      const componentProps = this.getComponentProps(componentSpec)
+      if (this.shouldRenderComponent(componentSpec, componentProps)) {
+        renderedComponents.push(this.renderComponent(componentSpec, componentProps))
       }
     }
-    if(renderedComponents.length === 0) {
+    if (renderedComponents.length === 0) {
       return fallback
     }
     return renderedComponents

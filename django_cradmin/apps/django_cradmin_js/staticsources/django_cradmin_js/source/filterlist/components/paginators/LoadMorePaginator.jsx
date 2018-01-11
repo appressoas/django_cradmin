@@ -75,6 +75,8 @@ export default class LoadMorePaginator extends AbstractPaginator {
   renderLoadMoreButton () {
     return <button type={'button'}
       className={this.className}
+      onFocus={this.onFocus}
+      onBlur={this.onBlur}
       onClick={this.onClick}
     >
       {this.props.label}

@@ -12,7 +12,7 @@ export default class AbstractFilterListChild extends React.Component {
     return {
       renderArea: PropTypes.string.isRequired,
       childExposedApi: PropTypes.object.isRequired,
-      componentGroup: PropTypes.string
+      componentGroups: PropTypes.arrayOf(PropTypes.string)
     }
   }
 
@@ -26,7 +26,7 @@ export default class AbstractFilterListChild extends React.Component {
    * @property {ChildExposedApi} childExposedApi Object with public methods from
    *    {@link AbstractFilterList}.
    *    _Provided automatically by the parent component_.
-   * @property {string|null} componentGroup The group this component belongs to.
+   * @property {[string]|null} componentGroups The groups this component belongs to.
    *    See {@link AbstractFilterList#toggleComponentGroup}.
    *    **Can be used in spec**.
    */
@@ -34,8 +34,18 @@ export default class AbstractFilterListChild extends React.Component {
     return {
       renderArea: null,
       childExposedApi: null,
-      componentGroup: null
+      componentGroups: null
     }
+  }
+
+  /**
+   * Does the component listen to focus changes?
+   *
+   * @param {object} componentSpec A component spec.
+   * @returns {boolean}
+   */
+  static shouldReceiveFocusEvents (componentSpec) {
+    return false
   }
 
   constructor (props) {
@@ -64,7 +74,8 @@ export default class AbstractFilterListChild extends React.Component {
    */
   getBlurFocusCallbackInfo () {
     return {
-      renderArea: this.props.renderArea
+      renderArea: this.props.renderArea,
+      componentGroups: this.props.componentGroups
     }
   }
 
