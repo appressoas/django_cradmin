@@ -106,6 +106,8 @@ export default class AbstractFilterList extends React.Component {
     this.cachedItemSpec = null
     this.cachedListSpec = null
     this.cachedPaginatorSpec = null
+    this._focusChangeListeners = new Set()
+    this._currentFocusChildInfo = null
   }
 
   /**
@@ -311,31 +313,56 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
-  onBlurTimerTimeout () {
+  onBlurTimerTimeout (childInfo) {
+    const didChangeFilterListFocus = this.state.hasFocus !== false
     this.setState({
       hasFocus: false
     })
+    this.callAllFocusChangeListeners('onAnyComponentBlur',
+      childInfo, didChangeFilterListFocus)
+    this._currentFocusChildInfo = null
   }
 
   get blurTimerTimeout () {
     return 200
   }
 
-  _startBlurTimer () {
+  _startBlurTimer (childInfo) {
     this._blurTimeoutId = window.setTimeout(() => {
-      this.onBlurTimerTimeout()
+      this.onBlurTimerTimeout(childInfo)
     }, this.blurTimerTimeout)
   }
 
   onChildBlur (childInfo) {
-    this._startBlurTimer()
+    this.callAllFocusChangeListeners('onAnyComponentBlur',
+      childInfo, false)
+    this._startBlurTimer(childInfo)
   }
 
   onChildFocus (childInfo) {
     this._stopBlurTimer()
+    const didChangeFilterListFocus = this.state.hasFocus !== true
     this.setState({
       hasFocus: true
     })
+    const prevChildInfo = this._currentFocusChildInfo
+    this.callAllFocusChangeListeners(
+      'onAnyComponentFocus', childInfo, prevChildInfo, didChangeFilterListFocus)
+    this._currentFocusChildInfo = childInfo
+  }
+
+  registerFocusChangeListener (componentObject) {
+    this._focusChangeListeners.add(componentObject)
+  }
+
+  unregisterFocusChangeListener (componentObject) {
+    this._focusChangeListeners.delete(componentObject)
+  }
+
+  callAllFocusChangeListeners (methodName, ...args) {
+    for (let componentObject of this._focusChangeListeners) {
+      componentObject[methodName](...args)
+    }
   }
 
   //
@@ -727,7 +754,7 @@ export default class AbstractFilterList extends React.Component {
    * @returns {*} HTTP request object. An instance of the
    *    class returned by {@link AbstractListFilter#getHttpRequestClass}.
    */
-  makeListItemsHttpRequest (paginationOptions, filter=true) {
+  makeListItemsHttpRequest (paginationOptions, filter = true) {
     const HttpRequestClass = this.getHttpRequestClass()
     const httpRequest = new HttpRequestClass(this.props.getItemsApiUrl)
     if (filter) {

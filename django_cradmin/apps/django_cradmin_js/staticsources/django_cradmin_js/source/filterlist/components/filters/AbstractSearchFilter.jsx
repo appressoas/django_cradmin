@@ -53,6 +53,7 @@ export default class AbstractSearchFilter extends AbstractListFilter {
   }
 
   componentDidMount () {
+    super.componentDidMount()
     if (this.placeholderIsRotatable()) {
       this.queuePlaceholderRotation()
     }
@@ -129,8 +130,8 @@ export default class AbstractSearchFilter extends AbstractListFilter {
 
   rotatePlaceholder () {
     let currentPlaceholderIndex = this.state.currentPlaceholderIndex + 1
-    if(currentPlaceholderIndex >= this.placeholderArray.length) {
-      currentPlaceholderIndex = 0;
+    if (currentPlaceholderIndex >= this.placeholderArray.length) {
+      currentPlaceholderIndex = 0
     }
     this.setState({
       currentPlaceholderIndex: currentPlaceholderIndex

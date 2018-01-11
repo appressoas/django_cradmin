@@ -1,6 +1,5 @@
 import AbstractFilterList from './AbstractFilterList'
 
-
 export class PageNumberPaginationFilterList extends AbstractFilterList {
   makePaginationStateFromHttpResponse (httpResponse, paginationOptions) {
     let page = 1
@@ -63,5 +62,4 @@ export class PageNumberPaginationFilterList extends AbstractFilterList {
   getTotalListItemCount (paginationState) {
     return paginationState.count
   }
-
 }

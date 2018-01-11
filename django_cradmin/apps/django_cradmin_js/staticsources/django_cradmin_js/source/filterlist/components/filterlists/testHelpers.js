@@ -32,5 +32,7 @@ export class ChildExposedApiMock {
     this.toggleComponentGroup = jest.fn()
     this.componentGroupIsEnabled = jest.fn()
     this.componentGroupsIsEnabled = jest.fn()
+    this.registerFocusChangeListener = jest.fn()
+    this.unregisterFocusChangeListener = jest.fn()
   }
 }

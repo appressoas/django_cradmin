@@ -135,14 +135,15 @@ export default class AbstractLayout extends AbstractFilterListChild {
     }
   }
 
-  getComponentGroupsForChildComponent (componentSpec) {
-    if (this.props.componentGroups === null) {
-      return componentSpec.props.componentGroups
+  getFocusableComponentProps (componentSpec) {
+    if (componentSpec.componentClass.shouldReceiveFocusEvents(componentSpec)) {
+      return {
+        willReceiveFocusEvents: true
+      }
     }
-    if (componentSpec.props.componentGroups === null) {
-      return this.props.componentGroups
+    return {
+      willReceiveFocusEvents: false
     }
-    return this.props.componentGroups.concat(componentSpec.props.componentGroups)
   }
 
   getComponentProps (componentSpec) {
@@ -154,10 +155,10 @@ export default class AbstractLayout extends AbstractFilterListChild {
     } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
       extraProps = this.getPaginatorComponentProps(componentSpec)
     }
-    return this.makeChildComponentProps(Object.assign({}, componentSpec.props, {
-      key: componentSpec.props.uniqueComponentKey,
-      componentGroups: this.getComponentGroupsForChildComponent(componentSpec)
-    }, extraProps))
+    const props = Object.assign({}, componentSpec.props, {
+      key: componentSpec.props.uniqueComponentKey
+    }, extraProps, this.getFocusableComponentProps(componentSpec))
+    return this.makeChildComponentProps(componentSpec, props)
   }
 
   renderComponent (componentSpec, componentProps) {

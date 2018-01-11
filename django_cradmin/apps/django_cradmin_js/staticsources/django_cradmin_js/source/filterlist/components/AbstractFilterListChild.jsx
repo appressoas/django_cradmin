@@ -12,7 +12,9 @@ export default class AbstractFilterListChild extends React.Component {
     return {
       renderArea: PropTypes.string.isRequired,
       childExposedApi: PropTypes.object.isRequired,
-      componentGroups: PropTypes.arrayOf(PropTypes.string)
+      willReceiveFocusEvents: PropTypes.bool.isRequired,
+      componentGroups: PropTypes.arrayOf(PropTypes.string),
+      uniqueComponentKey: PropTypes.string.isRequired
     }
   }
 
@@ -26,6 +28,9 @@ export default class AbstractFilterListChild extends React.Component {
    * @property {ChildExposedApi} childExposedApi Object with public methods from
    *    {@link AbstractFilterList}.
    *    _Provided automatically by the parent component_.
+   * @property {string} uniqueComponentKey A unique key for this component
+   *    instance.
+   *    _Provided automatically by the parent component_.
    * @property {[string]|null} componentGroups The groups this component belongs to.
    *    See {@link AbstractFilterList#toggleComponentGroup}.
    *    **Can be used in spec**.
@@ -34,14 +39,18 @@ export default class AbstractFilterListChild extends React.Component {
     return {
       renderArea: null,
       childExposedApi: null,
-      componentGroups: null
+      componentGroups: null,
+      willReceiveFocusEvents: false
     }
   }
 
   /**
    * Does the component listen to focus changes?
    *
-   * @param {object} componentSpec A component spec.
+   * If this returns ``true``, the component will receive
+   * onFocus and onBlur events.
+   *
+   * @param {AbstractComponentSpec} componentSpec The component spec.
    * @returns {boolean}
    */
   static shouldReceiveFocusEvents (componentSpec) {
@@ -51,6 +60,24 @@ export default class AbstractFilterListChild extends React.Component {
   constructor (props) {
     super(props)
     this.setupBoundMethods()
+  }
+
+  /**
+   * Make sure you call super.componentWillUnmount() if you override this.
+   */
+  componentWillUnmount () {
+    if (this.props.willReceiveFocusEvents) {
+      this.props.childExposedApi.unregisterFocusChangeListener(this)
+    }
+  }
+
+  /**
+   * Make sure you call super.componentWillUnmount() if you override this.
+   */
+  componentDidMount () {
+    if (this.props.willReceiveFocusEvents) {
+      this.props.childExposedApi.registerFocusChangeListener(this)
+    }
   }
 
   /**
@@ -64,6 +91,8 @@ export default class AbstractFilterListChild extends React.Component {
   setupBoundMethods () {
     this.onFocus = this.onFocus.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.onAnyComponentFocus = this.onAnyComponentFocus.bind(this)
+    this.onAnyComponentBlur = this.onAnyComponentBlur.bind(this)
   }
 
   /**
@@ -74,6 +103,7 @@ export default class AbstractFilterListChild extends React.Component {
    */
   getBlurFocusCallbackInfo () {
     return {
+      uniqueComponentKey: this.props.uniqueComponentKey,
       renderArea: this.props.renderArea,
       componentGroups: this.props.componentGroups
     }
@@ -99,18 +129,36 @@ export default class AbstractFilterListChild extends React.Component {
     this.props.childExposedApi.onChildFocus(this.getBlurFocusCallbackInfo())
   }
 
+  onAnyComponentFocus (newFocusComponentInfo, prevFocusComponentInfo, didChangeFilterListFocus) {
+  }
+
+  onAnyComponentBlur (blurredComponentInfo, didChangeFilterListFocus) {
+  }
+
+  getComponentGroupsForChildComponent (componentSpec) {
+    if (this.props.componentGroups === null) {
+      return componentSpec.props.componentGroups
+    }
+    if (componentSpec.props.componentGroups === null) {
+      return this.props.componentGroups
+    }
+    return this.props.componentGroups.concat(componentSpec.props.componentGroups)
+  }
+
   /**
    * Make props for child components that is also a subclass
    * of AbstractFilterListChild.
    *
-   * @param extraProps Extra props. These will override any props
+   * @param {AbstractComponentSpec} componentSpec The spec for the child component.
+   * @param {{}} extraProps Extra props. These will not override any props
    *    set by default.
    * @returns {{}} Object with child component props.
    */
-  makeChildComponentProps (extraProps) {
-    return Object.assign({
+  makeChildComponentProps (componentSpec, extraProps) {
+    return Object.assign({}, extraProps, {
       renderArea: this.props.renderArea,
-      childExposedApi: this.props.childExposedApi
-    }, extraProps)
+      childExposedApi: this.props.childExposedApi,
+      componentGroups: this.getComponentGroupsForChildComponent(componentSpec)
+    })
   }
 }

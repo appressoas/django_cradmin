@@ -76,13 +76,6 @@
                      "header": {
                         "component": "ThreeColumnLayout",
                         "layout": [{
-                          "component": "CheckboxBooleanFilter",
-                          "props": {
-                            "name": "is_godlike",
-                            "label": "Is godlike?"
-                          },
-                          "initialValue": false
-                        }, {
                           "component": "DropDownSearchFilter",
                           "props": {
                             "name": "search",
@@ -97,6 +90,13 @@
                             "dropdownContentBemVariants": []
                         },
                         "layout": [{
+                          "component": "CheckboxBooleanFilter",
+                          "props": {
+                            "name": "is_godlike",
+                            "label": "Is godlike?"
+                          },
+                          "initialValue": false
+                        }, {
                           "component": "SelectableList",
                           "itemSpec": {
                             "component": "SelectableTitleDescriptionItem",

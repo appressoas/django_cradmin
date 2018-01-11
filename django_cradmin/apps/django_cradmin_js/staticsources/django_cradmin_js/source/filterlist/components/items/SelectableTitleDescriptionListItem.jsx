@@ -95,6 +95,8 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
       className={this.className}
       tabIndex={0}
       aria-selected={this.props.isSelected}
+      onFocus={this.onFocus}
+      onBlur={this.onBlur}
       onClick={this.onClick}>
       {this.renderIconWrapper()}
       {this.renderContent()}

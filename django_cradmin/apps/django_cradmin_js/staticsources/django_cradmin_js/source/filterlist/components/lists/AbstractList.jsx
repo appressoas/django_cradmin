@@ -29,11 +29,12 @@ export default class AbstractList extends AbstractFilterListChild {
 
   getItemComponentProps (listItemData) {
     const listItemId = this.props.childExposedApi.getIdFromListItemData(listItemData)
-    return this.makeChildComponentProps(Object.assign(listItemData, this.props.itemSpec.props, {
+    const props = Object.assign(listItemData, this.props.itemSpec.props, {
       key: listItemId,
       isSelected: this.props.childExposedApi.itemIsSelected(listItemId),
       listItemId: listItemId
-    }))
+    })
+    return this.makeChildComponentProps(this.props.itemSpec, props)
   }
 
   renderListItem (listItemData) {

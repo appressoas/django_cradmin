@@ -73,26 +73,51 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
     return defaultProps
   }
 
+  static shouldReceiveFocusEvents (componentSpec) {
+    return true
+  }
+
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onClickExpandCollapseButton = this.onClickExpandCollapseButton.bind(this)
     this.onClickInputField = this.onClickInputField.bind(this)
   }
 
+  onAnyComponentFocus (newFocusComponentInfo, prevFocusComponentInfo, didChangeFilterListFocus) {
+    if (newFocusComponentInfo.uniqueComponentKey === this.props.uniqueComponentKey) {
+      return
+    }
+    if (newFocusComponentInfo.componentGroups === null) {
+      this.disableExpandableComponentGroup()
+    } else if (newFocusComponentInfo.componentGroups.indexOf(this.expandableComponentGroup) === -1) {
+      this.disableExpandableComponentGroup()
+    }
+  }
+
+  onAnyComponentBlur (blurredComponentInfo, didChangeFilterListFocus) {
+    if (didChangeFilterListFocus) {
+      this.disableExpandableComponentGroup()
+    }
+  }
+
+  get expandableComponentGroup () {
+    return COMPONENT_GROUP_EXPANDABLE
+  }
+
   isExpanded () {
-    return this.props.childExposedApi.componentGroupIsEnabled(COMPONENT_GROUP_EXPANDABLE)
+    return this.props.childExposedApi.componentGroupIsEnabled(this.expandableComponentGroup)
   }
 
   toggleExpandableComponentGroup () {
-    this.props.childExposedApi.toggleComponentGroup(COMPONENT_GROUP_EXPANDABLE)
+    this.props.childExposedApi.toggleComponentGroup(this.expandableComponentGroup)
   }
 
   enableExpandableComponentGroup () {
-    this.props.childExposedApi.enableComponentGroup(COMPONENT_GROUP_EXPANDABLE)
+    this.props.childExposedApi.enableComponentGroup(this.expandableComponentGroup)
   }
 
   disableExpandableComponentGroup () {
-    this.props.childExposedApi.disableComponentGroup(COMPONENT_GROUP_EXPANDABLE)
+    this.props.childExposedApi.disableComponentGroup(this.expandableComponentGroup)
   }
 
   onClickExpandCollapseButton () {
@@ -168,6 +193,8 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
       className={this.clearButtonClassName}
       title={this.expandCollapseButtonLabel}
       onClick={this.onClickExpandCollapseButton}
+      onFocus={this.onFocus}
+      onBlur={this.onBlur}
     >
       {this.renderExpandCollapseIcon()}
     </button>
@@ -182,7 +209,7 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
       value={this.stringValue}
       onClick={this.onClickInputField}
       onFocus={this.onFocus}
-      onBlur={this.onFocus}
+      onBlur={this.onBlur}
       onChange={this.onChange} />
   }
 
