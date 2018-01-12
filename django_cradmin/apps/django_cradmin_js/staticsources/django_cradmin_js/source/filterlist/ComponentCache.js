@@ -5,9 +5,10 @@ import FilterListRegistrySingleton from './FilterListRegistry'
 import PrettyFormat from 'ievv_jsbase/lib/utils/PrettyFormat'
 import AbstractListItem from './components/items/AbstractListItem'
 import AbstractLayout from './components/layout/AbstractLayout'
+import { RENDER_LOCATION_CENTER } from './filterListConstants'
 
 /**
- * Defines the component layout within a {@link ComponentArea}.
+ * Defines the component layout within a {@link LayoutComponentSpec}.
  */
 export class ComponentLayout {
   constructor () {
@@ -50,47 +51,6 @@ export class ComponentLayout {
    */
   getComponentsAtLocation (location) {
     return this.layoutMap.get(location) || []
-  }
-}
-
-/**
- * Information about a component area (I.E.: header or body).
- */
-export class ComponentArea {
-  constructor (componentSpec) {
-    /**
-     * The component spec.
-     *
-     * You normally will not need this since {@link ComponentArea#componentClass},
-     * {@link ComponentArea#props} and {@link ComponentArea#layout} should
-     * provide all you need.
-     *
-     * @type {object}
-     */
-    this.componentSpec = componentSpec
-
-    /**
-     * The child component layout.
-     *
-     * @type {ComponentLayout}
-     */
-    this.layout = new ComponentLayout()
-  }
-
-  /**
-   * Get the component class.
-   */
-  get componentClass () {
-    return this.componentSpec.componentClass
-  }
-
-  /**
-   * Get props for the component.
-   */
-  get props () {
-    return Object.assign({}, this.componentSpec.props, {
-      layout: this.layout
-    })
   }
 }
 
@@ -153,10 +113,18 @@ export class LayoutComponentSpec extends AbstractComponentSpec {
     if (!this._componentSpec.layout) {
       this._raiseMissingRequiredAttributeError('layout')
     }
-  }
-
-  get layout () {
-    return this._componentSpec.layout
+    if (!this._componentSpec.defaultLocation) {
+      this._componentSpec.defaultLocation = RENDER_LOCATION_CENTER
+    }
+    this._componentSpec.props.layout = new ComponentLayout()
+    for (let rawChildComponentSpec of this._componentSpec.layout) {
+      const childComponentSpec = componentCache.makeComponentSpec(rawChildComponentSpec)
+      if (!(childComponentSpec instanceof AbstractLayoutChildComponentSpec)) {
+        throw new Error(`Invalid child component of a layout: ${childComponentSpec.componentClassName}`)
+      }
+      childComponentSpec.clean(componentCache, this._componentSpec.defaultLocation)
+      this._componentSpec.props.layout.add(childComponentSpec)
+    }
   }
 }
 
@@ -229,8 +197,8 @@ export class PaginatorComponentSpec extends AbstractLayoutChildComponentSpec {
  * {@link AbstractFilterList#makeEmptyComponentCache} to
  * extend the possible values within the `body` and `header` props.
  *
- * You will normally only call {@link ComponentArea#setBody}
- * and {@link ComponentArea#setHeader} on an object if this
+ * You will normally only call {@link ComponentCache#setBody}
+ * and {@link ComponentCache#setHeader} on an object if this
  * class. The other methods can be overridden in subclasses, but
  * should normally not be called outside the class.
  */
@@ -251,20 +219,20 @@ export class ComponentCache {
     this.filterMap = new Map()
 
     /**
-     * The {@link ComponentArea} for the `body`.
+     * The {@link LayoutComponentSpec} for the `body`.
      *
      * Is `null` until {@link ComponentCache#setBody} is called.
      *
-     * @type {null|ComponentArea}
+     * @type {null|LayoutComponentSpec}
      */
     this.body = null
 
     /**
-     * The {@link ComponentArea} for the `header`.
+     * The {@link LayoutComponentSpec} for the `header`.
      *
      * Is `null` until {@link ComponentCache#setHeader} is called.
      *
-     * @type {null|ComponentArea}
+     * @type {null|LayoutComponentSpec}
      */
     this.header = null
 
@@ -355,44 +323,34 @@ export class ComponentCache {
   }
 
   /**
-   * Make a {@link ComponentArea}.
+   * Make a {@link LayoutComponentSpec}.
    *
    * @param {{}} rawAreaSpec The raw area spec.
-   * @param {string} defaultLocation The default location for child components.
-   * @returns {ComponentArea}
+   * @returns {LayoutComponentSpec}
    */
-  makeComponentArea (rawAreaSpec, defaultLocation) {
+  makeLayoutComponent (rawAreaSpec) {
     const componentSpec = this.makeComponentSpec(rawAreaSpec)
     componentSpec.clean(this)
-    const componentArea = new ComponentArea(componentSpec)
-    for (let rawChildComponentSpec of componentSpec.layout) {
-      const childComponentSpec = this.makeComponentSpec(rawChildComponentSpec)
-      if (!(childComponentSpec instanceof AbstractLayoutChildComponentSpec)) {
-        throw new Error(`Invalid child component of a layout: ${childComponentSpec.componentClassName}`)
-      }
-      childComponentSpec.clean(this, defaultLocation)
-      componentArea.layout.add(childComponentSpec)
-    }
-    return componentArea
+    return componentSpec
   }
 
   /**
-   * Set the header {@link ComponentArea}.
+   * Set the header {@link LayoutComponentSpec}.
    *
    * @param {{}} rawAreaSpec The raw area spec.
    * @param {string} defaultLocation The default location for child components.
    */
   setHeader (rawAreaSpec, defaultLocation) {
-    this.header = this.makeComponentArea(rawAreaSpec, defaultLocation)
+    this.header = this.makeLayoutComponent(rawAreaSpec, defaultLocation)
   }
 
   /**
-   * Set the body {@link ComponentArea}.
+   * Set the body {@link LayoutComponentSpec}.
    *
    * @param {{}} rawAreaSpec The raw area spec.
    * @param {string} defaultLocation The default location for child components.
    */
   setBody (rawAreaSpec, defaultLocation) {
-    this.body = this.makeComponentArea(rawAreaSpec, defaultLocation)
+    this.body = this.makeLayoutComponent(rawAreaSpec, defaultLocation)
   }
 }

@@ -79,14 +79,14 @@ export default class AbstractFilterList extends React.Component {
       submitSelectedItemsApiUrl: null,  // TODO: Does this make sense? What if we have multiple actions?
       header: null,
       body: {
-        component: "ThreeColumnLayout",
+        component: 'ThreeColumnLayout',
         layout: [{
-          component: "BlockList",
+          component: 'BlockList',
           itemSpec: {
-            component: "IdOnlyItem"
+            component: 'IdOnlyItem'
           }
         }, {
-          component: "LoadMorePaginator"
+          component: 'LoadMorePaginator'
         }]
       }
     }
@@ -1228,11 +1228,11 @@ export default class AbstractFilterList extends React.Component {
    * Uses {@link AbstractFilterList#componentGroupsIsEnabled} to determine
    * if the component should be rendered.
    *
-   * @param {ComponentArea} componentArea A component area (header or body).
+   * @param {LayoutComponentSpec} layoutComponentSpec A layout component.
    * @returns {bool}
    */
-  shouldRenderComponentArea (componentArea) {
-    return this.componentGroupsIsEnabled(componentArea.props.componentGroups)
+  shouldRenderLayoutComponentSpec (layoutComponentSpec) {
+    return this.componentGroupsIsEnabled(layoutComponentSpec.props.componentGroups)
   }
 
   /**
@@ -1257,7 +1257,7 @@ export default class AbstractFilterList extends React.Component {
     if (!this.state.componentCache.header) {
       return null
     }
-    if (!this.shouldRenderComponentArea(this.state.componentCache.header)) {
+    if (!this.shouldRenderLayoutComponentSpec(this.state.componentCache.header)) {
       return null
     }
     return React.createElement(
@@ -1287,7 +1287,7 @@ export default class AbstractFilterList extends React.Component {
     if (!this.state.componentCache.body) {
       return null
     }
-    if (!this.shouldRenderComponentArea(this.state.componentCache.body)) {
+    if (!this.shouldRenderLayoutComponentSpec(this.state.componentCache.body)) {
       return null
     }
     return React.createElement(
@@ -1297,7 +1297,7 @@ export default class AbstractFilterList extends React.Component {
 
   render () {
     if (this.state.isLoadingSelectedItemDataFromApi) {
-      return <LoadingIndicator/>
+      return <LoadingIndicator />
     } else {
       return <div className={this.props.className}>
         {this.renderHeader()}
