@@ -1,4 +1,4 @@
-import FilterListRegistry from './FilterListRegistry'
+import FilterListRegistry from './FilterListRegistrySingleton'
 import BlockList from './components/lists/BlockList'
 import IdOnlyListItem from './components/items/IdOnlyListItem'
 import CheckboxBooleanFilter from './components/filters/CheckboxBooleanFilter'
@@ -9,8 +9,9 @@ import DropDownSearchFilter from './components/filters/DropDownSearchFilter'
 import SelectableTitleDescriptionListItem from './components/items/SelectableTitleDescriptionListItem'
 import SelectableList from './components/lists/SelectableList'
 import ThreeColumnLayout from './components/layout/ThreeColumnLayout'
-import { PageNumberPaginationFilterList } from './components/filterlists/PageNumberPaginationFilterList'
+import PageNumberPaginationFilterList from './components/filterlists/PageNumberPaginationFilterList'
 import ThreeColumnDropDownLayout from './components/layout/ThreeColumnDropDownLayout'
+import HiddenFieldRenderSelectedItems from './components/selecteditems/HiddenFieldRenderSelectedItems'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
   registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
@@ -42,6 +43,10 @@ export function setupDefaultListRegistryPaginatorComponents (registry) {
   registry.registerPaginatorComponent('LoadMorePaginator', LoadMorePaginator)
 }
 
+export function setupDefaultListRegistrySelectedItemsComponents (registry) {
+  registry.registerSelectedItemsComponent('HiddenFieldRenderSelectedItems', HiddenFieldRenderSelectedItems)
+}
+
 export default function setupDefaultListRegistry () {
   const registry = new FilterListRegistry()
   setupDefaultListRegistryFilterListComponents(registry)
@@ -50,4 +55,5 @@ export default function setupDefaultListRegistry () {
   setupDefaultListRegistryFilterComponents(registry)
   setupDefaultListRegistryItemComponents(registry)
   setupDefaultListRegistryPaginatorComponents(registry)
+  setupDefaultListRegistrySelectedItemsComponents(registry)
 }

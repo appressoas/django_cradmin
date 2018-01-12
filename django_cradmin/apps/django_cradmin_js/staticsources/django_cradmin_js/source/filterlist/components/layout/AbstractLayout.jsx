@@ -6,6 +6,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator'
 import AbstractFilter from '../filters/AbstractFilter'
 import AbstractList from '../lists/AbstractList'
 import AbstractPaginator from '../paginators/AbstractPaginator'
+import AbstractSelectedItems from '../selecteditems/AbstractSelectedItems'
 
 export default class AbstractLayout extends AbstractFilterListChild {
   static get propTypes () {
@@ -88,6 +89,21 @@ export default class AbstractLayout extends AbstractFilterListChild {
   }
 
   /**
+   * Used by {@link AbstractLayout#shouldRenderComponent} when
+   * the provided componentSpec.componentClass is a subclass
+   * of {@link AbstractSelectedItems}.
+   *
+   * By default this returns `true`.
+   *
+   * @param componentSpec The component we want to determine if should be rendered.
+   * @returns {boolean} `true` to render the component, and `false` to not render
+   *    the component.
+   */
+  shouldRenderSelectedItemsComponent (componentSpec) {
+    return true
+  }
+
+  /**
    * Determine if a component should be rendered.
    *
    * Perfect place to hook in things like "show advanced" filters etc.
@@ -110,9 +126,14 @@ export default class AbstractLayout extends AbstractFilterListChild {
     } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
       return this.shouldRenderListComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
-      return this.shouldRenderPaginatorComponent(componentSpec)
+      return this.shouldRenderSelectedItemsComponent(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractSelectedItems) {
+      return this.shouldRenderSelectedItemsComponent(componentSpec)
+    } else {
+      throw new Error(
+        `Could not determine if we should render component. ` +
+        `Unsupported component type: ${componentSpec.componentClassName}`)
     }
-    return true
   }
 
   getFilterComponentProps (componentSpec) {
@@ -135,6 +156,28 @@ export default class AbstractLayout extends AbstractFilterListChild {
     }
   }
 
+  getSelectedItemsComponentProps (componentSpec) {
+    return {
+      selectedListItemsMap: this.props.selectedListItemsMap
+    }
+  }
+
+  getComponentTypeSpecificExtraProps (componentSpec) {
+    if (componentSpec.componentClass.prototype instanceof AbstractFilter) {
+      return this.getFilterComponentProps(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
+      return this.getListComponentProps(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
+      return this.getPaginatorComponentProps(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractSelectedItems) {
+      return this.getSelectedItemsComponentProps(componentSpec)
+    } else {
+      throw new Error(
+        `Could not determine type-specific extra props. ` +
+        `Unsupported component type: ${componentSpec.componentClassName}`)
+    }
+  }
+
   getFocusableComponentProps (componentSpec) {
     if (componentSpec.componentClass.shouldReceiveFocusEvents(componentSpec)) {
       return {
@@ -147,17 +190,9 @@ export default class AbstractLayout extends AbstractFilterListChild {
   }
 
   getComponentProps (componentSpec) {
-    let extraProps = {}
-    if (componentSpec.componentClass.prototype instanceof AbstractFilter) {
-      extraProps = this.getFilterComponentProps(componentSpec)
-    } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
-      extraProps = this.getListComponentProps(componentSpec)
-    } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
-      extraProps = this.getPaginatorComponentProps(componentSpec)
-    }
     const props = Object.assign({}, componentSpec.props, {
       key: componentSpec.props.uniqueComponentKey
-    }, extraProps, this.getFocusableComponentProps(componentSpec))
+    }, this.getComponentTypeSpecificExtraProps(componentSpec), this.getFocusableComponentProps(componentSpec))
     return this.makeChildComponentProps(componentSpec, props)
   }
 

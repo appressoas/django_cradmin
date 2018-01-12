@@ -1,11 +1,12 @@
 import AbstractFilter from './components/filters/AbstractFilter'
 import AbstractPaginator from './components/paginators/AbstractPaginator'
 import AbstractList from './components/lists/AbstractList'
-import FilterListRegistrySingleton from './FilterListRegistry'
+import FilterListRegistrySingleton from './FilterListRegistrySingleton'
 import PrettyFormat from 'ievv_jsbase/lib/utils/PrettyFormat'
 import AbstractListItem from './components/items/AbstractListItem'
 import AbstractLayout from './components/layout/AbstractLayout'
 import { RENDER_LOCATION_DEFAULT } from './filterListConstants'
+import AbstractSelectedItems from './components/selecteditems/AbstractSelectedItems'
 
 /**
  * Defines the component layout within a {@link LayoutComponentSpec}.
@@ -186,6 +187,9 @@ export class FilterComponentSpec extends AbstractLayoutChildComponentSpec {
 export class PaginatorComponentSpec extends AbstractLayoutChildComponentSpec {
 }
 
+export class SelectedItemsComponentSpec extends AbstractLayoutChildComponentSpec {
+}
+
 /**
  * Parser for the `body` and `header` props for {@link AbstractFilterList}.
  *
@@ -249,6 +253,8 @@ export class ComponentCache {
       componentClass = this.filterListRegistry.getListComponent(componentString)
     } else if (componentString.endsWith('Paginator')) {
       componentClass = this.filterListRegistry.getPaginatorComponent(componentString)
+    } else if (componentString.endsWith('SelectedItems')) {
+      componentClass = this.filterListRegistry.getSelectedItemsComponent(componentString)
     } else if (componentString.endsWith('Layout')) {
       componentClass = this.filterListRegistry.getLayoutComponent(componentString)
     } else if (componentString.endsWith('Item')) {
@@ -291,6 +297,8 @@ export class ComponentCache {
       return ListComponentSpec
     } else if (componentClass.prototype instanceof AbstractPaginator) {
       return PaginatorComponentSpec
+    } else if (componentClass.prototype instanceof AbstractSelectedItems) {
+      return SelectedItemsComponentSpec
     } else if (componentClass.prototype instanceof AbstractListItem) {
       return ListItemComponentSpec
     } else if (componentClass.prototype instanceof AbstractLayout) {

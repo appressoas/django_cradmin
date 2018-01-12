@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
-import FilterListRegistrySingleton from '../../FilterListRegistry'
+import FilterListRegistrySingleton from '../../FilterListRegistrySingleton'
 import { MULTISELECT, SINGLESELECT } from '../../filterListConstants'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'

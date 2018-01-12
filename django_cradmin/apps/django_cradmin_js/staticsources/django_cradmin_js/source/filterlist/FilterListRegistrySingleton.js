@@ -32,6 +32,7 @@ export default class FilterListRegistrySingleton {
     this._searchComponentMap = new Map()
     this._paginatorComponentMap = new Map()
     this._layoutComponentMap = new Map()
+    this._selectedItemsComponentMap = new Map()
   }
 
   clear () {
@@ -42,6 +43,7 @@ export default class FilterListRegistrySingleton {
     this._searchComponentMap.clear()
     this._paginatorComponentMap.clear()
     this._layoutComponentMap.clear()
+    this._selectedItemsComponentMap.clear()
   }
 
   /**
@@ -64,6 +66,11 @@ export default class FilterListRegistrySingleton {
     this._filterListComponentMap.delete(alias)
   }
 
+  /**
+   * Get filterlist component class.
+   * @param alias The alias that the filterlist component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerFilterListComponent}.
+   */
   getFilterListComponent (alias) {
     return this._filterListComponentMap.get(alias)
   }
@@ -88,6 +95,11 @@ export default class FilterListRegistrySingleton {
     this._listComponentMap.delete(alias)
   }
 
+  /**
+   * Get list component class.
+   * @param alias The alias that the list component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerListComponent}.
+   */
   getListComponent (alias) {
     return this._listComponentMap.get(alias)
   }
@@ -114,6 +126,11 @@ export default class FilterListRegistrySingleton {
     this._filterComponentMap.delete(alias)
   }
 
+  /**
+   * Get filter component class.
+   * @param alias The alias that the filter component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerFilterComponent}.
+   */
   getFilterComponent (alias) {
     return this._filterComponentMap.get(alias)
   }
@@ -140,6 +157,11 @@ export default class FilterListRegistrySingleton {
     this._itemComponentMap.delete(alias)
   }
 
+  /**
+   * Get item component class.
+   * @param alias The alias that the item component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerItemComponent}.
+   */
   getItemComponent (alias) {
     return this._itemComponentMap.get(alias)
   }
@@ -166,6 +188,11 @@ export default class FilterListRegistrySingleton {
     this._paginatorComponentMap.delete(alias)
   }
 
+  /**
+   * Get paginator component class.
+   * @param alias The alias that the paginator component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerPaginatorComponent}.
+   */
   getPaginatorComponent (alias) {
     return this._paginatorComponentMap.get(alias)
   }
@@ -192,7 +219,43 @@ export default class FilterListRegistrySingleton {
     this._layoutComponentMap.delete(alias)
   }
 
+  /**
+   * Get layout component class.
+   * @param alias The alias that the layout component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerLayoutComponent}.
+   */
   getLayoutComponent (alias) {
     return this._layoutComponentMap.get(alias)
+  }
+
+  /**
+   * Register a selectedItems component class in the registry.
+   *
+   * @param {string} alias The alias for the selectedItems class.
+   *    Makes it possible to use a JSON serializable object
+   *    to define this selectedItems for a list.
+   * @param {AbstractLayout} selectedItemsComponent The selectedItems class.
+   */
+  registerSelectedItemsComponent (alias, selectedItemsComponent) {
+    this._selectedItemsComponentMap.set(alias, selectedItemsComponent)
+  }
+
+  /**
+   * Remove selectedItems component class from registry.
+   *
+   * @param alias The alias that the selectedItems class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerSelectedItemsComponent}.
+   */
+  removeSelectedItemsComponent (alias) {
+    this._selectedItemsComponentMap.delete(alias)
+  }
+
+  /**
+   * Get selectedItems component class.
+   * @param alias The alias that the selectedItems component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerSelectedItemsComponent}.
+   */
+  getSelectedItemsComponent (alias) {
+    return this._selectedItemsComponentMap.get(alias)
   }
 }

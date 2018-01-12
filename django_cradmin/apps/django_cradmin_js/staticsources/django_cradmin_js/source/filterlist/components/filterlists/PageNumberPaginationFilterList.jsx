@@ -1,6 +1,6 @@
 import AbstractFilterList from './AbstractFilterList'
 
-export class PageNumberPaginationFilterList extends AbstractFilterList {
+export default class PageNumberPaginationFilterList extends AbstractFilterList {
   makePaginationStateFromHttpResponse (httpResponse, paginationOptions) {
     let page = 1
     if (paginationOptions && paginationOptions.page) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
-import FilterListRegistry from '../filterlist/FilterListRegistry'
+import FilterListRegistry from '../filterlist/FilterListRegistrySingleton'
 
 export default class FilterListWidget extends AbstractWidget {
   getDefaultConfig () {
