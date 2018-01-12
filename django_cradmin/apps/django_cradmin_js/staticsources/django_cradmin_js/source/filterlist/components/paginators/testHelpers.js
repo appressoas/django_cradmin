@@ -2,13 +2,13 @@ import React from 'react'
 import { ChildExposedApiMock } from '../filterlists/testHelpers'
 import { RENDER_AREA_BODY, RENDER_LOCATION_CENTER } from '../../filterListConstants'
 
-export function renderFilter (filterComponentClass, props = {}) {
+export function renderPaginator (paginatorComponentClass, props = {}) {
   const fullProps = Object.assign({
     childExposedApi: new ChildExposedApiMock(),
     renderArea: RENDER_AREA_BODY,
     location: RENDER_LOCATION_CENTER,
-    uniqueComponentKey: 'test',
-    name: 'test'
+    listItemsDataArray: [],
+    uniqueComponentKey: 'test'
   }, props)
-  return React.createElement(filterComponentClass, fullProps)
+  return React.createElement(paginatorComponentClass, fullProps)
 }

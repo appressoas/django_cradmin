@@ -4,6 +4,7 @@ import { shallow } from 'enzyme'
 import LoadMorePaginator from '../LoadMorePaginator'
 import { RENDER_AREA_BODY, RENDER_LOCATION_CENTER } from '../../../filterListConstants'
 import { ChildExposedApiMock } from '../../filterlists/testHelpers'
+import { renderPaginator } from '../testHelpers'
 
 function makeChildExposedApiMock (hasNextPaginationPage) {
   const childExposedApi = new ChildExposedApiMock()
@@ -12,12 +13,7 @@ function makeChildExposedApiMock (hasNextPaginationPage) {
 }
 
 function render (props) {
-  const fullProps = Object.assign({
-    renderArea: RENDER_AREA_BODY,
-    location: RENDER_LOCATION_CENTER,
-    listItemsDataArray: []
-  }, props)
-  return React.createElement(LoadMorePaginator, fullProps)
+  return renderPaginator(LoadMorePaginator, props)
 }
 
 test('hasNextPaginationPage() is false', () => {

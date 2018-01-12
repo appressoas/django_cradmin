@@ -46,7 +46,7 @@ export default class AbstractSearchFilter extends AbstractListFilter {
     this.placeholderRotateTimeoutId = null
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps () {
     this.setState({
       currentPlaceholderIndex: 0
     })
@@ -146,7 +146,7 @@ export default class AbstractSearchFilter extends AbstractListFilter {
   //
 
   onChange (event) {
-    const searchString = event.target.value;
+    const searchString = event.target.value
     this.setFilterValue(searchString)
   }
 
