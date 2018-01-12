@@ -11,8 +11,7 @@ import AbstractLayoutComponentChild from '../AbstractLayoutComponentChild'
 export default class AbstractPaginator extends AbstractLayoutComponentChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
-      listItemsDataArray: PropTypes.array.isRequired,
-      location: PropTypes.string.isRequired
+      listItemsDataArray: PropTypes.array.isRequired
     })
   }
 
@@ -30,8 +29,7 @@ export default class AbstractPaginator extends AbstractLayoutComponentChild {
    */
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
-      listItemsDataArray: null,
-      location: null
+      listItemsDataArray: null
     })
   }
 }

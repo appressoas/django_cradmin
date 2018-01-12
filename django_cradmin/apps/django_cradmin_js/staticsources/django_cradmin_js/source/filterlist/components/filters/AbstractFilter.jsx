@@ -12,7 +12,6 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       name: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
       isStatic: PropTypes.bool,
       value: PropTypes.any
     })
@@ -36,7 +35,6 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
    */
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
-      location: null,
       name: null,
       isStatic: false,
       value: null
