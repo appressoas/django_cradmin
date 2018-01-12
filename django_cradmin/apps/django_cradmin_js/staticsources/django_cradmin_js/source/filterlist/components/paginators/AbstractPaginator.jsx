@@ -27,17 +27,6 @@ export default class AbstractPaginator extends AbstractLayoutComponentChild {
    *    the list changes.
    *    This is required, and defaults to `null`.
    *    _Provided automatically by the parent component_.
-   * @property {string} location The location where the filter is rendered.
-   *    In advanced cases, you may want to render the filter
-   *    differently depending on the location, but this is generally
-   *    not recommended for reusable filters.
-   *
-   *    Will normally be one of {@link RENDER_LOCATION_LEFT},
-   *    {@link RENDER_LOCATION_RIGHT}, {@link RENDER_LOCATION_TOP},
-   *    {@link RENDER_LOCATION_BOTTOM} or {@link RENDER_LOCATION_CENTER}.
-   *
-   *    This is required, and defaults to `null`.
-   *    **Can be used in spec**.
    */
   static get defaultProps () {
     return Object.assign(super.defaultProps, {

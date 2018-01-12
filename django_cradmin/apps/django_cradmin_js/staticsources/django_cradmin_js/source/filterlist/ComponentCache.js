@@ -5,7 +5,7 @@ import FilterListRegistrySingleton from './FilterListRegistry'
 import PrettyFormat from 'ievv_jsbase/lib/utils/PrettyFormat'
 import AbstractListItem from './components/items/AbstractListItem'
 import AbstractLayout from './components/layout/AbstractLayout'
-import { RENDER_LOCATION_CENTER } from './filterListConstants'
+import { RENDER_LOCATION_DEFAULT } from './filterListConstants'
 
 /**
  * Defines the component layout within a {@link LayoutComponentSpec}.
@@ -114,7 +114,7 @@ export class LayoutComponentSpec extends AbstractComponentSpec {
       this._raiseMissingRequiredAttributeError('layout')
     }
     if (!this._componentSpec.defaultLocation) {
-      this._componentSpec.defaultLocation = RENDER_LOCATION_CENTER
+      this._componentSpec.defaultLocation = RENDER_LOCATION_DEFAULT
     }
     this._componentSpec.props.layout = new ComponentLayout()
     for (let rawChildComponentSpec of this._componentSpec.layout) {

@@ -1,4 +1,14 @@
 /**
+ * Constant for the "default" render location.
+ *
+ * All layout components (see {@link AbstractLayout}) must
+ * support this render location.
+ *
+ * @type {string}
+ */
+export const RENDER_LOCATION_DEFAULT = 'default'
+
+/**
  * Constant for the "left" render location.
  *
  * @type {string}

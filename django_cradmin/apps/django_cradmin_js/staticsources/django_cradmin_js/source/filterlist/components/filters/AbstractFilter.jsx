@@ -31,17 +31,6 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
    *    filter in the `initialValue` attribute of the spec for the filter.
    *    Defaults to `false`.
    *    **Can be used in spec**.
-   * @property {string} location The location where the filter is rendered.
-   *    In advanced cases, you may want to render the filter
-   *    differently depending on the location, but this is generally
-   *    not recommended for reusable filters.
-   *
-   *    Will normally be one of {@link RENDER_LOCATION_LEFT},
-   *    {@link RENDER_LOCATION_RIGHT}, {@link RENDER_LOCATION_TOP},
-   *    {@link RENDER_LOCATION_BOTTOM} or {@link RENDER_LOCATION_CENTER}.
-   *
-   *    This is required, and defaults to `null`.
-   *    **Can be used in spec**.
    * @property {*} value The current value of the filter.
    *    _Provided automatically by the parent component_.
    */

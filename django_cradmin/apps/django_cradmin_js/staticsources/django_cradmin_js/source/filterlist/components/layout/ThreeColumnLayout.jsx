@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  RENDER_LOCATION_BOTTOM, RENDER_LOCATION_CENTER,
+  RENDER_LOCATION_BOTTOM, RENDER_LOCATION_CENTER, RENDER_LOCATION_DEFAULT,
   RENDER_LOCATION_LEFT,
   RENDER_LOCATION_RIGHT,
   RENDER_LOCATION_TOP
@@ -109,6 +109,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
       this.renderTopBar()
     ]
     centerColumnContent.push(...this.renderComponentsAtLocation(RENDER_LOCATION_CENTER, []))
+    centerColumnContent.push(...this.renderComponentsAtLocation(RENDER_LOCATION_DEFAULT, []))
     if (this.props.isLoadingNewItemsFromApi || this.props.isLoadingMoreItemsFromApi) {
       centerColumnContent.push(this.renderLoadingIndicator())
     }

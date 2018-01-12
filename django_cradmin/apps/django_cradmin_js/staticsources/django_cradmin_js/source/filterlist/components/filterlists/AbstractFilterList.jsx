@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
-import { MULTISELECT, RENDER_LOCATION_CENTER, SINGLESELECT } from '../../filterListConstants'
+import { MULTISELECT, SINGLESELECT } from '../../filterListConstants'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'
 import { ComponentCache } from '../../ComponentCache'
@@ -620,22 +620,6 @@ export default class AbstractFilterList extends React.Component {
    */
   getFilterValue (filterName) {
     return this.state[this._getStateVariableNameForFilter(filterName)]
-  }
-
-  /**
-   * Get the default render location for filters
-   * that does not specify a location.
-   */
-  getDefaultHeaderComponentLocation () {
-    return RENDER_LOCATION_CENTER
-  }
-
-  /**
-   * Get the default render location for filters
-   * that does not specify a location.
-   */
-  getDefaultBodyComponentLocation () {
-    return RENDER_LOCATION_CENTER
   }
 
   //
