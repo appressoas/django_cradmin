@@ -43,7 +43,35 @@ import BemUtilities from '../../../utilities/BemUtilities'
  * }
  *
  * @example <caption>Spec - full example with something to expand</caption>
-
+ * {
+ *   "getItemsApiUrl": "https://example.com/path/to/my/api",
+ *   "header": {
+ *     "component": "ThreeColumnLayout",
+ *     "layout": [{
+ *       "component": "DropDownSearchFilter",
+ *       "props": {
+ *         "name": "search"
+ *       }
+ *     }]
+ *   },
+ *   "body": {
+ *     "component": "ThreeColumnDropDownLayout",
+ *     "props": {
+ *       "componentGroups": ["expandable"]
+ *     },
+ *     "layout": [{
+ *       "component": "SelectableList",
+ *       "itemSpec": {
+ *         "component": "SelectableTitleDescriptionItem",
+ *         "props": {
+ *           "bemVariants": ["neutral-light", "bordered"]
+ *         }
+ *       }
+ *     }, {
+ *       "component": "LoadMorePaginator"
+ *     }]
+ *   }
+ * }
  */
 export default class DropDownSearchFilter extends AbstractSearchFilter {
   static get propTypes () {
@@ -80,7 +108,6 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onClickExpandCollapseButton = this.onClickExpandCollapseButton.bind(this)
-    this.onClickInputField = this.onClickInputField.bind(this)
   }
 
   onAnyComponentFocus (newFocusComponentInfo, prevFocusComponentInfo, didChangeFilterListFocus) {
@@ -121,17 +148,7 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   }
 
   onClickExpandCollapseButton () {
-    // const willBeExpanded = !this.isExpanded()
-    // if (willBeExpanded) {
-    //   this.getSearchInputRef().focus()
-    // } else {
-    //   this._labelRef.focus()
-    // }
     this.toggleExpandableComponentGroup()
-  }
-
-  onClickInputField () {
-    // this.enableExpandableComponentGroup()
   }
 
   onFocus () {
@@ -207,7 +224,6 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
       placeholder={this.placeholder}
       className={this.searchInputClassName}
       value={this.stringValue}
-      onClick={this.onClickInputField}
       onFocus={this.onFocus}
       onBlur={this.onBlur}
       onChange={this.onChange} />
