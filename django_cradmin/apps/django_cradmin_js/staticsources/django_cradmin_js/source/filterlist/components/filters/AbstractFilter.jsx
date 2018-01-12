@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractFilterListChild from '../AbstractFilterListChild'
+import AbstractLayoutComponentChild from '../AbstractLayoutComponentChild'
 
 /**
  * Base class for filter components.
@@ -8,7 +8,7 @@ import AbstractFilterListChild from '../AbstractFilterListChild'
  * See {@link AbstractFilter.defaultProps} for documentation for
  * props and their defaults.
  */
-export default class AbstractFilter extends AbstractFilterListChild {
+export default class AbstractFilter extends AbstractLayoutComponentChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       name: PropTypes.string.isRequired,
@@ -20,7 +20,7 @@ export default class AbstractFilter extends AbstractFilterListChild {
 
   /**
    * Get default props. Extends the default props
-   * from {@link AbstractFilterListChild.defaultProps}.
+   * from {@link AbstractLayoutComponentChild.defaultProps}.
    *
    * @return {Object}
    * @property {string} name The name of the filter.
