@@ -195,15 +195,11 @@ export class PaginatorComponentSpec extends AbstractLayoutChildComponentSpec {
  *
  * You can extend this class, and override
  * {@link AbstractFilterList#makeEmptyComponentCache} to
- * extend the possible values within the `body` and `header` props.
- *
- * You will normally only call {@link ComponentCache#setBody}
- * and {@link ComponentCache#setHeader} on an object if this
- * class. The other methods can be overridden in subclasses, but
- * should normally not be called outside the class.
+ * use a subclass of this class to parse the AbstractFilterList
+ * `components` prop.
  */
 export class ComponentCache {
-  constructor () {
+  constructor (rawLayoutComponentSpecs = []) {
     /**
      * An instance of {@link FilterListRegistrySingleton} for convenience.
      *
@@ -219,24 +215,6 @@ export class ComponentCache {
     this.filterMap = new Map()
 
     /**
-     * The {@link LayoutComponentSpec} for the `body`.
-     *
-     * Is `null` until {@link ComponentCache#setBody} is called.
-     *
-     * @type {null|LayoutComponentSpec}
-     */
-    this.body = null
-
-    /**
-     * The {@link LayoutComponentSpec} for the `header`.
-     *
-     * Is `null` until {@link ComponentCache#setHeader} is called.
-     *
-     * @type {null|LayoutComponentSpec}
-     */
-    this.header = null
-
-    /**
      * Internal counter of the number of layout components.
      *
      * Used by {@link ComponentCache#makeUniqueComponentKey}.
@@ -244,6 +222,15 @@ export class ComponentCache {
      * @type {number}
      */
     this.componentCount = 0
+
+    /**
+     * The layout component specs.
+     *
+     * @type {[LayoutComponentSpec]}
+     */
+    this.layoutComponentSpecs = []
+
+    this.addRawLayoutComponentSpecs(rawLayoutComponentSpecs)
   }
 
   /**
@@ -325,32 +312,22 @@ export class ComponentCache {
   /**
    * Make a {@link LayoutComponentSpec}.
    *
-   * @param {{}} rawAreaSpec The raw area spec.
+   * @param {{}} rawLayoutComponentSpec The raw area spec.
    * @returns {LayoutComponentSpec}
    */
-  makeLayoutComponent (rawAreaSpec) {
-    const componentSpec = this.makeComponentSpec(rawAreaSpec)
+  makeLayoutComponent (rawLayoutComponentSpec) {
+    const componentSpec = this.makeComponentSpec(rawLayoutComponentSpec)
     componentSpec.clean(this)
     return componentSpec
   }
 
-  /**
-   * Set the header {@link LayoutComponentSpec}.
-   *
-   * @param {{}} rawAreaSpec The raw area spec.
-   * @param {string} defaultLocation The default location for child components.
-   */
-  setHeader (rawAreaSpec, defaultLocation) {
-    this.header = this.makeLayoutComponent(rawAreaSpec, defaultLocation)
+  addRawLayoutComponentSpec (rawLayoutComponentSpec) {
+    this.layoutComponentSpecs.push(this.makeLayoutComponent(rawLayoutComponentSpec))
   }
 
-  /**
-   * Set the body {@link LayoutComponentSpec}.
-   *
-   * @param {{}} rawAreaSpec The raw area spec.
-   * @param {string} defaultLocation The default location for child components.
-   */
-  setBody (rawAreaSpec, defaultLocation) {
-    this.body = this.makeLayoutComponent(rawAreaSpec, defaultLocation)
+  addRawLayoutComponentSpecs (rawLayoutComponentSpecs) {
+    for (let rawLayoutComponentSpec of rawLayoutComponentSpecs) {
+      this.addRawLayoutComponentSpec(rawLayoutComponentSpec)
+    }
   }
 }

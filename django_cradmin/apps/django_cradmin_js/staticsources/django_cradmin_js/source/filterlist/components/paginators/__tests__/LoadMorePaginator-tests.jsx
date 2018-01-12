@@ -2,7 +2,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import LoadMorePaginator from '../LoadMorePaginator'
-import { RENDER_AREA_BODY, RENDER_LOCATION_CENTER } from '../../../filterListConstants'
 import { ChildExposedApiMock } from '../../filterlists/testHelpers'
 import { renderPaginator } from '../testHelpers'
 

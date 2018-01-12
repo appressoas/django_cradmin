@@ -10,7 +10,6 @@ import PropTypes from 'prop-types'
 export default class AbstractFilterListChild extends React.Component {
   static get propTypes () {
     return {
-      renderArea: PropTypes.string.isRequired,
       childExposedApi: PropTypes.object.isRequired,
       willReceiveFocusEvents: PropTypes.bool.isRequired,
       componentGroups: PropTypes.arrayOf(PropTypes.string),
@@ -22,9 +21,6 @@ export default class AbstractFilterListChild extends React.Component {
    * Get default props.
    *
    * @return {Object}
-   * @property {string} renderArea The area the component is rendered within.
-   *    Will normally be one of {@link RENDER_AREA_HEADER} or {@link RENDER_AREA_BODY}.
-   *    _Provided automatically by the parent component_.
    * @property {ChildExposedApi} childExposedApi Object with public methods from
    *    {@link AbstractFilterList}.
    *    _Provided automatically by the parent component_.
@@ -37,7 +33,6 @@ export default class AbstractFilterListChild extends React.Component {
    */
   static get defaultProps () {
     return {
-      renderArea: null,
       childExposedApi: null,
       componentGroups: null,
       willReceiveFocusEvents: false
@@ -104,7 +99,6 @@ export default class AbstractFilterListChild extends React.Component {
   getBlurFocusCallbackInfo () {
     return {
       uniqueComponentKey: this.props.uniqueComponentKey,
-      renderArea: this.props.renderArea,
       componentGroups: this.props.componentGroups
     }
   }
@@ -156,7 +150,6 @@ export default class AbstractFilterListChild extends React.Component {
    */
   makeChildComponentProps (componentSpec, extraProps) {
     return Object.assign({}, extraProps, {
-      renderArea: this.props.renderArea,
       childExposedApi: this.props.childExposedApi,
       componentGroups: this.getComponentGroupsForChildComponent(componentSpec)
     })

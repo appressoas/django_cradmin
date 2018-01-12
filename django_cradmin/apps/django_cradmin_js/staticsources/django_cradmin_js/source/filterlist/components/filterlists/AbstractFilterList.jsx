@@ -2,41 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest'
 import FilterListRegistrySingleton from '../../FilterListRegistry'
-import {
-  MULTISELECT,
-  RENDER_AREA_BODY,
-  RENDER_AREA_HEADER,
-  RENDER_LOCATION_CENTER,
-  SINGLESELECT
-} from '../../filterListConstants'
+import { MULTISELECT, RENDER_LOCATION_CENTER, SINGLESELECT } from '../../filterListConstants'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'
-import {ComponentCache} from '../../ComponentCache'
+import { ComponentCache } from '../../ComponentCache'
 import ChildExposedApi from './ChildExposedApi'
-
-/*
-<AbstractList
-  body: {
-    component: "ThreeColumnLayout",
-    layout: [{
-      component: "SearchFilter",
-      props: {
-        name: "search"
-      }
-    }, {
-      component: "BlockList",
-      itemSpec: {
-        component: "TitleDescriptionItem"
-      }
-    }, {
-      component: "LoadMorePaginator",
-      props: {
-        label: "Load some more items!"
-      }
-    }]
-  }
-  />
-*/
 
 export default class AbstractFilterList extends React.Component {
   static get propTypes () {
@@ -51,8 +21,7 @@ export default class AbstractFilterList extends React.Component {
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
 
-      header: PropTypes.object,
-      body: PropTypes.object
+      components: PropTypes.arrayOf(PropTypes.object).isRequired
 
       // initiallySelectedItemIds: PropTypes.array
       // updateHttpMethod: (props, propName, componentName) => {
@@ -78,7 +47,7 @@ export default class AbstractFilterList extends React.Component {
       updateSingleItemSortOrderApiUrl: null,
       submitSelectedItemsApiUrl: null,  // TODO: Does this make sense? What if we have multiple actions?
       header: null,
-      body: {
+      components: [{
         component: 'ThreeColumnLayout',
         layout: [{
           component: 'BlockList',
@@ -88,7 +57,7 @@ export default class AbstractFilterList extends React.Component {
         }, {
           component: 'LoadMorePaginator'
         }]
-      }
+      }]
     }
   }
 
@@ -122,14 +91,14 @@ export default class AbstractFilterList extends React.Component {
   }
 
   componentDidMount () {
-    this.refreshComponentCache(this.props.header, this.props.body)
+    this.refreshComponentCache(this.props.components)
     if (this.props.autoLoadFirstPage) {
       this.loadFirstPageFromApi()
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    this.refreshComponentCache(nextProps.header, nextProps.body)
+    this.refreshComponentCache(nextProps.components)
   }
 
   setupBoundMethods () {
@@ -177,23 +146,17 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Make a {@link ComponentCache} object.
    *
-   * @param rawHeaderSpec
-   * @param rawBodySpec
+   * @param rawComponentSpecs
    * @returns {ComponentCache}
    */
-  buildComponentCache (rawHeaderSpec, rawBodySpec) {
+  buildComponentCache (rawComponentSpecs) {
     const componentCache = this.makeEmptyComponentCache()
-    if (rawHeaderSpec) {
-      componentCache.setHeader(rawHeaderSpec, this.getDefaultHeaderComponentLocation())
-    }
-    if (rawBodySpec) {
-      componentCache.setBody(rawBodySpec, this.getDefaultBodyComponentLocation())
-    }
+    componentCache.addRawLayoutComponentSpecs(rawComponentSpecs)
     return componentCache
   }
 
-  refreshComponentCache (rawHeaderSpec, rawBodySpec) {
-    const componentCache = this.buildComponentCache(rawHeaderSpec, rawBodySpec)
+  refreshComponentCache (rawComponentSpecs) {
+    const componentCache = this.buildComponentCache(rawComponentSpecs)
     this.setInitialFilterValuesInState(componentCache.filterMap.values())
     this.setState({
       componentCache: componentCache
@@ -904,7 +867,7 @@ export default class AbstractFilterList extends React.Component {
    * @returns {object} Pagination options
    */
   getSpecificPagePaginationOptions (pageNumber, paginationState) {
-    throw new Error ('getSpecificPagePaginationOptions() is not implemented')
+    throw new Error('getSpecificPagePaginationOptions() is not implemented')
   }
 
   /**
@@ -980,8 +943,8 @@ export default class AbstractFilterList extends React.Component {
    */
   makeNewItemsStateFromApiResponse (prevState, props, httpResponse, clearOldItems) {
     const newItemsArray = this.getItemsArrayFromHttpResponse(httpResponse)
-    let listItemsDataArray;
-    let listItemsDataMap;
+    let listItemsDataArray
+    let listItemsDataMap
     if (clearOldItems) {
       listItemsDataMap = new Map()
       listItemsDataArray = newItemsArray
@@ -990,7 +953,7 @@ export default class AbstractFilterList extends React.Component {
       listItemsDataArray = prevState.listItemsDataArray
       listItemsDataMap = prevState.listItemsDataMap
     }
-    for(let listItemData of newItemsArray) {
+    for (let listItemData of newItemsArray) {
       const listItemId = this.getIdFromListItemData(listItemData)
       listItemsDataMap.set(listItemId, listItemData)
     }
@@ -1201,17 +1164,16 @@ export default class AbstractFilterList extends React.Component {
   //
 
   /**
-   * Get props for an area component.
+   * Get props for a layout component.
    *
-   * Used by {@link AbstractFilterList#getHeaderComponentProps}
-   * and {@link AbstractFilterList#getBodyComponentProps}.
+   * Used by {@link AbstractFilterList#renderLayoutComponent}.
    *
-   * @param {{}} extraProps Extra props to set in addition to the props
-   *    set by this method.
-   * @returns {{}} Props for the area component.
+   * @param {LayoutComponentSpec} layoutComponentSpec The layout component spec
+   * @returns {{}} Props for the layout component.
    */
-  getAreaComponentProps (extraProps={}) {
-    return Object.assign({
+  getLayoutComponentProps (layoutComponentSpec) {
+    return Object.assign({}, layoutComponentSpec.props, {
+      key: layoutComponentSpec.props.uniqueComponentKey,
       childExposedApi: this.childExposedApi,
       listItemsDataArray: this.state.listItemsDataArray,
       listItemsDataMap: this.state.listItemsDataMap,
@@ -1219,16 +1181,16 @@ export default class AbstractFilterList extends React.Component {
       enabledComponentGroups: this.state.enabledComponentGroups,
       isLoadingNewItemsFromApi: this.state.isLoadingNewItemsFromApi,
       isLoadingMoreItemsFromApi: this.state.isLoadingMoreItemsFromApi
-    }, extraProps)
+    })
   }
 
   /**
-   * Should we render the provided component area?
+   * Should we render the provided layout component?
    *
    * Uses {@link AbstractFilterList#componentGroupsIsEnabled} to determine
    * if the component should be rendered.
    *
-   * @param {LayoutComponentSpec} layoutComponentSpec A layout component.
+   * @param {LayoutComponentSpec} layoutComponentSpec A layout component spec.
    * @returns {bool}
    */
   shouldRenderLayoutComponentSpec (layoutComponentSpec) {
@@ -1236,63 +1198,26 @@ export default class AbstractFilterList extends React.Component {
   }
 
   /**
-   * Get props for the header component.
+   * Render a layout component.
    *
-   * @returns {{}} Props for the header component.
-   */
-  getHeaderComponentProps () {
-    return this.getAreaComponentProps(
-      Object.assign(this.state.componentCache.header.props, {
-        renderArea: RENDER_AREA_HEADER,
-        key: 'header'
-      }))
-  }
-
-  /**
-   * Render the header component.
-   *
+   * @param {LayoutComponentSpec} layoutComponentSpec A layout component spec.
    * @returns {null|React.Element}
    */
-  renderHeader () {
-    if (!this.state.componentCache.header) {
-      return null
-    }
-    if (!this.shouldRenderLayoutComponentSpec(this.state.componentCache.header)) {
+  renderLayoutComponent (layoutComponentSpec) {
+    if (!this.shouldRenderLayoutComponentSpec(layoutComponentSpec)) {
       return null
     }
     return React.createElement(
-      this.state.componentCache.header.componentClass,
-      this.getHeaderComponentProps())
+      layoutComponentSpec.componentClass,
+      this.getLayoutComponentProps(layoutComponentSpec))
   }
 
-  /**
-   * Get props for the body component.
-   *
-   * @returns {{}} Props for the body component.
-   */
-  getBodyComponentProps () {
-    return this.getAreaComponentProps(
-      Object.assign(this.state.componentCache.body.props, {
-        renderArea: RENDER_AREA_BODY,
-        key: 'body'
-      }))
-  }
-
-  /**
-   * Render the body component.
-   *
-   * @returns {null|React.Element}
-   */
-  renderBody () {
-    if (!this.state.componentCache.body) {
-      return null
+  renderComponents () {
+    const renderedComponents = []
+    for (let layoutComponentSpec of this.state.componentCache.layoutComponentSpecs) {
+      renderedComponents.push(this.renderLayoutComponent(layoutComponentSpec))
     }
-    if (!this.shouldRenderLayoutComponentSpec(this.state.componentCache.body)) {
-      return null
-    }
-    return React.createElement(
-      this.state.componentCache.body.componentClass,
-      this.getBodyComponentProps())
+    return renderedComponents
   }
 
   render () {
@@ -1300,8 +1225,7 @@ export default class AbstractFilterList extends React.Component {
       return <LoadingIndicator />
     } else {
       return <div className={this.props.className}>
-        {this.renderHeader()}
-        {this.renderBody()}
+        {this.renderComponents()}
       </div>
     }
   }

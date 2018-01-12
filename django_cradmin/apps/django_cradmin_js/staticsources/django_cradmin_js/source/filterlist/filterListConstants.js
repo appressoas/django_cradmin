@@ -1,18 +1,4 @@
 /**
- * Constant for the header render area.
- *
- * @type {string}
- */
-export const RENDER_AREA_HEADER = 'header'
-
-/**
- * Constant for the body render area.
- *
- * @type {string}
- */
-export const RENDER_AREA_BODY = 'body'
-
-/**
  * Constant for the "left" render location.
  *
  * @type {string}

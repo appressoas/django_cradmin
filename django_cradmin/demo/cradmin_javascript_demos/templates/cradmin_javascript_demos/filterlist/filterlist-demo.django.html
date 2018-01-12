@@ -22,7 +22,6 @@
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}"
                  }'>
-
             </div>
         </div>
     </section>
@@ -32,7 +31,7 @@
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "body": {
+                     "components": [{
                         "component": "ThreeColumnLayout",
                         "layout": [{
                           "component": "SearchFilter",
@@ -62,7 +61,7 @@
                             "label": "Load some more items!"
                           }
                         }]
-                     }
+                     }]
                  }'>
             </div>
         </div>
@@ -73,7 +72,7 @@
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "header": {
+                     "components": [{
                         "component": "ThreeColumnLayout",
                         "layout": [{
                           "component": "DropDownSearchFilter",
@@ -82,8 +81,7 @@
                             "placeholder": ["God", "Time", "wizard"]
                           }
                         }]
-                     },
-                     "body": {
+                     }, {
                         "component": "ThreeColumnDropDownLayout",
                         "props": {
                             "componentGroups": ["expandable"],
@@ -107,7 +105,7 @@
                         }, {
                           "component": "LoadMorePaginator"
                         }]
-                     }
+                     }]
                  }'>
             </div>
             <p>
@@ -122,7 +120,7 @@
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
                      "selectMode": "multi",
-                     "body": {
+                     "components": [{
                         "component": "ThreeColumnLayout",
                         "layout": [{
                           "component": "SearchFilter",
@@ -145,7 +143,7 @@
                         }, {
                           "component": "LoadMorePaginator"
                         }]
-                     }
+                     }]
                  }'>
             </div>
 
