@@ -85,7 +85,7 @@ export default class SearchFilter extends AbstractSearchFilter {
     return `searchinput__input ${BemUtilities.addVariants('input', this.props.inputBemVariants)}`
   }
 
-  get clearButtonTitle () {
+  get buttonTitle () {
     return window.gettext('Clear search field')
   }
 
@@ -97,19 +97,19 @@ export default class SearchFilter extends AbstractSearchFilter {
     return 'icon-close'
   }
 
-  renderClearButtonIcon () {
+  renderbuttonIcon () {
     return <span className={this.clearButtonIconClassName} aria-hidden='true' />
   }
 
-  renderClearButton () {
+  renderbutton () {
     return <button
       type='button'
       className={this.clearButtonClassName}
-      title={this.clearButtonTitle}
-      onClick={this.onClickClearButton}
+      title={this.buttonTitle}
+      onClick={this.onClickbutton}
       onBlur={this.onBlur}
       onFocus={this.onFocus}>
-      {this.renderClearButtonIcon()}
+      {this.renderbuttonIcon()}
     </button>
   }
 
@@ -130,7 +130,7 @@ export default class SearchFilter extends AbstractSearchFilter {
       {this.renderLabel()}
       <div className={this.fieldWrapperClassName}>
         {this.renderSearchInput()}
-        {this.renderClearButton()}
+        {this.renderbutton()}
       </div>
     </label>
   }

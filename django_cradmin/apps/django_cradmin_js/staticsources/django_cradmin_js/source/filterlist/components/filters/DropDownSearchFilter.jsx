@@ -188,11 +188,11 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
     }
   }
 
-  get clearButtonClassName () {
+  get expandCollapseButtonClassName () {
     return 'searchinput__button'
   }
 
-  get clearButtonIconClassName () {
+  get expandCollapseButtonIconClassName () {
     if (this.isExpanded()) {
       return 'icon-chevron-up'
     } else {
@@ -201,13 +201,13 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   }
 
   renderExpandCollapseIcon () {
-    return <span className={this.clearButtonIconClassName} aria-hidden='true' />
+    return <span className={this.expandCollapseButtonIconClassName} aria-hidden='true' />
   }
 
   renderExpandCollapseButton () {
     return <button
       type='button'
-      className={this.clearButtonClassName}
+      className={this.expandCollapseButtonClassName}
       title={this.expandCollapseButtonLabel}
       onClick={this.onClickExpandCollapseButton}
       onFocus={this.onFocus}

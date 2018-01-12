@@ -72,7 +72,7 @@ export default class AbstractSearchFilter extends AbstractListFilter {
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onChange = this.onChange.bind(this)
-    this.onClickClearButton = this.onClickClearButton.bind(this)
+    this.onClickbutton = this.onClickbutton.bind(this)
     this.rotatePlaceholder = this.rotatePlaceholder.bind(this)
   }
 
@@ -150,7 +150,7 @@ export default class AbstractSearchFilter extends AbstractListFilter {
     this.setFilterValue(searchString)
   }
 
-  onClickClearButton () {
+  onClickbutton () {
     this.setFilterValue('')
     this.getSearchInputRef().focus()
   }
