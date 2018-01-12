@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractListFilter from './AbstractListFilter'
+import AbstractFilter from './AbstractFilter'
 
 /**
  * Abstract base class for filters.
@@ -8,7 +8,7 @@ import AbstractListFilter from './AbstractListFilter'
  * See {@link AbstractSearchFilter.defaultProps} for documentation for
  * props and their defaults.
  */
-export default class AbstractSearchFilter extends AbstractListFilter {
+export default class AbstractSearchFilter extends AbstractFilter {
   static get propTypes () {
     const propTypes = super.propTypes
     propTypes.placeholder = PropTypes.oneOfType([
@@ -21,7 +21,7 @@ export default class AbstractSearchFilter extends AbstractListFilter {
 
   /**
    * Get default props. Extends the default props
-   * from {@link AbstractListFilter.defaultProps}.
+   * from {@link AbstractFilter.defaultProps}.
    *
    * @return {Object}
    * @property {[string]|string} placeholder A placeholder string,

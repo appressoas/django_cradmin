@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractListFilter from './AbstractListFilter'
+import AbstractFilter from './AbstractFilter'
 
 /**
  * Checkbox filter that toggles a boolean.
@@ -27,7 +27,7 @@ import AbstractListFilter from './AbstractListFilter'
  *    }
  * }
  */
-export default class CheckboxBooleanFilter extends AbstractListFilter {
+export default class CheckboxBooleanFilter extends AbstractFilter {
   static get propTypes () {
     const propTypes = super.propTypes
     propTypes.label = PropTypes.string.isRequired
@@ -37,7 +37,7 @@ export default class CheckboxBooleanFilter extends AbstractListFilter {
 
   /**
    * Get default props. Extends the default props
-   * from {@link AbstractListFilter.defaultProps}.
+   * from {@link AbstractFilter.defaultProps}.
    *
    * @return {Object}
    * @property {string} label The label of the checkbox.

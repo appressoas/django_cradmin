@@ -78,7 +78,7 @@ export default class AbstractFilterListChild extends React.Component {
   /**
    * Setup bound methods.
    *
-   * Binds {@link AbstractListFilter#onFocus} and {@link AbstractListFilter#onBlur}
+   * Binds {@link AbstractFilter#onFocus} and {@link AbstractFilter#onBlur}
    * to ``this` by default, but you can override this
    * method to bind more methods. In that case, ensure
    * you call `super.setupBoundMethods()`!

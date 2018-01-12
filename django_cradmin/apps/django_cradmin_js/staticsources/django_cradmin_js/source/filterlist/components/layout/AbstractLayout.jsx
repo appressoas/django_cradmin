@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import AbstractFilterListChild from '../AbstractFilterListChild'
 import LoadingIndicator from '../../../components/LoadingIndicator'
-import AbstractListFilter from '../filters/AbstractListFilter'
+import AbstractFilter from '../filters/AbstractFilter'
 import AbstractList from '../lists/AbstractList'
 import AbstractPaginator from '../paginators/AbstractPaginator'
 
@@ -45,7 +45,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
   /**
    * Used by {@link AbstractLayout#shouldRenderComponent} when
    * the provided componentSpec.componentClass is a subclass
-   * of {@link AbstractListFilter}.
+   * of {@link AbstractFilter}.
    *
    * By default this returns `true`.
    *
@@ -105,7 +105,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
     if (!this.props.childExposedApi.componentGroupsIsEnabled(componentProps.componentGroups)) {
       return false
     }
-    if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
+    if (componentSpec.componentClass.prototype instanceof AbstractFilter) {
       return this.shouldRenderFilterComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
       return this.shouldRenderListComponent(componentSpec)
@@ -148,7 +148,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
 
   getComponentProps (componentSpec) {
     let extraProps = {}
-    if (componentSpec.componentClass.prototype instanceof AbstractListFilter) {
+    if (componentSpec.componentClass.prototype instanceof AbstractFilter) {
       extraProps = this.getFilterComponentProps(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
       extraProps = this.getListComponentProps(componentSpec)

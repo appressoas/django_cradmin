@@ -72,7 +72,7 @@ export default class FilterListRegistrySingleton {
    * Register a list component class in the registry.
    *
    * @param {string} alias The alias for the list class.
-   * @param {AbstractListFilter} listComponent The item class.
+   * @param {AbstractFilter} listComponent The item class.
    */
   registerListComponent (alias, listComponent) {
     this._listComponentMap.set(alias, listComponent)
@@ -98,7 +98,7 @@ export default class FilterListRegistrySingleton {
    * @param {string} alias The alias for the filter class.
    *    Makes it possible to use a JSON serializable object
    *    to define this filter for a list.
-   * @param {AbstractListFilter} filterComponent The filter class.
+   * @param {AbstractFilter} filterComponent The filter class.
    */
   registerFilterComponent (alias, filterComponent) {
     this._filterComponentMap.set(alias, filterComponent)
@@ -124,7 +124,7 @@ export default class FilterListRegistrySingleton {
    * @param {string} alias The alias for the item class.
    *    Makes it possible to use a JSON serializable object
    *    to define this item for a list.
-   * @param {AbstractListFilter} itemComponent The item class.
+   * @param {AbstractFilter} itemComponent The item class.
    */
   registerItemComponent (alias, itemComponent) {
     this._itemComponentMap.set(alias, itemComponent)

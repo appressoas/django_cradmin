@@ -5,10 +5,10 @@ import AbstractFilterListChild from '../AbstractFilterListChild'
 /**
  * Base class for filter components.
  *
- * See {@link AbstractListFilter.defaultProps} for documentation for
+ * See {@link AbstractFilter.defaultProps} for documentation for
  * props and their defaults.
  */
-export default class AbstractListFilter extends AbstractFilterListChild {
+export default class AbstractFilter extends AbstractFilterListChild {
   static get propTypes () {
     return Object.assign(super.propTypes, {
       name: PropTypes.string.isRequired,
@@ -61,7 +61,7 @@ export default class AbstractListFilter extends AbstractFilterListChild {
    * Non-trivial filters will need to override this.
    *
    * @param httpRequest The HTTP request.
-   *    An object of the class returned by {@link AbstractListFilter#getHttpRequestClass}
+   *    An object of the class returned by {@link AbstractFilter#getHttpRequestClass}
    * @param name The name of the filter. Will be the same as
    *    `props.name`.
    * @param value The current value of the filter.
@@ -91,7 +91,7 @@ export default class AbstractListFilter extends AbstractFilterListChild {
    * Setup bound methods.
    *
    * Calls {@link AbstractFilterListChild#setupBoundMethods}, and
-   * binds {@link AbstractListFilter#setFilterValue}
+   * binds {@link AbstractFilter#setFilterValue}
    * to ``this` by default, but you can override this
    * method to bind more methods. In that case, ensure
    * you call `super.setupBoundMethods()`!
@@ -105,7 +105,7 @@ export default class AbstractListFilter extends AbstractFilterListChild {
    * Set the value of the filter.
    *
    * If you set complex objects as value (array, object, map, set, ...),
-   * you will need to override {@link AbstractListFilter#filterHttpRequest}.
+   * you will need to override {@link AbstractFilter#filterHttpRequest}.
    *
    * @param value The value to set.
    */

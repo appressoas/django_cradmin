@@ -668,11 +668,11 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Filter a list items HTTP request.
    *
-   * Calls {@link AbstractListFilter#filterHttpRequest}
+   * Calls {@link AbstractFilter#filterHttpRequest}
    * on all filters.
    *
    * @param httpRequest The HTTP request.
-   *    An object of the class returned by {@link AbstractListFilter#getHttpRequestClass}
+   *    An object of the class returned by {@link AbstractFilter#getHttpRequestClass}
    */
   filterListItemsHttpRequest (httpRequest) {
     for (let filterSpec of this.state.componentCache.filterMap.values()) {
@@ -712,10 +712,10 @@ export default class AbstractFilterList extends React.Component {
    *
    * @param {{}} paginationOptions Paginator options.
    * @param {bool} filter Should we filter the HTTP request using
-   *    {@link AbstractListFilter#filterListItemsHttpRequest}?
+   *    {@link AbstractFilter#filterListItemsHttpRequest}?
    *    Defaults to `true`.
    * @returns {*} HTTP request object. An instance of the
-   *    class returned by {@link AbstractListFilter#getHttpRequestClass}.
+   *    class returned by {@link AbstractFilter#getHttpRequestClass}.
    */
   makeListItemsHttpRequest (paginationOptions, filter = true) {
     const HttpRequestClass = this.getHttpRequestClass()
@@ -742,12 +742,12 @@ export default class AbstractFilterList extends React.Component {
    * load items from API http request.
    *
    * You normally want to override
-   * {@link AbstractListFilter#getLoadItemsFromApiErrorMessage}
+   * {@link AbstractFilter#getLoadItemsFromApiErrorMessage}
    * instead of this method unless you are changing the error handling
    * completely.
    *
    * If you override this, you will need to also
-   * override {@link AbstractListFilter#clearLoadItemsFromApiErrorMessage}.
+   * override {@link AbstractFilter#clearLoadItemsFromApiErrorMessage}.
    *
    * @param {Error} errorObject
    */
@@ -759,7 +759,7 @@ export default class AbstractFilterList extends React.Component {
 
   /**
    * Clear the error messages set by
-   * {@link AbstractListFilter#setLoadItemsFromApiErrorMessage}.
+   * {@link AbstractFilter#setLoadItemsFromApiErrorMessage}.
    */
   clearLoadItemsFromApiErrorMessage () {
     if (this.state.loadItemsFromApiError !== null) {
@@ -773,7 +773,7 @@ export default class AbstractFilterList extends React.Component {
    * Handle a failed load items from API http request.
    *
    * You normally want to override
-   * {@link AbstractListFilter#getLoadItemsFromApiErrorMessage}
+   * {@link AbstractFilter#getLoadItemsFromApiErrorMessage}
    * instead of this method unless you are changing the error handling
    * completely.
    *

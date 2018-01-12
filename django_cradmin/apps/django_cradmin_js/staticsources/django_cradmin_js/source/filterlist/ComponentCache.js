@@ -1,4 +1,4 @@
-import AbstractListFilter from './components/filters/AbstractListFilter'
+import AbstractFilter from './components/filters/AbstractFilter'
 import AbstractPaginator from './components/paginators/AbstractPaginator'
 import AbstractList from './components/lists/AbstractList'
 import FilterListRegistrySingleton from './FilterListRegistry'
@@ -285,7 +285,7 @@ export class ComponentCache {
   }
 
   getComponentSpecClass (componentClass) {
-    if (componentClass.prototype instanceof AbstractListFilter) {
+    if (componentClass.prototype instanceof AbstractFilter) {
       return FilterComponentSpec
     } else if (componentClass.prototype instanceof AbstractList) {
       return ListComponentSpec
@@ -298,7 +298,7 @@ export class ComponentCache {
     } else {
       throw new Error(
         `Invalid component: "${componentClass.name}". ` +
-        `Must be a subclass of AbstractListFilter, AbstractList ` +
+        `Must be a subclass of AbstractFilter, AbstractList ` +
         `or AbstractPaginator.`)
     }
   }
