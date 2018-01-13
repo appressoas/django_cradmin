@@ -10,6 +10,18 @@
     }
 }
 
+@mixin max-width($name) {
+    @if not map-has-key($breakpoints, $name) {
+        @media (max-width: $name) {
+            @content;
+        }
+    } @else {
+        @media (max-width: (map-get($breakpoints, $name) - 1px)) {
+            @content;
+        }
+    }
+}
+
 // Defining colors as a map
 // retrieve color from $colors map ie. `color(primary, base)`
 @function color($color-name, $color-variant: 'base') {
