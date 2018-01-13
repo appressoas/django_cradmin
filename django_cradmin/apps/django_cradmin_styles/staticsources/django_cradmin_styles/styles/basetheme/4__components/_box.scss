@@ -137,6 +137,22 @@ Example: {type: isolated} --xlarge
         Medicinas cantare in piscinam!
     </div>
 
+Example: {type: isolated} Compine with containers
+    <div class="box box--warning box--spacing-none-sides">
+        <div class="container">
+            Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+    </div>
+
+Example: {type: isolated} Compine with containers - --spacing-large
+    <div class="box box--warning box--spacing-none-sides box--spacing-large">
+        <div class="container">
+            Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+    </div>
+
 Styleguide components.box.2:spacing
 */
 .box {
@@ -148,6 +164,11 @@ Styleguide components.box.2:spacing
     @include box--spacing(small, ($spacing--small / 2), $spacing--small);
     @include box--spacing(large, $spacing, $spacing--large);
     @include box--spacing(xlarge, $spacing--large, $spacing--xlarge);
+
+    &--spacing-none-sides {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
     @include box--color(focus, $color-light);
     @include box--color(neutral-xlight, color(neutral, xlight));
