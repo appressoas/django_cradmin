@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import AbstractSearchInputFilter from './AbstractSearchInputFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import { COMPONENT_GROUP_EXPANDABLE } from '../../filterListConstants'
-import BemUtilities from '../../../utilities/BemUtilities'
 import SearchInputExpandCollapseButton from './components/SearchInputExpandCollapseButton'
 
 /**
@@ -151,37 +149,8 @@ export default class DropDownSearchFilter extends AbstractSearchInputFilter {
 
   renderButtons () {
     return [
-      // this.renderClearButton(),
+      this.renderClearButton(),
       this.renderExpandCollapseButton()
     ]
   }
-
-  // renderSearchInput () {
-  //   return <input
-  //     type='text'
-  //     key='input'
-  //     ref={(input) => { this._searchInputRef = input }}
-  //     placeholder={this.placeholder}
-  //     className={this.searchInputClassName}
-  //     value={this.stringValue}
-  //     onFocus={this.onFocus}
-  //     onBlur={this.onBlur}
-  //     onChange={this.onChange} />
-  // }
-  //
-  // renderBodyContent () {
-  //   return this.renderSearchInput()
-  // }
-  //
-  // render () {
-  //   return <label className={this.labelClassName}>
-  //     {this.renderLabelText()}
-  //     <div className={this.fieldWrapperClassName}>
-  //       <span className={this.bodyClassName}>
-  //         {this.renderBodyContent()}
-  //       </span>
-  //       {this.renderButtons()}
-  //     </div>
-  //   </label>
-  // }
 }

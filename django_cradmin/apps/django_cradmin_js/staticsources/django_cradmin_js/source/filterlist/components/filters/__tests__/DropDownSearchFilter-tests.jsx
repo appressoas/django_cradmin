@@ -1,8 +1,8 @@
 /* eslint-env jest */
-import {mount, shallow} from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import { renderFilter } from '../testHelpers'
 import DropDownSearchFilter from '../DropDownSearchFilter'
-import {ChildExposedApiMock} from '../../filterlists/testHelpers'
+import { ChildExposedApiMock } from '../../filterlists/testHelpers'
 import { COMPONENT_GROUP_EXPANDABLE } from '../../../filterListConstants'
 
 function makeChildExposedApi (isExpanded = false) {
@@ -23,12 +23,12 @@ describe('DropDownSearchFilter', () => {
     jest.useFakeTimers()
   })
 
-  const getExpandCollapseButtonComponent = (component) => {
-    return component.find('SearchInputExpandCollapseButton')
+  const getClearButtonComponent = (component) => {
+    return component.find('button').at(0)
   }
 
-  const getExpandCollapseButtonIconComponent = (component) => {
-    return component.find('SearchInputExpandCollapseButton span')
+  const getExpandCollapseButtonComponent = (component) => {
+    return component.find('button').at(1)
   }
 
   const getSearchInputComponent = (component) => {
@@ -71,9 +71,15 @@ describe('DropDownSearchFilter', () => {
       'searchinput searchinput--stuff searchinput--things')
   })
 
-  test('expandCollapseButton is rendered', () => {
-    const component = shallow(render())
-    expect(getExpandCollapseButtonComponent(component).exists()).toBe(true)
+  test('clearButton click clears filter value', () => {
+    const childExposedApi = makeChildExposedApi(false)
+    const component = mount(render({
+      name: 'search',
+      value: 'Test',
+      childExposedApi: childExposedApi
+    }))
+    getClearButtonComponent(component).simulate('click')
+    expect(childExposedApi.setFilterValue).toBeCalledWith('search', '')
   })
 
   test('expandCollapseButton icon not expanded', () => {
@@ -81,7 +87,7 @@ describe('DropDownSearchFilter', () => {
     const component = mount(render({
       childExposedApi: childExposedApi
     }))
-    expect(getExpandCollapseButtonIconComponent(component).prop('className')).toEqual(
+    expect(getExpandCollapseButtonComponent(component).find('span').prop('className')).toEqual(
       'searchinput__buttonicon icon-chevron-down')
   })
 
@@ -90,7 +96,7 @@ describe('DropDownSearchFilter', () => {
     const component = mount(render({
       childExposedApi: childExposedApi
     }))
-    expect(getExpandCollapseButtonIconComponent(component).prop('className')).toEqual(
+    expect(getExpandCollapseButtonComponent(component).find('span').prop('className')).toEqual(
       'searchinput__buttonicon icon-chevron-up')
   })
 

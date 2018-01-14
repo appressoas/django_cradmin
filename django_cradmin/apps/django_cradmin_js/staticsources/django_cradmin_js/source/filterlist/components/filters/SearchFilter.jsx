@@ -1,9 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import AbstractSearchInputFilter from './AbstractSearchInputFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
-import BemUtilities from '../../../utilities/BemUtilities'
-import SearchInputClearButton from './components/SearchInputClearButton'
 
 /**
  * Search input filter.
