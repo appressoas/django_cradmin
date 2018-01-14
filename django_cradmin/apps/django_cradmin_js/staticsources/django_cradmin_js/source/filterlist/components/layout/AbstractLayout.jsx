@@ -137,10 +137,14 @@ export default class AbstractLayout extends AbstractFilterListChild {
   }
 
   getFilterComponentProps (componentSpec) {
-    return {
+    const props = {
       value: this.props.childExposedApi.getFilterValue(componentSpec.props.name),
       enabledComponentGroups: this.props.enabledComponentGroups
     }
+    if (componentSpec.componentClass.shouldReceiveSelectedItems(componentSpec)) {
+      props.selectedListItemsMap = this.props.selectedListItemsMap
+    }
+    return props
   }
 
   getListComponentProps (componentSpec) {

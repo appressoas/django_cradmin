@@ -4,6 +4,7 @@ import AbstractSearchFilter from './AbstractSearchFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import { COMPONENT_GROUP_EXPANDABLE } from '../../filterListConstants'
 import BemUtilities from '../../../utilities/BemUtilities'
+import SearchInputExpandCollapseButton from './components/SearchInputExpandCollapseButton'
 
 /**
  * Dropdown search input filter.
@@ -77,7 +78,7 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
   static get propTypes () {
     const propTypes = super.propTypes
     propTypes.label = PropTypes.string
-    propTypes.inputBemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
+    propTypes.fieldWrapperBemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
     return propTypes
   }
 
@@ -89,15 +90,15 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
    * @property {string} label An optional label for the search field.
    *    Defaults to empty string.
    *    **Can be used in spec**.
-   * @property {[string]} inputBemVariants Array of BEM variants
-   *    for the search input element.
+   * @property {[string]} fieldWrapperBemVariants Array of BEM variants
+   *    for the field wrapper element.
    *    Defaults to `['outlined']`.
    *    **Can be used in spec**.
    */
   static get defaultProps () {
     const defaultProps = super.defaultProps
     defaultProps.label = null
-    defaultProps.inputBemVariants = ['outlined']
+    defaultProps.fieldWrapperBemVariants = ['outlined']
     return defaultProps
   }
 
@@ -164,62 +165,48 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
     return this._searchInputRef
   }
 
-  renderLabel () {
-    return this.props.label
+  get labelTextClassName () {
+    if (process.env.NODE_ENV === 'test') {
+      return 'test-label-text'
+    }
+    return null
   }
 
   get labelClassName () {
     return 'label'
   }
 
+  get bodyClassName () {
+    return 'searchinput__body'
+  }
+
   get fieldWrapperClassName () {
-    return 'searchinput'
+    return BemUtilities.addVariants('searchinput', this.props.fieldWrapperBemVariants)
   }
 
   get searchInputClassName () {
-    return `searchinput__input ${BemUtilities.addVariants('input', this.props.inputBemVariants)}`
+    return 'searchinput__input'
   }
 
-  get expandCollapseButtonLabel () {
-    if (this.isExpanded()) {
-      return window.gettext('Collapse')
-    } else {
-      return window.gettext('Expand')
+  renderLabelText () {
+    if (this.props.label) {
+      return <span className={this.labelTextClassName}>{this.props.label}</span>
     }
-  }
-
-  get expandCollapseButtonClassName () {
-    return 'searchinput__button'
-  }
-
-  get expandCollapseButtonIconClassName () {
-    if (this.isExpanded()) {
-      return 'icon-chevron-up'
-    } else {
-      return 'icon-chevron-down'
-    }
-  }
-
-  renderExpandCollapseIcon () {
-    return <span className={this.expandCollapseButtonIconClassName} aria-hidden='true' />
+    return null
   }
 
   renderExpandCollapseButton () {
-    return <button
-      type='button'
-      className={this.expandCollapseButtonClassName}
-      title={this.expandCollapseButtonLabel}
+    return <SearchInputExpandCollapseButton
       onClick={this.onClickExpandCollapseButton}
       onFocus={this.onFocus}
       onBlur={this.onBlur}
-    >
-      {this.renderExpandCollapseIcon()}
-    </button>
+      isExpanded={this.isExpanded()} />
   }
 
   renderSearchInput () {
     return <input
       type='text'
+      key='input'
       ref={(input) => { this._searchInputRef = input }}
       placeholder={this.placeholder}
       className={this.searchInputClassName}
@@ -229,11 +216,17 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
       onChange={this.onChange} />
   }
 
+  renderBodyContent () {
+    return this.renderSearchInput()
+  }
+
   render () {
     return <label className={this.labelClassName}>
-      {this.renderLabel()}
+      {this.renderLabelText()}
       <div className={this.fieldWrapperClassName}>
-        {this.renderSearchInput()}
+        <span className={this.bodyClassName}>
+          {this.renderBodyContent()}
+        </span>
         {this.renderExpandCollapseButton()}
       </div>
     </label>

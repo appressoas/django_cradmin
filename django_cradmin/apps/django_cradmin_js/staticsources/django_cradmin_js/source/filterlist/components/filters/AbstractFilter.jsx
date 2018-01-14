@@ -57,6 +57,24 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
     httpRequest.urlParser.queryString.set(name, value)
   }
 
+  /**
+   * Should the filter receive selected items?
+   *
+   * If this returns ``true``, the component will receive
+   * ``selectedListItemsMap`` as a prop. This also means
+   * that the filter will re-render when selected items
+   * change.
+   *
+   * ``selectedListItemsMap`` is a Map of selected items
+   * that maps ID to item data.
+   *
+   * @param {FilterComponentSpec} componentSpec The component spec.
+   * @returns {boolean}
+   */
+  static shouldReceiveSelectedItems (componentSpec) {
+    return false
+  }
+
   constructor (props) {
     super(props)
     this.state = this.getInitialState()

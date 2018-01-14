@@ -3,6 +3,7 @@ import {mount, shallow} from 'enzyme'
 import { renderFilter } from '../testHelpers'
 import SearchFilter from '../SearchFilter'
 import {ChildExposedApiMock} from '../../filterlists/testHelpers'
+import SearchInputClearButton from '../components/SearchInputClearButton'
 
 function render (props = {}) {
   return renderFilter(SearchFilter, props)
@@ -14,11 +15,15 @@ describe('SearchFilter', () => {
   })
 
   const getClearButtonComponent = (component) => {
-    return component.find('button')
+    return component.find(SearchInputClearButton)
   }
 
   const getSearchInputComponent = (component) => {
     return component.find('input')
+  }
+
+  const getFieldWrapperComponent = (component) => {
+    return component.find('.searchinput')
   }
 
   test('label className', () => {
@@ -28,29 +33,34 @@ describe('SearchFilter', () => {
 
   test('no label prop', () => {
     const component = shallow(render())
-    expect(component.text()).toEqual('')
+    expect(component.find('.test-label-text').exists()).toBe(false)
   })
 
   test('has label prop', () => {
     const component = shallow(render({
       label: 'Test label'
     }))
-    expect(component.text()).toEqual('Test label')
+    expect(component.find('.test-label-text').exists()).toBe(true)
+    expect(component.find('.test-label-text').text()).toEqual('Test label')
+  })
+
+  test('fieldWrapper className default', () => {
+    const component = shallow(render())
+    expect(getFieldWrapperComponent(component).prop('className')).toEqual(
+      'searchinput searchinput--outlined')
+  })
+
+  test('fieldWrapper className custom fieldWrapperBemVariants', () => {
+    const component = shallow(render({
+      fieldWrapperBemVariants: ['stuff', 'things']
+    }))
+    expect(getFieldWrapperComponent(component).prop('className')).toEqual(
+      'searchinput searchinput--stuff searchinput--things')
   })
 
   test('clearButton is rendered', () => {
     const component = shallow(render())
     expect(getClearButtonComponent(component).exists()).toBe(true)
-  })
-
-  test('clearButton title', () => {
-    const component = shallow(render())
-    expect(getClearButtonComponent(component).prop('title')).toEqual('Clear search field')
-  })
-
-  test('clearButton type', () => {
-    const component = shallow(render())
-    expect(getClearButtonComponent(component).prop('type')).toEqual('button')
   })
 
   test('clearButton click clears filter value', () => {
@@ -72,15 +82,7 @@ describe('SearchFilter', () => {
   test('searchInput className', () => {
     const component = shallow(render())
     expect(getSearchInputComponent(component).prop('className')).toEqual(
-      'searchinput__input input input--outlined')
-  })
-
-  test('searchInput className custom inputBemVariants', () => {
-    const component = shallow(render({
-      inputBemVariants: ['stuff', 'things']
-    }))
-    expect(getSearchInputComponent(component).prop('className')).toEqual(
-      'searchinput__input input input--stuff input--things')
+      'searchinput__input')
   })
 
   test('searchInput default value', () => {

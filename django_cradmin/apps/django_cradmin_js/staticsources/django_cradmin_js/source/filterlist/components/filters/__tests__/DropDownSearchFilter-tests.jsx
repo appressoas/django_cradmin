@@ -5,8 +5,17 @@ import DropDownSearchFilter from '../DropDownSearchFilter'
 import {ChildExposedApiMock} from '../../filterlists/testHelpers'
 import { COMPONENT_GROUP_EXPANDABLE } from '../../../filterListConstants'
 
+function makeChildExposedApi (isExpanded = false) {
+  const childExposedApi = new ChildExposedApiMock()
+  childExposedApi.componentGroupIsEnabled.mockReturnValue(isExpanded)
+  return childExposedApi
+}
+
 function render (props = {}) {
-  return renderFilter(DropDownSearchFilter, props)
+  const fullProps = Object.assign({
+    childExposedApi: makeChildExposedApi()
+  }, props)
+  return renderFilter(DropDownSearchFilter, fullProps)
 }
 
 describe('DropDownSearchFilter', () => {
@@ -15,15 +24,19 @@ describe('DropDownSearchFilter', () => {
   })
 
   const getExpandCollapseButtonComponent = (component) => {
-    return component.find('button')
+    return component.find('SearchInputExpandCollapseButton')
   }
 
   const getExpandCollapseButtonIconComponent = (component) => {
-    return component.find('button span')
+    return component.find('SearchInputExpandCollapseButton span')
   }
 
   const getSearchInputComponent = (component) => {
     return component.find('input')
+  }
+
+  const getFieldWrapperComponent = (component) => {
+    return component.find('.searchinput')
   }
 
   test('label className', () => {
@@ -33,14 +46,29 @@ describe('DropDownSearchFilter', () => {
 
   test('no label prop', () => {
     const component = shallow(render())
-    expect(component.text()).toEqual('')
+    expect(component.find('.test-label-text').exists()).toBe(false)
   })
 
   test('has label prop', () => {
     const component = shallow(render({
       label: 'Test label'
     }))
-    expect(component.text()).toEqual('Test label')
+    expect(component.find('.test-label-text').exists()).toBe(true)
+    expect(component.find('.test-label-text').text()).toEqual('Test label')
+  })
+
+  test('fieldWrapper className default', () => {
+    const component = shallow(render())
+    expect(getFieldWrapperComponent(component).prop('className')).toEqual(
+      'searchinput searchinput--outlined')
+  })
+
+  test('fieldWrapper className custom fieldWrapperBemVariants', () => {
+    const component = shallow(render({
+      fieldWrapperBemVariants: ['stuff', 'things']
+    }))
+    expect(getFieldWrapperComponent(component).prop('className')).toEqual(
+      'searchinput searchinput--stuff searchinput--things')
   })
 
   test('expandCollapseButton is rendered', () => {
@@ -48,20 +76,8 @@ describe('DropDownSearchFilter', () => {
     expect(getExpandCollapseButtonComponent(component).exists()).toBe(true)
   })
 
-  test('expandCollapseButton title', () => {
-    const component = shallow(render())
-    expect(getExpandCollapseButtonComponent(component).prop('title')).toEqual(
-      'Expand')
-  })
-
-  test('expandCollapseButton type', () => {
-    const component = shallow(render())
-    expect(getExpandCollapseButtonComponent(component).prop('type')).toEqual('button')
-  })
-
   test('expandCollapseButton icon not expanded', () => {
-    const childExposedApi = new ChildExposedApiMock(true)
-    childExposedApi.componentGroupIsEnabled.mockReturnValue(false)
+    const childExposedApi = makeChildExposedApi(false)
     const component = mount(render({
       childExposedApi: childExposedApi
     }))
@@ -70,8 +86,7 @@ describe('DropDownSearchFilter', () => {
   })
 
   test('expandCollapseButton icon expanded', () => {
-    const childExposedApi = new ChildExposedApiMock(true)
-    childExposedApi.componentGroupIsEnabled.mockReturnValue(true)
+    const childExposedApi = makeChildExposedApi(true)
     const component = mount(render({
       childExposedApi: childExposedApi
     }))
@@ -80,8 +95,7 @@ describe('DropDownSearchFilter', () => {
   })
 
   test('expandCollapseButton click toggles "expandable" componentGroup', () => {
-    const childExposedApi = new ChildExposedApiMock(true)
-    childExposedApi.componentGroupIsEnabled.mockReturnValue(true)
+    const childExposedApi = makeChildExposedApi(true)
     const component = mount(render({
       childExposedApi: childExposedApi
     }))
@@ -98,15 +112,7 @@ describe('DropDownSearchFilter', () => {
   test('searchInput className', () => {
     const component = shallow(render())
     expect(getSearchInputComponent(component).prop('className')).toEqual(
-      'searchinput__input input input--outlined')
-  })
-
-  test('searchInput className custom inputBemVariants', () => {
-    const component = shallow(render({
-      inputBemVariants: ['stuff', 'things']
-    }))
-    expect(getSearchInputComponent(component).prop('className')).toEqual(
-      'searchinput__input input input--stuff input--things')
+      'searchinput__input')
   })
 
   test('searchInput default value', () => {
@@ -123,7 +129,7 @@ describe('DropDownSearchFilter', () => {
   })
 
   test('searchInput change event calls API', () => {
-    const childExposedApi = new ChildExposedApiMock(true)
+    const childExposedApi = makeChildExposedApi()
     const component = mount(render({
       name: 'search',
       childExposedApi: childExposedApi
@@ -135,7 +141,7 @@ describe('DropDownSearchFilter', () => {
   })
 
   test('searchInput change event empty value calls API', () => {
-    const childExposedApi = new ChildExposedApiMock(true)
+    const childExposedApi = makeChildExposedApi()
     const component = mount(render({
       name: 'search',
       childExposedApi: childExposedApi
@@ -147,7 +153,7 @@ describe('DropDownSearchFilter', () => {
   })
 
   test('searchInput focus expands "expandable" componentGroup', () => {
-    const childExposedApi = new ChildExposedApiMock(true)
+    const childExposedApi = makeChildExposedApi()
     const component = mount(render({
       name: 'search',
       childExposedApi: childExposedApi

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import AbstractSearchFilter from './AbstractSearchFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import BemUtilities from '../../../utilities/BemUtilities'
+import SearchInputClearButton from './components/SearchInputClearButton'
 
 /**
  * Search input filter.
@@ -41,7 +42,7 @@ export default class SearchFilter extends AbstractSearchFilter {
   static get propTypes () {
     const propTypes = super.propTypes
     propTypes.label = PropTypes.string
-    propTypes.inputBemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
+    propTypes.fieldWrapperBemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
     return propTypes
   }
 
@@ -53,15 +54,15 @@ export default class SearchFilter extends AbstractSearchFilter {
    * @property {string} label An optional label for the search field.
    *    Defaults to empty string.
    *    **Can be used in spec**.
-   * @property {[string]} inputBemVariants Array of BEM variants
-   *    for the search input element.
+   * @property {[string]} fieldWrapperBemVariants Array of BEM variants
+   *    for the field wrapper element.
    *    Defaults to `['outlined']`.
    *    **Can be used in spec**.
    */
   static get defaultProps () {
     const defaultProps = super.defaultProps
     defaultProps.label = null
-    defaultProps.inputBemVariants = ['outlined']
+    defaultProps.fieldWrapperBemVariants = ['outlined']
     return defaultProps
   }
 
@@ -69,48 +70,41 @@ export default class SearchFilter extends AbstractSearchFilter {
     return this._searchInputRef
   }
 
-  renderLabel () {
-    return this.props.label;
-  }
-
   get labelClassName () {
     return 'label'
   }
 
   get fieldWrapperClassName () {
-    return 'searchinput'
+    return BemUtilities.addVariants('searchinput', this.props.fieldWrapperBemVariants)
   }
 
-  get searchInputClassName () {
-    return `searchinput__input ${BemUtilities.addVariants('input', this.props.inputBemVariants)}`
+  get bodyClassName () {
+    return 'searchinput__body'
   }
 
-  get buttonTitle () {
-    return window.gettext('Clear search field')
+  get inputClassName () {
+    return 'searchinput__input'
   }
 
-  get clearButtonClassName () {
-    return 'searchinput__button'
+  get labelTextClassName () {
+    if (process.env.NODE_ENV === 'test') {
+      return 'test-label-text'
+    }
+    return null
   }
 
-  get clearButtonIconClassName () {
-    return 'icon-close'
+  renderLabelText () {
+    if (this.props.label) {
+      return <span className={this.labelTextClassName}>{this.props.label}</span>
+    }
+    return null
   }
 
-  renderbuttonIcon () {
-    return <span className={this.clearButtonIconClassName} aria-hidden='true' />
-  }
-
-  renderbutton () {
-    return <button
-      type='button'
-      className={this.clearButtonClassName}
-      title={this.buttonTitle}
+  renderButton () {
+    return <SearchInputClearButton
       onClick={this.onClickbutton}
       onBlur={this.onBlur}
-      onFocus={this.onFocus}>
-      {this.renderbuttonIcon()}
-    </button>
+      onFocus={this.onFocus} />
   }
 
   renderSearchInput () {
@@ -118,19 +112,25 @@ export default class SearchFilter extends AbstractSearchFilter {
       type='text'
       ref={(input) => { this._searchInputRef = input }}
       placeholder={this.placeholder}
-      className={this.searchInputClassName}
+      className={this.inputClassName}
       value={this.stringValue}
       onChange={this.onChange}
       onBlur={this.onBlur}
       onFocus={this.onFocus} />
   }
 
+  renderBodyContent () {
+    return this.renderSearchInput()
+  }
+
   render () {
     return <label className={this.labelClassName}>
-      {this.renderLabel()}
+      {this.renderLabelText()}
       <div className={this.fieldWrapperClassName}>
-        {this.renderSearchInput()}
-        {this.renderbutton()}
+        <span className={this.bodyClassName}>
+          {this.renderBodyContent()}
+        </span>
+        {this.renderButton()}
       </div>
     </label>
   }
