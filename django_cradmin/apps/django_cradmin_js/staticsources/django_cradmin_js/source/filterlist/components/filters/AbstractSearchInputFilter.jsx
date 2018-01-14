@@ -7,10 +7,10 @@ import SearchInputClearButton from './components/SearchInputClearButton'
 /**
  * Abstract base class for filters.
  *
- * See {@link AbstractSearchFilter.defaultProps} for documentation for
+ * See {@link AbstractSearchInputFilter.defaultProps} for documentation for
  * props and their defaults.
  */
-export default class AbstractSearchFilter extends AbstractFilter {
+export default class AbstractSearchInputFilter extends AbstractFilter {
   static get propTypes () {
     return Object.assign({}, {
       label: PropTypes.string,

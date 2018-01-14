@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractSearchFilter from './AbstractSearchFilter'
+import AbstractSearchInputFilter from './AbstractSearchInputFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import BemUtilities from '../../../utilities/BemUtilities'
 import SearchInputClearButton from './components/SearchInputClearButton'
@@ -38,10 +38,10 @@ import SearchInputClearButton from './components/SearchInputClearButton'
  *    }
  * }
  */
-export default class SearchFilter extends AbstractSearchFilter {
+export default class SearchFilter extends AbstractSearchInputFilter {
   /**
    * Get default props. Same props as for
-   * {@link AbstractSearchFilter.defaultProps}.
+   * {@link AbstractSearchInputFilter.defaultProps}.
    *
    * @return {Object}
    */

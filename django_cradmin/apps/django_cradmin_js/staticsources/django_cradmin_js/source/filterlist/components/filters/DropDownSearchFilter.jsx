@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractSearchFilter from './AbstractSearchFilter'
+import AbstractSearchInputFilter from './AbstractSearchInputFilter'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import { COMPONENT_GROUP_EXPANDABLE } from '../../filterListConstants'
 import BemUtilities from '../../../utilities/BemUtilities'
@@ -74,10 +74,10 @@ import SearchInputExpandCollapseButton from './components/SearchInputExpandColla
  *   }
  * }
  */
-export default class DropDownSearchFilter extends AbstractSearchFilter {
+export default class DropDownSearchFilter extends AbstractSearchInputFilter {
   /**
    * Get default props. Same props as for
-   * {@link AbstractSearchFilter.defaultProps}.
+   * {@link AbstractSearchInputFilter.defaultProps}.
    *
    * @return {Object}
    */
