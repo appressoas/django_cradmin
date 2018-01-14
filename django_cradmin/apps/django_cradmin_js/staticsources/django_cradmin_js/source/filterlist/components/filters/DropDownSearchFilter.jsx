@@ -197,10 +197,17 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
 
   renderExpandCollapseButton () {
     return <SearchInputExpandCollapseButton
+      key={'expand-collapse-button'}
       onClick={this.onClickExpandCollapseButton}
       onFocus={this.onFocus}
       onBlur={this.onBlur}
       isExpanded={this.isExpanded()} />
+  }
+
+  renderButtons () {
+    return [
+      this.renderExpandCollapseButton()
+    ]
   }
 
   renderSearchInput () {
@@ -227,7 +234,7 @@ export default class DropDownSearchFilter extends AbstractSearchFilter {
         <span className={this.bodyClassName}>
           {this.renderBodyContent()}
         </span>
-        {this.renderExpandCollapseButton()}
+        {this.renderButtons()}
       </div>
     </label>
   }

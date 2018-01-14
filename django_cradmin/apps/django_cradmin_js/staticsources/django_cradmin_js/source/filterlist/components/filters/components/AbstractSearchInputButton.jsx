@@ -44,8 +44,12 @@ export default class AbstractSearchInputButton extends React.Component {
     throw new Error('label must be overridden in subclasses.')
   }
 
+  get fullIconClassName () {
+    return `searchinput__buttonicon ${this.iconClassName}`
+  }
+
   renderIcon () {
-    return <span className={this.iconClassName} aria-hidden='true' />
+    return <span className={this.fullIconClassName} aria-hidden='true' />
   }
 
   render () {

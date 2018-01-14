@@ -24,12 +24,12 @@ test('className', () => {
 
 test('icon className - not expanded', () => {
   const component = shallow(render({isExpanded: false}))
-  expect(getIconComponent(component).prop('className')).toBe('icon-chevron-down')
+  expect(getIconComponent(component).prop('className')).toBe('searchinput__buttonicon icon-chevron-down')
 })
 
 test('icon className - expanded', () => {
   const component = shallow(render({isExpanded: true}))
-  expect(getIconComponent(component).prop('className')).toBe('icon-chevron-up')
+  expect(getIconComponent(component).prop('className')).toBe('searchinput__buttonicon icon-chevron-up')
 })
 
 test('title - not expanded', () => {
