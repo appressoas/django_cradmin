@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractFilter from './AbstractFilter'
+import BemUtilities from '../../../utilities/BemUtilities'
+import SearchInputClearButton from './components/SearchInputClearButton'
 
 /**
  * Abstract base class for filters.
@@ -10,13 +12,15 @@ import AbstractFilter from './AbstractFilter'
  */
 export default class AbstractSearchFilter extends AbstractFilter {
   static get propTypes () {
-    const propTypes = super.propTypes
-    propTypes.placeholder = PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ])
-    propTypes.value = PropTypes.string
-    return propTypes
+    return Object.assign({}, {
+      label: PropTypes.string,
+      placeholder: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string)
+      ]),
+      fieldWrapperBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      value: PropTypes.string
+    })
   }
 
   /**
@@ -27,14 +31,23 @@ export default class AbstractSearchFilter extends AbstractFilter {
    * @property {[string]|string} placeholder A placeholder string,
    *    or an array of placeholder strings.
    *    **Can be used in spec**.
+   * @property {string} label An optional label for the search field.
+   *    Defaults to empty string.
+   *    **Can be used in spec**.
+   * @property {[string]} fieldWrapperBemVariants Array of BEM variants
+   *    for the field wrapper element.
+   *    Defaults to `['outlined']`.
+   *    **Can be used in spec**.
    * @property {string} value The value as a string.
    *    _Provided automatically by the parent component_.
    */
   static get defaultProps () {
-    const defaultProps = super.defaultProps
-    defaultProps.placeholder = ''
-    defaultProps.value = ''
-    return defaultProps
+    return Object.assign({}, super.defaultProps, {
+      placeholder: '',
+      label: null,
+      fieldWrapperBemVariants: ['outlined'],
+      value: ''
+    })
   }
 
   static filterHttpRequest (httpRequest, name, value) {
@@ -72,16 +85,12 @@ export default class AbstractSearchFilter extends AbstractFilter {
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onChange = this.onChange.bind(this)
-    this.onClickbutton = this.onClickbutton.bind(this)
+    this.onClickClearButton = this.onClickClearButton.bind(this)
     this.rotatePlaceholder = this.rotatePlaceholder.bind(this)
   }
 
   get stringValue () {
     return this.props.value || ''
-  }
-
-  getSearchInputRef () {
-    throw new Error('getSearchInputRef() must be implemented in subclasses')
   }
 
   //
@@ -150,8 +159,88 @@ export default class AbstractSearchFilter extends AbstractFilter {
     this.setFilterValue(searchString)
   }
 
-  onClickbutton () {
+  onClickClearButton () {
     this.setFilterValue('')
     this.getSearchInputRef().focus()
+  }
+
+  //
+  //
+  // Rendering
+  //
+  //
+
+  getSearchInputRef () {
+    return this._searchInputRef
+  }
+
+  get labelClassName () {
+    return 'label'
+  }
+
+  get fieldWrapperClassName () {
+    return BemUtilities.addVariants('searchinput', this.props.fieldWrapperBemVariants)
+  }
+
+  get bodyClassName () {
+    return 'searchinput__body'
+  }
+
+  get inputClassName () {
+    return 'searchinput__input'
+  }
+
+  get labelTextClassName () {
+    if (process.env.NODE_ENV === 'test') {
+      return 'test-label-text'
+    }
+    return null
+  }
+
+  renderLabelText () {
+    if (this.props.label) {
+      return <span className={this.labelTextClassName}>{this.props.label}</span>
+    }
+    return null
+  }
+
+  renderClearButton () {
+    return <SearchInputClearButton
+      key={'clear-button'}
+      onClick={this.onClickClearButton}
+      onBlur={this.onBlur}
+      onFocus={this.onFocus} />
+  }
+
+  renderButtons () {
+    throw new Error('renderButtons() must be overridden in subclasses')
+  }
+
+  renderSearchInput () {
+    return <input
+      type='text'
+      ref={(input) => { this._searchInputRef = input }}
+      placeholder={this.placeholder}
+      className={this.inputClassName}
+      value={this.stringValue}
+      onChange={this.onChange}
+      onBlur={this.onBlur}
+      onFocus={this.onFocus} />
+  }
+
+  renderBodyContent () {
+    return this.renderSearchInput()
+  }
+
+  render () {
+    return <label className={this.labelClassName}>
+      {this.renderLabelText()}
+      <div className={this.fieldWrapperClassName}>
+        <span className={this.bodyClassName}>
+          {this.renderBodyContent()}
+        </span>
+        {this.renderButtons()}
+      </div>
+    </label>
   }
 }
