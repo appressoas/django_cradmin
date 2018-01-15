@@ -431,6 +431,7 @@ Styleguide components.searchinput.colors
 
     &__input {
         min-width: 120px;
+        width: 120px; // Just the initial width for flex
         flex: 2 2 auto;
         outline: none;
         color: $color-text;

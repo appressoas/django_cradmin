@@ -26,7 +26,7 @@
         </div>
     </section>
     <section class="adminui-page-section">
-        <div class="container">
+        <div class="container container--wide">
             <h2>Custom items and filters</h2>
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
@@ -43,6 +43,7 @@
                         }, {
                           "component": "CheckboxBooleanFilter",
                           "props": {
+                            "location": "left",
                             "name": "is_godlike",
                             "label": "Is godlike?"
                           },
@@ -91,6 +92,7 @@
                           "component": "CheckboxBooleanFilter",
                           "props": {
                             "name": "is_godlike",
+                            "location": "top",
                             "label": "Is godlike?"
                           },
                           "initialValue": false
@@ -103,7 +105,10 @@
                             }
                           }
                         }, {
-                          "component": "LoadMorePaginator"
+                          "component": "LoadMorePaginator",
+                          "props": {
+                            "location": "bottom"
+                          }
                         }]
                      }]
                  }'>

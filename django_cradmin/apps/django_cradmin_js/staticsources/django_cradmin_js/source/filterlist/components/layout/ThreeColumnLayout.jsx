@@ -6,8 +6,25 @@ import {
   RENDER_LOCATION_TOP
 } from '../../filterListConstants'
 import AbstractLayout from './AbstractLayout'
+import BemUtilities from '../../../utilities/BemUtilities'
+import PropTypes from 'prop-types'
 
 export default class ThreeColumnLayout extends AbstractLayout {
+  static get propTypes () {
+    return Object.assign(super.propTypes, {
+      leftColumnBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
+    })
+  }
+
+  static get defaultProps () {
+    return Object.assign(super.defaultProps, {
+      leftColumnBemVariants: ['large'],
+      centerColumnBemVariants: [],
+      rightColumnBemVariants: ['small'],
+      topBarBemVariants: [],
+      bottomBarBemVariants: []
+    })
+  }
 
   //
   //
@@ -15,31 +32,35 @@ export default class ThreeColumnLayout extends AbstractLayout {
   //
   //
   get bemBlock () {
-    return 'threecolumn'
+    return 'columnlayout'
   }
 
   get className () {
-    return `${this.bemBlock}__header`
+    return this.bemBlock
   }
 
   get leftColumnClassName () {
-    return `${this.bemBlock}__leftcolumn`
+    return BemUtilities.buildBemElement(this.bemBlock, 'column', this.props.leftColumnBemVariants)
   }
 
   get centerColumnClassName () {
-    return `${this.bemBlock}__centercolumn`
+    return BemUtilities.buildBemElement(this.bemBlock, 'column', this.props.centerColumnBemVariants)
   }
 
   get rightColumnClassName () {
-    return `${this.bemBlock}__rightcolumn`
+    return BemUtilities.buildBemElement(this.bemBlock, 'column', this.props.rightColumnBemVariants)
+  }
+
+  get barBemBlock () {
+    return 'box'
   }
 
   get topBarClassName () {
-    return `${this.bemBlock}__topbar`
+    return BemUtilities.addVariants(this.barBemBlock, this.props.topBarBemVariants)
   }
 
   get bottomBarClassName () {
-    return `${this.bemBlock}__bottombar`
+    return BemUtilities.addVariants(this.barBemBlock, this.props.bottomBarBemVariants)
   }
 
   //
@@ -68,7 +89,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
 
   renderTopBar () {
     const content = this.renderTopBarContent()
-    if (content) {
+    if (content && content.length > 0) {
       return <div className={this.topBarClassName} key={'topBar'}>
         {content}
       </div>
@@ -82,7 +103,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
 
   renderBottomBar () {
     const content = this.renderBottomBarContent()
-    if (content) {
+    if (content && content.length > 0) {
       return <div className={this.bottomBarClassName} key={'bottomBar'}>
         {content}
       </div>
@@ -96,7 +117,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
 
   renderRightColumn () {
     const content = this.renderRightColumnContent()
-    if (content) {
+    if (content && content.length > 0) {
       return <div className={this.rightColumnClassName} key={'rightColumn'}>
         {content}
       </div>
@@ -118,9 +139,13 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   renderCenterColumn () {
-    return <div className={this.centerColumnClassName} key={'centerColumn'}>
-      {this.renderCenterColumnContent()}
-    </div>
+    const content = this.renderCenterColumnContent()
+    if (content && content.length > 0) {
+      return <div className={this.centerColumnClassName} key={'centerColumn'}>
+        {content}
+      </div>
+    }
+    return null
   }
 
   renderContent () {
@@ -132,7 +157,7 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   render () {
-    return <div className={this.props.bemBlock}>
+    return <div className={this.className}>
       {this.renderContent()}
     </div>
   }

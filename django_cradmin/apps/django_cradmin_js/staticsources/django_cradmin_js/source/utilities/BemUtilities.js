@@ -2,7 +2,6 @@
  * General purpose BEM css class utilities.
  */
 export default class BemUtilities {
-
   /**
    * Add variants to a BEM block or element.
    *
