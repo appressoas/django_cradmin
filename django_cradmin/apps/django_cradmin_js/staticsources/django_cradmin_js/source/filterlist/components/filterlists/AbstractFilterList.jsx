@@ -18,9 +18,7 @@ export default class AbstractFilterList extends React.Component {
       autoLoadFirstPage: PropTypes.bool.isRequired,
 
       getItemsApiUrl: PropTypes.string.isRequired,
-      getItemsApiIdsQueryStringArgument: PropTypes.string,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
-      submitSelectedItemsApiUrl: PropTypes.string,
 
       components: PropTypes.arrayOf(PropTypes.object).isRequired,
 
@@ -44,9 +42,7 @@ export default class AbstractFilterList extends React.Component {
       autoLoadFirstPage: true,
 
       getItemsApiUrl: null,
-      getItemsApiIdsQueryStringArgument: 'id', // TODO: Should be optional and default to null - get by ID if not provided
       updateSingleItemSortOrderApiUrl: null,
-      submitSelectedItemsApiUrl: null,  // TODO: Does this make sense? What if we have multiple actions?
       initiallySelectedItemIds: [],
       components: [{
         component: 'ThreeColumnLayout',
