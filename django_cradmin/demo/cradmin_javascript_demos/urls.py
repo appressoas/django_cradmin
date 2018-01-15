@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^$',
         views.Overview.as_view(),
         name="cradmin_javascript_demos_overview"),
+    url(r'^receive-post-data$',
+        views.ReceivePostDataView.as_view(),
+        name="cradmin_javascript_demos_receive_post_data"),
     url(r'^geolocation-demo$',
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/geolocation-demo.django.html'),

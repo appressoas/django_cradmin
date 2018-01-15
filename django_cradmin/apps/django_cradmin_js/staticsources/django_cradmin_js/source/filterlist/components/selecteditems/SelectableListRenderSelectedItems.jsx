@@ -19,7 +19,7 @@ import BemUtilities from '../../../utilities/BemUtilities'
  * {
  *    "component": "SelectableListRenderSelectedItems",
  *    "props": {
- *       "labelAttribute": 'name'
+ *       "itemLabelAttribute": 'name'
  *    }
  * }
  *
@@ -34,7 +34,8 @@ import BemUtilities from '../../../utilities/BemUtilities'
 export default class SelectableListRenderSelectedItems extends AbstractSelectedItems {
   static get propTypes () {
     return Object.assign({}, {
-      labelAttribute: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      itemLabelAttribute: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
     })
   }
@@ -44,7 +45,7 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
    * from {@link AbstractSelectedItems.defaultProps}.
    *
    * @return {Object}
-   * @property {string} labelAttribute The list item data attribute
+   * @property {string} itemLabelAttribute The list item data attribute
    *    to use as the label of selected items.
    *    This is required, and defaults to `title`.
    *    **Can be used in spec**.
@@ -53,7 +54,8 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
    */
   static get defaultProps () {
     return Object.assign({}, super.defaultProps, {
-      labelAttribute: 'title',
+      label: window.gettext('Selected items:'),
+      itemLabelAttribute: 'title',
       bemVariants: ['inline']
     })
   }
@@ -67,6 +69,10 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
     this.props.childExposedApi.deselectItem(listItemId)
   }
 
+  get wrapperClassName () {
+    return 'paragraph'
+  }
+
   get bemBlock () {
     return 'selectable-list'
   }
@@ -76,7 +82,7 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
   }
 
   get selectedItemClassName () {
-    return BemUtilities.buildBemElement(this.bemBlock, 'item')
+    return BemUtilities.buildBemElement(this.bemBlock, 'item', ['selected'])
   }
 
   get selectedItemContentClassName () {
@@ -92,7 +98,7 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
   }
 
   getSelectedItemLabel (listItemData) {
-    return listItemData[this.props.labelAttribute]
+    return listItemData[this.props.itemLabelAttribute]
   }
 
   renderSelectedItemIcon (listItemId, listItemData) {
@@ -134,12 +140,19 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
     return renderedHiddenFields
   }
 
+  renderLabel () {
+    return this.props.label
+  }
+
   render () {
     if (this.props.selectedListItemsMap.size === 0) {
       return null
     }
-    return <ul className={this.className}>
-      {this.renderSelectedItems()}
-    </ul>
+    return <div className={this.wrapperClassName}>
+      {this.renderLabel()}
+      <ul className={this.className}>
+        {this.renderSelectedItems()}
+      </ul>
+    </div>
   }
 }

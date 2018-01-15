@@ -121,42 +121,74 @@
     <section class="adminui-page-section">
         <div class="container">
             <h2>Selectable list</h2>
-            <div data-ievv-jsbase-widget="cradmin-filterlist"
-                 data-ievv-jsbase-widget-config='{
-                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
-                     "selectMode": "multi",
-                     "components": [{
-                        "component": "ThreeColumnLayout",
-                        "layout": [{
-                          "component": "SearchFilter",
-                          "props": {
-                            "name": "search",
-                            "placeholder": ["God", "Time", "wizard"]
-                          }
-                        }, {
-                          "component": "CheckboxBooleanFilter",
-                          "props": {
-                            "name": "is_godlike",
-                            "label": "Is godlike?"
-                          },
-                          "initialValue": false
-                        }, {
-                          "component": "SelectableList",
-                          "itemSpec": {
-                            "component": "SelectableTitleDescriptionItem"
-                          }
-                        }, {
-                          "component": "LoadMorePaginator"
-                        }, {
-                          "component": "HiddenFieldRenderSelectedItems",
-                          "props": {
-                             "name": "my_selected_items",
-                             "debug": false
-                          }
-                        }]
-                     }]
-                 }'>
-            </div>
+            <p>
+                Here we render selected items in the right column.
+                We also render the selected items as a hidden field,
+                and wraps the entire list in a form to facilitate
+                POSTing the selected items to a view.
+            </p>
+            <p>
+                If you need to handle initially selected items,
+                you just need to provide the <code>initiallySelectedItemIds</code>
+                config as shown commented out in the source for this django
+                template.
+            </p>
+            <p>
+                To debug the hidden fields for the selected items, you
+                just have to flip the <code>debug</code> boolean
+                prop for <code>HiddenFieldRenderSelectedItems</code>.
+            </p>
+            <form method="POST" action="{% url 'cradmin_javascript_demos_receive_post_data' %}?redirect_url={{ request.path }}">
+                {% csrf_token %}
+                <div data-ievv-jsbase-widget="cradmin-filterlist"
+                     data-ievv-jsbase-widget-config='{
+                         "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                         "selectMode": "multi",
+                         {#"initiallySelectedItemIds": [9, 12, 7, 13],#}
+                         "components": [{
+                            "component": "ThreeColumnLayout",
+                            "props": {
+                                "rightColumnBemVariants": ["xlarge"]
+                            },
+                            "layout": [{
+                              "component": "SearchFilter",
+                              "props": {
+                                "name": "search",
+                                "placeholder": ["God", "Time", "wizard"]
+                              }
+                            }, {
+                              "component": "CheckboxBooleanFilter",
+                              "props": {
+                                "name": "is_godlike",
+                                "label": "Is godlike?"
+                              },
+                              "initialValue": false
+                            }, {
+                              "component": "SelectableList",
+                              "itemSpec": {
+                                "component": "SelectableTitleDescriptionItem"
+                              }
+                            }, {
+                              "component": "LoadMorePaginator"
+                            }, {
+                              "component": "HiddenFieldRenderSelectedItems",
+                              "props": {
+                                 "name": "my_selected_items",
+                                 "debug": false
+                              }
+                            }, {
+                              "component": "SelectableListRenderSelectedItems",
+                              "props": {
+                                "location": "right"
+                              }
+                            }]
+                         }]
+                     }'>
+                </div>
+                <button type="submit" class="button button--primary">
+                    Submit selected items
+                </button>
+            </form>
 
             <p>
                 Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Nulla vitae elit libero, a pharetra augue. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.

@@ -1,9 +1,27 @@
 import React from 'react'
 import AbstractList from './AbstractList'
+import BemUtilities from '../../../utilities/BemUtilities'
+import PropTypes from 'prop-types'
 
 export default class SelectableList extends AbstractList {
+  static get propTypes () {
+    return Object.assign(super.propTypes, {
+      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
+    })
+  }
+
+  static get defaultProps () {
+    return Object.assign(super.defaultProps, {
+      bemVariants: ['compact']
+    })
+  }
+
   get bemBlock () {
     return 'selectable-list'
+  }
+
+  get className () {
+    return BemUtilities.addVariants(this.bemBlock, this.props.bemVariants)
   }
 
   getItemComponentProps (listItemData) {
@@ -13,7 +31,7 @@ export default class SelectableList extends AbstractList {
   }
 
   render () {
-    return <div className={this.bemBlock}>
+    return <div className={this.className}>
       {this.renderListItems()}
     </div>
   }

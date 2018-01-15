@@ -7,12 +7,13 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import LoadingIndicator from '../../../components/LoadingIndicator'
 import { ComponentCache } from '../../ComponentCache'
 import ChildExposedApi from './ChildExposedApi'
+import { UrlParser } from 'ievv_jsbase/lib/http/UrlParser'
 
 export default class AbstractFilterList extends React.Component {
   static get propTypes () {
     return {
       idAttribute: PropTypes.string.isRequired,
-      className: PropTypes.string.isRequired,
+      className: PropTypes.string,
       selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null]),
       autoLoadFirstPage: PropTypes.bool.isRequired,
 
@@ -21,9 +22,9 @@ export default class AbstractFilterList extends React.Component {
       updateSingleItemSortOrderApiUrl: PropTypes.string,
       submitSelectedItemsApiUrl: PropTypes.string,
 
-      components: PropTypes.arrayOf(PropTypes.object).isRequired
+      components: PropTypes.arrayOf(PropTypes.object).isRequired,
 
-      // initiallySelectedItemIds: PropTypes.array
+      initiallySelectedItemIds: PropTypes.array.isRequired
       // updateHttpMethod: (props, propName, componentName) => {
       //   if(!props[propName] || !/^(post|put)$/.test(props[propName])) {
       //     return new Error(
@@ -38,7 +39,7 @@ export default class AbstractFilterList extends React.Component {
   static get defaultProps () {
     return {
       idAttribute: 'id',
-      className: 'filterlistX',
+      className: null,
       selectMode: null,
       autoLoadFirstPage: true,
 
@@ -46,7 +47,7 @@ export default class AbstractFilterList extends React.Component {
       getItemsApiIdsQueryStringArgument: 'id', // TODO: Should be optional and default to null - get by ID if not provided
       updateSingleItemSortOrderApiUrl: null,
       submitSelectedItemsApiUrl: null,  // TODO: Does this make sense? What if we have multiple actions?
-      header: null,
+      initiallySelectedItemIds: [],
       components: [{
         component: 'ThreeColumnLayout',
         layout: [{
@@ -92,6 +93,7 @@ export default class AbstractFilterList extends React.Component {
 
   componentDidMount () {
     this.refreshComponentCache(this.props.components)
+    this.loadMissingSelectedItemDataFromApi()
     if (this.props.autoLoadFirstPage) {
       this.loadFirstPageFromApi()
     }
@@ -103,6 +105,14 @@ export default class AbstractFilterList extends React.Component {
 
   setupBoundMethods () {
     this.loadMissingSelectedItemDataFromApi = this.loadMissingSelectedItemDataFromApi.bind(this)
+  }
+
+  _makeInitiallySelectedListItemsMap () {
+    const selectedListItemsMap = new Map()
+    for (let itemId of this.props.initiallySelectedItemIds) {
+      selectedListItemsMap.set(itemId, null)
+    }
+    return selectedListItemsMap
   }
 
   /**
@@ -121,7 +131,7 @@ export default class AbstractFilterList extends React.Component {
       componentCache: this.makeEmptyComponentCache(),
       paginationState: {},
       hasFocus: false,
-      selectedListItemsMap: new Map(),
+      selectedListItemsMap: this._makeInitiallySelectedListItemsMap(),
       loadSelectedItemsFromApiError: null,
       loadItemsFromApiError: null,
       enabledComponentGroups: new Set()
@@ -420,7 +430,7 @@ export default class AbstractFilterList extends React.Component {
    * @param {[]} listItemIds Array of list item IDs.
    */
   deselectItems (listItemIds) {
-    this.setState((prevState, props) => {
+    this.setState((prevState) => {
       const selectedListItemsMap = prevState.selectedListItemsMap
       for (let listItemId of listItemIds) {
         selectedListItemsMap.delete(listItemId)
@@ -450,43 +460,11 @@ export default class AbstractFilterList extends React.Component {
     return selectedItemIdsWithMissingItemData
   }
 
-  filterLoadSelectedItemDataFromApiRequest (httpRequest, listItemIds) {
-    httpRequest.urlParser.queryString.setIterable(
-      this.props.getItemsApiIdsQueryStringArgument,
-      listItemIds)
-  }
-
-  _loadSelectedItemDataFromApi (listItemIds, paginationOptions, selectedItemDataArray) {
-    return new Promise((resolve, reject) => {
-      const httpRequest = this.makeListItemsHttpRequest(paginationOptions, false)
-      this.filterLoadSelectedItemDataFromApiRequest(httpRequest, listItemIds)
-      httpRequest.get()
-        .then((httpResponse) => {
-          const itemDataArray = this.getItemsArrayFromHttpResponse(httpResponse)
-          selectedItemDataArray.push(...itemDataArray)
-
-          // Load more paginated pages if needed
-          const paginationState = this.makePaginationStateFromHttpResponse(
-            httpResponse, paginationOptions)
-          const nextPaginationOptions = this.getNextPagePaginationOptions(
-            paginationState)
-          if (this.hasNextPaginationPage(paginationState)) {
-            this._loadSelectedItemDataFromApi(listItemIds, nextPaginationOptions, selectedItemDataArray)
-              .then(() => {
-                resolve()
-              })
-              .catch((error) => {
-                reject(error)
-              })
-          } else {
-            resolve()
-          }
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
-  }
+  // filterLoadSelectedItemDataFromApiRequest (httpRequest, listItemIds) {
+  //   httpRequest.urlParser.queryString.setIterable(
+  //     this.props.getItemsApiIdsQueryStringArgument,
+  //     listItemIds)
+  // }
 
   setLoadMissingSelectedItemDataFromApiErrorMessage (errorObject) {
     this.setState({
@@ -521,20 +499,17 @@ export default class AbstractFilterList extends React.Component {
     this.setState({
       isLoadingSelectedItemDataFromApi: true
     }, () => {
-      const selectedItemDataArray = []
-      this._loadSelectedItemDataFromApi(
-        itemIdsWithMissingData,
-        this.getFirstPagePaginationOptions(this.state.paginationState),
-        selectedItemDataArray)
-        .then(() => {
-          this.setState((prevState, props) => {
+      this.loadMultipleItemDataFromApi(
+        itemIdsWithMissingData)
+        .then((selectedItemDataArray) => {
+          this.setState((prevState) => {
             const selectedListItemsMap = prevState.selectedListItemsMap
             for (let listItemData of selectedItemDataArray) {
               const listItemId = this.getIdFromListItemData(listItemData)
               selectedListItemsMap.set(listItemId, listItemData)
             }
             return {
-              // selectedListItemsMap: selectedListItemsMap,
+              selectedListItemsMap: selectedListItemsMap,
               isLoadingSelectedItemDataFromApi: false
             }
           })
@@ -709,6 +684,15 @@ export default class AbstractFilterList extends React.Component {
     }
     this.paginateListItemsHttpRequest(httpRequest, paginationOptions)
     return httpRequest
+  }
+
+  getSingleItemApiUrl (listItemId) {
+    return UrlParser.pathJoin(this.props.getItemsApiUrl, `${listItemId}`)
+  }
+
+  makeGetSingleItemHttpRequest (listItemId) {
+    const HttpRequestClass = this.getHttpRequestClass()
+    return new HttpRequestClass(this.getSingleItemApiUrl(listItemId))
   }
 
   /**
@@ -1202,6 +1186,35 @@ export default class AbstractFilterList extends React.Component {
       renderedComponents.push(this.renderLayoutComponent(layoutComponentSpec))
     }
     return renderedComponents
+  }
+
+  loadSingleItemDataFromApi (listItemId) {
+    return new Promise((resolve, reject) => {
+      this.makeGetSingleItemHttpRequest(listItemId)
+        .get()
+        .then((httpResponse) => {
+          resolve(httpResponse.bodydata)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  }
+
+  loadMultipleItemDataFromApi (listItemIds) {
+    return new Promise((resolve, reject) => {
+      const allPrimomises = []
+      for (let listItemId of listItemIds) {
+        allPrimomises.push(this.loadSingleItemDataFromApi(listItemId))
+      }
+      Promise.all(allPrimomises)
+        .then((listItemDataArray) => {
+          resolve(listItemDataArray)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 
   render () {

@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.views import View
 
 from django_cradmin import uicontainer
 from django_cradmin.demo.cradmin_javascript_demos.models import FictionalFigureCollection
@@ -11,6 +13,20 @@ from django_cradmin.viewhelpers import generic
 
 class Overview(generic.StandaloneBaseTemplateView):
     template_name = 'cradmin_javascript_demos/overview.django.html'
+
+
+class ReceivePostDataView(View):
+    def post(self, *args, **kwargs):
+        redirect_url = self.request.GET.get('redirect_url')
+        posted_data_string = str(self.request.POST)
+        if redirect_url:
+            messages.info(self.request, 'POSTED DATA: {}'.format(
+                posted_data_string))
+            return HttpResponseRedirect(redirect_url)
+        else:
+            return HttpResponse(
+                'POSTED DATA: {}'.format(posted_data_string),
+                content_type='text/plain')
 
 
 class JavascriptDemoView(generic.StandaloneBaseTemplateView):
