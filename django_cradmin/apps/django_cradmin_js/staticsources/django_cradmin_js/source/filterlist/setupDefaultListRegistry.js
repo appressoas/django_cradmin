@@ -12,6 +12,7 @@ import ThreeColumnLayout from './components/layout/ThreeColumnLayout'
 import PageNumberPaginationFilterList from './components/filterlists/PageNumberPaginationFilterList'
 import ThreeColumnDropDownLayout from './components/layout/ThreeColumnDropDownLayout'
 import HiddenFieldRenderSelectedItems from './components/selecteditems/HiddenFieldRenderSelectedItems'
+import SelectableListRenderSelectedItems from './components/selecteditems/SelectableListRenderSelectedItems'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
   registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
@@ -45,6 +46,7 @@ export function setupDefaultListRegistryPaginatorComponents (registry) {
 
 export function setupDefaultListRegistrySelectedItemsComponents (registry) {
   registry.registerSelectedItemsComponent('HiddenFieldRenderSelectedItems', HiddenFieldRenderSelectedItems)
+  registry.registerSelectedItemsComponent('SelectableListRenderSelectedItems', SelectableListRenderSelectedItems)
 }
 
 export default function setupDefaultListRegistry () {
