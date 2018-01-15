@@ -28,11 +28,11 @@ import BemUtilities from '../../../utilities/BemUtilities'
  */
 export default class LoadMorePaginator extends AbstractPaginator {
   static get propTypes () {
-    const propTypes = super.propTypes
-    propTypes.bemBlock = PropTypes.string.isRequired
-    propTypes.bemVariants = PropTypes.arrayOf(PropTypes.string).isRequired
-    propTypes.label = PropTypes.string.isRequired
-    return propTypes
+    return Object.assign({}, super.propTypes, {
+      bemBlock: PropTypes.string.isRequired,
+      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      label: PropTypes.string.isRequired
+    })
   }
 
   /**
@@ -51,11 +51,11 @@ export default class LoadMorePaginator extends AbstractPaginator {
    *    **Can be used in spec**.
    */
   static get defaultProps () {
-    const defaultProps = super.defaultProps
-    defaultProps.bemBlock = 'button'
-    defaultProps.bemVariants = []
-    defaultProps.label = window.gettext('Load more')
-    return defaultProps
+    return Object.assign({}, super.defaultProps, {
+      bemBlock: 'button',
+      bemVariants: [],
+      label: window.gettext('Load more')
+    })
   }
 
   setupBoundMethods () {
