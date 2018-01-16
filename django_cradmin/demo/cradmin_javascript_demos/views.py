@@ -122,3 +122,103 @@ class AutoSubmitFormAfterCountdownDemoView(generic.StandaloneBaseTemplateView):
     def post(self, *args, **kwargs):
         messages.info(self.request, 'Submitted form!')
         return redirect(self.request.path)
+
+
+class FilterListDemoForm(forms.ModelForm):
+    class Meta:
+        model = FictionalFigureCollection
+        fields = [
+            'promoted_fictional_figures'
+        ]
+
+
+class FilterListUiContainerDemoView(formview.StandaloneFormView):
+    form_class = FilterListDemoForm
+
+    def get_components_list(self):
+        return [{
+            "component": "ThreeColumnLayout",
+            "props": {
+                "rightColumnBemVariants": ["xlarge"],
+                "bottomBarBemVariants": ["spacing-none"]
+            },
+            "layout": [{
+                "component": "SearchFilter",
+                "props": {
+                    "name": "search",
+                    "placeholder": ["God", "Time", "wizard"]
+                }
+            }, {
+                "component": "CheckboxBooleanFilter",
+                "props": {
+                    "name": "is_godlike",
+                    "label": "Is godlike?"
+                },
+                "initialValue": False
+            }, {
+                "component": "SelectableList",
+                "itemSpec": {
+                    "component": "SelectableTitleDescriptionItem"
+                }
+            }, {
+                "component": "ParagraphLoadMorePaginator"
+            }, {
+                "component": "HiddenFieldRenderSelectedItems",
+                "props": {
+                    "name": 'promoted_fictional_figures'
+                }
+            }, {
+                "component": "SelectableListRenderSelectedItems",
+                "props": {
+                    "location": "top"
+                }
+            }]
+        }]
+
+    def get_fictional_figures_api_url(self):
+        return reverse('cradmin_javascript_demos_api:fictional-figures-list')
+
+    def get_form_field_renderables(self):
+        return [uicontainer.fieldwrapper.FieldWrapper(
+            fieldname='promoted_fictional_figures',
+            field_renderable=uicontainer.filterlist.FilterList(
+                get_items_api_url=self.get_fictional_figures_api_url(),
+                components=self.get_components_list(),
+                select_mode='multi',
+                initially_selected_item_ids=[9, 7]
+            ))
+        ]
+
+    def get_form_renderable(self):
+        return uicontainer.form.Form(
+            form=self.get_form(),
+            children=[
+                uicontainer.layout.AdminuiPageSection(
+                    children=[
+                        uicontainer.layout.Container(
+                            children=self.get_form_field_renderables()
+                        )
+                    ]
+                ),
+                uicontainer.layout.AdminuiPageSection(
+                    children=[
+                        uicontainer.layout.Container(
+                            children=[
+                                uicontainer.button.SubmitPrimary(text='Save')
+                            ]
+                        )
+                    ]
+                )
+            ]
+        ).bootstrap()
+
+    def get_success_url(self):
+        return self.request.path
+
+    def form_valid(self, form):
+        if form.is_valid():
+            figure_ids = [figure.id for figure in form.cleaned_data.get('promoted_fictional_figures', [])]
+            messages.info(request=self.request, message='submitted form. ids: {}'.format(figure_ids))
+        else:
+            messages.info(request=self.request, message='form invalid... {}'.format(form.errors))
+        return super().form_valid(form=form)
