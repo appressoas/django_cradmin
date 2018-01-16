@@ -17,3 +17,4 @@ from . import layout  # noqa
 from . import foreignkeyfield  # noqa
 from . import manytomanyfield  # noqa
 from . import utils  # noqa
+from . import filterlist  # noqa
