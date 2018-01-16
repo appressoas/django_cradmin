@@ -4,7 +4,7 @@ import AbstractSelectedItems from './AbstractSelectedItems'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
 /**
- * Load more paginator.
+ * Render selected items as hidden fields.
  *
  * See {@link HiddenFieldRenderSelectedItems.defaultProps} for documentation for
  * props and their defaults.
@@ -66,7 +66,7 @@ export default class HiddenFieldRenderSelectedItems extends AbstractSelectedItem
       key={listItemId}
       name={this.props.name}
       type={this.hiddenFieldType}
-      value={listItemId} />
+      defaultValue={listItemId} />
   }
 
   renderHiddenFields () {

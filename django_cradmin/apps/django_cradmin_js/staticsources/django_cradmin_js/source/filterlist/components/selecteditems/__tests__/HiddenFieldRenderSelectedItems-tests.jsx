@@ -34,7 +34,7 @@ test('single selected item sanity', () => {
   }))
   expect(component.find('input').prop('name')).toEqual('myfield')
   expect(component.find('input').prop('type')).toEqual('hidden')
-  expect(component.find('input').prop('value')).toBe(1)
+  expect(component.find('input').prop('defaultValue')).toBe(1)
 })
 
 test('multiple selected items sanity', () => {
@@ -45,8 +45,8 @@ test('multiple selected items sanity', () => {
       [3, {}]
     ])
   }))
-  expect(component.find('input').at(0).prop('value')).toBe(1)
-  expect(component.find('input').at(1).prop('value')).toBe(3)
+  expect(component.find('input').at(0).prop('defaultValue')).toBe(1)
+  expect(component.find('input').at(1).prop('defaultValue')).toBe(3)
 })
 
 test('debug prop true', () => {

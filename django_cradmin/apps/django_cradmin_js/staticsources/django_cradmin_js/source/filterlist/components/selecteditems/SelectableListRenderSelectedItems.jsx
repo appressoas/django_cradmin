@@ -5,7 +5,7 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import BemUtilities from '../../../utilities/BemUtilities'
 
 /**
- * Load more paginator.
+ * Render selected items using the `selectable-list` css component.
  *
  * See {@link SelectableListRenderSelectedItems.defaultProps} for documentation for
  * props and their defaults.
@@ -19,7 +19,7 @@ import BemUtilities from '../../../utilities/BemUtilities'
  * {
  *    "component": "SelectableListRenderSelectedItems",
  *    "props": {
- *       "itemLabelAttribute": 'name'
+ *       "itemLabelAttribute": "name"
  *    }
  * }
  *
@@ -56,7 +56,7 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
     return Object.assign({}, super.defaultProps, {
       label: window.gettext('Selected items:'),
       itemLabelAttribute: 'title',
-      bemVariants: ['inline']
+      bemVariants: ['inline', 'nomargin']
     })
   }
 
