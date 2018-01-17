@@ -30,6 +30,7 @@
   "name": "django_cradmin_js",
   "scripts": {
     "build": "rm -rf lib && babel source --presets=babel-preset-es2015,babel-preset-react --out-dir lib",
+    "build-watch": "rm -rf lib && babel source --watch --presets=babel-preset-es2015,babel-preset-react --out-dir lib",
     "clean": "rm -rf lib built_docs",
     "build-docs": "esdoc -c esdoc.json",
     "jsbuild": "webpack --config webpack.config.js",
