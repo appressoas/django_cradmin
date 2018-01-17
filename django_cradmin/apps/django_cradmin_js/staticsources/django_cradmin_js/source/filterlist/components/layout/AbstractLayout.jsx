@@ -7,6 +7,7 @@ import AbstractFilter from '../filters/AbstractFilter'
 import AbstractList from '../lists/AbstractList'
 import AbstractPaginator from '../paginators/AbstractPaginator'
 import AbstractSelectedItems from '../selecteditems/AbstractSelectedItems'
+import AbstractComponentGroup from '../componentgroup/AbstractComponentGroup'
 
 export default class AbstractLayout extends AbstractFilterListChild {
   static get propTypes () {
@@ -104,6 +105,21 @@ export default class AbstractLayout extends AbstractFilterListChild {
   }
 
   /**
+   * Used by {@link AbstractLayout#shouldRenderComponent} when
+   * the provided componentSpec.componentClass is a subclass
+   * of {@link AbstractComponentGroup}.
+   *
+   * By default this returns `true`.
+   *
+   * @param componentSpec The component we want to determine if should be rendered.
+   * @returns {boolean} `true` to render the component, and `false` to not render
+   *    the component.
+   */
+  shouldRenderComponentGroupComponent (componentSpec) {
+    return true
+  }
+
+  /**
    * Determine if a component should be rendered.
    *
    * Perfect place to hook in things like "show advanced" filters etc.
@@ -129,6 +145,8 @@ export default class AbstractLayout extends AbstractFilterListChild {
       return this.shouldRenderSelectedItemsComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractSelectedItems) {
       return this.shouldRenderSelectedItemsComponent(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractComponentGroup) {
+      return this.shouldRenderComponentGroupComponent(componentSpec)
     } else {
       throw new Error(
         `Could not determine if we should render component. ` +
@@ -166,6 +184,12 @@ export default class AbstractLayout extends AbstractFilterListChild {
     }
   }
 
+  getComponentGroupComponentProps (componentSpec) {
+    return {
+      enabledComponentGroups: this.props.enabledComponentGroups,
+    }
+  }
+
   getComponentTypeSpecificExtraProps (componentSpec) {
     if (componentSpec.componentClass.prototype instanceof AbstractFilter) {
       return this.getFilterComponentProps(componentSpec)
@@ -175,6 +199,8 @@ export default class AbstractLayout extends AbstractFilterListChild {
       return this.getPaginatorComponentProps(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractSelectedItems) {
       return this.getSelectedItemsComponentProps(componentSpec)
+    } else if (componentSpec.componentClass.prototype instanceof AbstractComponentGroup) {
+      return this.getComponentGroupComponentProps(componentSpec)
     } else {
       throw new Error(
         `Could not determine type-specific extra props. ` +

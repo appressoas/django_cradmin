@@ -97,6 +97,11 @@ export default class AbstractFilterList extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     this.refreshComponentCache(nextProps.components)
+    if ('selectMode' in nextProps) {
+      this.setState({
+        selectMode: nextProps.selectMode
+      })
+    }
   }
 
   setupBoundMethods () {
@@ -130,7 +135,8 @@ export default class AbstractFilterList extends React.Component {
       selectedListItemsMap: this._makeInitiallySelectedListItemsMap(),
       loadSelectedItemsFromApiError: null,
       loadItemsFromApiError: null,
-      enabledComponentGroups: new Set()
+      enabledComponentGroups: new Set(),
+      selectMode: this.props.selectMode
     }
   }
 
@@ -341,6 +347,20 @@ export default class AbstractFilterList extends React.Component {
   //
 
   /**
+   * Change selectMode to given selectMode
+   *
+   * NOTE: this is not error-handled, so users should take care to only use selectModes that make sense for the
+   * current use-case.
+   *
+   * @param selectMode the selectMode to change to.
+   */
+  setSelectMode (selectMode) {
+    this.setState({
+      selectMode: selectMode
+    })
+  }
+
+  /**
    * Is `props.selectMode === 'single'`?
    *
    * WARNING: The default value for `props.selectMode` is `null`,
@@ -352,7 +372,7 @@ export default class AbstractFilterList extends React.Component {
    * @returns {boolean}
    */
   isSingleSelectMode () {
-    return this.props.selectMode === SINGLESELECT
+    return this.state.selectMode === SINGLESELECT
   }
 
   /**
@@ -361,7 +381,7 @@ export default class AbstractFilterList extends React.Component {
    * @returns {boolean}
    */
   isMultiSelectMode () {
-    return this.props.selectMode === MULTISELECT
+    return this.state.selectMode === MULTISELECT
   }
 
   /**
@@ -1144,7 +1164,8 @@ export default class AbstractFilterList extends React.Component {
       selectedListItemsMap: this.state.selectedListItemsMap,
       enabledComponentGroups: this.state.enabledComponentGroups,
       isLoadingNewItemsFromApi: this.state.isLoadingNewItemsFromApi,
-      isLoadingMoreItemsFromApi: this.state.isLoadingMoreItemsFromApi
+      isLoadingMoreItemsFromApi: this.state.isLoadingMoreItemsFromApi,
+      selectMode: this.state.selectMode
     })
   }
 

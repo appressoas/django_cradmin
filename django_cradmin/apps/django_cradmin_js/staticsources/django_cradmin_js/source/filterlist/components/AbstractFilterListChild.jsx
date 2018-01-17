@@ -151,7 +151,8 @@ export default class AbstractFilterListChild extends React.Component {
   makeChildComponentProps (componentSpec, extraProps) {
     return Object.assign({}, extraProps, {
       childExposedApi: this.props.childExposedApi,
-      componentGroups: this.getComponentGroupsForChildComponent(componentSpec)
+      componentGroups: this.getComponentGroupsForChildComponent(componentSpec),
+      selectMode: this.props.selectMode
     })
   }
 }
