@@ -152,7 +152,6 @@ describe('SelectComponentGroup', () => {
       childExposedApi: childExposedApi
     }
     const component = shallow(render(props))
-    console.log(jest.isMockFunction(component.instance().selectComponentGroup))
     component.find('input[value="testgroup2"]').first().simulate('change', {target: {value: 'testgroup2'}})
     expect(childExposedApi.enableComponentGroup).toBeCalledWith('testgroup2')
   })
@@ -177,7 +176,6 @@ describe('SelectComponentGroup', () => {
       childExposedApi: childExposedApi
     }
     const component = shallow(render(props))
-    console.log(jest.isMockFunction(component.instance().selectComponentGroup))
     component.find('input[value="testgroup1"]').first().simulate('change', {target: {value: 'testgroup1'}})
     expect(childExposedApi.disableComponentGroup).toBeCalledWith('isEnabled')
   })
