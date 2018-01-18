@@ -4,13 +4,31 @@ Install and configure
 
 .. _installguide:
 
+***************************
+Recommended system packages
+***************************
+- Python 2.7+ or Python 3.4+
+- libjpeg, liblcms1, libfreetype6 and zlib for the required format support in Pillow (if you use any image functionality)
+
+
+On Mac OSX with homebrew::
+
+    $ brew install libjpeg little-cms freetype lzlib
+
+.. note::
+
+    If you get the error `OError: encoder zip not available`, you will
+    need to install the packages listed above, uninstall
+    pillow (`pip uninstall Pillow`), and re-install pillow
+    with `pip install Pillow==<version> --no-cache-dir`.
+
+
 *******
 Install
 *******
 Install ``django_cradmin``::
     
     $ pip install django_cradmin
-
 
 
 *********
