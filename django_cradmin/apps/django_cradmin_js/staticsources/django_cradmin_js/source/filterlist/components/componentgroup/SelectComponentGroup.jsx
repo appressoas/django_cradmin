@@ -10,6 +10,7 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
       initialEnabled: PropTypes.string.isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      name: PropTypes.string.isRequired
     })
   }
 
@@ -18,6 +19,7 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
       selectableComponentGroups: [],
       initialEnabled: '',
       bemBlock: 'radio',
+      name: null,
       bemVariants: ['block']
     })
   }
@@ -79,7 +81,7 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
         <label className={this.className} key={componentGroup.name}>
           <input
             type={'radio'}
-            name={componentGroup.name}
+            name={this.props.name}
             value={componentGroup.name}
             checked={this.props.enabledComponentGroups.has(componentGroup.name)}
             onChange={this.selectComponentGroupClickListener} />
@@ -93,6 +95,10 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
   }
 
   render () {
+    if (this.props.selectableComponentGroups.length === 0) {
+      console.warn('attempting to use SelectComponentGroup without passing any selectableComponentGroups - not rendering anything.')
+      return null
+    }
     return <div>
       {this.renderSelectableComponentGroups()}
     </div>

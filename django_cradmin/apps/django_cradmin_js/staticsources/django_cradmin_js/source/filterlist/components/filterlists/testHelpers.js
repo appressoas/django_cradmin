@@ -16,6 +16,7 @@ export class ChildExposedApiMock {
     this.setFilterValue = jest.fn()
     this.getFilterValue = jest.fn()
 
+    this.setSelectMode = jest.fn()
     this.isSingleSelectMode = jest.fn()
     this.isMultiSelectMode = jest.fn()
 
