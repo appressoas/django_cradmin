@@ -181,7 +181,7 @@ class FilterListUiContainerDemoView(formview.StandaloneFormView):
     def get_form_field_renderables(self):
         return [uicontainer.fieldwrapper.FieldWrapper(
             fieldname='promoted_fictional_figures',
-            field_renderable=uicontainer.filterlist.FilterList(
+            field_renderable=uicontainer.filterlist.FilterListField(
                 get_items_api_url=self.get_fictional_figures_api_url(),
                 components=self.get_components_list(),
                 select_mode='multi',
