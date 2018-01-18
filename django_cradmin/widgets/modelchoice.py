@@ -54,7 +54,7 @@ class ModelChoiceWidget(widgets.TextInput):
         else:
             return 'hidden'
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None:
             value = ''
         fieldid = attrs['id']

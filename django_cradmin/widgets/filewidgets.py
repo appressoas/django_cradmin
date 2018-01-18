@@ -70,7 +70,7 @@ class ImageWidget(forms.ClearableFileInput):
             }
         }
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         attrs = attrs or {}
         attrs['django-cradmin-image-preview-filefield'] = ''
         if self.accept:
@@ -108,7 +108,7 @@ class FileWidget(forms.ClearableFileInput):
             self.template_name = template_name
         super(FileWidget, self).__init__(attrs)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         attrs = attrs or {}
         if self.accept:
             attrs['accept'] = self.accept

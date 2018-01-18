@@ -521,7 +521,7 @@ class DatePickerWidget(widgets.TextInput):
         attributes['style'] = 'display: none;'
         return attributes
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         """
         Render the widget.
 
@@ -727,7 +727,7 @@ class TimePickerWidget(widgets.TimeInput):
             attrs['placeholder'] = placeholder
         super(TimePickerWidget, self).__init__(attrs=attrs, format=format)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         inputfield = super(TimePickerWidget, self).render(name, value, attrs)
         return loader.render_to_string(self.template_name, {
             'inputfield': inputfield,

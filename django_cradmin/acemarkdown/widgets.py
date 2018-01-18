@@ -19,18 +19,14 @@ class AceMarkdownWidget(forms.widgets.Textarea):
             ]
         )
 
-    def render(self, name, value, attrs=None):
+    def get_context(self, name, value, attrs):
         attrs = attrs.copy()
         attrs['textarea django-cradmin-acemarkdown-textarea'] = ''
-        textarea = super(AceMarkdownWidget, self).render(name, value, attrs)
-        return render_to_string(
-            self.template_name, {
-                'textarea': textarea,
-                'directiveconfig': json.dumps(self.directiveconfig),
-                'widget': {
-                    'name': name,
-                    'value': value,
-                    'attrs': attrs
-                }
+        return {
+            'directiveconfig': json.dumps(self.directiveconfig),
+            'widget': {
+                'name': name,
+                'value': value,
+                'attrs': attrs
             }
-        )
+        }
