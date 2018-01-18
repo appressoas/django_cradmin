@@ -17,6 +17,7 @@ import ParagraphLoadMorePaginator from './components/paginators/ParagraphLoadMor
 import SubmitSelectedItems from './components/selecteditems/SubmitSelectedItems'
 import LinkWithTitleDescriptionListItem from './components/items/LinkWithTitleDescriptionListItem'
 import SelectComponentGroup from './components/componentgroup/SelectComponentGroup'
+import DropDownSelectFilter from './components/filters/DropDownSelectFilter'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
   registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
@@ -34,6 +35,7 @@ export function setupDefaultListRegistryListComponents (registry) {
 
 export function setupDefaultListRegistryFilterComponents (registry) {
   registry.registerFilterComponent('CheckboxBooleanFilter', CheckboxBooleanFilter)
+  registry.registerFilterComponent('DropDownSelectFilter', DropDownSelectFilter)
   registry.registerFilterComponent('SearchFilter', SearchFilter)
   registry.registerFilterComponent('DropDownSearchFilter', DropDownSearchFilter)
 }
