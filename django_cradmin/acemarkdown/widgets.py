@@ -22,6 +22,8 @@ class AceMarkdownWidget(forms.widgets.Textarea):
     def get_context(self, name, value, attrs):
         attrs = attrs.copy()
         attrs['textarea django-cradmin-acemarkdown-textarea'] = ''
+        if 'required' in attrs:
+            attrs['required'] = False
         return {
             'directiveconfig': json.dumps(self.directiveconfig),
             'widget': {

@@ -530,6 +530,8 @@ class DatePickerWidget(widgets.TextInput):
         """
         attrs = attrs or {}
         attrs = self.get_field_attributes(attrs)
+        if 'required' in attrs:
+            attrs['required'] = False
         rendered_field = super(DatePickerWidget, self).render(name, value, attrs)
         fieldid = attrs.get('id', 'id_{}'.format(name))
         return loader.render_to_string(self.get_template_name(), self.get_context_data(
