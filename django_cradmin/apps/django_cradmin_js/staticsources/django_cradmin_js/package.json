@@ -39,7 +39,7 @@
     "test-debug": "jest --debug",
     "test-watch": "jest --watch"
   },
-  "version": "1.0.8",
+  "version": "1.1.0",
   "jest": {
     "transform": {
       ".*": "./config/jest/transform.js"
