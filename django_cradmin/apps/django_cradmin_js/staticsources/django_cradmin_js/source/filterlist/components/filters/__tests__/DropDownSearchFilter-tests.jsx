@@ -191,6 +191,7 @@ describe('DropDownSearchFilter', () => {
     expect(getSearchInputComponent(component).prop('placeholder')).toEqual(
       'people')
     jest.runOnlyPendingTimers()
+    component.update()
     expect(getSearchInputComponent(component).prop('placeholder')).toEqual(
       'animals')
   })

@@ -195,4 +195,56 @@
             </p>
         </div>
     </section>
+    <section class="adminui-page-section">
+        <div class="container container--wide">
+            <h2>Select different componentgroups to be rendered</h2>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "components": [{
+                        "component": "ThreeColumnLayout",
+                        "layout": [{
+                          "component": "SelectComponentGroup",
+                          "props": {
+                            "initialEnabled": "selectlist",
+                            "selectableComponentGroups": [
+                                {
+                                    "name": "selectlist",
+                                    "label": "selectable items"
+                                }, {
+                                    "name": "blocklist",
+                                    "label": "just list items"
+                                }
+                            ]
+                          }
+                        }, {
+                          "component": "SelectableList",
+                          "props": {
+                            "componentGroups": ["selectlist"]
+                          },
+                          "itemSpec": {
+                            "component": "SelectableTitleDescriptionItem"
+                          }
+                        }, {
+                          "component": "BlockList",
+                          "props": {
+                            "componentGroups": ["blocklist"]
+                          },
+                          "itemSpec": {
+                            "component": "TitleDescriptionItem",
+                            "props": {
+                              "titleBemVariants": ["small"]
+                            }
+                          }
+                        }, {
+                          "component": "LoadMorePaginator",
+                          "props": {
+                            "label": "Load some more items!"
+                          }
+                        }]
+                     }]
+                 }'>
+            </div>
+        </div>
+    </section>
 {% endblock content %}

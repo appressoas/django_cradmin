@@ -139,12 +139,13 @@ describe('SearchFilter', () => {
   })
 
   test('searchInput placeholder array rotate', () => {
-    const component = mount(render({
+    const component = shallow(render({
       placeholder: ['people', 'animals']
     }))
     expect(getSearchInputComponent(component).prop('placeholder')).toEqual(
       'people')
     jest.runOnlyPendingTimers()
+    component.update()
     expect(getSearchInputComponent(component).prop('placeholder')).toEqual(
       'animals')
   })

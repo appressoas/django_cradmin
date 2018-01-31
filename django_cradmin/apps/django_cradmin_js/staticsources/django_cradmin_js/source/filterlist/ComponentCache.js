@@ -7,6 +7,7 @@ import AbstractListItem from './components/items/AbstractListItem'
 import AbstractLayout from './components/layout/AbstractLayout'
 import { RENDER_LOCATION_DEFAULT } from './filterListConstants'
 import AbstractSelectedItems from './components/selecteditems/AbstractSelectedItems'
+import AbstractComponentGroup from './components/componentgroup/AbstractComponentGroup'
 
 /**
  * Defines the component layout within a {@link LayoutComponentSpec}.
@@ -190,6 +191,9 @@ export class PaginatorComponentSpec extends AbstractLayoutChildComponentSpec {
 export class SelectedItemsComponentSpec extends AbstractLayoutChildComponentSpec {
 }
 
+export class ComponentGroupComponentSpec extends AbstractLayoutChildComponentSpec {
+}
+
 /**
  * Parser for the `body` and `header` props for {@link AbstractFilterList}.
  *
@@ -259,10 +263,12 @@ export class ComponentCache {
       componentClass = this.filterListRegistry.getLayoutComponent(componentString)
     } else if (componentString.endsWith('Item')) {
       componentClass = this.filterListRegistry.getItemComponent(componentString)
+    } else if (componentString.endsWith('ComponentGroup')) {
+      componentClass = this.filterListRegistry.getComponentGroupComponent(componentString)
     } else {
       throw new Error(
         `Invalid component: "${componentString}". ` +
-        `Must end with "Filter", "List" or "Paginator".`)
+        `Must end with "Filter", "List", "ComponentGroup" or "Paginator".`)
     }
     if (!componentClass) {
       throw new Error(
@@ -303,10 +309,12 @@ export class ComponentCache {
       return ListItemComponentSpec
     } else if (componentClass.prototype instanceof AbstractLayout) {
       return LayoutComponentSpec
+    } else if (componentClass.prototype instanceof AbstractComponentGroup) {
+      return ComponentGroupComponentSpec
     } else {
       throw new Error(
         `Invalid component: "${componentClass.name}". ` +
-        `Must be a subclass of AbstractFilter, AbstractList ` +
+        `Must be a subclass of AbstractFilter, AbstractList, AbstractComponentGroup ` +
         `or AbstractPaginator.`)
     }
   }

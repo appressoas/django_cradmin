@@ -15,6 +15,9 @@ import HiddenFieldRenderSelectedItems from './components/selecteditems/HiddenFie
 import SelectableListRenderSelectedItems from './components/selecteditems/SelectableListRenderSelectedItems'
 import ParagraphLoadMorePaginator from './components/paginators/ParagraphLoadMorePaginator'
 import SubmitSelectedItems from './components/selecteditems/SubmitSelectedItems'
+import LinkWithTitleDescriptionListItem from './components/items/LinkWithTitleDescriptionListItem'
+import SelectComponentGroup from './components/componentgroup/SelectComponentGroup'
+import DropDownSelectFilter from './components/filters/DropDownSelectFilter'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
   registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
@@ -32,6 +35,7 @@ export function setupDefaultListRegistryListComponents (registry) {
 
 export function setupDefaultListRegistryFilterComponents (registry) {
   registry.registerFilterComponent('CheckboxBooleanFilter', CheckboxBooleanFilter)
+  registry.registerFilterComponent('DropDownSelectFilter', DropDownSelectFilter)
   registry.registerFilterComponent('SearchFilter', SearchFilter)
   registry.registerFilterComponent('DropDownSearchFilter', DropDownSearchFilter)
 }
@@ -40,11 +44,16 @@ export function setupDefaultListRegistryItemComponents (registry) {
   registry.registerItemComponent('IdOnlyItem', IdOnlyListItem)
   registry.registerItemComponent('TitleDescriptionItem', TitleDescriptionListItem)
   registry.registerItemComponent('SelectableTitleDescriptionItem', SelectableTitleDescriptionListItem)
+  registry.registerItemComponent('LinkWithTitleDescriptionListItem', LinkWithTitleDescriptionListItem)
 }
 
 export function setupDefaultListRegistryPaginatorComponents (registry) {
   registry.registerPaginatorComponent('LoadMorePaginator', LoadMorePaginator)
   registry.registerPaginatorComponent('ParagraphLoadMorePaginator', ParagraphLoadMorePaginator)
+}
+
+export function setupDefaultListRegistryComponentGroupComponents (registry) {
+  registry.registerComponentGroupComponent('SelectComponentGroup', SelectComponentGroup)
 }
 
 export function setupDefaultListRegistrySelectedItemsComponents (registry) {
@@ -62,4 +71,5 @@ export default function setupDefaultListRegistry () {
   setupDefaultListRegistryItemComponents(registry)
   setupDefaultListRegistryPaginatorComponents(registry)
   setupDefaultListRegistrySelectedItemsComponents(registry)
+  setupDefaultListRegistryComponentGroupComponents(registry)
 }

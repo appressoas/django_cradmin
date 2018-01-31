@@ -22,6 +22,7 @@
  * - {@link AbstractFilterList#itemIsSelected}
  * - {@link AbstractFilterList#isSingleSelectMode}
  * - {@link AbstractFilterList#isMultiSelectMode}
+ * - {@link AbstractFilterList#setSelectMode}
  *
  * Item details:
  * - {@link AbstractFilterList#getIdFromListItemData}
@@ -69,6 +70,7 @@ export default class ChildExposedApi {
     this.setFilterValue = this.filterListObject.setFilterValue.bind(this.filterListObject)
     this.getFilterValue = this.filterListObject.getFilterValue.bind(this.filterListObject)
 
+    this.setSelectMode = this.filterListObject.setSelectMode.bind(this.filterListObject)
     this.isSingleSelectMode = this.filterListObject.isSingleSelectMode.bind(this.filterListObject)
     this.isMultiSelectMode = this.filterListObject.isMultiSelectMode.bind(this.filterListObject)
 

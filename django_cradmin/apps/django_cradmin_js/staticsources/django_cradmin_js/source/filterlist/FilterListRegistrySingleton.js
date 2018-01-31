@@ -31,6 +31,7 @@ export default class FilterListRegistrySingleton {
     this._itemComponentMap = new Map()
     this._searchComponentMap = new Map()
     this._paginatorComponentMap = new Map()
+    this._componentGroupComponentMap = new Map()
     this._layoutComponentMap = new Map()
     this._selectedItemsComponentMap = new Map()
   }
@@ -42,6 +43,7 @@ export default class FilterListRegistrySingleton {
     this._itemComponentMap.clear()
     this._searchComponentMap.clear()
     this._paginatorComponentMap.clear()
+    this._componentGroupComponentMap.clear()
     this._layoutComponentMap.clear()
     this._selectedItemsComponentMap.clear()
   }
@@ -195,6 +197,37 @@ export default class FilterListRegistrySingleton {
    */
   getPaginatorComponent (alias) {
     return this._paginatorComponentMap.get(alias)
+  }
+
+  /**
+   * Register a componentGroup component class in the registry.
+   *
+   * @param {string} alias The alias for the componentGroup class.
+   *    Makes it possible to use a JSON serializable object
+   *    to define this componentGroup for a list.
+   * @param {AbstractPaginator} componentGroupComponent The componentGroup class.
+   */
+  registerComponentGroupComponent (alias, componentGroupComponent) {
+    this._componentGroupComponentMap.set(alias, componentGroupComponent)
+  }
+
+  /**
+   * Remove componentGroup component class from registry.
+   *
+   * @param alias The alias that the componentGroup class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerComponentGroupComponent}.
+   */
+  removeComponentGroupComponent (alias) {
+    this._componentGroupComponentMap.delete(alias)
+  }
+
+  /**
+   * Get componentGroup component class.
+   * @param alias The alias that the componentGroup component class was registered with
+   *      by using {@link FilterListRegistrySingleton#registerComponentGroupComponent}.
+   */
+  getComponentGroupComponent (alias) {
+    return this._componentGroupComponentMap.get(alias)
   }
 
   /**
