@@ -127,9 +127,9 @@ class Form(container.AbstractContainerRenderable):
 
         Defaults to a :class:`django_cradmin.uicontainer.messagecontainer.MessagesContainer`.
 
-        Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
+        Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageContainerMixin`.
         """
-        return messagescontainer.MessagesContainer(
+        return messagescontainer.BoxMessagesContainer(
             test_css_class_suffixes_list=['form-globalmessages']
         )
 
