@@ -45,7 +45,7 @@ Styleguide form.6:messages
     }
 
     &--error {
-        color: color(primary);
+        color: color(warning, dark);
 
         &:before {
             @extend %icon-error;
