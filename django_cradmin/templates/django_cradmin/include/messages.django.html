@@ -10,9 +10,9 @@
 
 {% if messages %}
     <div id="id_django_cradmin_messages" role="complementary"
-            class="{% if messages_cssclass %}{{ messages_cssclass }}{% else %}messages{% endif %}{% cradmin_test_css_class 'djangomessages' %}">
+            class="{% if messages_cssclass %}{{ messages_cssclass }}{% else %}global-messages{% endif %}{% cradmin_test_css_class 'djangomessages' %}">
         {% for message in messages %}
-            <div class="box box--spacing-none-sides
+            <div class="box box--spacing-none-sides global-messages__message
                             {% if message.tags == "error" %}
                                 box--warning
                             {% elif message.tags == "warning" %}
@@ -25,7 +25,7 @@
                             {% cradmin_test_css_class message.tags %}
                         "
                         role="alertdialog">
-                <div class="container">
+                <div class="global-messages__messagecontent">
                     <span class="screenreader-only">
                         {% if message.tags == "error" %}
                             {% trans "Error" %}
