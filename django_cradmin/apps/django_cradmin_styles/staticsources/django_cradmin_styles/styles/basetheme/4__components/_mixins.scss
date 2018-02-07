@@ -1,0 +1,345 @@
+@mixin page-header-mixin (
+        $vertical-padding: vertical-space($spacing--small),
+        $color: $color-light,
+        $background-color: color(primary)) {
+    position: relative;
+    top: 0;
+    width: 100%;
+    padding: $vertical-padding 0;
+    color: $color;
+    background-color: $background-color;
+
+    &__content {
+        @include container(wide);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+    }
+
+    &__brand {
+        display: block;
+        border: none;
+        height: 40px;
+        overflow: hidden;
+    }
+
+    &__brandname {
+        display: none;
+        fill: $color;
+        color: $color;
+
+        @include min-width(md) {
+            display: inline-block;
+        }
+    }
+
+    &__brandimage {
+        display: inline-block;
+        border: none;
+        height: 40px;
+        width: auto;
+    }
+
+    &__nav {
+        position: relative;
+        height: 40px;
+        //top: -1px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    &__navlink {
+        @include font(base, bold);
+        @include font-size(xsmall);
+        display: none;
+        position: relative;
+        margin-left: 1em;
+        color: $color;
+        border-bottom: $border-width--small solid transparent;
+
+        @include min-width(lg) {
+            display: block;
+        }
+
+        &--button {
+            @include button();
+            @include font-size(xsmall);
+            color: color(primary);
+            border-color: $color;
+            background-color: $color;
+            padding: $unit $spacing--small;
+            margin-bottom: 0;
+
+            @include min-width(md) {
+                padding: $unit $spacing--small;
+            }
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: $color;
+                background-color: transparent;
+                border: $border-width solid $color;
+            }
+
+        }
+
+        &--active,
+        &:hover,
+        &:focus {
+            color: $color;
+            border-color: $color;
+        }
+    }
+
+    &__navmenutoggle {
+        @include font(base, bold);
+        @include font-size(xsmall);
+        position: relative;
+        display: block;
+        height: 40px;
+        //top: 6px;
+        //float: right;
+        margin-left: 1em;
+        min-width: $unit * 14;
+        //line-height: 20px;
+        color: $color;
+        transition: all 300ms $swift-out;
+
+        .icon-hamburger__bar {
+            background-color: $color;
+        }
+    }
+}
+
+
+@mixin page-section-mixin () {
+    padding-top: $vertical-rythm--medium;
+    padding-bottom: $vertical-rythm--medium;
+
+    @include min-width(md) {
+        padding-top: $vertical-rythm--spacing + $unit;
+        padding-bottom: $vertical-rythm--spacing + $unit;
+    }
+
+    &--tight {
+        @include container(tight);
+    }
+
+    &--focus {
+        background-color: $color-light;
+    }
+
+    &--primary {
+        color: $color-text;
+        background-color: color(primary);
+    }
+
+    &--secondary {
+        color: $color-text;
+        background-color: color(secondary);
+    }
+
+    &--center {
+        text-align: center;
+    }
+
+    &--center-md {
+        @include min-width(md) {
+            text-align: center;
+        }
+    }
+
+    &--center-lg {
+        @include min-width(lg) {
+            text-align: center;
+        }
+    }
+
+    &--spaced {
+        padding-top: $vertical-rythm--spacing;
+        padding-bottom: $vertical-rythm--spacing;
+
+        @include min-width(md) {
+            padding-top: $vertical-rythm--spacing * 2;
+            padding-bottom: $vertical-rythm--spacing * 2;
+        }
+    }
+
+    &--outlined { // TODO: Better naming
+        border-top: $border-style;
+        border-color: color(neutral, light);
+    }
+
+    &--last {
+        margin-bottom: 0;
+
+        & + .care-question {
+            margin-top: 0;
+        }
+    }
+
+    // Collapsable (mobile) styles
+
+    &__toggle {
+        @extend %h3;
+        position: relative;
+        display: block;
+        width: 100%;
+        padding-right: $unit * 4;
+        margin-bottom: 0;
+
+        text-align: inherit;
+
+        &:hover,
+        &:focus {
+            color: $color-links--hover;
+        }
+
+        &:after {
+            @extend %icon-chevron-down--secondary;
+            content: '';
+            position: absolute;
+            display: block;
+            right: 0;
+            top: 50%;
+            margin-top: -5px;
+            transition: all 300ms $swift-out;
+        }
+
+        @include min-width(md) { // TODO: Base this on the modifier --sm?
+            display: none;
+        }
+    }
+
+    &--collapsable-sm {
+        border-bottom: $border-style;
+        border-color: color(neutral, light);
+
+        @include min-width(md) {
+            border-bottom: 0;
+        }
+
+        .adminui-page-section__title,
+        .adminui-page-section__content {
+            @extend %animation-fall-down;
+            display: none;
+            margin-top: $vertical-rythm--medium;
+
+            @include min-width(md) {
+                display: block;
+            }
+        }
+    }
+
+    &--expanded {
+        .adminui-page-section__content {
+            display: block;
+        }
+
+        .adminui-page-section__toggle:after {
+            transform: rotate(-180deg);
+        }
+    }
+
+    &--spaced {
+        padding-top: $vertical-rythm--spacing;
+        padding-bottom: $vertical-rythm--spacing;
+
+        @include min-width(md) {
+            padding-top: $vertical-rythm--spacing * 2;
+            padding-bottom: $vertical-rythm--spacing * 2;
+        }
+    }
+
+    &--spacing-sm {
+        padding-top: vertical-space($spacing--small);
+        padding-bottom: vertical-space($spacing--small);
+
+        @include min-width(md) {
+            padding-top: vertical-space($spacing);
+            padding-bottom: vertical-space($spacing);
+        }
+    }
+}
+
+
+@mixin page-cover-mixin(
+    $vertical-padding-sm: $spacing,
+    $vertical-padding: $vertical-rythm--spacing,
+    $background-color: color(primary),
+    $color: $color-light,
+    $emphasis-background-color: color(primary, dark),
+    $emphasis-color: $color-light
+) {
+    position: relative;
+    padding-top: $vertical-padding-sm; // TODO: Vertical variables...
+    padding-bottom: $vertical-padding-sm; // TODO: Vertical variables...
+    text-align: center;
+    color: $color;
+    background-color: $background-color;
+
+    @media print {
+        background-color: transparent;
+        color: #000;
+    }
+
+    @include min-width(md) {
+        padding-top: $vertical-padding;
+        padding-bottom: $vertical-padding;
+    }
+
+    &__title {
+        position: relative;
+        @include container(wide);
+        z-index: 2;
+        width: 100%;
+        max-width: $container-width;
+        margin-bottom: $spacing--small;
+        @include font-size(xlarge);
+
+        &--small {
+            @include font-size(large);
+        }
+
+        &:only-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__description {
+        @include container(tight);
+        @include font(base, bold);
+        @include font-size(small);
+        position: relative;
+        z-index: 2;
+        max-width: $container-width--tight + ($spacing * 2);
+        padding: 0;
+        margin-bottom: $spacing--small;
+
+        &--large {
+            @include font-size(large);
+            @include spaced-text;
+        }
+    }
+
+    &__strong {
+        @include font(base, bold);
+        display: inline-block;
+        padding: 0 $unit 2px;
+        margin: 0 -2px;
+        color: $emphasis-color;
+        background-color: $emphasis-background-color;
+    }
+    &__link {
+        color: $emphasis-color;
+        border-color: $emphasis-background-color;
+        &:hover,
+        &:focus {
+            color: $emphasis-color;
+            border-color: $emphasis-color;
+        }
+    }
+}
