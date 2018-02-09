@@ -284,7 +284,7 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
         return '{}__nav'.format(self.get_child_renderable_parent_bem_block())
 
     def __bool__(self):
-        return self.has_items() or bool(self.cradmin_instance.expandable_menu_renderable)
+        return self.has_items() or bool(getattr(self.cradmin_instance, 'expandable_menu_renderable', None))
 
 
 class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
