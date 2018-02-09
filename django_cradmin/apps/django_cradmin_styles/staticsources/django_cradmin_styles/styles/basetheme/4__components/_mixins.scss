@@ -133,13 +133,29 @@
     }
 
     &--primary {
-        color: $color-text;
-        background-color: color(primary);
+        color: $color-light;
+        background-color: color(primary, dark);
+
+        a {
+            color: $color-light;
+
+            &:hover {
+                color: $color-light;
+            }
+        }
     }
 
     &--secondary {
-        color: $color-text;
-        background-color: color(secondary);
+        color: $color-light;
+        background-color: color(secondary, dark);
+
+        a {
+            color: $color-light;
+
+            &:hover {
+                color: $color-light;
+            }
+        }
     }
 
     &--center {
@@ -262,6 +278,11 @@
             padding-top: vertical-space($spacing);
             padding-bottom: vertical-space($spacing);
         }
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
 }
 
