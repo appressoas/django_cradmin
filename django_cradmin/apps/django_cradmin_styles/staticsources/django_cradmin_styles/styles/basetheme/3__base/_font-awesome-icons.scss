@@ -1,0 +1,104 @@
+$fa-font-path: "#{$media-path}/cradmin_fontawesome/webfonts";
+
+@import "../../cradmin_fontawesome/scss/fontawesome.scss";
+@import "../../cradmin_fontawesome/scss/fa-solid.scss";
+
+
+/* cricon
+
+Example: Arrows
+
+    <ul class="sg-icon-grid">
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--arrow-up" aria-hidden="true"></span>
+            <code>cricon cricon--arrow-up</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--arrow-down" aria-hidden="true"></span>
+            <code>cricon cricon--arrow-down</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--arrow-left" aria-hidden="true"></span>
+            <code>cricon cricon--arrow-left</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--arrow-right" aria-hidden="true"></span>
+            <code>cricon cricon--arrow-right</code>
+        </li>
+    </ul>
+
+    <ul class="sg-icon-grid">
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
+            <code>cricon cricon--chevron-up</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
+            <code>cricon cricon--chevron-down</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+            <code>cricon cricon--chevron-left</code>
+        </li>
+        <li class="sg-icon-grid__item">
+            <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+            <code>cricon cricon--chevron-right</code>
+        </li>
+    </ul>
+
+
+Example: Fixed width
+    <div>
+        <span class="cricon cricon--bars cricon--fixed-width" style="background:MistyRose"></span>
+        <code>cricon cricon--bars cricon--fixed-width</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--fixed-width" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--fixed-width</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--fixed-width" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--fixed-width</code>
+    </div>
+Styleguide 4:cricon
+*/
+
+@mixin cricon_font_awesome_icon ($variantname, $icon-content) {
+    &--#{$variantname}::before {
+        content: fa-content($icon-content);
+    }
+}
+
+.cricon {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+
+    //&--arrow-up::before {
+    //    content: fa-content($fa-var-arrow-up);
+    //}
+    @include cricon_font_awesome_icon(arrow-up, $fa-var-arrow-up);
+    @include cricon_font_awesome_icon(arrow-down, $fa-var-arrow-down);
+    @include cricon_font_awesome_icon(arrow-left, $fa-var-arrow-left);
+    @include cricon_font_awesome_icon(arrow-right, $fa-var-arrow-right);
+
+    @include cricon_font_awesome_icon(chevron-up, $fa-var-chevron-up);
+    @include cricon_font_awesome_icon(chevron-down, $fa-var-chevron-down);
+    @include cricon_font_awesome_icon(chevron-left, $fa-var-chevron-left);
+    @include cricon_font_awesome_icon(chevron-right, $fa-var-chevron-right);
+
+    @include cricon_font_awesome_icon(info, $fa-var-info);
+    @include cricon_font_awesome_icon(settings, $fa-var-cog);
+    @include cricon_font_awesome_icon(bars, $fa-var-bars);
+
+    &--fixed-width {
+        text-align: center;
+        width: (20em / 16);
+    }
+}
