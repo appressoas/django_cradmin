@@ -88,7 +88,7 @@ describe('DropDownSearchFilter', () => {
       childExposedApi: childExposedApi
     }))
     expect(getExpandCollapseButtonComponent(component).find('span').prop('className')).toEqual(
-      'searchinput__buttonicon icon-chevron-down')
+      'searchinput__buttonicon cricon cricon--chevron-down')
   })
 
   test('expandCollapseButton icon expanded', () => {
@@ -97,7 +97,7 @@ describe('DropDownSearchFilter', () => {
       childExposedApi: childExposedApi
     }))
     expect(getExpandCollapseButtonComponent(component).find('span').prop('className')).toEqual(
-      'searchinput__buttonicon icon-chevron-up')
+      'searchinput__buttonicon cricon cricon--chevron-up')
   })
 
   test('expandCollapseButton click toggles "expandable" componentGroup', () => {

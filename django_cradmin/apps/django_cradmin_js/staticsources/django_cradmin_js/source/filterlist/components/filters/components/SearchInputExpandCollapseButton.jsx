@@ -30,9 +30,9 @@ export default class SearchInputExpandCollapseButton extends AbstractSearchInput
 
   get iconClassName () {
     if (this.props.isExpanded) {
-      return 'icon-chevron-up'
+      return 'cricon cricon--chevron-up'
     } else {
-      return 'icon-chevron-down'
+      return 'cricon cricon--chevron-down'
     }
   }
 

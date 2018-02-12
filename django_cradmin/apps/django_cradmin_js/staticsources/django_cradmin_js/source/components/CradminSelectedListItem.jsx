@@ -11,7 +11,7 @@ export default class CradminSelectedListItem extends React.Component {
       className: 'selectable-list__item  selectable-list__item--selected',
       contentClassName: 'selectable-list__itemcontent',
       iconWrapperClassName: 'selectable-list__icon',
-      iconClassName: 'icon-close--light',
+      iconClassName: 'cricon cricon--close cricon--color-light',
       titleTagName: 'strong',
       titleClassName: 'selectable-list__itemtitle',
       descriptionClassName: '',

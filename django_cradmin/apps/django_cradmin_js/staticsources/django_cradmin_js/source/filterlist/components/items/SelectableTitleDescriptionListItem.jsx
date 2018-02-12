@@ -51,7 +51,7 @@ export default class SelectableTitleDescriptionListItem extends AbstractListItem
   }
 
   get iconClassName () {
-    return 'icon-check--light'
+    return 'cricon cricon--check cricon--color-light'
   }
 
   get contentClassName () {

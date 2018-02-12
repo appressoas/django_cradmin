@@ -17,7 +17,7 @@ export default class SearchInputExpandCollapseButton extends AbstractSearchInput
   }
 
   get iconClassName () {
-    return 'icon-close'
+    return 'cricon cricon--close'
   }
 
   get label () {

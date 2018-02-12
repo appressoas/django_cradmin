@@ -94,7 +94,7 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
   }
 
   get selectedItemIconClassName () {
-    return 'icon-close--light'
+    return 'cricon cricon--close cricon--color-light'
   }
 
   getSelectedItemLabel (listItemData) {

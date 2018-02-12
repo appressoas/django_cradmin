@@ -23,7 +23,7 @@ test('className', () => {
 
 test('icon className', () => {
   const component = shallow(render())
-  expect(getIconComponent(component).prop('className')).toBe('searchinput__buttonicon icon-close')
+  expect(getIconComponent(component).prop('className')).toBe('searchinput__buttonicon cricon cricon--close')
 })
 
 test('title', () => {
