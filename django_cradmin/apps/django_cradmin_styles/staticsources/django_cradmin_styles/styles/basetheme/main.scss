@@ -45,9 +45,10 @@ Styleguide 7:components
 @import '3__base/cricon/cricon-font-awesome';
 
 //$cricon-font-awesome-free-icon-map: map-merge($cricon-font-awesome-free-icon-map, (
-//    align-center: $fa-var-align-center
+//    align-center: $fa-var-align-center,
+//    align-right: $fa-var-align-right
 //));
-//$cricon-extra-icon-names: align-center;
+//$cricon-extra-icon-names: align-center, align-right;
 
 @import '3__base/all';
 @import '4__components/all';

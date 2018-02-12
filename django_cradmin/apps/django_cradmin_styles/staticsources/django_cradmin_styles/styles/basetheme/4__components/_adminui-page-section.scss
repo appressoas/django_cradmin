@@ -61,7 +61,46 @@ Example: {type: isolated} `last`
     <section class="adminui-page-section  adminui-page-section--last">
         <div class="container  container--tight">
             <h2>No spacing below</h2>
-            <p>Used at the bottom of the page mostlye</p>
+            <p>Used at the bottom of the page mostly</p>
+        </div>
+    </section>
+
+Example: {type: isolated} Collapsible on small screens - collapsed
+
+    <section class="adminui-page-section  adminui-page-section--collapsible-sm">
+        <div class="container  container--tight">
+            <h2 class="adminui-page-section__title">
+                Some more stuff
+            </h2>
+            <!--
+            You need a javascript click listener on this button that adds
+             ``adminui-page-section--expanded`` class to the section.
+             -->
+            <button type="button" class="adminui-page-section__toggle">
+                Some more stuff
+            </button>
+            <div class="adminui-page-section__content">
+                <p>Hello world</p>
+            </div>
+        </div>
+    </section>
+
+Example: {type: isolated} Collapsible on small screens - expanded
+    <section class="adminui-page-section  adminui-page-section--collapsible-sm  adminui-page-section--expanded">
+        <div class="container  container--tight">
+            <h2 class="adminui-page-section__title">
+                Some more stuff
+            </h2>
+            <!--
+            You need a javascript click listener on this button that removes
+             ``adminui-page-section--expanded`` class from the section.
+             -->
+            <button type="button" class="adminui-page-section__toggle">
+                Some more stuff
+            </button>
+            <div class="adminui-page-section__content">
+                <p>Hello world</p>
+            </div>
         </div>
     </section>
 

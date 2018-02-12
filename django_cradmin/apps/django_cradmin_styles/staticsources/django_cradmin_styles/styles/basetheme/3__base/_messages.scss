@@ -6,10 +6,14 @@ Example: Error
 Example: Info
     <p class="message  message--info">Look, I'm an info message!</p>
 
+Example: Success
+    <p class="message  message--success">Look, I'm a success message!</p>
+
 Example: Multiple messages
     <p class="message  message--info">Look, I'm an info message!</p>
     <p class="message  message--error">Look, I'm an error message!</p>
     <p class="message  message--info">Look, I'm another info message!</p>
+    <p class="message  message--success">Look, I'm a success message!</p>
 
 Example: Within a fieldwrapper
     <div class="fieldwrapper">
@@ -40,7 +44,7 @@ Styleguide form.6:messages
     margin-bottom: vertical-space($spacing);
 
     &:before {
-        content: '';
+        @include cricon-fixed-width(xsmall);
         margin-right: $unit;
     }
 
@@ -48,8 +52,7 @@ Styleguide form.6:messages
         color: color(warning, dark);
 
         &:before {
-            @extend %icon-error;
-            margin-top: 0.05em;
+            @include cricon-icon(warning);
         }
     }
 
@@ -57,8 +60,15 @@ Styleguide form.6:messages
         color: $color-text;
 
         &:before {
-            @extend %icon-info;
-            margin-top: 0.05em;
+            @include cricon-icon(info);
+        }
+    }
+
+    &--success {
+        color: color(success, dark);
+
+        &:before {
+            @include cricon-icon(check);
         }
     }
 

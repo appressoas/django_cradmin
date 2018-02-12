@@ -116,6 +116,7 @@
 
 
 @mixin page-section-mixin () {
+    $__root: &;
     padding-top: $vertical-rythm--medium;
     padding-bottom: $vertical-rythm--medium;
 
@@ -215,13 +216,14 @@
         }
 
         &:after {
-            @extend %icon-chevron-down--secondary;
-            content: '';
+            @include cricon-icon(chevron-down);
+            @include cricon-size(small);
+            @include cricon-color-secondary();
             position: absolute;
             display: block;
             right: 0;
             top: 50%;
-            margin-top: -5px;
+            margin-top: -9px;
             transition: all 300ms $swift-out;
         }
 
@@ -230,7 +232,7 @@
         }
     }
 
-    &--collapsable-sm {
+    &--collapsible-sm {
         border-bottom: $border-style;
         border-color: color(neutral, light);
 
@@ -238,8 +240,8 @@
             border-bottom: 0;
         }
 
-        .adminui-page-section__title,
-        .adminui-page-section__content {
+        #{$__root}__title,
+        #{$__root}__content {
             @extend %animation-fall-down;
             display: none;
             margin-top: $vertical-rythm--medium;
@@ -251,11 +253,11 @@
     }
 
     &--expanded {
-        .adminui-page-section__content {
+        #{$__root}__content {
             display: block;
         }
 
-        .adminui-page-section__toggle:after {
+        #{$__root}__toggle:after {
             transform: rotate(-180deg);
         }
     }
@@ -362,5 +364,52 @@
             color: $emphasis-color;
             border-color: $emphasis-color;
         }
+    }
+}
+
+
+@mixin breadcrumbs-mixin () {
+    position: relative;
+    @include font-size(xsmall);
+    display: inline-block;
+
+    &__item {
+        color: inherit;
+        border-color: transparent;
+    }
+    &__separator {
+        &:before {
+            @include cricon-fixed-width(xsmall);
+            @include cricon-icon(chevron-right);
+        }
+    }
+
+    &--dark {
+        color: $color-text;
+        .adminui-breadcrumbs__item {
+            color: inherit;
+            border-color: transparent;
+            &:hover {
+                color: $color-links--hover;
+            }
+        }
+    }
+
+    &--light {
+        color: $color-light;
+        .adminui-breadcrumbs__item {
+            color: inherit;
+            &:hover {
+                color: color(neutral, light);
+                border-color: color(neutral, light);
+            }
+        }
+    }
+
+    &--block-light {
+        display: block;
+        padding: $vertical-rythm 0;
+        background-color: $color-light;
+        box-shadow: 0 $border-width 0 rgba(color(neutral), 0.15);
     }
 }

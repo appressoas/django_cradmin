@@ -217,7 +217,7 @@ Example: Color variants
 
 
 
-Example: Size variants
+Example: {type: isolated} Size variants
 
     <ul class="sg-icon-grid">
         <li class="sg-icon-grid__item">
@@ -260,79 +260,239 @@ Example: Size variants
 
 
 Example: Fixed width
+
+    <p>Just like the size variants, just add <code>-fw</code> at the end</p>
+
+    <br>
+    <strong>xxsmall</strong>
     <div>
-        <span class="cricon cricon--bars cricon--fixed-width" style="background:MistyRose"></span>
-        <code>cricon cricon--bars cricon--fixed-width</code>
+        <span class="cricon cricon--warning  cricon--size-xxsmall cricon--size-xxsmall-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning  cricon--size-xxsmall cricon--size-xxsmall-fw</code>
     </div>
     <div>
-        <span class="cricon cricon--info cricon--fixed-width" style="background:MistyRose"></span>
-        <code>cricon cricon--info cricon--fixed-width</code>
+        <span class="cricon cricon--info  cricon--size-xxsmall cricon--size-xxsmall-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info  cricon--size-xxsmall cricon--size-xxsmall-fw</code>
     </div>
     <div>
-        <span class="cricon cricon--settings cricon--fixed-width" style="background:MistyRose"></span>
-        <code>cricon cricon--settings cricon--fixed-width</code>
+        <span class="cricon cricon--settings  cricon--size-xxsmall cricon--size-xxsmall-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings  cricon--size-xxsmall cricon--size-xxsmall-fw</code>
     </div>
+
+    <br>
+    <strong>xsmall</strong>
+    <div>
+        <span class="cricon cricon--warning  cricon--size-xxsmall cricon--size-xsmall-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning  cricon--size-xxsmall cricon--size-xsmall-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info  cricon--size-xxsmall cricon--size-xsmall-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info  cricon--size-xxsmall cricon--size-xsmall-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings  cricon--size-xxsmall cricon--size-xsmall-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings  cricon--size-xxsmall cricon--size-xsmall-fw</code>
+    </div>
+
+    <br>
+    <strong>small</strong>
+    <div>
+        <span class="cricon cricon--warning cricon--size-small cricon--size-small-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning cricon--size-small cricon--size-small-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--size-small cricon--size-small-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--size-small cricon--size-small-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--size-small cricon--size-small-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--size-small cricon--size-small-fw</code>
+    </div>
+
+    <br>
+    <strong>medium</strong>
+    <div>
+        <span class="cricon cricon--warning cricon--size-medium cricon--size-medium-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning cricon--size-medium cricon--size-medium-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--size-medium cricon--size-medium-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--size-medium cricon--size-medium-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--size-medium cricon--size-medium-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--size-medium cricon--size-medium-fw</code>
+    </div>
+
+    <br>
+    <strong>large</strong>
+    <div>
+        <span class="cricon cricon--warning cricon--size-large cricon--size-large-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning cricon--size-large cricon--size-large-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--size-large cricon--size-large-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--size-large cricon--size-large-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--size-large cricon--size-large-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--size-large cricon--size-large-fw</code>
+    </div>
+
+    <br>
+    <strong>xlarge</strong>
+    <div>
+        <span class="cricon cricon--warning cricon--size-xlarge cricon--size-xlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning cricon--size-xlarge cricon--size-xlarge-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--size-xlarge cricon--size-xlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--size-xlarge cricon--size-xlarge-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--size-xlarge cricon--size-xlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--size-xlarge cricon--size-xlarge-fw</code>
+    </div>
+
+    <br>
+    <strong>xxlarge</strong>
+    <div>
+        <span class="cricon cricon--warning cricon--size-xxlarge cricon--size-xxlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning cricon--size-xxlarge cricon--size-xxlarge-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--size-xxlarge cricon--size-xxlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--size-xxlarge cricon--size-xxlarge-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--size-xxlarge cricon--size-xxlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--size-xxlarge cricon--size-xxlarge-fw</code>
+    </div>
+
+    <br>
+    <strong>xxxlarge</strong>
+    <div>
+        <span class="cricon cricon--warning cricon--size-xxxlarge cricon--size-xxxlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--warning cricon--size-xxxlarge cricon--size-xxxlarge-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--info cricon--size-xxxlarge cricon--size-xxxlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--info cricon--size-xxxlarge cricon--size-xxxlarge-fw</code>
+    </div>
+    <div>
+        <span class="cricon cricon--settings cricon--size-xxxlarge cricon--size-xxxlarge-fw" style="background:MistyRose"></span>
+        <code>cricon cricon--settings cricon--size-xxxlarge cricon--size-xxxlarge-fw</code>
+    </div>
+
 Styleguide 4:cricon
 */
 
-
 .cricon {
-    @include cricon-base();
-
-    &--fixed-width {
-        @include cricon-fixed-width();
-    }
-
     @each $icon-name in $cricon-default-icon-names {
-        @include cricon-iconvariant($icon-name);
+        &--#{$icon-name}:before {
+            @include cricon-icon($icon-name);
+        }
     }
     @if $cricon-extra-icon-names != null {
         @each $icon-name in $cricon-extra-icon-names {
-            @include cricon-iconvariant($icon-name);
+            &--#{$icon-name}:before {
+                @include cricon-icon($icon-name);
+            }
         }
     }
 
     &--color-primary {
-        @include cricon-color-primary();
+        &:before {
+            @include cricon-color-primary();
+        }
     }
     &--color-secondary {
-        @include cricon-color-secondary();
+        &:before {
+            @include cricon-color-secondary();
+        }
     }
     &--color-success {
-        @include cricon-color-success();
+        &:before {
+            @include cricon-color-success();
+        }
     }
     &--color-info {
-        @include cricon-color-info();
+        &:before {
+            @include cricon-color-info();
+        }
     }
     &--color-warning {
-        @include cricon-color-warning();
+        &:before {
+            @include cricon-color-warning();
+        }
     }
     &--color-light {
-        @include cricon-color-light();
+        &:before {
+            @include cricon-color-light();
+        }
     }
 
     &--size-xxsmall {
-        @include font-size(xxsmall);
+        &:before {
+            @include cricon-size(xxsmall);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(xxsmall);
+        }
     }
     &--size-xsmall {
-        @include font-size(xsmall);
+        &:before {
+            @include cricon-size(xsmall);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(xsmall);
+        }
     }
     &--size-small {
-        @include font-size(small);
+        &:before {
+            @include cricon-size(small);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(small);
+        }
     }
     &--size-medium {
-        @include font-size(medium);
+        &:before {
+            @include cricon-size(medium);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(medium);
+        }
     }
     &--size-large {
-        @include font-size(large);
+        &:before {
+            @include cricon-size(large);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(large);
+        }
     }
     &--size-xlarge {
-        @include font-size(xlarge);
+        &:before {
+            @include cricon-size(xlarge);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(xlarge);
+        }
     }
     &--size-xxlarge {
-        @include font-size(xxlarge);
+        &:before {
+            @include cricon-size(xxlarge);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(xxlarge);
+        }
     }
     &--size-xxxlarge {
-        @include font-size(xxxlarge);
+        &:before {
+            @include cricon-size(xxxlarge);
+        }
+        &-fw:before {
+            @include cricon-fixed-width(xxxlarge);
+        }
     }
 }
