@@ -11,7 +11,7 @@ Example:
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -22,7 +22,7 @@ Example: Dropdown icon
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="Expand">
-            <span class="searchinput__buttonicon icon-chevron-down" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--chevron-down" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -33,10 +33,10 @@ Example: Multiple buttons
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
         <button type="button" class="searchinput__button" title="Expand">
-            <span class="searchinput__buttonicon icon-chevron-down" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--chevron-down" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -49,7 +49,7 @@ Example: Within a label
                 <input type="text" placeholder="Search ..." class="searchinput__input" />
             </span>
             <button type="button" class="searchinput__button" title="clear search input">
-                <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+                <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
             </button>
         </div>
     </label>
@@ -61,7 +61,7 @@ Example: Disabled input
             <input type="text" disabled placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" disabled class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -79,7 +79,7 @@ Example: With selected items
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -91,19 +91,19 @@ Example: With deselectable selected items
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Animals</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">People</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -115,46 +115,46 @@ Example: With more than one line of selected items
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Animals</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">People</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Angry beasts</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Bigfoots / Yetis</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Magical creatures</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Demons / Hellspawn</span>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-chevron-down" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--chevron-down" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -172,19 +172,19 @@ Example: searchinput__selected_preview as a button
             <span class="searchinput__selected">
                 <button type="button" class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Animals</button>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <span class="searchinput__selected">
                 <button type="button" class="searchinput__selected_preview searchinput__selected_preview--with-deselect">People</button>
                 <button type="button" class="searchinput__deselect">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -207,7 +207,7 @@ Example: Single selected item - used when allowing to select one item via search
             </span>
         </span>
         <button type="button" class="searchinput__button" title="deselect">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -221,7 +221,7 @@ Example: --inline
                 <input type="text" placeholder="Search ..." class="searchinput__input" />
             </span>
             <button type="button" class="searchinput__button" title="clear search input">
-                <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+                <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
             </button>
         </span>
         am inline!
@@ -243,7 +243,7 @@ Example: --inline With selected items
                 <input type="text" placeholder="Search ..." class="searchinput__input" />
             </span>
             <button type="button" class="searchinput__button" title="clear search input">
-                <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+                <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
             </button>
         </span>
         am inline!
@@ -258,7 +258,7 @@ Example: Compared with a normal input
             <input type="text" placeholder="Search input ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -277,7 +277,7 @@ Example: --outlined
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -289,7 +289,7 @@ Example: --error
             <input type="text" placeholder="Search ..." class="searchinput__input" />
         </span>
         <button type="button" class="searchinput__button" title="clear search input">
-            <span class="searchinput__buttonicon icon-close" aria-hidden="true"></span>
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
         </button>
     </div>
 
@@ -303,7 +303,7 @@ Example: Selected items --primary
                     Animals
                 </span>
                 <button type="button" class="searchinput__deselect searchinput__deselect--primary">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
@@ -320,7 +320,7 @@ Example: Selected items --secondary
                     Animals
                 </span>
                 <button type="button" class="searchinput__deselect searchinput__deselect--secondary">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
@@ -337,7 +337,7 @@ Example: Selected items --warning
                     Animals
                 </span>
                 <button type="button" class="searchinput__deselect searchinput__deselect--warning">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
@@ -354,7 +354,7 @@ Example: Selected items --success
                     Animals
                 </span>
                 <button type="button" class="searchinput__deselect searchinput__deselect--success">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
@@ -371,7 +371,7 @@ Example: Selected items --info
                     Animals
                 </span>
                 <button type="button" class="searchinput__deselect searchinput__deselect--info">
-                    <i class="searchinput__deselect_icon icon-close--light"></i>
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
                 </button>
             </span>
             <input type="text" placeholder="Search ..." class="searchinput__input" />
