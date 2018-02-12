@@ -1,3 +1,5 @@
+@import 'cricon/deprecated-icons';  // NOTE: Will be removed in a future release
+
 @import 'screenreaders',
 'print',
 'animations',
@@ -6,8 +8,7 @@
 'link',
 'type',
 'lists',
-'icons',
-'cricon',
+'cricon/cricon',
 'fieldset',
 'label',
 'button',

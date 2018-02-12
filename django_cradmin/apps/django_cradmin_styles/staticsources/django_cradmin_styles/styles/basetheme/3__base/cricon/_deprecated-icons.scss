@@ -1,5 +1,7 @@
 /*
-Icons
+Deprecated old style icons
+
+Warning: **This is deprecated. Use cricon instead.**
 
 All icons come in the following colors: `dark` (default), `primary`, `secondary` and `light`.
 
@@ -480,74 +482,88 @@ Example: All the icons
         </li>
     </ul>
 
-Styleguide 4:icons
+Styleguide cricon.deprecated
 */
+
+
+// Sprite icons
+@mixin svg-prite-icon($col, $row, $width, $height) {
+    display: inline-block;
+    vertical-align: top;
+
+    width: $width;
+    height: $height;
+
+    background-image: url('#{$media-path}/images/sprite.svg');
+    background-position: (-( ( $col - 1 ) * 100) + px ) (-( ( $row - 1 ) * 100 ) + px);
+    background-repeat: no-repeat;
+}
 
 
 // Arrow
 .icon-arrow,
 %icon-arrow {
     &-up {
-        @include icon(1, 1, 15px, 15px);
+        @include svg-prite-icon(1, 1, 15px, 15px);
 
         &--light {
-            @include icon(1, 2, 15px, 15px);
+            @include svg-prite-icon(1, 2, 15px, 15px);
         }
 
         &--primary {
-            @include icon(1, 3, 15px, 15px);
+            @include svg-prite-icon(1, 3, 15px, 15px);
         }
 
         &--secondary {
-            @include icon(1, 4, 15px, 15px);
+            @include svg-prite-icon(1, 4, 15px, 15px);
         }
     }
 
     &-right {
-        @include icon(2, 1, 15px, 15px);
+        @include svg-prite-icon(2, 1, 15px, 15px);
 
         &--light {
-            @include icon(2, 2, 15px, 15px);
+            @include svg-prite-icon(2, 2, 15px, 15px);
         }
 
         &--primary {
-            @include icon(2, 3, 15px, 15px);
+            @include svg-prite-icon(2, 3, 15px, 15px);
         }
 
         &--secondary {
-            @include icon(2, 4, 15px, 15px);
+            @include svg-prite-icon(2, 4, 15px, 15px);
         }
     }
 
     &-down {
-        @include icon(3, 1, 15px, 15px);
+        @include svg-prite-icon(3, 1, 15px, 15px);
 
         &--light {
-            @include icon(3, 2, 15px, 15px);
+            @include svg-prite-icon(3, 2, 15px, 15px);
         }
 
         &--primary {
-            @include icon(3, 3, 15px, 15px);
+            @include svg-prite-icon(3, 3, 15px, 15px);
         }
 
         &--secondary {
-            @include icon(3, 4, 15px, 15px);
+            @include svg-prite-icon(3, 4, 15px, 15px);
         }
     }
 
     &-left {
-        @include icon(4, 1, 15px, 15px);
+        @include svg-prite-icon(4, 1, 15px, 15px);
 
         &--light {
-            @include icon(4, 2, 15px, 15px);
+            @include svg-prite-icon(4, 2, 15px, 15px);
         }
 
         &--primary {
-            @include icon(4, 3, 15px, 15px);
+            @include svg-prite-icon(4, 3, 15px, 15px);
         }
 
         &--secondary {
-            @include icon(4, 4, 15px, 15px);
+            @include svg-prite-icon(4, 4, 15px, 15px);
         }
     }
 }
@@ -556,402 +572,402 @@ Styleguide 4:icons
 .icon-chevron,
 %icon-chevron {
     &-up {
-        @include icon(5, 1, 15px, 10px);
+        @include svg-prite-icon(5, 1, 15px, 10px);
 
         &--light {
-            @include icon(5, 2, 15px, 10px);
+            @include svg-prite-icon(5, 2, 15px, 10px);
         }
 
         &--primary {
-            @include icon(5, 3, 15px, 10px);
+            @include svg-prite-icon(5, 3, 15px, 10px);
         }
 
         &--secondary {
-            @include icon(5, 4, 15px, 10px);
+            @include svg-prite-icon(5, 4, 15px, 10px);
         }
     }
 
     &-right {
-        @include icon(6, 1, 10px, 15px);
+        @include svg-prite-icon(6, 1, 10px, 15px);
 
         &--light {
-            @include icon(6, 2, 10px, 15px);
+            @include svg-prite-icon(6, 2, 10px, 15px);
         }
 
         &--primary {
-            @include icon(6, 3, 10px, 15px);
+            @include svg-prite-icon(6, 3, 10px, 15px);
         }
 
         &--secondary {
-            @include icon(6, 4, 10px, 15px);
+            @include svg-prite-icon(6, 4, 10px, 15px);
         }
     }
 
     &-down {
-        @include icon(7, 1, 15px, 10px);
+        @include svg-prite-icon(7, 1, 15px, 10px);
 
         &--light {
-            @include icon(7, 2, 15px, 10px);
+            @include svg-prite-icon(7, 2, 15px, 10px);
         }
 
         &--primary {
-            @include icon(7, 3, 15px, 10px);
+            @include svg-prite-icon(7, 3, 15px, 10px);
         }
 
         &--secondary {
-            @include icon(7, 4, 15px, 10px);
+            @include svg-prite-icon(7, 4, 15px, 10px);
         }
     }
 
     &-left {
-        @include icon(8, 1, 10px, 15px);
+        @include svg-prite-icon(8, 1, 10px, 15px);
 
         &--light {
-            @include icon(8, 2, 10px, 15px);
+            @include svg-prite-icon(8, 2, 10px, 15px);
         }
 
         &--primary {
-            @include icon(8, 3, 10px, 15px);
+            @include svg-prite-icon(8, 3, 10px, 15px);
         }
 
         &--secondary {
-            @include icon(8, 4, 10px, 15px);
+            @include svg-prite-icon(8, 4, 10px, 15px);
         }
     }
 }
 
 .icon-check,
 %icon-check {
-    @include icon(10, 1, 15px, 12px);
+    @include svg-prite-icon(10, 1, 15px, 12px);
 
     &--light {
-        @include icon(10, 2, 15px, 12px);
+        @include svg-prite-icon(10, 2, 15px, 12px);
     }
 
     &--primary {
-        @include icon(10, 3, 15px, 12px);
+        @include svg-prite-icon(10, 3, 15px, 12px);
     }
 
     &--secondary {
-        @include icon(10, 4, 15px, 12px);
+        @include svg-prite-icon(10, 4, 15px, 12px);
     }
 }
 
 .icon-search,
 %icon-search {
-    @include icon(9, 1, 19px, 19px);
+    @include svg-prite-icon(9, 1, 19px, 19px);
 
     &--light {
-        @include icon(9, 2, 19px, 19px);
+        @include svg-prite-icon(9, 2, 19px, 19px);
     }
 
     &--primary {
-        @include icon(9, 3, 19px, 19px);
+        @include svg-prite-icon(9, 3, 19px, 19px);
     }
 
     &--secondary {
-        @include icon(9, 4, 19px, 19px);
+        @include svg-prite-icon(9, 4, 19px, 19px);
     }
 }
 
 .icon-close,
 %icon-close {
-    @include icon(11, 1, 15px, 15px);
+    @include svg-prite-icon(11, 1, 15px, 15px);
 
     &--light {
-        @include icon(11, 2, 15px, 15px);
+        @include svg-prite-icon(11, 2, 15px, 15px);
     }
 
     &--primary {
-        @include icon(11, 3, 15px, 15px);
+        @include svg-prite-icon(11, 3, 15px, 15px);
     }
 
     &--secondary {
-        @include icon(11, 4, 15px, 15px);
+        @include svg-prite-icon(11, 4, 15px, 15px);
     }
 }
 
 .icon-user,
 %icon-user {
-    @include icon(12, 1, 17px, 20px);
+    @include svg-prite-icon(12, 1, 17px, 20px);
 
     &--light {
-        @include icon(12, 2, 17px, 20px);
+        @include svg-prite-icon(12, 2, 17px, 20px);
     }
 
     &--primary {
-        @include icon(12, 3, 17px, 20px);
+        @include svg-prite-icon(12, 3, 17px, 20px);
     }
 
     &--secondary {
-        @include icon(12, 4, 17px, 20px);
+        @include svg-prite-icon(12, 4, 17px, 20px);
     }
 }
 
 .icon-time,
 %icon-time {
-    @include icon(13, 1, 18px, 18px);
+    @include svg-prite-icon(13, 1, 18px, 18px);
 
     &--light {
-        @include icon(13, 2, 18px, 18px);
+        @include svg-prite-icon(13, 2, 18px, 18px);
     }
 
     &--primary {
-        @include icon(13, 3, 18px, 18px);
+        @include svg-prite-icon(13, 3, 18px, 18px);
     }
 
     &--secondary {
-        @include icon(13, 4, 18px, 18px);
+        @include svg-prite-icon(13, 4, 18px, 18px);
     }
 }
 
 .icon-flag,
 %icon-flag {
-    @include icon(14, 1, 12px, 15px);
+    @include svg-prite-icon(14, 1, 12px, 15px);
 
     &--light {
-        @include icon(14, 2, 12px, 15px);
+        @include svg-prite-icon(14, 2, 12px, 15px);
     }
 
     &--primary {
-        @include icon(14, 3, 12px, 15px);
+        @include svg-prite-icon(14, 3, 12px, 15px);
     }
 
     &--secondary {
-        @include icon(14, 4, 12px, 15px);
+        @include svg-prite-icon(14, 4, 12px, 15px);
     }
 }
 
 .icon-more,
 %icon-more {
-    @include icon(15, 1, 21px, 5px);
+    @include svg-prite-icon(15, 1, 21px, 5px);
 
     &--light {
-        @include icon(15, 2, 21px, 5px);
+        @include svg-prite-icon(15, 2, 21px, 5px);
     }
 
     &--primary {
-        @include icon(15, 3, 21px, 5px);
+        @include svg-prite-icon(15, 3, 21px, 5px);
     }
 
     &--secondary {
-        @include icon(15, 4, 21px, 5px);
+        @include svg-prite-icon(15, 4, 21px, 5px);
     }
 }
 
 .icon-user-small,
 %icon-user-small {
-    @include icon(16, 1, 14px, 16px);
+    @include svg-prite-icon(16, 1, 14px, 16px);
 
     &--light {
-        @include icon(16, 2, 14px, 16px);
+        @include svg-prite-icon(16, 2, 14px, 16px);
     }
 
     &--primary {
-        @include icon(16, 3, 14px, 16px);
+        @include svg-prite-icon(16, 3, 14px, 16px);
     }
 
     &--secondary {
-        @include icon(16, 4, 14px, 16px);
+        @include svg-prite-icon(16, 4, 14px, 16px);
     }
 }
 
 
 .icon-facebook,
 %icon-facebook {
-    @include icon(1, 5, 20px, 20px);
+    @include svg-prite-icon(1, 5, 20px, 20px);
 
     &--light {
-        @include icon(1, 6, 20px, 20px);
+        @include svg-prite-icon(1, 6, 20px, 20px);
     }
 
     &--primary {
-        @include icon(1, 7, 20px, 20px);
+        @include svg-prite-icon(1, 7, 20px, 20px);
     }
 
     &--secondary {
-        @include icon(1, 8, 20px, 20px);
+        @include svg-prite-icon(1, 8, 20px, 20px);
     }
 }
 
 .icon-twitter,
 %icon-twitter {
-    @include icon(2, 5, 20px, 17px);
+    @include svg-prite-icon(2, 5, 20px, 17px);
 
     &--light {
-        @include icon(2, 6, 20px, 17px);
+        @include svg-prite-icon(2, 6, 20px, 17px);
     }
 
     &--primary {
-        @include icon(2, 7, 20px, 17px);
+        @include svg-prite-icon(2, 7, 20px, 17px);
     }
 
     &--secondary {
-        @include icon(2, 8, 20px, 17px);
+        @include svg-prite-icon(2, 8, 20px, 17px);
     }
 }
 
 .icon-email,
 %icon-email {
-    @include icon(3, 5, 18px, 13px);
+    @include svg-prite-icon(3, 5, 18px, 13px);
 
     &--light {
-        @include icon(3, 6, 18px, 13px);
+        @include svg-prite-icon(3, 6, 18px, 13px);
     }
 
     &--primary {
-        @include icon(3, 7, 18px, 13px);
+        @include svg-prite-icon(3, 7, 18px, 13px);
     }
 
     &--secondary {
-        @include icon(3, 8, 18px, 13px);
+        @include svg-prite-icon(3, 8, 18px, 13px);
     }
 }
 
 .icon-podcast,
 %icon-podcast {
-    @include icon(4, 5, 12px, 16px);
+    @include svg-prite-icon(4, 5, 12px, 16px);
 
     &--light {
-        @include icon(4, 6, 12px, 16px);
+        @include svg-prite-icon(4, 6, 12px, 16px);
     }
 
     &--primary {
-        @include icon(4, 7, 12px, 16px);
+        @include svg-prite-icon(4, 7, 12px, 16px);
     }
 
     &--secondary {
-        @include icon(4, 8, 12px, 16px);
+        @include svg-prite-icon(4, 8, 12px, 16px);
     }
 }
 
 .icon-instagram,
 %icon-instagram {
-    @include icon(5, 5, 20px, 17px);
+    @include svg-prite-icon(5, 5, 20px, 17px);
 
     &--light {
-        @include icon(5, 6, 20px, 17px);
+        @include svg-prite-icon(5, 6, 20px, 17px);
     }
 
     &--primary {
-        @include icon(5, 7, 20px, 17px);
+        @include svg-prite-icon(5, 7, 20px, 17px);
     }
 
     &--secondary {
-        @include icon(5, 8, 20px, 17px);
+        @include svg-prite-icon(5, 8, 20px, 17px);
     }
 }
 
 .icon-snapchat,
 %icon-snapchat {
-    @include icon(6, 5, 18px, 17px);
+    @include svg-prite-icon(6, 5, 18px, 17px);
 
     &--light {
-        @include icon(6, 6, 18px, 17px);
+        @include svg-prite-icon(6, 6, 18px, 17px);
     }
 
     &--primary {
-        @include icon(6, 7, 18px, 17px);
+        @include svg-prite-icon(6, 7, 18px, 17px);
     }
 
     &--secondary {
-        @include icon(6, 8, 18px, 17px);
+        @include svg-prite-icon(6, 8, 18px, 17px);
     }
 }
 
 .icon-blog,
 %icon-blog {
-    @include icon(7, 5, 16px, 16px);
+    @include svg-prite-icon(7, 5, 16px, 16px);
 
     &--light {
-        @include icon(7, 6, 16px, 16px);
+        @include svg-prite-icon(7, 6, 16px, 16px);
     }
 
     &--primary {
-        @include icon(7, 7, 16px, 16px);
+        @include svg-prite-icon(7, 7, 16px, 16px);
     }
 
     &--secondary {
-        @include icon(7, 8, 16px, 16px);
+        @include svg-prite-icon(7, 8, 16px, 16px);
     }
 }
 
 .icon-phone,
 %icon-phone {
-    @include icon(8, 5, 14px, 14px);
+    @include svg-prite-icon(8, 5, 14px, 14px);
 
     &--light {
-        @include icon(8, 6, 14px, 14px);
+        @include svg-prite-icon(8, 6, 14px, 14px);
     }
 
     &--primary {
-        @include icon(8, 7, 14px, 14px);
+        @include svg-prite-icon(8, 7, 14px, 14px);
     }
 
     &--secondary {
-        @include icon(8, 8, 14px, 14px);
+        @include svg-prite-icon(8, 8, 14px, 14px);
     }
 }
 
 .icon-file,
 %icon-file {
-    @include icon(9, 5, 39px, 47px);
+    @include svg-prite-icon(9, 5, 39px, 47px);
 
     &--light {
-        @include icon(9, 6, 39px, 47px);
+        @include svg-prite-icon(9, 6, 39px, 47px);
     }
 
     &--primary {
-        @include icon(9, 7, 39px, 47px);
+        @include svg-prite-icon(9, 7, 39px, 47px);
     }
 
     &--secondary {
-        @include icon(9, 8, 39px, 47px);
+        @include svg-prite-icon(9, 8, 39px, 47px);
     }
 }
 
 .icon-download,
 %icon-download {
-    @include icon(10, 5, 19px, 21px);
+    @include svg-prite-icon(10, 5, 19px, 21px);
 
     &--light {
-        @include icon(10, 6, 19px, 21px);
+        @include svg-prite-icon(10, 6, 19px, 21px);
     }
 
     &--primary {
-        @include icon(10, 7, 19px, 21px);
+        @include svg-prite-icon(10, 7, 19px, 21px);
     }
 
     &--secondary {
-        @include icon(10, 8, 19px, 21px);
+        @include svg-prite-icon(10, 8, 19px, 21px);
     }
 }
 
 .icon-address,
 %icon-address {
-    @include icon(11, 5, 12px, 18px);
+    @include svg-prite-icon(11, 5, 12px, 18px);
 
     &--light {
-        @include icon(11, 6, 12px, 18px);
+        @include svg-prite-icon(11, 6, 12px, 18px);
     }
 
     &--primary {
-        @include icon(11, 7, 12px, 18px);
+        @include svg-prite-icon(11, 7, 12px, 18px);
     }
 
     &--secondary {
-        @include icon(11, 8, 12px, 18px);
+        @include svg-prite-icon(11, 8, 12px, 18px);
     }
 }
 
 .icon-error,
 %icon-error {
-    @include icon(1, 9, 18px, 15px);
+    @include svg-prite-icon(1, 9, 18px, 15px);
 }
 
 .icon-info,
 %icon-info {
-    @include icon(2, 9, 14px, 14px);
+    @include svg-prite-icon(2, 9, 14px, 14px);
 }
 
 .icon-middle {

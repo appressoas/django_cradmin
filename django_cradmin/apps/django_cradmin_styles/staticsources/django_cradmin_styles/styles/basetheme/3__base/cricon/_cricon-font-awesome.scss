@@ -1,0 +1,171 @@
+$fa-font-path: "#{$media-path}/cradmin_fontawesome/webfonts";
+
+@import "../../../cradmin_fontawesome/scss/fontawesome.scss";
+@import "../../../cradmin_fontawesome/scss/fa-solid.scss";
+@import "../../../cradmin_fontawesome/scss/fa-brands";
+
+
+@mixin cricon-base() {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-weight: 900;
+}
+
+@mixin cricon-fixed-width() {
+    text-align: center;
+    width: (20em / 16);
+}
+
+@mixin cricon-icon-font-awesome-free($icon-content) {
+    font-family: 'Font Awesome 5 Free';
+    &::before {
+        content: fa-content($icon-content);
+    }
+}
+
+@mixin cricon-iconvariant-font-awesome-free($name, $icon-content) {
+    &--#{$name} {
+        @include cricon-icon-font-awesome-free($icon-content);
+
+    }
+}
+
+@mixin cricon-icon-font-awesome-brands($icon-content) {
+    font-family: 'Font Awesome 5 Brands';
+    &::before {
+        content: fa-content($icon-content);
+    }
+}
+
+@mixin cricon-iconvariant-font-awesome-brands($name, $icon-content) {
+    &--#{$name} {
+        @include cricon-icon-font-awesome-brands($icon-content);
+
+    }
+}
+
+@mixin cricon-color-primary() {
+    color: color(primary);
+}
+
+@mixin cricon-color-secondary() {
+    color: color(secondary);
+}
+
+@mixin cricon-color-light() {
+    color: $color-light;
+}
+
+@mixin cricon-color-success() {
+    color: color(success);
+}
+
+@mixin cricon-color-info() {
+    color: color(info);
+}
+
+@mixin cricon-color-warning() {
+    color: color(warning);
+}
+
+
+.cricon {
+    @include cricon-base();
+
+    &--fixed-width {
+        @include cricon-fixed-width();
+    }
+
+    @include cricon-iconvariant-font-awesome-free(arrow-up, $fa-var-arrow-up);
+    @include cricon-iconvariant-font-awesome-free(arrow-down, $fa-var-arrow-down);
+    @include cricon-iconvariant-font-awesome-free(arrow-left, $fa-var-arrow-left);
+    @include cricon-iconvariant-font-awesome-free(arrow-right, $fa-var-arrow-right);
+    @include cricon-iconvariant-font-awesome-free(chevron-up, $fa-var-chevron-up);
+    @include cricon-iconvariant-font-awesome-free(chevron-down, $fa-var-chevron-down);
+    @include cricon-iconvariant-font-awesome-free(chevron-left, $fa-var-chevron-left);
+    @include cricon-iconvariant-font-awesome-free(chevron-right, $fa-var-chevron-right);
+
+    @include cricon-iconvariant-font-awesome-free(check, $fa-var-check);
+    @include cricon-iconvariant-font-awesome-free(search, $fa-var-search);
+    @include cricon-iconvariant-font-awesome-free(close, $fa-var-times);
+    @include cricon-iconvariant-font-awesome-free(user, $fa-var-user);
+    @include cricon-iconvariant-font-awesome-free(clock, $fa-var-clock);
+    @include cricon-iconvariant-font-awesome-free(flag, $fa-var-flag);
+    @include cricon-iconvariant-font-awesome-free(ellipsis-horizontal, $fa-var-ellipsis-h);
+    @include cricon-iconvariant-font-awesome-free(download, $fa-var-download);
+    @include cricon-iconvariant-font-awesome-free(file, $fa-var-file);
+    @include cricon-iconvariant-font-awesome-free(info, $fa-var-info);
+    @include cricon-iconvariant-font-awesome-free(warning, $fa-var-exclamation-triangle);
+    @include cricon-iconvariant-font-awesome-free(settings, $fa-var-cog);
+    @include cricon-iconvariant-font-awesome-free(bars, $fa-var-bars);
+    @include cricon-iconvariant-font-awesome-free(external-link, $fa-var-external-link-alt);
+
+    @include cricon-iconvariant-font-awesome-brands(facebook, $fa-var-facebook-square);
+    @include cricon-iconvariant-font-awesome-brands(twitter, $fa-var-twitter);
+    @include cricon-iconvariant-font-awesome-brands(instagram, $fa-var-instagram);
+    @include cricon-iconvariant-font-awesome-brands(youtube, $fa-var-youtube);
+    @include cricon-iconvariant-font-awesome-brands(snapchat, $fa-var-snapchat-ghost);
+    @include cricon-iconvariant-font-awesome-free(podcast, $fa-var-podcast);
+    @include cricon-iconvariant-font-awesome-free(email, $fa-var-envelope);
+    @include cricon-iconvariant-font-awesome-free(phone, $fa-var-phone);
+
+    @include cricon-iconvariant-font-awesome-free(map-marker, $fa-var-map-marker-alt);
+    @include cricon-iconvariant-font-awesome-free(location-arrow, $fa-var-location-arrow);
+
+    @include cricon-iconvariant-font-awesome-free(list-ul, $fa-var-list-ul);
+    @include cricon-iconvariant-font-awesome-free(list-ol, $fa-var-list-ol);
+    @include cricon-iconvariant-font-awesome-free(bold, $fa-var-bold);
+    @include cricon-iconvariant-font-awesome-free(italic, $fa-var-italic);
+    @include cricon-iconvariant-font-awesome-free(image, $fa-var-image);
+    @include cricon-iconvariant-font-awesome-free(video, $fa-var-video);
+    @include cricon-iconvariant-font-awesome-free(text, $fa-var-paragraph);
+
+    &--color-primary {
+        @include cricon-color-primary();
+    }
+    &--color-secondary {
+        @include cricon-color-secondary();
+    }
+    &--color-success {
+        @include cricon-color-success();
+    }
+    &--color-info {
+        @include cricon-color-info();
+    }
+    &--color-warning {
+        @include cricon-color-warning();
+    }
+    &--color-light {
+        @include cricon-color-light();
+    }
+
+    &--size-xxsmall {
+        @include font-size(xxsmall);
+    }
+    &--size-xsmall {
+        @include font-size(xsmall);
+    }
+    &--size-small {
+        @include font-size(small);
+    }
+    &--size-medium {
+        @include font-size(medium);
+    }
+    &--size-large {
+        @include font-size(large);
+    }
+    &--size-xlarge {
+        @include font-size(xlarge);
+    }
+    &--size-xxlarge {
+        @include font-size(xxlarge);
+    }
+    &--size-xxxlarge {
+        @include font-size(xxxlarge);
+    }
+}
