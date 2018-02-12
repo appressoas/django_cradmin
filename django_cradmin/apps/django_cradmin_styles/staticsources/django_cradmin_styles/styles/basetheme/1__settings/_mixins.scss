@@ -280,3 +280,8 @@
     word-break: break-word;
     hyphens: auto;
 }
+
+
+@function list-contains($list, $value) {
+    @return (false == index($list, $value));
+}

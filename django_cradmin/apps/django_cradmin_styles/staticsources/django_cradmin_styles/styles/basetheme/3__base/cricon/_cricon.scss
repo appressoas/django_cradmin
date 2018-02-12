@@ -274,3 +274,65 @@ Example: Fixed width
     </div>
 Styleguide 4:cricon
 */
+
+
+.cricon {
+    @include cricon-base();
+
+    &--fixed-width {
+        @include cricon-fixed-width();
+    }
+
+    @each $icon-name in $cricon-default-icon-names {
+        @include cricon-iconvariant($icon-name);
+    }
+    @if $cricon-extra-icon-names != null {
+        @each $icon-name in $cricon-extra-icon-names {
+            @include cricon-iconvariant($icon-name);
+        }
+    }
+
+    &--color-primary {
+        @include cricon-color-primary();
+    }
+    &--color-secondary {
+        @include cricon-color-secondary();
+    }
+    &--color-success {
+        @include cricon-color-success();
+    }
+    &--color-info {
+        @include cricon-color-info();
+    }
+    &--color-warning {
+        @include cricon-color-warning();
+    }
+    &--color-light {
+        @include cricon-color-light();
+    }
+
+    &--size-xxsmall {
+        @include font-size(xxsmall);
+    }
+    &--size-xsmall {
+        @include font-size(xsmall);
+    }
+    &--size-small {
+        @include font-size(small);
+    }
+    &--size-medium {
+        @include font-size(medium);
+    }
+    &--size-large {
+        @include font-size(large);
+    }
+    &--size-xlarge {
+        @include font-size(xlarge);
+    }
+    &--size-xxlarge {
+        @include font-size(xxlarge);
+    }
+    &--size-xxxlarge {
+        @include font-size(xxxlarge);
+    }
+}
