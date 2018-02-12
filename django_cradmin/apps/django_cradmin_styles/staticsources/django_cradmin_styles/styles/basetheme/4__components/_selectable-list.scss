@@ -134,7 +134,7 @@ Example: {type: isolated} With icon
             </li>
             <li class="selectable-list__item selectable-list__item--selected" tabindex="0">
                 <div class="selectable-list__icon">
-                    <i class="icon-check--light"></i>
+                    <span class="cricon cricon--check cricon--color-light"></span>
                 </div>
                 <div class="selectable-list__itemcontent">
                     <h3 class="selectable-list__itemtitle">Element 2</h3>
@@ -151,7 +151,7 @@ Example: {type: isolated} With icon
             </li>
             <li class="selectable-list__item selectable-list__item--selected" tabindex="0">
                 <div class="selectable-list__icon">
-                    <i class="icon-check--light"></i>
+                    <span class="cricon cricon--check cricon--color-light"></span>
                 </div>
                 <div class="selectable-list__itemcontent">
                     Element 4
@@ -177,7 +177,7 @@ Example: {type: isolated} With icon after
                     consectetur et. Maecenas faucibus mollis interdum.
                 </div>
                 <div class="selectable-list__icon">
-                    <i class="icon-close--light"></i>
+                    <i class="cricon cricon--close cricon--color-light"></i>
                 </div>
             </li>
             <li class="selectable-list__item" tabindex="0">
@@ -191,7 +191,7 @@ Example: {type: isolated} With icon after
                     Element 4
                 </div>
                 <div class="selectable-list__icon">
-                    <i class="icon-close--light"></i>
+                    <i class="cricon cricon--close cricon--color-light"></i>
                 </div>
             </li>
         </ul>
@@ -276,7 +276,7 @@ Example: {type: isolated} Inline with icon
                     Element 1
                 </div>
                 <div class="selectable-list__icon">
-                    <i class="icon-close--light"></i>
+                    <i class="cricon cricon--close cricon--color-light"></i>
                 </div>
             </li>
             <li class="selectable-list__item" tabindex="0">
@@ -289,7 +289,7 @@ Example: {type: isolated} Inline with icon
                     Element 3
                 </div>
                 <div class="selectable-list__icon">
-                    <i class="icon-close--light"></i>
+                    <i class="cricon cricon--close cricon--color-light"></i>
                 </div>
             </li>
         </ul>
@@ -305,7 +305,7 @@ Example: {type: isolated} Inline item content is always single line - ellipsis f
                     id ligula porta felis euismod semper. Curabitur blandit tempus porttitor.</p>
                 </div>
                 <div class="selectable-list__icon">
-                    <i class="icon-close--light"></i>
+                    <i class="cricon cricon--close cricon--color-light"></i>
                 </div>
             </li>
             <li class="selectable-list__item" tabindex="0">
@@ -379,14 +379,17 @@ Styleguide components.selectable-list
     }
 
     &__icon {
-        display: inline-block;
+        //display: inline-block;
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: 15px;
-        height: 20px;
-        overflow: visible;
-        text-align: center;
-        transform: scale(0.6);
+        width: 15px;
+        position: relative;
+
+        //height: 20px;
+        //overflow: visible;
+        //text-align: center;
+        ////transform: scale(0.6);
 
         &:first-child {
             margin-left: $spacing--small;
@@ -394,6 +397,16 @@ Styleguide components.selectable-list
 
         &:last-child {
             margin-right: $spacing--small;
+        }
+
+        .cricon:before {
+            //@include cricon-fixed-width(xxsmall);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            font-size: 12px;
+            margin-top: -5px;
         }
     }
 
