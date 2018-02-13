@@ -81,7 +81,7 @@ Styleguide form.2:buttons
 }
 
 
-@mixin button() {
+@mixin button($responsive: true) {
     @include spaced-text;
     @include font(base, bold);
     @include font-size(xsmall);
@@ -101,11 +101,13 @@ Styleguide form.2:buttons
     background-color: transparent;
     margin-bottom: $unit;
 
-    @include min-width(md) {
-        display: inline-block;
-        white-space: nowrap;
-        width: auto;
-        padding: #{$spacing--small - $border-width} #{$indention - $border-width};
+    @if $responsive {
+        @include min-width(md) {
+            display: inline-block;
+            white-space: nowrap;
+            width: auto;
+            padding: #{$spacing--small - $border-width} #{$indention - $border-width};
+        }
     }
 
     &[disabled] {

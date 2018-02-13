@@ -1,70 +1,88 @@
 @mixin page-header-mixin (
-        $vertical-padding: vertical-space($spacing--small),
+        $vertical-padding-base: vertical-space($spacing--small),
         $color: $color-light,
-        $background-color: color(primary)) {
-    position: relative;
-    top: 0;
-    width: 100%;
-    padding: $vertical-padding 0;
-    color: $color;
+        $background-color: color(primary),
+        $navlink-display-breakpoint: lg,
+        $content-container-width: wide,
+        $height-base: 40px) {
+    $__page-header-root: &;
     background-color: $background-color;
+    position: relative;
+    //top: 0;
+    padding: $vertical-padding-base 0;
+    width: 100%;
+    color: $color;
 
     &__content {
-        @include container(wide);
+        @if $content-container-width != null {
+            @include container($content-container-width);
+        }
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 40px;
+        height: $height-base;
+    }
+
+    &__brand,
+    &__nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     &__brand {
-        display: block;
         border: none;
-        height: 40px;
+        height: 100%;
         overflow: hidden;
+        justify-content: flex-start;
+        flex: 0 0 auto;
+        padding: 0;
+        margin: 0;
     }
 
     &__brandname {
-        display: none;
+        display: inline-block;
         fill: $color;
         color: $color;
-
-        @include min-width(md) {
-            display: inline-block;
-        }
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     &__brandimage {
         display: inline-block;
         border: none;
-        height: 40px;
+        height: 100%;
         width: auto;
     }
 
     &__nav {
         position: relative;
-        height: 40px;
-        //top: -1px;
-        display: flex;
+        height: 100%;
         justify-content: flex-end;
-        align-items: center;
     }
 
     &__navlink {
+        $__pageheader-navlink-root: &;
         @include font(base, bold);
         @include font-size(xsmall);
-        display: none;
         position: relative;
         margin-left: 1em;
         color: $color;
         border-bottom: $border-width--small solid transparent;
+        @include min-width($navlink-display-breakpoint) {
+            display: inline-block;
+        }
 
-        @include min-width(lg) {
-            display: block;
+        &--active,
+        &:hover,
+        &:focus {
+            color: $color;
+            border-color: $color;
         }
 
         &--button {
-            @include button();
+            @include button($responsive: false);
             @include font-size(xsmall);
             color: color(primary);
             border-color: $color;
@@ -76,6 +94,7 @@
                 padding: $unit $spacing--small;
             }
 
+            @at-root #{selector-append(&, selector-append($__pageheader-navlink-root, --active))},
             &:hover,
             &:focus,
             &:active {
@@ -83,14 +102,15 @@
                 background-color: transparent;
                 border: $border-width solid $color;
             }
-
         }
 
-        &--active,
-        &:hover,
-        &:focus {
-            color: $color;
-            border-color: $color;
+        &, &--button {
+            display: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            @include min-width($navlink-display-breakpoint) {
+                display: inline-block;
+            }
         }
     }
 
@@ -99,17 +119,46 @@
         @include font-size(xsmall);
         position: relative;
         display: block;
-        height: 40px;
-        //top: 6px;
-        //float: right;
+        height: 100%;
         margin-left: 1em;
         min-width: $unit * 14;
-        //line-height: 20px;
         color: $color;
         transition: all 300ms $swift-out;
 
         .icon-hamburger__bar {
             background-color: $color;
+        }
+    }
+
+    &--small {
+        padding-top: ceil($vertical-padding-base * 0.7);
+        padding-bottom: ceil($vertical-padding-base * 0.7);
+        #{$__page-header-root}__content {
+            height: ceil($height-base * .7);
+        }
+    }
+
+    &--large {
+        #{$__page-header-root}__content {
+            height: ceil($height-base * 1.4);
+        }
+    }
+
+    &--xlarge {
+        #{$__page-header-root}__content {
+            height: ceil($height-base * 1.6);
+        }
+    }
+
+    &--xxlarge {
+        #{$__page-header-root}__content {
+            height: ceil($height-base * 2.0);
+        }
+    }
+
+    &--xxxlarge {
+        #{$__page-header-root}__content {
+            height: ceil($height-base * 2.5);
         }
     }
 }
