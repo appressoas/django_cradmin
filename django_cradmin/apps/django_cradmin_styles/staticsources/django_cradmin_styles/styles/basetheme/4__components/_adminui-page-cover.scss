@@ -30,7 +30,7 @@ Example: {type: isolated} With inline elements in description
         </p>
     </header>
 
-Styleguide layout.adminui.adminui-page-cover
+Styleguide layout.adminui-page-cover
 */
 .adminui-page-cover {
     @include page-cover-mixin();
