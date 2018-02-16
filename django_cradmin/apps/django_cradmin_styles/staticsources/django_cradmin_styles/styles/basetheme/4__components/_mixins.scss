@@ -70,15 +70,16 @@
         margin-left: 1em;
         color: $color;
         border-bottom: $border-width--small solid transparent;
-        @include min-width($navlink-display-breakpoint) {
-            display: inline-block;
-        }
 
         &--active,
         &:hover,
         &:focus {
             color: $color;
             border-color: $color;
+        }
+
+        &--large {
+            @include font-size(large);
         }
 
         &--button {
@@ -104,14 +105,14 @@
             }
         }
 
-        &, &--button {
-            display: none;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            @include min-width($navlink-display-breakpoint) {
-                display: inline-block;
-            }
-        }
+        //&, &--button {
+        //    display: none;
+        //    white-space: nowrap;
+        //    text-overflow: ellipsis;
+        //    @include min-width($navlink-display-breakpoint) {
+        //        display: inline-block;
+        //    }
+        //}
     }
 
     &__navmenutoggle {
