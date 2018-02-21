@@ -15,6 +15,28 @@
     }
 }
 
+@mixin columnlayout__spacing($prefix, $name, $sidemargin) {
+    &--spacing-#{$name} {
+        #{$prefix}__column {
+            @include min-width (md) {
+                margin-left: $sidemargin;
+                margin-right: $sidemargin;
+
+                &:first-child {
+                    @include min-width (md) {
+                        margin-left: 0;
+                    }
+                }
+                &:last-child {
+                    @include min-width (md) {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
 /* Column layout
 
 Example: {type: isolated} 1 column
@@ -214,8 +236,113 @@ Example: {type: isolated} Re-order for small screens - advanced
 Styleguide components.columnlayout.2:sm-order
 */
 
+/* Column layout - Spacing
+
+Example: {type: isolated} --spacing-none
+    <div class="columnlayout columnlayout--spacing-none">
+        <div class="columnlayout__column columnlayout__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout__column">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout__column columnlayout__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
+
+Example: {type: isolated} Default
+    <div class="columnlayout">
+        <div class="columnlayout__column columnlayout__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout__column">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout__column columnlayout__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
+
+Example: {type: isolated} --spacing-large
+    <div class="columnlayout columnlayout--spacing-large">
+        <div class="columnlayout__column columnlayout__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout__column">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout__column columnlayout__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
+
+
+Styleguide components.columnlayout.3:spacing
+*/
+
+
+/* Column layout - Color variants
+
+You can use the ``box`` component in combination with ``columnlayout__column``
+to add colors. They can safely be combined, but be careful with the ``--large`` and
+larger box variants when you have many columns. The padding can easily become larger
+than the space available to each column.
+
+Example: {type: isolated} Combine with box for colors
+    <div class="columnlayout">
+        <div class="columnlayout__column columnlayout__column--spacing-none box box--primary"></div>
+        <div class="columnlayout__column columnlayout__column--spacing-none box box--secondary"></div>
+        <div class="columnlayout__column columnlayout__column--spacing-none box box--info"></div>
+        <div class="columnlayout__column columnlayout__column--spacing-none box box--warning"></div>
+    </div>
+
+Styleguide components.columnlayout.4:color
+*/
+
+/* Column layout - vertical separators
+
+For separators, you create a column with with the ``--separator`` variant combined
+with ``box box--spacing-none box--<somecolor>``.
+
+Separator columns should normally use one of the ``--border-width*`` variants:
+
+- columnlayout__column--border-width (width from the ``$border-width`` variable).
+- columnlayout__column--border-width (width from the ``$border-width--small`` variable)
+
+Separators are not visible on screens below the ``md`` breakpoint.
+
+Example: {type: isolated}
+    <div class="columnlayout">
+        <div class="columnlayout__column columnlayout__column--half">
+            Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod.
+        </div>
+        <div class="columnlayout__column columnlayout__column--separator columnlayout__column--border-width box box--neutral-dark box--spacing-none"></div>
+        <div class="columnlayout__column columnlayout__column--half">
+            Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod.
+        </div>
+    </div>
+
+Example: {type: isolated} Tighter separator with --border-width-small
+    <div class="columnlayout">
+        <div class="columnlayout__column columnlayout__column--half">
+            Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod.
+        </div>
+        <div class="columnlayout__column columnlayout__column--separator columnlayout__column--border-width-small box box--neutral-dark box--spacing-none"></div>
+        <div class="columnlayout__column columnlayout__column--half">
+            Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod.
+        </div>
+    </div>
+
+Styleguide components.columnlayout.5:separator
+*/
+
 
 .columnlayout {
+    //$__columnlayout-root: &;
     display: flex;
     flex-direction: column;
     @include min-width (md) {
@@ -240,6 +367,8 @@ Styleguide components.columnlayout.2:sm-order
             }
         }
 
+        @include columnlayout__column-size(border-width, $border-width);
+        @include columnlayout__column-size(border-width-small, $border-width--small);
         @include columnlayout__column-size(xsmall, 15%);
         @include columnlayout__column-size(small, 20%);
         @include columnlayout__column-size(large, 25%);
@@ -252,5 +381,17 @@ Styleguide components.columnlayout.2:sm-order
         @include columnlayout__column-sm-order(2);
         @include columnlayout__column-sm-order(3);
         @include columnlayout__column-sm-order(5);
+
+        &--separator {
+            display: none;
+            overflow: hidden;
+            @include min-width (md) {
+                display: block;
+                flex: 0 0 auto;
+            }
+        }
     }
+
+    @include columnlayout__spacing(&, none, 0);
+    @include columnlayout__spacing(&, large, $spacing);
 }
