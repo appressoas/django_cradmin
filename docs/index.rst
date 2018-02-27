@@ -16,7 +16,6 @@ Getting started
 
    install
    newbie
-   gettingstartedguide
 
 
 ***********
@@ -27,7 +26,6 @@ Viewhelpers
    :maxdepth: 1
 
    viewhelpers_delete
-   viewhelpers_objecttable
    viewhelpers_listbuilder
    viewhelpers_listfilter
 
@@ -102,7 +100,6 @@ Widgets
    :maxdepth: 1
 
    datetimepicker
-   foreignkeywidgets
 
 
 ***********

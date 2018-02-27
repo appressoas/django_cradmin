@@ -7,7 +7,6 @@ class ViewMixin(object):
     Mixin class for views using filterlist.
 
     See :class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`
-    and :class:`django_cradmin.viewhelpers.objecttable.FilterListMixin`
     for implementation examples.
     """
     #: The :class:`django_cradmin.viewhelpers.listfilter.base.abstractfilterlist.AbstractFilterList`

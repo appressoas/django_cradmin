@@ -82,14 +82,6 @@ Full source code
 See :github_folder:`django_cradmin/demo/listfilterdemo`.
 
 
-************************************
-Getting started with ObjectTableView
-************************************
-Works just like the listbuilder example above, but you use
-``objecttable.FilterListMixin, objecttable.ObjectTableView`` instead of
-``listbuilderview.FilterListMixin, listbuilderview.View`` in the view.
-
-
 ***************
 Advanced topics
 ***************
@@ -294,14 +286,10 @@ For listbuilder views
 =====================
 :class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`
 
-For ObjectTableView
-===================
-:class:`django_cradmin.viewhelpers.objecttable.FilterListMixin`
-
 
 Custom views
 ============
-If you are not using objecttable or listbuilder, you can use
+If you are not using listbuilder, you can use
 :class:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin`.
 
 .. currentmodule:: django_cradmin.viewhelpers.listfilter.listfilter_viewmixin
