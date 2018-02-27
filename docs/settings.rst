@@ -122,66 +122,6 @@ options for :meth:`django_cradmin.imageutils.backends.backendinterface.Interface
 See :doc:`imageutils` for more information.
 
 
-********************
-cradmin_imagearchive
-********************
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE
-
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE
-=============================================
-The :doc:`imageutils` imagetype that defines how images in the
-cradmin listing of archive images in cradmin imagearchive is transformed.
-If this is not defined, we default to scaling the image to fit within
-a 100x60 px box. If you you change this, you will also want to
-change :setting:`.DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH`
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH
-
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH
-==============================================
-The width of the column containing the image preview in the listing
-of archive images in the cradmin view. Defaults to ``100``.
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE
-
-DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE
-=============================================
-The :doc:`imageutils` imagetype that defines how previews of images
-in cradmin imagearchive is transformed. If this is not defined, we default
-to scaling the image to fit within a 300x300 px box.
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_FILENAMEPATTERN
-
-DJANGO_CRADMIN_IMAGEARCHIVE_FILENAMEPATTERN
-===========================================
-The pattern to use for the filename for ``cradmin_imagearchive`` images. Defaults
-to::
-
-    cradmin_imagearchive_images/{id}-{uuid}{extension}
-
-You can change this if you want to store archive images in another directory.
-Any pattern must contain all the variables in the pattern above.
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE
-
-DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE
-========================================
-Max file size for images uploaded to the image archive as a string
-compatible with :func:`django_cradmin.utils.crhumanize.py.dehumanize_readable_filesize`.
-
-Defaults to ``None``, which means that there is no limit by default. Examples::
-
-    DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '500KB'
-    DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '10MB'
-    DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '2.5GB'
-
-
 ***********
 uicontainer
 ***********
