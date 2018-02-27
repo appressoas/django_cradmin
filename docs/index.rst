@@ -30,7 +30,6 @@ Viewhelpers
    viewhelpers_objecttable
    viewhelpers_listbuilder
    viewhelpers_listfilter
-   viewhelpers_multiselect2
 
 
 *************

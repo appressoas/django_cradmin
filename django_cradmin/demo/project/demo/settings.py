@@ -81,9 +81,6 @@ INSTALLED_APPS = (
     # Demo for listfilter
     'django_cradmin.demo.listfilterdemo',
 
-    # Demo for multiselect
-    'django_cradmin.demo.multiselect2demo',
-
     #: Demo for django_cradmin.uicontainer
     'django_cradmin.demo.uicontainerdemo',
 

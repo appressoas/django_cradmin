@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_register_account',
     'django_cradmin.apps.cradmin_invite',
     'django_cradmin.apps.cradmin_email',
+    'django_cradmin.apps.django_cradmin_js',
     'django_cradmin.uicontainer',
 
     'django_cradmin.tests.test_sortable.cradmin_sortable_testapp',
@@ -48,7 +49,6 @@ INSTALLED_APPS = (
     # Demo apps
     'django_cradmin.demo.webdemo',
     'django_cradmin.demo.listfilterdemo',
-    'django_cradmin.demo.multiselect2demo',
 )
 
 MIDDLEWARE = (
