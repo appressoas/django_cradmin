@@ -92,16 +92,6 @@ Utilities
     uicontainer
 
 
-*******
-Widgets
-*******
-
-.. toctree::
-   :maxdepth: 1
-
-   datetimepicker
-
-
 ***********
 Development
 ***********
