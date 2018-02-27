@@ -78,9 +78,6 @@ INSTALLED_APPS = (
     'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
 
-    # Demo for listfilter
-    'django_cradmin.demo.listfilterdemo',
-
     #: Demo for django_cradmin.uicontainer
     'django_cradmin.demo.uicontainerdemo',
 

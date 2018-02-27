@@ -5,8 +5,6 @@ from django.template import defaultfilters
 from django.views.generic import ListView
 from django_cradmin.viewhelpers import listbuilder
 from django.utils.translation import ugettext_lazy as _
-from django_cradmin.viewhelpers.listfilter import listfilter_viewmixin
-from django_cradmin.viewhelpers import listfilter
 
 
 class ViewMixin(object):
@@ -291,70 +289,3 @@ class View(javascriptregistry.viewmixin.WithinRoleViewMixin, ViewMixin, ListView
         context['cradmin_hide_menu'] = self.hide_menu
         self.add_javascriptregistry_component_ids_to_context(context=context)
         return context
-
-
-class FilterListMixin(listfilter_viewmixin.ViewMixin):
-    """
-    Mixin for adding filtering with :doc:`viewhelpers.listfilter <viewhelpers_listfilter>` to
-    :class:`listbuilder View <.View>`.
-
-    Must be mixed in before any TemplateView subclass.
-    """
-    template_name = None
-
-    def get_filterlist_position(self):
-        """
-        Get the position where you want to place the filterlist.
-
-        Supported values are:
-
-        - left
-        - right (the default)
-        - top
-
-        Defaults to ``"top"`` if :meth:`.get_filterlist_class` returns
-        :class:`django_cradmin.viewhelpers.listfilter.lists.Horizontal` or a subclass of it,
-        otherwise ``"right"``.
-        """
-        filterlist_class = self.get_filterlist_class()
-        if issubclass(filterlist_class, listfilter.lists.Horizontal):
-            return 'top'
-        else:
-            return 'right'
-
-    def get_filterlist_template_name(self):
-        """
-        Get the template to use based on what :meth:`.get_filterlist_position`.
-
-        You will want to call this from the ``get_template_names`` method.
-        This is just the interface, refer to the mixins implemented in
-        various modules (such as :class:`django_cradmin.viewhelpers.listbuilderview.FilterListMixin`)
-        for details on how to use this method.
-        """
-        if getattr(self, 'template_name', None):
-            return self.template_name
-        else:
-            position = self.get_filterlist_position()
-            template_name = 'django_cradmin/viewhelpers/listbuilderview/filterlist-{}.django.html'.format(position)
-            return template_name
-
-    def get_filter_unprotected_querystring_arguments(self):
-        """
-        This returns ``{'page'}``, which ensures we go back to
-        page 1 when changing a filter.
-
-        See :class:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin`
-        for more details.
-        """
-        return {'page'}
-
-    def get_filterlist_target_dom_id(self):
-        """
-        Overrides
-        :meth:`django_cradmin.viewhelpers.listfilter.listfilter_viewmixin.ViewMixin.get_filterlist_target_dom_id`
-        with a default of ``"django_cradmin_listbuilderview_listwrapper"``.
-
-        You should not need to override this unless you create a completely custom
-        template for your view.
-        """
-        return 'django_cradmin_listbuilderview_listwrapper'

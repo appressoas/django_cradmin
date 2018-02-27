@@ -6,7 +6,6 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views import static
 
-from django_cradmin.demo.listfilterdemo.cradmin import ListfilterDemoCrAdminInstance
 from django_cradmin.demo.login_not_required_demo.cradmin import LoginNotRequiredCrAdminInstance
 from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
 from django_cradmin.demo.project.demo.views.demo_overview import DemoView
@@ -26,7 +25,6 @@ urlpatterns = [
     url(r'^djangoadmin/', include(admin.site.urls)),
     url(r'^webdemo/', include(WebdemoCrAdminInstance.urls())),
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
-    url(r'^listfilterdemo/', include(ListfilterDemoCrAdminInstance.urls())),
     url(r'^login_not_required_demo/', include(LoginNotRequiredCrAdminInstance.urls())),
     url(r'^no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     url(r'^webdemo/', include('django_cradmin.demo.webdemo.urls')),

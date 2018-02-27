@@ -36,6 +36,5 @@ Views
 
     ViewMixin
     View
-    FilterListMixin
 
 .. automodule:: django_cradmin.viewhelpers.listbuilderview
