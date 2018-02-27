@@ -196,14 +196,6 @@ Defaults to ``None``, which means that there is no limit by default. Examples::
     DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '2.5GB'
 
 
-.. setting:: DJANGO_CRADMIN_SUPERUSERUI_THEME_PATH
-
-DJANGO_CRADMIN_SUPERUSERUI_THEME_PATH
-=====================================
-The theme path to use by default for ``django_cradmin.superuserui``.
-Defaults to ``None``, which means that we use :setting:`DJANGO_CRADMIN_THEME_PATH`.
-
-
 ***********
 uicontainer
 ***********
