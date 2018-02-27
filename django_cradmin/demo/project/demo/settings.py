@@ -52,7 +52,6 @@ INSTALLED_APPS = (
 
     # Required by django cradmin
     'django_cradmin',
-    'django_cradmin.apps.cradmin_imagearchive',
     'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
@@ -262,11 +261,6 @@ DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
         'quality': 70,
     },
 }
-
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE = 'cradmin-archiveimage-listing'
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH = 170
-DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE = 'cradmin-archiveimage-preview'
-# DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '100KB'
 
 
 IEVVTASKS_DOCS_DIRECTORY = 'docs'
