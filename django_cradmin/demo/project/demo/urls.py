@@ -24,7 +24,6 @@ urlpatterns = [
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     url(r'^uicontainerdemo/', include(UIContainerDemoCrAdminInstance.urls())),
-    url(r'^cradmin_temporaryfileuploadstore/', include('django_cradmin.apps.cradmin_temporaryfileuploadstore.urls')),
     url(r'^$', DemoView.as_view()),
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT}),
