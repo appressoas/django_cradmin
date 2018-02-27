@@ -278,21 +278,36 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         return len(self.renderable_list)
 
     def insert(self, index, renderable_object):
+        """
+        Insert a renderable object at a specific index in the menu.
+
+        Args:
+            index (int): The index to insert at.
+            renderable_object: The renderable object (a subclass
+                of :class:`django_cradmin.renderable.AbstractRenderable`)
+        """
         if index < len(self.renderable_list):
             self.renderable_list.insert(index, renderable_object)
         else:
             self.append(renderable_object)
 
     def prepend(self, renderable_object):
+        """
+        Prepend a renderable object to the menu.
+
+        Args:
+            renderable_object: The renderable object (a subclass
+                of :class:`django_cradmin.renderable.AbstractRenderable`)
+        """
         self.renderable_list.insert(0, renderable_object)
 
     def append(self, renderable_object):
         """
-        Appends an item to the list.
+        Append a renderable object to the menu.
 
-        Parameters:
-            renderable_object: Must implement the :class:`django_cradmin.renderable_object.AbstractRenderableWithCss` interface,
-                and it is typically a subclass of :class:`.AbstractItemRenderer`.
+        Args:
+            renderable_object: The renderable object (a subclass
+                of :class:`django_cradmin.renderable.AbstractRenderable`)
         """
         self.renderable_list.append(renderable_object)
 

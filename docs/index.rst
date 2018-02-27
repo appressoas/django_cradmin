@@ -26,7 +26,6 @@ Viewhelpers
    :maxdepth: 1
 
    viewhelpers_delete
-   viewhelpers_listbuilder
 
 
 *************

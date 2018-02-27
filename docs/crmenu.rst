@@ -70,9 +70,7 @@ A menu is just a :class:`django_cradmin.renderable.AbstractRenderable`, and
 with some overrides of methods in :class:`django_cradmin.crinstance.BaseCrAdminInstance`,
 you can even use any direct subclass of AbstractRenderable. For most cases
 you will want to use a subclass of :class:`django_cradmin.crmenu.AbstractMenuRenderable`
-for your menu. AbstractMenuRenderable is a subclass of
-:class:`django_cradmin.viewhelpers.listbuilder.base.List`, so you can put any
-renderables in it, including nested menus.
+for your menu.
 
 Since we just use the AbstractRenderable framework, it is really easy to use
 a plain Django template for your menu. This is nice when working with complex

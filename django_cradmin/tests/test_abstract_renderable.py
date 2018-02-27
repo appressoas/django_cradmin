@@ -4,7 +4,7 @@ from django_cradmin.renderable import AbstractRenderable
 
 
 class MinimalRenderable(AbstractRenderable):
-    template_name = 'cradmin_viewhelpers_testapp/listbuilder/minimal-renderable.django.html'
+    template_name = 'cradmin_viewhelpers_testapp/minimal-renderable.django.html'
 
 
 class TestAbstractRenderable(TestCase):
