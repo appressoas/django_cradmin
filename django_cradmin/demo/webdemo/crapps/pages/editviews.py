@@ -8,7 +8,6 @@ from . import mixins
 class PageCreateUpdateMixin(object):
     model = Page
     roleid_field = 'site'
-    enable_modelchoicefield_support = True
     fields = [
         'title',
         'intro',
