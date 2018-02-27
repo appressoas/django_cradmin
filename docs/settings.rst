@@ -30,20 +30,6 @@ The staticfiles path to the css icon library.
 Defaults to ``"django_cradmin/dist/vendor/fonts/fontawesome/css/font-awesome.min.css"``.
 
 
-.. setting:: DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
-
-DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_FORMVIEWS
-===========================================
-Can be used to hide the page header in form views by default.
-
-
-.. setting:: DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
-
-DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTINGVIEWS
-==============================================
-Can be used to hide the page header in listing views by default.
-
-
 .. setting:: DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED
 
 DJANGO_CRADMIN_MENU_SCROLL_TOP_FIXED
