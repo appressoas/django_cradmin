@@ -246,22 +246,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
-    'cradmin-archiveimage-listing': {
-        'width': 170,
-        'height': 100,
-        'crop': 'lfill',
-        'quality': 70,
-    },
-    'cradmin-archiveimage-preview': {
-        'width': 330,
-        'height': 400,
-        'crop': 'limit',
-        'quality': 70,
-    },
-}
-
-
 IEVVTASKS_DOCS_DIRECTORY = 'docs'
 IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
 

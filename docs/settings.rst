@@ -98,29 +98,6 @@ the ``standalone-base-internal.django.html`` template unless
 something else is specified by the view or cradmin instance.
 
 
-**********
-imageutils
-**********
-
-.. setting:: DJANGO_CRADMIN_IMAGEUTILS_BACKEND
-
-DJANGO_CRADMIN_IMAGEUTILS_BACKEND
-=================================
-The string path of a :doc:`django_cradmin.imageutils <imageutils>` backend.
-Defaults to::
-
-    DJANGO_CRADMIN_IMAGEUTILS_BACKEND = "django_cradmin.imageutils.backends.sorl_thumbnail.SorlThumbnail"
-
-
-.. setting:: DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP
-
-DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP
-=======================================
-A map between an *imagetype* (a name you define) and
-options for :meth:`django_cradmin.imageutils.backends.backendinterface.Interface.transform_image`.
-
-See :doc:`imageutils` for more information.
-
 
 ***********
 uicontainer
