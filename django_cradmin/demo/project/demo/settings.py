@@ -73,9 +73,6 @@ INSTALLED_APPS = (
     # Just here to get the demo overview view.
     'django_cradmin.demo.project.demo',
 
-    # The advanced demo
-    'django_cradmin.demo.webdemo',
-    'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
 
     #: Demo for django_cradmin.uicontainer
@@ -252,12 +249,6 @@ USE_TZ = True
 
 
 DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
-    'cradmin-webdemo-pages-listing': {
-        'width': 300,
-        'height': 200,
-        'crop': 'lfill',
-        'quality': 70,
-    },
     'cradmin-archiveimage-listing': {
         'width': 170,
         'height': 100,

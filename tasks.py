@@ -74,15 +74,6 @@ def recreate_devdb():
     syncmigrate()
 
 
-@task
-def recreate_devdb_with_randomdata():
-    """
-    Recreate the test database and create random test data
-    """
-    recreate_devdb()
-    _manage('cradmin_webdemo_autogenerate_data')
-
-
 def _load_devdb_sqldump():
     run('sqlite3 db.sqlite3 ".read {}"'.format(SQL_DUMP_FILE))
 
