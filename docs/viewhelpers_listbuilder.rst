@@ -26,15 +26,3 @@ Base API
     List
 
 .. automodule:: django_cradmin.viewhelpers.listbuilder.base
-
-
-Views
-=====
-.. currentmodule:: django_cradmin.viewhelpers.listbuilderview
-
-.. autosummary::
-
-    ViewMixin
-    View
-
-.. automodule:: django_cradmin.viewhelpers.listbuilderview
