@@ -78,7 +78,7 @@ class MenuToggleItemItemRenderable(renderable.AbstractBemRenderable):
     Use this to add an expandable menu toggle to the menu.
     """
     template_name = 'django_cradmin/crmenu/menuitem/menutoggle.django.html'
-    
+
     def __init__(self, parent_bem_block=None, **kwargs):
         self.parent_bem_block = parent_bem_block
         super(MenuToggleItemItemRenderable, self).__init__()

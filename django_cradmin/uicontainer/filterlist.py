@@ -11,14 +11,13 @@ class FilterListContainerMixin(object):
     template_name = 'django_cradmin/uicontainer/filterlist/filterlist.django.html'
 
     def initialize(self,
-                 id_attribute='id',
-                 class_name=None,
-                 select_mode=None,
-                 auto_load_first_page=True,
-                 get_items_api_url=None,
-                 components=None,
-                 initially_selected_item_ids=None):
-
+                   id_attribute='id',
+                   class_name=None,
+                   select_mode=None,
+                   auto_load_first_page=True,
+                   get_items_api_url=None,
+                   components=None,
+                   initially_selected_item_ids=None):
         self._id_attribute = id_attribute
         self._class_name = class_name
         self._select_mode = select_mode

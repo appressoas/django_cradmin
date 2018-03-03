@@ -1,5 +1,5 @@
 try:
-    import django.forms.renderers
+    import django.forms.renderers  # noqa
 except ImportError:
     _has_template_based_form_rendering = False
 else:
