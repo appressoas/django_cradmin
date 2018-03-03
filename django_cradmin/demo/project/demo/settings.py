@@ -324,3 +324,13 @@ DJANGO_CRADMIN_THEME_PATH = 'django_cradmin_styles/{version}/styles/basetheme/ma
 
 
 IEVVTASKS_DUMPDATA_DIRECTORY = os.path.join(THIS_DIR, 'dumps')
+
+IEVVTASKS_MAKEMESSAGES_LANGUAGE_CODES = ['en', 'nb']
+IEVVTASKS_MAKEMESSAGES_JAVASCRIPT_IGNORE = [
+    'node_modules/*',
+    'bower_components/*',
+    'docs/*',
+    'demo/*',
+    'static/*',
+]
+IEVVTASKS_MAKEMESSAGES_DIRECTORIES = [os.path.dirname(django_cradmin.__file__)]
