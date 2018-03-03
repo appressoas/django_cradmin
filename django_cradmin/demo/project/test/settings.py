@@ -39,9 +39,6 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_authenticate.tests.cradmin_authenticate_testapp',
     'django_cradmin.apps.cradmin_register_account.tests.cradmin_register_account_testapp',
     'django_cradmin.apps.cradmin_email.tests.cradmin_email_testapp',
-
-    # Required by django cradmin
-    'crispy_forms',
 )
 
 MIDDLEWARE = (
@@ -102,9 +99,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = 'test_django_media_root'
 STATIC_ROOT = 'test_django_static_root'
-
-# Django crispy forms:
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 ROOT_URLCONF = 'django_cradmin.demo.project.test.urls'
 DJANGO_CRADMIN_SITENAME = 'Testsite'

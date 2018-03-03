@@ -2,7 +2,6 @@
 #Django==1.9.7
 Django==1.11.5
 
-django-crispy-forms==1.6.0
 pytz==2014.10
 html2text==2015.6.21
 

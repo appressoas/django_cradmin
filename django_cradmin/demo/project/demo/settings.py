@@ -62,7 +62,6 @@ INSTALLED_APPS = (
     'django_cradmin.apps.django_cradmin_js',
     'django_cradmin.apps.django_cradmin_styles.apps.WithStyleguideAppConfig',
     'django_cradmin.uicontainer',
-    'crispy_forms',
 
     # For the styleguide for themes
     'django_cradmin.apps.cradmin_kss_styleguide',
@@ -140,9 +139,6 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# Django crispy forms:
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 # The root for file fileuploads
