@@ -7,12 +7,21 @@
 
 {% block page-cover-content %}
     {{ block.super }}
-    <p>
+    <p class="adminui-page-cover__description">
         The sourcecode for the demos is in
         <a href="{{ github_base_url }}" class="adminui-page-cover__link">
             django_cradmin/demo/
         </a>
     </p>
+
+    {% if request.user.is_authenticated %}
+        <p class="adminui-page-cover__description">
+            Signed in as <em>{{ request.user }}</em><br>
+        </p>
+        <a href="{% url 'cradmin-authenticate-logout' %}" class="button button--light-fill">Logout</a>
+    {% else %}
+        <a href="{% url 'cradmin-authenticate-login' %}" class="button button--light-fill">Login</a>
+    {% endif %}
 {% endblock page-cover-content %}
 
 
@@ -36,6 +45,13 @@
                 </p>
                 <p>
                     <a href="{{ github_base_url }}/uicontainerdemo/">django_cradmin/demo/uicontainerdemo/</a>
+                </p>
+            </section>
+
+            <section class="blocklist__item">
+                <h2 class="blocklist__itemtitle"><a href="{% url 'cradmin-register-account' %}">Register account</a></h2>
+                <p>
+                    A demo of <em>the cradmin_register_account</em> app.
                 </p>
             </section>
 
