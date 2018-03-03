@@ -63,7 +63,6 @@ INSTALLED_APPS = (
     'django_cradmin.apps.django_cradmin_styles.apps.WithStyleguideAppConfig',
     'django_cradmin.uicontainer',
     'crispy_forms',
-    'sorl.thumbnail',  # Required by cradmin_imagearchive
 
     # For the styleguide for themes
     'django_cradmin.apps.cradmin_kss_styleguide',
@@ -145,12 +144,6 @@ STATIC_URL = '/static/'
 # Django crispy forms:
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Thumbnails (sorl-thumbnail)
-# See: http://sorl-thumbnail.readthedocs.org/en/latest/reference/settings.html
-THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.pil_engine.Engine'
-THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.cached_db_kvstore.KVStore'
-THUMBNAIL_PREFIX = 'sorlcache/'
-THUMBNAIL_DEBUG = False
 
 # The root for file fileuploads
 MEDIA_ROOT = os.path.join(BASE_DIR, 'django_media_root')

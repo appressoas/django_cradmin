@@ -42,7 +42,6 @@ INSTALLED_APPS = (
 
     # Required by django cradmin
     'crispy_forms',
-    'sorl.thumbnail',  # Required by cradmin_imagearchive
 )
 
 MIDDLEWARE = (
