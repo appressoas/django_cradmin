@@ -4,9 +4,6 @@ from invoke import task, run
 from invoke_extras.context_managers import cd
 
 LANGUAGE_CODES = ['en', 'nb']
-SQLITE_DATABASE = 'db.sqlite3'
-SQL_DUMP_FILE = os.path.join(
-    'django_cradmin', 'demo', 'project', 'dumps', 'dev', 'data.sql')
 
 
 def _manage(args, echo=True, cwd=None, **kwargs):
@@ -36,60 +33,3 @@ def makemessages():
 @task
 def compilemessages():
     _manage('compilemessages', cwd='django_cradmin')
-
-
-@task
-def syncmigrate():
-    """
-    Runs the migrate django management command.
-    """
-    _manage('migrate --noinput')
-
-
-@task
-def removedb():
-    """
-    Remove the database.
-    """
-    if os.path.exists(SQLITE_DATABASE):
-        os.remove(SQLITE_DATABASE)
-
-
-@task
-def resetdb():
-    """
-    Remove db.sqlite if it exists, and run the ``syncmigrate`` task.
-    """
-    removedb()
-    syncmigrate()
-
-
-@task
-def recreate_devdb():
-    """
-    Recreate the test database.
-    """
-    removedb()
-    _load_devdb_sqldump()
-    syncmigrate()
-
-
-def _load_devdb_sqldump():
-    run('sqlite3 db.sqlite3 ".read {}"'.format(SQL_DUMP_FILE))
-
-
-@task
-def dump_current_db_to_sql():
-    """
-    Dump current db into ``django_cradmin/demo/project/dumps/dev/data.sql``.
-    """
-    result = run('sqlite3 db.sqlite3 ".dump"', echo=False)
-    with open(SQL_DUMP_FILE, 'wb') as outfile:
-        outfile.write(result.stdout.encode('utf-8'))
-    print()
-    print("*" * 70)
-    print()
-    print('{} successfully updated.'.format(SQL_DUMP_FILE))
-    print()
-    print("*" * 70)
-    print()

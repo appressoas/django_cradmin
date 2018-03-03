@@ -1,6 +1,7 @@
 """
 Django settings for running the django_cradmin tests.
 """
+from django_dbdev.backends.sqlite import DBSETTINGS
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'y%j0x%=7a^sf53m*s^5nbmfe0_t13d*oibfx#m#*wz1x+k6+m1'
@@ -79,9 +80,7 @@ TEMPLATES = [
 
 # We do not set a name -- the test framework does that.
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3'
-    }
+    'default': DBSETTINGS
 }
 
 # Internationalization

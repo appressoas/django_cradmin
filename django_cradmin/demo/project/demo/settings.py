@@ -9,12 +9,15 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 from __future__ import unicode_literals
 
+import os
 import django_cradmin
 from ievv_opensource.utils import ievvbuildstatic
 from ievv_opensource.utils import ievvdevrun
+from django_dbdev.backends.sqlite import DBSETTINGS
 
+
+THIS_DIR = os.path.dirname(__file__)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 BASE_DIR = os.path.dirname(
     os.path.dirname(
         os.path.dirname(
@@ -49,6 +52,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_dbdev',
 
     # Required by django cradmin
     'django_cradmin',
@@ -129,10 +133,7 @@ ROOT_URLCONF = 'django_cradmin.demo.project.demo.urls'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': DBSETTINGS
 }
 
 # Static files (CSS, JavaScript, Images)
@@ -320,3 +321,6 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 DJANGO_CRADMIN_THEME_PATH = 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
     version=django_cradmin.__version__
 )
+
+
+IEVVTASKS_DUMPDATA_DIRECTORY = os.path.join(THIS_DIR, 'dumps')
