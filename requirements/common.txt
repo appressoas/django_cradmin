@@ -36,9 +36,6 @@ future==0.14.3
 # For translations
 transifex-client==0.11b3
 
-# For automating development tasks
-invoke==0.10.1
-
 # For model creation in tests
 model_mommy==1.2.6
 
