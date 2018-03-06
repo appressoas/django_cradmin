@@ -36,7 +36,7 @@ class ArchiveImageManager(models.Manager):
 
 
 @python_2_unicode_compatible
-class ArchiveImage(models.Model):
+class ArchiveImageDeprecated(models.Model):
     objects = ArchiveImageManager()
 
     role_content_type = models.ForeignKey(
