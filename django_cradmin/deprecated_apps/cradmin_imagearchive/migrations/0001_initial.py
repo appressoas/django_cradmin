@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django_cradmin.apps.cradmin_imagearchive.models
+import django_cradmin.deprecated_apps.cradmin_imagearchive.models
 
 
 class Migration(migrations.Migration):
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
                 ('role_object_id', models.PositiveIntegerField()),
-                ('image', models.ImageField(upload_to=django_cradmin.apps.cradmin_imagearchive.models.archiveimage_upload_to, null=True, help_text='Select an image to add to the archive.', verbose_name='image', height_field='image_height', max_length=255, width_field='image_width')),
+                ('image', models.ImageField(upload_to=django_cradmin.deprecated_apps.cradmin_imagearchive.models.archiveimage_upload_to, null=True, help_text='Select an image to add to the archive.', verbose_name='image', height_field='image_height', max_length=255, width_field='image_width')),
                 ('image_height', models.IntegerField(null=True, blank=True, editable=False)),
                 ('image_width', models.IntegerField(null=True, blank=True, editable=False)),
                 ('file_extension', models.CharField(max_length=255, editable=False)),
