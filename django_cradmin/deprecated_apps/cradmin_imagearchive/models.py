@@ -14,6 +14,16 @@ from django.utils.translation import ugettext_lazy as _
 from future.utils import python_2_unicode_compatible
 
 from django_cradmin import crsettings
+from django_cradmin.utils.deprecation_decorators import CradminDeprecatedSinceV4
+
+
+CradminDeprecatedSinceV4(
+    message='Deprecated, and only available to enable migration of the data. '
+            'If you still need cradmin_imagearchive, please use the cradmin_legacy '
+            'library, which can be used along with django_cradmin>=4.0.0. '
+            'If you want to keep the data in this model, migrate the data into '
+            'the ArchiveImage model in cradmin_legacy.apps.cradmin_imagearchive.models.ArchiveImage.'
+).show_warning(name=__name__)
 
 
 def archiveimage_upload_to(archiveimage, filename):
