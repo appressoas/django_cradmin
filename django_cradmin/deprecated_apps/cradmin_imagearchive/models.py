@@ -47,10 +47,8 @@ class ArchiveImage(models.Model):
     role = GenericForeignKey('role_content_type', 'role_object_id')
 
     #: The image.
-    image = models.ImageField(
+    image = models.FileField(
         max_length=255, null=True, blank=False,
-        height_field='image_height',
-        width_field='image_width',
         verbose_name=_('image'),
         help_text=_('Select an image to add to the archive.'),
         upload_to=archiveimage_upload_to)
