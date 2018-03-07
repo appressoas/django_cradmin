@@ -80,7 +80,7 @@ def _make_unique_filename(filename_set, wanted_filename, generated_filename, max
 
 def make_unique_filename(filename_set, wanted_filename, max_filename_length=None, ellipsis='...'):
     if max_filename_length \
-            and max_filename_length < TemporaryFileCollection.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES:
+            and max_filename_length < TemporaryFileCollectionDeprecated.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES:
         raise ValueError('make_unique_filename requires max_filename_length to be at least 45.')
     else:
         return _make_unique_filename(
@@ -91,7 +91,7 @@ def make_unique_filename(filename_set, wanted_filename, max_filename_length=None
             ellipsis=ellipsis)
 
 
-class TemporaryFileCollection(models.Model):
+class TemporaryFileCollectionDeprecated(models.Model):
     """
     A collection of temporary files uploaded by a user.
 
@@ -113,7 +113,7 @@ class TemporaryFileCollection(models.Model):
     is not really a problem since:
 
     1. You should have error checking in the views that
-       use TemporaryFileCollection.
+       use TemporaryFileCollectionDeprecated.
     2. If you have error checking in your views, the only thing
        the user can do by manipulating the API call is to cause
        themselves a less user-friendly experience - they will typically
@@ -198,7 +198,7 @@ class TemporaryFileCollection(models.Model):
 def temporary_file_upload_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     if instance.collection_id is None:
-        raise AttributeError('temporary_file_upload_to() requires a TemporaryFile with '
+        raise AttributeError('temporary_file_upload_to() requires a TemporaryFileDeprecated with '
                              'a collection that has been saved to the database.')
     return u'{directory}/{collectionid}/{uuid}_{timestamp}{extension}'.format(
         directory=getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_UPLOAD_DIRECTORY',
@@ -216,12 +216,12 @@ def validate_max_file_size(max_filesize_bytes, fieldfile):
         }, code='max_filesize_bytes_exceeded')
 
 
-class TemporaryFile(models.Model):
+class TemporaryFileDeprecated(models.Model):
     """
     A temporary file uploaded by a user.
     """
     collection = models.ForeignKey(
-        TemporaryFileCollection, on_delete=models.CASCADE,
+        TemporaryFileCollectionDeprecated, on_delete=models.CASCADE,
         related_name='files')
     filename = models.TextField(db_index=True)
     file = models.FileField(

@@ -65,8 +65,8 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_email',
     'django_cradmin.apps.django_cradmin_js',
     'django_cradmin.apps.django_cradmin_styles.apps.WithStyleguideAppConfig',
-    # 'django_cradmin.deprecated_apps.cradmin_imagearchive',
-    # 'django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore',
+    'django_cradmin.deprecated_apps.cradmin_imagearchive',
+    'django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.uicontainer',
 
     # For the styleguide for themes
