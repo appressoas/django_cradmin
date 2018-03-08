@@ -13,6 +13,14 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import math
 from django_cradmin.utils import crhumanize
+from django_cradmin.utils.deprecation_decorators import CradminDeprecatedSinceV4
+
+CradminDeprecatedSinceV4(
+    message='Deprecated, and only available to enable migration of the data. '
+            'If you still need cradmin_temporaryfileuploadstore, please use the cradmin_legacy '
+            'library, which can be used along with django_cradmin>=4.0.0. '
+            'See the releasenotes for 4.0.0 for more details and migration guide.'
+).show_warning(name=__name__)
 
 
 class TemporaryFileCollectionQuerySet(models.query.QuerySet):
