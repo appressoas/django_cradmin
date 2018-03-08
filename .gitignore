@@ -17,6 +17,10 @@
 .idea/dataSources.local.xml
 .idea/dictionaries/
 .idea/jsLibraryMappings.xml
+.idea/codeStyleSettings.xml
+.idea/codeStyles/
+.idea/dataSources.xml
+.idea/dataSources/
 
 # Files created when running tests and demos
 /django_media_root/
