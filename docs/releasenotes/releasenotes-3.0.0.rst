@@ -20,12 +20,16 @@ Whats new
   easy. This is documented in :doc:`../theme`.
 - Update the javascript with the new icon css classes.
 
-.. note:: There is no changes to the Python code, only so the theme .scss files.
+.. note:: There is no changes to the Python code, only so the theme .scss and javascript files.
 
 
 ***********************
 Migrate from 2.x to 3.x
 ***********************
+
+Update .scss files
+==================
+
 After updating to 3.x, your custom themes will break. You will need to update
 so that you include ``@import 'basetheme/3__base/cricon/cricon-font-awesome';`` before
 ``@import 'basetheme/3__base/all';``.
@@ -63,3 +67,8 @@ You will have the following with 3.x+:
 
     @import 'basetheme/4__components/all';
     @import '4__components/all';
+
+
+Update javascript
+=================
+You need to update your package.json to have `"django_cradmin_js": "^3.0.0"` as a requirement.

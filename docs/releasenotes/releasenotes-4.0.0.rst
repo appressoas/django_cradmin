@@ -12,9 +12,9 @@ What is new?
   django_cradmin >= 4.0.0.
 
 
-*********************************************
-Deprecated apps and migration guides for them
-*********************************************
+***********************
+Migrate from 3.x to 4.x
+***********************
 
 Deprecated: cradmin_imagearchive
 ================================
