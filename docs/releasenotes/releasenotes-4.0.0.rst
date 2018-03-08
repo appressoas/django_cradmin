@@ -1,5 +1,5 @@
 #################################
-Django cradmin 2.0.0 releasenotes
+Django cradmin 4.0.0 releasenotes
 #################################
 
 
