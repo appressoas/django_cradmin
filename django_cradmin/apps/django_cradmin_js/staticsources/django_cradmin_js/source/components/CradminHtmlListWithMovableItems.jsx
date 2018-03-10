@@ -15,9 +15,9 @@ export default class CradminHtmlListWithMovableItems extends CradminHtmlList {
       itemMoveBarClassNameFirst: 'blocklist__movesidebar blocklist__movesidebar--only-down',
       itemMoveBarClassNameLast: 'blocklist__movesidebar blocklist__movesidebar--only-up',
       moveUpButtonClassName: 'blocklist__movebutton',
-      moveUpButtonIconClassName: 'icon icon-chevron-up--light',
+      moveUpButtonIconClassName: 'cricon cricon--chevron-up cricon--color-light',
       moveDownButtonClassName: 'blocklist__movebutton',
-      moveDownButtonIconClassName: 'icon icon-chevron-down--light'
+      moveDownButtonIconClassName: 'cricon cricon--chevron-down cricon--color-light'
     });
     return defaultProps;
   }

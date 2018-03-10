@@ -1,30 +1,82 @@
 /* Messages
 
-Used to list multiple messages, typically save success messages, and error messages
-just below the page-cover.
+Example: Error
+    <p class="message message--error">Look, I'm an error message!</p>
 
+Example: Info
+    <p class="message  message--info">Look, I'm an info message!</p>
 
-Example: {type: isolated}
+Example: Success
+    <p class="message  message--success">Look, I'm a success message!</p>
 
-    <div class="messages" style="margin-bottom: 30px;"> <!-- the style is just for the styleguide rendering -->
-        <div class="container container--wide">
-            <p class="message message--error">Look, I'm an error message!</p>
-            <p class="message message--info">Look, I'm an info message!</p>
-        </div>
+Example: Multiple messages
+    <p class="message  message--info">Look, I'm an info message!</p>
+    <p class="message  message--error">Look, I'm an error message!</p>
+    <p class="message  message--info">Look, I'm another info message!</p>
+    <p class="message  message--success">Look, I'm a success message!</p>
+
+Example: Within a fieldwrapper
+    <div class="fieldwrapper">
+        <label class="label">
+            Standard input
+            <input type="text" class="input">
+        </label>
+        <p class="message  message--compact  message--info">Look, I'm an info message!</p>
+        <p class="message  message--compact  message--error">Look, I'm an error message!</p>
+    </div>
+    <div class="fieldwrapper">
+        <label class="label">
+            Another input - this also has help-text
+            <input type="text" class="input">
+        </label>
+        <p class="help-text">Some help text here</p>
+        <p class="message  message--compact  message--error">Look, I'm an error message!</p>
     </div>
 
-Styleguide components.messages
+Styleguide form.6:messages
 */
-.messages {
-    background-color: $color-light;
-    padding-top: $spacing;
-    padding-bottom: $spacing;
-    border-bottom: $border-width solid color(neutral, light);
+.message {
+    @extend %animation-fall-down;
+    animation-delay: 150ms;
+    @include font(base);
+    @include font-size(xsmall);
+    padding-top: vertical-space();
+    margin-bottom: vertical-space($spacing);
 
-    .message {
-        padding: 0;
-        &:last-child {
-            margin-bottom: 0;
+    &:before {
+        @include cricon-fixed-width(xsmall);
+        margin-right: $unit;
+    }
+
+    &--error {
+        color: color(warning, dark);
+
+        &:before {
+            @include cricon-icon(warning);
         }
+    }
+
+    &--info {
+        color: $color-text;
+
+        &:before {
+            @include cricon-icon(info);
+        }
+    }
+
+    &--success {
+        color: color(success, dark);
+
+        &:before {
+            @include cricon-icon(check);
+        }
+    }
+
+    &--compact {
+        margin-bottom: $unit;
+    }
+
+    &.ng-leave {
+        animation: 0;
     }
 }

@@ -20,4 +20,4 @@ How to release a new version of cradmin
 5. Commit.
 6. Tag the commit with ``<version>``.
 7. Push (``git push && git push --tags``).
-8. Release to pypi (``python setup.py sdist upload``).
+8. Release to pypi (``python setup.py sdist && twine upload dist/django-cradmin-<version>.tar.gz``).

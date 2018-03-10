@@ -90,13 +90,7 @@
                         {% endblock page-cover %}
 
                         {% block messages %}
-                            {% if messages %}
-                                <div class="messages">
-                                    <div class="container  container--wide">
-                                        {% include "django_cradmin/include/messages.django.html" %}
-                                    </div>
-                                </div>
-                            {% endif %}
+                            {% include "django_cradmin/include/messages.django.html" %}
                         {% endblock messages %}
 
                         {% block content %}{% endblock %}

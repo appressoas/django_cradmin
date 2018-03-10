@@ -6,14 +6,14 @@ import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 export default class CradminSelectableListItem extends React.Component {
 
-  static get defaultProps() {
+  static get defaultProps () {
     return {
       className: 'selectable-list__item',
       selectedClassName: 'selectable-list__item--selected',
       contentClassName: 'selectable-list__itemcontent',
       renderIcon: false,
       iconWrapperClassName: 'selectable-list__icon',
-      selectedIconClassName: 'icon-check--light',
+      selectedIconClassName: 'cricon cricon--check cricon--color-light',
       titleTagName: 'strong',
       titleClassName: 'selectable-list__itemtitle',
       descriptionClassName: '',

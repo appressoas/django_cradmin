@@ -11,6 +11,7 @@ from django_cradmin.demo.cradmin_javascript_demos.models import FictionalFigure
 
 class FictionalFigurePagination(PageNumberPagination):
     page_size = 3
+    page_size_query_param = 'page_size'
 
 
 class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
@@ -29,7 +30,8 @@ class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
             )
         if 'is_godlike' in self.request.query_params:
             is_godlike = self.request.query_params.get('is_godlike') == 'true'
-            queryset = queryset.filter(is_godlike=is_godlike)
+            if is_godlike:
+                queryset = queryset.filter(is_godlike=is_godlike)
 
         if 'rating' in self.request.query_params:
             try:

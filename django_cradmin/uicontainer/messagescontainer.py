@@ -193,10 +193,54 @@ class CompactMessageContainer(MessageContainer):
         return variants
 
 
-class MessagesContainer(AbstractMessageContainerMixin,
-                        container.AbstractContainerRenderable):
+class BoxMessageContainer(convenience.AbstractWithOptionalEscapedText):
     """
-    Messages container - contains zero or more :class:`.MessageContainer`.
+    Message container using the ``box`` css class.
+    """
+    level_to_variant_map = {
+        'error': 'warning',
+        'warning': 'warning',
+        'info': 'info',
+        'success': 'success',
+    }
+
+    def __init__(self, level, **kwargs):
+        """
+        Args:
+            level: The message level. See :meth:`.AbstractMessageContainerMixin.create_message_container`.
+            **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
+        """
+        self.level = level
+        super(BoxMessageContainer, self).__init__(**kwargs)
+
+    def get_default_html_tag(self):
+        return 'div'
+
+    def get_default_bem_block_or_element(self):
+        return 'box'
+
+    def get_default_bem_variant_list(self):
+        """
+        Default BEM variant set to the level kwarg for :meth:`.__init__`.
+
+        So this assumes that a variant matching the level exists.
+        """
+        level_variant = self.level_to_variant_map.get(self.level)
+        if level_variant:
+            return [level_variant]
+        else:
+            return []
+
+    def get_default_test_css_class_suffixes_list(self):
+        return super(BoxMessageContainer, self).get_default_test_css_class_suffixes_list() + [
+            '{}-message'.format(self.level or 'default')
+        ]
+
+
+class PlainMessagesContainer(AbstractMessageContainerMixin,
+                             container.AbstractContainerRenderable):
+    """
+    Messages container.
     """
     def get_message_container_class(self, level):
         return MessageContainer
@@ -206,15 +250,38 @@ class MessagesContainer(AbstractMessageContainerMixin,
         return message_container_class(level=level, text=text, **kwargs)
 
 
-class CompactMessagesContainer(MessagesContainer):
+class MessagesContainer(PlainMessagesContainer):
+    """
+    Messages container - contains zero or more :class:`.MessageContainer`.
+    """
+    def get_default_bem_block_or_element(self):
+        return 'messages'
+
+
+class BoxMessagesContainer(PlainMessagesContainer):
+    """
+    Messages container - contains zero or more :class:`.BoxMessageContainer`.
+    """
+    def get_message_container_class(self, level):
+        return BoxMessageContainer
+
+    def get_default_bem_block_or_element(self):
+        return 'messages'
+
+
+class CompactMessagesContainer(PlainMessagesContainer):
     """
     Same as :class:`.MessagesContainer` except that it uses
     :class:`.CompactMessageContainer` instead of :class:`.MessageContainer`
-    for the messages.
+    for the messages, and that it has no css class for the wrapper element
+    by default.
     """
     def get_message_container_class(self, level):
         return CompactMessageContainer
 
+    def get_default_bem_block_or_element(self):
+        return None
 
-class AdminUiPageSectionMessagesContainer(MessagesContainer):
+
+class AdminUiPageSectionMessagesContainer(PlainMessagesContainer):
     template_name = 'django_cradmin/uicontainer/messagescontainer/adminui_page_section_messages.django.html'

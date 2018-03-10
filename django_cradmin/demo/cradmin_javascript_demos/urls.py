@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^$',
         views.Overview.as_view(),
         name="cradmin_javascript_demos_overview"),
+    url(r'^receive-post-data$',
+        views.ReceivePostDataView.as_view(),
+        name="cradmin_javascript_demos_receive_post_data"),
     url(r'^geolocation-demo$',
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/geolocation-demo.django.html'),
@@ -33,6 +36,10 @@ urlpatterns = [
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/print-on-click.django.html'),
         name="cradmin_print_on_click_demo"),
+    url(r'^filterlist$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/filterlist/filterlist-demo.django.html'),
+        name="cradmin_javascript_demos_filterlist"),
     url(r'^datalistwidgets$',
         ensure_csrf_cookie(views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/data-list-widgets-demo.django.html')),
@@ -50,4 +57,8 @@ urlpatterns = [
         name='cradmin_move_fictional_figures_api'),
     url(r'^api/',
         include(apirouter.urls, namespace='cradmin_javascript_demos_api')),
+
+    url(r'^filterlist-uicontainer-demo$',
+        views.FilterListUiContainerDemoView.as_view(),
+        name='cradmin_javascript_demos_filterlist_uicontainer')
 ]

@@ -10,6 +10,18 @@
     }
 }
 
+@mixin max-width($name) {
+    @if not map-has-key($breakpoints, $name) {
+        @media (max-width: $name) {
+            @content;
+        }
+    } @else {
+        @media (max-width: (map-get($breakpoints, $name) - 1px)) {
+            @content;
+        }
+    }
+}
+
 // Defining colors as a map
 // retrieve color from $colors map ie. `color(primary, base)`
 @function color($color-name, $color-variant: 'base') {
@@ -113,20 +125,6 @@
     @include font(base, bold);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-}
-
-
-// Sprite icons
-@mixin icon($col, $row, $width, $height) {
-    display: inline-block;
-    vertical-align: top;
-
-    width: $width;
-    height: $height;
-
-    background-image: url('#{$media-path}/images/sprite.svg');
-    background-position: (-( ( $col - 1 ) * 100) + px ) (-( ( $row - 1 ) * 100 ) + px);
-    background-repeat: no-repeat;
 }
 
 // TINT AND SHADE
@@ -281,4 +279,9 @@
     overflow-wrap: break-word;
     word-break: break-word;
     hyphens: auto;
+}
+
+
+@function list-contains($list, $value) {
+    @return (false == index($list, $value));
 }

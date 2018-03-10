@@ -16,7 +16,7 @@
             {% endblock brand %}
 
             {% block main-menu %}
-                {% with main_menu_renderable=me.get_main_menu_rendereable %}
+                {% with main_menu_renderable=me.get_main_menu_renderable %}
                     {% if main_menu_renderable %}
                         {% cradmin_render_renderable main_menu_renderable %}
                     {% endif %}

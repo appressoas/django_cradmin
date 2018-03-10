@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), 'django_cradmin', 'version.jso
 
 
 setup(
-    name='django_cradmin',
+    name='django-cradmin',
     description='A role based admin UI for Django that produces a user friendly and beautiful UI.',
     version=version,
     url='https://github.com/appressoas/django_cradmin',

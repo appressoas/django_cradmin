@@ -108,14 +108,13 @@ Styleguide form.5:select
     }
 
     &:before {
-        @extend %icon-chevron-down;
-        content: '';
+        @include cricon-icon(chevron-down);
         position: absolute;
-        display: block;
         pointer-events: none;
         top: 50%;
+        margin-top: -6px;
         right: 1px; // Optical aligning
-        margin-top: -4px;
+        font-size: 16px;
     }
 
     &--block {
@@ -130,10 +129,6 @@ Styleguide form.5:select
     &--light {
         color: $color-light;
         border-color: $color-light;
-
-        &:before {
-            @extend %icon-chevron-down--light;
-        }
 
         select {
             color: $color-light;
