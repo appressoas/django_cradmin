@@ -288,7 +288,7 @@ def cradmin_theme_staticpath(context):
         if not theme_path:
             theme_path = getattr(settings,
                                  'DJANGO_CRADMIN_THEME_PATH',
-                                 'django_cradmin/{version}/styles/cradmin_theme_full/main.css'.format(
+                                 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
                                      version=django_cradmin.__version__
                                  ))
         return static(theme_path)
