@@ -2,9 +2,7 @@
 #Django==1.9.7
 Django==1.11.5
 
-django-crispy-forms==1.6.0
-Pillow==2.8.1
-sorl-thumbnail==12.3
+django-dbdev>=1.2.1
 pytz==2014.10
 html2text==2015.6.21
 
@@ -37,9 +35,6 @@ future==0.14.3
 
 # For translations
 transifex-client==0.11b3
-
-# For automating development tasks
-invoke==0.10.1
 
 # For model creation in tests
 model_mommy==1.2.6

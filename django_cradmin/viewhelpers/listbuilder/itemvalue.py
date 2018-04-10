@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
 
 import json
+from builtins import str
 from xml.sax.saxutils import quoteattr
 
 from django_cradmin.viewhelpers.listbuilder import base
-from builtins import str
 
 
 class FocusBox(base.ItemValueRenderer):
@@ -214,77 +214,4 @@ class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(EditDeleteWithPreview, self).get_test_css_class_suffixes_list()
         css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-preview')
-        return css_class_suffixes
-
-
-class EditDeleteWithArchiveImage(EditDelete):
-    """
-    Extends :class:`.EditDelete` to include an image from cradmin imagearchive.
-
-    Uses a template that extends the template in :class:`.EditDelete`.
-    """
-
-    #: The template used to render this itemvalue.
-    #: The template has lots of blocks that you can override.
-    template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete-with-archive-image.django.html'
-
-    def get_test_css_class_suffixes_list(self):
-        css_class_suffixes = super(EditDeleteWithArchiveImage, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-archive-image')
-        return css_class_suffixes
-
-    def get_archiveimage(self):
-        """
-        Get a :class:`django_cradmin.apps.cradmin_imagearchive.models.ArchiveImage`
-        object to use as the image.
-        """
-        raise NotImplementedError()
-
-    def get_imagetype(self):
-        """
-        Get the ``imagetype`` to use to scale/format the image.
-
-        See :func:`django_cradmin.templatetags.cradmin_image_tags.cradmin_create_archiveimage_tag`
-        for more information on ``imagetype``.
-
-        Defaults to ``"listbuilder-itemvalue-editdelete"``.
-        """
-        return "listbuilder-itemvalue-editdelete"
-
-    def get_image_fallbackoptions(self):
-        """
-        Get the ``fallbackoptions`` to use to scale/format the image.
-        These options are used when the imagetype returned by
-        :meth:`.get_imagetype` is not defined in the
-        :setting:`DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP` setting.
-
-        See :func:`django_cradmin.templatetags.cradmin_image_tags.cradmin_create_archiveimage_tag`
-        for more information on ``fallbackoptions``.
-
-        Defaults to::
-
-            {
-                'width': 330,
-                'height': 400,
-                'crop': 'limit',
-                'quality': 70,
-            }
-        """
-        return {
-            'width': 330,
-            'height': 400,
-            'crop': 'limit',
-            'quality': 70,
-        }
-
-
-class EditDeleteWithArchiveImageAndPreview(EditDeleteWithPreviewMixin, EditDeleteWithArchiveImage):
-    """
-    Shortcut for subclassing :class:`EditDeleteWithPreviewMixin`
-    and :class:`.EditDeleteWithArchiveImage`.
-    """
-
-    def get_test_css_class_suffixes_list(self):
-        css_class_suffixes = super(EditDeleteWithArchiveImage, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-archive-image-and-preview')
         return css_class_suffixes

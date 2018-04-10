@@ -1,5 +1,13 @@
 from __future__ import unicode_literals
 from django_cradmin.renderable import AbstractRenderableWithCss
+from django_cradmin.utils.deprecation_decorators import CradminDeprecatedSinceV4
+
+
+CradminDeprecatedSinceV4(
+    message='django_cradmin.viewhelpers.listbuilder* is deprecated. Please use '
+            'the "cradmin-filterlist" jsbase widget or a plain ListView instead. '
+            'uicontainer can also be an alternative in some cases.'
+).show_warning(name=__name__)
 
 
 class AbstractItemRenderer(AbstractRenderableWithCss):

@@ -8,10 +8,9 @@ Newbie guide
 ***************
 What is CRadmin
 ***************
-CRadmin is a Django extension for the administration part of a Django.
-CRadmin has rolebased accesscontrol.
-CRadmin has one or more apps, called CrApps.
-CRadmin as one or more files called crinstance, which holds all the CrApps.
+- CRadmin has rolebased accesscontrol.
+- CRadmin has one or more apps, called CrApps.
+- CRadmin as one or more files called crinstance, which holds all the CrApps.
 
 
 ****************
@@ -27,7 +26,7 @@ different roles.
 
 Minimalistic ``cradmin_instance`` example::
 
-    class <DjangoAppName>CrAdminInstance(crinstance.BaseCrAdminInstance):
+    class MyCrAdminInstance(crinstance.BaseCrAdminInstance):
     roleclass =
     rolefrontpage_appname =
 
@@ -39,7 +38,7 @@ Minimalistic ``cradmin_instance`` example::
 
 Roleclass
 ---------
-An easy way to explain the ``roleclass`` is to use the example from the ``webdemo`` in CRadmin. A website holds all the
+An easy way to explain the ``roleclass`` is to use the example. A website holds all the
 webpages. A very lightweight translation into Python classes can be the classes Site and Page. The ``cradmin_instance``
 is then the Site, setting the ``roleclass`` to Site. You request the roleclass with ``request.cradmin_role``.
 We will come back to the roleclass for Page later in the document.
@@ -169,23 +168,3 @@ the pages app::
                 editviews.PageDeleteView.as_view(),
                 name="delete")
         ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

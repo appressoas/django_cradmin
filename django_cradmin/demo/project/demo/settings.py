@@ -9,12 +9,15 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 from __future__ import unicode_literals
 
+import os
 import django_cradmin
 from ievv_opensource.utils import ievvbuildstatic
 from ievv_opensource.utils import ievvdevrun
+from django_dbdev.backends.sqlite import DBSETTINGS
 
+
+THIS_DIR = os.path.dirname(__file__)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 BASE_DIR = os.path.dirname(
     os.path.dirname(
         os.path.dirname(
@@ -49,11 +52,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_dbdev',
 
     # Required by django cradmin
     'django_cradmin',
-    'django_cradmin.apps.cradmin_imagearchive',
-    'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
     'django_cradmin.apps.cradmin_resetpassword',
@@ -63,9 +65,9 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_email',
     'django_cradmin.apps.django_cradmin_js',
     'django_cradmin.apps.django_cradmin_styles.apps.WithStyleguideAppConfig',
+    'django_cradmin.deprecated_apps.cradmin_imagearchive',
+    'django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.uicontainer',
-    'crispy_forms',
-    'sorl.thumbnail',  # Required by cradmin_imagearchive
 
     # For the styleguide for themes
     'django_cradmin.apps.cradmin_kss_styleguide',
@@ -73,16 +75,7 @@ INSTALLED_APPS = (
     # Just here to get the demo overview view.
     'django_cradmin.demo.project.demo',
 
-    # The advanced demo
-    'django_cradmin.demo.webdemo',
-    'django_cradmin.demo.login_not_required_demo',
     'django_cradmin.demo.no_role_demo',
-
-    # Demo for listfilter
-    'django_cradmin.demo.listfilterdemo',
-
-    # Demo for multiselect
-    'django_cradmin.demo.multiselect2demo',
 
     #: Demo for django_cradmin.uicontainer
     'django_cradmin.demo.uicontainerdemo',
@@ -142,10 +135,7 @@ ROOT_URLCONF = 'django_cradmin.demo.project.demo.urls'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': DBSETTINGS
 }
 
 # Static files (CSS, JavaScript, Images)
@@ -153,15 +143,6 @@ DATABASES = {
 
 STATIC_URL = '/static/'
 
-# Django crispy forms:
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
-# Thumbnails (sorl-thumbnail)
-# See: http://sorl-thumbnail.readthedocs.org/en/latest/reference/settings.html
-THUMBNAIL_ENGINE = 'sorl.thumbnail.engines.pil_engine.Engine'
-THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.cached_db_kvstore.KVStore'
-THUMBNAIL_PREFIX = 'sorlcache/'
-THUMBNAIL_DEBUG = False
 
 # The root for file fileuploads
 MEDIA_ROOT = os.path.join(BASE_DIR, 'django_media_root')
@@ -257,33 +238,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-DJANGO_CRADMIN_IMAGEUTILS_IMAGETYPE_MAP = {
-    'cradmin-webdemo-pages-listing': {
-        'width': 300,
-        'height': 200,
-        'crop': 'lfill',
-        'quality': 70,
-    },
-    'cradmin-archiveimage-listing': {
-        'width': 170,
-        'height': 100,
-        'crop': 'lfill',
-        'quality': 70,
-    },
-    'cradmin-archiveimage-preview': {
-        'width': 330,
-        'height': 400,
-        'crop': 'limit',
-        'quality': 70,
-    },
-}
-
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGETYPE = 'cradmin-archiveimage-listing'
-DJANGO_CRADMIN_IMAGEARCHIVE_LISTING_IMAGEWIDTH = 170
-DJANGO_CRADMIN_IMAGEARCHIVE_PREVIEW_IMAGETYPE = 'cradmin-archiveimage-preview'
-# DJANGO_CRADMIN_IMAGEARCHIVE_MAX_FILESIZE = '100KB'
-
-
 IEVVTASKS_DOCS_DIRECTORY = 'docs'
 IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
 
@@ -369,3 +323,16 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 DJANGO_CRADMIN_THEME_PATH = 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
     version=django_cradmin.__version__
 )
+
+
+IEVVTASKS_DUMPDATA_DIRECTORY = os.path.join(THIS_DIR, 'dumps')
+
+IEVVTASKS_MAKEMESSAGES_LANGUAGE_CODES = ['en', 'nb']
+IEVVTASKS_MAKEMESSAGES_JAVASCRIPT_IGNORE = [
+    'node_modules/*',
+    'bower_components/*',
+    'docs/*',
+    'demo/*',
+    'static/*',
+]
+IEVVTASKS_MAKEMESSAGES_DIRECTORIES = [os.path.dirname(django_cradmin.__file__)]

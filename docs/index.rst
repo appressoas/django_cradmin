@@ -16,7 +16,6 @@ Getting started
 
    install
    newbie
-   gettingstartedguide
 
 
 ***********
@@ -27,10 +26,6 @@ Viewhelpers
    :maxdepth: 1
 
    viewhelpers_delete
-   viewhelpers_objecttable
-   viewhelpers_listbuilder
-   viewhelpers_listfilter
-   viewhelpers_multiselect2
 
 
 *************
@@ -95,17 +90,6 @@ Utilities
     uicontainer
 
 
-*******
-Widgets
-*******
-
-.. toctree::
-   :maxdepth: 1
-
-   datetimepicker
-   foreignkeywidgets
-
-
 ***********
 Development
 ***********
@@ -129,7 +113,6 @@ Documentation
    settings
    templatetags
    theme
-   imageutils
 
 
 ************

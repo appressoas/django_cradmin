@@ -1,5 +1,17 @@
-{% extends "django_cradmin/viewhelpers/listbuilder/base/list.django.html" %}
+{% load cradmin_tags %}
 
-{% block list-element-attributes %}
-    {% if me.get_wrapper_htmltag_id %}id="{{ me.get_wrapper_htmltag_id }}"{% endif %}
-{% endblock list-element-attributes %}
+{% block pre %}{% endblock pre %}
+<{{ me.get_wrapper_htmltag }}
+        {% if me.get_css_classes_string %}class="{{ me.get_css_classes_string }}"{% endif %}
+        {% block list-element-attributes %}
+            {% if me.get_wrapper_htmltag_id %} id="{{ me.get_wrapper_htmltag_id }}"{% endif %}
+        {% endblock %}>
+    {% block content %}
+        {% for renderable in me.iter_renderables %}
+            {% block list-item %}
+                {% cradmin_render_renderable renderable %}
+            {% endblock list-item %}
+        {% endfor %}
+    {% endblock content %}
+</{{ me.get_wrapper_htmltag }}>
+{% block post %}{% endblock post %}

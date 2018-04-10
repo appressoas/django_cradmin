@@ -3,7 +3,6 @@ from django import http
 from django.contrib import messages
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core import serializers
-from django.utils.translation import ugettext_lazy
 
 from . import formviewmixin
 from . import previewmixin

@@ -1,6 +1,7 @@
 """
 Django settings for running the django_cradmin tests.
 """
+from django_dbdev.backends.sqlite import DBSETTINGS
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'y%j0x%=7a^sf53m*s^5nbmfe0_t13d*oibfx#m#*wz1x+k6+m1'
@@ -24,8 +25,6 @@ INSTALLED_APPS = (
     'django_cradmin',
     'django_cradmin.django_cradmin_testapp',
 
-    'django_cradmin.apps.cradmin_imagearchive',
-    'django_cradmin.apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
     'django_cradmin.apps.cradmin_resetpassword',
@@ -33,6 +32,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_register_account',
     'django_cradmin.apps.cradmin_invite',
     'django_cradmin.apps.cradmin_email',
+    'django_cradmin.apps.django_cradmin_js',
     'django_cradmin.uicontainer',
 
     'django_cradmin.tests.test_sortable.cradmin_sortable_testapp',
@@ -40,15 +40,6 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_authenticate.tests.cradmin_authenticate_testapp',
     'django_cradmin.apps.cradmin_register_account.tests.cradmin_register_account_testapp',
     'django_cradmin.apps.cradmin_email.tests.cradmin_email_testapp',
-
-    # Required by django cradmin
-    'crispy_forms',
-    'sorl.thumbnail',  # Required by cradmin_imagearchive
-
-    # Demo apps
-    'django_cradmin.demo.webdemo',
-    'django_cradmin.demo.listfilterdemo',
-    'django_cradmin.demo.multiselect2demo',
 )
 
 MIDDLEWARE = (
@@ -89,9 +80,7 @@ TEMPLATES = [
 
 # We do not set a name -- the test framework does that.
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3'
-    }
+    'default': DBSETTINGS
 }
 
 # Internationalization
@@ -109,9 +98,6 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = 'test_django_media_root'
 STATIC_ROOT = 'test_django_static_root'
-
-# Django crispy forms:
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 ROOT_URLCONF = 'django_cradmin.demo.project.test.urls'
 DJANGO_CRADMIN_SITENAME = 'Testsite'

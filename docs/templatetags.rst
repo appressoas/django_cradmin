@@ -49,15 +49,6 @@ views/components.
 
 
 ******************
-cradmin_image_tags
-******************
-See :doc:`imageutils` for examples.and details.
-
-.. currentmodule:: django_cradmin.templatetags.cradmin_image_tags
-.. automodule:: django_cradmin.templatetags.cradmin_image_tags
-
-
-******************
 cradmin_email_tags
 ******************
 See :doc:`apps.cradmin_email`.

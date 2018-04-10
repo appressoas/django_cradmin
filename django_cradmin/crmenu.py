@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.utils.translation import pgettext_lazy
 
 from django_cradmin import renderable
-from django_cradmin.viewhelpers import listbuilder
 
 
 class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
@@ -79,7 +78,7 @@ class MenuToggleItemItemRenderable(renderable.AbstractBemRenderable):
     Use this to add an expandable menu toggle to the menu.
     """
     template_name = 'django_cradmin/crmenu/menuitem/menutoggle.django.html'
-    
+
     def __init__(self, parent_bem_block=None, **kwargs):
         self.parent_bem_block = parent_bem_block
         super(MenuToggleItemItemRenderable, self).__init__()
@@ -100,7 +99,7 @@ class MenuToggleItemItemRenderable(renderable.AbstractBemRenderable):
         return '{}__navmenutoggle-label'.format(self.get_parent_bem_block())
 
 
-class AbstractMenuRenderable(listbuilder.base.List):
+class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
     """
     Base class for rendering a menu.
 
@@ -118,7 +117,14 @@ class AbstractMenuRenderable(listbuilder.base.List):
     def __init__(self, request, cradmin_instance=None):
         self.request = request
         self.cradmin_instance = cradmin_instance
+        self.renderable_list = []
         super(AbstractMenuRenderable, self).__init__()
+
+    def iter_renderables(self):
+        """
+        Get an iterator over the items in the list.
+        """
+        return iter(self.renderable_list)
 
     def get_link_renderable_class(self):
         """
@@ -260,6 +266,57 @@ class AbstractMenuRenderable(listbuilder.base.List):
 
     def get_base_css_classes_list(self):
         return [self.get_bem_block_or_element()]
+
+    def has_items(self):
+        """
+        Returns:
+            bool: ``True`` if the list has any items, and ``False`` otherwise.
+        """
+        return len(self.renderable_list) > 0
+
+    def __len__(self):
+        return len(self.renderable_list)
+
+    def insert(self, index, renderable_object):
+        """
+        Insert a renderable object at a specific index in the menu.
+
+        Args:
+            index (int): The index to insert at.
+            renderable_object: The renderable object (a subclass
+                of :class:`django_cradmin.renderable.AbstractRenderable`)
+        """
+        if index < len(self.renderable_list):
+            self.renderable_list.insert(index, renderable_object)
+        else:
+            self.append(renderable_object)
+
+    def prepend(self, renderable_object):
+        """
+        Prepend a renderable object to the menu.
+
+        Args:
+            renderable_object: The renderable object (a subclass
+                of :class:`django_cradmin.renderable.AbstractRenderable`)
+        """
+        self.renderable_list.insert(0, renderable_object)
+
+    def append(self, renderable_object):
+        """
+        Append a renderable object to the menu.
+
+        Args:
+            renderable_object: The renderable object (a subclass
+                of :class:`django_cradmin.renderable.AbstractRenderable`)
+        """
+        self.renderable_list.append(renderable_object)
+
+    def extend(self, renerable_iterable):
+        """
+        Just like :meth:`.append` except that it takes an iterable
+        of renderables instead of a single renderable.
+        """
+        self.renderable_list.extend(renerable_iterable)
 
 
 class DefaultMainMenuRenderable(AbstractMenuRenderable):

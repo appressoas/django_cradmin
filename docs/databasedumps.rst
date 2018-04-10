@@ -12,18 +12,9 @@ Importing the test data
 ***********************
 The easiest method of importing the test database is to use the ``recreate_devdb`` Fabric task::
 
-    $ inv recreate_devdb
+    $ ievv recreate_devdb
 
 .. warning:: This will destroy your current database.
-
-
-A slighly more low level method is to use the management command::
-
-    $ python manage.py runscript cradmin_demo.project.dumps.dev.data
-
-This does exactly the same as the management command, but it does not destroy
-and re-initialize the database for you first.
-
 
 
 **************************
@@ -41,7 +32,7 @@ and select Users to list all users. The password of all users are ``test``.
 ************
 Add new data
 ************
-To add new data, you just need to do add data to the database manually, or programmatically.
+To add new data, you just need to do add data to the database manually.
 
 Adding data manually (I.E.: Using the Django admin UI)
 ======================================================
@@ -49,15 +40,8 @@ To add data manually, you should first run the ``recreate_devdb`` management
 command to make sure you start out with the current up-to-date dataset. Then you
 can use the web-UI or the Django shell to add data. Finally, run::
 
-    $ inv dump_current_db_to_dumpscript_datafile
+    $ ievv dump_db_as_sql
 
-
-Adding data programmatically
-============================
-Adding data programmatically must be done in
-``cradmin_demo/project/dumps/dev/import_helper.py``. See the comment at
-the top of ``cradmin_demo/project/dumps/dev/data.py`` for information
-about how ``import_helper`` works.
-
-
-.. _dumpscript: http://django-extensions.readthedocs.org/en/latest/dumpscript.html
+Now you can commit the update ``django_cradmin/demo/project/demo/dumps/default.sql`` to the git
+repo if you want to make the changes to the development database available to other developers
+of django-cradmin.
