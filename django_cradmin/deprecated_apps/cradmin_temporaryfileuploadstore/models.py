@@ -87,8 +87,8 @@ def _make_unique_filename(filename_set, wanted_filename, generated_filename, max
 
 
 def make_unique_filename(filename_set, wanted_filename, max_filename_length=None, ellipsis='...'):
-    if max_filename_length \
-            and max_filename_length < TemporaryFileCollectionDeprecated.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES:
+    min_max_filename_length = TemporaryFileCollectionDeprecated.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES
+    if max_filename_length and max_filename_length < min_max_filename_length:
         raise ValueError('make_unique_filename requires max_filename_length to be at least 45.')
     else:
         return _make_unique_filename(
