@@ -33,7 +33,7 @@ def cradmin_titletext_for_role(context, role):
     return cradmin_instance.get_titletext_for_role(role)
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def cradmin_descriptionhtml_for_role(context, role):
     """
     Template tag implementation of
