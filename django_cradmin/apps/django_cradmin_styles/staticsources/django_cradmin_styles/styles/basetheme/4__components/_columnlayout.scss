@@ -337,6 +337,28 @@ Example: {type: isolated} Tighter separator with --border-width-small
         </div>
     </div>
 
+Example: {type: isolated} Spacing like a page-section on small displays
+
+    <!--
+    You typically need this when using heading like in the example below to avoid
+    that the sections are squashed together on small displays.
+    -->
+    <div class="columnlayout">
+        <section class="columnlayout__column columnlayout__column--half">
+            <h3>Hello</h3>
+            <p>Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod.</p>
+        </section>
+
+        <!-- We use "columnlayout__column--separator-spacing-sm" instead of "columnlayout__column--separator" -->
+        <div class="columnlayout__column columnlayout__column--separator-spacing-sm columnlayout__column--border-width box box--neutral-dark box--spacing-none"></div>
+
+        <section class="columnlayout__column columnlayout__column--half">
+            <h3>World</h3>
+            <p>Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod.</p>
+        </section>
+    </div>
+
+
 Styleguide components.columnlayout.5:separator
 */
 
@@ -387,6 +409,16 @@ Styleguide components.columnlayout.5:separator
             overflow: hidden;
             @include min-width (md) {
                 display: block;
+                flex: 0 0 auto;
+            }
+
+        }
+        &--separator-spacing-sm {
+            display: block;
+            margin-top: $vertical-rythm--medium;
+            overflow: hidden;
+            @include min-width (md) {
+                margin-top: 0;
                 flex: 0 0 auto;
             }
         }
