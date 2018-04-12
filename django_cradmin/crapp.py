@@ -106,3 +106,6 @@ class App(object):
                     name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
                     kwargs=pattern.kwargs))
         return urls
+
+    def get_breadcrumb_item_list_renderable(self):
+        return self.request.cradmin_instance.get_breadcrumb_item_list_renderable()

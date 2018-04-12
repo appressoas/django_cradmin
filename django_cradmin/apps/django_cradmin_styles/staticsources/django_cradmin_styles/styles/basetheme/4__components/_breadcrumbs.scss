@@ -1,0 +1,102 @@
+/* Breadcrumbs
+
+The basic components of a breadcrumb is:
+
+```
+.breadcrumbs  (the outer wrapper)
+    .breadcrumbs__content   (wrapper around the content)
+        .breadcrumbs__item   (an item in the breadcrumb)
+```
+
+Example: {type: isolated} Basic example
+
+    <nav class="breadcrumbs  breadcrumbs--dark">
+        <a class="breadcrumbs__item">
+            First
+        </a>
+        <span class="breadcrumbs__separator"></span>
+        <a class="breadcrumbs__item">
+            Second
+        </a>
+        <span class="breadcrumbs__separator"></span>
+        <a class="breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Example: {type: isolated} block-light variant
+
+    <nav class="breadcrumbs  breadcrumbs--block-light  breadcrumbs--dark">
+        <a class="breadcrumbs__item">
+            First
+        </a>
+        <span class="breadcrumbs__separator"></span>
+        <a class="breadcrumbs__item">
+            Second
+        </a>
+        <span class="breadcrumbs__separator"></span>
+        <a class="breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+
+Example: {type: isolated} Content before and after (inline-block by default)
+
+    Before the breadcrumb!
+    <nav class="breadcrumbs  breadcrumbs--dark">
+        <a class="breadcrumbs__item">
+            First
+        </a>
+        <span class="breadcrumbs__separator"></span>
+        <a class="breadcrumbs__item">
+            Second
+        </a>
+        <span class="breadcrumbs__separator"></span>
+        <a class="breadcrumbs__item">
+            Last
+        </a>
+    </nav>
+    After the breadcrumb!
+
+Example: {type: isolated} With container
+
+    <nav class="breadcrumbs  breadcrumbs--block-light  breadcrumbs--dark">
+        <div class="container container--wide">
+            <a class="breadcrumbs__item">
+                First
+            </a>
+            <span class="breadcrumbs__separator"></span>
+            <a class="breadcrumbs__item">
+                Second
+            </a>
+            <span class="breadcrumbs__separator"></span>
+            <a class="breadcrumbs__item">
+                Last
+            </a>
+        </div>
+    </nav>
+
+
+Example: {type: isolated} Light variant
+
+    <div style="background-color: #000;">
+        <nav class="breadcrumbs  breadcrumbs--light">
+            <a class="breadcrumbs__item">
+                First
+            </a>
+            <span class="breadcrumbs__separator"></span>
+            <a class="breadcrumbs__item">
+                Second
+            </a>
+            <span class="breadcrumbs__separator"></span>
+            <a class="breadcrumbs__item">
+                Last
+            </a>
+        </nav>
+    </div>
+
+Styleguide components.breadcrumbs
+*/
+.breadcrumbs {
+    @include breadcrumbs-mixin();
+}

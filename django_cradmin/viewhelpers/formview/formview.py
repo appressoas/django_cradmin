@@ -1,11 +1,13 @@
 from django.views.generic import FormView as DjangoFormView
 from django_cradmin import javascriptregistry
+from django_cradmin.viewhelpers.mixins import CommonCradminViewMixin
 
 from . import formviewmixin
 
 
 class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                          formviewmixin.FormViewMixin,
+                         CommonCradminViewMixin,
                          DjangoFormView):
     """
     Form view.
@@ -58,11 +60,13 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
         context = super(WithinRoleFormView, self).get_context_data(**kwargs)
         self.add_formview_mixin_context_data(context=context)
         self.add_javascriptregistry_component_ids_to_context(context=context)
+        self.add_common_view_mixin_data_to_context(context=context)
         return context
 
 
 class StandaloneFormView(javascriptregistry.viewmixin.StandaloneBaseViewMixin,
                          formviewmixin.FormViewMixin,
+                         CommonCradminViewMixin,
                          DjangoFormView):
     template_name = 'django_cradmin/viewhelpers/formview/standalone_form_view.django.html'
 
@@ -70,4 +74,5 @@ class StandaloneFormView(javascriptregistry.viewmixin.StandaloneBaseViewMixin,
         context = super(StandaloneFormView, self).get_context_data(**kwargs)
         self.add_formview_mixin_context_data(context=context)
         self.add_javascriptregistry_component_ids_to_context(context=context)
+        self.add_common_view_mixin_data_to_context(context=context)
         return context

@@ -434,6 +434,44 @@ def cradmin_render_header(context, headername='default', include_context=True, *
 
 
 @register.simple_tag(takes_context=True)
+def cradmin_render_breadcrumb_item_list(context, include_context=True, **kwargs):
+    """
+    Render breadcrumbs.
+
+    Args:
+        context: template context.
+        name (list): List or other iterable of css class strings.
+            Sent to :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_breadcrumb_list_renderable`
+            to get the breadcrumb list renderable.
+        include_context: Forwarded to :func:`.cradmin_render_renderable`.
+        **kwargs: Forwarded to :func:`.cradmin_render_renderable`.
+
+    Examples:
+
+        Render the default breadcrumbs::
+
+            {% cradmin_render_header %}
+            ... or ...
+            {% cradmin_render_header name='default' %}
+
+        Render some custom breadcrumbs (which we have added support to in our cradmin instance)::
+
+            {% cradmin_render_header name='myheader' %}
+
+        The last example assumes that you have overridden
+        :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_breadcrumb_list_renderable`
+        to handle this name as an argument.
+    """
+    breadcrumb_item_list = context.get('cradmin_breadcrumb_item_list', None)
+    if breadcrumb_item_list:
+        return cradmin_render_renderable(context, breadcrumb_item_list,
+                                         include_context=include_context,
+                                         **kwargs)
+    else:
+        return ''
+
+
+@register.simple_tag(takes_context=True)
 def cradmin_render_default_header(context):
     """
     Render the default header specified via the

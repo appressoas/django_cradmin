@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.utils.html import format_html
 from django.views import View
 
-from django_cradmin import crheader
+from django_cradmin import crheader, crbreadcrumb
 from django_cradmin import crmenu
 from django_cradmin.decorators import has_access_to_cradmin_instance
 from django_cradmin.javascriptregistry.default_componentids import get_default_component_ids
@@ -105,6 +105,11 @@ class BaseCrAdminInstance(object):
     #: The footer class for this cradmin instance.
     #: Must be a subclass of :class:`django_cradmin.crfooter.AbstractFooter`.
     footer_renderable_class = None
+
+    #: The breadcrumb item list renderable class for this cradmin instance.
+    #: Must be a subclass of :class:`django_cradmin.crbreadcrumb.BreadcrumbItemList`.
+    #: Defaults to :class:`django_cradmin.crbreadcrumb.WrappedBreadcrumbItemList`.
+    breadcrumb_item_list_renderable_class = crbreadcrumb.WrappedBreadcrumbItemList
 
     #: The class defining the role for this cradmin instance.
     #: If you do not set this, the role system will not be used,
@@ -331,6 +336,12 @@ class BaseCrAdminInstance(object):
         """
         if self.footer_renderable_class:
             return self.footer_renderable_class(cradmin_instance=self)
+        else:
+            return None
+
+    def get_breadcrumb_item_list_renderable(self):
+        if self.breadcrumb_item_list_renderable_class:
+            return self.breadcrumb_item_list_renderable_class(cradmin_instance=self)
         else:
             return None
 

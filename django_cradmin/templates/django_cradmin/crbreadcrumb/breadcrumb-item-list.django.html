@@ -1,0 +1,7 @@
+{% load cradmin_tags %}
+
+<nav class="{{ me.css_classes }}">
+    {% for breadcrumb_item in me.iter_listitems %}
+        {% cradmin_render_renderable breadcrumb_item %}
+    {% endfor %}
+</nav>

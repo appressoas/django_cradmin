@@ -89,6 +89,10 @@
                             </header>
                         {% endblock page-cover %}
 
+                        {% block breadcrumbs %}
+                            {% cradmin_render_breadcrumb_item_list %}
+                        {% endblock breadcrumbs %}
+
                         {% block messages %}
                             {% include "django_cradmin/include/messages.django.html" %}
                         {% endblock messages %}

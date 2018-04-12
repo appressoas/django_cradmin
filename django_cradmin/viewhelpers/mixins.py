@@ -1,4 +1,4 @@
-class QuerysetForRoleMixin:
+class QuerysetForRoleMixin(object):
     def get_queryset_for_role(self):
         """
         Get a queryset with all objects of ``self.model``  that
@@ -13,3 +13,17 @@ class QuerysetForRoleMixin:
         """
         queryset = self.get_queryset_for_role()
         return queryset
+
+
+class CommonCradminViewMixin(object):
+    def add_breadcrumb_items(self, breadcrumb_item_list):
+        pass
+
+    def get_breadcrumb_item_list_renderable(self):
+        breadcrumb_item_list = self.request.cradmin_app.get_breadcrumb_item_list_renderable()
+        if breadcrumb_item_list is not None:
+            self.add_breadcrumb_items(breadcrumb_item_list=breadcrumb_item_list)
+        return breadcrumb_item_list
+
+    def add_common_view_mixin_data_to_context(self, context):
+        context['cradmin_breadcrumb_item_list'] = self.get_breadcrumb_item_list_renderable()
