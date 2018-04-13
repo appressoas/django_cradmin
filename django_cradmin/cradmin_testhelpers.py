@@ -104,12 +104,12 @@ class AbstractTestCaseMixin(object):
 
         Args:
             method (str): The http method (get, post, ...).
-            requestkwargs: (dict): Kwargs for the request. Defaults to
+            requestkwargs (dict): Kwargs for the request. Defaults to
                 ``{'path': '/'}``, and the path is added unless it is
                 included in the dict. The data you can include in this
                 dict is the same as for the get, post, ... methods on
                 :class:`.django.test.Client` (depends on the ``method`` kwarg).
-            httpheaders: (dict): Extra http headers needed.
+            httpheaders (dict): Extra http headers needed.
 
         Returns:
             The created request object.
@@ -190,9 +190,9 @@ class AbstractTestCaseMixin(object):
 
         Parameters:
             method: The http method (get, post, ...).
-            httpheaders: (httpheaders): Forwarded to :meth:`.make_minimal_request`.
+            httpheaders (httpheaders): Forwarded to :meth:`.make_minimal_request`.
                 Extra HTTP headers to be added to request.META.
-            requestkwargs: (dict): Forwarded to :meth:`.make_minimal_request`.
+            requestkwargs (dict): Forwarded to :meth:`.make_minimal_request`.
 
             cradmin_role: The request.cradmin_role to use. Defaults to mock.MagicMock().
             cradmin_app: The request.cradmin_app to use. Defaults to mock.MagicMock().

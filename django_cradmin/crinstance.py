@@ -144,7 +144,7 @@ class BaseCrAdminInstance(object):
         """
         Parameters:
             request (HttpRequest): The current HttpRequest.
-                Stored in :attr:`.request`.
+                Stored in :attr:`~.BaseCrAdminInstance.request`.
         """
         self.request = request
 
@@ -341,10 +341,24 @@ class BaseCrAdminInstance(object):
 
     def add_breadcrumb_list_items(self, breadcrumb_item_list):
         """
+        Add items to the breadcrumb item list.
+
+        If you completely override the :meth:`.get_breadcrumb_item_list_renderable` method
+        without calling super (or calling this method explicitly), this method will have no effect.
+
+        Examples::
+
+            Simple example::
+
+                def add_breadcrumb_list_items(self, breadcrumb_item_list):
+                    breadcrumb_item_list.append(url='#', label='Test')
+
 
         Args:
             breadcrumb_item_list (django_cradmin.crbreadcrumb.BreadcrumbItemList): The breadcrumb item list
                 to add items to.
+
+        .. seealso:: :doc:`/crbreadcrumb`
         """
 
     def get_breadcrumb_item_list_renderable(self):
@@ -368,9 +382,12 @@ class BaseCrAdminInstance(object):
         but they will then have to initialize a :class:`django_cradmin.crbreadcrumb.BreadcrumbItemList`
         in their ``get_breadcrumb_item_list_renderable``-methods.
 
+
         Returns:
             django_cradmin.crbreadcrumb.BreadcrumbItemList: A breadcrumb item list renderable object
                 or ``None``.
+
+        .. seealso:: :doc:`/crbreadcrumb`
         """
         if self.breadcrumb_item_list_renderable_class:
             breadcrumb_item_list = self.breadcrumb_item_list_renderable_class(cradmin_instance=self)
@@ -653,6 +670,7 @@ class BaseCrAdminInstance(object):
         Should be overridden if you do not want the default of ``adminui-page-cover``.
 
         If you need more complex behavior, you should consider:
+
         - Making your own templates that extend:
             - ``django_cradmin/standalone-base.django.html`` - for all the views outside the role.
             - ``django_cradmin/base.django.html`` - for all the views within the role

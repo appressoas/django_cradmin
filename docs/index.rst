@@ -25,8 +25,9 @@ Viewhelpers
 .. toctree::
    :maxdepth: 1
 
+   viewhelpers_mixins
+   viewhelpers_generic
    viewhelpers_delete
-   crbreadcrumb
 
 
 *************
@@ -89,6 +90,7 @@ Utilities
     delay_middleware
     messages_debug_middleware
     uicontainer
+    crbreadcrumb
 
 
 ***********

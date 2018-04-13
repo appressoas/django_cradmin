@@ -2,10 +2,6 @@
 Using and creating database dumps
 #################################
 
-We use dumpscript_ from the django-extentions Django app to create our test
-data. We already have data, so unless you want to add more data, you do not need
-to know anything more than how to run a Django management task or a fabric task.
-
 
 ***********************
 Importing the test data

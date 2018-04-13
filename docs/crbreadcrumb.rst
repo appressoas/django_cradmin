@@ -1,6 +1,6 @@
-###########
-Breadcrumbs
-###########
+####################################################
+`crbreadcrumbs` --- Generalized breadcrumb rendering
+####################################################
 
 ***********
 Renderables
@@ -36,11 +36,12 @@ list from the cradmin app. Docs for each of these methods here:
 - :meth:`django_cradmin.crapp.App.get_breadcrumb_item_list_renderable`
 - :meth:`django_cradmin.viewhelpers.mixins.CommonCradminViewMixin.get_breadcrumb_item_list_renderable`
 
-As a convenience, crapp.App and viewhelpers.mixins.CommonCradminViewMixin also define
-a add_breadcrumb_list_items()-method which can be used to just add breadcrumb items as long
+As a convenience, crinstance.BaseCrAdminInstance, crapp.App and viewhelpers.mixins.CommonCradminViewMixin also define
+a ``add_breadcrumb_list_items()``-method which can be used to just add breadcrumb items as long
 as the cradmin instance/app actually provide a breadcrumb item list rendereable. You normally
 want to override these methods, and they are documented here:
 
+- :meth:`django_cradmin.crinstance.BaseCrAdminInstance.add_breadcrumb_list_items`
 - :meth:`django_cradmin.crapp.App.add_breadcrumb_list_items`
 - :meth:`django_cradmin.viewhelpers.mixins.CommonCradminViewMixin.add_breadcrumb_list_items`
 
@@ -117,6 +118,10 @@ Custom breadcrumb item list in just a single view::
             # above.
             breadcrumb_item_list = super().get_breadcrumb_item_list_renderable()
 
+            if breadcrumb_item_list is None:
+                # Handle that breadcrumbs may have been disabled in the cradmin instance or app.
+                return None
+
             # Then we create an instance of MyCustomBreadcrumbItemList with a copy
             # of the items of the items from super().
             return MyCustomBreadcrumbItemList.from_breadcrumb_item_list(breadcrumb_item_list)
@@ -144,6 +149,8 @@ First, we override ``get_breadcrumb_item_list_renderable`` on the view::
         def get_breadcrumb_item_list_renderable(self):
             # We have an example above that explains how this works in detail.
             breadcrumb_item_list = super().get_breadcrumb_item_list_renderable()
+            if breadcrumb_item_list is None:
+                return None
             return crbreadcrumb.BreadcrumbItemList.from_breadcrumb_item_list(breadcrumb_item_list)
 
 Next, we override the template:
@@ -173,9 +180,9 @@ Next, we override the template:
     and override the ``django_cradmin/standalone-base.django.html`` template.
 
 
-*****************
-crbreadcrumbs API
-*****************
+********************
+crbreadcrumbs module
+********************
 
 .. automodule:: django_cradmin.crbreadcrumb
    :members:

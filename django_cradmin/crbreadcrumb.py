@@ -76,8 +76,15 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
 
     We provide a lot of helper methods, but if you need more powerful features, such
     as removal of breadcrumb items, you can just manipulate the
-    ``breadcrumb_item_list`` attribute directly. All the append*, insert*, etc.
+    :attr:`~.BreadcrumbItemList.breadcrumb_item_list` attribute directly. All the append*, insert*, etc.
     methods just add items to this list.
+
+    Attributes:
+        breadcrumb_item_list (list): A plain python list of
+            :class:`django_cradmin.renderable.AbstractRenderable` objects,
+            normally :class:`.BreadcrumbItem` objects.
+        cradmin_instance (django_cradmin.crinstance.BaseCrAdminInstance): The
+            cradmin instance sent in as an argument to ``__init__()``.
     """
     template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item-list.django.html'
 

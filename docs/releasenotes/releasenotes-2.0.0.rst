@@ -19,7 +19,7 @@ What is new?
 New menu system
 ***************
 Menus are structurally changed, and they are defined in a different manner.
-Read :doc:`crmenu` for details.
+Read :doc:`/crmenu` for details.
 
 
 Migrating from the old menu system

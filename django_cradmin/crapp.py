@@ -109,14 +109,49 @@ class App(object):
 
     def add_breadcrumb_list_items(self, breadcrumb_item_list):
         """
+        Add items to the breadcrumb item list.
+
+        If you completely override the :meth:`.get_breadcrumb_item_list_renderable` method
+        without calling super (or calling this method explicitly), this method will have no effect.
+
+        Examples::
+
+            Simple example::
+
+                def add_breadcrumb_list_items(self, breadcrumb_item_list):
+                    breadcrumb_item_list.append(url='#', label='Test')
+
+
         Args:
             breadcrumb_item_list (django_cradmin.crbreadcrumb.BreadcrumbItemList): The breadcrumb item list
                 to add items to.
+
+        .. seealso:: :doc:`/crbreadcrumb`
         """
 
     def get_breadcrumb_item_list_renderable(self):
+        """
+        Get a breadcrumb item list renderable common for all views within this app.
+
+        By default, this just uses ``request.cradmin_instance.get_breadcrumb_item_list_renderable()``
+        (see :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_breadcrumb_item_list_renderable`).
+
+        You will normally only want to override this if you want to customize how breadcrumbs
+        are rendered for the views in this app. If you just need to add items to the breadcrumb item
+        list, override :meth:`.add_breadcrumb_list_items`.
+
+        If you override this, remember that the breadcrumb item list from
+        ``request.cradmin_instance.get_breadcrumb_item_list_renderable()``
+        can be ``None``, so if you use that method you have to remember to handle this.
+
+
+        Returns:
+            django_cradmin.crbreadcrumb.BreadcrumbItemList: A breadcrumb item list renderable object
+                or ``None``.
+
+        .. seealso:: :doc:`/crbreadcrumb`
+        """
         breadcrumb_item_list = self.request.cradmin_instance.get_breadcrumb_item_list_renderable()
         if breadcrumb_item_list is not None:
             self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
         return breadcrumb_item_list
-
