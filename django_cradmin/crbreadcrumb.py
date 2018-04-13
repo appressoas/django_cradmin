@@ -1,3 +1,5 @@
+from django.forms.utils import flatatt
+
 from django_cradmin import renderable
 
 
@@ -7,21 +9,51 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
     """
     template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item.django.html'
 
-    def __init__(self, url, label, parent_bem_block=None):
+    def __init__(self, label, url=None, active=False, parent_bem_block=None):
         """
 
         Args:
-            url (str): The link URL.
-            label (str): The link text/label.
+            label (str): The text/label.
+            url (str): The link URL. If this is `None` or any other boolean false value,
+                we render the item as a `<span>` instead of as a `<a>` element.
+            active (bool): If this is ``True``, we add the ``--active`` BEM variant to the element.
             parent_bem_block: Provided automatically by :class:`.BreadcrumbItemList`.
         """
         self.url = url
         self.label = label
+        self.active = active
         self.parent_bem_block = parent_bem_block
         super(BreadcrumbItem, self).__init__()
 
     def get_bem_element(self):
         return '{}__item'.format(self.parent_bem_block)
+
+    def get_bem_variant_list(self):
+        variant_list = []
+        if self.active:
+            variant_list.append('active')
+        return variant_list
+
+    @property
+    def html_tag(self):
+        if self.url:
+            return 'a'
+        return 'span'
+
+    def get_html_element_attributes(self):
+        """
+        Get HTML element attributes as a dict.
+        """
+        html_element_attributes = {
+            'class': self.css_classes or False,  # Fall back to false to avoid class=""
+        }
+        if self.url:
+            html_element_attributes['href'] = self.url
+        return html_element_attributes
+
+    @property
+    def html_element_attributes_string(self):
+        return flatatt(self.get_html_element_attributes())
 
 
 class BreadcrumbSeparator(renderable.AbstractBemRenderable):
@@ -41,16 +73,34 @@ class BreadcrumbSeparator(renderable.AbstractBemRenderable):
 class BreadcrumbItemList(renderable.AbstractBemRenderable):
     """
     List of breadcrumb items.
+
+    We provide a lot of helper methods, but if you need more powerful features, such
+    as removal of breadcrumb items, you can just manipulate the
+    ``breadcrumb_item_list`` attribute directly. All the append*, insert*, etc.
+    methods just add items to this list.
     """
     template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item-list.django.html'
 
+    @classmethod
+    def from_breadcrumb_item_list(cls, breadcrumb_item_list, **kwargs):
+        new_breadcrumb_item_list = cls(cradmin_instance=breadcrumb_item_list.cradmin_instance, **kwargs)
+        new_breadcrumb_item_list.extend_with_item_renderables(breadcrumb_item_list.breadcrumb_item_list)
+
     def __init__(self, cradmin_instance):
+        """
+
+        Args:
+            cradmin_instance (django_cradmin.crinstance.BaseCrAdminInstance): A cradmin instance.
+        """
         self.breadcrumb_item_list = []
         self.cradmin_instance = cradmin_instance
         super(BreadcrumbItemList, self).__init__()
 
     def get_bem_block(self):
-        return 'breadcrumbs'
+        """
+        Override this to use a custom BEM block for the breadcrumb.
+        """
+        return 'breadcrumb-item-list'
 
     def __len__(self):
         return len(self.breadcrumb_item_list)
@@ -67,6 +117,9 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         return BreadcrumbSeparator
 
     def make_separator_renderable(self):
+        """
+        Make a breadcrumb item separator renderable.
+        """
         return self.get_separator_renderable_class()(parent_bem_block=self.get_bem_block())
 
     def get_item_renderable_class(self):
@@ -97,30 +150,38 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         return kwargs
 
     def make_item_renderable(self, **kwargs):
+        """
+        Make an item renderable.
+
+        Args:
+            **kwargs: Kwargs for the item renderable class. This is forwarded to
+                :meth:`.get_item_renderable_kwargs` to enable default kwargs for all
+                items in the breadcrumb item list.
+        """
         return self.get_item_renderable_class()(**self.get_item_renderable_kwargs(**kwargs))
 
-    def append_link(self, **kwargs):
+    def append(self, **kwargs):
         """
         Uses :meth:`.make_item_renderable` to create a renderable,
         and appends the created item to the breadcrumb list.
         """
-        self.append(self.make_item_renderable(**kwargs))
+        self.append_item_renderable(self.make_item_renderable(**kwargs))
 
-    def prepend_link(self, **kwargs):
+    def prepend(self, **kwargs):
         """
         Uses :meth:`.make_item_renderable` to create a renderable,
         and prepends the created item to the breadcrumb list.
         """
-        self.prepend(self.make_item_renderable(**kwargs))
+        self.prepend_item_renderable(self.make_item_renderable(**kwargs))
 
-    def insert_link(self, index, **kwargs):
+    def insert(self, index, **kwargs):
         """
         Uses :meth:`.make_item_renderable` to create a renderable,
         and inserts the created item in the breadcrumb list.
         """
-        self.insert(index, self.make_item_renderable(**kwargs))
+        self.insert_item_renderable(index, self.make_item_renderable(**kwargs))
 
-    def insert(self, index, renderable_object):
+    def insert_item_renderable(self, index, renderable_object):
         """
         Insert a renderable object at a specific index in the breadcrumb list.
 
@@ -132,9 +193,9 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         if index < len(self.breadcrumb_item_list):
             self.breadcrumb_item_list.insert(index, renderable_object)
         else:
-            self.append(renderable_object)
+            self.append_item_renderable(renderable_object)
 
-    def prepend(self, renderable_object):
+    def prepend_item_renderable(self, renderable_object):
         """
         Prepend a renderable object to the breadcrumb list.
 
@@ -144,7 +205,7 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         """
         self.breadcrumb_item_list.insert(0, renderable_object)
 
-    def append(self, renderable_object):
+    def append_item_renderable(self, renderable_object):
         """
         Append a renderable object to the breadcrumb list.
 
@@ -154,14 +215,21 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         """
         self.breadcrumb_item_list.append(renderable_object)
 
-    def extend(self, renerable_iterable):
+    def extend_with_item_renderables(self, renerable_iterable):
         """
         Just like :meth:`.append` except that it takes an iterable
         of renderables instead of a single renderable.
         """
         self.breadcrumb_item_list.extend(renerable_iterable)
 
-    def iter_listitems(self):
+    def iter_breadcrumb_list_renderables(self):
+        """
+        Iterate through all the breadcrumb items and separators.
+
+        Separators is yielded automatically after each item except the last
+        one. Separator renderables can be overridden with
+        :meth:`.make_separator_renderable`.
+        """
         for index, breadcrumb_item in enumerate(self.breadcrumb_item_list):
             yield breadcrumb_item
             if index < len(self.breadcrumb_item_list) - 1:
@@ -179,10 +247,10 @@ class BreadcrumbItemListWrapper(renderable.AbstractBemRenderable):
         super(BreadcrumbItemListWrapper, self).__init__()
 
     def get_bem_block(self):
-        return 'box'
+        return 'breadcrumb-item-list-wrapper'
 
     def get_bem_variant_list(self):
-        return ['focus', 'spacing-small']
+        return []
 
     def get_breadcrumb_item_list_extra_context_data(self):
         return {

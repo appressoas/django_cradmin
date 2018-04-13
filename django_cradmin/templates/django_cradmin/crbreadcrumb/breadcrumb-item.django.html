@@ -1,5 +1,5 @@
-<a href="{{ me.url }}" class="{{ me.css_classes }}">
+<{{ me.html_tag }} {{ me.html_element_attributes_string }}>
     {% block content %}
         {{ me.label }}
     {% endblock content %}
-</a>
+</{{ me.html_tag }}>

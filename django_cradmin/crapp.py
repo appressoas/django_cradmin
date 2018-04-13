@@ -107,5 +107,16 @@ class App(object):
                     kwargs=pattern.kwargs))
         return urls
 
+    def add_breadcrumb_list_items(self, breadcrumb_item_list):
+        """
+        Args:
+            breadcrumb_item_list (django_cradmin.crbreadcrumb.BreadcrumbItemList): The breadcrumb item list
+                to add items to.
+        """
+
     def get_breadcrumb_item_list_renderable(self):
-        return self.request.cradmin_instance.get_breadcrumb_item_list_renderable()
+        breadcrumb_item_list = self.request.cradmin_instance.get_breadcrumb_item_list_renderable()
+        if breadcrumb_item_list is not None:
+            self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
+        return breadcrumb_item_list
+

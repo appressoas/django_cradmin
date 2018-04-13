@@ -418,14 +418,23 @@
 }
 
 
-@mixin breadcrumbs-mixin () {
+@mixin breadcrumb-item-list-mixin () {
+    $__root: &;
+
     position: relative;
+    @include font(base, normal);
     @include font-size(xsmall);
     display: inline-block;
+    color: $color-text;
 
     &__item {
         color: inherit;
         border-color: transparent;
+        text-decoration: none;
+
+        &--active {
+            @include font(base, bold);
+        }
     }
     &__separator {
         &:before {
@@ -434,32 +443,29 @@
         }
     }
 
-    &--dark {
-        color: $color-text;
-        .adminui-breadcrumbs__item {
-            color: inherit;
-            border-color: transparent;
-            &:hover {
-                color: $color-links--hover;
-            }
-        }
-    }
+    //&--dark {
+    //    #{$__root}__item {
+    //        color: inherit;
+    //        border-color: transparent;
+    //    }
+    //    a#{$__root}__item {
+    //        border-color: transparent;
+    //        &:hover {
+    //            color: $color-links--hover;
+    //        }
+    //    }
+    //}
 
     &--light {
         color: $color-light;
-        .adminui-breadcrumbs__item {
+        #{$__root}__item {
             color: inherit;
+        }
+        a#{$__root}__item {
             &:hover {
-                color: color(neutral, light);
-                border-color: color(neutral, light);
+                color: color(neutral, xlight);
+                border-color: color(neutral, xlight);
             }
         }
-    }
-
-    &--block-light {
-        display: block;
-        padding: $vertical-rythm 0;
-        background-color: $color-light;
-        box-shadow: 0 $border-width 0 rgba(color(neutral), 0.15);
     }
 }

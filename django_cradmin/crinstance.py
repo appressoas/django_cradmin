@@ -339,9 +339,43 @@ class BaseCrAdminInstance(object):
         else:
             return None
 
+    def add_breadcrumb_list_items(self, breadcrumb_item_list):
+        """
+
+        Args:
+            breadcrumb_item_list (django_cradmin.crbreadcrumb.BreadcrumbItemList): The breadcrumb item list
+                to add items to.
+        """
+
     def get_breadcrumb_item_list_renderable(self):
+        """
+        Get the breadcrumb item list renderable common for all (or at least most)
+        views within the cradmin instance.
+
+        You can override this, or you can set the class in
+        :obj:`~.BaseCrAdminInstance.breadcrumb_item_list_renderable_class`.
+
+        If you just want to add some items to the breadcrumb, you can override
+        :meth:`.add_breadcrumb_list_items` instead.
+
+        The value returned here is used as the default value for
+        :meth:`django_cradmin.crapp.App.get_breadcrumb_item_list_renderable` (enables apps to add breadcrumb items),
+        which in turn is used by
+        :meth:`django_cradmin.viewhelpers.mixins.CommonCradminViewMixin.get_breadcrumb_item_list_renderable`
+        (enables views to add breadcrumb items).
+
+        You can return ``None`` to not render a breadcrumb at all. Apps and views can still have breadcrumbs,
+        but they will then have to initialize a :class:`django_cradmin.crbreadcrumb.BreadcrumbItemList`
+        in their ``get_breadcrumb_item_list_renderable``-methods.
+
+        Returns:
+            django_cradmin.crbreadcrumb.BreadcrumbItemList: A breadcrumb item list renderable object
+                or ``None``.
+        """
         if self.breadcrumb_item_list_renderable_class:
-            return self.breadcrumb_item_list_renderable_class(cradmin_instance=self)
+            breadcrumb_item_list = self.breadcrumb_item_list_renderable_class(cradmin_instance=self)
+            self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
+            return breadcrumb_item_list
         else:
             return None
 
