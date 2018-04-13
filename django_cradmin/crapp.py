@@ -49,6 +49,16 @@ class App(object):
         self.request = request
         self.active_viewname = active_viewname
 
+    def is_crinstance_rolefrontpage_app(self):
+        """
+        Is this the :obj:`django_cradmin.crinstance.BaseCrAdminInstance.rolefrontpage_appname`
+
+        Returns:
+            bool: ``True`` if the appname of this app is the same as
+            ``request.cradmin_instance.rolefrontpage_appname``.
+        """
+        return self.appname == self.request.cradmin_instance.rolefrontpage_appname
+
     def reverse_appurl(self, viewname, args=None, kwargs=None):
         """
         Works just like :func:`django.core.urlresolvers.reverse`, except
