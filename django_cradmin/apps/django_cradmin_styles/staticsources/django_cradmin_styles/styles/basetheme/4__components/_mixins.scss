@@ -443,19 +443,6 @@
         }
     }
 
-    //&--dark {
-    //    #{$__root}__item {
-    //        color: inherit;
-    //        border-color: transparent;
-    //    }
-    //    a#{$__root}__item {
-    //        border-color: transparent;
-    //        &:hover {
-    //            color: $color-links--hover;
-    //        }
-    //    }
-    //}
-
     &--light {
         color: $color-light;
         #{$__root}__item {
