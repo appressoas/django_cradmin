@@ -427,6 +427,14 @@
     display: inline-block;
     color: $color-text;
 
+    &__itemlabel-minimized {
+        display: inline-block;
+    }
+
+    &__itemlabel-full {
+        display: none;
+    }
+
     &__item {
         color: inherit;
         border-color: transparent;
@@ -435,7 +443,18 @@
         &--active {
             @include font(base, bold);
         }
+
+        &:hover {
+            #{$__root}__itemlabel-minimized {
+                display: none;
+            }
+            #{$__root}__itemlabel-full {
+                display: inline-block;
+            }
+        }
+
     }
+
     &__separator {
         &:before {
             @include cricon-fixed-width(xsmall);

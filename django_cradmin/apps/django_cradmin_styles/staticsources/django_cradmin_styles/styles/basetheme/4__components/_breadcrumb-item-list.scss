@@ -24,6 +24,37 @@ Example: Basic example
         </span>
     </nav>
 
+Example: Expandable long item labels
+
+    <nav class="breadcrumb-item-list">
+        <a class="breadcrumb-item-list__item">
+            <span class="breadcrumb-item-list__itemlabel-minimized" aria-hidden="true">
+                The fi...
+            </span>
+            <span class="breadcrumb-item-list__itemlabel-full">
+                The first item
+            </span>
+        </a>
+        <span class="breadcrumb-item-list__separator"></span>
+        <a class="breadcrumb-item-list__item">
+            <span class="breadcrumb-item-list__itemlabel-minimized" aria-hidden="true">
+                The se...
+            </span>
+            <span class="breadcrumb-item-list__itemlabel-full">
+                The second item
+            </span>
+        </a>
+        <span class="breadcrumb-item-list__separator"></span>
+        <span class="breadcrumb-item-list__item  breadcrumb-item-list__item--active">
+            <span class="breadcrumb-item-list__itemlabel-minimized" aria-hidden="true">
+                The la...
+            </span>
+            <span class="breadcrumb-item-list__itemlabel-full">
+                The last item
+            </span>
+        </span>
+    </nav>
+
 Example: Content before and after
 
     Before the breadcrumb!

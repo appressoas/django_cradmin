@@ -1,5 +1,11 @@
 <{{ me.html_tag }} {{ me.html_element_attributes_string }}>
     {% block content %}
-        {{ me.label }}
+        <span class="breadcrumb-item-list__itemlabel-minimized" aria-hidden="true">
+            {{ me.truncated_label }}
+        </span>
+        <span class="breadcrumb-item-list__itemlabel-full">
+            {{ me.label }}
+        </span>
+
     {% endblock content %}
 </{{ me.html_tag }}>

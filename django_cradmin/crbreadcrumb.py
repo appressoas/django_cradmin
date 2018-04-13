@@ -1,4 +1,5 @@
 from django.forms.utils import flatatt
+from django.template import defaultfilters
 
 from django_cradmin import renderable
 
@@ -9,7 +10,9 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
     """
     template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item.django.html'
 
-    def __init__(self, label, url=None, active=False, parent_bem_block=None):
+    def __init__(self, label, url=None, active=False,
+                 label_maxlength=None, active_label_maxlength=None,
+                 parent_bem_block=None):
         """
 
         Args:
@@ -17,11 +20,23 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
             url (str): The link URL. If this is `None` or any other boolean false value,
                 we render the item as a `<span>` instead of as a `<a>` element.
             active (bool): If this is ``True``, we add the ``--active`` BEM variant to the element.
+            label_maxlength (int): The max length of the label before it is shortened using the
+                ``truncatechars`` django template filter.
+                You typically do not set this directly, but instead override
+                :meth:`.BreadcrumbItemList.get_default_item_label_maxlength` to get
+                uniformed max lengths for all your breadcrumbs.
+            active_label_maxlength (int): The max length of the label if active=True before the label
+                is shortened using the ``truncatechars`` django template filter.
+                You typically do not set this directly, but instead override
+                :meth:`.BreadcrumbItemList.get_default_active_item_label_maxlength` to get
+                uniformed max lengths for all your breadcrumbs.
             parent_bem_block: Provided automatically by :class:`.BreadcrumbItemList`.
         """
         self.url = url
         self.label = label
         self.active = active
+        self.label_maxlength = label_maxlength
+        self.active_label_maxlength = active_label_maxlength
         self.parent_bem_block = parent_bem_block
         super(BreadcrumbItem, self).__init__()
 
@@ -39,6 +54,17 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
         if self.url:
             return 'a'
         return 'span'
+
+    @property
+    def truncated_label(self):
+        if self.active:
+            label_maxlength = self.active_label_maxlength
+        else:
+            label_maxlength = self.label_maxlength
+
+        if label_maxlength:
+            return defaultfilters.truncatechars(self.label, label_maxlength)
+        return self.label
 
     def get_html_element_attributes(self):
         """
@@ -137,6 +163,36 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         """
         return BreadcrumbItem
 
+    def get_default_item_label_maxlength(self):
+        """
+        The default max length of the label of items.
+
+        If the label is longer than this, the label is truncated
+        using the ``truncatechars`` django template filter.
+
+        If you return None or another boolean false falue from this method,
+        labels are not truncated.
+
+        Returns:
+            int: The max length of item labels, or ``None``. Defaults to ``15``.
+        """
+        return 15
+
+    def get_default_active_item_label_maxlength(self):
+        """
+        The default max length of the label of active items.
+
+        If the label is longer than this, the label is truncated
+        using the ``truncatechars`` django template filter.
+
+        If you return None or another boolean false falue from this method,
+        labels are not truncated.
+
+        Returns:
+            int: The max length of item labels, or ``None``. Defaults to ``25``.
+        """
+        return 25
+
     def get_item_renderable_kwargs(self, **extra_kwargs):
         """
         Get kwargs for the :meth:`.get_item_renderable_class`.
@@ -151,7 +207,9 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
             dict: kwargs.
         """
         kwargs = {
-            'parent_bem_block': self.get_bem_block()
+            'parent_bem_block': self.get_bem_block(),
+            'label_maxlength': self.get_default_item_label_maxlength(),
+            'active_label_maxlength': self.get_default_active_item_label_maxlength(),
         }
         kwargs.update(extra_kwargs)
         return kwargs
