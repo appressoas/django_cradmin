@@ -471,7 +471,7 @@ class BaseCrAdminInstance(object):
         if self.__class__.__no_role_and_flatten_rolefrontpage_url():
             return self.rolefrontpage_url()
         else:
-            return reverse('{}-frontpage'.format(self.id))
+            return reverse_cradmin_url(instanceid=self.id)
 
     def roleselectview_url(self):
         """
