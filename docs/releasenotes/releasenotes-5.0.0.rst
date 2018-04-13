@@ -21,6 +21,7 @@ You should be able to find occurrences of the ``adminui-breadcrumbs`` css classe
 something like::
 
     $ git grep adminui-breadcrumbs -- '*.html' '*.py' '*.js' '*.jsx' '*.scss'
+    $ git grep breadcrumbs-mixin -- '*.html' '*.py' '*.js' '*.jsx' '*.scss'
 
 If your project is affected by the removal of ``adminui-breadcrumbs``, you have 3 options:
 
