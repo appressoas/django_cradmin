@@ -36,7 +36,7 @@ class CommonCradminViewMixin(object):
         If you completely override the :meth:`.get_breadcrumb_item_list_renderable` method
         without calling super (or calling this method explicitly), this method will have no effect.
 
-        Examples::
+        Examples:
 
             Simple example::
 
