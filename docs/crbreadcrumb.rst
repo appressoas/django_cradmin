@@ -166,6 +166,13 @@ Next, we override the template:
         {{ block.super }}
     {% endblock page-cover-content %}
 
+
+.. note:: You can change how the breadcrumbs are rendered for all views in your
+    site by overring the breadcrumb item list renderable
+    on your cradmin instances (typically with a common base class or mixin class),
+    and override the ``django_cradmin/standalone-base.django.html`` template.
+
+
 *****************
 crbreadcrumbs API
 *****************
