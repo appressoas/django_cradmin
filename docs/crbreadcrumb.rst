@@ -159,7 +159,9 @@ Next, we override the template:
 
     {% block page-cover-content %}
         {# Render breadcrumbs here instead #}
-        {% cradmin_render_breadcrumb_item_list %}
+        <div class="text-center paragraph">
+            {% cradmin_render_breadcrumb_item_list %}
+        </div>
 
         {{ block.super }}
     {% endblock page-cover-content %}
