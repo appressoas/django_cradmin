@@ -8,6 +8,13 @@ from . import create_update_view_mixin
 
 
 class UpdateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
+    """
+    Common mixin class for update views.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.UpdateViewMixin``.
+    """
+
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
@@ -25,6 +32,13 @@ class WithinRoleUpdateView(QuerysetForRoleMixin,
                            DjangoUpdateView,
                            CommonCradminViewMixin,
                            javascriptregistry.viewmixin.WithinRoleViewMixin):
+    """
+    Update view with the correct context data and sane base template
+    for views where we have a cradmin role.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.WithinRoleUpdateView``.
+    """
     template_name = 'django_cradmin/viewhelpers/formview/within_role_update_view.django.html'
 
     def get_pagetitle(self):
@@ -54,6 +68,9 @@ class UpdateRoleView(WithinRoleUpdateView):
     Just like :class:`.UpdateView`, but with the get_object and
     get_queryset_for_role methods implemented to edit the current role
     object.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.UpdateRoleView``.
     """
     def get_object(self, queryset=None):
         return self.get_queryset_for_role().get()
@@ -81,6 +98,9 @@ class RedirectToCreateIfDoesNotExistMixin(object):
 
     And the view will automatically redirect to the create view
     if the object does not exist.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.RedirectToCreateIfDoesNotExistMixin``.
     """
 
     #: The viewname within this app for the create view.

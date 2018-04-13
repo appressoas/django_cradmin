@@ -12,7 +12,7 @@ class PreviewMixin:
     :meth:`get_preview_data`. A typical place to call :meth:`.store_preview_in_session`
     is in the form_valid() method of form views. Example::
 
-        class MyFormView(formbase.PreviewMixin, formbase.FormView):
+        class MyFormView(viewhelpers.formview.PreviewMixin, viewhelpers.formview.WithinRoleFormView):
 
             # Ensure this extends django_cradmin/viewhelpers/formview_base.django.html
             template_name = 'myapp/mytemplate.django.html'

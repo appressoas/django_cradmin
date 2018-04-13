@@ -2,6 +2,9 @@ class QuerysetForRoleMixin(object):
     """
     Common mixin class for views that query for items limited to
     items accessible by the current cradmin role.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.mixins.QuerysetForRoleMixin``.
     """
     def get_queryset_for_role(self):
         """
@@ -22,6 +25,9 @@ class QuerysetForRoleMixin(object):
 class CommonCradminViewMixin(object):
     """
     Common mixin class for all cradmin view classes.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.mixins.CommonCradminViewMixin``.
     """
     def add_breadcrumb_list_items(self, breadcrumb_item_list):
         """

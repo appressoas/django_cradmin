@@ -1,18 +1,20 @@
-#######################################################################
-`viewhelpers.delete` --- Implements the preview+confirm+delete workflow
-#######################################################################
+####################################################################################
+`viewhelpers.formview.deleteview` --- Implements the preview+confirm+delete workflow
+####################################################################################
 
 
 ***********
 When to use
 ***********
-Use this when you need a view to delete a single item. Your users will get a preview of the item, and the option to confirm the delete or cancel the delete.
+Use this when you need a view to delete a single item. Your users will get a preview of the item,
+and the option to confirm the delete or cancel the delete.
 
 
 *****
 Usage
 *****
-The :class:`django_cradmin.viewhelpers.delete.DeleteView` is just a subclass of :class:`django.views.generic.DeleteView`, so you use it just like the Django DeleteView.
+The :class:`django_cradmin.viewhelpers.formview.WithinRoleDeleteView` is just a subclass of
+:class:`django.views.generic.DeleteView`, so you use it just like the Django DeleteView.
 
 
 Very basic example (no security)
@@ -26,16 +28,16 @@ Lets say you have the following ``Page``-model in ``models.py``::
         title = models.CharField(max_length=100)
         body = models.TextField()
 
-        def __unicode__(self):
+        def __str__(self):
             return self.title
 
 
 Then you would create a PageDeleteView and register it in an app with the following code::
 
-    from django_cradmin.viewhelpers import delete
+    from django_cradmin import viewhelpers
     from django_cradmin import crapp
 
-    class PageDeleteView(delete.DeleteView):
+    class PageDeleteView(viewhelpers.formview.WithinRoleDeleteView):
         """
         View used to delete existing pages.
         """
@@ -53,7 +55,9 @@ Then you would create a PageDeleteView and register it in an app with the follow
 
 Securing the basic example
 ==========================
-The basic example lets anyone with access to the cradmin delete any page. You normally have multiple roles, and each role will have access to a subset of objects. Lets add a role class named ``Site``, and extend our ``Page``-model with a foreign-key to that site. Our new ``models.py`` looks like this::
+The basic example lets anyone with access to the cradmin delete any page. You normally have multiple roles,
+and each role will have access to a subset of objects. Lets add a role class named ``Site``, and extend our
+``Page``-model with a foreign-key to that site. Our new ``models.py`` looks like this::
 
     from django.conf import settings
     from django.db import models
@@ -67,7 +71,7 @@ The basic example lets anyone with access to the cradmin delete any page. You no
         title = models.CharField(max_length=100)
         body = models.TextField()
 
-        def __unicode__(self):
+        def __str__(self):
             return self.title
 
 We make the Site the roleclass on our ``MyCrAdminInstance``::
@@ -77,11 +81,23 @@ We make the Site the roleclass on our ``MyCrAdminInstance``::
         roleclass = Site
         # Other stuff documented elsewhere
 
-We only want to allow deleting within the current Site (current role), so we replace ``model`` on the DeleteView with a ``get_queryset``-method that limits the pages to pages within the current site::
+We only want to allow deleting within the current Site (current role), so we replace ``model``
+on the WithinRoleDeleteView with a ``get_queryset_for_role``-method that limits the pages to
+pages within the current site::
 
-    class PageDeleteView(delete.DeleteView):
+    class PageDeleteView(viewhelpers.formview.WithinRoleDeleteView):
         """
         View used to delete existing pages.
         """
-        def get_queryset(self):
+        def get_queryset_for_role(self):
             return Page.objects.filter(site=self.request.cradmin_role)
+
+
+********
+API docs
+********
+
+.. currentmodule:: django_cradmin.viewhelpers.formview.deleteview
+
+.. automodule:: django_cradmin.viewhelpers.formview.deleteview
+   :members:

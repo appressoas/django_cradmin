@@ -4,6 +4,9 @@ from django_cradmin import crapp
 class FormViewMixin:
     """
     Mixin class for form views.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.FormViewMixin``.
     """
 
     #: Get the view name for the listing page.

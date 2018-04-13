@@ -10,6 +10,9 @@ class DetailView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                  CommonCradminViewMixin, QuerysetForRoleMixin, DjangoDetailView):
     """
     Base detail view for Django cradmin views.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.detail.DetailView``.
     """
 
     def get_context_data(self, **kwargs):
@@ -27,6 +30,9 @@ class DetailRoleView(DetailView):
     Just like :class:`.DetailView`, but with the get_object and
     get_queryset_for_role methods implemented to edit the current role
     object.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.detail.DetailRoleView``.
     """
     def get_object(self, queryset=None):
         return self.get_queryset_for_role().get()

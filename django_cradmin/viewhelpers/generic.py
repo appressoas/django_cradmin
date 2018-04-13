@@ -9,6 +9,9 @@ class StandaloneBaseTemplateView(TemplateView, CommonCradminViewMixin,
     """
     Base template view that you should use instead of :class:`django.views.generic.TemplateView`
     if you extend the ``django_cradmin/standalone-base.django.html`` template.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.generic.StandaloneBaseTemplateView``.
     """
     template_name = 'django_cradmin/standalone-base.django.html'
 
@@ -24,6 +27,9 @@ class WithinRoleTemplateView(TemplateView, CommonCradminViewMixin,
     """
     Base template view that you should use instead of :class:`django.views.generic.TemplateView`
     if you extend the ``django_cradmin/base.django.html`` template.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.generic.WithinRoleTemplateView``.
     """
     template_name = 'django_cradmin/base.django.html'
 

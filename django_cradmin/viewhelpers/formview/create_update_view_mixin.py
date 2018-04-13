@@ -12,6 +12,9 @@ class CreateUpdateViewMixin(previewmixin.PreviewMixin,
                             formviewmixin.FormViewMixin):
     """
     Mixin class for Update and Create views.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.CreateUpdateViewMixin``.
     """
 
     #: The model class.

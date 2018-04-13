@@ -2,13 +2,19 @@ import urllib.parse
 
 from django.utils.translation import ugettext_lazy
 from django.views.generic import CreateView as DjangoCreateView
+
 from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import CommonCradminViewMixin
-
 from . import create_update_view_mixin
 
 
 class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
+    """
+    Common mixin class for create views.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.CreateViewMixin``.
+    """
 
     #: The viewname within this app for the edit view.
     #: See :meth:`.get_editurl`.
@@ -61,6 +67,13 @@ class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 class WithinRoleCreateView(CreateViewMixin,
                            DjangoCreateView, CommonCradminViewMixin,
                            javascriptregistry.viewmixin.WithinRoleViewMixin):
+    """
+    Create view with the correct context data and sane base template
+    for views where we have a cradmin role.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.WithinRoleCreateView``.
+    """
     template_name = 'django_cradmin/viewhelpers/formview/within_role_create_view.django.html'
 
     def get_context_data(self, **kwargs):

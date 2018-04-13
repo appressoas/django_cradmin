@@ -6,6 +6,12 @@ from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin, CommonCradmi
 
 
 class DeleteViewMixin:
+    """
+    Delete view mixin.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.DeleteViewMixin``.
+    """
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
@@ -108,6 +114,13 @@ class WithinRoleDeleteView(QuerysetForRoleMixin,
                            DjangoDeleteView,
                            CommonCradminViewMixin,
                            javascriptregistry.viewmixin.WithinRoleViewMixin):
+    """
+    Delete view with the correct context data and sane base template
+    for views where we have a cradmin role.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.WithinRoleDeleteView``.
+    """
     template_name = 'django_cradmin/viewhelpers/formview/within_role_delete_view.django.html'
 
     def get_context_data(self, **kwargs):

@@ -10,11 +10,15 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                          CommonCradminViewMixin,
                          DjangoFormView):
     """
-    Form view.
+    Form view with the correct context data and sane base template
+    for views where we have a cradmin role.
 
     Uses :class:`django.views.generic.edit.FormView` with
     :class:`django_cradmin.viewhelpers.formview.formviewmixin.FormViewMixin`
     and :class:`django_cradmin.javascriptregistry.viewmixin.WithinRoleViewMixin`.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.WithinRoleFormView``.
 
     Examples:
 
@@ -22,13 +26,13 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
 
             from django import forms
             from django.http import HttpResponseRedirect
-            from django_cradmin.viewhelpers import formview
+            from django_cradmin import viewhelpers
 
             class MyForm(forms.Form):
                 first_name = forms.CharField(max_length=50)
                 last_name = forms.CharField(max_length=50)
 
-            class MyFormView(formview.WithinRoleFormView):
+            class MyFormView(viewhelpers.formview.WithinRoleFormView):
                 template_name = 'myapp/myview.django.html'
                 form_class = MyForm
 
@@ -68,6 +72,13 @@ class StandaloneFormView(javascriptregistry.viewmixin.StandaloneBaseViewMixin,
                          formviewmixin.FormViewMixin,
                          CommonCradminViewMixin,
                          DjangoFormView):
+    """
+    Form view with the correct context data and sane base template
+    for views where we do not have a cradmin role.
+
+    .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
+        and refer to it using ``viewhelpers.formview.StandaloneFormView``.
+    """
     template_name = 'django_cradmin/viewhelpers/formview/standalone_form_view.django.html'
 
     def get_context_data(self, **kwargs):

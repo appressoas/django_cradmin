@@ -27,7 +27,14 @@ Viewhelpers
 
    viewhelpers_mixins
    viewhelpers_generic
-   viewhelpers_delete
+   viewhelpers_detail
+   viewhelpers_formview_formviewmixin
+   viewhelpers_formview_formview
+   viewhelpers_formview_create_update_view_mixin
+   viewhelpers_formview_createview
+   viewhelpers_formview_updateview
+   viewhelpers_formview_deleteview
+   viewhelpers_formview_previewmixin
 
 
 *************
