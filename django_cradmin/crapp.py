@@ -40,6 +40,11 @@ class App(object):
 
     Added to a :class:`django_cradmin.crinstance.BaseCrAdminInstance`
     with :obj:`django_cradmin.crinstance.BaseCrAdminInstance.apps`.
+
+    Attributes:
+        appname (str): The name of the app.
+        request (django.http.HttpRequest): Django request object for the current request.
+        active_viewname (str): The name of the view we are currently rendering.
     """
     #: See :meth:`~.App.get_appurls`.
     appurls = []
@@ -48,6 +53,15 @@ class App(object):
         self.appname = appname
         self.request = request
         self.active_viewname = active_viewname
+
+    def active_viewname_is_indexview(self):
+        """
+        Is the active viewname the app index view?
+
+        Returns:
+            bool: ``True`` if
+        """
+        return self.active_viewname == INDEXVIEW_NAME
 
     def is_crinstance_rolefrontpage_app(self):
         """
