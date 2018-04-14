@@ -169,6 +169,14 @@ class BaseCrAdminInstance(object):
         """
         raise NotImplementedError()
 
+    def get_titletext_for_current_role(self):
+        """
+        Shortcut for ``get_titletext_for_role(role=request.cradmin_role)``.
+
+        .. seealso:: :meth:`.get_titletext_for_role`
+        """
+        return self.get_titletext_for_role(role=self.request.cradmin_role)
+
     def get_descriptiontext_for_role(self, role):
         """
         Get a longer description for the given ``role``.
@@ -179,6 +187,14 @@ class BaseCrAdminInstance(object):
         instead.
         """
         return None
+
+    def get_descriptiontext_for_current_role(self):
+        """
+        Shortcut for ``get_descriptiontext_for_role(role=request.cradmin_role)``.
+
+        .. seealso:: :meth:`.get_descriptiontext_for_role`
+        """
+        return self.get_descriptiontext_for_role(role=self.request.cradmin_role)
 
     def get_descriptionhtml_for_role(self, role):
         """
