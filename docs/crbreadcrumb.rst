@@ -1,6 +1,6 @@
-####################################################
-`crbreadcrumbs` --- Generalized breadcrumb rendering
-####################################################
+###################################################
+`crbreadcrumb` --- Generalized breadcrumb rendering
+###################################################
 
 ***********
 Renderables
@@ -44,6 +44,12 @@ want to override these methods, and they are documented here:
 - :meth:`django_cradmin.crinstance.BaseCrAdminInstance.add_breadcrumb_list_items`
 - :meth:`django_cradmin.crapp.App.add_breadcrumb_list_items`
 - :meth:`django_cradmin.viewhelpers.mixins.CommonCradminViewMixin.add_breadcrumb_list_items`
+
+
+.. note:: These methods are named `add_breadcrumb_list_items()`. This does not mean
+    that you can only add items (it is just the use case in 95% of use cases). Since
+    you have a BreadcrumbItemList, you can add, remove, insert, extend, etc, not just
+    add.
 
 
 *******
@@ -180,9 +186,9 @@ Next, we override the template:
     and override the ``django_cradmin/standalone-base.django.html`` template.
 
 
-********************
-crbreadcrumbs module
-********************
+*******************
+crbreadcrumb module
+*******************
 
 .. automodule:: django_cradmin.crbreadcrumb
    :members:
