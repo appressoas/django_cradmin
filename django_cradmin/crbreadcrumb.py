@@ -12,6 +12,7 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
 
     def __init__(self, label, url=None, active=False,
                  label_maxlength=None, active_label_maxlength=None,
+                 render_link_for_active=False,
                  parent_bem_block=None):
         """
 
@@ -30,6 +31,9 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
                 You typically do not set this directly, but instead override
                 :meth:`.BreadcrumbItemList.get_default_active_item_label_maxlength` to get
                 uniformed max lengths for all your breadcrumbs.
+            render_link_for_active (bool): If this is ``True``, we render as a link (``<a>``)
+                even if ``active`` is ``True``. We do, of course, not render
+                as a link if we do not have an ``url``.
             parent_bem_block: Provided automatically by :class:`.BreadcrumbItemList`.
         """
         self.url = url
@@ -37,6 +41,7 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
         self.active = active
         self.label_maxlength = label_maxlength
         self.active_label_maxlength = active_label_maxlength
+        self.render_link_for_active = render_link_for_active
         self.parent_bem_block = parent_bem_block
         super(BreadcrumbItem, self).__init__()
 
@@ -49,9 +54,17 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
             variant_list.append('active')
         return variant_list
 
+    def should_render_as_link(self):
+        """
+        Should we render the element as a link (``<a>``)?
+        """
+        if self.active and not self.render_link_for_active:
+            return False
+        return bool(self.url)
+
     @property
     def html_tag(self):
-        if self.url:
+        if self.should_render_as_link():
             return 'a'
         return 'span'
 
@@ -73,7 +86,7 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
         html_element_attributes = {
             'class': self.css_classes or False,  # Fall back to false to avoid class=""
         }
-        if self.url:
+        if self.should_render_as_link():
             html_element_attributes['href'] = self.url
         return html_element_attributes
 
