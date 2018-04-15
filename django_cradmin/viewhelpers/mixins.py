@@ -71,10 +71,12 @@ class CommonCradminViewMixin(object):
 
         .. seealso:: :doc:`/crbreadcrumb`
         """
-        breadcrumb_item_list = self.request.cradmin_app.get_breadcrumb_item_list_renderable()
-        if breadcrumb_item_list is not None:
-            self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
-        return breadcrumb_item_list
+        if hasattr(self.request, 'cradmin_app'):
+            breadcrumb_item_list = self.request.cradmin_app.get_breadcrumb_item_list_renderable()
+            if breadcrumb_item_list is not None:
+                self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
+            return breadcrumb_item_list
+        return []
 
     def add_common_view_mixin_data_to_context(self, context):
         """
