@@ -39,7 +39,7 @@ class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
     def get_bem_variant_list(self):
         bem_variant_list = super(BaseMenuLinkRenderable, self).get_bem_variant_list()
         if self.is_active:
-            bem_variant_list.extend_with_renderables(self.get_active_bem_variant_list())
+            bem_variant_list.extend(self.get_active_bem_variant_list())
         return bem_variant_list
 
 
