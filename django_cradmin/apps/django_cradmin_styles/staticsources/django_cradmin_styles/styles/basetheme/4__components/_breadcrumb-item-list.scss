@@ -8,7 +8,7 @@ The basic components of a breadcrumb is:
     .breadcrumb-item-list__separator   (a separator between items in the breadcrumb)
 ```
 
-Example: Basic example
+Example: {type: isolated} Basic example
 
     <nav class="breadcrumb-item-list">
         <a class="breadcrumb-item-list__item">
@@ -24,7 +24,19 @@ Example: Basic example
         </span>
     </nav>
 
-Example: Expandable long item labels
+Example: {type: isolated} Only two items - no ... before on mobile!
+
+    <nav class="breadcrumb-item-list">
+        <a class="breadcrumb-item-list__item">
+            First
+        </a>
+        <span class="breadcrumb-item-list__separator"></span>
+        <a class="breadcrumb-item-list__item breadcrumb-item-list__item--active">
+            Second
+        </a>
+    </nav>
+
+Example: {type: isolated} Expandable long item labels
 
     <nav class="breadcrumb-item-list">
         <a class="breadcrumb-item-list__item">
@@ -55,7 +67,7 @@ Example: Expandable long item labels
         </span>
     </nav>
 
-Example: Content before and after
+Example: {type: isolated} Content before and after
 
     Before the breadcrumb!
     <nav class="breadcrumb-item-list">
@@ -73,7 +85,7 @@ Example: Content before and after
     </nav>
     After the breadcrumb!
 
-Example: Light variant
+Example: {type: isolated} Light variant
 
     <div style="background-color: #000;">
         <nav class="breadcrumb-item-list  breadcrumb-item-list--light">

@@ -439,6 +439,21 @@
         color: inherit;
         border-color: transparent;
         text-decoration: none;
+        &:nth-last-child(3) {
+            &:before {
+                @include cricon-fixed-width(xsmall);
+                @include cricon-icon(arrow-left);
+                //content: "...";
+                @include min-width(md) {
+                    @include cricon-clear-icon(arrow-left);
+                }
+                //content: "...";
+                //@include min-width(md) {
+                //    content: "";
+                //}
+            }
+        }
+
 
         &--active {
             @include font(base, bold);
@@ -452,13 +467,22 @@
                 display: inline-block;
             }
         }
-
     }
 
     &__separator {
         &:before {
             @include cricon-fixed-width(xsmall);
             @include cricon-icon(chevron-right);
+        }
+    }
+
+    &__item, &__separator {
+        display: none;
+        &:nth-last-child(-n+3) {
+            display: inline-block;
+        }
+        @include min-width(md) {
+            display: inline-block;
         }
     }
 

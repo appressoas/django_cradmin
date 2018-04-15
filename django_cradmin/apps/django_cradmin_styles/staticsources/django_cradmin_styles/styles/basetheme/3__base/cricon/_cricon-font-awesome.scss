@@ -109,6 +109,11 @@ $cricon-font-awesome-brand-icon-map: (
     }
 }
 
+@mixin cricon-clear-icon($name) {
+    content: '';
+    width: auto;
+}
+
 @mixin cricon-color-text() {
     color: $color-text;
 }
