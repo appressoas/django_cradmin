@@ -73,6 +73,23 @@ class ExpandableMenuItem(BaseMenuLinkRenderable):
         return '{}__listitem'.format(self.get_parent_bem_block())
 
 
+class ExpandableMenuSeparator(renderable.AbstractBemRenderable):
+    template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-separator.django.html'
+
+    def __init__(self, parent_bem_block=None, **kwargs):
+        self.parent_bem_block = parent_bem_block
+        super(ExpandableMenuSeparator, self).__init__()
+
+    def get_fallback_parent_bem_block(self):
+        return 'adminui-expandable-menu'
+
+    def get_parent_bem_block(self):
+        return self.parent_bem_block or self.get_fallback_parent_bem_block()
+
+    def get_bem_element(self):
+        return '{}__separator'.format(self.get_parent_bem_block())
+
+
 class MenuToggleItemItemRenderable(renderable.AbstractBemRenderable):
     """
     Use this to add an expandable menu toggle to the menu.
@@ -111,6 +128,9 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
     #: The link renderable class used by :meth:`.make_link_renderable`.
     link_renderable_class = None
 
+    #: The separator renderable class used by :meth:`.make_separator_renderable`.
+    separator_renderable_class = None
+
     #: The button renderable class used by :meth:`.make_button_renderable`.
     button_renderable_class = None
 
@@ -140,6 +160,21 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         if not self.link_renderable_class:
             raise ValueError('No link_renderable_class defined for {}'.format(self.__class__.__name__))
         return self.link_renderable_class
+
+    def get_separator_renderable_class(self):
+        """
+        Get the separator renderable class.
+
+        The default implementation returns :obj:`~.AbstractMenuRenderable.separator_renderable_class`,
+        and raises ValueError if it is ``None``.
+
+        You can override this method, or override
+        :obj:`~.AbstractMenuRenderable.separator_renderable_class` to change
+        the separator renderable class.
+        """
+        if not self.separator_renderable_class:
+            raise ValueError('No separator_renderable_class defined for {}'.format(self.__class__.__name__))
+        return self.separator_renderable_class
 
     def get_button_renderable_class(self):
         """
@@ -190,6 +225,21 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         """
         return self.get_link_renderable_class()(**self.make_child_renderable_kwargs(**kwargs))
 
+    def make_separator_renderable(self, **kwargs):
+        """
+        Make a separator renderable.
+
+        Uses the renderable returned by :meth:`.get_separator_renderable_class`,
+        and forwards ``**kwargs`` to the constructor of that class.
+
+        Kwargs is filtered through :meth:`.make_child_renderable_kwargs`,
+        so you can override that method to add default kwargs.
+
+        Returns:
+            A separator renderable object.
+        """
+        return self.get_separator_renderable_class()(**self.make_child_renderable_kwargs(**kwargs))
+
     def make_button_renderable(self, **kwargs):
         """
         Make a button renderable.
@@ -212,13 +262,6 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         """
         self.append(self.make_link_renderable(**kwargs))
 
-    def append_button(self, **kwargs):
-        """
-        Uses :meth:`.make_button_renderable` to create a renderable,
-        and appends the created button to the menu.
-        """
-        self.append(self.make_button_renderable(**kwargs))
-
     def prepend_link(self, **kwargs):
         """
         Uses :meth:`.make_link_renderable` to create a renderable,
@@ -226,19 +269,47 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         """
         self.prepend(self.make_link_renderable(**kwargs))
 
-    def prepend_button(self, **kwargs):
-        """
-        Uses :meth:`.make_button_renderable` to create a renderable,
-        and prepends the created button to the menu.
-        """
-        self.prepend(self.make_button_renderable(**kwargs))
-
     def insert_link(self, index, **kwargs):
         """
         Uses :meth:`.make_link_renderable` to create a renderable,
         and inserts the created link in the menu.
         """
         self.insert(index, self.make_link_renderable(**kwargs))
+
+    def append_separator(self, **kwargs):
+        """
+        Uses :meth:`.make_separator_renderable` to create a renderable,
+        and appends the created separator to the menu.
+        """
+        self.append(self.make_separator_renderable(**kwargs))
+
+    def prepend_separator(self, **kwargs):
+        """
+        Uses :meth:`.make_separator_renderable` to create a renderable,
+        and prepends the created separator to the menu.
+        """
+        self.prepend(self.make_separator_renderable(**kwargs))
+
+    def insert_separator(self, index, **kwargs):
+        """
+        Uses :meth:`.make_separator_renderable` to create a renderable,
+        and inserts the created separator in the menu.
+        """
+        self.insert(index, self.make_separator_renderable(**kwargs))
+
+    def append_button(self, **kwargs):
+        """
+        Uses :meth:`.make_button_renderable` to create a renderable,
+        and appends the created button to the menu.
+        """
+        self.append(self.make_button_renderable(**kwargs))
+
+    def prepend_button(self, **kwargs):
+        """
+        Uses :meth:`.make_button_renderable` to create a renderable,
+        and prepends the created button to the menu.
+        """
+        self.prepend(self.make_button_renderable(**kwargs))
 
     def insert_button(self, index, **kwargs):
         """
@@ -365,6 +436,7 @@ class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
     """
     template_name = 'django_cradmin/crmenu/menu/default-expandable.django.html'
     link_renderable_class = ExpandableMenuItem
+    separator_renderable_class = ExpandableMenuSeparator
     button_renderable_class = None
 
     def get_wrapper_htmltag_id(self):
