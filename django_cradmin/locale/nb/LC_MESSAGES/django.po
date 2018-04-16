@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-16 18:34+0200\n"
-"PO-Revision-Date: 2018-04-16 18:40+0200\n"
+"PO-Revision-Date: 2018-04-16 18:46+0200\n"
 "Last-Translator: Tor Ivar Johansen <tor@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
@@ -274,7 +274,7 @@ msgstr ""
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/messages/successmessage.django.html:2
 msgid "Your password has been updated."
-msgstr "Ditt passord har blitt oppdatert."
+msgstr "Det gikk fint. Nå kan du logge inn med ditt nye passord!"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:5
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:9
