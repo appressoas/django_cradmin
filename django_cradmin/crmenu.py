@@ -9,7 +9,8 @@ class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
     template_name = 'django_cradmin/crmenu/menuitem/link.django.html'
 
     def __init__(self, label, url, is_active=False,
-                 bem_variant_list=None, parent_bem_block=None):
+                 bem_variant_list=None, parent_bem_block=None,
+                 **kwargs):
         """
         Parameters:
             label: A label shown in the menu.
@@ -20,7 +21,7 @@ class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
         self.url = url
         self.is_active = is_active
         self.parent_bem_block = parent_bem_block
-        super(BaseMenuLinkRenderable, self).__init__(bem_variant_list=bem_variant_list)
+        super(BaseMenuLinkRenderable, self).__init__(bem_variant_list=bem_variant_list, **kwargs)
 
     def get_fallback_parent_bem_block(self):
         return 'adminui-page-header'
