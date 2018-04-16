@@ -75,8 +75,8 @@ class CommonCradminViewMixin(object):
             breadcrumb_item_list = self.request.cradmin_app.get_breadcrumb_item_list_renderable()
             if breadcrumb_item_list is not None:
                 self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
-            return breadcrumb_item_list
-        return []
+                return breadcrumb_item_list
+        return None
 
     def add_common_view_mixin_data_to_context(self, context):
         """
