@@ -150,7 +150,8 @@ class AbstractBemRenderable(AbstractRenderable):
     This is an alternative to :class:`.AbstractRenderableWithCss`
     that makes it much more natural to work with BEM.
     """
-    def __init__(self, bem_block=None, bem_element=None, bem_variant_list=None):
+    def __init__(self, bem_block=None, bem_element=None, bem_variant_list=None,
+                 extra_css_classes_list=None):
         """
 
         Args:
@@ -158,6 +159,7 @@ class AbstractBemRenderable(AbstractRenderable):
             bem_element (str): Get the BEM element. Can not be supplied if ``bem_block`` is supplied.
             bem_variant_list (list): Get a list of BEM variants for the block/element.
                 You do not include the block/element, just the part after ``--``.
+            extra_css_classes_list (list): List of extra css classes.
         """
         if bem_block and bem_element:
             raise ValueError('Can not specify both bem_block and bem_element arguments.')
@@ -166,6 +168,7 @@ class AbstractBemRenderable(AbstractRenderable):
         self._bem_block = bem_block
         self._bem_element = bem_element
         self._bem_variant_list = bem_variant_list or []
+        self._extra_css_classes_list = extra_css_classes_list or []
 
     def get_test_css_class_suffixes_list(self):
         """
@@ -204,6 +207,12 @@ class AbstractBemRenderable(AbstractRenderable):
         """
         return self._bem_variant_list
 
+    def get_extra_css_classes_list(self):
+        """
+        Get a list of extra css classes.
+        """
+        return self._extra_css_classes_list
+
     @property
     def css_classes(self):
         """
@@ -221,4 +230,5 @@ class AbstractBemRenderable(AbstractRenderable):
         if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
             for css_class_suffix in self.get_test_css_class_suffixes_list():
                 css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
+        css_classes.extend(self.get_extra_css_classes_list())
         return join_css_classes_list(css_classes)
