@@ -45,7 +45,7 @@ class ResetPasswordView(formview.StandaloneFormView):
                 fieldname='password2',
             ),
             uicontainer.button.SubmitPrimary(
-                text=ugettext_lazy('Reset password')),
+                text=ugettext_lazy('Set password')),
         ]
         return uicontainer.layout.AdminuiPageSectionTight(
             children=[
