@@ -337,6 +337,18 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
     def get_menutoggle_renderable(self):
         return self.menutoggle_renderable_class(**self.make_child_renderable_kwargs())
 
+    @property
+    def cached_menutoggle_renderable(self):
+        if not hasattr(self, '_cached_menutoggle_renderable'):
+            self._cached_menutoggle_renderable = self.get_menutoggle_renderable()
+        return self._cached_menutoggle_renderable
+
+    def has_expandable_menu_renderable(self):
+        return bool(getattr(self.cradmin_instance, 'expandable_menu_renderable', None))
+
+    def should_render_menutoggle(self):
+        return self.has_expandable_menu_renderable() and bool(self.cached_menutoggle_renderable)
+
     def get_child_renderable_parent_bem_block(self):
         return 'adminui-page-header'
 
@@ -344,7 +356,7 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
         return '{}__nav'.format(self.get_child_renderable_parent_bem_block())
 
     def __bool__(self):
-        return self.has_items() or bool(getattr(self.cradmin_instance, 'expandable_menu_renderable', None))
+        return super(DefaultMainMenuRenderable, self).__bool__() or self.has_expandable_menu_renderable()
 
 
 class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
