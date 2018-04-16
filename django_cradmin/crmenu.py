@@ -277,6 +277,9 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
     def __len__(self):
         return len(self.renderable_list)
 
+    def __bool__(self):
+        return len(self) > 0
+
     def insert(self, index, renderable_object):
         """
         Insert a renderable object at a specific index in the menu.
