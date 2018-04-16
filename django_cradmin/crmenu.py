@@ -443,7 +443,7 @@ class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
         return 'id_django_cradmin_menu_expandable'
 
     def get_bem_block_or_element(self):
-        return 'adminui-expandable-menu'
+        return 'expandable-menu'
 
     def get_child_renderable_parent_bem_block(self):
         return self.get_bem_block_or_element()

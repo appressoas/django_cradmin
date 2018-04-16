@@ -499,3 +499,99 @@
         }
     }
 }
+
+
+@mixin expandable-menu-mixin () {
+    position: fixed;
+    display: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    z-index: $level-3;
+
+    &--expanded {
+        display: block;
+    }
+
+    &__backdrop {
+        @extend %animation-fade-in;
+        position: fixed;
+        z-index: $level-2;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(white, 0.85);
+    }
+
+    &__close {
+        position: absolute;
+        top: $spacing;
+        right: $spacing;
+        min-width: $unit * 14;
+        text-align: right;
+        line-height: 30px;
+        color: $color-light;
+    }
+
+    &__content {
+        animation: expandable-menu-open-keyframes 300ms $swift-out both;
+
+        position: fixed;
+        z-index: $level-3;
+        padding-top: 80px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 400px;
+        max-width: 100%;
+        color: $color-light;
+        background-color: color(secondary, dark);
+    }
+
+    &__list {
+        padding: 0 vertical-space($spacing);
+    }
+
+    &__listitem {
+        animation: expandable-menu-item-open-keyframes 300ms $swift-out both;
+        @include animation-delay(8, 60ms, 80ms);
+        margin-bottom: vertical-space();
+    }
+
+    &__separator {
+        height: $border-width;
+        background-color: color(secondary);
+        margin-top: vertical-space() * 2;
+        margin-bottom: vertical-space() * 2;
+    }
+
+    &__heading {
+        margin-top: vertical-space() * 3;
+        margin-bottom: vertical-space() * 2;
+        @include font-size(xxsmall);
+        @include font(base, bold);
+        text-transform: uppercase;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    &__link {
+        @include font(base, bold);
+        position: relative;
+        margin-left: 1em;
+        color: $color-light;
+        border-bottom: $border-width--small solid transparent;
+
+        &--active,
+        &:hover,
+        &:focus {
+            color: $color-light;
+            border-color: $color-light;
+        }
+    }
+}

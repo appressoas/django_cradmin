@@ -5,7 +5,7 @@ export default class ToggleableMenuWidget extends AbstractWidget {
   getDefaultConfig() {
     return {
       id: 'mainmenu',
-      activeCssClass: 'adminui-expandable-menu--expanded'
+      activeCssClass: 'expandable-menu--expanded'
     }
   }
 
