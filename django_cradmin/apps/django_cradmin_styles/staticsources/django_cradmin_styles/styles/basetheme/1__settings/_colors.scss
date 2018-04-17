@@ -50,6 +50,7 @@ $colors: (
     ),
     neutral: (
         xlight: tint($__color-neutral-base, 91%),
+        verylight: tint($__color-neutral-base, 75%),
         light: tint($__color-neutral-base, 50%),
         base: $__color-neutral-base,
         dark: shade($__color-neutral-base, 20%),

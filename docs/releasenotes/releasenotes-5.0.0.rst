@@ -9,6 +9,7 @@ What is new?
 - Generalized breadcrumbs support in the new ``crbreadcrumb`` module. See :doc:`/crbreadcrumb`.
 - Docs for all the non-deprecated classes in ``django_cradmin.viewhelpers``.
 - Renamed ``adminui-expandable-menu`` BEM block to ``expandable-menu``.
+- New neutral variable in the theme colormap - ``verylight``.
 
 
 ***********************
@@ -45,3 +46,19 @@ You will normally not be affected by this unless you have overidden the styles
 for this BEM block. Fin usages in your project with something like::
 
     $ git grep adminui-expandable-menu -- '*.html' '*.py' '*.js' '*.jsx' '*.scss'
+
+
+Handle the new ``verylight`` neutral color
+==========================================
+Add the ``verylight`` color to the neutral key in the ``$colors`` map in your
+SASS sources. Example::
+
+    $colors: (
+        // ...
+        neutral: (
+            // ...
+            verylight: tint($__color-neutral-base, 75%),
+            // ...
+        ),
+        // ...
+);
