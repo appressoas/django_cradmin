@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cradmin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-06 11:26+0200\n"
-"PO-Revision-Date: 2018-03-10 13:28+0100\n"
+"POT-Creation-Date: 2018-04-16 18:34+0200\n"
+"PO-Revision-Date: 2018-04-16 18:46+0200\n"
 "Last-Translator: Tor Ivar Johansen <tor@appresso.no>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/appresso/cradmin/"
 "language/nb/)\n"
@@ -21,10 +21,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:7
-#: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:11
+#: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:6
+#: apps/cradmin_activate_account/templates/cradmin_activate_account/activate.django.html:10
 msgid "Activate account error"
 msgstr "Feil ved kontoaktivering"
 
@@ -52,8 +52,8 @@ msgid ""
 "Invalid account activation URL. Are you sure you copied the entire URL from "
 "the email?"
 msgstr ""
-"Ugyldig kontoaktivering URL. Er du sikker på at du kopierte hele URLen fra "
-"eposten?"
+"Ugyldig URL for aktivering av konto. Er du sikker på at du kopierte hele URL-"
+"en fra e-posten?"
 
 #: apps/cradmin_activate_account/templates/cradmin_activate_account/messages/success.django.html:2
 msgid "Your account is now active."
@@ -101,11 +101,11 @@ msgstr "Ugyldig brukernavn og passord kombinasjon. Vennligst prøv igjen."
 #: apps/cradmin_authenticate/views/login.py:122
 #: apps/cradmin_resetpassword/views/begin.py:49
 msgid "Email"
-msgstr "Epost"
+msgstr "E-post"
 
 #: apps/cradmin_authenticate/views/login.py:123
 msgid "Your email and password didn't match. Please try again."
-msgstr "Ugyldig epost/passord. Venligst prøv igjen."
+msgstr "Ugyldig e-post/passord. Vennligst prøv igjen."
 
 #: apps/cradmin_generic_token_with_metadata/models.py:224
 msgid "Created"
@@ -114,48 +114,6 @@ msgstr "Lagt til"
 #: apps/cradmin_generic_token_with_metadata/models.py:230
 msgid "Expires"
 msgstr "Utgår"
-
-#: apps/cradmin_imagearchive/models.py:44
-msgid "role"
-msgstr "rolle"
-
-#: apps/cradmin_imagearchive/models.py:45
-msgid "The role owning this image."
-msgstr "Rollen som eier dette bildet."
-
-#: apps/cradmin_imagearchive/models.py:54
-msgid "image"
-msgstr "bilde"
-
-#: apps/cradmin_imagearchive/models.py:55
-msgid "Select an image to add to the archive."
-msgstr "Velg et bilde du ønsker å legge til i arkivet."
-
-#: apps/cradmin_imagearchive/models.py:80
-msgid "name"
-msgstr "navn"
-
-#: apps/cradmin_imagearchive/models.py:88
-msgid "description"
-msgstr "beskrivelse"
-
-#: apps/cradmin_imagearchive/models.py:90
-msgid ""
-"An optional description of the image. Think if this as a description of the "
-"image for visually impaired users. This means that you should describe the "
-"information carried in the image (if any). A good description also helps "
-"search engines find the image."
-msgstr ""
-"En alternativ beskrivelse av dette bildet. Tenk på dette som en beskrivelse "
-"av innholdet og hva du kan se i bildet. "
-
-#: apps/cradmin_imagearchive/models.py:103
-msgid "archive image"
-msgstr "arkivbilde"
-
-#: apps/cradmin_imagearchive/models.py:104
-msgid "archive images"
-msgstr "arkivbilder"
 
 #: apps/cradmin_invite/baseviews/accept.py:39
 #: apps/cradmin_invite/templates/cradmin_invite/email/html_message.django.html:8
@@ -177,19 +135,19 @@ msgstr "Registrer %(sitename)s konto"
 msgid "Sign in as another user"
 msgstr "Logg inn som en annen bruker"
 
-#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:7
-#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:11
+#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:5
+#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:9
 msgid "Invalid invite"
 msgstr "Ugyldig invitasjon"
 
-#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:18
+#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:16
 msgid ""
 "Invalid invite URL. Are you sure you copied the entire URL from the email?"
 msgstr ""
-"Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URLen fra "
-"eposten?"
+"Ugyldig invitasjonslink. Er du sikker på at du kopierte hele URL-en fra e-"
+"posten?"
 
-#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:26
+#: apps/cradmin_invite/templates/cradmin_invite/accept/token_error.django.html:24
 msgid "This invite link has expired."
 msgstr "Denne invitasjonslinken er for gammel."
 
@@ -220,7 +178,7 @@ msgstr "Åpne eksempel i nytt vindu"
 
 #: apps/cradmin_register_account/forms/auth_user.py:56
 msgid "Account with this email address already exists."
-msgstr "Konto med denne epost-adressen finnes allerede."
+msgstr "Konto med denne e-postadressen finnes allerede."
 
 #: apps/cradmin_register_account/forms/base.py:124
 msgid "Type your password"
@@ -239,18 +197,18 @@ msgstr "Passordene er ikke like."
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:6
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:10
 msgid "Check your email"
-msgstr "Sjekk din epost"
+msgstr "Sjekk din e-post"
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:17
 msgid ""
 "We have sent you an email. Click the link in the email to activate your "
 "account."
 msgstr ""
-"Vi har sendt deg en epost. Klikk linken i eposten for å aktivere din konto."
+"Vi har sendt deg en e-post. Klikk linken i e-posten for å aktivere din konto."
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/email_sent.django.html:20
 msgid "If you do not see the email, check your junk folder."
-msgstr "Hvis du ikke ser eposten, sjekk din spam-folder."
+msgstr "Hvis du ikke ser e-posten, sjekk din spam-folder."
 
 #: apps/cradmin_register_account/templates/cradmin_register_account/register_account.django.html:6
 #: apps/cradmin_register_account/templates/cradmin_register_account/register_account.django.html:10
@@ -259,7 +217,6 @@ msgid "Create your %(sitename)s account"
 msgstr "Lag din %(sitename)s konto"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/base.django.html:5
-#: apps/cradmin_resetpassword/views/reset.py:48
 msgid "Reset password"
 msgstr "Nullstill passord"
 
@@ -270,7 +227,7 @@ msgstr "Hei! Hvilken konto ser du etter?"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/begin.django.html:15
 msgid "Type in your email-address"
-msgstr "Skriv inn din epostadresse"
+msgstr "Skriv inn din e-postadresse"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:5
 #, python-format
@@ -290,8 +247,6 @@ msgstr ""
 "sendte denne forespørselen, kan du ignorere denne e-posten."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email/html_message.django.html:10
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:5
-#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:9
 msgid "Reset your password"
 msgstr "Nullstill ditt passord"
 
@@ -305,7 +260,7 @@ msgid ""
 "We have sent you an email. Click the link in the email to reset your "
 "password."
 msgstr ""
-"Vi har send deg en epost. Klikk linken i eposten for å nullstille ditt "
+"Vi har send deg en e-post. Klikk linken i e-posten for å nullstille ditt "
 "passord."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/email_sent.django.html:19
@@ -314,12 +269,17 @@ msgid ""
 "If you do not see the email, check your junk folder or try searching for "
 "\"%(email_subject)s\"."
 msgstr ""
-"Hvis du ikke ser eposten, sjekk din spam-folder eller prøv å søke etter "
+"Hvis du ikke ser e-posten, sjekk din spam-folder eller prøv å søke etter "
 "\"%(email_subject)s\"."
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/messages/successmessage.django.html:2
 msgid "Your password has been updated."
-msgstr "Ditt passord har blitt oppdatert."
+msgstr "Det gikk fint. Nå kan du logge inn med ditt nye passord!"
+
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:5
+#: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:9
+msgid "Set your password"
+msgstr "Sett ditt passord"
 
 #: apps/cradmin_resetpassword/templates/cradmin_resetpassword/reset.django.html:19
 msgid "This password reset link has expired."
@@ -330,15 +290,14 @@ msgid ""
 "Invalid password reset URL. Are you sure you copied the entire URL from the "
 "email?"
 msgstr ""
-"Ugyldig nullstill passord link. Er du sikker på at du kopierte hele URLen "
-"fra eposten."
+"Linken for å nullstille passord er ugyldig. Er du sikker på at du kopierte "
+"hele URL-en fra e-posten."
 
 #: apps/cradmin_resetpassword/views/begin.py:35
 msgid "No account with this email address found"
-msgstr "Vi finner ingen konto med denne epostadressen"
+msgstr "Vi finner ingen konto tilknyttet denne e-postadressen"
 
 #: apps/cradmin_resetpassword/views/begin.py:53
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:45
 msgid "Search"
 msgstr "Søk"
 
@@ -354,111 +313,82 @@ msgstr "Skriv ditt nye passord en gang til"
 msgid "The passwords do not match"
 msgstr "Passordene er ikke like"
 
-#: apps/cradmin_temporaryfileuploadstore/models.py:214
-#: apps/cradmin_temporaryfileuploadstore/widgets.py:78
-#, python-format
-msgid "Can not upload files larger than %(max_filesize)s."
-msgstr "Beklager, men bildet ditt er over maksstørrelsen på %(max_filesize)s"
+#: apps/cradmin_resetpassword/views/reset.py:48
+msgid "Set password"
+msgstr "Sett passord"
 
-#: apps/cradmin_temporaryfileuploadstore/models.py:246
-msgid "Unsupported filetype."
-msgstr "Ugyldig filtype."
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:24
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:27
-msgid "close file upload window"
-msgstr "Lukk opplastingsvinduet"
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:36
-msgid "We are uploading your file. Please do not close the browser window."
-msgstr ""
-"Bildet lastes opp. Vennligst ikke lukk vinduet før opplastingen er ferdig."
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:38
-msgid "We are uploading your files. Please do not close the browser window."
-msgstr ""
-"Bildene lastes opp. Vennligst ikke lukk vinduet før opplastingen er ferdig."
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:77
-msgid "Upload a file by dragging and dropping it here"
-msgstr "Last opp en file ved å dra og slipp den her"
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:79
-msgid "Upload files by dragging and dropping them here"
-msgstr "Last opp filer ved å dra og slipp de her"
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:99
-msgid "... or select a file"
-msgstr "... eller velg en fil"
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:101
-msgid "... or select files"
-msgstr "... eller velg filer"
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:115
-msgid "Invalid filetype"
-msgstr "Ugyldig filtype"
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:137
-msgid "Select a file ..."
-msgstr "Velg en fil..."
-
-#: apps/cradmin_temporaryfileuploadstore/templates/django_cradmin/apps/cradmin_temporaryfileuploadstore/include/bulkfileupload.django.html:139
-msgid "Select files ..."
-msgstr "Velg filer ..."
-
-#: apps/cradmin_temporaryfileuploadstore/views/temporary_file_upload_api.py:128
-#, python-format
-msgid "%(filename)s: Unsupported filetype."
-msgstr "%(filename)s: Ugyldig filetype."
-
-#: apps/cradmin_temporaryfileuploadstore/widgets.py:94
-msgid ""
-"Server timeout while uploading the file. This may be caused by a poor upload "
-"link and/or a too large file."
-msgstr ""
-"Beklager, men opplastingen stoppet. Dette er vanligvis forårsaket av at "
-"bildet er for stort eller tilkoblingen for dårlig. Hvis dette ikke kan "
-"stemme kan du prøve igjen."
-
-#: apps/cradmin_temporaryfileuploadstore/widgets.py:125
-msgid "Close"
-msgstr "Lukk"
-
-#: apps/cradmin_temporaryfileuploadstore/widgets.py:126
-msgid "Remove"
-msgstr "Fjern fil"
-
-#: apps/cradmin_temporaryfileuploadstore/widgets.py:127
-msgid "Removing ..."
-msgstr "Fjerner.."
-
-#: automodelform.py:111
-msgctxt "automodelform modelchoice_field no value"
-msgid "(Not selected)"
-msgstr "(Ikke valgt)"
-
-#: crispylayouts.py:60
-msgid "Show"
-msgstr "Vis"
-
-#: crispylayouts.py:61
-msgid "Hide"
-msgstr "Skjul"
-
-#: crmenu.py:71
+#: crmenu.py:105
 msgctxt "cradmin default header menu toggle label"
 msgid "Menu"
 msgstr "Meny"
 
+#: demo/no_role_demo/cradmin.py:23
+msgid "Dashboard"
+msgstr ""
+
+#: demo/no_role_demo/templates/no_role_demo/dashboard.django.html:7
+msgid "No role demo"
+msgstr ""
+
+#: deprecated_apps/cradmin_imagearchive/models.py:53
+msgid "role"
+msgstr "rolle"
+
+#: deprecated_apps/cradmin_imagearchive/models.py:54
+msgid "The role owning this image."
+msgstr "Rollen som eier dette bildet."
+
+#: deprecated_apps/cradmin_imagearchive/models.py:61
+msgid "image"
+msgstr "bilde"
+
+#: deprecated_apps/cradmin_imagearchive/models.py:62
+msgid "Select an image to add to the archive."
+msgstr "Velg et bilde du ønsker å legge til i arkivet."
+
+#: deprecated_apps/cradmin_imagearchive/models.py:87
+msgid "name"
+msgstr "navn"
+
+#: deprecated_apps/cradmin_imagearchive/models.py:95
+msgid "description"
+msgstr "beskrivelse"
+
+#: deprecated_apps/cradmin_imagearchive/models.py:97
+msgid ""
+"An optional description of the image. Think if this as a description of the "
+"image for visually impaired users. This means that you should describe the "
+"information carried in the image (if any). A good description also helps "
+"search engines find the image."
+msgstr ""
+"En alternativ beskrivelse av dette bildet. Tenk på dette som en beskrivelse "
+"av innholdet og hva du kan se i bildet. "
+
+#: deprecated_apps/cradmin_imagearchive/models.py:110
+msgid "archive image"
+msgstr "arkivbilde"
+
+#: deprecated_apps/cradmin_imagearchive/models.py:111
+msgid "archive images"
+msgstr "arkivbilder"
+
+#: deprecated_apps/cradmin_temporaryfileuploadstore/models.py:222
+#, python-format
+msgid "Can not upload files larger than %(max_filesize)s."
+msgstr "Beklager, men bildet ditt er over maksstørrelsen på %(max_filesize)s"
+
+#: deprecated_apps/cradmin_temporaryfileuploadstore/models.py:254
+msgid "Unsupported filetype."
+msgstr "Ugyldig filtype."
+
 #: formfields/email_list.py:18 formfields/email_list.py:20
 msgid "Type email-addresses separated by newlines, whitespace or comma."
-msgstr "Skriv epostadresser separert av linjeskift, mellomrom eller komma."
+msgstr "Skriv e-postadresser separert av linjeskift, mellomrom eller komma."
 
 #: formfields/email_list.py:64
 #, python-format
 msgid "Invalid email address: %(email)s"
-msgstr "Ugyldig epostadresse: %(email)s"
+msgstr "Ugyldig e-postadresse: %(email)s"
 
 #: sortable/models.py:207
 msgid "Sort index"
@@ -525,35 +455,19 @@ msgid "Close menu"
 msgstr "Lukk meny"
 
 #: templates/django_cradmin/error.django.html:10
-#: templates/django_cradmin/include/messages.django.html:22
+#: templates/django_cradmin/include/messages.django.html:31
 msgid "Error"
 msgstr "Feil"
 
-#: templates/django_cradmin/filewidgets/filewidget.django.html:21
-msgid "Remove file"
-msgstr "Fjern fil"
-
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:27
-msgid "Remove image"
-msgstr "Fjern bilde"
-
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:39
-msgid "Replace image ..."
-msgstr "Erstatt bilde ..."
-
-#: templates/django_cradmin/filewidgets/imagewidget.django.html:41
-msgid "Select an image ..."
-msgstr "Velg et bilde ..."
-
-#: templates/django_cradmin/include/messages.django.html:24
+#: templates/django_cradmin/include/messages.django.html:33
 msgid "Warning"
 msgstr "Advarsel"
 
-#: templates/django_cradmin/include/messages.django.html:26
+#: templates/django_cradmin/include/messages.django.html:35
 msgid "Info"
 msgstr "Info"
 
-#: templates/django_cradmin/include/messages.django.html:28
+#: templates/django_cradmin/include/messages.django.html:37
 msgid "Success"
 msgstr "Suksess"
 
@@ -583,10 +497,6 @@ msgstr "Lukk forhåndsvisning"
 msgid "Preview options"
 msgstr "Konfigurer forhåndsvisningen"
 
-#: templates/django_cradmin/superuserui/dashboard.django.html:17
-msgid "Please select what you would like to edit"
-msgstr "Velg hva du vil redigere"
-
 #: templates/django_cradmin/uicontainer/field/datetime.django.html:17
 msgid "Time:"
 msgstr "Tid:"
@@ -603,7 +513,6 @@ msgid "Loading"
 msgstr "Laster"
 
 #: templates/django_cradmin/viewhelpers/includes/loadmorepager-base.django.html:40
-#: templates/django_cradmin/viewhelpers/multiselect2view/base.django.html:37
 msgid "Loading ..."
 msgstr "Henter ..."
 
@@ -629,7 +538,7 @@ msgid "View"
 msgstr "Vis"
 
 #: templates/django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html:39
-#: viewhelpers/formview/deleteview.py:24
+#: viewhelpers/formview/deleteview.py:30
 msgid "Delete"
 msgstr "Slett"
 
@@ -647,148 +556,83 @@ msgstr "Velg"
 msgid "Create"
 msgstr "Opprett"
 
-#: templates/django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html:20
-#, python-format
-msgid "Clear %(label)s"
-msgstr "Nullstill %(label)s"
-
-#: templates/django_cradmin/viewhelpers/listfilter/django/single/textinput/base.django.html:24
-msgid "Clear"
-msgstr "Nullstill"
-
-#: templates/django_cradmin/viewhelpers/multiselect/formview.django.html:6
-msgid "EDIT"
-msgstr "REDIGER"
-
-#: templates/django_cradmin/viewhelpers/multiselect2/listbuilder_itemvalues/itemvalue.django.html:39
-msgid "Selected"
-msgstr "Valgte"
-
-#: templates/django_cradmin/viewhelpers/multiselect2view/base.django.html:42
-msgid "Select all"
-msgstr "Velg alle"
-
-#: templates/django_cradmin/viewhelpers/objecttable/imagepreviewcolumn-cell.django.html:4
-#: templates/django_cradmin/viewhelpers/objecttable/plaintextcolumn-cell.django.html:3
-msgid "(None)"
-msgstr "(Ingen)"
-
-#: templates/django_cradmin/viewhelpers/objecttable/no-items-message.django.html:2
-#: viewhelpers/listbuilderview.py:285
-#, python-format
-msgid "No %(modelname_plural)s"
-msgstr "Ingen %(modelname_plural)s"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:39
-msgid "Search..."
-msgstr "Søk..."
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:122
-msgid "Ordered ascending - Click to order descending"
-msgstr "Sortert stigende - klikk for å sortere synkende"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:124
-msgid "Ordered descending - Click to order ascending"
-msgstr "Sortert synkende - klikk for å sortere stigende"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:131
-msgid "Do not order by this column"
-msgstr "Ikke sorter etter denne kolonnen"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:136
-msgid "Ordering priority"
-msgstr "Sorteringsprioritet"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:192
-msgid "Select an action"
-msgstr "Velg en handling"
-
-#: templates/django_cradmin/viewhelpers/objecttable/objecttable.django.html:195
-msgid "Go"
-msgstr "Gå"
-
-#: templates/django_cradmin/widgets/modelchoice.django.html:25
-#: widgets/modelchoice.py:34
-msgid "Select ..."
-msgstr "Velg ..."
-
-#: uicontainer/field.py:579
+#: uicontainer/field.py:619
 msgctxt "monthname"
 msgid "Jan"
 msgstr "Jan."
 
-#: uicontainer/field.py:580
+#: uicontainer/field.py:620
 msgctxt "monthname"
 msgid "Feb"
 msgstr "Feb."
 
-#: uicontainer/field.py:581
+#: uicontainer/field.py:621
 msgctxt "monthname"
 msgid "Mar"
 msgstr "Mar."
 
-#: uicontainer/field.py:582
+#: uicontainer/field.py:622
 msgctxt "monthname"
 msgid "Apr"
 msgstr "Apr."
 
-#: uicontainer/field.py:583
+#: uicontainer/field.py:623
 msgctxt "monthname"
 msgid "May"
 msgstr "Mai."
 
-#: uicontainer/field.py:584
+#: uicontainer/field.py:624
 msgctxt "monthname"
 msgid "Jun"
 msgstr "Jun."
 
-#: uicontainer/field.py:585
+#: uicontainer/field.py:625
 msgctxt "monthname"
 msgid "Jul"
 msgstr "Jul."
 
-#: uicontainer/field.py:586
+#: uicontainer/field.py:626
 msgctxt "monthname"
 msgid "Aug"
 msgstr "Aug."
 
-#: uicontainer/field.py:587
+#: uicontainer/field.py:627
 msgctxt "monthname"
 msgid "Sep"
 msgstr "Sep."
 
-#: uicontainer/field.py:588
+#: uicontainer/field.py:628
 msgctxt "monthname"
 msgid "Oct"
 msgstr "Okt."
 
-#: uicontainer/field.py:589
+#: uicontainer/field.py:629
 msgctxt "monthname"
 msgid "Nov"
 msgstr "Nov."
 
-#: uicontainer/field.py:590
+#: uicontainer/field.py:630
 msgctxt "monthname"
 msgid "Des"
 msgstr "Des."
 
-#: uicontainer/field.py:602 uicontainer/field.py:604
+#: uicontainer/field.py:642 uicontainer/field.py:644
 msgid "Day"
 msgstr "Dag"
 
-#: uicontainer/field.py:610 uicontainer/field.py:613
+#: uicontainer/field.py:650 uicontainer/field.py:653
 msgid "Month"
 msgstr "Måned"
 
-#: uicontainer/field.py:619 uicontainer/field.py:621
+#: uicontainer/field.py:659 uicontainer/field.py:661
 msgid "Year"
 msgstr "År"
 
-#: uicontainer/field.py:628
+#: uicontainer/field.py:668
 msgid "Hour"
 msgstr "Time"
 
-#: uicontainer/field.py:635
+#: uicontainer/field.py:675
 msgid "Minute"
 msgstr "Minutt"
 
@@ -801,12 +645,12 @@ msgstr "Søk for å finne og velge ..."
 msgid "Please fix the errors below."
 msgstr "Vennligst fiks feilene i skjemaet nedenfor."
 
-#: uicontainer/label.py:124
+#: uicontainer/label.py:122
 msgctxt "django_cradmin optional form field label suffix"
 msgid "optional"
 msgstr "ikke påkrevet"
 
-#: uicontainer/label.py:166
+#: uicontainer/label.py:164
 msgctxt "uicontainer label aria text prefix"
 msgid "Choice for"
 msgstr "Valg for"
@@ -816,266 +660,345 @@ msgctxt "django_cradmin foreignkey Dropdown placeholder"
 msgid "Search to find and select items ..."
 msgstr "Søk for å finne og velge ..."
 
-#: viewhelpers/formview/create_update_view_mixin.py:216
-msgid "Please fix the errors in the form below."
-msgstr "Vennligst fiks feilene i skjemaet nedenfor."
-
-#: viewhelpers/formview/createview.py:22
+#: viewhelpers/formview/createview.py:29
 #, python-format
 msgid "Create %(what)s"
 msgstr "Legg til %(what)s"
 
-#: viewhelpers/formview/createview.py:28
+#: viewhelpers/formview/createview.py:35
 #, python-format
 msgid "Created \"%(object)s\""
 msgstr "Opprettet \"%(object)s\""
 
-#: viewhelpers/formview/deleteview.py:15
+#: viewhelpers/formview/deleteview.py:21
 msgid "Confirm delete"
 msgstr "Bekreft sletting"
 
-#: viewhelpers/formview/deleteview.py:40
+#: viewhelpers/formview/deleteview.py:46
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: viewhelpers/formview/deleteview.py:54
+#: viewhelpers/formview/deleteview.py:60
 #, python-format
 msgid "Are you sure you want to delete \"%(object_preview)s\"?"
 msgstr "Er du sikker på at du vil slette \"%(object_preview)s\"?"
 
-#: viewhelpers/formview/deleteview.py:72
+#: viewhelpers/formview/deleteview.py:78
 #, python-format
 msgid "Deleted \"%(what)s\""
 msgstr "Slettet \"%(what)s\""
 
-#: viewhelpers/formview/updateview.py:17 viewhelpers/formview/updateview.py:35
+#: viewhelpers/formview/updateview.py:24 viewhelpers/formview/updateview.py:50
 #, python-format
 msgid "Edit %(what)s"
 msgstr "Rediger %(what)s"
 
-#: viewhelpers/formview/updateview.py:20 viewhelpers/formview/updateview.py:38
+#: viewhelpers/formview/updateview.py:27 viewhelpers/formview/updateview.py:53
 #, python-format
 msgid "Saved \"%(object)s\""
 msgstr "Lagret \"%(object)s\""
 
-#: viewhelpers/listfilter/base/abstractfilter.py:262
-msgctxt "listfilter loading message"
-msgid "Loading"
-msgstr "Henter"
-
-#: viewhelpers/listfilter/base/abstractfilterlist.py:89
-msgid "An error occurred. Please try to reload the page."
-msgstr "Nå gikk noe galt dessverre. Vennligst prøv å åpne siden på nytt."
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:137
-msgid "Yes"
-msgstr "Ja"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:143
-msgid "No"
-msgstr "Nei"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:176
-msgid "Today"
-msgstr "I dag"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:184
-msgid "Yesterday"
-msgstr "I går"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:192
-msgid "Last seven days"
-msgstr "Siste syv dager"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:200
-msgid "This week"
-msgstr "Denne uken"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:208
-msgid "This month"
-msgstr "Denne måneden"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:216
-msgid "This year"
-msgstr "Dette året"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:232
-msgctxt "listfilter AbstractDateTime"
-msgid "Has no value"
-msgstr "Ikke satt"
-
-#: viewhelpers/listfilter/basefilters/single/abstractselect.py:242
-msgctxt "listfilter AbstractDateTime"
-msgid "Has value"
-msgstr "Er satt til"
-
-#: viewhelpers/listfilter/basefilters/single/abstracttextinput.py:106
-msgctxt "listfilter IntInputFilterMixin"
-msgid "Type a number ..."
-msgstr "Skriv ett tall ..."
-
-#: viewhelpers/listfilter/basefilters/single/abstracttextinput.py:125
-msgid "Search ..."
-msgstr "Søk ..."
-
-#: viewhelpers/listfilter/basefilters/single/abstracttextinput.py:128
-msgctxt "listfilter loading message"
-msgid "Searching"
-msgstr "Søker"
-
-#: viewhelpers/multiselect2/listbuilder_itemvalues.py:91
-msgctxt "multiselect2 select button"
-msgid "Select"
-msgstr "Velg"
-
-#: viewhelpers/multiselect2/listbuilder_itemvalues.py:100
+#: viewhelpers/listbuilderview.py:287
 #, python-format
-msgctxt "multiselect2 select button"
-msgid "Select \"%(title)s\""
-msgstr "Velg \"%(title)s\""
-
-#: viewhelpers/multiselect2/manytomanywidget.py:40
-msgctxt "multiselect2 manytomanywidget"
-msgid "Select ..."
-msgstr "Velg ..."
-
-#: viewhelpers/multiselect2/selected_item_renderer.py:66
-msgctxt "multiselect2 deselect button"
-msgid "Deselect"
-msgstr "Velg bort"
-
-#: viewhelpers/multiselect2/selected_item_renderer.py:75
-#, python-format
-msgctxt "multiselect2 deselect button"
-msgid "Deselect \"%(title)s\""
-msgstr "Velg bort \"%(title)s\""
-
-#: viewhelpers/multiselect2/target_renderer.py:82
-msgctxt "multiselect2 target renderer"
-msgid "Selected items"
-msgstr "Valgte elementer"
-
-#: viewhelpers/multiselect2/target_renderer.py:98
-msgctxt "multiselect2 target renderer"
-msgid "Submit selection"
-msgstr "Lagre utvalg"
-
-#: viewhelpers/multiselect2/target_renderer.py:135
-msgctxt "multiselect2 target renderer"
-msgid "(None)"
-msgstr "(Tom)"
+msgid "No %(modelname_plural)s"
+msgstr "Ingen %(modelname_plural)s"
 
 #: views/roleselect.py:29
 msgid "What would you like to edit?"
 msgstr "Hva ønsker du å redigere?"
 
-#: widgets/datetimepicker.py:75
-msgctxt "Has value trigger button text for date widget"
-msgid "Change date"
-msgstr "Endre dato"
+#~ msgid "close file upload window"
+#~ msgstr "Lukk opplastingsvinduet"
 
-#: widgets/datetimepicker.py:82
-msgctxt "No value trigger button text for date widget"
-msgid "Select a date"
-msgstr "Velg en dato"
+#~ msgid "We are uploading your file. Please do not close the browser window."
+#~ msgstr ""
+#~ "Bildet lastes opp. Vennligst ikke lukk vinduet før opplastingen er ferdig."
 
-#: widgets/datetimepicker.py:89
-msgctxt "Use button text in datetime widget"
-msgid "Use"
-msgstr "Bruk"
+#~ msgid "We are uploading your files. Please do not close the browser window."
+#~ msgstr ""
+#~ "Bildene lastes opp. Vennligst ikke lukk vinduet før opplastingen er "
+#~ "ferdig."
 
-#: widgets/datetimepicker.py:123
-msgctxt "Selected label in table cell in datetime widget"
-msgid "selected"
-msgstr "valgt"
+#~ msgid "Upload a file by dragging and dropping it here"
+#~ msgstr "Last opp en file ved å dra og slipp den her"
 
-#: widgets/datetimepicker.py:131
-msgctxt "Today label in table cell in datetime widget"
-msgid "today"
-msgstr "i dag"
+#~ msgid "Upload files by dragging and dropping them here"
+#~ msgstr "Last opp filer ved å dra og slipp de her"
 
-#: widgets/datetimepicker.py:144
-msgctxt "Datetime widget screenreader"
-msgid "Close date picker without changing the value"
-msgstr "Lukk datovelger uten å endre verdien"
+#~ msgid "... or select a file"
+#~ msgstr "... eller velg en fil"
 
-#: widgets/datetimepicker.py:150
-msgctxt "Datetime widget screenreader"
-msgid "Select year"
-msgstr "Velg år"
+#~ msgid "... or select files"
+#~ msgstr "... eller velg filer"
 
-#: widgets/datetimepicker.py:156
-msgctxt "Datetime widget screenreader"
-msgid "Select month"
-msgstr "Velg måned"
+#~ msgid "Invalid filetype"
+#~ msgstr "Ugyldig filtype"
 
-#: widgets/datetimepicker.py:162
-msgctxt "Datetime widget screenreader"
-msgid "Select day"
-msgstr "Velg dag"
+#~ msgid "Select a file ..."
+#~ msgstr "Velg en fil..."
 
-#: widgets/datetimepicker.py:168
-msgctxt "Datetime widget screenreader"
-msgid "Select hour"
-msgstr "Velg time"
+#~ msgid "Select files ..."
+#~ msgstr "Velg filer ..."
 
-#: widgets/datetimepicker.py:174
-msgctxt "Datetime widget screenreader"
-msgid "Select minute"
-msgstr "Velg minutt"
+#~ msgid "%(filename)s: Unsupported filetype."
+#~ msgstr "%(filename)s: Ugyldig filetype."
 
-#: widgets/datetimepicker.py:183
-msgctxt "Datetime widget screenreader"
-msgid "Confirm that you want to select"
-msgstr "Bekreft at du vil velge"
+#~ msgid ""
+#~ "Server timeout while uploading the file. This may be caused by a poor "
+#~ "upload link and/or a too large file."
+#~ msgstr ""
+#~ "Beklager, men opplastingen stoppet. Dette er vanligvis forårsaket av at "
+#~ "bildet er for stort eller tilkoblingen for dårlig. Hvis dette ikke kan "
+#~ "stemme kan du prøve igjen."
 
-#: widgets/datetimepicker.py:198
-msgid "Return to date picker"
-msgstr "Gå tilbake til datovelgeren"
+#~ msgid "Close"
+#~ msgstr "Lukk"
 
-#: widgets/datetimepicker.py:206
-msgctxt "Datetime widget screenreader"
-msgid ""
-"Select date. Navigate with the arrow keys or tab, jump up to the month "
-"selector with the page up key and back to this table with the page down key."
-msgstr ""
-"Velg en dato. Naviger med piltastene eller tab, hopp tilbake til "
-"månedsvelgeren med page up knappen og tilbake til denne tabellen med page "
-"down knappen."
+#~ msgid "Remove"
+#~ msgstr "Fjern fil"
 
-#: widgets/datetimepicker.py:214
-msgctxt "Now button text datetime widget"
-msgid "Now"
-msgstr "Nå"
+#~ msgid "Removing ..."
+#~ msgstr "Fjerner.."
 
-#: widgets/datetimepicker.py:220
-msgctxt "Today button text datetime widget"
-msgid "Today"
-msgstr "I dag"
+#~ msgctxt "automodelform modelchoice_field no value"
+#~ msgid "(Not selected)"
+#~ msgstr "(Ikke valgt)"
 
-#: widgets/datetimepicker.py:226
-msgctxt "Clear button text datetime widget"
-msgid "Clear"
-msgstr "Nullstill"
+#~ msgid "Show"
+#~ msgstr "Vis"
 
-#: widgets/datetimepicker.py:246
-msgctxt "Time label datetime widget"
-msgid "Time"
-msgstr "Kl."
+#~ msgid "Hide"
+#~ msgstr "Skjul"
 
-#: widgets/datetimepicker.py:694
-msgctxt "Has value trigger button text for date widget"
-msgid "Change date/time"
-msgstr "Endre tidspunkt"
+#~ msgid "Remove file"
+#~ msgstr "Fjern fil"
 
-#: widgets/datetimepicker.py:695
-msgctxt "No value trigger button text for date widget"
-msgid "Select a date/time"
-msgstr "Velg et tidspunk"
+#~ msgid "Remove image"
+#~ msgstr "Fjern bilde"
 
-#: widgets/datetimepicker.py:716
-msgid "hh:mm"
-msgstr "tt:mm"
+#~ msgid "Replace image ..."
+#~ msgstr "Erstatt bilde ..."
+
+#~ msgid "Select an image ..."
+#~ msgstr "Velg et bilde ..."
+
+#~ msgid "Please select what you would like to edit"
+#~ msgstr "Velg hva du vil redigere"
+
+#~ msgid "Clear %(label)s"
+#~ msgstr "Nullstill %(label)s"
+
+#~ msgid "Clear"
+#~ msgstr "Nullstill"
+
+#~ msgid "EDIT"
+#~ msgstr "REDIGER"
+
+#~ msgid "Selected"
+#~ msgstr "Valgte"
+
+#~ msgid "Select all"
+#~ msgstr "Velg alle"
+
+#~ msgid "(None)"
+#~ msgstr "(Ingen)"
+
+#~ msgid "Search..."
+#~ msgstr "Søk..."
+
+#~ msgid "Ordered ascending - Click to order descending"
+#~ msgstr "Sortert stigende - klikk for å sortere synkende"
+
+#~ msgid "Ordered descending - Click to order ascending"
+#~ msgstr "Sortert synkende - klikk for å sortere stigende"
+
+#~ msgid "Do not order by this column"
+#~ msgstr "Ikke sorter etter denne kolonnen"
+
+#~ msgid "Ordering priority"
+#~ msgstr "Sorteringsprioritet"
+
+#~ msgid "Select an action"
+#~ msgstr "Velg en handling"
+
+#~ msgid "Go"
+#~ msgstr "Gå"
+
+#~ msgid "Select ..."
+#~ msgstr "Velg ..."
+
+#~ msgid "Please fix the errors in the form below."
+#~ msgstr "Vennligst fiks feilene i skjemaet nedenfor."
+
+#~ msgctxt "listfilter loading message"
+#~ msgid "Loading"
+#~ msgstr "Henter"
+
+#~ msgid "An error occurred. Please try to reload the page."
+#~ msgstr "Nå gikk noe galt dessverre. Vennligst prøv å åpne siden på nytt."
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#~ msgid "No"
+#~ msgstr "Nei"
+
+#~ msgid "Today"
+#~ msgstr "I dag"
+
+#~ msgid "Yesterday"
+#~ msgstr "I går"
+
+#~ msgid "Last seven days"
+#~ msgstr "Siste syv dager"
+
+#~ msgid "This week"
+#~ msgstr "Denne uken"
+
+#~ msgid "This month"
+#~ msgstr "Denne måneden"
+
+#~ msgid "This year"
+#~ msgstr "Dette året"
+
+#~ msgctxt "listfilter AbstractDateTime"
+#~ msgid "Has no value"
+#~ msgstr "Ikke satt"
+
+#~ msgctxt "listfilter AbstractDateTime"
+#~ msgid "Has value"
+#~ msgstr "Er satt til"
+
+#~ msgctxt "listfilter IntInputFilterMixin"
+#~ msgid "Type a number ..."
+#~ msgstr "Skriv ett tall ..."
+
+#~ msgid "Search ..."
+#~ msgstr "Søk ..."
+
+#~ msgctxt "listfilter loading message"
+#~ msgid "Searching"
+#~ msgstr "Søker"
+
+#~ msgctxt "multiselect2 select button"
+#~ msgid "Select"
+#~ msgstr "Velg"
+
+#~ msgctxt "multiselect2 select button"
+#~ msgid "Select \"%(title)s\""
+#~ msgstr "Velg \"%(title)s\""
+
+#~ msgctxt "multiselect2 manytomanywidget"
+#~ msgid "Select ..."
+#~ msgstr "Velg ..."
+
+#~ msgctxt "multiselect2 deselect button"
+#~ msgid "Deselect"
+#~ msgstr "Velg bort"
+
+#~ msgctxt "multiselect2 deselect button"
+#~ msgid "Deselect \"%(title)s\""
+#~ msgstr "Velg bort \"%(title)s\""
+
+#~ msgctxt "multiselect2 target renderer"
+#~ msgid "Selected items"
+#~ msgstr "Valgte elementer"
+
+#~ msgctxt "multiselect2 target renderer"
+#~ msgid "Submit selection"
+#~ msgstr "Lagre utvalg"
+
+#~ msgctxt "multiselect2 target renderer"
+#~ msgid "(None)"
+#~ msgstr "(Tom)"
+
+#~ msgctxt "Has value trigger button text for date widget"
+#~ msgid "Change date"
+#~ msgstr "Endre dato"
+
+#~ msgctxt "No value trigger button text for date widget"
+#~ msgid "Select a date"
+#~ msgstr "Velg en dato"
+
+#~ msgctxt "Use button text in datetime widget"
+#~ msgid "Use"
+#~ msgstr "Bruk"
+
+#~ msgctxt "Selected label in table cell in datetime widget"
+#~ msgid "selected"
+#~ msgstr "valgt"
+
+#~ msgctxt "Today label in table cell in datetime widget"
+#~ msgid "today"
+#~ msgstr "i dag"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Close date picker without changing the value"
+#~ msgstr "Lukk datovelger uten å endre verdien"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Select year"
+#~ msgstr "Velg år"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Select month"
+#~ msgstr "Velg måned"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Select day"
+#~ msgstr "Velg dag"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Select hour"
+#~ msgstr "Velg time"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Select minute"
+#~ msgstr "Velg minutt"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid "Confirm that you want to select"
+#~ msgstr "Bekreft at du vil velge"
+
+#~ msgid "Return to date picker"
+#~ msgstr "Gå tilbake til datovelgeren"
+
+#~ msgctxt "Datetime widget screenreader"
+#~ msgid ""
+#~ "Select date. Navigate with the arrow keys or tab, jump up to the month "
+#~ "selector with the page up key and back to this table with the page down "
+#~ "key."
+#~ msgstr ""
+#~ "Velg en dato. Naviger med piltastene eller tab, hopp tilbake til "
+#~ "månedsvelgeren med page up knappen og tilbake til denne tabellen med page "
+#~ "down knappen."
+
+#~ msgctxt "Now button text datetime widget"
+#~ msgid "Now"
+#~ msgstr "Nå"
+
+#~ msgctxt "Today button text datetime widget"
+#~ msgid "Today"
+#~ msgstr "I dag"
+
+#~ msgctxt "Clear button text datetime widget"
+#~ msgid "Clear"
+#~ msgstr "Nullstill"
+
+#~ msgctxt "Time label datetime widget"
+#~ msgid "Time"
+#~ msgstr "Kl."
+
+#~ msgctxt "Has value trigger button text for date widget"
+#~ msgid "Change date/time"
+#~ msgstr "Endre tidspunkt"
+
+#~ msgctxt "No value trigger button text for date widget"
+#~ msgid "Select a date/time"
+#~ msgstr "Velg et tidspunk"
+
+#~ msgid "hh:mm"
+#~ msgstr "tt:mm"
 
 #~ msgid "Django CRadmin"
 #~ msgstr "Django CRadmin"
