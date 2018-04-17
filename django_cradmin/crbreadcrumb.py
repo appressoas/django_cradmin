@@ -137,6 +137,7 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
     def from_breadcrumb_item_list(cls, breadcrumb_item_list, **kwargs):
         new_breadcrumb_item_list = cls(cradmin_instance=breadcrumb_item_list.cradmin_instance, **kwargs)
         new_breadcrumb_item_list.extend_with_item_renderables(breadcrumb_item_list.breadcrumb_item_list)
+        return new_breadcrumb_item_list
 
     def __init__(self, cradmin_instance):
         """
