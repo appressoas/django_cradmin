@@ -186,6 +186,31 @@ Next, we override the template:
     and override the ``django_cradmin/standalone-base.django.html`` template.
 
 
+
+*********************
+Disabling breadcrumbs
+*********************
+Disabling breadcrumbs can be done on cradmin instance, app or views. It is
+the same for all of them, you just override the ``get_breadcrumb_item_list_renderable()``
+method and return ``None``::
+
+    # View
+    class SiteEditView(viewhelpers.formview.UpdateRoleView):
+        def get_breadcrumb_item_list_renderable(self):
+            return None
+
+    # App
+    class SiteDetailsApp(crapp.App):
+        def get_breadcrumb_item_list_renderable(self):
+            return None
+
+
+    # Cradmin instance
+    class SiteCradminInstance(crinstance.BaseCrAdminInstance):
+        def get_breadcrumb_item_list_renderable(self):
+            return None
+
+
 *******************
 crbreadcrumb module
 *******************
