@@ -154,6 +154,7 @@ Styleguide components.blocklist
         padding: $vertical-rythm--spacing $spacing;
         border-radius: $border-radius;
         background-color: $color-focus;
+        border: $border-width--small solid color(neutral, verylight);
 
         &--link {
             border: 0;
@@ -260,7 +261,7 @@ Styleguide components.blocklist
     &--tight {
         .blocklist__movesidebar,
         .blocklist__item {
-            margin-bottom: $border-width;
+            margin-bottom: ($border-width * 2);
         }
         .blocklist__item {
             padding: vertical-space($spacing--small) $spacing;
