@@ -153,18 +153,20 @@ Styleguide components.blocklist
         margin-bottom: $vertical-rythm--spacing;
         padding: $vertical-rythm--spacing $spacing;
         border-radius: $border-radius;
-        background-color: $color-focus;
+        background-color: $color-light;
         border: $border-width--small solid color(neutral, verylight);
 
         &--link {
-            border: 0;
+            border: $border-width--small solid color(neutral, verylight);
             color: $color-text;
             text-decoration: none;
+            transition: border-color 160ms;
 
             &:hover,
             &:focus {
                 color: $color-links--hover;
                 text-decoration: none;
+                border-color: color(neutral, light);
             }
         }
 
