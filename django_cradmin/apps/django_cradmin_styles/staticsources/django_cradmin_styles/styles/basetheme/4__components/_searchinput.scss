@@ -441,7 +441,7 @@ Styleguide components.searchinput.colors
         @include font-size(small, true);
         line-height: 1.6;
         border: none;
-        //background-color: green;
+        background-color: inherit;
         &[disabled] {
             background-color: color(neutral);
         }
