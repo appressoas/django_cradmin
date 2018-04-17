@@ -127,6 +127,12 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
     """
     template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item-list.django.html'
 
+    #: Render location: Above page cover.
+    LOCATION_ABOVE_PAGE_COVER = 'above-page-cover'
+
+    #: Render location: Below page cover.
+    LOCATION_BELOW_PAGE_COVER = 'below-page-cover'
+
     @classmethod
     def from_breadcrumb_item_list(cls, breadcrumb_item_list, **kwargs):
         new_breadcrumb_item_list = cls(cradmin_instance=breadcrumb_item_list.cradmin_instance, **kwargs)
@@ -140,13 +146,56 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         """
         self.breadcrumb_item_list = []
         self.cradmin_instance = cradmin_instance
+        self._overridden_location = None
         super(BreadcrumbItemList, self).__init__()
+
+    def get_default_location(self):
+        """
+        The location to render the breadcrumb at by default.
+
+        Can be overridden on a per view, per app or per cradmin instance
+        basis using :meth:`.set_location`.
+
+        Only relevant if using the
+        :func:`django_cradmin.templatetags.cradmin_tags.cradmin_render_breadcrumb_item_list`
+        template tag with the ``location`` argument.
+        Defaults to :obj:`~.BreadcrumbItemList.LOCATION_BELOW_PAGE_COVER`.
+        """
+        return self.LOCATION_BELOW_PAGE_COVER
+
+    def get_location(self):
+        """
+        Get the location to render the breadcrumb item list at.
+
+        Do not override this - override :meth:`.get_default_location`
+        instead.
+        """
+        return self._overridden_location or self.get_default_location()
+
+    def set_location(self, location):
+        """
+        Set the location to render the breadcrumb item list at.
+
+        Can be used in the ``get_breadcrumb_item_list_renderable()``
+        method of cradmin instances, apps or views to override the
+        location to render breadcrumbs at.
+
+        Args:
+            location (str): Location.
+        """
+        self._overridden_location = location
+
+    def should_render_at_location(self, location):
+        return location is None or location == self.get_location()
 
     def get_bem_block(self):
         """
         Override this to use a custom BEM block for the breadcrumb.
         """
         return 'breadcrumb-item-list'
+
+    def get_bem_variant_list(self):
+        return ['location-{}'.format(self.get_location())]
 
     def __len__(self):
         return len(self.breadcrumb_item_list)
@@ -328,7 +377,7 @@ class BreadcrumbItemListWrapper(renderable.AbstractBemRenderable):
         return 'breadcrumb-item-list-wrapper'
 
     def get_bem_variant_list(self):
-        return []
+        return ['location-{}'.format(self.breadcrumb_item_list.get_location())]
 
     def get_breadcrumb_item_list_extra_context_data(self):
         return {

@@ -434,7 +434,9 @@ def cradmin_render_header(context, headername='default', include_context=True, *
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_render_breadcrumb_item_list(context, include_context=True, **kwargs):
+def cradmin_render_breadcrumb_item_list(context, include_context=True,
+                                        location=None,
+                                        **kwargs):
     """
     Render breadcrumbs from the ``cradmin_breadcrumb_item_list`` template context
     variable.
@@ -446,6 +448,10 @@ def cradmin_render_breadcrumb_item_list(context, include_context=True, **kwargs)
     Args:
         context: template context.
         include_context: Forwarded to :func:`.cradmin_render_renderable`.
+        location (str): The location to render the breadcrumb item list.
+            If this is ``None`` (the default), we render the list no matter what.
+            If it has a value, the value must match the ``get_location()`` of the
+            ``cradmin_breadcrumb_item_list`` item list.
         **kwargs: Forwarded to :func:`.cradmin_render_renderable`.
 
     Examples:
@@ -456,7 +462,7 @@ def cradmin_render_breadcrumb_item_list(context, include_context=True, **kwargs)
 
     """
     breadcrumb_item_list = context.get('cradmin_breadcrumb_item_list', None)
-    if breadcrumb_item_list:
+    if breadcrumb_item_list and breadcrumb_item_list.should_render_at_location(location):
         return cradmin_render_renderable(context, breadcrumb_item_list,
                                          include_context=include_context,
                                          **kwargs)

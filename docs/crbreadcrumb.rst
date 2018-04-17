@@ -143,7 +143,7 @@ This can be solved in many different ways, but we will go with a fairly easy sol
 
 - Use ``BreadcrumbItemList`` instead of ``WrappedBreadcrumbItemList`` to get a plain
   ``<nav class="breadcrumb-item-list">`` without any wrapper.
-- Override the ``breadcrumbs`` template block to avoid rendering the breadcrumb at the default location.
+- Set a custom location for the breadcrumb so it is not rendered at the default location.
 - Render the breadcrumb in the ``page-cover-content`` block.
 
 First, we override ``get_breadcrumb_item_list_renderable`` on the view::
@@ -153,11 +153,18 @@ First, we override ``get_breadcrumb_item_list_renderable`` on the view::
             breadcrumb_item_list.append(label='Edit', active=True)
 
         def get_breadcrumb_item_list_renderable(self):
-            # We have an example above that explains how this works in detail.
+            # We have an example above that explains how just copying items works in detail.
             breadcrumb_item_list = super().get_breadcrumb_item_list_renderable()
             if breadcrumb_item_list is None:
                 return None
-            return crbreadcrumb.BreadcrumbItemList.from_breadcrumb_item_list(breadcrumb_item_list)
+            breadcrumb_item_list = crbreadcrumb.BreadcrumbItemList.from_breadcrumb_item_list(breadcrumb_item_list)
+
+            # We set a custom location to avoid rendering the breadcrumbs
+            # at the default location
+            breadcrumb_item_list.set_location('custom')
+
+            return breadcrumb_item_list
+
 
 Next, we override the template:
 
@@ -165,10 +172,6 @@ Next, we override the template:
 
     {% extends "django_cradmin/viewhelpers/formview/within_role_update_view.django.html" %}
     {% load cradmin_tags %}
-
-    {% block breadcrumbs %}
-        {# Do not render breadcrumb item list at the default location #}
-    {% endblock breadcrumbs %}
 
     {% block page-cover-content %}
         {# Render breadcrumbs here instead #}

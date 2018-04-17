@@ -73,6 +73,10 @@
             {% block main %}
                 <main {% block main-attributes %}role="main"{% endblock %}>
                     {% block main-content %}
+                        {% block breadcrumbs-above-page-cover %}
+                            {% cradmin_render_breadcrumb_item_list location='above-page-cover' %}
+                        {% endblock breadcrumbs-above-page-cover %}
+
                         {% block page-cover %}
                             <header class="
                                     {% block page-cover-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}{% endblock %}
@@ -89,9 +93,9 @@
                             </header>
                         {% endblock page-cover %}
 
-                        {% block breadcrumbs %}
-                            {% cradmin_render_breadcrumb_item_list %}
-                        {% endblock breadcrumbs %}
+                        {% block breadcrumbs-below-page-cover %}
+                            {% cradmin_render_breadcrumb_item_list location='below-page-cover' %}
+                        {% endblock breadcrumbs-below-page-cover %}
 
                         {% block messages %}
                             {% include "django_cradmin/include/messages.django.html" %}
