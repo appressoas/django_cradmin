@@ -14,7 +14,7 @@ export default class BlockList extends AbstractList {
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
       bemBlock: 'blocklist',
-      bemVariants: ['tight'],
+      bemVariants: ['tight']
     })
   }
 
