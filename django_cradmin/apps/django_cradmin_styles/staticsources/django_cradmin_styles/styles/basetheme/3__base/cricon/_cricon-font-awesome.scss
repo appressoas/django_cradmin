@@ -6,6 +6,12 @@ $fa-font-path: "#{$media-path}/cradmin_fontawesome/webfonts";
 
 
 $cricon-font-awesome-free-icon-map: (
+    plus: $fa-var-plus,
+    minus: $fa-var-minus,
+    edit: $fa-var-edit,
+    pencil: $fa-var-pencil-alt,
+    trash: $fa-var-trash,
+
     arrow-up: $fa-var-arrow-up,
     arrow-down: $fa-var-arrow-down,
     arrow-left: $fa-var-arrow-left,
