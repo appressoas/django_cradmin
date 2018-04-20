@@ -116,6 +116,9 @@ class MenuToggleItemItemRenderable(renderable.AbstractBemRenderable):
     def get_label_css_class(self):
         return '{}__navmenutoggle-label'.format(self.get_parent_bem_block())
 
+    def get_icon_css_class(self):
+        return '{}__navmenutoggle-icon'.format(self.get_parent_bem_block())
+
 
 class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
     """

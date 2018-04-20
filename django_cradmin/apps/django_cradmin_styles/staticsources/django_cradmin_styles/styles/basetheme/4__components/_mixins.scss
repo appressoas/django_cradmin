@@ -4,6 +4,7 @@
         $background-color: color(primary),
         $navlink-display-breakpoint: lg,
         $content-container-width: wide,
+        $item-margin-left: 1em,
         $height-base: 40px) {
     $__page-header-root: &;
     background-color: $background-color;
@@ -67,9 +68,10 @@
         @include font(base, bold);
         @include font-size(xsmall);
         position: relative;
-        margin-left: 1em;
+        margin-left: $item-margin-left;
         color: $color;
         border-bottom: $border-width--small solid transparent;
+        white-space: nowrap;
 
         &--active,
         &:hover,
@@ -118,16 +120,26 @@
     &__navmenutoggle {
         @include font(base, bold);
         @include font-size(xsmall);
-        position: relative;
-        display: block;
-        height: 100%;
-        margin-left: 1em;
-        min-width: $unit * 14;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-end;
+        margin-left: $item-margin-left;
         color: $color;
         transition: all 300ms $swift-out;
+    }
 
-        .icon-hamburger__bar {
-            background-color: $color;
+
+    &__navmenutoggle-label {
+        vertical-align: middle;
+    }
+
+    &__navmenutoggle-icon {
+        margin-right: $unit;
+        &:before {
+            @include cricon-icon(bars);
+            @include cricon-size(large);
         }
     }
 

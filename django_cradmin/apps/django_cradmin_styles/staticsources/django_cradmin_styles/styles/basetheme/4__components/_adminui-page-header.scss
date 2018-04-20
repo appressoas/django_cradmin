@@ -76,12 +76,8 @@ Example: {type: isolated} With navigation buttons and menu toggle button
                 <a class="adminui-page-header__navlink">Important stuff</a>
                 <a class="adminui-page-header__navlink  adminui-page-header__navlink--button">A button</a>
                 <button type="button" class="adminui-page-header__navmenutoggle">
-                    Menu
-                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                    </i>
+                    <span class="adminui-page-header__navmenutoggle-icon" aria-hidden="true"></span>
+                    <span class="adminui-page-header__navmenutoggle-label">Menu</span>
                 </button>
             </nav>
         </div>
@@ -101,12 +97,8 @@ Example: {type: isolated} Compact variant with navigation buttons and menu toggl
                 <a class="adminui-page-header__navlink">Important stuff</a>
                 <a class="adminui-page-header__navlink  adminui-page-header__navlink--button-compact">A button</a>
                 <button type="button" class="adminui-page-header__navmenutoggle">
-                    Menu
-                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                    </i>
+                    <span class="adminui-page-header__navmenutoggle-icon" aria-hidden="true"></span>
+                    <span class="adminui-page-header__navmenutoggle-label">Menu</span>
                 </button>
             </nav>
         </div>
@@ -123,12 +115,8 @@ Example: {type: isolated} With brand image (logo) menu toggle button
                 <a class="adminui-page-header__navlink">Important stuff</a>
                 <a class="adminui-page-header__navlink  adminui-page-header__navlink--button">A button</a>
                 <button type="button" class="adminui-page-header__navmenutoggle">
-                    Menu
-                    <i class="icon-hamburger" aria-hidden="true" role="presentation">
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                        <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                    </i>
+                    <span class="adminui-page-header__navmenutoggle-icon" aria-hidden="true"></span>
+                    <span class="adminui-page-header__navmenutoggle-label">Menu</span>
                 </button>
             </nav>
         </div>

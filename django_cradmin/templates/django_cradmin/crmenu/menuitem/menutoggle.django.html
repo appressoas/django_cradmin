@@ -3,18 +3,14 @@
             class="{{ me.css_classes }}"
             data-ievv-jsbase-widget="cradmin-menutoggle">
         {% block content %}
+            {% block icon %}
+                <span class="{{ me.get_icon_css_class }}" aria-hidden="true"></span>
+            {% endblock icon %}
             {% block label %}
                 <span class="{{ me.get_label_css_class }}">
                     {{ me.get_label }}
                 </span>
             {% endblock label %}
-            {% block icon %}
-                <i class="icon-hamburger" aria-hidden="true" role="presentation">
-                    <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                    <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                    <span aria-hidden="true" class="icon-hamburger__bar"></span>
-                </i>
-            {% endblock icon %}
         {% endblock content %}
     </button>
 {% endblock outer-wrapper %}
