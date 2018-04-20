@@ -503,7 +503,14 @@
 }
 
 
-@mixin expandable-menu-mixin () {
+@mixin expandable-menu-mixin (
+    $backdrop-background-color: rgba(white, 0.85),
+    $background-color: color(secondary, dark),
+    $separator-color: color(secondary),
+    $separator-width: $border-width,
+    $text-color: $color-light,
+    $close-button-hover-color: color(neutral, light)
+) {
     position: fixed;
     display: none;
     left: 0;
@@ -525,7 +532,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        background-color: rgba(white, 0.85);
+        background-color: $backdrop-background-color;
     }
 
     &__close {
@@ -535,7 +542,11 @@
         min-width: $unit * 14;
         text-align: right;
         line-height: 30px;
-        color: $color-light;
+        color: $text-color;
+
+        &:hover {
+            color: $close-button-hover-color;
+        }
     }
 
     &__content {
@@ -549,8 +560,8 @@
         bottom: 0;
         width: 400px;
         max-width: 100%;
-        color: $color-light;
-        background-color: color(secondary, dark);
+        color: $text-color;
+        background-color: $background-color;
     }
 
     &__list {
@@ -564,8 +575,8 @@
     }
 
     &__separator {
-        height: $border-width;
-        background-color: color(secondary);
+        height: $separator-width;
+        background-color: $separator-color;
         margin-top: vertical-space() * 3;
         margin-bottom: vertical-space() * 2;
     }
@@ -586,14 +597,14 @@
         @include font(base, bold);
         position: relative;
         margin-left: 1em;
-        color: $color-light;
+        color: $text-color;
         border-bottom: $border-width--small solid transparent;
 
         &--active,
         &:hover,
         &:focus {
-            color: $color-light;
-            border-color: $color-light;
+            color: $text-color;
+            border-color: $text-color;
         }
     }
 }
