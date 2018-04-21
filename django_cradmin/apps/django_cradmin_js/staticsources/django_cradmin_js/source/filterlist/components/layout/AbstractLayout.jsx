@@ -130,6 +130,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
    * of this method.
    *
    * @param componentSpec The component we want to determine if should be rendered.
+   * @param componentProps The props for the component we want to determine if should be rendered.
    * @returns {boolean} `true` to render the component, and `false` to not render
    *    the component.
    */
