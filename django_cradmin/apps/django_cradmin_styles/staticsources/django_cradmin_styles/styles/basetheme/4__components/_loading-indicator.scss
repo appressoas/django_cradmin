@@ -39,6 +39,41 @@ Example: Light
     </div>
 
 
+Example: With label instead of text (text is only visible to screenreaders)
+    <span class="loading-indicator">
+        <span class="loading-indicator__indicator"></span>
+        <span class="loading-indicator__indicator"></span>
+        <span class="loading-indicator__indicator"></span>
+        <span class="loading-indicator__label">
+            Loading...
+        </span>
+    </span>
+
+Example: Centered - With label instead of text (text is only visible to screenreaders)
+    <div class="text-center">
+        <span class="loading-indicator">
+            <span class="loading-indicator__indicator"></span>
+            <span class="loading-indicator__indicator"></span>
+            <span class="loading-indicator__indicator"></span>
+            <span class="loading-indicator__label">
+                Loading...
+            </span>
+        </span>
+    </div>
+
+Example: Light - With label instead of text (text is only visible to screenreaders)
+    <div class="text-center" style="background-color: #000; padding: 20px;">
+        <span class="loading-indicator">
+            <span class="loading-indicator__indicator loading-indicator__indicator--light"></span>
+            <span class="loading-indicator__indicator loading-indicator__indicator--light"></span>
+            <span class="loading-indicator__indicator loading-indicator__indicator--light"></span>
+            <span class="loading-indicator__label loading-indicator__label--light">
+                Loading...
+            </span>
+        </span>
+    </div>
+
+
 Styleguide components.loading-indicator
 */
 $__loading-indicator-show-delay: 0.1s;
@@ -74,6 +109,17 @@ $__loading-indicator-show-delay: 0.1s;
 
     &__text {
         @include screenreader-only();
+    }
+
+    &__label {
+        display: block;
+        margin-top: $spacing--small;
+        @include font(base, bold);
+        @include font-size(small);
+
+        &--light {
+            color: $color-light;
+        }
     }
 }
 
