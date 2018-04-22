@@ -41,7 +41,7 @@
     "test-debug": "jest --debug",
     "test-watch": "jest --watch"
   },
-  "version": "3.0.0",
+  "version": "3.0.1",
   "jest": {
     "setupTestFrameworkScriptFile": "./config/jest/test-setup.js",
     "transform": {
