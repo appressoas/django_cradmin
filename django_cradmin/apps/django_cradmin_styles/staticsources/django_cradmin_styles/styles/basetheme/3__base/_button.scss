@@ -22,7 +22,8 @@ Example: For actions that need's to stand out on red or dark blue background.
 
 Example: Button with icon
     <button type="button" class="button">
-        <span class="icon-chevron-right button__icon"></span>
+        <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+        Go forward!
     </button>
 
 Example: This is some modifiers you can add (PS: Can be combined)
