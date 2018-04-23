@@ -30,6 +30,21 @@ Example: {type: isolated} With inline elements in description
         </p>
     </header>
 
+Example: {type: isolated} Buttons
+
+    <header class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">The title</h1>
+
+        <p>
+            <button type="button" class="adminui-page-cover__button">
+                Default page-cover button
+            </button>
+            <button type="button" class="adminui-page-cover__button adminui-page-cover__button--focus">
+                --focus
+            </button>
+        </p>
+    </header>
+
 Styleguide layout.adminui-page-cover
 */
 .adminui-page-cover {

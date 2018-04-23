@@ -360,7 +360,9 @@
     $emphasis-color: $color-light,
     $text-align: center,
     $title-container-width: wide,
-    $description-container-width: tight
+    $description-container-width: tight,
+    $button-border-color: $color-light,
+    $button-text-color: color(primary, dark)
 ) {
     position: relative;
     padding-top: $vertical-padding-sm; // TODO: Vertical variables...
@@ -420,6 +422,7 @@
         color: $emphasis-color;
         background-color: $emphasis-background-color;
     }
+
     &__link {
         color: $emphasis-color;
         border-color: $emphasis-background-color;
@@ -427,6 +430,25 @@
         &:focus {
             color: $emphasis-color;
             border-color: $emphasis-color;
+        }
+    }
+
+    &__button {
+        @include button();
+        @include button-style(
+            $border-color: $color-light,
+            $background-color-hover: $color-light,
+            $text-color: $color-light,
+            $text-color-hover: color(primary, dark)
+        );
+
+        &--focus {
+            @include button-style-fill(
+                $border-color: $color-light,
+                $background-color: $color-light,
+                $text-color: color(primary, dark),
+                $text-color-hover: $color-light
+            );
         }
     }
 }
