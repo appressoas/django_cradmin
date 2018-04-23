@@ -41,43 +41,61 @@ Example: This is some modifiers you can add (PS: Can be combined)
 Styleguide form.2:buttons
 */
 
-@mixin button-modifier($b-name, $b-main, $b-text, $b-hover, $b-text-hover: false) {
-    &--#{$b-name} {
-        color: $b-text;
-        border-color: $b-main;
-        background-color: transparent;
+@mixin button-style ($border-color, $text-color, $background-color-hover, $background-color: transparent, $text-color-hover: false) {
+    color: $text-color;
+    border-color: $border-color;
+    background-color: $background-color;
 
-        &:hover,
-        &:focus,
-        &:active {
-            border-color: $b-hover;
-            background-color: $b-hover;
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: $background-color-hover;
+        background-color: $background-color-hover;
 
-            @if ($b-text-hover) {
-                color: $b-text-hover;
-            } @else {
-                color: color-contrast($b-hover);
-            }
+        @if ($text-color-hover) {
+            color: $text-color-hover;
+        } @else {
+            color: color-contrast($background-color-hover);
         }
     }
+}
 
-    &--#{$b-name}-fill {
-        border-color: $b-hover;
-        background-color: $b-hover;
+@mixin button-style-fill ($border-color, $background-color, $text-color-hover, $background-color-hover: transparent, $text-color: false) {
+    border-color: $border-color;
+    background-color: $background-color;
 
-        @if ($b-text-hover) {
-            color: $b-text-hover;
-        } @else {
-            color: color-contrast($b-hover);
-        }
+    @if ($text-color) {
+        color: $text-color;
+    } @else {
+        color: color-contrast($background-color);
+    }
 
-        &:hover,
-        &:focus,
-        &:active {
-            color: $b-text;
-            border-color: $b-main;
-            background-color: transparent;
-        }
+    &:hover,
+    &:focus,
+    &:active {
+        color: $text-color-hover;
+        border-color: $border-color;
+        background-color: $background-color-hover;
+    }
+}
+
+@mixin button-modifier($name, $border-color, $text-color, $background-color-hover, $text-color-hover: false) {
+    &--#{$name} {
+        @include button-style(
+            $border-color: $border-color,
+            $text-color: $text-color,
+            $background-color-hover: $background-color-hover,
+            $text-color-hover: $text-color-hover
+        );
+    }
+
+    &--#{$name}-fill {
+        @include button-style-fill(
+            $border-color: $background-color-hover,
+            $background-color: $background-color-hover,
+            $text-color-hover: $text-color,
+            $text-color: $text-color-hover
+        );
     }
 }
 
