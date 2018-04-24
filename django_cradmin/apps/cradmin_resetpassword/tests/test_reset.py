@@ -34,7 +34,7 @@ class TestResetPasswordView(TestCase):
         selector = htmls.S(response.content)
         self.assertEqual(
             selector.one('h1').alltext_normalized,
-            'Reset your password testuser')
+            'Set your password testuser')
         self.assertTrue(selector.exists('form#id_django_cradmin_resetpassword_reset_form'))
         self.assertTrue(selector.exists('input[type="password"][name="password1"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password2"]'))
