@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
+import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
 
 export default class CradminDateSelectorDay extends React.Component {
@@ -9,7 +10,7 @@ export default class CradminDateSelectorDay extends React.Component {
     return {
       signalNameSpace: null,
       extraSelectAttributes: {},
-      labelText: "Day",
+      labelText: window.gettext('Day'),
       initialYear: null,
       initialMonth: null,
       initialValue: 0

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
+import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
 
 export default class CradminDateSelectorYear extends React.Component {
@@ -10,7 +11,7 @@ export default class CradminDateSelectorYear extends React.Component {
     return {
       signalNameSpace: null,
       extraSelectAttributes: {},
-      labelText: "Year",
+      labelText: window.gettext('Year'),
       minYear: currentYear - 10,
       maxYear: currentYear + 50,
       initialValue: null

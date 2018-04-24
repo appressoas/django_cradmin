@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
+import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
 
 export default class CradminDateSelectorMonth extends React.Component {
@@ -9,8 +10,21 @@ export default class CradminDateSelectorMonth extends React.Component {
     return {
       signalNameSpace: null,
       extraSelectAttributes: {},
-      labelText: "Month",
-      monthLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
+      labelText: window.gettext('Month'),
+      monthLabels: [
+        window.pgettext('month shortname', 'Jan'),
+        window.pgettext('month shortname', 'Feb'),
+        window.pgettext('month shortname', 'Mar'),
+        window.pgettext('month shortname', 'Apr'),
+        window.pgettext('month shortname', 'May'),
+        window.pgettext('month shortname', 'Jun'),
+        window.pgettext('month shortname', 'Jul'),
+        window.pgettext('month shortname', 'Aug'),
+        window.pgettext('month shortname', 'Sep'),
+        window.pgettext('month shortname', 'Oct'),
+        window.pgettext('month shortname', 'Nov'),
+        window.pgettext('month shortname', 'Des')
+      ],
       useLabels: true,
       initialValue: new Date().getUTCMonth()
     }
