@@ -314,6 +314,17 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         """
         self.insert_item_renderable(index, self.make_item_renderable(**kwargs))
 
+    def clear(self):
+        self.breadcrumb_item_list.clear()
+
+    def remove_last(self):
+        if len(self.breadcrumb_item_list) > 0:
+            self.breadcrumb_item_list.pop()
+
+    def remove_first(self):
+        if len(self.breadcrumb_item_list) > 0:
+            del self.breadcrumb_item_list[0]
+
     def insert_item_renderable(self, index, renderable_object):
         """
         Insert a renderable object at a specific index in the breadcrumb list.
