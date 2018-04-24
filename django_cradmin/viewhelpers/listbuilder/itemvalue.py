@@ -18,12 +18,12 @@ class FocusBox(base.ItemValueRenderer):
     """
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-focus-box')
+        css_class_suffixes.append('cradmin-listbuilder-focus-box')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
         css_classes = super(FocusBox, self).get_base_css_classes_list()
-        css_classes.append_renderable('django-cradmin-listbuilder-itemvalue-focusbox')
+        css_classes.append('django-cradmin-listbuilder-itemvalue-focusbox')
         return css_classes
 
 
@@ -40,7 +40,7 @@ class TitleDescription(FocusBox):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-title-description')
+        css_class_suffixes.append('cradmin-listbuilder-title-description')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -49,7 +49,7 @@ class TitleDescription(FocusBox):
         in addition to the classes added by the superclasses.
         """
         css_classes = super(TitleDescription, self).get_base_css_classes_list()
-        css_classes.append_renderable('django-cradmin-listbuilder-itemvalue-titledescription')
+        css_classes.append('django-cradmin-listbuilder-itemvalue-titledescription')
         return css_classes
 
     def get_title(self):
@@ -82,7 +82,7 @@ class UseThis(TitleDescription):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-use-this')
+        css_class_suffixes.append('cradmin-listbuilder-use-this')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -91,7 +91,7 @@ class UseThis(TitleDescription):
         in addition to the classes added by the superclasses.
         """
         css_classes = super(UseThis, self).get_base_css_classes_list()
-        css_classes.append_renderable('django-cradmin-listbuilder-itemvalue-usethis')
+        css_classes.append('django-cradmin-listbuilder-itemvalue-usethis')
         return css_classes
 
     def get_use_this_directive_options_dict(self, request):
@@ -126,7 +126,7 @@ class EditDelete(TitleDescription):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-edit-delete')
+        css_class_suffixes.append('cradmin-listbuilder-edit-delete')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -135,7 +135,7 @@ class EditDelete(TitleDescription):
         in addition to the classes added by the superclasses.
         """
         css_classes = super(EditDelete, self).get_base_css_classes_list()
-        css_classes.append_renderable('django-cradmin-listbuilder-itemvalue-editdelete')
+        css_classes.append('django-cradmin-listbuilder-itemvalue-editdelete')
         return css_classes
 
     def get_edit_viewname(self):
@@ -213,5 +213,5 @@ class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(EditDeleteWithPreview, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-edit-delete-with-preview')
+        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-preview')
         return css_class_suffixes

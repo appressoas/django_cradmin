@@ -7,12 +7,12 @@ class DefaultSpacingItemFrame(base.ItemFrameRenderer):
     """
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(DefaultSpacingItemFrame, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-default-spacing-item-frame')
+        css_class_suffixes.append('cradmin-listbuilder-default-spacing-item-frame')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
         css_classes = super(DefaultSpacingItemFrame, self).get_base_css_classes_list()
-        css_classes.append_renderable('blocklist__item')
+        css_classes.append('blocklist__item')
         return css_classes
 
 
@@ -24,12 +24,12 @@ class Link(DefaultSpacingItemFrame):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(DefaultSpacingItemFrame, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-link')
+        css_class_suffixes.append('cradmin-listbuilder-link')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
         css_classes = super(Link, self).get_base_css_classes_list()
-        css_classes.append_renderable('blocklist__item--link')
+        css_classes.append('blocklist__item--link')
         return css_classes
 
     def get_url(self):

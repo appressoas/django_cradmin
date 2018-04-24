@@ -48,7 +48,7 @@ class ItemValueRenderer(AbstractItemRenderer):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(ItemValueRenderer, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-item-value-renderer')
+        css_class_suffixes.append('cradmin-listbuilder-item-value-renderer')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -86,7 +86,7 @@ class ItemFrameRenderer(AbstractItemRenderer):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(ItemFrameRenderer, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append_renderable('cradmin-listbuilder-item-frame-renderer')
+        css_class_suffixes.append('cradmin-listbuilder-item-frame-renderer')
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
