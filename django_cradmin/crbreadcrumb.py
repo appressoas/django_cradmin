@@ -150,6 +150,11 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         self._overridden_location = None
         super(BreadcrumbItemList, self).__init__()
 
+    def get_extra_css_classes_list(self):
+        return [
+            'hidden-in-print'
+        ]
+
     def get_default_location(self):
         """
         The location to render the breadcrumb at by default.
