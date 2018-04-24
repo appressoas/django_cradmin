@@ -12,9 +12,9 @@ What is new?
 - New neutral variable in the theme colormap - ``verylight``.
 
 
-***********************
-Migrate from 4.x to 5.x
-***********************
+*************************
+Migrate from 4.x to 5.0.0
+*************************
 
 
 Handle adminui-breadcrumbs BEM block removal
