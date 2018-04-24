@@ -13,6 +13,7 @@ What is new?
 - button styles: Make it easier to create custom button styles with some new mixins.
 - ``page-cover-mixin`` SASS mixin: Add __button BEM element.
 - Add new ``block`` BEM block.
+- ``viewhelpers.listbuilder``: Fix refactoring bug that basically made this module unusable.
 
 
 ***************************
