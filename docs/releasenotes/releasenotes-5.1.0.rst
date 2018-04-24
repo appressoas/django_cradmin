@@ -14,6 +14,7 @@ What is new?
 - ``page-cover-mixin`` SASS mixin: Add __button BEM element.
 - Add new ``block`` BEM block.
 - ``viewhelpers.listbuilder``: Fix refactoring bug that basically made this module unusable.
+- ``crbreadcrumb``: Hide in print by default.
 
 
 ***************************
