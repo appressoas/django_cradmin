@@ -5,7 +5,7 @@ __Never__ use `<span>`, `<div>` or elements without a semantic meaning as links.
 
 Example: Link styles
     <a href="">I'm a link</a>
-    <a href="" class="link--light">I'm also link</a>
+    <a href="" class="link link--light">I'm also link</a>
 
 Example: Button styled as a link
     <button type="button" class="link">I'm a button!</a>
@@ -28,6 +28,22 @@ a,
     &:focus {
         color: $color-links--hover;
         border-color: $color-links--hover;
+    }
+
+    &--light {
+        color: $color-light;
+        border-color: rgba($color-light, 0.7);
+
+        &:hover,
+        &:focus {
+            color: $color-light;
+            border-color: $color-light;
+        }
+    }
+
+    &--no-border {
+        border: none;
+        text-decoration: none;
     }
 }
 
