@@ -62,53 +62,61 @@
         {% endblock global-pre-body %}
 
         {% block body %}
-            {% block header %}
-                {% comment %}
-                    A common header for many pages. This is not part of the ``<main>``
-                    content of the page, so you should not add your H1 here.
-                {% endcomment %}
-                {% cradmin_render_default_header %}
-            {% endblock header %}
+            <div class="{{ cradmin_viewport_layout_bem_block|default:'fill-viewport-layout' }}">
+                <div class="{{ cradmin_viewport_layout_bem_block|default:'fill-viewport-layout' }}__content">
+                    {% block header %}
+                        {% comment %}
+                            A common header for many pages. This is not part of the ``<main>``
+                            content of the page, so you should not add your H1 here.
+                        {% endcomment %}
+                        {% cradmin_render_default_header %}
+                    {% endblock header %}
 
-            {% block main %}
-                <main {% block main-attributes %}role="main"{% endblock %}>
-                    {% block main-content %}
-                        {% block breadcrumbs-above-page-cover %}
-                            {% cradmin_render_breadcrumb_item_list location='above-page-cover' %}
-                        {% endblock breadcrumbs-above-page-cover %}
+                    {% block main %}
+                        <main {% block main-attributes %}role="main"{% endblock %}>
+                            {% block main-content %}
+                                {% block breadcrumbs-above-page-cover %}
+                                    {% cradmin_render_breadcrumb_item_list location='above-page-cover' %}
+                                {% endblock breadcrumbs-above-page-cover %}
 
-                        {% block page-cover %}
-                            <header class="
-                                    {% block page-cover-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}{% endblock %}
-                                    {% block page-cover-bem-variant %}{% endblock %}
-                                    {% cradmin_test_css_class 'page-cover' %}">
-                                {% block page-cover-content %}
-                                    <h1 class="
-                                            {% block page-cover-title-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}__title{% endblock %}
-                                            {% block page-cover-title-bem-variant %}{% endblock %}
-                                            {% cradmin_test_css_class 'primary-h1' %}">
-                                        {% block page-cover-title %}{% endblock page-cover-title %}
-                                    </h1>
-                                {% endblock page-cover-content %}
-                            </header>
-                        {% endblock page-cover %}
+                                {% block page-cover %}
+                                    <header class="
+                                            {% block page-cover-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}{% endblock %}
+                                            {% block page-cover-bem-variant %}{% endblock %}
+                                            {% cradmin_test_css_class 'page-cover' %}">
+                                        {% block page-cover-content %}
+                                            <h1 class="
+                                                    {% block page-cover-title-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}__title{% endblock %}
+                                                    {% block page-cover-title-bem-variant %}{% endblock %}
+                                                    {% cradmin_test_css_class 'primary-h1' %}">
+                                                {% block page-cover-title %}{% endblock page-cover-title %}
+                                            </h1>
+                                        {% endblock page-cover-content %}
+                                    </header>
+                                {% endblock page-cover %}
 
-                        {% block breadcrumbs-below-page-cover %}
-                            {% cradmin_render_breadcrumb_item_list location='below-page-cover' %}
-                        {% endblock breadcrumbs-below-page-cover %}
+                                {% block breadcrumbs-below-page-cover %}
+                                    {% cradmin_render_breadcrumb_item_list location='below-page-cover' %}
+                                {% endblock breadcrumbs-below-page-cover %}
 
-                        {% block messages %}
-                            {% include "django_cradmin/include/messages.django.html" %}
-                        {% endblock messages %}
+                                {% block messages %}
+                                    {% include "django_cradmin/include/messages.django.html" %}
+                                {% endblock messages %}
 
-                        {% block content %}{% endblock %}
-                    {% endblock main-content %}
-                </main>
-            {% endblock main %}
+                                {% block content %}{% endblock %}
+                            {% endblock main-content %}
+                        </main>
+                    {% endblock main %}
+                </div>
 
-            {% block footer %}
-                {% cradmin_render_default_footer %}
-            {% endblock footer %}
+                {% block footerlayout %}
+                    <div class="{{ cradmin_viewport_layout_bem_block|default:'fill-viewport-layout' }}__content">
+                        {% block footer %}
+                            {% cradmin_render_default_footer %}
+                        {% endblock footer %}
+                    </div>
+                {% endblock footerlayout %}
+            </div>
 
             {% block toggleable-menu %}
                 {% comment %}
