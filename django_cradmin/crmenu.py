@@ -1,8 +1,28 @@
 from __future__ import unicode_literals
 
+from django.conf import settings
+from django.utils.module_loading import import_string
 from django.utils.translation import pgettext_lazy
 
 from django_cradmin import renderable
+
+
+def get_default_expandable_menu_renderable(request=None):
+    """
+    Get the default expandable menu renderable.
+
+    The one set in the :setting:`DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS`.
+
+    Args:
+        request (django.http.HttpRequest): Optional request object.
+
+    Returns:
+        AbstractMenuRenderable: Expandable menu renderable object or ``None``.
+    """
+    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS', None):
+        return None
+    menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS)
+    return menu_class(cradmin_instance=None, request=request)
 
 
 class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
@@ -418,9 +438,15 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
             self._cached_menutoggle_renderable = self.get_menutoggle_renderable()
         return self._cached_menutoggle_renderable
 
+    @property
+    def expandable_menu_renderable(self):
+        if self.cradmin_instance:
+            return getattr(self.cradmin_instance, 'expandable_menu_renderable', None)
+        else:
+            return get_default_expandable_menu_renderable(request=self.request)
+
     def has_expandable_menu_renderable(self):
-        return self.cradmin_instance is not None and bool(
-            getattr(self.cradmin_instance, 'expandable_menu_renderable', None))
+        return bool(self.expandable_menu_renderable)
 
     def should_render_menutoggle(self):
         return self.has_expandable_menu_renderable() and bool(self.cached_menutoggle_renderable)

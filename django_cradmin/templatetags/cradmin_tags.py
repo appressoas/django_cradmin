@@ -14,7 +14,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 import warnings
 from django.urls import reverse
 
-from django_cradmin import crapp
+from django_cradmin import crapp, crmenu
 from django_cradmin import crsettings
 from django_cradmin import renderable
 from django_cradmin.crinstance import reverse_cradmin_url
@@ -494,14 +494,12 @@ def cradmin_render_default_expandable_menu(context):
     :setting:DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS`
     setting.
     """
-    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS', None):
-        return ''
-
-    menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS)
-    menu_renderable = menu_class(cradmin_instance=None,
-                                 request=context.get('request', None))
-    return cradmin_render_renderable(context, menu_renderable,
-                                     include_context=True)
+    menu_renderable = crmenu.get_default_expandable_menu_renderable(
+        request=context.get('request', None))
+    if menu_renderable:
+        return cradmin_render_renderable(context, menu_renderable,
+                                         include_context=True)
+    return ''
 
 
 @register.simple_tag(takes_context=True)

@@ -69,22 +69,32 @@ If this is ``None``, or not specified (the default), we do not render
 a header.
 
 Must be the string path to a subclass of
-:class:`django_cradmin.crheader.AbstractHeaderRenderable`.
+:class:`django_cradmin.crheader.AbstractHeaderRenderable` or a callable with the same
+signature.
+
+A callable is typically used to dynamically determine the header
+based on the provided kwargs. The callable must return an object
+of :class:`django_cradmin.crheader.AbstractHeaderRenderable` or a subclass.
 
 
 
 
-.. setting:: DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS
+.. setting:: DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS
 
-DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS
-=======================================
+DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS
+============================================
 The default expandable menu class rendered at the end of ``<body>`` by
 the base template for all cradmin view templates (standalone-base-internal.django.html).
 If this is ``None``, or not specified (the default), we do not render
 an expandable menu.
 
 Must be the string path to a subclass of
-:class:`django_cradmin.crmenu.AbstractMenuRenderable`.
+:class:`django_cradmin.crmenu.AbstractMenuRenderable` or a callable with the same
+signature.
+
+A callable is typically used to dynamically determine the expandable
+menu based on the provided kwargs. The callable must return an object
+of :class:`django_cradmin.crmenu.AbstractMenuRenderable` or a subclass.
 
 
 .. setting:: DJANGO_CRADMIN_DEFAULT_STATIC_COMPONENT_IDS
