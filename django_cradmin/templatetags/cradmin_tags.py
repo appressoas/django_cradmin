@@ -14,7 +14,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 import warnings
 from django.urls import reverse
 
-from django_cradmin import crapp, crmenu
+from django_cradmin import crapp, crmenu, crheader
 from django_cradmin import crsettings
 from django_cradmin import renderable
 from django_cradmin.crinstance import reverse_cradmin_url
@@ -476,15 +476,16 @@ def cradmin_render_default_header(context):
     Render the default header specified via the
     :setting:DJANGO_CRADMIN_DEFAULT_HEADER_CLASS`
     setting.
-    """
-    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_HEADER_CLASS', None):
-        return ''
 
-    header_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_HEADER_CLASS)
-    header_renderable = header_class(cradmin_instance=None,
-                                     request=context.get('request', None))
-    return cradmin_render_renderable(context, header_renderable,
-                                     include_context=True)
+    Uses :func:`django_cradmin.crheader.get_default_header_renderable` to
+    get the header renderable.
+    """
+    header_renderable = crheader.get_default_header_renderable(
+        request=context.get('request', None))
+    if header_renderable:
+        return cradmin_render_renderable(context, header_renderable,
+                                         include_context=True)
+    return ''
 
 
 @register.simple_tag(takes_context=True)
@@ -493,6 +494,9 @@ def cradmin_render_default_expandable_menu(context):
     Render the default header specified via the
     :setting:DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS`
     setting.
+
+    Uses :func:`django_cradmin.crmenu.get_default_expandable_menu_renderable` to
+    get the expandable menu renderable.
     """
     menu_renderable = crmenu.get_default_expandable_menu_renderable(
         request=context.get('request', None))

@@ -7,14 +7,14 @@ from django.utils.translation import pgettext_lazy
 from django_cradmin import renderable
 
 
-def get_default_expandable_menu_renderable(request=None):
+def get_default_expandable_menu_renderable(**kwargs):
     """
     Get the default expandable menu renderable.
 
     The one set in the :setting:`DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS`.
 
     Args:
-        request (django.http.HttpRequest): Optional request object.
+        **kwargs: Kwargs for the expandable menu class constructor.
 
     Returns:
         AbstractMenuRenderable: Expandable menu renderable object or ``None``.
@@ -22,7 +22,7 @@ def get_default_expandable_menu_renderable(request=None):
     if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS', None):
         return None
     menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS)
-    return menu_class(cradmin_instance=None, request=request)
+    return menu_class(**kwargs)
 
 
 class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):

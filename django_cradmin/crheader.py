@@ -1,4 +1,25 @@
+from django.conf import settings
+from django.utils.module_loading import import_string
+
 from django_cradmin import renderable
+
+
+def get_default_header_renderable(**kwargs):
+    """
+    Get the default header renderable.
+
+    The one set in the :setting:`DJANGO_CRADMIN_DEFAULT_HEADER_CLASS`.
+
+    Args:
+        **kwargs: Kwargs for the header class constructor.
+
+    Returns:
+        AbstractHeaderRenderable: Header renderable object or ``None``.
+    """
+    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_HEADER_CLASS', None):
+        return None
+    header_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_HEADER_CLASS)
+    return header_class(**kwargs)
 
 
 class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
