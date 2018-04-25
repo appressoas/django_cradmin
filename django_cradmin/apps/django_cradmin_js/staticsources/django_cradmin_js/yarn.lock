@@ -2374,9 +2374,9 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
-"ievv_jsbase@git+ssh://git@github.com/appressoas/ievv_jsbase.git#1.5.5":
-  version "1.5.5"
-  resolved "git+ssh://git@github.com/appressoas/ievv_jsbase.git#5360a180a076391fadd47e452b573e2c511fdb15"
+"ievv_jsbase@git+ssh://git@github.com/appressoas/ievv_jsbase.git#1.6.1":
+  version "1.6.1"
+  resolved "git+ssh://git@github.com/appressoas/ievv_jsbase.git#47cc4835c359797209d65866b27c5fbdcb3ac25c"
   dependencies:
     htmlparser2 "^3.9.2"
     standard "^10.0.3"
