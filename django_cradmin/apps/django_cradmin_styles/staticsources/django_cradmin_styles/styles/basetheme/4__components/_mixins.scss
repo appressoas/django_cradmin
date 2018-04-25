@@ -362,7 +362,8 @@
     $title-container-width: wide,
     $description-container-width: tight,
     $button-border-color: $color-light,
-    $button-text-color: color(primary, dark)
+    $button-text-color: color(primary, dark),
+    $link-hover-color: color(primary, dark)
 ) {
     position: relative;
     padding-top: $vertical-padding-sm; // TODO: Vertical variables...
@@ -428,8 +429,18 @@
         border-color: $emphasis-background-color;
         &:hover,
         &:focus {
-            color: $emphasis-color;
-            border-color: $emphasis-color;
+            color: $link-hover-color;
+            border-color: $link-hover-color;
+        }
+
+        &--no-border {
+            border: none;
+            text-decoration: none;
+
+            &:hover {
+                border: none;
+                text-decoration: none;
+            }
         }
     }
 
