@@ -10,6 +10,9 @@ What is new?
 - Rename the ``DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS`` setting to ``DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS``.
 - Improved support for expandable menu outside of a cradmin instance.
 - Add support for a default footer rendererable. See :setting:`DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS`.
+- Remove the need for the `$footer-height` SASS variable. We have wrapped the body content
+  with a new ``fill-viewport-layout`` BEM block, which handles footer alignment without
+  the need for knowing the height of the footer.
 
 
 ***************************
