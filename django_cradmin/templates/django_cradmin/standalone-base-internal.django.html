@@ -106,7 +106,9 @@
                 </main>
             {% endblock main %}
 
-            {% block footer %}{% endblock footer %}
+            {% block footer %}
+                {% cradmin_render_default_footer %}
+            {% endblock footer %}
 
             {% block toggleable-menu %}
                 {% comment %}

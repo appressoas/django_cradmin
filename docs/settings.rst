@@ -63,20 +63,36 @@ automatic tests. Defaults to ``False``.
 
 DJANGO_CRADMIN_DEFAULT_HEADER_CLASS
 ===================================
-The default header class rendered in the header block of
+The default header class rendered in the ``header`` block of
 the base template for all cradmin view templates (standalone-base-internal.django.html).
 If this is ``None``, or not specified (the default), we do not render
 a header.
 
 Must be the string path to a subclass of
 :class:`django_cradmin.crheader.AbstractHeaderRenderable` or a callable with the same
-signature.
+signature as the AbstractHeaderRenderable constructor.
 
 A callable is typically used to dynamically determine the header
 based on the provided kwargs. The callable must return an object
 of :class:`django_cradmin.crheader.AbstractHeaderRenderable` or a subclass.
 
 
+.. setting:: DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS
+
+DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS
+===================================
+The default footer class rendered in the ``footer`` block of
+the base template for all cradmin view templates (standalone-base-internal.django.html).
+If this is ``None``, or not specified (the default), we do not render
+a footer.
+
+Must be the string path to a subclass of
+:class:`django_cradmin.crheader.AbstractHeaderRenderable` or a callable with the same
+signature as the AbstractHeaderRenderable constructor.
+
+A callable is typically used to dynamically determine the footer
+based on the provided kwargs. The callable must return an object
+of :class:`django_cradmin.crheader.AbstractHeaderRenderable` or a subclass.
 
 
 .. setting:: DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS
@@ -90,7 +106,7 @@ an expandable menu.
 
 Must be the string path to a subclass of
 :class:`django_cradmin.crmenu.AbstractMenuRenderable` or a callable with the same
-signature.
+signature as the AbstractMenuRenderable constructor.
 
 A callable is typically used to dynamically determine the expandable
 menu based on the provided kwargs. The callable must return an object

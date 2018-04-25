@@ -14,7 +14,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 import warnings
 from django.urls import reverse
 
-from django_cradmin import crapp, crmenu, crheader
+from django_cradmin import crapp, crmenu, crheader, crfooter
 from django_cradmin import crsettings
 from django_cradmin import renderable
 from django_cradmin.crinstance import reverse_cradmin_url
@@ -484,6 +484,24 @@ def cradmin_render_default_header(context):
         request=context.get('request', None))
     if header_renderable:
         return cradmin_render_renderable(context, header_renderable,
+                                         include_context=True)
+    return ''
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_render_default_footer(context):
+    """
+    Render the default footer specified via the
+    :setting:DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS`
+    setting.
+
+    Uses :func:`django_cradmin.crfooter.get_default_footer_renderable` to
+    get the footer renderable.
+    """
+    footer_renderable = crfooter.get_default_footer_renderable(
+        request=context.get('request', None))
+    if footer_renderable:
+        return cradmin_render_renderable(context, footer_renderable,
                                          include_context=True)
     return ''
 

@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.utils.html import format_html
 from django.views import View
 
-from django_cradmin import crheader, crbreadcrumb
+from django_cradmin import crheader, crbreadcrumb, crfooter
 from django_cradmin import crmenu
 from django_cradmin.decorators import has_access_to_cradmin_instance
 from django_cradmin.javascriptregistry.default_componentids import get_default_component_ids
@@ -353,7 +353,7 @@ class BaseCrAdminInstance(object):
         if self.footer_renderable_class:
             return self.footer_renderable_class(cradmin_instance=self)
         else:
-            return None
+            return crfooter.get_default_footer_renderable(cradmin_instance=self)
 
     def add_breadcrumb_list_items(self, breadcrumb_item_list):
         """
