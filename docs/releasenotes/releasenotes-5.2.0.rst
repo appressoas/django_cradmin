@@ -7,7 +7,7 @@ Django cradmin 5.2.0 releasenotes
 ************
 What is new?
 ************
-- Rename the ``DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS`` to ``DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS``.
+- Rename the ``DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS`` setting to ``DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS``.
 
 ***************************
 Migrate from 5.1.0 to 5.2.0
