@@ -419,7 +419,8 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
         return self._cached_menutoggle_renderable
 
     def has_expandable_menu_renderable(self):
-        return bool(getattr(self.cradmin_instance, 'expandable_menu_renderable', None))
+        return self.cradmin_instance is not None and bool(
+            getattr(self.cradmin_instance, 'expandable_menu_renderable', None))
 
     def should_render_menutoggle(self):
         return self.has_expandable_menu_renderable() and bool(self.cached_menutoggle_renderable)
