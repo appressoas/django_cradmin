@@ -491,13 +491,13 @@ def cradmin_render_default_header(context):
 def cradmin_render_default_expandable_menu(context):
     """
     Render the default header specified via the
-    :setting:DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS`
+    :setting:DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS`
     setting.
     """
-    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS', None):
+    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS', None):
         return ''
 
-    menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_CLASS)
+    menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS)
     menu_renderable = menu_class(cradmin_instance=None,
                                  request=context.get('request', None))
     return cradmin_render_renderable(context, menu_renderable,
