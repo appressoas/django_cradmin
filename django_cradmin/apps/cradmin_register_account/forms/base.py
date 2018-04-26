@@ -59,6 +59,11 @@ class AbstractCreateAccountForm(forms.ModelForm):
         :meth:`~.AbstractCreateAccountForm.set_password`.
         """
 
+    def set_extra_user_attributes_before_clean(self, user):
+        """
+        Override this to set extra user attributes before the any cleaning is run on the user instance.
+        """
+
     def get_field_renderables(self):
         """
         Get field renderables.
@@ -106,6 +111,10 @@ class AbstractCreateAccountForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_extra_user_attributes_before_clean(user=self.instance)
 
 
 class AbstractCreateAccountWithPasswordForm(AbstractCreateAccountForm):
