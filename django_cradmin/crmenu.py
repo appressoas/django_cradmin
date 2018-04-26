@@ -85,7 +85,7 @@ class ExpandableMenuItem(BaseMenuLinkRenderable):
     template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-item.django.html'
 
     def get_fallback_parent_bem_block(self):
-        return 'adminui-expandable-menu'
+        return 'expandable-menu'
 
     def get_bem_element(self):
         return '{}__link'.format(self.get_parent_bem_block())
@@ -102,7 +102,7 @@ class ExpandableMenuSeparator(renderable.AbstractBemRenderable):
         super(ExpandableMenuSeparator, self).__init__()
 
     def get_fallback_parent_bem_block(self):
-        return 'adminui-expandable-menu'
+        return 'expandable-menu'
 
     def get_parent_bem_block(self):
         return self.parent_bem_block or self.get_fallback_parent_bem_block()
