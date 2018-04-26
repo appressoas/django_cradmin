@@ -13,6 +13,7 @@ What is new?
 - Remove the need for the `$footer-height` SASS variable. We have wrapped the body content
   with a new ``fill-viewport-layout`` BEM block, which handles footer alignment without
   the need for knowing the height of the footer.
+- Supports adding extra user attributes before cleaning in ``AbstractCreateAccountForm``.
 
 
 ***************************
