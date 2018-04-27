@@ -509,11 +509,14 @@
         }
 
         &:hover {
-            #{$__root}__itemlabel-minimized {
-                display: none;
-            }
-            #{$__root}__itemlabel-full {
-                display: inline-block;
+            @include min-width (md) {
+                #{$__root}__itemlabel-minimized {
+                    display: none;
+                }
+
+                #{$__root}__itemlabel-full {
+                    display: inline-block;
+                }
             }
         }
     }
