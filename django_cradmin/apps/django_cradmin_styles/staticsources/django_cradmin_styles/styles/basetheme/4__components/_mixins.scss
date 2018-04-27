@@ -55,6 +55,8 @@
         border: none;
         height: 100%;
         width: auto;
+        object-position: left center;
+        object-fit: contain;
     }
 
     &__nav {
