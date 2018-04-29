@@ -8,6 +8,21 @@ Example: {type: isolated}
     <h3>Header 3</h3>
     <h4>Header 4</h4>
 
+
+Example: {type: isolated} --spaced - for usage outside of page-sections
+
+    <!--
+    You should normally use a page-section for each heading, and have one heading
+    in each page-section, but if you need to have multiple headings in a single
+    container etc., use --spaced
+    -->
+
+    <h1 class="h1 h1--spaced">Header 1</h1>
+    <h2 class="h2 h2--spaced">Header 2</h2>
+    <h3 class="h3 h3--spaced">Header 3</h3>
+    <h4 class="h4 h4--spaced">Header 4</h4>
+
+
 Styleguide type.3:headers
 */
 
@@ -27,6 +42,15 @@ h3,
     overflow-wrap: break-word;
     word-break: break-word;
     hyphens: auto;
+}
+
+h1, .h1,  %h1,
+h2, .h2,  %h2,
+h3, .h3,  %h3,
+h4, .h4,  %h4 {
+    &--spaced {
+        margin-top: vertical-space($spacing);
+    }
 }
 
 h1,
