@@ -39,5 +39,5 @@ class UiMock(generic.StandaloneBaseTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['session_postdata'] = self.session_postdata
+        context['postdata'] = self.session_postdata
         return context
