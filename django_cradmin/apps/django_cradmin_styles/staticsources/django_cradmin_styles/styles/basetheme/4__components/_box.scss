@@ -11,6 +11,16 @@
     &--#{$name} {
         background-color: $background-color;
         color: $text-color;
+
+        a {
+            color: $text-color;
+            border-color: $text-color;
+
+            &:hover {
+                color: $text-color;
+                border-color: $text-color;
+            }
+        }
     }
 }
 
