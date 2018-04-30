@@ -35,6 +35,7 @@ Viewhelpers
    viewhelpers_formview_updateview
    viewhelpers_formview_deleteview
    viewhelpers_formview_previewmixin
+   viewhelpers_uimock
 
 
 *************

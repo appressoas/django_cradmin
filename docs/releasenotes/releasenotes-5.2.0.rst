@@ -15,6 +15,7 @@ What is new?
       with a new ``fill-viewport-layout`` BEM block, which handles footer alignment without
       the need for knowing the height of the footer.
     - Handle SVG image sizing correctly in IE 11 in page-header-mixin ``__brandimage``.
+    - Add two new cricon icons: comment and comments.
 - Supports adding extra user attributes before cleaning in ``AbstractCreateAccountForm``.
 
 

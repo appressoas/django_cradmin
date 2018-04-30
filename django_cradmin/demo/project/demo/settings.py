@@ -86,6 +86,9 @@ INSTALLED_APPS = (
     #: Demo for the javascript components
     'django_cradmin.demo.cradmin_javascript_demos',
 
+    #: Demo for viewhelpers.uimock
+    'django_cradmin.demo.uimock_demo',
+
     'ievv_opensource.ievvtasks_development',
     'ievv_opensource.ievvtasks_common',
 )
