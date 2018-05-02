@@ -2,7 +2,6 @@
 Django cradmin 5.2.0 releasenotes
 #################################
 
-.. warning:: 5.2.0 is not released yet.
 
 ************
 What is new?
