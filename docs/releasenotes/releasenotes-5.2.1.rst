@@ -1,8 +1,6 @@
 #################################
-Django cradmin 5.3.0 releasenotes
+Django cradmin 5.2.1 releasenotes
 #################################
-
-.. warning:: Not released yet.
 
 
 ************
@@ -13,6 +11,6 @@ What is new?
 
 
 ***************************
-Migrate from 5.2.0 to 5.3.0
+Migrate from 5.2.0 to 5.2.1
 ***************************
 Nothing should break with this update.
