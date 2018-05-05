@@ -140,4 +140,33 @@ $sidebar-sizes: (
 );
 
 
+// Maps items in $breakpoints to line heights for form elements.
+// We use this to ensure form elements line up nicely horizontally
+$form-element-height-map: (
+    default: (
+        xsmall: 42px,
+        small: 48px,
+        base: 52px,
+        large: 62px
+    ),
+    md: (
+        xsmall: 42px,
+        small: 48px,
+        base: 56px,
+        large: 70px
+    ),
+    lg: (
+        xsmall: 42px,
+        small: 48px,
+        base: 56px,
+        large: 70px
+    ),
+    xl: (
+        xsmall: 42px,
+        small: 48px,
+        base: 56px,
+        large: 70px
+    )
+);
+
 $media-path: '../../media' !default;  // Must NOT end with /

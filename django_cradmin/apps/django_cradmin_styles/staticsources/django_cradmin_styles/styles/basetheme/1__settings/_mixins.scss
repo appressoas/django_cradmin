@@ -76,6 +76,31 @@
     }
 }
 
+@mixin form-element-size ($sizemap, $size) {
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.2;
+    @if map-has-key($sizemap, $size) {
+        height: map-get($sizemap, $size);
+    }
+}
+
+@mixin form-element-mixin ($size: base) {
+    box-sizing: border-box;
+    $default-sizemap: map-get($form-element-height-map, default);
+    @include form-element-size($default-sizemap, $size);
+
+    @each $screen-breakpoint-name, $screen-breakpoint in $breakpoints {
+        $sizemap: $default-sizemap;
+        @if map-has-key($form-element-height-map, $screen-breakpoint-name) {
+            $sizemap: map-get($form-element-height-map, $screen-breakpoint-name);
+        }
+        @media screen and (min-width: $screen-breakpoint) {
+            @include form-element-size($sizemap, $size);
+        }
+    }
+}
+
 @mixin make-font-size($fs-font-size, $skip-line-height: false) {
     @if (type-of($fs-font-size) == 'list') {
         font-size: nth($fs-font-size, 1);

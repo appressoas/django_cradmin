@@ -28,18 +28,44 @@ Example: Outlined input
         <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
     </label>
 
-Example: Smaller input
+Example: Input width adjustments
     <label class="label">
-        Small input
-        <input type="text" placeholder="I'm tiny!" class="input input--small" />
+        --width-xxsmall
+        <input type="text" placeholder="I'm xxsmall!" class="input input--width-xxsmall" />
+    </label>
+    <label class="label">
+        --width-xsmall
+        <input type="text" placeholder="I'm xsmall!" class="input input--width-xsmall" />
+    </label>
+    <label class="label">
+        --width-small
+        <input type="text" placeholder="I'm small!" class="input input--width-small" />
     </label>
 
-Example: Extra small inline input - suitable for time input and similar
+Example: Input size adjustments
+    <label class="label">
+        --size-xsmall
+        <input type="text" placeholder="I'm xsmall!" class="input input--size-xsmall" />
+    </label>
+    <label class="label">
+        --size-small
+        <input type="text" placeholder="I'm small!" class="input input--size-small" />
+    </label>
+    <label class="label">
+        Default size
+        <input type="text" placeholder="I'm default sized!" class="input" />
+    </label>
+    <label class="label">
+        --size-large
+        <input type="text" placeholder="I'm large!" class="input input--size-large" />
+    </label>
+
+Example: Combining width adjustments and size adjustments
     <label class="label">
         Time:
-        <input type="text" placeholder="Hour" class="input input--inline-xxsmall" />
+        <input type="text" placeholder="Hour" class="input input--inline input--width-xxsmall input--size-small" />
         :
-        <input type="text" placeholder="Minute" class="input input--inline-xxsmall" />
+        <input type="text" placeholder="Minute" class="input input--inline input--width-xxsmall input--size-small" />
     </label>
 
 Example: Standard textarea
@@ -60,19 +86,13 @@ Example: Textarea with outlines
         <textarea placeholder="Look, outlines!" class="input  input--outlined"></textarea>
     </label>
 
-Example: {type: isolated} Textarea that grows
-    <label class="label">
-        I'm a textarea that can grow
-        <textarea class="input" placeholder="You can type alot on me!" auto-grow></textarea>
-    </label>
-
 Styleguide form.3:input
 */
 
 .input {
     @include font(base, normal);
-    @include font-size(small, true);
-    line-height: 1.6;
+    @include font-size(small, $skip-line-height: true);
+    @include form-element-mixin();
     min-height: vertical-space(6);
 
     display: block;
@@ -109,29 +129,34 @@ Styleguide form.3:input
         margin: 0;
     }
 
-    &--inline-xxsmall {
-        @include font-size(small);
-        display: inline-block;
+    &--width-xsmall {
+        width: $unit * 20;
+        min-width: $unit * 5;
+    }
+
+    &--width-xxsmall {
         width: $unit * 16;
         min-width: $unit * 5;
-        padding: $unit $spacing--small;
-        margin: 0;
     }
 
-    &--half {
-        width: calc(50% - #{$spacing--small});
-    }
-
-    &--small {
+    &--width-small {
         width: $unit * 36;
+        min-width: $unit * 5;
     }
 
-    &--xsmall {
-        width: $unit * 20;
+    &--size-xsmall {
+        @include font-size(xsmall, $skip-line-height: true);
+        @include form-element-mixin(xsmall);
     }
 
-    &--xxsmall {
-        width: $unit * 16;
+    &--size-small {
+        @include font-size(small, $skip-line-height: true);
+        @include form-element-mixin(small);
+    }
+
+    &--size-large {
+        @include font-size(medium, $skip-line-height: true);
+        @include form-element-mixin(large);
     }
 
     &--outlined {

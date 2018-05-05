@@ -1,0 +1,92 @@
+/* Combining form elements examples
+
+Example: {type: isolated} Block elements
+
+    <div class="container container--wide">
+        <div class="columnlayout">
+            <div class="columnlayout__column">
+                <label class="select  select--outlined select--block">
+                    <select aria-label="Category">
+                        <option>all subjects</option>
+                        <option>enterprise</option>
+                        <option>...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="columnlayout__column">
+                <input type="text" placeholder="Look at ma' outlines" class="input input--outlined" />
+            </div>
+            <div class="columnlayout__column">
+                <button type="button" class="button button--block button--form-size-default">A button</button>
+            </div>
+        </div>
+    </div>
+
+Example: {type: isolated} Block elements - xsmall
+
+    <div class="container container--wide">
+        <div class="columnlayout">
+            <div class="columnlayout__column">
+                <label class="select  select--outlined select--size-xsmall select--block">
+                    <select aria-label="Category">
+                        <option>all subjects</option>
+                        <option>enterprise</option>
+                        <option>...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="columnlayout__column">
+                <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined input--size-xsmall" />
+            </div>
+            <div class="columnlayout__column">
+                <button type="button" class="button button--block button--form-size-xsmall">A button</button>
+            </div>
+        </div>
+    </div>
+
+Example: {type: isolated} Block elements - small
+
+    <div class="container container--wide">
+        <div class="columnlayout">
+            <div class="columnlayout__column">
+                <label class="select  select--outlined select--size-small select--block">
+                    <select aria-label="Category">
+                        <option>all subjects</option>
+                        <option>enterprise</option>
+                        <option>...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="columnlayout__column">
+                <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined input--size-small" />
+            </div>
+            <div class="columnlayout__column">
+                <button type="button" class="button button--block button--form-size-small">A button</button>
+            </div>
+        </div>
+    </div>
+
+Example: {type: isolated} Block elements - large
+
+    <div class="container container--wide">
+        <div class="columnlayout">
+            <div class="columnlayout__column">
+                <label class="select  select--outlined select--size-large select--block">
+                    <select aria-label="Category">
+                        <option>all subjects</option>
+                        <option>enterprise</option>
+                        <option>...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="columnlayout__column">
+                <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined input--size-large" />
+            </div>
+            <div class="columnlayout__column">
+                <button type="button" class="button button--block button--form-size-large">A button</button>
+            </div>
+        </div>
+    </div>
+
+Styleguide form.8:combining-form-elements-examples
+*/
