@@ -349,7 +349,7 @@ Example: --size-large
         </button>
     </div>
 
-Styleguide components.searchinput.sizes
+Styleguide components.searchinput.1:sizes
 */
 
 
@@ -465,7 +465,54 @@ Example: Selected items --info
     </div>
 
 
-Styleguide components.searchinput.colors
+Styleguide components.searchinput.2:colors
+*/
+
+
+/* Searchinput IE 11 hacks
+
+In IE11, searchinput does not render correctly because of a bug with min-height and
+flexbox vertical centering. The workaround is to wrap the searchinput in an element
+with ``display: flex`` or ``display: inline-flex``. We provide CSS classes for
+this as shown below.
+
+Example: Block
+
+    <div class="ie-hack-display-flex-wrapper">
+        <div class="searchinput">
+            <span class="searchinput__body">
+                <span class="searchinput__selected">
+                    <span class="searchinput__selected_preview">Animals</span>
+                </span>
+                <span class="searchinput__selected">
+                    <span class="searchinput__selected_preview">People</span>
+                </span>
+                <input type="text" placeholder="Search ..." class="searchinput__input" />
+            </span>
+            <button type="button" class="searchinput__button" title="clear search input">
+                <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+
+Example: Inline
+
+    <label class="label">
+        Look, I
+        <span class="ie-hack-display-inline-flex-wrapper">
+            <span class="searchinput searchinput--inline">
+                <span class="searchinput__body">
+                    <input type="text" placeholder="Search ..." class="searchinput__input" />
+                </span>
+                <button type="button" class="searchinput__button" title="clear search input">
+                    <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+                </button>
+            </span>
+        </span>
+        am inline!
+    </label>
+
+Styleguide components.searchinput.ie-hacks
 */
 
 .searchinput {
@@ -567,6 +614,12 @@ Styleguide components.searchinput.colors
         background-color: inherit;
         &[disabled] {
             background-color: color(neutral);
+        }
+
+        &::-ms-clear {
+            display: none;
+            width : 0;
+            height: 0;
         }
     }
 

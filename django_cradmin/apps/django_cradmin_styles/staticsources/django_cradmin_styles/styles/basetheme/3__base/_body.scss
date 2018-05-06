@@ -50,6 +50,9 @@ A layout that ensures that we fill the entire viewport while keeping the
 footer at the bottom at the screen even if the main content is not high
 enough to push the footer to the bottom.
 
+NOTE: This does not work on IE 11, but you can make it work by adding the ``ie-hack-display-flex-wrapper``
+to ``body``.
+
 Example: {type: isolated}
 
     <div class="fill-viewport-layout" style="background-color: blue;">
