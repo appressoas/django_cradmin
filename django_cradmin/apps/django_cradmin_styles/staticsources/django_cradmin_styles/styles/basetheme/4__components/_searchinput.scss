@@ -353,6 +353,60 @@ Styleguide components.searchinput.1:sizes
 */
 
 
+/* Searchinput width variants
+
+Notice that we do not provide the ``--xsmall`` and ``--xxsmall``
+variants that we do for ``input``. This is because those sizes are so small
+that they really do not make sense when you need to have place for a button.
+
+Example: --width-small
+
+    <div class="searchinput searchinput--width-small">
+        <span class="searchinput__body">
+            <input type="text" placeholder="--width-small" class="searchinput__input" />
+        </span>
+        <button type="button" class="searchinput__button" title="clear search input">
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+        </button>
+    </div>
+
+Example: --width-small with buttons works, but is rarely a good idea
+
+    <div class="searchinput searchinput--width-small">
+        <span class="searchinput__body">
+            <span class="searchinput__selected">
+                <span class="searchinput__selected_preview searchinput__selected_preview--with-deselect">Animals</span>
+                <button type="button" class="searchinput__deselect">
+                    <i class="searchinput__deselect_icon cricon cricon--close cricon--color-light"></i>
+                </button>
+            </span>
+            <span class="searchinput__selected">
+                <span class="searchinput__selected_preview">People</span>
+            </span>
+            <input type="text" placeholder="--width-small" class="searchinput__input" />
+        </span>
+        <button type="button" class="searchinput__button" title="clear search input">
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+        </button>
+    </div>
+
+Example: --width-small with single button
+
+    <div class="searchinput searchinput--width-small">
+        <span class="searchinput__body">
+            <span class="searchinput__selected searchinput__selected--single">
+                <span class="searchinput__selected_preview">Animals</span>
+            </span>
+        </span>
+        <button type="button" class="searchinput__button" title="clear search input">
+            <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+        </button>
+    </div>
+
+Styleguide components.searchinput.2:widths
+*/
+
+
 /* Searchinput color variants
 
 
@@ -465,7 +519,7 @@ Example: Selected items --info
     </div>
 
 
-Styleguide components.searchinput.2:colors
+Styleguide components.searchinput.3:colors
 */
 
 
@@ -543,16 +597,6 @@ Styleguide components.searchinput.ie-hacks
         }
     }
 
-    &--width-xsmall {
-        width: $unit * 20;
-        min-width: $unit * 5;
-    }
-
-    &--width-xxsmall {
-        width: $unit * 16;
-        min-width: $unit * 5;
-    }
-
     &--width-small {
         width: $unit * 36;
         min-width: $unit * 5;
@@ -601,7 +645,7 @@ Styleguide components.searchinput.ie-hacks
     }
 
     &__input {
-        min-width: 120px;
+        min-width: $unit * 16;
         width: 120px; // Just the initial width for flex
         flex: 2 2 auto;
         outline: none;
@@ -612,6 +656,8 @@ Styleguide components.searchinput.ie-hacks
         line-height: inherit;
         border: none;
         background-color: inherit;
+        overflow: hidden;
+
         &[disabled] {
             background-color: color(neutral);
         }
@@ -643,6 +689,7 @@ Styleguide components.searchinput.ie-hacks
         //align-content: center;
         align-items: center;
         @include font-size(xsmall, $skip-line-height: true);
+        overflow: hidden;
 
         &--single {
             width: 100%;
