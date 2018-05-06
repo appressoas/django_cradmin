@@ -76,19 +76,27 @@
     }
 }
 
-@mixin form-element-size ($sizemap, $size) {
+@mixin form-element-size ($sizemap, $size, $use-min-height: false, $line-height: 1.2) {
     padding-top: 0;
     padding-bottom: 0;
-    line-height: 1.2;
+    line-height: $line-height;
     @if map-has-key($sizemap, $size) {
-        height: map-get($sizemap, $size);
+        @if $use-min-height {
+            min-height: map-get($sizemap, $size);
+        } @else {
+            height: map-get($sizemap, $size);
+        }
     }
 }
 
-@mixin form-element-mixin ($size: base) {
+@mixin form-element-mixin ($size: base, $use-min-height: false, $line-height: 1.2) {
     box-sizing: border-box;
-    $default-sizemap: map-get($form-element-height-map, default);
-    @include form-element-size($default-sizemap, $size);
+    $default-sizemap: map-get($form-element-height-map, base);
+    @include form-element-size(
+        $sizemap: $default-sizemap,
+        $size: $size,
+        $use-min-height: $use-min-height,
+        $line-height: $line-height);
 
     @each $screen-breakpoint-name, $screen-breakpoint in $breakpoints {
         $sizemap: $default-sizemap;
@@ -96,7 +104,11 @@
             $sizemap: map-get($form-element-height-map, $screen-breakpoint-name);
         }
         @media screen and (min-width: $screen-breakpoint) {
-            @include form-element-size($sizemap, $size);
+            @include form-element-size(
+                $sizemap: $sizemap,
+                $size: $size,
+                $use-min-height: $use-min-height,
+                $line-height: $line-height);
         }
     }
 }

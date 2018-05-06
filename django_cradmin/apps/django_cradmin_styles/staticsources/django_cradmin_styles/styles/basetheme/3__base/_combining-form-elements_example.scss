@@ -1,26 +1,11 @@
 /* Combining form elements examples
 
-Example: {type: isolated} Block elements
 
-    <div class="container container--wide">
-        <div class="columnlayout">
-            <div class="columnlayout__column">
-                <label class="select  select--outlined select--block">
-                    <select aria-label="Category">
-                        <option>all subjects</option>
-                        <option>enterprise</option>
-                        <option>...</option>
-                    </select>
-                </label>
-            </div>
-            <div class="columnlayout__column">
-                <input type="text" placeholder="Look at ma' outlines" class="input input--outlined" />
-            </div>
-            <div class="columnlayout__column">
-                <button type="button" class="button button--block button--form-size-default">A button</button>
-            </div>
-        </div>
-    </div>
+Styleguide form.8:combining-form-elements-examples
+*/
+
+
+/* Horizontal layout
 
 Example: {type: isolated} Block elements - xsmall
 
@@ -37,6 +22,16 @@ Example: {type: isolated} Block elements - xsmall
             </div>
             <div class="columnlayout__column">
                 <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined input--size-xsmall" />
+            </div>
+            <div class="columnlayout__column">
+                <div class="searchinput searchinput--outlined searchinput--size-xsmall">
+                    <span class="searchinput__body">
+                        <input type="text" placeholder="Search ..." class="searchinput__input" />
+                    </span>
+                    <button type="button" class="searchinput__button" title="clear search input">
+                        <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+                    </button>
+                </div>
             </div>
             <div class="columnlayout__column">
                 <button type="button" class="button button--block button--form-size-xsmall">A button</button>
@@ -61,7 +56,49 @@ Example: {type: isolated} Block elements - small
                 <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined input--size-small" />
             </div>
             <div class="columnlayout__column">
+                <div class="searchinput searchinput--outlined searchinput--size-small">
+                    <span class="searchinput__body">
+                        <input type="text" placeholder="Search ..." class="searchinput__input" />
+                    </span>
+                    <button type="button" class="searchinput__button" title="clear search input">
+                        <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="columnlayout__column">
                 <button type="button" class="button button--block button--form-size-small">A button</button>
+            </div>
+        </div>
+    </div>
+
+Example: {type: isolated} Block elements - default size
+
+    <div class="container container--wide">
+        <div class="columnlayout">
+            <div class="columnlayout__column">
+                <label class="select  select--outlined select--block">
+                    <select aria-label="Category">
+                        <option>all subjects</option>
+                        <option>enterprise</option>
+                        <option>...</option>
+                    </select>
+                </label>
+            </div>
+            <div class="columnlayout__column">
+                <input type="text" placeholder="Look at ma' outlines" class="input input--outlined" />
+            </div>
+            <div class="columnlayout__column">
+                <div class="searchinput searchinput--outlined">
+                    <span class="searchinput__body">
+                        <input type="text" placeholder="Search ..." class="searchinput__input" />
+                    </span>
+                    <button type="button" class="searchinput__button" title="clear search input">
+                        <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="columnlayout__column">
+                <button type="button" class="button button--block button--form-size-default">A button</button>
             </div>
         </div>
     </div>
@@ -83,10 +120,20 @@ Example: {type: isolated} Block elements - large
                 <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined input--size-large" />
             </div>
             <div class="columnlayout__column">
+                <div class="searchinput searchinput--outlined searchinput--size-large">
+                    <span class="searchinput__body">
+                        <input type="text" placeholder="Search ..." class="searchinput__input" />
+                    </span>
+                    <button type="button" class="searchinput__button" title="clear search input">
+                        <span class="searchinput__buttonicon cricon cricon--close" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="columnlayout__column">
                 <button type="button" class="button button--block button--form-size-large">A button</button>
             </div>
         </div>
     </div>
 
-Styleguide form.8:combining-form-elements-examples
+Styleguide form.combining-form-elements-examples.horizontal
 */

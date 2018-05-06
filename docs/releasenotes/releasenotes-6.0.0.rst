@@ -23,7 +23,9 @@ What is new?
         - New ``--width-*`` variants.
     - ``button`` BEM block:
         - New ``--form-size-*`` variants.
-    - Fixes and new css classes to make input, select and button have the exact same height - for horizontal layouts.
+    - ``searchinput`` BEM block:
+        - New ``--size-*`` variants.
+    - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
 
 
 ***************************

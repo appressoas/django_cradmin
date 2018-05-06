@@ -93,7 +93,6 @@ Styleguide form.3:input
     @include font(base, normal);
     @include font-size(small, $skip-line-height: true);
     @include form-element-mixin();
-    min-height: vertical-space(6);
 
     display: block;
     width: 100%;
