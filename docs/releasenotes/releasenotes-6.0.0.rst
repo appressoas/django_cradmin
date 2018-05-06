@@ -25,6 +25,7 @@ What is new?
         - New ``--form-size-*`` variants.
     - ``searchinput`` BEM block:
         - New ``--size-*`` variants.
+        - New ``--width-small`` variant.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
     - Update recommended NPM package versions.
 
