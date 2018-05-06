@@ -26,11 +26,25 @@ What is new?
     - ``searchinput`` BEM block:
         - New ``--size-*`` variants.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
+    - Update recommended NPM package versions.
 
 
 ***************************
 Migrate from 5.2.x to 6.0.0
 ***************************
 
+Migrate your form styles
+========================
 You need to migrate the styles that have been removed/changed as described in the ``django_cradmin_styles`` section
 in the _Whats new?_ section above.
+
+
+Update NPM package versions for your theme(s)
+=============================================
+You should update the package.json for your themes using ``django_cradmin_styles`` to::
+
+    "autoprefixer": "^8.4.1",
+    "cssnano": "^3.10.0",
+    "postcss-cli": "^5.0.0",
+    "postcss-scss": "^1.0.5",
+    "stylelint": "^9.2.0"
