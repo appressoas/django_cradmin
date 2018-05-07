@@ -26,6 +26,8 @@ What is new?
     - ``searchinput`` BEM block:
         - New ``--size-*`` variants.
         - New ``--width-small`` variant.
+    - ``selectable-list`` BEM block:
+        - New ``--outlined`` variant for ``selectable-list__item``.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
     - Update recommended NPM package versions.
 
