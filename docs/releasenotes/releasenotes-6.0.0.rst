@@ -35,6 +35,9 @@ What is new?
       if the ``<p>`` is the last child of the last ``.container`` within the page-section.
     - ``column-layout``:
         - Add ``column-layout__column--vertical-center`` variant.
+    - ``blocklist``:
+        - New styles for generic action sidebar. With these new styles, we no longer need
+          the ``blocklist__movable-item-wrapper`` and related BEM elements, so they are deprecated.
     - Add new ``help`` BEM block.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
     - Update recommended NPM package versions.
