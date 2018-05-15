@@ -106,52 +106,32 @@ Example: With tighter spacing
 Styleguide components.blocklist
 */
 
-/* Blocklist with sidebar for moving items
 
-WARNING: **This is deprecated.** Use _Blocklist with action sidebar_ instead.
+/* Color variants
 
-Example:
-    <div class="blocklist">
-        <section class="blocklist__movable-item-wrapper">
-            <div class="blocklist__item  blocklist__item--movable">
-                <h2 class="blocklist__itemtitle">Element 1</h2>
-                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
-            </div>
-            <div class="blocklist__movesidebar  blocklist__movesidebar--only-down">
-                <button class="blocklist__movebutton" aria-label="Move Element 1 down">
-                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
-                </button>
-            </div>
-        </section>
-        <section class="blocklist__movable-item-wrapper">
-            <div class="blocklist__item  blocklist__item--movable">
-                <h2 class="blocklist__itemtitle">Element 2</h2>
-                <p>Tristique Vestibulum Purus</p>
-            </div>
-            <div class="blocklist__movesidebar">
-                <button class="blocklist__movebutton" aria-label="Move Element 2 up">
-                    <span class="cricon cricon--chevron-up cricon--color-light" aria-hidden="true">
-                </button>
-                <button class="blocklist__movebutton" aria-label="Move Element 2 down">
-                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
-                </button>
-            </div>
-        </section>
-        <section class="blocklist__movable-item-wrapper">
-            <div class="blocklist__item  blocklist__item--movable">
-                Hello world
-            </div>
-            <div class="blocklist__movesidebar  blocklist__movesidebar--only-up">
-                <button class="blocklist__movebutton" aria-label="Move Hello world up">
-                    <span class="cricon cricon--chevron-up cricon--color-light" aria-hidden="true">
-                </button>
-            </div>
-        </section>
-    </div>
+Example: Default
+    <ul class="blocklist">
+        <li class="blocklist__item">Element 1</li>
+        <li class="blocklist__item">Element 2</li>
+        <li class="blocklist__item">Element 3</li>
+    </ul>
 
+Example: --neutral-light
+    <ul class="blocklist">
+        <li class="blocklist__item blocklist__item--neutral-light">Element 1</li>
+        <li class="blocklist__item blocklist__item--neutral-light">Element 2</li>
+        <li class="blocklist__item blocklist__item--neutral-light">Element 3</li>
+    </ul>
 
-Styleguide components.blocklist.movable-items
-*/
+Example: --neutral-xlight
+    <ul class="blocklist">
+        <li class="blocklist__item blocklist__item--neutral-xlight">Element 1</li>
+        <li class="blocklist__item blocklist__item--neutral-xlight">Element 2</li>
+        <li class="blocklist__item blocklist__item--neutral-xlight">Element 3</li>
+    </ul>
+
+Styleguide components.blocklist.1:colors
+ */
 
 
 /* Blocklist with action sidebar
@@ -349,7 +329,56 @@ Example: Action sidebar combined with --tight
     </div>
 
 
-Styleguide components.blocklist.action-sidebar
+Styleguide components.blocklist.2:action-sidebar
+*/
+
+
+
+/* Blocklist with sidebar for moving items
+
+WARNING: **This is deprecated.** Use _Blocklist with action sidebar_ instead.
+
+Example:
+    <div class="blocklist">
+        <section class="blocklist__movable-item-wrapper">
+            <div class="blocklist__item  blocklist__item--movable">
+                <h2 class="blocklist__itemtitle">Element 1</h2>
+                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Maecenas faucibus mollis interdum.</p>
+            </div>
+            <div class="blocklist__movesidebar  blocklist__movesidebar--only-down">
+                <button class="blocklist__movebutton" aria-label="Move Element 1 down">
+                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
+                </button>
+            </div>
+        </section>
+        <section class="blocklist__movable-item-wrapper">
+            <div class="blocklist__item  blocklist__item--movable">
+                <h2 class="blocklist__itemtitle">Element 2</h2>
+                <p>Tristique Vestibulum Purus</p>
+            </div>
+            <div class="blocklist__movesidebar">
+                <button class="blocklist__movebutton" aria-label="Move Element 2 up">
+                    <span class="cricon cricon--chevron-up cricon--color-light" aria-hidden="true">
+                </button>
+                <button class="blocklist__movebutton" aria-label="Move Element 2 down">
+                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
+                </button>
+            </div>
+        </section>
+        <section class="blocklist__movable-item-wrapper">
+            <div class="blocklist__item  blocklist__item--movable">
+                Hello world
+            </div>
+            <div class="blocklist__movesidebar  blocklist__movesidebar--only-up">
+                <button class="blocklist__movebutton" aria-label="Move Hello world up">
+                    <span class="cricon cricon--chevron-up cricon--color-light" aria-hidden="true">
+                </button>
+            </div>
+        </section>
+    </div>
+
+
+Styleguide components.blocklist.movable-items
 */
 
 
