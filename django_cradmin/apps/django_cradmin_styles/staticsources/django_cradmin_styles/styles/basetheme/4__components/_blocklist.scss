@@ -119,7 +119,7 @@ Example:
             </div>
             <div class="blocklist__movesidebar  blocklist__movesidebar--only-down">
                 <button class="blocklist__movebutton" aria-label="Move Element 1 down">
-                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true">
+                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
                 </button>
             </div>
         </section>
@@ -133,7 +133,7 @@ Example:
                     <span class="cricon cricon--chevron-up cricon--color-light" aria-hidden="true">
                 </button>
                 <button class="blocklist__movebutton" aria-label="Move Element 2 down">
-                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true">
+                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
                 </button>
             </div>
         </section>
@@ -163,7 +163,7 @@ Example: Various action sidebar layouts
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -176,14 +176,14 @@ Example: Various action sidebar layouts
             </div>
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Edit">
-                    <span class="cricon cricon--pencil" aria-hidden="true">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -191,19 +191,19 @@ Example: Various action sidebar layouts
             </div>
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Edit">
-                    <span class="cricon cricon--pencil" aria-hidden="true">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Edit">
-                    <span class="cricon cricon--pencil" aria-hidden="true">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -216,12 +216,12 @@ Example: Various action sidebar layouts
             </div>
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Move down">
-                    <span class="cricon cricon--chevron-down" aria-hidden="true">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Move up">
-                    <span class="cricon cricon--chevron-up" aria-hidden="true">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
@@ -231,10 +231,10 @@ Example: Various action sidebar layouts
             </div>
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Move up">
-                    <span class="cricon cricon--chevron-up" aria-hidden="true">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
                 </button>
                 <button class="blocklist__action-button" aria-label="Move down">
-                    <span class="cricon cricon--chevron-down" aria-hidden="true">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
@@ -247,7 +247,7 @@ Example: Action sidebar - button sizes
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button blocklist__action-button--xxsmall" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -257,7 +257,7 @@ Example: Action sidebar - button sizes
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button blocklist__action-button--xsmall" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -267,7 +267,7 @@ Example: Action sidebar - button sizes
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -283,7 +283,7 @@ Example: Action sidebar - button colors
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button blocklist__action-button--warning" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -293,7 +293,7 @@ Example: Action sidebar - button colors
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button blocklist__action-button--success" aria-label="Delete">
-                    <span class="cricon cricon--check" aria-hidden="true">
+                    <span class="cricon cricon--check" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -303,7 +303,7 @@ Example: Action sidebar - button colors
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--pencil" aria-hidden="true">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -319,7 +319,7 @@ Example: Action sidebar combined with --tight
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--trash" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -329,7 +329,7 @@ Example: Action sidebar combined with --tight
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--check" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
@@ -339,7 +339,7 @@ Example: Action sidebar combined with --tight
         <div class="blocklist__item  blocklist__item--with-action-sidebar">
             <div class="blocklist__action-sidebar">
                 <button class="blocklist__action-button" aria-label="Delete">
-                    <span class="cricon cricon--pencil" aria-hidden="true">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="blocklist__action-content">
