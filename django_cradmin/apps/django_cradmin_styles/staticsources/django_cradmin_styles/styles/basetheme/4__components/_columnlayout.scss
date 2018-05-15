@@ -389,6 +389,13 @@ Styleguide components.columnlayout.5:separator
             }
         }
 
+        &--vertical-center {
+            @include min-width (md) {
+                display: flex;
+                align-items: center;
+            }
+        }
+
         @include columnlayout__column-size(border-width, $border-width);
         @include columnlayout__column-size(border-width-small, $border-width--small);
         @include columnlayout__column-size(xsmall, 15%);
