@@ -98,6 +98,7 @@ Styleguide components.help
 
         &--warning {
             &:before {
+                color: color(warning);
                 @include cricon-icon(warning);
             }
         }
