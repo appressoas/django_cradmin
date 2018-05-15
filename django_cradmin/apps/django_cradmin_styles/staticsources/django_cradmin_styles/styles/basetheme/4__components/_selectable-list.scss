@@ -363,6 +363,7 @@ Styleguide components.selectable-list
         outline: none;
         border-radius: $border-radius;
         background-color: $color-light;
+        text-align: left;
 
         &--neutral-xlight {
             background-color: color(neutral, xlight)
@@ -453,6 +454,7 @@ Styleguide components.selectable-list
         @include font-size(xsmall);
         flex-grow: 1;
         padding: vertical-space() $spacing--small;
+        display: block;
 
         & > * {
             &:first-child {
