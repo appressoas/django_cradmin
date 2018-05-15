@@ -92,7 +92,6 @@ Styleguide form.3:input
 .input {
     @include font(base, normal);
     @include font-size(small, $skip-line-height: true);
-    @include form-element-mixin();
 
     display: block;
     width: 100%;
@@ -169,4 +168,8 @@ Styleguide form.3:input
     &--nomargin {
         margin: 0;
     }
+}
+
+input.input {
+    @include form-element-mixin();
 }
