@@ -28,6 +28,11 @@ What is new?
         - New ``--width-small`` variant.
     - ``selectable-list`` BEM block:
         - New ``--outlined`` variant for ``selectable-list__item``.
+        - Set ``selectable-list__item`` to text-align left. Makes it work with ``<button>`` too.
+        - Set ``selectable-list__itemcontent`` to display block. Makes it work with ``<span>`` too (which is needed
+          when the ``selectable-list__item`` is a ``<button>``.
+    - ``page-section-mixin``: Make the p:last-child check more explicit. Now it only matches
+      if the ``<p>`` is the last child of the last ``.container`` within the page-section.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
     - Update recommended NPM package versions.
 
