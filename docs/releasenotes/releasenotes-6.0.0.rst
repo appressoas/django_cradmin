@@ -35,6 +35,7 @@ What is new?
       if the ``<p>`` is the last child of the last ``.container`` within the page-section.
     - ``column-layout``:
         - Add ``column-layout__column--vertical-center`` variant.
+    - Add new ``help`` BEM block.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
     - Update recommended NPM package versions.
 
