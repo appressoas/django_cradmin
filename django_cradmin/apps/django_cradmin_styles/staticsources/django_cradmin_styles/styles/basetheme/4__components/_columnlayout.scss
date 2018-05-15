@@ -392,7 +392,8 @@ Styleguide components.columnlayout.5:separator
         &--vertical-center {
             @include min-width (md) {
                 display: flex;
-                align-items: center;
+                flex-direction: column;
+                justify-content: center;
             }
         }
 
