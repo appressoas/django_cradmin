@@ -1,8 +1,12 @@
-let babelJest = require('babel-jest');
+let babelJest = require('babel-jest')
 
 module.exports = babelJest.createTransformer({
   presets: [
-    "es2015",
-    "react"
+    'react',
+    ['env', {
+      'targets': {
+        'node': 'current'
+      }
+    }]
   ]
-});
+})

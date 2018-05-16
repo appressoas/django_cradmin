@@ -1,6 +1,6 @@
-const path = require('path');
-const webpack = require('webpack');
-const appconfig = require("./ievv_buildstatic.appconfig.json");
+const path = require('path')
+const webpack = require('webpack')
+const appconfig = require('./ievv_buildstatic.appconfig.json')
 
 const webpackConfig = {
   entry: path.resolve(__dirname, 'source/django_cradmin_all.js'),
@@ -11,7 +11,7 @@ const webpackConfig = {
   },
   resolve: {
     root: [path.resolve(__dirname, 'node_modules')],
-    extensions: [".js", ".jsx", ""]
+    extensions: ['.js', '.jsx', '']
   },
   resolveLoader: {
     // We only want loaders to be resolved from node_modules
@@ -25,12 +25,16 @@ const webpackConfig = {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        include: [path.resolve(__dirname, "source")],
+        include: [path.resolve(__dirname, 'source')],
         query: {
           presets: [
-            'babel-preset-es2015',
-            'babel-preset-react'
-          ].map(require.resolve),
+            'react',
+            ['env', {
+              'targets': {
+                'browsers': ['last 2 versions']
+              }
+            }]
+          ]
         }
       },
       {
@@ -40,21 +44,27 @@ const webpackConfig = {
     ]
   },
   plugins: []
-};
+}
 
-if(appconfig.is_in_production_mode) {
-  webpackConfig.devtool = 'source-map';
+if (appconfig.is_in_production_mode) {
+  webpackConfig.devtool = 'source-map'
   webpackConfig.plugins.push(
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     })
-  );
+  )
 } else {
-  webpackConfig.devtool = 'cheap-module-eval-source-map';
-  webpackConfig.output.pathinfo = true;
+  webpackConfig.devtool = 'cheap-module-eval-source-map'
+  webpackConfig.output.pathinfo = true
+  webpackConfig.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('develop')
+      }
+    })
+  )
 }
 
-
-module.exports = webpackConfig;
+module.exports = webpackConfig
