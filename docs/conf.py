@@ -126,7 +126,7 @@ html_theme = 'default'
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if not on_rtd:  # only import and set the theme if we're building docs locally
     try:
-        import sphinx_rtd_theme
+        import sphinx_rtd_theme  # noqa
     except ImportError:
         pass
     else:

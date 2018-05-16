@@ -2,18 +2,16 @@ from __future__ import unicode_literals
 
 import json
 import posixpath
+import warnings
 from xml.sax.saxutils import quoteattr
 
-from django.utils.module_loading import import_string
-from django.utils.safestring import mark_safe
-
-import django_cradmin
 from django import template
 from django.conf import settings
 from django.contrib.staticfiles.templatetags.staticfiles import static
-import warnings
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
+import django_cradmin
 from django_cradmin import crapp, crmenu, crheader, crfooter
 from django_cradmin import crsettings
 from django_cradmin import renderable
