@@ -21,7 +21,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "esdoc": "^0.4.8",
     "esdoc-importpath-plugin": "^0.0.1",
-    "jest": "^22.4.3",
+    "jest": "^22.4.4",
     "jest-enzyme": "^6.0.0",
     "json-loader": "^0.5.4",
     "react-test-renderer": "^16.3.2",
