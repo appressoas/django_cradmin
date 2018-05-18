@@ -1,70 +1,28 @@
 const path = require('path')
-const webpack = require('webpack')
 const appconfig = require('./ievv_buildstatic.appconfig.json')
 
-const webpackConfig = {
-  entry: path.resolve(__dirname, 'source/django_cradmin_all.js'),
+module.exports = {
+  entry: [
+    '@babel/polyfill',
+    path.resolve(__dirname, 'source/django_cradmin_all.js')
+  ],
   output: {
     filename: 'django_cradmin_all.js',
-    path: appconfig.destinationfolder,
-    target: 'web'
+    path: appconfig.destinationfolder
   },
+
   resolve: {
-    root: [path.resolve(__dirname, 'node_modules')],
-    extensions: ['.js', '.jsx', '']
+    extensions: ['.js', '.jsx', '.json']
   },
-  resolveLoader: {
-    // We only want loaders to be resolved from node_modules
-    // in this directory (not in any of the other packages, and
-    // not from other directories).
-    root: path.resolve(__dirname, 'node_modules')
-  },
+
   module: {
-    loaders: [
+    rules: [
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        include: [path.resolve(__dirname, 'source')],
-        query: {
-          presets: [
-            'react',
-            ['env', {
-              'targets': {
-                'browsers': ['last 2 versions']
-              }
-            }]
-          ]
-        }
-      },
-      {
-        test: /.json$/,
-        loader: 'json-loader'
+        include: [path.resolve(__dirname, 'source')]
       }
     ]
-  },
-  plugins: []
+  }
 }
-
-if (appconfig.is_in_production_mode) {
-  webpackConfig.devtool = 'source-map'
-  webpackConfig.plugins.push(
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    })
-  )
-} else {
-  webpackConfig.devtool = 'cheap-module-eval-source-map'
-  webpackConfig.output.pathinfo = true
-  webpackConfig.plugins.push(
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('develop')
-      }
-    })
-  )
-}
-
-module.exports = webpackConfig
