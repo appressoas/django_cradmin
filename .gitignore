@@ -11,7 +11,7 @@
 .tox
 
 # Ignore user-specific pycharm settings
-#/.idea/
+/.idea/
 
 # Files created when running tests and demos
 /django_media_root/
