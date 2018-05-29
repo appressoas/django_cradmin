@@ -80,6 +80,29 @@ Example: {type: isolated} In a group with label and aria
     </label>
 
 
+Example: Disabled
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox">
+        <span class="checkbox__control-indicator"></span>
+        Enabled 1
+    </label>
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox" disabled checked>
+        <span class="checkbox__control-indicator"></span>
+        Disabled 1
+    </label>
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox">
+        <span class="checkbox__control-indicator"></span>
+        Enabled 2
+    </label>
+    <label class="checkbox  checkbox--block">
+        <input type="checkbox" disabled>
+        <span class="checkbox__control-indicator"></span>
+        Disabled 2
+    </label>
+
+
 Styleguide form.4:checkbox
 */
 
@@ -176,6 +199,25 @@ Example: {type: isolated} With label and aria - without a wrapper element
     </label>
 
 
+Example: Disabled
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide">
+        <span class="radio__control-indicator"></span>
+        Enabled option 1
+    </label>
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide">
+        <span class="radio__control-indicator"></span>
+        Enabled option 2
+    </label>
+    <label class="radio  radio--block">
+        <input type="radio" name="styleguide" disabled>
+        <span class="radio__control-indicator"></span>
+        Disabled option
+    </label>
+
+
+
 Styleguide form.4:radio
 */
 .radio,
@@ -208,6 +250,14 @@ Styleguide form.4:radio
         &:focus ~ .checkbox__control-indicator,
         &:focus ~ .radio__control-indicator {
             border-color: color(primary, dark);
+        }
+
+        &:disabled {
+            & ~ .radio__control-indicator,
+            & ~ .checkbox__control-indicator {
+                border-color: color(neutral);
+                background-color: color(neutral, light);
+            }
         }
     }
 
