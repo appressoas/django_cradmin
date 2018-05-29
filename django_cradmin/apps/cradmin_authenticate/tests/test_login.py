@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
-from django.test import TestCase
+
+from django.contrib.auth import authenticate, login
+from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
 import htmls
 from django_cradmin.apps.cradmin_authenticate.tests.cradmin_authenticate_testapp.models import EmailUser
@@ -25,6 +27,18 @@ class TestUsernameLogin(TestCase):
             'password': 'test'
         })
         self.assertEquals(response.status_code, 302)
+
+    def test_user_authenticated_login_redirect_to_login_redirect_url(self):
+        self.client.login(username='testuser', password='test')
+        with self.settings(LOGIN_REDIRECT_URL='/login/redirect'):
+            response = self.client.get(self.url)
+        self.assertEqual(response['location'], '/login/redirect')
+
+    def test_user_authenticated_login_redirect_to_next_url(self):
+        self.client.login(username='testuser', password='test')
+        with self.settings(LOGIN_REDIRECT_URL='/login/redirect'):
+            response = self.client.get('{}?next=/next-url'.format(self.url))
+        self.assertEqual(response['location'], '/next-url')
 
     def test_login_invalid(self):
         response = self.client.post(self.url, {
@@ -67,6 +81,18 @@ class TestEmailLogin(TestCase):
         })
         self.assertEquals(response.status_code, 302)
         self.assertEqual(response['location'], '/next')
+
+    def test_user_authenticated_login_redirect_to_login_redirect_url(self):
+        self.client.login(username='testuser@example.com', password='test')
+        with self.settings(LOGIN_REDIRECT_URL='/login/redirect'):
+            response = self.client.get(self.url)
+        self.assertEqual(response['location'], '/login/redirect')
+
+    def test_user_authenticated_login_redirect_to_next_url(self):
+        self.client.login(username='testuser@example.com', password='test')
+        with self.settings(LOGIN_REDIRECT_URL='/login/redirect'):
+            response = self.client.get('{}?next=/next-url'.format(self.url))
+        self.assertEqual(response['location'], '/next-url')
 
     def test_login_invalid(self):
         response = self.client.post(self.url, {
