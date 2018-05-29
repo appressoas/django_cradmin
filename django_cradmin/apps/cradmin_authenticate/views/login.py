@@ -254,6 +254,8 @@ class LoginView(formview.StandaloneFormView):
         """
         Returns the redirect url to use. We always want to redirect to the `next` queryparam if
         provided regardless.
+
+        Returns the `settings.LOGIN_REDIRECT_URL` if no `next` queryparam is provided.
         """
         next_url = self.request.GET.get('next')
         if next_url:
