@@ -11,16 +11,7 @@
 .tox
 
 # Ignore user-specific pycharm settings
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dataSources.ids
-.idea/dataSources.local.xml
-.idea/dictionaries/
-.idea/jsLibraryMappings.xml
-.idea/codeStyleSettings.xml
-.idea/codeStyles/
-.idea/dataSources.xml
-.idea/dataSources/
+/.idea/
 
 # Files created when running tests and demos
 /django_media_root/

@@ -44,14 +44,6 @@ h3,
     hyphens: auto;
 }
 
-h1, .h1,  %h1,
-h2, .h2,  %h2,
-h3, .h3,  %h3,
-h4, .h4,  %h4 {
-    &--spaced {
-        margin-top: vertical-space($spacing);
-    }
-}
 
 h1,
 .h1,
@@ -105,6 +97,15 @@ h4,
 
     @include min-width(md) {
         margin-bottom: vertical-space($spacing--small);
+    }
+}
+
+.h1,  %h1,
+.h2,  %h2,
+.h3,  %h3,
+.h4,  %h4 {
+    &--spaced {
+        margin-top: vertical-space($spacing);
     }
 }
 

@@ -103,9 +103,242 @@ Example: With tighter spacing
         </section>
     </div>
 
+Styleguide components.blocklist
+*/
 
 
-Example: With sidebar for moving items
+/* Color variants
+
+Example: Default
+    <ul class="blocklist">
+        <li class="blocklist__item">Element 1</li>
+        <li class="blocklist__item">Element 2</li>
+        <li class="blocklist__item">Element 3</li>
+    </ul>
+
+Example: --neutral-light
+    <ul class="blocklist">
+        <li class="blocklist__item blocklist__item--neutral-light">Element 1</li>
+        <li class="blocklist__item blocklist__item--neutral-light">Element 2</li>
+        <li class="blocklist__item blocklist__item--neutral-light">Element 3</li>
+    </ul>
+
+Example: --neutral-xlight
+    <ul class="blocklist">
+        <li class="blocklist__item blocklist__item--neutral-xlight">Element 1</li>
+        <li class="blocklist__item blocklist__item--neutral-xlight">Element 2</li>
+        <li class="blocklist__item blocklist__item--neutral-xlight">Element 3</li>
+    </ul>
+
+Styleguide components.blocklist.1:colors
+ */
+
+
+/* Blocklist with action sidebar
+
+
+Example: Various action sidebar layouts
+
+    <div class="blocklist">
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-content">
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Edit">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Edit">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Edit">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-content">
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move down">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move up">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-content">
+                Two vertical buttons
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move up">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
+                </button>
+                <button class="blocklist__action-button" aria-label="Move down">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+Example: Action sidebar - button sizes
+
+    <div class="blocklist">
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button blocklist__action-button--xxsmall" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                blocklist__action-button--xxsmall
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button blocklist__action-button--xsmall" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                blocklist__action-button--xsmall
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                blocklist__action-button default size
+            </div>
+        </div>
+    </div>
+
+
+Example: Action sidebar - button colors
+
+    <div class="blocklist">
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button blocklist__action-button--warning" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                blocklist__action-button--warning
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button blocklist__action-button--success" aria-label="Delete">
+                    <span class="cricon cricon--check" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                blocklist__action-button--success
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                blocklist__action-button default color
+            </div>
+        </div>
+    </div>
+
+
+Example: Action sidebar combined with --tight
+
+    <div class="blocklist blocklist--tight">
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                Item 1
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                Item 2
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-content">
+                Item 3
+            </div>
+        </div>
+    </div>
+
+
+Styleguide components.blocklist.2:action-sidebar
+*/
+
+
+
+/* Blocklist with sidebar for moving items
+
+WARNING: **This is deprecated.** Use _Blocklist with action sidebar_ instead.
+
+Example:
     <div class="blocklist">
         <section class="blocklist__movable-item-wrapper">
             <div class="blocklist__item  blocklist__item--movable">
@@ -114,7 +347,7 @@ Example: With sidebar for moving items
             </div>
             <div class="blocklist__movesidebar  blocklist__movesidebar--only-down">
                 <button class="blocklist__movebutton" aria-label="Move Element 1 down">
-                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true">
+                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
                 </button>
             </div>
         </section>
@@ -128,7 +361,7 @@ Example: With sidebar for moving items
                     <span class="cricon cricon--chevron-up cricon--color-light" aria-hidden="true">
                 </button>
                 <button class="blocklist__movebutton" aria-label="Move Element 2 down">
-                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true">
+                    <span class="cricon cricon--chevron-down cricon--color-light" aria-hidden="true"></span>
                 </button>
             </div>
         </section>
@@ -145,9 +378,35 @@ Example: With sidebar for moving items
     </div>
 
 
-Styleguide components.blocklist
+Styleguide components.blocklist.movable-items
 */
+
+
+@mixin blocklist-action-button-color (
+    $text-color: $color-light,
+    $background-color: color(secondary, base),
+    $text-color-hover: null,
+    $background-color-hover: null
+) {
+    @if ($text-color-hover == null) {
+        $text-color-hover: $text-color;
+    }
+    @if ($background-color-hover == null) {
+        $background-color-hover: $background-color;
+    }
+    color: $text-color;
+    background-color: $background-color;
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: $background-color-hover;
+        color: $text-color-hover;
+    }
+}
+
 .blocklist {
+    $__root: &;
+
     &__item {
         display: block;
         margin-bottom: $vertical-rythm--spacing;
@@ -186,6 +445,13 @@ Styleguide components.blocklist
 
         &--neutral-light {
             background-color: color(neutral, light)
+        }
+
+        &--with-action-sidebar {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            padding: 0;
         }
     }
 
@@ -260,13 +526,78 @@ Styleguide components.blocklist
         }
     }
 
+    &__action-sidebar {
+        flex: 0 0 auto;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-content: stretch;
+        margin-right: $border-width--small;
+
+        &:first-child {
+            border-radius: $border-radius 0 0 $border-radius;
+        }
+        &:last-child {
+            border-radius: 0 $border-radius $border-radius 0;
+            margin-right: 0;
+        }
+    }
+
+    &__action-button {
+        flex: 1 0 auto;
+        display: block;
+        border: none;
+        border-radius: 0;
+        padding: $spacing;
+        margin: 0;
+
+        @include blocklist-action-button-color(
+            $background-color-hover: color(secondary, dark)
+        );
+
+        &--warning {
+            @include blocklist-action-button-color(
+                $background-color: color(warning),
+                $background-color-hover: color(warning, dark)
+            );
+        }
+
+        &--success {
+            @include blocklist-action-button-color(
+                $background-color: color(success),
+                $background-color-hover: color(success, dark)
+            );
+        }
+
+        &--xsmall {
+            @include font-size(xsmall);
+        }
+        &--xxsmall {
+            @include font-size(xxsmall);
+            padding: $unit * 3;
+        }
+    }
+
+
+    &__action-content {
+        padding: $vertical-rythm--spacing $spacing;
+        flex: 1 1 auto;
+        align-self: center;
+    }
+
     &--tight {
-        .blocklist__movesidebar,
-        .blocklist__item {
+        #{$__root}__movesidebar,
+        #{$__root}__item {
             margin-bottom: ($border-width * 2);
         }
-        .blocklist__item {
+        #{$__root}__item {
             padding: vertical-space($spacing--small) $spacing;
+            &--with-action-sidebar {
+                padding: 0;
+                #{$__root}__action-content {
+                    padding: vertical-space($spacing--small) $spacing;
+                }
+            }
         }
     }
 }

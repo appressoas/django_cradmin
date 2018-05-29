@@ -93,6 +93,28 @@ Example: {type: isolated} With border separating items
     </div>
 
 
+Example: {type: isolated} Outlined with a border around each item
+    <div class="container">
+        <ul class="selectable-list">
+            <li class="selectable-list__item  selectable-list__item--outlined" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 1
+                </div>
+            </li>
+            <li class="selectable-list__item  selectable-list__item--outlined" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 2
+                </div>
+            </li>
+            <li class="selectable-list__item  selectable-list__item--outlined" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 3
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
 Example: {type: isolated} With selected items
     <div class="container">
         <ul class="selectable-list">
@@ -341,6 +363,7 @@ Styleguide components.selectable-list
         outline: none;
         border-radius: $border-radius;
         background-color: $color-light;
+        text-align: left;
 
         &--neutral-xlight {
             background-color: color(neutral, xlight)
@@ -361,6 +384,23 @@ Styleguide components.selectable-list
 
             &:last-of-type {
                 border: 0;
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+        }
+
+        &--outlined {
+            border-radius: 0;
+            border: $border-width--small solid color(neutral, light);
+            border-top-width: 0;
+
+            &:first-of-type {
+                border-top-width: $border-width--small;
+                border-top-left-radius: $border-radius;
+                border-top-right-radius: $border-radius;
+            }
+
+            &:last-of-type {
                 border-bottom-left-radius: $border-radius;
                 border-bottom-right-radius: $border-radius;
             }
@@ -414,6 +454,7 @@ Styleguide components.selectable-list
         @include font-size(xsmall);
         flex-grow: 1;
         padding: vertical-space() $spacing--small;
+        display: block;
 
         & > * {
             &:first-child {

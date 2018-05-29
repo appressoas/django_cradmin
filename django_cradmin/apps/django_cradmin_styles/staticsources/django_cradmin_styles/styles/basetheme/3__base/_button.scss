@@ -38,6 +38,25 @@ Example: This is some modifiers you can add (PS: Can be combined)
     <br>
     <button type="button" class="button" disabled>Disabled button</button>
 
+Example: Optimized for used along with form elements
+
+    <p>
+        <input type="text" class="input input--inline input--outlined input--size-xsmall">
+        <button type="button" class="button button--form-size-xsmall">--form-size-xsmall</button>
+    </p>
+    <p>
+        <input type="text" class="input input--inline input--outlined input--size-small">
+        <button type="button" class="button button--form-size-small">--form-size-small</button>
+    </p>
+    <p>
+        <input type="text" class="input input--inline input--outlined">
+        <button type="button" class="button button--form-size-default">--form-size-default</button>
+    </p>
+    <p>
+        <input type="text" class="input input--inline input--outlined input--size-large">
+        <button type="button" class="button button--form-size-large">--form-size-large</button>
+    </p>
+
 Styleguide form.2:buttons
 */
 
@@ -260,4 +279,27 @@ Styleguide form.2:buttons
             display: none;
         }
     }
+
+    &--form-size-xsmall {
+        @include font-size(xxsmall, $skip-line-height: true);
+        padding-left: $spacing--small;
+        padding-right: $spacing--small;
+        @include form-element-mixin(xsmall);
+    }
+
+    &--form-size-small {
+        @include form-element-mixin(small);
+        padding-left: $spacing--small;
+        padding-right: $spacing--small;
+    }
+
+    &--form-size-default {
+        @include form-element-mixin();
+    }
+
+    &--form-size-large {
+        @include font-size(small, $skip-line-height: true);
+        @include form-element-mixin(large);
+    }
+
 }
