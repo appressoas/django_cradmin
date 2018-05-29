@@ -166,10 +166,10 @@ class LoginView(formview.StandaloneFormView):
 
     def get(self, *args, **kwargs):
         """
-        if user is authenticated, redirect to ``settings.LOGIN_REDIRECT_URL``, else render the login form.
+        If user is authenticated, call :meth:`.LoginView.get_redirect_url()`, else render the login form.
         """
         if self.request.user.is_authenticated():
-            return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+            return HttpResponseRedirect(self.get_redirect_url())
         else:
             return super(LoginView, self).get(*args, **kwargs)
 
@@ -250,16 +250,23 @@ class LoginView(formview.StandaloneFormView):
             ]
         ).bootstrap()
 
-    def get_success_url(self):
+    def get_redirect_url(self):
         """
-        Returns the redirect-url after login-success. This will either be the ``next`` field in ``request.GET``
-        if present, or ``settings.LOGIN_REDIRECT_URL`` if not.
+        Returns the redirect url to use. We always want to redirect to the `next` queryparam if
+        provided regardless.
         """
         next_url = self.request.GET.get('next')
         if next_url:
             return next_url
         else:
             return settings.LOGIN_REDIRECT_URL
+
+    def get_success_url(self):
+        """
+        Returns the redirect-url after login-success. This will either be the ``next`` field in ``request.GET``
+        if present, or ``settings.LOGIN_REDIRECT_URL`` if not.
+        """
+        return self.get_redirect_url()
 
     def form_valid(self, form):
         """
