@@ -14,7 +14,7 @@ export default class DjangoCradminAll {
     setupDefaultListRegistry()
 
     const widgetRegistry = new WidgetRegistrySingleton()
-    if (document.readyState !== 'loading'){
+    if (document.readyState !== 'loading') {
       widgetRegistry.initializeAllWidgetsWithinElement(document.body)
     } else {
       document.addEventListener('DOMContentLoaded', () => {

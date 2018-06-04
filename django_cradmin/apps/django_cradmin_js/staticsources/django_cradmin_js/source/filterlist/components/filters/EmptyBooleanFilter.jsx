@@ -67,10 +67,8 @@ export default class EmptyBooleanFilter extends AbstractFilter {
     defaultProps.ariaLabel = null
     defaultProps.className = 'select select--outlined'
     defaultProps.emptyLabel = '---'
-    // defaultProps.trueLabel = gettext('Yes')
-    // defaultProps.falseLabel = gettext('No')
-    defaultProps.trueLabel = 'Yes'
-    defaultProps.falseLabel = 'No'
+    defaultProps.trueLabel = gettext('Yes')
+    defaultProps.falseLabel = gettext('No')
     return defaultProps
   }
 
