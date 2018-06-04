@@ -92,6 +92,7 @@ export default class TightLabeledEmptyBooleanFilter extends EmptyBooleanFilter {
   render () {
     return <p className={this.props.wrapperClassName}>
       {super.render()}
+      {' '}
       {this.renderAfterSelectLabelText()}
     </p>
   }
