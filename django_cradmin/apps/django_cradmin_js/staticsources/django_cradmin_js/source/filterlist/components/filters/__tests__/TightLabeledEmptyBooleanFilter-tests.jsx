@@ -11,7 +11,12 @@ function render (props = {}) {
 
 test('className', () => {
   const component = shallow(render())
-  expect(component.prop('className')).toBe('select select--outlined select--size-xsmall select--width-xxsmall')
+  expect(component.find('label').prop('className')).toBe('select select--outlined select--size-xsmall select--width-xxsmall')
+})
+
+test('wrapperClassName', () => {
+  const component = shallow(render())
+  expect(component.prop('className')).toBe('paragraph paragraph--xtight')
 })
 
 test('label', () => {

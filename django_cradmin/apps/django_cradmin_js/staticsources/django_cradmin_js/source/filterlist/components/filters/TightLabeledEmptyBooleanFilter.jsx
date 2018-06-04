@@ -46,6 +46,7 @@ export default class TightLabeledEmptyBooleanFilter extends EmptyBooleanFilter {
   static get propTypes () {
     const propTypes = super.propTypes
     propTypes.label = PropTypes.string.isRequired
+    propTypes.wrapperClassName = PropTypes.string
     propTypes.ariaLabel = PropTypes.string
     return propTypes
   }
@@ -67,6 +68,7 @@ export default class TightLabeledEmptyBooleanFilter extends EmptyBooleanFilter {
     defaultProps.ariaLabel = null
     defaultProps.label = null
     defaultProps.className = 'select select--outlined select--size-xsmall select--width-xxsmall'
+    defaultProps.wrapperClassName = 'paragraph paragraph--xtight'
     return defaultProps
   }
 
@@ -81,9 +83,16 @@ export default class TightLabeledEmptyBooleanFilter extends EmptyBooleanFilter {
     return <span key={'labelText'}>{this.props.label}</span>
   }
 
-  renderLabelContent () {
-    const content = super.renderLabelContent()
-    content.push(this.renderAfterSelectLabelText())
-    return content
+  // renderLabelContent () {
+  //   const content = super.renderLabelContent()
+  //   content.push(this.renderAfterSelectLabelText())
+  //   return content
+  // }
+
+  render () {
+    return <p className={this.props.wrapperClassName}>
+      {super.render()}
+      {this.renderAfterSelectLabelText()}
+    </p>
   }
 }
