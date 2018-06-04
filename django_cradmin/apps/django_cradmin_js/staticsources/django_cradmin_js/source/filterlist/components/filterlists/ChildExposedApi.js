@@ -54,6 +54,7 @@ export default class ChildExposedApi {
   }
 
   setupBoundMethods () {
+    this.loadFirstPageFromApi = this.filterListObject.loadFirstPageFromApi.bind(this.filterListObject)
     this.loadMoreItemsFromApi = this.filterListObject.loadMoreItemsFromApi.bind(this.filterListObject)
     this.loadNextPageFromApi = this.filterListObject.loadNextPageFromApi.bind(this.filterListObject)
     this.loadPreviousPageFromApi = this.filterListObject.loadPreviousPageFromApi.bind(this.filterListObject)

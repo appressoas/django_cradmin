@@ -1036,7 +1036,7 @@ export default class AbstractFilterList extends React.Component {
   /**
    * Load first page from the API.
    *
-   * Loaded items replace the current items in the list.
+   * Loaded items replaces all items currently in the list.
    */
   loadFirstPageFromApi () {
     const paginationOptions = this.getFirstPagePaginationOptions()
