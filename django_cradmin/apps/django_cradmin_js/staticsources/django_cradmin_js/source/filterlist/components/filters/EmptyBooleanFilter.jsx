@@ -49,6 +49,7 @@ export default class EmptyBooleanFilter extends AbstractFilter {
     propTypes.trueLabel = PropTypes.string.isRequired
     propTypes.falseLabel = PropTypes.string.isRequired
     propTypes.value = PropTypes.bool
+    propTypes.disabled = PropTypes.bool
     return propTypes
   }
 
@@ -69,6 +70,7 @@ export default class EmptyBooleanFilter extends AbstractFilter {
     defaultProps.emptyLabel = '---'
     defaultProps.trueLabel = gettext('Yes')
     defaultProps.falseLabel = gettext('No')
+    defaultProps.disabled = false
     return defaultProps
   }
 
@@ -105,6 +107,9 @@ export default class EmptyBooleanFilter extends AbstractFilter {
   }
 
   onChange (e) {
+    if (this.props.disabled) {
+      return
+    }
     this.setFilterValue(this.optionValueToPropValue(e.target.value))
   }
 
@@ -114,6 +119,7 @@ export default class EmptyBooleanFilter extends AbstractFilter {
 
   renderSelect () {
     return <select
+      disabled={this.props.disabled}
       aria-label={this.ariaLabel}
       onChange={this.onChange}
       onFocus={this.onFocus}
