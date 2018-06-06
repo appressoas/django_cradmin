@@ -10,6 +10,12 @@ Example: Best suited for icons, not for text
         <span class="cricon cricon--edit" aria-hidden="true"></span>
     </button>
 
+Example: Works with links too
+
+    <a href="#" class="anonymous-button" title="Edit">
+        <span class="cricon cricon--edit" aria-hidden="true"></span>
+    </a>
+
 Example: Color variants
 
     <p>
@@ -88,11 +94,15 @@ Styleguide form.buttons.anonymous
     margin-bottom: $unit;
     margin-left: $unit;
     margin-right: $unit;
+    color: $color-text;
+    border: none;
+    padding: 0;
 
 
     &:focus,
     &:hover {
         color: $color-links--hover;
+        border: none;
     }
 
     &--spaced {
