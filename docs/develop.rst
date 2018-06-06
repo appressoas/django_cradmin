@@ -34,7 +34,7 @@ Create the demo database
 ::
 
     $ workon django_cradmin
-    $ inv recreate_devdb
+    $ ievv recreate_devdb
 
 
 **************************
@@ -43,7 +43,7 @@ Run the development server
 ::
 
     $ workon django_cradmin
-    $ python manage.py runserver
+    $ ievv devrun
 
 Open http://localhost:8000 and login with::
 
