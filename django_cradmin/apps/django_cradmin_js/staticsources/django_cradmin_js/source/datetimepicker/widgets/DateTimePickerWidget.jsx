@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import moment from 'moment'
-import DatePickerForWidget from './DatePickerForWidget'
+import DateTimePickerForWidget from './DateTimePickerForWidget'
 
-export default class DatePickerWidget extends AbstractWidget {
+export default class DateTimePickerWidget extends AbstractWidget {
   /**
    * @returns {Object}
    * @property moment Something that can be passed into ``moment()`` for the initial date.
@@ -13,6 +13,7 @@ export default class DatePickerWidget extends AbstractWidget {
     return {
       moment: null,
       locale: 'en',
+      showSeconds: false,
       size: 'small'
     }
   }
@@ -26,10 +27,11 @@ export default class DatePickerWidget extends AbstractWidget {
     const props = {
       moment: momentObject,
       locale: this.config.locale,
+      showSeconds: this.config.showSeconds,
       size: this.config.size
     }
     ReactDOM.render(
-      <DatePickerForWidget {...props} />,
+      <DateTimePickerForWidget {...props} />,
       this.element
     )
   }

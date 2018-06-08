@@ -11,21 +11,45 @@
 
 
 {% block content %}
-    <div class="adminui-page-section  adminui-page-section--tight  adminui-page-section--center">
-        <fieldset class="fieldset">
-            <legend class="legend">Date example</legend>
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Date example</h2>
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-date"
-                     data-ievv-jsbase-widget-config='{
-                         "resultFieldProps": {}
-                     }'></div>
+                     data-ievv-jsbase-widget-config='{}'></div>
             </div>
 
-{#            <div class="fieldwrapper">#}
-{#                <h3 class="h4">With initial value</h3>#}
-{#            </div>#}
-        </fieldset>
+            <div class="fieldwrapper">
+                <h3 class="h4">With initial value</h3>
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-date"
+                     data-ievv-jsbase-widget-config='{"moment": "2017-12-24"}'></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>DateTime example</h2>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">Without initial value</h3>
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-datetime"
+                     data-ievv-jsbase-widget-config='{}'></div>
+            </div>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">With initial value</h3>
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-datetime"
+                     data-ievv-jsbase-widget-config='{"moment": "2017-12-24 12:35", "showSeconds": true}'></div>
+            </div>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">With seconds</h3>
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-datetime"
+                     data-ievv-jsbase-widget-config='{"showSeconds": true}'></div>
+            </div>
+        </div>
     </div>
 {% endblock content %}
