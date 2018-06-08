@@ -1,27 +1,28 @@
-import "ievv_jsbase/lib/polyfill/all"
-
-import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton"
-import LOGLEVEL from "ievv_jsbase/lib/log/loglevel"
-import WidgetRegistrySingleton from "ievv_jsbase/lib/widget/WidgetRegistrySingleton"
-import registerAllCradminWidgets from "./widgets/registerAllCradminWidgets"
-import setupDefaultListRegistry from './filterlist/setupDefaultListRegistry'
+import 'ievv_jsbase/lib/polyfill/all'
+import LoggerSingleton from 'ievv_jsbase/lib/log/LoggerSingleton'
+import LOGLEVEL from 'ievv_jsbase/lib/log/loglevel'
+import WidgetRegistrySingleton from 'ievv_jsbase/lib/widget/WidgetRegistrySingleton'
 import 'ievv_jsbase/lib/utils/i18nFallbacks'
 
-export default class DjangoCradminAll {
-  constructor () {
-    new LoggerSingleton().setDefaultLogLevel(LOGLEVEL.INFO)
-    registerAllCradminWidgets()
-    setupDefaultListRegistry()
+import registerAllCradminWidgets from './widgets/registerAllCradminWidgets'
+import setupDefaultListRegistry from './filterlist/setupDefaultListRegistry'
+import registerAllDatetimePickerWidgets from './datetimepicker/widgets/registerAllDatetimePickerWidgets'
 
-    const widgetRegistry = new WidgetRegistrySingleton()
-    if (document.readyState !== 'loading') {
-      widgetRegistry.initializeAllWidgetsWithinElement(document.body)
-    } else {
-      document.addEventListener('DOMContentLoaded', () => {
-        widgetRegistry.initializeAllWidgetsWithinElement(document.body)
-      })
-    }
-  }
+function _onDomReady () {
+  new LoggerSingleton().setDefaultLogLevel(LOGLEVEL.INFO)
+  registerAllCradminWidgets()
+  registerAllDatetimePickerWidgets()
+  setupDefaultListRegistry()
+
+  const widgetRegistry = new WidgetRegistrySingleton()
+  widgetRegistry.initializeAllWidgetsWithinElement(document.body)
+  widgetRegistry.initializeAllWidgetsWithinElement(document.body)
 }
 
-new DjangoCradminAll()
+if (document.readyState !== 'loading') {
+  _onDomReady()
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    _onDomReady()
+  })
+}

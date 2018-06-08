@@ -1,0 +1,97 @@
+@import 'variables';
+
+.im-date-picker {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+
+  .toolbar {
+    height: $toolbar-height;
+    line-height: 30px;
+    color: $color-blue;
+    text-align: center;
+    white-space: nowrap;
+
+    .current-date {
+      color: $color-blue;
+    }
+
+    //arrows
+    .prev-nav, .next-nav {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      color: #fff;
+      border: 1px solid #1385e5;
+      border-radius: 50%;
+      background: #1385e5;
+      font-size: 20px;
+      padding: 0;
+      text-align: center;
+      outline: 0;
+      z-index: 5;
+      cursor: pointer;
+      display: inline-block;
+      // width: 8%;
+      // cursor: pointer;
+      // font-size: 40px;
+      // vertical-align: middle;
+    }
+    .prev-nav.left{
+      float: left
+    }
+    .next-nav.right{
+      float: right
+    }
+  }
+
+  //days on calendar not within current month
+  .prev-month, .next-month, .prev-year, .next-year {
+    color: #CCC;
+  }
+
+  table {
+    width: 100%;
+    height: calc(100% #{"-"} $toolbar-height);
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+
+  tbody td:hover {
+    background: #1385e5;
+    border-color: #1385e5;
+    color: #fff;
+  }
+  
+  td {
+    padding: 8px 0;
+    text-align: center;
+    cursor: pointer;
+    color: $color-gray;
+    border: 1px solid $color-gray;
+    font-size: 20px;
+
+    &.current {
+      color: $color-blue;
+      font-weight: bold;
+    }
+  }
+
+  thead {
+    td {
+      color: $color-blue;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+  }
+
+  tbody {
+    td {
+      color: #666666;
+    }
+  }
+}
