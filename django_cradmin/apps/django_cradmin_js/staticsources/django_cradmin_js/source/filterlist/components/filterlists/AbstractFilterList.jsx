@@ -88,8 +88,7 @@ export default class AbstractFilterList extends React.Component {
   }
 
   componentDidMount () {
-    console.log('did mount')
-    this.setState({...AbstractFilterList.refreshComponentCache(this.props.components), isMounted: true})
+    this.setState({...AbstractFilterList.refreshComponentCache(this.props.components, this.state), isMounted: true})
     this.loadMissingSelectedItemDataFromApi()
     if (this.props.autoLoadFirstPage) {
       this.loadFirstPageFromApi()
@@ -97,11 +96,8 @@ export default class AbstractFilterList extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log('getDerivedStateFromProps lol')
-    console.log(prevState.isMounted)
     if (prevState.isMounted) {
-      console.log('Props have changed')
-      let nextState = AbstractFilterList.refreshComponentCache(nextProps.components)
+      let nextState = AbstractFilterList.refreshComponentCache(nextProps.components, prevState)
       nextState = {...nextState, isMounted: true }
       if ('selectMode' in nextProps) {
         nextState = {...nextState, selectMode: nextProps.selectMode}
@@ -111,16 +107,6 @@ export default class AbstractFilterList extends React.Component {
     return null
 
   }
-
-  // componentWillReceiveProps (nextProps) {
-  //   // this.refreshComponentCache(nextProps.components)
-  //   console.log('componentWillReceiveProps')
-  //   let nextState = AbstractFilterList.refreshComponentCache(nextProps.components)
-  //   if ('selectMode' in nextProps) {
-  //     nextState = Object.assign(nextState, {selectMode: nextProps.selectMode})
-  //   }
-  //   this.setState(nextState)
-  // }
 
   setupBoundMethods () {
     this.loadMissingSelectedItemDataFromApi = this.loadMissingSelectedItemDataFromApi.bind(this)
@@ -159,12 +145,6 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
-  setInitialFilterValuesInState (filterSpecs) {
-    for (let filterSpec of filterSpecs) {
-      this._setFilterValueInState(filterSpec.props.name, filterSpec.initialValue)
-    }
-  }
-
   /**
    * Make an empty component cache.
    *
@@ -186,11 +166,11 @@ export default class AbstractFilterList extends React.Component {
     return componentCache
   }
 
-  static refreshComponentCache (rawComponentSpecs) {
+  static refreshComponentCache (rawComponentSpecs, state) {
     const componentCache = AbstractFilterList.buildComponentCache(rawComponentSpecs)
     // this.setInitialFilterValuesInState(componentCache.filterMap.values())
     return Object.assign(
-      AbstractFilterList.makeInitialFilterValues(componentCache.filterMap.values()),
+      AbstractFilterList.makeInitialFilterValues(componentCache.filterMap.values(), state),
       {componentCache}
     )
   }
@@ -629,11 +609,13 @@ export default class AbstractFilterList extends React.Component {
     })
   }
 
-  static makeInitialFilterValues (filterSpecs) {
+  static makeInitialFilterValues (filterSpecs, state) {
     let filter = {}
     for (let filterSpec of filterSpecs) {
-      filter = Object.assign(filter,
-        AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue))
+      const filterKey = AbstractFilterList._getStateVariableNameForFilter(filterSpec.props.name)
+      if (state[filterKey] === undefined) {
+        filter = {...filter, ...AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue) }
+      }
     }
     return filter
   }
