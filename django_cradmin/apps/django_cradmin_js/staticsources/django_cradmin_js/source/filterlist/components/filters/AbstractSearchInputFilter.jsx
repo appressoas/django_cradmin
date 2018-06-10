@@ -59,10 +59,10 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     this.placeholderRotateTimeoutId = null
   }
 
-  componentWillReceiveProps () {
-    this.setState({
+  static getDerivedStateFromProps() {
+    return {
       currentPlaceholderIndex: 0
-    })
+    }
   }
 
   componentDidMount () {

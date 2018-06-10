@@ -106,10 +106,10 @@ describe('SelectComponentGroup', () => {
       ],
       initialEnabled: 'testgroup1'
     }
-    const selectComponentGroup = jest.spyOn(SelectComponentGroup.prototype, 'selectComponentGroup')
+    const selectComponentGroup = jest.spyOn(SelectComponentGroup, 'selectComponentGroup')
     shallow(render(props))
     expect(selectComponentGroup).toHaveBeenCalledTimes(1)
-    expect(selectComponentGroup).toHaveBeenCalledWith('testgroup1')
+    expect(selectComponentGroup).toHaveBeenCalledWith('testgroup1', expect.anything())
   })
 
   test('clicking radiobutton runs selectComponentGroup', () => {
@@ -125,11 +125,11 @@ describe('SelectComponentGroup', () => {
       ],
       initialEnabled: 'testgroup1'
     }
-    const selectComponentGroup = jest.spyOn(SelectComponentGroup.prototype, 'selectComponentGroup')
+    const selectComponentGroup = jest.spyOn(SelectComponentGroup, 'selectComponentGroup')
     const component = shallow(render(props))
-    expect(selectComponentGroup).toHaveBeenCalledWith('testgroup1')
+    expect(selectComponentGroup).toHaveBeenCalledWith('testgroup1', expect.anything())
     component.find('input[value="testgroup2"]').first().simulate('change', {target: {value: 'testgroup2'}})
-    expect(selectComponentGroup).toHaveBeenLastCalledWith('testgroup2')
+    expect(selectComponentGroup).toHaveBeenLastCalledWith('testgroup2', expect.anything())
   })
 
   test('selectComponentGroup enables given componentGroup if not already enabled', () => {

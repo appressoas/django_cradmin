@@ -22,7 +22,7 @@ export default class AbstractFilterList extends React.Component {
 
       components: PropTypes.arrayOf(PropTypes.object).isRequired,
 
-      initiallySelectedItemIds: PropTypes.array.isRequired
+      initiallySelectedItemIds: PropTypes.array.isRequired,
       // updateHttpMethod: (props, propName, componentName) => {
       //   if(!props[propName] || !/^(post|put)$/.test(props[propName])) {
       //     return new Error(
@@ -88,20 +88,24 @@ export default class AbstractFilterList extends React.Component {
   }
 
   componentDidMount () {
-    this.refreshComponentCache(this.props.components)
+    this.setState({...AbstractFilterList.refreshComponentCache(this.props.components, this.state), isMounted: true})
     this.loadMissingSelectedItemDataFromApi()
     if (this.props.autoLoadFirstPage) {
       this.loadFirstPageFromApi()
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.refreshComponentCache(nextProps.components)
-    if ('selectMode' in nextProps) {
-      this.setState({
-        selectMode: nextProps.selectMode
-      })
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.isMounted) {
+      let nextState = AbstractFilterList.refreshComponentCache(nextProps.components, prevState)
+      nextState = {...nextState, isMounted: true }
+      if ('selectMode' in nextProps) {
+        nextState = {...nextState, selectMode: nextProps.selectMode}
+      }
+      return nextState
     }
+    return null
+
   }
 
   setupBoundMethods () {
@@ -129,20 +133,15 @@ export default class AbstractFilterList extends React.Component {
       listItemsDataMap: new Map(),
       isLoadingNewItemsFromApi: false,
       isLoadingMoreItemsFromApi: false,
-      componentCache: this.makeEmptyComponentCache(),
+      componentCache: AbstractFilterList.makeEmptyComponentCache(),
       paginationState: {},
       hasFocus: false,
       selectedListItemsMap: this._makeInitiallySelectedListItemsMap(),
       loadSelectedItemsFromApiError: null,
       loadItemsFromApiError: null,
       enabledComponentGroups: new Set(),
-      selectMode: this.props.selectMode
-    }
-  }
-
-  setInitialFilterValuesInState (filterSpecs) {
-    for (let filterSpec of filterSpecs) {
-      this._setFilterValueInState(filterSpec.props.name, filterSpec.initialValue)
+      selectMode: this.props.selectMode,
+      isMounted: false
     }
   }
 
@@ -151,7 +150,7 @@ export default class AbstractFilterList extends React.Component {
    *
    * @returns {ComponentCache} An object of {@link ComponentCache} or a subclass.
    */
-  makeEmptyComponentCache () {
+  static makeEmptyComponentCache () {
     return new ComponentCache()
   }
 
@@ -161,18 +160,19 @@ export default class AbstractFilterList extends React.Component {
    * @param rawComponentSpecs
    * @returns {ComponentCache}
    */
-  buildComponentCache (rawComponentSpecs) {
-    const componentCache = this.makeEmptyComponentCache()
+  static buildComponentCache (rawComponentSpecs) {
+    const componentCache = AbstractFilterList.makeEmptyComponentCache()
     componentCache.addRawLayoutComponentSpecs(rawComponentSpecs)
     return componentCache
   }
 
-  refreshComponentCache (rawComponentSpecs) {
-    const componentCache = this.buildComponentCache(rawComponentSpecs)
-    this.setInitialFilterValuesInState(componentCache.filterMap.values())
-    this.setState({
-      componentCache: componentCache
-    })
+  static refreshComponentCache (rawComponentSpecs, state) {
+    const componentCache = AbstractFilterList.buildComponentCache(rawComponentSpecs)
+    // this.setInitialFilterValuesInState(componentCache.filterMap.values())
+    return Object.assign(
+      AbstractFilterList.makeInitialFilterValues(componentCache.filterMap.values(), state),
+      {componentCache}
+    )
   }
 
   //
@@ -410,6 +410,7 @@ export default class AbstractFilterList extends React.Component {
    *    than 1 item unless {@link AbstractFilterList#isMultiSelectMode} is `true`.
    */
   selectItems (listItemIds) {
+    console.log(listItemIds)
     if (listItemIds.length > 1 && !this.isMultiSelectMode()) {
       throw new Error('Can not select multiple items unless selectMode is "multi".')
     }
@@ -425,6 +426,7 @@ export default class AbstractFilterList extends React.Component {
         }
         selectedListItemsMap.set(listItemId, listItemData)
       }
+      console.log(selectedListItemsMap)
       return {
         selectedListItemsMap: selectedListItemsMap
       }
@@ -571,17 +573,21 @@ export default class AbstractFilterList extends React.Component {
     }, this.filterApiDelayMilliseconds)
   }
 
-  _getStateVariableNameForFilter (filterName) {
+  static _getStateVariableNameForFilter (filterName) {
     return `filterstate_${filterName}`
   }
 
-  _setFilterValueInState (filterName, value, onComplete = () => {}) {
+  static _makeFilterValue(filterName, value) {
     if (value === undefined) {
       value = null
     }
-    this.setState({
-      [this._getStateVariableNameForFilter(filterName)]: value
-    }, onComplete)
+    return {
+      [AbstractFilterList._getStateVariableNameForFilter(filterName)]: value
+    }
+  }
+
+  _setFilterValueInState (filterName, value, onComplete = () => {}) {
+    this.setState(AbstractFilterList._makeFilterValue(filterName, value), onComplete)
   }
 
   /**
@@ -603,6 +609,18 @@ export default class AbstractFilterList extends React.Component {
     })
   }
 
+  static makeInitialFilterValues (filterSpecs, state) {
+    let filter = {}
+    for (let filterSpec of filterSpecs) {
+      const filterKey = AbstractFilterList._getStateVariableNameForFilter(filterSpec.props.name)
+      if (state[filterKey] === undefined) {
+        filter = {...filter, ...AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue) }
+      }
+    }
+    return filter
+  }
+
+
   /**
    * Get the current value of a filter.
    *
@@ -610,7 +628,7 @@ export default class AbstractFilterList extends React.Component {
    * @returns Value of the filter.
    */
   getFilterValue (filterName) {
-    return this.state[this._getStateVariableNameForFilter(filterName)]
+    return this.state[AbstractFilterList._getStateVariableNameForFilter(filterName)]
   }
 
   //
