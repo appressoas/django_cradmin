@@ -1,0 +1,116 @@
+/* Buttonbar
+
+Example: {type: isolated}
+    <nav class="buttonbar">
+        <button class="buttonbar__button button button--primary">
+            H1
+        </button>
+        <button class="buttonbar__button button button--primary">
+            H2
+        </button>
+        <button class="buttonbar__button button">
+            <strong>B</strong>
+        </button>
+        <button class="buttonbar__button button">
+            <em>I</em>
+        </button>
+    </nav>
+
+
+Example: {type: isolated} Compact buttons
+    <nav class="buttonbar">
+        <button class="buttonbar__button button button--compact button--primary">
+            H1
+        </button>
+        <button class="buttonbar__button button button--compact button--primary">
+            H2
+        </button>
+        <button class="buttonbar__button button button--compact">
+            <strong>B</strong>
+        </button>
+        <button class="buttonbar__button button button--compact">
+            <em>I</em>
+        </button>
+    </nav>
+
+
+Example: {type: isolated}
+    <nav class="buttonbar">
+        <button class="buttonbar__button button button--primary-fill">
+            Yes
+        </button>
+        <button class="buttonbar__button button button--primary">
+            No
+        </button>
+    </nav>
+
+
+Example: {type: isolated} --stretch
+    <nav class="buttonbar buttonbar--stretch">
+        <button class="buttonbar__button button button--primary-fill">
+            Yes
+        </button>
+        <button class="buttonbar__button button button--primary">
+            No
+        </button>
+    </nav>
+
+Styleguide components.buttonbar
+*/
+.buttonbar {
+    $__root: &;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-right: $border-width;
+    padding-bottom: $border-width;
+    margin-bottom: vertical-space($spacing--small);
+
+    &__button {
+        margin-right: -($border-width);
+        margin-bottom: $border-width;
+        border-radius: 0;
+
+        &:nth-of-type(odd) {
+            border-top-left-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
+        }
+
+        &:nth-of-type(even) {
+            border-top-right-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+        }
+
+        @include min-width(md) {
+            width: auto;
+
+            &:not(:first-child) {
+                border-radius: 0;
+            }
+
+            &:last-child {
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+        }
+
+        &--fill {
+            @extend .button--fill;
+        }
+    }
+
+    &--nomargin {
+        margin-bottom: 0;
+    }
+
+    &--tinymargin {
+        margin-bottom: $unit;
+    }
+
+    &--stretch {
+        //align-content: stretch;
+        #{$__root}__button {
+            flex: 1 1 auto;
+        }
+    }
+}

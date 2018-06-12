@@ -1,0 +1,102 @@
+/** Paginator
+
+Example:
+
+    <div class="paginator">
+        <button class="paginator__button" title="Previous">
+            <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+        </button>
+        <span class="paginator__label">Page 3/9</span>
+        <button class="paginator__button" title="Next">
+            <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+        </button>
+    </div>
+
+Example: --inline
+
+    <div class="text-center">
+        <span class="paginator paginator--inline">
+            <button class="paginator__button" title="Previous">
+                <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+            </button>
+            <span class="paginator__label">Page 3/9</span>
+            <button class="paginator__button" title="Next">
+                <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+            </button>
+        </span>
+    </div>
+
+
+Example: Disabled button
+
+    <div class="paginator">
+        <button class="paginator__button" title="Previous">
+            <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+        </button>
+        <span class="paginator__label">Page 9/9</span>
+        <button class="paginator__button" title="Next" disabled>
+            <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+        </button>
+    </div>
+
+
+Example: Small label
+
+    <div class="paginator">
+        <button class="paginator__button" title="Previous">
+            <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+        </button>
+        <span class="paginator__label paginator__label--xsmall">Page 3/9</span>
+        <button class="paginator__button" title="Next">
+            <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+        </button>
+    </div>
+
+
+Styleguide components.paginator
+*/
+.paginator {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $unit;
+
+    &__label {
+        &--xsmall {
+            @include font-size(xsmall);
+        }
+    }
+
+    &__label, &__button {
+        margin-left: $unit;
+        margin-right: $unit;
+        &:last-child {
+            margin-right: 0;
+        }
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+
+    &__button {
+        border-radius: 50%;
+        width: $unit * 6;
+        height: $unit * 6;
+        color: $color-light;
+        text-align: center;
+        background-color: color(primary);
+
+        &:hover {
+            background-color: color(primary, dark);
+        }
+
+        &:disabled {
+            background-color: color(neutral);
+        }
+    }
+
+    &--inline {
+        display: inline-flex;
+    }
+}

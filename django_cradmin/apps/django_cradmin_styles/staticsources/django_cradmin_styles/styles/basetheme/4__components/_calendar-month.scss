@@ -2,7 +2,7 @@
 
 Example: {type: isolated}
 
-    <div class="calendar-month">
+    <div class="calendar-month calendar-month--sane-max-width">
         <div class="calendar-month__header">
             <div class="calendar-month__header-row">
                 <div class="calendar-month__header-day">mon</div>
@@ -42,9 +42,35 @@ Example: {type: isolated}
                 <div tabindex="0" aria-role="button" class="calendar-month__day">15</div>
                 <div tabindex="0" aria-role="button" class="calendar-month__day">16</div>
             </div>
+            <div class="calendar-month__week">
+                <div tabindex="0" aria-role="button" class="calendar-month__day">17</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">18</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">19</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">20</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">21</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">22</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">23</div>
+            </div>
+            <div class="calendar-month__week">
+                <div tabindex="0" aria-role="button" class="calendar-month__day">24</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">25</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">26</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">27</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">28</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">29</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">30</div>
+            </div>
+            <div class="calendar-month__week">
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">1</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">2</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">3</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">4</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">5</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">6</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">7</div>
+            </div>
         </div>
     </div>
-
 
 Styleguide components.calendar-month
  */
@@ -54,7 +80,6 @@ Styleguide components.calendar-month
     border-spacing: 0;
     table-layout: fixed;
     width: 100%;
-    max-width: 400px;
 
     &__header {
         display: table-header-group;
@@ -103,5 +128,12 @@ Styleguide components.calendar-month
             background-color: color(primary, dark);
         }
 
+        &--muted {
+            color: $color-muted;
+        }
+    }
+
+    &--sane-max-width {
+        max-width: 400px;
     }
 }
