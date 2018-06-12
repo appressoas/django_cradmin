@@ -28,18 +28,12 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
     })
   }
 
-  componentDidMount () {
-    super.componentDidMount()
-
-    this.selectComponentGroup(this.props.initialEnabled)
-  }
-
-  componentWillReceiveProps (nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     let selected = ''
     for (const componentGroup of nextProps.selectableComponentGroups) {
       if (nextProps.childExposedApi.componentGroupIsEnabled(componentGroup.name)) {
         if (selected) {
-          this.selectComponentGroup(selected)
+          SelectComponentGroup.selectComponentGroup(selected, nextProps)
           break
         }
         selected = componentGroup.name
@@ -47,13 +41,14 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
     }
 
     if (!selected) {
-      this.selectComponentGroup(nextProps.initialEnabled)
+      SelectComponentGroup.selectComponentGroup(nextProps.initialEnabled, nextProps)
     }
+    return null
   }
+
 
   setupBoundMethods () {
     super.setupBoundMethods()
-    this.selectComponentGroup = this.selectComponentGroup.bind(this)
     this.selectComponentGroupClickListener = this.selectComponentGroupClickListener.bind(this)
   }
 
@@ -61,21 +56,21 @@ export default class SelectComponentGroup extends AbstractComponentGroup {
     return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
   }
 
-  selectComponentGroup (enabledComponentGroup) {
-    if (!this.props.childExposedApi.componentGroupIsEnabled(enabledComponentGroup)) {
-      this.props.childExposedApi.enableComponentGroup(enabledComponentGroup)
+  static selectComponentGroup (enabledComponentGroup, props) {
+    if (!props.childExposedApi.componentGroupIsEnabled(enabledComponentGroup)) {
+      props.childExposedApi.enableComponentGroup(enabledComponentGroup)
     }
 
-    for (const componentGroup of this.props.selectableComponentGroups) {
+    for (const componentGroup of props.selectableComponentGroups) {
       if (componentGroup.name !== enabledComponentGroup &&
-          this.props.childExposedApi.componentGroupIsEnabled(componentGroup.name)) {
-        this.props.childExposedApi.disableComponentGroup(componentGroup.name)
+          props.childExposedApi.componentGroupIsEnabled(componentGroup.name)) {
+        props.childExposedApi.disableComponentGroup(componentGroup.name)
       }
     }
   }
 
   selectComponentGroupClickListener (event) {
-    this.selectComponentGroup(event.target.value)
+    SelectComponentGroup.selectComponentGroup(event.target.value, this.props)
   }
 
   renderSelectableComponentGroups () {

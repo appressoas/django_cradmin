@@ -55,6 +55,7 @@ export default class AbstractFilterListChild extends React.Component {
   constructor (props) {
     super(props)
     this.setupBoundMethods()
+    this.state = {}
   }
 
   /**

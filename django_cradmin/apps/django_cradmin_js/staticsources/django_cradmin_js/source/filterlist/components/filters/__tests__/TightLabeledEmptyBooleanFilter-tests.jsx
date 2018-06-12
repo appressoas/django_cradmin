@@ -21,7 +21,7 @@ test('wrapperClassName', () => {
 
 test('label', () => {
   const component = shallow(render({label: 'Testlabel'}))
-  expect(component.childAt(1).text()).toBe('Testlabel')
+  expect(component.find('span').text()).toBe('Testlabel')
 })
 
 test('aria-label defaults to label', () => {
