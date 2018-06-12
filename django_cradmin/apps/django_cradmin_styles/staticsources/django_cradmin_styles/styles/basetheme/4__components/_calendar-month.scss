@@ -1,0 +1,107 @@
+/** Calendar month
+
+Example: {type: isolated}
+
+    <div class="calendar-month">
+        <div class="calendar-month__header">
+            <div class="calendar-month__header-row">
+                <div class="calendar-month__header-day">mon</div>
+                <div class="calendar-month__header-day">tue</div>
+                <div class="calendar-month__header-day">wed</div>
+                <div class="calendar-month__header-day">thu</div>
+                <div class="calendar-month__header-day">fri</div>
+                <div class="calendar-month__header-day">sat</div>
+                <div class="calendar-month__header-day">sun</div>
+            </div>
+        </div>
+        <div class="calendar-month__body">
+            <div class="calendar-month__week">
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">27</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">28</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">29</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">30</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day calendar-month__day--muted">31</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">1</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">2</div>
+            </div>
+            <div class="calendar-month__week">
+                <div tabindex="0" aria-role="button" class="calendar-month__day">3</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">4</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">5</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">6</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">7</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">8</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">9</div>
+            </div>
+            <div class="calendar-month__week">
+                <div tabindex="0" aria-role="button" class="calendar-month__day">10</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">11</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">12</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">13</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">14</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">15</div>
+                <div tabindex="0" aria-role="button" class="calendar-month__day">16</div>
+            </div>
+        </div>
+    </div>
+
+
+Styleguide components.calendar-month
+ */
+.calendar-month {
+    display: table;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%;
+    max-width: 400px;
+
+    &__header {
+        display: table-header-group;
+    }
+
+    &__body {
+        display: table-row-group;
+    }
+
+    &__week, &__header-row {
+        display: table-row;
+    }
+
+    &__day, &__header-day {
+        display: table-cell;
+        padding: $unit 0;
+        text-align: center;
+        border: 1px solid color(neutral, light);
+    }
+
+    &__header-day {
+        @include font(base, bold);
+        @include font-size(xsmall);
+        text-transform: uppercase;
+    }
+
+    &__day {
+        cursor: pointer;
+        @include font(base);
+
+        &:hover,
+        &:focus,
+        &:active,
+        &--selected {
+            color: $color-light;
+            outline: none;
+        }
+
+        &:hover {
+            background-color: color(primary);
+        }
+
+        &:focus,
+        &:active,
+        &--selected {
+            background-color: color(primary, dark);
+        }
+
+    }
+}
