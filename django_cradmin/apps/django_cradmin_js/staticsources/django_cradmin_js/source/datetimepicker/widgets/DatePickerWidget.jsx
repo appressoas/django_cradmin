@@ -12,8 +12,7 @@ export default class DatePickerWidget extends AbstractWidget {
   getDefaultConfig () {
     return {
       moment: null,
-      locale: 'en',
-      size: 'small'
+      locale: 'en'
     }
   }
 
@@ -25,8 +24,7 @@ export default class DatePickerWidget extends AbstractWidget {
     }
     const props = {
       moment: momentObject,
-      locale: this.config.locale,
-      size: this.config.size
+      locale: this.config.locale
     }
     ReactDOM.render(
       <DatePickerForWidget {...props} />,

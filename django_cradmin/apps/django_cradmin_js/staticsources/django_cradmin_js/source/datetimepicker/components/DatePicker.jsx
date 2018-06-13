@@ -1,19 +1,32 @@
-import cx from 'classnames'
 import moment from 'moment'
 import React from 'react'
 
 import DateCalendar from './DateCalendar'
 import DateMonths from './DateMonths'
 
-import LeftIcon from 'react-icons/lib/fa/angle-left'
-import RightIcon from 'react-icons/lib/fa/angle-right'
+import PropTypes from 'prop-types'
+import DatePickerToolbar from './DatePickerToolbar'
 
 export default class DatePicker extends React.Component {
+  static get defaultProps () {
+    return {
+      moment: null,
+      locale: null
+    }
+  }
+
+  static get propTypes () {
+    return {
+      moment: PropTypes.any,
+      locale: PropTypes.string
+    }
+  }
+
   constructor (props) {
     super(props)
 
     this.state = {
-      mode: 'calendar',
+      mode: 'calendar'
     }
   }
 
@@ -27,24 +40,80 @@ export default class DatePicker extends React.Component {
     return moment
   }
 
-  render () {
-    let {mode} = this.state
-    let moment = this.getMoment()
+  // get className () {
+  //   if (this.state.mode === 'months') {
+  //     return BemUtilities.addVariants(this.props.monthsBemBlock, this.props.monthsBemVariants)
+  //   }
+  //   return BemUtilities.addVariants(this.props.calendarBemBlock, this.props.calendarBemVariants)
+  // }
 
-    return (
-      <div className={cx('im-date-picker', this.props.className)}>
-        <Toolbar
-          display={moment.format('MMMM YYYY')}
-          onPrevMonth={this.onPrevMonth.bind(this)}
-          onNextMonth={this.onNextMonth.bind(this)}
-          onPrevYear={this.onPrevYear.bind(this)}
-          onNextYear={this.onNextYear.bind(this)}
-          onToggleMode={this.onToggleMode.bind(this)}
-        />
-        {mode === 'calendar' && <DateCalendar moment={moment} onDaySelect={this.onDaySelect.bind(this)}/>}
-        {mode === 'months' && <DateMonths moment={moment} onMonthSelect={this.onMonthSelect.bind(this)}/>}
-      </div>
-    )
+  get monthPickerComponentClass () {
+    return DateMonths
+  }
+
+  get monthPickerComponentProps () {
+    return {
+      moment: this.getMoment(),
+      onMonthSelect: this.onMonthSelect.bind(this),
+      key: 'monthPicker'
+    }
+  }
+
+  get datePickerComponentClass () {
+    return DateCalendar
+  }
+
+  get datePickerComponentProps () {
+    return {
+      moment: this.getMoment(),
+      onDaySelect: this.onDaySelect.bind(this),
+      key: 'datePicker'
+    }
+  }
+
+  get toolbarComponentClass () {
+    return DatePickerToolbar
+  }
+
+  get toolbarComponentProps () {
+    return {
+      display: this.getMoment().format('MMMM YYYY'),
+      onPrevMonth: this.onPrevMonth.bind(this),
+      onNextMonth: this.onNextMonth.bind(this),
+      onPrevYear: this.onPrevYear.bind(this),
+      onNextYear: this.onNextYear.bind(this),
+      onToggleMode: this.onToggleMode.bind(this),
+      key: 'toolbar'
+    }
+  }
+
+  renderMonthPicker () {
+    const MonthPickerComponent = this.monthPickerComponentClass
+    return <MonthPickerComponent {...this.monthPickerComponentProps} />
+  }
+
+  renderDatePicker () {
+    const DatePickerComponent = this.datePickerComponentClass
+    return <DatePickerComponent {...this.datePickerComponentProps} />
+  }
+
+  renderPicker () {
+    if (this.state.mode === 'months') {
+      return this.renderMonthPicker()
+    }
+    return this.renderDatePicker()
+  }
+
+  renderToolbar () {
+    const ToolbarComponent = this.toolbarComponentClass
+    return <ToolbarComponent {...this.toolbarComponentProps} />
+  }
+
+  render () {
+    return [
+      this.renderToolbar(),
+      this.renderPicker()
+    ]
   }
 
   onPrevMonth (e) {
@@ -91,27 +160,5 @@ export default class DatePicker extends React.Component {
   onMonthSelect (month) {
     let moment = this.props.moment.clone()
     this.setState({mode: 'calendar'}, () => this.props.onChange(moment.month(month)))
-  }
-}
-
-class Toolbar extends React.Component {
-  render () {
-    return (
-      <div className='toolbar'>
-        <LeftIcon
-          className='prev-nav left'
-          onClick={this.props.onPrevMonth}
-        />
-        <span
-          className='current-date'
-          onClick={this.props.onToggleMode}>
-          {this.props.display}
-        </span>
-        <RightIcon
-          className='next-nav right'
-          onClick={this.props.onNextMonth}
-        />
-      </div>
-    )
   }
 }
