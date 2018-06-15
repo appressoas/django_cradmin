@@ -4,7 +4,7 @@ import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import moment from 'moment'
 import EmbeddedDateSelect from '../components/EmbeddedDateSelect'
 
-export default class DatePickerWidget extends AbstractWidget {
+export default class EmbeddedDateSelectWidget extends AbstractWidget {
   /**
    * @returns {Object}
    * @property moment Something that can be passed into ``moment()`` for the initial date.
