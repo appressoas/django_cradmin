@@ -175,15 +175,13 @@ Styleguide components.buttonbar.buttoncolor
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    padding-right: $border-width;
-    padding-bottom: $border-width;
     margin-bottom: vertical-space($spacing--small);
 
     &__button {
         @include button($responsive: false);
 
         margin-right: -($border-width);
-        margin-bottom: $border-width;
+        margin-bottom: 0;
         border-radius: 0;
         width: auto;
 
