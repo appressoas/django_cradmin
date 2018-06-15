@@ -43,7 +43,7 @@ export default class DatePickerToolbar extends React.Component {
   }
 
   get buttonClassName () {
-    return BemUtilities.buildBemElement(this.props.bemBlock, this.buttonBemVariants)
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'button', ['secondary'])
   }
 
   get leftButtonIconClassName () {

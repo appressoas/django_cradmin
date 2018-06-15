@@ -53,6 +53,29 @@ Example: Small label
     </div>
 
 
+Example: Button colors
+
+    <div class="paginator">
+        <button class="paginator__button paginator__button--primary" title="Previous">
+            <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+        </button>
+        <span class="paginator__label">--primary</span>
+        <button class="paginator__button paginator__button--primary" title="Next">
+            <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div class="paginator">
+        <button class="paginator__button paginator__button--secondary" title="Previous">
+            <span class="cricon cricon--chevron-left" aria-hidden="true"></span>
+        </button>
+        <span class="paginator__label">--secondary</span>
+        <button class="paginator__button paginator__button--secondary" title="Next">
+            <span class="cricon cricon--chevron-right" aria-hidden="true"></span>
+        </button>
+    </div>
+
+
 Styleguide components.paginator
 */
 .paginator {
@@ -85,14 +108,26 @@ Styleguide components.paginator
         height: $unit * 6;
         color: $color-light;
         text-align: center;
-        background-color: color(primary);
-
+        background-color: color(neutral);
         &:hover {
-            background-color: color(primary, dark);
+            background-color: color(neutral, dark);
         }
 
         &:disabled {
             background-color: color(neutral);
+        }
+
+        &--primary {
+            background-color: color(primary);
+            &:hover {
+                background-color: color(primary, dark);
+            }
+        }
+        &--secondary {
+            background-color: color(secondary);
+            &:hover {
+                background-color: color(secondary, dark);
+            }
         }
     }
 

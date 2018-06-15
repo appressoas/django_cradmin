@@ -41,6 +41,10 @@ export default class DateTimePickerForWidget extends React.Component {
     return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
   }
 
+  get previewClassName () {
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'preview')
+  }
+
   get dateTimePickerComponentClass () {
     return DateTimePicker
   }
@@ -57,12 +61,7 @@ export default class DateTimePickerForWidget extends React.Component {
   }
 
   renderPreview () {
-    return <input
-      type='text'
-      className='input  input--outlined'
-      value={this.state.inputMoment.format('llll')}
-      readOnly
-    />
+    return <p className={this.previewClassName}>{this.state.inputMoment.format('llll')}</p>
   }
 
   renderDateTimePicker () {

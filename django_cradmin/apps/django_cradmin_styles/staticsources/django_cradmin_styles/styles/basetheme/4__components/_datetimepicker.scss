@@ -4,15 +4,18 @@ Very small class that just acts as a wrapper around
 several components needed to make a data/time picker
 widget.
 
-Example: {type: isolated}
+Example:
 
     <div class="datetimepicker">
+        <p class="datetimepicker__preview">
+            Jun 15 2018 14:33
+        </p>
         <div class="buttonbar buttonbar--stretch buttonbar--tinymargin">
-            <button class="buttonbar__button button button--primary-fill" title="Date">
+            <button class="buttonbar__button button button--secondary-fill" title="Date">
                 <span class="cricon cricon--calendar-grid" aria-hidden="true"></span>
                 Date
             </button>
-            <button class="buttonbar__button button button--primary" title="Time">
+            <button class="buttonbar__button button button--secondary" title="Time">
                 <span class="cricon cricon--clock" aria-hidden="true"></span>
                 Time
             </button>
@@ -103,4 +106,17 @@ Styleguide components.datetimepicker
 .datetimepicker {
     width: 100%;
     max-width: $datetimepicker-max-width;
+    background-color: $color-light;
+    border: $border-style--small;
+    padding: $unit;
+    border-radius: $border-radius;
+
+    &__preview {
+        text-align: center;
+        margin-bottom: $spacing--small;
+        color: $color-muted;
+        padding-bottom: $unit;
+        @include font(base, bold);
+        border-bottom: $border-style--small;
+    }
 }
