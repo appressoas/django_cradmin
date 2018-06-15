@@ -102,5 +102,5 @@ Styleguide components.datetimepicker
 */
 .datetimepicker {
     width: 100%;
-    max-width: 400px;
+    max-width: $datetimepicker-max-width;
 }

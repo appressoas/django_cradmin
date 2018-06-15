@@ -99,6 +99,7 @@ Styleguide basic.5:borders
 */
 $border-width: 3px !default;
 $border-width--small: 2px !default;
+$border-width--xsmall: 1px !default;
 
 $border-radius: 5px !default;
 
@@ -106,6 +107,7 @@ $border-radius: 5px !default;
 // Border style
 $border-style: $border-width solid color(neutral, light) !default;
 $border-style--small: $border-width--small solid color(neutral, light) !default;
+$border-style--datetimepicker: $border-width--xsmall solid color(neutral, light) !default;
 
 
 // Better easing
@@ -174,3 +176,6 @@ $form-element-height-map: (
 );
 
 $media-path: '../../media' !default;  // Must NOT end with /
+
+
+$datetimepicker-max-width: 400px !default;

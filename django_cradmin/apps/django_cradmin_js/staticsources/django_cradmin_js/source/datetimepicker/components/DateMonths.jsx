@@ -1,33 +1,58 @@
-import cx from 'classnames'
 import React from 'react'
-import chunk from 'lodash/chunk'
+import PropTypes from 'prop-types'
+import BemUtilities from '../../utilities/BemUtilities'
 
 export default class DateMonths extends React.Component {
-  render () {
-    let months = this.props.moment.localeData().months()
+  static get defaultProps () {
+    return {
+      moment: null,
+      bemBlock: 'month-picker',
+      bemVariants: [],
+      onMonthSelect: null
+    }
+  }
 
-    return (
-      <table>
-        <tbody>
-          {chunk(months, 3).map((row, ridx) => {
-            return (
-              <tr key={ridx}>
-                {row.map((month, midx) => {
-                  let month_num = (ridx * 3) + midx
-                  return (
-                    <td
-                      key={midx}
-                      className={cx({current: this.props.moment.month() === month_num})}
-                      onClick={() => this.props.onMonthSelect(month)}>
-                      {month}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    )
+  static get propTypes () {
+    return {
+      moment: PropTypes.any,
+      bemBlock: PropTypes.string.isRequired,
+      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      onMonthSelect: PropTypes.func.isRequired
+    }
+  }
+
+  get className () {
+    return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
+  }
+
+  getMonthClassName (monthNumber) {
+    let bemVariants = []
+    if (this.props.moment.month() === monthNumber) {
+      bemVariants.push('selected')
+    }
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'month', bemVariants)
+  }
+
+  renderMonth (monthNumber, monthName) {
+    return <button className={this.getMonthClassName(monthNumber)} onClick={() => this.props.onMonthSelect(monthNumber)}>
+      {monthName}
+    </button>
+  }
+
+  renderMonths () {
+    const monthRenderables = []
+    let monthNames = this.props.moment.localeData().months()
+    let monthNumber = 0
+    for (let monthName of monthNames) {
+      monthRenderables.push(this.renderMonth(monthNumber, monthName))
+      monthNumber++
+    }
+    return monthRenderables
+  }
+
+  render () {
+    return <div className={this.className}>
+      {this.renderMonths()}
+    </div>
   }
 }

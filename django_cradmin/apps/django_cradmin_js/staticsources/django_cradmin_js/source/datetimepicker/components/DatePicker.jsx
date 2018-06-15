@@ -142,7 +142,7 @@ export default class DatePicker extends React.Component {
 
   onToggleMode () {
     this.setState({
-      mode: this.state.mode === 'calendar' ? 'months' : 'calendar',
+      mode: this.state.mode === 'calendar' ? 'months' : 'calendar'
     })
   }
 
@@ -157,8 +157,10 @@ export default class DatePicker extends React.Component {
     this.props.onChange(moment)
   }
 
-  onMonthSelect (month) {
+  onMonthSelect (monthNumber) {
     let moment = this.props.moment.clone()
-    this.setState({mode: 'calendar'}, () => this.props.onChange(moment.month(month)))
+    this.setState({mode: 'calendar'}, () => {
+      this.props.onChange(moment.month(monthNumber))
+    })
   }
 }

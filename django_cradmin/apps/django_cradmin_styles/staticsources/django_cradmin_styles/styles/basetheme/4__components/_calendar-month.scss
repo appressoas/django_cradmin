@@ -97,7 +97,7 @@ Styleguide components.calendar-month
         display: table-cell;
         padding: $unit 0;
         text-align: center;
-        border: 1px solid color(neutral, light);
+        border: $border-style--datetimepicker;
     }
 
     &__header-day {
@@ -134,6 +134,6 @@ Styleguide components.calendar-month
     }
 
     &--sane-max-width {
-        max-width: 400px;
+        max-width: $datetimepicker-max-width;
     }
 }
