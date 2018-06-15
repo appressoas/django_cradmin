@@ -12,7 +12,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       hiddenFieldName: null,
       hiddenFieldFormat: 'YYYY-MM-DD HH:mm:ss',
       selectedPreviewFormat: null,
-      bodyBemVariants: []
+      bodyBemVariants: [],
+      onChange: null
     }
   }
 
@@ -25,7 +26,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       hiddenFieldName: PropTypes.string,
       hiddenFieldFormat: PropTypes.string.isRequired,
       selectedPreviewFormat: PropTypes.string.isRequired,
-      bodyBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
+      bodyBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      onChange: PropTypes.func
     }
   }
 
@@ -36,8 +38,28 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   makeInitialState () {
     return {
-      selectedMoment: this.props.moment
+      selectedMoment: this.props.moment,
+
+      // Only set when the user actually triggers the action that triggers onChange
+      useMoment: null
     }
+  }
+
+  triggerOnChange (useMoment, onComplete = null) {
+    this.setState({
+      useMoment: useMoment
+    }, () => {
+      if (this.props.onChange !== null) {
+        this.props.onChange(useMoment)
+      }
+      if (onComplete !== null) {
+        onComplete()
+      }
+    })
+  }
+
+  setSelectedMoment (selectedMoment) {
+    throw new Error('Must override setSelectedMoment()')
   }
 
   get className () {
@@ -60,14 +82,18 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return {
       moment: this.state.selectedMoment,
       locale: this.props.locale,
-      onChange: (moment) => {
-        this.setState({selectedMoment: moment})
+      onChange: (selectedMoment) => {
+        this.setSelectedMoment(selectedMoment)
       }
     }
   }
 
   get selectedMomentPreviewFormatted () {
     return this.state.selectedMoment.format(this.props.selectedPreviewFormat)
+  }
+
+  get useMomentPreviewFormatted () {
+    return this.state.useMoment.format(this.props.selectedPreviewFormat)
   }
 
   renderPreview () {
@@ -95,7 +121,10 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get hiddenFieldValue () {
-    return this.state.selectedMoment.format(this.props.hiddenFieldFormat)
+    if (this.state.useMoment !== null) {
+      return this.state.useMoment.format(this.props.hiddenFieldFormat)
+    }
+    return ''
   }
 
   renderHiddenField () {
@@ -113,8 +142,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   renderContent () {
     return [
-      this.renderBody(),
-      this.renderHiddenField()
+      this.renderBody()
     ]
   }
 

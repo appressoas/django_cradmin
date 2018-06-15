@@ -42,6 +42,12 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     })
   }
 
+  setSelectedMoment (selectedMoment) {
+    this.setState({
+      selectedMoment: selectedMoment
+    })
+  }
+
   get openButtonClassName () {
     return BemUtilities.addVariants(this.props.openButtonBemBlock, this.props.openButtonBemVariants)
   }
@@ -70,8 +76,16 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return 'cricon cricon--close'
   }
 
+  triggerOnChange (useMoment, onComplete = null) {
+    super.triggerOnChange(useMoment, () => {
+      this.setState({
+        isOpen: false
+      }, onComplete)
+    })
+  }
+
   onUseButtonClick () {
-    console.log('USE!')
+    this.triggerOnChange(this.state.selectedMoment)
   }
 
   onOpenButtonClick () {
@@ -87,10 +101,10 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   renderOpenButtonLabel () {
-    if (this.props.moment === null) {
+    if (this.state.useMoment === null) {
       return this.props.noneSelectedButtonLabel
     }
-    return this.selectedMomentPreviewFormatted
+    return this.useMomentPreviewFormatted
   }
 
   renderOpenButton () {
@@ -148,7 +162,9 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   renderModal () {
     if (this.state.isOpen) {
-      return super.render()
+      return <div className={this.className}>
+        {this.renderContent()}
+      </div>
     }
     return null
   }
@@ -157,6 +173,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return <div>
       {this.renderOpenButton()}
       {this.renderModal()}
+      {this.renderHiddenField()}
     </div>
   }
 }

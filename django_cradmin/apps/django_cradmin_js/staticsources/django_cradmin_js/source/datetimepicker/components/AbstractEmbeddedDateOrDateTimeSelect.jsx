@@ -7,4 +7,19 @@ export default class AbstractEmbeddedDateOrDateTimeSelect extends AbstractDateOr
       bodyBemVariants: ['outlined']
     })
   }
+
+  setSelectedMoment (selectedMoment) {
+    this.setState({
+      selectedMoment: selectedMoment
+    }, () => {
+      this.triggerOnChange(selectedMoment)
+    })
+  }
+
+  renderContent () {
+    return [
+      ...super.renderContent(),
+      this.renderHiddenField()
+    ]
+  }
 }
