@@ -40,13 +40,6 @@ export default class DatePicker extends React.Component {
     return moment
   }
 
-  // get className () {
-  //   if (this.state.mode === 'months') {
-  //     return BemUtilities.addVariants(this.props.monthsBemBlock, this.props.monthsBemVariants)
-  //   }
-  //   return BemUtilities.addVariants(this.props.calendarBemBlock, this.props.calendarBemVariants)
-  // }
-
   get monthPickerComponentClass () {
     return DateMonths
   }

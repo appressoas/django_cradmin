@@ -1,14 +1,26 @@
 import React from 'react'
 import DateTimePicker from '../components/DateTimePicker'
+import PropTypes from 'prop-types'
+import BemUtilities from '../../utilities/BemUtilities'
 
 export default class DateTimePickerForWidget extends React.Component {
   static get defaultProps () {
     return {
       moment: null,
       locale: null,
-      showSeconds: null,
-      size: null,
-      signalNameSpace: null
+      bemBlock: 'datetimepicker',
+      bemVariants: [],
+      showSeconds: false
+    }
+  }
+
+  static get propTypes () {
+    return {
+      moment: PropTypes.any,
+      locale: PropTypes.string,
+      bemBlock: PropTypes.string.isRequired,
+      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      showSeconds: PropTypes.bool.isRequired
     }
   }
 
@@ -21,32 +33,47 @@ export default class DateTimePickerForWidget extends React.Component {
     return {
       inputMoment: this.props.moment,
       showSeconds: this.props.showSeconds,
-      locale: this.props.locale,
-      size: this.props.size
+      locale: this.props.locale
     }
   }
 
-  render () {
-    let {inputMoment, showSeconds, locale, size} = this.state
-    let wrapperClass = 'wrapper ' + size
+  get className () {
+    return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
+  }
 
-    return (
-      <div className='app'>
-        <input
-          type='text'
-          className='input  input--outlined'
-          value={this.state.inputMoment.format('llll')}
-          readOnly
-        />
-        <div className={wrapperClass}>
-          <DateTimePicker
-            moment={inputMoment}
-            locale={locale}
-            showSeconds={showSeconds}
-            onChange={moment => this.setState({inputMoment: moment})}
-          />
-        </div>
-      </div>
-    )
+  get dateTimePickerComponentClass () {
+    return DateTimePicker
+  }
+
+  get dateTimePickerComponentProps () {
+    return {
+      moment: this.state.inputMoment,
+      locale: this.props.locale,
+      showSeconds: this.props.showSeconds,
+      onChange: (moment) => {
+        this.setState({inputMoment: moment})
+      }
+    }
+  }
+
+  renderPreview () {
+    return <input
+      type='text'
+      className='input  input--outlined'
+      value={this.state.inputMoment.format('llll')}
+      readOnly
+    />
+  }
+
+  renderDateTimePicker () {
+    const DateTimePickerComponent = this.dateTimePickerComponentClass
+    return <DateTimePickerComponent {...this.dateTimePickerComponentProps} />
+  }
+
+  render () {
+    return <div className={this.className}>
+      {this.renderPreview()}
+      {this.renderDateTimePicker()}
+    </div>
   }
 }

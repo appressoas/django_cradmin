@@ -29,9 +29,7 @@ export default class DatePickerForWidget extends React.Component {
 
   makeInitialState () {
     return {
-      inputMoment: this.props.moment,
-      showSeconds: this.props.showSeconds,
-      locale: this.props.locale
+      inputMoment: this.props.moment
     }
   }
 
@@ -46,8 +44,7 @@ export default class DatePickerForWidget extends React.Component {
   get datePickerComponentProps () {
     return {
       moment: this.state.inputMoment,
-      locale: this.state.locale,
-      showSeconds: this.state.showSeconds,
+      locale: this.props.locale,
       onChange: (moment) => {
         this.setState({inputMoment: moment})
       }
@@ -69,11 +66,9 @@ export default class DatePickerForWidget extends React.Component {
   }
 
   render () {
-    return (
-      <div className={this.className}>
-        {this.renderPreview()}
-        {this.renderDatePicker()}
-      </div>
-    )
+    return <div className={this.className}>
+      {this.renderPreview()}
+      {this.renderDatePicker()}
+    </div>
   }
 }
