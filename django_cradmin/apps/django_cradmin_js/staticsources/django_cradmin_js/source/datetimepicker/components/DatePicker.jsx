@@ -11,14 +11,16 @@ export default class DatePicker extends React.Component {
   static get defaultProps () {
     return {
       moment: null,
-      locale: null
+      locale: null,
+      onChange: null
     }
   }
 
   static get propTypes () {
     return {
       moment: PropTypes.any,
-      locale: PropTypes.string
+      locale: PropTypes.string,
+      onChange: PropTypes.func.isRequired
     }
   }
 
