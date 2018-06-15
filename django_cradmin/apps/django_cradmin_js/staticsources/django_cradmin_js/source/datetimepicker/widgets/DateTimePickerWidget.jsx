@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import moment from 'moment'
-import DateTimePickerForWidget from './DateTimePickerForWidget'
+import EmbeddedDateTimeSelect from '../components/EmbeddedDateTimeSelect'
 
 export default class DateTimePickerWidget extends AbstractWidget {
   /**
@@ -14,7 +14,7 @@ export default class DateTimePickerWidget extends AbstractWidget {
       moment: null,
       locale: 'en',
       showSeconds: false,
-      size: 'small'
+      hiddenFieldName: null
     }
   }
 
@@ -28,10 +28,10 @@ export default class DateTimePickerWidget extends AbstractWidget {
       moment: momentObject,
       locale: this.config.locale,
       showSeconds: this.config.showSeconds,
-      size: this.config.size
+      hiddenFieldName: this.config.hiddenFieldName
     }
     ReactDOM.render(
-      <DateTimePickerForWidget {...props} />,
+      <EmbeddedDateTimeSelect {...props} />,
       this.element
     )
   }

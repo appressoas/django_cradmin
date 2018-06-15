@@ -117,6 +117,14 @@ export default class TimePicker extends React.Component {
     ]
   }
 
+  _cleanMoment (momentObject) {
+    momentObject.millisecond(0)
+    if (!this.showSeconds) {
+      momentObject.second(0)
+    }
+    return momentObject
+  }
+
   onClickNowButton () {
     const today = moment()
     let momentObject = this.props.moment.clone()
@@ -124,24 +132,24 @@ export default class TimePicker extends React.Component {
     momentObject.minute(today.minute())
     momentObject.second(today.second())
     momentObject.millisecond(0)
-    this.props.onChange(momentObject)
+    this.props.onChange(this._cleanMoment(momentObject))
   }
 
   changeHours (hours) {
     let moment = this.props.moment.clone()
     moment.hours(hours)
-    this.props.onChange(moment)
+    this.props.onChange(this._cleanMoment(moment))
   }
 
   changeMinutes (minutes) {
     let moment = this.props.moment.clone()
     moment.minutes(minutes)
-    this.props.onChange(moment)
+    this.props.onChange(this._cleanMoment(moment))
   }
 
   changeSeconds (seconds) {
     let moment = this.props.moment.clone()
     moment.seconds(seconds)
-    this.props.onChange(moment)
+    this.props.onChange(this._cleanMoment(moment))
   }
 }
