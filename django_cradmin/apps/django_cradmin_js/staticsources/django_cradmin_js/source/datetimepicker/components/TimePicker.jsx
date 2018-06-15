@@ -42,10 +42,9 @@ export default class TimePicker extends React.Component {
   }
 
   renderHourPicker () {
-    return <label className='label'>
+    return <label className='label' key={'hour'}>
       {gettext('Hours')}:
       <RangeSlider
-        key={'hour'}
         value={this.props.moment.hour()}
         min={0}
         max={23}
@@ -55,13 +54,12 @@ export default class TimePicker extends React.Component {
   }
 
   renderMinutePicker () {
-    return <label className='label'>
+    return <label className='label' key={'minute'}>
       {gettext('Minutes')}:
       <RangeSlider
-        key={'minute'}
         value={this.props.moment.minute()}
         min={0}
-        max={23}
+        max={59}
         onChange={this.changeMinutes.bind(this)}
       />
     </label>
@@ -71,10 +69,9 @@ export default class TimePicker extends React.Component {
     if (!this.props.showSeconds) {
       return null
     }
-    return <label className='label'>
+    return <label className='label' key={'second'}>
       {gettext('Seconds')}:
       <RangeSlider
-        key={'second'}
         value={this.props.moment.second()}
         min={0}
         max={59}

@@ -84,7 +84,7 @@ export default class DateTimePicker extends React.Component {
       onClick={this.handleClickTab.bind(this, tabName)}
     >
       <span className={iconClassName} aria-hidden='true' />
-      {label}
+      {' '}{label}
     </button>
   }
 
