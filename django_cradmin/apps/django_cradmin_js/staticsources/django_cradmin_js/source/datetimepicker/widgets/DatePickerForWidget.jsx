@@ -9,7 +9,7 @@ export default class DatePickerForWidget extends React.Component {
       moment: null,
       locale: null,
       bemBlock: 'datetimepicker',
-      bemVariants: []
+      bemVariants: ['sane-max-width']
     }
   }
 
@@ -37,6 +37,10 @@ export default class DatePickerForWidget extends React.Component {
     return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
   }
 
+  get bodyClassName () {
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'body', ['outlined'])
+  }
+
   get previewClassName () {
     return BemUtilities.buildBemElement(this.props.bemBlock, 'preview')
   }
@@ -50,7 +54,6 @@ export default class DatePickerForWidget extends React.Component {
       moment: this.state.inputMoment,
       locale: this.props.locale,
       onChange: (moment) => {
-        console.log('YEY')
         this.setState({inputMoment: moment})
       }
     }
@@ -67,8 +70,10 @@ export default class DatePickerForWidget extends React.Component {
 
   render () {
     return <div className={this.className}>
-      {this.renderPreview()}
-      {this.renderDatePicker()}
+      <div className={this.bodyClassName}>
+        {this.renderPreview()}
+        {this.renderDatePicker()}
+      </div>
     </div>
   }
 }

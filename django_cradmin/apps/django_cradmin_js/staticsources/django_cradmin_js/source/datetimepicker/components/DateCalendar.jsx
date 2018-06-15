@@ -54,8 +54,7 @@ export default class DateCalendar extends React.Component {
     const bemVariants = []
     if (isInPrevMonth || isInNextMonth) {
       bemVariants.push('muted')
-    }
-    else if (day === currentDay) {
+    } else if (day === currentDay) {
       bemVariants.push('selected')
     }
     return BemUtilities.buildBemElement(this.props.bemBlock, 'day', bemVariants)
@@ -67,7 +66,9 @@ export default class DateCalendar extends React.Component {
       tabIndex={0}
       key={day}
       className={this.makeDayClassName(day, week, currentDay)}
-      onClick={() => this.props.onDaySelect(day, week)}
+      onClick={() => {
+        this.props.onDaySelect(day, week)
+      }}
     >
       {day}
     </div>
