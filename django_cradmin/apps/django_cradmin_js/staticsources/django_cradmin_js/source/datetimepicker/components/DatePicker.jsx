@@ -115,14 +115,15 @@ export default class DatePicker extends React.Component {
     if (!this.props.showTodayButton) {
       return null
     }
-    return <button
-      key={'todayButton'}
-      type={'button'}
-      className={'button button--compact button--block'}
-      onClick={this.onClickTodayButton.bind(this)}
-    >
-      {this.renderTodayButtonLabel()}
-    </button>
+    return <div className="text-center" key={'todayButton'}>
+      <button
+        type={'button'}
+        className={'button button--compact'}
+        onClick={this.onClickTodayButton.bind(this)}
+      >
+        {this.renderTodayButtonLabel()}
+      </button>
+    </div>
   }
 
   render () {

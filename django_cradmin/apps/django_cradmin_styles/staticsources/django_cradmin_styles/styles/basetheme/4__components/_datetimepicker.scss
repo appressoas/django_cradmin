@@ -8,9 +8,6 @@ Example: {type: isolated}
 
     <div class="datetimepicker datetimepicker--sane-max-width">
         <div class="datetimepicker__body datetimepicker__body--outlined">
-            <p class="datetimepicker__preview">
-                Jun 15 2018 14:33
-            </p>
             <div class="buttonbar buttonbar--stretch buttonbar--tinymargin">
                 <button class="buttonbar__button buttonbar__button--secondary-fill" title="Date">
                     <span class="cricon cricon--calendar-grid" aria-hidden="true"></span>
@@ -100,6 +97,9 @@ Example: {type: isolated}
                     </div>
                 </div>
             </div>
+            <p class="datetimepicker__preview">
+                Jun 15 2018 14:33
+            </p>
         </div>
     </div>
 
@@ -128,9 +128,6 @@ Example: Modal
                 Select a publishing time
             </div>
 
-            <p class="datetimepicker__preview">
-                Jun 15 2018 14:33
-            </p>
             <div class="buttonbar buttonbar--stretch buttonbar--tinymargin">
                 <button class="buttonbar__button buttonbar__button--secondary-fill" title="Date">
                     <span class="cricon cricon--calendar-grid" aria-hidden="true"></span>
@@ -223,6 +220,9 @@ Example: Modal
             <button class="button button--compact button--block">
                 Today
             </button>
+            <p class="datetimepicker__preview">
+                Jun 15 2018 14:33
+            </p>
             <button class="button button--primary button--block">
                 Use
             </button>
@@ -303,11 +303,14 @@ Styleguide components.datetimepicker
     }
 
     &__preview {
+        margin-top: $spacing;
         margin-bottom: $spacing--small;
         color: $color-muted;
-        padding-bottom: $unit;
+        text-align: center;
         @include font(base, bold);
-        border-bottom: $border-style--small;
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     &--sane-max-width {

@@ -10,7 +10,9 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       bemBlock: 'datetimepicker',
       bemVariants: [],
       hiddenFieldName: null,
-      hiddenFieldFormat: 'YYYY-MM-DD HH:mm:ss'
+      hiddenFieldFormat: 'YYYY-MM-DD HH:mm:ss',
+      selectedPreviewFormat: null,
+      bodyBemVariants: []
     }
   }
 
@@ -21,7 +23,9 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       hiddenFieldName: PropTypes.string,
-      hiddenFieldFormat: PropTypes.string.isRequired
+      hiddenFieldFormat: PropTypes.string.isRequired,
+      selectedPreviewFormat: PropTypes.string.isRequired,
+      bodyBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
     }
   }
 
@@ -32,7 +36,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   makeInitialState () {
     return {
-      inputMoment: this.props.moment
+      selectedMoment: this.props.moment
     }
   }
 
@@ -41,7 +45,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get bodyClassName () {
-    return BemUtilities.buildBemElement(this.props.bemBlock, 'body', ['outlined'])
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'body', this.props.bodyBemVariants)
   }
 
   get previewClassName () {
@@ -54,16 +58,22 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   get pickerComponentProps () {
     return {
-      moment: this.state.inputMoment,
+      moment: this.state.selectedMoment,
       locale: this.props.locale,
       onChange: (moment) => {
-        this.setState({inputMoment: moment})
+        this.setState({selectedMoment: moment})
       }
     }
   }
 
+  get selectedMomentPreviewFormatted () {
+    return this.state.selectedMoment.format(this.props.selectedPreviewFormat)
+  }
+
   renderPreview () {
-    return <p key={'preview'} className={this.previewClassName}>{this.state.inputMoment.format('ll')}</p>
+    return <p key={'preview'} className={this.previewClassName}>
+      {this.selectedMomentPreviewFormatted}
+    </p>
   }
 
   renderPicker () {
@@ -73,8 +83,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   renderBodyContent () {
     return [
-      this.renderPreview(),
-      this.renderPicker()
+      this.renderPicker(),
+      this.renderPreview()
     ]
   }
 
@@ -85,7 +95,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get hiddenFieldValue () {
-    return this.state.inputMoment.format(this.props.hiddenFieldFormat)
+    return this.state.selectedMoment.format(this.props.hiddenFieldFormat)
   }
 
   renderHiddenField () {

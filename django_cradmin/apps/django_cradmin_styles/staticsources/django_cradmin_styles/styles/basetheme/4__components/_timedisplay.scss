@@ -123,6 +123,7 @@ Styleguide components.timepicker
     flex-wrap: nowrap;
     align-items: center;
     @include font-size(small);
+    cursor: default;
 
     &__number, &__separator {
         display: block;

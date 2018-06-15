@@ -99,14 +99,15 @@ export default class TimePicker extends React.Component {
     if (!this.props.showNowButton) {
       return null
     }
-    return <button
-      key={'nowButton'}
-      type={'button'}
-      className={'button button--compact button--block'}
-      onClick={this.onClickNowButton.bind(this)}
-    >
-      {this.renderNowButtonLabel()}
-    </button>
+    return <div className="text-center" key={'nowButton'}>
+      <button
+        type={'button'}
+        className={'button button--compact'}
+        onClick={this.onClickNowButton.bind(this)}
+      >
+        {this.renderNowButtonLabel()}
+      </button>
+    </div>
   }
 
   render () {
