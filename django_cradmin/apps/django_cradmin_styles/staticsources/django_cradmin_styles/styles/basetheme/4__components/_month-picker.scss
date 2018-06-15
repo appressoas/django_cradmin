@@ -82,13 +82,13 @@ Styleguide components.month-picker
         }
 
         &:hover {
-            background-color: color(primary);
+            background-color: color(secondary);
         }
 
         &:focus,
         &:active,
         &--selected {
-            background-color: color(primary, dark);
+            background-color: color(secondary, dark);
         }
 
         &--muted {

@@ -71,9 +71,9 @@ export default class DateTimePicker extends React.Component {
   makeTabButtonClassName (tabName) {
     const bemVariants = []
     if (tabName === this.state.tabName) {
-      bemVariants.push('primary-fill')
+      bemVariants.push('secondary-fill')
     } else {
-      bemVariants.push('primary')
+      bemVariants.push('secondary')
     }
     return `${BemUtilities.buildBemElement('buttonbar', 'button')} ${BemUtilities.addVariants('button', bemVariants)}`
   }
