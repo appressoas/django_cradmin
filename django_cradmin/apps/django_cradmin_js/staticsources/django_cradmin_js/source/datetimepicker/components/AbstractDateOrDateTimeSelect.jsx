@@ -47,6 +47,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   triggerOnChange (useMoment, onComplete = null) {
     this.setState({
+      selectedMoment: useMoment,
       useMoment: useMoment
     }, () => {
       if (this.props.onChange !== null) {
@@ -96,7 +97,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return this.state.useMoment.format(this.props.selectedPreviewFormat)
   }
 
-  renderPreview () {
+  renderSelectedPreview () {
     return <p key={'preview'} className={this.previewClassName}>
       {this.selectedMomentPreviewFormatted}
     </p>
@@ -110,7 +111,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   renderBodyContent () {
     return [
       this.renderPicker(),
-      this.renderPreview()
+      this.renderSelectedPreview()
     ]
   }
 

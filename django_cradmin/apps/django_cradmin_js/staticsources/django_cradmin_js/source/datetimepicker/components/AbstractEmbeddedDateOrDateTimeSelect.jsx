@@ -9,11 +9,7 @@ export default class AbstractEmbeddedDateOrDateTimeSelect extends AbstractDateOr
   }
 
   setSelectedMoment (selectedMoment) {
-    this.setState({
-      selectedMoment: selectedMoment
-    }, () => {
-      this.triggerOnChange(selectedMoment)
-    })
+    this.triggerOnChange(selectedMoment)
   }
 
   renderContent () {

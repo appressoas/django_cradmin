@@ -9,23 +9,21 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return Object.assign({}, super.defaultProps, {
       bemVariants: ['modal'],
       bodyBemVariants: ['modal'],
-      openButtonBemBlock: 'button',
-      openButtonBemVariants: [],
       useButtonBemBlock: 'button',
       useButtonBemVariants: ['block', 'primary'],
       noneSelectedButtonLabel: null,
       title: null,
-      useButtonLabel: pgettext('datetimepicker', 'Use')
+      useButtonLabel: pgettext('datetimepicker', 'Use'),
+      openModalButtonLabel: pgettext('datetimepicker', 'Select')
     })
   }
 
   static get propTypes () {
     return Object.assign({}, {
-      openButtonBemBlock: PropTypes.string.isRequired,
-      openButtonBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
-      noneSelectedButtonLabel: PropTypes.string.isRequired,
+      noneSelectedButtonLabel: PropTypes.string,
       title: PropTypes.string.isRequired,
-      useButtonLabel: PropTypes.string.isRequired
+      useButtonLabel: PropTypes.string.isRequired,
+      openModalButtonLabel: PropTypes.string.isRequired
     })
   }
 
@@ -46,10 +44,6 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     this.setState({
       selectedMoment: selectedMoment
     })
-  }
-
-  get openButtonClassName () {
-    return BemUtilities.addVariants(this.props.openButtonBemBlock, this.props.openButtonBemVariants)
   }
 
   get useButtonClassName () {
@@ -100,17 +94,47 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     })
   }
 
-  renderOpenButtonLabel () {
-    if (this.state.useMoment === null) {
-      return this.props.noneSelectedButtonLabel
-    }
-    return this.useMomentPreviewFormatted
+  renderOpenButton () {
+    return <button
+      type={'button'}
+      key={'openButton'}
+      className={'buttonbar__button buttonbar__button--secondary'}
+      onClick={this.onOpenButtonClick}
+    >
+      <span className='cricon cricon--calendar' aria-hidden='true' />
+      {' '}
+      {this.props.openModalButtonLabel}
+    </button>
   }
 
-  renderOpenButton () {
-    return <button type={'button'} className={this.openButtonClassName} onClick={this.onOpenButtonClick}>
-      {this.renderOpenButtonLabel()}
-    </button>
+  renderUsePreviewLabel () {
+    let label = this.props.noneSelectedButtonLabel
+    if (this.state.useMoment !== null) {
+      label = this.useMomentPreviewFormatted
+    }
+    if (label === null) {
+      return null
+    }
+    return <span className='datetime-preview__label'>
+      {label}
+    </span>
+  }
+
+  renderUsePreviewButtons () {
+    return [
+      this.renderOpenButton()
+    ]
+  }
+
+  renderUsePreviewBox () {
+    return <div>
+      <div className='datetime-preview'>
+        {this.renderUsePreviewLabel()}
+        <span className='buttonbar buttonbar--inline buttonbar--nomargin'>
+          {this.renderUsePreviewButtons()}
+        </span>
+      </div>
+    </div>
   }
 
   renderCloseButton () {
@@ -171,7 +195,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   render () {
     return <div>
-      {this.renderOpenButton()}
+      {this.renderUsePreviewBox()}
       {this.renderModal()}
       {this.renderHiddenField()}
     </div>

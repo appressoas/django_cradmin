@@ -53,6 +53,15 @@ Example: {type: isolated} Compact buttons
     </nav>
 
 
+
+Example: {type: isolated} Single button works too!
+    <nav class="buttonbar">
+        <button class="buttonbar__button">
+            H1
+        </button>
+    </nav>
+
+
 Example: {type: isolated} --center
     <!--
     Do not combine this with buttonbar--inline. If you want to center inlined
