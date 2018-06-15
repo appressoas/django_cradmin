@@ -63,6 +63,8 @@ export default class DateCalendar extends React.Component {
 
   renderDay (day, week, currentDay) {
     return <div
+      role={'button'}
+      tabIndex={0}
       key={day}
       className={this.makeDayClassName(day, week, currentDay)}
       onClick={() => this.props.onDaySelect(day, week)}
@@ -105,7 +107,7 @@ export default class DateCalendar extends React.Component {
       )
     )
     return chunk(days, 7).map((daysInWeek, week) => {
-      return this.renderDaysInWeek(daysInWeek, week, currentDay)
+      return this.renderWeek(daysInWeek, week, currentDay)
     })
   }
 
@@ -138,39 +140,9 @@ export default class DateCalendar extends React.Component {
   }
 
   render () {
-    let currentDay = this.props.moment.date()
-    let firstDayOfWeek = this.props.moment.localeData().firstDayOfWeek()
-    let endOfPreviousMonth = this.props.moment.clone().subtract(1, 'month').endOf('month').date()
-    let startDayOfCurrentMonth = this.props.moment.clone().date(1).day()
-    let endOfCurrentMonth = this.props.moment.clone().endOf('month').date()
-
-    let days = [].concat(
-      range(
-        (endOfPreviousMonth - startDayOfCurrentMonth + firstDayOfWeek + 1),
-        (endOfPreviousMonth + 1)
-      ),
-      range(
-        1,
-        (endOfCurrentMonth + 1)
-      ),
-      range(
-        1,
-        (42 - endOfCurrentMonth - startDayOfCurrentMonth + firstDayOfWeek + 1)
-      )
-    )
-
-    return (
-      <div className={this.className}>
-        {this.renderHeader()}
-
-        <div className={this.bodyClassName}>
-          {chunk(days, 7).map((row, week) => (
-            <div key={week} className={this.weekClassName}>
-              {row.map(day => this.renderDay(day, week, currentDay))}
-            </div>
-          ))}
-        </div>
-      </div>
-    )
+    return <div className={this.className}>
+      {this.renderHeader()}
+      {this.renderBody()}
+    </div>
   }
 }

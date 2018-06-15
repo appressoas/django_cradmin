@@ -50,6 +50,7 @@ export default class DatePickerForWidget extends React.Component {
       moment: this.state.inputMoment,
       locale: this.props.locale,
       onChange: (moment) => {
+        console.log('YEY')
         this.setState({inputMoment: moment})
       }
     }

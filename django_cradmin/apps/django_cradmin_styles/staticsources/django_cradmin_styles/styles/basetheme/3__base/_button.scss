@@ -241,7 +241,6 @@ Styleguide form.2:buttons
         color(primary, dark)
     );
 
-    // TODO: Remove?
     @include button-modifier(
         'secondary',
         color(secondary, dark),

@@ -37,6 +37,20 @@ export default class DateTimePicker extends React.Component {
     }
   }
 
+  get tabsClassName () {
+    return BemUtilities.addVariants('buttonbar', ['stretch', 'tinymargin'])
+  }
+
+  makeTabButtonClassName (tabName) {
+    const bemVariants = []
+    if (tabName === this.state.tabName) {
+      bemVariants.push('secondary-fill')
+    } else {
+      bemVariants.push('secondary')
+    }
+    return BemUtilities.buildBemElement('buttonbar', 'button', bemVariants)
+  }
+
   renderDatePicker () {
     return <DatePicker
       key={'datePicker'}
@@ -62,20 +76,6 @@ export default class DateTimePicker extends React.Component {
     } else {
       return this.renderTimePicker()
     }
-  }
-
-  get tabsClassName () {
-    return BemUtilities.addVariants('buttonbar', ['stretch', 'tinymargin'])
-  }
-
-  makeTabButtonClassName (tabName) {
-    const bemVariants = []
-    if (tabName === this.state.tabName) {
-      bemVariants.push('secondary-fill')
-    } else {
-      bemVariants.push('secondary')
-    }
-    return `${BemUtilities.buildBemElement('buttonbar', 'button')} ${BemUtilities.addVariants('button', bemVariants)}`
   }
 
   renderTabButton (tabName, label, iconClassName) {

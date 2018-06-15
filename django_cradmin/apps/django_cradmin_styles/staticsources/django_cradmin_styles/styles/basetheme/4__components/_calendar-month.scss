@@ -102,8 +102,11 @@ Styleguide components.calendar-month
 
     &__header-day {
         @include font(base, bold);
-        @include font-size(xsmall);
+        @include font-size(xxsmall);
         text-transform: uppercase;
+        @include min-width(md) {
+            @include font-size(xsmall);
+        }
     }
 
     &__day {

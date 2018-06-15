@@ -2,44 +2,67 @@
 
 Example: {type: isolated}
     <nav class="buttonbar">
-        <button class="buttonbar__button button button--primary">
+        <button class="buttonbar__button">
             H1
         </button>
-        <button class="buttonbar__button button button--primary">
+        <button class="buttonbar__button">
             H2
         </button>
-        <button class="buttonbar__button button">
+        <button class="buttonbar__button">
             <strong>B</strong>
         </button>
-        <button class="buttonbar__button button">
+        <button class="buttonbar__button">
             <em>I</em>
+        </button>
+    </nav>
+
+
+Example: {type: isolated} Multiple on one line
+    <nav class="buttonbar buttonbar--inline">
+        <button class="buttonbar__button">
+            H1
+        </button>
+        <button class="buttonbar__button">
+            H2
+        </button>
+        <button class="buttonbar__button">
+            <strong>B</strong>
+        </button>
+        <button class="buttonbar__button">
+            <em>I</em>
+        </button>
+    </nav>
+    <nav class="buttonbar buttonbar--inline">
+        <button class="buttonbar__button">
+            Left
+        </button>
+        <button class="buttonbar__button">
+            Right
         </button>
     </nav>
 
 
 Example: {type: isolated} Compact buttons
     <nav class="buttonbar">
-        <button class="buttonbar__button button button--compact button--primary">
+        <button class="buttonbar__button buttonbar__button--compact">
             H1
         </button>
-        <button class="buttonbar__button button button--compact button--primary">
+        <button class="buttonbar__button buttonbar__button--compact">
             H2
-        </button>
-        <button class="buttonbar__button button button--compact">
-            <strong>B</strong>
-        </button>
-        <button class="buttonbar__button button button--compact">
-            <em>I</em>
         </button>
     </nav>
 
 
-Example: {type: isolated}
-    <nav class="buttonbar">
-        <button class="buttonbar__button button button--primary-fill">
+Example: {type: isolated} --center
+    <!--
+    Do not combine this with buttonbar--inline. If you want to center inlined
+    buttonbar, wrap it in a block element (div) with "text-center" class.
+    -->
+    <nav class="buttonbar buttonbar--center">
+        <button class="buttonbar__button">
             Yes
         </button>
-        <button class="buttonbar__button button button--primary">
+        <button class="buttonbar__button">
             No
         </button>
     </nav>
@@ -47,56 +70,182 @@ Example: {type: isolated}
 
 Example: {type: isolated} --stretch
     <nav class="buttonbar buttonbar--stretch">
-        <button class="buttonbar__button button button--primary-fill">
+        <button class="buttonbar__button">
             Yes
         </button>
-        <button class="buttonbar__button button button--primary">
+        <button class="buttonbar__button">
             No
         </button>
     </nav>
 
 Styleguide components.buttonbar
 */
+
+/** Buttonbar - button colors
+
+Example: Default and --fill
+    <nav class="buttonbar">
+        <button class="buttonbar__button buttonbar__button--fill">
+            --fill
+        </button>
+        <button class="buttonbar__button">
+            Default
+        </button>
+    </nav>
+
+Example: --primary and --primary-fill
+    <nav class="buttonbar">
+        <button class="buttonbar__button buttonbar__button--primary-fill">
+            --primary-fill
+        </button>
+        <button class="buttonbar__button buttonbar__button--primary">
+            --primary
+        </button>
+    </nav>
+
+Example: --secondary and --secondary-fill
+    <nav class="buttonbar">
+        <button class="buttonbar__button buttonbar__button--secondary-fill">
+            --secondary-fill
+        </button>
+        <button class="buttonbar__button buttonbar__button--secondary">
+            --secondary
+        </button>
+    </nav>
+
+Example: --warning and --warning-fill
+    <nav class="buttonbar">
+        <button class="buttonbar__button buttonbar__button--warning-fill">
+            --warning-fill
+        </button>
+        <button class="buttonbar__button buttonbar__button--warning">
+            --warning
+        </button>
+    </nav>
+
+Example: --success and --success-fill
+    <nav class="buttonbar">
+        <button class="buttonbar__button buttonbar__button--success-fill">
+            --success-fill
+        </button>
+        <button class="buttonbar__button buttonbar__button--success">
+            --success
+        </button>
+    </nav>
+
+Example: --light and --light-fill
+    <div style="background-color: #000; padding: 10px;">
+        <nav class="buttonbar">
+            <button class="buttonbar__button buttonbar__button--light-fill">
+                --light-fill
+            </button>
+            <button class="buttonbar__button buttonbar__button--light">
+                --light
+            </button>
+        </nav>
+    </div>
+
+
+Styleguide components.buttonbar.buttoncolor
+ */
+
+@mixin buttonbar-button-modifier($name, $border-color, $text-color, $background-color-hover, $text-color-hover: false) {
+    &--#{$name} {
+        @include button-style(
+            $border-color: $border-color,
+            $text-color: $text-color,
+            $background-color-hover: $background-color-hover,
+            $text-color-hover: $text-color-hover
+        );
+    }
+
+    &--#{$name}-fill {
+        @include button-style-fill(
+            $border-color: $background-color-hover,
+            $background-color: $background-color-hover,
+            $text-color-hover: $text-color,
+            $text-color: $text-color-hover
+        );
+    }
+}
+
+
 .buttonbar {
     $__root: &;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     padding-right: $border-width;
     padding-bottom: $border-width;
     margin-bottom: vertical-space($spacing--small);
 
     &__button {
+        @include button($responsive: false);
+
         margin-right: -($border-width);
         margin-bottom: $border-width;
         border-radius: 0;
+        width: auto;
 
-        &:nth-of-type(odd) {
+        &:first-child {
             border-top-left-radius: $border-radius;
             border-bottom-left-radius: $border-radius;
         }
 
-        &:nth-of-type(even) {
+        &:last-child {
             border-top-right-radius: $border-radius;
             border-bottom-right-radius: $border-radius;
         }
 
-        @include min-width(md) {
-            width: auto;
-
-            &:not(:first-child) {
-                border-radius: 0;
-            }
-
-            &:last-child {
-                border-top-right-radius: $border-radius;
-                border-bottom-right-radius: $border-radius;
-            }
-        }
-
         &--fill {
-            @extend .button--fill;
+            color: $color-light;
+            border-color: color(neutral, dark);
+            background-color: color(neutral, dark);
+
+            &:hover,
+            &:focus,
+            &:active {
+                color: $color-text;
+                border-color: color(neutral, dark);
+                background-color: transparent;
+            }
         }
+
+        @include buttonbar-button-modifier(
+            'primary',
+            color(primary, dark),
+            color(primary, dark),
+            color(primary, dark)
+        );
+
+        @include buttonbar-button-modifier(
+            'secondary',
+            color(secondary, dark),
+            color(secondary, dark),
+            color(secondary, dark)
+        );
+
+        @include buttonbar-button-modifier(
+            'warning',
+            color(warning, dark),
+            color(warning, dark),
+            color(warning, dark)
+        );
+
+        @include buttonbar-button-modifier(
+            'success',
+            color(success, dark),
+            color(success, dark),
+            color(success, dark)
+        );
+
+        @include buttonbar-button-modifier(
+            'light',
+            $color-light,
+            $color-light,
+            $color-light,
+            color(primary)
+        );
     }
 
     &--nomargin {
@@ -112,5 +261,13 @@ Styleguide components.buttonbar
         #{$__root}__button {
             flex: 1 1 auto;
         }
+    }
+
+    &--inline {
+        display: inline-flex;
+    }
+
+    &--center {
+        justify-content: center;
     }
 }
