@@ -1,5 +1,5 @@
-import cx from 'classnames'
 import React from 'react'
+import moment from 'moment'
 import range from 'lodash/range'
 import chunk from 'lodash/chunk'
 import PropTypes from 'prop-types'
@@ -56,6 +56,9 @@ export default class DateCalendar extends React.Component {
       bemVariants.push('muted')
     } else if (day === currentDay) {
       bemVariants.push('selected')
+    }
+    if (day === moment().date()) {
+      bemVariants.push('today')
     }
     return BemUtilities.buildBemElement(this.props.bemBlock, 'day', bemVariants)
   }

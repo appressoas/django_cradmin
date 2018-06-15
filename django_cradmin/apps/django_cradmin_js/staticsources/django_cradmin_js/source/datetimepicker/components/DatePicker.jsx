@@ -1,5 +1,6 @@
 import moment from 'moment'
 import React from 'react'
+import { gettext } from 'ievv_jsbase/lib/gettext'
 
 import DateCalendar from './DateCalendar'
 import DateMonths from './DateMonths'
@@ -12,7 +13,8 @@ export default class DatePicker extends React.Component {
     return {
       moment: null,
       locale: null,
-      onChange: null
+      onChange: null,
+      showTodayButton: true
     }
   }
 
@@ -20,7 +22,8 @@ export default class DatePicker extends React.Component {
     return {
       moment: PropTypes.any,
       locale: PropTypes.string,
-      onChange: PropTypes.func.isRequired
+      onChange: PropTypes.func.isRequired,
+      showTodayButton: PropTypes.bool
     }
   }
 
@@ -104,35 +107,54 @@ export default class DatePicker extends React.Component {
     return <ToolbarComponent {...this.toolbarComponentProps} />
   }
 
+  renderTodayButtonLabel () {
+    return gettext('Today')
+  }
+
+  renderTodayButton () {
+    if (!this.props.showTodayButton) {
+      return null
+    }
+    return <button
+      key={'todayButton'}
+      type={'button'}
+      className={'button button--compact button--block'}
+      onClick={this.onClickTodayButton.bind(this)}
+    >
+      {this.renderTodayButtonLabel()}
+    </button>
+  }
+
   render () {
     return [
       this.renderToolbar(),
-      this.renderPicker()
+      this.renderPicker(),
+      this.renderTodayButton()
     ]
   }
 
   onPrevMonth (e) {
     e.preventDefault()
-    let moment = this.getMoment().clone()
-    this.props.onChange(moment.subtract(1, 'month'))
+    let momentObject = this.getMoment().clone()
+    this.props.onChange(momentObject.subtract(1, 'month'))
   }
 
   onNextMonth (e) {
     e.preventDefault()
-    let moment = this.getMoment().clone()
-    this.props.onChange(moment.add(1, 'month'))
+    let momentObject = this.getMoment().clone()
+    this.props.onChange(momentObject.add(1, 'month'))
   }
 
   onPrevYear (e) {
     e.preventDefault()
-    let moment = this.getMoment().clone()
-    this.props.onChange(moment.subtract(1, 'year'))
+    let momentObject = this.getMoment().clone()
+    this.props.onChange(momentObject.subtract(1, 'year'))
   }
 
   onNextYear (e) {
     e.preventDefault()
-    let moment = this.getMoment().clone()
-    this.props.onChange(moment.add(1, 'year'))
+    let momentObject = this.getMoment().clone()
+    this.props.onChange(momentObject.add(1, 'year'))
   }
 
   onToggleMode () {
@@ -141,21 +163,30 @@ export default class DatePicker extends React.Component {
     })
   }
 
+  onClickTodayButton () {
+    const today = moment()
+    let momentObject = this.props.moment.clone()
+    momentObject.year(today.year())
+    momentObject.month(today.month())
+    momentObject.date(today.date())
+    this.props.onChange(momentObject)
+  }
+
   onDaySelect (day, week) {
-    let moment = this.props.moment.clone()
+    let momentObject = this.props.moment.clone()
     let prevMonth = (week === 0 && day > 7)
     let nextMonth = (week >= 4 && day <= 14)
 
-    moment.date(day)
-    if (prevMonth) moment.subtract(1, 'month')
-    if (nextMonth) moment.add(1, 'month')
-    this.props.onChange(moment)
+    momentObject.date(day)
+    if (prevMonth) momentObject.subtract(1, 'month')
+    if (nextMonth) momentObject.add(1, 'month')
+    this.props.onChange(momentObject)
   }
 
   onMonthSelect (monthNumber) {
-    let moment = this.props.moment.clone()
+    let momentObject = this.props.moment.clone()
     this.setState({mode: 'calendar'}, () => {
-      this.props.onChange(moment.month(monthNumber))
+      this.props.onChange(momentObject.month(monthNumber))
     })
   }
 }

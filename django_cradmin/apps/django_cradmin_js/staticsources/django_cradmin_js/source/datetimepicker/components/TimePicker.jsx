@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import TimeDisplay from './TimeDisplay'
 import RangeSlider from '../../components/RangeSlider'
 import { gettext } from 'ievv_jsbase/lib/gettext'
+import moment from 'moment/moment'
 
 export default class TimePicker extends React.Component {
   static get defaultProps () {
@@ -10,7 +11,8 @@ export default class TimePicker extends React.Component {
       moment: null,
       locale: null,
       showSeconds: false,
-      onChange: null
+      onChange: null,
+      showNowButton: true
     }
   }
 
@@ -19,7 +21,8 @@ export default class TimePicker extends React.Component {
       moment: PropTypes.any,
       locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
-      onChange: PropTypes.func.isRequired
+      onChange: PropTypes.func.isRequired,
+      showNowButton: PropTypes.bool
     }
   }
 
@@ -88,11 +91,40 @@ export default class TimePicker extends React.Component {
     ]
   }
 
+  renderNowButtonLabel () {
+    return gettext('Now')
+  }
+
+  renderNowButton () {
+    if (!this.props.showNowButton) {
+      return null
+    }
+    return <button
+      key={'nowButton'}
+      type={'button'}
+      className={'button button--compact button--block'}
+      onClick={this.onClickNowButton.bind(this)}
+    >
+      {this.renderNowButtonLabel()}
+    </button>
+  }
+
   render () {
     return [
       this.renderTimeDisplayWrapper(),
-      this.renderTimePickers()
+      this.renderTimePickers(),
+      this.renderNowButton()
     ]
+  }
+
+  onClickNowButton () {
+    const today = moment()
+    let momentObject = this.props.moment.clone()
+    momentObject.hour(today.hour())
+    momentObject.minute(today.minute())
+    momentObject.second(today.second())
+    momentObject.millisecond(0)
+    this.props.onChange(momentObject)
   }
 
   changeHours (hours) {

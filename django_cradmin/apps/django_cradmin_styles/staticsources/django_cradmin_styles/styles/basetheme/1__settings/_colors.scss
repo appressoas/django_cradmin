@@ -65,6 +65,7 @@ $colors: (
         dark: shade($__color-success-base, 20%)
     ),
     info: (
+        light: tint($__color-info-base, 50%),
         base: $__color-info-base,
         dark: shade($__color-info-base, 20%)
     )

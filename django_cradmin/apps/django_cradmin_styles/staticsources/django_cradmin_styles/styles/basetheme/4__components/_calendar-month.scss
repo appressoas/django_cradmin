@@ -80,6 +80,11 @@ Styleguide components.calendar-month
     border-spacing: 0;
     table-layout: fixed;
     width: 100%;
+    margin-bottom: $unit;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     &__header {
         display: table-header-group;
@@ -123,6 +128,10 @@ Styleguide components.calendar-month
 
         &:hover {
             background-color: color(secondary);
+        }
+
+        &--today {
+            background-color: color(info, light);
         }
 
         &:focus,
