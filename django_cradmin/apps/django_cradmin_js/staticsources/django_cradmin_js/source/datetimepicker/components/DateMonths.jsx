@@ -34,7 +34,10 @@ export default class DateMonths extends React.Component {
   }
 
   renderMonth (monthNumber, monthName) {
-    return <button className={this.getMonthClassName(monthNumber)} onClick={() => this.props.onMonthSelect(monthNumber)}>
+    return <button key={monthNumber}
+      className={this.getMonthClassName(monthNumber)}
+      onClick={() => this.props.onMonthSelect(monthNumber)}
+    >
       {monthName}
     </button>
   }
