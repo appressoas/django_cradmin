@@ -141,7 +141,6 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
     />
   }
 
-
   render () {
     return this.renderWrappedComponent()
   }
