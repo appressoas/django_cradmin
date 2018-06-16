@@ -148,7 +148,7 @@ export default class TimePicker extends React.Component {
 
   _cleanMoment (momentObject) {
     momentObject.millisecond(0)
-    if (!this.showSeconds) {
+    if (!this.props.showSeconds) {
       momentObject.second(0)
     }
     return momentObject

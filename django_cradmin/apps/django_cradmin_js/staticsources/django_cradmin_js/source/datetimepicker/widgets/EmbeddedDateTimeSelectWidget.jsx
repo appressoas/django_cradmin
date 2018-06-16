@@ -4,7 +4,8 @@ import AbstractDateOrDateTimeSelectWidget from './AbstractDateOrDateTimeSelectWi
 export default class EmbeddedDateTimeSelectWidget extends AbstractDateOrDateTimeSelectWidget {
   getDefaultConfig () {
     return Object.assign({}, super.getDefaultConfig(), {
-      hiddenFieldFormat: 'YYYY-MM-DD HH:mm:ss'
+      hiddenFieldFormat: 'YYYY-MM-DD HH:mm:ss',
+      showSeconds: false
     })
   }
 
