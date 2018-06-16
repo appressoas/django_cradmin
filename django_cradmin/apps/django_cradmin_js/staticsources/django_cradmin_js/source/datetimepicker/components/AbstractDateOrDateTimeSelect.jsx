@@ -9,8 +9,6 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       locale: null,
       bemBlock: 'datetimepicker',
       bemVariants: [],
-      hiddenFieldName: null,
-      hiddenFieldFormat: 'YYYY-MM-DD HH:mm:ss',
       selectedPreviewFormat: null,
       bodyBemVariants: [],
       onChange: null
@@ -23,8 +21,6 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       locale: PropTypes.string,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
-      hiddenFieldName: PropTypes.string,
-      hiddenFieldFormat: PropTypes.string.isRequired,
       selectedPreviewFormat: PropTypes.string.isRequired,
       bodyBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       onChange: PropTypes.func
@@ -131,26 +127,6 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return <div key={'body'} className={this.bodyClassName}>
       {this.renderBodyContent()}
     </div>
-  }
-
-  get hiddenFieldValue () {
-    if (this.state.useMoment !== null) {
-      return this.state.useMoment.format(this.props.hiddenFieldFormat)
-    }
-    return ''
-  }
-
-  renderHiddenField () {
-    if (this.props.hiddenFieldName === null) {
-      return null
-    }
-    return <input
-      key={'hiddenField'}
-      type={'hidden'}
-      name={this.props.hiddenFieldName}
-      value={this.hiddenFieldValue}
-      readOnly
-    />
   }
 
   renderContent () {

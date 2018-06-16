@@ -11,11 +11,4 @@ export default class AbstractEmbeddedDateOrDateTimeSelect extends AbstractDateOr
   setSelectedMoment (selectedMoment) {
     this.triggerOnChange(selectedMoment)
   }
-
-  renderContent () {
-    return [
-      ...super.renderContent(),
-      this.renderHiddenField()
-    ]
-  }
 }

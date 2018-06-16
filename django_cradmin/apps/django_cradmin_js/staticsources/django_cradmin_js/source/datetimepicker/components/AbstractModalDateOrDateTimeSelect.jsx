@@ -197,7 +197,6 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return <div>
       {this.renderUsePreviewBox()}
       {this.renderModal()}
-      {this.renderHiddenField()}
     </div>
   }
 }
