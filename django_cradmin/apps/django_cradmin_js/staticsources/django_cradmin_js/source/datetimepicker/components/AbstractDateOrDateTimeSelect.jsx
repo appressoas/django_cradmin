@@ -34,13 +34,13 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   makeInitialState () {
     return {
-      selectedMoment: null
+      draftMomentObject: null
     }
   }
 
   static getDerivedStateFromProps (props, state) {
     return {
-      selectedMoment: props.moment
+      draftMomentObject: props.moment
     }
   }
 
@@ -50,7 +50,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   triggerOnChange (momentObject, onComplete = null) {
     this.setState({
-      selectedMoment: momentObject
+      draftMomentObject: momentObject
     }, () => {
       if (this.props.onChange !== null) {
         this.props.onChange(momentObject)
@@ -61,8 +61,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     })
   }
 
-  setSelectedMoment (selectedMoment) {
-    throw new Error('Must override setSelectedMoment()')
+  setDraftMomentObject (draftMomentObject) {
+    throw new Error('Must override setDraftMomentObject()')
   }
 
   //
@@ -87,16 +87,16 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   get pickerComponentProps () {
     return {
-      moment: this.state.selectedMoment,
+      moment: this.state.draftMomentObject,
       locale: this.props.locale,
-      onChange: (selectedMoment) => {
-        this.setSelectedMoment(selectedMoment)
+      onChange: (draftMomentObject) => {
+        this.setDraftMomentObject(draftMomentObject)
       }
     }
   }
 
-  get selectedMomentPreviewFormatted () {
-    return this.state.selectedMoment.format(this.props.selectedPreviewFormat)
+  get draftMomentObjectPreviewFormatted () {
+    return this.state.draftMomentObject.format(this.props.selectedPreviewFormat)
   }
 
   get momentObjectPreviewFormatted () {
@@ -109,7 +109,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   renderSelectedPreview () {
     return <p key={'preview'} className={this.previewClassName}>
-      {this.selectedMomentPreviewFormatted}
+      {this.draftMomentObjectPreviewFormatted}
     </p>
   }
 

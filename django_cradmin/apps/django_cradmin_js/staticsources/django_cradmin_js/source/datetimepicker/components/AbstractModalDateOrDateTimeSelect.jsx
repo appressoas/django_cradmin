@@ -40,9 +40,9 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     })
   }
 
-  setSelectedMoment (selectedMoment) {
+  setDraftMomentObject (draftMomentObject) {
     this.setState({
-      selectedMoment: selectedMoment
+      draftMomentObject: draftMomentObject
     })
   }
 
@@ -79,7 +79,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   onUseButtonClick () {
-    this.triggerOnChange(this.state.selectedMoment)
+    this.triggerOnChange(this.state.draftMomentObject)
   }
 
   onOpenButtonClick () {
