@@ -34,10 +34,13 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   makeInitialState () {
     return {
-      selectedMoment: this.props.moment,
+      selectedMoment: null
+    }
+  }
 
-      // Only set when the user actually triggers the action that triggers onChange
-      useMoment: null
+  static getDerivedStateFromProps (props, state) {
+    return {
+      selectedMoment: props.moment
     }
   }
 
@@ -45,13 +48,12 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   // Event handling and setting of selected datetime
   //
 
-  triggerOnChange (useMoment, onComplete = null) {
+  triggerOnChange (momentObject, onComplete = null) {
     this.setState({
-      selectedMoment: useMoment,
-      useMoment: useMoment
+      selectedMoment: momentObject
     }, () => {
       if (this.props.onChange !== null) {
-        this.props.onChange(useMoment)
+        this.props.onChange(momentObject)
       }
       if (onComplete !== null) {
         onComplete()
@@ -97,8 +99,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return this.state.selectedMoment.format(this.props.selectedPreviewFormat)
   }
 
-  get useMomentPreviewFormatted () {
-    return this.state.useMoment.format(this.props.selectedPreviewFormat)
+  get momentObjectPreviewFormatted () {
+    return this.props.moment.format(this.props.selectedPreviewFormat)
   }
 
   //

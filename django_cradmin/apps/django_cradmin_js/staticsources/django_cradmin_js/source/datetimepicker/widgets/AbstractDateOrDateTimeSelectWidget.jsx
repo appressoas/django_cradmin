@@ -7,11 +7,11 @@ import PropTypes from 'prop-types'
 export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
   /**
    * @returns {Object}
-   * @property moment Something that can be passed into ``moment()`` for the initial date.
+   * @property datetime Something that can be passed into ``moment()`` for the initial date.
    */
   getDefaultConfig () {
     return {
-      moment: null,
+      datetime: null,
       locale: 'en',
       hiddenFieldName: null,
       hiddenFieldFormat: null,
@@ -25,17 +25,17 @@ export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
 
   get wrapperProps () {
     let momentObject = moment()
-    if (this.config.moment !== null) {
-      momentObject = moment(this.config.moment)
+    if (this.config.datetime !== null) {
+      momentObject = moment(this.config.datetime)
     }
-    let componentProps = Object.assign({}, this.config, {
-      moment: momentObject
-    })
+    let componentProps = Object.assign({}, this.config)
     delete componentProps.hiddenFieldName
     delete componentProps.hiddenFieldFormat
+    delete componentProps.moment
     return {
       componentProps: componentProps,
       componentClass: this.componentClass,
+      momentObject: momentObject,
       hiddenFieldName: this.config.hiddenFieldName,
       hiddenFieldFormat: this.config.hiddenFieldFormat,
       debug: this.config.debug
@@ -62,6 +62,7 @@ export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
 export class DateOrDateTimeSelectWrapper extends React.Component {
   static get defaultProps () {
     return {
+      momentObject: null,
       hiddenFieldName: null,
       hiddenFieldFormat: null,
       componentClass: null,
@@ -72,6 +73,7 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
 
   static get propTypes () {
     return {
+      momentObject: PropTypes.any,
       hiddenFieldName: PropTypes.string.isRequired,
       hiddenFieldFormat: PropTypes.string.isRequired,
       componentClass: PropTypes.any.isRequired,
@@ -88,7 +90,7 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
 
   makeInitialState () {
     return {
-      useMoment: this.props.componentProps.moment
+      useMoment: this.props.momentObject
     }
   }
 
@@ -100,7 +102,12 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
 
   renderComponent () {
     const ComponentClass = this.props.componentClass
-    return <ComponentClass key={'datetimeComponent'} {...this.props.componentProps} onChange={this.onChange} />
+    return <ComponentClass
+      key={'datetimeComponent'}
+      moment={this.state.useMoment}
+      onChange={this.onChange}
+      {...this.props.componentProps}
+    />
   }
 
   get hiddenFieldValue () {

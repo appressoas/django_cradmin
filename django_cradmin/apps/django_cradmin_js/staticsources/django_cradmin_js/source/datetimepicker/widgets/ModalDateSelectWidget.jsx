@@ -1,7 +1,7 @@
-import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import ModalDateSelect from '../components/ModalDateSelect'
+import AbstractDateOrDateTimeSelectWidget from './AbstractDateOrDateTimeSelectWidget'
 
-export default class ModalDateSelectWidget extends AbstractWidget {
+export default class ModalDateSelectWidget extends AbstractDateOrDateTimeSelectWidget {
   getDefaultConfig () {
     return Object.assign({}, super.getDefaultConfig(), {
       hiddenFieldFormat: 'YYYY-MM-DD'

@@ -70,8 +70,8 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return 'cricon cricon--close'
   }
 
-  triggerOnChange (useMoment, onComplete = null) {
-    super.triggerOnChange(useMoment, () => {
+  triggerOnChange (momentObject, onComplete = null) {
+    super.triggerOnChange(momentObject, () => {
       this.setState({
         isOpen: false
       }, onComplete)
@@ -109,8 +109,8 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   renderUsePreviewLabel () {
     let label = this.props.noneSelectedButtonLabel
-    if (this.state.useMoment !== null) {
-      label = this.useMomentPreviewFormatted
+    if (this.props.moment !== null) {
+      label = this.momentObjectPreviewFormatted
     }
     if (label === null) {
       return null
