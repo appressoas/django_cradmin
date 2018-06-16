@@ -12,6 +12,7 @@ export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
   getDefaultConfig () {
     return {
       locale: 'en',
+      initialFocusValue: null,
       hiddenFieldId: null,
       hiddenFieldFormat: null,
       debug: true
@@ -41,16 +42,22 @@ export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
     return moment(value)
   }
 
+  getInitialFocusMomentObject () {
+    if (this.config.initialFocusValue === null) {
+      return moment()
+    }
+    return moment(this.config.initialFocusValue)
+  }
+
   get wrapperProps () {
     const hiddenFieldDomElement = this.getHiddenFieldDomElement()
     let momentObject = this.getMomentObjectFromHiddenField(hiddenFieldDomElement)
-    if (momentObject === null) {
-      momentObject = moment()
-    }
-    let wrappedComponentProps = Object.assign({}, this.config)
+    let wrappedComponentProps = Object.assign({
+      initialFocusMomentObject: this.getInitialFocusMomentObject()
+    }, this.config)
     delete wrappedComponentProps.hiddenFieldId
     delete wrappedComponentProps.hiddenFieldFormat
-    delete wrappedComponentProps.moment
+    delete wrappedComponentProps.initialFocusValue
     return {
       wrappedComponentProps: wrappedComponentProps,
       componentClass: this.componentClass,

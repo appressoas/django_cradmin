@@ -14,7 +14,7 @@ export default class TimeDisplay extends React.Component {
 
   static get propTypes () {
     return {
-      momentObject: PropTypes.any,
+      momentObject: PropTypes.any.isRequired,
       showSeconds: PropTypes.bool.isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired

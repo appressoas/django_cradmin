@@ -4,11 +4,13 @@ import TimePicker from './TimePicker'
 import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
 import { gettext } from 'ievv_jsbase/lib/gettext'
+import moment from 'moment/moment'
 
 export default class DateTimePicker extends React.Component {
   static get defaultProps () {
     return {
       momentObject: null,
+      initialFocusMomentObject: moment(),
       locale: null,
       showSeconds: false,
       dateIconClassName: 'cricon cricon--calendar-grid',
@@ -21,6 +23,7 @@ export default class DateTimePicker extends React.Component {
   static get propTypes () {
     return {
       momentObject: PropTypes.any,
+      initialFocusMomentObject: PropTypes.any.isRequired,
       locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       dateIconClassName: PropTypes.string.isRequired,
@@ -55,6 +58,7 @@ export default class DateTimePicker extends React.Component {
     return <DatePicker
       key={'datePicker'}
       momentObject={this.props.momentObject}
+      initialFocusMomentObject={this.props.initialFocusMomentObject}
       locale={this.props.locale}
       onChange={this.props.onChange}
     />
@@ -64,6 +68,7 @@ export default class DateTimePicker extends React.Component {
     return <TimePicker
       key={'timePicker'}
       momentObject={this.props.momentObject}
+      initialFocusMomentObject={this.props.initialFocusMomentObject}
       showSeconds={this.props.showSeconds}
       locale={this.props.locale}
       onChange={this.props.onChange}

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import TimeDisplay from './TimeDisplay'
 import RangeSlider from '../../components/RangeSlider'
 import { gettext } from 'ievv_jsbase/lib/gettext'
-import moment from 'moment/moment'
+import moment from 'moment'
 import BemUtilities from '../../utilities/BemUtilities'
 
 export default class TimePicker extends React.Component {
   static get defaultProps () {
     return {
       momentObject: null,
+      initialFocusMomentObject: moment(),
       locale: null,
       showSeconds: false,
       onChange: null,
@@ -20,6 +21,7 @@ export default class TimePicker extends React.Component {
   static get propTypes () {
     return {
       momentObject: PropTypes.any,
+      initialFocusMomentObject: PropTypes.any.isRequired,
       locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       onChange: PropTypes.func.isRequired,
@@ -27,9 +29,22 @@ export default class TimePicker extends React.Component {
     }
   }
 
+  getMoment () {
+    let momentObject = null
+    if (this.props.momentObject === null) {
+      momentObject = this.props.initialFocusMomentObject.clone()
+    } else {
+      momentObject = this.props.momentObject.clone()
+    }
+    if (this.props.locale) {
+      momentObject = momentObject.locale(this.props.locale)
+    }
+    return momentObject
+  }
+
   get timeDisplayComponentProps () {
     return {
-      momentObject: this.props.momentObject,
+      momentObject: this.getMoment(),
       showSeconds: this.props.showSeconds,
       bemVariants: ['xlarge']
     }
@@ -49,7 +64,7 @@ export default class TimePicker extends React.Component {
     return <label className='label' key={'hour'}>
       {gettext('Hours')}:
       <RangeSlider
-        value={this.props.momentObject.hour()}
+        value={this.getMoment().hour()}
         min={0}
         max={23}
         onChange={this.changeHours.bind(this)}
@@ -61,7 +76,7 @@ export default class TimePicker extends React.Component {
     return <label className='label' key={'minute'}>
       {gettext('Minutes')}:
       <RangeSlider
-        value={this.props.momentObject.minute()}
+        value={this.getMoment().minute()}
         min={0}
         max={59}
         onChange={this.changeMinutes.bind(this)}
@@ -76,7 +91,7 @@ export default class TimePicker extends React.Component {
     return <label className='label' key={'second'}>
       {gettext('Seconds')}:
       <RangeSlider
-        value={this.props.momentObject.second()}
+        value={this.getMoment().second()}
         min={0}
         max={59}
         onChange={this.changeSeconds.bind(this)}
@@ -141,7 +156,7 @@ export default class TimePicker extends React.Component {
 
   onClickNowButton () {
     const today = moment()
-    let momentObject = this.props.momentObject.clone()
+    let momentObject = this.getMoment().clone()
     momentObject.hour(today.hour())
     momentObject.minute(today.minute())
     momentObject.second(today.second())
@@ -150,19 +165,19 @@ export default class TimePicker extends React.Component {
   }
 
   changeHours (hours) {
-    let momentObject = this.props.momentObject.clone()
+    let momentObject = this.getMoment().clone()
     momentObject.hours(hours)
     this.props.onChange(this._cleanMoment(momentObject))
   }
 
   changeMinutes (minutes) {
-    let momentObject = this.props.momentObject.clone()
+    let momentObject = this.getMoment().clone()
     momentObject.minutes(minutes)
     this.props.onChange(this._cleanMoment(momentObject))
   }
 
   changeSeconds (seconds) {
-    let momentObject = this.props.momentObject.clone()
+    let momentObject = this.getMoment().clone()
     momentObject.seconds(seconds)
     this.props.onChange(this._cleanMoment(momentObject))
   }

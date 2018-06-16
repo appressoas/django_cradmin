@@ -9,6 +9,7 @@ export default class DateCalendar extends React.Component {
   static get defaultProps () {
     return {
       momentObject: null,
+      initialFocusMomentObject: moment(),
       bemBlock: 'calendar-month',
       bemVariants: [],
       onDaySelect: null
@@ -18,10 +19,24 @@ export default class DateCalendar extends React.Component {
   static get propTypes () {
     return {
       momentObject: PropTypes.any,
+      initialFocusMomentObject: PropTypes.any.isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       onDaySelect: PropTypes.func.isRequired
     }
+  }
+
+  getMoment () {
+    let momentObject = null
+    if (this.props.momentObject === null) {
+      momentObject = this.props.initialFocusMomentObject.clone()
+    } else {
+      momentObject = this.props.momentObject.clone()
+    }
+    if (this.props.locale) {
+      momentObject = momentObject.locale(this.props.locale)
+    }
+    return momentObject
   }
 
   get className () {
@@ -54,7 +69,7 @@ export default class DateCalendar extends React.Component {
     const bemVariants = []
     if (isInPrevMonth || isInNextMonth) {
       bemVariants.push('muted')
-    } else if (day === currentDay) {
+    } else if (this.props.momentObject !== null && day === currentDay) {
       bemVariants.push('selected')
     }
     if (day === moment().date()) {
@@ -90,11 +105,12 @@ export default class DateCalendar extends React.Component {
   }
 
   renderWeeks () {
-    let currentDay = this.props.momentObject.date()
-    let firstDayOfWeek = this.props.momentObject.localeData().firstDayOfWeek()
-    let endOfPreviousMonth = this.props.momentObject.clone().subtract(1, 'month').endOf('month').date()
-    let startDayOfCurrentMonth = this.props.momentObject.clone().date(1).day()
-    let endOfCurrentMonth = this.props.momentObject.clone().endOf('month').date()
+    const momentObject = this.getMoment()
+    let currentDay = momentObject.date()
+    let firstDayOfWeek = momentObject.localeData().firstDayOfWeek()
+    let endOfPreviousMonth = momentObject.clone().subtract(1, 'month').endOf('month').date()
+    let startDayOfCurrentMonth = momentObject.clone().date(1).day()
+    let endOfCurrentMonth = momentObject.clone().endOf('month').date()
 
     let days = [].concat(
       range(
@@ -122,8 +138,9 @@ export default class DateCalendar extends React.Component {
   }
 
   renderHeaderRowContent () {
-    const firstDayOfWeek = this.props.momentObject.localeData().firstDayOfWeek()
-    let weeks = this.props.momentObject.localeData().weekdaysShort()
+    const momentObject = this.getMoment()
+    const firstDayOfWeek = momentObject.localeData().firstDayOfWeek()
+    let weeks = momentObject.localeData().weekdaysShort()
     weeks = weeks.slice(firstDayOfWeek).concat(weeks.slice(0, firstDayOfWeek))
 
     return weeks.map((week, index) => {

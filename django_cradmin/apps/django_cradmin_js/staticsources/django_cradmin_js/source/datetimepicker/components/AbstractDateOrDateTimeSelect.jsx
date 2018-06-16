@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import BemUtilities from '../../utilities/BemUtilities'
 import PropTypes from 'prop-types'
 
@@ -6,6 +7,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   static get defaultProps () {
     return {
       momentObject: null,
+      initialFocusMomentObject: moment(),
       locale: null,
       bemBlock: 'datetimepicker',
       bemVariants: [],
@@ -18,6 +20,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   static get propTypes () {
     return {
       momentObject: PropTypes.any,
+      initialFocusMomentObject: PropTypes.any.isRequired,
       locale: PropTypes.string,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -88,6 +91,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   get pickerComponentProps () {
     return {
       momentObject: this.state.draftMomentObject,
+      initialFocusMomentObject: this.props.initialFocusMomentObject,
       locale: this.props.locale,
       onChange: (draftMomentObject) => {
         this.setDraftMomentObject(draftMomentObject)
@@ -96,6 +100,9 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get draftMomentObjectPreviewFormatted () {
+    if (this.state.draftMomentObject === null) {
+      return ''
+    }
     return this.state.draftMomentObject.format(this.props.selectedPreviewFormat)
   }
 
