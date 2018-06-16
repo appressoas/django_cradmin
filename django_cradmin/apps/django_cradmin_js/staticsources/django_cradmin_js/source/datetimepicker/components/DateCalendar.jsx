@@ -63,27 +63,30 @@ export default class DateCalendar extends React.Component {
     return BemUtilities.buildBemElement(this.props.bemBlock, 'week')
   }
 
-  makeDayClassName (day, week, currentDay) {
+  makeDayClassName (year, month, week, day) {
     const isInPrevMonth = (week === 0 && day > 7)
     const isInNextMonth = (week >= 4 && day <= 14)
     const bemVariants = []
     if (isInPrevMonth || isInNextMonth) {
       bemVariants.push('muted')
-    } else if (this.props.momentObject !== null && day === currentDay) {
+    } else if (this.props.momentObject !== null && this.props.momentObject.isSame(moment({year: year, month: month, day: day}), 'day')) {
       bemVariants.push('selected')
+    } else {
+      const now = moment()
+      if (year === now.year() && month === now.month() && day === now.date()) {
+        bemVariants.push('today')
+      }
     }
-    if (day === moment().date()) {
-      bemVariants.push('today')
-    }
+
     return BemUtilities.buildBemElement(this.props.bemBlock, 'day', bemVariants)
   }
 
-  renderDay (day, week, currentDay) {
+  renderDay (year, month, week, day) {
     return <div
       role={'button'}
       tabIndex={0}
       key={day}
-      className={this.makeDayClassName(day, week, currentDay)}
+      className={this.makeDayClassName(year, month, week, day)}
       onClick={() => {
         this.props.onDaySelect(day, week)
       }}
@@ -92,25 +95,26 @@ export default class DateCalendar extends React.Component {
     </div>
   }
 
-  renderDaysInWeek (daysInWeek, week, currentDay) {
+  renderDaysInWeek (daysInWeek, year, month, week) {
     return daysInWeek.map(day => {
-      return this.renderDay(day, week, currentDay)
+      return this.renderDay(year, month, week, day)
     })
   }
 
-  renderWeek (daysInWeek, week, currentDay) {
+  renderWeek (daysInWeek, year, month, week) {
     return <div key={week} className={this.weekClassName}>
-      {this.renderDaysInWeek(daysInWeek, week, currentDay)}
+      {this.renderDaysInWeek(daysInWeek, year, month, week)}
     </div>
   }
 
   renderWeeks () {
     const momentObject = this.getMoment()
-    let currentDay = momentObject.date()
-    let firstDayOfWeek = momentObject.localeData().firstDayOfWeek()
-    let endOfPreviousMonth = momentObject.clone().subtract(1, 'month').endOf('month').date()
-    let startDayOfCurrentMonth = momentObject.clone().date(1).day()
-    let endOfCurrentMonth = momentObject.clone().endOf('month').date()
+    const firstDayOfWeek = momentObject.localeData().firstDayOfWeek()
+    const endOfPreviousMonth = momentObject.clone().subtract(1, 'month').endOf('month').date()
+    const startDayOfCurrentMonth = momentObject.clone().date(1).day()
+    const endOfCurrentMonth = momentObject.clone().endOf('month').date()
+    const year = momentObject.year()
+    const month = momentObject.month()
 
     let days = [].concat(
       range(
@@ -127,7 +131,7 @@ export default class DateCalendar extends React.Component {
       )
     )
     return chunk(days, 7).map((daysInWeek, week) => {
-      return this.renderWeek(daysInWeek, week, currentDay)
+      return this.renderWeek(daysInWeek, year, month, week)
     })
   }
 
