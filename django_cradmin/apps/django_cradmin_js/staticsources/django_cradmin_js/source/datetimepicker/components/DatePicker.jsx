@@ -85,8 +85,6 @@ export default class DatePicker extends React.Component {
       display: this.getMoment().format('MMMM YYYY'),
       onPrevMonth: this.onPrevMonth.bind(this),
       onNextMonth: this.onNextMonth.bind(this),
-      onPrevYear: this.onPrevYear.bind(this),
-      onNextYear: this.onNextYear.bind(this),
       onToggleMode: this.onToggleMode.bind(this),
       key: 'toolbar'
     }
@@ -163,18 +161,6 @@ export default class DatePicker extends React.Component {
     e.preventDefault()
     let momentObject = this.getMoment().clone()
     this.props.onChange(momentObject.add(1, 'month'))
-  }
-
-  onPrevYear (e) {
-    e.preventDefault()
-    let momentObject = this.getMoment().clone()
-    this.props.onChange(momentObject.subtract(1, 'year'))
-  }
-
-  onNextYear (e) {
-    e.preventDefault()
-    let momentObject = this.getMoment().clone()
-    this.props.onChange(momentObject.add(1, 'year'))
   }
 
   onToggleMode () {
