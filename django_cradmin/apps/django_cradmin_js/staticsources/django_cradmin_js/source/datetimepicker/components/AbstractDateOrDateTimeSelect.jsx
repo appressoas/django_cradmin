@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 export default class AbstractDateOrDateTimeSelect extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       locale: null,
       bemBlock: 'datetimepicker',
       bemVariants: [],
@@ -17,7 +17,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       locale: PropTypes.string,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -40,7 +40,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   static getDerivedStateFromProps (props, state) {
     return {
-      draftMomentObject: props.moment
+      draftMomentObject: props.momentObject
     }
   }
 
@@ -87,7 +87,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   get pickerComponentProps () {
     return {
-      moment: this.state.draftMomentObject,
+      momentObject: this.state.draftMomentObject,
       locale: this.props.locale,
       onChange: (draftMomentObject) => {
         this.setDraftMomentObject(draftMomentObject)
@@ -100,7 +100,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get momentObjectPreviewFormatted () {
-    return this.props.moment.format(this.props.selectedPreviewFormat)
+    return this.props.momentObject.format(this.props.selectedPreviewFormat)
   }
 
   //

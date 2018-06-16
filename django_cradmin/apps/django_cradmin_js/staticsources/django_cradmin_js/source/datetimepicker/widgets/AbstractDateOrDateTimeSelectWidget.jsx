@@ -90,13 +90,13 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
 
   makeInitialState () {
     return {
-      useMoment: this.props.momentObject
+      selectedMoment: this.props.momentObject
     }
   }
 
   onChange (momentObject) {
     this.setState({
-      useMoment: momentObject
+      selectedMoment: momentObject
     })
   }
 
@@ -104,15 +104,15 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
     const ComponentClass = this.props.componentClass
     return <ComponentClass
       key={'datetimeComponent'}
-      moment={this.state.useMoment}
+      momentObject={this.state.selectedMoment}
       onChange={this.onChange}
       {...this.props.componentProps}
     />
   }
 
   get hiddenFieldValue () {
-    if (this.state.useMoment !== null) {
-      return this.state.useMoment.format(this.props.hiddenFieldFormat)
+    if (this.state.selectedMoment !== null) {
+      return this.state.selectedMoment.format(this.props.hiddenFieldFormat)
     }
     return ''
   }

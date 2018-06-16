@@ -109,7 +109,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   renderUsePreviewLabel () {
     let label = this.props.noneSelectedButtonLabel
-    if (this.props.moment !== null) {
+    if (this.props.momentObject !== null) {
       label = this.momentObjectPreviewFormatted
     }
     if (label === null) {

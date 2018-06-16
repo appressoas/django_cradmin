@@ -9,7 +9,7 @@ import BemUtilities from '../../utilities/BemUtilities'
 export default class TimePicker extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       locale: null,
       showSeconds: false,
       onChange: null,
@@ -19,7 +19,7 @@ export default class TimePicker extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       onChange: PropTypes.func.isRequired,
@@ -29,7 +29,7 @@ export default class TimePicker extends React.Component {
 
   get timeDisplayComponentProps () {
     return {
-      moment: this.props.moment,
+      momentObject: this.props.momentObject,
       showSeconds: this.props.showSeconds,
       bemVariants: ['xlarge']
     }
@@ -49,7 +49,7 @@ export default class TimePicker extends React.Component {
     return <label className='label' key={'hour'}>
       {gettext('Hours')}:
       <RangeSlider
-        value={this.props.moment.hour()}
+        value={this.props.momentObject.hour()}
         min={0}
         max={23}
         onChange={this.changeHours.bind(this)}
@@ -61,7 +61,7 @@ export default class TimePicker extends React.Component {
     return <label className='label' key={'minute'}>
       {gettext('Minutes')}:
       <RangeSlider
-        value={this.props.moment.minute()}
+        value={this.props.momentObject.minute()}
         min={0}
         max={59}
         onChange={this.changeMinutes.bind(this)}
@@ -76,7 +76,7 @@ export default class TimePicker extends React.Component {
     return <label className='label' key={'second'}>
       {gettext('Seconds')}:
       <RangeSlider
-        value={this.props.moment.second()}
+        value={this.props.momentObject.second()}
         min={0}
         max={59}
         onChange={this.changeSeconds.bind(this)}
@@ -141,7 +141,7 @@ export default class TimePicker extends React.Component {
 
   onClickNowButton () {
     const today = moment()
-    let momentObject = this.props.moment.clone()
+    let momentObject = this.props.momentObject.clone()
     momentObject.hour(today.hour())
     momentObject.minute(today.minute())
     momentObject.second(today.second())
@@ -150,20 +150,20 @@ export default class TimePicker extends React.Component {
   }
 
   changeHours (hours) {
-    let moment = this.props.moment.clone()
-    moment.hours(hours)
-    this.props.onChange(this._cleanMoment(moment))
+    let momentObject = this.props.momentObject.clone()
+    momentObject.hours(hours)
+    this.props.onChange(this._cleanMoment(momentObject))
   }
 
   changeMinutes (minutes) {
-    let moment = this.props.moment.clone()
-    moment.minutes(minutes)
-    this.props.onChange(this._cleanMoment(moment))
+    let momentObject = this.props.momentObject.clone()
+    momentObject.minutes(minutes)
+    this.props.onChange(this._cleanMoment(momentObject))
   }
 
   changeSeconds (seconds) {
-    let moment = this.props.moment.clone()
-    moment.seconds(seconds)
-    this.props.onChange(this._cleanMoment(moment))
+    let momentObject = this.props.momentObject.clone()
+    momentObject.seconds(seconds)
+    this.props.onChange(this._cleanMoment(momentObject))
   }
 }

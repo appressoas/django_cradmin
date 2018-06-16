@@ -5,7 +5,7 @@ import BemUtilities from '../../utilities/BemUtilities'
 export default class TimeDisplay extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       showSeconds: false,
       bemBlock: 'timedisplay',
       bemVariants: []
@@ -14,7 +14,7 @@ export default class TimeDisplay extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       showSeconds: PropTypes.bool.isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
@@ -42,15 +42,15 @@ export default class TimeDisplay extends React.Component {
   }
 
   renderHours () {
-    return this.renderNumber('hours', this.props.moment.format('HH'))
+    return this.renderNumber('hours', this.props.momentObject.format('HH'))
   }
 
   renderMinutes () {
-    return this.renderNumber('minutes', this.props.moment.format('mm'))
+    return this.renderNumber('minutes', this.props.momentObject.format('mm'))
   }
 
   renderSeconds () {
-    return this.renderNumber('seconds', this.props.moment.format('ss'))
+    return this.renderNumber('seconds', this.props.momentObject.format('ss'))
   }
 
   renderNumbers () {

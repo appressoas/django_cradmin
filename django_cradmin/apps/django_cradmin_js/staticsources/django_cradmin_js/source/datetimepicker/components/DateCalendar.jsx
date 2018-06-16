@@ -8,7 +8,7 @@ import BemUtilities from '../../utilities/BemUtilities'
 export default class DateCalendar extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       bemBlock: 'calendar-month',
       bemVariants: [],
       onDaySelect: null
@@ -17,7 +17,7 @@ export default class DateCalendar extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       onDaySelect: PropTypes.func.isRequired
@@ -90,11 +90,11 @@ export default class DateCalendar extends React.Component {
   }
 
   renderWeeks () {
-    let currentDay = this.props.moment.date()
-    let firstDayOfWeek = this.props.moment.localeData().firstDayOfWeek()
-    let endOfPreviousMonth = this.props.moment.clone().subtract(1, 'month').endOf('month').date()
-    let startDayOfCurrentMonth = this.props.moment.clone().date(1).day()
-    let endOfCurrentMonth = this.props.moment.clone().endOf('month').date()
+    let currentDay = this.props.momentObject.date()
+    let firstDayOfWeek = this.props.momentObject.localeData().firstDayOfWeek()
+    let endOfPreviousMonth = this.props.momentObject.clone().subtract(1, 'month').endOf('month').date()
+    let startDayOfCurrentMonth = this.props.momentObject.clone().date(1).day()
+    let endOfCurrentMonth = this.props.momentObject.clone().endOf('month').date()
 
     let days = [].concat(
       range(
@@ -122,8 +122,8 @@ export default class DateCalendar extends React.Component {
   }
 
   renderHeaderRowContent () {
-    const firstDayOfWeek = this.props.moment.localeData().firstDayOfWeek()
-    let weeks = this.props.moment.localeData().weekdaysShort()
+    const firstDayOfWeek = this.props.momentObject.localeData().firstDayOfWeek()
+    let weeks = this.props.momentObject.localeData().weekdaysShort()
     weeks = weeks.slice(firstDayOfWeek).concat(weeks.slice(0, firstDayOfWeek))
 
     return weeks.map((week, index) => {

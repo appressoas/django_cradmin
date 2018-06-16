@@ -12,7 +12,7 @@ import BemUtilities from '../../utilities/BemUtilities'
 export default class DatePicker extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       locale: null,
       onChange: null,
       includeShortcuts: true
@@ -21,7 +21,7 @@ export default class DatePicker extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       locale: PropTypes.string,
       onChange: PropTypes.func.isRequired,
       includeShortcuts: PropTypes.bool
@@ -37,7 +37,7 @@ export default class DatePicker extends React.Component {
   }
 
   getMoment () {
-    let momentObject = this.props.moment ? this.props.moment.clone() : moment()
+    let momentObject = this.props.momentObject ? this.props.momentObject.clone() : moment()
     if (this.props.locale) {
       momentObject = momentObject.locale(this.props.locale)
     }
@@ -50,7 +50,7 @@ export default class DatePicker extends React.Component {
 
   get monthPickerComponentProps () {
     return {
-      moment: this.getMoment(),
+      momentObject: this.getMoment(),
       onMonthSelect: this.onMonthSelect.bind(this),
       key: 'monthPicker'
     }
@@ -62,7 +62,7 @@ export default class DatePicker extends React.Component {
 
   get datePickerComponentProps () {
     return {
-      moment: this.getMoment(),
+      momentObject: this.getMoment(),
       onDaySelect: this.onDaySelect.bind(this),
       key: 'datePicker'
     }
@@ -177,7 +177,7 @@ export default class DatePicker extends React.Component {
 
   onClickTodayButton () {
     const today = moment()
-    let momentObject = this.props.moment.clone()
+    let momentObject = this.props.momentObject.clone()
     momentObject.year(today.year())
     momentObject.month(today.month())
     momentObject.date(today.date())
@@ -185,7 +185,7 @@ export default class DatePicker extends React.Component {
   }
 
   onDaySelect (day, week) {
-    let momentObject = this.props.moment.clone()
+    let momentObject = this.props.momentObject.clone()
     let prevMonth = (week === 0 && day > 7)
     let nextMonth = (week >= 4 && day <= 14)
 
@@ -196,7 +196,7 @@ export default class DatePicker extends React.Component {
   }
 
   onMonthSelect (monthNumber) {
-    let momentObject = this.props.moment.clone()
+    let momentObject = this.props.momentObject.clone()
     this.setState({mode: 'calendar'}, () => {
       this.props.onChange(momentObject.month(monthNumber))
     })

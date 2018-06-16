@@ -8,7 +8,7 @@ import { gettext } from 'ievv_jsbase/lib/gettext'
 export default class DateTimePicker extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       locale: null,
       showSeconds: false,
       dateIconClassName: 'cricon cricon--calendar-grid',
@@ -20,7 +20,7 @@ export default class DateTimePicker extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       dateIconClassName: PropTypes.string.isRequired,
@@ -54,7 +54,7 @@ export default class DateTimePicker extends React.Component {
   renderDatePicker () {
     return <DatePicker
       key={'datePicker'}
-      moment={this.props.moment}
+      momentObject={this.props.momentObject}
       locale={this.props.locale}
       onChange={this.props.onChange}
     />
@@ -63,7 +63,7 @@ export default class DateTimePicker extends React.Component {
   renderTimePicker () {
     return <TimePicker
       key={'timePicker'}
-      moment={this.props.moment}
+      momentObject={this.props.momentObject}
       showSeconds={this.props.showSeconds}
       locale={this.props.locale}
       onChange={this.props.onChange}

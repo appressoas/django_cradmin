@@ -5,7 +5,7 @@ import BemUtilities from '../../utilities/BemUtilities'
 export default class DateMonths extends React.Component {
   static get defaultProps () {
     return {
-      moment: null,
+      momentObject: null,
       bemBlock: 'month-picker',
       bemVariants: [],
       onMonthSelect: null
@@ -14,7 +14,7 @@ export default class DateMonths extends React.Component {
 
   static get propTypes () {
     return {
-      moment: PropTypes.any,
+      momentObject: PropTypes.any,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       onMonthSelect: PropTypes.func.isRequired
@@ -27,7 +27,7 @@ export default class DateMonths extends React.Component {
 
   getMonthClassName (monthNumber) {
     let bemVariants = []
-    if (this.props.moment.month() === monthNumber) {
+    if (this.props.momentObject.month() === monthNumber) {
       bemVariants.push('selected')
     }
     return BemUtilities.buildBemElement(this.props.bemBlock, 'month', bemVariants)
@@ -46,7 +46,7 @@ export default class DateMonths extends React.Component {
 
   renderMonths () {
     const monthRenderables = []
-    let monthNames = this.props.moment.localeData().months()
+    let monthNames = this.props.momentObject.localeData().months()
     let monthNumber = 0
     for (let monthName of monthNames) {
       monthRenderables.push(this.renderMonth(monthNumber, monthName))
