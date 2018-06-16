@@ -11,9 +11,8 @@ export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
    */
   getDefaultConfig () {
     return {
-      datetime: null,
       locale: 'en',
-      hiddenFieldName: null,
+      hiddenFieldId: null,
       hiddenFieldFormat: null,
       debug: true
     }
@@ -23,21 +22,42 @@ export default class AbstractDateOrDateTimeSelectWidget extends AbstractWidget {
     throw new Error('componentClass getter must be implemented in subclasses')
   }
 
-  get wrapperProps () {
-    let momentObject = moment()
-    if (this.config.datetime !== null) {
-      momentObject = moment(this.config.datetime)
+  getHiddenFieldDomElement () {
+    if (this.config.hiddenFieldId === null) {
+      throw new Error(`The hiddenFieldId config is required`)
     }
-    let componentProps = Object.assign({}, this.config)
-    delete componentProps.hiddenFieldName
-    delete componentProps.hiddenFieldFormat
-    delete componentProps.moment
+    const domElement = document.getElementById(this.config.hiddenFieldId)
+    if (domElement === null) {
+      throw new Error(`No DOM element with ID=${this.config.hiddenFieldId} found`)
+    }
+    return domElement
+  }
+
+  getMomentObjectFromHiddenField (hiddenFieldDomElement) {
+    const value = hiddenFieldDomElement.value
+    if (!value || value === '') {
+      return null
+    }
+    return moment(value)
+  }
+
+  get wrapperProps () {
+    const hiddenFieldDomElement = this.getHiddenFieldDomElement()
+    let momentObject = this.getMomentObjectFromHiddenField(hiddenFieldDomElement)
+    if (momentObject === null) {
+      momentObject = moment()
+    }
+    let wrappedComponentProps = Object.assign({}, this.config)
+    delete wrappedComponentProps.hiddenFieldId
+    delete wrappedComponentProps.hiddenFieldFormat
+    delete wrappedComponentProps.moment
     return {
-      componentProps: componentProps,
+      wrappedComponentProps: wrappedComponentProps,
       componentClass: this.componentClass,
       momentObject: momentObject,
-      hiddenFieldName: this.config.hiddenFieldName,
+      hiddenFieldId: this.config.hiddenFieldId,
       hiddenFieldFormat: this.config.hiddenFieldFormat,
+      hiddenFieldDomElement: hiddenFieldDomElement,
       debug: this.config.debug
     }
   }
@@ -63,10 +83,11 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
   static get defaultProps () {
     return {
       momentObject: null,
-      hiddenFieldName: null,
+      hiddenFieldId: null,
       hiddenFieldFormat: null,
+      hiddenFieldDomElement: null,
       componentClass: null,
-      componentProps: null,
+      wrappedComponentProps: null,
       debug: false
     }
   }
@@ -74,10 +95,11 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
   static get propTypes () {
     return {
       momentObject: PropTypes.any,
-      hiddenFieldName: PropTypes.string.isRequired,
+      hiddenFieldId: PropTypes.string.isRequired,
       hiddenFieldFormat: PropTypes.string.isRequired,
+      hiddenFieldDomElement: PropTypes.any.isRequired,
       componentClass: PropTypes.any.isRequired,
-      componentProps: PropTypes.object.isRequired,
+      wrappedComponentProps: PropTypes.object.isRequired,
       debug: PropTypes.bool.isRequired
     }
   }
@@ -94,22 +116,6 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
     }
   }
 
-  onChange (momentObject) {
-    this.setState({
-      selectedMoment: momentObject
-    })
-  }
-
-  renderComponent () {
-    const ComponentClass = this.props.componentClass
-    return <ComponentClass
-      key={'datetimeComponent'}
-      momentObject={this.state.selectedMoment}
-      onChange={this.onChange}
-      {...this.props.componentProps}
-    />
-  }
-
   get hiddenFieldValue () {
     if (this.state.selectedMoment !== null) {
       return this.state.selectedMoment.format(this.props.hiddenFieldFormat)
@@ -117,27 +123,26 @@ export class DateOrDateTimeSelectWrapper extends React.Component {
     return ''
   }
 
-  get hiddenFieldType () {
-    if (this.props.debug) {
-      return 'text'
-    }
-    return 'hidden'
+  onChange (momentObject) {
+    this.setState({
+      selectedMoment: momentObject
+    }, () => {
+      this.props.hiddenFieldDomElement.value = this.hiddenFieldValue
+    })
   }
 
-  renderHiddenField () {
-    return <input
-      key={'hiddenField'}
-      type={this.hiddenFieldType}
-      name={this.props.hiddenFieldName}
-      value={this.hiddenFieldValue}
-      readOnly
+  renderWrappedComponent () {
+    const ComponentClass = this.props.componentClass
+    return <ComponentClass
+      key={'datetimeComponent'}
+      momentObject={this.state.selectedMoment}
+      onChange={this.onChange}
+      {...this.props.wrappedComponentProps}
     />
   }
 
+
   render () {
-    return [
-      this.renderComponent(),
-      this.renderHiddenField()
-    ]
+    return this.renderWrappedComponent()
   }
 }
