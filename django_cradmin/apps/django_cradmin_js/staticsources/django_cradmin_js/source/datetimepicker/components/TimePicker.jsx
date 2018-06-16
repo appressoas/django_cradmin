@@ -4,6 +4,7 @@ import TimeDisplay from './TimeDisplay'
 import RangeSlider from '../../components/RangeSlider'
 import { gettext } from 'ievv_jsbase/lib/gettext'
 import moment from 'moment/moment'
+import BemUtilities from '../../utilities/BemUtilities'
 
 export default class TimePicker extends React.Component {
   static get defaultProps () {
@@ -12,7 +13,7 @@ export default class TimePicker extends React.Component {
       locale: null,
       showSeconds: false,
       onChange: null,
-      showNowButton: true
+      includeShortcuts: true
     }
   }
 
@@ -22,7 +23,7 @@ export default class TimePicker extends React.Component {
       locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       onChange: PropTypes.func.isRequired,
-      showNowButton: PropTypes.bool
+      includeShortcuts: PropTypes.bool
     }
   }
 
@@ -91,22 +92,34 @@ export default class TimePicker extends React.Component {
     ]
   }
 
+  makeShortcutButtonClassName (bemVariants = []) {
+    return BemUtilities.buildBemElement('buttonbar', 'button', [bemVariants, ...['compact']])
+  }
+
   renderNowButtonLabel () {
     return gettext('Now')
   }
 
   renderNowButton () {
-    if (!this.props.showNowButton) {
-      return null
-    }
-    return <div className="text-center" key={'nowButton'}>
-      <button
-        type={'button'}
-        className={'button button--compact'}
-        onClick={this.onClickNowButton.bind(this)}
-      >
-        {this.renderNowButtonLabel()}
-      </button>
+    return <button
+      type={'button'}
+      key={'nowButton'}
+      className={this.makeShortcutButtonClassName()}
+      onClick={this.onClickNowButton.bind(this)}
+    >
+      {this.renderNowButtonLabel()}
+    </button>
+  }
+
+  renderShortcutButtons () {
+    return [
+      this.renderNowButton()
+    ]
+  }
+
+  renderShortcutButtonBar () {
+    return <div key={'shortcutButtonBar'} className={'buttonbar buttonbar--center'}>
+      {this.renderShortcutButtons()}
     </div>
   }
 
@@ -114,7 +127,7 @@ export default class TimePicker extends React.Component {
     return [
       this.renderTimeDisplayWrapper(),
       this.renderTimePickers(),
-      this.renderNowButton()
+      this.props.includeShortcuts ? this.renderShortcutButtonBar() : null
     ]
   }
 

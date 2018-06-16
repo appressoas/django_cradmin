@@ -7,6 +7,7 @@ import DateMonths from './DateMonths'
 
 import PropTypes from 'prop-types'
 import DatePickerToolbar from './DatePickerToolbar'
+import BemUtilities from '../../utilities/BemUtilities'
 
 export default class DatePicker extends React.Component {
   static get defaultProps () {
@@ -14,7 +15,7 @@ export default class DatePicker extends React.Component {
       moment: null,
       locale: null,
       onChange: null,
-      showTodayButton: true
+      includeShortcuts: true
     }
   }
 
@@ -23,7 +24,7 @@ export default class DatePicker extends React.Component {
       moment: PropTypes.any,
       locale: PropTypes.string,
       onChange: PropTypes.func.isRequired,
-      showTodayButton: PropTypes.bool
+      includeShortcuts: PropTypes.bool
     }
   }
 
@@ -36,13 +37,11 @@ export default class DatePicker extends React.Component {
   }
 
   getMoment () {
-    let moment = this.props.moment ? this.props.moment.clone() : moment()
-
+    let momentObject = this.props.moment ? this.props.moment.clone() : moment()
     if (this.props.locale) {
-      moment = moment.locale(this.props.locale)
+      momentObject = momentObject.locale(this.props.locale)
     }
-
-    return moment
+    return momentObject
   }
 
   get monthPickerComponentClass () {
@@ -107,22 +106,34 @@ export default class DatePicker extends React.Component {
     return <ToolbarComponent {...this.toolbarComponentProps} />
   }
 
+  makeShortcutButtonClassName (bemVariants = []) {
+    return BemUtilities.buildBemElement('buttonbar', 'button', [bemVariants, ...['compact']])
+  }
+
   renderTodayButtonLabel () {
     return gettext('Today')
   }
 
   renderTodayButton () {
-    if (!this.props.showTodayButton) {
-      return null
-    }
-    return <div className="text-center" key={'todayButton'}>
-      <button
-        type={'button'}
-        className={'button button--compact'}
-        onClick={this.onClickTodayButton.bind(this)}
-      >
-        {this.renderTodayButtonLabel()}
-      </button>
+    return <button
+      type={'button'}
+      key={'todayButton'}
+      className={this.makeShortcutButtonClassName()}
+      onClick={this.onClickTodayButton.bind(this)}
+    >
+      {this.renderTodayButtonLabel()}
+    </button>
+  }
+
+  renderShortcutButtons () {
+    return [
+      this.renderTodayButton()
+    ]
+  }
+
+  renderShortcutButtonBar () {
+    return <div key={'shortcutButtonBar'} className={'buttonbar buttonbar--center'}>
+      {this.renderShortcutButtons()}
     </div>
   }
 
@@ -130,7 +141,7 @@ export default class DatePicker extends React.Component {
     return [
       this.renderToolbar(),
       this.renderPicker(),
-      this.renderTodayButton()
+      this.props.includeShortcuts ? this.renderShortcutButtonBar() : null
     ]
   }
 

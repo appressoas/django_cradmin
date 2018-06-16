@@ -45,6 +45,10 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     }
   }
 
+  //
+  // Event handling and setting of selected datetime
+  //
+
   triggerOnChange (useMoment, onComplete = null) {
     this.setState({
       selectedMoment: useMoment,
@@ -62,6 +66,10 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   setSelectedMoment (selectedMoment) {
     throw new Error('Must override setSelectedMoment()')
   }
+
+  //
+  // Easily overridable component props
+  //
 
   get className () {
     return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
@@ -96,6 +104,10 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   get useMomentPreviewFormatted () {
     return this.state.useMoment.format(this.props.selectedPreviewFormat)
   }
+
+  //
+  // Rendering
+  //
 
   renderSelectedPreview () {
     return <p key={'preview'} className={this.previewClassName}>
