@@ -1,4 +1,3 @@
-import React from 'react'
 import AbstractModalDateOrDateTimeSelect from './AbstractModalDateOrDateTimeSelect'
 
 export default class AbstractDropdownDateOrDateTimeSelect extends AbstractModalDateOrDateTimeSelect {
