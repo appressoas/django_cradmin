@@ -133,8 +133,10 @@ export default class TimePicker extends React.Component {
   }
 
   renderShortcutButtonBar () {
-    return <div key={'shortcutButtonBar'} className={'buttonbar buttonbar--center'}>
-      {this.renderShortcutButtons()}
+    return <div key={'shortcutButtonBar'} className={'text-center'}>
+      <div className={'buttonbar buttonbar--inline'}>
+        {this.renderShortcutButtons()}
+      </div>
     </div>
   }
 
