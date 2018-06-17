@@ -1,7 +1,7 @@
 /* Buttonbar
 
 Example: {type: isolated}
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button">
             H1
         </button>
@@ -14,11 +14,11 @@ Example: {type: isolated}
         <button class="buttonbar__button">
             <em>I</em>
         </button>
-    </nav>
+    </div>
 
 
 Example: {type: isolated} Multiple on one line
-    <nav class="buttonbar buttonbar--inline">
+    <div class="buttonbar buttonbar--inline">
         <button class="buttonbar__button">
             H1
         </button>
@@ -31,35 +31,35 @@ Example: {type: isolated} Multiple on one line
         <button class="buttonbar__button">
             <em>I</em>
         </button>
-    </nav>
-    <nav class="buttonbar buttonbar--inline">
+    </div>
+    <div class="buttonbar buttonbar--inline">
         <button class="buttonbar__button">
             Left
         </button>
         <button class="buttonbar__button">
             Right
         </button>
-    </nav>
+    </div>
 
 
 Example: {type: isolated} Compact buttons
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--compact">
             H1
         </button>
         <button class="buttonbar__button buttonbar__button--compact">
             H2
         </button>
-    </nav>
+    </div>
 
 
 
 Example: {type: isolated} Single button works too!
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button">
             H1
         </button>
-    </nav>
+    </div>
 
 
 Example: {type: isolated} --center
@@ -67,25 +67,25 @@ Example: {type: isolated} --center
     Do not combine this with buttonbar--inline. If you want to center inlined
     buttonbar, wrap it in a block element (div) with "text-center" class.
     -->
-    <nav class="buttonbar buttonbar--center">
+    <div class="buttonbar buttonbar--center">
         <button class="buttonbar__button">
             Yes
         </button>
         <button class="buttonbar__button">
             No
         </button>
-    </nav>
+    </div>
 
 
 Example: {type: isolated} --stretch
-    <nav class="buttonbar buttonbar--stretch">
+    <div class="buttonbar buttonbar--stretch">
         <button class="buttonbar__button">
             Yes
         </button>
         <button class="buttonbar__button">
             No
         </button>
-    </nav>
+    </div>
 
 Styleguide components.buttonbar
 */
@@ -93,65 +93,65 @@ Styleguide components.buttonbar
 /** Buttonbar - button colors
 
 Example: Default and --fill
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--fill">
             --fill
         </button>
         <button class="buttonbar__button">
             Default
         </button>
-    </nav>
+    </div>
 
 Example: --primary and --primary-fill
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--primary-fill">
             --primary-fill
         </button>
         <button class="buttonbar__button buttonbar__button--primary">
             --primary
         </button>
-    </nav>
+    </div>
 
 Example: --secondary and --secondary-fill
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--secondary-fill">
             --secondary-fill
         </button>
         <button class="buttonbar__button buttonbar__button--secondary">
             --secondary
         </button>
-    </nav>
+    </div>
 
 Example: --warning and --warning-fill
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--warning-fill">
             --warning-fill
         </button>
         <button class="buttonbar__button buttonbar__button--warning">
             --warning
         </button>
-    </nav>
+    </div>
 
 Example: --success and --success-fill
-    <nav class="buttonbar">
+    <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--success-fill">
             --success-fill
         </button>
         <button class="buttonbar__button buttonbar__button--success">
             --success
         </button>
-    </nav>
+    </div>
 
 Example: --light and --light-fill
     <div style="background-color: #000; padding: 10px;">
-        <nav class="buttonbar">
+        <div class="buttonbar">
             <button class="buttonbar__button buttonbar__button--light-fill">
                 --light-fill
             </button>
             <button class="buttonbar__button buttonbar__button--light">
                 --light
             </button>
-        </nav>
+        </div>
     </div>
 
 

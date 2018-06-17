@@ -14,7 +14,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       noneSelectedButtonLabel: null,
       title: null,
       useButtonLabel: pgettext('datetimepicker', 'Use'),
-      openModalButtonLabel: pgettext('datetimepicker', 'Select')
+      openButtonLabel: pgettext('datetimepicker', 'Select')
     })
   }
 
@@ -23,7 +23,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       noneSelectedButtonLabel: PropTypes.string,
       title: PropTypes.string.isRequired,
       useButtonLabel: PropTypes.string.isRequired,
-      openModalButtonLabel: PropTypes.string.isRequired
+      openButtonLabel: PropTypes.string.isRequired
     })
   }
 
@@ -103,7 +103,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     >
       <span className='cricon cricon--calendar' aria-hidden='true' />
       {' '}
-      {this.props.openModalButtonLabel}
+      {this.props.openButtonLabel}
     </button>
   }
 

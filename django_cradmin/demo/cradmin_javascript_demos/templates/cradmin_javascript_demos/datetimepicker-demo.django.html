@@ -9,6 +9,14 @@
     Datetime picker demo
 {% endblock page-cover-title %}
 
+{% block page-cover-content %}
+    {{ block.super }}
+    <strong>NOTE:</strong> The demos use an <code>input type="text"</code>, but you would
+    normally use an <code>input type="hidden"</code> - we use text to
+    demonstrate the value updates. When using the react components directly,
+    the hidden field binding is irrelevant.
+{% endblock page-cover-content %}
+
 
 {% block content %}
     <div class="adminui-page-section">
@@ -51,6 +59,32 @@
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-date"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test201",
+                        "title": "Select a date"
+                     }'></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Date example (dropdown)</h2>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">Without initial value</h3>
+                <input type="text" id="id_test250">
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-date"
+                     data-ievv-jsbase-widget-config='{
+                        "hiddenFieldId": "id_test250",
+                        "title": "Select a date"
+                     }'></div>
+            </div>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">With initial value</h3>
+                <input type="text" id="id_test251" value="2017-12-24">
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-date"
+                     data-ievv-jsbase-widget-config='{
+                        "hiddenFieldId": "id_test251",
                         "title": "Select a date"
                      }'></div>
             </div>
@@ -115,6 +149,43 @@
                      data-ievv-jsbase-widget-config='{
                         "showSeconds": true,
                         "hiddenFieldId": "id_test402",
+                        "title": "Select date/time"
+                     }'></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>DateTime example (dropdown)</h2>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">Without initial value</h3>
+                <input type="text" id="id_test450">
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-datetime"
+                     data-ievv-jsbase-widget-config='{
+                        "hiddenFieldId": "id_test450",
+                        "title": "Select date/time"
+                     }'></div>
+            </div>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">With initial value</h3>
+                <input type="text" id="id_test451" value="2017-12-24 12:35">
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-datetime"
+                     data-ievv-jsbase-widget-config='{
+                        "hiddenFieldId": "id_test451",
+                        "title": "Select date/time"
+                     }'></div>
+            </div>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">With seconds</h3>
+                <input type="text" id="id_test452">
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-datetime"
+                     data-ievv-jsbase-widget-config='{
+                        "showSeconds": true,
+                        "hiddenFieldId": "id_test452",
                         "title": "Select date/time"
                      }'></div>
             </div>
