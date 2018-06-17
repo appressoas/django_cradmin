@@ -33,6 +33,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.makeInitialState()
+    this.setDraftMomentObject = this.setDraftMomentObject.bind(this)
+    this.triggerOnChange = this.triggerOnChange.bind(this)
   }
 
   makeInitialState () {
@@ -93,9 +95,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       momentObject: this.state.draftMomentObject,
       initialFocusMomentObject: this.props.initialFocusMomentObject,
       locale: this.props.locale,
-      onChange: (draftMomentObject) => {
-        this.setDraftMomentObject(draftMomentObject)
-      }
+      onChange: this.setDraftMomentObject
     }
   }
 

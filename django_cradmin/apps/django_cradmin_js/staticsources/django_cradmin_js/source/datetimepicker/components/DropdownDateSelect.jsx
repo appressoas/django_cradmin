@@ -1,5 +1,6 @@
 import DatePicker from './DatePicker'
 import AbstractDropdownDateOrDateTimeSelect from './AbstractDropdownDateOrDateTimeSelect'
+import OpenDatePicker from './OpenDatePicker'
 
 export default class DropdownDateSelect extends AbstractDropdownDateOrDateTimeSelect {
   static get defaultProps () {
@@ -11,5 +12,9 @@ export default class DropdownDateSelect extends AbstractDropdownDateOrDateTimeSe
 
   get pickerComponentClass () {
     return DatePicker
+  }
+
+  get openPickerComponentClass () {
+    return OpenDatePicker
   }
 }

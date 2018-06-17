@@ -11,10 +11,6 @@
 
 {% block page-cover-content %}
     {{ block.super }}
-    <strong>NOTE:</strong> The demos use an <code>input type="text"</code>, but you would
-    normally use an <code>input type="hidden"</code> - we use text to
-    demonstrate the value updates. When using the react components directly,
-    the hidden field binding is irrelevant.
 {% endblock page-cover-content %}
 
 
@@ -25,14 +21,14 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
-                <input type="text" id="id_test100">
+                <input type="hidden" id="id_test100">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-embedded-date"
                      data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test100"}'></div>
             </div>
 
             <div class="fieldwrapper">
                 <h3 class="h4">With initial value</h3>
-                <input type="text" id="id_test101" value="2017-12-24">
+                <input type="hidden" id="id_test101" value="2017-12-24">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-embedded-date"
                      data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test101"}'></div>
             </div>
@@ -45,7 +41,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
-                <input type="text" id="id_test200">
+                <input type="hidden" id="id_test200">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-date"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test200",
@@ -55,7 +51,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">With initial value</h3>
-                <input type="text" id="id_test201" value="2017-12-24">
+                <input type="hidden" id="id_test201" value="2017-12-24">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-date"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test201",
@@ -71,7 +67,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
-                <input type="text" id="id_test250">
+                <input type="hidden" id="id_test250">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-date"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test250",
@@ -81,7 +77,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">With initial value</h3>
-                <input type="text" id="id_test251" value="2017-12-24">
+                <input type="hidden" id="id_test251" value="2017-12-24">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-date"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test251",
@@ -97,21 +93,21 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
-                <input type="text" id="id_test300">
+                <input type="hidden" id="id_test300">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-embedded-datetime"
                      data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test300"}'></div>
             </div>
 
             <div class="fieldwrapper">
                 <h3 class="h4">With initial value</h3>
-                <input type="text" id="id_test301" value="2017-12-24 12:35">
+                <input type="hidden" id="id_test301" value="2017-12-24 12:35">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-embedded-datetime"
                      data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test301"}'></div>
             </div>
 
             <div class="fieldwrapper">
                 <h3 class="h4">With seconds</h3>
-                <input type="text" id="id_test302">
+                <input type="hidden" id="id_test302">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-embedded-datetime"
                      data-ievv-jsbase-widget-config='{"showSeconds": true, "hiddenFieldId": "id_test302"}'></div>
             </div>
@@ -124,7 +120,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
-                <input type="text" id="id_test400">
+                <input type="hidden" id="id_test400">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-datetime"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test400",
@@ -134,7 +130,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">With initial value</h3>
-                <input type="text" id="id_test401" value="2017-12-24 12:35">
+                <input type="hidden" id="id_test401" value="2017-12-24 12:35">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-datetime"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test401",
@@ -144,7 +140,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">With seconds</h3>
-                <input type="text" id="id_test402">
+                <input type="hidden" id="id_test402">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-datetime"
                      data-ievv-jsbase-widget-config='{
                         "showSeconds": true,
@@ -161,7 +157,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">Without initial value</h3>
-                <input type="text" id="id_test450">
+                <input type="hidden" id="id_test450">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-datetime"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test450",
@@ -171,7 +167,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">With initial value</h3>
-                <input type="text" id="id_test451" value="2017-12-24 12:35">
+                <input type="hidden" id="id_test451" value="2017-12-24 12:35">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-datetime"
                      data-ievv-jsbase-widget-config='{
                         "hiddenFieldId": "id_test451",
@@ -181,7 +177,7 @@
 
             <div class="fieldwrapper">
                 <h3 class="h4">With seconds</h3>
-                <input type="text" id="id_test452">
+                <input type="hidden" id="id_test452">
                 <div data-ievv-jsbase-widget="cradmin-datetimepicker-dropdown-datetime"
                      data-ievv-jsbase-widget-config='{
                         "showSeconds": true,

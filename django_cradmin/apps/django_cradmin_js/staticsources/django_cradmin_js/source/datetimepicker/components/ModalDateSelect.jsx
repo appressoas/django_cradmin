@@ -1,5 +1,6 @@
 import DatePicker from './DatePicker'
 import AbstractModalDateOrDateTimeSelect from './AbstractModalDateOrDateTimeSelect'
+import OpenDatePicker from './OpenDatePicker'
 
 export default class ModalDateSelect extends AbstractModalDateOrDateTimeSelect {
   static get defaultProps () {
@@ -11,5 +12,9 @@ export default class ModalDateSelect extends AbstractModalDateOrDateTimeSelect {
 
   get pickerComponentClass () {
     return DatePicker
+  }
+
+  get openPickerComponentClass () {
+    return OpenDatePicker
   }
 }

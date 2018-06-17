@@ -14,7 +14,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       noneSelectedButtonLabel: null,
       title: null,
       useButtonLabel: pgettext('datetimepicker', 'Use'),
-      openButtonLabel: pgettext('datetimepicker', 'Select')
+      openButtonEmptyLabel: pgettext('datetimepicker', 'Select')
     })
   }
 
@@ -23,7 +23,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       noneSelectedButtonLabel: PropTypes.string,
       title: PropTypes.string.isRequired,
       useButtonLabel: PropTypes.string.isRequired,
-      openButtonLabel: PropTypes.string.isRequired
+      openButtonEmptyLabel: PropTypes.string.isRequired
     })
   }
 
@@ -84,7 +84,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   onOpenButtonClick () {
     this.setState({
-      isOpen: true
+      isOpen: !this.state.isOpen
     })
   }
 
@@ -92,6 +92,13 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     this.setState({
       isOpen: false
     })
+  }
+
+  renderOpenButtonLabel () {
+    if (this.props.momentObject === null) {
+      return this.props.openButtonEmptyLabel
+    }
+    return this.momentObjectPreviewFormatted
   }
 
   renderOpenButton () {
@@ -103,38 +110,25 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     >
       <span className='cricon cricon--calendar' aria-hidden='true' />
       {' '}
-      {this.props.openButtonLabel}
+      {this.props.openButtonEmptyLabel}
     </button>
   }
 
-  renderUsePreviewLabel () {
-    let label = this.props.noneSelectedButtonLabel
-    if (this.props.momentObject !== null) {
-      label = this.momentObjectPreviewFormatted
+  get openPickerComponentProps () {
+    return {
+      momentObject: this.props.momentObject,
+      onOpen: this.onOpenButtonClick,
+      onChange: this.triggerOnChange
     }
-    if (label === null) {
-      return null
-    }
-    return <span className='datetime-preview__label'>
-      {label}
-    </span>
   }
 
-  renderUsePreviewButtons () {
-    return [
-      this.renderOpenButton()
-    ]
+  get openPickerComponentClass () {
+    throw new Error('The openPickerComponentClass getter must be implemented in subclasses')
   }
 
-  renderUsePreviewBox () {
-    return <div>
-      <div className='datetime-preview'>
-        {this.renderUsePreviewLabel()}
-        <span className='buttonbar buttonbar--inline buttonbar--nomargin'>
-          {this.renderUsePreviewButtons()}
-        </span>
-      </div>
-    </div>
+  renderOpenPicker () {
+    const OpenPickerComponent = this.openPickerComponentClass
+    return <OpenPickerComponent {...this.openPickerComponentProps} />
   }
 
   renderCloseButton () {
@@ -195,7 +189,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   render () {
     return <div>
-      {this.renderUsePreviewBox()}
+      {this.renderOpenPicker()}
       {this.renderModal()}
     </div>
   }
