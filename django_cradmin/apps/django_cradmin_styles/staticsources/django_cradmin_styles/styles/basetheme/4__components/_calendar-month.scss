@@ -146,6 +146,6 @@ Styleguide components.calendar-month
     }
 
     &--sane-max-width {
-        max-width: $datetimepicker-max-width;
+        max-width: map-get($breakpoints, xs);
     }
 }

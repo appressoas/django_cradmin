@@ -113,7 +113,20 @@ Example: Modal
         }
     </script>
 
-    <button class="button" onClick="showDateTimePickerModal()">Select a date</button>
+    <label class="label">Select a date:</label>
+    <div class="max-width max-width--xs">
+        <div class="buttonbar">
+            <button class="buttonbar__button buttonbar__button--input-outlined buttonbar__button--grow-2 buttonbar__button--width-xsmall"
+                    onClick="showDateTimePickerModal()">
+                <span class="cricon cricon--calendar" aria-hidden="true"></span>
+                Dec 24, 2017 12:35 PM
+            </button>
+            <button type="button" class="buttonbar__button buttonbar__button--secondary-fill buttonbar__button--no-grow">
+                Now
+            </button>
+        </div>
+    </div>
+
     <div id="id_datetimepicker_modal" class="datetimepicker datetimepicker--modal" style="display: none;">
         <div class="datetimepicker__backdrop" onClick="hideDateTimePickerModal()"></div>
         <div class="datetimepicker__body datetimepicker__body--modal">
@@ -231,7 +244,7 @@ Example: Modal
     </div>
 
 
-Example: Dropdown - looks exactly the same as modal on small displays
+Example: {type: isolated} Dropdown - looks exactly the same as modal on small displays
     <script>
         function showDateTimePickerDropwdown () {
             document.getElementById('id_datetimepicker_dropdown').style.display = 'block';
@@ -241,7 +254,19 @@ Example: Dropdown - looks exactly the same as modal on small displays
         }
     </script>
 
-    <button class="button" onClick="showDateTimePickerDropwdown()">Select a date</button>
+    <label class="label">Select a date:</label>
+    <div class="max-width max-width--xs">
+        <div class="buttonbar buttonbar--nomargin">
+            <button class="buttonbar__button buttonbar__button--input-outlined buttonbar__button--grow-2 buttonbar__button--width-xsmall"
+                    onClick="showDateTimePickerDropwdown()">
+                <span class="cricon cricon--calendar" aria-hidden="true"></span>
+                Dec 24, 2017 12:35 PM
+            </button>
+            <button type="button" class="buttonbar__button buttonbar__button--secondary-fill buttonbar__button--no-grow">
+                Now
+            </button>
+        </div>
+    </div>
     <div id="id_datetimepicker_dropdown" class="datetimepicker datetimepicker--dropdown" style="display: none;">
         <div class="datetimepicker__body datetimepicker__body--dropdown">
             <div class="datetimepicker__close">
@@ -436,7 +461,7 @@ Styleguide components.datetimepicker
                 margin-left: auto;
                 margin-right: auto;
                 margin-bottom: $spacing;
-                width: $datetimepicker-max-width;
+                width: map-get($breakpoints, xs);
                 max-width: 100%;
                 height: auto;
                 left: auto;
@@ -453,7 +478,7 @@ Styleguide components.datetimepicker
                 bottom: auto;
                 height: auto;
                 width: 100%;
-                max-width: $datetimepicker-max-width;
+                max-width: map-get($breakpoints, xs);
                 margin-bottom: $spacing;
                 border-radius: $border-radius;
                 box-shadow: $shadow-level-3;
@@ -485,6 +510,6 @@ Styleguide components.datetimepicker
     }
 
     &--sane-max-width {
-        max-width: $datetimepicker-max-width;
+        max-width: map-get($breakpoints, xs);
     }
 }

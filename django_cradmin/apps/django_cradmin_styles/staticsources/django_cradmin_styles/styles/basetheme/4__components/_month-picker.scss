@@ -97,6 +97,6 @@ Styleguide components.month-picker
     }
 
     &--sane-max-width {
-        max-width: $datetimepicker-max-width;
+        max-width: map-get($breakpoints, xs);
     }
 }

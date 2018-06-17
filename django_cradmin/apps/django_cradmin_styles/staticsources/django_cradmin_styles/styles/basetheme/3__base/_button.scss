@@ -26,6 +26,16 @@ Example: Button with icon
         Go forward!
     </button>
 
+Example: Button styled as an input field
+    <button type="button" class="button button--block button--input button--form-size-default">
+        I am a button--input
+    </button>
+    <input type="text" class="input" value="I am an input!">
+    <button type="button" class="button button--block button--input-outlined button--form-size-default">
+        I am a button--input-outlined!
+    </button>
+    <input type="text" class="input input--outlined" value="I am an input--outlined!">
+
 Example: This is some modifiers you can add (PS: Can be combined)
     <button type="button" class="button  button--block">
         Make it 100% width of whatever container
@@ -60,7 +70,8 @@ Example: Optimized for used along with form elements
 Styleguide form.2:buttons
 */
 
-@mixin button-style ($border-color, $text-color, $background-color-hover, $background-color: transparent, $text-color-hover: false) {
+@mixin button-style ($border-color, $text-color, $background-color-hover, $background-color: transparent,
+        $text-color-hover: false, $border-color-hover: false) {
     color: $text-color;
     border-color: $border-color;
     background-color: $background-color;
@@ -70,6 +81,10 @@ Styleguide form.2:buttons
     &:active {
         border-color: $background-color-hover;
         background-color: $background-color-hover;
+
+        @if ($border-color-hover) {
+            border-color: $border-color-hover;
+        }
 
         @if ($text-color-hover) {
             color: $text-color-hover;
@@ -96,6 +111,29 @@ Styleguide form.2:buttons
         border-color: $border-color;
         background-color: $background-color-hover;
     }
+}
+
+@mixin button-style-input ($outlined: false) {
+    $border-color: $color-light;
+    @if ($outlined) {
+        $border-color: color(neutral, light);
+    }
+    @include button-style (
+        $border-color: $border-color,
+        $text-color: $color-text,
+        $background-color: $color-light,
+        $background-color-hover: $color-light,
+        $border-color-hover: color(secondary, dark),
+        $text-color-hover: false);
+    @include font(base, normal);
+    @include font-size(small);
+    text-align: left;
+    letter-spacing: normal;
+    text-transform: none;
+    padding: #{$unit + $border-width} #{$spacing--small + $border-width};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @mixin button-modifier($name, $border-color, $text-color, $background-color-hover, $text-color-hover: false) {
@@ -255,6 +293,14 @@ Styleguide form.2:buttons
         $color-light,
         color(primary)
     );
+
+    &--input {
+        @include button-style-input($outlined: false);
+    }
+
+    &--input-outlined {
+        @include button-style-input($outlined: true);
+    }
 
     &--wider { // TODO: Remove?
         min-width: $unit * 30;

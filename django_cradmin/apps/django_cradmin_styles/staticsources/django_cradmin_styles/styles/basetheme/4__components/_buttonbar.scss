@@ -1,6 +1,6 @@
 /* Buttonbar
 
-Example: {type: isolated}
+Example:
     <div class="buttonbar">
         <button class="buttonbar__button">
             H1
@@ -17,7 +17,7 @@ Example: {type: isolated}
     </div>
 
 
-Example: {type: isolated} Multiple on one line
+Example: Multiple on one line
     <div class="buttonbar buttonbar--inline">
         <button class="buttonbar__button">
             H1
@@ -42,7 +42,7 @@ Example: {type: isolated} Multiple on one line
     </div>
 
 
-Example: {type: isolated} Compact buttons
+Example: Compact buttons
     <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--compact">
             H1
@@ -54,7 +54,7 @@ Example: {type: isolated} Compact buttons
 
 
 
-Example: {type: isolated} Single button works too!
+Example: Single button works too!
     <div class="buttonbar">
         <button class="buttonbar__button">
             H1
@@ -62,30 +62,42 @@ Example: {type: isolated} Single button works too!
     </div>
 
 
-Example: {type: isolated} --center
+Example: {type: isolated} Center
     <!--
-    Do not combine this with buttonbar--inline. If you want to center inlined
-    buttonbar, wrap it in a block element (div) with "text-center" class.
+    Use a wrapper with "text-center" class combined with buttonbar--inline to center
     -->
-    <div class="buttonbar buttonbar--center">
-        <button class="buttonbar__button">
-            Yes
-        </button>
-        <button class="buttonbar__button">
-            No
-        </button>
+    <div class="text-center">
+        <div class="buttonbar buttonbar--inline">
+            <button class="buttonbar__button">
+                Yes
+            </button>
+            <button class="buttonbar__button">
+                No
+            </button>
+        </div>
     </div>
 
-
-Example: {type: isolated} --stretch
-    <div class="buttonbar buttonbar--stretch">
-        <button class="buttonbar__button">
-            Yes
-        </button>
-        <button class="buttonbar__button">
-            No
-        </button>
+Example: {type: isolated} Break into multiple lines on small displays
+    <!-- can also use --md --lg and --xl, or no breakpoint class at all. -->
+    <div class="container container--wide">
+        <label class="label">Select a date:</label>
+        <div class="buttonbar">
+            <div class="buttonbar__group buttonbar__group--sm">
+                <button class="buttonbar__button buttonbar__button--input-outlined buttonbar__button--grow-2" style="width: 200px;">
+                    Sunday, December 24, 2017 12:35 PM
+                </button>
+                <button class="buttonbar__button buttonbar__button--secondary-fill buttonbar__button--no-grow">
+                    Now
+                </button>
+            </div>
+            <div class="buttonbar__group buttonbar__group--sm">
+                <button class="buttonbar__button">
+                    Tomorrow
+                </button>
+            </div>
+        </div>
     </div>
+
 
 Styleguide components.buttonbar
 */
@@ -97,7 +109,7 @@ Example: Default and --fill
         <button class="buttonbar__button buttonbar__button--fill">
             --fill
         </button>
-        <button class="buttonbar__button">
+        <button class="buttonbar__button buttonbar__button">
             Default
         </button>
     </div>
@@ -179,12 +191,35 @@ Styleguide components.buttonbar.buttoncolor
 }
 
 
+@mixin buttonbar-group-breakpoint ($root, $breakpoint) {
+    @include min-width($breakpoint) {
+        flex-basis: auto;
+        #{$root}__button {
+            border-radius: 0;
+        }
+        &:first-child {
+            #{$root}__button:first-child {
+                border-top-left-radius: $border-radius;
+                border-bottom-left-radius: $border-radius;
+            }
+        }
+        &:last-child {
+            #{$root}__button:last-child {
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+        }
+    }
+}
+
+
 .buttonbar {
     $__root: &;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     margin-bottom: vertical-space($spacing--small);
+    align-items: stretch;
 
     &__button {
         @include button($responsive: false);
@@ -192,12 +227,17 @@ Styleguide components.buttonbar.buttoncolor
         margin-right: -($border-width);
         margin-bottom: 0;
         border-radius: 0;
-        width: auto;
+        //width: auto;
         white-space: nowrap;
+        flex-shrink: 1;
+        flex-grow: 1;
+        flex-basis: auto;
+        width: auto;
 
         @include min-width(md) {
             padding: #{$spacing--small - $border-width} #{$indention - $border-width};
         }
+
 
         &:first-child {
             border-top-left-radius: $border-radius;
@@ -259,8 +299,100 @@ Styleguide components.buttonbar.buttoncolor
             color(primary)
         );
 
+        &--grow-2 {
+            flex-grow: 2;
+        }
+        &--no-grow {
+            flex-grow: 0;
+        }
+
+
+        &--input {
+            @include button-style-input($outlined: false);
+        }
+
+        &--input-outlined {
+            @include button-style-input($outlined: true);
+        }
+
         &--compact {
             @include button--compact();
+        }
+
+        &--form-size-xsmall {
+            @include font-size(xxsmall, $skip-line-height: true);
+            padding-left: $spacing--small;
+            padding-right: $spacing--small;
+            @include form-element-mixin(xsmall);
+        }
+
+        &--form-size-small {
+            @include form-element-mixin(small);
+            padding-left: $spacing--small;
+            padding-right: $spacing--small;
+        }
+
+        &--form-size-default {
+            @include form-element-mixin();
+        }
+
+        &--form-size-large {
+            @include font-size(small, $skip-line-height: true);
+            @include form-element-mixin(large);
+        }
+
+        &--width-xsmall {
+            width: $unit * 20;
+            min-width: $unit * 5;
+        }
+
+        &--width-xxsmall {
+            width: $unit * 16;
+            min-width: $unit * 5;
+        }
+
+        &--width-small {
+            width: $unit * 36;
+            min-width: $unit * 5;
+        }
+    }
+
+    &__group {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        flex-shrink: 1;
+        flex-grow: 1;
+        flex-basis: 100%;
+        align-items: stretch;
+        #{$__root}__button {
+            border-radius: 0;
+        }
+
+        &:first-child {
+            #{$__root}__button:first-child {
+                border-top-left-radius: $border-radius;
+            }
+            #{$__root}__button:last-child {
+                border-top-right-radius: $border-radius;
+            }
+        }
+        &:last-child {
+            #{$__root}__button:first-child {
+                border-bottom-left-radius: $border-radius;
+            }
+            #{$__root}__button:last-child {
+                border-bottom-right-radius: $border-radius;
+            }
+        }
+        &--sm {
+            @include buttonbar-group-breakpoint($__root, md);
+        }
+        &--md {
+            @include buttonbar-group-breakpoint($__root, lg);
+        }
+        &--lg {
+            @include buttonbar-group-breakpoint($__root, xl);
         }
     }
 
