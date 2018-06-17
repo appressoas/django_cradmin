@@ -14,7 +14,8 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       noneSelectedButtonLabel: null,
       title: null,
       useButtonLabel: pgettext('datetimepicker', 'Use'),
-      openButtonEmptyLabel: pgettext('datetimepicker', 'Select')
+      openButtonEmptyLabel: pgettext('datetimepicker', 'Select'),
+      openPickerProps: {}
     })
   }
 
@@ -23,7 +24,8 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       noneSelectedButtonLabel: PropTypes.string,
       title: PropTypes.string.isRequired,
       useButtonLabel: PropTypes.string.isRequired,
-      openButtonEmptyLabel: PropTypes.string.isRequired
+      openButtonEmptyLabel: PropTypes.string.isRequired,
+      openPickerProps: PropTypes.object.isRequired
     })
   }
 
@@ -115,11 +117,11 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   get openPickerComponentProps () {
-    return {
+    return Object.assign({}, this.props.openPickerProps, {
       momentObject: this.props.momentObject,
       onOpen: this.onOpenButtonClick,
       onChange: this.triggerOnChange
-    }
+    })
   }
 
   get openPickerComponentClass () {

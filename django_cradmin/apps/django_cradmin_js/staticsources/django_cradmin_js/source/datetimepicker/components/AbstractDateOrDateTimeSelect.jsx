@@ -13,7 +13,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       bemVariants: [],
       selectedPreviewFormat: null,
       bodyBemVariants: [],
-      onChange: null
+      onChange: null,
+      pickerProps: {}
     }
   }
 
@@ -26,7 +27,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       selectedPreviewFormat: PropTypes.string.isRequired,
       bodyBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
-      onChange: PropTypes.func
+      onChange: PropTypes.func,
+      pickerProps: PropTypes.object.isRequired
     }
   }
 
@@ -91,12 +93,12 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get pickerComponentProps () {
-    return {
+    return Object.assign({}, this.props.pickerProps, {
       momentObject: this.state.draftMomentObject,
       initialFocusMomentObject: this.props.initialFocusMomentObject,
       locale: this.props.locale,
       onChange: this.setDraftMomentObject
-    }
+    })
   }
 
   get draftMomentObjectPreviewFormatted () {
