@@ -226,4 +226,47 @@
             </div>
         </div>
     </div>
+
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Modal datetime picker within a modal</h2>
+            <p><em>Using dropdown style within a modal does not work well, so within a modal
+            you should use the modal or embedded styles.</em></p>
+            <button type="button" class="button" onclick="openExampleModal()">Open the modal</button>
+        </div>
+    </div>
+    <script>
+        function openExampleModal () {
+            document.getElementById('id_example_modal').style.display = 'block';
+        }
+
+        function closeExampleModal () {
+            document.getElementById('id_example_modal').style.display = 'none';
+        }
+    </script>
+    <div id="id_example_modal" class="modal modal--wide" style="display: none;">
+        <div class="modal__backdrop" onclick="closeExampleModal()"></div>
+
+        <div class="modal__content">
+            <div class="modal__close">
+                <button type="button" aria-title="Close" onclick="closeExampleModal()">
+                    <span class="cricon cricon--close" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="modal__title">
+                <h2>Edit some stuff</h2>
+            </div>
+            <div class="fieldwrapper">
+                <label class="label">Please select a date</label>
+                <input type="hidden" id="id_test450">
+                <div data-ievv-jsbase-widget="cradmin-datetimepicker-modal-datetime"
+                     data-ievv-jsbase-widget-config='{
+                        "hiddenFieldId": "id_test450",
+                        "title": "Select date/time"
+                     }'></div>
+            </div>
+        </div>
+    </div>
+
 {% endblock content %}

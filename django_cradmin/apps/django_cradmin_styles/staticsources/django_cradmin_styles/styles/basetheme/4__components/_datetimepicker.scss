@@ -409,18 +409,19 @@ Styleguide components.datetimepicker
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: $level-4;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
     }
 
     &--modal {
+        z-index: $level-4;
         @include min-width(md) {
             padding: $spacing--small;
         }
     }
 
     &--dropdown {
+        z-index: $level-3;
         @include min-width(md) {
             position: relative;
             overflow: visible;
@@ -446,7 +447,6 @@ Styleguide components.datetimepicker
             background-color: $color-light;
             position: relative;
             overflow: hidden;
-            z-index: $level-4;
             top: 0;
             left: 0;
             right: 0;
@@ -457,6 +457,7 @@ Styleguide components.datetimepicker
         }
 
         &--modal {
+            z-index: $level-4;
             @include min-width(md) {
                 margin-left: auto;
                 margin-right: auto;
@@ -472,6 +473,7 @@ Styleguide components.datetimepicker
         }
 
         &--dropdown {
+            z-index: $level-3;
             @include min-width(md) {
                 overflow: visible;
                 position: absolute;
