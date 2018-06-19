@@ -462,7 +462,7 @@ Styleguide components.blocklist.movable-items
             margin-bottom: -4px; // Optical adjustment
         }
 
-        @include font-size(large);
+        @include font-size(medium);
 
         &--small {
             @include font-size(small);
