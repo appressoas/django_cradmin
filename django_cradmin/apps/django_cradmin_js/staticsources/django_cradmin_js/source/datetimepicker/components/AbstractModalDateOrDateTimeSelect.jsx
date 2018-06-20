@@ -96,26 +96,6 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     })
   }
 
-  renderOpenButtonLabel () {
-    if (this.props.momentObject === null) {
-      return this.props.openButtonEmptyLabel
-    }
-    return this.momentObjectPreviewFormatted
-  }
-
-  renderOpenButton () {
-    return <button
-      type={'button'}
-      key={'openButton'}
-      className={'buttonbar__button buttonbar__button--secondary'}
-      onClick={this.onOpenButtonClick}
-    >
-      <span className='cricon cricon--calendar' aria-hidden='true' />
-      {' '}
-      {this.props.openButtonEmptyLabel}
-    </button>
-  }
-
   get openPickerComponentProps () {
     return Object.assign({}, this.props.openPickerProps, {
       momentObject: this.props.momentObject,
