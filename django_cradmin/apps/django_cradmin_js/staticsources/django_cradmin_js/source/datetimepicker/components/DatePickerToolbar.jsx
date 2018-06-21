@@ -70,10 +70,44 @@ export default class DatePickerToolbar extends React.Component {
     </button>
   }
 
+  renderYearSelect () {
+    return <label key={'yearSelect'} className='select select--outlined select--size-xsmall'>
+      <select aria-label='Year'>
+        <option>2000</option>
+        <option>2001</option>
+        <option>2002</option>
+        <option>2003</option>
+        <option>2004</option>
+        <option>...</option>
+      </select>
+    </label>
+  }
+
+  renderMonthButton () {
+    // return <button key={'monthButton'} className={'button button--form-size-xsmall'} onClick={this.props.onToggleMode}>
+    //   May
+    //   {' '}
+    //   <span className="cricon cricon--size-xxsmall cricon--chevron-down" aria-hidden="true" />
+    // </button>
+    return <label key={'monthSelect'} className='select select--outlined select--size-xsmall'>
+      <select aria-label='Month'>
+        <option>Jan</option>
+        <option>Feb</option>
+        <option>Sep</option>
+        <option>...</option>
+      </select>
+    </label>
+  }
+
   renderCurrentDate () {
-    return <button className={this.currentDateClassName} onClick={this.props.onToggleMode}>
-      {this.props.display}
-    </button>
+    // return <button className={this.currentDateClassName} onClick={this.props.onToggleMode}>
+    //   {this.props.display}
+    // </button>
+    return <span>
+      {this.renderMonthButton()}
+      {' '}
+      {this.renderYearSelect()}
+    </span>
   }
 
   render () {

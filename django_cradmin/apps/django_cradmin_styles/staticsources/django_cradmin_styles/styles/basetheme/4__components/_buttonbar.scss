@@ -114,6 +114,16 @@ Example: Default and --fill
         </button>
     </div>
 
+Example: --neutral-light and  --neutral-light-fill
+    <div class="buttonbar">
+        <button class="buttonbar__button buttonbar__button--neutral-light-fill">
+            --fill
+        </button>
+        <button class="buttonbar__button buttonbar__button--neutral-light">
+            Default
+        </button>
+    </div>
+
 Example: --primary and --primary-fill
     <div class="buttonbar">
         <button class="buttonbar__button buttonbar__button--primary-fill">
@@ -262,6 +272,13 @@ Styleguide components.buttonbar.buttoncolor
                 background-color: transparent;
             }
         }
+
+        @include buttonbar-button-modifier(
+            $name: 'neutral-light',
+            $border-color: color(neutral, light),
+            $text-color: $color-text,
+            $background-color-hover: color(neutral, light)
+        );
 
         @include buttonbar-button-modifier(
             'primary',
