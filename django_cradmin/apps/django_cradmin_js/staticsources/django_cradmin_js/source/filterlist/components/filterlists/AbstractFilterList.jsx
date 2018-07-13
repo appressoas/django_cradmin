@@ -497,7 +497,7 @@ export default class AbstractFilterList extends React.Component {
           this.props.onDeselectItem(listItemIds[0], this)
         }
       }
-      if (this.props.onDeselectAllItems && this.props.selectedListItemsMap.size === 0) {
+      if (this.props.onDeselectAllItems && this.state.selectedListItemsMap.size === 0) {
         this.props.onDeselectAllItems(this)
       }
     })
