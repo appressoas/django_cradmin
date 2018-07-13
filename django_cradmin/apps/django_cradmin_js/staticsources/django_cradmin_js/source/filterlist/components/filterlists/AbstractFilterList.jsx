@@ -16,6 +16,7 @@ export default class AbstractFilterList extends React.Component {
       className: PropTypes.string,
       selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null]),
       autoLoadFirstPage: PropTypes.bool.isRequired,
+      skipLoadingMissingSelectedItemDataFromApi: PropTypes.bool.isRequired,
 
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
@@ -40,6 +41,7 @@ export default class AbstractFilterList extends React.Component {
       className: null,
       selectMode: null,
       autoLoadFirstPage: true,
+      skipLoadingMissingSelectedItemDataFromApi: false,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -410,7 +412,6 @@ export default class AbstractFilterList extends React.Component {
    *    than 1 item unless {@link AbstractFilterList#isMultiSelectMode} is `true`.
    */
   selectItems (listItemIds) {
-    console.log(listItemIds)
     if (listItemIds.length > 1 && !this.isMultiSelectMode()) {
       throw new Error('Can not select multiple items unless selectMode is "multi".')
     }
@@ -426,7 +427,6 @@ export default class AbstractFilterList extends React.Component {
         }
         selectedListItemsMap.set(listItemId, listItemData)
       }
-      console.log(selectedListItemsMap)
       return {
         selectedListItemsMap: selectedListItemsMap
       }
@@ -504,6 +504,9 @@ export default class AbstractFilterList extends React.Component {
   }
 
   loadMissingSelectedItemDataFromApi () {
+    if (this.props.skipLoadingMissingSelectedItemDataFromApi) {
+      return
+    }
     const itemIdsWithMissingData = this.getSelectedItemIdsWithMissingItemData()
     if (itemIdsWithMissingData.length === 0) {
       return
