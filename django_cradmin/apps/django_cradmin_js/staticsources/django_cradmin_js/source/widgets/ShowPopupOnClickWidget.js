@@ -27,7 +27,6 @@ export default class ShowPopupOnClickWidget extends AbstractWidget {
   }
 
   _onClick(event) {
-    console.log('CLICK');
     event.preventDefault();
     new SignalHandlerSingleton().send(
       `${this.config.signalNameSpace}.ShowPopup`);

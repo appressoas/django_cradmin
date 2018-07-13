@@ -26,6 +26,7 @@ export default class GenericListItemWrapper extends AbstractListItem {
     const Type = componentType
     const props = {
       [listItemIdName]: listItemId,
+      listItemId,
       ...componentProps,
       ...otherProps
     }
