@@ -19,6 +19,11 @@ export default class AbstractFilterList extends React.Component {
       skipLoadingMissingSelectedItemDataFromApi: PropTypes.bool.isRequired,
       onFocus: PropTypes.func,
       onBlur: PropTypes.func,
+      onSelectItem: PropTypes.func,
+      onSelectItems: PropTypes.func,
+      onDeselectItem: PropTypes.func,
+      onDeselectItems: PropTypes.func,
+      onDeselectAllItems: PropTypes.func,
 
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
@@ -46,6 +51,11 @@ export default class AbstractFilterList extends React.Component {
       skipLoadingMissingSelectedItemDataFromApi: false,
       onFocus: null,
       onBlur: null,
+      onSelectItem: null,
+      onSelectItems: null,
+      onDeselectItem: null,
+      onDeselectItems: null,
+      onDeselectAllItems: null,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -442,7 +452,17 @@ export default class AbstractFilterList extends React.Component {
       return {
         selectedListItemsMap: selectedListItemsMap
       }
-    }, this.loadMissingSelectedItemDataFromApi)
+    }, () => {
+      this.loadMissingSelectedItemDataFromApi()
+      if (this.props.onSelectItems) {
+        this.props.onSelectItems(listItemIds, this)
+      }
+      if (!this.isMultiSelectMode()) {
+        if (this.props.onSelectItem && listItemIds.length > 0) {
+          this.props.onSelectItem(listItemIds[0], this)
+        }
+      }
+    })
   }
 
   /**
@@ -468,6 +488,18 @@ export default class AbstractFilterList extends React.Component {
       return {
         selectedListItemsMap: selectedListItemsMap
       }
+    }, () => {
+      if (this.props.onDeselectItems) {
+        this.props.onDeselectItems(listItemIds, this)
+      }
+      if (!this.isMultiSelectMode()) {
+        if (this.props.onDeselectItem && listItemIds.length > 0) {
+          this.props.onDeselectItem(listItemIds[0], this)
+        }
+      }
+      if (this.props.onDeselectAllItems && this.props.selectedListItemsMap.size === 0) {
+        this.props.onDeselectAllItems(this)
+      }
     })
   }
 
@@ -475,9 +507,8 @@ export default class AbstractFilterList extends React.Component {
    * Deselect all selected items.
    */
   deselectAllItems () {
-    this.setState({
-      selectedListItemsMap: new Map()
-    })
+    const listItemIds = Array.from(this.state.selectedListItemsMap.keys())
+    this.deselectItems(listItemIds)
   }
 
   getSelectedItemIdsWithMissingItemData () {
