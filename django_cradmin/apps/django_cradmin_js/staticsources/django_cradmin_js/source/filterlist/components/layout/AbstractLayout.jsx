@@ -158,7 +158,8 @@ export default class AbstractLayout extends AbstractFilterListChild {
   getFilterComponentProps (componentSpec) {
     const props = {
       value: this.props.childExposedApi.getFilterValue(componentSpec.props.name),
-      enabledComponentGroups: this.props.enabledComponentGroups
+      enabledComponentGroups: this.props.enabledComponentGroups,
+      selectedListItemsMap: this.props.selectedListItemsMap
     }
     if (componentSpec.componentClass.shouldReceiveSelectedItems(componentSpec)) {
       props.selectedListItemsMap = this.props.selectedListItemsMap
