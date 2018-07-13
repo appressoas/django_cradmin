@@ -35,7 +35,11 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
   }
 
   renderSelectedValue (extraProps) {
-    return <span {...extraProps} className={'searchinput__selected searchinput__selected--single'} key={'selected value'}>
+    return <span
+      className={'searchinput__selected searchinput__selected--single'}
+      key={'selected value'}
+      onClick={this.onClickSelectedItemBody}
+      {...extraProps}>
       <span className={'searchinput__selected_preview'}>
         {this.renderSelectedLabel()}
       </span>
@@ -43,11 +47,6 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
   }
 
   renderBodyContent () {
-    const blockStyle = {
-      style: {
-        display: 'block'
-      }
-    }
     const noneStyle = {
       style: {
         display: 'none'
@@ -56,13 +55,13 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
 
     if (this.props.selectedListItemsMap.size === 0) {
       return [
-        this.renderSearchInput(blockStyle),
+        this.renderSearchInput(),
         this.renderSelectedValue(noneStyle)
       ]
     }
     return [
       this.renderSearchInput(noneStyle),
-      this.renderSelectedValue(blockStyle)
+      this.renderSelectedValue()
     ]
   }
 }
