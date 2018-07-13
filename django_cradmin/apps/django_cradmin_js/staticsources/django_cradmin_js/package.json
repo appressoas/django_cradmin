@@ -34,6 +34,7 @@
   "scripts": {
     "build": "rm -rf lib && babel source --out-dir lib",
     "build-watch": "rm -rf lib && babel source --watch --out-dir lib",
+    "build-watch-verbose": "rm -rf lib && babel source --watch --out-dir lib --verbose",
     "clean": "rm -rf lib built_docs",
     "build-docs": "esdoc -c esdoc.json",
     "jsbuild": "webpack --mode development",
