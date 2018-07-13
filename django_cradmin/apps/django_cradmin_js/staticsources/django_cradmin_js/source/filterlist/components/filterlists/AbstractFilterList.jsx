@@ -17,6 +17,8 @@ export default class AbstractFilterList extends React.Component {
       selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null]),
       autoLoadFirstPage: PropTypes.bool.isRequired,
       skipLoadingMissingSelectedItemDataFromApi: PropTypes.bool.isRequired,
+      onFocus: PropTypes.func,
+      onBlur: PropTypes.func,
 
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
@@ -42,6 +44,8 @@ export default class AbstractFilterList extends React.Component {
       selectMode: null,
       autoLoadFirstPage: true,
       skipLoadingMissingSelectedItemDataFromApi: false,
+      onFocus: null,
+      onBlur: null,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -294,10 +298,14 @@ export default class AbstractFilterList extends React.Component {
     const didChangeFilterListFocus = this.state.hasFocus !== false
     this.setState({
       hasFocus: false
+    }, () => {
+      this.callAllFocusChangeListeners('onAnyComponentBlur',
+        childInfo, didChangeFilterListFocus)
+      this._currentFocusChildInfo = null
+      if (this.props.onBlur) {
+        this.props.onBlur(this)
+      }
     })
-    this.callAllFocusChangeListeners('onAnyComponentBlur',
-      childInfo, didChangeFilterListFocus)
-    this._currentFocusChildInfo = null
   }
 
   get blurTimerTimeout () {
@@ -321,11 +329,15 @@ export default class AbstractFilterList extends React.Component {
     const didChangeFilterListFocus = this.state.hasFocus !== true
     this.setState({
       hasFocus: true
+    }, () => {
+      const prevChildInfo = this._currentFocusChildInfo
+      this.callAllFocusChangeListeners(
+        'onAnyComponentFocus', childInfo, prevChildInfo, didChangeFilterListFocus)
+      this._currentFocusChildInfo = childInfo
+      if (this.props.onFocus) {
+        this.props.onFocus(this)
+      }
     })
-    const prevChildInfo = this._currentFocusChildInfo
-    this.callAllFocusChangeListeners(
-      'onAnyComponentFocus', childInfo, prevChildInfo, didChangeFilterListFocus)
-    this._currentFocusChildInfo = childInfo
   }
 
   registerFocusChangeListener (componentObject) {
