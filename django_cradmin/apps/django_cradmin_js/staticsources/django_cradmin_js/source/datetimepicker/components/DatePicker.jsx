@@ -82,10 +82,10 @@ export default class DatePicker extends React.Component {
 
   get toolbarComponentProps () {
     return {
-      display: this.getMoment().format('MMMM YYYY'),
       onPrevMonth: this.onPrevMonth.bind(this),
       onNextMonth: this.onNextMonth.bind(this),
       onToggleMode: this.onToggleMode.bind(this),
+      momentObject: this.getMoment(),
       key: 'toolbar'
     }
   }

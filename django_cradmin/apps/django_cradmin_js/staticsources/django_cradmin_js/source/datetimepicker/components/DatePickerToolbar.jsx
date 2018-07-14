@@ -1,29 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
-import { gettext } from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
+import YearSelect from './YearSelect'
+import MonthSelect from './MonthSelect'
 
 export default class DatePickerToolbar extends React.Component {
   static get defaultProps () {
     return {
-      display: null,
+      momentObject: null,
       bemBlock: 'paginator',
       bemVariants: [],
       buttonBemVariants: [],
       leftButtonIcon: 'chevron-left',
       rightButtonIcon: 'chevron-right',
       buttonIconBemVariants: [],
-      leftButtonTitle: gettext('Previous'),
-      rightButtonTitle: gettext('Next'),
+      leftButtonTitle: gettext.gettext('Previous'),
+      rightButtonTitle: gettext.gettext('Next'),
       onPrevMonth: null,
       onToggleMode: null,
-      onNextMonth: null
+      onNextMonth: null,
+      minYear: 1900,
+      maxYear: 2100
     }
   }
 
   static get propTypes () {
     return {
-      display: PropTypes.string,
+      momentObject: PropTypes.any,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       buttonBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -70,41 +74,52 @@ export default class DatePickerToolbar extends React.Component {
     </button>
   }
 
-  renderYearSelect () {
-    return <label key={'yearSelect'} className='select select--outlined select--size-xsmall'>
-      <select aria-label='Year'>
-        <option>2000</option>
-        <option>2001</option>
-        <option>2002</option>
-        <option>2003</option>
-        <option>2004</option>
-        <option>...</option>
-      </select>
-    </label>
+  get yearSelectComponentClass () {
+    return YearSelect
   }
 
-  renderMonthButton () {
-    // return <button key={'monthButton'} className={'button button--form-size-xsmall'} onClick={this.props.onToggleMode}>
-    //   May
-    //   {' '}
-    //   <span className="cricon cricon--size-xxsmall cricon--chevron-down" aria-hidden="true" />
-    // </button>
-    return <label key={'monthSelect'} className='select select--outlined select--size-xsmall'>
-      <select aria-label='Month'>
-        <option>Jan</option>
-        <option>Feb</option>
-        <option>Sep</option>
-        <option>...</option>
-      </select>
-    </label>
+  get yearSelectComponentProps () {
+    return {
+      momentObject: this.props.momentObject,
+      min: this.props.minYear,
+      max: this.props.maxYear
+    }
   }
+
+  renderYearSelect () {
+    const YearSelectComponent = this.yearSelectComponentClass
+    return <YearSelectComponent key={'yearSelect'} {...this.yearSelectComponentProps} />
+  }
+
+  get monthSelectComponentClass () {
+    return MonthSelect
+  }
+
+  get monthSelectComponentProps () {
+    return {
+      momentObject: this.props.momentObject
+    }
+  }
+
+  renderMonthSelect () {
+    const MonthSelectComponent = this.monthSelectComponentClass
+    return <MonthSelectComponent key={'monthSelect'} {...this.monthSelectComponentProps} />
+  }
+
+  // renderMonthButton () {
+  //   // return <button key={'monthButton'} className={'button button--form-size-xsmall'} onClick={this.props.onToggleMode}>
+  //   //   May
+  //   //   {' '}
+  //   //   <span className="cricon cricon--size-xxsmall cricon--chevron-down" aria-hidden="true" />
+  //   // </button>
+  // }
 
   renderCurrentDate () {
     // return <button className={this.currentDateClassName} onClick={this.props.onToggleMode}>
     //   {this.props.display}
     // </button>
     return <span>
-      {this.renderMonthButton()}
+      {this.renderMonthSelect()}
       {' '}
       {this.renderYearSelect()}
     </span>
