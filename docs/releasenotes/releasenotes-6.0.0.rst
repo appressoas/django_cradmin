@@ -38,9 +38,18 @@ What is new?
     - ``blocklist``:
         - New styles for generic action sidebar. With these new styles, we no longer need
           the ``blocklist__movable-item-wrapper`` and related BEM elements, so they are deprecated.
-    - Add new ``help`` BEM block.
+    - New ``help`` BEM block.
+    - New ``responsive-table`` BEM block - responsive tables.
+    - New ``text`` BEM block - for simple text styling.
+    - New ``paginator`` BEM block.
+    - New ``expandable`` BEM block (expand/collapse, accordion, ...).
+    - New ``definition-list`` BEM block (styling for ``<dl>``).
+    - Add new date/time picker related BEM blocks: ``datetimepicker``, ``calendar-month``, ``month-picker``.
     - Fixes and new css classes to make input, searchinput, select and button have the exact same height - for horizontal layouts.
     - Update recommended NPM package versions.
+- ``django_cradmin_js``:
+    - React 16 is now required and fully supported.
+    - New date/time picker ReactJS components and ievv-jsbase widgets.
 
 
 ***************************
@@ -62,3 +71,7 @@ You should update the package.json for your themes using ``django_cradmin_styles
     "postcss-cli": "^5.0.0",
     "postcss-scss": "^1.0.5",
     "stylelint": "^9.2.0"
+
+Update NPM package versions for your javascript
+===============================================
+TODO

@@ -1,0 +1,90 @@
+// TODO: Move to django-cradmin
+
+/** Text
+
+Example: Normal text styles
+
+    <span class="text text--warning">A warning text</span><br>
+    <span class="text text--success">A success text</span><br>
+
+Example: Strong text styles
+
+    <strong class="text text--strong-warning">A strong warning text</strong><br>
+    <strong class="text text--strong-success">A strong success text</strong><br>
+
+Example: You can also use the normal text styles with strong and em tags
+
+    <strong class="text text--warning">A warning text in a strong tag</strong><br>
+    <em class="text text--warning">A warning text in a em tag</em><br>
+
+    <strong class="text text--success">A success text in a strong tag</strong><br>
+    <em class="text text--success">A success text in a em tag</em><br>
+
+Example: Mixed with other text
+
+    <p>
+        Your account is <span class="text text--warning">almost empty</span>,
+        but you have <strong class="text text--strong-success">a very good credit rating</strong>.
+        This means that you are personally not in a good place, but the Bank is
+        <strong class="text text--success">very happy</strong>.
+    </p>
+
+Styleguide components.text
+*/
+@mixin text-variant-mixin(
+    $name,
+    $text-color,
+    $strong-background-color,
+    $strong-text-color: $color-light
+) {
+    &--#{$name} {
+        color: $text-color;
+
+        a {
+            color: $text-color;
+            border-color: $text-color;
+            text-decoration: underline;
+
+            &:hover {
+                color: $text-color;
+                border-color: $text-color;
+            }
+        }
+    }
+
+    &--strong-#{$name} {
+        background-color: $strong-background-color;
+        color: $strong-text-color;
+        @include font(base, bold);
+        padding: 1px $unit;
+        margin-bottom: $border-width;
+        border-radius: $border-radius;
+
+        a {
+            color: $text-color;
+            border-color: $text-color;
+
+            &:hover {
+                color: $text-color;
+                border-color: $text-color;
+            }
+        }
+    }
+}
+
+
+.text {
+    display: inline-block;
+
+    @include text-variant-mixin(
+        $name: warning,
+        $text-color: color(warning, dark),
+        $strong-background-color: color(warning)
+    );
+
+    @include text-variant-mixin(
+        $name: success,
+        $text-color: color(success, dark),
+        $strong-background-color: color(success)
+    );
+}

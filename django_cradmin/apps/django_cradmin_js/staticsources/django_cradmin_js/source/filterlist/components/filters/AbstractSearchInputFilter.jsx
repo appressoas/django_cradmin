@@ -216,8 +216,10 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     throw new Error('renderButtons() must be overridden in subclasses')
   }
 
-  renderSearchInput () {
+  renderSearchInput (extraProps = {}) {
     return <input
+      {...extraProps}
+      key={'search input'}
       type='text'
       ref={(input) => { this._searchInputRef = input }}
       placeholder={this.placeholder}

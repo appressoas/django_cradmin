@@ -16,6 +16,14 @@ export default class AbstractFilterList extends React.Component {
       className: PropTypes.string,
       selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null]),
       autoLoadFirstPage: PropTypes.bool.isRequired,
+      skipLoadingMissingSelectedItemDataFromApi: PropTypes.bool.isRequired,
+      onFocus: PropTypes.func,
+      onBlur: PropTypes.func,
+      onSelectItem: PropTypes.func,
+      onSelectItems: PropTypes.func,
+      onDeselectItem: PropTypes.func,
+      onDeselectItems: PropTypes.func,
+      onDeselectAllItems: PropTypes.func,
 
       getItemsApiUrl: PropTypes.string.isRequired,
       updateSingleItemSortOrderApiUrl: PropTypes.string,
@@ -40,6 +48,14 @@ export default class AbstractFilterList extends React.Component {
       className: null,
       selectMode: null,
       autoLoadFirstPage: true,
+      skipLoadingMissingSelectedItemDataFromApi: false,
+      onFocus: null,
+      onBlur: null,
+      onSelectItem: null,
+      onSelectItems: null,
+      onDeselectItem: null,
+      onDeselectItems: null,
+      onDeselectAllItems: null,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -292,10 +308,14 @@ export default class AbstractFilterList extends React.Component {
     const didChangeFilterListFocus = this.state.hasFocus !== false
     this.setState({
       hasFocus: false
+    }, () => {
+      this.callAllFocusChangeListeners('onAnyComponentBlur',
+        childInfo, didChangeFilterListFocus)
+      this._currentFocusChildInfo = null
+      if (this.props.onBlur) {
+        this.props.onBlur(this)
+      }
     })
-    this.callAllFocusChangeListeners('onAnyComponentBlur',
-      childInfo, didChangeFilterListFocus)
-    this._currentFocusChildInfo = null
   }
 
   get blurTimerTimeout () {
@@ -319,11 +339,15 @@ export default class AbstractFilterList extends React.Component {
     const didChangeFilterListFocus = this.state.hasFocus !== true
     this.setState({
       hasFocus: true
+    }, () => {
+      const prevChildInfo = this._currentFocusChildInfo
+      this.callAllFocusChangeListeners(
+        'onAnyComponentFocus', childInfo, prevChildInfo, didChangeFilterListFocus)
+      this._currentFocusChildInfo = childInfo
+      if (this.props.onFocus) {
+        this.props.onFocus(this)
+      }
     })
-    const prevChildInfo = this._currentFocusChildInfo
-    this.callAllFocusChangeListeners(
-      'onAnyComponentFocus', childInfo, prevChildInfo, didChangeFilterListFocus)
-    this._currentFocusChildInfo = childInfo
   }
 
   registerFocusChangeListener (componentObject) {
@@ -410,7 +434,6 @@ export default class AbstractFilterList extends React.Component {
    *    than 1 item unless {@link AbstractFilterList#isMultiSelectMode} is `true`.
    */
   selectItems (listItemIds) {
-    console.log(listItemIds)
     if (listItemIds.length > 1 && !this.isMultiSelectMode()) {
       throw new Error('Can not select multiple items unless selectMode is "multi".')
     }
@@ -426,11 +449,20 @@ export default class AbstractFilterList extends React.Component {
         }
         selectedListItemsMap.set(listItemId, listItemData)
       }
-      console.log(selectedListItemsMap)
       return {
         selectedListItemsMap: selectedListItemsMap
       }
-    }, this.loadMissingSelectedItemDataFromApi)
+    }, () => {
+      this.loadMissingSelectedItemDataFromApi()
+      if (this.props.onSelectItems) {
+        this.props.onSelectItems(listItemIds, this)
+      }
+      if (!this.isMultiSelectMode()) {
+        if (this.props.onSelectItem && listItemIds.length > 0) {
+          this.props.onSelectItem(listItemIds[0], this)
+        }
+      }
+    })
   }
 
   /**
@@ -456,6 +488,18 @@ export default class AbstractFilterList extends React.Component {
       return {
         selectedListItemsMap: selectedListItemsMap
       }
+    }, () => {
+      if (this.props.onDeselectItems) {
+        this.props.onDeselectItems(listItemIds, this)
+      }
+      if (!this.isMultiSelectMode()) {
+        if (this.props.onDeselectItem && listItemIds.length > 0) {
+          this.props.onDeselectItem(listItemIds[0], this)
+        }
+      }
+      if (this.props.onDeselectAllItems && this.state.selectedListItemsMap.size === 0) {
+        this.props.onDeselectAllItems(this)
+      }
     })
   }
 
@@ -463,9 +507,8 @@ export default class AbstractFilterList extends React.Component {
    * Deselect all selected items.
    */
   deselectAllItems () {
-    this.setState({
-      selectedListItemsMap: new Map()
-    })
+    const listItemIds = Array.from(this.state.selectedListItemsMap.keys())
+    this.deselectItems(listItemIds)
   }
 
   getSelectedItemIdsWithMissingItemData () {
@@ -504,6 +547,9 @@ export default class AbstractFilterList extends React.Component {
   }
 
   loadMissingSelectedItemDataFromApi () {
+    if (this.props.skipLoadingMissingSelectedItemDataFromApi) {
+      return
+    }
     const itemIdsWithMissingData = this.getSelectedItemIdsWithMissingItemData()
     if (itemIdsWithMissingData.length === 0) {
       return

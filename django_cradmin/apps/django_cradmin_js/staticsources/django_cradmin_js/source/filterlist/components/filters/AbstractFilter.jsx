@@ -13,7 +13,8 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
     return Object.assign(super.propTypes, {
       name: PropTypes.string.isRequired,
       isStatic: PropTypes.bool,
-      value: PropTypes.any
+      value: PropTypes.any,
+      selectedListItemsMap: PropTypes.instanceOf(Map).isRequired
     })
   }
 
@@ -32,12 +33,16 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
    *    **Can be used in spec**.
    * @property {*} value The current value of the filter.
    *    _Provided automatically by the parent component_.
+   * @property {Map} selectedListItemsMap Map of selected items
+   *    (maps ID to item data).
+   *    _Provided automatically by the parent component_.
    */
   static get defaultProps () {
     return Object.assign(super.defaultProps, {
       name: null,
       isStatic: false,
-      value: null
+      value: null,
+      selectedListItemsMap: null
     })
   }
 
