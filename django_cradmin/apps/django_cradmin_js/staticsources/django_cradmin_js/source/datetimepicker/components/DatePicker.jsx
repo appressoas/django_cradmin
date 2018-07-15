@@ -14,7 +14,6 @@ export default class DatePicker extends React.Component {
     return {
       momentObject: null,
       initialFocusMomentObject: moment(),
-      locale: null,
       onChange: null,
       includeShortcuts: true,
       momentRange: MomentRange.defaultForDatetimeSelect()
@@ -25,7 +24,6 @@ export default class DatePicker extends React.Component {
     return {
       momentObject: PropTypes.any,
       initialFocusMomentObject: PropTypes.any.isRequired,
-      locale: PropTypes.string,
       onChange: PropTypes.func.isRequired,
       includeShortcuts: PropTypes.bool,
       momentRange: PropTypes.instanceOf(MomentRange).isRequired
@@ -38,9 +36,6 @@ export default class DatePicker extends React.Component {
       momentObject = this.props.initialFocusMomentObject.clone()
     } else {
       momentObject = this.props.momentObject.clone()
-    }
-    if (this.props.locale) {
-      momentObject = momentObject.locale(this.props.locale)
     }
     return momentObject
   }

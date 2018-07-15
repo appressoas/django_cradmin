@@ -11,7 +11,6 @@ export default class TimePicker extends React.Component {
     return {
       momentObject: null,
       initialFocusMomentObject: moment(),
-      locale: null,
       showSeconds: false,
       onChange: null,
       includeShortcuts: true
@@ -22,7 +21,6 @@ export default class TimePicker extends React.Component {
     return {
       momentObject: PropTypes.any,
       initialFocusMomentObject: PropTypes.any.isRequired,
-      locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       onChange: PropTypes.func.isRequired,
       includeShortcuts: PropTypes.bool
@@ -35,9 +33,6 @@ export default class TimePicker extends React.Component {
       momentObject = this.props.initialFocusMomentObject.clone()
     } else {
       momentObject = this.props.momentObject.clone()
-    }
-    if (this.props.locale) {
-      momentObject = momentObject.locale(this.props.locale)
     }
     return momentObject
   }

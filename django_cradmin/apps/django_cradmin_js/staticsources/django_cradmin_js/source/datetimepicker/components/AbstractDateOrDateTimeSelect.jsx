@@ -8,7 +8,6 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return {
       momentObject: null,
       initialFocusMomentObject: moment(),
-      locale: null,
       bemBlock: 'datetimepicker',
       bemVariants: [],
       selectedPreviewFormat: null,
@@ -22,7 +21,6 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return {
       momentObject: PropTypes.any,
       initialFocusMomentObject: PropTypes.any.isRequired,
-      locale: PropTypes.string,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       selectedPreviewFormat: PropTypes.string.isRequired,
@@ -109,7 +107,6 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     return Object.assign({}, this.props.pickerProps, {
       momentObject: this.state.draftMomentObject,
       initialFocusMomentObject: this.props.initialFocusMomentObject,
-      locale: this.props.locale,
       onChange: this.setDraftMomentObject
     })
   }

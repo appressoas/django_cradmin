@@ -34,9 +34,6 @@ export default class DateCalendar extends React.Component {
     } else {
       momentObject = this.props.momentObject.clone()
     }
-    if (this.props.locale) {
-      momentObject = momentObject.locale(this.props.locale)
-    }
     return momentObject
   }
 

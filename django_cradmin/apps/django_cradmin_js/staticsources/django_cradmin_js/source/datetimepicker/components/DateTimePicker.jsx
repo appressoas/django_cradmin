@@ -12,7 +12,6 @@ export default class DateTimePicker extends React.Component {
     return {
       momentObject: null,
       initialFocusMomentObject: moment(),
-      locale: null,
       showSeconds: false,
       includeShortcuts: true,
       dateIconClassName: 'cricon cricon--calendar-grid',
@@ -27,7 +26,6 @@ export default class DateTimePicker extends React.Component {
     return {
       momentObject: PropTypes.any,
       initialFocusMomentObject: PropTypes.any.isRequired,
-      locale: PropTypes.string,
       showSeconds: PropTypes.bool.isRequired,
       includeShortcuts: PropTypes.bool.isRequired,
       dateIconClassName: PropTypes.string.isRequired,
@@ -65,7 +63,6 @@ export default class DateTimePicker extends React.Component {
       momentObject={this.props.momentObject}
       initialFocusMomentObject={this.props.initialFocusMomentObject}
       includeShortcuts={this.props.includeShortcuts}
-      locale={this.props.locale}
       onChange={this.props.onChange}
       momentRange={this.props.momentRange}
     />
@@ -78,7 +75,6 @@ export default class DateTimePicker extends React.Component {
       initialFocusMomentObject={this.props.initialFocusMomentObject}
       showSeconds={this.props.showSeconds}
       includeShortcuts={this.props.includeShortcuts}
-      locale={this.props.locale}
       onChange={this.props.onChange}
       momentRange={this.props.momentRange}
     />
