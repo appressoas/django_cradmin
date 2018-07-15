@@ -127,6 +127,22 @@ Styleguide form.3:input
         margin: 0;
     }
 
+    &--outlined {
+        border: $border-width solid color(neutral, light);
+    }
+
+    &--error {
+        border-color: color(warning);
+    }
+
+    &--nomargin {
+        margin: 0;
+    }
+}
+
+input.input {
+    @include form-element-mixin();
+
     &--width-xsmall {
         width: $unit * 20;
         min-width: $unit * 5;
@@ -156,20 +172,4 @@ Styleguide form.3:input
         @include font-size(medium, $skip-line-height: true);
         @include form-element-mixin(large);
     }
-
-    &--outlined {
-        border: $border-width solid color(neutral, light);
-    }
-
-    &--error {
-        border-color: color(warning);
-    }
-
-    &--nomargin {
-        margin: 0;
-    }
-}
-
-input.input {
-    @include form-element-mixin();
 }
