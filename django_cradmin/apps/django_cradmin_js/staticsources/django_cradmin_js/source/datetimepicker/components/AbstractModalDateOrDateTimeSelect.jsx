@@ -135,6 +135,9 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   renderUseButton () {
+    if (this.state.draftMomentObject === null) {
+      return null
+    }
     return <button key={'useButton'} type={'button'} className={this.useButtonClassName} onClick={this.onUseButtonClick}>
       {this.renderUseButtonLabel()}
     </button>

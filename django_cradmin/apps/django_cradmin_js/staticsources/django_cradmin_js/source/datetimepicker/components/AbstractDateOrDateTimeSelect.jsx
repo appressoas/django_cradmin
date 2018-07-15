@@ -127,6 +127,9 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   //
 
   renderSelectedPreview () {
+    if (this.state.draftMomentObject === null) {
+      return null
+    }
     return <p key={'preview'} className={this.previewClassName}>
       {this.draftMomentObjectPreviewFormatted}
     </p>
