@@ -7,7 +7,7 @@ export default class MonthSelect extends React.Component {
   static get defaultProps () {
     return {
       bemBlock: 'select',
-      bemVariants: ['outlined', 'size-xsmall'],
+      bemVariants: ['outlined', 'size-xsmall', 'width-xxsmall'],
       ariaLabel: gettext.gettext('Month'),
       momentObject: null,
       onChange: null

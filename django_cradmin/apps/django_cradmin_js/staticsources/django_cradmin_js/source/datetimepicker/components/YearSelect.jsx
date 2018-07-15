@@ -7,21 +7,24 @@ import moment from 'moment'
 export default class YearSelect extends React.Component {
   static get defaultProps () {
     return {
-      bemBlock: 'select',
-      bemVariants: ['outlined', 'size-xsmall'],
+      selectBemBlock: 'select',
+      selectBemVariants: ['outlined', 'size-xsmall', 'width-xxsmall'],
+      inputBemBlock: 'input',
+      inputBemVariants: ['outlined', 'inline', 'size-xsmall', 'width-xxsmall'],
       ariaLabel: gettext.gettext('Year'),
       min: 1900,
       max: 2100,
       momentObject: null,
-      onChange: null
+      onChange: null,
+      renderAsInputThreshold: 200
     }
   }
 
   static get propTypes () {
     return {
       momentObject: PropTypes.any.isRequired,
-      bemBlock: PropTypes.string.isRequired,
-      bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      selectBemBlock: PropTypes.string.isRequired,
+      selectBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       ariaLabel: PropTypes.string.isRequired,
       min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
@@ -29,8 +32,12 @@ export default class YearSelect extends React.Component {
     }
   }
 
-  get className () {
-    return BemUtilities.addVariants(this.props.bemBlock, this.props.bemVariants)
+  get selectClassName () {
+    return BemUtilities.addVariants(this.props.selectBemBlock, this.props.selectBemVariants)
+  }
+
+  get inputClassName () {
+    return BemUtilities.addVariants(this.props.inputBemBlock, this.props.inputBemVariants)
   }
 
   parseMinMaxProp (value) {
@@ -48,8 +55,12 @@ export default class YearSelect extends React.Component {
     return this.parseMinMaxProp(this.props.max)
   }
 
+  get selectedYear () {
+    return this.props.momentObject.year()
+  }
+
   isSelectedYear (year) {
-    return this.props.momentObject.year() === year
+    return this.selectedYear === year
   }
 
   renderYear (year) {
@@ -68,18 +79,44 @@ export default class YearSelect extends React.Component {
     return renderedYears
   }
 
-  handleChange (e) {
+  handleSelectChange (e) {
     const value = parseInt(e.target.value, 10)
     if (this.props.onChange) {
       this.props.onChange(value)
     }
   }
 
-  render () {
-    return <label className={this.className} onChange={this.handleChange.bind(this)}>
+  handleInputChange (e) {
+    const value = parseInt(e.target.value, 10)
+    if (this.props.onChange) {
+      this.props.onChange(value)
+    }
+  }
+
+  shouldRenderAsSelect () {
+    return (this.maxYear - this.minYear) <= this.props.renderAsInputThreshold
+  }
+
+  renderAsSelect () {
+    return <label className={this.selectClassName} onChange={this.handleSelectChange.bind(this)}>
       <select aria-label={this.props.ariaLabel}>
         {this.renderYears()}
       </select>
     </label>
+  }
+
+  renderAsInput () {
+    return <input
+      className={this.inputClassName}
+      onChange={this.handleInputChange.bind(this)}
+      value={this.selectedYear}
+    />
+  }
+
+  render () {
+    if (this.shouldRenderAsSelect()) {
+      return this.renderAsSelect()
+    }
+    return this.renderAsInput()
   }
 }
