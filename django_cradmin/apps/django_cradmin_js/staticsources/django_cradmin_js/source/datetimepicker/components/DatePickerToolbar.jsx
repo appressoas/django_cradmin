@@ -4,11 +4,13 @@ import BemUtilities from '../../utilities/BemUtilities'
 import * as gettext from 'ievv_jsbase/lib/gettext'
 import YearSelect from './YearSelect'
 import MonthSelect from './MonthSelect'
+import MomentRange from '../../utilities/MomentRange'
 
 export default class DatePickerToolbar extends React.Component {
   static get defaultProps () {
     return {
       momentObject: null,
+      momentRange: null,
       bemBlock: 'paginator',
       bemVariants: [],
       buttonBemVariants: [],
@@ -20,15 +22,14 @@ export default class DatePickerToolbar extends React.Component {
       onPrevMonth: null,
       onNextMonth: null,
       onMonthSelect: null,
-      onYearSelect: null,
-      minYear: 1900,
-      maxYear: 2100
+      onYearSelect: null
     }
   }
 
   static get propTypes () {
     return {
       momentObject: PropTypes.any,
+      momentRange: PropTypes.instanceOf(MomentRange).isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       buttonBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -40,9 +41,7 @@ export default class DatePickerToolbar extends React.Component {
       onPrevMonth: PropTypes.func.isRequired,
       onNextMonth: PropTypes.func.isRequired,
       onMonthSelect: PropTypes.func.isRequired,
-      onYearSelect: PropTypes.func.isRequired,
-      minYear: PropTypes.number.isRequired,
-      maxYear: PropTypes.number.isRequired
+      onYearSelect: PropTypes.func.isRequired
     }
   }
 
@@ -85,8 +84,7 @@ export default class DatePickerToolbar extends React.Component {
   get yearSelectComponentProps () {
     return {
       momentObject: this.props.momentObject,
-      min: this.props.minYear,
-      max: this.props.maxYear,
+      momentRange: this.props.momentRange,
       onChange: this.props.onYearSelect
     }
   }
@@ -103,6 +101,7 @@ export default class DatePickerToolbar extends React.Component {
   get monthSelectComponentProps () {
     return {
       momentObject: this.props.momentObject,
+      momentRange: this.props.momentRange,
       onChange: this.props.onMonthSelect
     }
   }

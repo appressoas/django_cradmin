@@ -7,6 +7,7 @@ import DateCalendar from './DateCalendar'
 import PropTypes from 'prop-types'
 import DatePickerToolbar from './DatePickerToolbar'
 import BemUtilities from '../../utilities/BemUtilities'
+import MomentRange from '../../utilities/MomentRange'
 
 export default class DatePicker extends React.Component {
   static get defaultProps () {
@@ -15,7 +16,8 @@ export default class DatePicker extends React.Component {
       initialFocusMomentObject: moment(),
       locale: null,
       onChange: null,
-      includeShortcuts: true
+      includeShortcuts: true,
+      momentRange: MomentRange.defaultForDatetimeSelect()
     }
   }
 
@@ -25,7 +27,8 @@ export default class DatePicker extends React.Component {
       initialFocusMomentObject: PropTypes.any.isRequired,
       locale: PropTypes.string,
       onChange: PropTypes.func.isRequired,
-      includeShortcuts: PropTypes.bool
+      includeShortcuts: PropTypes.bool,
+      momentRange: PropTypes.instanceOf(MomentRange).isRequired
     }
   }
 
@@ -48,10 +51,11 @@ export default class DatePicker extends React.Component {
 
   get datePickerComponentProps () {
     return {
+      key: 'datePicker',
       momentObject: this.props.momentObject,
       initialFocusMomentObject: this.props.initialFocusMomentObject,
       onDaySelect: this.onDaySelect.bind(this),
-      key: 'datePicker'
+      momentRange: this.props.momentRange
     }
   }
 
@@ -61,12 +65,13 @@ export default class DatePicker extends React.Component {
 
   get toolbarComponentProps () {
     return {
+      key: 'toolbar',
       onPrevMonth: this.onPrevMonth.bind(this),
       onNextMonth: this.onNextMonth.bind(this),
       onMonthSelect: this.onMonthSelect.bind(this),
       onYearSelect: this.onYearSelect.bind(this),
       momentObject: this.getMoment(),
-      key: 'toolbar'
+      momentRange: this.props.momentRange
     }
   }
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
 import * as gettext from 'ievv_jsbase/lib/gettext'
 import moment from 'moment'
+import MomentRange from '../../utilities/MomentRange'
 
 export default class YearSelect extends React.Component {
   static get defaultProps () {
@@ -12,9 +13,8 @@ export default class YearSelect extends React.Component {
       inputBemBlock: 'input',
       inputBemVariants: ['outlined', 'inline', 'size-xsmall', 'width-xxsmall'],
       ariaLabel: gettext.gettext('Year'),
-      min: 1900,
-      max: 2100,
       momentObject: null,
+      momentRange: null,
       onChange: null,
       renderAsInputThreshold: 200
     }
@@ -23,11 +23,10 @@ export default class YearSelect extends React.Component {
   static get propTypes () {
     return {
       momentObject: PropTypes.any.isRequired,
+      momentRange: PropTypes.instanceOf(MomentRange).isRequired,
       selectBemBlock: PropTypes.string.isRequired,
       selectBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       ariaLabel: PropTypes.string.isRequired,
-      min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-      max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
       onChange: PropTypes.func
     }
   }
@@ -40,31 +39,20 @@ export default class YearSelect extends React.Component {
     return BemUtilities.addVariants(this.props.inputBemBlock, this.props.inputBemVariants)
   }
 
-  parseMinMaxProp (value) {
-    if (value === 'now') {
-      return moment().year()
-    }
-    return value
-  }
-
   get minYear () {
-    return this.parseMinMaxProp(this.props.min)
+    return this.props.momentRange.start.year()
   }
 
   get maxYear () {
-    return this.parseMinMaxProp(this.props.max)
+    return this.props.momentRange.end.year()
   }
 
   get selectedYear () {
     return this.props.momentObject.year()
   }
 
-  isSelectedYear (year) {
-    return this.selectedYear === year
-  }
-
   renderYear (year) {
-    return <option key={year} value={year} selected={this.isSelectedYear(year)}>
+    return <option key={year} value={year}>
       {year}
     </option>
   }
@@ -72,6 +60,7 @@ export default class YearSelect extends React.Component {
   renderYears () {
     let year = this.minYear
     let renderedYears = []
+    console.log(this.props.momentRange.format())
     while (year <= this.maxYear) {
       renderedYears.push(this.renderYear(year))
       year += 1
@@ -98,8 +87,8 @@ export default class YearSelect extends React.Component {
   }
 
   renderAsSelect () {
-    return <label className={this.selectClassName} onChange={this.handleSelectChange.bind(this)}>
-      <select aria-label={this.props.ariaLabel}>
+    return <label className={this.selectClassName}>
+      <select aria-label={this.props.ariaLabel} value={this.selectedYear} onChange={this.handleSelectChange.bind(this)}>
         {this.renderYears()}
       </select>
     </label>

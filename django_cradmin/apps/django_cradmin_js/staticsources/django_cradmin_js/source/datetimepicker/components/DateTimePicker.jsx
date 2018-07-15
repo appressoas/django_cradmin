@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
 import { gettext } from 'ievv_jsbase/lib/gettext'
 import moment from 'moment/moment'
+import MomentRange from '../../utilities/MomentRange'
 
 export default class DateTimePicker extends React.Component {
   static get defaultProps () {
@@ -17,7 +18,8 @@ export default class DateTimePicker extends React.Component {
       dateIconClassName: 'cricon cricon--calendar-grid',
       timeIconClassName: 'cricon cricon--clock',
       dateButtonLabel: gettext('Date'),
-      timeButtonLabel: gettext('Time')
+      timeButtonLabel: gettext('Time'),
+      momentRange: MomentRange.defaultForDatetimeSelect()
     }
   }
 
@@ -31,7 +33,8 @@ export default class DateTimePicker extends React.Component {
       dateIconClassName: PropTypes.string.isRequired,
       timeIconClassName: PropTypes.string.isRequired,
       dateButtonLabel: PropTypes.string.isRequired,
-      timeButtonLabel: PropTypes.string.isRequired
+      timeButtonLabel: PropTypes.string.isRequired,
+      momentRange: PropTypes.instanceOf(MomentRange).isRequired
     }
   }
 
@@ -64,6 +67,7 @@ export default class DateTimePicker extends React.Component {
       includeShortcuts={this.props.includeShortcuts}
       locale={this.props.locale}
       onChange={this.props.onChange}
+      momentRange={this.props.momentRange}
     />
   }
 
@@ -76,6 +80,7 @@ export default class DateTimePicker extends React.Component {
       includeShortcuts={this.props.includeShortcuts}
       locale={this.props.locale}
       onChange={this.props.onChange}
+      momentRange={this.props.momentRange}
     />
   }
 
