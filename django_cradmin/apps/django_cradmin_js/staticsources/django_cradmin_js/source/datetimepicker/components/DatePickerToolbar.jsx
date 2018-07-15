@@ -86,7 +86,7 @@ export default class DatePickerToolbar extends React.Component {
   }
 
   isValidMonth (monthMomentObject) {
-    return this.props.momentRange.isWithin(monthMomentObject)
+    return this.props.momentRange.contains(monthMomentObject)
   }
 
   renderPrevMonthButton () {

@@ -36,7 +36,7 @@ export default class MonthSelect extends React.Component {
   }
 
   isValidMonth (monthMomentObject) {
-    return this.props.momentRange.isWithin(monthMomentObject)
+    return this.props.momentRange.contains(monthMomentObject)
   }
 
   renderMonthAriaLabel (monthMomentObject) {

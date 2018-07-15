@@ -152,24 +152,18 @@ export default class DatePicker extends React.Component {
   }
 
   onDaySelect (dayMomentObject) {
-    // let momentObject = this.getMoment().clone()
-    // let prevMonth = (week === 0 && day > 7)
-    // let nextMonth = (week >= 4 && day <= 14)
-    //
-    // momentObject.date(day)
-    // if (prevMonth) momentObject.subtract(1, 'month')
-    // if (nextMonth) momentObject.add(1, 'month')
-    this.props.onChange(dayMomentObject)
+    this.props.onChange(this.props.momentRange.getClosestValid(dayMomentObject))
   }
 
   onMonthSelect (monthNumber) {
-    let momentObject = this.getMoment().clone()
-    this.props.onChange(momentObject.month(monthNumber))
+    let momentObject = this.getMoment().clone().month(monthNumber)
+    momentObject = this.props.momentRange.getClosestValid(momentObject)
+    this.props.onChange(momentObject)
   }
 
   onYearSelect (year) {
-    let momentObject = this.getMoment().clone()
-    this.props.onChange(momentObject.year(year))
+    let momentObject = this.getMoment().clone().year(year)
+    momentObject = this.props.momentRange.getClosestValid(momentObject)
+    this.props.onChange(momentObject)
   }
-
 }

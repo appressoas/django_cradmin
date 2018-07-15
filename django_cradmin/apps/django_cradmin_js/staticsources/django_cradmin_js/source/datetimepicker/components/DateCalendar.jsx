@@ -65,7 +65,7 @@ export default class DateCalendar extends React.Component {
   }
 
   isValidDay (dayMomentObject) {
-    return this.props.momentRange.isWithin(dayMomentObject)
+    return this.props.momentRange.contains(dayMomentObject)
   }
 
   makeDayButtonClassName (dayMomentObject) {
