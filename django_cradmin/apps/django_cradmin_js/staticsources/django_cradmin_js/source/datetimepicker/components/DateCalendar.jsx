@@ -4,6 +4,7 @@ import range from 'lodash/range'
 import chunk from 'lodash/chunk'
 import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 
 export default class DateCalendar extends React.Component {
   static get defaultProps () {
@@ -63,41 +64,89 @@ export default class DateCalendar extends React.Component {
     return BemUtilities.buildBemElement(this.props.bemBlock, 'week')
   }
 
-  makeDayClassName (year, month, week, day) {
-    const isInPrevMonth = (week === 0 && day > 7)
-    const isInNextMonth = (week >= 4 && day <= 14)
+  isValidDay (dayMomentObject) {
+    return this.props.momentRange.isWithin(dayMomentObject)
+  }
+
+  makeDayButtonClassName (dayMomentObject) {
     const bemVariants = []
-    if (isInPrevMonth || isInNextMonth) {
+    if (!dayMomentObject.isSame(this.getMoment(), 'month')) {
       bemVariants.push('muted')
-    } else if (this.props.momentObject !== null && this.props.momentObject.isSame(moment({year: year, month: month, day: day}), 'day')) {
+    } else if (this.props.momentObject !== null && this.props.momentObject.isSame(dayMomentObject, 'day')) {
       bemVariants.push('selected')
     } else {
       const now = moment()
-      if (year === now.year() && month === now.month() && day === now.date()) {
+      if (dayMomentObject.isSame(now, 'day')) {
         bemVariants.push('today')
       }
     }
 
-    return BemUtilities.buildBemElement(this.props.bemBlock, 'day', bemVariants)
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'daybutton', bemVariants)
   }
 
-  renderDay (year, month, week, day) {
-    return <div
-      role={'button'}
+  makeDayClassName (dayMomentObject) {
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'day')
+  }
+
+  renderDayButtonAriaLabel (dayMomentObject) {
+    return gettext.interpolate(gettext.gettext('Select %(date)s'), {
+      date: dayMomentObject.format('LL')
+    }, true)
+  }
+
+  renderDayButtonLabel (dayMomentObject) {
+    return dayMomentObject.format('D')
+  }
+
+  renderDayButton (dayMomentObject) {
+    return <button
       tabIndex={0}
-      key={day}
-      className={this.makeDayClassName(year, month, week, day)}
-      onClick={() => {
-        this.props.onDaySelect(day, week)
+      className={this.makeDayButtonClassName(dayMomentObject)}
+      aria-label={this.renderDayButtonAriaLabel(dayMomentObject)}
+      disabled={!this.isValidDay(dayMomentObject)}
+      onClick={(e) => {
+        e.preventDefault()
+        this.props.onDaySelect(dayMomentObject)
       }}
     >
-      {day}
+      {this.renderDayButtonLabel(dayMomentObject)}
+    </button>
+  }
+
+  renderDay (dayMomentObject) {
+    return <div key={dayMomentObject.format()} className={this.makeDayClassName(dayMomentObject)}>
+      {this.renderDayButton(dayMomentObject)}
     </div>
   }
 
   renderDaysInWeek (daysInWeek, year, month, week) {
     return daysInWeek.map(day => {
-      return this.renderDay(year, month, week, day)
+      let realMonth = month
+      let realYear = year
+      if (week === 0 && day > 7) {
+        realMonth -= 1
+      } else if (week >= 4 && day <= 14) {
+        realMonth += 1
+      }
+
+      if (realMonth > 11) {
+        realYear += 1
+        realMonth = 0
+      }
+      if (realMonth < 0) {
+        realYear -= 1
+        realMonth = 11
+      }
+
+      const dayMomentObject = moment({
+        year: realYear,
+        month: realMonth,
+        day: day
+      })
+      if (dayMomentObject.format() === 'Invalid date') {
+        console.log('CRAP', year, realMonth, day)
+      }
+      return this.renderDay(dayMomentObject)
     })
   }
 
@@ -144,11 +193,11 @@ export default class DateCalendar extends React.Component {
   renderHeaderRowContent () {
     const momentObject = this.getMoment()
     const firstDayOfWeek = momentObject.localeData().firstDayOfWeek()
-    let weeks = momentObject.localeData().weekdaysShort()
-    weeks = weeks.slice(firstDayOfWeek).concat(weeks.slice(0, firstDayOfWeek))
+    let weekdays = momentObject.localeData().weekdaysShort()
+    weekdays = weekdays.slice(firstDayOfWeek).concat(weekdays.slice(0, firstDayOfWeek))
 
-    return weeks.map((week, index) => {
-      return <div key={index} className={this.headerDayClassName}>{week}</div>
+    return weekdays.map((weekday, index) => {
+      return <div key={index} className={this.headerDayClassName}>{weekday}</div>
     })
   }
 

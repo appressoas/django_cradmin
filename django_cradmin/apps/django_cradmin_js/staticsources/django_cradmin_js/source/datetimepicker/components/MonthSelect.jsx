@@ -39,12 +39,21 @@ export default class MonthSelect extends React.Component {
     return this.props.momentRange.isWithin(monthMomentObject)
   }
 
+  renderMonthAriaLabel (monthMomentObject) {
+    return monthMomentObject.format('MMMM')
+  }
+
   renderMonthLabel (monthMomentObject) {
     return monthMomentObject.format('MMM')
   }
 
   renderMonth (monthMomentObject) {
-    return <option key={monthMomentObject.format()} value={monthMomentObject.month()} disabled={!this.isValidMonth(monthMomentObject)}>
+    return <option
+      key={monthMomentObject.format()}
+      value={monthMomentObject.month()}
+      disabled={!this.isValidMonth(monthMomentObject)}
+      aria-label={this.renderMonthAriaLabel(monthMomentObject)}
+    >
       {this.renderMonthLabel(monthMomentObject)}
     </option>
   }
@@ -55,7 +64,6 @@ export default class MonthSelect extends React.Component {
 
   renderMonths () {
     const renderedMonths = []
-    // let monthNames = this.props.momentObject.localeData().monthsShort()
     let monthNumber = 0
     while (monthNumber < 12) {
       const monthMomentObject = this.makeMomentForMonthNumber(monthNumber)

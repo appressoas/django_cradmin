@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
 import * as gettext from 'ievv_jsbase/lib/gettext'
-import moment from 'moment'
 import MomentRange from '../../utilities/MomentRange'
 
 export default class YearSelect extends React.Component {
@@ -60,7 +59,6 @@ export default class YearSelect extends React.Component {
   renderYears () {
     let year = this.minYear
     let renderedYears = []
-    console.log(this.props.momentRange.format())
     while (year <= this.maxYear) {
       renderedYears.push(this.renderYear(year))
       year += 1

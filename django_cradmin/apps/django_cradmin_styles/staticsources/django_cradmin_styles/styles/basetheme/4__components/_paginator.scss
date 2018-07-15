@@ -114,7 +114,9 @@ Styleguide components.paginator
         }
 
         &:disabled {
-            background-color: color(neutral);
+            &, &:hover {
+                background-color: color(neutral);
+            }
         }
 
         &--primary {

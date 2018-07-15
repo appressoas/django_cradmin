@@ -28,7 +28,7 @@ export default class DatePickerToolbar extends React.Component {
 
   static get propTypes () {
     return {
-      momentObject: PropTypes.any,
+      momentObject: PropTypes.any.isRequired,
       momentRange: PropTypes.instanceOf(MomentRange).isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -65,14 +65,50 @@ export default class DatePickerToolbar extends React.Component {
     return BemUtilities.buildBemElement(this.props.bemBlock, 'label')
   }
 
-  renderLeftButton () {
-    return <button className={this.buttonClassName} title={this.props.leftButtonTitle} onClick={this.props.onPrevMonth}>
+  get prevMonthMoment () {
+    return this.props.momentObject.clone().subtract(1, 'month')
+  }
+
+  get nextMonthMoment () {
+    return this.props.momentObject.clone().add(1, 'month')
+  }
+
+  renderPrevMonthButtonAriaLabel () {
+    return gettext.interpolate(gettext.gettext('Select previous month (%(month)s)'), {
+      month: this.prevMonthMoment.format('MMMM YYYY')
+    }, true)
+  }
+
+  renderNextMonthButtonAriaLabel () {
+    return gettext.interpolate(gettext.gettext('Select next month (%(month)s)'), {
+      month: this.nextMonthMoment.format('MMMM YYYY')
+    }, true)
+  }
+
+  isValidMonth (monthMomentObject) {
+    return this.props.momentRange.isWithin(monthMomentObject)
+  }
+
+  renderPrevMonthButton () {
+    return <button
+      className={this.buttonClassName}
+      title={this.props.leftButtonTitle}
+      onClick={this.props.onPrevMonth}
+      disabled={!this.isValidMonth(this.prevMonthMoment)}
+      aria-label={this.renderPrevMonthButtonAriaLabel()}
+    >
       <span className={this.leftButtonIconClassName} aria-hidden='true' />
     </button>
   }
 
-  renderRightButton () {
-    return <button className={this.buttonClassName} title={this.props.rightButtonTitle} onClick={this.props.onNextMonth}>
+  renderNextMonthButton () {
+    return <button
+      className={this.buttonClassName}
+      title={this.props.rightButtonTitle}
+      onClick={this.props.onNextMonth}
+      disabled={!this.isValidMonth(this.nextMonthMoment)}
+      aria-label={this.renderNextMonthButtonAriaLabel()}
+    >
       <span className={this.rightButtonIconClassName} aria-hidden='true' />
     </button>
   }
@@ -121,9 +157,9 @@ export default class DatePickerToolbar extends React.Component {
 
   render () {
     return <div className={this.className}>
-      {this.renderLeftButton()}
+      {this.renderPrevMonthButton()}
       {this.renderCurrentDate()}
-      {this.renderRightButton()}
+      {this.renderNextMonthButton()}
     </div>
   }
 }
