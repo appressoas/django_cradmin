@@ -18,8 +18,9 @@ export default class DatePickerToolbar extends React.Component {
       leftButtonTitle: gettext.gettext('Previous'),
       rightButtonTitle: gettext.gettext('Next'),
       onPrevMonth: null,
-      onToggleMode: null,
       onNextMonth: null,
+      onMonthSelect: null,
+      onYearSelect: null,
       minYear: 1900,
       maxYear: 2100
     }
@@ -37,8 +38,11 @@ export default class DatePickerToolbar extends React.Component {
       leftButtonTitle: PropTypes.string.isRequired,
       rightButtonTitle: PropTypes.string.isRequired,
       onPrevMonth: PropTypes.func.isRequired,
-      onToggleMode: PropTypes.func.isRequired,
-      onNextMonth: PropTypes.func.isRequired
+      onNextMonth: PropTypes.func.isRequired,
+      onMonthSelect: PropTypes.func.isRequired,
+      onYearSelect: PropTypes.func.isRequired,
+      minYear: PropTypes.number.isRequired,
+      maxYear: PropTypes.number.isRequired
     }
   }
 
@@ -82,7 +86,8 @@ export default class DatePickerToolbar extends React.Component {
     return {
       momentObject: this.props.momentObject,
       min: this.props.minYear,
-      max: this.props.maxYear
+      max: this.props.maxYear,
+      onChange: this.props.onYearSelect
     }
   }
 
@@ -97,7 +102,8 @@ export default class DatePickerToolbar extends React.Component {
 
   get monthSelectComponentProps () {
     return {
-      momentObject: this.props.momentObject
+      momentObject: this.props.momentObject,
+      onChange: this.props.onMonthSelect
     }
   }
 
@@ -106,18 +112,7 @@ export default class DatePickerToolbar extends React.Component {
     return <MonthSelectComponent key={'monthSelect'} {...this.monthSelectComponentProps} />
   }
 
-  // renderMonthButton () {
-  //   // return <button key={'monthButton'} className={'button button--form-size-xsmall'} onClick={this.props.onToggleMode}>
-  //   //   May
-  //   //   {' '}
-  //   //   <span className="cricon cricon--size-xxsmall cricon--chevron-down" aria-hidden="true" />
-  //   // </button>
-  // }
-
   renderCurrentDate () {
-    // return <button className={this.currentDateClassName} onClick={this.props.onToggleMode}>
-    //   {this.props.display}
-    // </button>
     return <span>
       {this.renderMonthSelect()}
       {' '}

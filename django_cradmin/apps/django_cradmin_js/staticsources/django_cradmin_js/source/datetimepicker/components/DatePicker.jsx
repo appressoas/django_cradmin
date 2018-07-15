@@ -3,7 +3,6 @@ import React from 'react'
 import { gettext } from 'ievv_jsbase/lib/gettext'
 
 import DateCalendar from './DateCalendar'
-import DateMonths from './DateMonths'
 
 import PropTypes from 'prop-types'
 import DatePickerToolbar from './DatePickerToolbar'
@@ -30,14 +29,6 @@ export default class DatePicker extends React.Component {
     }
   }
 
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      mode: 'calendar'
-    }
-  }
-
   getMoment () {
     let momentObject = null
     if (this.props.momentObject === null) {
@@ -49,18 +40,6 @@ export default class DatePicker extends React.Component {
       momentObject = momentObject.locale(this.props.locale)
     }
     return momentObject
-  }
-
-  get monthPickerComponentClass () {
-    return DateMonths
-  }
-
-  get monthPickerComponentProps () {
-    return {
-      momentObject: this.getMoment(),
-      onMonthSelect: this.onMonthSelect.bind(this),
-      key: 'monthPicker'
-    }
   }
 
   get datePickerComponentClass () {
@@ -84,15 +63,11 @@ export default class DatePicker extends React.Component {
     return {
       onPrevMonth: this.onPrevMonth.bind(this),
       onNextMonth: this.onNextMonth.bind(this),
-      onToggleMode: this.onToggleMode.bind(this),
+      onMonthSelect: this.onMonthSelect.bind(this),
+      onYearSelect: this.onYearSelect.bind(this),
       momentObject: this.getMoment(),
       key: 'toolbar'
     }
-  }
-
-  renderMonthPicker () {
-    const MonthPickerComponent = this.monthPickerComponentClass
-    return <MonthPickerComponent {...this.monthPickerComponentProps} />
   }
 
   renderDatePicker () {
@@ -101,9 +76,6 @@ export default class DatePicker extends React.Component {
   }
 
   renderPicker () {
-    if (this.state.mode === 'months') {
-      return this.renderMonthPicker()
-    }
     return this.renderDatePicker()
   }
 
@@ -165,12 +137,6 @@ export default class DatePicker extends React.Component {
     this.props.onChange(momentObject.add(1, 'month'))
   }
 
-  onToggleMode () {
-    this.setState({
-      mode: this.state.mode === 'calendar' ? 'months' : 'calendar'
-    })
-  }
-
   onClickTodayButton () {
     const today = moment()
     let momentObject = this.getMoment().clone()
@@ -193,8 +159,12 @@ export default class DatePicker extends React.Component {
 
   onMonthSelect (monthNumber) {
     let momentObject = this.getMoment().clone()
-    this.setState({mode: 'calendar'}, () => {
-      this.props.onChange(momentObject.month(monthNumber))
-    })
+    this.props.onChange(momentObject.month(monthNumber))
   }
+
+  onYearSelect (year) {
+    let momentObject = this.getMoment().clone()
+    this.props.onChange(momentObject.year(year))
+  }
+
 }
