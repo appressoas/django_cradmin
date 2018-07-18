@@ -3,7 +3,7 @@ import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 import PropTypes from 'prop-types'
 import BemUtilities from '../../utilities/BemUtilities'
-import { gettext } from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 import moment from 'moment/moment'
 import MomentRange from '../../utilities/MomentRange'
 
@@ -16,8 +16,8 @@ export default class DateTimePicker extends React.Component {
       includeShortcuts: true,
       dateIconClassName: 'cricon cricon--calendar-grid',
       timeIconClassName: 'cricon cricon--clock',
-      dateButtonLabel: gettext('Date'),
-      timeButtonLabel: gettext('Time'),
+      dateButtonLabel: gettext.gettext('Date'),
+      timeButtonLabel: gettext.gettext('Time'),
       momentRange: MomentRange.defaultForDatetimeSelect()
     }
   }

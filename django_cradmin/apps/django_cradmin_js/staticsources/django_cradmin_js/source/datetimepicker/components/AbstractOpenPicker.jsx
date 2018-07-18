@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { pgettext } from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 import BemUtilities from '../../utilities/BemUtilities'
 import moment from 'moment/moment'
 
@@ -9,7 +9,7 @@ export default class AbstractOpenPicker extends React.Component {
     return {
       momentObject: null,
       momentObjectFormat: null,
-      openButtonEmptyLabel: pgettext('datetimepicker', 'Select'),
+      openButtonEmptyLabel: gettext.pgettext('datetimepicker', 'Select'),
       includeNowButton: true,
       nowButtonLabel: null,
       onOpen: null,

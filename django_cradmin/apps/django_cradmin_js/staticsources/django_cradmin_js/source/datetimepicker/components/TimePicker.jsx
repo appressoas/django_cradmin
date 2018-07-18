@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import TimeDisplay from './TimeDisplay'
 import RangeSlider from '../../components/RangeSlider'
-import { gettext } from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 import moment from 'moment'
 import BemUtilities from '../../utilities/BemUtilities'
 
@@ -57,7 +57,7 @@ export default class TimePicker extends React.Component {
 
   renderHourPicker () {
     return <label className='label' key={'hour'}>
-      {gettext('Hours')}:
+      {gettext.gettext('Hours')}:
       <RangeSlider
         value={this.getMoment().hour()}
         min={0}
@@ -69,7 +69,7 @@ export default class TimePicker extends React.Component {
 
   renderMinutePicker () {
     return <label className='label' key={'minute'}>
-      {gettext('Minutes')}:
+      {gettext.gettext('Minutes')}:
       <RangeSlider
         value={this.getMoment().minute()}
         min={0}
@@ -84,7 +84,7 @@ export default class TimePicker extends React.Component {
       return null
     }
     return <label className='label' key={'second'}>
-      {gettext('Seconds')}:
+      {gettext.gettext('Seconds')}:
       <RangeSlider
         value={this.getMoment().second()}
         min={0}
@@ -107,7 +107,7 @@ export default class TimePicker extends React.Component {
   }
 
   renderNowButtonLabel () {
-    return gettext('Now')
+    return gettext.gettext('Now')
   }
 
   renderNowButton () {

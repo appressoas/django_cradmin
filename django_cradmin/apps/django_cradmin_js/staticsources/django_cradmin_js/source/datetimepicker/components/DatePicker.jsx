@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React from 'react'
-import { gettext } from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 
 import DateCalendar from './DateCalendar'
 
@@ -89,7 +89,7 @@ export default class DatePicker extends React.Component {
   }
 
   renderTodayButtonLabel () {
-    return gettext('Today')
+    return gettext.gettext('Today')
   }
 
   renderTodayButton () {

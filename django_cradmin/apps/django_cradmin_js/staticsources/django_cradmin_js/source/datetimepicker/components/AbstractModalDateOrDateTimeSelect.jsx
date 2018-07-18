@@ -1,7 +1,7 @@
 import React from 'react'
 import AbstractDateOrDateTimeSelect from './AbstractDateOrDateTimeSelect'
 import PropTypes from 'prop-types'
-import { gettext, pgettext } from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 import BemUtilities from '../../utilities/BemUtilities'
 
 export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDateTimeSelect {
@@ -13,8 +13,8 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
       useButtonBemVariants: ['block', 'primary'],
       noneSelectedButtonLabel: null,
       title: null,
-      useButtonLabel: pgettext('datetimepicker', 'Use'),
-      openButtonEmptyLabel: pgettext('datetimepicker', 'Select'),
+      useButtonLabel: gettext.pgettext('datetimepicker', 'Use'),
+      openButtonEmptyLabel: gettext.pgettext('datetimepicker', 'Select'),
       openPickerProps: {}
     })
   }
@@ -65,7 +65,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   get closeButtonTitle () {
-    return gettext('Close')
+    return gettext.gettext('Close')
   }
 
   get closeButtonIconClassName () {
