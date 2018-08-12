@@ -90,6 +90,7 @@ export default class DropDownSearchFilter extends AbstractSearchInputFilter {
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onClickExpandCollapseButton = this.onClickExpandCollapseButton.bind(this)
+    this.onExpandandCollapseButtonFocus = this.onExpandandCollapseButtonFocus.bind(this)
   }
 
   onAnyComponentFocus (newFocusComponentInfo, prevFocusComponentInfo, didChangeFilterListFocus) {
@@ -133,8 +134,17 @@ export default class DropDownSearchFilter extends AbstractSearchInputFilter {
     this.toggleExpandableComponentGroup()
   }
 
-  onFocus () {
+  onFocus (...args) {
     this.enableExpandableComponentGroup()
+    super.onFocus()
+  }
+
+  onExpandandCollapseButtonFocus () {
+    // NOTE: We do not use this.onFocus() since that toggles the
+    // collapsible component group. This leads to a race-condition
+    // when just clicking on the expand button since it will first get focus,
+    // which will expand the component group on, then be clicked, which will
+    // toggle the group off.
     super.onFocus()
   }
 
@@ -142,7 +152,7 @@ export default class DropDownSearchFilter extends AbstractSearchInputFilter {
     return <SearchInputExpandCollapseButton
       key={'expand-collapse-button'}
       onClick={this.onClickExpandCollapseButton}
-      onFocus={this.onFocus}
+      onFocus={this.onExpandandCollapseButtonFocus}
       onBlur={this.onBlur}
       isExpanded={this.isExpanded()} />
   }
