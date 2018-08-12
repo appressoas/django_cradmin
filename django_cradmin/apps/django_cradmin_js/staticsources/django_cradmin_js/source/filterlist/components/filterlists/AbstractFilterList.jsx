@@ -17,6 +17,7 @@ export default class AbstractFilterList extends React.Component {
       selectMode: PropTypes.oneOf([SINGLESELECT, MULTISELECT, null]),
       autoLoadFirstPage: PropTypes.bool.isRequired,
       skipLoadingMissingSelectedItemDataFromApi: PropTypes.bool.isRequired,
+      domIdPrefix: PropTypes.string,
       onFocus: PropTypes.func,
       onBlur: PropTypes.func,
       onSelectItem: PropTypes.func,
@@ -42,6 +43,18 @@ export default class AbstractFilterList extends React.Component {
     }
   }
 
+  /**
+   * Get default props.
+   *
+   * TODO: Document all the props.
+   *
+   * @return {Object}
+   * @property {string} idAttribute The ID attribute in the getItemsApiUrl API. Defaults to `id`.
+   * @property {string} getItemsApiUrl The API to get the items from (with a GET request). Required.
+   * @property {string} domIdPrefix The DOM id prefix that we use when we need to set IDs on DOM elements
+   *    within the list. This is optional, but highly recommended to set. If this is not set,
+   *    we generate a prefix from the `getItemsApiUrl` and a random integer.
+   */
   static get defaultProps () {
     return {
       idAttribute: 'id',
@@ -60,6 +73,7 @@ export default class AbstractFilterList extends React.Component {
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
       initiallySelectedItemIds: [],
+      domIdPrefix: null,
       components: [{
         component: 'ThreeColumnLayout',
         layout: [{
@@ -76,6 +90,7 @@ export default class AbstractFilterList extends React.Component {
 
   constructor (props) {
     super(props)
+    this.domIdPrefix = this._makeDomIdPrefix()
     this.setupBoundMethods()
     this.childExposedApi = this.makeChildExposedApi()
     this._filterApiUpdateTimeoutId = null
@@ -90,6 +105,27 @@ export default class AbstractFilterList extends React.Component {
     this.cachedPaginatorSpec = null
     this._focusChangeListeners = new Set()
     this._currentFocusChildInfo = null
+  }
+
+  _makeDomIdPrefix () {
+    if (this.props.domIdPrefix) {
+      return this.props.domIdPrefix
+    }
+    const min = 1000
+    const max = 999999999
+    const randomInt = Math.floor(Math.random() * (max - min)) + min
+    return `${this.props.getItemsApiUrl}-${randomInt}-`
+  }
+
+  /**
+   * Make a DOM id for a component within the filterlist.
+   * NEVER set DOM IDs directly - always use this method.
+   *
+   * @param {string} domIdSuffix The suffix for the DOM id.
+   * @returns {string} The full DOM id.
+   */
+  makeDomDomId (domIdSuffix) {
+    return `${this.domIdPrefix}-${domIdSuffix}`
   }
 
   /**
