@@ -30,12 +30,15 @@ export default class AbstractFilterListChild extends React.Component {
    * @property {[string]|null} componentGroups The groups this component belongs to.
    *    See {@link AbstractFilterList#toggleComponentGroup}.
    *    **Can be used in spec**.
+   * @property {[string]|null} domIdSuffix DOM id suffix.
+   *    **Can be used in spec**.
    */
   static get defaultProps () {
     return {
       childExposedApi: null,
       componentGroups: null,
-      willReceiveFocusEvents: false
+      willReceiveFocusEvents: false,
+      domIdSuffix: null
     }
   }
 
@@ -56,6 +59,16 @@ export default class AbstractFilterListChild extends React.Component {
     super(props)
     this.setupBoundMethods()
     this.state = {}
+  }
+
+  get domIdSuffix () {
+    return `${this.props.uniqueComponentKey}`
+  }
+
+  makeDomId (extraDomIdSuffix) {
+    return this.props.childExposedApi.makeDomId(
+      `${this.domIdSuffix}-${extraDomIdSuffix}`
+    )
   }
 
   /**

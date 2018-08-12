@@ -8,6 +8,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator'
 import { ComponentCache } from '../../ComponentCache'
 import ChildExposedApi from './ChildExposedApi'
 import { UrlParser } from 'ievv_jsbase/lib/http/UrlParser'
+import UniqueDomIdSingleton from 'ievv_jsbase/lib/dom/UniqueDomIdSingleton'
 
 export default class AbstractFilterList extends React.Component {
   static get propTypes () {
@@ -111,10 +112,7 @@ export default class AbstractFilterList extends React.Component {
     if (this.props.domIdPrefix) {
       return this.props.domIdPrefix
     }
-    const min = 1000
-    const max = 999999999
-    const randomInt = Math.floor(Math.random() * (max - min)) + min
-    return `${this.props.getItemsApiUrl}-${randomInt}-`
+    return `${new UniqueDomIdSingleton().generate()}-`
   }
 
   /**
@@ -124,7 +122,7 @@ export default class AbstractFilterList extends React.Component {
    * @param {string} domIdSuffix The suffix for the DOM id.
    * @returns {string} The full DOM id.
    */
-  makeDomDomId (domIdSuffix) {
+  makeDomId (domIdSuffix) {
     return `${this.domIdPrefix}-${domIdSuffix}`
   }
 

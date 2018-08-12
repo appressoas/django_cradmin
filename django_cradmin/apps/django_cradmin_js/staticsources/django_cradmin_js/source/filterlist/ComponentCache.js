@@ -292,7 +292,7 @@ export class ComponentCache {
    */
   makeUniqueComponentKey () {
     const key = this.componentCount
-    this.componentCount ++
+    this.componentCount++
     return `${key}`
   }
 

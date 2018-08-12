@@ -20,4 +20,8 @@ export default class AbstractListItem extends AbstractFilterListChild {
       isSelected: false
     }
   }
+
+  get domIdSuffix () {
+    return `${this.props.uniqueComponentKey}-${this.props.listItemId}`
+  }
 }

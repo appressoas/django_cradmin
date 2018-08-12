@@ -28,10 +28,11 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
  */
 export default class HiddenFieldRenderSelectedItems extends AbstractSelectedItems {
   static get propTypes () {
-    return Object.assign({}, {
+    return {
+      ...super.propTypes,
       name: PropTypes.string.isRequired,
       debug: PropTypes.bool.isRequired
-    })
+    }
   }
 
   /**
@@ -48,10 +49,11 @@ export default class HiddenFieldRenderSelectedItems extends AbstractSelectedItem
    *    **Can be used in spec**.
    */
   static get defaultProps () {
-    return Object.assign({}, super.defaultProps, {
+    return {
+      ...super.defaultProps,
       name: null,
       debug: false
-    })
+    }
   }
 
   get hiddenFieldType () {
