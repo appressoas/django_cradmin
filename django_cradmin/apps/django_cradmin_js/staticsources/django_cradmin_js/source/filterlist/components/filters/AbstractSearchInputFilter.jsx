@@ -244,12 +244,12 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
 
   renderSearchInput (extraProps = {}) {
     let allExtraProps = {
-      ...extraProps
+      ...extraProps,
+      ...this.ariaProps
     }
     if (this.props.inputFieldDomId) {
       allExtraProps.id = this.props.inputFieldDomId
     }
-    // aria-controls={'id_ievvjsbase_auto_5-ThreeColumnLayout-0'}
     return <input
       {...allExtraProps}
       key={'search input'}

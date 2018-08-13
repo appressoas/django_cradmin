@@ -96,6 +96,11 @@ export class AbstractComponentSpec {
     this._componentSpec.props.uniqueComponentKey = this._makeUniqueComponentKey(componentCache)
     this._componentSpec.props.domIdPrefix = this._makeDomIdPrefix(
       componentCache, this._componentSpec.props.uniqueComponentKey)
+    if (!componentCache.typeMap.has(this.constructor.name)) {
+      componentCache.typeMap.set(this.constructor.name, [])
+    }
+    componentCache.typeMap.get(this.constructor.name).push(this)
+    // TODO linkedlist between the components? Just recurse the list to find the next focusable?
   }
 
   prettyFormatRawComponentSpec () {
@@ -245,6 +250,13 @@ export class ComponentCache {
      * @type {[LayoutComponentSpec]}
      */
     this.layoutComponentSpecs = []
+
+    /**
+     * Map of spec type string to list of component specs within the type.
+     *
+     * @type {Map}
+     */
+    this.typeMap = new Map()
 
     this.addRawLayoutComponentSpecs(rawLayoutComponentSpecs)
   }

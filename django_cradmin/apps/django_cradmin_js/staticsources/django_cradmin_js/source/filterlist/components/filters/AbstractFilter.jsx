@@ -122,4 +122,14 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
   setFilterValue (value) {
     this.props.childExposedApi.setFilterValue(this.props.name, value)
   }
+
+  get ariaProps () {
+    let controlsDomIds = []
+    for (const componentSpec of this.props.childExposedApi.listComponentSpecs) {
+      controlsDomIds.push(componentSpec.props.domIdPrefix)
+    }
+    return {
+      'aria-controls': controlsDomIds.join(' ')
+    }
+  }
 }

@@ -107,4 +107,8 @@ export default class ChildExposedApi {
   getTotalListItemCount () {
     return this._getTotalListItemCount(this.filterListObject.state.paginationState)
   }
+
+  get listComponentSpecs () {
+    return this.filterListObject.state.componentCache.typeMap.get('ListComponentSpec') || []
+  }
 }
