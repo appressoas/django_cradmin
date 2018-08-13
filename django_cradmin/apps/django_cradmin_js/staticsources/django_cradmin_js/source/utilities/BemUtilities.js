@@ -5,6 +5,9 @@ export default class BemUtilities {
   /**
    * Add variants to a BEM block or element.
    *
+   * Low level method - you normally want to use
+   * {@link BemUtilities#buildBemBlock} or {@link BemUtilities#buildBemElement}.
+   *
    * @example
    * BemUtilities.addVariants('button', ['primary', 'spaced']
    * // Result is 'button button--primary button--spaced'
@@ -13,7 +16,7 @@ export default class BemUtilities {
    * @param {[]} bemVariants Array of BEM variants.
    * @returns {string} CSS classes string.
    */
-  static addVariants (bemBlockOrElement, bemVariants=[]) {
+  static addVariants (bemBlockOrElement, bemVariants = []) {
     let cssClass = bemBlockOrElement
     for (let variant of bemVariants) {
       cssClass = `${cssClass} ${bemBlockOrElement}--${variant}`
@@ -33,7 +36,22 @@ export default class BemUtilities {
    * @param {[]} bemVariants Array of BEM variants
    * @returns {string} CSS classes string.
    */
-  static buildBemElement (bemBlock, bemElement, bemVariants=[]) {
+  static buildBemElement (bemBlock, bemElement, bemVariants = []) {
     return BemUtilities.addVariants(`${bemBlock}__${bemElement}`, bemVariants)
+  }
+
+  /**
+   * Build a BEM block.
+   *
+   * @example
+   * BemUtilities.buildBemBlock('button', ['primary', 'huge'])
+   * // Result is 'button button--primary button--huge'
+   *
+   * @param {string} bemBlock The BEM block.
+   * @param {[]} bemVariants Array of BEM variants
+   * @returns {string} CSS classes string.
+   */
+  static buildBemBlock (bemBlock, bemVariants = []) {
+    return BemUtilities.addVariants(bemBlock, bemVariants)
   }
 }
