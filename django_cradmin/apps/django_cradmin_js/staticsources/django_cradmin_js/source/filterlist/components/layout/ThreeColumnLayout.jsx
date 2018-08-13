@@ -157,7 +157,8 @@ export default class ThreeColumnLayout extends AbstractLayout {
   }
 
   render () {
-    return <div className={this.className}>
+    // return <div className={this.className} id={this.makeDomId()} aria-live={'polite'} aria-atomic={'true'}>
+    return <div className={this.className} id={this.makeDomId()}>
       {this.renderContent()}
     </div>
   }

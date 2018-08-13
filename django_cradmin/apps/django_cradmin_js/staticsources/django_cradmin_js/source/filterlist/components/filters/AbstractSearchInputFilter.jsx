@@ -249,6 +249,7 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     if (this.props.inputFieldDomId) {
       allExtraProps.id = this.props.inputFieldDomId
     }
+    // aria-controls={'id_ievvjsbase_auto_5-ThreeColumnLayout-0'}
     return <input
       {...allExtraProps}
       key={'search input'}
@@ -259,7 +260,8 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       value={this.stringValue}
       onChange={this.onChange}
       onBlur={this.onBlur}
-      onFocus={this.onFocus} />
+      onFocus={this.onFocus}
+    />
   }
 
   renderBodyContent () {

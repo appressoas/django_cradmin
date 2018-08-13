@@ -140,6 +140,7 @@ export default class SubmitSelectedItems extends AbstractSelectedItems {
 
   renderHiddenFields () {
     const uniqueComponentKey = `${this.props.uniqueComponentKey}-HiddenFieldRenderSelectedItems`
+    const domIdPrefix = `${this.props.domIdPrefix}-HiddenFieldRenderSelectedItems`
     return <HiddenFieldRenderSelectedItems
       key='hiddenFields'
       name={this.props.hiddenFieldName}
@@ -147,6 +148,7 @@ export default class SubmitSelectedItems extends AbstractSelectedItems {
       selectedListItemsMap={this.props.selectedListItemsMap}
       childExposedApi={this.props.childExposedApi}
       uniqueComponentKey={uniqueComponentKey}
+      domIdPrefix={domIdPrefix}
       location={this.props.location}
     />
   }

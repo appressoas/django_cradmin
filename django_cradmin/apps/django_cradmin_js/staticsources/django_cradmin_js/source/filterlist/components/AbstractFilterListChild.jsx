@@ -13,7 +13,8 @@ export default class AbstractFilterListChild extends React.Component {
       childExposedApi: PropTypes.object.isRequired,
       willReceiveFocusEvents: PropTypes.bool.isRequired,
       componentGroups: PropTypes.arrayOf(PropTypes.string),
-      uniqueComponentKey: PropTypes.string.isRequired
+      uniqueComponentKey: PropTypes.string.isRequired,
+      domIdPrefix: PropTypes.string.isRequired
     }
   }
 
@@ -30,15 +31,15 @@ export default class AbstractFilterListChild extends React.Component {
    * @property {[string]|null} componentGroups The groups this component belongs to.
    *    See {@link AbstractFilterList#toggleComponentGroup}.
    *    **Can be used in spec**.
-   * @property {[string]|null} domIdSuffix DOM id suffix.
-   *    **Can be used in spec**.
+   * @property {string} domIdPrefix DOM id prefix.
+   *    _Provided automatically_.
    */
   static get defaultProps () {
     return {
       childExposedApi: null,
       componentGroups: null,
       willReceiveFocusEvents: false,
-      domIdSuffix: null
+      domIdPrefix: null
     }
   }
 
@@ -55,20 +56,31 @@ export default class AbstractFilterListChild extends React.Component {
     return false
   }
 
+  // /**
+  //  * The focus groups this item belongs to.
+  //  *
+  //  * @param {AbstractComponentSpec} componentSpec The component spec.
+  //  * @returns {[]} Array of focus groups.
+  //  */
+  // static getFocusGroups (componentSpec) {
+  //   return []
+  // }
+
   constructor (props) {
     super(props)
     this.setupBoundMethods()
     this.state = {}
   }
 
-  get domIdSuffix () {
-    return `${this.props.uniqueComponentKey}`
+  get domIdPrefix () {
+    return this.props.domIdPrefix
   }
 
-  makeDomId (extraDomIdSuffix) {
-    return this.props.childExposedApi.makeDomId(
-      `${this.domIdSuffix}-${extraDomIdSuffix}`
-    )
+  makeDomId (domIdSuffix = null) {
+    if (domIdSuffix) {
+      return `${this.domIdPrefix}-${domIdSuffix}`
+    }
+    return this.domIdPrefix
   }
 
   /**

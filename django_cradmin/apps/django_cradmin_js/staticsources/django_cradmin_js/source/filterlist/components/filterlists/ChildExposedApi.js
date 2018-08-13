@@ -7,9 +7,6 @@
  *
  * Exposes the following methods:
  *
- * Utils:
- * - {@link AbstractFilterList#makeDomId}
- *
  * API:
  * - {@link AbstractFilterList#loadMoreItemsFromApi}
  * - {@link AbstractFilterList#loadNextPageFromApi}
@@ -57,8 +54,6 @@ export default class ChildExposedApi {
   }
 
   setupBoundMethods () {
-    this.makeDomId = this.filterListObject.makeDomId.bind(this.filterListObject)
-
     this.loadFirstPageFromApi = this.filterListObject.loadFirstPageFromApi.bind(this.filterListObject)
     this.loadMoreItemsFromApi = this.filterListObject.loadMoreItemsFromApi.bind(this.filterListObject)
     this.loadNextPageFromApi = this.filterListObject.loadNextPageFromApi.bind(this.filterListObject)

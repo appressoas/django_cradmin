@@ -91,7 +91,6 @@ export default class AbstractFilterList extends React.Component {
 
   constructor (props) {
     super(props)
-    this.domIdPrefix = this._makeDomIdPrefix()
     this.setupBoundMethods()
     this.childExposedApi = this.makeChildExposedApi()
     this._filterApiUpdateTimeoutId = null
@@ -108,24 +107,6 @@ export default class AbstractFilterList extends React.Component {
     this._currentFocusChildInfo = null
   }
 
-  _makeDomIdPrefix () {
-    if (this.props.domIdPrefix) {
-      return this.props.domIdPrefix
-    }
-    return `${new UniqueDomIdSingleton().generate()}-`
-  }
-
-  /**
-   * Make a DOM id for a component within the filterlist.
-   * NEVER set DOM IDs directly - always use this method.
-   *
-   * @param {string} domIdSuffix The suffix for the DOM id.
-   * @returns {string} The full DOM id.
-   */
-  makeDomId (domIdSuffix) {
-    return `${this.domIdPrefix}-${domIdSuffix}`
-  }
-
   /**
    * Make a {@link ChildExposedApi} object.
    *
@@ -138,17 +119,17 @@ export default class AbstractFilterList extends React.Component {
   }
 
   componentDidMount () {
-    this.setState({...AbstractFilterList.refreshComponentCache(this.props.components, this.state), isMounted: true})
+    this.setState({...AbstractFilterList.refreshComponentCache(this.props, this.state), isMounted: true})
     this.loadMissingSelectedItemDataFromApi()
     if (this.props.autoLoadFirstPage) {
       this.loadFirstPageFromApi()
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps (nextProps, prevState) {
     if (prevState.isMounted) {
-      let nextState = AbstractFilterList.refreshComponentCache(nextProps.components, prevState)
-      nextState = {...nextState, isMounted: true }
+      let nextState = AbstractFilterList.refreshComponentCache(nextProps, prevState)
+      nextState = {...nextState, isMounted: true}
       if ('selectMode' in nextProps) {
         nextState = {...nextState, selectMode: nextProps.selectMode}
       }
@@ -200,25 +181,28 @@ export default class AbstractFilterList extends React.Component {
    *
    * @returns {ComponentCache} An object of {@link ComponentCache} or a subclass.
    */
-  static makeEmptyComponentCache () {
-    return new ComponentCache()
+  static makeEmptyComponentCache (domIdPrefix = null) {
+    if (!domIdPrefix) {
+      domIdPrefix = `${new UniqueDomIdSingleton().generate()}-`
+    }
+    return new ComponentCache([], domIdPrefix)
   }
 
   /**
    * Make a {@link ComponentCache} object.
    *
    * @param rawComponentSpecs
+   * @param domIdPrefix
    * @returns {ComponentCache}
    */
-  static buildComponentCache (rawComponentSpecs) {
-    const componentCache = AbstractFilterList.makeEmptyComponentCache()
+  static buildComponentCache (rawComponentSpecs, domIdPrefix) {
+    const componentCache = AbstractFilterList.makeEmptyComponentCache(domIdPrefix)
     componentCache.addRawLayoutComponentSpecs(rawComponentSpecs)
     return componentCache
   }
 
-  static refreshComponentCache (rawComponentSpecs, state) {
-    const componentCache = AbstractFilterList.buildComponentCache(rawComponentSpecs)
-    // this.setInitialFilterValuesInState(componentCache.filterMap.values())
+  static refreshComponentCache (props, state) {
+    const componentCache = AbstractFilterList.buildComponentCache(props.components, props.domIdPrefix)
     return Object.assign(
       AbstractFilterList.makeInitialFilterValues(componentCache.filterMap.values(), state),
       {componentCache}

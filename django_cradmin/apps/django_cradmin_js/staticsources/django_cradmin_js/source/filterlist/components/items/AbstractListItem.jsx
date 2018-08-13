@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AbstractFilterListChild from '../AbstractFilterListChild'
 
@@ -21,7 +20,7 @@ export default class AbstractListItem extends AbstractFilterListChild {
     }
   }
 
-  get domIdSuffix () {
-    return `${this.props.uniqueComponentKey}-${this.props.listItemId}`
+  get domIdPrefix () {
+    return `${this.props.domIdPrefix}${this.props.listItemId}`
   }
 }

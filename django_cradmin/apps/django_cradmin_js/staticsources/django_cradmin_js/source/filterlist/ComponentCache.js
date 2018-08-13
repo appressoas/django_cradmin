@@ -77,6 +77,10 @@ export class AbstractComponentSpec {
     return `${this._makeUniqueComponentKeyPrefix()}-${suffix}`
   }
 
+  _makeDomIdPrefix (componentCache, uniqueComponentKey) {
+    return `${componentCache.domIdPrefix}${uniqueComponentKey}`
+  }
+
   _raiseMissingRequiredAttributeError (attribute) {
     throw new Error(
       `${this.componentClassName} Missing required attribute "${attribute}": ${this.prettyFormatRawComponentSpec()}`)
@@ -90,6 +94,8 @@ export class AbstractComponentSpec {
       this._componentSpec.props.componentGroups = null
     }
     this._componentSpec.props.uniqueComponentKey = this._makeUniqueComponentKey(componentCache)
+    this._componentSpec.props.domIdPrefix = this._makeDomIdPrefix(
+      componentCache, this._componentSpec.props.uniqueComponentKey)
   }
 
   prettyFormatRawComponentSpec () {
@@ -207,7 +213,9 @@ export class ComponentGroupComponentSpec extends AbstractLayoutChildComponentSpe
  * `components` prop.
  */
 export class ComponentCache {
-  constructor (rawLayoutComponentSpecs = []) {
+  constructor (rawLayoutComponentSpecs = [], domIdPrefix = '') {
+    this.domIdPrefix = domIdPrefix
+
     /**
      * An instance of {@link FilterListRegistrySingleton} for convenience.
      *
