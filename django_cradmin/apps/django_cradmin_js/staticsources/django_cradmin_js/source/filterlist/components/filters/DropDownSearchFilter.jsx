@@ -154,7 +154,8 @@ export default class DropDownSearchFilter extends AbstractSearchInputFilter {
       onClick={this.onClickExpandCollapseButton}
       onFocus={this.onExpandandCollapseButtonFocus}
       onBlur={this.onBlur}
-      isExpanded={this.isExpanded()} />
+      isExpanded={this.isExpanded()}
+      ariaHidden />
   }
 
   renderButtons () {

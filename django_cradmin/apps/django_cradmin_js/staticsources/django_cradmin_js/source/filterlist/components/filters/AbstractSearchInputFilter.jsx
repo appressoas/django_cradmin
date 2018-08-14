@@ -17,7 +17,6 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       labelIsScreenreaderOnly: PropTypes.bool.isRequired,
       labelBemBlock: PropTypes.string.isRequired,
       labelBemVariants: PropTypes.arrayOf(PropTypes.string),
-      inputFieldDomId: PropTypes.string,
       placeholder: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.string)
@@ -49,10 +48,6 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
    * @property {[]} labelBemVariants BEM variants for the label.
    *    Defaults to empty array.
    *    **Can be used in spec**.
-   * @property {string} inputFieldDomId DOM id of the input field.
-   *    If this is set, the search input field is rendered outside of the label,
-   *    and the label uses the ``for`` attribute to refer to the input field.
-   *    **Can be used in spec**.
    * @property {[string]} fieldWrapperBemVariants Array of BEM variants
    *    for the field wrapper element.
    *    Defaults to `['outlined']`.
@@ -67,7 +62,6 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       labelIsScreenreaderOnly: false,
       labelBemBlock: 'label',
       labelBemVariants: [],
-      inputFieldDomId: null,
       fieldWrapperBemVariants: ['outlined'],
       value: ''
     })
@@ -223,6 +217,10 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     return null
   }
 
+  get inputFieldDomId () {
+    return this.makeDomId('inputField')
+  }
+
   renderLabelText () {
     if (this.props.label) {
       return <span className={this.labelTextClassName}>{this.props.label}</span>
@@ -235,7 +233,8 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       key={'clear-button'}
       onClick={this.onClickClearButton}
       onBlur={this.onBlur}
-      onFocus={this.onFocus} />
+      onFocus={this.onFocus}
+      ariaHidden />
   }
 
   renderButtons () {
@@ -247,14 +246,12 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       ...extraProps,
       ...this.ariaProps
     }
-    if (this.props.inputFieldDomId) {
-      allExtraProps.id = this.props.inputFieldDomId
-    }
     return <input
       {...allExtraProps}
       key={'search input'}
       type='text'
       ref={(input) => { this._searchInputRef = input }}
+      id={this.inputFieldDomId}
       placeholder={this.placeholder}
       className={this.inputClassName}
       value={this.stringValue}
@@ -287,10 +284,8 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
   renderLabel (includeFieldWrapper) {
     let labelProps = {
       key: `${this.props.name}-label`,
-      className: this.labelClassName
-    }
-    if (this.props.inputFieldDomId) {
-      labelProps.htmlFor = this.props.inputFieldDomId
+      className: this.labelClassName,
+      htmlFor: this.inputFieldDomId
     }
     return <label {...labelProps}>
       {this.renderLabelText()}
@@ -299,13 +294,9 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
   }
 
   render () {
-    if (this.props.inputFieldDomId) {
-      return [
-        this.renderLabel(false),
-        this.renderFieldWrapper()
-      ]
-    } else {
-      return this.renderLabel(true)
-    }
+    return [
+      this.renderLabel(false),
+      this.renderFieldWrapper()
+    ]
   }
 }

@@ -12,7 +12,8 @@ export default class AbstractSearchInputButton extends React.Component {
     return {
       onClick: PropTypes.func.isRequired,
       onFocus: PropTypes.func.isRequired,
-      onBlur: PropTypes.func.isRequired
+      onBlur: PropTypes.func.isRequired,
+      ariaHidden: PropTypes.bool.isRequired
     }
   }
 
@@ -23,12 +24,15 @@ export default class AbstractSearchInputButton extends React.Component {
    * @property {func} onClick On click callback.
    * @property {func} onFocus On focus callback.
    * @property {func} onBlur On blur callback.
+   * @property {bool} ariaHidden Is this button hidden to screenreaders?
+   *    Defaults to false.
    */
   static get defaultProps () {
     return {
       onClick: null,
       onFocus: null,
-      onBlur: null
+      onBlur: null,
+      ariaHidden: false
     }
   }
 
@@ -60,6 +64,7 @@ export default class AbstractSearchInputButton extends React.Component {
       onClick={this.props.onClick}
       onFocus={this.props.onFocus}
       onBlur={this.props.onBlur}
+      aria-hidden={this.props.ariaHidden}
     >
       {this.renderIcon()}
     </button>
