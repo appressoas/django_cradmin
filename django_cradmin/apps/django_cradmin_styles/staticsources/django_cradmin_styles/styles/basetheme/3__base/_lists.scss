@@ -9,28 +9,42 @@ Example: `Ordered list`; Default styling
         <li>I'm last :(</li>
     </ol>
 
-Example: `.list`; Default styling
+Example: list - Default styling
     <ul class="list">
         <li>I'm number one!</li>
         <li>Second isn't all that bad</li>
         <li>I'm last :(</li>
     </ul>
 
-Example: `.list .list--large`; Default styling
+Example: list--no-margin
+    <ul class="list list--no-margin">
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ul>
+
+Example: list--flat
+    <ul class="list list--flat">
+        <li>I'm number one!</li>
+        <li>Second isn't all that bad</li>
+        <li>I'm last :(</li>
+    </ul>
+
+Example: list .list--large
     <ul class="list  list--large">
         <li>I'm number one!</li>
         <li>Second isn't all that bad</li>
         <li>I'm last :(</li>
     </ul>
 
-Example: `.list .list--links`; Results list
+Example: list .list--links - list of links
     <ul class="list  list--links">
         <li><a href="">I'm number one!</a></li>
         <li><a href="">Second isn't all that bad</a></li>
         <li><a href="">I'm last :(</a></li>
     </ul>
 
-Example: `.list .list--contact`; Contact list
+Example: list .list--contact` - Contact list
     <ul class="list  list--contact">
         <li class="list__item  list__item--phone">
             <a href="tel:12345678">123 45 678</a>
@@ -148,6 +162,27 @@ ol {
 
             &--address:before {
                 @include cricon-icon(map-marker);
+            }
+        }
+    }
+
+    &--no-margin {
+        margin-bottom: 0;
+    }
+
+    &--flat {
+        padding-left: 0;
+        list-style: none;
+        & > li, .list__item {
+            padding-left: 0;
+            &:before {
+                background-color: transparent;
+                width: 0;
+                height: 0;
+                top: 0;
+                @include min-width(xs) {
+                    top: 0;
+                }
             }
         }
     }
