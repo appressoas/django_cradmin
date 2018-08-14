@@ -164,6 +164,13 @@
     text-transform: uppercase;
 }
 
+// Normal
+@mixin normal-text {
+    @include font(base);
+    letter-spacing: normal;
+    text-transform: none;
+}
+
 // TINT AND SHADE
 
 // Add percentage of white to a color

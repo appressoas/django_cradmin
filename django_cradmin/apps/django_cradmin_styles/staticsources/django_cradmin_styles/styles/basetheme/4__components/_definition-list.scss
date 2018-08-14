@@ -14,6 +14,17 @@ Example: {type: isolated} Default style
     </dl>
 
 
+Example: {type: isolated} Value and title variants
+
+    <dl class="definition-list">
+        <dt class="definition-list__title definition-list__title--anonymous">Title --anonymous</dt>
+        <dd class="definition-list__value">peter@example.com</dd>
+
+        <dt class="definition-list__title definition-list__title--anonymous-small">Title --anonymous-small:</dt>
+        <dd class="definition-list__value definition-list__value--small">Value --small</dd>
+    </dl>
+
+
 Example: {type: isolated} --center  (do not combine this with --table - use --table-center for that)
 
     <dl class="definition-list definition-list--center">
@@ -124,11 +135,28 @@ Styleguide components.definition-list
         &:first-child {
             margin-top: 0;
         }
+
+        &--anonymous {
+            @include normal-text;
+            @include font-size(small);
+            //@include font(base);
+            font-weight: normal;
+            font-style: italic;
+
+        }
+        &--anonymous-small {
+            @extend #{$__root}__title--anonymous;
+            @include font-size(xsmall);
+        }
     }
 
     &__value {
         &--break-words {
             word-break: break-all;
+        }
+
+        &--small {
+            @include font-size(xsmall);
         }
     }
 
