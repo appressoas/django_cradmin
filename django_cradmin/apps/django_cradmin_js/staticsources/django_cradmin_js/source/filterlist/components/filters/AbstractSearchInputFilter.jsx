@@ -183,7 +183,9 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
 
   onClickClearButton () {
     this.setFilterValue('')
-    this.getSearchInputRef().focus()
+    window.setTimeout(() => {
+      this.getSearchInputRef().focus()
+    }, 100)
   }
 
   //
@@ -290,7 +292,7 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     let labelProps = {
       key: `${this.props.name}-label`,
       className: this.labelClassName,
-      htmlFor: this.inputFieldDomId
+      htmlFor: this.inputFieldDomId,
     }
     return <label {...labelProps}>
       {this.renderLabelText()}

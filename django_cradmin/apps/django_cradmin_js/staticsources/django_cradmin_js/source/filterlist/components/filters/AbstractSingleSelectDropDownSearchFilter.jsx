@@ -1,5 +1,6 @@
 import React from 'react'
 import DropDownSearchFilter from './DropDownSearchFilter'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 
 export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSearchFilter {
   setupBoundMethods () {
@@ -16,8 +17,12 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
     this.onClickClearButton()
   }
 
+  getSelectedLabelText () {
+    throw new Error('getSelectedLabelText must be overridden by subclasses!')
+  }
+
   renderSelectedLabel () {
-    throw new Error('renderSelectedLabel must be overridden by subclasses!')
+    return this.getSelectedLabelText()
   }
 
   get selectedItemKey () {
@@ -34,16 +39,27 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
     return this.props.selectedListItemsMap.get(this.selectedItemKey)
   }
 
+  get selectedValueAriaLabel () {
+    return gettext.interpolate(
+      gettext.gettext('"%(selectedValue)s" selected. Hit the enter button to change your selection. %(selectLabel)s'),
+      {
+        'selectedValue': this.getSelectedLabelText(),
+        'selectLabel': this.props.label
+      },
+      true)
+  }
+
   renderSelectedValue (extraProps) {
-    return <span
+    return <button
       className={'searchinput__selected searchinput__selected--single'}
       key={'selected value'}
       onClick={this.onClickSelectedItemBody}
+      aria-label={this.selectedValueAriaLabel}
       {...extraProps}>
       <span className={'searchinput__selected_preview'}>
         {this.renderSelectedLabel()}
       </span>
-    </span>
+    </button>
   }
 
   renderBodyContent () {

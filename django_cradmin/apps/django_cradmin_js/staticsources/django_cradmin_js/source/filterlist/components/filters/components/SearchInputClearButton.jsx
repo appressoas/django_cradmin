@@ -13,7 +13,11 @@ export default class SearchInputExpandCollapseButton extends AbstractSearchInput
    * Get default props. Same props as for {@link AbstractSearchInputButton.defaultProps}.
    */
   static get defaultProps () {
-    return super.defaultProps
+    return {
+      ...super.defaultProps,
+      tabIndex: -1,
+      ariaHidden: true
+    }
   }
 
   get iconClassName () {

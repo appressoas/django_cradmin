@@ -13,7 +13,8 @@ export default class AbstractSearchInputButton extends React.Component {
       onClick: PropTypes.func.isRequired,
       onFocus: PropTypes.func.isRequired,
       onBlur: PropTypes.func.isRequired,
-      ariaHidden: PropTypes.bool.isRequired
+      ariaHidden: PropTypes.bool.isRequired,
+      tabIndex: PropTypes.number.isRequired
     }
   }
 
@@ -32,7 +33,8 @@ export default class AbstractSearchInputButton extends React.Component {
       onClick: null,
       onFocus: null,
       onBlur: null,
-      ariaHidden: false
+      ariaHidden: false,
+      tabIndex: 0
     }
   }
 
@@ -65,6 +67,7 @@ export default class AbstractSearchInputButton extends React.Component {
       onFocus={this.props.onFocus}
       onBlur={this.props.onBlur}
       aria-hidden={this.props.ariaHidden}
+      tabIndex={this.props.tabIndex}
     >
       {this.renderIcon()}
     </button>

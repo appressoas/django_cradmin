@@ -10,9 +10,10 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
  */
 export default class SearchInputExpandCollapseButton extends AbstractSearchInputButton {
   static get propTypes () {
-    return Object.assign({}, super.propTypes, {
+    return {
+      ...super.propTypes,
       isExpanded: PropTypes.bool.isRequired
-    })
+    }
   }
 
   /**
@@ -23,9 +24,12 @@ export default class SearchInputExpandCollapseButton extends AbstractSearchInput
    * @property {bool} isExpanded Render as expanded?
    */
   static get defaultProps () {
-    return Object.assign({}, super.defaultProps, {
-      isExpanded: null
-    })
+    return {
+      ...super.defaultProps,
+      isExpanded: null,
+      tabIndex: -1,
+      ariaHidden: true
+    }
   }
 
   get iconClassName () {
