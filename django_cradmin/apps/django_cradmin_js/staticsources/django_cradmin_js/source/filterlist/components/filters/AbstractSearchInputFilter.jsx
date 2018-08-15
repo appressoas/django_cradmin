@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import AbstractFilter from './AbstractFilter'
 import BemUtilities from '../../../utilities/BemUtilities'
 import SearchInputClearButton from './components/SearchInputClearButton'
-import { KEYBOARD_NAVIGATION_GROUP_KEY_UP_DOWN } from '../../filterListConstants'
+// import { KEYBOARD_NAVIGATION_GROUP_KEY_UP_DOWN } from '../../filterListConstants'
 
 /**
  * Abstract base class for filters.
