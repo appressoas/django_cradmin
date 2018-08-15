@@ -228,6 +228,10 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     return this.makeDomId('inputField')
   }
 
+  get labelDomId () {
+    return this.makeDomId('label')
+  }
+
   renderLabelText () {
     if (this.props.label) {
       return <span className={this.labelTextClassName}>{this.props.label}</span>
@@ -291,6 +295,7 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
   renderLabel (includeFieldWrapper) {
     let labelProps = {
       key: `${this.props.name}-label`,
+      id: this.labelDomId,
       className: this.labelClassName,
       htmlFor: this.inputFieldDomId,
     }

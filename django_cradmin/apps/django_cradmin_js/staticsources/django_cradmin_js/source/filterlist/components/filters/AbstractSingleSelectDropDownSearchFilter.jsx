@@ -41,10 +41,9 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
 
   get selectedValueAriaLabel () {
     return gettext.interpolate(
-      gettext.gettext('"%(selectedValue)s" selected. Hit the enter button to change your selection. %(selectLabel)s'),
+      gettext.gettext('"%(selectedValue)s" selected. Hit the enter button to change your selection.'),
       {
-        'selectedValue': this.getSelectedLabelText(),
-        'selectLabel': this.props.label
+        'selectedValue': this.getSelectedLabelText()
       },
       true)
   }
@@ -55,6 +54,7 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
       key={'selected value'}
       onClick={this.onClickSelectedItemBody}
       aria-label={this.selectedValueAriaLabel}
+      aria-describedby={this.labelDomId}
       {...extraProps}>
       <span className={'searchinput__selected_preview'}>
         {this.renderSelectedLabel()}
