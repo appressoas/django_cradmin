@@ -62,7 +62,7 @@ export default class AbstractFilterListChild extends React.Component {
   //  * @param {AbstractComponentSpec} componentSpec The component spec.
   //  * @returns {[]} Array of focus groups.
   //  */
-  // static getFocusGroups (componentSpec) {
+  // static getKeyboardNavigationGroups (componentSpec) {
   //   return []
   // }
 

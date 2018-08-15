@@ -9,6 +9,13 @@ import { RENDER_LOCATION_DEFAULT } from './filterListConstants'
 import AbstractSelectedItems from './components/selecteditems/AbstractSelectedItems'
 import AbstractComponentGroup from './components/componentgroup/AbstractComponentGroup'
 
+export class KeyboardNavigationGroupItem {
+  constructor (componentSpec, index) {
+    this.componentSpec = componentSpec
+    this.index = index
+  }
+}
+
 /**
  * Defines the component layout within a {@link LayoutComponentSpec}.
  */
@@ -66,6 +73,7 @@ export class AbstractComponentSpec {
     this.filterListRegistry = new FilterListRegistrySingleton()
     this._componentClass = componentClass
     this._componentSpec = Object.assign({}, rawComponentSpec)
+    this._keyboardNavigationGroupPointerMap = new Map()
   }
 
   _makeUniqueComponentKeyPrefix () {
@@ -99,8 +107,12 @@ export class AbstractComponentSpec {
     if (!componentCache.typeMap.has(this.constructor.name)) {
       componentCache.typeMap.set(this.constructor.name, [])
     }
-    componentCache.typeMap.get(this.constructor.name).push(this)
-    // TODO linkedlist between the components? Just recurse the list to find the next focusable?
+    componentCache.addComponentSpecToTypeMap(this)
+
+    // const keyboardNavigationGroups = this._componentClass.getKeyboardNavigationGroups ? this._componentClass.getKeyboardNavigationGroups(this) : []
+    // for (const keyboardNavigationGroup of keyboardNavigationGroups) {
+    //   componentCache.addComponentSpecToKeyboardNavigationGroup(keyboardNavigationGroup, this)
+    // }
   }
 
   prettyFormatRawComponentSpec () {
@@ -258,6 +270,8 @@ export class ComponentCache {
      */
     this.typeMap = new Map()
 
+    this.keyboardNavigationGroupMap = new Map()
+
     this.addRawLayoutComponentSpecs(rawLayoutComponentSpecs)
   }
 
@@ -366,4 +380,17 @@ export class ComponentCache {
       this.addRawLayoutComponentSpec(rawLayoutComponentSpec)
     }
   }
+
+  addComponentSpecToTypeMap (componentSpec) {
+    this.typeMap.get(componentSpec.constructor.name).push(componentSpec)
+  }
+
+  // addComponentSpecToKeyboardNavigationGroup (keyboardNavigationGroup, componentSpec) {
+  //   if (!this.keyboardNavigationGroupMap.has(keyboardNavigationGroup)) {
+  //     this.keyboardNavigationGroupMap.set(keyboardNavigationGroup, [])
+  //   }
+  //   const keyboardNavigationGroupItemsArray = this.keyboardNavigationGroupMap.get(keyboardNavigationGroup)
+  //   const nextIndex = keyboardNavigationGroupItemsArray.length
+  //   keyboardNavigationGroupItemsArray.push(new KeyboardNavigationGroupItem(componentSpec, nextIndex))
+  // }
 }

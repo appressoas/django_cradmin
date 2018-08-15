@@ -77,3 +77,5 @@ export const COMPONENT_GROUP_EXPANDABLE = 'expandable'
  * @type {string}
  */
 export const COMPONENT_GROUP_ADVANCED = 'advanced'
+
+// export const KEYBOARD_NAVIGATION_GROUP_KEY_UP_DOWN = 'key_up_down'
