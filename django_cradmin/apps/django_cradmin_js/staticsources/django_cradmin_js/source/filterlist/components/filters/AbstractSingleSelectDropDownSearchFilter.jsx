@@ -1,8 +1,16 @@
 import React from 'react'
 import DropDownSearchFilter from './DropDownSearchFilter'
 import * as gettext from 'ievv_jsbase/lib/gettext'
+import AriaDescribedByTarget from '../../../components/AriaDescribedByTarget'
 
 export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSearchFilter {
+  static get defaultProps () {
+    return {
+      ...super.defaultProps,
+      selectedValueExtraAriaDescription: null
+    }
+  }
+
   setupBoundMethods () {
     super.setupBoundMethods()
     this.onClickSelectedItemBody = this.onClickSelectedItemBody.bind(this)
@@ -23,6 +31,10 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
 
   renderSelectedLabel () {
     return this.getSelectedLabelText()
+  }
+
+  get selectedValueExtraAriaDescribedByDomId () {
+    return this.makeDomId('selectedValueExtraAriaDescribedBy')
   }
 
   get selectedItemKey () {
@@ -48,18 +60,42 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
       true)
   }
 
+  renderSelectedValueExtraAriaDescribedBy () {
+    if (this.props.selectedValueExtraAriaDescription === null) {
+      return null
+    }
+    return <AriaDescribedByTarget
+      domId={this.selectedValueExtraAriaDescribedByDomId}
+      message={this.props.selectedValueExtraAriaDescription}
+      key={'selectedValue extra aria-describedby'} />
+  }
+
+  get selectedValueAriaDescribedByDomIds () {
+    let domIds = [
+      this.labelDomId
+    ]
+    if (this.props.selectedValueExtraAriaDescription !== null) {
+      domIds.push(this.selectedValueExtraAriaDescribedByDomId)
+    }
+    return domIds
+  }
+
   renderSelectedValue (extraProps) {
-    return <button
-      className={'searchinput__selected searchinput__selected--single'}
-      key={'selected value'}
-      onClick={this.onClickSelectedItemBody}
-      aria-label={this.selectedValueAriaLabel}
-      aria-describedby={this.labelDomId}
-      {...extraProps}>
-      <span className={'searchinput__selected_preview'}>
-        {this.renderSelectedLabel()}
-      </span>
-    </button>
+    return [
+      this.renderSelectedValueExtraAriaDescribedBy(),
+      <button
+        className={'searchinput__selected searchinput__selected--single'}
+        key={'selected value'}
+        onClick={this.onClickSelectedItemBody}
+        aria-label={this.selectedValueAriaLabel}
+        aria-describedby={this.selectedValueAriaDescribedByDomIds.join(' ')}
+        {...extraProps}
+      >
+        <span className={'searchinput__selected_preview'}>
+          {this.renderSelectedLabel()}
+        </span>
+      </button>
+    ]
   }
 
   renderBodyContent () {
@@ -72,12 +108,12 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
     if (this.props.selectedListItemsMap.size === 0) {
       return [
         this.renderSearchInput(),
-        this.renderSelectedValue(noneStyle)
+        ...this.renderSelectedValue(noneStyle)
       ]
     }
     return [
       this.renderSearchInput(noneStyle),
-      this.renderSelectedValue()
+      ...this.renderSelectedValue()
     ]
   }
 }

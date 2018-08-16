@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import AbstractFilter from './AbstractFilter'
 import BemUtilities from '../../../utilities/BemUtilities'
 import SearchInputClearButton from './components/SearchInputClearButton'
+import AriaDescribedByTarget from '../../../components/AriaDescribedByTarget'
 // import { KEYBOARD_NAVIGATION_GROUP_KEY_UP_DOWN } from '../../filterListConstants'
 
 /**
@@ -23,7 +24,8 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
         PropTypes.arrayOf(PropTypes.string)
       ]),
       fieldWrapperBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
-      value: PropTypes.string
+      value: PropTypes.string,
+      searchInputExtraAriaDescription: PropTypes.string
     })
   }
 
@@ -64,7 +66,8 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       labelBemBlock: 'label',
       labelBemVariants: [],
       fieldWrapperBemVariants: ['outlined'],
-      value: ''
+      value: '',
+      searchInputExtraAriaDescription: null
     })
   }
 
@@ -252,7 +255,28 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
     throw new Error('renderButtons() must be overridden in subclasses')
   }
 
-  renderSearchInput (extraProps = {}) {
+  get searchInputExtraAriaDescribedByDomId () {
+    return this.makeDomId('searchInputExtraAriaDescribedBy')
+  }
+
+  renderSearchInputExtraAriaDescribedBy () {
+    if (this.props.searchInputExtraAriaDescription === null) {
+      return null
+    }
+    return <AriaDescribedByTarget
+      domId={this.searchInputExtraAriaDescribedByDomId}
+      message={this.props.searchInputExtraAriaDescription}
+      key={'searchInput extra aria-describedby'} />
+  }
+
+  get searchInputAriaDescribedByDomIds () {
+    if (this.props.searchInputExtraAriaDescription !== null) {
+      return this.searchInputExtraAriaDescribedByDomId
+    }
+    return null
+  }
+
+  renderSearchInputField (extraProps) {
     let allExtraProps = {
       ...extraProps,
       ...this.ariaProps
@@ -263,6 +287,7 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       type='text'
       ref={(input) => { this._searchInputRef = input }}
       id={this.inputFieldDomId}
+      aria-describedby={this.searchInputAriaDescribedByDomIds}
       placeholder={this.placeholder}
       className={this.inputClassName}
       value={this.stringValue}
@@ -270,6 +295,13 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       onBlur={this.onBlur}
       onFocus={this.onFocus}
     />
+  }
+
+  renderSearchInput (extraProps = {}) {
+    return [
+      this.renderSearchInputExtraAriaDescribedBy(),
+      this.renderSearchInputField(extraProps)
+    ]
   }
 
   renderBodyContent () {
