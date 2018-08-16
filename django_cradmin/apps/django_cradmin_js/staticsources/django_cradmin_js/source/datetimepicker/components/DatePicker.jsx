@@ -16,7 +16,8 @@ export default class DatePicker extends React.Component {
       initialFocusMomentObject: moment(),
       onChange: null,
       includeShortcuts: true,
-      momentRange: MomentRange.defaultForDatetimeSelect()
+      momentRange: MomentRange.defaultForDatetimeSelect(),
+      ariaDescribedByDomId: null
     }
   }
 
@@ -26,7 +27,8 @@ export default class DatePicker extends React.Component {
       initialFocusMomentObject: PropTypes.any.isRequired,
       onChange: PropTypes.func.isRequired,
       includeShortcuts: PropTypes.bool,
-      momentRange: PropTypes.instanceOf(MomentRange).isRequired
+      momentRange: PropTypes.instanceOf(MomentRange).isRequired,
+      ariaDescribedByDomId: PropTypes.string.isRequired
     }
   }
 
@@ -50,7 +52,8 @@ export default class DatePicker extends React.Component {
       momentObject: this.props.momentObject,
       initialFocusMomentObject: this.props.initialFocusMomentObject,
       onDaySelect: this.onDaySelect.bind(this),
-      momentRange: this.props.momentRange
+      momentRange: this.props.momentRange,
+      ariaDescribedByDomId: this.props.ariaDescribedByDomId
     }
   }
 
@@ -66,7 +69,8 @@ export default class DatePicker extends React.Component {
       onMonthSelect: this.onMonthSelect.bind(this),
       onYearSelect: this.onYearSelect.bind(this),
       momentObject: this.getMoment(),
-      momentRange: this.props.momentRange
+      momentRange: this.props.momentRange,
+      ariaDescribedByDomId: this.props.ariaDescribedByDomId
     }
   }
 

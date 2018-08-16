@@ -22,7 +22,8 @@ export default class DatePickerToolbar extends React.Component {
       onPrevMonth: null,
       onNextMonth: null,
       onMonthSelect: null,
-      onYearSelect: null
+      onYearSelect: null,
+      ariaDescribedByDomId: null
     }
   }
 
@@ -41,7 +42,8 @@ export default class DatePickerToolbar extends React.Component {
       onPrevMonth: PropTypes.func.isRequired,
       onNextMonth: PropTypes.func.isRequired,
       onMonthSelect: PropTypes.func.isRequired,
-      onYearSelect: PropTypes.func.isRequired
+      onYearSelect: PropTypes.func.isRequired,
+      ariaDescribedByDomId: PropTypes.string.isRequired
     }
   }
 
@@ -96,6 +98,7 @@ export default class DatePickerToolbar extends React.Component {
       onClick={this.props.onPrevMonth}
       disabled={!this.isValidMonth(this.prevMonthMoment)}
       aria-label={this.renderPrevMonthButtonAriaLabel()}
+      aria-describedby={this.props.ariaDescribedByDomId}
     >
       <span className={this.leftButtonIconClassName} aria-hidden='true' />
     </button>
@@ -108,6 +111,7 @@ export default class DatePickerToolbar extends React.Component {
       onClick={this.props.onNextMonth}
       disabled={!this.isValidMonth(this.nextMonthMoment)}
       aria-label={this.renderNextMonthButtonAriaLabel()}
+      aria-describedby={this.props.ariaDescribedByDomId}
     >
       <span className={this.rightButtonIconClassName} aria-hidden='true' />
     </button>
@@ -121,7 +125,8 @@ export default class DatePickerToolbar extends React.Component {
     return {
       momentObject: this.props.momentObject,
       momentRange: this.props.momentRange,
-      onChange: this.props.onYearSelect
+      onChange: this.props.onYearSelect,
+      ariaDescribedByDomId: this.props.ariaDescribedByDomId
     }
   }
 
@@ -138,7 +143,8 @@ export default class DatePickerToolbar extends React.Component {
     return {
       momentObject: this.props.momentObject,
       momentRange: this.props.momentRange,
-      onChange: this.props.onMonthSelect
+      onChange: this.props.onMonthSelect,
+      ariaDescribedByDomId: this.props.ariaDescribedByDomId
     }
   }
 

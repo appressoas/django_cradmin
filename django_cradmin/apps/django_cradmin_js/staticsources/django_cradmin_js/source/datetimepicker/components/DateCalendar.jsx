@@ -13,7 +13,8 @@ export default class DateCalendar extends React.Component {
       initialFocusMomentObject: moment(),
       bemBlock: 'calendar-month',
       bemVariants: [],
-      onDaySelect: null
+      onDaySelect: null,
+      ariaDescribedByDomId: null
     }
   }
 
@@ -23,7 +24,8 @@ export default class DateCalendar extends React.Component {
       initialFocusMomentObject: PropTypes.any.isRequired,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
-      onDaySelect: PropTypes.func.isRequired
+      onDaySelect: PropTypes.func.isRequired,
+      ariaDescribedByDomId: PropTypes.string.isRequired
     }
   }
 
@@ -100,6 +102,7 @@ export default class DateCalendar extends React.Component {
       tabIndex={0}
       className={this.makeDayButtonClassName(dayMomentObject)}
       aria-label={this.renderDayButtonAriaLabel(dayMomentObject)}
+      aria-describedby={this.props.ariaDescribedByDomId}
       disabled={!this.isValidDay(dayMomentObject)}
       onClick={(e) => {
         e.preventDefault()

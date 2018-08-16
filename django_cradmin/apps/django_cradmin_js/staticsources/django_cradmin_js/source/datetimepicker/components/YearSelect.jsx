@@ -15,7 +15,8 @@ export default class YearSelect extends React.Component {
       momentObject: null,
       momentRange: null,
       onChange: null,
-      renderAsInputThreshold: 200
+      renderAsInputThreshold: 200,
+      ariaDescribedByDomId: null
     }
   }
 
@@ -26,7 +27,8 @@ export default class YearSelect extends React.Component {
       selectBemBlock: PropTypes.string.isRequired,
       selectBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       ariaLabel: PropTypes.string.isRequired,
-      onChange: PropTypes.func
+      onChange: PropTypes.func,
+      ariaDescribedByDomId: PropTypes.string.isRequired
     }
   }
 
@@ -51,7 +53,7 @@ export default class YearSelect extends React.Component {
   }
 
   renderYear (year) {
-    return <option key={year} value={year}>
+    return <option key={year} value={year} aria-label={year} aria-describedby={this.props.ariaDescribedByDomId}>
       {year}
     </option>
   }
@@ -86,7 +88,12 @@ export default class YearSelect extends React.Component {
 
   renderAsSelect () {
     return <label className={this.selectClassName}>
-      <select aria-label={this.props.ariaLabel} value={this.selectedYear} onChange={this.handleSelectChange.bind(this)}>
+      <select
+        aria-label={this.props.ariaLabel}
+        value={this.selectedYear}
+        onChange={this.handleSelectChange.bind(this)}
+        aria-describedby={this.props.ariaDescribedByDomId}
+      >
         {this.renderYears()}
       </select>
     </label>
@@ -97,6 +104,7 @@ export default class YearSelect extends React.Component {
       className={this.inputClassName}
       onChange={this.handleInputChange.bind(this)}
       value={this.selectedYear}
+      aria-describedby={this.props.ariaDescribedByDomId}
     />
   }
 

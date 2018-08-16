@@ -2,6 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import BemUtilities from '../../utilities/BemUtilities'
 import PropTypes from 'prop-types'
+import UniqueDomIdSingleton from 'ievv_jsbase/lib/dom/UniqueDomIdSingleton'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 
 export default class AbstractDateOrDateTimeSelect extends React.Component {
   static get defaultProps () {
@@ -13,7 +15,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       selectedPreviewFormat: null,
       bodyBemVariants: [],
       onChange: null,
-      pickerProps: {}
+      pickerProps: {},
+      ariaLabel: null
     }
   }
 
@@ -26,7 +29,8 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
       selectedPreviewFormat: PropTypes.string.isRequired,
       bodyBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       onChange: PropTypes.func,
-      pickerProps: PropTypes.object.isRequired
+      pickerProps: PropTypes.object.isRequired,
+      ariaLabel: PropTypes.string
     }
   }
 
@@ -35,6 +39,15 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     this.state = this.makeInitialState()
     this.setDraftMomentObject = this.setDraftMomentObject.bind(this)
     this.triggerOnChange = this.triggerOnChange.bind(this)
+    this.domIdPrefix = new UniqueDomIdSingleton().generate()
+  }
+
+  get ariaLabel () {
+    return this.props.ariaLabel
+  }
+
+  get ariaDescribedByDomId () {
+    return `${this.domIdPrefix}_describedby`
   }
 
   makeInitialState () {
@@ -104,11 +117,13 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get pickerComponentProps () {
-    return Object.assign({}, this.props.pickerProps, {
+    return {
+      ...this.props.pickerProps,
       momentObject: this.state.draftMomentObject,
       initialFocusMomentObject: this.props.initialFocusMomentObject,
-      onChange: this.setDraftMomentObject
-    })
+      onChange: this.setDraftMomentObject,
+      ariaDescribedByDomId: this.ariaDescribedByDomId
+    }
   }
 
   get draftMomentObjectPreviewFormatted () {
@@ -125,6 +140,31 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   //
   // Rendering
   //
+
+  get noValueSelectedAriaText () {
+    return gettext.gettext('No value selected')
+  }
+
+  get selectedValueAriaText () {
+    return gettext.interpolate(
+      gettext.gettext('Currently selected value: %(currentValue)s'),
+      {currentValue: this.draftMomentObjectPreviewFormatted},
+      true
+    )
+  }
+
+  get ariaDescribedByText () {
+    if (this.state.draftMomentObject === null) {
+      return `${this.ariaLabel} - ${this.noValueSelectedAriaText}`
+    }
+    return `${this.ariaLabel} - ${this.selectedValueAriaText}`
+  }
+
+  renderAriaDescribedBy () {
+    return <span id={this.ariaDescribedByDomId} className='screenreader-only' key={'aria-describedby'}>
+      {this.ariaDescribedByText}
+    </span>
+  }
 
   renderSelectedPreview () {
     if (this.state.draftMomentObject === null) {
@@ -161,6 +201,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
 
   render () {
     return <div className={this.className}>
+      {this.renderAriaDescribedBy()}
       {this.renderContent()}
     </div>
   }

@@ -15,7 +15,8 @@ export default class AbstractOpenPicker extends React.Component {
       onOpen: null,
       onChange: null,
       wrapperBemVariants: ['xs'],
-      buttonBarBemVariants: ['nomargin']
+      buttonBarBemVariants: ['nomargin'],
+      modalDomId: null
     }
   }
 
@@ -28,7 +29,8 @@ export default class AbstractOpenPicker extends React.Component {
       nowButtonLabel: PropTypes.string.isRequired,
       onOpen: PropTypes.func.isRequired,
       onChange: PropTypes.func.isRequired,
-      wrapperBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired
+      wrapperBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      modalDomId: PropTypes.string
     }
   }
 
@@ -77,13 +79,17 @@ export default class AbstractOpenPicker extends React.Component {
     return <span>{this.renderIcon('calendar')}{' '}</span>
   }
 
+  get openButtonProps () {
+    return {
+      key: 'openButton',
+      type: 'button',
+      className: this.makeButtonClassName(['input-outlined', 'grow-2', 'width-xsmall']),
+      onClick: this.props.onOpen
+    }
+  }
+
   renderOpenButton () {
-    return <button
-      key={'openButton'}
-      type={'button'}
-      className={this.makeButtonClassName(['input-outlined', 'grow-2', 'width-xsmall'])}
-      onClick={this.props.onOpen}
-    >
+    return <button {...this.openButtonProps}>
       {this.renderOpenButtonIcon()}
       {this.renderOpenButtonLabel()}
     </button>

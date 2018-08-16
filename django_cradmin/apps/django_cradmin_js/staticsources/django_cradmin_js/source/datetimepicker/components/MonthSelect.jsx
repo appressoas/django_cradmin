@@ -12,7 +12,8 @@ export default class MonthSelect extends React.Component {
       ariaLabel: gettext.gettext('Month'),
       momentObject: null,
       momentRange: null,
-      onChange: null
+      onChange: null,
+      ariaDescribedByDomId: null
     }
   }
 
@@ -23,7 +24,8 @@ export default class MonthSelect extends React.Component {
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       ariaLabel: PropTypes.string.isRequired,
-      onChange: PropTypes.func
+      onChange: PropTypes.func,
+      ariaDescribedByDomId: PropTypes.string.isRequired
     }
   }
 
@@ -40,7 +42,7 @@ export default class MonthSelect extends React.Component {
   }
 
   renderMonthAriaLabel (monthMomentObject) {
-    return monthMomentObject.format('MMMM')
+    return monthMomentObject.format('MMMM YYYY')
   }
 
   renderMonthLabel (monthMomentObject) {
@@ -82,7 +84,12 @@ export default class MonthSelect extends React.Component {
 
   render () {
     return <label className={this.className}>
-      <select aria-label={this.props.ariaLabel} value={this.selectedMonth} onChange={this.handleChange.bind(this)}>
+      <select
+        aria-label={this.props.ariaLabel}
+        value={this.selectedMonth}
+        onChange={this.handleChange.bind(this)}
+        aria-describedby={this.props.ariaDescribedByDomId}
+      >
         {this.renderMonths()}
       </select>
     </label>

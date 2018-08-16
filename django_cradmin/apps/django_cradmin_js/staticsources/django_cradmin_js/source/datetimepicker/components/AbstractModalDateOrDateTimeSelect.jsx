@@ -48,6 +48,10 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     })
   }
 
+  get ariaLabel () {
+    return this.props.ariaLabel ? this.ariaLabel : this.title
+  }
+
   get useButtonClassName () {
     return BemUtilities.addVariants(this.props.useButtonBemBlock, this.props.useButtonBemVariants)
   }
@@ -70,6 +74,10 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   get closeButtonIconClassName () {
     return 'cricon cricon--close'
+  }
+
+  get modalDomId () {
+    return `${this.domIdPrefix}_modal`
   }
 
   triggerOnChange (momentObject, onComplete = null) {
@@ -97,11 +105,15 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   get openPickerComponentProps () {
-    return Object.assign({}, this.props.openPickerProps, {
+    return {
+      ...this.props.openPickerProps,
+      key: 'openPicker',
       momentObject: this.props.momentObject,
       onOpen: this.onOpenButtonClick,
-      onChange: this.triggerOnChange
-    })
+      onChange: this.triggerOnChange,
+      modalDomId: this.modalDomId,
+      ariaDescribedByDomId: this.ariaDescribedByDomId
+    }
   }
 
   get openPickerComponentClass () {
@@ -125,7 +137,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     if (this.props.title === null) {
       return null
     }
-    return <div key={'title'} className={this.titleClassName}>
+    return <div key={'title'} className={this.titleClassName} aria-hidden>
       {this.props.title}
     </div>
   }
@@ -165,7 +177,7 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   renderModal () {
     if (this.state.isOpen) {
-      return <div className={this.className}>
+      return <div className={this.className} aria-live={'assertive'} id={this.modalDomId} key={'modal'}>
         {this.renderContent()}
       </div>
     }
@@ -173,9 +185,10 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
   }
 
   render () {
-    return <div>
-      {this.renderOpenPicker()}
-      {this.renderModal()}
-    </div>
+    return [
+      this.renderAriaDescribedBy(),
+      this.renderOpenPicker(),
+      this.renderModal()
+    ]
   }
 }
