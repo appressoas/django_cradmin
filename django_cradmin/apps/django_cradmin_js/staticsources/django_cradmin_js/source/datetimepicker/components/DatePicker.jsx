@@ -151,7 +151,7 @@ export default class DatePicker extends React.Component {
   }
 
   onDaySelect (dayMomentObject) {
-    this.props.onChange(this.props.momentRange.getClosestValid(dayMomentObject))
+    this.props.onChange(this.props.momentRange.getClosestValid(dayMomentObject), true, false)
   }
 
   onMonthSelect (monthNumber) {

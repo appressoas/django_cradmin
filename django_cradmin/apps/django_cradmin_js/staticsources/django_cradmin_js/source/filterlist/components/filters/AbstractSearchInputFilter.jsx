@@ -297,7 +297,7 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
       key: `${this.props.name}-label`,
       id: this.labelDomId,
       className: this.labelClassName,
-      htmlFor: this.inputFieldDomId,
+      htmlFor: this.inputFieldDomId
     }
     return <label {...labelProps}>
       {this.renderLabelText()}

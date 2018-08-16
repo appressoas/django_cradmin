@@ -10,6 +10,10 @@ export default class ModalDateSelect extends AbstractModalDateOrDateTimeSelect {
     })
   }
 
+  get selectType () {
+    return 'date'
+  }
+
   get pickerComponentClass () {
     return DatePicker
   }

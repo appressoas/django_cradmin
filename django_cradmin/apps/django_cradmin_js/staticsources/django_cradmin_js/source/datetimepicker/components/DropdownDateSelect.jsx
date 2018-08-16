@@ -10,6 +10,10 @@ export default class DropdownDateSelect extends AbstractDropdownDateOrDateTimeSe
     })
   }
 
+  get selectType () {
+    return 'date'
+  }
+
   get pickerComponentClass () {
     return DatePicker
   }

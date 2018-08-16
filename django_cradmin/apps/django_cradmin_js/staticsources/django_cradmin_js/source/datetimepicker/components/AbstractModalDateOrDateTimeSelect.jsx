@@ -34,6 +34,8 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     this.onOpenButtonClick = this.onOpenButtonClick.bind(this)
     this.onCloseButtonClick = this.onCloseButtonClick.bind(this)
     this.onUseButtonClick = this.onUseButtonClick.bind(this)
+    this.useButtonRef = React.createRef()
+    this.openPickerComponentRef = React.createRef()
   }
 
   makeInitialState () {
@@ -42,14 +44,34 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     })
   }
 
-  setDraftMomentObject (draftMomentObject) {
+  onCompleteMomentObjectSelected () {
+    if (this.selectType === 'date') {
+      this.triggerOnChange(this.state.draftMomentObject)
+    }
+  }
+
+  postSetDraftMomentObject (isCompleteDate = false, isCompleteDateTime = false) {
+    if (this.selectType === 'date') {
+      if (isCompleteDate || isCompleteDateTime) {
+        this.onCompleteMomentObjectSelected()
+      }
+    } else if (this.selectType === 'datetime') {
+      if (isCompleteDateTime) {
+        this.onCompleteMomentObjectSelected()
+      }
+    }
+  }
+
+  setDraftMomentObject (draftMomentObject, isCompleteDate = false, isCompleteDateTime = false) {
     this.setState({
       draftMomentObject: draftMomentObject
+    }, () => {
+      this.postSetDraftMomentObject(isCompleteDate, isCompleteDateTime)
     })
   }
 
   get ariaLabel () {
-    return this.props.ariaLabel ? this.ariaLabel : this.title
+    return this.props.ariaLabel ? this.props.ariaLabel : this.props.title
   }
 
   get useButtonClassName () {
@@ -84,7 +106,12 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     super.triggerOnChange(momentObject, () => {
       this.setState({
         isOpen: false
-      }, onComplete)
+      }, () => {
+        this.openPickerComponentRef.current.focus()
+        if (onComplete) {
+          onComplete()
+        }
+      })
     })
   }
 
@@ -108,7 +135,10 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return {
       ...this.props.openPickerProps,
       key: 'openPicker',
+      ref: this.openPickerComponentRef,
       momentObject: this.props.momentObject,
+      isOpen: this.state.isOpen,
+      domIdPrefix: this.domIdPrefix,
       onOpen: this.onOpenButtonClick,
       onChange: this.triggerOnChange,
       modalDomId: this.modalDomId,
@@ -127,7 +157,12 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
 
   renderCloseButton () {
     return <div className={this.closeButtonClassName} key={'closeButton'}>
-      <button type='button' title={this.closeButtonTitle} onClick={this.onCloseButtonClick}>
+      <button
+        type='button'
+        title={this.closeButtonTitle}
+        onClick={this.onCloseButtonClick}
+        aria-describedby={this.ariaDescribedByDomId}
+      >
         <span className={this.closeButtonIconClassName} aria-hidden='true' />
       </button>
     </div>
@@ -146,11 +181,21 @@ export default class AbstractModalDateOrDateTimeSelect extends AbstractDateOrDat
     return this.props.useButtonLabel
   }
 
+  get useButtonProps () {
+    return {
+      key: 'useButton',
+      ref: this.useButtonRef,
+      type: 'button',
+      className: this.useButtonClassName,
+      onClick: this.onUseButtonClick
+    }
+  }
+
   renderUseButton () {
-    if (this.state.draftMomentObject === null) {
+    if (this.state.draftMomentObject === null || this.selectType !== 'datetime') {
       return null
     }
-    return <button key={'useButton'} type={'button'} className={this.useButtonClassName} onClick={this.onUseButtonClick}>
+    return <button {...this.useButtonProps}>
       {this.renderUseButtonLabel()}
     </button>
   }

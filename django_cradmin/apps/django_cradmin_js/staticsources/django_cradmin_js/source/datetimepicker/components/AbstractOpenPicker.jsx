@@ -16,7 +16,10 @@ export default class AbstractOpenPicker extends React.Component {
       onChange: null,
       wrapperBemVariants: ['xs'],
       buttonBarBemVariants: ['nomargin'],
-      modalDomId: null
+      modalDomId: null,
+      ariaDescribedByDomId: null,
+      domIdPrefix: null,
+      isOpen: false
     }
   }
 
@@ -30,17 +33,26 @@ export default class AbstractOpenPicker extends React.Component {
       onOpen: PropTypes.func.isRequired,
       onChange: PropTypes.func.isRequired,
       wrapperBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
-      modalDomId: PropTypes.string
+      modalDomId: PropTypes.string,
+      ariaDescribedByDomId: PropTypes.string.isRequired,
+      domIdPrefix: PropTypes.string.isRequired,
+      isOpen: PropTypes.bool.isRequired
     }
   }
 
   constructor (props) {
     super(props)
     this.onNowButtonClick = this.onNowButtonClick.bind(this)
+    this.openButtonRef = React.createRef()
   }
 
   onNowButtonClick () {
     this.props.onChange(moment())
+    this.openButtonRef.focus()
+  }
+
+  get openButtonAriaDescribedByDomId () {
+    return `${this.props.domIdPrefix}_openPicker_openButton`
   }
 
   get wrapperBemBlock () {
@@ -68,23 +80,39 @@ export default class AbstractOpenPicker extends React.Component {
     return <span className={className} aria-hidden='true' />
   }
 
-  renderOpenButtonLabel () {
+  get openButtonLabelText () {
     if (this.props.momentObject === null) {
       return this.props.openButtonEmptyLabel
     }
     return this.props.momentObject.format(this.props.momentObjectFormat)
   }
 
+  renderOpenButtonLabel () {
+    return this.openButtonLabelText
+  }
+
   renderOpenButtonIcon () {
     return <span>{this.renderIcon('calendar')}{' '}</span>
+  }
+
+  get openButtonAriaLabel () {
+    let expandedState = gettext.pgettext('datetimepicker openButton', 'collapsed')
+    if (this.props.isOpen) {
+      expandedState = gettext.pgettext('datetimepicker openButton', 'expanded')
+    }
+    const ariaExtra = gettext.gettext('Calendar picker toggle button')
+    return `${this.openButtonLabelText}. ${ariaExtra} - ${expandedState}`
   }
 
   get openButtonProps () {
     return {
       key: 'openButton',
+      ref: this.openButtonRef,
       type: 'button',
       className: this.makeButtonClassName(['input-outlined', 'grow-2', 'width-xsmall']),
-      onClick: this.props.onOpen
+      onClick: this.props.onOpen,
+      'aria-label': this.openButtonAriaLabel,
+      'aria-describedby': `${this.props.ariaDescribedByDomId} ${this.openButtonAriaDescribedByDomId}`
     }
   }
 
@@ -93,6 +121,20 @@ export default class AbstractOpenPicker extends React.Component {
       {this.renderOpenButtonIcon()}
       {this.renderOpenButtonLabel()}
     </button>
+  }
+
+  get openButtonAriaDescribedByText () {
+    if (this.props.isOpen) {
+      return gettext.gettext('You are currently on an expanded calendar picker toggle button. Use the focus change key (tab) to go to the calendar picker. Click the button to collapse/hide the calendar picker.')
+    } else {
+      return gettext.gettext('You are currently on an collapsed calendar picker toggle button. Click the button to expand the calendar picker.')
+    }
+  }
+
+  renderOpenButtonAriaDescribedBy () {
+    return <span id={this.openButtonAriaDescribedByDomId} className='screenreader-only' key={'aria-describedby'}>
+      {this.openButtonAriaDescribedByText}
+    </span>
   }
 
   renderNowButtonLabel () {
@@ -105,6 +147,7 @@ export default class AbstractOpenPicker extends React.Component {
       type={'button'}
       className={this.makeButtonClassName(['fill', 'no-grow'])}
       onClick={this.onNowButtonClick}
+      aria-describedby={this.props.ariaDescribedByDomId}
     >
       {this.renderNowButtonLabel()}
     </button>
@@ -126,9 +169,16 @@ export default class AbstractOpenPicker extends React.Component {
     </div>
   }
 
+  focus () {
+    this.openButtonRef.current.focus()
+  }
+
   render () {
-    return <div className={this.wrapperClassName}>
-      {this.renderButtonBar()}
-    </div>
+    return [
+      this.renderOpenButtonAriaDescribedBy(),
+      <div className={this.wrapperClassName} key={'buttonBarWrapper'}>
+        {this.renderButtonBar()}
+      </div>
+    ]
   }
 }

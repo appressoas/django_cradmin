@@ -8,7 +8,7 @@ export default class AbstractEmbeddedDateOrDateTimeSelect extends AbstractDateOr
     })
   }
 
-  setDraftMomentObject (draftMomentObject) {
+  setDraftMomentObject (draftMomentObject, isCompleteDate = false, isCompleteDateTime = false) {
     this.triggerOnChange(draftMomentObject)
   }
 }

@@ -35,6 +35,9 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   constructor (props) {
+    if (props.initialFocusMomentObject === null && props.momentObject !== null) {
+      props.initialFocusMomentObject = props.momentObject.clone()
+    }
     super(props)
     this.state = this.makeInitialState()
     this.setDraftMomentObject = this.setDraftMomentObject.bind(this)
@@ -92,7 +95,11 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
     })
   }
 
-  setDraftMomentObject (draftMomentObject) {
+  get selectType () {
+    throw new Error('The selectType getter must be overridden in subclasses')
+  }
+
+  setDraftMomentObject (draftMomentObject, isCompleteDate = false, isCompleteDateTime = false) {
     throw new Error('Must override setDraftMomentObject()')
   }
 
@@ -134,6 +141,9 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   }
 
   get momentObjectPreviewFormatted () {
+    if (this.props.momentObject === null) {
+      return ''
+    }
     return this.props.momentObject.format(this.props.selectedPreviewFormat)
   }
 
@@ -148,16 +158,16 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   get selectedValueAriaText () {
     return gettext.interpolate(
       gettext.gettext('Currently selected value: %(currentValue)s'),
-      {currentValue: this.draftMomentObjectPreviewFormatted},
+      {currentValue: this.momentObjectPreviewFormatted},
       true
     )
   }
 
   get ariaDescribedByText () {
-    if (this.state.draftMomentObject === null) {
+    if (this.props.momentObject === null) {
       return `${this.ariaLabel} - ${this.noValueSelectedAriaText}`
     }
-    return `${this.ariaLabel} - ${this.selectedValueAriaText}`
+    return `${this.ariaLabel} - ${this.selectedValueAriaText}.`
   }
 
   renderAriaDescribedBy () {
