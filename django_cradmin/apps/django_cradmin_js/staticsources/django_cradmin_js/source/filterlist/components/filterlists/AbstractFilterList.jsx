@@ -771,14 +771,19 @@ export default class AbstractFilterList extends React.Component {
    * @param {bool} filter Should we filter the HTTP request using
    *    {@link AbstractFilter#filterListItemsHttpRequest}?
    *    Defaults to `true`.
+   * @param {bool} paginate should we add paginationOptions using
+   *    {@link AbstractFilterList#paginateListItemsHttpRequest}? Default: true
    * @returns {*} HTTP request object. An instance of the
    *    class returned by {@link AbstractFilter#getHttpRequestClass}.
    */
-  makeListItemsHttpRequest (paginationOptions, filter = true) {
+  makeListItemsHttpRequest (paginationOptions, filter = true, paginate = true) {
     const HttpRequestClass = this.getHttpRequestClass()
     const httpRequest = new HttpRequestClass(this.props.getItemsApiUrl)
     if (filter) {
       this.filterListItemsHttpRequest(httpRequest)
+    }
+    if (!paginate) {
+      return httpRequest
     }
     this.paginateListItemsHttpRequest(httpRequest, paginationOptions)
     return httpRequest
