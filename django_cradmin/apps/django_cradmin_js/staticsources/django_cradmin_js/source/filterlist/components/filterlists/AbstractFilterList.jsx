@@ -32,7 +32,7 @@ export default class AbstractFilterList extends React.Component {
 
       components: PropTypes.arrayOf(PropTypes.object).isRequired,
 
-      initiallySelectedItemIds: PropTypes.array.isRequired,
+      initiallySelectedItemIds: PropTypes.array.isRequired
       // updateHttpMethod: (props, propName, componentName) => {
       //   if(!props[propName] || !/^(post|put)$/.test(props[propName])) {
       //     return new Error(
@@ -641,7 +641,7 @@ export default class AbstractFilterList extends React.Component {
     return `filterstate_${filterName}`
   }
 
-  static _makeFilterValue(filterName, value) {
+  static _makeFilterValue (filterName, value) {
     if (value === undefined) {
       value = null
     }
@@ -678,12 +678,11 @@ export default class AbstractFilterList extends React.Component {
     for (let filterSpec of filterSpecs) {
       const filterKey = AbstractFilterList._getStateVariableNameForFilter(filterSpec.props.name)
       if (state[filterKey] === undefined) {
-        filter = {...filter, ...AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue) }
+        filter = {...filter, ...AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue)}
       }
     }
     return filter
   }
-
 
   /**
    * Get the current value of a filter.
@@ -770,15 +769,20 @@ export default class AbstractFilterList extends React.Component {
    * @param {{}} paginationOptions Paginator options.
    * @param {bool} filter Should we filter the HTTP request using
    *    {@link AbstractFilter#filterListItemsHttpRequest}?
+   * @param {bool} paginate Should we apply paginationoptions using
+   *    {@link AbstractFilterList#paginateListItemsHttpRequest}?
    *    Defaults to `true`.
    * @returns {*} HTTP request object. An instance of the
    *    class returned by {@link AbstractFilter#getHttpRequestClass}.
    */
-  makeListItemsHttpRequest (paginationOptions, filter = true) {
+  makeListItemsHttpRequest (paginationOptions, filter = true, paginate = true) {
     const HttpRequestClass = this.getHttpRequestClass()
     const httpRequest = new HttpRequestClass(this.props.getItemsApiUrl)
     if (filter) {
       this.filterListItemsHttpRequest(httpRequest)
+    }
+    if (!paginate) {
+      return httpRequest
     }
     this.paginateListItemsHttpRequest(httpRequest, paginationOptions)
     return httpRequest
@@ -1050,7 +1054,7 @@ export default class AbstractFilterList extends React.Component {
    */
   makeStateFromLoadItemsApiSuccessResponse (prevState, props, httpResponse, paginationOptions, clearOldItems) {
     const newItemsState = this.makeNewItemsStateFromApiResponse(
-        prevState, props, httpResponse, clearOldItems)
+      prevState, props, httpResponse, clearOldItems)
     return {
       isLoadingNewItemsFromApi: false,
       isLoadingMoreItemsFromApi: false,
