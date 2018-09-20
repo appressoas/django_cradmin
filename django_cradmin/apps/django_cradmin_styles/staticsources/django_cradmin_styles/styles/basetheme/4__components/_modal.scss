@@ -1,8 +1,156 @@
 /* Modal
 
-Example: {type: isolated}
+Example: {type: isolated} Tight modal (modal--tight)
+
+    <div class="modal modal--tight">
+        <div class="modal__backdrop"></div>
+
+        <div class="modal__content">
+            <div class="modal__close">
+                <button type="button" aria-title="Close">
+                    <span class="cricon cricon--close" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="modal__title">
+                <h2>The title</h2>
+            </div>
+
+            <p>
+                <strong>The modal content.</strong>
+                Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus,
+                nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
+                consectetur purus sit amet fermentum.
+            </p>
+        </div>
+    </div>
+
+    <p>
+        <strong>Should be behind the modal.</strong>
+        Maecenas faucibus mollis interdum. Cras mattis
+        consectetur purus sit amet fermentum. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Sed posuere consectetur est at lobortis. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Curabitur blandit tempus porttitor. Nullam quis
+        risus eget urna mollis ornare vel eu leo.
+    </p>
+
+
+Example: {type: isolated} Normal/default sized modal
+
+    <div class="modal">
+        <div class="modal__backdrop"></div>
+
+        <div class="modal__content">
+            <div class="modal__close">
+                <button type="button" aria-title="Close">
+                    <span class="cricon cricon--close" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="modal__title">
+                <h2>The title</h2>
+            </div>
+
+            <p>
+                <strong>The modal content.</strong>
+                Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus,
+                nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
+                consectetur purus sit amet fermentum.
+            </p>
+        </div>
+    </div>
+
+    <p>
+        <strong>Should be behind the modal.</strong>
+        Maecenas faucibus mollis interdum. Cras mattis
+        consectetur purus sit amet fermentum. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Sed posuere consectetur est at lobortis. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Curabitur blandit tempus porttitor. Nullam quis
+        risus eget urna mollis ornare vel eu leo.
+    </p>
+
+
+Example: {type: isolated} Wide modal (modal--wide)
 
     <div class="modal modal--wide">
+        <div class="modal__backdrop"></div>
+
+        <div class="modal__content">
+            <div class="modal__close">
+                <button type="button" aria-title="Close">
+                    <span class="cricon cricon--close" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="modal__title">
+                <h2>The title</h2>
+            </div>
+
+            <p>
+                <strong>The modal content.</strong>
+                Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus,
+                nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
+                consectetur purus sit amet fermentum.
+            </p>
+        </div>
+    </div>
+
+    <p>
+        <strong>Should be behind the modal.</strong>
+        Maecenas faucibus mollis interdum. Cras mattis
+        consectetur purus sit amet fermentum. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Sed posuere consectetur est at lobortis. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Curabitur blandit tempus porttitor. Nullam quis
+        risus eget urna mollis ornare vel eu leo.
+    </p>
+
+
+Example: {type: isolated} Extra wide modal (modal--xwide)
+
+    <div class="modal modal--xwide">
+        <div class="modal__backdrop"></div>
+
+        <div class="modal__content">
+            <div class="modal__close">
+                <button type="button" aria-title="Close">
+                    <span class="cricon cricon--close" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="modal__title">
+                <h2>The title</h2>
+            </div>
+
+            <p>
+                <strong>The modal content.</strong>
+                Nulla vitae elit libero, a pharetra augue. Duis mollis, est non commodo luctus,
+                nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis
+                consectetur purus sit amet fermentum.
+            </p>
+        </div>
+    </div>
+
+    <p>
+        <strong>Should be behind the modal.</strong>
+        Maecenas faucibus mollis interdum. Cras mattis
+        consectetur purus sit amet fermentum. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Sed posuere consectetur est at lobortis. Morbi leo
+        risus, porta ac consectetur ac, vestibulum at eros.
+        Curabitur blandit tempus porttitor. Nullam quis
+        risus eget urna mollis ornare vel eu leo.
+    </p>
+
+
+Example: {type: isolated} (Almost) Full page width modal (modal--fullwidth)
+
+    <div class="modal modal--fullwidth">
         <div class="modal__backdrop"></div>
 
         <div class="modal__content">
@@ -107,6 +255,18 @@ Styleguide components.modal
     &--wide {
         .modal__content {
             width: 900px;
+        }
+    }
+
+    &--xwide {
+        .modal__content {
+            width: 1200px;
+        }
+    }
+
+    &--fullwidth {
+        .modal__content {
+            width: 98%;
         }
     }
 }
