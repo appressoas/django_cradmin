@@ -13,8 +13,8 @@ import BemUtilities from '../../../utilities/BemUtilities'
  * {
  *    "component": "SingleChoiceFilter",
  *    "props": {
- *      "name": "include_disabled_users",
- *      "label": "Include disabled users?",
+ *      "name": "size",
+ *      "label": "Size?",
  *      "choices": [
  *        {"value": "l", "label": "Large"},
  *        {"value": "m", "label": "Medium"},
@@ -28,8 +28,8 @@ import BemUtilities from '../../../utilities/BemUtilities'
  *    "component": "SingleChoiceFilter",
  *    "initialValue": "l",
  *    "props": {
- *      "name": "include_disabled_users",
- *      "label": "Include disabled users?",
+ *      "name": "size",
+ *      "label": "Size?",
  *      "choices": [
  *        {"value": "l", "label": "Large"},
  *        {"value": "m", "label": "Medium"},
