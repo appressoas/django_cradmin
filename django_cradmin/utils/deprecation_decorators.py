@@ -33,8 +33,8 @@ class CradminDeprecated(object):
 
             class MyClass:
 
-                @CradminDeprecated(message='This is deprecated and should not be used!')
                 @property
+                @CradminDeprecated(message='This is deprecated and should not be used!')
                 def myproperty(self):
                     return 10
 
