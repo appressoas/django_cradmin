@@ -29,6 +29,15 @@ class CradminDeprecated(object):
                 def mymethod(self):
                     pass
 
+        Property::
+
+            class MyClass:
+
+                @CradminDeprecated(message='This is deprecated and should not be used!')
+                @property
+                def myproperty(self):
+                    return 10
+
         Class::
 
             @CradminDeprecated(message='This is deprecated and should not be used!')
@@ -58,6 +67,7 @@ class CradminDeprecated(object):
     def __call__(self, func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+
             self.show_warning(name=func.__name__)
             return func(*args, **kwargs)
         return wrapper
