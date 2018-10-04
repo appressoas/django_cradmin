@@ -459,7 +459,7 @@ msgstr ""
 
 #: templates/django_cradmin/missing_role.django.html:12
 #, python-format
-msgid "You do not have permission to administer \"%(what)s\"."
+msgid "You do not have permission to administer this page."
 msgstr ""
 
 #: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:25
