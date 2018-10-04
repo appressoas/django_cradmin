@@ -632,9 +632,9 @@ msgstr "Ingen tilgang"
 
 #: templates/django_cradmin/missing_role.django.html:8
 #, python-format
-msgid "You do not have permission to administer \"%(what)s\"."
+msgid "You do not have permission to administer this page."
 msgstr ""
-"Du har ikke de nødvendige rettighetene for å administrere \"%(what)s\"."
+"Du har ikke de nødvendige rettighetene for å administrere denne siden."
 
 #: templates/django_cradmin/pagepreview/includes/pagepreview-fullsize-iframe-wrapper.django.html:25
 msgid "Close preview"

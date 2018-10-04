@@ -1,11 +1,16 @@
 {% extends "django_cradmin/standalone-base.django.html" %}
 {% load i18n %}
 
-{% block body %}
-    <div class="container">
-        <h1>{% trans "Permission denied" %}</h1>
-        <p>
-            {% blocktrans with what=role %}You do not have permission to administer "{{what}}".{% endblocktrans %}
-        </p>
+{% block page-cover-title %}
+    {% trans "Permission denied" %}
+{% endblock page-cover-title %}
+
+{% block content %}
+    <div class="adminui-page-section adminui-page-section--center-md">
+        <div class="container container--tight">
+            <p>
+                {% blocktrans %}You do not have permission to administer this page.{% endblocktrans %}
+            </p>
+        </div>
     </div>
-{% endblock body %}
+{% endblock content %}
