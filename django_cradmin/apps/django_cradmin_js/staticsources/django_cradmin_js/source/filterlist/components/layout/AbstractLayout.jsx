@@ -86,7 +86,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
    *    the component.
    */
   shouldRenderPaginatorComponent (componentSpec) {
-    return !this.props.isLoadingNewItemsFromApi
+    return !this.props.isLoadingNewItemsFromApi && !this.props.isLoadingMoreItemsFromApi
   }
 
   /**
@@ -143,7 +143,7 @@ export default class AbstractLayout extends AbstractFilterListChild {
     } else if (componentSpec.componentClass.prototype instanceof AbstractList) {
       return this.shouldRenderListComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractPaginator) {
-      return this.shouldRenderSelectedItemsComponent(componentSpec)
+      return this.shouldRenderPaginatorComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractSelectedItems) {
       return this.shouldRenderSelectedItemsComponent(componentSpec)
     } else if (componentSpec.componentClass.prototype instanceof AbstractComponentGroup) {

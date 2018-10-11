@@ -71,7 +71,7 @@ export default class AbstractFilterList extends React.Component {
    *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
    *    and ``clearOldItems``. ``error`` is the exception object.
    * @property {number} filterApiDelayMilliseconds Number of milliseconds we wait from the last filter change until
-   *    we perform an API request. Defaults to ``800``.
+   *    we perform an API request. Defaults to ``500``.
    */
   static get defaultProps () {
     return {
@@ -90,7 +90,7 @@ export default class AbstractFilterList extends React.Component {
       onGetListItemsFromApiRequestBegin: null,
       onGetListItemsFromApiRequestError: null,
       onGetListItemsFromApiRequestSuccess: null,
-      filterApiDelayMilliseconds: 800,
+      filterApiDelayMilliseconds: 500,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -113,6 +113,7 @@ export default class AbstractFilterList extends React.Component {
   constructor (props) {
     super(props)
     this.setupBoundMethods()
+    this._apiRequestNumber = 0
     this.childExposedApi = this.makeChildExposedApi()
     this._filterApiUpdateTimeoutId = null
     this._blurTimeoutId = null
@@ -1104,6 +1105,11 @@ export default class AbstractFilterList extends React.Component {
     })
   }
 
+  _makeApiRequestNumber () {
+    this._apiRequestNumber ++
+    return this._apiRequestNumber
+  }
+
   /**
    * Load items from API.
    *
@@ -1121,6 +1127,9 @@ export default class AbstractFilterList extends React.Component {
    * @returns {Promise}
    */
   loadItemsFromApi (paginationOptions, clearOldItems) {
+    const apiRequestNumber = this._makeApiRequestNumber()
+    this._isLoadingItemsFromApiRequestNumber = apiRequestNumber
+
     if (this.props.onGetListItemsFromApiRequestBegin) {
       this.props.onGetListItemsFromApiRequestBegin(this, paginationOptions, clearOldItems)
     }
@@ -1135,12 +1144,21 @@ export default class AbstractFilterList extends React.Component {
       this.setState(newState, () => {
         this.makeListItemsHttpRequest(paginationOptions).get()
           .then((httpResponse) => {
-            resolve(httpResponse)
-            if (this.props.onGetListItemsFromApiRequestSuccess) {
-              this.props.onGetListItemsFromApiRequestSuccess(this, paginationOptions, clearOldItems)
+            if (apiRequestNumber === this._isLoadingItemsFromApiRequestNumber) {
+              this._isLoadingItemsFromApiRequestNumber = null
+              resolve(httpResponse)
+              if (this.props.onGetListItemsFromApiRequestSuccess) {
+                this.props.onGetListItemsFromApiRequestSuccess(this, httpResponse, paginationOptions, clearOldItems)
+              }
+            } else {
+              reject({isCancelled: true})
+              if (this.props.onGetListItemsFromApiRequestError) {
+                this.props.onGetListItemsFromApiRequestError(this, {isCancelled: true}, paginationOptions, clearOldItems)
+              }
             }
           })
           .catch((error) => {
+            this._isLoadingItemsFromApiRequestNumber = null
             reject(error)
             if (this.props.onGetListItemsFromApiRequestError) {
               this.props.onGetListItemsFromApiRequestError(this, error, paginationOptions, clearOldItems)
@@ -1163,7 +1181,9 @@ export default class AbstractFilterList extends React.Component {
           httpResponse, paginationOptions, true)
       })
       .catch((error) => {
-        this.handleGetListItemsFromApiRequestError(error)
+        if (!error.isCancelled) {
+          this.handleGetListItemsFromApiRequestError(error)
+        }
       })
   }
 
@@ -1193,7 +1213,9 @@ export default class AbstractFilterList extends React.Component {
           httpResponse, paginationOptions, false)
       })
       .catch((error) => {
-        this.handleGetListItemsFromApiRequestError(error)
+        if (!error.isCancelled) {
+          this.handleGetListItemsFromApiRequestError(error)
+        }
       })
   }
 
@@ -1213,7 +1235,9 @@ export default class AbstractFilterList extends React.Component {
           httpResponse, paginationOptions, true)
       })
       .catch((error) => {
-        this.handleGetListItemsFromApiRequestError(error)
+        if (!error.isCancelled) {
+          this.handleGetListItemsFromApiRequestError(error)
+        }
       })
   }
 
@@ -1233,7 +1257,9 @@ export default class AbstractFilterList extends React.Component {
           httpResponse, paginationOptions, true)
       })
       .catch((error) => {
-        this.handleGetListItemsFromApiRequestError(error)
+        if (!error.isCancelled) {
+          this.handleGetListItemsFromApiRequestError(error)
+        }
       })
   }
 
@@ -1254,7 +1280,9 @@ export default class AbstractFilterList extends React.Component {
           httpResponse, paginationOptions, true)
       })
       .catch((error) => {
-        this.handleGetListItemsFromApiRequestError(error)
+        if (!error.isCancelled) {
+          this.handleGetListItemsFromApiRequestError(error)
+        }
       })
   }
 
