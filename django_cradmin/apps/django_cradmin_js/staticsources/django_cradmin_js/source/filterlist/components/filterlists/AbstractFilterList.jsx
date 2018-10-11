@@ -55,6 +55,21 @@ export default class AbstractFilterList extends React.Component {
    * @property {string} domIdPrefix The DOM id prefix that we use when we need to set IDs on DOM elements
    *    within the list. This is optional, but highly recommended to set. If this is not set,
    *    we generate a prefix from the `getItemsApiUrl` and a random integer.
+   * @property (function) onGetListItemsFromApiRequestBegin
+   *    Called each time we initialize an API request to get items. Called with
+   *    three arguments: (<this - the filterlist object>, paginationOptions, clearOldItems).
+   *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
+   *    and ``clearOldItems``.
+   * @property (function) onGetListItemsFromApiRequestSuccess
+   *    Called each time we successfully complete an API request to get items. Called with
+   *    three arguments: (<this - the filterlist object>, paginationOptions, clearOldItems).
+   *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
+   *    and ``clearOldItems``.
+   * @property (function) onGetListItemsFromApiRequestError
+   *    Called each time we successfully complete an API request to get items. Called with
+   *    three arguments: (<this - the filterlist object>, error, paginationOptions, clearOldItems).
+   *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
+   *    and ``clearOldItems``. ``error`` is the exception object.
    */
   static get defaultProps () {
     return {
@@ -70,6 +85,9 @@ export default class AbstractFilterList extends React.Component {
       onDeselectItem: null,
       onDeselectItems: null,
       onDeselectAllItems: null,
+      onGetListItemsFromApiRequestBegin: null,
+      onGetListItemsFromApiRequestError: null,
+      onGetListItemsFromApiRequestSuccess: null,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -1100,6 +1118,9 @@ export default class AbstractFilterList extends React.Component {
    * @returns {Promise}
    */
   loadItemsFromApi (paginationOptions, clearOldItems) {
+    if (this.props.onGetListItemsFromApiRequestBegin) {
+      this.props.onGetListItemsFromApiRequestBegin(this, paginationOptions, clearOldItems)
+    }
     return new Promise((resolve, reject) => {
       this.clearLoadItemsFromApiErrorMessage()
       const newState = {}
@@ -1112,9 +1133,15 @@ export default class AbstractFilterList extends React.Component {
         this.makeListItemsHttpRequest(paginationOptions).get()
           .then((httpResponse) => {
             resolve(httpResponse)
+            if (this.props.onGetListItemsFromApiRequestSuccess) {
+              this.props.onGetListItemsFromApiRequestSuccess(this, paginationOptions, clearOldItems)
+            }
           })
           .catch((error) => {
             reject(error)
+            if (this.props.onGetListItemsFromApiRequestError) {
+              this.props.onGetListItemsFromApiRequestError(this, error, paginationOptions, clearOldItems)
+            }
           })
       })
     })
