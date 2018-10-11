@@ -7,7 +7,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models, IntegrityError
-from django.db.models import QuerySet
+from django.db.models import QuerySet, CASCADE
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -240,7 +240,7 @@ class GenericTokenWithMetadata(models.Model):
     #: The content-type of the :obj:`~.GenericTokenWithMetadata.content_object`.
     #: Together with :obj:`~.GenericTokenWithMetadata.object_id` this creates a
     #: generic foreign key to any Django model.
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=CASCADE)
 
     #: The object ID of the :obj:`~.GenericTokenWithMetadata.content_object`.
     #: Together with :obj:`~.GenericTokenWithMetadata.content_type` this creates a
