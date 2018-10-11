@@ -55,21 +55,23 @@ export default class AbstractFilterList extends React.Component {
    * @property {string} domIdPrefix The DOM id prefix that we use when we need to set IDs on DOM elements
    *    within the list. This is optional, but highly recommended to set. If this is not set,
    *    we generate a prefix from the `getItemsApiUrl` and a random integer.
-   * @property (function) onGetListItemsFromApiRequestBegin
+   * @property {function} onGetListItemsFromApiRequestBegin
    *    Called each time we initialize an API request to get items. Called with
    *    three arguments: (<this - the filterlist object>, paginationOptions, clearOldItems).
    *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
    *    and ``clearOldItems``.
-   * @property (function) onGetListItemsFromApiRequestSuccess
+   * @property {function} onGetListItemsFromApiRequestSuccess
    *    Called each time we successfully complete an API request to get items. Called with
    *    three arguments: (<this - the filterlist object>, paginationOptions, clearOldItems).
    *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
    *    and ``clearOldItems``.
-   * @property (function) onGetListItemsFromApiRequestError
+   * @property {function} onGetListItemsFromApiRequestError
    *    Called each time we successfully complete an API request to get items. Called with
    *    three arguments: (<this - the filterlist object>, error, paginationOptions, clearOldItems).
    *    See {@link AbstractFilterList#loadItemsFromApi} for documentation of ``paginationOptions``
    *    and ``clearOldItems``. ``error`` is the exception object.
+   * @property {number} filterApiDelayMilliseconds Number of milliseconds we wait from the last filter change until
+   *    we perform an API request. Defaults to ``800``.
    */
   static get defaultProps () {
     return {
@@ -88,6 +90,7 @@ export default class AbstractFilterList extends React.Component {
       onGetListItemsFromApiRequestBegin: null,
       onGetListItemsFromApiRequestError: null,
       onGetListItemsFromApiRequestSuccess: null,
+      filterApiDelayMilliseconds: 800,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -637,10 +640,10 @@ export default class AbstractFilterList extends React.Component {
    *
    * @returns {number} Number of milliseconds to wait before
    *    making the API request on filter value change.
-   *    Defaults to `300`.
+   *    Defaults to `this.props.filterApiDelayMilliseconds`.
    */
   get filterApiDelayMilliseconds () {
-    return 300
+    return this.props.filterApiDelayMilliseconds
   }
 
   _stopFilterApiUpdateTimer () {
