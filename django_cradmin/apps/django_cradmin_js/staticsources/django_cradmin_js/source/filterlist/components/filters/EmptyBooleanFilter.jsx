@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractFilter from './AbstractFilter'
-import {gettext} from 'ievv_jsbase/lib/gettext'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 
 /**
  * Empty or boolean filter - users can select between "empty" or "true" or "false".
@@ -68,8 +68,8 @@ export default class EmptyBooleanFilter extends AbstractFilter {
     defaultProps.ariaLabel = null
     defaultProps.className = 'select select--outlined'
     defaultProps.emptyLabel = '---'
-    defaultProps.trueLabel = gettext('Yes')
-    defaultProps.falseLabel = gettext('No')
+    defaultProps.trueLabel = gettext.gettext('Yes')
+    defaultProps.falseLabel = gettext.gettext('No')
     defaultProps.disabled = false
     return defaultProps
   }

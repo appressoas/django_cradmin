@@ -16,6 +16,8 @@ export default class DatePicker extends React.Component {
       initialFocusMomentObject: moment(),
       onChange: null,
       includeShortcuts: true,
+      includeTodayButton: true,
+      includeClearButton: true,
       momentRange: MomentRange.defaultForDatetimeSelect(),
       ariaDescribedByDomId: null
     }
@@ -96,7 +98,14 @@ export default class DatePicker extends React.Component {
     return gettext.gettext('Today')
   }
 
+  get shouldRenderTodayButton () {
+    return this.props.includeTodayButton
+  }
+
   renderTodayButton () {
+    if (!this.shouldRenderTodayButton) {
+      return null
+    }
     return <button
       type={'button'}
       key={'todayButton'}
@@ -107,16 +116,56 @@ export default class DatePicker extends React.Component {
     </button>
   }
 
+  renderClearButtonLabel () {
+    return gettext.pgettext('clear date field', 'Clear')
+  }
+
+  get shouldRenderClearButton () {
+    if (!this.props.includeClearButton) {
+      return false
+    }
+    return this.props.momentObject !== null
+  }
+
+  renderClearButton () {
+    if (!this.shouldRenderClearButton) {
+      return null
+    }
+    return <button
+      type={'button'}
+      key={'clearButton'}
+      className={this.makeShortcutButtonClassName()}
+      onClick={this.onClickClearButton.bind(this)}
+    >
+      {this.renderClearButtonLabel()}
+    </button>
+  }
+
+  _removeNulls (itemArray) {
+    let result = []
+    for (let item of itemArray) {
+      if (item !== null) {
+        result.push(item)
+      }
+    }
+    return result
+  }
+
   renderShortcutButtons () {
     return [
-      this.renderTodayButton()
+      this.renderTodayButton(),
+      this.renderClearButton()
     ]
   }
 
   renderShortcutButtonBar () {
+    const renderedShortcutButtons = this._removeNulls(this.renderShortcutButtons())
+    if (renderedShortcutButtons.length === 0) {
+      return null
+    }
     return <div key={'shortcutButtonBar'} className={'text-center'}>
       <div className={'buttonbar buttonbar--inline'}>
-        {this.renderShortcutButtons()}
+        {renderedShortcutButtons}
       </div>
     </div>
   }
@@ -148,6 +197,10 @@ export default class DatePicker extends React.Component {
     momentObject.month(today.month())
     momentObject.date(today.date())
     this.props.onChange(momentObject)
+  }
+
+  onClickClearButton () {
+    this.props.onChange(null, true, true)
   }
 
   onDaySelect (dayMomentObject) {
