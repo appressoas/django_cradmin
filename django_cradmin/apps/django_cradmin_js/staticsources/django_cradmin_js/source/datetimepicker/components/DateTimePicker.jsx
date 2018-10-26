@@ -18,7 +18,8 @@ export default class DateTimePicker extends React.Component {
       timeIconClassName: 'cricon cricon--clock',
       dateButtonLabel: gettext.gettext('Date'),
       timeButtonLabel: gettext.gettext('Time'),
-      momentRange: MomentRange.defaultForDatetimeSelect()
+      momentRange: MomentRange.defaultForDatetimeSelect(),
+      ariaDescribedByDomId: null
     }
   }
 
@@ -32,7 +33,8 @@ export default class DateTimePicker extends React.Component {
       timeIconClassName: PropTypes.string.isRequired,
       dateButtonLabel: PropTypes.string.isRequired,
       timeButtonLabel: PropTypes.string.isRequired,
-      momentRange: PropTypes.instanceOf(MomentRange).isRequired
+      momentRange: PropTypes.instanceOf(MomentRange).isRequired,
+      ariaDescribedByDomId: PropTypes.string.isRequired
     }
   }
 
@@ -65,6 +67,7 @@ export default class DateTimePicker extends React.Component {
       includeShortcuts={this.props.includeShortcuts}
       onChange={this.props.onChange}
       momentRange={this.props.momentRange}
+      ariaDescribedByDomId={this.props.ariaDescribedByDomId}
     />
   }
 
@@ -77,6 +80,7 @@ export default class DateTimePicker extends React.Component {
       includeShortcuts={this.props.includeShortcuts}
       onChange={this.props.onChange}
       momentRange={this.props.momentRange}
+      ariaDescribedByDomId={this.props.ariaDescribedByDomId}
     />
   }
 
