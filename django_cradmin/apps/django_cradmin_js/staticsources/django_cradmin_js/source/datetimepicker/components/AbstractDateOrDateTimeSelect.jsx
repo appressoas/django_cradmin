@@ -56,7 +56,7 @@ export default class AbstractDateOrDateTimeSelect extends React.Component {
   makeInitialState () {
     return {
       initialPropsMomentClone: this.props.momentObject,
-      draftMomentObject: null
+      draftMomentObject: this.props.momentObject === null? null : this.props.momentObject.clone()
     }
   }
 
