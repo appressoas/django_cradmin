@@ -85,6 +85,7 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
       this.renderSelectedValueExtraAriaDescribedBy(),
       <button
         className={'searchinput__selected searchinput__selected--single'}
+        type={'button'}
         key={'selected value'}
         onClick={this.onClickSelectedItemBody}
         aria-label={this.selectedValueAriaLabel}
