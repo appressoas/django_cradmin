@@ -406,6 +406,100 @@ export default class AbstractFilterList extends React.Component {
 
   //
   //
+  // List mutations
+  //
+  //
+
+  /**
+   * Get the index of listItemId in the listItemsDataArray
+   * @param listItemId The list item id
+   * @returns {number} the index of item in list
+   */
+  getIndexOfId (listItemId) {
+    return this.state.listItemsDataArray.findIndex(item => item.listItemId === listItemId)
+  }
+
+  /**
+   * Returns true if the listItemId is the first element in listItemsDataArray
+   * @param listItemId the list item id
+   * @returns {boolean}
+   */
+  isFirst (listItemId) {
+    return this.getIndexOfId(listItemId) === 0
+  }
+
+  /**
+   * Returns true if the listItemId is the last element in listItemsDataArray
+   * @param listItemId the list item id
+   * @returns {boolean}
+   */
+  isLast (listItemId) {
+    return this.getIndexOfId(listItemId) === this.state.listItemsDataArray.length - 1
+  }
+
+  /**
+   * Get the element before the listItemId element
+   * @param listItemId the list item id
+   * @returns {null|number} returns null if list item id is the first element, otherwise the object before.
+   */
+  getBefore (listItemId) {
+    if (this.isFirst(listItemId)) {
+      return null
+    }
+    return this.state.listItemsDataArray[this.getIndexOfId(listItemId) - 1]
+  }
+
+  /**
+   * Get the element after the listItemId element
+   * @param listItemId the list item id
+   * @returns {null|number} returns null if the list item id is the last element, otherwise the object after.
+   */
+  getAfter (listItemId) {
+    if (this.isLast(listItemId)) {
+      return null
+    }
+    return this.state.listItemsDataArray[this.getIndexOfId(listItemId) + 1]
+  }
+
+  /**
+   * Moves an element with listItemId one step up in the listItemsDataArray
+   * @param listItemId the list item id to move
+   */
+  moveUp (listItemId) {
+    const index = this.getIndexOfId(listItemId)
+    if (index === 0) {
+      return
+    }
+    this.setState({
+      listItemsDataArray: [
+        ...this.state.listItemsDataArray.slice(0, index - 1),
+        this.state.listItemsDataArray[index],
+        this.state.listItemsDataArray[index - 1],
+        ...this.state.listItemsDataArray.slice(index + 1)]
+    })
+  }
+
+  /**
+   * Moves an element with listItemId one step down in the listItemsDataArray
+   * @param listItemId the list item id to move
+   */
+  moveDown (listItemId) {
+    const index = this.getIndexOfId(listItemId)
+    if (index === this.state.listItemsDataArray.lastIndex - 1) {
+      return
+    }
+    this.setState({
+      listItemsDataArray: [
+        ...this.state.listItemsDataArray.slice(0, index),
+        this.state.listItemsDataArray[index + 1],
+        this.state.listItemsDataArray[index],
+        ...this.state.listItemsDataArray.slice(index + 2)
+      ]
+    })
+  }
+
+  //
+  //
   // Single and multiselect
   //
   //

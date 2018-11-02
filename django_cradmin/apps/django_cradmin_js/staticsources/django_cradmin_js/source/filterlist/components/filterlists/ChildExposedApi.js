@@ -92,6 +92,12 @@ export default class ChildExposedApi {
     this.unregisterFocusChangeListener = this.filterListObject.unregisterFocusChangeListener.bind(this.filterListObject)
 
     this.makeListItemsHttpRequest = this.filterListObject.makeListItemsHttpRequest.bind(this.filterListObject)
+    this.moveDown = this.filterListObject.moveDown.bind(this.filterListObject)
+    this.moveUp = this.filterListObject.moveUp.bind(this.filterListObject)
+    this.isLast = this.filterListObject.isLast.bind(this.filterListObject)
+    this.isFirst = this.filterListObject.isFirst.bind(this.filterListObject)
+    this.getAfter = this.filterListObject.getAfter.bind(this.filterListObject)
+    this.getBefore = this.filterListObject.getBefore.bind(this.filterListObject)
   }
 
   hasPreviousPaginationPage () {
