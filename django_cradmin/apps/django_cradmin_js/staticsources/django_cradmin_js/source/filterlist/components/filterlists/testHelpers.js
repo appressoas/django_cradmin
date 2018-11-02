@@ -35,5 +35,19 @@ export class ChildExposedApiMock {
     this.componentGroupsIsEnabled = jest.fn()
     this.registerFocusChangeListener = jest.fn()
     this.unregisterFocusChangeListener = jest.fn()
+
+    this.makeListItemsHttpRequest = jest.fn()
+
+    this.moveDown = jest.fn()
+    this.moveUp = jest.fn()
+    this.isLast = jest.fn()
+    this.isFirst = jest.fn()
+    this.getAfter = jest.fn()
+    this.getBefore = jest.fn()
+  }
+
+  get listComponentSpecs () {
+    return []
   }
 }
+

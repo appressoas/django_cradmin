@@ -92,6 +92,7 @@ export default class ChildExposedApi {
     this.unregisterFocusChangeListener = this.filterListObject.unregisterFocusChangeListener.bind(this.filterListObject)
 
     this.makeListItemsHttpRequest = this.filterListObject.makeListItemsHttpRequest.bind(this.filterListObject)
+
     this.moveDown = this.filterListObject.moveDown.bind(this.filterListObject)
     this.moveUp = this.filterListObject.moveUp.bind(this.filterListObject)
     this.isLast = this.filterListObject.isLast.bind(this.filterListObject)
