@@ -72,6 +72,24 @@ export default class AbstractFilterList extends React.Component {
    *    and ``clearOldItems``. ``error`` is the exception object.
    * @property {number} filterApiDelayMilliseconds Number of milliseconds we wait from the last filter change until
    *    we perform an API request. Defaults to ``500``.
+   * @property {string} selectMode One of {@link SINGLESELECT}, {@link MULTISELECT} or null. Always set this
+   *    to something other than null when using a configuration that enables selecting items.
+   * @property {function} onSelectItems Callback function called each time a user adds to the selected items
+   *    when `selectMode` is {@link MULTISELECT}. Called with two arguments `(addedSelectedListItemIds, filterList)`
+   *    where `addedSelectedListItemIds` is the items that was just added to the selection, and
+   *    `filterList` is a reference to this filterlist object.
+   * @property {function} onDeselectItems Callback function called each time a user removes from the selected items
+   *    when `selectMode` is {@link MULTISELECT}. Called with two arguments `(removedSelectedListItemIds, filterList)`
+   *    where `removedSelectedListItemIds` is the items that was just removed from the selection, and
+   *    `filterList` is a reference to this filterlist object.
+   * @property {function} onSelectItem Callback function called each time a user adds to the selected items
+   *    when `selectMode` is {@link SINGLESELECT}. Called with two arguments `(selectedItemId, filterList)`
+   *    where `selectedItemId` is the ID of the selected item, and `filterList` is a reference to this
+   *    filterlist object.
+   * @property {function} onDeselectItem Callback function called each time a user removes from the selected items
+   *    when `selectMode` is {@link SINGLESELECT}. Called with two arguments `(deselectedItemId, filterList)`
+   *    where `deselectedItemId` is the ID of the deselected item, and `filterList` is a reference to this
+   *    filterlist object.
    */
   static get defaultProps () {
     return {
@@ -550,6 +568,24 @@ export default class AbstractFilterList extends React.Component {
    */
   itemIsSelected (listItemId) {
     return this.state.selectedListItemsMap.has(listItemId)
+  }
+
+  /**
+   * Get an array with the IDs of the selected items.
+   *
+   * You will typically use this in combination with
+   * the `onSelectItems` and `onDeselectItems` to store the
+   * selected items in some parent component. Both `onSelectItems`
+   * and `onDeselectItems` gets a reference to this filterlist class
+   * as their second argument.
+   *
+   * @example <caption>A typical callback function for the onSelectItems / onDeselectItems props</caption>
+   * onSelectItemsHandler (addedSelectedListItemIds, filterList) {
+   *   const allSelectedItemIds = filterList.getSelectedListItemIds()
+   * }
+   */
+  getSelectedListItemIds () {
+    return Array.from(this.state.selectedListItemsMap.keys())
   }
 
   /**
