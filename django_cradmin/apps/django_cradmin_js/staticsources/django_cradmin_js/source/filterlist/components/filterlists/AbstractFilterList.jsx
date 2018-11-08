@@ -424,6 +424,114 @@ export default class AbstractFilterList extends React.Component {
 
   //
   //
+  // Selected items list mutation
+  //
+  //
+
+  /**
+   * Get the index of the selectedListItemId in the selectedItemsArray.
+   * @param selectedListItemId
+   * @param selectedItemsArray
+   * @returns {number} the index of the selected item in the array.
+   */
+  getIndexOfItem (selectedListItemId, selectedItemsArray) {
+    return selectedItemsArray.findIndex(itemId => itemId === selectedListItemId)
+  }
+
+  /**
+   * Returns true if the selectedListeItemId is the first element in selectedListItemsMap.
+   *
+   * @param selectedListItemId
+   * @returns {boolean}
+   */
+  selectedItemIsFirst (selectedListItemId) {
+    return Array.from(this.state.selectedListItemsMap.values())[0].id === selectedListItemId
+  }
+
+  /**
+   * Returns true if the selectedListeItemId is the last element in selectedListItemsMap.
+   *
+   * @param selectedListItemId
+   * @returns {boolean}
+   */
+  selectedItemIsLast (selectedListItemId) {
+    return Array.from(this.state.selectedListItemsMap.values()).slice(-1)[0].id === selectedListItemId
+  }
+
+  /**
+   * Get an array of the selected item ids from selectedListItemsMap.
+   * @returns {Array}
+   */
+  selectedItemIdsAsArray () {
+    let selectedItemIds = []
+    for (let item of this.state.selectedListItemsMap) {
+      selectedItemIds.push(item[0])
+    }
+    return selectedItemIds
+  }
+
+  /**
+   * Build a new map from a reordered array of selected item ids to replace current
+   * selectedListItemsMap
+   * @param reorderedArray
+   * @returns {Map<Number, Object>}
+   */
+  getItemsMapFromReorderedArray (reorderedArray) {
+    let selectedItemsMap = new Map()
+    for (let itemId of reorderedArray) {
+      selectedItemsMap.set(itemId, this.state.selectedListItemsMap.get(itemId))
+    }
+    return selectedItemsMap
+  }
+
+  /**
+   * Moves an element with selectedItemId one step up in the selectedListItemsMap.
+   * @param selectedItemId the selected item id to move up.
+   */
+  selectedItemMoveUp (selectedItemId) {
+    if (this.selectedItemIsFirst(selectedItemId)) {
+      return
+    }
+    let selectedItemsArray = this.selectedItemIdsAsArray()
+    if (selectedItemsArray[0] === selectedItemId) {
+      return
+    }
+    const index = this.getIndexOfItem(selectedItemId, selectedItemsArray)
+    let newArray = [
+      ...selectedItemsArray.slice(0, index - 1),
+      selectedItemsArray[index],
+      selectedItemsArray[index - 1],
+      ...selectedItemsArray.slice(index + 1)
+    ]
+    this.setState({
+      selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
+    })
+  }
+
+  /**
+   * Moves an element with selectedItemId one step down in the selectedListItemsMap.
+   * @param selectedItemId the selected item id to move down.
+   */
+  selectedItemMoveDown (selectedItemId) {
+    if (this.selectedItemIsLast(selectedItemId)) {
+      return
+    }
+    let selectedItemsArray = this.selectedItemIdsAsArray()
+    const index = this.getIndexOfItem(selectedItemId, selectedItemsArray)
+    let newArray = [
+      ...selectedItemsArray.slice(0, index),
+      selectedItemsArray[index + 1],
+      selectedItemsArray[index],
+      ...selectedItemsArray.slice(index + 2)
+    ]
+    this.setState({
+      selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
+    })
+  }
+
+
+  //
+  //
   // List mutations
   //
   //

@@ -147,7 +147,7 @@
                         "component": "ThreeColumnLayout",
                         "props": {
                             "rightColumnBemVariants": ["xlarge"],
-                            "bottomBarBemVariants": ["spacing-none"]
+                            "topBarBemVariants": ["spacing-none"]
                         },
                         "layout": [{
                           "component": "SearchFilter",
@@ -174,7 +174,7 @@
                         }, {
                           "component": "SelectableListRenderSelectedItems",
                           "props": {
-                            "location": "bottom"
+                            "location": "top"
                           }
                         }, {
                           "component": "SubmitSelectedItems",
@@ -197,6 +197,109 @@
             </p>
         </div>
     </section>
+
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Selectable list with blocklist rendering</h2>
+            <p>
+                Here we render selected items in the right column.
+            </p>
+            <p>
+                If you need to handle initially selected items,
+                you just need to provide the <code>initiallySelectedItemIds</code>
+                config as shown commented out in the source for this django
+                template.
+            </p>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "selectMode": "multi",
+                     "initiallySelectedItemIds": [2, 4, 7],
+                     "components": [{
+                        "component": "ThreeColumnLayout",
+                        "props": {
+                            "rightColumnBemVariants": ["xlarge"],
+                            "topBarBemVariants": ["spacing-none"]
+                        },
+                        "layout": [{
+                          "component": "SearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"],
+                            "label": "Search for a superhero",
+                            "labelIsScreenreaderOnly": true
+                          }
+                        }, {
+                          "component": "SelectableList",
+                          "itemSpec": {
+                            "component": "SelectableTitleDescriptionItem"
+                          }
+                        }, {
+                          "component": "ParagraphLoadMorePaginator"
+                        }, {
+                          "component": "BlockListRenderSelectedItems",
+                          "props": {
+                            "location": "top",
+                            "itemTitleAttribute": "title",
+                            "itemDescriptionAttribute": "description"
+                          }
+                        }]
+                     }]
+                 }'>
+            </div>
+        </div>
+    </section>
+
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Selectable list with sortable blocklist rendering</h2>
+            <p>
+                If you need to handle initially selected items,
+                you just need to provide the <code>initiallySelectedItemIds</code>
+                config as shown commented out in the source for this django
+                template.
+            </p>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "selectMode": "multi",
+                     "initiallySelectedItemIds": [2, 4, 7],
+                     "components": [{
+                        "component": "ThreeColumnLayout",
+                        "props": {
+                            "rightColumnBemVariants": ["xlarge"],
+                            "topBarBemVariants": ["spacing-none"]
+                        },
+                        "layout": [{
+                          "component": "SearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"],
+                            "label": "Search for a superhero",
+                            "labelIsScreenreaderOnly": true
+                          }
+                        }, {
+                          "component": "SelectableList",
+                          "itemSpec": {
+                            "component": "SelectableTitleDescriptionItem"
+                          }
+                        }, {
+                          "component": "ParagraphLoadMorePaginator"
+                        }, {
+                          "component": "BlockListRenderSortableSelectedItems",
+                          "props": {
+                            "location": "top",
+                            "itemTitleAttribute": "title",
+                            "itemDescriptionAttribute": "description",
+                            "inlineMoveIcons": true
+                          }
+                        }]
+                     }]
+                 }'>
+            </div>
+        </div>
+    </section>
+
     <section class="adminui-page-section">
         <div class="container container--wide">
             <h2>Select different componentgroups to be rendered</h2>
