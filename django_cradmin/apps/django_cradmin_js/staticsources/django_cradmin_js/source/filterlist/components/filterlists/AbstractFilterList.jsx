@@ -1618,11 +1618,11 @@ export default class AbstractFilterList extends React.Component {
 
   loadMultipleItemDataFromApi (listItemIds) {
     return new Promise((resolve, reject) => {
-      const allPrimomises = []
+      const allPromises = []
       for (let listItemId of listItemIds) {
-        allPrimomises.push(this.loadSingleItemDataFromApi(listItemId))
+        allPromises.push(this.loadSingleItemDataFromApi(listItemId))
       }
-      Promise.all(allPrimomises)
+      Promise.all(allPromises)
         .then((listItemDataArray) => {
           resolve(listItemDataArray)
         })
