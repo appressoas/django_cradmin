@@ -839,6 +839,10 @@ export default class AbstractFilterList extends React.Component {
     this.setLoadMissingSelectedItemDataFromApiErrorMessage(errorObject)
   }
 
+  handleRetrieveListItemDataError (listItemResponse) {
+    console.warn('Failed to retrieve list item data:', listItemResponse)
+  }
+
   loadMissingSelectedItemDataFromApi () {
     if (this.props.skipLoadingMissingSelectedItemDataFromApi) {
       return
@@ -861,9 +865,14 @@ export default class AbstractFilterList extends React.Component {
         .then((selectedItemDataArray) => {
           this.setState((prevState) => {
             const selectedListItemsMap = prevState.selectedListItemsMap
-            for (let listItemData of selectedItemDataArray) {
-              const listItemId = this.getIdFromListItemData(listItemData)
-              selectedListItemsMap.set(listItemId, listItemData)
+            for (let listItemResponse of selectedItemDataArray) {
+              const listItemId = listItemResponse.listItemId
+              if (listItemResponse.status === 200) {
+                selectedListItemsMap.set(listItemId, listItemResponse.data)
+              } else {
+                selectedListItemsMap.delete(listItemId)
+                this.handleRetrieveListItemDataError(listItemResponse)
+              }
             }
             return {
               selectedListItemsMap: selectedListItemsMap,
@@ -1608,10 +1617,23 @@ export default class AbstractFilterList extends React.Component {
       this.makeGetSingleItemHttpRequest(listItemId)
         .get()
         .then((httpResponse) => {
-          resolve(httpResponse.bodydata)
+          resolve({
+            status: httpResponse.status,
+            data: httpResponse.bodydata,
+            listItemId: listItemId
+          })
         })
         .catch((error) => {
-          reject(error)
+          console.log('YE', error.response.isClientError())
+          if (error.response.isClientError()) {
+            resolve({
+              status: error.response.status,
+              error: error,
+              listItemId: listItemId
+            })
+          } else {
+            reject(error)
+          }
         })
     })
   }
