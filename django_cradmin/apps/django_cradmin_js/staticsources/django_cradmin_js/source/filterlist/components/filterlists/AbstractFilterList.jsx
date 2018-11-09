@@ -463,11 +463,7 @@ export default class AbstractFilterList extends React.Component {
    * @returns {Array}
    */
   selectedItemIdsAsArray () {
-    let selectedItemIds = []
-    for (let item of this.state.selectedListItemsMap) {
-      selectedItemIds.push(item[0])
-    }
-    return selectedItemIds
+    return Array.from(this.state.selectedListItemsMap.keys())
   }
 
   /**
