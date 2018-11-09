@@ -31,46 +31,55 @@ export default class BlockListRenderSortableSelectedItems extends BlockListRende
     this.props.childExposedApi.selectedItemMoveDown(listItemId)
   }
 
-  renderSelectedItemMoveUp (listItemId) {
+  renderSelectedItemMoveUp (listItemId, withActionSidebar=true) {
     if (this.props.childExposedApi.selectedItemIsFirst(listItemId)) {
       return null
     }
-    return <button
+    const button = <button
       type={"button"}
       className="blocklist__action-button"
       aria-label="Move up"
       onClick={() => {this.onClickMoveUp(listItemId)}}>
         <span className="cricon cricon--chevron-up" aria-hidden="true" />
     </button>
+
+    if (withActionSidebar) {
+      return <div className="blocklist__action-sidebar" key={`${listItemId} sortable-item-move-up`}>
+        {button}
+      </div>
+    }
+    return button
   }
 
-  renderSelectedItemMoveDown (listItemId) {
+  renderSelectedItemMoveDown (listItemId, withActionSidebar=true) {
     if (this.props.childExposedApi.selectedItemIsLast(listItemId)) {
       return null
     }
-    return <button
+    const button = <button
       type={"button"}
       className="blocklist__action-button"
       aria-label="Move down"
       onClick={() => {this.onClickMoveDown(listItemId)}}>
       <span className="cricon cricon--chevron-down" aria-hidden="true" />
     </button>
+    if (withActionSidebar) {
+      return <div className="blocklist__action-sidebar" key={`${listItemId} sortable-item`}>
+        {button}
+      </div>
+    }
+    return button
   }
 
   renderSortableItems (listItemId) {
     if (this.props.inlineMoveIcons) {
       return [
-        <div className="blocklist__action-sidebar" key={`${listItemId} action-move-up`}>
-          {this.renderSelectedItemMoveUp(listItemId)}
-        </div>,
-        <div className="blocklist__action-sidebar" key={`${listItemId} action-move-down`}>
-          {this.renderSelectedItemMoveDown(listItemId)}
-        </div>
+        this.renderSelectedItemMoveUp(listItemId),
+        this.renderSelectedItemMoveDown(listItemId)
       ]
     }
     return <div className="blocklist__action-sidebar" key={`${listItemId} sortable-item`}>
-      {this.renderSelectedItemMoveUp(listItemId)}
-      {this.renderSelectedItemMoveDown(listItemId)}
+      {this.renderSelectedItemMoveUp(listItemId, false)}
+      {this.renderSelectedItemMoveDown(listItemId, false)}
     </div>
   }
 
