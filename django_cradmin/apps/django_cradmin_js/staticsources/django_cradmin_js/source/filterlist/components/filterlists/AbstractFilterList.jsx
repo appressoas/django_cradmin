@@ -25,6 +25,7 @@ export default class AbstractFilterList extends React.Component {
       onSelectItems: PropTypes.func,
       onDeselectItem: PropTypes.func,
       onDeselectItems: PropTypes.func,
+      onSelectedItemsMoved: PropTypes.func,
       onDeselectAllItems: PropTypes.func,
 
       getItemsApiUrl: PropTypes.string.isRequired,
@@ -82,6 +83,9 @@ export default class AbstractFilterList extends React.Component {
    *    when `selectMode` is {@link MULTISELECT}. Called with two arguments `(removedSelectedListItemIds, filterList)`
    *    where `removedSelectedListItemIds` is the items that was just removed from the selection, and
    *    `filterList` is a reference to this filterlist object.
+   * @property {function} onSelectedItemsMoved Callback function called each time a user moves a selected item
+   *    when `selectMode` is {@link MULTISELECT}. Called with one argument `(filterList)` where `filterList` is a
+   *    reference to this filterlist object.
    * @property {function} onSelectItem Callback function called each time a user adds to the selected items
    *    when `selectMode` is {@link SINGLESELECT}. Called with two arguments `(selectedItemId, filterList)`
    *    where `selectedItemId` is the ID of the selected item, and `filterList` is a reference to this
@@ -104,6 +108,7 @@ export default class AbstractFilterList extends React.Component {
       onSelectItems: null,
       onDeselectItem: null,
       onDeselectItems: null,
+      onSelectedItemsMoved: null,
       onDeselectAllItems: null,
       onGetListItemsFromApiRequestBegin: null,
       onGetListItemsFromApiRequestError: null,
@@ -501,6 +506,10 @@ export default class AbstractFilterList extends React.Component {
     ]
     this.setState({
       selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
+    }, () => {
+      if (this.props.onSelectedItemsMoved) {
+        this.props.onSelectedItemsMoved(this)
+      }
     })
   }
 
@@ -522,6 +531,10 @@ export default class AbstractFilterList extends React.Component {
     ]
     this.setState({
       selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
+    }, () => {
+      if (this.props.onSelectedItemsMoved) {
+        this.props.onSelectedItemsMoved(this)
+      }
     })
   }
 
@@ -678,13 +691,19 @@ export default class AbstractFilterList extends React.Component {
    * Get an array with the IDs of the selected items.
    *
    * You will typically use this in combination with
-   * the `onSelectItems` and `onDeselectItems` to store the
+   * the `onSelectItems`, `onDeselectItems` and `onSelectedItemsMoved` to store the
    * selected items in some parent component. Both `onSelectItems`
    * and `onDeselectItems` gets a reference to this filterlist class
-   * as their second argument.
+   * as their second argument. `onSelectedItemsMoved` gets a reference to this filterlist as
+   * its only argument.
    *
    * @example <caption>A typical callback function for the onSelectItems / onDeselectItems props</caption>
    * onSelectItemsHandler (addedSelectedListItemIds, filterList) {
+   *   const allSelectedItemIds = filterList.getSelectedListItemIds()
+   * }
+   *
+   * @example <caption>A typical callback function for the onSelectedItemsMoved prop</caption>
+   * onSelectedItemsMovedHandler (filterList) {
    *   const allSelectedItemIds = filterList.getSelectedListItemIds()
    * }
    */
