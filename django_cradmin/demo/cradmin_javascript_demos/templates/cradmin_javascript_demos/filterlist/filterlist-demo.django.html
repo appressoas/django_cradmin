@@ -147,7 +147,7 @@
                         "component": "ThreeColumnLayout",
                         "props": {
                             "rightColumnBemVariants": ["xlarge"],
-                            "bottomBarBemVariants": ["spacing-none"]
+                            "topBarBemVariants": ["spacing-none"]
                         },
                         "layout": [{
                           "component": "SearchFilter",
@@ -174,7 +174,7 @@
                         }, {
                           "component": "SelectableListRenderSelectedItems",
                           "props": {
-                            "location": "bottom"
+                            "location": "top"
                           }
                         }, {
                           "component": "SubmitSelectedItems",
@@ -197,6 +197,119 @@
             </p>
         </div>
     </section>
+
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Selectable dropdown list with blocklist rendering</h2>
+            <p>
+                Here we render selected items in the right column.
+            </p>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "selectMode": "multi",
+                     "initiallySelectedItemIds": [2, 4, 7],
+                     "components": [{
+                        "component": "ThreeColumnLayout",
+                        "layout": [{
+                          "component": "DropDownSearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"]
+                          }
+                        }, {
+                           "component": "BlockListRenderSelectedItems",
+                           "props": {
+                             "location": "top",
+                             "itemTitleAttribute": "title",
+                             "itemDescriptionAttribute": "description"
+                           }
+                        }]
+                     }, {
+                        "component": "ThreeColumnDropDownLayout",
+                        "props": {
+                            "componentGroups": ["expandable"],
+                            "dropdownContentBemVariants": []
+                        },
+                        "layout": [{
+                          "component": "CheckboxBooleanFilter",
+                          "props": {
+                            "name": "is_godlike",
+                            "location": "top",
+                            "label": "Is godlike?"
+                          },
+                          "initialValue": false
+                        }, {
+                          "component": "SelectableList",
+                          "itemSpec": {
+                            "component": "SelectableTitleDescriptionItem",
+                            "props": {
+                              "bemVariants": ["neutral-light", "bordered"]
+                            }
+                          }
+                        }, {
+                          "component": "LoadMorePaginator",
+                          "props": {
+                            "location": "bottom"
+                          }
+                        }]
+                     }]
+                 }'>
+            </div>
+        </div>
+    </section>
+
+    <section class="adminui-page-section">
+        <div class="container">
+            <h2>Selectable dropdown list with sortable blocklist rendering</h2>
+            <div data-ievv-jsbase-widget="cradmin-filterlist"
+                 data-ievv-jsbase-widget-config='{
+                     "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "selectMode": "multi",
+                     "initiallySelectedItemIds": [2, 4, 7],
+                     "components": [{
+                        "component": "ThreeColumnLayout",
+                        "layout": [{
+                          "component": "DropDownSearchFilter",
+                          "props": {
+                            "name": "search",
+                            "placeholder": ["God", "Time", "wizard"]
+                          }
+                        }, {
+                           "component": "BlockListRenderSortableSelectedItems",
+                           "props": {
+                             "location": "top",
+                             "itemTitleAttribute": "title",
+                             "itemDescriptionAttribute": "description",
+                             "inlineMoveIcons": true
+                           }
+                        }]
+                     }, {
+                        "component": "ThreeColumnDropDownLayout",
+                        "props": {
+                            "componentGroups": ["expandable"],
+                            "dropdownContentBemVariants": []
+                        },
+                        "layout": [{
+                          "component": "SelectableList",
+                          "itemSpec": {
+                            "component": "SelectableTitleDescriptionItem",
+                            "props": {
+                              "bemVariants": ["neutral-light", "bordered"]
+                            }
+                          }
+                        }, {
+                          "component": "LoadMorePaginator",
+                          "props": {
+                            "location": "bottom"
+                          }
+                        }]
+                     }]
+                 }'>
+            </div>
+        </div>
+    </section>
+
     <section class="adminui-page-section">
         <div class="container container--wide">
             <h2>Select different componentgroups to be rendered</h2>

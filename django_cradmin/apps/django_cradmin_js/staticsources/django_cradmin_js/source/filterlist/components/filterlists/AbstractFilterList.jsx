@@ -25,6 +25,7 @@ export default class AbstractFilterList extends React.Component {
       onSelectItems: PropTypes.func,
       onDeselectItem: PropTypes.func,
       onDeselectItems: PropTypes.func,
+      onSelectedItemsMoved: PropTypes.func,
       onDeselectAllItems: PropTypes.func,
 
       getItemsApiUrl: PropTypes.string.isRequired,
@@ -82,6 +83,9 @@ export default class AbstractFilterList extends React.Component {
    *    when `selectMode` is {@link MULTISELECT}. Called with two arguments `(removedSelectedListItemIds, filterList)`
    *    where `removedSelectedListItemIds` is the items that was just removed from the selection, and
    *    `filterList` is a reference to this filterlist object.
+   * @property {function} onSelectedItemsMoved Callback function called each time a user moves a selected item
+   *    when `selectMode` is {@link MULTISELECT}. Called with one argument `(filterList)` where `filterList` is a
+   *    reference to this filterlist object.
    * @property {function} onSelectItem Callback function called each time a user adds to the selected items
    *    when `selectMode` is {@link SINGLESELECT}. Called with two arguments `(selectedItemId, filterList)`
    *    where `selectedItemId` is the ID of the selected item, and `filterList` is a reference to this
@@ -104,6 +108,7 @@ export default class AbstractFilterList extends React.Component {
       onSelectItems: null,
       onDeselectItem: null,
       onDeselectItems: null,
+      onSelectedItemsMoved: null,
       onDeselectAllItems: null,
       onGetListItemsFromApiRequestBegin: null,
       onGetListItemsFromApiRequestError: null,
@@ -424,6 +429,118 @@ export default class AbstractFilterList extends React.Component {
 
   //
   //
+  // Selected items list mutation
+  //
+  //
+
+  /**
+   * Get the index of the selectedListItemId in the selectedItemsArray.
+   * @param selectedListItemId
+   * @param selectedItemsArray
+   * @returns {number} the index of the selected item in the array.
+   */
+  getIndexOfItem (selectedListItemId, selectedItemsArray) {
+    return selectedItemsArray.findIndex(itemId => itemId === selectedListItemId)
+  }
+
+  /**
+   * Returns true if the selectedListeItemId is the first element in selectedListItemsMap.
+   *
+   * @param selectedListItemId
+   * @returns {boolean}
+   */
+  selectedItemIsFirst (selectedListItemId) {
+    return Array.from(this.state.selectedListItemsMap.values())[0].id === selectedListItemId
+  }
+
+  /**
+   * Returns true if the selectedListeItemId is the last element in selectedListItemsMap.
+   *
+   * @param selectedListItemId
+   * @returns {boolean}
+   */
+  selectedItemIsLast (selectedListItemId) {
+    return Array.from(this.state.selectedListItemsMap.values()).slice(-1)[0].id === selectedListItemId
+  }
+
+  /**
+   * Get an array of the selected item ids from selectedListItemsMap.
+   * @returns {Array}
+   */
+  selectedItemIdsAsArray () {
+    return Array.from(this.state.selectedListItemsMap.keys())
+  }
+
+  /**
+   * Build a new map from a reordered array of selected item ids to replace current
+   * selectedListItemsMap
+   * @param reorderedArray
+   * @returns {Map<Number, Object>}
+   */
+  getItemsMapFromReorderedArray (reorderedArray) {
+    let selectedItemsMap = new Map()
+    for (let itemId of reorderedArray) {
+      selectedItemsMap.set(itemId, this.state.selectedListItemsMap.get(itemId))
+    }
+    return selectedItemsMap
+  }
+
+  /**
+   * Moves an element with selectedItemId one step up in the selectedListItemsMap.
+   * @param selectedItemId the selected item id to move up.
+   */
+  selectedItemMoveUp (selectedItemId) {
+    if (this.selectedItemIsFirst(selectedItemId)) {
+      return
+    }
+    let selectedItemsArray = this.selectedItemIdsAsArray()
+    if (selectedItemsArray[0] === selectedItemId) {
+      return
+    }
+    const index = this.getIndexOfItem(selectedItemId, selectedItemsArray)
+    let newArray = [
+      ...selectedItemsArray.slice(0, index - 1),
+      selectedItemsArray[index],
+      selectedItemsArray[index - 1],
+      ...selectedItemsArray.slice(index + 1)
+    ]
+    this.setState({
+      selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
+    }, () => {
+      if (this.props.onSelectedItemsMoved) {
+        this.props.onSelectedItemsMoved(this)
+      }
+    })
+  }
+
+  /**
+   * Moves an element with selectedItemId one step down in the selectedListItemsMap.
+   * @param selectedItemId the selected item id to move down.
+   */
+  selectedItemMoveDown (selectedItemId) {
+    if (this.selectedItemIsLast(selectedItemId)) {
+      return
+    }
+    let selectedItemsArray = this.selectedItemIdsAsArray()
+    const index = this.getIndexOfItem(selectedItemId, selectedItemsArray)
+    let newArray = [
+      ...selectedItemsArray.slice(0, index),
+      selectedItemsArray[index + 1],
+      selectedItemsArray[index],
+      ...selectedItemsArray.slice(index + 2)
+    ]
+    this.setState({
+      selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
+    }, () => {
+      if (this.props.onSelectedItemsMoved) {
+        this.props.onSelectedItemsMoved(this)
+      }
+    })
+  }
+
+
+  //
+  //
   // List mutations
   //
   //
@@ -574,13 +691,19 @@ export default class AbstractFilterList extends React.Component {
    * Get an array with the IDs of the selected items.
    *
    * You will typically use this in combination with
-   * the `onSelectItems` and `onDeselectItems` to store the
+   * the `onSelectItems`, `onDeselectItems` and `onSelectedItemsMoved` to store the
    * selected items in some parent component. Both `onSelectItems`
    * and `onDeselectItems` gets a reference to this filterlist class
-   * as their second argument.
+   * as their second argument. `onSelectedItemsMoved` gets a reference to this filterlist as
+   * its only argument.
    *
    * @example <caption>A typical callback function for the onSelectItems / onDeselectItems props</caption>
    * onSelectItemsHandler (addedSelectedListItemIds, filterList) {
+   *   const allSelectedItemIds = filterList.getSelectedListItemIds()
+   * }
+   *
+   * @example <caption>A typical callback function for the onSelectedItemsMoved prop</caption>
+   * onSelectedItemsMovedHandler (filterList) {
    *   const allSelectedItemIds = filterList.getSelectedListItemIds()
    * }
    */
@@ -716,6 +839,10 @@ export default class AbstractFilterList extends React.Component {
     this.setLoadMissingSelectedItemDataFromApiErrorMessage(errorObject)
   }
 
+  handleRetrieveListItemDataError (listItemResponse) {
+    console.warn('Failed to retrieve list item data:', listItemResponse)
+  }
+
   loadMissingSelectedItemDataFromApi () {
     if (this.props.skipLoadingMissingSelectedItemDataFromApi) {
       return
@@ -738,9 +865,14 @@ export default class AbstractFilterList extends React.Component {
         .then((selectedItemDataArray) => {
           this.setState((prevState) => {
             const selectedListItemsMap = prevState.selectedListItemsMap
-            for (let listItemData of selectedItemDataArray) {
-              const listItemId = this.getIdFromListItemData(listItemData)
-              selectedListItemsMap.set(listItemId, listItemData)
+            for (let listItemResponse of selectedItemDataArray) {
+              const listItemId = listItemResponse.listItemId
+              if (listItemResponse.status === 200) {
+                selectedListItemsMap.set(listItemId, listItemResponse.data)
+              } else {
+                selectedListItemsMap.delete(listItemId)
+                this.handleRetrieveListItemDataError(listItemResponse)
+              }
             }
             return {
               selectedListItemsMap: selectedListItemsMap,
@@ -1485,21 +1617,34 @@ export default class AbstractFilterList extends React.Component {
       this.makeGetSingleItemHttpRequest(listItemId)
         .get()
         .then((httpResponse) => {
-          resolve(httpResponse.bodydata)
+          resolve({
+            status: httpResponse.status,
+            data: httpResponse.bodydata,
+            listItemId: listItemId
+          })
         })
         .catch((error) => {
-          reject(error)
+          console.log('YE', error.response.isClientError())
+          if (error.response.isClientError()) {
+            resolve({
+              status: error.response.status,
+              error: error,
+              listItemId: listItemId
+            })
+          } else {
+            reject(error)
+          }
         })
     })
   }
 
   loadMultipleItemDataFromApi (listItemIds) {
     return new Promise((resolve, reject) => {
-      const allPrimomises = []
+      const allPromises = []
       for (let listItemId of listItemIds) {
-        allPrimomises.push(this.loadSingleItemDataFromApi(listItemId))
+        allPromises.push(this.loadSingleItemDataFromApi(listItemId))
       }
-      Promise.all(allPrimomises)
+      Promise.all(allPromises)
         .then((listItemDataArray) => {
           resolve(listItemDataArray)
         })

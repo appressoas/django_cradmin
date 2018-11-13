@@ -13,6 +13,7 @@ import PageNumberPaginationFilterList from './components/filterlists/PageNumberP
 import ThreeColumnDropDownLayout from './components/layout/ThreeColumnDropDownLayout'
 import HiddenFieldRenderSelectedItems from './components/selecteditems/HiddenFieldRenderSelectedItems'
 import SelectableListRenderSelectedItems from './components/selecteditems/SelectableListRenderSelectedItems'
+import BlockListRenderSelectedItems from './components/selecteditems/BlockListRenderSelectedItems'
 import ParagraphLoadMorePaginator from './components/paginators/ParagraphLoadMorePaginator'
 import SubmitSelectedItems from './components/selecteditems/SubmitSelectedItems'
 import LinkWithTitleDescriptionListItem from './components/items/LinkWithTitleDescriptionListItem'
@@ -20,6 +21,7 @@ import SelectComponentGroup from './components/componentgroup/SelectComponentGro
 import DropDownSelectFilter from './components/filters/DropDownSelectFilter'
 import TightLabeledEmptyBooleanFilter from './components/filters/TightLabeledEmptyBooleanFilter'
 import EmptyBooleanFilter from './components/filters/EmptyBooleanFilter'
+import BlockListRenderSortableSelectedItems from './components/selecteditems/BlockListRenderSortableSelectedItems'
 
 export function setupDefaultListRegistryFilterListComponents (registry) {
   registry.registerFilterListComponent('PageNumberPaginationFilterList', PageNumberPaginationFilterList)
@@ -63,6 +65,8 @@ export function setupDefaultListRegistryComponentGroupComponents (registry) {
 export function setupDefaultListRegistrySelectedItemsComponents (registry) {
   registry.registerSelectedItemsComponent('HiddenFieldRenderSelectedItems', HiddenFieldRenderSelectedItems)
   registry.registerSelectedItemsComponent('SelectableListRenderSelectedItems', SelectableListRenderSelectedItems)
+  registry.registerSelectedItemsComponent('BlockListRenderSelectedItems', BlockListRenderSelectedItems)
+  registry.registerSelectedItemsComponent('BlockListRenderSortableSelectedItems', BlockListRenderSortableSelectedItems)
   registry.registerSelectedItemsComponent('SubmitSelectedItems', SubmitSelectedItems)
 }
 
