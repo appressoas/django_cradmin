@@ -44,6 +44,10 @@ urlpatterns = [
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/filterlist/filterlist-demo.django.html'),
         name="cradmin_javascript_demos_filterlist"),
+    url(r'^filterlist-querystring$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/filterlist/filterlist-querystring-demo.django.html'),
+        name="cradmin_javascript_demos_filterlist_querystring"),
     url(r'^datalistwidgets$',
         ensure_csrf_cookie(views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/data-list-widgets-demo.django.html')),
