@@ -4,6 +4,7 @@ import AbstractFilter from './AbstractFilter'
 import BemUtilities from '../../../utilities/BemUtilities'
 import SearchInputClearButton from './components/SearchInputClearButton'
 import AriaDescribedByTarget from '../../../components/AriaDescribedByTarget'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 // import { KEYBOARD_NAVIGATION_GROUP_KEY_UP_DOWN } from '../../filterListConstants'
 
 /**
@@ -59,16 +60,17 @@ export default class AbstractSearchInputFilter extends AbstractFilter {
    *    _Provided automatically by the parent component_.
    */
   static get defaultProps () {
-    return Object.assign({}, super.defaultProps, {
+    return {
+      ...super.defaultProps,
       placeholder: '',
-      label: null,
+      label: gettext.gettext('Search'),
       labelIsScreenreaderOnly: false,
       labelBemBlock: 'label',
       labelBemVariants: [],
       fieldWrapperBemVariants: ['outlined'],
       value: '',
       searchInputExtraAriaDescription: null
-    })
+    }
   }
 
   static filterHttpRequest (httpRequest, name, value) {
