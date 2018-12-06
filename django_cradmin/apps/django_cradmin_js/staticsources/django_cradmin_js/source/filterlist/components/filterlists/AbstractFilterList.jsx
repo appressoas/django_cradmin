@@ -991,7 +991,7 @@ export default class AbstractFilterList extends React.Component {
       }
     }
     const newUrl = urlParser.buildUrl()
-    window.history.pushState({path: newUrl}, '', newUrl)
+    window.history.replaceState({path: newUrl}, '', newUrl)
   }
 
   /**
