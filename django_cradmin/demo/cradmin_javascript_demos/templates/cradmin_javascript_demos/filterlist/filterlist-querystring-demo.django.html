@@ -17,10 +17,10 @@
 {% block content %}
     <section class="adminui-page-section">
         <div class="container container--wide">
-            <h2>Custom items and filters</h2>
             <div data-ievv-jsbase-widget="cradmin-filterlist"
                  data-ievv-jsbase-widget-config='{
                      "getItemsApiUrl": "{% url 'cradmin_javascript_demos_api:fictional-figures-list' %}",
+                     "bindFiltersToQuerystring": true,
                      "components": [{
                         "component": "ThreeColumnLayout",
                         "props": {

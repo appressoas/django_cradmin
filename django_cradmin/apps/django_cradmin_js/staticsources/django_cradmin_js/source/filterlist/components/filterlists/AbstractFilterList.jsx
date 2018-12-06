@@ -8,6 +8,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator'
 import { ComponentCache } from '../../ComponentCache'
 import ChildExposedApi from './ChildExposedApi'
 import { UrlParser } from 'ievv_jsbase/lib/http/UrlParser'
+import QueryString from 'ievv_jsbase/lib/http/QueryString'
 import UniqueDomIdSingleton from 'ievv_jsbase/lib/dom/UniqueDomIdSingleton'
 
 export default class AbstractFilterList extends React.Component {
@@ -114,6 +115,7 @@ export default class AbstractFilterList extends React.Component {
       onGetListItemsFromApiRequestError: null,
       onGetListItemsFromApiRequestSuccess: null,
       filterApiDelayMilliseconds: 500,
+      bindFiltersToQuerystring: false,
 
       getItemsApiUrl: null,
       updateSingleItemSortOrderApiUrl: null,
@@ -164,11 +166,15 @@ export default class AbstractFilterList extends React.Component {
   }
 
   componentDidMount () {
-    this.setState({...AbstractFilterList.refreshComponentCache(this.props, this.state), isMounted: true})
-    this.loadMissingSelectedItemDataFromApi()
-    if (this.props.autoLoadFirstPage) {
-      this.loadFirstPageFromApi()
-    }
+    this.setState({
+      ...AbstractFilterList.refreshComponentCache(this.props, this.state), isMounted: true
+    }, () => {
+      this.loadMissingSelectedItemDataFromApi()
+      this.loadInitialFilterValues()
+      if (this.props.autoLoadFirstPage) {
+        this.loadFirstPageFromApi()
+      }
+    })
   }
 
   static getDerivedStateFromProps (nextProps, prevState) {
@@ -935,7 +941,57 @@ export default class AbstractFilterList extends React.Component {
   }
 
   _setFilterValueInState (filterName, value, onComplete = () => {}) {
-    this.setState(AbstractFilterList._makeFilterValue(filterName, value), onComplete)
+    this.setState(AbstractFilterList._makeFilterValue(filterName, value), () => {
+      if (this.props.bindFiltersToQuerystring) {
+        this.syncFilterValuesToQueryString(filterName, value)
+      }
+      this.onFilterValueSetInState(filterName, value)
+      onComplete()
+    })
+  }
+
+  onFilterValueSetInState (filterName, value) {}
+
+  loadFilterValuesFromQueryString () {
+    const queryString = new QueryString(window.location.search)
+    let newState = {}
+    let stateUpdateNeeded = false
+    for (let filterName of queryString.keys()) {
+      const filterSpec = this.state.componentCache.filterMap.get(filterName)
+      if (filterSpec) {
+        const value = filterSpec.componentClass.getValueFromQueryString(queryString, filterName)
+        newState[AbstractFilterList._getStateVariableNameForFilter(filterName)] = value
+        stateUpdateNeeded = true
+      }
+    }
+    if (stateUpdateNeeded) {
+      this.setState(newState)
+    }
+  }
+
+  loadInitialFilterValues () {
+    if (this.props.bindFiltersToQuerystring) {
+      this.loadFilterValuesFromQueryString()
+    }
+  }
+
+  setFilterValueInQueryString (queryString, filterName) {
+    const filterSpec = this.state.componentCache.filterMap.get(filterName)
+    const value = this.getFilterValue(filterName)
+    filterSpec.componentClass.setInQueryString(queryString, filterName, value)
+  }
+
+  syncFilterValuesToQueryString (changedFilterName = null, changedFilterValue = null) {
+    const urlParser = new UrlParser(window.location.href)
+    if (changedFilterName !== null && changedFilterValue !== null) {
+      this.setFilterValueInQueryString(urlParser.queryString, changedFilterName)
+    } else {
+      for (let filterName of this.state.componentCache.filterMap.keys()) {
+        this.setFilterValueInQueryString(urlParser.queryString, filterName)
+      }
+    }
+    const newUrl = urlParser.buildUrl()
+    window.history.pushState({path: newUrl}, '', newUrl)
   }
 
   /**
@@ -1624,7 +1680,6 @@ export default class AbstractFilterList extends React.Component {
           })
         })
         .catch((error) => {
-          console.log('YE', error.response.isClientError())
           if (error.response.isClientError()) {
             resolve({
               status: error.response.status,

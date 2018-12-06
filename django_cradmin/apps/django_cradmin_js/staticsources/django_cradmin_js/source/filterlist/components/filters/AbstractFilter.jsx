@@ -59,7 +59,18 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
    * @param value The current value of the filter.
    */
   static filterHttpRequest (httpRequest, name, value) {
-    httpRequest.urlParser.queryString.set(name, value)
+    httpRequest.urlParser.queryString.setSmart(name, value)
+  }
+
+  static setInQueryString (queryString, name, value) {
+    if (value === null) {
+      return
+    }
+    queryString.setSmart(name, value)
+  }
+
+  static getValueFromQueryString (queryString, name) {
+    return queryString.getSmart(name, null)
   }
 
   /**

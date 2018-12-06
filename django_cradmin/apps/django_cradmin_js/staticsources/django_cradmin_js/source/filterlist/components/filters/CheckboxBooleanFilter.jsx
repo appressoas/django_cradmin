@@ -35,6 +35,16 @@ export default class CheckboxBooleanFilter extends AbstractFilter {
     return propTypes
   }
 
+  static getValueFromQueryString (queryString, name) {
+    const value = queryString.getSmart(name)
+    if (value === 'true') {
+      return true
+    } else if (value === 'false') {
+      return false
+    }
+    return null
+  }
+
   /**
    * Get default props. Extends the default props
    * from {@link AbstractFilter.defaultProps}.
