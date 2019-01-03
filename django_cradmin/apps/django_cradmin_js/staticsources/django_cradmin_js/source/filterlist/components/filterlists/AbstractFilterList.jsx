@@ -456,7 +456,11 @@ export default class AbstractFilterList extends React.Component {
    * @returns {boolean}
    */
   selectedItemIsFirst (selectedListItemId) {
-    return Array.from(this.state.selectedListItemsMap.values())[0].id === selectedListItemId
+    const item = Array.from(this.state.selectedListItemsMap.values())[0]
+    if (item === null) {
+      return false
+    }
+    return item.id === selectedListItemId
   }
 
   /**
@@ -466,7 +470,11 @@ export default class AbstractFilterList extends React.Component {
    * @returns {boolean}
    */
   selectedItemIsLast (selectedListItemId) {
-    return Array.from(this.state.selectedListItemsMap.values()).slice(-1)[0].id === selectedListItemId
+    const item = Array.from(this.state.selectedListItemsMap.values()).slice(-1)[0]
+    if (item === null) {
+      return false
+    }
+    return item.id === selectedListItemId
   }
 
   /**

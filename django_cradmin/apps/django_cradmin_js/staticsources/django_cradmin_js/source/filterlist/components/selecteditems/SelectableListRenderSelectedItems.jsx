@@ -112,6 +112,9 @@ export default class SelectableListRenderSelectedItems extends AbstractSelectedI
   }
 
   renderSelectedItemContent (listItemId, listItemData) {
+    if (listItemData === null) {
+      return null
+    }
     return <div className={this.selectedItemContentClassName}>
       {this.getSelectedItemLabel(listItemData)}
     </div>

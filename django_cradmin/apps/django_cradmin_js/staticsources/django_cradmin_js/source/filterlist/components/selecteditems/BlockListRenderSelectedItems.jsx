@@ -111,7 +111,7 @@ export default class BlockListRenderSelectedItems extends AbstractSelectedItems 
   }
 
   renderSelectedItemTitle (listItemData) {
-    return  this.getSelectedItemTitle(listItemData)
+    return this.getSelectedItemTitle(listItemData)
   }
 
   renderSelectedItemDescription (listItemData) {
@@ -123,7 +123,9 @@ export default class BlockListRenderSelectedItems extends AbstractSelectedItems 
   }
 
   renderSelectedItemTitleDescription (listItemId, listItemData) {
-    const title = this.getSelectedItemTitle(listItemData)
+    if (listItemData === null) {
+      return null
+    }
     return <div className={'blocklist__action-content'} key={`${listItemId} action-content title-description`}>
       {this.renderSelectedItemTitle(listItemData)}
       {this.renderSelectedItemDescription(listItemData)}
