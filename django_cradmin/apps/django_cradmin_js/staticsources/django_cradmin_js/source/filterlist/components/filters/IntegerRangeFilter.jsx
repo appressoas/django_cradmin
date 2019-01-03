@@ -83,6 +83,30 @@ export default class IntegerRangeFilter extends AbstractFilter {
     httpRequest.urlParser.queryString.set(`${name}_to`, value.toValue)
   }
 
+  static setInQueryString (queryString, name, value) {
+    console.log('Setting values',name,value.fromValue)
+    if (value === null) {
+      queryString.remove(name)
+    } else {
+      queryString.setSmart(name, [value.fromValue, value.toValue].toString())
+    }
+  }
+
+  static getValueFromQueryString (queryString, name) {
+    console.log('Reading values',name)
+    let value = queryString.getSmart(name, null)
+    if (value) {
+      let resultValue = {}
+      value = value.split(',')
+      console.log(value)
+      resultValue.fromValue = parseInt(value[0])
+      resultValue.toValue = parseInt(value[1])
+      console.log('result', resultValue)
+      return resultValue
+    }
+
+  }
+
   getInitialState () {
     return {
       fromValue: '',
