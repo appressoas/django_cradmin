@@ -166,22 +166,12 @@ export default class AbstractFilterList extends React.Component {
     return new ChildExposedApi(this)
   }
 
-  static buildNewStateForComponentCacheChange (props, state) {
-    const newState = {
-      ...AbstractFilterList.refreshComponentCache(props, state),
-      isMounted: true
-    }
-    return {
-      ...newState,
-      ...AbstractFilterList.buildFilterValueStateFromQueryString(props, state)
-    }
-  }
-
   componentDidMount () {
-    const newState = AbstractFilterList.buildNewStateForComponentCacheChange(this.props, this.state)
-    this.setState(newState, () => {
+    this.setState({
+      ...AbstractFilterList.refreshComponentCache(this.props, this.state), isMounted: true
+    }, () => {
       this.loadMissingSelectedItemDataFromApi()
-      // this.loadInitialFilterValues()
+      this.loadInitialFilterValues()
       if (this.props.autoLoadFirstPage) {
         this.loadFirstPageFromApi()
       }
@@ -190,16 +180,15 @@ export default class AbstractFilterList extends React.Component {
 
   static getDerivedStateFromProps (nextProps, prevState) {
     if (prevState.isMounted) {
-      let nextState = {
-        ...AbstractFilterList.buildNewStateForComponentCacheChange(nextProps, prevState),
-        isMounted: true
-      }
+      let nextState = AbstractFilterList.refreshComponentCache(nextProps, prevState)
+      nextState = {...nextState, isMounted: true}
       if ('selectMode' in nextProps) {
-        nextState.selectMode = nextProps.selectMode
+        nextState = {...nextState, selectMode: nextProps.selectMode}
       }
       return nextState
     }
     return null
+
   }
 
   setupBoundMethods () {
@@ -266,10 +255,10 @@ export default class AbstractFilterList extends React.Component {
 
   static refreshComponentCache (props, state) {
     const componentCache = AbstractFilterList.buildComponentCache(props.components, props.domIdPrefix)
-    return {
-      ...AbstractFilterList.makeInitialFilterValues(componentCache.filterMap.values(), state),
-      componentCache
-    }
+    return Object.assign(
+      AbstractFilterList.makeInitialFilterValues(componentCache.filterMap.values(), state),
+      {componentCache}
+    )
   }
 
   //
@@ -1000,28 +989,26 @@ export default class AbstractFilterList extends React.Component {
 
   onFilterValueSetInState (filterName, value) {}
 
-  static buildFilterValueStateFromQueryString (props, state) {
-    if (!props.bindFiltersToQuerystring) {
-      return {}
-    }
+  loadFilterValuesFromQueryString () {
     const queryString = new QueryString(window.location.search)
     let newState = {}
-    // let stateUpdateNeeded = false
+    let stateUpdateNeeded = false
     for (let filterName of queryString.keys()) {
-      const filterSpec = state.componentCache.filterMap.get(filterName)
+      const filterSpec = this.state.componentCache.filterMap.get(filterName)
       if (filterSpec) {
         const value = filterSpec.componentClass.getValueFromQueryString(queryString, filterName)
-        // console.log(filterName, value)
         newState[AbstractFilterList._getStateVariableNameForFilter(filterName)] = value
-        // stateUpdateNeeded = true
+        stateUpdateNeeded = true
       }
     }
-    return newState
+    if (stateUpdateNeeded) {
+      this.setState(newState)
+    }
   }
 
   loadInitialFilterValues () {
     if (this.props.bindFiltersToQuerystring) {
-      this.setState(AbstractFilterList.buildFilterValueStateFromQueryString(this.props, this.state))
+      this.loadFilterValuesFromQueryString()
     }
   }
 
