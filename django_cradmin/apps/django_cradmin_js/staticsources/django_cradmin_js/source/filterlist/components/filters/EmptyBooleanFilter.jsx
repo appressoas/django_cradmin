@@ -48,7 +48,7 @@ export default class EmptyBooleanFilter extends AbstractFilter {
     propTypes.emptyLabel = PropTypes.string.isRequired
     propTypes.trueLabel = PropTypes.string.isRequired
     propTypes.falseLabel = PropTypes.string.isRequired
-    propTypes.value = PropTypes.bool
+    propTypes.value = PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
     propTypes.disabled = PropTypes.bool
     return propTypes
   }
@@ -79,6 +79,24 @@ export default class EmptyBooleanFilter extends AbstractFilter {
       return
     }
     super.filterHttpRequest(httpRequest, name, value)
+  }
+
+  static setInQueryString (queryString, name, value) {
+    if (value === null) {
+      queryString.remove(name)
+    } else {
+      queryString.setSmart(name, value)
+    }
+  }
+
+  static getValueFromQueryString (queryString, name) {
+    const value = queryString.get(name, null)
+    if (value === 'true') {
+      return true
+    } else if(value==='false'){
+      return false
+    }
+    return null
   }
 
   setupBoundMethods () {
