@@ -7,7 +7,8 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
   static get defaultProps () {
     return {
       ...super.defaultProps,
-      selectedValueExtraAriaDescription: null
+      selectedValueExtraAriaDescription: null,
+      willReceiveSelectionEvents: true
     }
   }
 
@@ -23,6 +24,20 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
 
   onClickSelectedItemBody () {
     this.onClickClearButton()
+  }
+
+  onSelectItems (listItemIds) {
+    window.setTimeout(() => {
+      if (this._selectedItemButton) {
+        this._selectedItemButton.focus()
+      }
+    }, 100)
+  }
+
+  onDeselectItems (listItemIds) {
+    window.setTimeout(() => {
+      this.getSearchInputRef().focus()
+    }, 100)
   }
 
   getSelectedLabelText () {
@@ -90,6 +105,7 @@ export default class AbstractSingleSelectDropDownSearchFilter extends DropDownSe
         onClick={this.onClickSelectedItemBody}
         aria-label={this.selectedValueAriaLabel}
         aria-describedby={this.selectedValueAriaDescribedByDomIds.join(' ')}
+        ref={(input) => { this._selectedItemButton = input }}
         {...extraProps}
       >
         <span className={'searchinput__selected_preview'}>
