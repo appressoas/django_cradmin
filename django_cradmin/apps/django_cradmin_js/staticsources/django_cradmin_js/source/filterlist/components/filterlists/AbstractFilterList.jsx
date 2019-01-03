@@ -151,6 +151,7 @@ export default class AbstractFilterList extends React.Component {
     this.cachedListSpec = null
     this.cachedPaginatorSpec = null
     this._focusChangeListeners = new Set()
+    this._selectionChangeListeners = new Set()
     this._currentFocusChildInfo = null
   }
 
@@ -734,6 +735,28 @@ export default class AbstractFilterList extends React.Component {
     this.selectItems([listItemId])
   }
 
+  registerSelectionChangeListener (componentObject) {
+    this._selectionChangeListeners.add(componentObject)
+  }
+
+  unregisterSelectionChangeListener (componentObject) {
+    this._selectionChangeListeners.delete(componentObject)
+  }
+
+  callAllSelectionChangeListeners (methodName, ...args) {
+    for (let componentObject of this._selectionChangeListeners) {
+      componentObject[methodName](...args)
+    }
+  }
+
+  onSelectedItems (listItemIds) {
+    this.callAllSelectionChangeListeners('onSelectItems', listItemIds)
+  }
+
+  onDeselectItems (listItemIds) {
+    this.callAllSelectionChangeListeners('onDeselectItems', listItemIds)
+  }
+
   /**
    * Select multiple items.
    *
@@ -761,6 +784,7 @@ export default class AbstractFilterList extends React.Component {
       }
     }, () => {
       this.loadMissingSelectedItemDataFromApi()
+      this.onSelectedItems(listItemIds)
       if (this.props.onSelectItems) {
         this.props.onSelectItems(listItemIds, this)
       }
@@ -796,6 +820,7 @@ export default class AbstractFilterList extends React.Component {
         selectedListItemsMap: selectedListItemsMap
       }
     }, () => {
+      this.onDeselectItems()
       if (this.props.onDeselectItems) {
         this.props.onDeselectItems(listItemIds, this)
       }
@@ -898,6 +923,10 @@ export default class AbstractFilterList extends React.Component {
           this.handleLoadMissingSelectedItemDataFromApiError(error)
         })
     })
+  }
+
+  get selectedItemIds () {
+    return Array.from(this.state.selectedListItemsMap.keys())
   }
 
   //

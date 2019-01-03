@@ -12,6 +12,7 @@ export default class AbstractFilterListChild extends React.Component {
     return {
       childExposedApi: PropTypes.object.isRequired,
       willReceiveFocusEvents: PropTypes.bool.isRequired,
+      willReceiveSelectionEvents: PropTypes.bool.isRequired,
       componentGroups: PropTypes.arrayOf(PropTypes.string),
       uniqueComponentKey: PropTypes.string.isRequired,
       domIdPrefix: PropTypes.string.isRequired
@@ -39,6 +40,7 @@ export default class AbstractFilterListChild extends React.Component {
       childExposedApi: null,
       componentGroups: null,
       willReceiveFocusEvents: false,
+      willReceiveSelectionEvents: false,
       domIdPrefix: null
     }
   }
@@ -90,6 +92,9 @@ export default class AbstractFilterListChild extends React.Component {
     if (this.props.willReceiveFocusEvents) {
       this.props.childExposedApi.unregisterFocusChangeListener(this)
     }
+    if (this.props.willReceiveSelectionEvents) {
+      this.props.childExposedApi.unregisterSelectionChangeListener(this)
+    }
   }
 
   /**
@@ -98,6 +103,9 @@ export default class AbstractFilterListChild extends React.Component {
   componentDidMount () {
     if (this.props.willReceiveFocusEvents) {
       this.props.childExposedApi.registerFocusChangeListener(this)
+    }
+    if (this.props.willReceiveSelectionEvents) {
+      this.props.childExposedApi.registerSelectionChangeListener(this)
     }
   }
 
@@ -153,6 +161,12 @@ export default class AbstractFilterListChild extends React.Component {
   }
 
   onAnyComponentBlur (blurredComponentInfo, didChangeFilterListFocus) {
+  }
+
+  onSelectItems (listItemIds) {
+  }
+
+  onDeselectItems (listItemIds) {
   }
 
   getComponentGroupsForChildComponent (componentSpec) {
