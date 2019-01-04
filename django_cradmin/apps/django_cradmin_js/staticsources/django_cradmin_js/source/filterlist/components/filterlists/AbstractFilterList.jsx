@@ -1015,14 +1015,16 @@ export default class AbstractFilterList extends React.Component {
   setFilterValueInQueryString (queryString, filterName) {
     const filterSpec = this.state.componentCache.filterMap.get(filterName)
     const value = this.getFilterValue(filterName)
-    if (value !== null) {
+    if (value === null || value === undefined || value === '') {
+      queryString.remove(filterName)
+    } else {
       filterSpec.componentClass.setInQueryString(queryString, filterName, value)
     }
   }
 
   syncFilterValuesToQueryString (changedFilterName = null, changedFilterValue = null) {
     const urlParser = new UrlParser(window.location.href)
-    if (changedFilterName !== null && changedFilterValue !== null) {
+    if (changedFilterName !== null) {
       this.setFilterValueInQueryString(urlParser.queryString, changedFilterName)
     } else {
       for (let filterName of this.state.componentCache.filterMap.keys()) {
