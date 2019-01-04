@@ -84,7 +84,6 @@ export default class IntegerRangeFilter extends AbstractFilter {
   }
 
   static setInQueryString (queryString, name, value) {
-    console.log('Setting values',name,value.fromValue)
     if (value === null) {
       queryString.remove(name)
     } else {
@@ -93,15 +92,12 @@ export default class IntegerRangeFilter extends AbstractFilter {
   }
 
   static getValueFromQueryString (queryString, name) {
-    console.log('Reading values',name)
     let value = queryString.getSmart(name, null)
     if (value) {
       let resultValue = {}
       value = value.split(',')
-      console.log(value)
-      resultValue.fromValue = parseInt(value[0])
-      resultValue.toValue = parseInt(value[1])
-      console.log('result', resultValue)
+      resultValue.fromValue = value[0]
+      resultValue.toValue = value[1]
       return resultValue
     }
 
@@ -111,6 +107,13 @@ export default class IntegerRangeFilter extends AbstractFilter {
     return {
       fromValue: '',
       toValue: ''
+    }
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    if (this.props.value) {
+      this.setState(this.props.value)
     }
   }
 
