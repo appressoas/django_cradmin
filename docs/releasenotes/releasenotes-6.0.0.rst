@@ -3,8 +3,6 @@ Django cradmin 6.0.0 releasenotes
 #################################
 
 
-.. warning:: This version is not released yet.
-
 ************
 What is new?
 ************
@@ -74,4 +72,4 @@ You should update the package.json for your themes using ``django_cradmin_styles
 
 Update NPM package versions for your javascript
 ===============================================
-TODO
+Update to django_cradmin_js 4.
