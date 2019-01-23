@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import BemUtilities from '../utilities/BemUtilities'
 import * as is from 'is_js'
-import * as gettext from 'ievv_jsbase/lib/gettext'
 import UniqueDomIdSingleton from 'ievv_jsbase/lib/dom/UniqueDomIdSingleton'
 
 export default class AbstractHtml5DatetimeInput extends React.Component {
