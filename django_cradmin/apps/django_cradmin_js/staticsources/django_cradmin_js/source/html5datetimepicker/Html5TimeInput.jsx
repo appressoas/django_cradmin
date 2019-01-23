@@ -12,7 +12,7 @@ export default class Html5TimeInput extends AbstractHtml5DatetimeInput {
   }
 
   get humanReadableInputFormat () {
-    return gettext.pgettext('time format', this.timeInputFormat)
+    return gettext.pgettext('time format', this.inputFormat)
   }
 
   static isValidTime (value) {
