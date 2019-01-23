@@ -2,19 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
-import Html5DateInput from '../Html5DateInput'
-import moment from 'moment/moment'
+import Html5TimeInput from '../Html5TimeInput'
 
 /**
  * Add the widget to a Django template
  *
  * @example
  * <input type="hidden" id="id_test100">
- * <div data-ievv-jsbase-widget="cradmin-html5-datepicker"
- *      data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test100", "ariaLabel": "Select a date"}'>
+ * <div data-ievv-jsbase-widget="cradmin-html5-timepicker"
+ *      data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test100", "ariaLabel": "Select a time"}'>
  * </div>
  */
-export default class Html5DateInputWidget extends AbstractWidget {
+export default class Html5TimeInputWidget extends AbstractWidget {
   getDefaultConfig () {
     return {
       hiddenFieldId: null
@@ -23,10 +22,10 @@ export default class Html5DateInputWidget extends AbstractWidget {
 
   getHiddenFieldInitialValue (hiddenFieldDomElement) {
     const value = hiddenFieldDomElement.value
-    if (!value || value === '' ) {
+    if (!value || value === '' || !Html5TimeInput.isValidTime(value)) {
       return ''
     }
-    return moment(value).format('YYYY-MM-DD')
+    return value
   }
 
   get wrapperProps () {
@@ -35,7 +34,7 @@ export default class Html5DateInputWidget extends AbstractWidget {
     let wrappedComponentProps = Object.assign({value: hiddenFieldValue, ...this.config})
     delete wrappedComponentProps.hiddenFieldId
     return {
-      componentClass: Html5DateInput,
+      componentClass: Html5TimeInput,
       wrappedComponentProps: wrappedComponentProps,
       hiddenFieldId: this.config.hiddenFieldId,
       hiddenFieldDomElement: hiddenFieldDomElement
@@ -43,7 +42,7 @@ export default class Html5DateInputWidget extends AbstractWidget {
   }
 
   renderWrapper () {
-    return <Html5DateInputWrapper {...this.wrapperProps}/>
+    return <Html5TimeInputWrapper {...this.wrapperProps}/>
   }
 
   constructor(element, widgetInstanceId) {
@@ -60,7 +59,7 @@ export default class Html5DateInputWidget extends AbstractWidget {
 }
 
 
-export class Html5DateInputWrapper extends React.Component {
+export class Html5TimeInputWrapper extends React.Component {
   static get defaultProps () {
     return {
       hiddenFieldId: null,
@@ -85,7 +84,6 @@ export class Html5DateInputWrapper extends React.Component {
   }
 
   onChange (isoStringValue) {
-    console.log(isoStringValue)
     this.props.hiddenFieldDomElement.value = isoStringValue
   }
 

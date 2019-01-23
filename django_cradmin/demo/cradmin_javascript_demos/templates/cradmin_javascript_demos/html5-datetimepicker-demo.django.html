@@ -35,4 +35,24 @@
         </div>
     </div>
 
+    <div class="adminui-page-section">
+        <div class="container">
+            <h2>Time example (embedded)</h2>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">Without initial value</h3>
+                <input type="hidden" id="id_test200">
+                <div data-ievv-jsbase-widget="cradmin-html5-timepicker"
+                    data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test200", "ariaLabel": "Select a time"}'></div>
+            </div>
+
+            <div class="fieldwrapper">
+                <h3 class="h4">With initial value</h3>
+                <input type="hidden" id="id_test201" value="22:51">
+                <div data-ievv-jsbase-widget="cradmin-html5-timepicker"
+                    data-ievv-jsbase-widget-config='{"hiddenFieldId": "id_test201", "ariaLabel": "Select a time"}'></div>
+            </div>
+        </div>
+    </div>
+
 {% endblock content %}
