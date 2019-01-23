@@ -7,11 +7,13 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
 import registerAllCradminWidgets from './widgets/registerAllCradminWidgets'
 import setupDefaultListRegistry from './filterlist/setupDefaultListRegistry'
 import registerAllDatetimePickerWidgets from './datetimepicker/widgets/registerAllDatetimePickerWidgets'
+import registerAllHtml5DatetimePickerWidgets from './html5datetimepicker/widgets/registerAllHtml5DatetimePickerWidgets'
 
 function _onDomReady () {
   new LoggerSingleton().setDefaultLogLevel(LOGLEVEL.INFO)
   registerAllCradminWidgets()
   registerAllDatetimePickerWidgets()
+  registerAllHtml5DatetimePickerWidgets()
   setupDefaultListRegistry()
 
   const widgetRegistry = new WidgetRegistrySingleton()

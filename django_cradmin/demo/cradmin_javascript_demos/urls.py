@@ -24,6 +24,10 @@ urlpatterns = [
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/rotating-placeholder.django.html'),
         name="cradmin_javascript_demos_rotating_placeholder"),
+    url(r'^html5-date-picker-demo$',
+        views.JavascriptDemoView.as_view(
+            template_name='cradmin_javascript_demos/html5-dateinput-demo.django.html'),
+        name="cradmin_javascript_demos_html5-datepicker"),
     url(r'^old-date-time-picker-demo$',
         views.JavascriptDemoView.as_view(
             template_name='cradmin_javascript_demos/old-datetimepicker-demo.django.html'),
