@@ -14,8 +14,8 @@ Example: Basics
         </label>
         <input type="text" placeholder="I set the standard"
             id="id_myfield"
-            class="input input--fieldwrapper-item" />
-        <p class="help-text help-text--fieldwrapper-item">
+            class="input" />
+        <p class="help-text">
             Vestibulum id ligula porta felis euismod semper.
             Nullam id dolor id nibh ultricies vehicula ut id elit.
         </p>
@@ -33,7 +33,7 @@ Example: Basics
             I'm a textarea
             <textarea placeholder="I more got space!" class="input"></textarea>
         </label>
-        <p class="help-text  help-text--fieldwrapper-item">
+        <p class="help-text ">
             Donec sed odio dui.
         </p>
     </div>
@@ -58,7 +58,7 @@ Example: {type: isolated} More complex example
                 <span class="radio__control-indicator"></span>
                 Maybe
             </label>
-            <p class="help-text  help-text--fieldwrapper-item">
+            <p class="help-text ">
                 Donec sed odio dui.
             </p>
         </div>
@@ -81,7 +81,7 @@ Example: {type: isolated} More complex example
                     <span class="checkbox__control-indicator"></span>
                     SASS is a programming language
                 </label>
-                <p class="help-text  help-text--fieldwrapper-item">
+                <p class="help-text ">
                     Donec sed odio dui.
                 </p>
             </div>
@@ -96,7 +96,7 @@ Example: {type: isolated} More complex example
                     <option>Maybe</option>
                 </select>
             </label>
-            <p class="help-text  help-text--fieldwrapper-item">
+            <p class="help-text ">
                 Donec sed odio dui.
             </p>
         </div>
@@ -111,8 +111,8 @@ Example: --compact
         </label>
         <input type="text" placeholder="I set the standard"
             id="id_myfield"
-            class="input input--fieldwrapper-item" />
-        <p class="help-text help-text--fieldwrapper-item">
+            class="input" />
+        <p class="help-text">
             Vestibulum id ligula porta felis euismod semper.
             Nullam id dolor id nibh ultricies vehicula ut id elit.
         </p>
@@ -130,7 +130,7 @@ Example: --compact
             I'm a textarea
             <textarea placeholder="I more got space!" class="input"></textarea>
         </label>
-        <p class="help-text  help-text--fieldwrapper-item">
+        <p class="help-text ">
             Donec sed odio dui.
         </p>
     </div>

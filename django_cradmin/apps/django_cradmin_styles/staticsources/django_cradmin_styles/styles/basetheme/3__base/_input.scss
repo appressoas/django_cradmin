@@ -28,6 +28,19 @@ Example: Outlined input
         <input type="text" placeholder="Look at ma' outlines" class="input  input--outlined" />
     </label>
 
+Example: Underlined input - do not combine with size adjusting variants!
+    <label class="label">
+        Underlined input
+        <input type="text" placeholder="Look at ma' underlines" class="input  input--underlined" />
+    </label>
+
+Example: Underlined input inline - do not combine with size adjusting variants!
+
+    And here we have an <label class="label label--inline">
+        inline input
+        <input type="text" placeholder="Look at ma' underlines" class="input  input--inline  input--underlined" />
+    </label>
+
 Example: Input width adjustments
     <label class="label">
         --width-xxsmall
@@ -171,5 +184,19 @@ input.input {
     &--size-large {
         @include font-size(medium, $skip-line-height: true);
         @include form-element-mixin(large);
+    }
+
+    &--underlined {
+        @include form-element-mixin(xsmall);
+        border-width: 0 0 $border-width 0;
+        border-color: color(neutral, light);
+        border-style: solid;
+        border-radius: 0;
+        background-color: transparent;
+        padding: 0;
+
+        //&:focus {
+        //    border-color: color(primary);
+        //}
     }
 }
