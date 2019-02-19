@@ -67,4 +67,12 @@ Styleguide form.2:label
     &--primary {
         color: color(primary);
     }
+
+    &--small {
+        @include font-size(xsmall);
+    }
+
+    &--muted {
+        color: $color-muted;
+    }
 }
