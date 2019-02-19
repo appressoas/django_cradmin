@@ -25,7 +25,8 @@ import Html5FromToDateSelectors from '../../../html5datetimepicker/Html5FromToDa
  *      "fromDateExpandedLabel": "From",
  *      "toDateExpandedLabel": "To",
  *      "expandToggleLabel": "Show range",
- *      "isExpandedInitially": true
+ *      "isExpandedInitially": true,
+ *      "displayExpandToggle": true
  *    }
  * }
  */
@@ -41,7 +42,8 @@ export default class Html5FromToDateFilter extends AbstractFilter {
         isExpandedInitially: PropTypes.bool.isRequired,
         toDateExpandedLabel: PropTypes.string,
         fromDateExpandedLabel: PropTypes.string,
-        expandToggleLabel: PropTypes.string
+        expandToggleLabel: PropTypes.string,
+        displayExpandToggle: PropTypes.bool
       })
     }
   }

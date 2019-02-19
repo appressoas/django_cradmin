@@ -12,6 +12,7 @@ export default class Html5FromToDateSelectors extends React.Component {
       commonDateOptions: PropTypes.shape({}).isRequired,
       onChange: PropTypes.func.isRequired,
       isExpandedInitially: PropTypes.bool.isRequired,
+      displayExpandToggle: PropTypes.bool.isRequired,
       label: PropTypes.string.isRequired,
       expandedLabel: PropTypes.string,
       expandToggleLabel: PropTypes.string.isRequired,
@@ -28,6 +29,7 @@ export default class Html5FromToDateSelectors extends React.Component {
       expandedLabel: null,
       commonDateOptions: {},
       isExpandedInitially: false,
+      displayExpandToggle: true,
       expandToggleLabel: gettext.gettext('Display to-date?'),
       toDateExpandedLabel: gettext.gettext('To date'),
       fromDateExpandedLabel: gettext.gettext('From date')
@@ -99,7 +101,8 @@ export default class Html5FromToDateSelectors extends React.Component {
       ...this.commonDateOptions,
       value: this.props.fromDateValue,
       max: this.props.toDateValue,
-      onChange: (value) => { this.handleDateChange('fromDate', value) }
+      onChange: (value) => { this.handleDateChange('fromDate', value) },
+      ariaLabel: this.ariaFromLabel
     }
   }
 
@@ -108,7 +111,8 @@ export default class Html5FromToDateSelectors extends React.Component {
       ...this.commonDateOptions,
       value: this.props.toDateValue,
       min: this.props.fromDateValue,
-      onChange: (value) => { this.handleDateChange('toDate', value) }
+      onChange: (value) => { this.handleDateChange('toDate', value) },
+      ariaLabel: this.ariaToLabel
     }
   }
 
@@ -142,6 +146,17 @@ export default class Html5FromToDateSelectors extends React.Component {
     return this.props.expandToggleLabel
   }
 
+  get ariaToLabel () {
+    return `${this.expandedLabel}: ${this.toDateExpandedLabel}`
+  }
+
+  get ariaFromLabel () {
+    if (this.state.isExpanded) {
+      return `${this.expandedLabel}: ${this.fromDateExpandedLabel}`
+    }
+    return this.collapsedLabel
+  }
+
   /* Render functions */
 
   renderFromDateField () {
@@ -171,7 +186,7 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.isExpanded) {
       return null
     }
-    return <label className={'label'} aria-hidden>
+    return <label className={'label label--small label--muted'} aria-hidden>
       {labelText}
     </label>
   }
@@ -186,19 +201,21 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.isExpanded) {
       return null
     }
-    return <React.Fragment>
-      <div className={'fieldwrapper fieldwrapper--compact'} style={{display: 'inline-block'}}>
+    return <div className={'fieldwrapper-line__item fieldwrapper-line__item--width-small'}>
+      <div className={'fieldwrapper fieldwrapper--compact'}>
         {this.renderIfExpandedLabel(this.toDateExpandedLabel)}
         {this.renderToDateField()}
       </div>
-    </React.Fragment>
+    </div>
   }
 
   renderDateFields () {
-    return <div>
-      <div className={'fieldwrapper fieldwrapper--compact'} style={{display: 'inline-block'}}>
-        {this.renderIfExpandedLabel(this.fromDateExpandedLabel)}
-        {this.renderFromDateField()}
+    return <div className={'fieldwrapper-line'}>
+      <div className={'fieldwrapper-line__item fieldwrapper-line__item--width-small'}>
+        <div className={'fieldwrapper fieldwrapper--compact'}>
+          {this.renderIfExpandedLabel(this.fromDateExpandedLabel)}
+          {this.renderFromDateField()}
+        </div>
       </div>
       {this.renderToDateLayout()}
     </div>
