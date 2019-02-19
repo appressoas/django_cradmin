@@ -89,6 +89,20 @@ Example: {type: isolated} 4 columns
         </div>
     </div>
 
+Example: {type: isolated} Centered vertically
+    <div class="columnlayout">
+        <div class="columnlayout__column columnlayout__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout__column columnlayout__column--vertical-center">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout__column columnlayout__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
+
 Styleguide components.columnlayout
 */
 
