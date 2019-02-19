@@ -2,19 +2,45 @@
 
 Add the class `.label` to style labels.
 
-As a default; wrap labels around inputs. It saves markup and make it more intuitive to read code :)
+NOTE: You can wrap labels around inputs. It saves markup and make it more intuitive to read code :)
 
-Example: Label
+Example:
     <label class="label">
         I'm a label!
     </label>
 
+Example: --inline
     <p>Look, <label class="label  label--inline">I'm a inline label</label>!!!</p>
 
+Example: --spaced
     <label class="label  label--spaced">
         I have more spacing below me. The same spacing as a .fieldwrapper.
     </label>
 
+Example: --primary
+    <label class="label label--primary">
+        I'm a label with the --primary style!
+    </label>
+
+Example: --strong
+    <label class="label label--strong">
+        I'm a label with the --strong style!
+    </label>
+
+
+Example: With input within the label
+
+    <label class="label">
+        Name
+        <input class='input' type='text'/>
+    </label>
+
+Example: With input outside the label
+
+    <label class="label" for='id_labelexample'>
+        Name
+    </label>
+    <input class='input' type='text' id='id_labelexample'/>
 Styleguide form.2:label
 */
 
@@ -34,4 +60,19 @@ Styleguide form.2:label
         }
     }
 
+    &--strong {
+        font-weight: bold;
+    }
+
+    &--primary {
+        color: color(primary);
+    }
+
+    &--small {
+        @include font-size(xsmall);
+    }
+
+    &--muted {
+        color: $color-muted;
+    }
 }

@@ -22,6 +22,9 @@ Example: {type: isolated} Value and title variants
 
         <dt class="definition-list__title definition-list__title--anonymous-small">Title --anonymous-small:</dt>
         <dd class="definition-list__value definition-list__value--small">Value --small</dd>
+
+        <dt class="definition-list__title">Default title:</dt>
+        <dd class="definition-list__value definition-list__value--strong">Value --strong</dd>
     </dl>
 
 
@@ -157,6 +160,9 @@ Styleguide components.definition-list
 
         &--small {
             @include font-size(xsmall);
+        }
+        &--strong {
+            @include font(base, bold);
         }
     }
 
