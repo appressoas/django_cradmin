@@ -135,6 +135,30 @@ Example: --compact
         </p>
     </div>
 
+
+Example: {type: isolated} Multiple fieldwrappers on one line
+
+    <div class="fieldwrapper-line">
+        <div class="fieldwrapper  fieldwrapper--compact fieldwrapper--width-small">
+            <label class="label">
+                From:
+                <input type="text" class="input input--outlined" />
+            </label>
+        </div>
+
+        <div class="fieldwrapper  fieldwrapper--compact fieldwrapper--width-small">
+            <label class="label">
+                To:
+                <input type="text" class="input input--outlined" />
+            </label>
+            <p class="help-text ">
+                Donec sed odio dui.
+            </p>
+        </div>
+    </div>
+
+
+
 Styleguide form.7:fieldwrapper
 */
 
@@ -145,5 +169,39 @@ Styleguide form.7:fieldwrapper
 
     &--compact {
         margin-bottom: $vertical-rythm;
+    }
+
+    &--width-xsmall {
+        width: $unit * 20;
+        min-width: $unit * 5;
+    }
+
+    &--width-xxsmall {
+        width: $unit * 16;
+        min-width: $unit * 5;
+    }
+
+    &--width-small {
+        width: $unit * 36;
+        min-width: $unit * 5;
+    }
+
+    &--width-medium {
+        width: $unit * 50;
+        min-width: $unit * 5;
+    }
+}
+
+
+.fieldwrapper-line {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .fieldwrapper {
+        margin-right: $unit;
+        &:last-child {
+            margin-right: 0;
+        }
     }
 }
