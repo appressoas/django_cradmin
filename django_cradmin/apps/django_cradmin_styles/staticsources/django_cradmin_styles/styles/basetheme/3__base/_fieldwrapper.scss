@@ -163,6 +163,47 @@ Example: {type: isolated} Multiple fieldwrappers on one line
 
 
 
+Example: {type: isolated} Multiple fieldwrappers on one line - multiple sizes
+
+    <div class="container container--wide">
+        <div class="fieldwrapper-line">
+            <div class="fieldwrapper-line__item fieldwrapper-line__item--width-xxsmall">
+                <div class="fieldwrapper  fieldwrapper--compact">
+                    <label class="label">
+                        xxsmall:
+                        <input type="text" class="input input--outlined" />
+                    </label>
+                </div>
+            </div>
+            <div class="fieldwrapper-line__item fieldwrapper-line__item--width-xxsmall">
+                <div class="fieldwrapper  fieldwrapper--compact">
+                    <label class="label">
+                        xxsmall:
+                        <input type="text" class="input input--outlined" />
+                    </label>
+                </div>
+            </div>
+            <div class="fieldwrapper-line__item fieldwrapper-line__item--width-small">
+                <div class="fieldwrapper  fieldwrapper--compact">
+                    <label class="label">
+                        small:
+                        <input type="text" class="input input--outlined" />
+                    </label>
+                </div>
+            </div>
+            <div class="fieldwrapper-line__item fieldwrapper-line__item--width-medium">
+                <div class="fieldwrapper  fieldwrapper--compact">
+                    <label class="label">
+                        medium:
+                        <input type="text" class="input input--outlined" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 Styleguide form.7:fieldwrapper
 */
 
@@ -203,7 +244,7 @@ Styleguide form.7:fieldwrapper
         }
 
         &--width-medium {
-            width: $unit * 50;
+            width: $unit * 46;
             min-width: $unit * 5;
         }
         &--vertical-center {
