@@ -20,13 +20,12 @@ import Html5FromToDateSelectors from '../../../html5datetimepicker/Html5FromToDa
  *    "initialValue": "2018-12-24,2019-04-29",
  *    "props": {
  *      "name": "christmas_range",
- *      "fromDateOptions": {
- *        "label": "Christmas lasts from",
- *      },
- *      "toDateOptions": {
- *        "label": "Christmas lasts to"
- *      },
- *      "showToDateInitially": true
+ *      "label": "Christmas ends on",
+ *      "expandedLabel": "Christmas lasts ...",
+ *      "fromDateExpandedLabel": "From",
+ *      "toDateExpandedLabel": "To",
+ *      "expandToggleLabel": "Show range",
+ *      "isExpandedInitially": true
  *    }
  * }
  */
@@ -36,14 +35,13 @@ export default class Html5FromToDateFilter extends AbstractFilter {
       ...super.propTypes,
       value: PropTypes.string.isRequired,
       dateSelectorProps: PropTypes.shape({
-        fromDateOptions: PropTypes.shape({
-          label: PropTypes.string.isRequired
-        }).isRequired,
-        toDateOptions: PropTypes.shape({
-          label: PropTypes.string.isRequired
-        }).isRequired,
+        label: PropTypes.string.isRequired,
+        expandedLabel: PropTypes.string,
         commonDateOptions: PropTypes.shape({}).isRequired,
-        showToFieldInitially: PropTypes.bool.isRequired
+        isExpandedInitially: PropTypes.bool.isRequired,
+        toDateExpandedLabel: PropTypes.string,
+        fromDateExpandedLabel: PropTypes.string,
+        expandToggleLabel: PropTypes.string
       })
     }
   }
@@ -79,7 +77,6 @@ export default class Html5FromToDateFilter extends AbstractFilter {
   }
 
   handleDateChange (fromDate, toDate) {
-    console.log(`Got fromDate: ${fromDate}, and toDate: ${toDate}`)
     this.setFilterValue(`${fromDate},${toDate}`)
   }
 
