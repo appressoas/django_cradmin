@@ -61,7 +61,7 @@ Styleguide form.2:label
     }
 
     &--strong {
-        font-weight: bold;
+        @include font(base, bold);
     }
 
     &--primary {
