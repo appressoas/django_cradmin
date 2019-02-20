@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractFilter from 'django_cradmin_js/lib/filterlist/components/filters/AbstractFilter'
 import Html5FromToDateSelectors from '../../../html5datetimepicker/Html5FromToDateSelectors'
+import AbstractFilter from './AbstractFilter'
 
 /**
  * Html5FromToDateFilter filter that does something.
@@ -48,6 +48,11 @@ export default class Html5FromToDateFilter extends AbstractFilter {
     }
   }
 
+  constructor (props) {
+    super(props)
+    this.handleChangeTimeout = null
+  }
+
   setupBoundMethods () {
     super.setupBoundMethods()
     this.handleDateChange = this.handleDateChange.bind(this)
@@ -78,8 +83,18 @@ export default class Html5FromToDateFilter extends AbstractFilter {
     return this.datesAsList[1]
   }
 
+  _clearTimeout () {
+    if (this.handleChangeTimeout === null) {
+      return
+    }
+    window.clearTimeout(this.handleChangeTimeout)
+  }
+
   handleDateChange (fromDate, toDate) {
-    this.setFilterValue(`${fromDate},${toDate}`)
+    this._clearTimeout()
+    this.handleChangeTimeout = window.setTimeout(() => {
+      this.setFilterValue(`${fromDate},${toDate}`)
+    }, 1000)
   }
 
   render () {

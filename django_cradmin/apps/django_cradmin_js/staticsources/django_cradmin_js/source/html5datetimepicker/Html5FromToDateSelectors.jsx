@@ -60,7 +60,7 @@ export default class Html5FromToDateSelectors extends React.Component {
     const fromDate = valueKey === 'fromDate' ? value : this.props.fromDateValue
     const toDate = valueKey === 'toDate' ? value : this.props.toDateValue
 
-    if (fromDate && toDate) {
+    if (fromDate && toDate && this.state.isExpanded) {
       const momentFromDate = moment(fromDate)
       const momentToDate = moment(toDate)
       if (momentFromDate > momentToDate) {
