@@ -90,13 +90,14 @@ export default class Html5FromToDateFilter extends AbstractFilter {
     window.clearTimeout(this.handleChangeTimeout)
   }
 
-  handleDateChange (fromDate, toDate, isReset = false) {
+  handleDateChange (fromDate, toDate, skipTimeout = false) {
     this._clearTimeout()
-    if (isReset) {
-      this.setFilterValue(`,`)
+    const filterValue = `${fromDate || ''},${toDate || ''}`
+    if (skipTimeout) {
+      this.setFilterValue(filterValue)
     } else {
       this.handleChangeTimeout = window.setTimeout(() => {
-        this.setFilterValue(`${fromDate},${toDate}`)
+        this.setFilterValue(filterValue)
       }, 1000)
     }
   }

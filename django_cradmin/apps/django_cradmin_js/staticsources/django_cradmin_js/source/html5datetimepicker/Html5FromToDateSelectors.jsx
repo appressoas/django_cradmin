@@ -88,7 +88,10 @@ export default class Html5FromToDateSelectors extends React.Component {
   handleShowToDateChange (event) {
     this.setState({
       isExpanded: event.target.checked
-    }, this.handleDateChange)
+    }, () => {
+      const fromDate = this.props.fromDateValue || ''
+      this.props.onChange(fromDate, fromDate, true)
+    })
   }
 
   reset () {

@@ -25,12 +25,24 @@ export default class Html5DateInput extends AbstractHtml5DatetimeInput {
     return this.valueStringToMoment(this.props.value)
   }
 
+  makeValidInputFieldValue (valueString) {
+    if (this.browserFullySupportsDateInput() || !valueString) {
+      return valueString
+    }
+
+    const momentValue = moment(valueString)
+    if (!momentValue.isValid()) {
+      return valueString
+    }
+    return momentValue.format(this.inputFormat)
+  }
+
   parseInputValue (stringValue) {
     let momentValue = null
     let isValid = true
     let isoStringValue = ''
     if (stringValue) {
-      momentValue = moment(stringValue, this.momentInputFormat)
+      momentValue = moment(stringValue, this.inputFormat)
       if (momentValue.isValid()) {
         isoStringValue = momentValue.format('YYYY-MM-DD')
       } else {

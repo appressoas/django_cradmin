@@ -18,6 +18,10 @@ export default class Html5TimeInput extends AbstractHtml5DatetimeInput {
     return 'HH:MM'
   }
 
+  makeValidInputFieldValue (stringValue) {
+    return stringValue
+  }
+
   get humanReadableInputFormat () {
     return gettext.pgettext('time format', this.inputFormat)
   }

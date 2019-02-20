@@ -59,7 +59,7 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
 
   makeInitialState () {
     return {
-      value: this.props.value || '',
+      value: this.makeValidInputFieldValue(this.props.value || ''),
       isBlurred: false
     }
   }
@@ -168,6 +168,10 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
     }
 
     return this.humanReadableInputFormat
+  }
+
+  makeValidInputFieldValue () {
+    throw new Error('makeValidInputFieldValue must be implemented in subclass')
   }
 
   get inputProps () {
