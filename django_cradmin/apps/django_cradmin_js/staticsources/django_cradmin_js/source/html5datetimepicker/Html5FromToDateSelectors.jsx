@@ -17,7 +17,7 @@ export default class Html5FromToDateSelectors extends React.Component {
       expandedLabel: PropTypes.string,
       expandToggleLabel: PropTypes.string.isRequired,
       toDateExpandedLabel: PropTypes.string.isRequired,
-      fromDateExpandedLabel: PropTypes.string.isRequired
+      fromDateExpandedLabel: PropTypes.string.isRequired,
     }
   }
 
@@ -30,30 +30,31 @@ export default class Html5FromToDateSelectors extends React.Component {
       commonDateOptions: {},
       isExpandedInitially: false,
       displayExpandToggle: true,
-      expandToggleLabel: gettext.gettext('Display to-date?'),
-      toDateExpandedLabel: gettext.gettext('To date'),
-      fromDateExpandedLabel: gettext.gettext('From date')
+      expandToggleLabel: gettext.pgettext('cradmin html5 from to date selector', 'Display to-date?'),
+      toDateExpandedLabel: gettext.pgettext('cradmin html5 from to date selector', 'To date'),
+      fromDateExpandedLabel: gettext.pgettext('cradmin html5 from to date selector', 'From date')
     }
   }
 
   constructor (props) {
     super(props)
-    this.state = this._getInitialState()
-    this._setupBoundFunctions()
+    this.state = this.getInitialState()
+    this.setupBoundFunctions()
   }
 
   /* initialization functions */
 
-  _getInitialState () {
+  getInitialState () {
     return {
       isExpanded: this.props.isExpandedInitially,
       invalidRangeAttempted: false
     }
   }
 
-  _setupBoundFunctions () {
+  setupBoundFunctions () {
     this.handleDateChange = this.handleDateChange.bind(this)
     this.handleShowToDateChange = this.handleShowToDateChange.bind(this)
+    this.reset = this.reset.bind(this)
   }
 
   handleDateChange (valueKey, value) {
@@ -90,27 +91,55 @@ export default class Html5FromToDateSelectors extends React.Component {
     }, this.handleDateChange)
   }
 
+  reset () {
+    this.props.onChange('', '', true)
+  }
+
   get commonDateOptions () {
     return {
       ...this.props.commonDateOptions
     }
   }
 
+  get fromDateMin () {
+    return null
+  }
+
+  get fromDateMax () {
+    if (!this.state.isExpanded) {
+      return null
+    }
+    return this.props.toDateValue
+  }
+
   get fromDateOptions () {
     return {
       ...this.commonDateOptions,
       value: this.props.fromDateValue,
-      max: this.props.toDateValue,
+      min: this.fromDateMin,
+      max: this.fromDateMax,
       onChange: (value) => { this.handleDateChange('fromDate', value) },
       ariaLabel: this.ariaFromLabel
     }
+  }
+
+  get toDateMin () {
+    if (!this.state.isExpanded) {
+      return null
+    }
+    return this.props.fromDateValue
+  }
+
+  get toDateMax () {
+    return null
   }
 
   get toDateOptions () {
     return {
       ...this.commonDateOptions,
       value: this.props.toDateValue,
-      min: this.props.fromDateValue,
+      min: this.toDateMin,
+      max: this.toDateMax,
       onChange: (value) => { this.handleDateChange('toDate', value) },
       ariaLabel: this.ariaToLabel
     }
@@ -146,6 +175,10 @@ export default class Html5FromToDateSelectors extends React.Component {
     return this.props.expandToggleLabel
   }
 
+  get invalidRangeErrorMsg () {
+    return gettext.pgettext('cradmin html5 from to date selector', 'To date cannot be before from date')
+  }
+
   get ariaToLabel () {
     return `${this.expandedLabel}: ${this.toDateExpandedLabel}`
   }
@@ -168,6 +201,9 @@ export default class Html5FromToDateSelectors extends React.Component {
   }
 
   renderShowToFieldCheckbox () {
+    if (!this.props.displayExpandToggle) {
+      return null
+    }
     return <label className='checkbox  checkbox--block'>
       <input type='checkbox' checked={this.state.isExpanded} onChange={this.handleShowToDateChange} />
       <span className='checkbox__control-indicator' />
@@ -179,7 +215,7 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.invalidRangeAttempted) {
       return null
     }
-    return <p className={'message message--error'}>{gettext.gettext('To date cannot be before from date')}</p>
+    return <p className={'message message--error'}>{this.invalidRangeErrorMsg}</p>
   }
 
   renderIfExpandedLabel (labelText) {

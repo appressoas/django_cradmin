@@ -26,7 +26,7 @@ import AbstractFilter from './AbstractFilter'
  *      "toDateExpandedLabel": "To",
  *      "expandToggleLabel": "Show range",
  *      "isExpandedInitially": true,
- *      "displayExpandToggle": true
+ *      "displayExpandToggle": true,
  *    }
  * }
  */
@@ -43,7 +43,7 @@ export default class Html5FromToDateFilter extends AbstractFilter {
         toDateExpandedLabel: PropTypes.string,
         fromDateExpandedLabel: PropTypes.string,
         expandToggleLabel: PropTypes.string,
-        displayExpandToggle: PropTypes.bool
+        displayExpandToggle: PropTypes.bool,
       })
     }
   }
@@ -90,11 +90,15 @@ export default class Html5FromToDateFilter extends AbstractFilter {
     window.clearTimeout(this.handleChangeTimeout)
   }
 
-  handleDateChange (fromDate, toDate) {
+  handleDateChange (fromDate, toDate, isReset = false) {
     this._clearTimeout()
-    this.handleChangeTimeout = window.setTimeout(() => {
-      this.setFilterValue(`${fromDate},${toDate}`)
-    }, 1000)
+    if (isReset) {
+      this.setFilterValue(`,`)
+    } else {
+      this.handleChangeTimeout = window.setTimeout(() => {
+        this.setFilterValue(`${fromDate},${toDate}`)
+      }, 1000)
+    }
   }
 
   render () {

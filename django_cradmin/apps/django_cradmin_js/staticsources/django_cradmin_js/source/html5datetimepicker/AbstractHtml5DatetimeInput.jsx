@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import BemUtilities from '../utilities/BemUtilities'
 import * as is from 'is_js'
 import UniqueDomIdSingleton from 'ievv_jsbase/lib/dom/UniqueDomIdSingleton'
+import * as gettext from 'ievv_jsbase/lib/gettext'
 
 export default class AbstractHtml5DatetimeInput extends React.Component {
   static get defaultProps () {
     return {
       value: null,
-      bemBlock: 'input',
+      bemBlock: 'searchinput',
       bemVariants: ['outlined'],
+      buttonIconBemVariants: ['close'],
       errorBemVariants: ['error'],
       messageBemBlock: 'message',
       messageErrorBemVariants: ['error'],
@@ -18,6 +20,7 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
       ariaLabel: null,
       ariaLabelledBy: null,
       ariaDescribedBy: null,
+      clearButtonTitle: gettext.pgettext('cradmin html5 datetime selector', 'Clear'),
       min: null,
       max: null,
       readOnly: false,
@@ -30,6 +33,8 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
       value: PropTypes.string,
       bemBlock: PropTypes.string.isRequired,
       bemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      buttonIconBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
+      clearButtonTitle: PropTypes.string.isRequired,
       errorBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
       messageBemBlock: PropTypes.string.isRequired,
       messageErrorBemVariants: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -47,14 +52,23 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
 
   constructor (props) {
     super(props)
-    this.onChange = this.onChange.bind(this)
-    this.onBlur = this.onBlur.bind(this)
-    this.onFocus = this.onFocus.bind(this)
     this.messageDomId = new UniqueDomIdSingleton().generate()
-    this.state = {
+    this.state = this.makeInitialState()
+    this.setupBoundFunctions()
+  }
+
+  makeInitialState () {
+    return {
       value: this.props.value || '',
       isBlurred: false
     }
+  }
+
+  setupBoundFunctions () {
+    this.onChange = this.onChange.bind(this)
+    this.onBlur = this.onBlur.bind(this)
+    this.onFocus = this.onFocus.bind(this)
+    this.handleClearClick = this.handleClearClick.bind(this)
   }
 
   parseInputValue (stringValue) {
@@ -63,6 +77,10 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
 
   handleChange (stringValue) {
     throw new Error('handleChange must be implemented in subclass')
+  }
+
+  handleClearClick () {
+    this.handleChange('')
   }
 
   onChange (e) {
@@ -83,12 +101,30 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
     })
   }
 
-  get className () {
+  get wrapperClassName () {
     let bemVariants = this.props.bemVariants
     if (!this.hasValidInput()) {
       bemVariants = this.props.errorBemVariants
     }
     return BemUtilities.buildBemBlock(this.props.bemBlock, bemVariants)
+  }
+
+  get bodyClassName () {
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'body')
+  }
+
+  get inputClassName () {
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'input')
+  }
+
+  get buttonClassName () {
+    return BemUtilities.buildBemElement(this.props.bemBlock, 'button')
+  }
+
+  get buttonIconClassName () {
+    const buttonIconClass = BemUtilities.buildBemElement(this.props.bemBlock, 'buttonicon')
+    const crIconClass = BemUtilities.buildBemBlock('cricon', this.props.buttonIconBemVariants)
+    return `${buttonIconClass} ${crIconClass}`
   }
 
   get messageClassName () {
@@ -149,7 +185,7 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
       onChange: this.onChange,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
-      className: this.className
+      className: this.inputClassName
     }
 
     if (!this.hasValidInput()) {
@@ -198,9 +234,20 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
     return this.renderInvalidInputMessage()
   }
 
+  renderWrappedInput () {
+    return <div className={this.wrapperClassName}>
+      <span className={this.bodyClassName}>
+        {this.renderInput()}
+      </span>
+      <button type={'button'} className={this.buttonClassName} title={this.props.clearButtonTitle} onClick={this.handleClearClick}>
+        <span className={this.buttonIconClassName} aria-hidden />
+      </button>
+    </div>
+  }
+
   render () {
     return <React.Fragment>
-      {this.renderInput()}
+      {this.renderWrappedInput()}
       {this.renderErrors()}
     </React.Fragment>
   }
