@@ -364,7 +364,8 @@
     $title-container-width: wide,
     $description-container-width: tight,
     $button-border-color: $color-light,
-    $button-text-color: color(primary, dark),
+    $button-text-color: $color-light,
+    $button-text-color-hover: color(primary, dark),
     $link-hover-color: color(primary, dark)
 ) {
     position: relative;
@@ -449,18 +450,18 @@
     &__button {
         @include button();
         @include button-style(
-            $border-color: $color-light,
-            $background-color-hover: $color-light,
-            $text-color: $color-light,
-            $text-color-hover: color(primary, dark)
+            $border-color: $button-border-color,
+            $background-color-hover: $button-border-color,
+            $text-color: $button-text-color,
+            $text-color-hover: $button-text-color-hover
         );
 
         &--focus {
             @include button-style-fill(
-                $border-color: $color-light,
-                $background-color: $color-light,
-                $text-color: color(primary, dark),
-                $text-color-hover: $color-light
+                $border-color: $button-border-color,
+                $background-color: $button-border-color,
+                $text-color: $button-text-color-hover,
+                $text-color-hover: $button-text-color
             );
         }
     }
