@@ -3,12 +3,23 @@ import * as gettext from 'ievv_jsbase/lib/gettext'
 import AbstractHtml5DatetimeInput from './AbstractHtml5DatetimeInput'
 
 export default class Html5TimeInput extends AbstractHtml5DatetimeInput {
+  static get defaultProps () {
+    return {
+      ...super.defaultProps,
+      clearButtonTitle: gettext.pgettext('cradmin html5 date', 'Clear time')
+    }
+  }
+
   getInputType () {
     return 'time'
   }
 
   get inputFormat () {
     return 'HH:MM'
+  }
+
+  makeValidInputFieldValue (stringValue) {
+    return stringValue
   }
 
   get humanReadableInputFormat () {
@@ -47,10 +58,6 @@ export default class Html5TimeInput extends AbstractHtml5DatetimeInput {
       const parseResult = this.parseInputValue(stringValue)
       this.props.onChange(parseResult.timeStringValue)
     })
-  }
-
-  get humanReadableInputFormat () {
-    return gettext.pgettext('time format', this.inputFormat)
   }
 
   renderInvalidInputText () {
