@@ -658,3 +658,115 @@
         }
     }
 }
+
+@mixin columnlayout__column-sm-order($order, $breakpoint) {
+    &--sm-order-#{$order} {
+        @include max-width ($breakpoint) {
+            order: $order;
+        }
+    }
+}
+
+@mixin columnlayout__column-size($name, $width, $breakpoint) {
+    &--#{$name} {
+        @include min-width ($breakpoint) {
+            flex: 0 0 auto;
+            width: $width;
+        }
+    }
+}
+
+@mixin columnlayout__spacing($prefix, $name, $sidemargin, $breakpoint) {
+    &--spacing-#{$name} {
+        #{$prefix}__column {
+            @include min-width ($breakpoint) {
+                margin-left: $sidemargin;
+                margin-right: $sidemargin;
+
+                &:first-child {
+                    @include min-width ($breakpoint) {
+                        margin-left: 0;
+                    }
+                }
+                &:last-child {
+                    @include min-width ($breakpoint) {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin columnlayout-bem-block($breakpoint) {
+    //$__columnlayout-root: &;
+    display: flex;
+    flex-direction: column;
+    @include min-width ($breakpoint) {
+        flex-direction: row;
+    }
+    &__column {
+        order: 10;
+
+        @include min-width ($breakpoint) {
+            flex: 1;
+            margin-left: $spacing--small;
+            margin-right: $spacing--small;
+        }
+        &:first-child {
+            @include min-width ($breakpoint) {
+                margin-left: 0;
+            }
+        }
+        &:last-child {
+            @include min-width ($breakpoint) {
+                margin-right: 0;
+            }
+        }
+
+        &--vertical-center {
+            @include min-width ($breakpoint) {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+
+        @include columnlayout__column-size(border-width, $border-width, $breakpoint);
+        @include columnlayout__column-size(border-width-small, $border-width--small, $breakpoint);
+        @include columnlayout__column-size(xsmall, 15%, $breakpoint);
+        @include columnlayout__column-size(small, 20%, $breakpoint);
+        @include columnlayout__column-size(large, 25%, $breakpoint);
+        @include columnlayout__column-size(xlarge, 30%, $breakpoint);
+        @include columnlayout__column-size(xxlarge, 35%, $breakpoint);
+        @include columnlayout__column-size(xxxlarge, 40%, $breakpoint);
+        @include columnlayout__column-size(half, 50%, $breakpoint);
+
+        @include columnlayout__column-sm-order(1, $breakpoint);
+        @include columnlayout__column-sm-order(2, $breakpoint);
+        @include columnlayout__column-sm-order(3, $breakpoint);
+        @include columnlayout__column-sm-order(5, $breakpoint);
+
+        &--separator {
+            display: none;
+            overflow: hidden;
+            @include min-width ($breakpoint) {
+                display: block;
+                flex: 0 0 auto;
+            }
+
+        }
+        &--separator-spacing-sm {
+            display: block;
+            margin-top: $vertical-rythm--medium;
+            overflow: hidden;
+            @include min-width ($breakpoint) {
+                margin-top: 0;
+                flex: 0 0 auto;
+            }
+        }
+    }
+
+    @include columnlayout__spacing(&, none, 0, $breakpoint);
+    @include columnlayout__spacing(&, large, $spacing, $breakpoint);
+}

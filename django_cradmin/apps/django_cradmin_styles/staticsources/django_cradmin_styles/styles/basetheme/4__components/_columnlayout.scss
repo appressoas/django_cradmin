@@ -1,42 +1,3 @@
-@mixin columnlayout__column-sm-order($order) {
-    &--sm-order-#{$order} {
-        @include max-width (md) {
-            order: $order;
-        }
-    }
-}
-
-@mixin columnlayout__column-size($name, $width) {
-    &--#{$name} {
-        @include min-width (md) {
-            flex: 0 0 auto;
-            width: $width;
-        }
-    }
-}
-
-@mixin columnlayout__spacing($prefix, $name, $sidemargin) {
-    &--spacing-#{$name} {
-        #{$prefix}__column {
-            @include min-width (md) {
-                margin-left: $sidemargin;
-                margin-right: $sidemargin;
-
-                &:first-child {
-                    @include min-width (md) {
-                        margin-left: 0;
-                    }
-                }
-                &:last-child {
-                    @include min-width (md) {
-                        margin-right: 0;
-                    }
-                }
-            }
-        }
-    }
-}
-
 /* Column layout
 
 Example: {type: isolated} 1 column
@@ -378,74 +339,33 @@ Styleguide components.columnlayout.5:separator
 
 
 .columnlayout {
-    //$__columnlayout-root: &;
-    display: flex;
-    flex-direction: column;
-    @include min-width (md) {
-        flex-direction: row;
-    }
-    &__column {
-        order: 10;
+    @include columnlayout-bem-block(md);
+}
 
-        @include min-width (md) {
-            flex: 1;
-            margin-left: $spacing--small;
-            margin-right: $spacing--small;
-        }
-        &:first-child {
-            @include min-width (md) {
-                margin-left: 0;
-            }
-        }
-        &:last-child {
-            @include min-width (md) {
-                margin-right: 0;
-            }
-        }
+/* Column layout - breakpoint at "lg" screen size
 
-        &--vertical-center {
-            @include min-width (md) {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-        }
+When you want the breakpoint for vertical layout to be `lg` instead of `md`, use `columnlayout-lg`
+instead of `columnlayout`.
 
-        @include columnlayout__column-size(border-width, $border-width);
-        @include columnlayout__column-size(border-width-small, $border-width--small);
-        @include columnlayout__column-size(xsmall, 15%);
-        @include columnlayout__column-size(small, 20%);
-        @include columnlayout__column-size(large, 25%);
-        @include columnlayout__column-size(xlarge, 30%);
-        @include columnlayout__column-size(xxlarge, 35%);
-        @include columnlayout__column-size(xxxlarge, 40%);
-        @include columnlayout__column-size(half, 50%);
 
-        @include columnlayout__column-sm-order(1);
-        @include columnlayout__column-sm-order(2);
-        @include columnlayout__column-sm-order(3);
-        @include columnlayout__column-sm-order(5);
+Example: {type: isolated} 3 columns
+    <div class="columnlayout-lg">
+        <div class="columnlayout-lg__column columnlayout-lg__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout-lg__column">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout-lg__column columnlayout-lg__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
 
-        &--separator {
-            display: none;
-            overflow: hidden;
-            @include min-width (md) {
-                display: block;
-                flex: 0 0 auto;
-            }
 
-        }
-        &--separator-spacing-sm {
-            display: block;
-            margin-top: $vertical-rythm--medium;
-            overflow: hidden;
-            @include min-width (md) {
-                margin-top: 0;
-                flex: 0 0 auto;
-            }
-        }
-    }
+Styleguide components.columnlayout.6:lg
+*/
 
-    @include columnlayout__spacing(&, none, 0);
-    @include columnlayout__spacing(&, large, $spacing);
+.columnlayout-lg {
+    @include columnlayout-bem-block(lg);
 }
