@@ -3746,9 +3746,9 @@ ieee754@^1.1.4:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.11.tgz#c16384ffe00f5b7835824e67b6f2bd44a5229455"
 
-"ievv_jsbase@git+ssh://git@github.com/appressoas/ievv_jsbase.git#2.0.0":
+ievv_jsbase@^2.0.0:
   version "2.0.0"
-  resolved "git+ssh://git@github.com/appressoas/ievv_jsbase.git#adc6e5e2d1585117da542efc90a97c3327233356"
+  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-2.0.0.tgz#c7bd228dcb2dfc50bf2cac423240e7949e9e20fd"
   dependencies:
     "@babel/cli" "^7.0.0-beta.47"
     "@babel/polyfill" "^7.0.0-beta.47"
