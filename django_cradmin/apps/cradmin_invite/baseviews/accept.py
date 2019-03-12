@@ -194,7 +194,7 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         If the user is authenticated, we return :meth:`~.AbstractAcceptInviteView.invite_accepted`.
         If the user is not authenticated, we raise :exc:`django.core.exceptions.PermissionDenied`.
         """
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             return self.invite_accepted(self.generictoken)
         else:
             raise PermissionDenied()

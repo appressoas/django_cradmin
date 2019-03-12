@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.views import logout
+from django.contrib.auth import logout
 
 
 def cradmin_logoutview(request, template_name='cradmin_authenticate/logout.django.html'):

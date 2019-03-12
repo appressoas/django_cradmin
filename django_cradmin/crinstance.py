@@ -512,7 +512,7 @@ class BaseCrAdminInstance(object):
         Defaults to ``self.request.user.is_authenticated()``, but you
         can override this.
         """
-        return self.request.user.is_authenticated()
+        return self.request.user.is_authenticated
 
     def get_two_factor_auth_viewname(self):
         """

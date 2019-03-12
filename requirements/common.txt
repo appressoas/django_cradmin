@@ -2,7 +2,8 @@
 #Django==1.9.7
 #Django==1.11.5
 #Django==1.11.20
-Django==2.0.13
+#Django==2.0.13
+Django==2.1.7
 
 django-dbdev>=1.2.1
 pytz==2014.10
