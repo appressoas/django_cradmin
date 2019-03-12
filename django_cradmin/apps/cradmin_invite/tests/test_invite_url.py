@@ -50,7 +50,7 @@ class TestSendActivationEmail(TestCase):
             private=True,
             content_object=self.invite_target
         ).generate_generictoken()
-        self.assertEquals(token.content_object, self.invite_target)
+        self.assertEqual(token.content_object, self.invite_target)
 
     def test_generate_generictoken_with_email(self):
         token = InviteUrlMock(
@@ -58,7 +58,7 @@ class TestSendActivationEmail(TestCase):
             private=True,
             content_object=self.invite_target
         ).generate_generictoken(email='test@example.com')
-        self.assertEquals(token.metadata['email'], 'test@example.com')
+        self.assertEqual(token.metadata['email'], 'test@example.com')
 
     def test_generate_generictoken_with_email_and_metadata(self):
         token = InviteUrlMock(
@@ -67,8 +67,8 @@ class TestSendActivationEmail(TestCase):
             content_object=self.invite_target,
             metadata={'test': 10}
         ).generate_generictoken(email='test@example.com')
-        self.assertEquals(token.metadata['email'], 'test@example.com')
-        self.assertEquals(token.metadata['test'], 10)
+        self.assertEqual(token.metadata['email'], 'test@example.com')
+        self.assertEqual(token.metadata['test'], 10)
 
     def test_generate_generictoken_with_email_and_metadata_with_email(self):
         token = InviteUrlMock(
@@ -77,7 +77,7 @@ class TestSendActivationEmail(TestCase):
             content_object=self.invite_target,
             metadata={'email': 'existing@example.com'}
         ).generate_generictoken(email='test@example.com')
-        self.assertEquals(token.metadata['email'], 'existing@example.com')
+        self.assertEqual(token.metadata['email'], 'existing@example.com')
 
     def test_send_email(self):
         testrequest = mock.MagicMock()

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render
