@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "ievv_jsbase": "git+ssh://git@github.com/appressoas/ievv_jsbase.git#1.6.1",
+    "ievv_jsbase": "^2.0.0",
     "moment": "^2.17.1",
     "prop-types": "^15.6.0",
     "react": "^15.5.0",
