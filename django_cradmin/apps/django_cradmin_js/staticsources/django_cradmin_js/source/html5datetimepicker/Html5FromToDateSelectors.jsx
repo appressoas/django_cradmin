@@ -44,9 +44,15 @@ export default class Html5FromToDateSelectors extends React.Component {
 
   /* initialization functions */
 
+  getInitiallyExpanded () {
+    const expanded = this.props.isExpandedInitially
+    const initialValuesMatch = this.props.toDateValue && this.props.fromDateValue !== this.props.toDateValue
+    return expanded ? expanded : initialValuesMatch
+  }
+
   getInitialState () {
     return {
-      isExpanded: this.props.isExpandedInitially,
+      isExpanded: this.getInitiallyExpanded(),
       invalidRangeAttempted: false
     }
   }
