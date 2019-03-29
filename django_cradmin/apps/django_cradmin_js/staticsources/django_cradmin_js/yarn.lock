@@ -3746,9 +3746,10 @@ ieee754@^1.1.4:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.11.tgz#c16384ffe00f5b7835824e67b6f2bd44a5229455"
 
-ievv_jsbase@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-2.0.0.tgz#c7bd228dcb2dfc50bf2cac423240e7949e9e20fd"
+ievv_jsbase@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-2.0.1.tgz#2ce030af9d59c4c521ee6aacf91af7d318ef5fbb"
+  integrity sha512-waG180/VvWctQGZahP7Dij6PB9rOclSAhtzUuMEe6fNglSOUjLghQNcLGEDvo7hL+Ka67CsrR3yQuNduVw9t4g==
   dependencies:
     "@babel/cli" "^7.0.0-beta.47"
     "@babel/polyfill" "^7.0.0-beta.47"
