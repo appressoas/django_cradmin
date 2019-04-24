@@ -87,9 +87,6 @@ export default class OpenModalButton extends React.Component {
       className: this.props.buttonClassName,
       onClick: this.openModal,
       disabled: this.props.isDisabled,
-      // style: {
-      //   cursor: 'pointer'
-      // },
       ...this.props.extraButtonAttributes
     }
     if (this.props.htmlTag === 'button') {
