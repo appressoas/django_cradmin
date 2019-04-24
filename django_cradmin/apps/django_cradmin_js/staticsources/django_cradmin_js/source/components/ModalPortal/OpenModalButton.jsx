@@ -7,6 +7,7 @@ import * as constants from './constants'
 export default class OpenModalButton extends React.Component {
   static get propTypes () {
     return {
+      htmlTag: PropTypes.string,
       buttonClassName: PropTypes.string,
       buttonContents: PropTypes.any,
       modalClosedCallback: PropTypes.func,
@@ -25,6 +26,7 @@ export default class OpenModalButton extends React.Component {
 
   static get defaultProps () {
     return {
+      htmlTag: 'button',
       buttonClassName: 'button button--compact',
       buttonContents: 'Open modal',
       modalContentsComponent: null,
@@ -78,15 +80,26 @@ export default class OpenModalButton extends React.Component {
   }
 
   renderOpenModalButton () {
-    return <button
-      key={'magic-portal-modal button'}
-      type={'button'}
-      className={this.props.buttonClassName}
-      onClick={this.openModal}
-      disabled={this.props.isDisabled}
-      {...this.props.extraButtonAttributes}>
+    const TagName = this.props.htmlTag
+    const props = {
+      key: 'magic-portal-modal button',
+      tabIndex: '0',
+      className: this.props.buttonClassName,
+      onClick: this.openModal,
+      disabled: this.props.isDisabled,
+      // style: {
+      //   cursor: 'pointer'
+      // },
+      ...this.props.extraButtonAttributes
+    }
+    if (this.props.htmlTag === 'button') {
+      props.type = 'button'
+    } else {
+      props.role = 'button'
+    }
+    return <TagName {...props}>
       {this.props.buttonContents}
-    </button>
+    </TagName>
   }
 
   renderModal () {

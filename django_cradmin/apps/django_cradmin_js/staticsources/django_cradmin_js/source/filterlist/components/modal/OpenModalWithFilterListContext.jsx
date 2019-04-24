@@ -9,7 +9,9 @@ export default class OpenModalWithFilterListContext extends AbstractFilter {
     return {
       ...super.propTypes,
       buttonLabel: PropTypes.string.isRequired,
-      buttomBemVariants: PropTypes.arrayOf(PropTypes.string),
+      htmlTag: PropTypes.string,
+      buttonClassName: PropTypes.string,
+      buttonBemVariants: PropTypes.arrayOf(PropTypes.string),
       modalContentsComponent: PropTypes.any.isRequired,
       modalContentsComponentProps: PropTypes.object.isRequired
     }
@@ -18,12 +20,17 @@ export default class OpenModalWithFilterListContext extends AbstractFilter {
   static get defaultProps () {
     return {
       ...super.defaultProps,
+      htmlTag: null,
+      buttonClassName: null,
       buttonBemVariants: [],
       modalContentsComponentProps: {}
     }
   }
 
   get buttonClassName () {
+    if (this.props.buttonClassName !== null) {
+      return this.props.buttonClassName
+    }
     return BemUtilities.addVariants('button', this.props.buttonBemVariants)
   }
 
@@ -32,6 +39,7 @@ export default class OpenModalWithFilterListContext extends AbstractFilter {
 
   render () {
     const props = {
+      htmlTag: this.props.htmlTag,
       modalContentsComponent: this.props.modalContentsComponent,
       buttonClassName: this.buttonClassName,
       buttonContents: this.props.buttonLabel,
