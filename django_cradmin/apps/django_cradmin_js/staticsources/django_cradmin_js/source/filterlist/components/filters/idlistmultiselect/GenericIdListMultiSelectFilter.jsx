@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AbstractFilter from '../AbstractFilter'
-import AbstractGenericIdListMultiselectItem from './AbstractGenericIdListMultiselectItem'
+import AbstractGenericIdListMultiSelectItem from './AbstractGenericIdListMultiSelectItem'
 import PageNumberPaginationFilterList from '../../filterlists/PageNumberPaginationFilterList'
 import ThreeColumnLayout from '../../layout/ThreeColumnLayout'
 import LoadMorePaginator from '../../paginators/LoadMorePaginator'
@@ -18,7 +18,7 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       idListApiUrl: PropTypes.string.isRequired,
       listItemIdName: PropTypes.string.isRequired,
       itemComponentType: PropTypes.any.isRequired,
-      itemComponentProps: PropTypes.object,
+      itemComponentPropOverrides: PropTypes.object,
       searchFilterLabel: PropTypes.string.isRequired,
       searchFilterName: PropTypes.string.isRequired,
       searchFilterPlaceholders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
@@ -30,8 +30,8 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       ...super.defaultProps,
       idListApiUrl: null,
       listItemIdName: 'id',
-      itemComponentType: AbstractGenericIdListMultiselectItem,
-      itemComponentProps: {},
+      itemComponentType: null,
+      itemComponentPropOverrides: {},
       searchFilterLabel: gettext.pgettext('cradmin GenericIdListMultiSelect searchFilterLabel', 'Search'),
       searchFilterName: 'search',
       searchFilterPlaceholders: []
@@ -68,6 +68,17 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
     ]
   }
 
+  get itemComponentType () {
+    if (!this.props.itemComponentType) {
+      console.error(
+        'No itemComponentType given in props. ' +
+        'Falling back to AbstractGenericIdListMultiSelectItem. ' +
+        'You should make a subclass of that component and pass it as "itemComponentType" in props!')
+      return AbstractGenericIdListMultiSelectItem
+    }
+    return this.props.itemComponentType
+  }
+
   get filterListItemListConfig () {
     return {
       component: SelectableList,
@@ -75,7 +86,7 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
         component: GenericFilterListItemWrapper,
         props: {
           listItemIdName: this.props.listItemIdName,
-          componentType: this.props.itemComponentType,
+          componentType: this.itemComponentType,
           componentProps: this.props.itemComponentProps
         }
       }

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AbstractListItem from 'django_cradmin_js/lib/filterlist/components/items/AbstractListItem'
+import AbstractListItem from '../../items/AbstractListItem'
 
 export default class GenericFilterListItemWrapper extends AbstractListItem {
   static get propTypes () {
@@ -15,7 +15,7 @@ export default class GenericFilterListItemWrapper extends AbstractListItem {
     return Object.assign(super.defaultProps, {
       componentType: null,
       componentProps: {},
-      listItemIdName: null
+      listItemIdName: 'id'
     })
   }
 
