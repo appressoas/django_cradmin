@@ -488,6 +488,11 @@ Styleguide components.selectable-list
                 &:first-child {
                     margin-left: 0;
                 }
+
+                &--outlined {
+                    border: $border-width--small solid color(neutral, light);
+                    border-radius: $border-radius;
+                }
             }
 
             .selectable-list__itemcontent {
