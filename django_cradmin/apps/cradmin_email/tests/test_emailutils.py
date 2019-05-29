@@ -89,34 +89,40 @@ class TestCrAdminEmail(TestCase):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
-        MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}, reply_to='reply@example.com').send()
+        MyEmail(recipient='test@example.com',
+                extra_context_data={'name': 'Test'},
+                reply_to=('reply', 'reply@example.com')
+                ).send()
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
-        self.assertListEqual(mail.outbox[0].reply_to, ['reply@example.com'])
+        self.assertEqual(mail.outbox[0].reply_to, ['reply', 'reply@example.com'])
 
-    def test_multiple_reply_to(self):
+    def test_reply_to_label_reply_to_email(self):
         class MyEmail(emailutils.CrAdminEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
         MyEmail(recipient='test@example.com',
                 extra_context_data={'name': 'Test'},
-                reply_to_list=['reply1@example.com', 'reply1@example.com']
+                reply_to_label='reply',
+                reply_to_email='reply@example.com'
                 ).send()
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
-        self.assertListEqual(mail.outbox[0].reply_to, ['reply1@example.com', 'reply1@example.com'])
+        self.assertEqual(mail.outbox[0].reply_to, ['reply', 'reply@example.com'])
 
     def test_value_error_cannot_specify_both_reply_to_and_reply_to_list(self):
         class MyEmail(emailutils.CrAdminEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
-        with self.assertRaisesMessage(ValueError, 'You can only specify one of the reply_to or reply_to_list.'):
+        with self.assertRaisesMessage(ValueError,
+                                      'You can only specify one of the reply_to or reply_to_label and reply_to_email.'):
             MyEmail(recipient='test@example.com',
                     extra_context_data={'name': 'Test'},
-                    reply_to_list=['reply1@example.com', 'reply1@example.com'],
-                    reply_to='reply@example.com'
+                    reply_to_label='reply',
+                    reply_to_email='reply@example.com',
+                    reply_to=('reply', 'reply@example.com')
                     )
 
     def test_without_reply_to(self):
@@ -127,4 +133,30 @@ class TestCrAdminEmail(TestCase):
         MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
-        self.assertListEqual(mail.outbox[0].reply_to, [])
+        self.assertEqual(mail.outbox[0].reply_to, [])
+
+    def test_reply_to_only_reply_email(self):
+        class MyEmail(emailutils.CrAdminEmail):
+            subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
+            html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
+        MyEmail(recipient='test@example.com',
+                extra_context_data={'name': 'Test'},
+                reply_to_email='reply@example.com'
+                ).send()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
+        self.assertEqual(mail.outbox[0].reply_to, [])
+
+    def test_reply_to_only_reply_label(self):
+        class MyEmail(emailutils.CrAdminEmail):
+            subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
+            html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
+        MyEmail(recipient='test@example.com',
+                extra_context_data={'name': 'Test'},
+                reply_to_label='reply'
+                ).send()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
+        self.assertEqual(mail.outbox[0].reply_to, [])

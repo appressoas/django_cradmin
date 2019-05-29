@@ -327,21 +327,21 @@ class AbstractEmail(object):
 
 class CrAdminEmail(AbstractEmail):
 
-    def __init__(self, reply_to=None, reply_to_list=None, *args, **kwargs):
+    def __init__(self, reply_to=None, reply_to_label=None, reply_to_email=None, *args, **kwargs):
         super(CrAdminEmail, self).__init__(*args, **kwargs)
-        if reply_to and reply_to_list:
-            raise ValueError('You can only specify one of the reply_to or reply_to_list.')
-        if reply_to:
-            self.reply_to_list = [reply_to]
+        if reply_to and reply_to_email and reply_to_label:
+            raise ValueError('You can only specify one of the reply_to or reply_to_label and reply_to_email.')
+        if reply_to_label and reply_to_email:
+            self.reply_to = (reply_to_label, reply_to_email)
         else:
-            self.reply_to_list = reply_to_list
+            self.reply_to = reply_to
 
-    def get_reply_to_list(self):
-        return self.reply_to_list
+    def get_reply_to(self):
+        return self.reply_to
 
     def get_send_mail_kwargs(self):
         kwargs = super(CrAdminEmail, self).get_send_mail_kwargs()
-        reply_to = self.get_reply_to_list()
+        reply_to = self.get_reply_to()
         if reply_to:
             kwargs['reply_to'] = reply_to
         return kwargs
