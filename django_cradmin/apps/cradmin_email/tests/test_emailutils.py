@@ -40,6 +40,7 @@ class TestAbstractEmail(TestCase):
         class MyEmail(emailutils.AbstractEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
         MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
@@ -48,6 +49,7 @@ class TestAbstractEmail(TestCase):
         class MyEmail(emailutils.AbstractEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
         with self.settings(DJANGO_CRADMIN_EMAIL_SUBJECT_PREFIX='[Testbrand] '):
             MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
         self.assertEqual(len(mail.outbox), 1)
@@ -57,6 +59,7 @@ class TestAbstractEmail(TestCase):
         class MyEmail(emailutils.AbstractEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
         MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
         html_altenative = mail.outbox[0].alternatives[0]
         self.assertEqual(html_altenative[1], 'text/html')
@@ -66,6 +69,7 @@ class TestAbstractEmail(TestCase):
         class MyEmail(emailutils.AbstractEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
         MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
         self.assertEqual(mail.outbox[0].body.strip(), 'Hello\n\nWorld\n\nTest')
 
@@ -74,5 +78,53 @@ class TestAbstractEmail(TestCase):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
             plaintext_message_template = 'cradmin_email_testapp/abstractemail/plaintext_message.django.txt'
+
         MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
         self.assertEqual(mail.outbox[0].body.strip(), 'Hello PlainText World Test')
+
+
+class TestCrAdminEmail(TestCase):
+    def test_reply_to(self):
+        class MyEmail(emailutils.CrAdminEmail):
+            subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
+            html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
+        MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}, reply_to='reply@example.com').send()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
+        self.assertListEqual(mail.outbox[0].reply_to, ['reply@example.com'])
+
+    def test_multiple_reply_to(self):
+        class MyEmail(emailutils.CrAdminEmail):
+            subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
+            html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
+        MyEmail(recipient='test@example.com',
+                extra_context_data={'name': 'Test'},
+                reply_to_list=['reply1@example.com', 'reply1@example.com']
+                ).send()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
+        self.assertListEqual(mail.outbox[0].reply_to, ['reply1@example.com', 'reply1@example.com'])
+
+    def test_value_error_cannot_specify_both_reply_to_and_reply_to_list(self):
+        class MyEmail(emailutils.CrAdminEmail):
+            subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
+            html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
+        with self.assertRaisesMessage(ValueError, 'You can only specify one of the reply_to or reply_to_list.'):
+            MyEmail(recipient='test@example.com',
+                    extra_context_data={'name': 'Test'},
+                    reply_to_list=['reply1@example.com', 'reply1@example.com'],
+                    reply_to='reply@example.com'
+                    )
+
+    def test_without_reply_to(self):
+        class MyEmail(emailutils.CrAdminEmail):
+            subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
+            html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
+
+        MyEmail(recipient='test@example.com', extra_context_data={'name': 'Test'}).send()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Hello, Test')
+        self.assertListEqual(mail.outbox[0].reply_to, [])

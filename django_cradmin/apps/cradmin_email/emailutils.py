@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, get_connection, EmailMultiAlternatives
 from django.template.loader import render_to_string
 import html2text
 
@@ -323,3 +323,43 @@ class AbstractEmail(object):
             self.from_email = self.get_default_from_email()
 
         self.extra_context_data = extra_context_data
+
+
+class CrAdminEmail(AbstractEmail):
+
+    def __init__(self, reply_to=None, reply_to_list=None, *args, **kwargs):
+        super(CrAdminEmail, self).__init__(*args, **kwargs)
+        if reply_to and reply_to_list:
+            raise ValueError('You can only specify one of the reply_to or reply_to_list.')
+        if reply_to:
+            self.reply_to_list = [reply_to]
+        else:
+            self.reply_to_list = reply_to_list
+
+    def get_reply_to_list(self):
+        return self.reply_to_list
+
+    def get_send_mail_kwargs(self):
+        kwargs = super(CrAdminEmail, self).get_send_mail_kwargs()
+        reply_to = self.get_reply_to_list()
+        if reply_to:
+            kwargs['reply_to'] = reply_to
+        return kwargs
+    
+    def send_mail(self, subject, message, from_email, recipient_list,
+                  fail_silently=False, auth_user=None, auth_password=None,
+                  connection=None, html_message=None, reply_to=None):
+        connection = connection or get_connection(
+            username=auth_user,
+            password=auth_password,
+            fail_silently=fail_silently,
+        )
+        mail = EmailMultiAlternatives(subject=subject, body=message, from_email=from_email, to=recipient_list,
+                                      reply_to=reply_to, connection=connection)
+        if html_message:
+            mail.attach_alternative(html_message, 'text/html')
+
+        return mail.send()
+
+    def send(self):
+        self.send_mail(**self.get_send_mail_kwargs())
