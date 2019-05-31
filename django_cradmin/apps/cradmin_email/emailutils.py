@@ -325,10 +325,10 @@ class AbstractEmail(object):
         self.extra_context_data = extra_context_data
 
 
-class CrAdminEmail(AbstractEmail):
+class AbstractAdvancedEmail(AbstractEmail):
 
     def __init__(self, reply_to=None, reply_to_label=None, reply_to_email=None, *args, **kwargs):
-        super(CrAdminEmail, self).__init__(*args, **kwargs)
+        super(AbstractAdvancedEmail, self).__init__(*args, **kwargs)
         if reply_to and reply_to_email and reply_to_label:
             raise ValueError('You can only specify one of the reply_to or reply_to_label and reply_to_email.')
         if reply_to_label and reply_to_email:
@@ -340,7 +340,7 @@ class CrAdminEmail(AbstractEmail):
         return self.reply_to
 
     def get_send_mail_kwargs(self):
-        kwargs = super(CrAdminEmail, self).get_send_mail_kwargs()
+        kwargs = super(AbstractAdvancedEmail, self).get_send_mail_kwargs()
         reply_to = self.get_reply_to()
         if reply_to:
             kwargs['reply_to'] = reply_to

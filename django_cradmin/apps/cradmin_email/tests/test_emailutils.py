@@ -83,9 +83,9 @@ class TestAbstractEmail(TestCase):
         self.assertEqual(mail.outbox[0].body.strip(), 'Hello PlainText World Test')
 
 
-class TestCrAdminEmail(TestCase):
+class TestAbstractAdvancedEmail(TestCase):
     def test_reply_to(self):
-        class MyEmail(emailutils.CrAdminEmail):
+        class MyEmail(emailutils.AbstractAdvancedEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
@@ -98,7 +98,7 @@ class TestCrAdminEmail(TestCase):
         self.assertEqual(mail.outbox[0].reply_to, ['reply', 'reply@example.com'])
 
     def test_reply_to_label_reply_to_email(self):
-        class MyEmail(emailutils.CrAdminEmail):
+        class MyEmail(emailutils.AbstractAdvancedEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
@@ -112,7 +112,7 @@ class TestCrAdminEmail(TestCase):
         self.assertEqual(mail.outbox[0].reply_to, ['reply', 'reply@example.com'])
 
     def test_value_error_cannot_specify_both_reply_to_and_reply_to_list(self):
-        class MyEmail(emailutils.CrAdminEmail):
+        class MyEmail(emailutils.AbstractAdvancedEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
@@ -126,7 +126,7 @@ class TestCrAdminEmail(TestCase):
                     )
 
     def test_without_reply_to(self):
-        class MyEmail(emailutils.CrAdminEmail):
+        class MyEmail(emailutils.AbstractAdvancedEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
@@ -136,7 +136,7 @@ class TestCrAdminEmail(TestCase):
         self.assertEqual(mail.outbox[0].reply_to, [])
 
     def test_reply_to_only_reply_email(self):
-        class MyEmail(emailutils.CrAdminEmail):
+        class MyEmail(emailutils.AbstractAdvancedEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
@@ -149,7 +149,7 @@ class TestCrAdminEmail(TestCase):
         self.assertEqual(mail.outbox[0].reply_to, [])
 
     def test_reply_to_only_reply_label(self):
-        class MyEmail(emailutils.CrAdminEmail):
+        class MyEmail(emailutils.AbstractAdvancedEmail):
             subject_template = 'cradmin_email_testapp/abstractemail/subject.django.txt'
             html_message_template = 'cradmin_email_testapp/abstractemail/html_message.django.html'
 
