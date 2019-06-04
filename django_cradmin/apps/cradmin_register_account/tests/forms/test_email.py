@@ -25,9 +25,9 @@ class TestEmailUserCreateAccountForm(TestCase):
             'email': 'test@example.com'
         })
         form.is_valid()
-        self.assertEquals(EmailUser.objects.count(), 0)
+        self.assertEqual(EmailUser.objects.count(), 0)
         form.save()
-        self.assertEquals(EmailUser.objects.count(), 1)
+        self.assertEqual(EmailUser.objects.count(), 1)
         created_user = EmailUser.objects.first()
         self.assertEqual(created_user.email, 'test@example.com')
         self.assertTrue(created_user.has_usable_password())
@@ -40,7 +40,7 @@ class TestEmailUserCreateAccountForm(TestCase):
             'email': 'unused@example.com'
         })
         self.assertFalse(form.is_valid())
-        self.assertEquals(form.non_field_errors(), [u'The passwords do not match.'])
+        self.assertEqual(form.non_field_errors(), [u'The passwords do not match.'])
 
     def test_email_is_not_unique(self):
         EmailUser.objects.create(email='test@example.com')
@@ -50,6 +50,6 @@ class TestEmailUserCreateAccountForm(TestCase):
             'email': 'test@example.com'
         })
         self.assertFalse(form.is_valid())
-        self.assertEquals(form.errors, {
+        self.assertEqual(form.errors, {
             'email': [u'Email user with this Email already exists.']
         })

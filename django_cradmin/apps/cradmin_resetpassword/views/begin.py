@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django_cradmin import uicontainer

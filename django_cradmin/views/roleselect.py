@@ -80,8 +80,8 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
         """
         if self.get_autoredirect_if_single_role():
             only_role = self.get_queryset().first()
-            return HttpResponseRedirect(self.request.cradmin_instance.rolefrontpage_url(
-                self.request.cradmin_instance.get_roleid(only_role)))
+            return HttpResponseRedirect(str(self.request.cradmin_instance.rolefrontpage_url(
+                self.request.cradmin_instance.get_roleid(only_role))))
         else:
             return super(RoleSelectView, self).get(*args, **kwargs)
 

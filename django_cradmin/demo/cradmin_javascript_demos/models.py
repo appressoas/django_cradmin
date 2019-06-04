@@ -19,10 +19,14 @@ class FictionalFigure(models.Model):
 class FictionalFigureCollection(models.Model):
     name = models.CharField(max_length=255)
     primary_fictional_figure = models.ForeignKey(
-        FictionalFigure, related_name='+')
+        FictionalFigure, related_name='+',
+        on_delete=models.CASCADE
+    )
     secondary_fictional_figure = models.ForeignKey(
         FictionalFigure, related_name='+',
-        null=True, blank=True)
+        null=True, blank=True,
+        on_delete=models.CASCADE
+    )
     promoted_fictional_figures = models.ManyToManyField(
         FictionalFigure,
         blank=True)

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.core import mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase
 import htmls
 from django_cradmin.python2_compatibility import mock
@@ -19,12 +19,12 @@ class TestBeginPasswordResetView(TestCase):
         response = self.client.get(self.url)
         selector = htmls.S(response.content)
         self.assertTrue(selector.exists('form#id_django_cradmin_resetpassword_begin_form'))
-        self.assertEquals(selector.one('h1').alltext_normalized, 'Find your account')
+        self.assertEqual(selector.one('h1').alltext_normalized, 'Find your account')
         self.assertIn(
             'Type in your email-address',
             selector.one('.adminui-page-cover').alltext_normalized)
         self.assertTrue(selector.exists('input[type="email"][name="email"]'))
-        self.assertEquals(selector.one('button[type="submit"]').alltext_normalized, 'Search')
+        self.assertEqual(selector.one('button[type="submit"]').alltext_normalized, 'Search')
 
     def test_post_user_not_found(self):
         response = self.client.post(self.url, {'email': 'testuser@example.com'})

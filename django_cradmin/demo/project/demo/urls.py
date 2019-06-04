@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^styleguide/', include('django_cradmin.apps.cradmin_kss_styleguide.urls')),
     url(r'^cradmin_email/', include('django_cradmin.apps.cradmin_email.urls')),
 
-    url(r'^djangoadmin/', include(admin.site.urls)),
+    url(r'^djangoadmin/', admin.site.urls),
     url(r'^javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     url(r'^no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     url(r'^uicontainerdemo/', include(UIContainerDemoCrAdminInstance.urls())),

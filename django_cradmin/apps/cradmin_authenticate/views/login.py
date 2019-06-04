@@ -168,7 +168,7 @@ class LoginView(formview.StandaloneFormView):
         """
         If user is authenticated, call :meth:`.LoginView.get_redirect_url()`, else render the login form.
         """
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             return HttpResponseRedirect(self.get_redirect_url())
         else:
             return super(LoginView, self).get(*args, **kwargs)

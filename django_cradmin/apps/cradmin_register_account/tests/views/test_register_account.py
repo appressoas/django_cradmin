@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import htmls
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase
 
 from django_cradmin.tests.helpers import create_user
@@ -15,15 +15,15 @@ class TestRegisterAccountView(TestCase):
     def test_get(self):
         response = self.client.get(self.url)
         selector = htmls.S(response.content)
-        self.assertEquals(selector.one('.test-primary-h1').alltext_normalized,
+        self.assertEqual(selector.one('.test-primary-h1').alltext_normalized,
                           'Create your Testsite account')
-        self.assertEquals(selector.one('title').alltext_normalized,
+        self.assertEqual(selector.one('title').alltext_normalized,
                           'Create your Testsite account')
         self.assertTrue(selector.exists('input[type="email"][name="email"]'))
         self.assertTrue(selector.exists('input[type="text"][name="username"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password1"]'))
         self.assertTrue(selector.exists('input[type="password"][name="password2"]'))
-        self.assertEquals(selector.one('button[type="submit"]').alltext_normalized, 'Sign up for Testsite')
+        self.assertEqual(selector.one('button[type="submit"]').alltext_normalized, 'Sign up for Testsite')
 
     def test_post_email_not_unique(self):
         create_user('testuser', email='testuser@example.com')

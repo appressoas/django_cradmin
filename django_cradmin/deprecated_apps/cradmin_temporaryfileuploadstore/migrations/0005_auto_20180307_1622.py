@@ -6,6 +6,7 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+    atomic = False
 
     dependencies = [
         ('cradmin_temporaryfileuploadstore', '0004_auto_20151017_1947'),

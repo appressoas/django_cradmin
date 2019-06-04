@@ -67,7 +67,7 @@ class DeleteViewMixin:
 
         Defaults to the INDEX view of the current app.
         """
-        return self.request.cradmin_app.reverse_appindexurl()
+        return str(self.request.cradmin_app.reverse_appindexurl())
 
     def get_success_message(self, object_preview):
         """

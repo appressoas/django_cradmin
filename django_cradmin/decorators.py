@@ -42,7 +42,7 @@ def has_access_to_cradmin_instance(cradmin_instance_id, view_function,
             if cradmin_instance.get_two_factor_auth_viewname():
                 return two_factor_required(view_function)(request, *args, **kwargs)
             return view_function(request, *args, **kwargs)
-        elif request.user.is_authenticated():
+        elif request.user.is_authenticated:
             raise PermissionDenied()
         else:
             # Redirect to login just like login_required()
