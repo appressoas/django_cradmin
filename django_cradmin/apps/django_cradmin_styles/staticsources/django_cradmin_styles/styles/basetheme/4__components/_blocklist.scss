@@ -396,6 +396,11 @@ Styleguide components.blocklist.movable-items
     }
     color: $text-color;
     background-color: $background-color;
+
+    &[disabled] {
+        pointer-events: none;
+        opacity: 0.4;
+    }
     &:hover,
     &:focus,
     &:active {
