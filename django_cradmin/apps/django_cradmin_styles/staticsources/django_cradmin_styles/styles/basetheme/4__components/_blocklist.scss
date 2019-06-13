@@ -218,6 +218,63 @@ Example: Various action sidebar layouts
                 </button>
             </div>
         </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <a href="#" class="blocklist__action-content blocklist__action-content--link">
+                Two vertical buttons with link on action-content
+            </a>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move up">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
+                </button>
+                <button class="blocklist__action-button" aria-label="Move down">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <a href="#" class="blocklist__action-content blocklist__action-content--link">
+                <h2 class="blocklist__itemtitle">Two vertical buttons with link on action-content</h2>
+                <p>With complex content</p>
+            </a>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move up">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
+                </button>
+                <button class="blocklist__action-button" aria-label="Move down">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Delete">
+                    <span class="cricon cricon--trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <a href="#" class="blocklist__action-content blocklist__action-content--link">
+                LINK Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </a>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move down">
+                    <span class="cricon cricon--chevron-down" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Move up">
+                    <span class="cricon cricon--chevron-up" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div class="blocklist__item  blocklist__item--with-action-sidebar">
+            <div class="blocklist__action-sidebar">
+                <button class="blocklist__action-button" aria-label="Edit">
+                    <span class="cricon cricon--pencil" aria-hidden="true"></span>
+                </button>
+            </div>
+            <a href="#" class="blocklist__action-content blocklist__action-content--link">
+                LINK Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </a>
+        </div>
     </div>
 
 
@@ -456,7 +513,9 @@ Styleguide components.blocklist.movable-items
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
+            //align-content: stretch;
             padding: 0;
+            border: none;
         }
     }
 
@@ -587,7 +646,41 @@ Styleguide components.blocklist.movable-items
     &__action-content {
         padding: $vertical-rythm--spacing $spacing;
         flex: 1 1 auto;
-        align-self: center;
+        align-self: stretch;
+        border-style: solid;
+        border-width: $border-width--small 0;
+        border-color: color(neutral, verylight);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &:first-child {
+            border-left-width: $border-width--small;
+            border-top-left-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
+        }
+        &:last-child {
+            border-right-width: $border-width--small;
+            border-top-right-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+        }
+
+        &--link {
+            color: $color-text;
+            text-decoration: none;
+            transition: border-color 160ms;
+
+            &:hover,
+            &:focus {
+                color: $color-links--hover;
+                text-decoration: none;
+                border-color: color(neutral, light);
+            }
+        }
+    }
+
+    &__action-sidebar + &__action-content {
+        margin-left: -2px;
     }
 
     &--tight {
