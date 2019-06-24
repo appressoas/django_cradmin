@@ -45,7 +45,7 @@
     "test-debug": "jest --debug",
     "test-watch": "jest --watch"
   },
-  "version": "4.2.4",
+  "version": "4.2.6",
   "standard": {
     "env": [
       "jest"

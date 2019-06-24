@@ -141,6 +141,7 @@ export default class AbstractFilterList extends React.Component {
     this._apiRequestNumber = 0
     this.childExposedApi = this.makeChildExposedApi()
     this._filterApiUpdateTimeoutId = null
+    this._saveMovingItemTimeout = null
     this._blurTimeoutId = null
     this.filterListRegistry = new FilterListRegistrySingleton()
     this.state = this.getInitialState()
@@ -224,7 +225,9 @@ export default class AbstractFilterList extends React.Component {
       loadItemsFromApiError: null,
       enabledComponentGroups: new Set(),
       selectMode: this.props.selectMode,
-      isMounted: false
+      isMounted: false,
+      isMovingListItemId: null,
+      allListItemMovementIsLocked: false
     }
   }
 
@@ -615,7 +618,7 @@ export default class AbstractFilterList extends React.Component {
    * Moves an element with listItemId one step up in the listItemsDataArray
    * @param listItemId the list item id to move
    */
-  moveUp (listItemId) {
+  moveUp (listItemId, callback = null) {
     const index = this.getIndexOfId(listItemId)
     if (index === 0) {
       return
@@ -626,6 +629,10 @@ export default class AbstractFilterList extends React.Component {
         this.state.listItemsDataArray[index],
         this.state.listItemsDataArray[index - 1],
         ...this.state.listItemsDataArray.slice(index + 1)]
+    }, () => {
+      if (callback !== null) {
+        callback(listItemId)
+      }
     })
   }
 
@@ -633,7 +640,7 @@ export default class AbstractFilterList extends React.Component {
    * Moves an element with listItemId one step down in the listItemsDataArray
    * @param listItemId the list item id to move
    */
-  moveDown (listItemId) {
+  moveDown (listItemId, callback = null) {
     const index = this.getIndexOfId(listItemId)
     if (index === this.state.listItemsDataArray.lastIndex - 1) {
       return
@@ -645,7 +652,117 @@ export default class AbstractFilterList extends React.Component {
         this.state.listItemsDataArray[index],
         ...this.state.listItemsDataArray.slice(index + 2)
       ]
+    }, () => {
+      if (callback !== null) {
+        callback(listItemId)
+      }
     })
+  }
+
+  /**
+   *
+   * @example <caption>Typical example within some child component of the filterlist</caption>
+   *
+   * handleMoveUp () {
+   *   // this.props.listItemId would work for list item renderables, but you may get it from somewhere else
+   *   this.childExposedApi.setIsMovingListItemId(this.props.listItemId, (listItemId) => {
+   *     this.childExposedApi.moveUp(listItemId, () => {
+   *       this.childExposedApi.setSaveMovingItemTimeout((listItemId) => {
+   *         this.saveMovedItem(listItemId)
+   *       })
+   *     })
+   *   })
+   * }
+   *
+   * saveMovedItem (listItemId) {
+   *   this.childExposedApi.lockAllListItemMovement(() => {
+   *     new HttpRequest()
+   *        .post(...)
+   *        .then(() => {
+   *           this.childExposedApi.clearIsMovingListItemId()
+   *        })
+   *        .catch(() => {
+   *           // Show some error, and perhaps call clearisMovingListItemId()
+   *        })
+   *   })
+   * }
+   *
+   * @param listItemId
+   * @param callback
+   */
+  setIsMovingListItemId (listItemId, callback = null) {
+    this.setState({
+      isMovingListItemId: listItemId
+    }, () => {
+      if (callback !== null) {
+        callback(listItemId)
+      }
+    })
+  }
+
+  /**
+   * Get the ID of the list-item currently being moved.
+   *
+   * @returns {*}
+   */
+  get isMovingListItemId () {
+    return this.state.isMovingListItemId
+  }
+
+  /**
+   * Should item-movement be completely disabled?
+   *
+   * @returns {bool}
+   */
+  get allListItemMovementIsLocked () {
+    return this.state.allListItemMovementIsLocked
+  }
+
+  /**
+   * Sets the `allListItemMovementIsLocked` in state, and the
+   * callback should handle the POST-request to an API.
+   *
+   * For example usage, see the example for `setIsMovingListItemId`.
+   *
+   * @param callback
+   */
+  lockAllListItemMovement (callback = null) {
+    this.setState({
+      allListItemMovementIsLocked: true
+    }, () => {
+      if (callback !== null) {
+        callback()
+      }
+    })
+  }
+
+  /**
+   * Sets `isMovingListItemId` to ``null`` and `allListItemMovementIsLocked` to
+   * ``false`` in state.
+   *
+   * @see setIsMovingListItemId
+   */
+  clearIsMovingListItemId () {
+    this.setState({
+      isMovingListItemId: null,
+      allListItemMovementIsLocked: false
+    })
+  }
+
+  /**
+   * A timeout applied everytime an item is moved, that resets when moving an item
+   * before the previous timeout.
+   *
+   * For example usage, see the example for `setIsMovingListItemId`.
+   *
+   * @param callback
+   * @param timeoutMilliseconds
+   */
+  setSaveMovingItemTimeout (callback, timeoutMilliseconds = 500) {
+    if (this._saveMovingItemTimeout) {
+      window.clearTimeout(this._saveMovingItemTimeout)
+    }
+    this._saveMovingItemTimeout = window.setTimeout(callback, timeoutMilliseconds)
   }
 
   //
@@ -1669,7 +1786,9 @@ export default class AbstractFilterList extends React.Component {
       enabledComponentGroups: this.state.enabledComponentGroups,
       isLoadingNewItemsFromApi: this.state.isLoadingNewItemsFromApi,
       isLoadingMoreItemsFromApi: this.state.isLoadingMoreItemsFromApi,
-      selectMode: this.state.selectMode
+      selectMode: this.state.selectMode,
+      movingListItem: this.state.movingListItem,
+      allListItemMovementIsLocked: this.state.allListItemMovementIsLocked
     })
   }
 

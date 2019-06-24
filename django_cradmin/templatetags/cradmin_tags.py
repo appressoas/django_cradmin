@@ -542,3 +542,28 @@ def cradmin_theme_static(context, path, absolute=False):
     else:
         url = full_path
     return url
+
+
+@register.simple_tag(takes_context=True)
+def cradmin_page_cover_bem_block(context):
+    """
+    Get the page-cover BEM block.
+
+    Tries to find the BEM block by lookup in this order:
+
+    - If we have the `page_cover_bem_block` variable in the template context, use that.
+    - Try to use request.cradmin_app.page_cover_bem_block.
+    - Try to use request.cradmin_instance.page_cover_bem_block.
+    - Fall back on `"adminui-page-cover"`.
+    """
+    request = context['request']
+    context_bem_block = context.get('page_cover_bem_block', None)
+    if context_bem_block:
+        return context_bem_block
+    cradmin_app = getattr(request, 'cradmin_app', None)
+    if cradmin_app:
+        return cradmin_app.page_cover_bem_block
+    cradmin_instance = getattr(request, 'cradmin_instance', None)
+    if cradmin_instance:
+        return cradmin_instance.page_cover_bem_block
+    return 'adminui-page-cover'

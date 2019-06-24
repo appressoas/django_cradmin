@@ -81,12 +81,12 @@
 
                                 {% block page-cover %}
                                     <header class="
-                                            {% block page-cover-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}{% endblock %}
+                                            {% block page-cover-bem-block %}{% cradmin_page_cover_bem_block %}{% endblock %}
                                             {% block page-cover-bem-variant %}{% endblock %}
                                             {% cradmin_test_css_class 'page-cover' %}">
                                         {% block page-cover-content %}
                                             <h1 class="
-                                                    {% block page-cover-title-bem-block %}{{ request.cradmin_instance.page_cover_bem_block|default:"adminui-page-cover" }}__title{% endblock %}
+                                                    {% block page-cover-title-bem-block %}{% cradmin_page_cover_bem_block %}__title{% endblock %}
                                                     {% block page-cover-title-bem-variant %}{% endblock %}
                                                     {% cradmin_test_css_class 'primary-h1' %}">
                                                 {% block page-cover-title %}{% endblock page-cover-title %}

@@ -461,6 +461,10 @@ Styleguide 4:cricon
         }
     }
 
+    &--hidden {
+        visibility: hidden;
+    }
+
     &--color-primary {
         &:before {
             @include cricon-color-primary();

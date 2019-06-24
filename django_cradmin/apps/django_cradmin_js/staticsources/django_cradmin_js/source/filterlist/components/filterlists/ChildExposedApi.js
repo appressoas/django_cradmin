@@ -105,6 +105,11 @@ export default class ChildExposedApi {
     this.isFirst = this.filterListObject.isFirst.bind(this.filterListObject)
     this.getAfter = this.filterListObject.getAfter.bind(this.filterListObject)
     this.getBefore = this.filterListObject.getBefore.bind(this.filterListObject)
+
+    this.setIsMovingListItemId = this.filterListObject.setIsMovingListItemId.bind(this.filterListObject)
+    this.lockAllListItemMovement = this.filterListObject.lockAllListItemMovement.bind(this.filterListObject)
+    this.clearIsMovingListItemId = this.filterListObject.clearIsMovingListItemId.bind(this.filterListObject)
+    this.setSaveMovingItemTimeout = this.filterListObject.setSaveMovingItemTimeout.bind(this.filterListObject)
   }
 
   hasPreviousPaginationPage () {
@@ -126,4 +131,14 @@ export default class ChildExposedApi {
   get listComponentSpecs () {
     return this.filterListObject.state.componentCache.typeMap.get('ListComponentSpec') || []
   }
+
+  get isMovingListItemId () {
+    return this.filterListObject.isMovingListItemId
+  }
+
+  get allListItemMovementIsLocked () {
+    return this.filterListObject.allListItemMovementIsLocked
+  }
+
+
 }
