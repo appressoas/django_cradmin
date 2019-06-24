@@ -47,7 +47,7 @@ Markdown==2.6.6
 Pygments==2.3.1
 beautifulsoup4==4.5.1
 html5lib==0.9999999
-ievv-opensource==5.0.0
+ievv-opensource==6.0.0
 pythonkss==1.3
 
 
