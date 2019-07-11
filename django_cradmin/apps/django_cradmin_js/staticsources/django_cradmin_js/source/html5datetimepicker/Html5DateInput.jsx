@@ -1,13 +1,23 @@
 import React from 'react'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 import * as gettext from 'ievv_jsbase/lib/gettext'
 import AbstractHtml5DatetimeInput from './AbstractHtml5DatetimeInput'
+import { ColdObservable } from 'rxjs/testing/ColdObservable';
 
 export default class Html5DateInput extends AbstractHtml5DatetimeInput {
   static get defaultProps () {
     return {
       ...super.defaultProps,
-      clearButtonTitle: gettext.pgettext('cradmin html5 date', 'Clear date')
+      clearButtonTitle: gettext.pgettext('cradmin html5 date', 'Clear date'),
+      onBlur: () => {}
+    }
+  }
+
+  static get propTypes () {
+    return {
+      ...super.propTypes,
+      onBlur: PropTypes.func
     }
   }
 
@@ -77,6 +87,9 @@ export default class Html5DateInput extends AbstractHtml5DatetimeInput {
       isBlurred: true,
       value: stringValue
     })
+    console.log('COOL 123')
+    console.log(e.target)
+    this.props.onBlur(e)
   }
 
   getInputType () {
