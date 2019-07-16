@@ -25,8 +25,9 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   static get defaultProps () {
     return {
       idListItemMap: new Map(),
+      selectedValues: [],
       getIdListItemAction: () => {
-        console.log('getIdListItemAction not given in props!')
+        console.warn('getIdListItemAction not given in props!')
         return null
       }
     }
@@ -51,7 +52,17 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   /**
    * only here to be overridden. A place to setup bound functions
    */
-  setupBoundFunctions () {}
+  setupBoundFunctions () {
+    this.handleOnClick = this.handleOnClick.bind(this)
+  }
+
+  handleOnClick () {
+    if (this.isSelected) {
+      this.props.childExposedApi.deselectItems([this.props.id])
+    } else {
+      this.props.childExposedApi.selectItems([this.props.id])
+    }
+  }
 
   /**
    * Override this to use something other than `null` as a fallback if `this.props.id` is not found in
@@ -65,18 +76,37 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   /**
    * Util to get idListItem.
    *
-   * @return {*} lookup for `['data', this.props.id]` in `this.props.idListItemMap`, or
+   * @return {*} lookup for `[this.props.id, 'data']` in `this.props.idListItemMap`, or
    *    `this.idListItemNotFoundFallback` if not found.
    */
   get idListItem () {
-    return this.props.idListItemMap.getIn(['data', this.props.id], this.idListItemNotFoundFallback)
+    return this.props.idListItemMap.getIn([this.props.id, 'data'], this.idListItemNotFoundFallback)
+  }
+
+  /**
+   * Is the component selected
+   *
+   * @return {boolean} true if item is selected, false otherwise
+   */
+  get isSelected () {
+    return this.props.childExposedApi.selectedItemIdsAsArray().includes(this.props.id)
+  }
+
+  getLabel () {
+    console.warn('getLabel: Should be overridden by subclass of AbstractIdGenericListMultiselectItem')
+    return null
   }
 
   renderContents () {
-    console.warn(`You should make a subclass of AbstractIdGenericListMultiselectItem, and override renderContents()!`)
-    console.log(`Got id: ${this.props.id}`)
-    console.log(`And item: `, this.idListItem)
-    return <p>Got id: {this.props.id}</p>
+    return <button className={`selectable-list__item ${this.isSelected ? 'selectable-list__item--selected' : ''}`}
+      onClick={this.handleOnClick}>
+      <div className={'selectable-list__icon'}>
+        {this.isSelected ? <i className={'cricon cricon--check cricon--color-light'} /> : null}
+      </div>
+      <h2 className={'selectable-list__itemtitle'}>
+        {this.getLabel()}
+      </h2>
+    </button>
   }
 
   renderLoadingIndicator () {

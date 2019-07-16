@@ -9,6 +9,7 @@ import DropDownSearchFilter from '../DropDownSearchFilter'
 import * as gettext from 'ievv_jsbase/lib/gettext'
 import SelectableList from '../../lists/SelectableList'
 import GenericFilterListItemWrapper from './GenericFilterListItemWrapper'
+import GenericSearchFilterWrapper from './GenericSearchFilterWrapper'
 import { MULTISELECT } from '../../../filterListConstants'
 
 export default class GenericIdListMultiSelectFilter extends AbstractFilter {
@@ -19,9 +20,11 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       listItemIdName: PropTypes.string.isRequired,
       itemComponentType: PropTypes.any.isRequired,
       itemComponentPropOverrides: PropTypes.object,
+      searchFilterComponentType: PropTypes.any,
+      SearchFilterComponentPropOverrides: PropTypes.object,
       searchFilterLabel: PropTypes.string.isRequired,
       searchFilterName: PropTypes.string.isRequired,
-      searchFilterPlaceholders: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+      searchFilterPlaceholders: PropTypes.arrayOf(PropTypes.string.isRequired)
     }
   }
 
@@ -34,20 +37,21 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       itemComponentPropOverrides: {},
       searchFilterLabel: gettext.pgettext('cradmin GenericIdListMultiSelect searchFilterLabel', 'Search'),
       searchFilterName: 'search',
-      searchFilterPlaceholders: []
+      searchFilterPlaceholders: [gettext.gettext('Search ...')],
+      searchFilterComponentType: DropDownSearchFilter
     }
   }
 
   get filterListSearchFieldConfig () {
     return {
-      component: DropDownSearchFilter,
+      component: GenericSearchFilterWrapper,
       props: {
         name: 'search',
+        componentType: this.props.searchFilterComponentType,
         label: this.props.searchFilterLabel,
         labelIsScreenreaderOnly: true,
-        placeholder: [gettext.gettext('Name ...'),
-          gettext.gettext('Email ...'),
-          gettext.gettext('Phone number ...')]
+        placeholder: this.props.searchFilterPlaceholders,
+        ...this.props.SearchFilterComponentPropOverrides
       }
     }
   }
@@ -62,9 +66,9 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
 
   get filterListFilterConfig () {
     return [
-      this.filterListSearchFieldConfig,
       ...this.filterListStaticFilters,
-      ...this.filterListExtraFilters
+      ...this.filterListExtraFilters,
+      this.filterListSearchFieldConfig
     ]
   }
 
@@ -93,9 +97,35 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
     }
   }
 
+  constructor (props) {
+    super(props)
+    this.fitlerListRef = React.createRef()
+  }
+
+  setupBoundMethods () {
+    super.setupBoundMethods()
+    this.handleSelectItems = this.handleSelectItems.bind(this)
+    this.handleDiselectItems = this.handleDiselectItems.bind(this)
+    this.handleClear = this.handleClear.bind(this)
+  }
+
+  handleSelectItems (data) {
+    this.setFilterValue(this.fitlerListRef.selectedItemIdsAsArray())
+  }
+
+  handleDiselectItems (data) {
+    this.setFilterValue(this.fitlerListRef.selectedItemIdsAsArray())
+  }
+
+  handleClear () {
+
+  }
+
   get filterListConfig () {
     return {
       getItemsApiUrl: this.props.idListApiUrl,
+      onSelectItems: this.handleSelectItems,
+      onDeselectItems: this.handleDiselectItems,
       selectMode: MULTISELECT,
       components: [{
         component: ThreeColumnLayout,
@@ -119,6 +149,6 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
   }
 
   render () {
-    return <PageNumberPaginationFilterList {...this.filterListConfig} />
+    return <PageNumberPaginationFilterList {...this.filterListConfig} ref={ref => { this.fitlerListRef = ref }} />
   }
 }
