@@ -89,5 +89,5 @@ class TestResetPasswordView(TestCase):
             })
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(str(response.data['password'][0]),
+        self.assertEqual(str(response.data['password']),
                          'This password is too short. It must contain at least 10 characters.')
