@@ -28,7 +28,7 @@ import GeoLocationFilterWidget from './GeoLocationFilterWidget';
 import GeoLocationDebugWidget from "./GeoLocationDebugWidget";
 import RotatingPlaceholderWidget from "./RotatingPlaceholderWidget";
 import FilterListWidget from './FilterListWidget'
-
+import DisableFormSubmitOnEnter from './DisableFormSubmitOnEnter'
 
 /**
  * Register all the cradmin widgets in the ievv_jsbase WidgetRegistrySingleton.
@@ -65,4 +65,5 @@ export default function registerAllCradminWidgets() {
     widgetRegistry.registerWidgetClass('cradmin-geolocation-filter', GeoLocationFilterWidget);
     widgetRegistry.registerWidgetClass('cradmin-rotating-placeholder', RotatingPlaceholderWidget);
     widgetRegistry.registerWidgetClass('cradmin-filterlist', FilterListWidget);
+    widgetRegistry.registerWidgetClass('cradmin-disable-form-submit-on-enter', DisableFormSubmitOnEnter)
 }

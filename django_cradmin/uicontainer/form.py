@@ -10,7 +10,7 @@ class Form(container.AbstractContainerRenderable):
     """
     template_name = 'django_cradmin/uicontainer/form.django.html'
 
-    def __init__(self, form, action=None, method=None, messages_container=None, **kwargs):
+    def __init__(self, form, action=None, method=None, messages_container=None, disable_submit_on_enter=True, **kwargs):
         """
 
         Args:
@@ -27,6 +27,7 @@ class Form(container.AbstractContainerRenderable):
 
             **kwargs: Kwargs for :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`.
         """
+        self._disable_submit_on_enter = disable_submit_on_enter
         self.form = form
         self.action = action
         self._overridden_method = method
@@ -68,6 +69,9 @@ class Form(container.AbstractContainerRenderable):
 
     def action_is_redirect_to_self(self):
         return self.action is None
+
+    def disable_submit_on_enter(self):
+        return self._disable_submit_on_enter
 
     def get_html_element_attributes(self):
         html_element_attributes = super(Form, self).get_html_element_attributes()
