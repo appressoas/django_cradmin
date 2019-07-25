@@ -10,7 +10,7 @@ class Form(container.AbstractContainerRenderable):
     """
     template_name = 'django_cradmin/uicontainer/form.django.html'
 
-    def __init__(self, form, action=None, method=None, messages_container=None, disable_submit_on_enter=True, **kwargs):
+    def __init__(self, form, action=None, method=None, messages_container=None, disable_submit_on_enter=False, **kwargs):
         """
 
         Args:
