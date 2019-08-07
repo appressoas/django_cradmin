@@ -28,6 +28,7 @@ import GeoLocationFilterWidget from './GeoLocationFilterWidget'
 import GeoLocationDebugWidget from './GeoLocationDebugWidget'
 import RotatingPlaceholderWidget from './RotatingPlaceholderWidget'
 import FilterListWidget from './FilterListWidget'
+import DisableFormSubmitOnEnter from './DisableFormSubmitOnEnter'
 
 /**
  * Register all the cradmin widgets in the ievv_jsbase WidgetRegistrySingleton.
@@ -55,9 +56,7 @@ export default function registerAllCradminWidgets () {
   widgetRegistry.registerWidgetClass('cradmin-hide-popup', HidePopupOnClickWidget)
   widgetRegistry.registerWidgetClass('cradmin-filter-checkbox', FilterCheckboxFilter)
   widgetRegistry.registerWidgetClass('cradmin-filter-radio-button', FilterRadioButtonWidget)
-  widgetRegistry.registerWidgetClass(
-    'cradmin-filter-radio-button-with-custom-choice',
-    FilterRadioButtonWithCustomChoiceWidget)
+  widgetRegistry.registerWidgetClass('cradmin-filter-radio-button-with-custom-choice', FilterRadioButtonWithCustomChoiceWidget)
   widgetRegistry.registerWidgetClass('cradmin-dateselector', DateSelectorWidget)
   widgetRegistry.registerWidgetClass('cradmin-auto-submit-form-after-countdown', AutoSubmitFormAfterCountdownWidget)
   widgetRegistry.registerWidgetClass('cradmin-print-on-click', PrintOnClickWidget)
@@ -66,4 +65,5 @@ export default function registerAllCradminWidgets () {
   widgetRegistry.registerWidgetClass('cradmin-geolocation-filter', GeoLocationFilterWidget)
   widgetRegistry.registerWidgetClass('cradmin-rotating-placeholder', RotatingPlaceholderWidget)
   widgetRegistry.registerWidgetClass('cradmin-filterlist', FilterListWidget)
+  widgetRegistry.registerWidgetClass('cradmin-disable-form-submit-on-enter', DisableFormSubmitOnEnter)
 }

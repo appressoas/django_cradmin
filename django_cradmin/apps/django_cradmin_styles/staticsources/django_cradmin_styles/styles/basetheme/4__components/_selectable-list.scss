@@ -317,6 +317,28 @@ Example: {type: isolated} Inline with icon
         </ul>
     </div>
 
+
+Example: {type: isolated} Inline outlined
+    <div class="container">
+        <ul class="selectable-list selectable-list--inline">
+            <li class="selectable-list__item  selectable-list__item--outlined" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 1
+                </div>
+            </li>
+            <li class="selectable-list__item  selectable-list__item--outlined  selectable-list__item--selected" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 2
+                </div>
+            </li>
+            <li class="selectable-list__item  selectable-list__item--outlined" tabindex="0">
+                <div class="selectable-list__itemcontent">
+                    Element 3
+                </div>
+            </li>
+        </ul>
+    </div>
+
 Example: {type: isolated} Inline item content is always single line - ellipsis for long text
     <div class="container">
         <ul class="selectable-list selectable-list--inline">
@@ -487,6 +509,11 @@ Styleguide components.selectable-list
 
                 &:first-child {
                     margin-left: 0;
+                }
+
+                &--outlined {
+                    border: $border-width--small solid color(neutral, light);
+                    border-radius: $border-radius;
                 }
             }
 

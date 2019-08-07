@@ -6,6 +6,8 @@ Example: Normal text styles
 
     <span class="text text--warning">A warning text</span><br>
     <span class="text text--success">A success text</span><br>
+    <span class="text text--primary">A primary text</span><br>
+    <span class="text text--secondary">A secondary text</span><br>
 
 Example: Strong text styles
 
@@ -86,5 +88,15 @@ Styleguide components.text
         $name: success,
         $text-color: color(success, dark),
         $strong-background-color: color(success)
+    );
+    @include text-variant-mixin(
+        $name: primary,
+        $text-color: color(primary, dark),
+        $strong-background-color: color(primary)
+    );
+    @include text-variant-mixin(
+        $name: secondary,
+        $text-color: color(secondary, dark),
+        $strong-background-color: color(secondary)
     );
 }

@@ -179,3 +179,14 @@ class App(object):
         if breadcrumb_item_list is not None:
             self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
         return breadcrumb_item_list
+
+    @property
+    def page_cover_bem_block(self):
+        """
+        Override the default page cover BEM block for all views in the app.
+
+        Used by :func:`django_cradmin.templatetags.cradmin_tags.cradmin_page_cover_bem_block` for more details.
+
+        See also: :meth:`django_cradmin.crinstance.BaseCrAdminInstance.page_cover_bem_block`.
+        """
+        return self.request.cradmin_instance.page_cover_bem_block

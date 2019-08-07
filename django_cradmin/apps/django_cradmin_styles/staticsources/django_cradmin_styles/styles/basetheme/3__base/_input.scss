@@ -9,6 +9,12 @@ Example: Standard input
         <input type="text" placeholder="I set the standard" class="input" />
     </label>
 
+Example: Date input
+    <label class="label">
+        Standard input
+        <input type="date" placeholder="I set the standard" class="input" value="2019-12-24" />
+    </label>
+
 Example: Error input
     <label class="label">
         I'm a error input!
@@ -124,6 +130,15 @@ Styleguide form.3:input
 
     &[disabled] {
         background-color: color(neutral);
+    }
+
+    &[type='date'] {
+        -webkit-appearance: none;
+        // padding: #{$unit + $border-width} #{$spacing--small + $border-width};
+        @supports (-webkit-overflow-scrolling: touch) {
+            // IOS safari adjustment
+            padding-top: #{$unit + $border-width + 3px};
+        }
     }
 
     @include input-placeholder {
