@@ -98,7 +98,7 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   }
 
   renderContents () {
-    return <button className={`selectable-list__item ${this.isSelected ? 'selectable-list__item--selected' : ''}`}
+    return <button className={`selectable-list__item selectable-list__item--outlined ${this.isSelected ? 'selectable-list__item--selected' : ''}`}
       onClick={this.handleOnClick}>
       <div className={'selectable-list__icon'}>
         {this.isSelected ? <i className={'cricon cricon--check cricon--color-light'} /> : null}
