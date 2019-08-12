@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from django.contrib.auth.password_validation import validate_password
 
 
-class ResetPasswordApi(APIView):
+class ChangePasswordApi(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, *args, **kwargs):
