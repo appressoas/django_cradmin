@@ -99,22 +99,22 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
 
   constructor (props) {
     super(props)
-    this.fitlerListRef = React.createRef()
+    this.filterListRef = React.createRef()
   }
 
   setupBoundMethods () {
     super.setupBoundMethods()
     this.handleSelectItems = this.handleSelectItems.bind(this)
-    this.handleDiselectItems = this.handleDiselectItems.bind(this)
+    this.handleDeselectItems = this.handleDeselectItems.bind(this)
     this.handleClear = this.handleClear.bind(this)
   }
 
   handleSelectItems (data) {
-    this.setFilterValue(this.fitlerListRef.selectedItemIdsAsArray())
+    this.setFilterValue(this.filterListRef.selectedItemIdsAsArray())
   }
 
-  handleDiselectItems (data) {
-    this.setFilterValue(this.fitlerListRef.selectedItemIdsAsArray())
+  handleDeselectItems (data) {
+    this.setFilterValue(this.filterListRef.selectedItemIdsAsArray())
   }
 
   handleClear () {
@@ -125,7 +125,7 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
     return {
       getItemsApiUrl: this.props.idListApiUrl,
       onSelectItems: this.handleSelectItems,
-      onDeselectItems: this.handleDiselectItems,
+      onDeselectItems: this.handleDeselectItems,
       selectMode: MULTISELECT,
       components: [{
         component: ThreeColumnLayout,
@@ -149,6 +149,6 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
   }
 
   render () {
-    return <PageNumberPaginationFilterList {...this.filterListConfig} ref={ref => { this.fitlerListRef = ref }} />
+    return <PageNumberPaginationFilterList {...this.filterListConfig} ref={ref => { this.filterListRef = ref }} />
   }
 }
