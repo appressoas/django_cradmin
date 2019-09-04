@@ -14,6 +14,7 @@ recursive-include django_cradmin *.svg
 recursive-include django_cradmin *.otf
 recursive-include django_cradmin *.scss
 recursive-include django_cradmin *.eot
+recursive-include django_cradmin *.ttf
 prune django_cradmin/demo
 prune django_cradmin/apps/django_cradmin_js/staticsources/
 prune django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/node_modules/
