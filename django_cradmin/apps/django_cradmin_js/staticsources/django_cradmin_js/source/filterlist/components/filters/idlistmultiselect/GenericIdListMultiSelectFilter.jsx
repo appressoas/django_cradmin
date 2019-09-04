@@ -11,6 +11,8 @@ import SelectableList from '../../lists/SelectableList'
 import GenericFilterListItemWrapper from './GenericFilterListItemWrapper'
 import GenericSearchFilterWrapper from './GenericSearchFilterWrapper'
 import { MULTISELECT } from '../../../filterListConstants'
+import typeDetect from 'ievv_jsbase/lib/utils/typeDetect'
+import ThreeColumnDropDownLayout from '../../layout/ThreeColumnDropDownLayout'
 
 export default class GenericIdListMultiSelectFilter extends AbstractFilter {
   static get propTypes () {
@@ -106,7 +108,6 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
     super.setupBoundMethods()
     this.handleSelectItems = this.handleSelectItems.bind(this)
     this.handleDeselectItems = this.handleDeselectItems.bind(this)
-    this.handleClear = this.handleClear.bind(this)
   }
 
   handleSelectItems (data) {
@@ -117,8 +118,18 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
     this.setFilterValue(this.filterListRef.selectedItemIdsAsArray())
   }
 
-  handleClear () {
-
+  get initiallySelectedItemIds () {
+    if (!this.props.value) {
+      return []
+    }
+    if (typeDetect(this.props.value) === 'array') {
+      return this.props.value
+    }
+    const value = parseInt(this.props.value, 10)
+    if (isNaN(value)) {
+      return []
+    }
+    return [value]
   }
 
   get filterListConfig () {
@@ -127,11 +138,12 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       onSelectItems: this.handleSelectItems,
       onDeselectItems: this.handleDeselectItems,
       selectMode: MULTISELECT,
+      initiallySelectedItemIds: this.initiallySelectedItemIds,
       components: [{
         component: ThreeColumnLayout,
         layout: this.filterListFilterConfig
       }, {
-        component: ThreeColumnLayout,
+        component: ThreeColumnDropDownLayout,
         props: {
           componentGroups: ['expandable'],
           dropdownContentBemVariants: []

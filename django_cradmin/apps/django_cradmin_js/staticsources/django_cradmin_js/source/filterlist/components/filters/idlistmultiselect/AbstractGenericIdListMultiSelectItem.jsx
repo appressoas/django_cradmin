@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import * as reduxApiUtilities from 'ievv_jsbase/lib/utils/reduxApiUtilities'
-import LoadingIndicator from '../../../../components/LoadingIndicator'
+import CenteredLoadingIndicator from '../../../../components/CenteredLoadingIndicator'
 
 /**
  * Generic IdListMultiselectItem. You need to subclass this when using {@link GenericIdListMultiSelectFilter} and
@@ -98,7 +98,7 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   }
 
   renderContents () {
-    return <button className={`selectable-list__item selectable-list__item--outlined ${this.isSelected ? 'selectable-list__item--selected' : ''}`}
+    return <button className={`selectable-list__item ${this.isSelected ? 'selectable-list__item--selected' : ''}`}
       onClick={this.handleOnClick}>
       <div className={'selectable-list__icon'}>
         {this.isSelected ? <i className={'cricon cricon--check cricon--color-light'} /> : null}
@@ -110,7 +110,7 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   }
 
   renderLoadingIndicator () {
-    return <LoadingIndicator />
+    return <CenteredLoadingIndicator />
   }
 
   render () {

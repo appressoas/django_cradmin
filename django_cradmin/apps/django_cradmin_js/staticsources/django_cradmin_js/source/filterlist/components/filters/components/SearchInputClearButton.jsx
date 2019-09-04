@@ -8,7 +8,7 @@ import 'ievv_jsbase/lib/utils/i18nFallbacks'
  * See {@link SearchInputExpandCollapseButton.defaultProps} for documentation for
  * props and their defaults.
  */
-export default class SearchInputExpandCollapseButton extends AbstractSearchInputButton {
+export default class SearchInputClearButton extends AbstractSearchInputButton {
   /**
    * Get default props. Same props as for {@link AbstractSearchInputButton.defaultProps}.
    */
