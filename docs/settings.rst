@@ -124,6 +124,14 @@ the ``standalone-base-internal.django.html`` template unless
 something else is specified by the view or cradmin instance.
 
 
+.. setting:: DJANGO_CRADMIN_EMAIL_ENCODING
+
+DJANGO_CRADMIN_EMAIL_ENCODING
+=============================
+Custom encoding for cradmin_email mails. Defaults to the django defaults. Example::
+
+    DJANGO_CRADMIN_EMAIL_ENCODING = 'latin1'
+
 
 ***********
 uicontainer
