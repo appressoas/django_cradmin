@@ -58,3 +58,18 @@ Run the tests
 
     $ workon django_cradmin
     $ DJANGOENV=test python manage.py test django_cradmin
+
+
+***********************
+Building the javascript
+***********************
+
+::
+
+    $ cd django_cradmin/static/django_cradmin/
+    $ yarn
+    $ yarn add grunt
+    $ yarn add bower
+    $ node_modules/.bin/bower install
+    $ node_modules/.bin/grunt watch   # for development
+    $ node_modules/.bin/grunt dist   # for release building
