@@ -15,7 +15,10 @@ export default class AbstractFilterListChild extends React.Component {
       willReceiveSelectionEvents: PropTypes.bool.isRequired,
       componentGroups: PropTypes.arrayOf(PropTypes.string),
       uniqueComponentKey: PropTypes.string.isRequired,
-      domIdPrefix: PropTypes.string.isRequired
+      domIdPrefix: PropTypes.string.isRequired,
+      isMovingListItemId: PropTypes.any,
+      allListItemMovementIsLocked: PropTypes.bool.isRequired,
+      selectMode: PropTypes.string
     }
   }
 
@@ -41,7 +44,10 @@ export default class AbstractFilterListChild extends React.Component {
       componentGroups: null,
       willReceiveFocusEvents: false,
       willReceiveSelectionEvents: false,
-      domIdPrefix: null
+      domIdPrefix: null,
+      isMovingListItemId: null,
+      allListItemMovementIsLocked: false,
+      selectMode: null
     }
   }
 
@@ -192,7 +198,9 @@ export default class AbstractFilterListChild extends React.Component {
     return Object.assign({}, extraProps, {
       childExposedApi: this.props.childExposedApi,
       componentGroups: this.getComponentGroupsForChildComponent(componentSpec),
-      selectMode: this.props.selectMode
+      selectMode: this.props.selectMode,
+      isMovingListItemId: this.props.isMovingListItemId,
+      allListItemMovementIsLocked: this.props.allListItemMovementIsLocked
     })
   }
 }

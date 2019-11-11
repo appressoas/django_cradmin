@@ -216,7 +216,21 @@ Example: Disabled
         Disabled option
     </label>
 
-
+Example: Radio button variant
+    <div class="buttonbar">
+        <label class="radio radio--button buttonbar__button buttonbar__button--primary-fill">
+            <input type="radio" name="styleguide">
+            Yes
+        </label>
+        <label class="radio radio--button buttonbar__button buttonbar__button--primary">
+            <input type="radio" name="styleguide">
+            maybe
+        </label>
+        <label class="radio radio--button buttonbar__button buttonbar__button--primary">
+            <input type="radio" name="styleguide">
+            No
+        </label>
+    </div>
 
 Styleguide form.4:radio
 */
@@ -376,6 +390,8 @@ Styleguide form.4:radio
 }
 
 .radio {
+    $this: &;
+
     &__control-indicator {
         border-radius: 50%;
 
@@ -388,6 +404,11 @@ Styleguide form.4:radio
             margin-left: -4px;
             margin-top: -4px;
             background-color: color(secondary, dark);
+        }
+    }
+    &--button {
+        #{$this}__control-indicator {
+            display: none;
         }
     }
 }

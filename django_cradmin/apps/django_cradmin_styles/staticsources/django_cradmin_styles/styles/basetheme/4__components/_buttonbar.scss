@@ -316,6 +316,13 @@ Styleguide components.buttonbar.buttoncolor
             color(primary)
         );
 
+        @include buttonbar-button-modifier(
+            'primary-xlight',
+            color(primary),
+            color(primary),
+            color(primary)
+        );
+
         &--grow-2 {
             flex-grow: 2;
         }

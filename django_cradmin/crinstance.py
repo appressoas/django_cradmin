@@ -687,6 +687,12 @@ class BaseCrAdminInstance(object):
 
         If you need more complex behavior, you should consider:
 
+        - Override :meth:`django_cradmin.crapp.App.page_cover_bem_block` on the cradmin app.
+        - Set `page_cover_bem_block` template context variable in your views.
+
+        (see :func:`django_cradmin.templatetags.cradmin_tags.cradmin_page_cover_bem_block` for more details).
+
+        In extreme cases you can also:
         - Making your own templates that extend:
             - ``django_cradmin/standalone-base.django.html`` - for all the views outside the role.
             - ``django_cradmin/base.django.html`` - for all the views within the role

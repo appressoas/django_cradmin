@@ -1,7 +1,8 @@
+import html2text
 from django.conf import settings
+
 from django.core.mail import send_mail, get_connection, EmailMultiAlternatives
 from django.template.loader import render_to_string
-import html2text
 
 
 def convert_html_to_plaintext(html):
@@ -9,6 +10,14 @@ def convert_html_to_plaintext(html):
     Convert the given ``html`` to plain text.
     """
     return html2text.html2text(html)
+
+
+class CradminEmailMultiAlternatives(EmailMultiAlternatives):
+    def __init__(self, *args, **kwargs):
+        email_encoding = getattr(settings, 'DJANGO_CRADMIN_EMAIL_ENCODING', None)
+        if email_encoding:
+            self.encoding = email_encoding
+        super().__init__(*args, **kwargs)
 
 
 class AbstractEmail(object):
@@ -285,11 +294,20 @@ class AbstractEmail(object):
             'recipient_list': self.get_recipient_list()
         }
 
+    def make_email(self, subject, message, from_email, recipient_list, fail_silently=False, html_message=None):
+        connection = get_connection(
+            fail_silently=fail_silently,
+        )
+        mail = CradminEmailMultiAlternatives(subject, message, from_email, recipient_list, connection=connection)
+        if html_message:
+            mail.attach_alternative(html_message, 'text/html')
+        return mail
+
     def send(self):
         """
         Send the email.
         """
-        send_mail(**self.get_send_mail_kwargs())
+        self.make_email(**self.get_send_mail_kwargs()).send()
 
     def get_default_from_email(self):
         """
@@ -345,7 +363,7 @@ class AbstractAdvancedEmail(AbstractEmail):
         if reply_to:
             kwargs['reply_to'] = reply_to
         return kwargs
-    
+
     def send_mail(self, subject, message, from_email, recipient_list,
                   fail_silently=False, auth_user=None, auth_password=None,
                   connection=None, html_message=None, reply_to=None):

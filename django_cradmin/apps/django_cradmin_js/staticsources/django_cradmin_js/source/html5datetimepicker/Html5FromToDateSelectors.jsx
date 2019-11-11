@@ -45,9 +45,12 @@ export default class Html5FromToDateSelectors extends React.Component {
   /* initialization functions */
 
   getInitiallyExpanded () {
-    const expanded = this.props.isExpandedInitially
-    const initialValuesMatch = this.props.toDateValue && this.props.fromDateValue !== this.props.toDateValue
-    return expanded ? expanded : initialValuesMatch
+    if (this.props.isExpandedInitially) {
+      return true
+    } else if (this.props.fromDateValue !== this.props.toDateValue) {
+      return true
+    }
+    return false
   }
 
   getInitialState () {
@@ -84,11 +87,11 @@ export default class Html5FromToDateSelectors extends React.Component {
       })
     }
 
-    if (!this.state.isExpanded || !toDate) {
+    if (this.state.isExpanded) {
+      this.props.onChange(fromDate, toDate)
+    } else {
       this.props.onChange(fromDate, fromDate)
-      return
     }
-    this.props.onChange(fromDate, toDate)
   }
 
   handleShowToDateChange (event) {

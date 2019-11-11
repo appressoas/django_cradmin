@@ -24,7 +24,9 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
       min: null,
       max: null,
       readOnly: false,
-      required: false
+      required: false,
+      extraClassNames: '',
+      inputName: null
     }
   }
 
@@ -46,7 +48,9 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
       min: PropTypes.string,
       max: PropTypes.string,
       readOnly: PropTypes.bool.isRequired,
-      required: PropTypes.bool.isRequired
+      required: PropTypes.bool.isRequired,
+      extraClassNames: PropTypes.string,
+      inputName: PropTypes.string
     }
   }
 
@@ -106,7 +110,7 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
     if (!this.hasValidInput()) {
       bemVariants = this.props.errorBemVariants
     }
-    return BemUtilities.buildBemBlock(this.props.bemBlock, bemVariants)
+    return `${BemUtilities.buildBemBlock(this.props.bemBlock, bemVariants)} ${this.props.extraClassNames}`
   }
 
   get bodyClassName () {
@@ -189,7 +193,8 @@ export default class AbstractHtml5DatetimeInput extends React.Component {
       onChange: this.onChange,
       onBlur: this.onBlur,
       onFocus: this.onFocus,
-      className: this.inputClassName
+      className: this.inputClassName,
+      name: this.props.inputName
     }
 
     if (!this.hasValidInput()) {
