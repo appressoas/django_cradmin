@@ -86,8 +86,6 @@ export default class Html5DateInput extends AbstractHtml5DatetimeInput {
       isBlurred: true,
       value: stringValue
     })
-    console.log('COOL 123')
-    console.log(e.target)
     this.props.onBlur(e)
   }
 

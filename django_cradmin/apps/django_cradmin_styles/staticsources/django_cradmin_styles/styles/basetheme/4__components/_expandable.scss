@@ -419,6 +419,7 @@ Styleguide components.expandable
         &:hover,
         &:focus {
             background-color: color(primary);
+            color: $color-light;
         }
 
         &:before {
