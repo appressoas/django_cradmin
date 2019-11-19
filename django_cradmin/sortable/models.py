@@ -73,7 +73,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
         decrease_index_for_items = [item.id for item in items[from_index:to_index]]
         queryset.filter(id__in=decrease_index_for_items).update(sort_index=models.F('sort_index') - distance)
 
-    def __fix_sort_order(self, item, sort_before_id, none_values_order_by):
+    def __fix_sort_order(self, item, sort_before_id, none_values_order_by, option_dict=None):
         """
         Iterate over all the items and remove any gaps, fix any duplicate
         sort indexes and find the correct sort index for the item.
@@ -101,7 +101,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
             current_item = itemsqueryset[index]
             if current_item.sort_index is None:
                 current_item.sort_index = index
-                current_item.save()
+                current_item._save(option_dict)
             else:
                 if index < current_item.sort_index:
                     # Found gap, need to move rest of list <size-of-gap> step(s) down
@@ -121,7 +121,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
                 detected_item_sort_index = current_item.sort_index
         return itemsqueryset, detected_item_sort_index, original_item_index
 
-    def __sort_last(self, itemsqueryset, item, original_item_index):
+    def __sort_last(self, itemsqueryset, item, original_item_index, option_dict=None):
         if original_item_index is not None:
             # fill gap left when moving item to end
             self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset,
@@ -129,9 +129,9 @@ class SortableQuerySetBase(NullsLastQuerySet):
             item.sort_index = len(itemsqueryset) - 1
         else:
             item.sort_index = len(itemsqueryset)
-        item.save()
+        item._save(option_dict)
 
-    def __sort_not_last(self, itemsqueryset, item, detected_item_sort_index, original_item_index):
+    def __sort_not_last(self, itemsqueryset, item, detected_item_sort_index, original_item_index, option_dict=None):
         if original_item_index is None:
             # new item, move rest of list one step up, and place the new item
             self.__increase_sort_index_in_range(itemsqueryset,
@@ -157,9 +157,9 @@ class SortableQuerySetBase(NullsLastQuerySet):
             # Item is already in the correct place
             # - Return without saving
             return
-        item.save()
+        item._save(option_dict)
 
-    def sort_before(self, item, sort_before_id, none_values_order_by=None):
+    def sort_before(self, item, sort_before_id, none_values_order_by=None, option_dict=None):
         """
         Sort a given item before the item with id `sort_before_id`,
         or last if `sort_before_id` is ``None``.
@@ -169,25 +169,25 @@ class SortableQuerySetBase(NullsLastQuerySet):
         """
         with transaction.atomic():
             itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(
-                item, sort_before_id, none_values_order_by)
+                item, sort_before_id, none_values_order_by, option_dict=option_dict)
 
             if detected_item_sort_index is None:
                 self.__sort_last(itemsqueryset=itemsqueryset, item=item,
-                                 original_item_index=original_item_index)
+                                 original_item_index=original_item_index, option_dict=option_dict)
             else:
                 self.__sort_not_last(itemsqueryset=itemsqueryset,
                                      item=item,
                                      detected_item_sort_index=detected_item_sort_index,
-                                     original_item_index=original_item_index)
+                                     original_item_index=original_item_index, option_dict=option_dict)
 
-    def sort_last(self, item, none_values_order_by=None):
+    def sort_last(self, item, none_values_order_by=None, option_dict=None):
         """
         Just a shortcut for::
 
             self.sort_before(item, sort_before_id=None)
         """
         self.sort_before(item, sort_before_id=None,
-                         none_values_order_by=none_values_order_by)
+                         none_values_order_by=none_values_order_by, option_dict=option_dict)
 
 
 def validate_sort_index(value):
@@ -207,6 +207,15 @@ class SortableBase(models.Model):
         verbose_name=ugettext_lazy('Sort index'),
         validators=[validate_sort_index]
     )
+
+    def perform_extra_actions_on_save(self, option_dict=None):
+        if option_dict is not None:
+            for key, val in option_dict.items():
+                setattr(self, key, val)
+
+    def _save(self, option_dict=None):
+        self.perform_extra_actions_on_save(option_dict)
+        self.save()
 
     class Meta(object):
         abstract = True
