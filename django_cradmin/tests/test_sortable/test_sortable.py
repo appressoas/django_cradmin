@@ -235,6 +235,62 @@ class TestSortableItem(test.TestCase):
         self.assertEqual(1, item2.sort_index)
         self.assertEqual(2, item3.sort_index)
 
+    def test_extra_item_attributes_sanity(self):
+        container = mommy.make(ItemContainer)
+        item1 = mommy.make(SortableItem, sort_index=None, name='SomeName', container=container)
+        SortableItem.objects.sort_last(item1, item_attrs_dict={'name': "OtherName"})
+        item1.refresh_from_db()
+        self.assertEqual(0, item1.sort_index)
+        self.assertEqual(item1.name, 'OtherName')
+
+    def test_extra_item_attributes_set_only_on_items_that_updated_start_of_list(self):
+        container = mommy.make(ItemContainer)
+        item1 = mommy.make(SortableItem, sort_index=0, name='SomeName', container=container)
+        item2 = mommy.make(SortableItem, sort_index=1, name='SomeName', container=container)
+        item3 = mommy.make(SortableItem, sort_index=2, name='SomeName', container=container)
+        SortableItem.objects.sort_before(item2, item1.id, item_attrs_dict={'name': "OtherName"})
+        item1.refresh_from_db()
+        item2.refresh_from_db()
+        item3.refresh_from_db()
+        self.assertEqual(1, item1.sort_index)
+        self.assertEqual(0, item2.sort_index)
+        self.assertEqual(2, item3.sort_index)
+        self.assertEqual(item1.name, 'OtherName')
+        self.assertEqual(item2.name, 'OtherName')
+        self.assertEqual(item3.name, 'SomeName')
+
+    def test_extra_item_attributes_set_only_on_items_that_updated_end_of_list(self):
+        container = mommy.make(ItemContainer)
+        item1 = mommy.make(SortableItem, sort_index=0, name='SomeName', container=container)
+        item2 = mommy.make(SortableItem, sort_index=1, name='SomeName', container=container)
+        item3 = mommy.make(SortableItem, sort_index=2, name='SomeName', container=container)
+        SortableItem.objects.sort_before(item3, item2.id, item_attrs_dict={'name': "OtherName"})
+        item1.refresh_from_db()
+        item2.refresh_from_db()
+        item3.refresh_from_db()
+        self.assertEqual(0, item1.sort_index)
+        self.assertEqual(2, item2.sort_index)
+        self.assertEqual(1, item3.sort_index)
+        self.assertEqual(item1.name, 'SomeName')
+        self.assertEqual(item2.name, 'OtherName')
+        self.assertEqual(item3.name, 'OtherName')
+
+    def test_extra_item_attributes_all_items_updated_initially_no_sort_indexes(self):
+        container = mommy.make(ItemContainer)
+        item1 = mommy.make(SortableItem, sort_index=None, name='NameA', container=container)
+        item2 = mommy.make(SortableItem, sort_index=None, name='NameB', container=container)
+        item3 = mommy.make(SortableItem, sort_index=None, name='NameC', container=container)
+        SortableItem.objects.sort_before(item3, item2.id, item_attrs_dict={'name': "OtherName"})
+        item1.refresh_from_db()
+        item2.refresh_from_db()
+        item3.refresh_from_db()
+        self.assertEqual(0, item1.sort_index)
+        self.assertEqual(2, item2.sort_index)
+        self.assertEqual(1, item3.sort_index)
+        self.assertEqual(item1.name, 'OtherName')
+        self.assertEqual(item2.name, 'OtherName')
+        self.assertEqual(item3.name, 'OtherName')
+
 
 class TestRepairSortable(test.TestCase):
     def setUp(self):
