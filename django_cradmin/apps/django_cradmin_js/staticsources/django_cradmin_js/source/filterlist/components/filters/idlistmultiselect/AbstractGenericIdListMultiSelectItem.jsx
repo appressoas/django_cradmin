@@ -31,7 +31,7 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
         console.warn('getIdListItemAction not given in props!')
         return null
       },
-      bemVariants: []
+      bemVariants: ['outlined']
     }
   }
 
@@ -112,9 +112,7 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
   }
 
   renderContent () {
-    return <h2 className={'selectable-list__itemtitle'}>
-      {this.getLabel()}
-    </h2>
+    return this.getLabel()
   }
 
   renderContents () {
@@ -123,7 +121,9 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
       <div className={'selectable-list__icon'}>
         {this.isSelected ? <i className={'cricon cricon--check cricon--color-light'} /> : null}
       </div>
-      {this.renderContent()}
+      <span className={'selectable-list__itemcontent'}>
+        {this.renderContent()}
+      </span>
     </button>
   }
 
