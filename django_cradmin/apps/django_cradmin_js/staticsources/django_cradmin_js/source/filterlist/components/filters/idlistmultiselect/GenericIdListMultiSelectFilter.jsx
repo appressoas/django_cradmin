@@ -26,7 +26,8 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       SearchFilterComponentPropOverrides: PropTypes.object,
       searchFilterLabel: PropTypes.string.isRequired,
       searchFilterName: PropTypes.string.isRequired,
-      searchFilterPlaceholders: PropTypes.arrayOf(PropTypes.string.isRequired)
+      searchFilterPlaceholders: PropTypes.arrayOf(PropTypes.string.isRequired),
+      dropDownBemVariants: PropTypes.arrayOf(PropTypes.string)
     }
   }
 
@@ -40,7 +41,8 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
       searchFilterLabel: gettext.pgettext('cradmin GenericIdListMultiSelect searchFilterLabel', 'Search'),
       searchFilterName: 'search',
       searchFilterPlaceholders: [gettext.gettext('Search ...')],
-      searchFilterComponentType: DropDownSearchFilter
+      searchFilterComponentType: DropDownSearchFilter,
+      dropDownBemVariants: ['spaced-sm']
     }
   }
 
@@ -146,7 +148,7 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
         component: ThreeColumnDropDownLayout,
         props: {
           componentGroups: ['expandable'],
-          dropdownContentBemVariants: []
+          dropdownContentBemVariants: this.props.dropDownBemVariants
         },
         layout: [
           this.filterListItemListConfig,

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as reduxApiUtilities from 'ievv_jsbase/lib/utils/reduxApiUtilities'
 import CenteredLoadingIndicator from '../../../../components/CenteredLoadingIndicator'
-
+import BemUtilities from '../../../../utilities/BemUtilities'
 /**
  * Generic IdListMultiselectItem. You need to subclass this when using {@link GenericIdListMultiSelectFilter} and
  * override renderContents.
@@ -18,7 +18,8 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
     return {
       id: PropTypes.number.isRequired,
       idListItemMap: PropTypes.object.isRequired,
-      getIdListItemAction: PropTypes.func.isRequired
+      getIdListItemAction: PropTypes.func.isRequired,
+      bemVariants: PropTypes.arrayOf(PropTypes.string.isRequired)
     }
   }
 
@@ -29,7 +30,8 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
       getIdListItemAction: () => {
         console.warn('getIdListItemAction not given in props!')
         return null
-      }
+      },
+      bemVariants: []
     }
   }
 
@@ -92,20 +94,36 @@ export default class AbstractGenericIdListMultiSelectItem extends React.Componen
     return this.props.childExposedApi.selectedItemIdsAsArray().includes(this.props.id)
   }
 
+  get elementVariants () {
+    return this.props.bemVariants
+  }
+
+  get elementClassName () {
+    let variants = this.elementVariants
+    if (this.isSelected) {
+      variants = [...variants, 'selected']
+    }
+    return BemUtilities.buildBemElement('selectable-list', 'item', variants)
+  }
+
   getLabel () {
     console.warn('getLabel: Should be overridden by subclass of AbstractIdGenericListMultiselectItem')
     return null
   }
 
+  renderContent () {
+    return <h2 className={'selectable-list__itemtitle'}>
+      {this.getLabel()}
+    </h2>
+  }
+
   renderContents () {
-    return <button className={`selectable-list__item ${this.isSelected ? 'selectable-list__item--selected' : ''}`}
+    return <button className={this.elementClassName}
       onClick={this.handleOnClick}>
       <div className={'selectable-list__icon'}>
         {this.isSelected ? <i className={'cricon cricon--check cricon--color-light'} /> : null}
       </div>
-      <h2 className={'selectable-list__itemtitle'}>
-        {this.getLabel()}
-      </h2>
+      {this.renderContent()}
     </button>
   }
 
