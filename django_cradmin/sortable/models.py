@@ -20,6 +20,29 @@ class SortableQuerySetBase(NullsLastQuerySet):
     """
     parent_attribute = None
 
+    def __set_extra_item_attrs_before_save(self, item, item_attrs_dict):
+        """
+        Sets values to attributes defined in the `item_attrs_dict`.
+
+        Does nothing if `item_attrs_dict` is `None`.
+
+        Args:
+            item: Sortable model instance.
+            item_attrs_dict: A dict of attribute names mapped to values.
+        """
+        if item_attrs_dict is not None:
+            for key, val in item_attrs_dict.items():
+                setattr(item, key, val)
+
+    def __save(self, item, item_attrs_dict):
+        """
+        Private wrapper-method for saving that makes sure extra attributes are set on the item before save.
+
+        Use this method instead of calling item.save() directly.
+        """
+        self.__set_extra_item_attrs_before_save(item, item_attrs_dict)
+        item.save()
+
     def _get_filtered_by_parentobject_queryset(self, parentobject, none_values_order_by):
         filter_kwargs = {self.parent_attribute: parentobject}
         order_by = ['sort_index']
@@ -179,10 +202,12 @@ class SortableQuerySetBase(NullsLastQuerySet):
         Only the required updates are made.
 
         Parameters:
-            item:
-            sort_before_id:
-            none_values_order_by:
-            item_attrs_dict (dict): A dictionary of extra attributes to set on an items when sorting (last_updated_by, etc.)
+            item: A sortable item.
+            sort_before_id: The item-ID to sort the item before.
+            none_values_order_by: A list of values to order by for items where the sort_index is None.
+                Standard Django-ORM ordering.
+            item_attrs_dict (dict): A dictionary of extra attributes to set on all
+                items that are sorted.
         """
         with transaction.atomic():
             itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(
@@ -205,23 +230,11 @@ class SortableQuerySetBase(NullsLastQuerySet):
 
             self.sort_before(item, sort_before_id=None)
 
-        Parameters:
-            item:
-            none_values_order_by:
-            item_attrs_dict (dict): A dictionary of extra attributes to set on an items when sorting (last_updated_by, etc.)
+        See ``sort_before`` docstring more info about the arguments.
         """
         self.sort_before(item, sort_before_id=None,
                          none_values_order_by=none_values_order_by,
                          item_attrs_dict=item_attrs_dict)
-
-    def __set_extra_item_attrs_before_save(self, item, item_attrs_dict):
-        if item_attrs_dict is not None:
-            for key, val in item_attrs_dict.items():
-                setattr(item, key, val)
-
-    def __save(self, item, item_attrs_dict):
-        self.__set_extra_item_attrs_before_save(item, item_attrs_dict)
-        item.save()
 
 
 def validate_sort_index(value):
