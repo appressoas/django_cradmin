@@ -47,7 +47,7 @@ export default class AbstractGeneridIdListSearchInputMultiSelect extends Abstrac
   renderSelected (id) {
     return <span key={`selected-${id}`} className={'searchinput__selected'}>
       <span className={'searchinput__selected_preview searchinput__selected_preview--with-deselect'}>
-        {this.getLabelForId(id)}
+        {this.getLabelForId(parseInt(id))}
       </span>
       <button
         type={'button'}
@@ -87,7 +87,7 @@ export default class AbstractGeneridIdListSearchInputMultiSelect extends Abstrac
       for (const id of nextProps.childExposedApi.selectedItemIdsAsArray()) {
         const idListItem = reduxApiUtilities.getObjectFromReduxMapOrNullIfLoading(
           nextProps.idListItemMap,
-          id,
+          parseInt(id),
           nextProps.getIdListItemAction,
           nextProps.dispatch
         )
@@ -96,7 +96,6 @@ export default class AbstractGeneridIdListSearchInputMultiSelect extends Abstrac
         }
       }
     }
-
     ensureIdListItemInStore()
 
     if (hasAllReduxData !== prevState.hasAllReduxData) {

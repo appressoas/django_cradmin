@@ -114,6 +114,7 @@ export default class GenericIdListMultiSelectFilter extends AbstractFilter {
 
   handleSelectItems (data) {
     this.setFilterValue(this.filterListRef.selectedItemIdsAsArray())
+    this.filterListRef.setFilterValue('search', '')
   }
 
   handleDeselectItems (data) {
