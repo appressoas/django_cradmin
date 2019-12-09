@@ -37,7 +37,7 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -49,29 +49,33 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 var AbstractFilterList =
 /*#__PURE__*/
 function (_React$Component) {
+  _inherits(AbstractFilterList, _React$Component);
+
   _createClass(AbstractFilterList, null, [{
     key: "propTypes",
     get: function get() {
@@ -690,9 +694,7 @@ function (_React$Component) {
       }
 
       var index = this.getIndexOfItem(selectedItemId, selectedItemsArray);
-
-      var newArray = _toConsumableArray(selectedItemsArray.slice(0, index - 1)).concat([selectedItemsArray[index], selectedItemsArray[index - 1]], _toConsumableArray(selectedItemsArray.slice(index + 1)));
-
+      var newArray = [].concat(_toConsumableArray(selectedItemsArray.slice(0, index - 1)), [selectedItemsArray[index], selectedItemsArray[index - 1]], _toConsumableArray(selectedItemsArray.slice(index + 1)));
       this.setState({
         selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
       }, function () {
@@ -717,9 +719,7 @@ function (_React$Component) {
 
       var selectedItemsArray = this.selectedItemIdsAsArray();
       var index = this.getIndexOfItem(selectedItemId, selectedItemsArray);
-
-      var newArray = _toConsumableArray(selectedItemsArray.slice(0, index)).concat([selectedItemsArray[index + 1], selectedItemsArray[index]], _toConsumableArray(selectedItemsArray.slice(index + 2)));
-
+      var newArray = [].concat(_toConsumableArray(selectedItemsArray.slice(0, index)), [selectedItemsArray[index + 1], selectedItemsArray[index]], _toConsumableArray(selectedItemsArray.slice(index + 2)));
       this.setState({
         selectedListItemsMap: this.getItemsMapFromReorderedArray(newArray)
       }, function () {
@@ -814,7 +814,7 @@ function (_React$Component) {
       }
 
       this.setState({
-        listItemsDataArray: _toConsumableArray(this.state.listItemsDataArray.slice(0, index - 1)).concat([this.state.listItemsDataArray[index], this.state.listItemsDataArray[index - 1]], _toConsumableArray(this.state.listItemsDataArray.slice(index + 1)))
+        listItemsDataArray: [].concat(_toConsumableArray(this.state.listItemsDataArray.slice(0, index - 1)), [this.state.listItemsDataArray[index], this.state.listItemsDataArray[index - 1]], _toConsumableArray(this.state.listItemsDataArray.slice(index + 1)))
       }, function () {
         if (callback !== null) {
           callback(listItemId);
@@ -837,7 +837,7 @@ function (_React$Component) {
       }
 
       this.setState({
-        listItemsDataArray: _toConsumableArray(this.state.listItemsDataArray.slice(0, index)).concat([this.state.listItemsDataArray[index + 1], this.state.listItemsDataArray[index]], _toConsumableArray(this.state.listItemsDataArray.slice(index + 2)))
+        listItemsDataArray: [].concat(_toConsumableArray(this.state.listItemsDataArray.slice(0, index)), [this.state.listItemsDataArray[index + 1], this.state.listItemsDataArray[index]], _toConsumableArray(this.state.listItemsDataArray.slice(index + 2)))
       }, function () {
         if (callback !== null) {
           callback(listItemId);
@@ -2543,7 +2543,7 @@ function (_React$Component) {
           var filterKey = AbstractFilterList._getStateVariableNameForFilter(filterSpec.props.name);
 
           if (state[filterKey] === undefined) {
-            filter = _objectSpread({}, filter, AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue));
+            filter = _objectSpread({}, filter, {}, AbstractFilterList._makeFilterValue(filterSpec.props.name, filterSpec.initialValue));
           }
         }
       } catch (err) {
@@ -2564,8 +2564,6 @@ function (_React$Component) {
       return filter;
     }
   }]);
-
-  _inherits(AbstractFilterList, _React$Component);
 
   return AbstractFilterList;
 }(_react.default.Component);

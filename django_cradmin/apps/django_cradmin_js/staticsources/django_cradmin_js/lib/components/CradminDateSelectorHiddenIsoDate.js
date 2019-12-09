@@ -19,23 +19,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var CradminDateSelectorHiddenIsoDate =
 /*#__PURE__*/
 function (_React$Component) {
+  _inherits(CradminDateSelectorHiddenIsoDate, _React$Component);
+
   _createClass(CradminDateSelectorHiddenIsoDate, [{
     key: "makeInitialState",
     value: function makeInitialState() {
@@ -68,9 +70,9 @@ function (_React$Component) {
     _this._name = "django_cradmin.components.CradminDateSelectorHiddenIsoDate.".concat(_this.props.signalNameSpace);
     _this.logger = new _LoggerSingleton.default().getLogger('django_cradmin.components.CradminDateSelectorHiddenIsoDate');
     _this.state = _this.makeInitialState();
-    _this._onDayValueChangeSignal = _this._onDayValueChangeSignal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this._onMonthValueChangeSignal = _this._onMonthValueChangeSignal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this._onYearValueChangeSignal = _this._onYearValueChangeSignal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this._onDayValueChangeSignal = _this._onDayValueChangeSignal.bind(_assertThisInitialized(_this));
+    _this._onMonthValueChangeSignal = _this._onMonthValueChangeSignal.bind(_assertThisInitialized(_this));
+    _this._onYearValueChangeSignal = _this._onYearValueChangeSignal.bind(_assertThisInitialized(_this));
 
     _this.initializeSignalHandlers();
 
@@ -133,8 +135,6 @@ function (_React$Component) {
       });
     }
   }]);
-
-  _inherits(CradminDateSelectorHiddenIsoDate, _React$Component);
 
   return CradminDateSelectorHiddenIsoDate;
 }(_react.default.Component);
