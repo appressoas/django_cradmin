@@ -71,6 +71,8 @@ export default class ChildExposedApi {
     this.selectedItemIsLast = this.filterListObject.selectedItemIsLast.bind(this.filterListObject)
     this.selectedItemMoveUp = this.filterListObject.selectedItemMoveUp.bind(this.filterListObject)
     this.selectedItemMoveDown = this.filterListObject.selectedItemMoveDown.bind(this.filterListObject)
+    this.selectedItemIdsAsArray = this.filterListObject.selectedItemIdsAsArray.bind(this.filterListObject)
+
     this.registerSelectionChangeListener = this.filterListObject.registerSelectionChangeListener.bind(this.filterListObject)
     this.unregisterSelectionChangeListener = this.filterListObject.unregisterSelectionChangeListener.bind(this.filterListObject)
 
