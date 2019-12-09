@@ -29,6 +29,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
@@ -37,11 +41,7 @@ function _get(target, property, receiver) { if (typeof Reflect !== "undefined" &
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -212,8 +212,6 @@ exports.AbstractComponentSpec = AbstractComponentSpec;
 var LayoutComponentSpec =
 /*#__PURE__*/
 function (_AbstractComponentSpe) {
-  _inherits(LayoutComponentSpec, _AbstractComponentSpe);
-
   function LayoutComponentSpec() {
     _classCallCheck(this, LayoutComponentSpec);
 
@@ -268,6 +266,8 @@ function (_AbstractComponentSpe) {
     }
   }]);
 
+  _inherits(LayoutComponentSpec, _AbstractComponentSpe);
+
   return LayoutComponentSpec;
 }(AbstractComponentSpec);
 
@@ -276,13 +276,13 @@ exports.LayoutComponentSpec = LayoutComponentSpec;
 var ListItemComponentSpec =
 /*#__PURE__*/
 function (_AbstractComponentSpe2) {
-  _inherits(ListItemComponentSpec, _AbstractComponentSpe2);
-
   function ListItemComponentSpec() {
     _classCallCheck(this, ListItemComponentSpec);
 
     return _possibleConstructorReturn(this, _getPrototypeOf(ListItemComponentSpec).apply(this, arguments));
   }
+
+  _inherits(ListItemComponentSpec, _AbstractComponentSpe2);
 
   return ListItemComponentSpec;
 }(AbstractComponentSpec);
@@ -292,8 +292,6 @@ exports.ListItemComponentSpec = ListItemComponentSpec;
 var AbstractLayoutChildComponentSpec =
 /*#__PURE__*/
 function (_AbstractComponentSpe3) {
-  _inherits(AbstractLayoutChildComponentSpec, _AbstractComponentSpe3);
-
   function AbstractLayoutChildComponentSpec() {
     _classCallCheck(this, AbstractLayoutChildComponentSpec);
 
@@ -311,6 +309,8 @@ function (_AbstractComponentSpe3) {
     }
   }]);
 
+  _inherits(AbstractLayoutChildComponentSpec, _AbstractComponentSpe3);
+
   return AbstractLayoutChildComponentSpec;
 }(AbstractComponentSpec);
 
@@ -319,8 +319,6 @@ exports.AbstractLayoutChildComponentSpec = AbstractLayoutChildComponentSpec;
 var ListComponentSpec =
 /*#__PURE__*/
 function (_AbstractLayoutChildC) {
-  _inherits(ListComponentSpec, _AbstractLayoutChildC);
-
   function ListComponentSpec() {
     _classCallCheck(this, ListComponentSpec);
 
@@ -347,6 +345,8 @@ function (_AbstractLayoutChildC) {
     }
   }]);
 
+  _inherits(ListComponentSpec, _AbstractLayoutChildC);
+
   return ListComponentSpec;
 }(AbstractLayoutChildComponentSpec);
 
@@ -355,8 +355,6 @@ exports.ListComponentSpec = ListComponentSpec;
 var FilterComponentSpec =
 /*#__PURE__*/
 function (_AbstractLayoutChildC2) {
-  _inherits(FilterComponentSpec, _AbstractLayoutChildC2);
-
   function FilterComponentSpec() {
     _classCallCheck(this, FilterComponentSpec);
 
@@ -399,6 +397,8 @@ function (_AbstractLayoutChildC2) {
     }
   }]);
 
+  _inherits(FilterComponentSpec, _AbstractLayoutChildC2);
+
   return FilterComponentSpec;
 }(AbstractLayoutChildComponentSpec);
 
@@ -407,13 +407,13 @@ exports.FilterComponentSpec = FilterComponentSpec;
 var PaginatorComponentSpec =
 /*#__PURE__*/
 function (_AbstractLayoutChildC3) {
-  _inherits(PaginatorComponentSpec, _AbstractLayoutChildC3);
-
   function PaginatorComponentSpec() {
     _classCallCheck(this, PaginatorComponentSpec);
 
     return _possibleConstructorReturn(this, _getPrototypeOf(PaginatorComponentSpec).apply(this, arguments));
   }
+
+  _inherits(PaginatorComponentSpec, _AbstractLayoutChildC3);
 
   return PaginatorComponentSpec;
 }(AbstractLayoutChildComponentSpec);
@@ -423,13 +423,13 @@ exports.PaginatorComponentSpec = PaginatorComponentSpec;
 var SelectedItemsComponentSpec =
 /*#__PURE__*/
 function (_AbstractLayoutChildC4) {
-  _inherits(SelectedItemsComponentSpec, _AbstractLayoutChildC4);
-
   function SelectedItemsComponentSpec() {
     _classCallCheck(this, SelectedItemsComponentSpec);
 
     return _possibleConstructorReturn(this, _getPrototypeOf(SelectedItemsComponentSpec).apply(this, arguments));
   }
+
+  _inherits(SelectedItemsComponentSpec, _AbstractLayoutChildC4);
 
   return SelectedItemsComponentSpec;
 }(AbstractLayoutChildComponentSpec);
@@ -439,13 +439,13 @@ exports.SelectedItemsComponentSpec = SelectedItemsComponentSpec;
 var ComponentGroupComponentSpec =
 /*#__PURE__*/
 function (_AbstractLayoutChildC5) {
-  _inherits(ComponentGroupComponentSpec, _AbstractLayoutChildC5);
-
   function ComponentGroupComponentSpec() {
     _classCallCheck(this, ComponentGroupComponentSpec);
 
     return _possibleConstructorReturn(this, _getPrototypeOf(ComponentGroupComponentSpec).apply(this, arguments));
   }
+
+  _inherits(ComponentGroupComponentSpec, _AbstractLayoutChildC5);
 
   return ComponentGroupComponentSpec;
 }(AbstractLayoutChildComponentSpec);

@@ -20,15 +20,15 @@ describe('ElementCreator', function () {
     var elementCreator = new _ElementCreator.default('div');
     var cssClasses = ['this-is-a-test-class', 'this-is-another-test-class', 'woopeeedoooooooo'];
 
-    for (var _i = 0, _cssClasses = cssClasses; _i < _cssClasses.length; _i++) {
-      var cssClass = _cssClasses[_i];
+    for (var _i = 0; _i < cssClasses.length; _i++) {
+      var cssClass = cssClasses[_i];
       elementCreator.addCssClass(cssClass);
     }
 
     var element = elementCreator.renderElement();
 
-    for (var _i2 = 0, _cssClasses2 = cssClasses; _i2 < _cssClasses2.length; _i2++) {
-      var _cssClass = _cssClasses2[_i2];
+    for (var _i2 = 0; _i2 < cssClasses.length; _i2++) {
+      var _cssClass = cssClasses[_i2];
       expect(element.classList.contains(_cssClass)).toBe(true);
     }
   });
@@ -68,8 +68,8 @@ describe('ElementCreator', function () {
     var elementCreator = new _ElementCreator.default('div');
     var cssClasses = ['this-is-a-test-class', 'this-is-another-test-class', 'woopeeedoooooooo'];
 
-    for (var _i3 = 0, _cssClasses3 = cssClasses; _i3 < _cssClasses3.length; _i3++) {
-      var cssClass = _cssClasses3[_i3];
+    for (var _i3 = 0; _i3 < cssClasses.length; _i3++) {
+      var cssClass = cssClasses[_i3];
       elementCreator.addCssClass(cssClass);
     }
 
@@ -78,8 +78,8 @@ describe('ElementCreator', function () {
     var element = elementCreator.renderElement();
     expect(element.tagName).toBe('DIV');
 
-    for (var _i4 = 0, _cssClasses4 = cssClasses; _i4 < _cssClasses4.length; _i4++) {
-      var _cssClass2 = _cssClasses4[_i4];
+    for (var _i4 = 0; _i4 < cssClasses.length; _i4++) {
+      var _cssClass2 = cssClasses[_i4];
       expect(element.classList.contains(_cssClass2)).toBe(true);
     }
 

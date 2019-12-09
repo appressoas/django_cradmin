@@ -2,7 +2,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0-beta.47",
     "create-react-class": "^15.6.3",
-    "ievv_jsbase": "^2.0.1",
+    "ievv_jsbase": "^2.0.4",
     "is_js": "^0.9.0",
     "lodash": "^4.17.10",
     "moment": "^2.17.1",
@@ -45,7 +45,7 @@
     "test-debug": "jest --debug",
     "test-watch": "jest --watch"
   },
-  "version": "4.3.3",
+  "version": "4.3.4",
   "standard": {
     "env": [
       "jest"

@@ -23,25 +23,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } _setPrototypeOf(subClass.prototype, superClass && superClass.prototype); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) { return o.__proto__; }; return _getPrototypeOf(o); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var AbstractSelectWidget =
 /*#__PURE__*/
 function (_AbstractWidget) {
-  _inherits(AbstractSelectWidget, _AbstractWidget);
-
   function AbstractSelectWidget(element, widgetInstanceId) {
     var _this;
 
@@ -49,8 +47,8 @@ function (_AbstractWidget) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AbstractSelectWidget).call(this, element, widgetInstanceId));
     _this.logger = new _LoggerSingleton.default().getLogger('django_cradmin.widgets.AbstractSelectWidget');
-    _this.onSelectResultSignal = _this.onSelectResultSignal.bind(_assertThisInitialized(_this));
-    _this.onSearchRequestedSignal = _this.onSearchRequestedSignal.bind(_assertThisInitialized(_this));
+    _this.onSelectResultSignal = _this.onSelectResultSignal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.onSearchRequestedSignal = _this.onSearchRequestedSignal.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this._uniquePrefix = "django_cradmin.Select.".concat(_this.widgetInstanceId);
     _this._searchRequestedSignalName = "".concat(_this._uniquePrefix, ".SearchRequested");
     _this._searchCompletedSignalName = "".concat(_this._uniquePrefix, ".SearchCompleted");
@@ -215,8 +213,10 @@ function (_AbstractWidget) {
   }, {
     key: "_updatePreviews",
     value: function _updatePreviews(resultObject) {
-      for (var _i = 0, _Object$keys = Object.keys(this.config.updateInnerHtmlWithResult); _i < _Object$keys.length; _i++) {
-        var attribute = _Object$keys[_i];
+      var _arr = Object.keys(this.config.updateInnerHtmlWithResult);
+
+      for (var _i = 0; _i < _arr.length; _i++) {
+        var attribute = _arr[_i];
         var domIds = this.config.updateInnerHtmlWithResult[attribute];
         var value = resultObject[attribute];
 
@@ -414,8 +414,10 @@ function (_AbstractWidget) {
       return new Promise(function (resolve, reject) {
         var request = new _HttpDjangoJsonRequest.default(_this4.config.searchApi.url);
 
-        for (var _i2 = 0, _Object$keys2 = Object.keys(_this4.config.searchApi.staticData); _i2 < _Object$keys2.length; _i2++) {
-          var attribute = _Object$keys2[_i2];
+        var _arr2 = Object.keys(_this4.config.searchApi.staticData);
+
+        for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
+          var attribute = _arr2[_i2];
           request.urlParser.queryString.set(attribute, _this4.config.searchApi.staticData[attribute]);
         }
 
@@ -564,6 +566,8 @@ function (_AbstractWidget) {
       throw new Error('You must override makeReactElement()');
     }
   }]);
+
+  _inherits(AbstractSelectWidget, _AbstractWidget);
 
   return AbstractSelectWidget;
 }(_AbstractWidget2.default);
