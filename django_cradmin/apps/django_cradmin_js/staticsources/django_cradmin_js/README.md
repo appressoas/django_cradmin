@@ -29,6 +29,7 @@ $ yarn add django_cradmin_js --dev
 
    ```
    $ yarn run build
+   $ git add -f lib/
    ```
 2. Update the ``version`` in ``package.json``.
 3. ``npm publish``.
