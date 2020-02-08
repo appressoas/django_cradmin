@@ -52,6 +52,8 @@ html5lib==0.9999999
 ievv-opensource==5.0.0
 pythonkss==1.3
 
+# lockdown the whole site with a password. Used by lockdown_demo
+django-lockdown==3.0
 
 # Pull inn development packages from GIT
 -r develop.gitpackages.txt

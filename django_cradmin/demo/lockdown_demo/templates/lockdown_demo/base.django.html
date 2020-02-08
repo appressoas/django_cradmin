@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{% block title %}{% endblock %}</title>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        font-family: Maison Neue,Helvetica,sans-serif;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+    .header {
+        background-color: #952028;
+        padding: 29px 11px 3px 11px;
+        margin-top: 0;
+        padding-bottom: 30px;
+        color: white;
+        text-align: center;
+    }
+    .body {
+        width: 700px;
+        margin: 60px auto;
+        text-align: center;
+    }
+    .body input {
+        width: 80%;
+        padding: 16px;
+        font-size: 105%;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+{% block content %}
+{% endblock %}
+</body>
+</html>

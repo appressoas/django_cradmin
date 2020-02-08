@@ -1,0 +1,23 @@
+{% extends "lockdown/base.html" %}
+{% block title %}Ikke åpen testside{% endblock %}
+
+{% block content %}
+<div id="lockdown">
+  <h2 class="header">Passord kreves for å se denne siden...</h2>
+
+  <div class="body">
+      {% if form %}
+          <form action="" method="post" placeholder="Passord du har mottatt...">{% csrf_token %}
+            <p>
+                <input type="password" name="password" required id="id_password" placeholder="Skriv inn passord..." />
+            </p>
+            <p>
+                <input type="submit" value="Fortsett" />
+            </p>
+            {% csrf_token %}
+          </form>
+      {% endif %}
+  </div>
+
+</div>
+{% endblock %}

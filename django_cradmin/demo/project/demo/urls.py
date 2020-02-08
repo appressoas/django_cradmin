@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     url(r'^uicontainerdemo/', include(UIContainerDemoCrAdminInstance.urls())),
     url(r'^uimock_demo/', include('django_cradmin.demo.uimock_demo.urls')),
+    url(r'^lockdown_demo/', include('django_cradmin.demo.lockdown_demo.urls')),
     url(r'^$', DemoView.as_view()),
     url(r'^media/(?P<path>.*)$', static.serve, {
         'document_root': settings.MEDIA_ROOT}),
