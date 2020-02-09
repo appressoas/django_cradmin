@@ -1,23 +1,42 @@
 {% extends "lockdown/base.html" %}
-{% block title %}Ikke åpen testside{% endblock %}
+{% load static %}
+{% load i18n %}
+
+{% block tab-icon %}
+    {% static 'django_cradmin_styles/unversioned_media/appresso_logo.png' %}
+{% endblock tab-icon %}
+
+{% block title %}{% trans 'Not open test site' context 'cradmin_lockdown' %}{% endblock %}
+
+{% block brandimage %}
+    <img class="adminui-page-header__brandimage"
+         src="{% static 'django_cradmin_styles/unversioned_media/appresso_logo.png' %}">
+{% endblock brandimage %}
+
+{% block page-cover-title %}
+    {% trans 'This site needs a password' context 'cradmin_lockdown' %}
+{% endblock page-cover-title %}
+
+{% block page-cover-description %}
+    {% trans 'Security provided by Django lockdown and Appresso' context 'cradmin_lockdown' %}
+{% endblock page-cover-description %}
 
 {% block content %}
-<div id="lockdown">
-  <h2 class="header">Passord kreves for å se denne siden...</h2>
-
-  <div class="body">
-      {% if form %}
-          <form action="" method="post" placeholder="Passord du har mottatt...">{% csrf_token %}
-            <p>
-                <input type="password" name="password" required id="id_password" placeholder="Skriv inn passord..." />
-            </p>
-            <p>
-                <input type="submit" value="Fortsett" />
-            </p>
-            {% csrf_token %}
-          </form>
-      {% endif %}
-  </div>
-
-</div>
+    <section class="adminui-page-section adminui-page-section--tight">
+        {% if form %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="fieldwrapper">
+                    <input type="password"
+                           name="password"
+                           required id="id_password"
+                           class="input"
+                           placeholder="{% trans 'Type in password' context 'cradmin_lockdown' %}" />
+                </div>
+                <button type="submit" class="button button--primary-fill">
+                    {% trans 'Continue' context 'cradmin_lockdown' %}
+                </button>
+            </form>
+        {% endif %}
+    </section>
 {% endblock %}

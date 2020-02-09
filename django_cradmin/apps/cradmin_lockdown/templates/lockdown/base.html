@@ -1,39 +1,35 @@
+{% load cradmin_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>{% block title %}{% endblock %}</title>
-<style>
-    body {
-        padding: 0;
-        margin: 0;
-        font-family: Maison Neue,Helvetica,sans-serif;
-        font-weight: 400;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-    }
-    .header {
-        background-color: #952028;
-        padding: 29px 11px 3px 11px;
-        margin-top: 0;
-        padding-bottom: 30px;
-        color: white;
-        text-align: center;
-    }
-    .body {
-        width: 700px;
-        margin: 60px auto;
-        text-align: center;
-    }
-    .body input {
-        width: 80%;
-        padding: 16px;
-        font-size: 105%;
-        font-weight: bold;
-    }
-</style>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% block tab-icon %}{% endblock tab-icon %}">
+    {% block styles %}
+        <link href='{% cradmin_theme_staticpath %}' rel="stylesheet">
+    {% endblock styles %}
 </head>
 <body>
-{% block content %}
-{% endblock %}
+
+{% block header %}
+    <header class="adminui-page-header">
+        <div class="adminui-page-header__content">
+            <div class="adminui-page-header__brand">
+                {% block brandname %}{% endblock brandname %}
+                {% block brandimage %}{% endblock brandimage %}
+            </div>
+        </div>
+    </header>
+{% endblock header %}
+
+{% block page-cover %}
+    <div class="adminui-page-cover">
+        <h1 class="adminui-page-cover__title">{% block page-cover-title %}{% endblock page-cover-title %}</h1>
+        <p class="adminui-page-cover__description adminui-page-cover__description--small">
+            {% block page-cover-description %}{% endblock page-cover-description %}
+        </p>
+    </div>
+{% endblock page-cover %}
+
+{% block content %}{% endblock content %}
 </body>
 </html>
