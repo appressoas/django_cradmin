@@ -53,7 +53,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'django_dbdev',
-    'lockdown',
 
     # Required by django cradmin
     'django_cradmin',
@@ -92,6 +91,7 @@ INSTALLED_APPS = (
 
     #: Demo for lockdown
     'django_cradmin.demo.lockdown_demo',
+    'lockdown',  # must come after the app which loads the custom templates for the lockdown form
 
     'ievv_opensource.ievvtasks_development',
     'ievv_opensource.ievvtasks_common',
@@ -353,4 +353,4 @@ if LOCKDOWN_ENABLED:
         'lockdown.middleware.LockdownMiddleware',
     )
     LOCKDOWN_PASSWORDS = 'bad moon rising'
-    # LOCKDOWN_FORM = 'django_cradmin.demo.lockdown_demo.views.TestLockdownView'
+    LOCKDOWN_FORM = 'django_cradmin.demo.lockdown_demo.forms.lockdown_form.DjangoCradminLockdownForm'
