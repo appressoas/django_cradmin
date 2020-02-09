@@ -1,7 +1,5 @@
-from django import forms
-from lockdown.forms import LockdownForm
-from django_cradmin.viewhelpers import formview
+from django_cradmin.apps.cradmin_lockdown.forms import BaseDjangoCradminLockdownForm
 
 
-class DjangoCradminLockdownForm(LockdownForm):
+class TestDjangoCradminLockdownForm(BaseDjangoCradminLockdownForm):
     """"""
