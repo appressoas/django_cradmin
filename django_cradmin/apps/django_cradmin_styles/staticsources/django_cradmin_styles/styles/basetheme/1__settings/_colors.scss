@@ -39,7 +39,11 @@ $__color-warning-base: mix(red, $__color-neutral-base, 60%);
 $__color-success-base: mix(green, $__color-neutral-base, 60%);
 $__color-info-base: mix(#ffce00, $__color-neutral-base, 90%);
 
-$colors: (
+// Default colors.
+// These act as fallback for $colors.
+// Can not be overridden, but you can use the provided `deep-map-merge()` function
+// for things like theming (E.g.: `$colors: deep-map-merge($theme-base-colors, $local-colors)`).
+$default-colors: (
     primary: (
         base: $__color-primary-base,
         dark: shade($__color-primary-base, 20%)
@@ -69,7 +73,9 @@ $colors: (
         base: $__color-info-base,
         dark: shade($__color-info-base, 20%)
     )
-) !default;
+);
+
+$colors: null !default;
 
 $color-light: #fff !default;
 $color-dark: color(neutral, xdark) !default;

@@ -29,6 +29,49 @@
     @return map-get(map-get($colors, $color-name), $color-variant);
 }
 
+// $colors map lookup.
+// retrieve color from $colors map ie. `color(primary, base)`
+@function color($color-name, $color-variant: 'base') {
+    // map inception
+    $output-color: null;
+    @if ($colors) {
+        $color-variant-map: map-get($colors, $color-name);
+        @if ($color-variant-map) {
+            $output-color: map-get($color-variant-map, $color-variant);
+        }
+    }
+    @if ($output-color) {
+        @return $output-color;
+    } @else if ($default-colors) {
+        $default-color-variant-map: map-get($default-colors, $color-name);
+        @if ($default-color-variant-map) {
+            $output-color: map-get($default-color-variant-map, $color-variant);
+            @if ($output-color) {
+                @return $output-color;
+            }
+            @error "color(#{$color-name}, #{$color-variant}) failed. No entry named '#{$color-variant}' in $default-colors[#{$color-name}] or $colors[#{$color-name}].";
+        }
+        @error "color(#{$color-name}, #{$color-variant}) failed. No entry named '#{$color-name}' in $default-colors or $colors.";
+    }
+}
+
+// Deep merge two maps.
+// This merges all the keys, and keep any key that is present in any of the two maps.
+// If a key is present in both maps, the key from `$child-map` is used.
+@function deep-map-merge($parent-map, $child-map) {
+	$result: $parent-map;
+	@each $key, $value in $child-map {
+		@if (not map-has-key($result, $key)) or (type-of(map-get($result, $key)) != type-of($value)) or (not (type-of(map-get($result, $key)) == map and type-of($value) == map)) {
+			$result: map-merge($result, ($key: $value));
+		}
+		@else {
+			$result: map-merge($result, ($key: deep-map-merge(map-get($result, $key), $value)));
+		}
+	}
+	@return $result;
+}
+
+
 // Find the contrast color to any color hex
 @function color-contrast($n) {
     $color-brightness: round((red($n) * 299) + (green($n) * 587) + (blue($n) * 114) / 1000);
