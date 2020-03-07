@@ -68,7 +68,7 @@ Styleguide components.tilelayout
     &,
     &:hover,
     &:focus {
-        color: rgba(black, 0.75);
+        color: color-contrast($color);
     }
 }
 
@@ -206,8 +206,44 @@ Styleguide components.tilelayout
             }
         }
 
+        &--primary {
+            @include tilelayout-color-variant(color(primary))
+        }
+        &--primary-dark {
+            @include tilelayout-color-variant(color(primary, dark))
+        }
+        &--secondary {
+            @include tilelayout-color-variant(color(secondary))
+        }
+        &--secondary-dark {
+            @include tilelayout-color-variant(color(secondary, dark))
+        }
         &--neutral {
             @include tilelayout-color-variant(color(neutral))
+        }
+        &--neutral-dark {
+            @include tilelayout-color-variant(color(neutral, dark))
+        }
+        &--warning {
+            @include tilelayout-color-variant(color(warning))
+        }
+        &--warning-dark {
+            @include tilelayout-color-variant(color(warning, dark))
+        }
+        &--success {
+            @include tilelayout-color-variant(color(success))
+        }
+        &--success-dark {
+            @include tilelayout-color-variant(color(success, dark))
+        }
+        &--info {
+            @include tilelayout-color-variant(color(info))
+        }
+        &--info-dark {
+            @include tilelayout-color-variant(color(info, dark))
+        }
+        &--link {
+            @include tilelayout-color-variant($color-links)
         }
     }
 }
