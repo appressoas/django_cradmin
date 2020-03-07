@@ -1,0 +1,60 @@
+{% extends "lockdown/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block tab-icon %}
+    {% static 'django_cradmin_styles/unversioned_media/appresso_logo.png' %}
+{% endblock tab-icon %}
+
+{% block title %}{% trans 'Test server' context 'cradmin_lockdown' %}{% endblock %}
+
+{% block brandimage %}
+    <img class="adminui-page-header__brandimage"
+         src="{% static 'django_cradmin_styles/unversioned_media/appresso_logo.png' %}">
+{% endblock brandimage %}
+
+{% block page-cover-title %}
+    {% trans 'Welcome to the test server' context 'cradmin_lockdown' %}
+{% endblock page-cover-title %}
+
+{% block page-cover-description %}
+    {% trans 'Security provided by Django lockdown and Appresso' context 'cradmin_lockdown' %}
+{% endblock page-cover-description %}
+
+{% block content %}
+    {% block form %}
+        <section class="adminui-page-section adminui-page-section--tight">
+            {% if form %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="fieldwrapper">
+                        <input type="password"
+                               name="password"
+                               required id="id_password"
+                               class="input"
+                               placeholder="{% trans 'Type in password' context 'cradmin_lockdown' %}" />
+                    </div>
+                    <button type="submit" class="button button--block button--primary-fill">
+                        {% trans 'Continue' context 'cradmin_lockdown' %}
+                    </button>
+                </form>
+            {% endif %}
+        </section>
+    {% endblock form %}
+    {% block spinning-cogs %}
+        <section class="adminui-page-section adminui-page-section--tight">
+            <div class="container container--tight">
+                <p class="text-center">
+{#                    <i class="cricon cricon--settings cricon--size-xxsmall fas fa-spin"></i>#}
+{#                    <i class="cricon cricon--settings cricon--size-xsmall fas fa-spin"></i>#}
+{#                    <i class="cricon cricon--settings cricon--size-small fas fa-spin"></i>#}
+{#                    <i class="cricon cricon--settings cricon--size-medium fas fa-spin"></i>#}
+{#                    <i class="cricon cricon--settings cricon--size-large fas fa-spin"></i>#}
+                    <i class="cricon cricon--settings cricon--size-xlarge fas fa-spin"></i>
+                    <i class="cricon cricon--settings cricon--size-xxlarge fas fa-spin"></i>
+                    <i class="cricon cricon--settings cricon--size-xxxlarge fas fa-spin"></i>
+                </p>
+            </div>
+        </section>
+    {% endblock spinning-cogs %}
+{% endblock %}

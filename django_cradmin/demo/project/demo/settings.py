@@ -69,6 +69,10 @@ INSTALLED_APPS = (
     'django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore',
     'django_cradmin.uicontainer',
 
+    # Use the custom lockdown templates
+    'django_cradmin.apps.cradmin_lockdown',
+    'lockdown',  # must come after the app which loads the custom templates for the lockdown form
+
     # For the styleguide for themes
     'django_cradmin.apps.cradmin_kss_styleguide',
 
@@ -88,6 +92,9 @@ INSTALLED_APPS = (
 
     #: Demo for viewhelpers.uimock
     'django_cradmin.demo.uimock_demo',
+
+    #: Demo for lockdown
+    'django_cradmin.demo.lockdown_demo',
 
     'ievv_opensource.ievvtasks_development',
     'ievv_opensource.ievvtasks_common',
@@ -339,3 +346,14 @@ IEVVTASKS_MAKEMESSAGES_JAVASCRIPT_IGNORE = [
     'static/*',
 ]
 IEVVTASKS_MAKEMESSAGES_DIRECTORIES = [os.path.dirname(django_cradmin.__file__)]
+
+##########
+# LOCKDOWN
+##########
+LOCKDOWN_ENABLED = True
+if LOCKDOWN_ENABLED:
+    MIDDLEWARE += (
+        'lockdown.middleware.LockdownMiddleware',
+    )
+    LOCKDOWN_PASSWORDS = 'bad moon rising'
+    LOCKDOWN_FORM = 'django_cradmin.demo.lockdown_demo.forms.lockdown_form.TestDjangoCradminLockdownForm'
