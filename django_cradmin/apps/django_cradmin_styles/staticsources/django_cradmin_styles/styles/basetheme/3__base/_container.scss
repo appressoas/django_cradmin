@@ -42,6 +42,10 @@ Styleguide layout.container
         max-width: $container-width--wide;
     }
 
+    &--xwide {
+        max-width: $container-width--xwide;
+    }
+
     // Remove padding from container within container
     .container {
         padding-left: 0;
