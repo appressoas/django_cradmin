@@ -353,17 +353,33 @@
     $vertical-padding-sm: $spacing,
     $vertical-padding: $vertical-rythm--spacing,
     $background-color: color(primary),
-    $color: $color-light,
+    $color: null,
     $emphasis-background-color: color(primary, dark),
-    $emphasis-color: $color-light,
+    $emphasis-color: null,
     $text-align: center,
     $title-container-width: wide,
     $description-container-width: tight,
-    $button-border-color: $color-light,
-    $button-text-color: $color-light,
+    $button-border-color: null,
+    $button-text-color: null,
     $button-text-color-hover: color(primary, dark),
-    $link-hover-color: color(primary, dark)
+    $link-hover-color: null
 ) {
+    @if (not $color) {
+        $color: black-or-white-contrast-color($background-color)
+    }
+    @if (not $emphasis-color) {
+        $emphasis-color: black-or-white-contrast-color($emphasis-background-color)
+    }
+    @if (not $button-border-color) {
+        $button-border-color: black-or-white-contrast-color($background-color)
+    }
+    @if (not $button-text-color) {
+        $button-text-color: black-or-white-contrast-color($background-color)
+    }
+    @if (not $link-hover-color) {
+        $link-hover-color: $emphasis-color;
+    }
+    
     position: relative;
     padding-top: $vertical-padding-sm; // TODO: Vertical variables...
     padding-bottom: $vertical-padding-sm; // TODO: Vertical variables...
