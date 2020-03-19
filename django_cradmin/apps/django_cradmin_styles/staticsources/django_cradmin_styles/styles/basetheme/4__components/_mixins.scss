@@ -198,28 +198,24 @@
     }
 
     &--primary {
-        color: $color-light;
-        background-color: color(primary, dark);
-
-        a {
-            color: $color-light;
-
-            &:hover {
-                color: $color-light;
-            }
+        background-color: get-background-color(primary);
+        
+        &, a, a:hover {
+            color: black-or-white-contrast-color(get-background-color(primary));
+        }
+        a, a:hover {
+            border-color: black-or-white-contrast-color(get-background-color(primary));;
         }
     }
 
     &--secondary {
-        color: $color-light;
-        background-color: color(secondary, dark);
-
-        a {
-            color: $color-light;
-
-            &:hover {
-                color: $color-light;
-            }
+        background-color: get-background-color(secondary);
+        
+        &, a, a:hover {
+            color: black-or-white-contrast-color(get-background-color(secondary));
+        }
+        a, a:hover {
+            border-color: black-or-white-contrast-color(get-background-color(secondary));;
         }
     }
 

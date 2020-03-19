@@ -90,3 +90,7 @@ $color-text: $color-dark !default;
 $color-muted: tint($color-text, 26%) !default;
 $color-links: color(secondary, base) !default;
 $color-links--hover: shade(color(secondary, base), 35%) !default;
+
+// Used by the get-background-color() function to determine the variant of the
+// provided color to use.
+$use-dark-colorvariants-for-backgrounds: true !default;

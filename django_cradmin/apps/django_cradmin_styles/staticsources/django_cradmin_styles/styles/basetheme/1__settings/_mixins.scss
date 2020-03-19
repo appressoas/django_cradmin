@@ -22,13 +22,6 @@
     }
 }
 
-// Defining colors as a map
-// retrieve color from $colors map ie. `color(primary, base)`
-@function color($color-name, $color-variant: 'base') {
-    // map inception
-    @return map-get(map-get($colors, $color-name), $color-variant);
-}
-
 // $colors map lookup.
 // retrieve color from $colors map ie. `color(primary, base)`
 @function color($color-name, $color-variant: 'base') {
@@ -52,6 +45,19 @@
             @error "color(#{$color-name}, #{$color-variant}) failed. No entry named '#{$color-variant}' in $default-colors[#{$color-name}] or $colors[#{$color-name}].";
         }
         @error "color(#{$color-name}, #{$color-variant}) failed. No entry named '#{$color-name}' in $default-colors or $colors.";
+    }
+}
+
+// Get background color.
+//
+// Thin wrapper around the color() function that checks the variable 
+// $use-dark-colorvariants-for-backgrounds to determine if we should
+// use the dark or the base variant of the provided $color-name.
+@function get-background-color($color-name) {
+    @if ($use-dark-colorvariants-for-backgrounds) {
+        @return color($color-name, dark);
+    } @else {
+        @return color($color-name);
     }
 }
 
