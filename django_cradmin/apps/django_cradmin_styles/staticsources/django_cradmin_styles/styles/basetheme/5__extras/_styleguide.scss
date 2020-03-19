@@ -287,7 +287,9 @@ $kss-controls-height: vertical-space(20px);
             @each $sub, $color in $colorgroup {
                 &--#{$item} {
                     &--#{$sub} {
-                        color: color-contrast($color);
+                        @if ($color) {
+                            color: color-contrast($color);
+                        }
                         background-color: #{$color};
 
                         &:before {
