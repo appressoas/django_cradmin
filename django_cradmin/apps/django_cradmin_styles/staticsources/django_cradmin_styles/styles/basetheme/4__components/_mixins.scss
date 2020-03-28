@@ -179,6 +179,17 @@
 }
 
 
+@mixin page-section-background-color-variant ($bgcolor) {
+    background-color: $bgcolor;
+
+    &, a:not([class]), a:not([class]):hover {
+        color: black-or-white-contrast-color($bgcolor);
+    }
+    a:not([class]), a:not([class]):hover {
+        border-color: black-or-white-contrast-color($bgcolor);
+    }
+}
+
 @mixin page-section-mixin () {
     $__root: &;
     padding-top: $vertical-rythm--medium;
@@ -198,25 +209,11 @@
     }
 
     &--primary {
-        background-color: get-background-color(primary);
-        
-        &, a, a:hover {
-            color: black-or-white-contrast-color(get-background-color(primary));
-        }
-        a, a:hover {
-            border-color: black-or-white-contrast-color(get-background-color(primary));;
-        }
+        @include page-section-background-color-variant (get-background-color(primary))
     }
 
     &--secondary {
-        background-color: get-background-color(secondary);
-        
-        &, a, a:hover {
-            color: black-or-white-contrast-color(get-background-color(secondary));
-        }
-        a, a:hover {
-            border-color: black-or-white-contrast-color(get-background-color(secondary));;
-        }
+        @include page-section-background-color-variant (get-background-color(secondary))
     }
 
     &--center {
@@ -379,7 +376,7 @@
     @if (not $link-hover-color) {
         $link-hover-color: $emphasis-color;
     }
-    
+
     position: relative;
     padding-top: $vertical-padding-sm; // TODO: Vertical variables...
     padding-bottom: $vertical-padding-sm; // TODO: Vertical variables...

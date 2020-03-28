@@ -18,18 +18,10 @@ Example: {type: isolated} Default page section
         </div>
     </section>
 
-Example: {type: isolated} `tight`
+Example: {type: isolated} `tight` (DEPRECATED - use an inner container container
     <section class="adminui-page-section  adminui-page-section--tight">
         <h2>A tight section</h2>
         <p>Good for pure content</p>
-    </section>
-
-Example: {type: isolated} `focus`
-    <section class="adminui-page-section  adminui-page-section--focus">
-        <div class="container  container--tight">
-            <h2>Focus section</h2>
-            <p>Used for making the content stand out slightly from the rest of the page</p>
-        </div>
     </section>
 
 Example: {type: isolated} `center`
@@ -101,6 +93,39 @@ Example: {type: isolated} Collapsible on small screens - expanded
             <div class="adminui-page-section__content">
                 <p>Hello world</p>
             </div>
+        </div>
+    </section>
+
+
+Example: {type: isolated} --focus
+    <section class="adminui-page-section  adminui-page-section--focus">
+        <div class="container  container--tight">
+            <h2>Focus section</h2>
+            <p>Used for making the content stand out slightly from the rest of the page</p>
+            <p><a href="#">A link</a><p>
+            <p><a href="#" class="button button--fill">A button styled link</a><p>
+        </div>
+    </section>
+
+
+Example: {type: isolated} --primary
+    <section class="adminui-page-section  adminui-page-section--primary">
+        <div class="container  container--tight">
+            <h2>Primary section</h2>
+            <p>Used for making the content stand out slightly from the rest of the page</p>
+            <p><a href="#">A link</a><p>
+            <p><a href="#" class="button button--fill">A button styled link</a><p>
+        </div>
+    </section>
+
+
+Example: {type: isolated} --secondary
+    <section class="adminui-page-section  adminui-page-section--secondary">
+        <div class="container  container--tight">
+            <h2>Secondary section</h2>
+            <p>Used for making the content stand out slightly from the rest of the page</p>
+            <p><a href="#">A link</a><p>
+            <p><a href="#" class="button button--fill">A button styled link</a><p>
         </div>
     </section>
 
