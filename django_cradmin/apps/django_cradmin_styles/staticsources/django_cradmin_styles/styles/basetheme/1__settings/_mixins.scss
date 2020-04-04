@@ -50,7 +50,7 @@
 
 // Get background color.
 //
-// Thin wrapper around the color() function that checks the variable 
+// Thin wrapper around the color() function that checks the variable
 // $use-dark-colorvariants-for-backgrounds to determine if we should
 // use the dark or the base variant of the provided $color-name.
 @function get-background-color($color-name) {
@@ -646,7 +646,7 @@ $linear-channel-values:
     $red: nth($linear-channel-values, red($color) + 1);
     $green: nth($linear-channel-values, green($color) + 1);
     $blue: nth($linear-channel-values, blue($color) + 1);
-    
+
     @return .2126 * $red + .7152 * $green + .0722 * $blue;
 }
 
@@ -657,24 +657,55 @@ $linear-channel-values:
 @function find-color-contrast($back, $front) {
     $backLum: luminance($back) + .05;
     $foreLum: luminance($front) + .05;
-    
+
     @return max($backLum, $foreLum) / min($backLum, $foreLum);
 }
 
 /**
 * Determine whether to use dark or light text on top of given color.
 * Returns black for dark text and white for light text.
-* 
+*
 * Credits go to https://medium.com/dev-channel/using-sass-to-automatically-pick-text-colors-4ba7645d2796.
 */
 @function black-or-white-contrast-color($color) {
     $lightContrast: find-color-contrast($color, white);
     $darkContrast: find-color-contrast($color, black);
-    
+
     @if ($lightContrast > $darkContrast) {
         @return white;
     }
     @else {
         @return black;
     }
+}
+
+
+@function cricon-get-fixed-width-for-font-size($size, $breakpoint, $breakpoint-fallback: false) {
+    $font-size-breakpoint-map: map-get($font-size, $size);
+    @if ($font-size-breakpoint-map == null) {
+        @error "The size '#{$size}' is not in the $font-size variable/map";
+    }
+
+    $breakpoint-font-size: map-get($font-size-breakpoint-map, $breakpoint);
+    @if $breakpoint-font-size == null {
+        @if $breakpoint == base {
+            @error "The size '#{$size}' key in the $font-size variable/map is missing the 'base' key.";
+        }
+        @if $breakpoint-fallback {
+            $fallback-breakpoint: base;
+            @if $breakpoint == xl {
+                $fallback-breakpoint: lg;
+            } @else if $breakpoint == lg {
+                $fallback-breakpoint: md;
+            }
+            @return cricon-get-fixed-width-for-font-size($size, $fallback-breakpoint);
+        } @else {
+            @return null;
+        }
+    }
+
+    @if type-of($breakpoint-font-size) == 'list' {
+        $breakpoint-font-size: nth($breakpoint-font-size, 1);
+    }
+    @return $breakpoint-font-size * 1.3;
 }
