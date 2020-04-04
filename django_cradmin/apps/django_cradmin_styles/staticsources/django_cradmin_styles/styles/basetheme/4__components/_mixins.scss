@@ -686,6 +686,14 @@
     }
 }
 
+@mixin columnlayout__column-weight($name, $weight, $breakpoint) {
+    &--weight-#{$name} {
+        @include min-width ($breakpoint) {
+            flex: 0 $weight auto;
+        }
+    }
+}
+
 @mixin columnlayout__spacing($prefix, $name, $sidemargin, $breakpoint) {
     &--spacing-#{$name} {
         #{$prefix}__column {
@@ -756,6 +764,15 @@
         @include columnlayout__column-sm-order(2, $breakpoint);
         @include columnlayout__column-sm-order(3, $breakpoint);
         @include columnlayout__column-sm-order(5, $breakpoint);
+
+        @include columnlayout__column-weight(1, 1, $breakpoint);
+        @include columnlayout__column-weight(2, 2, $breakpoint);
+        @include columnlayout__column-weight(3, 3, $breakpoint);
+        @include columnlayout__column-weight(4, 4, $breakpoint);
+
+        &--no-shrink-or-grow {
+            flex: 0 0 auto;
+        }
 
         &--separator {
             display: none;
