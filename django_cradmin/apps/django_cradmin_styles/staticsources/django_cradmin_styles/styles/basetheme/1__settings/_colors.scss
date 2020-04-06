@@ -72,6 +72,10 @@ $default-colors: (
         light: tint($__color-info-base, 50%),
         base: $__color-info-base,
         dark: shade($__color-info-base, 20%)
+    ),
+    contrast: (
+        black: #fff,
+        white: #000
     )
 );
 

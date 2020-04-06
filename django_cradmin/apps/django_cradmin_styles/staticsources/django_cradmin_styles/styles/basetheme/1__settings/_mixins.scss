@@ -672,10 +672,10 @@ $linear-channel-values:
     $darkContrast: find-color-contrast($color, black);
 
     @if ($lightContrast > $darkContrast) {
-        @return white;
+        @return color(contrast, black);
     }
     @else {
-        @return black;
+        @return color(contrast, white);
     }
 }
 
