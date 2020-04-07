@@ -31,7 +31,7 @@ setup(
         'future',
         'html2text',
         'htmls',
-        'ievv_opensource>=5.20.0'
+        'ievv_opensource>=5.20.2'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
