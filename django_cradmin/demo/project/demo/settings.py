@@ -339,3 +339,7 @@ IEVVTASKS_MAKEMESSAGES_JAVASCRIPT_IGNORE = [
     'static/*',
 ]
 IEVVTASKS_MAKEMESSAGES_DIRECTORIES = [os.path.dirname(django_cradmin.__file__)]
+
+# IEVV_STATICFILES_AUTOGZIP = {
+#     'cradmin-theme-css': True
+# }

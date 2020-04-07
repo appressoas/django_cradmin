@@ -16,6 +16,7 @@ from django_cradmin import crapp, crmenu, crheader, crfooter
 from django_cradmin import crsettings
 from django_cradmin import renderable
 from django_cradmin.crinstance import reverse_cradmin_url
+from ievv_opensource.utils import ievv_staticfiles_autogzip
 
 register = template.Library()
 
@@ -289,7 +290,7 @@ def cradmin_theme_staticpath(context):
                                  'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
                                      version=django_cradmin.__version__
                                  ))
-        return static(theme_path)
+        return ievv_staticfiles_autogzip.static(theme_path, autogzip_context='cradmin-theme-css')
     else:
         raise Exception('The cradmin_theme_staticpath requires "request" to be in the template '
                         'context. You can get this using the "django.template.context_processors.request" '
