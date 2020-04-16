@@ -253,8 +253,7 @@ ol {
     }
 }
 
-%list,
-.list {
+@mixin unordered-list-default () {
     margin-bottom: $vertical-rythm--spacing;
     text-align: left;
 
@@ -282,6 +281,11 @@ ol {
             }
         }
     }
+}
+
+%list,
+.list {
+    @include unordered-list-default();
 
     &--large {
         & > li, .list__item {
