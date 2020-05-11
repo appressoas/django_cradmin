@@ -1,7 +1,7 @@
 Django cradmin 6 releasenotes
 =============================
 
-> **warning**: The 6.x release have a bit of a messy relationship
+> **WARNING**: The 6.x release have a bit of a messy relationship
 > with patch and minor releases up to 6.11, so do not assume that minor and patch
 > releases mean what semver.org say for <6.11.
 
@@ -124,12 +124,12 @@ Update to django_cradmin_js 4.
 
 6.4
 ===
-> **Warning:** Release notes missing
+> **WARNING:** Release notes missing
 
 
 6.5
 ===
-> **Warning:** Release notes missing
+> **WARNING:** Release notes missing
 
 
 6.6
@@ -141,10 +141,10 @@ Update to django_cradmin_js 4.
 ## 6.6: Patch releases
 
 ### 6.6.1
-> **Warning:** Release notes missing
+> **WARNING:** Release notes missing
 
 ### 6.6.2
-> **Warning:** Release notes missing
+> **WARNING:** Release notes missing
 
 ### 6.6.3
 - Improved django_cradmin.apps.cradmin_email.emailutils.AbstractEmail with support for sending emails with other
@@ -184,7 +184,7 @@ Update to django_cradmin_js 4.
 
 6.9
 ===
-> **Warning:** Release notes missing
+> **WARNING:** Release notes missing
 
 
 6.10
