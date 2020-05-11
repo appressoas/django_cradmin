@@ -7,7 +7,7 @@ from . import views
 
 apirouter = DefaultRouter()
 apirouter.register(r'fictional-figures', demo_api.FictionalFigureViewSet,
-                   base_name='fictional-figures')
+                   basename='fictional-figures')
 
 urlpatterns = [
     url(r'^$',

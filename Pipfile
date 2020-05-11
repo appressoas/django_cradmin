@@ -1,0 +1,37 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+ipython = "*"
+htmls = "*"
+flake8 = "*"
+tox = "*"
+coverage = "*"
+model-mommy = "*"
+django-dbdev = "*"
+django-debug-toolbar = "*"
+twine = "*"
+pytest = "==5.3.5"
+pytest-django = "==3.8.0"
+pytest-env = "==0.6.2"
+Markdown = "*"
+Pygments = "*"
+beautifulsoup4 = "*"
+html5lib = "*"
+pythonkss = "*"
+mock-django = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+
+[packages]
+future = "*"
+django = ">1.11,<2"
+appresso-sphinx-extensions = "*"
+djangorestframework = "*"
+ievv-opensource = "<6"
+html2text = "*"
+
+[requires]
+python_version = "3.7"

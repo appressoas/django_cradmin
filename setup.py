@@ -23,15 +23,10 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'setuptools',
-        'Django>=1.8',
-        'django-multiupload',
-        'Jinja2',
-        'pytz',
+        'Django>=1.11,<2',
         'future',
         'html2text',
-        'htmls',
-        'ievv_opensource>=5.20.2'
+        'ievv_opensource>=5.20.2<6'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
