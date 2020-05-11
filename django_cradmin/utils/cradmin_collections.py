@@ -1,7 +1,7 @@
-import collections
+from collections.abc import MutableSet
 
 
-class OrderedSet(collections.MutableSet):
+class OrderedSet(MutableSet):
     """
     Ordered set.
 
