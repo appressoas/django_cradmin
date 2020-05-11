@@ -8,7 +8,7 @@ Django cradmin 6 releasenotes
 6.0
 ===
 
-## Changes:
+## Changes
 - ``django_cradmin_styles``:
     - ``input`` BEM block:
         - ``input--small``, ``input--xsmall`` and ``input--xxsmall``: Removed. Replaced by ``input--width-<size>``
@@ -104,20 +104,20 @@ Update to django_cradmin_js 4.
 6.1
 ===
 
-## Changes:
+## Changes
 - Add cut, copy, paste and to the default icon set.
 
 
 6.2
 ===
 
-## Changes:
+## Changes
 - Add new `image` bem block to styles.
 
 
 6.3
 ===
-## Changes:
+## Changes
 - New size variants for `dateinput` css BEM block.
 - New --primary and --secondary variants for `text` css BEM block.
 
@@ -158,7 +158,7 @@ Update to django_cradmin_js 4.
 6.7
 ===
 
-## Changes:
+## Changes
 - styles:
     - Add the --xwide container variant.
     - Include a new --no-wrapping-layout variant for tilelayout.
@@ -176,7 +176,7 @@ Update to django_cradmin_js 4.
 6.8
 ===
 
-## Changes:
+## Changes
 - styles:
     - Add new black-or-white-contrast-color function
     - Introduce the get-background-color function, and use it for page-section color variants.
@@ -190,7 +190,7 @@ Update to django_cradmin_js 4.
 6.10
 ====
 
-## Changes:
+## Changes
 - styles:
     - New text-size BEM block.
     - Add --weight and --no-shrink-or-grow variants to columnlayout columns.
@@ -200,6 +200,31 @@ Update to django_cradmin_js 4.
 6.11
 ====
 
-## Changes:
+## Changes
 - Support for gzipped CSS via new support in ievv_opensource.
 - Requires ievv_opensource>=5.20.2.
+
+## 6.11: Patch releases
+
+### 6.11.1
+
+- styles:
+    - Add a new article css class.
+
+### 6.11.2
+
+- ``templates/django_cradmin/crmenu/menu/default-expandable.django.html``:
+    - Add more template blocks to make it easier to override.
+
+
+6.12
+====
+
+## Changes
+- New development setup with Pipenv.
+    - Removed requirements.txt and ``requirements/``.
+    - See ``docs/develop.rst`` for help developing with pipenv.
+    - Only relevant for the people actually developing django_cradmin, not the ones using it.
+- Correct dependencies (not too many, and correct versions) in ``setup.py``.
+    - Avoids pulling in stuff that was not required to use django_cradmin.
+    - Requires ``ievv_opensource>=5.22.1,<6``

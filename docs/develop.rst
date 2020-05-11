@@ -11,21 +11,12 @@ Clone the git repo
 You will find the URL on our github project page.
 
 
-*******************
-Create a virtualenv
-*******************
-::
-
-    $ mkvirtualenv -p /path/to/python3 django_cradmin
-
-
 ************************************
 Install the development requirements
 ************************************
 ::
 
-    $ workon django_cradmin
-    $ pip install -r requirements/python3.txt
+    $ pipenv install --dev
 
 
 ************************
@@ -33,8 +24,7 @@ Create the demo database
 ************************
 ::
 
-    $ workon django_cradmin
-    $ ievv recreate_devdb
+    $ pipenv run ievv recreate_devdb
 
 
 **************************
@@ -42,8 +32,7 @@ Run the development server
 **************************
 ::
 
-    $ workon django_cradmin
-    $ ievv devrun
+    $ pipenv run ievv devrun
 
 Open http://localhost:8000 and login with::
 
@@ -56,5 +45,4 @@ Run the tests
 *************
 ::
 
-    $ workon django_cradmin
-    $ DJANGOENV=test python manage.py test django_cradmin
+    $ pipenv run pytest django_cradmin
