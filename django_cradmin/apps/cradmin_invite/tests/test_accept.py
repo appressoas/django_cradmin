@@ -1,17 +1,20 @@
 from __future__ import unicode_literals
-from datetime import timedelta, datetime
 
+from datetime import datetime, timedelta
+
+import arrow
+import htmls
+from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 from django.utils import timezone
-import htmls
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import \
+    GenericTokenWithMetadata
+from django_cradmin.apps.cradmin_invite.baseviews.accept import \
+    AbstractAcceptInviteView
 from django_cradmin.python2_compatibility import mock
-
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
-from django_cradmin.apps.cradmin_invite.baseviews.accept import AbstractAcceptInviteView
 from django_cradmin.tests.helpers import create_user
 
 
@@ -42,7 +45,7 @@ class TestAbstractAcceptInviteView(TestCase):
     def test_get_expired_token(self):
         self.__create_token(
             token='valid-token',
-            expiration_datetime=datetime(2014, 1, 1))
+            expiration_datetime=arrow.get(datetime(2014, 1, 1), settings.TIME_ZONE).datetime)
         request = self.factory.get('/test')
         response = AcceptInviteView.as_view()(request, token='valid-token')
         selector = htmls.S(response.content)

@@ -1,14 +1,20 @@
 from __future__ import unicode_literals
-from datetime import timedelta, datetime
+
+from datetime import datetime, timedelta
+
+import arrow
+import htmls
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
-from django.test import TestCase, RequestFactory
 from django.utils import timezone
-import htmls
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import \
+    GenericTokenWithMetadata
+from django_cradmin.apps.cradmin_resetpassword.views.reset import \
+    ResetPasswordView
 from django_cradmin.python2_compatibility import mock
-from django_cradmin.apps.cradmin_resetpassword.views.reset import ResetPasswordView
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user
 
 
@@ -42,7 +48,7 @@ class TestResetPasswordView(TestCase):
     def test_get_expired_token(self):
         self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser,
-            expiration_datetime=datetime(2014, 1, 1))
+            expiration_datetime=arrow.get(datetime(2014, 1, 1), settings.TIME_ZONE).datetime)
         response = self.client.get(self.__get_url('valid-token'))
         selector = htmls.S(response.content)
         self.assertFalse(selector.exists('form#django_cradmin_resetpassword_reset_form'))
@@ -76,7 +82,7 @@ class TestResetPasswordView(TestCase):
     def test_post_expired_token(self):
         self._create_generic_token_with_metadata(
             token='valid-token', user=self.testuser,
-            expiration_datetime=datetime(2014, 1, 1))
+            expiration_datetime=arrow.get(datetime(2014, 1, 1), settings.TIME_ZONE).datetime)
         response = self.client.post(self.__get_url('valid-token'), {
             'password1': 'secret',
             'password2': 'secret',

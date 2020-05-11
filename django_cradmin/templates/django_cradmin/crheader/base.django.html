@@ -2,7 +2,7 @@
     <{{ me.get_wrapper_htmltag }}
             {% block outer-wrapper-element-attributes %}
                 id="{{ me.get_wrapper_htmltag_id }}"
-                class="{{ me.get_css_classes_string }}"
+                class="{{ me.css_classes }}"
             {% endblock %}>
         {% block content %}{% endblock content %}
     </{{ me.get_wrapper_htmltag }}>

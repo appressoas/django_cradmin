@@ -2,7 +2,7 @@
 
 {% block pre %}{% endblock pre %}
 <{{ me.get_wrapper_htmltag }}
-        {% if me.get_css_classes_string %}class="{{ me.get_css_classes_string }}"{% endif %}
+        {% if me.css_classes %}class="{{ me.css_classes }}"{% endif %}
         {% block list-element-attributes %}
             {% if me.get_wrapper_htmltag_id %} id="{{ me.get_wrapper_htmltag_id }}"{% endif %}
         {% endblock %}>

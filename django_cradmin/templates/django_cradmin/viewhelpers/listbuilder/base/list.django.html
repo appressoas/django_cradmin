@@ -1,7 +1,7 @@
 {% load cradmin_tags %}
 
 {% block pre %}{% endblock pre %}
-<{{ me.get_wrapper_htmltag }} {% if me.get_css_classes_string %}class="{{ me.get_css_classes_string }}"{% endif %} {% block list-element-attributes %}{% endblock %}>
+<{{ me.get_wrapper_htmltag }} {% if me.css_classes %}class="{{ me.css_classes }}"{% endif %} {% block list-element-attributes %}{% endblock %}>
     {% block content %}
         {% for renderable in me.iter_renderables %}
             {% block list-item %}
