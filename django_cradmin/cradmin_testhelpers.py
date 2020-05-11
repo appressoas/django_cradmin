@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory
 from django_cradmin.python2_compatibility import mock
-from model_mommy import mommy
+from model_bakery import baker
 
 
 def _indent_string(string):
@@ -82,7 +82,7 @@ class AbstractTestCaseMixin(object):
         """
         Create default user for mock request.
 
-        Defaults to returning ``mommy.make(settings.AUTH_USER_MODEL)``,
+        Defaults to returning ``baker.make(settings.AUTH_USER_MODEL)``,
         which should create a user no matter what user model you
         are using, unless you do something very complex for users.
 
@@ -96,7 +96,7 @@ class AbstractTestCaseMixin(object):
         This means that the method can also return an AnonymousUser, but if you need this
         you should use :class:`.NoLoginTestCaseMixin` (which just overrides this method).
         """
-        return mommy.make(settings.AUTH_USER_MODEL)
+        return baker.make(settings.AUTH_USER_MODEL)
 
     def make_minimal_request(self, method, requestkwargs=None, httpheaders=None):
         """
@@ -388,7 +388,7 @@ class TestCaseMixin(AbstractTestCaseMixin):
                 viewclass = MyView
 
                 def test_post(self):
-                    requestuser = mommy.make(settings.AUTH_USER_MODEL)
+                    requestuser = baker.make(settings.AUTH_USER_MODEL)
                     mockresponse = self.mock_http200_getrequest_htmls(requestuser=requestuser)
 
         Mocking Django messages framework messages::

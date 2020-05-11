@@ -1,5 +1,5 @@
 from django.test import TestCase
-from model_mommy import mommy
+from model_bakery import baker
 
 from django_cradmin.cradmin_testhelpers import TestCaseMixin
 from django_cradmin.viewhelpers import listbuilderview
@@ -28,14 +28,14 @@ class TestListBuilderView(TestCase, TestCaseMixin):
             'No some items')
 
     def test_not_empty(self):
-        mommy.make('django_cradmin_testapp.SomeItem',
+        baker.make('django_cradmin_testapp.SomeItem',
                    name='Test name')
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertFalse(mockresponse.selector.exists('.test-cradmin-no-items-message'))
         self.assertTrue(mockresponse.selector.exists('.test-cradmin-listbuilder-list'))
 
     def test_item_rendering(self):
-        mommy.make('django_cradmin_testapp.SomeItem',
+        baker.make('django_cradmin_testapp.SomeItem',
                    name='Test name')
         mockresponse = self.mock_http200_getrequest_htmls()
         # mockresponse.selector.prettyprint()
@@ -48,26 +48,26 @@ class TestListBuilderPaginationView(TestCase, TestCaseMixin):
     viewclass = ListBuilderViewWithPaging
 
     def test_paginate_by_singlepage(self):
-        mommy.make('django_cradmin_testapp.SomeItem', _quantity=3)
+        baker.make('django_cradmin_testapp.SomeItem', _quantity=3)
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertEqual(3, mockresponse.selector.count('.test-cradmin-listbuilder-item-frame-renderer'))
         self.assertFalse(mockresponse.selector.exists('.django-cradmin-loadmorepager'))
 
     def test_paginate_by_firstpage(self):
-        mommy.make('django_cradmin_testapp.SomeItem', _quantity=8)
+        baker.make('django_cradmin_testapp.SomeItem', _quantity=8)
         mockresponse = self.mock_http200_getrequest_htmls()
         # mockresponse.selector.one('#django_cradmin_contentwrapper').prettyprint()
         self.assertEqual(3, mockresponse.selector.count('.test-cradmin-listbuilder-item-frame-renderer'))
         self.assertTrue(mockresponse.selector.exists('.django-cradmin-loadmorepager'))
 
     def test_paginate_by_middlepage(self):
-        mommy.make('django_cradmin_testapp.SomeItem', _quantity=8)
+        baker.make('django_cradmin_testapp.SomeItem', _quantity=8)
         mockresponse = self.mock_http200_getrequest_htmls(requestkwargs={'data': {'page': 2}})
         self.assertEqual(3, mockresponse.selector.count('.test-cradmin-listbuilder-item-frame-renderer'))
         self.assertTrue(mockresponse.selector.exists('.django-cradmin-loadmorepager'))
 
     def test_paginate_by_lastpage(self):
-        mommy.make('django_cradmin_testapp.SomeItem', _quantity=8)
+        baker.make('django_cradmin_testapp.SomeItem', _quantity=8)
         mockresponse = self.mock_http200_getrequest_htmls(requestkwargs={'data': {'page': 3}})
         self.assertEqual(2, mockresponse.selector.count('.test-cradmin-listbuilder-item-frame-renderer'))
         self.assertFalse(mockresponse.selector.exists('.django-cradmin-loadmorepager'))

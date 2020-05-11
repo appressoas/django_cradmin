@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from builtins import range
 from django import test
 from django.core.exceptions import FieldDoesNotExist
-from model_mommy import mommy
+from model_bakery import baker
 
 from django_cradmin.tests.test_sortable.cradmin_sortable_testapp.models import SortableItem
 from django_cradmin.tests.test_sortable.cradmin_sortable_testapp.models import ItemContainer
@@ -45,15 +45,15 @@ class TestSortableItem(test.TestCase):
 
     def test_sort_last_handles_none(self):
         container = self._create_container()
-        other_item1 = mommy.make(SortableItem,
+        other_item1 = baker.make(SortableItem,
                                  container=container,
                                  name='a',
                                  sort_index=None)
-        other_item2 = mommy.make(SortableItem,
+        other_item2 = baker.make(SortableItem,
                                  container=container,
                                  name='b',
                                  sort_index=None)
-        moving_item = mommy.make(SortableItem, container=container, sort_index=None)
+        moving_item = baker.make(SortableItem, container=container, sort_index=None)
         SortableItem.objects.sort_last(moving_item)
         other_item1.refresh_from_db()
         other_item2.refresh_from_db()
@@ -64,19 +64,19 @@ class TestSortableItem(test.TestCase):
 
     def test_sort_before_handles_none(self):
         container = self._create_container()
-        other_item1 = mommy.make(SortableItem,
+        other_item1 = baker.make(SortableItem,
                                  container=container,
                                  name='a',
                                  sort_index=None)
-        other_item2 = mommy.make(SortableItem,
+        other_item2 = baker.make(SortableItem,
                                  container=container,
                                  name='b',
                                  sort_index=None)
-        other_item3 = mommy.make(SortableItem,
+        other_item3 = baker.make(SortableItem,
                                  container=container,
                                  name='c',
                                  sort_index=None)
-        moving_item = mommy.make(SortableItem, container=container, sort_index=None)
+        moving_item = baker.make(SortableItem, container=container, sort_index=None)
         SortableItem.objects.sort_before(moving_item, other_item1.id)
         other_item1.refresh_from_db()
         other_item2.refresh_from_db()
@@ -222,10 +222,10 @@ class TestSortableItem(test.TestCase):
             self.assertTrue(object.sort_index >= 0)
 
     def test_sortindex_is_none_sanity(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=None, container=container)
-        item2 = mommy.make(SortableItem, sort_index=None, container=container)
-        item3 = mommy.make(SortableItem, sort_index=None, container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=None, container=container)
+        item2 = baker.make(SortableItem, sort_index=None, container=container)
+        item3 = baker.make(SortableItem, sort_index=None, container=container)
         SortableItem.objects.sort_last(item1)
         SortableItem.objects.sort_last(item2)
         SortableItem.objects.sort_last(item3)
@@ -237,32 +237,32 @@ class TestSortableItem(test.TestCase):
         self.assertEqual(2, item3.sort_index)
 
     def test_item_attrs_dict_sanity(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=None, name='SomeName', container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=None, name='SomeName', container=container)
         SortableItem.objects.sort_last(item1, item_attrs_dict={'name': "OtherName"})
         item1.refresh_from_db()
         self.assertEqual(0, item1.sort_index)
         self.assertEqual(item1.name, 'OtherName')
 
     def test_item_attrs_dict_none_sanity(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=None, name='SomeName', container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=None, name='SomeName', container=container)
         SortableItem.objects.sort_last(item1, item_attrs_dict=None)
         item1.refresh_from_db()
         self.assertEqual(0, item1.sort_index)
         self.assertEqual(item1.name, 'SomeName')
 
     def test_item_attrs_dict_has_invalid_values_crashes_sanity(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=None, name='SomeName', container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=None, name='SomeName', container=container)
         with self.assertRaisesMessage(FieldDoesNotExist, 'SortableItem has no field named \'no_field\''):
             SortableItem.objects.sort_last(item1, item_attrs_dict={'name': "OtherName", 'no_field': 'asd'})
 
     def test_item_attrs_dict_set_only_on_items_that_updated_start_of_list(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=0, name='SomeName', container=container)
-        item2 = mommy.make(SortableItem, sort_index=1, name='SomeName', container=container)
-        item3 = mommy.make(SortableItem, sort_index=2, name='SomeName', container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=0, name='SomeName', container=container)
+        item2 = baker.make(SortableItem, sort_index=1, name='SomeName', container=container)
+        item3 = baker.make(SortableItem, sort_index=2, name='SomeName', container=container)
         SortableItem.objects.sort_before(item2, item1.id, item_attrs_dict={'name': "OtherName"})
         item1.refresh_from_db()
         item2.refresh_from_db()
@@ -275,10 +275,10 @@ class TestSortableItem(test.TestCase):
         self.assertEqual(item3.name, 'SomeName')
 
     def test_item_attrs_dict_set_only_on_items_that_updated_end_of_list(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=0, name='SomeName', container=container)
-        item2 = mommy.make(SortableItem, sort_index=1, name='SomeName', container=container)
-        item3 = mommy.make(SortableItem, sort_index=2, name='SomeName', container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=0, name='SomeName', container=container)
+        item2 = baker.make(SortableItem, sort_index=1, name='SomeName', container=container)
+        item3 = baker.make(SortableItem, sort_index=2, name='SomeName', container=container)
         SortableItem.objects.sort_before(item3, item2.id, item_attrs_dict={'name': "OtherName"})
         item1.refresh_from_db()
         item2.refresh_from_db()
@@ -291,10 +291,10 @@ class TestSortableItem(test.TestCase):
         self.assertEqual(item3.name, 'OtherName')
 
     def test_item_attrs_dict_all_items_updated_initially_no_sort_indexes(self):
-        container = mommy.make(ItemContainer)
-        item1 = mommy.make(SortableItem, sort_index=None, name='NameA', container=container)
-        item2 = mommy.make(SortableItem, sort_index=None, name='NameB', container=container)
-        item3 = mommy.make(SortableItem, sort_index=None, name='NameC', container=container)
+        container = baker.make(ItemContainer)
+        item1 = baker.make(SortableItem, sort_index=None, name='NameA', container=container)
+        item2 = baker.make(SortableItem, sort_index=None, name='NameB', container=container)
+        item3 = baker.make(SortableItem, sort_index=None, name='NameC', container=container)
         SortableItem.objects.sort_before(item3, item2.id, item_attrs_dict={'name': "OtherName"})
         item1.refresh_from_db()
         item2.refresh_from_db()
