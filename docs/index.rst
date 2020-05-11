@@ -126,16 +126,6 @@ Documentation
    theme
 
 
-************
-Releasenotes
-************
-
-.. toctree::
-    :maxdepth: 1
-    :glob:
-
-    releasenotes/releasenotes-*
-
 ******************
 Indices and tables
 ******************
