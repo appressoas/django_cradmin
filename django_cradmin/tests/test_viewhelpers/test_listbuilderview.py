@@ -10,7 +10,7 @@ class ListBuilderViewWithoutPaging(listbuilderview.View):
     model = testmodels.SomeItem
 
     def get_queryset_for_role(self):
-        return testmodels.SomeItem.objects.all()
+        return testmodels.SomeItem.objects.all().order_by('id')
 
 
 class ListBuilderViewWithPaging(ListBuilderViewWithoutPaging):
