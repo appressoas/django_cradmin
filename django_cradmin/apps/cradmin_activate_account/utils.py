@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from django_cradmin.apps.cradmin_email import emailutils
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \

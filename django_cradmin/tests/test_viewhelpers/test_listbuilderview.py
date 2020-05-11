@@ -23,7 +23,7 @@ class TestListBuilderView(TestCase, TestCaseMixin):
     def test_empty(self):
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertFalse(mockresponse.selector.exists('.test-cradmin-listbuilder-list'))
-        self.assertEquals(
+        self.assertEqual(
             mockresponse.selector.one('.test-cradmin-no-items-message').alltext_normalized,
             'No some items')
 

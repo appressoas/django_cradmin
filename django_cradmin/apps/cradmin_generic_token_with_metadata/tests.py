@@ -47,21 +47,21 @@ class TestGenericTokenWithMetadata(TestCase):
         generictoken = GenericTokenWithMetadata.objects.generate(
             content_object=testobject1, app='testapp',
             expiration_datetime=get_expiration_datetime_for_app('testapp'))
-        self.assertEquals(
+        self.assertEqual(
             GenericTokenWithMetadata.objects.filter_by_content_object(testobject1).get(),
             generictoken)
-        self.assertEquals(GenericTokenWithMetadata.objects.filter_by_content_object(testobject2).count(), 0)
+        self.assertEqual(GenericTokenWithMetadata.objects.filter_by_content_object(testobject2).count(), 0)
 
     def test_unsafe_pop(self):
         testuser = create_user('testuser')
         self._create_generic_token_with_metadata(user=testuser, app='testapp1', token='test-token1')
         self._create_generic_token_with_metadata(user=testuser, app='testapp2', token='test-token2')
-        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(
+        self.assertEqual(GenericTokenWithMetadata.objects.unsafe_pop(
             token='test-token1', app='testapp1').content_object, testuser)
-        self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
-        self.assertEquals(GenericTokenWithMetadata.objects.unsafe_pop(
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 1)
+        self.assertEqual(GenericTokenWithMetadata.objects.unsafe_pop(
             token='test-token2', app='testapp2').content_object, testuser)
-        self.assertEquals(GenericTokenWithMetadata.objects.count(), 0)
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 0)
 
     def test_filter_not_expired(self):
         unexpired_generic_token_with_metadata = self._create_generic_token_with_metadata(
@@ -73,8 +73,8 @@ class TestGenericTokenWithMetadata(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().count(), 1)
-            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().first(),
+            self.assertEqual(GenericTokenWithMetadata.objects.filter_not_expired().count(), 1)
+            self.assertEqual(GenericTokenWithMetadata.objects.filter_not_expired().first(),
                               unexpired_generic_token_with_metadata)
 
     def test_filter_not_expired_none(self):
@@ -87,8 +87,8 @@ class TestGenericTokenWithMetadata(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().count(), 1)
-            self.assertEquals(GenericTokenWithMetadata.objects.filter_not_expired().first(),
+            self.assertEqual(GenericTokenWithMetadata.objects.filter_not_expired().count(), 1)
+            self.assertEqual(GenericTokenWithMetadata.objects.filter_not_expired().first(),
                               expired_none_generic_token_with_metadata)
 
     def test_filter_has_expired(self):
@@ -107,8 +107,8 @@ class TestGenericTokenWithMetadata(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(GenericTokenWithMetadata.objects.filter_has_expired().count(), 1)
-            self.assertEquals(GenericTokenWithMetadata.objects.filter_has_expired().first(),
+            self.assertEqual(GenericTokenWithMetadata.objects.filter_has_expired().count(), 1)
+            self.assertEqual(GenericTokenWithMetadata.objects.filter_has_expired().first(),
                               expired_generic_token_with_metadata)
 
     def test_pop_not_expired(self):
@@ -119,7 +119,7 @@ class TestGenericTokenWithMetadata(TestCase):
 
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
-            self.assertEquals(GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token').content_object,
+            self.assertEqual(GenericTokenWithMetadata.objects.pop(app='testapp', token='test-token').content_object,
                               testuser)
 
     def test_pop_expired(self):
@@ -141,12 +141,12 @@ class TestGenericTokenWithMetadata(TestCase):
             user=create_user('testuser2'), token='test-token2',
             expiration_datetime=datetime(2015, 1, 1, 13, 30))
 
-        self.assertEquals(GenericTokenWithMetadata.objects.count(), 2)
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 2)
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
             GenericTokenWithMetadata.objects.delete_expired()
-        self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
-        self.assertEquals(GenericTokenWithMetadata.objects.first(),
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 1)
+        self.assertEqual(GenericTokenWithMetadata.objects.first(),
                           unexpired_generic_token_with_metadata)
 
     def test_delete_expired_management_command(self):
@@ -157,12 +157,12 @@ class TestGenericTokenWithMetadata(TestCase):
             user=create_user('testuser2'), token='test-token2',
             expiration_datetime=datetime(2015, 1, 1, 13, 30))
 
-        self.assertEquals(GenericTokenWithMetadata.objects.count(), 2)
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 2)
         with mock.patch('django_cradmin.apps.cradmin_generic_token_with_metadata.models._get_current_datetime',
                         lambda: datetime(2015, 1, 1, 14)):
             call_command('cradmin_generic_token_with_metadata_delete_expired')
-        self.assertEquals(GenericTokenWithMetadata.objects.count(), 1)
-        self.assertEquals(GenericTokenWithMetadata.objects.first(),
+        self.assertEqual(GenericTokenWithMetadata.objects.count(), 1)
+        self.assertEqual(GenericTokenWithMetadata.objects.first(),
                           unexpired_generic_token_with_metadata)
 
     def test_is_expired(self):

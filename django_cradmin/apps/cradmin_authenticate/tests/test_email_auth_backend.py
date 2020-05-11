@@ -13,7 +13,7 @@ class TestEmailAuthBackend(TestCase):
     def test_get_user_from_email(self):
         user = self.emailauthbackend._EmailAuthBackend__get_user_from_email(self.testuser.email)
         self.assertIsNotNone(user)
-        self.assertEquals(user.pk, self.testuser.pk)
+        self.assertEqual(user.pk, self.testuser.pk)
 
     def test_get_user_from_email_returns_none(self):
         user = self.emailauthbackend._EmailAuthBackend__get_user_from_email('doesnotexist@example.com')
@@ -22,7 +22,7 @@ class TestEmailAuthBackend(TestCase):
     def test_get_user(self):
         user = self.emailauthbackend.get_user(self.testuser.pk)
         self.assertIsNotNone(user)
-        self.assertEquals(user.pk, self.testuser.pk)
+        self.assertEqual(user.pk, self.testuser.pk)
 
     def test_get_user_returns_none(self):
         user = self.emailauthbackend.get_user(42)
@@ -31,7 +31,7 @@ class TestEmailAuthBackend(TestCase):
     def test_authenticate(self):
         user = self.emailauthbackend.authenticate(email=self.testuser.email, password='test')
         self.assertIsNotNone(user)
-        self.assertEquals(self.testuser.pk, user.pk)
+        self.assertEqual(self.testuser.pk, user.pk)
 
     def test_authenticate_invalid_password_returns_none(self):
         user = self.emailauthbackend.authenticate(email=self.testuser.email, password='notcorrectpassword')

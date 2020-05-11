@@ -25,9 +25,9 @@ class TestAuthUserCreateAccountForm(TestCase):
             'email': 'test@example.com'
         })
         form.is_valid()
-        self.assertEquals(User.objects.count(), 0)
+        self.assertEqual(User.objects.count(), 0)
         form.save()
-        self.assertEquals(User.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
         created_user = User.objects.first()
         self.assertEqual(created_user.username, 'test')
         self.assertEqual(created_user.email, 'test@example.com')
@@ -42,7 +42,7 @@ class TestAuthUserCreateAccountForm(TestCase):
             'email': 'unused@example.com'
         })
         self.assertFalse(form.is_valid())
-        self.assertEquals(form.non_field_errors(), [u'The passwords do not match.'])
+        self.assertEqual(form.non_field_errors(), [u'The passwords do not match.'])
 
     def test_email_is_not_unique(self):
         create_user('testuser', email='test@example.com')
@@ -53,7 +53,7 @@ class TestAuthUserCreateAccountForm(TestCase):
             'email': 'test@example.com'
         })
         self.assertFalse(form.is_valid())
-        self.assertEquals(form.errors, {
+        self.assertEqual(form.errors, {
             'email': [u'Account with this email address already exists.']
         })
 
@@ -86,9 +86,9 @@ class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
             'email': 'test@example.com'
         })
         form.is_valid()
-        self.assertEquals(User.objects.count(), 0)
+        self.assertEqual(User.objects.count(), 0)
         form.save()
-        self.assertEquals(User.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 1)
         created_user = User.objects.first()
         self.assertEqual(created_user.username, 'test@example.com')
         self.assertEqual(created_user.email, 'test@example.com')
@@ -102,7 +102,7 @@ class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
             'email': 'unused@example.com'
         })
         self.assertFalse(form.is_valid())
-        self.assertEquals(form.non_field_errors(), [u'The passwords do not match.'])
+        self.assertEqual(form.non_field_errors(), [u'The passwords do not match.'])
 
     def test_email_is_not_unique(self):
         create_user('testuser', email='test@example.com')
@@ -112,7 +112,7 @@ class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
             'email': 'test@example.com'
         })
         self.assertFalse(form.is_valid())
-        self.assertEquals(form.errors, {
+        self.assertEqual(form.errors, {
             'email': [u'Account with this email address already exists.']
         })
 
@@ -125,7 +125,7 @@ class TestAuthUserCreateAccountAutoUsernameForm(TestCase):
         })
         self.assertTrue(form.is_valid())
         user = form.save()
-        self.assertEquals(user.username, 'a.very.long.testuser@example.c')
+        self.assertEqual(user.username, 'a.very.long.testuser@example.c')
 
     def test_email_makes_username_not_unique(self):
         create_user(

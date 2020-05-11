@@ -75,7 +75,7 @@ class App(object):
 
     def reverse_appurl(self, viewname, args=None, kwargs=None):
         """
-        Works just like :func:`django.core.urlresolvers.reverse`, except
+        Works just like :func:`django.urls.reverse`, except
         that the name is the name given in :obj:`.appurls`, not the full
         name of the URL.
 
