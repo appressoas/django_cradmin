@@ -1,9 +1,0 @@
-#
-#
-# GIT repo dependencies for development. These are in a separate file
-# so we can run:
-#
-#    $ pip install -r requirements/develop.gitpackages.txt --force-reinstall
-#
-#
--e git://github.com/appressoas/invoke_extras.git#egg=invoke_extras
