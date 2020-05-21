@@ -227,6 +227,34 @@ Example: {type: isolated} --spacing-none
         </div>
     </div>
 
+Example: {type: isolated} --spacing-xsmall
+    <div class="columnlayout columnlayout--spacing-xsmall">
+        <div class="columnlayout__column columnlayout__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout__column">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout__column columnlayout__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
+
+Example: {type: isolated} --spacing-small
+    <div class="columnlayout columnlayout--spacing-small">
+        <div class="columnlayout__column columnlayout__column--xsmall">
+            Column 1. A falsis, terror primus imber. Rusticus frondators ducunt ad abactus.
+        </div>
+        <div class="columnlayout__column">
+            Column 2. Pol, festus buxum! Nunquam acquirere mens. Hercle, spatii nobilis!, rumor!
+            Medicinas cantare in piscinam!
+        </div>
+        <div class="columnlayout__column columnlayout__column--small">
+            Column 3. Heuretes moris, tanquam castus nixus. Pol, a bene fides, epos!
+        </div>
+    </div>
+
 Example: {type: isolated} Default
     <div class="columnlayout">
         <div class="columnlayout__column columnlayout__column--xsmall">

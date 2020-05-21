@@ -795,5 +795,7 @@
     }
 
     @include columnlayout__spacing(&, none, 0, $breakpoint);
+    @include columnlayout__spacing(&, xsmall, $unit, $breakpoint);
+    @include columnlayout__spacing(&, small, $spacing--small, $breakpoint);
     @include columnlayout__spacing(&, large, $spacing, $breakpoint);
 }
