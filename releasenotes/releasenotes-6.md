@@ -228,3 +228,9 @@ Update to django_cradmin_js 4.
 - Correct dependencies (not too many, and correct versions) in ``setup.py``.
     - Avoids pulling in stuff that was not required to use django_cradmin.
     - Requires ``ievv_opensource>=5.22.1,<6``
+
+
+## 6.12: Patch releases
+
+### 6.12.1
+Add new xsmall and small spacing variants for columnlayout CSS.
