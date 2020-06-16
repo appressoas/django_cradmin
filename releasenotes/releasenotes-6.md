@@ -234,3 +234,6 @@ Update to django_cradmin_js 4.
 
 ### 6.12.1
 Add new xsmall and small spacing variants for columnlayout CSS.
+
+### 6.12.2
+Bugfix in select CSS: Fix default select focus color for --light variant. It was $color-text, now it is $color-light.
