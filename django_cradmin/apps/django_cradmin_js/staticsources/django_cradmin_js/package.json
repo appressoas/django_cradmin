@@ -4,7 +4,7 @@
     "create-react-class": "^15.6.3",
     "ievv_jsbase": "^2.0.4",
     "is_js": "^0.9.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "moment": "^2.17.1",
     "prop-types": "^15.6.1",
     "react": "^16.4.1",
