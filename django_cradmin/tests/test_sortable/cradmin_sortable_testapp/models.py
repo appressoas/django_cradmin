@@ -45,7 +45,10 @@ class SortableItem(SortableBase):
 
     The `sort_index` field is inherited from SortableBase.
     """
-    container = models.ForeignKey(ItemContainer, blank=False, null=False)
+    container = models.ForeignKey(
+        to=ItemContainer,
+        blank=False, null=False,
+        on_delete=models.CASCADE)
     name = models.CharField(
         max_length=255,
         blank=True,
