@@ -23,10 +23,10 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'Django>=1.11,<2',
+        'Django>=3.1.0,<4.0.0',
         'future',
         'html2text',
-        'ievv_opensource>=5.22.1<6'
+        'ievv_opensource>=7'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

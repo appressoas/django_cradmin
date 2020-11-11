@@ -9,6 +9,7 @@
 *.egg-info/
 /dist/
 .tox
+/build/
 
 # Ignore user-specific pycharm settings
 /.idea/

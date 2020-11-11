@@ -24,14 +24,13 @@ mock-django = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 model-bakery = "*"
+django_cradmin = {editable = true, path = "."}
 
 [packages]
 future = "*"
-django = ">1.11,<2"
 appresso-sphinx-extensions = "*"
 djangorestframework = "*"
-ievv-opensource = "<6"
 html2text = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
