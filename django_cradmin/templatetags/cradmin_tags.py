@@ -7,7 +7,7 @@ from xml.sax.saxutils import quoteattr
 
 from django import template
 from django.conf import settings
-from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.templatetags.static import static as django_static
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
@@ -537,7 +537,7 @@ def cradmin_theme_static(context, path, absolute=False):
             Defaults to ``False``.
     """
     staticpath = posixpath.join(settings.DJANGO_CRADMIN_THEME_PREFIX, path)
-    full_path = static(staticpath)
+    full_path = django_static(staticpath)
     if absolute:
         url = context['request'].build_absolute_uri(full_path)
     else:

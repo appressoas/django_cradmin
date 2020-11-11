@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 import re
 
-from django.contrib.staticfiles.templatetags import staticfiles
+from django.templatetags.static import static as django_static
+
 
 COMPONENT_ID_REGEX = re.compile(r'^[a-z][a-z0-9_]*[a-z0-9]$')
 
@@ -64,7 +65,7 @@ class AbstractJsComponent(object):
             str: The static URL.
 
         """
-        return staticfiles.static(path)
+        return django_static(path)
 
     def get_sourceurls(self):
         """
