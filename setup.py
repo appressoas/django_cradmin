@@ -25,7 +25,7 @@ setup(
     install_requires=[
         'Django>=3.1.0,<4.0.0',
         'html2text',
-        'ievv_opensource>=7.0.1'
+        'ievv_opensource>=7.0.2'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
