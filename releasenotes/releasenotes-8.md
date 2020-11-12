@@ -7,7 +7,9 @@ Django-cradmin 8 releasenotes
 
 ## What is new
 
-- Django 3.x is the minimum required version.
+- Requires Django 3.x
+- Requires ievv-opensource 7.x+
+- Requires python 3.8+
 
 
 ## Migrating to django-cradmin 8.0
