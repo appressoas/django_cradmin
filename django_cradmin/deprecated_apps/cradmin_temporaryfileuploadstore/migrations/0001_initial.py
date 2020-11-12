@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 import django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore.models
 from django.conf import settings
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -34,7 +35,7 @@ class Migration(migrations.Migration):
                 ('accept', models.TextField(blank=True, default='', help_text='An html input field accept attribute formatted string. This is validated by the API on upload.')),
                 ('max_filename_length', models.IntegerField(blank=True, default=None, null=True, help_text='If specified, we shorten filenames to maximum the specified length. This is validated by the API on upload.')),
                 ('unique_filenames', models.BooleanField(default=False, help_text='If this is True, we add random data when we detect duplicate filenames. The duplicate prevention algorithm handles max_filename.This is validated by the API on upload.')),
-                ('user', models.ForeignKey(help_text='The user that owns this temporary file. Users should notbe allowed access to other users temporary files.', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(help_text='The user that owns this temporary file. Users should notbe allowed access to other users temporary files.', to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
@@ -43,7 +44,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='temporaryfile',
             name='collection',
-            field=models.ForeignKey(related_name='files', to='cradmin_temporaryfileuploadstore.TemporaryFileCollection'),
+            field=models.ForeignKey(related_name='files', to='cradmin_temporaryfileuploadstore.TemporaryFileCollection', on_delete=django.db.models.deletion.CASCADE),
             preserve_default=True,
         ),
     ]
