@@ -18,6 +18,7 @@ class TestRoleSelectView(TestCase):
         cradmin_instance.get_rolequeryset.return_value.count = mock.MagicMock(return_value=1)
         request = self.factory.get('/roleselecttest')
         request.cradmin_instance = cradmin_instance
+        request.cradmin_instance.rolefrontpage_url.return_value = '/rolefrontpage'
         response = RoleSelectView.as_view()(request)
         self.assertEqual(response.status_code, 302)
 

@@ -51,5 +51,6 @@ class TestDelete(TestCase):
         request = self.factory.post('/test')
         request._messages = mock.MagicMock()
         request.cradmin_app = mock.MagicMock()
+        request.cradmin_app.reverse_appindexurl.return_value = '/success'
         SimpleDeleteView.as_view()(request, pk=10)
         obj.delete.assert_called_once_with()

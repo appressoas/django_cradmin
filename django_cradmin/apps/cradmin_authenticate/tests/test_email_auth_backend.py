@@ -1,6 +1,6 @@
-from __future__ import unicode_literals
 from django.test import TestCase
 from django_cradmin.apps.cradmin_authenticate import backends
+from unittest import mock
 
 from django_cradmin.tests.test_views.helpers import create_testuser
 
@@ -29,14 +29,17 @@ class TestEmailAuthBackend(TestCase):
         self.assertIsNone(user)
 
     def test_authenticate(self):
-        user = self.emailauthbackend.authenticate(email=self.testuser.email, password='test')
+        user = self.emailauthbackend.authenticate(
+            request=mock.MagicMock(), email=self.testuser.email, password='test')
         self.assertIsNotNone(user)
         self.assertEqual(self.testuser.pk, user.pk)
 
     def test_authenticate_invalid_password_returns_none(self):
-        user = self.emailauthbackend.authenticate(email=self.testuser.email, password='notcorrectpassword')
+        user = self.emailauthbackend.authenticate(
+            request=mock.MagicMock(), email=self.testuser.email, password='notcorrectpassword')
         self.assertIsNone(user)
 
     def test_authenticate_invalid_email_returns_none(self):
-        user = self.emailauthbackend.authenticate(email='doesnotexist@example.com', password='test')
+        user = self.emailauthbackend.authenticate(
+            request=mock.MagicMock(), email='doesnotexist@example.com', password='test')
         self.assertIsNone(user)
