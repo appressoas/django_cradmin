@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.contrib import messages
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django.utils.translation import gettext_lazy as _, gettext_lazy
 from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
     GenericTokenExpiredError
@@ -45,7 +45,7 @@ class ResetPasswordView(formview.StandaloneFormView):
                 fieldname='password2',
             ),
             uicontainer.button.SubmitPrimary(
-                text=ugettext_lazy('Set password')),
+                text=gettext_lazy('Set password')),
         ]
         return uicontainer.layout.AdminuiPageSectionTight(
             children=[

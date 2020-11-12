@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.http import QueryDict
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django.utils.translation import gettext_lazy as _, gettext_lazy
 from django import forms
 from django_cradmin import uicontainer
 
@@ -236,7 +236,7 @@ class LoginView(formview.StandaloneFormView):
                     placeholder=form_class.password_field_placeholder
                 )),
             uicontainer.button.SubmitPrimary(
-                text=ugettext_lazy('Sign in')),
+                text=gettext_lazy('Sign in')),
         ])
         return formchildren
 

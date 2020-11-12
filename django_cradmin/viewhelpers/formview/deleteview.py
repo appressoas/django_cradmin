@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 from django.views.generic import DeleteView as DjangoDeleteView
 from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin, CommonCradminViewMixin
@@ -18,7 +18,7 @@ class DeleteViewMixin:
 
         Defaults to ``Delete <verbose_name model>``.
         """
-        return ugettext_lazy('Confirm delete')
+        return gettext_lazy('Confirm delete')
 
     def get_action_label(self):
         """
@@ -27,7 +27,7 @@ class DeleteViewMixin:
         Used as the prefix of the page title (see :meth:`.get_pagetitle`),
         and as the default for :meth:`.get_delete_button_label`.
         """
-        return ugettext_lazy('Delete')
+        return gettext_lazy('Delete')
 
     def get_delete_button_label(self):
         """
@@ -43,7 +43,7 @@ class DeleteViewMixin:
 
         Defaults to :meth:`.get_action_label`.
         """
-        return ugettext_lazy('Cancel')
+        return gettext_lazy('Cancel')
 
     def get_object_preview(self):
         """
@@ -57,7 +57,7 @@ class DeleteViewMixin:
         """
         Get the confirm message shown in the focus area of the view.
         """
-        return ugettext_lazy('Are you sure you want to delete "%(object_preview)s"?') % {
+        return gettext_lazy('Are you sure you want to delete "%(object_preview)s"?') % {
             'object_preview': self.get_object_preview()
         }
 
@@ -75,7 +75,7 @@ class DeleteViewMixin:
 
         Used by :meth:`.add_success_messages`.
         """
-        return ugettext_lazy('Deleted "%(what)s"') % {
+        return gettext_lazy('Deleted "%(what)s"') % {
             'what': object_preview
         }
 

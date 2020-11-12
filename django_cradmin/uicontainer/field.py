@@ -7,7 +7,7 @@ from xml.sax.saxutils import quoteattr
 from django import forms
 
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext, pgettext
+from django.utils.translation import gettext, pgettext
 
 from django_cradmin.widgets import rangeinput
 from . import container
@@ -639,40 +639,40 @@ class AbstractDate(Field):
 
     def make_day_field_props(self):
         return {
-            "labelText": ugettext('Day'),
+            "labelText": gettext('Day'),
             "extraSelectAttributes": {
-                "aria-label": self.make_aria_label(ugettext('Day'))
+                "aria-label": self.make_aria_label(gettext('Day'))
             }
         }
 
     def make_month_field_props(self):
         return {
-            "labelText": ugettext('Month'),
+            "labelText": gettext('Month'),
             "monthLabels": self.get_month_labels(),
             "extraSelectAttributes": {
-                "aria-label": self.make_aria_label(ugettext('Month'))
+                "aria-label": self.make_aria_label(gettext('Month'))
             }
         }
 
     def make_year_field_props(self):
         return {
-            "labelText": ugettext('Year'),
+            "labelText": gettext('Year'),
             "extraSelectAttributes": {
-                "aria-label": self.make_aria_label(ugettext('Year'))
+                "aria-label": self.make_aria_label(gettext('Year'))
             }
         }
 
     def make_hour_field_props(self):
         return {
             "extraInputAttributes": {
-                "aria-label": self.make_aria_label(ugettext('Hour'))
+                "aria-label": self.make_aria_label(gettext('Hour'))
             }
         }
 
     def make_minute_field_props(self):
         return {
             "extraInputAttributes": {
-                "aria-label": self.make_aria_label(ugettext('Minute'))
+                "aria-label": self.make_aria_label(gettext('Minute'))
             }
         }
 

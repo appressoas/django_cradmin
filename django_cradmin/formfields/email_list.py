@@ -4,7 +4,7 @@ import re
 from django import forms
 from django.core import validators
 from django.core.validators import EmailValidator
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class EmailListField(forms.Field):

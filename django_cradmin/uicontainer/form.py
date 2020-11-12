@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 from . import container
 from . import messagescontainer
@@ -152,7 +152,7 @@ class Form(container.AbstractContainerRenderable):
 
     def add_global_field_errors_message(self):
         self.messages_container.add_warning(
-            text=ugettext_lazy('Please fix the errors below.')
+            text=gettext_lazy('Please fix the errors below.')
         )
 
     def add_field_validation_errors(self, field_wrapper_renderable, validationerror_list):

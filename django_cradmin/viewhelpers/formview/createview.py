@@ -1,6 +1,6 @@
 import urllib.parse
 
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView as DjangoCreateView
 
 from django_cradmin import javascriptregistry
@@ -26,13 +26,13 @@ class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 
         Defaults to ``Create <verbose_name model>``.
         """
-        return ugettext_lazy('Create %(what)s') % {'what': self.model_verbose_name}
+        return gettext_lazy('Create %(what)s') % {'what': self.model_verbose_name}
 
     def get_success_message(self, obj):
         """
         Defaults to ``"Created "<str(obj)>".``
         """
-        return ugettext_lazy('Created "%(object)s"') % {'object': obj}
+        return gettext_lazy('Created "%(object)s"') % {'object': obj}
 
     def get_editurl(self, obj):
         """

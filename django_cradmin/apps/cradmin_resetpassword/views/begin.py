@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django.utils.translation import gettext_lazy as _, gettext_lazy
 from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_email import emailutils
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
@@ -46,11 +46,11 @@ class BeginPasswordResetView(formview.StandaloneFormView):
                 fieldname='email',
                 field_renderable=uicontainer.field.Field(
                     autofocus=True,
-                    placeholder=ugettext_lazy('Email')
+                    placeholder=gettext_lazy('Email')
                 )
             ),
             uicontainer.button.SubmitPrimary(
-                text=ugettext_lazy('Search')),
+                text=gettext_lazy('Search')),
         ]
         return uicontainer.layout.AdminuiPageSectionTight(
             children=[

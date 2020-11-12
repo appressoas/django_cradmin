@@ -23,11 +23,11 @@ to the "pages" app (both apps are within the cradmin instance)::
         def get_menu_item_renderables(self):
             return [
                 crmenu.LinkItemRenderable(
-                    label=ugettext_lazy('Dashboard'),
+                    label=gettext_lazy('Dashboard'),
                     url=self.appindex_url('dashboard'),
                     is_active=self.request.cradmin_app.appname == 'dashboard'),
                 crmenu.LinkItemRenderable(
-                    label=ugettext_lazy('Pages'),
+                    label=gettext_lazy('Pages'),
                     url=self.appindex_url('pages'),
                     is_active=self.request.cradmin_app.appname == 'pages'),
             ]

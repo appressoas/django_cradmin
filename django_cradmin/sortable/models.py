@@ -6,7 +6,7 @@ from builtins import range
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db import transaction
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 
 from django_cradmin.utils.nulls_last_queryset import NullsLastQuerySet
 
@@ -251,7 +251,7 @@ class SortableBase(models.Model):
     sort_index = models.PositiveIntegerField(
         blank=True, null=True,
         default=None,
-        verbose_name=ugettext_lazy('Sort index'),
+        verbose_name=gettext_lazy('Sort index'),
         validators=[validate_sort_index]
     )
 

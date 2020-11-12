@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 
 from django_cradmin import javascriptregistry
