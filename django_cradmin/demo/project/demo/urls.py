@@ -18,7 +18,7 @@ urlpatterns = [
     path('styleguide/', include('django_cradmin.apps.cradmin_kss_styleguide.urls')),
     path('cradmin_email/', include('django_cradmin.apps.cradmin_email.urls')),
 
-    path('djangoadmin/', include(admin.site.urls)),
+    path('djangoadmin/', admin.site.urls),
     path('javascript_demos/', include('django_cradmin.demo.cradmin_javascript_demos.urls')),
     path('no_role_demo/', include(NoRoleCrAdminInstance.urls())),
     path('uicontainerdemo/', include(UIContainerDemoCrAdminInstance.urls())),

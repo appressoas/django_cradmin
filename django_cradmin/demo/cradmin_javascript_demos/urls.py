@@ -68,7 +68,7 @@ urlpatterns = [
          demo_api.FictionalFigureMoveView.as_view(),
          name='cradmin_move_fictional_figures_api'),
     path('api/',
-         include(apirouter.urls, namespace='cradmin_javascript_demos_api')),
+         include((apirouter.urls, 'cradmin_javascript_demos_api'), namespace='cradmin_javascript_demos_api')),
 
     path('filterlist-uicontainer-demo',
          views.FilterListUiContainerDemoView.as_view(),

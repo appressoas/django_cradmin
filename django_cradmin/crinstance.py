@@ -1,9 +1,7 @@
-from __future__ import unicode_literals
-
 from builtins import object
 
 from django.conf import settings
-from django.conf.urls import url, include
+from django.urls import path, re_path, include
 from django.urls import reverse
 from django.shortcuts import render
 from django.utils.html import format_html
@@ -609,18 +607,18 @@ class BaseCrAdminInstance(object):
         flatten = cls.rolefrontpage_appname == appname and cls.flatten_rolefrontpage_url
         if cls.roleclass:
             if flatten:
-                return url(r'^(?P<roleid>{})/'.format(cls.roleid_regex),
-                           include(appurlpatterns))
+                return re_path(r'^(?P<roleid>{})/'.format(cls.roleid_regex),
+                               include(appurlpatterns))
             else:
-                return url(r'^(?P<roleid>{})/{}/'.format(cls.roleid_regex, appname),
-                           include(appurlpatterns))
+                return re_path(r'^(?P<roleid>{})/{}/'.format(cls.roleid_regex, appname),
+                               include(appurlpatterns))
 
         else:
             if flatten:
-                return url(r'^', include(appurlpatterns))
+                return re_path(r'^', include(appurlpatterns))
             else:
-                return url(r'^{}/'.format(appname),
-                           include(appurlpatterns))
+                return re_path(r'^{}/'.format(appname),
+                               include(appurlpatterns))
 
     @classmethod
     def _get_app_urls(cls):
@@ -641,11 +639,11 @@ class BaseCrAdminInstance(object):
         cradmin_instance_registry.add(cls)
         urls = cls._get_app_urls()
         if cls.__no_role_and_flatten_rolefrontpage_url():
-            urls.append(url('^$', FakeRoleFrontpageView.as_view(),
-                            name=cls.id))
+            urls.append(path('', FakeRoleFrontpageView.as_view(),
+                             name=cls.id))
         else:
-            urls.append(url('^$', cls.get_instance_frontpage_view(),
-                            name=cls.id))
+            urls.append(path('', cls.get_instance_frontpage_view(),
+                             name=cls.id))
         return urls
 
     def add_extra_instance_variables_to_request(self, request):
