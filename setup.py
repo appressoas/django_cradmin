@@ -26,7 +26,7 @@ setup(
         'Django>=3.1.0,<4.0.0',
         'future',
         'html2text',
-        'ievv_opensource>=7'
+        'ievv_opensource>=7.0.1'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

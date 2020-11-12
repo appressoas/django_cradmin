@@ -31,11 +31,7 @@ future = "*"
 appresso-sphinx-extensions = "*"
 djangorestframework = "*"
 html2text = "*"
-termcolor = "*"
-psutil = "*"
-watchdog = "*"
-sh = "*"
-arrow = "*"
+ievv-opensource = ">=7.0.1"
 
 [requires]
 python_version = "3.8"
