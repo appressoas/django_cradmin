@@ -110,7 +110,6 @@ Development
    develop
    databasedumps
    i18n
-   release
 
 *************
 Documentation
