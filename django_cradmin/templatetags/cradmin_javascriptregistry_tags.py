@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from django.template import Library
 from django_cradmin import javascriptregistry
 from django_cradmin.javascriptregistry.default_componentids import get_default_component_ids

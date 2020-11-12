@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django_cradmin.uicontainer import messagescontainer
 
 from . import container

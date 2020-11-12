@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _

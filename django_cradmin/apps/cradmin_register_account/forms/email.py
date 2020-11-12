@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django_cradmin import uicontainer
 from django_cradmin.apps.cradmin_register_account.forms.base import AbstractCreateAccountWithPasswordForm
 

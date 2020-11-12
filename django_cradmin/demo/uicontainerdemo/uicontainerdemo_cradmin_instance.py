@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django_cradmin import crinstance, crmenu
 from django_cradmin.demo.uicontainerdemo.crapps import uiforms_demoapp
 from django_cradmin.demo.uicontainerdemo.crapps import uicontainer_overview_app

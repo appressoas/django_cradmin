@@ -3,7 +3,7 @@ import htmls
 
 from django_cradmin.renderable import AbstractRenderableWithCss
 from django_cradmin.viewhelpers import listbuilder
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 
 
 class MinimalRenderable(AbstractRenderableWithCss):

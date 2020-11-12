@@ -7,8 +7,6 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-from __future__ import unicode_literals
-
 import os
 import django_cradmin
 from ievv_opensource.utils import ievvbuildstatic

@@ -1,7 +1,7 @@
 import htmls
 from django.test import TestCase
 from django.test.client import RequestFactory
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 from django_cradmin.viewhelpers import formview
 
 

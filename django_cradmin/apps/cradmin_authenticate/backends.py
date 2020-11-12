@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from builtins import object
 from django.contrib import auth
 from django.contrib.auth.hashers import check_password

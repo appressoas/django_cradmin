@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.contrib.auth import authenticate, login
 from django.test import TestCase, RequestFactory
 from django.urls import reverse

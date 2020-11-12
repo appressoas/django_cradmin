@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import inspect
 
 from ievv_opensource.utils.singleton import Singleton

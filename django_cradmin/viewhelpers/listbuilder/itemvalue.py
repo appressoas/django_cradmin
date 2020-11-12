@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import json
 from builtins import str
 from xml.sax.saxutils import quoteattr

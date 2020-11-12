@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from datetime import datetime, timedelta
 
 import arrow
@@ -9,7 +7,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import (
     GenericTokenWithMetadata, generate_token, get_expiration_datetime_for_app)
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 from django_cradmin.tests.helpers import create_user
 
 

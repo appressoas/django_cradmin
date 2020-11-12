@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django.views.generic.detail import DetailView as DjangoDetailView
 
 from django_cradmin import javascriptregistry

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from datetime import datetime, timedelta
 
 import arrow
@@ -14,7 +12,7 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import \
     GenericTokenWithMetadata
 from django_cradmin.apps.cradmin_resetpassword.views.reset import \
     ResetPasswordView
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 from django_cradmin.tests.helpers import create_user
 
 

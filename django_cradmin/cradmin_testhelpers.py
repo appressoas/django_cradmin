@@ -4,7 +4,7 @@ import htmls
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 from model_bakery import baker
 
 

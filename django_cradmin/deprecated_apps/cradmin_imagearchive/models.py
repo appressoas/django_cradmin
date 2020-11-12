@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os
 import posixpath
 import uuid
@@ -11,7 +9,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-from future.utils import python_2_unicode_compatible
 
 from django_cradmin import crsettings
 from django_cradmin.utils.deprecation_decorators import CradminDeprecatedSinceV4
@@ -44,7 +41,6 @@ class ArchiveImageManager(models.Manager):
             role_content_type=ContentType.objects.get_for_model(role.__class__))
 
 
-@python_2_unicode_compatible
 class ArchiveImageDeprecated(models.Model):
     objects = ArchiveImageManager()
 

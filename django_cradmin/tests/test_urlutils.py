@@ -1,10 +1,7 @@
 from django.http import QueryDict
 from django.test import TestCase
-from future.standard_library import install_aliases
 
 from django_cradmin import urlutils
-
-install_aliases()
 
 from urllib.parse import urlsplit
 

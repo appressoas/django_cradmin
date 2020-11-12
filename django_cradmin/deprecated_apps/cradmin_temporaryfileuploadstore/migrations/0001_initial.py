@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 import django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore.models
 from django.conf import settings

@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from builtins import range
 from django import test
 from django.core.exceptions import FieldDoesNotExist

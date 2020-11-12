@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import htmls
 import mock
 from django import forms

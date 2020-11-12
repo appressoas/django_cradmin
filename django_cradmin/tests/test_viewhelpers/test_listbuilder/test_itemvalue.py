@@ -1,8 +1,7 @@
 import htmls
 from django import test
-from future.utils import python_2_unicode_compatible
 
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 from django_cradmin.viewhelpers import listbuilder
 
 
@@ -34,7 +33,6 @@ class TestTitleDescription(test.TestCase):
             selector.one('.test-cradmin-listbuilder-title-description__description').alltext_normalized)
 
 
-@python_2_unicode_compatible
 class MockValue(object):
     def __init__(self, value_str, pk):
         self.value_str = value_str

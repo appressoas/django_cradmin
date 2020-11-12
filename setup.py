@@ -24,7 +24,6 @@ setup(
     include_package_data=True,
     install_requires=[
         'Django>=3.1.0,<4.0.0',
-        'future',
         'html2text',
         'ievv_opensource>=7.0.1'
     ],

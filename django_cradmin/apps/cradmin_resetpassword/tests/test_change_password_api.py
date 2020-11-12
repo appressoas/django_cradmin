@@ -6,7 +6,7 @@ import htmls
 from rest_framework.test import APIRequestFactory
 
 from django_cradmin.apps.cradmin_resetpassword.api.change_password import ChangePasswordApi
-from django_cradmin.python2_compatibility import mock
+from unittest import mock
 from django_cradmin.apps.cradmin_resetpassword.views.reset import ResetPasswordView
 from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata
 from django_cradmin.tests.helpers import create_user

@@ -1,6 +1,4 @@
-from __future__ import unicode_literals
 from django.db import models
-from future.utils import python_2_unicode_compatible
 
 
 class TstRole(models.Model):
@@ -9,7 +7,6 @@ class TstRole(models.Model):
     """
 
 
-@python_2_unicode_compatible
 class SomeItem(models.Model):
     name = models.CharField(
         max_length=30,

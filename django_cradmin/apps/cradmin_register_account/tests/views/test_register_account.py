@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import htmls
 from django.contrib.auth import get_user_model
 from django.urls import reverse

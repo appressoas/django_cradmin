@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-from future.builtins import str
 import re
 from django import forms
 from django.core import validators
