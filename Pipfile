@@ -30,7 +30,7 @@ django_cradmin = {editable = true, path = "."}
 appresso-sphinx-extensions = "*"
 djangorestframework = "*"
 html2text = "*"
-ievv-opensource = ">=7.0.2"
+ievv-opensource = ">=7.0.3"
 
 [requires]
 python_version = "3.8"
