@@ -36,4 +36,4 @@ http://django-cradmin.readthedocs.org
 6. Commit with ``Release <version>``.
 7. Tag the commit with ``<version>``.
 8. Push (``git push && git push --tags``).
-9. Release to pypi (``python setup.py sdist && twine upload dist/django_cradmin-<version>.tar.gz``).
+9. Release to pypi (``python setup.py sdist && twine upload dist/django-cradmin-<version>.tar.gz``).
