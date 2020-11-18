@@ -25,3 +25,9 @@ If you are migrating from django-cradmin 6.x, you should just need to:
 Version 7.x of django-cradmin was an experimental Django2 release. There is many changes
 in 6.x and 8.x that is not in 7.x. You SHOULD be able to just update to django-cradmin 8.0.x,
 but you may have some issues. If you do, check out the releasenotes for 6.x.
+
+
+## 8.0 patch releases
+
+### 8.0.1
+- Remove pyproject.toml. It causes an issue with strict PEP 517 checking in pip.
