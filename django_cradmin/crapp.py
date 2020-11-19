@@ -1,7 +1,7 @@
 from builtins import object
 from functools import update_wrapper
 
-from django.conf.urls import url
+from django.urls import re_path
 
 from .decorators import cradminview, has_access_to_cradmin_instance
 
@@ -122,7 +122,7 @@ class App(object):
         urls = []
         for pattern in cls.get_appurls():
             urls.append(
-                url(
+                re_path(
                     pattern.regex, cls._wrap_view(cradmin_instance_id,
                                                   appname, pattern.view, pattern.name),
                     name='{}-{}-{}'.format(cradmin_instance_id, appname, pattern.name),
