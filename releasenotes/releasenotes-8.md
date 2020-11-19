@@ -32,3 +32,6 @@ but you may have some issues. If you do, check out the releasenotes for 6.x.
 ### 8.0.1
 - Remove pyproject.toml. It causes an issue with strict PEP 517 checking in pip.
 - Update to ievv-opensource>=7.0.3 with the same pyproject.toml fix.
+
+### 8.0.2
+- Update forgotten url(...) in crapp.py for django3.
