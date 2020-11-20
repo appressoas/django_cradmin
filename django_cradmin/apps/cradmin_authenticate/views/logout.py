@@ -12,4 +12,4 @@ class CradminLogoutView(auth_views.LogoutView):
 
 
 def cradmin_logoutview(request, template_name='cradmin_authenticate/logout.django.html'):
-    return CradminLogoutView.as_view(template_name=template_name).dispatch(request)
+    return CradminLogoutView.as_view(template_name=template_name)(request)
