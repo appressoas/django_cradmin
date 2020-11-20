@@ -35,3 +35,6 @@ but you may have some issues. If you do, check out the releasenotes for 6.x.
 
 ### 8.0.2
 - Update forgotten url(...) in crapp.py for django3.
+
+### 8.0.3
+- Update logout.py - Fix wrong handling of view decorator for logout view
