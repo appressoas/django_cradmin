@@ -41,3 +41,6 @@ but you may have some issues. If you do, check out the releasenotes for 6.x.
 
 ### 8.0.4
 - Remove pyproject.toml AGAIN (was added in 8.0.3). Also added note about this in README.md.
+
+### 8.0.5
+- Set wrap_label to false in `SubWidgetField` tp prevent double label rendering for checkbox and radio
