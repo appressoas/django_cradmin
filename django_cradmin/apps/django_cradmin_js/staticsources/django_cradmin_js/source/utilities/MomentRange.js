@@ -16,13 +16,13 @@ export default class MomentRange {
     return new MomentRange(
       moment({
         year: 1900,
-        month: 0,
-        day: 0
+        month: 1,
+        day: 1
       }),
       moment({
         year: 2100,
-        month: 0,
-        day: 0
+        month: 1,
+        day: 1
       }).subtract(1, 'second')
     )
   }
@@ -33,7 +33,7 @@ export default class MomentRange {
    */
   constructor (start = null, end = null) {
     this.start = start || moment()
-    this.end = end || moment()
+    this.end = end || moment().add(1, 'seconds')
     if (!this.end.isAfter(this.start)) {
       throw new Error('The end of a MomentRange must be after the start.')
     }
