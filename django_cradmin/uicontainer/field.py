@@ -193,15 +193,13 @@ class SubWidgetField(BaseFieldRenderable):
                 subindex=None,
                 attrs=self.field_attributes_dict
             )
+            if isinstance(option, dict) and option.get('type') in ('checkbox', 'radio'):
+                option['wrap_label'] = False
             return mark_safe(renderer.render(
                 template_name=self.django_subwidget['template_name'],
                 context={
                     'widget': option
                 }))
-            # return render_to_string(
-            #     template_name=self.django_subwidget['template_name'],
-            #     context=self.django_subwidget
-            # )
         else:
             return self.django_subwidget.tag(attrs=self.field_attributes_dict)
 
