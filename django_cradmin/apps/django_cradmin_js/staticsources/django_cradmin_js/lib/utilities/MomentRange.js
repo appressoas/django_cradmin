@@ -35,12 +35,12 @@ function () {
     value: function defaultForDatetimeSelect() {
       return new MomentRange((0, _moment.default)({
         year: 1900,
-        month: 0,
-        day: 0
+        month: 1,
+        day: 1
       }), (0, _moment.default)({
         year: 2100,
-        month: 0,
-        day: 0
+        month: 1,
+        day: 1
       }).subtract(1, 'second'));
     }
     /**
@@ -57,7 +57,7 @@ function () {
     _classCallCheck(this, MomentRange);
 
     this.start = start || (0, _moment.default)();
-    this.end = end || (0, _moment.default)();
+    this.end = end || (0, _moment.default)().add(1, 'seconds');
 
     if (!this.end.isAfter(this.start)) {
       throw new Error('The end of a MomentRange must be after the start.');
