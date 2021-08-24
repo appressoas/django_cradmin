@@ -151,6 +151,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'django_static_root')
 
 MEDIA_URL = '/media/'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

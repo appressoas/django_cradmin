@@ -27,10 +27,14 @@ model-bakery = "*"
 django_cradmin = {editable = true, path = "."}
 
 [packages]
+django = ">=3.2.0,<4"
 appresso-sphinx-extensions = "*"
 djangorestframework = "*"
 html2text = "*"
-ievv-opensource = ">=7.0.3"
+ievv-opensource = ">=8.0.0b1"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
