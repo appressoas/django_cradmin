@@ -1,9 +1,9 @@
-Django-cradmin 9 beta releasenotes
-==================================
+Django-cradmin 9 releasenotes
+=============================
 
 
-9.0.0b1
-=======
+9.0.0
+=====
 
 ## What is new
 
