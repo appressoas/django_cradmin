@@ -61,6 +61,17 @@ class Registry(Singleton):
                 jscomponent_class.get_component_id()))
         self._jscomponent_classes[jscomponent_class.get_component_id()] = jscomponent_class
 
+    def remove_if_exists(self, jscomponent_id):
+        """
+        Check if the provided component ID is in the registry
+        and deletes it if found.
+
+        Args:
+            - jscomponent_id: String
+        """
+        if jscomponent_id in self._jscomponent_classes:
+            del self._jscomponent_classes[jscomponent_id]
+
     def __contains__(self, component_id_or_object):
         """
         Check if the provided component ID, component object or
