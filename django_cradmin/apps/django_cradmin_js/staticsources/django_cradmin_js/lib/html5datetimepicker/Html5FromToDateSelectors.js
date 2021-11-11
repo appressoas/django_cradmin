@@ -250,8 +250,9 @@ function (_React$Component) {
         return null;
       }
 
+      var lineItemWidth = this.lineItemWidth;
       return _react.default.createElement("div", {
-        className: "fieldwrapper-line__item ".concat(this.lineItemWidth)
+        className: 'fieldwrapper-line__item ' + lineItemWidth
       }, _react.default.createElement("div", {
         className: 'fieldwrapper fieldwrapper--compact'
       }, this.renderIfExpandedLabel(this.toDateExpandedLabel), this.renderToDateField()));
@@ -259,10 +260,11 @@ function (_React$Component) {
   }, {
     key: "renderDateFields",
     value: function renderDateFields() {
+      var lineItemWidth = this.lineItemWidth;
       return _react.default.createElement("div", {
         className: 'fieldwrapper-line'
       }, _react.default.createElement("div", {
-        className: "fieldwrapper-line__item ".concat(this.lineItemWidth)
+        className: 'fieldwrapper-line__item ' + lineItemWidth
       }, _react.default.createElement("div", {
         className: 'fieldwrapper fieldwrapper--compact'
       }, this.renderIfExpandedLabel(this.fromDateExpandedLabel), this.renderFromDateField())), this.renderToDateLayout());

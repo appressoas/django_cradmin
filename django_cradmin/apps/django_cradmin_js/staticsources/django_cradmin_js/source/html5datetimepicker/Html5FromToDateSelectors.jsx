@@ -285,7 +285,8 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.isExpanded) {
       return null
     }
-    return <div className={`fieldwrapper-line__item ${this.lineItemWidth}`}>
+    const lineItemWidth = this.lineItemWidth
+    return <div className={'fieldwrapper-line__item ' + lineItemWidth}>
       <div className={'fieldwrapper fieldwrapper--compact'}>
         {this.renderIfExpandedLabel(this.toDateExpandedLabel)}
         {this.renderToDateField()}
@@ -294,8 +295,9 @@ export default class Html5FromToDateSelectors extends React.Component {
   }
 
   renderDateFields () {
+    const lineItemWidth = this.lineItemWidth
     return <div className={'fieldwrapper-line'}>
-      <div className={`fieldwrapper-line__item ${this.lineItemWidth}`}>
+      <div className={'fieldwrapper-line__item ' + lineItemWidth}>
         <div className={'fieldwrapper fieldwrapper--compact'}>
           {this.renderIfExpandedLabel(this.fromDateExpandedLabel)}
           {this.renderFromDateField()}
