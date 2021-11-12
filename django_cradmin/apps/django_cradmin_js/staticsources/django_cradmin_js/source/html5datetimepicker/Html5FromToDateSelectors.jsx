@@ -218,8 +218,8 @@ export default class Html5FromToDateSelectors extends React.Component {
     return this.collapsedLabel
   }
 
-  get lineItemWidth () {
-    const fieldWrapperLineItemWidth = this.props.commonDateOptions.lineItemWidth
+  getLineItemWidth () {
+    const fieldWrapperLineItemWidth = this.commonDateOptions.lineItemWidth
     let itemWidth = ''
     switch (fieldWrapperLineItemWidth) {
       case 'xxsmall':
@@ -285,7 +285,7 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.isExpanded) {
       return null
     }
-    const lineItemWidth = this.lineItemWidth
+    const lineItemWidth = this.getLineItemWidth()
     return <div className={'fieldwrapper-line__item ' + lineItemWidth}>
       <div className={'fieldwrapper fieldwrapper--compact'}>
         {this.renderIfExpandedLabel(this.toDateExpandedLabel)}
@@ -295,7 +295,7 @@ export default class Html5FromToDateSelectors extends React.Component {
   }
 
   renderDateFields () {
-    const lineItemWidth = this.lineItemWidth
+    const lineItemWidth = this.getLineItemWidth()
     return <div className={'fieldwrapper-line'}>
       <div className={'fieldwrapper-line__item ' + lineItemWidth}>
         <div className={'fieldwrapper fieldwrapper--compact'}>

@@ -185,9 +185,35 @@ function (_React$Component) {
       this.props.onChange('', '', true);
     }
   }, {
-    key: "renderFromDateField",
+    key: "getLineItemWidth",
+    value: function getLineItemWidth() {
+      var fieldWrapperLineItemWidth = this.commonDateOptions.lineItemWidth;
+      var itemWidth = '';
 
+      switch (fieldWrapperLineItemWidth) {
+        case 'xxsmall':
+          itemWidth = 'fieldwrapper-line__item--width-xxsmall';
+          break;
+
+        case 'xsmall':
+          itemWidth = 'fieldwrapper-line__item--width-xsmall';
+          break;
+
+        case 'medium':
+          itemWidth = 'fieldwrapper-line__item--width-medium';
+          break;
+
+        default:
+          itemWidth = 'fieldwrapper-line__item--width-small';
+          break;
+      }
+
+      return itemWidth;
+    }
     /* Render functions */
+
+  }, {
+    key: "renderFromDateField",
     value: function renderFromDateField() {
       return _react.default.createElement(_Html5DateInput.default, this.fromDateOptions);
     }
@@ -250,7 +276,7 @@ function (_React$Component) {
         return null;
       }
 
-      var lineItemWidth = this.lineItemWidth;
+      var lineItemWidth = this.getLineItemWidth();
       return _react.default.createElement("div", {
         className: 'fieldwrapper-line__item ' + lineItemWidth
       }, _react.default.createElement("div", {
@@ -260,7 +286,7 @@ function (_React$Component) {
   }, {
     key: "renderDateFields",
     value: function renderDateFields() {
-      var lineItemWidth = this.lineItemWidth;
+      var lineItemWidth = this.getLineItemWidth();
       return _react.default.createElement("div", {
         className: 'fieldwrapper-line'
       }, _react.default.createElement("div", {
@@ -395,32 +421,6 @@ function (_React$Component) {
       }
 
       return this.collapsedLabel;
-    }
-  }, {
-    key: "lineItemWidth",
-    get: function get() {
-      var fieldWrapperLineItemWidth = this.props.commonDateOptions.lineItemWidth;
-      var itemWidth = '';
-
-      switch (fieldWrapperLineItemWidth) {
-        case 'xxsmall':
-          itemWidth = 'fieldwrapper-line__item--width-xxsmall';
-          break;
-
-        case 'xsmall':
-          itemWidth = 'fieldwrapper-line__item--width-xsmall';
-          break;
-
-        case 'medium':
-          itemWidth = 'fieldwrapper-line__item--width-medium';
-          break;
-
-        default:
-          itemWidth = 'fieldwrapper-line__item--width-small';
-          break;
-      }
-
-      return itemWidth;
     }
   }]);
 
