@@ -186,29 +186,20 @@ function (_React$Component) {
     }
   }, {
     key: "getLineItemWidth",
-    value: function getLineItemWidth() {
-      var fieldWrapperLineItemWidth = this.commonDateOptions.lineItemWidth;
-      var itemWidth = '';
-
+    value: function getLineItemWidth(fieldWrapperLineItemWidth) {
       switch (fieldWrapperLineItemWidth) {
         case 'xxsmall':
-          itemWidth = 'fieldwrapper-line__item--width-xxsmall';
-          break;
+          return 'fieldwrapper-line__item--width-xxsmall';
 
         case 'xsmall':
-          itemWidth = 'fieldwrapper-line__item--width-xsmall';
-          break;
+          return 'fieldwrapper-line__item--width-xsmall';
 
         case 'medium':
-          itemWidth = 'fieldwrapper-line__item--width-medium';
-          break;
+          return 'fieldwrapper-line__item--width-medium';
 
         default:
-          itemWidth = 'fieldwrapper-line__item--width-small';
-          break;
+          return 'fieldwrapper-line__item--width-small';
       }
-
-      return itemWidth;
     }
     /* Render functions */
 
@@ -276,7 +267,7 @@ function (_React$Component) {
         return null;
       }
 
-      var lineItemWidth = this.getLineItemWidth();
+      var lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth);
       return _react.default.createElement("div", {
         className: 'fieldwrapper-line__item ' + lineItemWidth
       }, _react.default.createElement("div", {
@@ -286,7 +277,7 @@ function (_React$Component) {
   }, {
     key: "renderDateFields",
     value: function renderDateFields() {
-      var lineItemWidth = this.getLineItemWidth();
+      var lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth);
       return _react.default.createElement("div", {
         className: 'fieldwrapper-line'
       }, _react.default.createElement("div", {

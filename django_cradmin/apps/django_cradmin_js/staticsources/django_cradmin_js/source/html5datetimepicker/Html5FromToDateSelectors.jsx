@@ -16,7 +16,7 @@ import moment from 'moment'
 *      commonDateOptions: {'lineItemWidth': 'medium'}
 *    }
 *
-* The function `get lineItemWidth` gets the css class. If new css classes are added,
+* The function `getLineItemWidth` gets the css class. If new css classes are added,
 * update the switch in this function.
 *
 */
@@ -218,24 +218,17 @@ export default class Html5FromToDateSelectors extends React.Component {
     return this.collapsedLabel
   }
 
-  getLineItemWidth () {
-    const fieldWrapperLineItemWidth = this.commonDateOptions.lineItemWidth
-    let itemWidth = ''
+  getLineItemWidth (fieldWrapperLineItemWidth) {
     switch (fieldWrapperLineItemWidth) {
       case 'xxsmall':
-        itemWidth = 'fieldwrapper-line__item--width-xxsmall'
-        break
+        return 'fieldwrapper-line__item--width-xxsmall'
       case 'xsmall':
-        itemWidth = 'fieldwrapper-line__item--width-xsmall'
-        break
+        return 'fieldwrapper-line__item--width-xsmall'
       case 'medium':
-        itemWidth = 'fieldwrapper-line__item--width-medium'
-        break
+        return 'fieldwrapper-line__item--width-medium'
       default:
-        itemWidth = 'fieldwrapper-line__item--width-small'
-        break
+        return 'fieldwrapper-line__item--width-small'
     }
-    return itemWidth
   }
 
   /* Render functions */
@@ -285,7 +278,7 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.isExpanded) {
       return null
     }
-    const lineItemWidth = this.getLineItemWidth()
+    const lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth)
     return <div className={'fieldwrapper-line__item ' + lineItemWidth}>
       <div className={'fieldwrapper fieldwrapper--compact'}>
         {this.renderIfExpandedLabel(this.toDateExpandedLabel)}
@@ -295,7 +288,7 @@ export default class Html5FromToDateSelectors extends React.Component {
   }
 
   renderDateFields () {
-    const lineItemWidth = this.getLineItemWidth()
+    const lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth)
     return <div className={'fieldwrapper-line'}>
       <div className={'fieldwrapper-line__item ' + lineItemWidth}>
         <div className={'fieldwrapper fieldwrapper--compact'}>
