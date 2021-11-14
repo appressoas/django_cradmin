@@ -53,7 +53,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 *      commonDateOptions: {'lineItemWidth': 'medium'}
 *    }
 *
-* The function `get lineItemWidth` gets the css class. If new css classes are added,
+* The function `getLineItemWidth` gets the css class. If new css classes are added,
 * update the switch in this function.
 *
 */
