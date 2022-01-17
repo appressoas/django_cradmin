@@ -62,8 +62,8 @@ export default class AbstractFilter extends AbstractLayoutComponentChild {
     httpRequest.urlParser.queryString.setSmart(name, value)
   }
 
-  static setInQueryString (queryString, name, value) {
-    if (value === null) {
+  static setInQueryString (queryString, name, value, allowNullInQuerystring = false) {
+    if (!allowNullInQuerystring && value === null) {
       return
     }
     queryString.setSmart(name, value)

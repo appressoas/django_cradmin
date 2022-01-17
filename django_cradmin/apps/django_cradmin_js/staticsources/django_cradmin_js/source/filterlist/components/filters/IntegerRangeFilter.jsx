@@ -83,7 +83,7 @@ export default class IntegerRangeFilter extends AbstractFilter {
     httpRequest.urlParser.queryString.set(`${name}_to`, value.toValue)
   }
 
-  static setInQueryString (queryString, name, value) {
+  static setInQueryString (queryString, name, value, allowNullInQuerystring = false) {
     if (value === null) {
       queryString.remove(name)
     } else {

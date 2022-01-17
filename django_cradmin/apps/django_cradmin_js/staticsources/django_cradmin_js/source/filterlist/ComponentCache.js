@@ -206,6 +206,10 @@ export class FilterComponentSpec extends AbstractLayoutChildComponentSpec {
   get initialValue () {
     return this._componentSpec.initialValue
   }
+
+  get allowNullInQuerystring () {
+    return this._componentSpec.allowNullInQuerystring || false
+  }
 }
 
 export class PaginatorComponentSpec extends AbstractLayoutChildComponentSpec {
