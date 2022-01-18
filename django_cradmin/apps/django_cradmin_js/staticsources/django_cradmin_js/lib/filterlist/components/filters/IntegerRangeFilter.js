@@ -268,6 +268,8 @@ function (_AbstractFilter) {
   }, {
     key: "setInQueryString",
     value: function setInQueryString(queryString, name, value) {
+      var allowNullInQuerystring = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
       if (value === null) {
         queryString.remove(name);
       } else {

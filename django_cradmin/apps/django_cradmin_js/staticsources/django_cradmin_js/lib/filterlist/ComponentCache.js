@@ -395,6 +395,11 @@ function (_AbstractLayoutChildC2) {
     get: function get() {
       return this._componentSpec.initialValue;
     }
+  }, {
+    key: "allowNullInQuerystring",
+    get: function get() {
+      return this._componentSpec.allowNullInQuerystring || false;
+    }
   }]);
 
   _inherits(FilterComponentSpec, _AbstractLayoutChildC2);
