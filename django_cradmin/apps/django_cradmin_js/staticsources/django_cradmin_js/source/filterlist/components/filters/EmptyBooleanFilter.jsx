@@ -82,7 +82,7 @@ export default class EmptyBooleanFilter extends AbstractFilter {
   }
 
   static setInQueryString (queryString, name, value, allowNullInQuerystring = false) {
-    if (allowNullInQuerystring && value === null) {
+    if (!allowNullInQuerystring && value === null) {
       queryString.remove(name)
     } else {
       queryString.setSmart(name, value)
