@@ -1,5 +1,4 @@
 import React from "react";
-import {HotKeys} from 'react-hotkeys';
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
