@@ -1475,10 +1475,10 @@ function (_React$Component) {
       var filterSpec = this.state.componentCache.filterMap.get(filterName);
       var value = this.getFilterValue(filterName);
 
-      if (value === null || value === undefined || value === '') {
+      if (!filterSpec.allowNullInQuerystring && (value === null || value === undefined || value === '')) {
         queryString.remove(filterName);
       } else {
-        filterSpec.componentClass.setInQueryString(queryString, filterName, value);
+        filterSpec.componentClass.setInQueryString(queryString, filterName, value, filterSpec.allowNullInQuerystring);
       }
     }
   }, {

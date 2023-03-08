@@ -1132,10 +1132,10 @@ export default class AbstractFilterList extends React.Component {
   setFilterValueInQueryString (queryString, filterName) {
     const filterSpec = this.state.componentCache.filterMap.get(filterName)
     const value = this.getFilterValue(filterName)
-    if (value === null || value === undefined || value === '') {
+    if (!filterSpec.allowNullInQuerystring && (value === null || value === undefined || value === '')) {
       queryString.remove(filterName)
     } else {
-      filterSpec.componentClass.setInQueryString(queryString, filterName, value)
+      filterSpec.componentClass.setInQueryString(queryString, filterName, value, filterSpec.allowNullInQuerystring)
     }
   }
 

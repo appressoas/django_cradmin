@@ -7,8 +7,6 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _reactHotkeys = require("react-hotkeys");
-
 var _LoggerSingleton = _interopRequireDefault(require("ievv_jsbase/lib/log/LoggerSingleton"));
 
 var _SignalHandlerSingleton = _interopRequireDefault(require("ievv_jsbase/lib/SignalHandlerSingleton"));

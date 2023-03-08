@@ -41,6 +41,22 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+/**
+* If you need to change the width on the date time fields, do as follows in the code
+* which uses this date selector. Do not set lineItemWidth in this class!!:
+*
+*@example
+*   component: Html5FromToDateSelectors
+*    ...
+*    dateSelectorProps: {
+*      ...
+*      commonDateOptions: {'lineItemWidth': 'medium'}
+*    }
+*
+* The function `getLineItemWidth` gets the css class. If new css classes are added,
+* update the switch in this function.
+*
+*/
 var Html5FromToDateSelectors =
 /*#__PURE__*/
 function (_React$Component) {
@@ -169,9 +185,26 @@ function (_React$Component) {
       this.props.onChange('', '', true);
     }
   }, {
-    key: "renderFromDateField",
+    key: "getLineItemWidth",
+    value: function getLineItemWidth(fieldWrapperLineItemWidth) {
+      switch (fieldWrapperLineItemWidth) {
+        case 'xxsmall':
+          return 'fieldwrapper-line__item--width-xxsmall';
 
+        case 'xsmall':
+          return 'fieldwrapper-line__item--width-xsmall';
+
+        case 'medium':
+          return 'fieldwrapper-line__item--width-medium';
+
+        default:
+          return 'fieldwrapper-line__item--width-small';
+      }
+    }
     /* Render functions */
+
+  }, {
+    key: "renderFromDateField",
     value: function renderFromDateField() {
       return _react.default.createElement(_Html5DateInput.default, this.fromDateOptions);
     }
@@ -234,8 +267,9 @@ function (_React$Component) {
         return null;
       }
 
+      var lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth);
       return _react.default.createElement("div", {
-        className: 'fieldwrapper-line__item fieldwrapper-line__item--width-small'
+        className: 'fieldwrapper-line__item ' + lineItemWidth
       }, _react.default.createElement("div", {
         className: 'fieldwrapper fieldwrapper--compact'
       }, this.renderIfExpandedLabel(this.toDateExpandedLabel), this.renderToDateField()));
@@ -243,10 +277,11 @@ function (_React$Component) {
   }, {
     key: "renderDateFields",
     value: function renderDateFields() {
+      var lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth);
       return _react.default.createElement("div", {
         className: 'fieldwrapper-line'
       }, _react.default.createElement("div", {
-        className: 'fieldwrapper-line__item fieldwrapper-line__item--width-small'
+        className: 'fieldwrapper-line__item ' + lineItemWidth
       }, _react.default.createElement("div", {
         className: 'fieldwrapper fieldwrapper--compact'
       }, this.renderIfExpandedLabel(this.fromDateExpandedLabel), this.renderFromDateField())), this.renderToDateLayout());

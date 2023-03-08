@@ -65,7 +65,9 @@ function (_AbstractLayoutCompon) {
   }, {
     key: "setInQueryString",
     value: function setInQueryString(queryString, name, value) {
-      if (value === null) {
+      var allowNullInQuerystring = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      if (!allowNullInQuerystring && value === null) {
         return;
       }
 

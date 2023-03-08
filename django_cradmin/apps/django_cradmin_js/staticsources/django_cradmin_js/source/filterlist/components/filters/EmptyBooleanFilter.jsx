@@ -81,8 +81,8 @@ export default class EmptyBooleanFilter extends AbstractFilter {
     super.filterHttpRequest(httpRequest, name, value)
   }
 
-  static setInQueryString (queryString, name, value) {
-    if (value === null) {
+  static setInQueryString (queryString, name, value, allowNullInQuerystring = false) {
+    if (!allowNullInQuerystring && value === null) {
       queryString.remove(name)
     } else {
       queryString.setSmart(name, value)

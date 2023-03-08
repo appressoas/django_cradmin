@@ -4,6 +4,22 @@ import Html5DateInput from './Html5DateInput'
 import * as gettext from 'ievv_jsbase/lib/gettext'
 import moment from 'moment'
 
+/**
+* If you need to change the width on the date time fields, do as follows in the code
+* which uses this date selector. Do not set lineItemWidth in this class!!:
+*
+*@example
+*   component: Html5FromToDateSelectors
+*    ...
+*    dateSelectorProps: {
+*      ...
+*      commonDateOptions: {'lineItemWidth': 'medium'}
+*    }
+*
+* The function `getLineItemWidth` gets the css class. If new css classes are added,
+* update the switch in this function.
+*
+*/
 export default class Html5FromToDateSelectors extends React.Component {
   static get propTypes () {
     return {
@@ -17,7 +33,7 @@ export default class Html5FromToDateSelectors extends React.Component {
       expandedLabel: PropTypes.string,
       expandToggleLabel: PropTypes.string.isRequired,
       toDateExpandedLabel: PropTypes.string.isRequired,
-      fromDateExpandedLabel: PropTypes.string.isRequired,
+      fromDateExpandedLabel: PropTypes.string.isRequired
     }
   }
 
@@ -202,6 +218,19 @@ export default class Html5FromToDateSelectors extends React.Component {
     return this.collapsedLabel
   }
 
+  getLineItemWidth (fieldWrapperLineItemWidth) {
+    switch (fieldWrapperLineItemWidth) {
+      case 'xxsmall':
+        return 'fieldwrapper-line__item--width-xxsmall'
+      case 'xsmall':
+        return 'fieldwrapper-line__item--width-xsmall'
+      case 'medium':
+        return 'fieldwrapper-line__item--width-medium'
+      default:
+        return 'fieldwrapper-line__item--width-small'
+    }
+  }
+
   /* Render functions */
 
   renderFromDateField () {
@@ -249,7 +278,8 @@ export default class Html5FromToDateSelectors extends React.Component {
     if (!this.state.isExpanded) {
       return null
     }
-    return <div className={'fieldwrapper-line__item fieldwrapper-line__item--width-small'}>
+    const lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth)
+    return <div className={'fieldwrapper-line__item ' + lineItemWidth}>
       <div className={'fieldwrapper fieldwrapper--compact'}>
         {this.renderIfExpandedLabel(this.toDateExpandedLabel)}
         {this.renderToDateField()}
@@ -258,8 +288,9 @@ export default class Html5FromToDateSelectors extends React.Component {
   }
 
   renderDateFields () {
+    const lineItemWidth = this.getLineItemWidth(this.commonDateOptions.lineItemWidth)
     return <div className={'fieldwrapper-line'}>
-      <div className={'fieldwrapper-line__item fieldwrapper-line__item--width-small'}>
+      <div className={'fieldwrapper-line__item ' + lineItemWidth}>
         <div className={'fieldwrapper fieldwrapper--compact'}>
           {this.renderIfExpandedLabel(this.fromDateExpandedLabel)}
           {this.renderFromDateField()}
