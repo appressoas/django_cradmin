@@ -30,3 +30,11 @@ launch (6. April 2024).
 
 ## What's new?
 - Javascript registry method `remove_if_exists`
+
+
+9.2
+===
+
+## What's new?
+- crbreadcrumb: Bugfix: Use span instead of li for separatator (produce valid HTML instead of LI tags without an UL).
+- Update to ievv-opensource ``>=8.2.1,<8.3.0``.
