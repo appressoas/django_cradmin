@@ -34,8 +34,8 @@ html2text = "*"
 ievv-opensource = ">=9.0.0,<10.0.0"
 importlib-metadata = "*"
 
-[requires]
-python_version = "3.10.8"
-
 [pipenv]
 allow_prereleases = false
+
+[requires]
+python_version = "3.10.8"
