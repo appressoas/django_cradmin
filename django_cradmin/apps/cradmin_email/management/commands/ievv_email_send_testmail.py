@@ -3,7 +3,7 @@ from django_cradmin.apps.cradmin_email import emailutils
 
 
 class Command(BaseCommand):
-    def handle(self, args, **kwargs):
+    def handle(self, *args, **kwargs):
         class DemoEmail(emailutils.AbstractEmail):
             subject_template = 'cradmin_email/cradmin_email_send_testmail/subject.django.txt'
             html_message_template = 'cradmin_email/cradmin_email_send_testmail/html_message.django.html'

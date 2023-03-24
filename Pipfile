@@ -12,9 +12,9 @@ coverage = "*"
 django-dbdev = "*"
 django-debug-toolbar = "*"
 twine = "*"
-pytest = "==5.3.5"
-pytest-django = "==3.8.0"
-pytest-env = "==0.6.2"
+pytest = "*"
+pytest-django = "*"
+pytest-env = "*"
 Markdown = "*"
 Pygments = "*"
 beautifulsoup4 = "*"
@@ -27,14 +27,15 @@ model-bakery = "*"
 django_cradmin = {editable = true, path = "."}
 
 [packages]
-django = ">=3.2.0,<4"
+django = ">=4.0.0,<4.2.0"
 appresso-sphinx-extensions = "*"
 djangorestframework = "*"
 html2text = "*"
-ievv-opensource = ">=8.0.0,<9.0.0"
+ievv-opensource = ">=9.0.0,<10.0.0"
+importlib-metadata = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10.8"
 
 [pipenv]
 allow_prereleases = false
