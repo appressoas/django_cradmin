@@ -20,3 +20,8 @@ Updated to Django 4.x.x.
 - Update your own application for Django 4.x+
 - Update your own application for python version >=3.10.0 and <3.10.9
 - Update django_cradmin 10.x
+
+## 10.0 patch releases
+
+### 10.0.1
+- NullsLastQuery: pass args and kwargs in get_compiler
