@@ -22,11 +22,11 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_cradmin.demo.project.settingsproxy")
-import django
+import django  # noqa
 django.setup()
 
 # Workaround for https://bitbucket.org/birkenfeld/sphinx/issue/1254/autodoc-fails-to-handle-descriptors-with
-from django.db.models.fields.files import FileDescriptor
+from django.db.models.fields.files import FileDescriptor  # noqa
 FileDescriptor.__get__ = lambda self, *args, **kwargs: self
 
 # -- General configuration ------------------------------------------------

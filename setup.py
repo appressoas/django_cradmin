@@ -23,9 +23,9 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'Django>=3.2.0,<4.0.0',
+        'Django>=4.0.0,<5.0.0',
         'html2text',
-        'ievv_opensource>=8.0.0,<9.0.0'
+        'ievv_opensource>=9.0.0,<10.0.0'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
