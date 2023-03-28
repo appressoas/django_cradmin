@@ -21,7 +21,7 @@ beautifulsoup4 = "*"
 html5lib = "*"
 pythonkss = "*"
 mock-django = "*"
-sphinx = "==5.3.0"
+sphinx = "*"
 sphinx-rtd-theme = "*"
 model-bakery = "*"
 django_cradmin = {editable = true, path = "."}
