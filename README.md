@@ -8,12 +8,11 @@ Django cradmin is in BETA. The system is fairly stable, but:
 - We should have better tests before release. Some parts have been prototyped
   a lot while we tested out different concepts, and they need a complexity
   review and better tests.
-- Works with Django 4 and python 3.10
+- Works with Django 4 and python >=3.8,<3.11
 
 ## Develop
 Requires:
 - https://github.com/pyenv/pyenv
-- Docker (Docker desktop or similar)
 
 
 ### Use conventional commits for GIT commit messages
