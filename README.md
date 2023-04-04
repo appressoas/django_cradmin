@@ -92,18 +92,25 @@ Remove the previous built static files:
 ```
 
 __Temporary bump version__
+
 Manually go to `django_cradmin/__ini__.py` and set the new version. This must be the same as the one which will be created by `cz bump`.
 
 Create new production static files
 ```
 $ ievv buildstatic --production
 ```
+__Undo temporary version__
+
+Undo the version you sat before building production static files
+
 Commit static files
    ```
    $ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
    ```
 
-Release (create changelog, increment version, commit and tag the change) with:
+Use ```cz commit``` to get a good conventional commit.
+
+__Release__ (create changelog, increment version, commit and tag the change) with:
 ```
 $ cz bump
 $ git push && git push --tags
@@ -115,7 +122,7 @@ NOTE:
   if conventional commits has been used correctly. See https://commitizen-tools.github.io/commitizen/.
 - The ``cz`` command comes from ``commitizen`` (install documented above).
 
-Release to pypi:
+__Release to pypi__:
 ```
 $ hatch build -t sdist
 $ hatch publish
