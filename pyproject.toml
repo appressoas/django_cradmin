@@ -84,7 +84,7 @@ exclude = [
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "10.0.1"
+version = "10.1.0"
 version_files = [
     "django_cradmin/__init__.py:__version__"
 ]
