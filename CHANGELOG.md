@@ -1,3 +1,9 @@
+## 10.1.1 (2023-04-04)
+
+### Fix
+
+- **django_cradmin_js**: include buildstatic files in release
+
 ## 10.1.0 (2023-04-04)
 
 ### Feat
