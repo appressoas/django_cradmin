@@ -90,6 +90,10 @@ Remove the previous built static files:
 ```
    $ git rm -r django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 ```
+
+__Temporary bump version__
+Manually go to `django_cradmin/__ini__.py` and set the new version. This must be the same as the one which will be created by `cz bump`.
+
 Create new production static files
 ```
 $ ievv buildstatic --production
