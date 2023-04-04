@@ -84,6 +84,10 @@ http://django-cradmin.readthedocs.org
 
 
 ## How to release django_cradmin
+Remember to run
+```
+$ ievv buildstatic
+```
 
 Release (create changelog, increment version, commit and tag the change) with:
 ```
