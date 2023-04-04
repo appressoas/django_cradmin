@@ -91,7 +91,7 @@ artifacts = [
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "10.1.2"
+version = "10.1.3"
 version_files = [
     "django_cradmin/__init__.py:__version__"
 ]

@@ -1,3 +1,9 @@
+## 10.1.3 (2023-04-04)
+
+### Fix
+
+- **buildstatic**: add buildstatic with new verison
+
 ## 10.1.2 (2023-04-04)
 
 ### Fix
