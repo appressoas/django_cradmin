@@ -84,10 +84,20 @@ http://django-cradmin.readthedocs.org
 
 
 ## How to release django_cradmin
-Remember to run
+
+### Buildstatic
+Remove the previous built static files:
 ```
-$ ievv buildstatic
+   $ git rm -r django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 ```
+Create new production static files
+```
+$ ievv buildstatic --production
+```
+Commit static files
+   ```
+   $ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
+   ```
 
 Release (create changelog, increment version, commit and tag the change) with:
 ```
