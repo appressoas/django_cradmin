@@ -80,6 +80,13 @@ include = [
 exclude = [
     "/django_cradmin/demo",
     "node_modules",
+    "/django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/yarn.lock",
+    "/django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/package.json",
+    "/django_cradmin/apps/django_cradmin_styles/staticsources/django_cradmin_styles/ievv_buildstatic.appconfig.json",
+]
+artifacts = [
+    "/django_cradmin/apps/django_cradmin_js/static/",
+    "/django_cradmin/apps/django_cradmin_styles/static/",
 ]
 
 [tool.commitizen]
