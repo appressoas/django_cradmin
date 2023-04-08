@@ -1,3 +1,13 @@
+## 10.2.0 (2023-04-08)
+
+### Feat
+
+- **pyproject**: sh file for creating venv
+
+### Refactor
+
+- **staticfiles**: build production static files for new version
+
 ## 10.1.3 (2023-04-04)
 
 ### Fix
