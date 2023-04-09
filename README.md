@@ -151,32 +151,6 @@ $ git push && git push --tags
 ### What if the release fails?
 See _How to revert a bump_ in the [commitizen FAQ](https://commitizen-tools.github.io/commitizen/faq/#how-to-revert-a-bump).
 
-### Skipping tests on release
-Why?:
-- You may need to just get a release out even if a test or 2 is breaking. This may be
-  tests that is just not that important, but be very careful making this choice.
-- You may have just run all the tests, and just added a bit more docs or something
-  before the release.
-
-To release without running tests, you first need to find the current and next version.
-So run:
-```
-$ cz bump --dry-run
-```
-and take a look at the first few lines of the output. You can normally
-just copy the first line of the output (``bump: version ...``)
-into the command below...
-
-
-Now you can release with a custom message like this:
-```
-$ cz bump --bump-message "bump: version <CURRENT-VERSION> → <NEXT-VERSION> [skip tests]"
-$ git push && git push --tags
-```
-_NOTE:_ The important part here is that the message starts with ``bump: version``, and contains ``[skip tests]``.
-The prefix is required to trigger the release stages of the CI/CD pipeline, and the ``[skip tests]``
-flag tells the pipeline to skip the tests.
-
 ## Release to pypi:
 ```
 $ hatch build -t sdist
