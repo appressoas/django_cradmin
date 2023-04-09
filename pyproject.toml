@@ -73,8 +73,8 @@ Homepage = "https://github.com/appressoas/django_cradmin"
 [tool.hatch.version]
 path = "django_cradmin/__init__.py"
 
-[tool.hatch.build.targets]
-include = [
+[tool.hatch.build]
+packages = [
     "/django_cradmin",
 ]
 exclude = [
