@@ -1,3 +1,13 @@
+## 10.2.1 (2023-04-11)
+
+### Fix
+
+- **pyproject**: use packages instead of include
+
+### Refactor
+
+- **buildstatic**: static files for new version
+
 ## 10.2.0 (2023-04-08)
 
 ### Feat
