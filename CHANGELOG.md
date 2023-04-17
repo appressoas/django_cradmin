@@ -1,3 +1,19 @@
+## 10.3.1 (2023-04-17)
+
+### Fix
+
+- **readme**: use --changelog on correct place when bumping
+
+## 10.3.0 (2023-04-17)
+
+### Feat
+
+- **buildstatic**: easier version handling during release
+
+### Refactor
+
+- **buildstatic**: new version
+
 ## 10.2.1 (2023-04-11)
 
 ### Fix
