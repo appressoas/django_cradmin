@@ -105,7 +105,7 @@ Remove the previous built static files:
    $ git rm -r django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 ```
 
-#### Bump only files and add chang changelog
+#### Bump version and add changelog
 ```
 $ cz bump --files-only --changelog
 ```
@@ -117,6 +117,8 @@ $ ievv buildstatic --production
 ```
 
 Commit static files
+__NB__: Make sure you also commit pyproject.toml, as the new version is in this file now.
+
 ```
 $ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 ```
