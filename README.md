@@ -105,48 +105,51 @@ Remove the previous built static files:
    $ git rm -r django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 ```
 
-#### Temporary bump version
+#### Bump only files
 ```
-$ cz bump --dry-run
+$ cz bump --files-only
 ```
-In the first line, starting with "bump", you'll see the new version.
-Manually go to `django_cradmin/__ini__.py` and set the new version. This must be the same as the one found in the first line after running `cz bump --dry-run`
 
+#### Build static files
 Create new production static files
 ```
 $ ievv buildstatic --production
 ```
-#### Undo temporary version
-Undo the version change sat in `django_cradmin/__ini__.py` before committing production static files
 
 Commit static files
-  ```
-  $ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
-  ```
-
-Use ```cz commit``` to get a good conventional commit.
-
-### Release (create changelog, increment version, commit and tag the change) with:
 ```
-$ cz bump
+$ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
+  ```
+
+Commit with the message `refactor(buildstatic): new version`
+
+#### Make tag
+Create tag with the current version
+```
+$ git tag $(cz version --project)
+```
+
+#### Bump and push
+```
+$ cz bump $(cz version --project) --changelog
 $ git push && git push --tags
 ```
 
-### NOTE (release):
-- `cz bump` automatically updates CHANGELOG.md, updates version file(s), commits the change and tags the release commit.
-- If you are unsure about what `cz bump` will do, run it with `--dry-run`. You can use
+> __NOTE__:
+> - `cz bump` automatically updates CHANGELOG.md, updates version file(s), commits the change and tags the release commit.
+> - If you are unsure about what `cz bump` will do, run it with `--dry-run`. You can use
   options to force a specific version instead of the one it automatically selects
   from the git log if needed, BUT if this is needed, it is a sign that someone has messed
   up with their conventional commits.
-- When you push, the Azure devops pipeline will take care of the rest. It will see the
+> - When you push, the Azure devops pipeline will take care of the rest. It will see the
   ``bump: version ...`` commit, and release the python package to the artifact registry.
-- ``cz bump`` only works if conventional commits (see section about that above) is used.
-- ``cz bump`` can take a specific version etc, but it automatically select the correct version
+> - ``cz bump`` only works if conventional commits (see section about that above) is used.
+> - ``cz bump`` can take a specific version etc, but it automatically select the correct version
   if conventional commits has been used correctly. See https://commitizen-tools.github.io/commitizen/.
-- If you need to add more to CHANGELOG.md (migration guide, etc), you can just edit
+> - If you need to add more to CHANGELOG.md (migration guide, etc), you can just edit
   CHANGELOG.md after the release, and commit the change with a `docs: some useful message`
   commit.
-- The ``cz`` command comes from ``commitizen`` (install documented above).
+> - The ``cz`` command comes from ``commitizen`` (install documented above).
 
 ### What if the release fails?
 See _How to revert a bump_ in the [commitizen FAQ](https://commitizen-tools.github.io/commitizen/faq/#how-to-revert-a-bump).
