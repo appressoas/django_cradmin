@@ -1,3 +1,9 @@
+## 10.3.3 (2023-04-19)
+
+### Fix
+
+- **pyproject.toml**: use ievv_opensource 9.2.2 or higher
+
 ## 10.3.2 (2023-04-19)
 
 ### Fix
