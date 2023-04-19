@@ -1,3 +1,9 @@
+## 10.3.2 (2023-04-19)
+
+### Fix
+
+- **apps_config**: set default is true and remove config in init
+
 ## 10.3.1 (2023-04-17)
 
 ### Fix
