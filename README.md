@@ -117,7 +117,7 @@ $ ievv buildstatic --production
 ```
 
 Commit static files
-__NB__: Make sure you also commit pyproject.toml, as the new version is in this file now.
+__NB__: Make sure you also commit `pyproject.toml` and `django_cradmin/__init__.py`, as the new version is in these files now.
 
 ```
 $ git add django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
