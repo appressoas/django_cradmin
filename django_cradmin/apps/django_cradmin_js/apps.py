@@ -3,6 +3,7 @@ from . import static_components
 
 
 class CradminJavascriptAppConfig(AppConfig):
+    default = True
     name = 'django_cradmin.apps.django_cradmin_js'
     verbose_name = 'Django cradmin javascript'
 
