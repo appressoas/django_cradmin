@@ -2,7 +2,7 @@
 
 ### Refactor
 
-- **recreate-virtualenv.sh**: moe into root tools folder
+- **recreate-virtualenv.sh**: move into root tools folder
 
 ## 10.3.3 (2023-04-19)
 
