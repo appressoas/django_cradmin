@@ -1,3 +1,9 @@
+## 10.3.4 (2023-06-05)
+
+### Refactor
+
+- **recreate-virtualenv.sh**: moe into root tools folder
+
 ## 10.3.3 (2023-04-19)
 
 ### Fix
