@@ -1,10 +1,14 @@
 from django.apps import AppConfig
 
 
-class WithStyleguideAppConfig(AppConfig):
+class WithoutStyleguideAppConfig(AppConfig):
     default = True
     name = 'django_cradmin.apps.django_cradmin_styles'
     verbose_name = 'Django cradmin styles'
+
+
+class WithStyleguideAppConfig(WithoutStyleguideAppConfig):
+    default = False
 
     def ready(self):
         from django_cradmin.apps.cradmin_kss_styleguide import styleguide_registry
