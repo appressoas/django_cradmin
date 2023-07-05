@@ -87,6 +87,15 @@ source .venv/bin/activate   # enable virtualenv
 pytest django_cradmin
 ```
 
+### Build css/javascript:
+```bash
+source .venv/bin/activate   # enable virtualenv
+nvm use 14    # May need to run "nvm install 14" first
+ievv buildstatic
+# ... or if you want to watch for changes ...:
+ievv buildstatic --watch
+```
+
 
 ## Docs
 http://django-cradmin.readthedocs.org
@@ -113,6 +122,7 @@ cz bump --files-only --changelog
 #### Build static files
 Create new production static files
 ```bash
+$ nvm use 14    # May need to run "nvm install 14" first
 ievv buildstatic --production
 ```
 
