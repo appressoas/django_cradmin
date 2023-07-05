@@ -1,3 +1,9 @@
+## 10.3.5 (2023-07-05)
+
+### Fix
+
+- make without styleguide app config the default
+
 ## 10.3.4 (2023-06-05)
 
 ### Refactor
