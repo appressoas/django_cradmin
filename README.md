@@ -116,11 +116,13 @@ Create new production static files
 ievv buildstatic --production
 ```
 
-Commit static files
-__NB__: Make sure you also commit `pyproject.toml` and `django_cradmin/__init__.py`, as the new version is in these files now.
+Commit th
+__NB__: Make sure you 
 ```bash
 git add pyproject.toml django_cradmin/__init__.py django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
-
+git status
+# ... make sure there are no more files that need to be added ...
+git commit -m "bump: $(cz version --project)"
 ```
 
 Commit with the message `refactor(buildstatic): new version`
