@@ -11,7 +11,6 @@ import os
 import django_cradmin
 from ievv_opensource.utils import ievvbuildstatic
 from ievv_opensource.utils import ievvdevrun
-from django_dbdev.backends.sqlite import DBSETTINGS
 
 
 THIS_DIR = os.path.dirname(__file__)
@@ -50,7 +49,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_dbdev',
 
     # Required by django cradmin
     'django_cradmin',
@@ -136,7 +134,10 @@ ROOT_URLCONF = 'django_cradmin.demo.project.demo.urls'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': DBSETTINGS
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "dbdev_tempdata/SqliteBackend/dbdev.sqlite3",
+    }
 }
 
 # Static files (CSS, JavaScript, Images)

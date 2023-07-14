@@ -55,7 +55,6 @@ dev = [
     "sphinx",
     "sphinx-rtd-theme",
     "psycopg2",
-    "django-dbdev",
 ]
 test = [
     "coverage",
