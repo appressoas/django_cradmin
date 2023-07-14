@@ -1,3 +1,9 @@
+## 10.4.0 (2023-07-14)
+
+### Feat
+
+- **databases**: remove django_dbdev and set databases in settings using django sqlite3
+
 ## 10.3.6 (2023-07-05)
 
 ### Fix
