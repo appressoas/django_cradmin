@@ -136,8 +136,6 @@ git status
 git commit -m "bump: $(cz version --project)"
 ```
 
-Commit with the message `refactor(buildstatic): new version`
-
 #### Make tag and push
 Create tag with the current version
 ```bash
