@@ -1,3 +1,9 @@
+## 10.4.1 (2023-07-17)
+
+### Fix
+
+- new release with static files
+
 ## 10.4.0 (2023-07-14)
 
 ### Feat
