@@ -136,7 +136,7 @@ ROOT_URLCONF = 'django_cradmin.demo.project.demo.urls'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "dbdev_tempdata/SqliteBackend/dbdev.sqlite3",
+        "NAME": "dbdev.sqlite3",
     }
 }
 
