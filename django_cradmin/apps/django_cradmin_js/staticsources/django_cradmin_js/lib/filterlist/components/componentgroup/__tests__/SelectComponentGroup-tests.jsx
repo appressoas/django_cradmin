@@ -7,6 +7,7 @@ import { ChildExposedApiMock } from '../../filterlists/testHelpers'
 function render (props = {}) {
   return renderComponentGroup(
     SelectComponentGroup, Object.assign({
+      domIdPrefix: 'test',
       name: 'test'
     }, props))
 }

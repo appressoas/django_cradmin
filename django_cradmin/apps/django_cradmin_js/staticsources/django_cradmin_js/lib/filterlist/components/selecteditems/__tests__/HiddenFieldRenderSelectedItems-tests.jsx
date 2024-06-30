@@ -6,6 +6,7 @@ import { renderSelectedItems } from '../testHelpers'
 function render (props = {}) {
   return renderSelectedItems(
     HiddenFieldRenderSelectedItems, Object.assign({
+      domIdPrefix: 'test',
       name: 'test'
     }, props))
 }

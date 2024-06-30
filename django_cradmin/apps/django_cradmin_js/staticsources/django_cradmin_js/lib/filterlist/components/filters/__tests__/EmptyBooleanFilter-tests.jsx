@@ -6,7 +6,10 @@ import { renderFilter } from '../testHelpers'
 import { ChildExposedApiMock } from '../../filterlists/testHelpers'
 
 function render (props = {}) {
-  return renderFilter(EmptyBooleanFilter, Object.assign({ariaLabel: 'Test'}, props))
+  return renderFilter(EmptyBooleanFilter, Object.assign({
+    domIdPrefix: 'test', ariaLabel: 'Test',
+    selectedListItemsMap: new Map()
+  }, props))
 }
 
 test('className', () => {

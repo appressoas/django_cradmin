@@ -11,7 +11,7 @@ function makeChildExposedApiMock (hasNextPaginationPage) {
 }
 
 function render (props) {
-  return renderPaginator(LoadMorePaginator, props)
+  return renderPaginator(LoadMorePaginator, {domIdPrefix: 'test', ...props})
 }
 
 test('hasNextPaginationPage() is false', () => {

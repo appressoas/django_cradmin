@@ -6,7 +6,10 @@ import { renderFilter } from '../testHelpers'
 import { ChildExposedApiMock } from '../../filterlists/testHelpers'
 
 function render (props = {}) {
-  return renderFilter(TightLabeledEmptyBooleanFilter, Object.assign({label: 'Test'}, props))
+  return renderFilter(TightLabeledEmptyBooleanFilter, Object.assign({
+    label: 'Test', domIdPrefix: 'test',
+    selectedListItemsMap: new Map()
+  }, props))
 }
 
 test('className', () => {

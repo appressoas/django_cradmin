@@ -12,7 +12,7 @@ function renderSelector (selectorComponentClass, props = {}) {
     fromDateValue: '',
     toDateValue: '',
     onChange: jest.fn(),
-    label: null,
+    label: 'testing',
     expandedLabel: null,
     commonDateOptions: {},
     isExpandedInitially: false,

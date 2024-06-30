@@ -42,7 +42,7 @@ describe('RotatingPlaceholderWidget', () => {
   });
 
   it('placeholder from config overrides placeholder attribute', () => {
-    document.body.innerHTML = `<input id="id_test" placeholder="ignored" 
+    document.body.innerHTML = `<input id="id_test" placeholder="ignored"
         data-ievv-jsbase-widget-config='{"placeholder": "test"}'>`;
     const element = document.getElementById('id_test');
     const widget = new RotatingPlaceholderWidget(element);
@@ -55,11 +55,11 @@ describe('RotatingPlaceholderWidget', () => {
     const element = document.getElementById('id_test');
     const widget = new RotatingPlaceholderWidget(element);
     expect(element.getAttribute('placeholder')).toEqual('test1');
-    jest.runTimersToTime(2000);
+    jest.advanceTimersByTime(2000);
     expect(element.getAttribute('placeholder')).toEqual('test2');
-    jest.runTimersToTime(2000);
+    jest.advanceTimersByTime(2000);
     expect(element.getAttribute('placeholder')).toEqual('test3');
-    jest.runTimersToTime(2000);
+    jest.advanceTimersByTime(2000);
     expect(element.getAttribute('placeholder')).toBe('test1');
   });
 
@@ -69,11 +69,11 @@ describe('RotatingPlaceholderWidget', () => {
     const element = document.getElementById('id_test');
     const widget = new RotatingPlaceholderWidget(element);
     expect(element.getAttribute('placeholder')).toEqual('test1');
-    jest.runTimersToTime(100);
+    jest.advanceTimersByTime(100);
     expect(element.getAttribute('placeholder')).toEqual('test2');
-    jest.runTimersToTime(100);
+    jest.advanceTimersByTime(100);
     expect(element.getAttribute('placeholder')).toEqual('test3');
-    jest.runTimersToTime(100);
+    jest.advanceTimersByTime(100);
     expect(element.getAttribute('placeholder')).toBe('test1');
   });
 
@@ -91,7 +91,7 @@ describe('RotatingPlaceholderWidget', () => {
     const element = document.getElementById('id_test');
     const widget = new RotatingPlaceholderWidget(element);
     expect(element.getAttribute('placeholder')).toEqual('The prefix test1');
-    jest.runTimersToTime(2000);
+    jest.advanceTimersByTime(2000);
     expect(element.getAttribute('placeholder')).toEqual('The prefix test2');
   });
 
@@ -109,7 +109,7 @@ describe('RotatingPlaceholderWidget', () => {
     const element = document.getElementById('id_test');
     const widget = new RotatingPlaceholderWidget(element);
     expect(element.getAttribute('placeholder')).toEqual('test1 the suffix');
-    jest.runTimersToTime(2000);
+    jest.advanceTimersByTime(2000);
     expect(element.getAttribute('placeholder')).toEqual('test2 the suffix');
   });
 
