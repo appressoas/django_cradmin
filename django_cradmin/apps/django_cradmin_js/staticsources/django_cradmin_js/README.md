@@ -25,17 +25,11 @@ $ yarn add django_cradmin_js --dev
 ## Release a new version
 (for people with publish permissions for the npm package)
 
-1. Build:
-
-   ```
-   $ yarn run build
-   $ git add -f lib/
-   ```
-2. Update the ``version`` in ``package.json``.
-3. ``npm publish``.
-4. Git commit the changes. The commit should be
+1. Update the ``version`` in ``package.json``.
+2. ``npm publish``.
+3. Git commit the changes. The commit should be
    ``Release django_cradmin_js <version>``
    where ``<version>`` is the same version as you used in (2).
-5. ``git tag django_cradmin_js-<version>`` where ``<version>`` is the same version as
+4. ``git tag django_cradmin_js-<version>`` where ``<version>`` is the same version as
    you used in (2).
-6. ``git push && git push --tags``.
+5. ``git push && git push --tags``.
