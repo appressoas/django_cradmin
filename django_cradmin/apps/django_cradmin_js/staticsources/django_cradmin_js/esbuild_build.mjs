@@ -10,7 +10,7 @@ if (process.argv.length != 3) {
 const mode = process.argv[2]
 
 const config = {
-    entryPoints: ['source/django_cradmin_all.js'],
+    entryPoints: ['lib/django_cradmin_all.js'],
     bundle: true,
     outfile: `${appconfig.destinationfolder}/django_cradmin_all.js`,
     loader: { '.js': 'jsx' },

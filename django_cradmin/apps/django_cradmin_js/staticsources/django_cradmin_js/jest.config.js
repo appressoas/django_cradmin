@@ -1,9 +1,8 @@
 module.exports = {
   verbose: false,
-  roots: ['<rootDir>/source/'],
+  roots: ['<rootDir>/lib/'],
   testPathIgnorePatterns: [
-    "/node_modules/",
-    "/lib/"
+    "/node_modules/"
   ],
   transform: {
     "\\.jsx?$": "babel-jest",

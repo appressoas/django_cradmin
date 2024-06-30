@@ -1,4 +1,3 @@
-source/
 built_docs/
 !lib/
 config/
@@ -8,5 +7,5 @@ yarn.lock
 esdoc.json
 esdoc/
 *.tgz
-webpack.config.js
 ievv_buildstatic.appconfig.json
+.gitignore

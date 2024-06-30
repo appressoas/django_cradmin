@@ -1,23 +1,12 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = registerAllDatetimePickerWidgets;
-
-var _WidgetRegistrySingleton = _interopRequireDefault(require("ievv_jsbase/lib/widget/WidgetRegistrySingleton"));
-
-var _Html5DateInputWidget = _interopRequireDefault(require("./Html5DateInputWidget"));
-
-var _Html5TimeInputWidget = _interopRequireDefault(require("./Html5TimeInputWidget"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import WidgetRegistrySingleton from 'ievv_jsbase/lib/widget/WidgetRegistrySingleton'
+import Html5DateInputWidget from './Html5DateInputWidget'
+import Html5TimeInputWidget from './Html5TimeInputWidget'
 
 /**
  * Register all the cradmin widgets for datetimepicker in the ievv_jsbase WidgetRegistrySingleton.
  */
-function registerAllDatetimePickerWidgets() {
-  var widgetRegistry = new _WidgetRegistrySingleton.default();
-  widgetRegistry.registerWidgetClass('cradmin-html5-datepicker', _Html5DateInputWidget.default);
-  widgetRegistry.registerWidgetClass('cradmin-html5-timepicker', _Html5TimeInputWidget.default);
+export default function registerAllDatetimePickerWidgets () {
+  const widgetRegistry = new WidgetRegistrySingleton()
+  widgetRegistry.registerWidgetClass('cradmin-html5-datepicker', Html5DateInputWidget)
+  widgetRegistry.registerWidgetClass('cradmin-html5-timepicker', Html5TimeInputWidget)
 }
