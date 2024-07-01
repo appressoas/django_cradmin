@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminSelectedList from "../components/CradminSelectedList";
 
@@ -7,13 +7,11 @@ import CradminSelectedList from "../components/CradminSelectedList";
 export default class SelectedListWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    ReactDOM.render(
-      <CradminSelectedList uniqueId={widgetInstanceId} {...this.config} />,
-      this.element
-    );
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(<CradminSelectedList uniqueId={widgetInstanceId} {...this.config} />);
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
   }
 }

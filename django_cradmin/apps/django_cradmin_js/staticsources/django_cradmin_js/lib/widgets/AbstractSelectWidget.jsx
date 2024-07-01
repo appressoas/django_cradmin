@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import HttpDjangoJsonRequest from 'ievv_jsbase/lib/http/HttpDjangoJsonRequest';
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
@@ -90,7 +89,7 @@ export default class AbstractSelectWidget extends AbstractWidget {
       'django_cradmin.widgets.AbstractSelectWidget'
     );
     if(this._reactWrapperElement) {
-      ReactDOM.unmountComponentAtNode(this._reactWrapperElement);
+      this.reactRoot.unmount();
       this._reactWrapperElement.remove();
     }
   }
@@ -319,10 +318,9 @@ export default class AbstractSelectWidget extends AbstractWidget {
     this._reactWrapperElement = document.createElement('div');
     this.addReactWrapperElementToDocument(this._reactWrapperElement);
     const reactElement = this.makeReactElement();
-    ReactDOM.render(
-      reactElement,
-      this._reactWrapperElement
-    );
+    this.reactRoot = createRoot(this._reactWrapperElement);
+    this.reactRoot.render(reactElement);
+
     if(this.config.fetchEmptySearchOnLoad) {
     this.requestSearchResults()
       .then((results) => {

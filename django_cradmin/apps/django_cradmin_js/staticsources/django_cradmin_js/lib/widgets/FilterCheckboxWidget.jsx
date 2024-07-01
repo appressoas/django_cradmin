@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminFilterCheckbox from "../components/CradminFilterCheckbox";
 
@@ -7,13 +7,11 @@ import CradminFilterCheckbox from "../components/CradminFilterCheckbox";
 export default class FilterCheckboxFilter extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    ReactDOM.render(
-      <CradminFilterCheckbox {...this.config} />,
-      this.element
-    );
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(<CradminFilterCheckbox {...this.config} />,);
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminFilterRadioButtonWithCustomChoice from "../components/CradminFilterRadioButtonWithCustomChoice";
 
@@ -7,13 +7,11 @@ import CradminFilterRadioButtonWithCustomChoice from "../components/CradminFilte
 export default class FilterRadioButtonWithCustomChoiceWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    ReactDOM.render(
-      <CradminFilterRadioButtonWithCustomChoice {...this.config} />,
-      this.element
-    );
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(<CradminFilterRadioButtonWithCustomChoice {...this.config} />,);
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
   }
 }

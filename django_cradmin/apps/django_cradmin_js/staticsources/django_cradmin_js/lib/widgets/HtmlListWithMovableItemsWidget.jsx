@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminHtmlListWithMovableItems from "../components/CradminHtmlListWithMovableItems";
 
@@ -7,13 +7,11 @@ import CradminHtmlListWithMovableItems from "../components/CradminHtmlListWithMo
 export default class HtmlListWithMovableItemsWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    ReactDOM.render(
-      <CradminHtmlListWithMovableItems {...this.config} />,
-      this.element
-    );
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(<CradminHtmlListWithMovableItems {...this.config} />);
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
   }
 }

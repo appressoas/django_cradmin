@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from "ievv_jsbase/lib/widget/AbstractWidget";
 import CradminLoadMoreButton from "../components/CradminLoadMoreButton";
 
@@ -7,13 +7,11 @@ import CradminLoadMoreButton from "../components/CradminLoadMoreButton";
 export default class LoadMoreButtonWidget extends AbstractWidget {
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId);
-    ReactDOM.render(
-      <CradminLoadMoreButton {...this.config} />,
-      this.element
-    );
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(<CradminLoadMoreButton {...this.config} />);
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
   }
 }

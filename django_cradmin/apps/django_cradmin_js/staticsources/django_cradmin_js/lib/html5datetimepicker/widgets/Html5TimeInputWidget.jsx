@@ -1,6 +1,6 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import Html5TimeInput from '../Html5TimeInput'
 
@@ -47,14 +47,12 @@ export default class Html5TimeInputWidget extends AbstractWidget {
 
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId)
-    ReactDOM.render(
-      this.renderWrapper(),
-      this.element
-    )
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(this.renderWrapper());
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element)
+    this.reactRoot.unmount();
   }
 }
 

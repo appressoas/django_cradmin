@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client';
 import PropTypes from 'prop-types'
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import Html5DateInput from '../Html5DateInput'
@@ -48,14 +48,12 @@ export default class Html5DateInputWidget extends AbstractWidget {
 
   constructor(element, widgetInstanceId) {
     super(element, widgetInstanceId)
-    ReactDOM.render(
-      this.renderWrapper(),
-      this.element
-    )
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(this.renderWrapper());
   }
 
   destroy() {
-    ReactDOM.unmountComponentAtNode(this.element)
+    this.reactRoot.unmount();
   }
 }
 
@@ -85,7 +83,7 @@ export class Html5DateInputWrapper extends React.Component {
   }
 
   onChange (isoStringValue) {
-    console.log(isoStringValue)
+    // console.log(isoStringValue)
     this.props.hiddenFieldDomElement.value = isoStringValue
   }
 

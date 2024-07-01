@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client';
 import AbstractWidget from 'ievv_jsbase/lib/widget/AbstractWidget'
 import FilterListRegistry from '../filterlist/FilterListRegistrySingleton'
 
@@ -25,13 +25,11 @@ export default class FilterListWidget extends AbstractWidget {
 
     delete this.config.component
     const reactElement = React.createElement(filterListComponentClass, this.config)
-    ReactDOM.render(
-      reactElement,
-      this.element
-    )
+    this.reactRoot = createRoot(this.element);
+    this.reactRoot.render(reactElement);
   }
 
   destroy () {
-    ReactDOM.unmountComponentAtNode(this.element)
+    this.reactRoot.unmount();
   }
 }

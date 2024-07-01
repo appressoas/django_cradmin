@@ -18,7 +18,6 @@ function _onDomReady () {
 
   const widgetRegistry = new WidgetRegistrySingleton()
   widgetRegistry.initializeAllWidgetsWithinElement(document.body)
-  widgetRegistry.initializeAllWidgetsWithinElement(document.body)
 }
 
 if (document.readyState !== 'loading') {
