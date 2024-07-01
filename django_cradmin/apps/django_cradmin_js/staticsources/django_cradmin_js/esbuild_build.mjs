@@ -21,6 +21,10 @@ const config = {
     //  node_modules/.bin/browserslist-to-esbuild ">0.2%, not dead"
     // (not using browserslist-to-esbuild directly to keep uneeded dependencies down)
     target: ["chrome109", "edge124", "firefox115", "ios12.2", "opera109", "safari15.6"],
+
+    inject: [
+        'config/esbuild-inject.js'
+    ]
 }
 
 if (mode === 'production') {

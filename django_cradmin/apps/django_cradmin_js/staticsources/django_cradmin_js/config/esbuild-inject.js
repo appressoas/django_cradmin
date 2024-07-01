@@ -1,0 +1,1 @@
+window.IEVV_GETTEXT_BACKEND_ID = 'django';
