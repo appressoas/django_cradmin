@@ -38,7 +38,7 @@ pipx ensurepath
 
 Then install hatch and commitizen:
 ```bash
-pipx install hatch 
+pipx install hatch
 pipx install commitizen
 ```
 
@@ -81,6 +81,14 @@ pip install -e ".[dev, test]"
 source .venv/bin/activate   # enable virtualenv
 ievv devrun
 ```
+
+### Fill devdb with some content
+```bash
+rm dbdev.sqlite3
+cat django_cradmin/demo/project/demo/dumps/default.sql | sqlite3 dbdev.sqlite3
+python manage.py migrate
+```
+
 
 ### Run tests
 ```bash
@@ -128,7 +136,7 @@ ievv buildstatic --production
 ```
 
 Commit th
-__NB__: Make sure you 
+__NB__: Make sure you
 ```bash
 git add pyproject.toml django_cradmin/__init__.py django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 git status
