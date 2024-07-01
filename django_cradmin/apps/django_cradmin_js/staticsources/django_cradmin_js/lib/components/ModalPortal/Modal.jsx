@@ -1,6 +1,6 @@
 import React from 'react'
 import * as constants from './constants'
-import ReactDOM from 'react-dom'
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types'
 import ErrorBoundary from '../ErrorBoundary'
 import BemUtilities from '../../utilities/BemUtilities'
@@ -85,7 +85,7 @@ export default class Modal extends React.Component {
       console.error('Cannot open modal without valid portalLocation and valid element.')
       return null
     }
-    return ReactDOM.createPortal(
+    return createPortal(
       this.renderContents(),
       this.element
     )
