@@ -43,3 +43,7 @@ npm-debug.log
 .nvmrc
 
 .venv/
+
+/django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/local-dev-static-build/
+/django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/local-dev-static-build/
+develop-environment.json

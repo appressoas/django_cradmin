@@ -286,7 +286,7 @@ def cradmin_theme_staticpath(context):
             theme_path = getattr(settings,
                                  'DJANGO_CRADMIN_THEME_PATH',
                                  'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
-                                     version=django_cradmin.__version__
+                                     version=django_cradmin.get_static_version()
                                  ))
         return ievv_staticfiles_autogzip.static(theme_path, autogzip_context='cradmin-theme-css')
     else:

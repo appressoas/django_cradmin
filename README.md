@@ -76,6 +76,16 @@ pip install -e ".[dev, test]"
 .venv/bin/pip install -e ".[dev,test]"
 ```
 
+### Setup a develop-environment.json
+Create a file named ``develop-environment.json`` in the root of the repo (same directory as manage.py), with this content:
+```
+{
+    "LOCAL_DEV_MODE": "True"
+}
+```
+This just ensures that you do not get changes in static build assets that you commit by accident during development.
+
+
 ### Run dev server
 ```bash
 source .venv/bin/activate   # enable virtualenv
@@ -131,8 +141,8 @@ cz bump --files-only --changelog
 #### Build static files
 Create new production static files
 ```bash
-$ nvm use 14    # May need to run "nvm install 14" first
-ievv buildstatic --production
+nvm use 14    # May need to run "nvm install 14" first
+LOCAL_DEV_MODE=False ievv buildstatic --production
 ```
 
 Commit th

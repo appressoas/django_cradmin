@@ -28,7 +28,7 @@ class SassBuild(ievvbuildstatic.sassbuild.Plugin):
         sass_variables = {
             'media-path': LazyString(
                 "'{}'",
-                LazyStatic('django_cradmin_styles/{}/media'.format(django_cradmin.__version__)))
+                LazyStatic('django_cradmin_styles/{}/media'.format(django_cradmin.get_static_version())))
         }
         if extra_sass_variables:
             sass_variables.update(extra_sass_variables)

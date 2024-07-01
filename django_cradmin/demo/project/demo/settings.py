@@ -249,7 +249,7 @@ IEVVTASKS_DOCS_DASH_NAME = 'cradmin'
 IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ievvbuildstatic.config.App(
         appname='django_cradmin_styles',
-        version=django_cradmin.__version__,
+        version=django_cradmin.get_static_version(),
         # keep_temporary_files=True,
         plugins=[
             ievvbuildstatic.mediacopy.Plugin(),
@@ -265,7 +265,7 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ),
     ievvbuildstatic.config.App(
         appname='django_cradmin_js',
-        version=django_cradmin.__version__,
+        version=django_cradmin.get_static_version(),
         # keep_temporary_files=True,
         plugins=[
             ievvbuildstatic.npmrun_jsbuild.Plugin(),
@@ -325,7 +325,7 @@ IEVVTASKS_DEVRUN_RUNNABLES = {
 
 
 DJANGO_CRADMIN_THEME_PATH = 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
-    version=django_cradmin.__version__
+    version=django_cradmin.get_static_version()
 )
 
 

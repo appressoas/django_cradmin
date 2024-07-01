@@ -10,6 +10,6 @@ class CradminJavascript(javascriptregistry.component.AbstractJsComponent):
     def get_sourceurls(self):
         return [
             self.get_static_url('django_cradmin_js/{version}/django_cradmin_all.js'.format(
-                version=django_cradmin.__version__
+                version=django_cradmin.get_static_version()
             ))
         ]
