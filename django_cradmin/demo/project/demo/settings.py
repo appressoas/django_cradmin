@@ -251,6 +251,7 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
         appname='django_cradmin_styles',
         version=django_cradmin.get_static_version(),
         # keep_temporary_files=True,
+        installers_config={'npm': {'installer_class': ievvbuildstatic.installers.yarn.YarnInstaller}},
         plugins=[
             ievvbuildstatic.mediacopy.Plugin(),
             ievvbuildstatic.sassbuild.Plugin(
@@ -266,7 +267,8 @@ IEVVTASKS_BUILDSTATIC_APPS = ievvbuildstatic.config.Apps(
     ievvbuildstatic.config.App(
         appname='django_cradmin_js',
         version=django_cradmin.get_static_version(),
-        # keep_temporary_files=True,
+        installers_config={'npm': {'installer_class': ievvbuildstatic.installers.yarn.YarnInstaller}},
+        keep_temporary_files=True,
         plugins=[
             ievvbuildstatic.npmrun_jsbuild.Plugin(),
         ]
