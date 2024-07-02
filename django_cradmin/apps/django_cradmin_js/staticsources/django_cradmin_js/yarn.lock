@@ -3495,10 +3495,10 @@ iconv-lite@0.6.3:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
-ievv_jsbase@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-3.0.0.tgz#2e6c90bee8893fc348957a60c76b2cfec590db23"
-  integrity sha512-/TweIrStMIsL5xFmAcnp8oTRzsBO3p6KtXw28ElTQsmGvs8X+wX+ZUmDNNKLpw6akVfYXPoevxm4S3z8ppiP3w==
+ievv_jsbase@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ievv_jsbase/-/ievv_jsbase-3.0.1.tgz#c2af4fce1c0d71fde8056eb0cb323a1b5fa20229"
+  integrity sha512-sRWWnx4lgzq0CG2qQf/lkwxkpX4SOFVOMdCp16PZ0u5wP3kSTTFgCmcYgNXjEI/CGeHJ9yJdP0gGpe/Ptjslhg==
   dependencies:
     htmlparser2 "^9.1.0"
 
