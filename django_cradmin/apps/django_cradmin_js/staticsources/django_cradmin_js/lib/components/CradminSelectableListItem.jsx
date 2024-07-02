@@ -1,5 +1,4 @@
 import React from "react";
-import {HotKeys} from "react-hotkeys";
 import DomUtilities from "../utilities/DomUtilities";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
@@ -37,6 +36,7 @@ export default class CradminSelectableListItem extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
     this._onFocusOnSelectableItemSignal = this._onFocusOnSelectableItemSignal.bind(this);
     this.initializeSignalHandlers();
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   initializeSignalHandlers() {
@@ -217,28 +217,19 @@ export default class CradminSelectableListItem extends React.Component {
       `${this.props.signalNameSpace}.SelectableItemEscapeKey`);
   }
 
-  get hotKeysMap() {
-    return {
-      'focusPreviousItem': ['up'],
-      'focusNextItem': ['down'],
-      'escapeKey': ['escape']
-    };
-  }
-
-  get hotKeysHandlers() {
-    return {
-      'focusPreviousItem': (event) => {
-        event.preventDefault();
-        this._focusPreviousItem();
-      },
-      'focusNextItem': (event) => {
-        event.preventDefault();
-        this._focusNextItem();
-      },
-      'escapeKey': (event) => {
-        event.preventDefault();
-        this._onEscapeKey();
-      }
+  handleKeyDown(e) {
+    if (!this.props.useHotKeys) {
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this._focusNextItem();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this._focusPreviousItem();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      this._onEscapeKey();
     }
   }
 
@@ -250,19 +241,14 @@ export default class CradminSelectableListItem extends React.Component {
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
               aria-label={this.ariaTitle}
-              role="button">
+              role="button"
+              onKeyDown={this.handleKeyDown}>
       {this.renderIconWrapper()}
       {this.renderContent()}
     </a>;
   }
 
   render() {
-    if(this.props.useHotKeys) {
-      return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
-        {this.renderWrapper()}
-      </HotKeys>
-    } else {
-      return this.renderWrapper();
-    }
+    return this.renderWrapper();
   }
 }

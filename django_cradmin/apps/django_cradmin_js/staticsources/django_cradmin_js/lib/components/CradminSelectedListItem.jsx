@@ -1,6 +1,5 @@
 import React from "react";
 import DomUtilities from "../utilities/DomUtilities";
-import {HotKeys} from "react-hotkeys";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
 
 
@@ -33,6 +32,7 @@ export default class CradminSelectedListItem extends React.Component {
     this.handleBlur = this.handleBlur.bind(this);
     this._onFocusOnSelectedItemSignal = this._onFocusOnSelectedItemSignal.bind(this);
     this.initializeSignalHandlers();
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   initializeSignalHandlers() {
@@ -186,18 +186,16 @@ export default class CradminSelectedListItem extends React.Component {
     }
   }
 
-  get hotKeysMap() {
-    return {
-      'deselect': ['delete', 'backspace']
-    };
-  }
-
-  get hotKeysHandlers() {
-    return {
-      'deselect': (event) => {
-        event.preventDefault();
-        this._deselectItem();
-      }
+  handleKeyDown(e) {
+    if (!this.props.useHotKeys) {
+      return;
+    }
+    if (e.key === 'Delete') {
+      e.preventDefault();
+      this._deselectItem();
+    } else if (e.key === 'Backspace') {
+      e.preventDefault();
+      this._deselectItem();
     }
   }
 
@@ -208,19 +206,14 @@ export default class CradminSelectedListItem extends React.Component {
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
               aria-label={this.ariaTitle}
-              role="button">
+              role="button"
+              onKeyDown={this.handleKeyDown}>
       {this.renderContent()}
       {this.renderIconWrapper()}
     </a>
   }
 
   render() {
-    if(this.props.useHotKeys) {
-      return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
-        {this.renderWrapper()}
-      </HotKeys>
-    } else {
-      return this.renderWrapper();
-    }
+    return this.renderWrapper();
   }
 }

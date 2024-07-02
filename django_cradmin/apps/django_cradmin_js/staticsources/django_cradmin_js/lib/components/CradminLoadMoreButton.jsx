@@ -1,5 +1,4 @@
 import React from "react";
-import {HotKeys} from 'react-hotkeys';
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
@@ -29,6 +28,7 @@ export default class CradminLoadMoreButton extends React.Component {
     this._onFocusOnLoadMoreButtonSignal = this._onFocusOnLoadMoreButtonSignal.bind(this);
     this._onFocus = this._onFocus.bind(this);
     this._onBlur = this._onBlur.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
 
     this.state = {
       isLoading: false
@@ -86,14 +86,6 @@ export default class CradminLoadMoreButton extends React.Component {
     DomUtilities.forceFocus(this._buttonDomElement);
   }
 
-  get hotKeysMap() {
-    return {
-      'upKey': ['up'],
-      'downKey': ['down'],
-      'escapeKey': ['escape']
-    };
-  }
-
   _onUpKey() {
     new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.LoadMoreUpKey`);
@@ -109,20 +101,19 @@ export default class CradminLoadMoreButton extends React.Component {
       `${this.props.signalNameSpace}.LoadMoreEscapeKey`);
   }
 
-  get hotKeysHandlers() {
-    return {
-      'upKey': (event) => {
-        event.preventDefault();
-        this._onUpKey();
-      },
-      'downKey': (event) => {
-        event.preventDefault();
-        this._onDownKey();
-      },
-      'escapeKey': (event) => {
-        event.preventDefault();
-        this._onEscapeKey();
-      },
+  handleKeyDown(e) {
+    if (!this.props.useHotKeys) {
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this._onDownKey();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this._onUpKey();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      this._onEscapeKey();
     }
   }
 
@@ -146,18 +137,13 @@ export default class CradminLoadMoreButton extends React.Component {
                   onClick={this._onClick}
                   onFocus={this._onFocus}
                   onBlur={this._onBlur}
-                  tabIndex={this.getTabIndex()}>
+                  tabIndex={this.getTabIndex()}
+                  onKeyDown={this.handleKeyDown}>
       {this.renderButtonContent()}
     </button>;
   }
 
   render() {
-    if(this.props.useHotKeys) {
-      return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
-        {this.renderButton()}
-      </HotKeys>;
-    } else {
-      return this.renderButton();
-    }
+    return this.renderButton();
   }
 }

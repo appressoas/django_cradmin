@@ -1,5 +1,4 @@
 import React from "react";
-import {HotKeys} from 'react-hotkeys';
 import DomUtilities from "../utilities/DomUtilities";
 import LoggerSingleton from "ievv_jsbase/lib/log/LoggerSingleton";
 import SignalHandlerSingleton from "ievv_jsbase/lib/SignalHandlerSingleton";
@@ -27,6 +26,7 @@ export default class CradminSearchInput extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this._onDataListInitializedSignal = this._onDataListInitializedSignal.bind(this);
     this._onClearSearchFieldSignal = this._onClearSearchFieldSignal.bind(this);
     this._onFocusOnSearchFieldSignal = this._onFocusOnSearchFieldSignal.bind(this);
@@ -143,14 +143,6 @@ export default class CradminSearchInput extends React.Component {
       `${this.props.signalNameSpace}.Blur`);
   }
 
-  get hotKeysMap() {
-    return {
-      'downKey': ['down'],
-      'enterKey': ['enter'],
-      'escapeKey': ['escape']
-    };
-  }
-
   _onDownKey() {
     new SignalHandlerSingleton().send(
       `${this.props.signalNameSpace}.SearchDownKey`);
@@ -166,20 +158,16 @@ export default class CradminSearchInput extends React.Component {
       `${this.props.signalNameSpace}.SearchEscapeKey`);
   }
 
-  get hotKeysHandlers() {
-    return {
-      'downKey': (event) => {
-        event.preventDefault();
-        this._onDownKey();
-      },
-      'enterKey': (event) => {
-        event.preventDefault();
-        this._onEnterKey();
-      },
-      'escapeKey': (event) => {
-        event.preventDefault();
-        this._onEscapeKey();
-      },
+  handleKeyDown(e) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this._onDownKey();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      this._onEnterKey();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      this._onEscapeKey();
     }
   }
 
@@ -192,12 +180,11 @@ export default class CradminSearchInput extends React.Component {
                   value={this.state.searchString}
                   onChange={this.handleChange}
                   onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}/>;
+                  onBlur={this.handleBlur}
+                  onKeyDown={this.handleKeyDown} />;
   }
 
   render() {
-    return <HotKeys keyMap={this.hotKeysMap} handlers={this.hotKeysHandlers}>
-      {this.renderInputField()}
-    </HotKeys>;
+    return this.renderInputField();
   }
 }
