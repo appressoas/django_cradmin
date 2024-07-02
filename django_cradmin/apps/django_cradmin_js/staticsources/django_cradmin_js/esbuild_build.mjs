@@ -15,6 +15,7 @@ const config = {
     outfile: `${appconfig.destinationfolder}/django_cradmin_all.js`,
     loader: { '.js': 'jsx' },
     logLevel: "info",
+    sourcemap: true,
 
     // Browsers to target. Use this to get an updated list based on browserlist query:
     //  npm install --no-save browserslist-to-esbuild
