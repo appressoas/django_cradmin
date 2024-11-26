@@ -1,3 +1,19 @@
+## 11.0.0 (2024-11-26)
+
+### BREAKING CHANGE
+
+- this will be a major release
+
+### Feat
+
+- python 3.12 and django 5.x
+- **js**: Turn into pure ES6 module (move source to lib).
+
+### Fix
+
+- Update ievv_opensource to 9.3.4+
+- **js**: Update dependencies - node 20 compatibility, remove webpack.
+
 ## 10.4.1 (2023-07-17)
 
 ### Fix
