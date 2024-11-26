@@ -56,7 +56,6 @@ dev = [
     "sphinx",
     "sphinx-rtd-theme",
     "psycopg2",
-    "setuptools",
 ]
 test = [
     "coverage",
