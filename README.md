@@ -38,7 +38,7 @@ pipx ensurepath
 
 Then install hatch and commitizen:
 ```bash
-pipx install hatch 
+pipx install hatch
 pipx install commitizen
 ```
 
@@ -51,8 +51,8 @@ needed, but we really recommend using pipx since that is isolated.
 
 Install a local python version with pyenv:
 ```bash
-pyenv install 3.10
-pyenv local 3.10
+pyenv install $(pyenv latest -k 3.12)
+pyenv local 3.12
 ```
 
 #### Create virtualenv
@@ -123,12 +123,12 @@ cz bump --files-only --changelog
 #### Build static files
 Create new production static files
 ```bash
-$ nvm use 14    # May need to run "nvm install 14" first
+nvm use 14    # May need to run "nvm install 14" first
 ievv buildstatic --production
 ```
 
 Commit th
-__NB__: Make sure you 
+__NB__: Make sure you
 ```bash
 git add pyproject.toml django_cradmin/__init__.py django_cradmin/apps/django_cradmin_js/static/django_cradmin_js/ django_cradmin/apps/django_cradmin_styles/static/django_cradmin_styles/
 git status
