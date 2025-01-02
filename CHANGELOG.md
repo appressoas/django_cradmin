@@ -1,3 +1,9 @@
+## 11.0.3 (2025-01-02)
+
+### Fix
+
+- add doc string to start new release
+
 ## 11.0.2 (2024-12-11)
 
 ### Fix
