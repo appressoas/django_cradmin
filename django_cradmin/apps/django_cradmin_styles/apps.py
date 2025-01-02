@@ -8,6 +8,7 @@ class WithoutStyleguideAppConfig(AppConfig):
 
 
 class WithStyleguideAppConfig(WithoutStyleguideAppConfig):
+    """"""
     default = False
 
     def ready(self):
