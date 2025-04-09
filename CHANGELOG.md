@@ -1,3 +1,13 @@
+## 12.0.0 (2025-04-09)
+
+### BREAKING CHANGE
+
+- requires django 5.2 or higher and ievv_opensource 12.x or higher
+
+### Feat
+
+- **django**: update Django and ievv_opensource dependencies to latest compatible versions
+
 ## 11.0.3 (2025-01-02)
 
 ### Fix
