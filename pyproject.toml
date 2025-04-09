@@ -33,9 +33,9 @@ classifiers = [
 ]
 
 dependencies = [
-    "Django>=5.0.0,<6.0.0",
+    "Django>=5.2.0,<6.0.0",
     "html2text",
-    "ievv_opensource>=11.0.0,<12.0.0",
+    "ievv_opensource>=12.0.0,<13.0.0",
     "appresso-sphinx-extensions",
     "djangorestframework",
     "importlib-metadata",
