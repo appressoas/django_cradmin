@@ -3,8 +3,10 @@ from django.conf import settings
 from django.urls import reverse
 
 from django_cradmin.apps.cradmin_email import emailutils
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
-    get_expiration_datetime_for_app
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import (
+    GenericTokenWithMetadata,
+    get_expiration_datetime_for_app,
+)
 
 
 class ActivationEmail(emailutils.AbstractEmail):
@@ -21,15 +23,15 @@ class ActivationEmail(emailutils.AbstractEmail):
             ActivationEmail(request=request, user=someuser).send()
     """
 
-    subject_template = 'cradmin_activate_account/email/subject.django.txt'
-    html_message_template = 'cradmin_activate_account/email/html_message.django.html'
+    subject_template = "cradmin_activate_account/email/subject.django.txt"
+    html_message_template = "cradmin_activate_account/email/html_message.django.html"
 
     #: The name of the app. Used for
     #: :obj:`django_cradmin.apps.cradmin_generic_token_with_metadata.models.GenericTokenWithMetadata.app`.
     #: If you override this, you also have to override :meth:`~.ActivationEmail.get_activate_url`
     #: and return the URL to a view that pops a GenericTokenWithMetadata with the
     #: changed appname.
-    appname = 'cradmin_activate_account'
+    appname = "cradmin_activate_account"
 
     def __init__(self, request, user, next_url=None):
         """
@@ -41,7 +43,8 @@ class ActivationEmail(emailutils.AbstractEmail):
         self.user = user
         self.request = request
         self.next_url = next_url or getattr(
-            settings, 'DJANGO_CRADMIN_ACTIVATE_ACCOUNT_DEFAULT_NEXT_URL', settings.LOGIN_URL)
+            settings, "DJANGO_CRADMIN_ACTIVATE_ACCOUNT_DEFAULT_NEXT_URL", settings.LOGIN_URL
+        )
         self.token = self.generate_token()
         super(ActivationEmail, self).__init__(recipient=self.user.email)
 
@@ -49,19 +52,16 @@ class ActivationEmail(emailutils.AbstractEmail):
         """
         Get the activate account view URL.
         """
-        return reverse('cradmin-activate-account-activate', kwargs={
-            'token': token.token
-        })
+        return reverse("cradmin-activate-account-activate", kwargs={"token": token.token})
 
     def get_context_data(self):
         """
         Get the context data of the email templates.
         """
         context = super(ActivationEmail, self).get_context_data()
-        context.update({
-            'user': self.user,
-            'activate_url': self.request.build_absolute_uri(self.get_activate_url(self.token))
-        })
+        context.update(
+            {"user": self.user, "activate_url": self.request.build_absolute_uri(self.get_activate_url(self.token))}
+        )
         return context
 
     def get_from_email(self):
@@ -71,7 +71,7 @@ class ActivationEmail(emailutils.AbstractEmail):
         Defaults to the ``DJANGO_CRADMIN_ACTIVATE_ACCOUNT_FROM_EMAIL`` setting
         falling back on the ``DEFAULT_FROM_EMAIL`` setting.
         """
-        return getattr(settings, 'DJANGO_CRADMIN_ACTIVATE_ACCOUNT_FROM_EMAIL', settings.DEFAULT_FROM_EMAIL)
+        return getattr(settings, "DJANGO_CRADMIN_ACTIVATE_ACCOUNT_FROM_EMAIL", settings.DEFAULT_FROM_EMAIL)
 
     def get_expiration_datetime(self):
         """
@@ -85,7 +85,5 @@ class ActivationEmail(emailutils.AbstractEmail):
             content_object=self.user,
             app=self.appname,
             expiration_datetime=self.get_expiration_datetime(),
-            metadata={
-                'next_url': self.next_url
-            }
+            metadata={"next_url": self.next_url},
         )

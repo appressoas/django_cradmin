@@ -7,7 +7,8 @@ class EscapedText(container.AbstractContainerRenderable):
 
     Can not have children.
     """
-    template_name = 'django_cradmin/uicontainer/text/escaped_text.django.html'
+
+    template_name = "django_cradmin/uicontainer/text/escaped_text.django.html"
 
     def __init__(self, text, **kwargs):
         """
@@ -29,7 +30,8 @@ class Html(container.AbstractContainerRenderable):
 
     Can not have children.
     """
-    template_name = 'django_cradmin/uicontainer/text/html.django.html'
+
+    template_name = "django_cradmin/uicontainer/text/html.django.html"
 
     def __init__(self, html=None, **kwargs):
         """
@@ -51,7 +53,7 @@ class Html(container.AbstractContainerRenderable):
 
         Defaults to empty string.
         """
-        return ''
+        return ""
 
     @property
     def html(self):

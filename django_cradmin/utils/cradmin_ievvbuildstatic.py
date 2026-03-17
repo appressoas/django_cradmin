@@ -6,13 +6,16 @@ import django_cradmin
 
 
 class SassBuild(ievvbuildstatic.sassbuild.Plugin):
-    def __init__(self,
-                 sourcefile, sourcefolder='styles',
-                 destinationfolder=None,
-                 other_sourcefolders=None,
-                 sass_include_paths=None,
-                 sass_variables=None,
-                 **kwargs):
+    def __init__(
+        self,
+        sourcefile,
+        sourcefolder="styles",
+        destinationfolder=None,
+        other_sourcefolders=None,
+        sass_include_paths=None,
+        sass_variables=None,
+        **kwargs,
+    ):
 
         super(SassBuild, self).__init__(
             sourcefile=sourcefile,
@@ -21,14 +24,14 @@ class SassBuild(ievvbuildstatic.sassbuild.Plugin):
             other_sourcefolders=other_sourcefolders,
             sass_include_paths=sass_include_paths,
             sass_variables=self.build_cradmin_sass_variables(sass_variables),
-            **kwargs
+            **kwargs,
         )
 
     def build_cradmin_sass_variables(self, extra_sass_variables):
         sass_variables = {
-            'media-path': LazyString(
-                "'{}'",
-                LazyStatic('django_cradmin_styles/{}/media'.format(django_cradmin.__version__)))
+            "media-path": LazyString(
+                "'{}'", LazyStatic("django_cradmin_styles/{}/media".format(django_cradmin.__version__))
+            )
         }
         if extra_sass_variables:
             sass_variables.update(extra_sass_variables)

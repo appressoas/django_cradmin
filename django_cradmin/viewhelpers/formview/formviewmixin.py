@@ -18,7 +18,7 @@ class FormViewMixin:
         """
         Get the page title (the title tag).
         """
-        return ''
+        return ""
 
     def get_pageheading(self):
         """
@@ -60,9 +60,9 @@ class FormViewMixin:
                     self.add_formview_mixin_context_data(context=context)
                     return context
         """
-        context['form_renderable'] = self.get_form_renderable()
-        context['pagetitle'] = self.get_pagetitle()
-        context['pageheading'] = self.get_pageheading()
+        context["form_renderable"] = self.get_form_renderable()
+        context["pagetitle"] = self.get_pagetitle()
+        context["pageheading"] = self.get_pageheading()
 
     def get_listing_url(self):
         """
@@ -80,8 +80,8 @@ class FormViewMixin:
         Defaults to :meth:`.get_listing_url`, but if ``success_url`` is in
         ``request.GET``, that is used instead.
         """
-        if 'success_url' in self.request.GET:
-            return self.request.GET['success_url']
+        if "success_url" in self.request.GET:
+            return self.request.GET["success_url"]
         else:
             return self.get_listing_url()
 

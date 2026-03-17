@@ -57,8 +57,9 @@ class Registry(Singleton):
                 to the registry.
         """
         if jscomponent_class.get_component_id() in self._jscomponent_classes:
-            raise DuplicateComponentId('Duplicate component ID in javascriptregistry: {}'.format(
-                jscomponent_class.get_component_id()))
+            raise DuplicateComponentId(
+                "Duplicate component ID in javascriptregistry: {}".format(jscomponent_class.get_component_id())
+            )
         self._jscomponent_classes[jscomponent_class.get_component_id()] = jscomponent_class
 
     def remove_if_exists(self, jscomponent_id):
@@ -105,8 +106,7 @@ class Registry(Singleton):
         for component_id in component.get_dependencies():
             component = self._get_component_object(request=request, component_id=component_id)
             all_dependencies.append(component)
-            all_dependencies.extend(self._get_all_dependencies_for_component(
-                request=request, component=component))
+            all_dependencies.extend(self._get_all_dependencies_for_component(request=request, component=component))
         return all_dependencies
 
     def get_component_objects(self, request, component_ids):
@@ -132,10 +132,10 @@ class Registry(Singleton):
             if requested_component_id in added_component_ids:
                 continue
 
-            requested_component = self._get_component_object(
-                request=request, component_id=requested_component_id)
+            requested_component = self._get_component_object(request=request, component_id=requested_component_id)
             for dependency_component in self._get_all_dependencies_for_component(
-                    request=request, component=requested_component):
+                request=request, component=requested_component
+            ):
                 dependency_component_id = dependency_component.__class__.get_component_id()
                 if dependency_component_id in added_component_ids:
                     continue

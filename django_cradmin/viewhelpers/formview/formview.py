@@ -5,10 +5,12 @@ from django_cradmin.viewhelpers.mixins import CommonCradminViewMixin
 from . import formviewmixin
 
 
-class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
-                         formviewmixin.FormViewMixin,
-                         CommonCradminViewMixin,
-                         DjangoFormView):
+class WithinRoleFormView(
+    javascriptregistry.viewmixin.WithinRoleViewMixin,
+    formviewmixin.FormViewMixin,
+    CommonCradminViewMixin,
+    DjangoFormView,
+):
     """
     Form view with the correct context data and sane base template
     for views where we have a cradmin role.
@@ -58,7 +60,8 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
                     # ... do something with the form ...
                     return HttpResponseRedirect('/some/view')
     """
-    template_name = 'django_cradmin/viewhelpers/formview/within_role_form_view.django.html'
+
+    template_name = "django_cradmin/viewhelpers/formview/within_role_form_view.django.html"
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleFormView, self).get_context_data(**kwargs)
@@ -68,10 +71,12 @@ class WithinRoleFormView(javascriptregistry.viewmixin.WithinRoleViewMixin,
         return context
 
 
-class StandaloneFormView(javascriptregistry.viewmixin.StandaloneBaseViewMixin,
-                         formviewmixin.FormViewMixin,
-                         CommonCradminViewMixin,
-                         DjangoFormView):
+class StandaloneFormView(
+    javascriptregistry.viewmixin.StandaloneBaseViewMixin,
+    formviewmixin.FormViewMixin,
+    CommonCradminViewMixin,
+    DjangoFormView,
+):
     """
     Form view with the correct context data and sane base template
     for views where we do not have a cradmin role.
@@ -79,7 +84,8 @@ class StandaloneFormView(javascriptregistry.viewmixin.StandaloneBaseViewMixin,
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.formview.StandaloneFormView``.
     """
-    template_name = 'django_cradmin/viewhelpers/formview/standalone_form_view.django.html'
+
+    template_name = "django_cradmin/viewhelpers/formview/standalone_form_view.django.html"
 
     def get_context_data(self, **kwargs):
         context = super(StandaloneFormView, self).get_context_data(**kwargs)

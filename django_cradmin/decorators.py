@@ -13,9 +13,9 @@ from django.utils.encoding import force_str
 from django_cradmin.registry import cradmin_instance_registry
 
 
-def has_access_to_cradmin_instance(cradmin_instance_id, view_function,
-                                   redirect_field_name=REDIRECT_FIELD_NAME,
-                                   login_url=None):
+def has_access_to_cradmin_instance(
+    cradmin_instance_id, view_function, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None
+):
     """
     Decorator for django_cradmin views.
 
@@ -31,9 +31,7 @@ def has_access_to_cradmin_instance(cradmin_instance_id, view_function,
 
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
-        cradmin_instance = cradmin_instance_registry.get_instance_by_id(
-            id=cradmin_instance_id,
-            request=request)
+        cradmin_instance = cradmin_instance_registry.get_instance_by_id(id=cradmin_instance_id, request=request)
         if cradmin_instance.has_access():
             request.cradmin_instance = cradmin_instance
             # Check if two-factor authentication is required
@@ -45,9 +43,9 @@ def has_access_to_cradmin_instance(cradmin_instance_id, view_function,
         else:
             # Redirect to login just like login_required()
             from django.contrib.auth.views import redirect_to_login
+
             path = request.build_absolute_uri()
-            resolved_login_url = force_str(
-                resolve_url(login_url or settings.LOGIN_URL))
+            resolved_login_url = force_str(resolve_url(login_url or settings.LOGIN_URL))
             return redirect_to_login(path, resolved_login_url, redirect_field_name)
 
     return wrapper
@@ -69,7 +67,7 @@ def cradminview(view_function):
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
         if request.cradmin_instance.roleclass:
-            roleid = kwargs.pop('roleid')
+            roleid = kwargs.pop("roleid")
             role = request.cradmin_instance.get_role_from_roleid(roleid)
             if not role:
                 return request.cradmin_instance.invalid_roleid_response(roleid)
@@ -105,15 +103,16 @@ def two_factor_required(view_function, urlname=None):
     settings with `DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME` unless `two_factor_verified` has been
     added to the session data (this must be handled in the two-factor authentication view).
     """
-    urlname = urlname or getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None)
+    urlname = urlname or getattr(settings, "DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME", None)
 
     @wraps(view_function)
     def wrapper(request, *args, **kwargs):
-        if urlname and not request.session.get('two_factor_verified'):
-            url = reverse(getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None))
+        if urlname and not request.session.get("two_factor_verified"):
+            url = reverse(getattr(settings, "DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME", None))
             querystring = QueryDict(mutable=True)
-            querystring['next'] = request.get_full_path()
-            url = '{}?{}'.format(url, querystring.urlencode())
+            querystring["next"] = request.get_full_path()
+            url = "{}?{}".format(url, querystring.urlencode())
             return redirect(url)
         return view_function(request, *args, **kwargs)
+
     return login_required(wrapper)

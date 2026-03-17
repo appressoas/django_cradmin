@@ -39,39 +39,34 @@ class AuthUserCreateAccountForm(AbstractCreateAccountWithPasswordForm):
                 ]
 
     """
+
     class Meta(AbstractCreateAccountWithPasswordForm.Meta):
-        fields = ['email', 'username']
+        fields = ["email", "username"]
 
     def __init__(self, *args, **kwargs):
         super(AuthUserCreateAccountForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
+        self.fields["email"].required = True
         # self.fields['username'].required = True
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data["email"]
         user_model = get_user_model()
         if user_model.objects.filter(email=email).exists():
             raise forms.ValidationError(
-                message=_('Account with this email address already exists.'),
-                code='not_unique_email')
+                message=_("Account with this email address already exists."), code="not_unique_email"
+            )
         return email
 
     def get_field_renderables(self):
         return [
             uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='username',
-                field_renderable=uicontainer.field.Field(autofocus=True)
+                fieldname="username", field_renderable=uicontainer.field.Field(autofocus=True)
             ),
             uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='email',
-                field_renderable=uicontainer.field.Field(autofocus=True)
+                fieldname="email", field_renderable=uicontainer.field.Field(autofocus=True)
             ),
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password1'
-            ),
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password2'
-            ),
+            uicontainer.fieldwrapper.FieldWrapper(fieldname="password1"),
+            uicontainer.fieldwrapper.FieldWrapper(fieldname="password2"),
         ]
 
 
@@ -92,8 +87,9 @@ class AuthUserCreateAccountAutoUsernameForm(AuthUserCreateAccountForm):
             'django_cradmin.apps.cradmin_register_account.forms.auth_user.AuthUserCreateAccountAutoUsernameForm'
 
     """
+
     class Meta(AuthUserCreateAccountForm.Meta):
-        fields = ['email']
+        fields = ["email"]
 
     def set_username(self, user):
         user.username = user.email[0:30]
@@ -104,13 +100,8 @@ class AuthUserCreateAccountAutoUsernameForm(AuthUserCreateAccountForm):
     def get_field_renderables(self):
         return [
             uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='email',
-                field_renderable=uicontainer.field.Field(autofocus=True)
+                fieldname="email", field_renderable=uicontainer.field.Field(autofocus=True)
             ),
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password1'
-            ),
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password2'
-            ),
+            uicontainer.fieldwrapper.FieldWrapper(fieldname="password1"),
+            uicontainer.fieldwrapper.FieldWrapper(fieldname="password2"),
         ]

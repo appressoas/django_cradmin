@@ -3,13 +3,11 @@ from django.db import models
 
 
 class EmailUser(AbstractBaseUser):
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = BaseUserManager()
 
-    email = models.EmailField(
-        max_length=250, blank=False,
-        unique=True)
+    email = models.EmailField(max_length=250, blank=False, unique=True)
 
     def get_short_name(self):
         return self.email

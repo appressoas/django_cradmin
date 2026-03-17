@@ -5,11 +5,11 @@ from django_cradmin.demo.no_role_demo.views import dashboard
 
 
 class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstance):
-    id = 'no_role_demo'
-    rolefrontpage_appname = 'dashboard'
+    id = "no_role_demo"
+    rolefrontpage_appname = "dashboard"
 
     apps = [
-        ('dashboard', dashboard.App),
+        ("dashboard", dashboard.App),
     ]
 
     def has_access(self):
@@ -18,6 +18,8 @@ class NoRoleCrAdminInstance(crinstance.NoRoleMixin, crinstance.BaseCrAdminInstan
     def get_menu_item_renderables(self):
         return [
             crmenu.NavLinkItemRenderable(
-                label=_('Dashboard'), url=self.appindex_url('dashboard'),
-                is_active=self.request.cradmin_app.appname == 'dashboard'),
+                label=_("Dashboard"),
+                url=self.appindex_url("dashboard"),
+                is_active=self.request.cradmin_app.appname == "dashboard",
+            ),
         ]

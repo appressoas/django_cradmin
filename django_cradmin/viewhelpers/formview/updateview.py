@@ -21,17 +21,19 @@ class UpdateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 
         Defaults to ``Edit <verbose_name model>``.
         """
-        return _('Edit %(what)s') % {'what': self.model_verbose_name}
+        return _("Edit %(what)s") % {"what": self.model_verbose_name}
 
     def get_success_message(self, obj):
-        return _('Saved "%(object)s"') % {'object': obj}
+        return _('Saved "%(object)s"') % {"object": obj}
 
 
-class WithinRoleUpdateView(QuerysetForRoleMixin,
-                           UpdateViewMixin,
-                           DjangoUpdateView,
-                           CommonCradminViewMixin,
-                           javascriptregistry.viewmixin.WithinRoleViewMixin):
+class WithinRoleUpdateView(
+    QuerysetForRoleMixin,
+    UpdateViewMixin,
+    DjangoUpdateView,
+    CommonCradminViewMixin,
+    javascriptregistry.viewmixin.WithinRoleViewMixin,
+):
     """
     Update view with the correct context data and sane base template
     for views where we have a cradmin role.
@@ -39,7 +41,8 @@ class WithinRoleUpdateView(QuerysetForRoleMixin,
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.formview.WithinRoleUpdateView``.
     """
-    template_name = 'django_cradmin/viewhelpers/formview/within_role_update_view.django.html'
+
+    template_name = "django_cradmin/viewhelpers/formview/within_role_update_view.django.html"
 
     def get_pagetitle(self):
         """
@@ -47,10 +50,10 @@ class WithinRoleUpdateView(QuerysetForRoleMixin,
 
         Defaults to ``Edit <verbose_name model>``.
         """
-        return _('Edit %(what)s') % {'what': self.model_verbose_name}
+        return _("Edit %(what)s") % {"what": self.model_verbose_name}
 
     def get_success_message(self, obj):
-        return _('Saved "%(object)s"') % {'object': obj}
+        return _('Saved "%(object)s"') % {"object": obj}
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleUpdateView, self).get_context_data(**kwargs)
@@ -72,6 +75,7 @@ class UpdateRoleView(WithinRoleUpdateView):
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.formview.UpdateRoleView``.
     """
+
     def get_object(self, queryset=None):
         return self.get_queryset_for_role().get()
 
@@ -105,7 +109,7 @@ class RedirectToCreateIfDoesNotExistMixin(object):
 
     #: The viewname within this app for the create view.
     #: See :meth:`.get_createurl`. Defaults to ``create``.
-    createview_appurl_name = 'create'
+    createview_appurl_name = "create"
 
     def get_createurl(self):
         """
@@ -122,4 +126,4 @@ class RedirectToCreateIfDoesNotExistMixin(object):
         try:
             return super().get(request, *args, **kwargs)
         except self.get_model_class().DoesNotExist:
-            return HttpResponseRedirect(self.request.cradmin_app.reverse_appurl('create'))
+            return HttpResponseRedirect(self.request.cradmin_app.reverse_appurl("create"))

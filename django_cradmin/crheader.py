@@ -16,7 +16,7 @@ def get_default_header_renderable(**kwargs):
     Returns:
         AbstractHeaderRenderable: Header renderable object or ``None``.
     """
-    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_HEADER_CLASS', None):
+    if not getattr(settings, "DJANGO_CRADMIN_DEFAULT_HEADER_CLASS", None):
         return None
     header_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_HEADER_CLASS)
     return header_class(**kwargs)
@@ -29,6 +29,7 @@ class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
     You will typically want to use/extend :class:`.DefaultHeaderRenderable`
     instead of this unless you have some special needs.
     """
+
     def __init__(self, cradmin_instance=None, request=None):
         """
 
@@ -48,24 +49,25 @@ class AbstractHeaderRenderable(renderable.AbstractRenderableWithCss):
 
         Defaults to ``"header"``.
         """
-        return 'header'
+        return "header"
 
     def get_wrapper_htmltag_id(self):
         """
         Get the ID of the wrapper html tag.
         """
-        return 'id_django_cradmin_page_header'
+        return "id_django_cradmin_page_header"
 
 
 class DefaultHeaderRenderable(AbstractHeaderRenderable):
     """
     The default header renderable class.
     """
-    template_name = 'django_cradmin/crheader/default-header.django.html'
+
+    template_name = "django_cradmin/crheader/default-header.django.html"
 
     @property
     def bem_block(self):
-        return 'adminui-page-header'
+        return "adminui-page-header"
 
     @property
     def bem_variants_list(self):
@@ -79,7 +81,7 @@ class DefaultHeaderRenderable(AbstractHeaderRenderable):
 
     def expand_bem_variants_list(self):
         bem_block = self.bem_block
-        return ['{}--{}'.format(bem_block, variant) for variant in self.bem_variants_list]
+        return ["{}--{}".format(bem_block, variant) for variant in self.bem_variants_list]
 
     def get_base_css_classes_list(self):
         return [self.bem_block] + self.expand_bem_variants_list()

@@ -17,18 +17,16 @@ def get_default_expandable_menu_renderable(**kwargs):
     Returns:
         AbstractMenuRenderable: Expandable menu renderable object or ``None``.
     """
-    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS', None):
+    if not getattr(settings, "DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS", None):
         return None
     menu_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_EXPANDABLE_MENU_CLASS)
     return menu_class(**kwargs)
 
 
 class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
-    template_name = 'django_cradmin/crmenu/menuitem/link.django.html'
+    template_name = "django_cradmin/crmenu/menuitem/link.django.html"
 
-    def __init__(self, label, url, is_active=False,
-                 bem_variant_list=None, parent_bem_block=None,
-                 **kwargs):
+    def __init__(self, label, url, is_active=False, bem_variant_list=None, parent_bem_block=None, **kwargs):
         """
         Parameters:
             label: A label shown in the menu.
@@ -42,18 +40,16 @@ class BaseMenuLinkRenderable(renderable.AbstractBemRenderable):
         super(BaseMenuLinkRenderable, self).__init__(bem_variant_list=bem_variant_list, **kwargs)
 
     def get_fallback_parent_bem_block(self):
-        return 'adminui-page-header'
+        return "adminui-page-header"
 
     def get_parent_bem_block(self):
         return self.parent_bem_block or self.get_fallback_parent_bem_block()
 
     def get_bem_element(self):
-        return '{}__navlink'.format(self.get_parent_bem_block())
+        return "{}__navlink".format(self.get_parent_bem_block())
 
     def get_active_bem_variant_list(self):
-        return [
-            'active'
-        ]
+        return ["active"]
 
     def get_bem_variant_list(self):
         bem_variant_list = super(BaseMenuLinkRenderable, self).get_bem_variant_list()
@@ -72,70 +68,73 @@ class NavLinkButtonItemRenderable(NavLinkItemRenderable):
     """
     Use this to add links styled as a button to the main menu.
     """
+
     def get_bem_variant_list(self):
-        return ['button']
+        return ["button"]
 
 
 class ExpandableMenuItem(BaseMenuLinkRenderable):
     """
     Use this to add links to the main menu.
     """
-    template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-item.django.html'
+
+    template_name = "django_cradmin/crmenu/menuitem/expandable-menu-item.django.html"
 
     def get_fallback_parent_bem_block(self):
-        return 'expandable-menu'
+        return "expandable-menu"
 
     def get_bem_element(self):
-        return '{}__link'.format(self.get_parent_bem_block())
+        return "{}__link".format(self.get_parent_bem_block())
 
     def get_list_element_bem_element(self):
-        return '{}__listitem'.format(self.get_parent_bem_block())
+        return "{}__listitem".format(self.get_parent_bem_block())
 
 
 class ExpandableMenuSeparator(renderable.AbstractBemRenderable):
-    template_name = 'django_cradmin/crmenu/menuitem/expandable-menu-separator.django.html'
+    template_name = "django_cradmin/crmenu/menuitem/expandable-menu-separator.django.html"
 
     def __init__(self, parent_bem_block=None, **kwargs):
         self.parent_bem_block = parent_bem_block
         super(ExpandableMenuSeparator, self).__init__()
 
     def get_fallback_parent_bem_block(self):
-        return 'expandable-menu'
+        return "expandable-menu"
 
     def get_parent_bem_block(self):
         return self.parent_bem_block or self.get_fallback_parent_bem_block()
 
     def get_bem_element(self):
-        return '{}__separator'.format(self.get_parent_bem_block())
+        return "{}__separator".format(self.get_parent_bem_block())
 
 
 class MenuToggleItemItemRenderable(renderable.AbstractBemRenderable):
     """
     Use this to add an expandable menu toggle to the menu.
     """
-    template_name = 'django_cradmin/crmenu/menuitem/menutoggle.django.html'
+
+    template_name = "django_cradmin/crmenu/menuitem/menutoggle.django.html"
 
     def __init__(self, parent_bem_block=None, **kwargs):
         self.parent_bem_block = parent_bem_block
         super(MenuToggleItemItemRenderable, self).__init__()
 
     def get_label(self):
-        return pgettext_lazy('cradmin default header menu toggle label', 'Menu')
+        return pgettext_lazy("cradmin default header menu toggle label", "Menu")
 
     def get_fallback_parent_bem_block(self):
-        return 'adminui-page-header'
+        return "adminui-page-header"
 
     def get_parent_bem_block(self):
         return self.parent_bem_block or self.get_fallback_parent_bem_block()
 
     def get_bem_element(self):
-        return '{}__navmenutoggle'.format(self.get_parent_bem_block())
+        return "{}__navmenutoggle".format(self.get_parent_bem_block())
 
     def get_label_css_class(self):
-        return '{}__navmenutoggle-label'.format(self.get_parent_bem_block())
+        return "{}__navmenutoggle-label".format(self.get_parent_bem_block())
 
     def get_icon_css_class(self):
-        return '{}__navmenutoggle-icon'.format(self.get_parent_bem_block())
+        return "{}__navmenutoggle-icon".format(self.get_parent_bem_block())
 
 
 class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
@@ -180,7 +179,7 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         the link renderable class.
         """
         if not self.link_renderable_class:
-            raise ValueError('No link_renderable_class defined for {}'.format(self.__class__.__name__))
+            raise ValueError("No link_renderable_class defined for {}".format(self.__class__.__name__))
         return self.link_renderable_class
 
     def get_separator_renderable_class(self):
@@ -195,7 +194,7 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         the separator renderable class.
         """
         if not self.separator_renderable_class:
-            raise ValueError('No separator_renderable_class defined for {}'.format(self.__class__.__name__))
+            raise ValueError("No separator_renderable_class defined for {}".format(self.__class__.__name__))
         return self.separator_renderable_class
 
     def get_button_renderable_class(self):
@@ -210,7 +209,7 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         the button renderable class.
         """
         if not self.button_renderable_class:
-            raise ValueError('No button_renderable_class defined for {}'.format(self.__class__.__name__))
+            raise ValueError("No button_renderable_class defined for {}".format(self.__class__.__name__))
         return self.button_renderable_class
 
     def get_child_renderable_parent_bem_block(self):
@@ -226,9 +225,7 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
         By default, this adds the ``parent_bem_block`` kwarg
         with the value returned by :meth:`.get_child_renderable_parent_bem_block`.
         """
-        full_kwargs = {
-            'parent_bem_block': self.get_child_renderable_parent_bem_block()
-        }
+        full_kwargs = {"parent_bem_block": self.get_child_renderable_parent_bem_block()}
         full_kwargs.update(**kwargs)
         return full_kwargs
 
@@ -346,7 +343,7 @@ class AbstractMenuRenderable(renderable.AbstractRenderableWithCss):
 
         Defaults to ``"div"``.
         """
-        return 'div'
+        return "div"
 
     def get_wrapper_htmltag_id(self):
         """
@@ -419,27 +416,28 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
     """
     The default large screen (desktop) :class:`.Menu` renderable.
     """
-    template_name = 'django_cradmin/crmenu/menu/default-main.django.html'
+
+    template_name = "django_cradmin/crmenu/menu/default-main.django.html"
     menutoggle_renderable_class = MenuToggleItemItemRenderable
     link_renderable_class = NavLinkItemRenderable
     button_renderable_class = NavLinkButtonItemRenderable
 
     def get_wrapper_htmltag_id(self):
-        return 'id_django_cradmin_menu_main'
+        return "id_django_cradmin_menu_main"
 
     def get_menutoggle_renderable(self):
         return self.menutoggle_renderable_class(**self.make_child_renderable_kwargs())
 
     @property
     def cached_menutoggle_renderable(self):
-        if not hasattr(self, '_cached_menutoggle_renderable'):
+        if not hasattr(self, "_cached_menutoggle_renderable"):
             self._cached_menutoggle_renderable = self.get_menutoggle_renderable()
         return self._cached_menutoggle_renderable
 
     @property
     def expandable_menu_renderable(self):
         if self.cradmin_instance:
-            return getattr(self.cradmin_instance, 'expandable_menu_renderable', None)
+            return getattr(self.cradmin_instance, "expandable_menu_renderable", None)
         else:
             return get_default_expandable_menu_renderable(request=self.request)
 
@@ -450,10 +448,10 @@ class DefaultMainMenuRenderable(AbstractMenuRenderable):
         return self.has_expandable_menu_renderable() and bool(self.cached_menutoggle_renderable)
 
     def get_child_renderable_parent_bem_block(self):
-        return 'adminui-page-header'
+        return "adminui-page-header"
 
     def get_bem_block_or_element(self):
-        return '{}__nav'.format(self.get_child_renderable_parent_bem_block())
+        return "{}__nav".format(self.get_child_renderable_parent_bem_block())
 
     def __bool__(self):
         return super(DefaultMainMenuRenderable, self).__bool__() or self.has_expandable_menu_renderable()
@@ -463,16 +461,17 @@ class DefaultExpandableMenuRenderable(AbstractMenuRenderable):
     """
     The default small screen (mobile) :class:`.Menu` renderable.
     """
-    template_name = 'django_cradmin/crmenu/menu/default-expandable.django.html'
+
+    template_name = "django_cradmin/crmenu/menu/default-expandable.django.html"
     link_renderable_class = ExpandableMenuItem
     separator_renderable_class = ExpandableMenuSeparator
     button_renderable_class = None
 
     def get_wrapper_htmltag_id(self):
-        return 'id_django_cradmin_menu_expandable'
+        return "id_django_cradmin_menu_expandable"
 
     def get_bem_block_or_element(self):
-        return 'expandable-menu'
+        return "expandable-menu"
 
     def get_child_renderable_parent_bem_block(self):
         return self.get_bem_block_or_element()

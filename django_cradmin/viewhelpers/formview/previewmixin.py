@@ -60,7 +60,7 @@ class PreviewMixin:
     """
 
     #: The name of the submit button used for preview.
-    submit_preview_name = 'submit-preview'
+    submit_preview_name = "submit-preview"
 
     def preview_requested(self):
         """
@@ -102,9 +102,7 @@ class PreviewMixin:
         Get the session key used for preview. You should not
         need to override this.
         """
-        sessionkey = 'django_cradmin__{module}.{classname}'.format(
-            module=cls.__module__,
-            classname=cls.__name__)
+        sessionkey = "django_cradmin__{module}.{classname}".format(module=cls.__module__, classname=cls.__name__)
         return sessionkey
 
     @classmethod
@@ -141,6 +139,6 @@ class PreviewMixin:
                     self.add_preview_mixin_context_data(context=context)
                     return context
         """
-        if context.get('show_preview', False):
-            context['preview_url'] = self.get_preview_url()
-            context['show_preview'] = True
+        if context.get("show_preview", False):
+            context["preview_url"] = self.get_preview_url()
+            context["show_preview"] = True

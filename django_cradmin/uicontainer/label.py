@@ -5,10 +5,10 @@ from . import container
 
 
 class AbstractLabel(container.AbstractContainerRenderable):
-    template_name = 'django_cradmin/uicontainer/label/label.django.html'
+    template_name = "django_cradmin/uicontainer/label/label.django.html"
 
     def get_default_html_tag(self):
-        return 'label'
+        return "label"
 
     @property
     def for_attribute(self):
@@ -16,7 +16,7 @@ class AbstractLabel(container.AbstractContainerRenderable):
 
     def get_html_element_attributes(self):
         html_element_attributes = super(AbstractLabel, self).get_html_element_attributes()
-        html_element_attributes['for'] = self.for_attribute
+        html_element_attributes["for"] = self.for_attribute
         return html_element_attributes
 
     @property
@@ -51,23 +51,24 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
     You never use this on its own outside a
     :class:`~django_cradmin.uicontainer.fieldwrapper.FieldWrapper`.
     """
+
     def __init__(self, text=None, include_optional_text=True, **kwargs):
         self._overridden_label_text = text
         self._include_optional_text = include_optional_text
         super(Label, self).__init__(**kwargs)
 
     def should_include_for_attribute(self):
-        return self.field_wrapper_renderable.field_renderable.should_have_for_attribute_on_label() and \
-            not self.field_wrapper_renderable.field_renderable.should_render_as_child_of_label()
+        return (
+            self.field_wrapper_renderable.field_renderable.should_have_for_attribute_on_label()
+            and not self.field_wrapper_renderable.field_renderable.should_render_as_child_of_label()
+        )
 
     def get_default_dom_id(self):
-        return '{field_dom_id}_label'.format(
-            field_dom_id=self.field_wrapper_renderable.field_renderable.dom_id
-        )
+        return "{field_dom_id}_label".format(field_dom_id=self.field_wrapper_renderable.field_renderable.dom_id)
 
     def field_is_checkbox_input_widget(self):
         field_renderable = self.field_wrapper_renderable.field_renderable
-        if hasattr(field_renderable, 'is_checkbox_input_widget'):
+        if hasattr(field_renderable, "is_checkbox_input_widget"):
             return field_renderable.is_checkbox_input_widget()
         else:
             return False
@@ -77,9 +78,9 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
         Default BEM block is ``label``.
         """
         if self.field_is_checkbox_input_widget():
-            return 'checkbox'
+            return "checkbox"
         else:
-            return 'label'
+            return "label"
 
     @property
     def for_attribute(self):
@@ -118,8 +119,7 @@ class Label(AbstractLabel, form_mixins.FieldWrapperRenderableChildMixin):
 
     @property
     def optional_text(self):
-        return pgettext_lazy('django_cradmin optional form field label suffix',
-                             'optional')
+        return pgettext_lazy("django_cradmin optional form field label suffix", "optional")
 
     def should_show_text_after_field(self):
         return self.field_is_checkbox_input_widget()
@@ -133,22 +133,21 @@ class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
 
     If you want
     """
+
     def __init__(self, subwidget_field_renderable, **kwargs):
         self.subwidget_field_renderable = subwidget_field_renderable
         super(SubWidgetLabel, self).__init__(**kwargs)
 
     def prepopulate_virtual_children_list(self):
-        return [
-            self.subwidget_field_renderable
-        ]
+        return [self.subwidget_field_renderable]
 
     def should_show_text_after_field(self):
         return True
 
     def get_default_dom_id(self):
-        return '{field_dom_id}_{index_in_parent}_label'.format(
-            field_dom_id=self.field_renderable.dom_id,
-            index_in_parent=self.subwidget_field_renderable.index_in_parent)
+        return "{field_dom_id}_{index_in_parent}_label".format(
+            field_dom_id=self.field_renderable.dom_id, index_in_parent=self.subwidget_field_renderable.index_in_parent
+        )
 
     @property
     def label_text(self):
@@ -157,12 +156,11 @@ class SubWidgetLabel(AbstractLabel, form_mixins.FieldChildMixin):
     @property
     def label_text_aria_suffix(self):
         label_renderable = self.field_wrapper_renderable.label_renderable
-        field_label = getattr(label_renderable, 'label_text', None)
+        field_label = getattr(label_renderable, "label_text", None)
         if field_label:
-            return '- {prefix} {field_label}'.format(
-                prefix=pgettext('uicontainer label aria text prefix',
-                                'Choice for'),
-                field_label=field_label)
+            return "- {prefix} {field_label}".format(
+                prefix=pgettext("uicontainer label aria text prefix", "Choice for"), field_label=field_label
+            )
         else:
             return None
 
@@ -181,11 +179,12 @@ class StyledSubWidgetLabel(SubWidgetLabel):
     be ``<BEM block>__control-indicator`` - can be overriden
     in :meth:`~.StyledSubWidgetLabel.control_indicator_bem_element`.
     """
-    template_name = 'django_cradmin/uicontainer/label/styled_sub_widget_label.django.html'
+
+    template_name = "django_cradmin/uicontainer/label/styled_sub_widget_label.django.html"
 
     @property
     def control_indicator_bem_element(self):
-        return '{}__control-indicator'.format(self.get_bem_block_or_element())
+        return "{}__control-indicator".format(self.get_bem_block_or_element())
 
 
 class RadioSubWidgetLabel(StyledSubWidgetLabel):
@@ -193,17 +192,18 @@ class RadioSubWidgetLabel(StyledSubWidgetLabel):
     A ``<label>`` suitable for wrapping around lists of
     radio buttons.
     """
+
     def get_default_bem_block_or_element(self):
         """
         Uses the ``radio`` BEM block by default.
         """
-        return 'radio'
+        return "radio"
 
     def get_default_bem_variant_list(self):
         """
         Uses the ``radio--block`` BEM variant by default.
         """
-        return ['block']
+        return ["block"]
 
 
 class CheckboxSubWidgetLabel(StyledSubWidgetLabel):
@@ -211,14 +211,15 @@ class CheckboxSubWidgetLabel(StyledSubWidgetLabel):
     A ``<label>`` suitable for wrapping around lists of
     checkboxes.
     """
+
     def get_default_bem_block_or_element(self):
         """
         Uses the ``checkbox`` BEM block by default.
         """
-        return 'checkbox'
+        return "checkbox"
 
     def get_default_bem_variant_list(self):
         """
         Uses the ``checkbox--block`` BEM variant by default.
         """
-        return ['block']
+        return ["block"]

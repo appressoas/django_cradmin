@@ -4,7 +4,7 @@ from django_cradmin.renderable import AbstractRenderable
 
 
 class MinimalRenderable(AbstractRenderable):
-    template_name = 'cradmin_viewhelpers_testapp/listbuilder/minimal-renderable.django.html'
+    template_name = "cradmin_viewhelpers_testapp/listbuilder/minimal-renderable.django.html"
 
 
 class TestAbstractRenderable(TestCase):
@@ -17,7 +17,7 @@ class TestAbstractRenderable(TestCase):
 
     def test_get_context_data(self):
         renderable = AbstractRenderable()
-        self.assertEqual({'me': renderable}, renderable.get_context_data())
+        self.assertEqual({"me": renderable}, renderable.get_context_data())
 
     def test_render(self):
-        self.assertEqual('Test', MinimalRenderable().render().strip())
+        self.assertEqual("Test", MinimalRenderable().render().strip())

@@ -31,7 +31,7 @@ class AbstractLoginForm(forms.Form):
 
     #: The placeholder text for the password field.
     #: Must be set in subclasses
-    password_field_placeholder = _('Password')
+    password_field_placeholder = _("Password")
 
     #: Error message to show if username and password do not match
     error_message_invalid_login = None
@@ -40,9 +40,7 @@ class AbstractLoginForm(forms.Form):
     error_message_inactive = _("This account is inactive.")
 
     #: The password field
-    password = forms.CharField(
-        label=_('Password'),
-        widget=forms.PasswordInput)
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
 
     def model_sanity_check(self):
         pass
@@ -63,12 +61,9 @@ class AbstractLoginForm(forms.Form):
         validate the form, and execute :func:`django.contrib.auth.authenticate` to login the user if form is valid.
         """
         username = self.cleaned_data.get(self.username_field)
-        password = self.cleaned_data.get('password')
+        password = self.cleaned_data.get("password")
         if username and password:
-            authenticated_user = self.authenticate(**{
-                self.username_field: username,
-                'password': password
-            })
+            authenticated_user = self.authenticate(**{self.username_field: username, "password": password})
 
             if authenticated_user is None:
                 raise forms.ValidationError(self.error_message_invalid_login)
@@ -88,17 +83,19 @@ class UsernameLoginForm(AbstractLoginForm):
     Using this form in its default state requires the `User`-models ``USERNAME_FIELD`` to be ``username``.
     This is set in the field ``username_field`` in this class.
     """
-    username_field = 'username'
-    username_field_placeholder = _('Username')
-    username = forms.CharField(
-        label=_('Username'))
+
+    username_field = "username"
+    username_field_placeholder = _("Username")
+    username = forms.CharField(label=_("Username"))
     error_message_invalid_login = _("Your username and password didn't match. Please try again.")
 
     def model_sanity_check(self):
         user_model = get_user_model()
         if user_model.USERNAME_FIELD != self.username_field:
-            raise ValueError('The username_field attribute of the login form must match the USERNAME_FIELD '
-                             'attribute of the User model.')
+            raise ValueError(
+                "The username_field attribute of the login form must match the USERNAME_FIELD "
+                "attribute of the User model."
+            )
 
 
 class EmailLoginForm(AbstractLoginForm):
@@ -116,15 +113,15 @@ class EmailLoginForm(AbstractLoginForm):
     If you want to use this class without the :class:`EmailAuthBackend`, you should rather use the
     :class:`.EmailLoginFormNoSanityCheck`.
     """
-    username_field = 'email'
-    username_field_placeholder = _('Email')
-    email = forms.CharField(
-        label=_('Email'))
+
+    username_field = "email"
+    username_field_placeholder = _("Email")
+    email = forms.CharField(label=_("Email"))
     error_message_invalid_login = _("Your email and password didn't match. Please try again.")
 
     def model_sanity_check(self):
-        if not getattr(settings, 'DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND', False):
-            raise ValueError('The DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND must be set to use the EmailLoginForm.')
+        if not getattr(settings, "DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND", False):
+            raise ValueError("The DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND must be set to use the EmailLoginForm.")
 
 
 class EmailLoginFormNoSanityCheck(EmailLoginForm):
@@ -132,6 +129,7 @@ class EmailLoginFormNoSanityCheck(EmailLoginForm):
     This works exactly like :class:`.EmailLoginForm`, but does not require
     ``DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND`` to be set.
     """
+
     def model_sanity_check(self):
         pass
 
@@ -141,7 +139,8 @@ class LoginView(formview.StandaloneFormView):
     View for handling login.
     By default, a "forgot password" link is read from ``DJANGO_CRADMIN_FORGOTPASSWORD_URL`` to your ``settings.py``.
     """
-    template_name = 'cradmin_authenticate/login.django.html'
+
+    template_name = "cradmin_authenticate/login.django.html"
 
     def get_form_class(self):
         """
@@ -154,11 +153,11 @@ class LoginView(formview.StandaloneFormView):
         Override this function to add your own login-form.
         """
         user_model = get_user_model()
-        if getattr(settings, 'DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND', False):
+        if getattr(settings, "DJANGO_CRADMIN_USE_EMAIL_AUTH_BACKEND", False):
             return EmailLoginForm
-        elif user_model.USERNAME_FIELD == 'email':
+        elif user_model.USERNAME_FIELD == "email":
             return EmailLoginFormNoSanityCheck
-        elif user_model.USERNAME_FIELD == 'username':
+        elif user_model.USERNAME_FIELD == "username":
             return UsernameLoginForm
 
         else:
@@ -204,7 +203,7 @@ class LoginView(formview.StandaloneFormView):
         only run once (like request.session.pop) without worrying
         about it.
         """
-        if not hasattr(self, '_inital_email_value'):
+        if not hasattr(self, "_inital_email_value"):
             self._inital_email_value = self.get_initial_email_value()
         return self._inital_email_value
 
@@ -214,8 +213,8 @@ class LoginView(formview.StandaloneFormView):
         if self.initial_email_value:
             formchildren = [
                 uicontainer.fieldwrapper.FieldWrapper(
-                    fieldname=form_class.username_field,
-                    field_renderable=uicontainer.field.HiddenField()),
+                    fieldname=form_class.username_field, field_renderable=uicontainer.field.HiddenField()
+                ),
             ]
             autofocus_password_field = True
         else:
@@ -223,31 +222,26 @@ class LoginView(formview.StandaloneFormView):
                 uicontainer.fieldwrapper.FieldWrapper(
                     fieldname=form_class.username_field,
                     field_renderable=uicontainer.field.Field(
-                        autofocus=True,
-                        placeholder=form_class.username_field_placeholder
-                    )
+                        autofocus=True, placeholder=form_class.username_field_placeholder
+                    ),
                 ),
             ]
-        formchildren.extend([
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password',
-                field_renderable=uicontainer.field.Field(
-                    autofocus=autofocus_password_field,
-                    placeholder=form_class.password_field_placeholder
-                )),
-            uicontainer.button.SubmitPrimary(
-                text=gettext_lazy('Sign in')),
-        ])
+        formchildren.extend(
+            [
+                uicontainer.fieldwrapper.FieldWrapper(
+                    fieldname="password",
+                    field_renderable=uicontainer.field.Field(
+                        autofocus=autofocus_password_field, placeholder=form_class.password_field_placeholder
+                    ),
+                ),
+                uicontainer.button.SubmitPrimary(text=gettext_lazy("Sign in")),
+            ]
+        )
         return formchildren
 
     def get_form_renderable(self):
         return uicontainer.layout.AdminuiPageSectionTight(
-            children=[
-                uicontainer.form.Form(
-                    form=self.get_form(),
-                    children=self.get_form_field_renderables()
-                )
-            ]
+            children=[uicontainer.form.Form(form=self.get_form(), children=self.get_form_field_renderables())]
         ).bootstrap()
 
     def get_redirect_url(self):
@@ -257,7 +251,7 @@ class LoginView(formview.StandaloneFormView):
 
         Returns the `settings.LOGIN_REDIRECT_URL` if no `next` queryparam is provided.
         """
-        next_url = self.request.GET.get('next')
+        next_url = self.request.GET.get("next")
         if next_url:
             return next_url
         else:
@@ -284,9 +278,8 @@ class LoginView(formview.StandaloneFormView):
         template-context.
         """
         context = super(LoginView, self).get_context_data(**kwargs)
-        context['DJANGO_CRADMIN_FORGOTPASSWORD_URL'] = getattr(
-            settings, 'DJANGO_CRADMIN_FORGOTPASSWORD_URL', None)
+        context["DJANGO_CRADMIN_FORGOTPASSWORD_URL"] = getattr(settings, "DJANGO_CRADMIN_FORGOTPASSWORD_URL", None)
         next_querystring = QueryDict(mutable=True)
-        next_querystring['next'] = self.request.GET.get('next')
-        context['next_querystring'] = mark_safe(next_querystring.urlencode())
+        next_querystring["next"] = self.request.GET.get("next")
+        context["next_querystring"] = mark_safe(next_querystring.urlencode())
         return context

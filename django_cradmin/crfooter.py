@@ -16,7 +16,7 @@ def get_default_footer_renderable(**kwargs):
     Returns:
         AbstractFooter: Header renderable object or ``None``.
     """
-    if not getattr(settings, 'DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS', None):
+    if not getattr(settings, "DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS", None):
         return None
     footer_class = import_string(settings.DJANGO_CRADMIN_DEFAULT_FOOTER_CLASS)
     return footer_class(**kwargs)
@@ -35,4 +35,4 @@ class AbstractFooter(renderable.AbstractRenderableWithCss):
 
         Defaults to ``"footer"``.
         """
-        return 'footer'
+        return "footer"

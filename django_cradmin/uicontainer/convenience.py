@@ -7,6 +7,7 @@ class AbstractWithOptionalEscapedText(container.AbstractContainerRenderable):
     that adds the provided text as a :class:`django_cradmin.uicontainer.text.EscapedText`
     child.
     """
+
     def __init__(self, text=None, **kwargs):
         """
         Args:
@@ -23,10 +24,9 @@ class AbstractWithOptionalEscapedText(container.AbstractContainerRenderable):
         that is ``bool(text) == True``.
         """
         from . import text
+
         if self.text:
-            return [
-                text.EscapedText(text=self.text)
-            ]
+            return [text.EscapedText(text=self.text)]
         else:
             return []
 
@@ -37,6 +37,7 @@ class AbstractWithOptionalParagraphWithEscapedText(container.AbstractContainerRe
     that adds the provided text as a :class:`django_cradmin.uicontainer.typography.Paragraph`
     child containing a :class:`django_cradmin.uicontainer.text.EscapedText` child
     """
+
     def __init__(self, text=None, **kwargs):
         """
         Args:
@@ -55,10 +56,8 @@ class AbstractWithOptionalParagraphWithEscapedText(container.AbstractContainerRe
         """
         from . import text
         from . import semantic
+
         if self.text:
-            return [
-                semantic.Paragraph(
-                    children=[text.EscapedText(text=self.text)])
-            ]
+            return [semantic.Paragraph(children=[text.EscapedText(text=self.text)])]
         else:
             return []

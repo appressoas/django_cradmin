@@ -16,10 +16,8 @@ class NullsLastQuery(sql.Query):
             def get_order_by(self):
                 results = super(NullsLastSQLCompiler, self).get_order_by()
 
-                if self.connection.vendor == 'postgresql' and results:
-                    results = [(result[0],
-                                (result[1][0] + " NULLS LAST",) + result[1][1:])
-                               for result in results]
+                if self.connection.vendor == "postgresql" and results:
+                    results = [(result[0], (result[1][0] + " NULLS LAST",) + result[1][1:]) for result in results]
 
                 return results
 

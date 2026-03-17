@@ -17,8 +17,9 @@ class AbstractMessageContainerMixin(object):
     :class:`django_cradmin.uicontainer.container.AbstractContainerRenderable`
     (or a subclass of it), and override :meth:`.create_message_container`.
     """
+
     #: Supported message levels for :meth:`~.AbstractMessageContainerMixin.add_message`.
-    supported_message_levels = {'warning', 'success', 'info'}
+    supported_message_levels = {"warning", "success", "info"}
 
     @property
     def should_render(self):
@@ -32,12 +33,13 @@ class AbstractMessageContainerMixin(object):
             .UnsupportedMessageLevel: If ``level`` is not in :obj:`.supported_message_levels`.
         """
         if level not in self.supported_message_levels:
-            raise UnsupportedMessageLevel('{module}.{classname} does not support message level: {level}'.format(
-                module=self.__class__.__module__,
-                classname=self.__class__.__name__,
-                level=level))
+            raise UnsupportedMessageLevel(
+                "{module}.{classname} does not support message level: {level}".format(
+                    module=self.__class__.__module__, classname=self.__class__.__name__, level=level
+                )
+            )
 
-    def create_message_container(self, level, text='', **kwargs):
+    def create_message_container(self, level, text="", **kwargs):
         """
         Create a message container object.
 
@@ -85,7 +87,7 @@ class AbstractMessageContainerMixin(object):
             **kwargs: Same as for :meth:`.add_message`, the only
                 difference is that the ``level`` kwarg is set.
         """
-        kwargs['level'] = 'warning'
+        kwargs["level"] = "warning"
         return self.add_message(**kwargs)
 
     def add_success(self, **kwargs):
@@ -96,7 +98,7 @@ class AbstractMessageContainerMixin(object):
             **kwargs: Same as for :meth:`.add_message`, the only
                 difference is that the ``level`` kwarg is set.
         """
-        kwargs['level'] = 'success'
+        kwargs["level"] = "success"
         return self.add_message(**kwargs)
 
     def add_info(self, **kwargs):
@@ -107,7 +109,7 @@ class AbstractMessageContainerMixin(object):
             **kwargs: Same as for :meth:`.add_message`, the only
                 difference is that the ``level`` kwarg is set.
         """
-        kwargs['level'] = 'info'
+        kwargs["level"] = "info"
         return self.add_message(**kwargs)
 
     def add_validationerror(self, validationerror, prefix=None, **kwargs):
@@ -120,7 +122,7 @@ class AbstractMessageContainerMixin(object):
         """
         for message in validationerror.messages:
             if prefix:
-                message = '{}: {}'.format(prefix, message)
+                message = "{}: {}".format(prefix, message)
             self.add_warning(text=message, **kwargs)
         return self
 
@@ -144,10 +146,11 @@ class MessageContainer(convenience.AbstractWithOptionalEscapedText):
     """
     Single message container.
     """
+
     level_to_variant_map = {
-        'warning': 'error',
-        'info': 'info',
-        'success': 'info',
+        "warning": "error",
+        "info": "info",
+        "success": "info",
     }
 
     def __init__(self, level, **kwargs):
@@ -160,10 +163,10 @@ class MessageContainer(convenience.AbstractWithOptionalEscapedText):
         super(MessageContainer, self).__init__(**kwargs)
 
     def get_default_html_tag(self):
-        return 'p'
+        return "p"
 
     def get_default_bem_block_or_element(self):
-        return 'message'
+        return "message"
 
     def get_default_bem_variant_list(self):
         """
@@ -179,7 +182,7 @@ class MessageContainer(convenience.AbstractWithOptionalEscapedText):
 
     def get_default_test_css_class_suffixes_list(self):
         return super(MessageContainer, self).get_default_test_css_class_suffixes_list() + [
-            '{}-message'.format(self.level or 'default')
+            "{}-message".format(self.level or "default")
         ]
 
 
@@ -187,9 +190,10 @@ class CompactMessageContainer(MessageContainer):
     """
     Single message container - compact version.
     """
+
     def get_default_bem_variant_list(self):
         variants = super(CompactMessageContainer, self).get_default_bem_variant_list()
-        variants.append('compact')
+        variants.append("compact")
         return variants
 
 
@@ -197,11 +201,12 @@ class BoxMessageContainer(convenience.AbstractWithOptionalEscapedText):
     """
     Message container using the ``box`` css class.
     """
+
     level_to_variant_map = {
-        'error': 'warning',
-        'warning': 'warning',
-        'info': 'info',
-        'success': 'success',
+        "error": "warning",
+        "warning": "warning",
+        "info": "info",
+        "success": "success",
     }
 
     def __init__(self, level, **kwargs):
@@ -214,10 +219,10 @@ class BoxMessageContainer(convenience.AbstractWithOptionalEscapedText):
         super(BoxMessageContainer, self).__init__(**kwargs)
 
     def get_default_html_tag(self):
-        return 'div'
+        return "div"
 
     def get_default_bem_block_or_element(self):
-        return 'box'
+        return "box"
 
     def get_default_bem_variant_list(self):
         """
@@ -233,19 +238,19 @@ class BoxMessageContainer(convenience.AbstractWithOptionalEscapedText):
 
     def get_default_test_css_class_suffixes_list(self):
         return super(BoxMessageContainer, self).get_default_test_css_class_suffixes_list() + [
-            '{}-message'.format(self.level or 'default')
+            "{}-message".format(self.level or "default")
         ]
 
 
-class PlainMessagesContainer(AbstractMessageContainerMixin,
-                             container.AbstractContainerRenderable):
+class PlainMessagesContainer(AbstractMessageContainerMixin, container.AbstractContainerRenderable):
     """
     Messages container.
     """
+
     def get_message_container_class(self, level):
         return MessageContainer
 
-    def create_message_container(self, level, text='', **kwargs):
+    def create_message_container(self, level, text="", **kwargs):
         message_container_class = self.get_message_container_class(level=level)
         return message_container_class(level=level, text=text, **kwargs)
 
@@ -254,19 +259,21 @@ class MessagesContainer(PlainMessagesContainer):
     """
     Messages container - contains zero or more :class:`.MessageContainer`.
     """
+
     def get_default_bem_block_or_element(self):
-        return 'messages'
+        return "messages"
 
 
 class BoxMessagesContainer(PlainMessagesContainer):
     """
     Messages container - contains zero or more :class:`.BoxMessageContainer`.
     """
+
     def get_message_container_class(self, level):
         return BoxMessageContainer
 
     def get_default_bem_block_or_element(self):
-        return 'messages'
+        return "messages"
 
 
 class CompactMessagesContainer(PlainMessagesContainer):
@@ -276,6 +283,7 @@ class CompactMessagesContainer(PlainMessagesContainer):
     for the messages, and that it has no css class for the wrapper element
     by default.
     """
+
     def get_message_container_class(self, level):
         return CompactMessageContainer
 
@@ -284,4 +292,4 @@ class CompactMessagesContainer(PlainMessagesContainer):
 
 
 class AdminUiPageSectionMessagesContainer(PlainMessagesContainer):
-    template_name = 'django_cradmin/uicontainer/messagescontainer/adminui_page_section_messages.django.html'
+    template_name = "django_cradmin/uicontainer/messagescontainer/adminui_page_section_messages.django.html"

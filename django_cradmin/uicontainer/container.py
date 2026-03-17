@@ -69,7 +69,8 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         This means that you can add properties in ``__init__()``,
         and make them available to any children recursively.
     """
-    template_name = 'django_cradmin/uicontainer/container.django.html'
+
+    template_name = "django_cradmin/uicontainer/container.django.html"
 
     #: You can override this to specify a set of supported HTML tags
     #: for the ``html_tag`` attribute for :meth:`~.AbstractContainerRenderable.__init__`.
@@ -80,16 +81,21 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
     #: ``bool()``, we do not validate the ``html_tag`` kwarg.
     supported_html_tags = None
 
-    def __init__(self, children=None,
-                 bem_block=None, bem_element=None, bem_variant_list=None,
-                 html_tag=None,
-                 css_classes_list=None,
-                 extra_css_classes_list=None,
-                 test_css_class_suffixes_list=None,
-                 role=False,
-                 dom_id=False,
-                 html_element_attributes=None,
-                 **kwargs):
+    def __init__(
+        self,
+        children=None,
+        bem_block=None,
+        bem_element=None,
+        bem_variant_list=None,
+        html_tag=None,
+        css_classes_list=None,
+        extra_css_classes_list=None,
+        test_css_class_suffixes_list=None,
+        role=False,
+        dom_id=False,
+        html_element_attributes=None,
+        **kwargs,
+    ):
         """
         Args:
             children: List of children. Children must be objects of subclasses
@@ -117,8 +123,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         """
         self.kwargs = kwargs
         self.validate_dom_id(dom_id=dom_id)
-        self.validate_bem(bem_block=bem_block,
-                          bem_element=bem_element)
+        self.validate_bem(bem_block=bem_block, bem_element=bem_element)
         self.validate_html_tag(html_tag=html_tag)
         self._childrenlist = []
         self._virtual_childrenlist = []
@@ -154,7 +159,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         You should disable this validation in production using the
         :setting:`DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID` setting.
         """
-        return getattr(settings, 'DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID', True)
+        return getattr(settings, "DJANGO_CRADMIN_UICONTAINER_VALIDATE_DOM_ID", True)
 
     def should_validate_bem(self):
         """
@@ -174,43 +179,42 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         You should disable this validation in production using the
         :setting:`DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM` setting.
         """
-        return getattr(settings, 'DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM', True)
+        return getattr(settings, "DJANGO_CRADMIN_UICONTAINER_VALIDATE_BEM", True)
 
     def validate_dom_id(self, dom_id):
         if dom_id is False:
             return
         if not self.should_validate_dom_id():
             return
-        normalized_dom_id = dom_id.replace('-', '').lower()
-        if not dom_id.startswith('id_') or dom_id != normalized_dom_id:
+        normalized_dom_id = dom_id.replace("-", "").lower()
+        if not dom_id.startswith("id_") or dom_id != normalized_dom_id:
             raise InvalidDomIdError(
                 'dom_id must begin with "id_", be all lowercase, and can not contain "-". '
-                '{dom_id!r} does not match this requirement.'.format(
-                    dom_id=dom_id))
+                "{dom_id!r} does not match this requirement.".format(dom_id=dom_id)
+            )
 
     def validate_bem(self, bem_block, bem_element):
         if not self.should_validate_bem():
             return
         if bem_block and bem_element:
             raise InvalidBemError(
-                'Can not specify both bem_element or bem_block. An '
-                'HTML element is eighter a BEM block or a BEM element.')
+                "Can not specify both bem_element or bem_block. An "
+                "HTML element is eighter a BEM block or a BEM element."
+            )
         if bem_block:
-            if '__' in bem_block:
+            if "__" in bem_block:
                 raise InvalidBemError(
-                    '{bem_block} is not a valid BEM block name. '
+                    "{bem_block} is not a valid BEM block name. "
                     'BEM blocks do not contain "__". Are you sure you '
-                    'did not mean to use the bem_element kwarg?'.format(
-                        bem_block=bem_block
-                    ))
+                    "did not mean to use the bem_element kwarg?".format(bem_block=bem_block)
+                )
         elif bem_element:
-            if '__' not in bem_element:
+            if "__" not in bem_element:
                 raise InvalidBemError(
-                    '{bem_element} is not a valid BEM element name. '
+                    "{bem_element} is not a valid BEM element name. "
                     'BEM elements must contain "__". Are you sure you '
-                    'did not mean to use the bem_block kwarg?'.format(
-                        bem_element=bem_element
-                    ))
+                    "did not mean to use the bem_block kwarg?".format(bem_element=bem_element)
+                )
 
     def get_full_class_path_as_string(self):
         """
@@ -221,14 +225,15 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         things rendered by a Django template, this information is not
         always included.
         """
-        return '{}.{}'.format(self.__class__.__module__, self.__class__.__name__)
+        return "{}.{}".format(self.__class__.__module__, self.__class__.__name__)
 
     def validate_html_tag(self, html_tag):
         if html_tag and self.supported_html_tags and html_tag not in self.supported_html_tags:
-            raise UnsupportedHtmlTagError('Unsupported HTML tag for {classpath}: {html_tag}'.format(
-                classpath=self.get_full_class_path_as_string(),
-                html_tag=self._overridden_html_tag
-            ))
+            raise UnsupportedHtmlTagError(
+                "Unsupported HTML tag for {classpath}: {html_tag}".format(
+                    classpath=self.get_full_class_path_as_string(), html_tag=self._overridden_html_tag
+                )
+            )
 
     def get_default_html_tag(self):
         """
@@ -238,7 +243,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
 
         Returns ``"div"`` by default.
         """
-        return 'div'
+        return "div"
 
     @property
     def html_tag(self):
@@ -331,9 +336,9 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         the attributes set in the superclass.
         """
         html_element_attributes = {
-            'role': self.role,
-            'id': self.dom_id,
-            'class': self.css_classes or False,  # Fall back to false to avoid class=""
+            "role": self.role,
+            "id": self.dom_id,
+            "class": self.css_classes or False,  # Fall back to false to avoid class=""
         }
         if self._html_element_attributes:
             html_element_attributes.update(self._html_element_attributes)
@@ -374,8 +379,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         DO NOT OVERRIDE THIS METHOD.
         Override :meth:`.get_default_bem_block_or_element` instead.
         """
-        return (self._overridden_bem_block_or_element or
-                self.get_default_bem_block_or_element())
+        return self._overridden_bem_block_or_element or self.get_default_bem_block_or_element()
 
     def get_default_bem_variant_list(self):
         """
@@ -411,7 +415,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         if bem_block_or_element:
             bem_css_classes.append(bem_block_or_element)
             for variant in self.get_bem_variant_list():
-                css_class = '{}--{}'.format(bem_block_or_element, variant)
+                css_class = "{}--{}".format(bem_block_or_element, variant)
                 bem_css_classes.append(css_class)
         return bem_css_classes
 
@@ -443,7 +447,7 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         The css classes specified here can be overridden using
         the ``test_css_class_suffixes_list`` kwarg for :meth:`.__init__`.
         """
-        return ['uicontainer-{}'.format(self.__class__.__name__.lower())]
+        return ["uicontainer-{}".format(self.__class__.__name__.lower())]
 
     def get_test_css_class_suffixes_list(self):
         """
@@ -476,8 +480,9 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         with :attr:`.properties`.
         """
         if self._is_bootstrapped:
-            raise AlreadyBootsrappedError('The container is already bootstrapped. Can not bootstrap '
-                                          'the same container twice.')
+            raise AlreadyBootsrappedError(
+                "The container is already bootstrapped. Can not bootstrap the same container twice."
+            )
         self.parent = parent
         if self.parent:
             self.properties.update(self.parent.properties)
@@ -530,10 +535,11 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
             if self._is_bootstrapped and not childcontainer._is_bootstrapped:
                 childcontainer.bootstrap(parent=self)
         else:
-            raise NotAllowedToAddChildrenError('{modulename}.{classname} can not have children'.format(
-                modulename=self.__class__.__module__,
-                classname=self.__class__.__name__
-            ))
+            raise NotAllowedToAddChildrenError(
+                "{modulename}.{classname} can not have children".format(
+                    modulename=self.__class__.__module__, classname=self.__class__.__name__
+                )
+            )
         return self
 
     def add_virtual_child(self, childcontainer):
@@ -641,15 +647,16 @@ class AbstractContainerRenderable(renderable.AbstractRenderableWithCss):
         """
         if not self._is_bootstrapped:
             raise NotBootsrappedError(
-                'Can not render an AbstractContainerRenderable that has not been bootstrapped. '
-                'Ensure you call bootsrap() on the top-level container in the container '
-                'hierarchy before rendering. Class causing this issue: {classpath}'.format(
+                "Can not render an AbstractContainerRenderable that has not been bootstrapped. "
+                "Ensure you call bootsrap() on the top-level container in the container "
+                "hierarchy before rendering. Class causing this issue: {classpath}".format(
                     classpath=self.get_full_class_path_as_string()
-                ))
+                )
+            )
         if self.should_render:
             return super(AbstractContainerRenderable, self).render(**kwargs)
         else:
-            return ''
+            return ""
 
 
 class Div(AbstractContainerRenderable):
@@ -660,12 +667,14 @@ class Div(AbstractContainerRenderable):
     :meth:`django_cradmin.uicontainer.container.AbstractContainerRenderable.get_default_html_tag`
     and return ``"div"``.
     """
+
     def get_default_html_tag(self):
-        return 'div'
+        return "div"
 
 
 class NoWrapperElement(AbstractContainerRenderable):
     """
     Renders children, but no wrapper HTML element.
     """
-    template_name = 'django_cradmin/uicontainer/no_wrapper_element.django.html'
+
+    template_name = "django_cradmin/uicontainer/no_wrapper_element.django.html"

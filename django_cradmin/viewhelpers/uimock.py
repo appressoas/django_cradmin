@@ -23,9 +23,9 @@ class UiMock(generic.StandaloneBaseTemplateView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if not self.template_directory:
-            raise ValueError('The UiMock class requires a template_directory as argument to as_view().')
-        if not self.template_directory.endswith('/'):
-            raise ValueError('The template_directory kwarg for UiMock must end with /')
+            raise ValueError("The UiMock class requires a template_directory as argument to as_view().")
+        if not self.template_directory.endswith("/"):
+            raise ValueError("The template_directory kwarg for UiMock must end with /")
 
     def dispatch(self, request, mockname=None, **kwargs):
         """
@@ -41,19 +41,19 @@ class UiMock(generic.StandaloneBaseTemplateView):
         """
         self.session_postdata = None
         self.mockname = mockname
-        if 'cradmin_uimock_postdata' in self.request.session:
-            self.session_postdata = self.request.session['cradmin_uimock_postdata']
-            if 'csrfmiddlewaretoken' in self.session_postdata:
-                del self.session_postdata['csrfmiddlewaretoken']
-            del self.request.session['cradmin_uimock_postdata']
+        if "cradmin_uimock_postdata" in self.request.session:
+            self.session_postdata = self.request.session["cradmin_uimock_postdata"]
+            if "csrfmiddlewaretoken" in self.session_postdata:
+                del self.session_postdata["csrfmiddlewaretoken"]
+            del self.request.session["cradmin_uimock_postdata"]
 
         return super().dispatch(request, mockname, **kwargs)
 
     def _get_mock_template_name(self, mockname=None):
-        template_name = 'index.django.html'
+        template_name = "index.django.html"
         if mockname:
-            template_name = '{}.django.html'.format(mockname)
-        template_name = '{}{}'.format(self.template_directory, template_name)
+            template_name = "{}.django.html".format(mockname)
+        template_name = "{}{}".format(self.template_directory, template_name)
         return template_name
 
     def get_template_names(self):
@@ -67,8 +67,8 @@ class UiMock(generic.StandaloneBaseTemplateView):
         """
         return [
             self._get_mock_template_name(mockname=self.mockname),
-            self._get_mock_template_name(mockname='404'),
-            'django_cradmin/viewhelpers/uimock/404.django.html'
+            self._get_mock_template_name(mockname="404"),
+            "django_cradmin/viewhelpers/uimock/404.django.html",
         ]
 
     def post(self, request, *args, **kwargs):
@@ -79,11 +79,11 @@ class UiMock(generic.StandaloneBaseTemplateView):
 
         This facilitates mocking simple form flows.
         """
-        self.request.session['cradmin_uimock_postdata'] = self.request.POST.dict()
+        self.request.session["cradmin_uimock_postdata"] = self.request.POST.dict()
         return redirect(self.request.get_full_path())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['postdata'] = self.session_postdata
-        context['mockname'] = self.mockname
+        context["postdata"] = self.session_postdata
+        context["mockname"] = self.mockname
         return context

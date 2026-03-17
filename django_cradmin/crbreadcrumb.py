@@ -8,12 +8,19 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
     """
     Breadcrumb item renderable.
     """
-    template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item.django.html'
 
-    def __init__(self, label, url=None, active=False,
-                 label_maxlength=None, active_label_maxlength=None,
-                 render_link_for_active=False,
-                 parent_bem_block=None):
+    template_name = "django_cradmin/crbreadcrumb/breadcrumb-item.django.html"
+
+    def __init__(
+        self,
+        label,
+        url=None,
+        active=False,
+        label_maxlength=None,
+        active_label_maxlength=None,
+        render_link_for_active=False,
+        parent_bem_block=None,
+    ):
         """
 
         Args:
@@ -46,12 +53,12 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
         super(BreadcrumbItem, self).__init__()
 
     def get_bem_element(self):
-        return '{}__item'.format(self.parent_bem_block)
+        return "{}__item".format(self.parent_bem_block)
 
     def get_bem_variant_list(self):
         variant_list = []
         if self.active:
-            variant_list.append('active')
+            variant_list.append("active")
         return variant_list
 
     def should_render_as_link(self):
@@ -65,8 +72,8 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
     @property
     def html_tag(self):
         if self.should_render_as_link():
-            return 'a'
-        return 'span'
+            return "a"
+        return "span"
 
     @property
     def truncated_label(self):
@@ -84,10 +91,10 @@ class BreadcrumbItem(renderable.AbstractBemRenderable):
         Get HTML element attributes as a dict.
         """
         html_element_attributes = {
-            'class': self.css_classes or False,  # Fall back to false to avoid class=""
+            "class": self.css_classes or False,  # Fall back to false to avoid class=""
         }
         if self.should_render_as_link():
-            html_element_attributes['href'] = self.url
+            html_element_attributes["href"] = self.url
         return html_element_attributes
 
     @property
@@ -99,14 +106,15 @@ class BreadcrumbSeparator(renderable.AbstractBemRenderable):
     """
     Breadcrumb separator renderable.
     """
-    template_name = 'django_cradmin/crbreadcrumb/breadcrumb-separator.django.html'
+
+    template_name = "django_cradmin/crbreadcrumb/breadcrumb-separator.django.html"
 
     def __init__(self, parent_bem_block=None):
         self.parent_bem_block = parent_bem_block
         super(BreadcrumbSeparator, self).__init__()
 
     def get_bem_element(self):
-        return '{}__separator'.format(self.parent_bem_block)
+        return "{}__separator".format(self.parent_bem_block)
 
 
 class BreadcrumbItemList(renderable.AbstractBemRenderable):
@@ -125,13 +133,14 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         cradmin_instance (django_cradmin.crinstance.BaseCrAdminInstance): The
             cradmin instance sent in as an argument to ``__init__()``.
     """
-    template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item-list.django.html'
+
+    template_name = "django_cradmin/crbreadcrumb/breadcrumb-item-list.django.html"
 
     #: Render location: Above page cover.
-    LOCATION_ABOVE_PAGE_COVER = 'above-page-cover'
+    LOCATION_ABOVE_PAGE_COVER = "above-page-cover"
 
     #: Render location: Below page cover.
-    LOCATION_BELOW_PAGE_COVER = 'below-page-cover'
+    LOCATION_BELOW_PAGE_COVER = "below-page-cover"
 
     @classmethod
     def from_breadcrumb_item_list(cls, breadcrumb_item_list, **kwargs):
@@ -151,9 +160,7 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         super(BreadcrumbItemList, self).__init__()
 
     def get_extra_css_classes_list(self):
-        return [
-            'hidden-in-print'
-        ]
+        return ["hidden-in-print"]
 
     def get_default_location(self):
         """
@@ -198,10 +205,10 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
         """
         Override this to use a custom BEM block for the breadcrumb.
         """
-        return 'breadcrumb-item-list'
+        return "breadcrumb-item-list"
 
     def get_bem_variant_list(self):
-        return ['location-{}'.format(self.get_location())]
+        return ["location-{}".format(self.get_location())]
 
     def __len__(self):
         return len(self.breadcrumb_item_list)
@@ -275,9 +282,9 @@ class BreadcrumbItemList(renderable.AbstractBemRenderable):
             dict: kwargs.
         """
         kwargs = {
-            'parent_bem_block': self.get_bem_block(),
-            'label_maxlength': self.get_default_item_label_maxlength(),
-            'active_label_maxlength': self.get_default_active_item_label_maxlength(),
+            "parent_bem_block": self.get_bem_block(),
+            "label_maxlength": self.get_default_item_label_maxlength(),
+            "active_label_maxlength": self.get_default_active_item_label_maxlength(),
         }
         kwargs.update(extra_kwargs)
         return kwargs
@@ -384,26 +391,25 @@ class BreadcrumbItemListWrapper(renderable.AbstractBemRenderable):
     """
     Wraps a :class:`.BreadcrumbItemList` in a box.
     """
-    template_name = 'django_cradmin/crbreadcrumb/breadcrumb-item-list-wrapper.django.html'
+
+    template_name = "django_cradmin/crbreadcrumb/breadcrumb-item-list-wrapper.django.html"
 
     def __init__(self, breadcrumb_item_list):
         self.breadcrumb_item_list = breadcrumb_item_list
         super(BreadcrumbItemListWrapper, self).__init__()
 
     def get_bem_block(self):
-        return 'breadcrumb-item-list-wrapper'
+        return "breadcrumb-item-list-wrapper"
 
     def get_bem_variant_list(self):
-        return ['location-{}'.format(self.breadcrumb_item_list.get_location())]
+        return ["location-{}".format(self.breadcrumb_item_list.get_location())]
 
     def get_breadcrumb_item_list_extra_context_data(self):
-        return {
-            'is_within_wrapper': True
-        }
+        return {"is_within_wrapper": True}
 
     @property
     def container_css_classes(self):
-        return 'container container--wide'
+        return "container container--wide"
 
 
 class WrappedBreadcrumbItemList(BreadcrumbItemList):
@@ -414,6 +420,7 @@ class WrappedBreadcrumbItemList(BreadcrumbItemList):
     You can subclass :class:`.BreadcrumbItemListWrapper` and replace the wrapper
     class by overriding :meth:`.get_wrapper_renderable_class`.
     """
+
     def get_wrapper_renderable_class(self):
         """
         Get the renderable for the wrapper element(s).
@@ -432,16 +439,14 @@ class WrappedBreadcrumbItemList(BreadcrumbItemList):
         Returns:
             dict: Kwargs.
         """
-        return {
-            'breadcrumb_item_list': self
-        }
+        return {"breadcrumb_item_list": self}
 
     def make_wrapper_renderable(self):
         return self.get_wrapper_renderable_class()(**self.get_wrapper_renderable_kwargs())
 
     def render(self, request=None, extra_context_data=None):
         extra_context_data = extra_context_data or {}
-        if extra_context_data.get('is_within_wrapper'):
+        if extra_context_data.get("is_within_wrapper"):
             return super(WrappedBreadcrumbItemList, self).render(request=request, extra_context_data=extra_context_data)
         else:
             return self.make_wrapper_renderable().render(request=request, extra_context_data=extra_context_data)

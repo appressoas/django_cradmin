@@ -8,8 +8,10 @@ from django.utils.http import urlencode
 from django.views.generic import TemplateView
 
 from django_cradmin import javascriptregistry
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
-    GenericTokenExpiredError
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import (
+    GenericTokenWithMetadata,
+    GenericTokenExpiredError,
+)
 
 
 class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
@@ -23,43 +25,43 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
     - :meth:`~.AbstractAcceptInviteView.invite_accepted`.
     """
 
-    template_name = 'cradmin_invite/accept/accept.django.html'
+    template_name = "cradmin_invite/accept/accept.django.html"
 
     #: Default value for :meth:`~.AbstractAcceptInviteView.get_description_template_name`.
-    description_template_name = 'cradmin_invite/accept/description.django.html'
+    description_template_name = "cradmin_invite/accept/description.django.html"
 
     #: Default value for :meth:`~.AbstractAcceptInviteView.get_token_error_template_name`.
-    token_error_template_name = 'cradmin_invite/accept/token_error.django.html'
+    token_error_template_name = "cradmin_invite/accept/token_error.django.html"
 
     def get_pagetitle(self):
         """
         Get the title of the page.
         """
-        return _('Accept invite')
+        return _("Accept invite")
 
     def get_accept_as_button_label(self):
         """
         Get the label of the *Accept as authenticated user* button.
         """
-        return _('Accept as %(user)s') % {'user': self.request.user}
+        return _("Accept as %(user)s") % {"user": self.request.user}
 
     def get_register_account_button_label(self):
         """
         Get the label of the *Sign up* button.
         """
-        return _('Sign up for %(sitename)s') % {'sitename': settings.DJANGO_CRADMIN_SITENAME}
+        return _("Sign up for %(sitename)s") % {"sitename": settings.DJANGO_CRADMIN_SITENAME}
 
     def get_login_as_different_user_button_label(self):
         """
         Get the label of the *Sign in as different user* button.
         """
-        return _('Sign in as another user')
+        return _("Sign in as another user")
 
     def get_login_button_label(self):
         """
         Get the label of the *Sign in* button.
         """
-        return _('Sign in')
+        return _("Sign in")
 
     def get_description_template_name(self):
         """
@@ -93,7 +95,8 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         """
         try:
             generictoken = GenericTokenWithMetadata.objects.get_and_validate(
-                token=self.kwargs['token'], app=self.get_appname())
+                token=self.kwargs["token"], app=self.get_appname()
+            )
         except GenericTokenWithMetadata.DoesNotExist:
             return self.token_error_response(token_does_not_exist=True)
         except GenericTokenExpiredError:
@@ -109,10 +112,7 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         Unless you have some special needs, you will most likely want to just override
         :obj:`.token_error_template_name` instead of this view.
         """
-        context = {
-            'token_does_not_exist': token_does_not_exist,
-            'token_expired': token_expired
-        }
+        context = {"token_does_not_exist": token_does_not_exist, "token_expired": token_expired}
         self.add_javascriptregistry_component_ids_to_context(context=context)
         return render(self.request, self.get_token_error_template_name(), context)
 
@@ -127,12 +127,7 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         """
         if not next_url:
             next_url = self.request.build_absolute_uri()
-        return '{url}?{arguments}'.format(
-            url=url,
-            arguments=urlencode({
-                'next': str(next_url)
-            })
-        )
+        return "{url}?{arguments}".format(url=url, arguments=urlencode({"next": str(next_url)}))
 
     def get_register_account_url(self):
         """
@@ -144,7 +139,7 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         Defaults to the ``cradmin-register-account`` view in
         ``django_cradmin.apps.cradmin_register_account``.
         """
-        return self.add_next_argument_to_url(reverse('cradmin-register-account'))
+        return self.add_next_argument_to_url(reverse("cradmin-register-account"))
 
     def get_login_url(self):
         """
@@ -168,24 +163,22 @@ class AbstractAcceptInviteView(TemplateView, javascriptregistry.viewmixin.Standa
         with the next-argument set to the ``cradmin-authenticate-login`` view in the same app, with the next
         argument of the ``cradmin-authenticate-login`` view set to the current url.
         """
-        return self.add_next_argument_to_url(
-            url=reverse('cradmin-authenticate-logout'),
-            next_url=self.get_login_url())
+        return self.add_next_argument_to_url(url=reverse("cradmin-authenticate-logout"), next_url=self.get_login_url())
 
     def get_context_data(self, **kwargs):
         context = super(AbstractAcceptInviteView, self).get_context_data(**kwargs)
         self.add_javascriptregistry_component_ids_to_context(context=context)
-        context['pagetitle'] = self.get_pagetitle()
-        context['description_template_name'] = self.get_description_template_name()
+        context["pagetitle"] = self.get_pagetitle()
+        context["description_template_name"] = self.get_description_template_name()
 
-        context['register_account_url'] = self.get_register_account_url()
-        context['login_url'] = self.get_login_url()
-        context['login_as_different_user_url'] = self.get_login_as_different_user_url()
+        context["register_account_url"] = self.get_register_account_url()
+        context["login_url"] = self.get_login_url()
+        context["login_as_different_user_url"] = self.get_login_as_different_user_url()
 
-        context['accept_as_button_label'] = self.get_accept_as_button_label()
-        context['register_account_button_label'] = self.get_register_account_button_label()
-        context['login_as_different_user_button_label'] = self.get_login_as_different_user_button_label()
-        context['login_button_label'] = self.get_login_button_label()
+        context["accept_as_button_label"] = self.get_accept_as_button_label()
+        context["register_account_button_label"] = self.get_register_account_button_label()
+        context["login_as_different_user_button_label"] = self.get_login_as_different_user_button_label()
+        context["login_button_label"] = self.get_login_button_label()
         return context
 
     def post(self, *args, **kwargs):

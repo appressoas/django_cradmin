@@ -24,6 +24,7 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
 
     You never use this on its own outside a :class:`.FieldWrapper`.
     """
+
     def __init__(self, autofocus=False, placeholder=False, **kwargs):
         """
 
@@ -97,10 +98,12 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
         and autofocus added.
         """
         field_element_attributes = dict(self.get_html_element_attributes())
-        field_element_attributes.update({
-            'autofocus': self.autofocus,
-            'placeholder': self.placeholder,
-        })
+        field_element_attributes.update(
+            {
+                "autofocus": self.autofocus,
+                "placeholder": self.placeholder,
+            }
+        )
         return field_element_attributes
 
     def should_have_for_attribute_on_label(self):
@@ -141,7 +144,7 @@ class BaseFieldRenderable(container.AbstractContainerRenderable, form_mixins.Fie
 
 
 class SubWidgetField(BaseFieldRenderable):
-    template_name = 'django_cradmin/uicontainer/field/subwidget.django.html'
+    template_name = "django_cradmin/uicontainer/field/subwidget.django.html"
 
     def __init__(self, django_subwidget, index_in_parent, **kwargs):
         self.django_subwidget = django_subwidget
@@ -151,7 +154,7 @@ class SubWidgetField(BaseFieldRenderable):
     @property
     def label_text(self):
         if utils.has_template_based_form_rendering():
-            return self.django_subwidget.get('label', '')
+            return self.django_subwidget.get("label", "")
         else:
             return self.django_subwidget.choice_label
 
@@ -162,18 +165,18 @@ class SubWidgetField(BaseFieldRenderable):
     def field_attributes_dict(self):
         attributes_dict = {}
         if utils.has_template_based_form_rendering():
-            attrs = self.django_subwidget.get('attrs', {})
+            attrs = self.django_subwidget.get("attrs", {})
         else:
             attrs = self.django_subwidget.attrs
         attributes_dict.update(attrs)
         attributes_dict.update(self.get_html_element_attributes())
         if self.dom_id:
             if utils.has_template_based_form_rendering():
-                attributes_dict['id'] = self.dom_id
+                attributes_dict["id"] = self.dom_id
             else:
-                attributes_dict['id'] = '{dom_id}_{index_in_parent}'.format(
-                    dom_id=self.dom_id,
-                    index_in_parent=self.index_in_parent)
+                attributes_dict["id"] = "{dom_id}_{index_in_parent}".format(
+                    dom_id=self.dom_id, index_in_parent=self.index_in_parent
+                )
         return attributes_dict
 
     @property
@@ -182,24 +185,22 @@ class SubWidgetField(BaseFieldRenderable):
             renderer = get_default_renderer()
             widget = self.bound_formfield.field.widget
             attrs = self.field_attributes_dict
-            attrs['id'] = self.dom_id
+            attrs["id"] = self.dom_id
 
             option = widget.create_option(
-                name=self.django_subwidget['name'],
-                value=self.django_subwidget.get('value', None),
-                label=self.django_subwidget.get('label'),
-                selected=self.django_subwidget['selected'],
+                name=self.django_subwidget["name"],
+                value=self.django_subwidget.get("value", None),
+                label=self.django_subwidget.get("label"),
+                selected=self.django_subwidget["selected"],
                 index=self.index_in_parent,
                 subindex=None,
-                attrs=self.field_attributes_dict
+                attrs=self.field_attributes_dict,
             )
-            if isinstance(option, dict) and option.get('type') in ('checkbox', 'radio'):
-                option['wrap_label'] = False
-            return mark_safe(renderer.render(
-                template_name=self.django_subwidget['template_name'],
-                context={
-                    'widget': option
-                }))
+            if isinstance(option, dict) and option.get("type") in ("checkbox", "radio"):
+                option["wrap_label"] = False
+            return mark_safe(
+                renderer.render(template_name=self.django_subwidget["template_name"], context={"widget": option})
+            )
         else:
             return self.django_subwidget.tag(attrs=self.field_attributes_dict)
 
@@ -320,7 +321,8 @@ class Field(BaseFieldRenderable):
         - :meth:`~.Field.make_subwidget_renderable_checkbox`
 
     """
-    template_name = 'django_cradmin/uicontainer/field/field.django.html'
+
+    template_name = "django_cradmin/uicontainer/field/field.django.html"
 
     def __init__(self, subwidget_renderable_kwargs=None, **kwargs):
         """
@@ -334,7 +336,7 @@ class Field(BaseFieldRenderable):
         """
         self.extra_subwidget_renderable_kwargs = subwidget_renderable_kwargs or {}
         super(Field, self).__init__(**kwargs)
-        self.properties['field_wrapper_renderable'] = self
+        self.properties["field_wrapper_renderable"] = self
 
     @property
     def django_widget(self):
@@ -392,8 +394,7 @@ class Field(BaseFieldRenderable):
         Default to returining ``True`` if :meth:`.is_radio_select_widget` or
         :meth:`.is_checkbox_select_multiple_widget` returns ``True``.
         """
-        return (self.is_radio_select_widget()
-                or self.is_checkbox_select_multiple_widget())
+        return self.is_radio_select_widget() or self.is_checkbox_select_multiple_widget()
 
     def should_have_for_attribute_on_label(self):
         """
@@ -422,16 +423,16 @@ class Field(BaseFieldRenderable):
         if self.is_select_widget() or self.is_checkbox_input_widget():
             return None
         elif self.is_range_widget():
-            return 'range-input'
+            return "range-input"
         else:
-            return 'input'
+            return "input"
 
     def get_default_bem_variant_list(self):
-        return ['outlined']
+        return ["outlined"]
 
     def get_default_test_css_class_suffixes_list(self):
         return super(Field, self).get_default_test_css_class_suffixes_list() + [
-            'djangowidget-{}'.format(self.django_widget.__class__.__name__.lower())
+            "djangowidget-{}".format(self.django_widget.__class__.__name__.lower())
         ]
 
     def render_bound_formfield_as_widget(self):
@@ -445,10 +446,13 @@ class Field(BaseFieldRenderable):
         a :class:`.SubWidgetField` object as ``subwidget_field_renderable``.
         """
         kwargs = dict(self.extra_subwidget_renderable_kwargs)
-        kwargs.update({
-            'subwidget_field_renderable': SubWidgetField(django_subwidget=django_subwidget,
-                                                         index_in_parent=index_in_parent)
-        })
+        kwargs.update(
+            {
+                "subwidget_field_renderable": SubWidgetField(
+                    django_subwidget=django_subwidget, index_in_parent=index_in_parent
+                )
+            }
+        )
         return kwargs
 
     def make_subwidget_renderable_radio(self, django_subwidget, index_in_parent):
@@ -464,10 +468,9 @@ class Field(BaseFieldRenderable):
             django_subwidget: The SubWidget object.
             index_in_parent: The index of the subwidget in the parent.
         """
-        return label.RadioSubWidgetLabel(**self.get_subwidget_renderable_kwargs(
-            django_subwidget=django_subwidget,
-            index_in_parent=index_in_parent
-        ))
+        return label.RadioSubWidgetLabel(
+            **self.get_subwidget_renderable_kwargs(django_subwidget=django_subwidget, index_in_parent=index_in_parent)
+        )
 
     def make_subwidget_renderable_checkbox(self, django_subwidget, index_in_parent):
         """
@@ -482,10 +485,9 @@ class Field(BaseFieldRenderable):
             django_subwidget: The SubWidget object.
             index_in_parent: The index of the subwidget in the parent.
         """
-        return label.CheckboxSubWidgetLabel(**self.get_subwidget_renderable_kwargs(
-            django_subwidget=django_subwidget,
-            index_in_parent=index_in_parent
-        ))
+        return label.CheckboxSubWidgetLabel(
+            **self.get_subwidget_renderable_kwargs(django_subwidget=django_subwidget, index_in_parent=index_in_parent)
+        )
 
     def make_subwidget_renderable(self, django_subwidget, index_in_parent):
         """
@@ -506,25 +508,29 @@ class Field(BaseFieldRenderable):
         """
         if self.is_radio_select_widget():
             return self.make_subwidget_renderable_radio(
-                django_subwidget=django_subwidget, index_in_parent=index_in_parent)
+                django_subwidget=django_subwidget, index_in_parent=index_in_parent
+            )
         elif self.is_checkbox_select_multiple_widget():
             return self.make_subwidget_renderable_checkbox(
-                django_subwidget=django_subwidget, index_in_parent=index_in_parent)
+                django_subwidget=django_subwidget, index_in_parent=index_in_parent
+            )
         else:
             widget_class = self.django_widget.__class__
             raise NotImplementedError(
-                'The {widget_class!r} widget is not supported.'.format(
-                    widget_class='{}.{}'.format(widget_class.__module__, widget_class.__name__)
-                ))
+                "The {widget_class!r} widget is not supported.".format(
+                    widget_class="{}.{}".format(widget_class.__module__, widget_class.__name__)
+                )
+            )
 
     def iter_subwidgets(self):
-        for index, django_subwidget in enumerate(self.django_widget.subwidgets(
+        for index, django_subwidget in enumerate(
+            self.django_widget.subwidgets(
                 name=self.bound_formfield.html_name,
                 value=self.bound_formfield.value(),
-                attrs=self.field_attributes_dict)):
-            subwidget = self.make_subwidget_renderable(
-                django_subwidget=django_subwidget,
-                index_in_parent=index)
+                attrs=self.field_attributes_dict,
+            )
+        ):
+            subwidget = self.make_subwidget_renderable(django_subwidget=django_subwidget, index_in_parent=index)
             subwidget.bootstrap(parent=self)
             yield subwidget
 
@@ -539,26 +545,25 @@ class Select(Field):
     the ``select select--outlined select--block`` css
     classes.
     """
-    template_name = 'django_cradmin/uicontainer/field/select.django.html'
+
+    template_name = "django_cradmin/uicontainer/field/select.django.html"
 
     def get_default_bem_block_or_element(self):
-        return 'select'
+        return "select"
 
     def get_default_html_tag(self):
-        return 'label'
+        return "label"
 
     def get_default_bem_variant_list(self):
-        return ['outlined', 'block']
+        return ["outlined", "block"]
 
     def get_html_element_attributes(self):
         html_element_attributes = super(Select, self).get_html_element_attributes()
-        html_element_attributes.pop('id')
+        html_element_attributes.pop("id")
         return html_element_attributes
 
     def get_field_element_attributes(self):
-        return {
-            'id': self.dom_id
-        }
+        return {"id": self.dom_id}
 
 
 class HiddenField(Field):
@@ -577,6 +582,7 @@ class HiddenField(Field):
                 field_renderable=uicontainer.field.HiddenField()
             )
     """
+
     @property
     def rendered_field(self):
         return self.bound_formfield.as_hidden(attrs=self.field_attributes_dict)
@@ -586,14 +592,14 @@ class HiddenField(Field):
 
 
 class AbstractDate(Field):
-    template_name = 'django_cradmin/uicontainer/field/date.django.html'
+    template_name = "django_cradmin/uicontainer/field/date.django.html"
 
     string_datetime_formats = [
-        '%Y-%m-%d',
-        '%Y-%m-%d %H:%M',
-        '%Y-%m-%d %H:%M:%S',
-        '%H:%M',
-        '%H:%M:%S',
+        "%Y-%m-%d",
+        "%Y-%m-%d %H:%M",
+        "%Y-%m-%d %H:%M:%S",
+        "%H:%M",
+        "%H:%M:%S",
     ]
 
     def __init__(self, debug=False, **kwargs):
@@ -612,71 +618,57 @@ class AbstractDate(Field):
 
     def get_month_labels(self):
         return [
-            pgettext('monthname', 'Jan'),
-            pgettext('monthname', 'Feb'),
-            pgettext('monthname', 'Mar'),
-            pgettext('monthname', 'Apr'),
-            pgettext('monthname', 'May'),
-            pgettext('monthname', 'Jun'),
-            pgettext('monthname', 'Jul'),
-            pgettext('monthname', 'Aug'),
-            pgettext('monthname', 'Sep'),
-            pgettext('monthname', 'Oct'),
-            pgettext('monthname', 'Nov'),
-            pgettext('monthname', 'Des')
+            pgettext("monthname", "Jan"),
+            pgettext("monthname", "Feb"),
+            pgettext("monthname", "Mar"),
+            pgettext("monthname", "Apr"),
+            pgettext("monthname", "May"),
+            pgettext("monthname", "Jun"),
+            pgettext("monthname", "Jul"),
+            pgettext("monthname", "Aug"),
+            pgettext("monthname", "Sep"),
+            pgettext("monthname", "Oct"),
+            pgettext("monthname", "Nov"),
+            pgettext("monthname", "Des"),
         ]
 
     def make_aria_label(self, subfield_label):
         label_renderable = self.field_wrapper_renderable.label_renderable
-        label_text = getattr(label_renderable, 'label_text', '')
+        label_text = getattr(label_renderable, "label_text", "")
         if label_text:
-            return '{} - {}'.format(subfield_label, label_text)
+            return "{} - {}".format(subfield_label, label_text)
         return subfield_label
 
     def make_day_field_props(self):
         return {
-            "labelText": gettext('Day'),
-            "extraSelectAttributes": {
-                "aria-label": self.make_aria_label(gettext('Day'))
-            }
+            "labelText": gettext("Day"),
+            "extraSelectAttributes": {"aria-label": self.make_aria_label(gettext("Day"))},
         }
 
     def make_month_field_props(self):
         return {
-            "labelText": gettext('Month'),
+            "labelText": gettext("Month"),
             "monthLabels": self.get_month_labels(),
-            "extraSelectAttributes": {
-                "aria-label": self.make_aria_label(gettext('Month'))
-            }
+            "extraSelectAttributes": {"aria-label": self.make_aria_label(gettext("Month"))},
         }
 
     def make_year_field_props(self):
         return {
-            "labelText": gettext('Year'),
-            "extraSelectAttributes": {
-                "aria-label": self.make_aria_label(gettext('Year'))
-            }
+            "labelText": gettext("Year"),
+            "extraSelectAttributes": {"aria-label": self.make_aria_label(gettext("Year"))},
         }
 
     def make_hour_field_props(self):
-        return {
-            "extraInputAttributes": {
-                "aria-label": self.make_aria_label(gettext('Hour'))
-            }
-        }
+        return {"extraInputAttributes": {"aria-label": self.make_aria_label(gettext("Hour"))}}
 
     def make_minute_field_props(self):
-        return {
-            "extraInputAttributes": {
-                "aria-label": self.make_aria_label(gettext('Minute'))
-            }
-        }
+        return {"extraInputAttributes": {"aria-label": self.make_aria_label(gettext("Minute"))}}
 
     def make_result_field_props(self):
         if self.debug:
-            input_type = 'text'
+            input_type = "text"
         else:
-            input_type = 'hidden'
+            input_type = "hidden"
         return {
             "inputName": self.fieldname,
             "inputType": input_type,
@@ -685,16 +677,15 @@ class AbstractDate(Field):
     def make_initial_values_dict(self, value_object):
         initial_values_dict = {}
         if isinstance(value_object, (datetime.date, datetime.datetime)):
-            initial_values_dict.update({
-                'initialDay': value_object.day,
-                'initialMonth': value_object.month,
-                'initialYear': value_object.year,
-            })
+            initial_values_dict.update(
+                {
+                    "initialDay": value_object.day,
+                    "initialMonth": value_object.month,
+                    "initialYear": value_object.year,
+                }
+            )
         if isinstance(value_object, (datetime.time, datetime.datetime)):
-            initial_values_dict.update({
-                'initialHour': value_object.hour,
-                'initialMinute': value_object.minute
-            })
+            initial_values_dict.update({"initialHour": value_object.hour, "initialMinute": value_object.minute})
         return initial_values_dict
 
     def get_initial_values(self):
@@ -726,16 +717,14 @@ class AbstractDate(Field):
     def make_value_object_from_string(self, value_string):
         for datetime_format in self.string_datetime_formats:
             try:
-                return datetime.datetime.strptime(value_string,
-                                                  datetime_format)
+                return datetime.datetime.strptime(value_string, datetime_format)
             except ValueError:
                 pass
         return None
 
     def get_context_data(self, **kwargs):
         context = super(AbstractDate, self).get_context_data(**kwargs)
-        context['widget_config_json'] = self._quoted_json(
-            self.make_widget_config_dict())
+        context["widget_config_json"] = self._quoted_json(self.make_widget_config_dict())
         return context
 
 
@@ -760,19 +749,20 @@ class Date(AbstractDate):
                 fieldname='birth_date',
                 field_renderable=uicontainer.field.Date())
     """
+
     def make_widget_config_dict(self):
         widget_config_dict = super(Date, self).make_widget_config_dict()
-        widget_config_dict['includeDate'] = True
-        widget_config_dict['includeTime'] = False
+        widget_config_dict["includeDate"] = True
+        widget_config_dict["includeTime"] = False
         return widget_config_dict
 
     @property
     def label_for_dom_id(self):
-        return '{}_daysubfield'.format(self.dom_id)
+        return "{}_daysubfield".format(self.dom_id)
 
     def make_day_field_props(self):
         props = super(Date, self).make_day_field_props()
-        props['extraSelectAttributes']['id'] = self.label_for_dom_id
+        props["extraSelectAttributes"]["id"] = self.label_for_dom_id
         return props
 
 
@@ -800,17 +790,17 @@ class DateTime(AbstractDate):
 
     @property
     def label_for_dom_id(self):
-        return '{}_daysubfield'.format(self.dom_id)
+        return "{}_daysubfield".format(self.dom_id)
 
     def make_day_field_props(self):
         props = super(DateTime, self).make_day_field_props()
-        props['extraSelectAttributes']['id'] = self.label_for_dom_id
+        props["extraSelectAttributes"]["id"] = self.label_for_dom_id
         return props
 
     def make_widget_config_dict(self):
         widget_config_dict = super(DateTime, self).make_widget_config_dict()
-        widget_config_dict['includeDate'] = True
-        widget_config_dict['includeTime'] = True
+        widget_config_dict["includeDate"] = True
+        widget_config_dict["includeTime"] = True
         return widget_config_dict
 
 
@@ -838,15 +828,15 @@ class Time(AbstractDate):
 
     @property
     def label_for_dom_id(self):
-        return '{}_hoursubfield'.format(self.dom_id)
+        return "{}_hoursubfield".format(self.dom_id)
 
     def make_hour_field_props(self):
         props = super(Time, self).make_hour_field_props()
-        props['extraInputAttributes']['id'] = self.label_for_dom_id
+        props["extraInputAttributes"]["id"] = self.label_for_dom_id
         return props
 
     def make_widget_config_dict(self):
         widget_config_dict = super(Time, self).make_widget_config_dict()
-        widget_config_dict['includeDate'] = False
-        widget_config_dict['includeTime'] = True
+        widget_config_dict["includeDate"] = False
+        widget_config_dict["includeTime"] = True
         return widget_config_dict

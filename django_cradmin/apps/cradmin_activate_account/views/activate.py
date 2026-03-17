@@ -4,24 +4,25 @@ from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 
 from django_cradmin import javascriptregistry
-from django_cradmin.apps.cradmin_generic_token_with_metadata.models import GenericTokenWithMetadata, \
-    GenericTokenExpiredError
+from django_cradmin.apps.cradmin_generic_token_with_metadata.models import (
+    GenericTokenWithMetadata,
+    GenericTokenExpiredError,
+)
 
 
 class ActivateAccountView(TemplateView, javascriptregistry.viewmixin.StandaloneBaseViewMixin):
-    template_name = 'cradmin_activate_account/activate.django.html'
-    appname = 'cradmin_activate_account'
+    template_name = "cradmin_activate_account/activate.django.html"
+    appname = "cradmin_activate_account"
 
     #: The template used to render the success message.
     #: Default value for :obj:`~.ActivateAccountView.get_success_message_template`
-    success_message_template = 'cradmin_activate_account/messages/success.django.html'
+    success_message_template = "cradmin_activate_account/messages/success.django.html"
 
     def get(self, *args, **kwargs):
         self.token_does_not_exist = False
         self.token_expired = False
         try:
-            token = GenericTokenWithMetadata.objects.get_and_validate(
-                token=self.kwargs['token'], app=self.appname)
+            token = GenericTokenWithMetadata.objects.get_and_validate(token=self.kwargs["token"], app=self.appname)
         except GenericTokenWithMetadata.DoesNotExist:
             self.token_does_not_exist = True
         except GenericTokenExpiredError:
@@ -33,8 +34,8 @@ class ActivateAccountView(TemplateView, javascriptregistry.viewmixin.StandaloneB
     def get_context_data(self, **kwargs):
         context = super(ActivateAccountView, self).get_context_data(**kwargs)
         self.add_javascriptregistry_component_ids_to_context(context=context)
-        context['token_does_not_exist'] = self.token_does_not_exist
-        context['token_expired'] = self.token_expired
+        context["token_does_not_exist"] = self.token_does_not_exist
+        context["token_expired"] = self.token_expired
         return context
 
     def get_success_message_template(self):
@@ -51,9 +52,7 @@ class ActivateAccountView(TemplateView, javascriptregistry.viewmixin.StandaloneB
         Defaults to rendering the :meth:`.get_success_message_template`
         template.
         """
-        return render_to_string(self.get_success_message_template(), {
-            'user': user
-        }).strip()
+        return render_to_string(self.get_success_message_template(), {"user": user}).strip()
 
     def add_success_message(self, user):
         """
@@ -72,7 +71,7 @@ class ActivateAccountView(TemplateView, javascriptregistry.viewmixin.StandaloneB
         but you will most likely want to override the ``activate_user()``
         method of your User model if you have a custom user model.
         """
-        if hasattr(user, 'activate_user'):
+        if hasattr(user, "activate_user"):
             user.activate_user()
         else:
             user.is_active = True
@@ -80,7 +79,7 @@ class ActivateAccountView(TemplateView, javascriptregistry.viewmixin.StandaloneB
 
     def token_is_valid(self, token):
         user = token.content_object
-        next_url = token.metadata['next_url']
+        next_url = token.metadata["next_url"]
         self.activate_user(user)
         self.add_success_message(user)
         return HttpResponseRedirect(next_url)

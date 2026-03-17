@@ -12,13 +12,14 @@ class DeleteViewMixin:
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.formview.DeleteViewMixin``.
     """
+
     def get_pagetitle(self):
         """
         Get the page title (the title tag).
 
         Defaults to ``Delete <verbose_name model>``.
         """
-        return gettext_lazy('Confirm delete')
+        return gettext_lazy("Confirm delete")
 
     def get_action_label(self):
         """
@@ -27,7 +28,7 @@ class DeleteViewMixin:
         Used as the prefix of the page title (see :meth:`.get_pagetitle`),
         and as the default for :meth:`.get_delete_button_label`.
         """
-        return gettext_lazy('Delete')
+        return gettext_lazy("Delete")
 
     def get_delete_button_label(self):
         """
@@ -43,7 +44,7 @@ class DeleteViewMixin:
 
         Defaults to :meth:`.get_action_label`.
         """
-        return gettext_lazy('Cancel')
+        return gettext_lazy("Cancel")
 
     def get_object_preview(self):
         """
@@ -58,7 +59,7 @@ class DeleteViewMixin:
         Get the confirm message shown in the focus area of the view.
         """
         return gettext_lazy('Are you sure you want to delete "%(object_preview)s"?') % {
-            'object_preview': self.get_object_preview()
+            "object_preview": self.get_object_preview()
         }
 
     def get_success_url(self):
@@ -75,9 +76,7 @@ class DeleteViewMixin:
 
         Used by :meth:`.add_success_messages`.
         """
-        return gettext_lazy('Deleted "%(what)s"') % {
-            'what': object_preview
-        }
+        return gettext_lazy('Deleted "%(what)s"') % {"what": object_preview}
 
     def add_success_messages(self, object_preview):
         """
@@ -93,14 +92,14 @@ class DeleteViewMixin:
             messages.success(self.request, success_message)
 
     def add_delete_view_mixin_context_data(self, context):
-        obj = context['object']
-        context['model_verbose_name'] = obj._meta.verbose_name
-        context['success_url'] = self.get_success_url()
-        context['object_preview'] = self.get_object_preview()
-        context['pagetitle'] = self.get_pagetitle()
-        context['confirm_message'] = self.get_confirm_message()
-        context['delete_button_label'] = self.get_delete_button_label()
-        context['cancel_button_label'] = self.get_cancel_button_label()
+        obj = context["object"]
+        context["model_verbose_name"] = obj._meta.verbose_name
+        context["success_url"] = self.get_success_url()
+        context["object_preview"] = self.get_object_preview()
+        context["pagetitle"] = self.get_pagetitle()
+        context["confirm_message"] = self.get_confirm_message()
+        context["delete_button_label"] = self.get_delete_button_label()
+        context["cancel_button_label"] = self.get_cancel_button_label()
 
     def delete(self, request, *args, **kwargs):
         object_preview = self.get_object_preview()
@@ -109,11 +108,13 @@ class DeleteViewMixin:
         return response
 
 
-class WithinRoleDeleteView(QuerysetForRoleMixin,
-                           DeleteViewMixin,
-                           DjangoDeleteView,
-                           CommonCradminViewMixin,
-                           javascriptregistry.viewmixin.WithinRoleViewMixin):
+class WithinRoleDeleteView(
+    QuerysetForRoleMixin,
+    DeleteViewMixin,
+    DjangoDeleteView,
+    CommonCradminViewMixin,
+    javascriptregistry.viewmixin.WithinRoleViewMixin,
+):
     """
     Delete view with the correct context data and sane base template
     for views where we have a cradmin role.
@@ -121,7 +122,8 @@ class WithinRoleDeleteView(QuerysetForRoleMixin,
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.formview.WithinRoleDeleteView``.
     """
-    template_name = 'django_cradmin/viewhelpers/formview/within_role_delete_view.django.html'
+
+    template_name = "django_cradmin/viewhelpers/formview/within_role_delete_view.django.html"
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleDeleteView, self).get_context_data(**kwargs)

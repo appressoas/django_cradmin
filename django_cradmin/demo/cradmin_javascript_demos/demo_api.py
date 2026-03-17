@@ -11,7 +11,7 @@ from django_cradmin.demo.cradmin_javascript_demos.models import FictionalFigure
 
 class FictionalFigurePagination(PageNumberPagination):
     page_size = 3
-    page_size_query_param = 'page_size'
+    page_size_query_param = "page_size"
 
 
 class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
@@ -22,20 +22,17 @@ class FictionalFigureViewSet(viewsets.ReadOnlyModelViewSet):
         # WARNING: In a real world use case, you will often want to restrict permissions,
         #          instead of giving anyone access to everything!
         queryset = FictionalFigure.objects.all()
-        search = self.request.query_params.get('search', None)
+        search = self.request.query_params.get("search", None)
         if search:
-            queryset = queryset.filter(
-                models.Q(name__icontains=search) |
-                models.Q(about__icontains=search)
-            )
-        if 'is_godlike' in self.request.query_params:
-            is_godlike = self.request.query_params.get('is_godlike') == 'true'
+            queryset = queryset.filter(models.Q(name__icontains=search) | models.Q(about__icontains=search))
+        if "is_godlike" in self.request.query_params:
+            is_godlike = self.request.query_params.get("is_godlike") == "true"
             if is_godlike:
                 queryset = queryset.filter(is_godlike=is_godlike)
 
-        if 'rating' in self.request.query_params:
+        if "rating" in self.request.query_params:
             try:
-                rating = int(self.request.query_params.get('rating'))
+                rating = int(self.request.query_params.get("rating"))
             except ValueError:
                 rating = 0
             queryset = queryset.filter(rating__gte=rating)
@@ -48,9 +45,9 @@ class MoveSerializer(serializers.Serializer):
     """
     Serializer for :class:`.FictionalFigureMoveView`.
     """
+
     moving_object_id = serializers.IntegerField(required=True)
-    move_before_object_id = serializers.IntegerField(
-        required=True, allow_null=True)
+    move_before_object_id = serializers.IntegerField(required=True, allow_null=True)
 
 
 class FictionalFigureMoveView(GenericAPIView):
@@ -70,7 +67,7 @@ class FictionalFigureMoveView(GenericAPIView):
         HINT: You can save having to implement sort by using the
         sortable models. Refer to sortable.rst in the docs for more info.
         """
-        fictional_figures = FictionalFigure.objects.order_by('sort_index', 'name')
+        fictional_figures = FictionalFigure.objects.order_by("sort_index", "name")
         index = 0
         for fictional_figure in fictional_figures:
             if fictional_figure == moving_object:
@@ -89,10 +86,7 @@ class FictionalFigureMoveView(GenericAPIView):
     def post(self, request, **kwargs):
         serializer = MoveSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        moving_object = self.__get_fictionalfigure_object(
-            pk=serializer.validated_data['moving_object_id'])
-        move_before_object = self.__get_fictionalfigure_object(
-            pk=serializer.validated_data['move_before_object_id'])
-        self.__set_sortindex(moving_object=moving_object,
-                             move_before_object=move_before_object)
+        moving_object = self.__get_fictionalfigure_object(pk=serializer.validated_data["moving_object_id"])
+        move_before_object = self.__get_fictionalfigure_object(pk=serializer.validated_data["move_before_object_id"])
+        self.__set_sortindex(moving_object=moving_object, move_before_object=move_before_object)
         return Response(serializer.data)

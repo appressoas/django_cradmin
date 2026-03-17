@@ -4,7 +4,7 @@ import re
 from django.templatetags.static import static as django_static
 
 
-COMPONENT_ID_REGEX = re.compile(r'^[a-z][a-z0-9_]*[a-z0-9]$')
+COMPONENT_ID_REGEX = re.compile(r"^[a-z][a-z0-9_]*[a-z0-9]$")
 
 
 class ComponentIdFormatError(Exception):
@@ -23,6 +23,7 @@ class AbstractJsComponent(object):
         Set to :meth:`.get_component_id` in __init__ if the component ID passes
         the validation checks.
     """
+
     @classmethod
     def get_component_id(cls):
         """
@@ -40,10 +41,10 @@ class AbstractJsComponent(object):
         self.component_id = self.get_component_id()
         if not COMPONENT_ID_REGEX.match(self.component_id):
             raise ComponentIdFormatError(
-                'Invalid component_id: {}. Must start with a-z, end with a-z or 0-9, and'
-                'the letters between the start and end can only be a-z, 0-9 and _. Must '
-                'be at least 2 letters.'.format(
-                    self.component_id))
+                "Invalid component_id: {}. Must start with a-z, end with a-z or 0-9, and"
+                "the letters between the start and end can only be a-z, 0-9 and _. Must "
+                "be at least 2 letters.".format(self.component_id)
+            )
 
     def get_dependencies(self):
         """

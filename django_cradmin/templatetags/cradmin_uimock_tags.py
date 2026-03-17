@@ -18,13 +18,13 @@ def cradmin_uimock_url(context, mockname=None, viewname=None):
         viewname: The name of the mock view (the name specified for the view in urls.py).
             You do not need to specify this to link to mocks within the same view.
     """
-    request = context['request']
+    request = context["request"]
     if viewname:
         path = reverse(viewname)
     else:
         path = request.path
-        if not path.endswith('/'):
-            path = path.rsplit('/', 1)[0] + '/'
+        if not path.endswith("/"):
+            path = path.rsplit("/", 1)[0] + "/"
     if mockname:
-        path = '{}{}'.format(path, mockname)
+        path = "{}{}".format(path, mockname)
     return path

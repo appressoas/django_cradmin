@@ -13,10 +13,10 @@ from django_cradmin.utils import crhumanize
 from django_cradmin.utils.deprecation_decorators import CradminDeprecatedSinceV4
 
 CradminDeprecatedSinceV4(
-    message='Deprecated, and only available to enable migration of the data. '
-            'If you still need cradmin_temporaryfileuploadstore, please use the cradmin_legacy '
-            'library, which can be used along with django_cradmin>=4.0.0. '
-            'See the releasenotes for 4.0.0 for more details and migration guide.'
+    message="Deprecated, and only available to enable migration of the data. "
+    "If you still need cradmin_temporaryfileuploadstore, please use the cradmin_legacy "
+    "library, which can be used along with django_cradmin>=4.0.0. "
+    "See the releasenotes for 4.0.0 for more details and migration guide."
 ).show_warning(name=__name__)
 
 
@@ -35,11 +35,11 @@ class TemporaryFileCollectionManager(models.Manager):
 
 def html_input_accept_match(accept, mimetype, filename):
     filename = filename.lower()
-    for pattern in accept.split(','):
-        if '/' in pattern:
+    for pattern in accept.split(","):
+        if "/" in pattern:
             if mimetype and fnmatch.fnmatch(mimetype, pattern):
                 return True
-        elif pattern.startswith('.'):
+        elif pattern.startswith("."):
             if os.path.splitext(filename)[1] == pattern:
                 return True
         else:
@@ -48,7 +48,7 @@ def html_input_accept_match(accept, mimetype, filename):
     return False
 
 
-def truncate_filename(filename, maxlength, ellipsis='...'):
+def truncate_filename(filename, maxlength, ellipsis="..."):
     if len(filename) <= maxlength:
         return filename
     elif maxlength < 12:
@@ -59,7 +59,7 @@ def truncate_filename(filename, maxlength, ellipsis='...'):
         endlength = int(math.ceil(max_length_noellipsis / 2.0))
         start = filename[0:startlength]
         end = filename[-endlength:]
-        return u'{}{}{}'.format(start, ellipsis, end)
+        return "{}{}{}".format(start, ellipsis, end)
 
 
 def _make_unique_filename(filename_set, wanted_filename, generated_filename, max_filename_length, ellipsis):
@@ -67,33 +67,34 @@ def _make_unique_filename(filename_set, wanted_filename, generated_filename, max
         generated_uuid = str(uuid.uuid4())
         if max_filename_length:
             filename = truncate_filename(
-                filename=wanted_filename,
-                maxlength=max_filename_length - len(generated_uuid) - 1,
-                ellipsis=ellipsis)
+                filename=wanted_filename, maxlength=max_filename_length - len(generated_uuid) - 1, ellipsis=ellipsis
+            )
         else:
             filename = wanted_filename
-        generated_filename = u'{}-{}'.format(generated_uuid, filename)
+        generated_filename = "{}-{}".format(generated_uuid, filename)
         return _make_unique_filename(
             filename_set,
             wanted_filename=wanted_filename,
             generated_filename=generated_filename,
             max_filename_length=max_filename_length,
-            ellipsis=ellipsis)
+            ellipsis=ellipsis,
+        )
     else:
         return generated_filename
 
 
-def make_unique_filename(filename_set, wanted_filename, max_filename_length=None, ellipsis='...'):
+def make_unique_filename(filename_set, wanted_filename, max_filename_length=None, ellipsis="..."):
     min_max_filename_length = TemporaryFileCollectionDeprecated.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES
     if max_filename_length and max_filename_length < min_max_filename_length:
-        raise ValueError('make_unique_filename requires max_filename_length to be at least 45.')
+        raise ValueError("make_unique_filename requires max_filename_length to be at least 45.")
     else:
         return _make_unique_filename(
             filename_set=filename_set,
             wanted_filename=wanted_filename,
             generated_filename=wanted_filename,
             max_filename_length=max_filename_length,
-            ellipsis=ellipsis)
+            ellipsis=ellipsis,
+        )
 
 
 class TemporaryFileCollectionDeprecated(models.Model):
@@ -135,47 +136,56 @@ class TemporaryFileCollectionDeprecated(models.Model):
     objects = TemporaryFileCollectionManager()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        help_text='The user that owns this temporary file. Users should not'
-                  'be allowed access to other users temporary files.',
-        on_delete=models.CASCADE)
+        help_text="The user that owns this temporary file. Users should not"
+        "be allowed access to other users temporary files.",
+        on_delete=models.CASCADE,
+    )
     created_datetime = models.DateTimeField(auto_now_add=True)
     minutes_to_live = models.PositiveIntegerField(
         default=60,
-        help_text='The number of minutes the app requests that this '
-                  'file collection should be kept before automatic removal. '
-                  'This is used by automatic cleanup jobs to determine '
-                  'what to delete. You should not rely on the file beeing '
-                  'automatically deleted after this number of minutes, and '
-                  'you should always delete files explicitly as part of the '
-                  'file upload process.'
+        help_text="The number of minutes the app requests that this "
+        "file collection should be kept before automatic removal. "
+        "This is used by automatic cleanup jobs to determine "
+        "what to delete. You should not rely on the file beeing "
+        "automatically deleted after this number of minutes, and "
+        "you should always delete files explicitly as part of the "
+        "file upload process.",
     )
     accept = models.TextField(
-        null=False, blank=True, default='',
-        help_text='An html input field accept attribute formatted string. '
-                  'This is validated by the API on upload.')
+        null=False,
+        blank=True,
+        default="",
+        help_text="An html input field accept attribute formatted string. This is validated by the API on upload.",
+    )
     max_filename_length = models.IntegerField(
-        null=True, blank=True, default=None,
-        help_text='If specified, we shorten filenames to maximum the specified length. '
-                  'This is validated by the API on upload.')
+        null=True,
+        blank=True,
+        default=None,
+        help_text="If specified, we shorten filenames to maximum the specified length. "
+        "This is validated by the API on upload.",
+    )
     unique_filenames = models.BooleanField(
-        null=False, default=False,
-        help_text='If this is True, we add random data when we '
-                  'detect duplicate filenames. The duplicate prevention '
-                  'algorithm handles max_filename.'
-                  'This is validated by the API on upload.')
+        null=False,
+        default=False,
+        help_text="If this is True, we add random data when we "
+        "detect duplicate filenames. The duplicate prevention "
+        "algorithm handles max_filename."
+        "This is validated by the API on upload.",
+    )
 
     #: Max file size in bytes.
-    max_filesize_bytes = models.PositiveIntegerField(
-        null=True, default=None, blank=True)
+    max_filesize_bytes = models.PositiveIntegerField(null=True, default=None, blank=True)
 
     #: If this is True, only a single file can be added to the collection.
     #: This means that the last file added to the collection will be the
     #: only file in the collection.
     singlemode = models.BooleanField(
-        null=False, default=False,
-        help_text='If this is True, only a single file can be added to the '
-                  'collection. This means that the last file added to the '
-                  'collection will be the only file in the collection.')
+        null=False,
+        default=False,
+        help_text="If this is True, only a single file can be added to the "
+        "collection. This means that the last file added to the "
+        "collection will be the only file in the collection.",
+    )
 
     def clear_files(self):
         for temporaryfile in self.files.all():
@@ -192,65 +202,72 @@ class TemporaryFileCollectionDeprecated(models.Model):
             return True
 
     def get_filename_set(self):
-        return set(self.files.values_list('filename', flat=True))
+        return set(self.files.values_list("filename", flat=True))
 
     def clean(self):
         if self.max_filename_length and self.unique_filenames:
             if self.max_filename_length < self.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES:
-                raise ValidationError('max_filename_length must be at least {} when unique_filenames '
-                                      'is True'.format(self.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES))
+                raise ValidationError(
+                    "max_filename_length must be at least {} when unique_filenames is True".format(
+                        self.MAX_FILENAME_LENGTH_MINVALUE_WITH_UNIQUE_FILENAMES
+                    )
+                )
 
 
 def temporary_file_upload_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     if instance.collection_id is None:
-        raise AttributeError('temporary_file_upload_to() requires a TemporaryFileDeprecated with '
-                             'a collection that has been saved to the database.')
-    return u'{directory}/{collectionid}/{uuid}_{timestamp}{extension}'.format(
-        directory=getattr(settings, 'CRADMIN_TEMPORARYFILEUPLOADSTORE_UPLOAD_DIRECTORY',
-                          'cradmin_temporaryfileuploadstore'),
+        raise AttributeError(
+            "temporary_file_upload_to() requires a TemporaryFileDeprecated with "
+            "a collection that has been saved to the database."
+        )
+    return "{directory}/{collectionid}/{uuid}_{timestamp}{extension}".format(
+        directory=getattr(
+            settings, "CRADMIN_TEMPORARYFILEUPLOADSTORE_UPLOAD_DIRECTORY", "cradmin_temporaryfileuploadstore"
+        ),
         collectionid=instance.collection_id,
         uuid=uuid.uuid4(),
         timestamp=time.time(),
-        extension=extension)
+        extension=extension,
+    )
 
 
 def validate_max_file_size(max_filesize_bytes, fieldfile):
     if fieldfile.size > max_filesize_bytes:
-        raise ValidationError(_('Can not upload files larger than %(max_filesize)s.') % {
-            'max_filesize': crhumanize.human_readable_filesize(max_filesize_bytes),
-        }, code='max_filesize_bytes_exceeded')
+        raise ValidationError(
+            _("Can not upload files larger than %(max_filesize)s.")
+            % {
+                "max_filesize": crhumanize.human_readable_filesize(max_filesize_bytes),
+            },
+            code="max_filesize_bytes_exceeded",
+        )
 
 
 class TemporaryFileDeprecated(models.Model):
     """
     A temporary file uploaded by a user.
     """
-    collection = models.ForeignKey(
-        TemporaryFileCollectionDeprecated,
-        on_delete=models.CASCADE,
-        related_name='files')
+
+    collection = models.ForeignKey(TemporaryFileCollectionDeprecated, on_delete=models.CASCADE, related_name="files")
     filename = models.TextField(db_index=True)
-    file = models.FileField(
-        upload_to=temporary_file_upload_to)
-    mimetype = models.TextField(null=False, blank=True, default='')
+    file = models.FileField(upload_to=temporary_file_upload_to)
+    mimetype = models.TextField(null=False, blank=True, default="")
 
     def delete_object_and_file(self):
         self.file.delete()
         self.delete()
 
     def set_mimetype_from_filename(self):
-        self.mimetype = mimetypes.guess_type(self.filename)[0] or ''
+        self.mimetype = mimetypes.guess_type(self.filename)[0] or ""
 
     def clean(self):
         if not self.mimetype and self.filename:
             self.set_mimetype_from_filename()
         if self.collection:
             if self.filename and self.collection.max_filename_length:
-                self.filename = truncate_filename(filename=self.filename,
-                                                  maxlength=self.collection.max_filename_length)
+                self.filename = truncate_filename(filename=self.filename, maxlength=self.collection.max_filename_length)
             if not self.collection.is_supported_filetype(self.mimetype, self.filename):
-                raise ValidationError(_('Unsupported filetype.'), code='unsupported_mimetype')
+                raise ValidationError(_("Unsupported filetype."), code="unsupported_mimetype")
             if self.collection.singlemode:
                 other_temporaryfiles_queryset = self.collection.files.all()
                 if self.id is not None:
@@ -259,5 +276,4 @@ class TemporaryFileDeprecated(models.Model):
                     temporaryfile.file.delete()
                     temporaryfile.delete()
             if self.collection.max_filesize_bytes and self.file:
-                validate_max_file_size(max_filesize_bytes=self.collection.max_filesize_bytes,
-                                       fieldfile=self.file)
+                validate_max_file_size(max_filesize_bytes=self.collection.max_filesize_bytes, fieldfile=self.file)

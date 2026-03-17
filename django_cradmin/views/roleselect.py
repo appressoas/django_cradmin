@@ -15,16 +15,17 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
     - If the user has multiple roles, we list the roles.
     - If the user has no roles, we call :meth:`.get_no_roles_response`.
     """
+
     paginate_by = 30
 
     #: Makes the roles queryset available as ``roles`` in the template.
-    context_object_name = 'roles'
+    context_object_name = "roles"
 
     #: The template used to render this view.
-    template_name = 'django_cradmin/roleselect.django.html'
+    template_name = "django_cradmin/roleselect.django.html"
 
     #: The title of the page. See :meth:`.get_pagetitle`.
-    pagetitle = _('What would you like to edit?')
+    pagetitle = _("What would you like to edit?")
 
     #: Redirect if we have a single role? See :meth:`.get_autoredirect_if_single_role`.
     autoredirect_if_single_role = True
@@ -78,8 +79,9 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
         """
         if self.get_autoredirect_if_single_role():
             only_role = self.get_queryset().first()
-            return HttpResponseRedirect(self.request.cradmin_instance.rolefrontpage_url(
-                self.request.cradmin_instance.get_roleid(only_role)))
+            return HttpResponseRedirect(
+                self.request.cradmin_instance.rolefrontpage_url(self.request.cradmin_instance.get_roleid(only_role))
+            )
         else:
             return super(RoleSelectView, self).get(*args, **kwargs)
 
@@ -101,7 +103,7 @@ class RoleSelectView(javascriptregistry.viewmixin.WithinRoleViewMixin, ListView)
 
     def get_context_data(self, **kwargs):
         context = super(RoleSelectView, self).get_context_data(**kwargs)
-        context['pagetitle'] = self.get_pagetitle()
-        context['rolecount'] = self.get_queryset().count()
+        context["pagetitle"] = self.get_pagetitle()
+        context["rolecount"] = self.get_queryset().count()
         self.add_javascriptregistry_component_ids_to_context(context=context)
         return context

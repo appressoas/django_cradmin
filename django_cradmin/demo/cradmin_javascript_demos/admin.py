@@ -6,26 +6,19 @@ from django_cradmin.demo.cradmin_javascript_demos.models import FictionalFigure,
 @admin.register(FictionalFigure)
 class FictionalFigureAdmin(admin.ModelAdmin):
     list_display = [
-        'name',
-        'about',
-        'is_godlike',
-        'rating',
-        'sort_index',
+        "name",
+        "about",
+        "is_godlike",
+        "rating",
+        "sort_index",
     ]
-    search_fields = [
-        'name',
-        'about'
-    ]
+    search_fields = ["name", "about"]
     list_filter = [
-        'is_godlike',
+        "is_godlike",
     ]
 
 
 @admin.register(FictionalFigureCollection)
 class FictionalFigureCollectionAdmin(admin.ModelAdmin):
-    list_display = [
-        'name'
-    ]
-    search_fields = [
-        'name'
-    ]
+    list_display = ["name"]
+    search_fields = ["name"]

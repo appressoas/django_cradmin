@@ -14,14 +14,15 @@ class FocusBox(base.ItemValueRenderer):
     :class:`django_cradmin.viewhelpers.listbuilder.base.ItemValueRenderer`
     subclass for more than the most simple use cases.
     """
+
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-focus-box')
+        css_class_suffixes.append("cradmin-listbuilder-focus-box")
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
         css_classes = super(FocusBox, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listbuilder-itemvalue-focusbox')
+        css_classes.append("django-cradmin-listbuilder-itemvalue-focusbox")
         return css_classes
 
 
@@ -34,11 +35,11 @@ class TitleDescription(FocusBox):
 
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
-    template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html'
+    template_name = "django_cradmin/viewhelpers/listbuilder/itemvalue/titledescription.django.html"
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-title-description')
+        css_class_suffixes.append("cradmin-listbuilder-title-description")
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -47,7 +48,7 @@ class TitleDescription(FocusBox):
         in addition to the classes added by the superclasses.
         """
         css_classes = super(TitleDescription, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listbuilder-itemvalue-titledescription')
+        css_classes.append("django-cradmin-listbuilder-itemvalue-titledescription")
         return css_classes
 
     def get_title(self):
@@ -76,11 +77,11 @@ class UseThis(TitleDescription):
 
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
-    template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/use-this.django.html'
+    template_name = "django_cradmin/viewhelpers/listbuilder/itemvalue/use-this.django.html"
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-use-this')
+        css_class_suffixes.append("cradmin-listbuilder-use-this")
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -89,14 +90,14 @@ class UseThis(TitleDescription):
         in addition to the classes added by the superclasses.
         """
         css_classes = super(UseThis, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listbuilder-itemvalue-usethis')
+        css_classes.append("django-cradmin-listbuilder-itemvalue-usethis")
         return css_classes
 
     def get_use_this_directive_options_dict(self, request):
         return {
-            'value': self.value.pk,
-            'fieldid': request.GET['foreignkey_select_fieldid'],
-            'preview': self.get_title()
+            "value": self.value.pk,
+            "fieldid": request.GET["foreignkey_select_fieldid"],
+            "preview": self.get_title(),
         }
 
     def get_use_this_directive_options_json(self, request):
@@ -104,7 +105,7 @@ class UseThis(TitleDescription):
 
     def get_context_data(self, request=None):
         context = super(UseThis, self).get_context_data(request=request)
-        context['use_this_directive_options_json'] = self.get_use_this_directive_options_json(request=request)
+        context["use_this_directive_options_json"] = self.get_use_this_directive_options_json(request=request)
         return context
 
 
@@ -120,11 +121,11 @@ class EditDelete(TitleDescription):
 
     #: The template used to render this itemvalue.
     #: The template has lots of blocks that you can override.
-    template_name = 'django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html'
+    template_name = "django_cradmin/viewhelpers/listbuilder/itemvalue/edit-delete.django.html"
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(FocusBox, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-edit-delete')
+        css_class_suffixes.append("cradmin-listbuilder-edit-delete")
         return css_class_suffixes
 
     def get_base_css_classes_list(self):
@@ -133,7 +134,7 @@ class EditDelete(TitleDescription):
         in addition to the classes added by the superclasses.
         """
         css_classes = super(EditDelete, self).get_base_css_classes_list()
-        css_classes.append('django-cradmin-listbuilder-itemvalue-editdelete')
+        css_classes.append("django-cradmin-listbuilder-itemvalue-editdelete")
         return css_classes
 
     def get_edit_viewname(self):
@@ -147,7 +148,7 @@ class EditDelete(TitleDescription):
         name the view for editing items this to keep things uniformly
         structured.
         """
-        return 'edit'
+        return "edit"
 
     def get_delete_viewname(self):
         """
@@ -160,7 +161,7 @@ class EditDelete(TitleDescription):
         name the view for deleting items this to keep things uniformly
         structured.
         """
-        return 'delete'
+        return "delete"
 
     def get_preview_viewname(self):
         """
@@ -195,12 +196,13 @@ class EditDeleteWithPreviewMixin(object):
 
             The example above is the same as using :class:`.EditDeleteWithPreviewMixin`.
     """
+
     def get_preview_viewname(self):
         """
         Overrides :meth:`.EditDelete.get_preview_viewname` to make it return
         ``"preview"`` by default instead of ``None``.
         """
-        return 'preview'
+        return "preview"
 
 
 class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
@@ -211,5 +213,5 @@ class EditDeleteWithPreview(EditDeleteWithPreviewMixin, EditDelete):
 
     def get_test_css_class_suffixes_list(self):
         css_class_suffixes = super(EditDeleteWithPreview, self).get_test_css_class_suffixes_list()
-        css_class_suffixes.append('cradmin-listbuilder-edit-delete-with-preview')
+        css_class_suffixes.append("cradmin-listbuilder-edit-delete-with-preview")
         return css_class_suffixes

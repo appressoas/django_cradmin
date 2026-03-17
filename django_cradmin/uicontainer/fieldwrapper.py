@@ -24,20 +24,28 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
       renders the help text. This can be overridden using the ``help_text_renderable``
       kwarg, or in :meth:`.get_default_help_text_renderable`.
     """
-    template_name = 'django_cradmin/uicontainer/fieldwrapper.django.html'
 
-    def __init__(self, fieldname, label_renderable=None, field_renderable=None,
-                 help_text_renderable=None, messages_container=None, **kwargs):
+    template_name = "django_cradmin/uicontainer/fieldwrapper.django.html"
+
+    def __init__(
+        self,
+        fieldname,
+        label_renderable=None,
+        field_renderable=None,
+        help_text_renderable=None,
+        messages_container=None,
+        **kwargs,
+    ):
         self.fieldname = fieldname
         self.label_renderable = label_renderable or self.get_default_label_renderable()
         self.field_renderable = field_renderable or self.get_default_field_renderable()
         self.help_text_renderable = help_text_renderable or self.get_default_help_text_renderable()
         self.messages_container = messages_container or self.get_default_messages_container()
         super(FieldWrapper, self).__init__(**kwargs)
-        self.properties['field_wrapper_renderable'] = self
+        self.properties["field_wrapper_renderable"] = self
 
     def get_default_dom_id(self):
-        return '{}_wrapper'.format(self.field_renderable.dom_id)
+        return "{}_wrapper".format(self.field_renderable.dom_id)
 
     def bootstrap(self, **kwargs):
         """
@@ -51,7 +59,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         return returnvalue
 
     def get_default_html_tag(self):
-        return 'div'
+        return "div"
 
     def get_default_label_renderable(self):
         """
@@ -98,9 +106,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
 
         Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageListMixin`.
         """
-        return messagescontainer.CompactMessagesContainer(
-            test_css_class_suffixes_list=['field-messages']
-        )
+        return messagescontainer.CompactMessagesContainer(test_css_class_suffixes_list=["field-messages"])
 
     def prepopulate_virtual_children_list(self):
         """
@@ -109,10 +115,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         - Label renderable
         - Field renderable
         """
-        return [
-            self.label_renderable,
-            self.field_renderable
-        ]
+        return [self.label_renderable, self.field_renderable]
 
     def prepopulate_children_list(self):
         """
@@ -137,7 +140,7 @@ class FieldWrapper(container.AbstractContainerRenderable, form_mixins.FormRender
         return self.formrenderable.form[self.fieldname]
 
     def get_default_bem_block_or_element(self):
-        return 'fieldwrapper'
+        return "fieldwrapper"
 
 
 class NoWrapperElementFieldWrapper(FieldWrapper):
@@ -145,4 +148,5 @@ class NoWrapperElementFieldWrapper(FieldWrapper):
     Same as :class:`.FieldWrapper` except that it does not include the wrapper
     element.
     """
-    template_name = 'django_cradmin/uicontainer/fieldwrapper_no_wrapper_element.django.html'
+
+    template_name = "django_cradmin/uicontainer/fieldwrapper_no_wrapper_element.django.html"

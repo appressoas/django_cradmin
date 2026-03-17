@@ -3,7 +3,7 @@ from django_cradmin.apps.cradmin_generic_token_with_metadata.models import Gener
 
 
 class Command(BaseCommand):
-    help = 'Delete all expired GenericTokenWithMetadata objects from the database.'
+    help = "Delete all expired GenericTokenWithMetadata objects from the database."
 
     def handle(self, **options):
         GenericTokenWithMetadata.objects.delete_expired()

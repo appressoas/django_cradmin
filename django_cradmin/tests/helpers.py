@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 
 
-def create_user(username=None, password='test', **kwargs):
+def create_user(username=None, password="test", **kwargs):
     """
     Create a user with the given ``username``.
 

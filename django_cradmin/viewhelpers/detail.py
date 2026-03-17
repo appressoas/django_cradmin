@@ -4,8 +4,9 @@ from django_cradmin import javascriptregistry
 from django_cradmin.viewhelpers.mixins import QuerysetForRoleMixin, CommonCradminViewMixin
 
 
-class DetailView(javascriptregistry.viewmixin.WithinRoleViewMixin,
-                 CommonCradminViewMixin, QuerysetForRoleMixin, DjangoDetailView):
+class DetailView(
+    javascriptregistry.viewmixin.WithinRoleViewMixin, CommonCradminViewMixin, QuerysetForRoleMixin, DjangoDetailView
+):
     """
     Base detail view for Django cradmin views.
 
@@ -32,6 +33,7 @@ class DetailRoleView(DetailView):
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.detail.DetailRoleView``.
     """
+
     def get_object(self, queryset=None):
         return self.get_queryset_for_role().get()
 

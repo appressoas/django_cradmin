@@ -11,18 +11,22 @@ from ievv_opensource.utils.singleton import Singleton
 
 class AbstractStyleGuide(object):
     #: The extensions to look for when finding style files.
-    stylefile_extensions = ['.less', '.css', '.sass', '.scss']
+    stylefile_extensions = [".less", ".css", ".sass", ".scss"]
 
-    def __init__(self, unique_id, label,
-                 template_name="cradmin_kss_styleguide/styleguideview/guide.django.html",
-                 section_template_name='cradmin_kss_styleguide/templatetags/render_kss_section.django.html',
-                 sections_template_name='cradmin_kss_styleguide/templatetags/render_kss_sections.django.html',
-                 toc_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc.django.html',
-                 toc_node_template_name='cradmin_kss_styleguide/templatetags/render_kss_toc_node.django.html',
-                 example_template_name='cradmin_kss_styleguide/styleguideview/example.django.html',
-                 frontpage_template=None,
-                 filename_patterns=None,
-                 javascript_component_ids=None):
+    def __init__(
+        self,
+        unique_id,
+        label,
+        template_name="cradmin_kss_styleguide/styleguideview/guide.django.html",
+        section_template_name="cradmin_kss_styleguide/templatetags/render_kss_section.django.html",
+        sections_template_name="cradmin_kss_styleguide/templatetags/render_kss_sections.django.html",
+        toc_template_name="cradmin_kss_styleguide/templatetags/render_kss_toc.django.html",
+        toc_node_template_name="cradmin_kss_styleguide/templatetags/render_kss_toc_node.django.html",
+        example_template_name="cradmin_kss_styleguide/styleguideview/example.django.html",
+        frontpage_template=None,
+        filename_patterns=None,
+        javascript_component_ids=None,
+    ):
         """
         Args:
             unique_id: A unique ID for the styleguide.
@@ -48,9 +52,8 @@ class AbstractStyleGuide(object):
 
     def make_kss_styleguide(self):
         return pythonkss.Parser(
-            *self.get_sourcefolders(),
-            extensions=self.stylefile_extensions,
-            filename_patterns=self.filename_patterns)
+            *self.get_sourcefolders(), extensions=self.stylefile_extensions, filename_patterns=self.filename_patterns
+        )
 
     def get_template_name(self):
         return self.template_name
@@ -96,7 +99,7 @@ class StyleGuide(AbstractStyleGuide):
 
 
 class IevvBuildstaticStyleGuide(AbstractStyleGuide):
-    def __init__(self, appname, sourcefile, sourcefolder='styles', **kwargs):
+    def __init__(self, appname, sourcefile, sourcefolder="styles", **kwargs):
         super(IevvBuildstaticStyleGuide, self).__init__(**kwargs)
         self.appname = appname
         self.sourcefolder = sourcefolder
@@ -109,11 +112,10 @@ class IevvBuildstaticStyleGuide(AbstractStyleGuide):
                 if plugin.sourcefolder == self.sourcefolder and plugin.sourcefile == self.sourcefile:
                     return plugin
         raise ValueError(
-            'Plugin in {appname} matching sourcefolder={sourcefolder} and '
-            'sourcefile={sourcefile} not found'.format(
-                appname=self.appname,
-                sourcefolder=self.sourcefolder,
-                sourcefile=self.sourcefile))
+            "Plugin in {appname} matching sourcefolder={sourcefolder} and sourcefile={sourcefile} not found".format(
+                appname=self.appname, sourcefolder=self.sourcefolder, sourcefile=self.sourcefile
+            )
+        )
 
     def get_sourcefolders(self):
         plugin = self.find_plugin()
@@ -123,24 +125,22 @@ class IevvBuildstaticStyleGuide(AbstractStyleGuide):
 
     def get_cssurl_for_styleguide(self):
         plugin = self.find_plugin()
-        staticurl = plugin.get_destinationfile_path().split('{sep}static{sep}'.format(sep=os.sep))[1]
+        staticurl = plugin.get_destinationfile_path().split("{sep}static{sep}".format(sep=os.sep))[1]
         return static(staticurl)
 
 
 class CradminStyleGuide(IevvBuildstaticStyleGuide):
     def __init__(self, *args, **kwargs):
-        template_name = kwargs.pop(
-            'template_name',
-            'cradmin_kss_styleguide/styleguideview/cradmin-guide.django.html')
+        template_name = kwargs.pop("template_name", "cradmin_kss_styleguide/styleguideview/cradmin-guide.django.html")
         example_template_name = kwargs.pop(
-            'example_template_name',
-            'cradmin_kss_styleguide/styleguideview/cradmin-example.django.html')
-        kwargs['template_name'] = template_name
-        kwargs['example_template_name'] = example_template_name
+            "example_template_name", "cradmin_kss_styleguide/styleguideview/cradmin-example.django.html"
+        )
+        kwargs["template_name"] = template_name
+        kwargs["example_template_name"] = example_template_name
         super(CradminStyleGuide, self).__init__(*args, **kwargs)
 
     def get_javascript_component_ids(self):
-        return ['django_cradmin_javascript']
+        return ["django_cradmin_javascript"]
 
 
 class Registry(Singleton):
@@ -180,7 +180,7 @@ class Registry(Singleton):
             styleguide (.AbstractStyleGuide): The styleguide.
         """
         if styleguide.unique_id in self._styleguides:
-            raise KeyError('Duplicate unique_id in styleguide: {}'.format(styleguide.unique_id))
+            raise KeyError("Duplicate unique_id in styleguide: {}".format(styleguide.unique_id))
         self._styleguides[styleguide.unique_id] = styleguide
 
     def __getitem__(self, unique_id):

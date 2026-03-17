@@ -9,7 +9,7 @@ def join_css_classes_list(css_classes_list):
     """
     Join the provided list of css classes into a string.
     """
-    return '  '.join(css_classes_list)
+    return "  ".join(css_classes_list)
 
 
 class AbstractRenderable(object):
@@ -38,8 +38,7 @@ class AbstractRenderable(object):
         if self.template_name:
             return self.template_name
         else:
-            raise NotImplementedError('You must set template_name or override '
-                                      'get_template_names().')
+            raise NotImplementedError("You must set template_name or override get_template_names().")
 
     def get_context_data(self, request=None):
         """
@@ -51,9 +50,7 @@ class AbstractRenderable(object):
                 'me': self
             }
         """
-        return {
-            'me': self
-        }
+        return {"me": self}
 
     def render(self, request=None, extra_context_data=None):
         """
@@ -69,10 +66,7 @@ class AbstractRenderable(object):
         if extra_context_data:
             context_data.update(extra_context_data)
         context_data.update(self.get_context_data(request=request))
-        return render_to_string(
-            template_name=self.get_template_names(),
-            context=context_data,
-            request=request)
+        return render_to_string(template_name=self.get_template_names(), context=context_data, request=request)
 
 
 class AbstractRenderableWithCss(AbstractRenderable):
@@ -80,6 +74,7 @@ class AbstractRenderableWithCss(AbstractRenderable):
     Extends :class:`.AbstractRenderable` with a unified
     API for setting CSS classes.
     """
+
     def get_base_css_classes_list(self):
         return []
 
@@ -129,16 +124,19 @@ class AbstractRenderableWithCss(AbstractRenderable):
         You should not override this, override :meth:`.get_css_classes_list` instead.
         """
         from django_cradmin.templatetags import cradmin_tags  # Avoid circular import
+
         css_classes = list(self.get_css_classes_list())
-        if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
+        if crsettings.get_setting("DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES", False):
             for css_class_suffix in self.get_test_css_class_suffixes_list():
                 css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
         return join_css_classes_list(css_classes)
 
     def get_css_classes_string(self):
-        warnings.warn("AbstractRenderableWithCss.get_css_classes_string() is deprectated "
-                      "- use the AbstractRenderableWithCss.css_classes property instead.",
-                      DeprecationWarning)
+        warnings.warn(
+            "AbstractRenderableWithCss.get_css_classes_string() is deprectated "
+            "- use the AbstractRenderableWithCss.css_classes property instead.",
+            DeprecationWarning,
+        )
         return self.css_classes
 
 
@@ -150,8 +148,8 @@ class AbstractBemRenderable(AbstractRenderable):
     This is an alternative to :class:`.AbstractRenderableWithCss`
     that makes it much more natural to work with BEM.
     """
-    def __init__(self, bem_block=None, bem_element=None, bem_variant_list=None,
-                 extra_css_classes_list=None):
+
+    def __init__(self, bem_block=None, bem_element=None, bem_variant_list=None, extra_css_classes_list=None):
         """
 
         Args:
@@ -162,9 +160,9 @@ class AbstractBemRenderable(AbstractRenderable):
             extra_css_classes_list (list): List of extra css classes.
         """
         if bem_block and bem_element:
-            raise ValueError('Can not specify both bem_block and bem_element arguments.')
-        if bem_element and '__' not in bem_element:
-            raise ValueError('bem_element must contain __')
+            raise ValueError("Can not specify both bem_block and bem_element arguments.")
+        if bem_element and "__" not in bem_element:
+            raise ValueError("bem_element must contain __")
         self._bem_block = bem_block
         self._bem_element = bem_element
         self._bem_variant_list = bem_variant_list or []
@@ -222,12 +220,14 @@ class AbstractBemRenderable(AbstractRenderable):
         and :meth:`.get_bem_variant_list` instead.
         """
         from django_cradmin.templatetags import cradmin_tags  # Avoid circular import
+
         css_classes = []
         if self.bem_block_or_element:
             css_classes = [self.bem_block_or_element]
-            css_classes.extend(['{}--{}'.format(self.bem_block_or_element, variant)
-                                for variant in self.get_bem_variant_list()])
-        if crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False):
+            css_classes.extend(
+                ["{}--{}".format(self.bem_block_or_element, variant) for variant in self.get_bem_variant_list()]
+            )
+        if crsettings.get_setting("DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES", False):
             for css_class_suffix in self.get_test_css_class_suffixes_list():
                 css_classes.append(cradmin_tags.cradmin_test_css_class(css_class_suffix))
         css_classes.extend(self.get_extra_css_classes_list())

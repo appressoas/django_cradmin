@@ -25,7 +25,7 @@ def cradmin_titletext_for_role(context, role):
     Template tag implementation of
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role`.
     """
-    request = context['request']
+    request = context["request"]
     cradmin_instance = request.cradmin_instance
     return cradmin_instance.get_titletext_for_role(role)
 
@@ -36,7 +36,7 @@ def cradmin_descriptionhtml_for_role(context, role):
     Template tag implementation of
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_titletext_for_role`.
     """
-    request = context['request']
+    request = context["request"]
     cradmin_instance = request.cradmin_instance
     return cradmin_instance.get_descriptionhtml_for_role(role)
 
@@ -47,7 +47,7 @@ def cradmin_rolefrontpage_url(context, role):
     Template tag implementation of
     :meth:`django_cradmin.crinstance.BaseCrAdminInstance.rolefrontpage_url`.
     """
-    request = context['request']
+    request = context["request"]
     cradmin_instance = request.cradmin_instance
     return cradmin_instance.rolefrontpage_url(cradmin_instance.get_roleid(role))
 
@@ -77,7 +77,7 @@ def cradmin_appurl(context, viewname, *args, **kwargs):
                 Show advanced listing ordered by name
             </a>
     """
-    request = context['request']
+    request = context["request"]
     return request.cradmin_app.reverse_appurl(viewname, args=args, kwargs=kwargs)
 
 
@@ -108,9 +108,8 @@ def cradmin_appindex_url(context, *args, **kwargs):
                 Show advanced listing ordered by name
             </a>
     """
-    request = context['request']
-    return request.cradmin_app.reverse_appurl(
-        viewname=crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs)
+    request = context["request"]
+    return request.cradmin_app.reverse_appurl(viewname=crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs)
 
 
 @register.simple_tag(takes_context=True)
@@ -140,15 +139,17 @@ def cradmin_instance_appindex_url(context, appname, *args, **kwargs):
                 Show advanced listing ordered by name
             </a>
     """
-    request = context['request']
+    request = context["request"]
     return request.cradmin_instance.reverse_url(
-        appname=appname, viewname=crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs)
+        appname=appname, viewname=crapp.INDEXVIEW_NAME, args=args, kwargs=kwargs
+    )
 
 
 @register.simple_tag(takes_context=True)
 def cradmin_instanceindex_url(context, appname):
-    warnings.warn("cradmin_instanceindex_url is deprecated. Use cradmin_instance_appindex_url instead.",
-                  DeprecationWarning)
+    warnings.warn(
+        "cradmin_instanceindex_url is deprecated. Use cradmin_instance_appindex_url instead.", DeprecationWarning
+    )
     return cradmin_instance_appindex_url(context, appname)
 
 
@@ -179,9 +180,8 @@ def cradmin_instance_url(context, appname, viewname, *args, **kwargs):
                 Show advanced pages listing ordered by name
             </a>
     """
-    request = context['request']
-    return request.cradmin_instance.reverse_url(
-        appname=appname, viewname=viewname, args=args, kwargs=kwargs)
+    request = context["request"]
+    return request.cradmin_instance.reverse_url(appname=appname, viewname=viewname, args=args, kwargs=kwargs)
 
 
 @register.simple_tag
@@ -198,7 +198,7 @@ def cradmin_instanceroot_url(instanceid):
 
 @register.simple_tag(takes_context=True)
 def cradmin_instance_rolefrontpage_url(context):
-    request = context['request']
+    request = context["request"]
     return request.cradmin_instance.rolefrontpage_url()
 
 
@@ -233,14 +233,11 @@ def cradmin_url(context, instanceid=None, appname=None, roleid=None, viewname=cr
             </a>
     """
     if instanceid is None:
-        request = context['request']
+        request = context["request"]
         instanceid = request.cradmin_instance.id
     return reverse_cradmin_url(
-        instanceid=instanceid,
-        appname=appname,
-        roleid=roleid,
-        viewname=viewname,
-        args=args, kwargs=kwargs)
+        instanceid=instanceid, appname=appname, roleid=roleid, viewname=viewname, args=args, kwargs=kwargs
+    )
 
 
 @register.filter
@@ -273,26 +270,27 @@ def cradmin_jsonencode_html_attribute_value(json_serializable_pythonobject):
 
 @register.simple_tag(takes_context=True)
 def cradmin_theme_staticpath(context):
-    """
-    """
-    if 'request' in context:
-        request = context['request']
+    """ """
+    if "request" in context:
+        request = context["request"]
         theme_path = None
-        if hasattr(request, 'cradmin_instance'):
+        if hasattr(request, "cradmin_instance"):
             theme_path = request.cradmin_instance.get_cradmin_theme_path()
             if theme_path:
                 theme_path = str(theme_path)
         if not theme_path:
-            theme_path = getattr(settings,
-                                 'DJANGO_CRADMIN_THEME_PATH',
-                                 'django_cradmin_styles/{version}/styles/basetheme/main.css'.format(
-                                     version=django_cradmin.__version__
-                                 ))
-        return ievv_staticfiles_autogzip.static(theme_path, autogzip_context='cradmin-theme-css')
+            theme_path = getattr(
+                settings,
+                "DJANGO_CRADMIN_THEME_PATH",
+                "django_cradmin_styles/{version}/styles/basetheme/main.css".format(version=django_cradmin.__version__),
+            )
+        return ievv_staticfiles_autogzip.static(theme_path, autogzip_context="cradmin-theme-css")
     else:
-        raise Exception('The cradmin_theme_staticpath requires "request" to be in the template '
-                        'context. You can get this using the "django.template.context_processors.request" '
-                        'context processor.')
+        raise Exception(
+            'The cradmin_theme_staticpath requires "request" to be in the template '
+            'context. You can get this using the "django.template.context_processors.request" '
+            "context processor."
+        )
 
 
 @register.simple_tag(takes_context=True)
@@ -314,10 +312,10 @@ def cradmin_render_renderable(context, renderable, include_context=False, **kwar
 
             {% cradmin_render_renderable renderable %}
     """
-    request = context.get('request', None)
+    request = context.get("request", None)
     full_kwargs = {}
     if include_context:
-        full_kwargs['extra_context_data'] = context.flatten()
+        full_kwargs["extra_context_data"] = context.flatten()
     full_kwargs.update(kwargs)
     return renderable.render(request=request, **full_kwargs)
 
@@ -366,11 +364,11 @@ def cradmin_test_css_class(suffix):
     Args:
         suffix: The suffix for your css class. The actual css class will be `` test-<suffix> ``.
     """
-    include_test_css_classes = crsettings.get_setting('DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES', False)
+    include_test_css_classes = crsettings.get_setting("DJANGO_CRADMIN_INCLUDE_TEST_CSS_CLASSES", False)
     if include_test_css_classes:
-        return '  test-{}  '.format(suffix)
+        return "  test-{}  ".format(suffix)
     else:
-        return ''
+        return ""
 
 
 @register.simple_tag
@@ -391,7 +389,7 @@ def cradmin_join_css_classes_list(css_classes_list):
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_render_header(context, headername='default', include_context=True, **kwargs):
+def cradmin_render_header(context, headername="default", include_context=True, **kwargs):
     """
     Render a header.
 
@@ -419,21 +417,17 @@ def cradmin_render_header(context, headername='default', include_context=True, *
         :meth:`django_cradmin.crinstance.BaseCrAdminInstance.get_header_renderable`
         to handle this headername as an argument.
     """
-    request = context['request']
+    request = context["request"]
     cradmin_instance = request.cradmin_instance
     header_renderable = cradmin_instance.get_header_renderable(headername=headername)
     if header_renderable:
-        return cradmin_render_renderable(context, header_renderable,
-                                         include_context=include_context,
-                                         **kwargs)
+        return cradmin_render_renderable(context, header_renderable, include_context=include_context, **kwargs)
     else:
-        return ''
+        return ""
 
 
 @register.simple_tag(takes_context=True)
-def cradmin_render_breadcrumb_item_list(context, include_context=True,
-                                        location=None,
-                                        **kwargs):
+def cradmin_render_breadcrumb_item_list(context, include_context=True, location=None, **kwargs):
     """
     Render breadcrumbs from the ``cradmin_breadcrumb_item_list`` template context
     variable.
@@ -458,13 +452,11 @@ def cradmin_render_breadcrumb_item_list(context, include_context=True,
             {% cradmin_render_breadcrumb_item_list %}
 
     """
-    breadcrumb_item_list = context.get('cradmin_breadcrumb_item_list', None)
+    breadcrumb_item_list = context.get("cradmin_breadcrumb_item_list", None)
     if breadcrumb_item_list and breadcrumb_item_list.should_render_at_location(location):
-        return cradmin_render_renderable(context, breadcrumb_item_list,
-                                         include_context=include_context,
-                                         **kwargs)
+        return cradmin_render_renderable(context, breadcrumb_item_list, include_context=include_context, **kwargs)
     else:
-        return ''
+        return ""
 
 
 @register.simple_tag(takes_context=True)
@@ -477,12 +469,10 @@ def cradmin_render_default_header(context):
     Uses :func:`django_cradmin.crheader.get_default_header_renderable` to
     get the header renderable.
     """
-    header_renderable = crheader.get_default_header_renderable(
-        request=context.get('request', None))
+    header_renderable = crheader.get_default_header_renderable(request=context.get("request", None))
     if header_renderable:
-        return cradmin_render_renderable(context, header_renderable,
-                                         include_context=True)
-    return ''
+        return cradmin_render_renderable(context, header_renderable, include_context=True)
+    return ""
 
 
 @register.simple_tag(takes_context=True)
@@ -495,12 +485,10 @@ def cradmin_render_default_footer(context):
     Uses :func:`django_cradmin.crfooter.get_default_footer_renderable` to
     get the footer renderable.
     """
-    footer_renderable = crfooter.get_default_footer_renderable(
-        request=context.get('request', None))
+    footer_renderable = crfooter.get_default_footer_renderable(request=context.get("request", None))
     if footer_renderable:
-        return cradmin_render_renderable(context, footer_renderable,
-                                         include_context=True)
-    return ''
+        return cradmin_render_renderable(context, footer_renderable, include_context=True)
+    return ""
 
 
 @register.simple_tag(takes_context=True)
@@ -513,12 +501,10 @@ def cradmin_render_default_expandable_menu(context):
     Uses :func:`django_cradmin.crmenu.get_default_expandable_menu_renderable` to
     get the expandable menu renderable.
     """
-    menu_renderable = crmenu.get_default_expandable_menu_renderable(
-        request=context.get('request', None))
+    menu_renderable = crmenu.get_default_expandable_menu_renderable(request=context.get("request", None))
     if menu_renderable:
-        return cradmin_render_renderable(context, menu_renderable,
-                                         include_context=True)
-    return ''
+        return cradmin_render_renderable(context, menu_renderable, include_context=True)
+    return ""
 
 
 @register.simple_tag(takes_context=True)
@@ -537,7 +523,7 @@ def cradmin_theme_static(context, path, absolute=False):
     staticpath = posixpath.join(settings.DJANGO_CRADMIN_THEME_PREFIX, path)
     full_path = django_static(staticpath)
     if absolute:
-        url = context['request'].build_absolute_uri(full_path)
+        url = context["request"].build_absolute_uri(full_path)
     else:
         url = full_path
     return url
@@ -555,14 +541,14 @@ def cradmin_page_cover_bem_block(context):
     - Try to use request.cradmin_instance.page_cover_bem_block.
     - Fall back on `"adminui-page-cover"`.
     """
-    request = context['request']
-    context_bem_block = context.get('page_cover_bem_block', None)
+    request = context["request"]
+    context_bem_block = context.get("page_cover_bem_block", None)
     if context_bem_block:
         return context_bem_block
-    cradmin_app = getattr(request, 'cradmin_app', None)
+    cradmin_app = getattr(request, "cradmin_app", None)
     if cradmin_app:
         return cradmin_app.page_cover_bem_block
-    cradmin_instance = getattr(request, 'cradmin_instance', None)
+    cradmin_instance = getattr(request, "cradmin_instance", None)
     if cradmin_instance:
         return cradmin_instance.page_cover_bem_block
-    return 'adminui-page-cover'
+    return "adminui-page-cover"

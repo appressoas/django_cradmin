@@ -8,8 +8,9 @@ class BlocklistItemTitle(convenience.AbstractWithOptionalEscapedText):
 
     The HTML element has the ``blocklist__itemtitle`` css class.
     """
+
     def get_default_bem_block_or_element(self):
-        return 'blocklist__itemtitle'
+        return "blocklist__itemtitle"
 
 
 class BlocklistItem(convenience.AbstractWithOptionalParagraphWithEscapedText):
@@ -18,8 +19,9 @@ class BlocklistItem(convenience.AbstractWithOptionalParagraphWithEscapedText):
 
     The HTML element has the ``blocklist__item`` css class.
     """
+
     def get_default_bem_block_or_element(self):
-        return 'blocklist__item'
+        return "blocklist__item"
 
 
 class Blocklist(container.AbstractContainerRenderable):
@@ -73,5 +75,6 @@ class Blocklist(container.AbstractContainerRenderable):
                 ]
             )
     """
+
     def get_default_bem_block_or_element(self):
-        return 'blocklist'
+        return "blocklist"

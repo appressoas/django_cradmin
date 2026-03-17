@@ -16,9 +16,7 @@ from .registry import cradmin_instance_registry
 from .views import roleselect
 
 
-def reverse_cradmin_url(instanceid, appname=None, roleid=None,
-                        viewname=crapp.INDEXVIEW_NAME,
-                        args=None, kwargs=None):
+def reverse_cradmin_url(instanceid, appname=None, roleid=None, viewname=crapp.INDEXVIEW_NAME, args=None, kwargs=None):
     """
     Reverse an URL within a cradmin instance.
 
@@ -50,8 +48,8 @@ def reverse_cradmin_url(instanceid, appname=None, roleid=None,
             else:
                 if not kwargs:
                     kwargs = {}
-                kwargs['roleid'] = roleid
-        urlname = u'{}-{}-{}'.format(instanceid, appname, viewname)
+                kwargs["roleid"] = roleid
+        urlname = "{}-{}-{}".format(instanceid, appname, viewname)
     else:
         urlname = instanceid
     return reverse(urlname, args=args, kwargs=kwargs)
@@ -59,11 +57,13 @@ def reverse_cradmin_url(instanceid, appname=None, roleid=None,
 
 class FakeRoleFrontpageView(View):
     def dispatch(self, request, *args, **kwargs):
-        raise Exception('This is just a fake view - it should not be possible to access. '
-                        'The most common reason for this error is that you have configured '
-                        'the BaseCrAdminInstance with flatten_rolefrontpage_url, and not '
-                        'provided a URL at the root of the the rolefrontpage_appname '
-                        'crapp.App.')
+        raise Exception(
+            "This is just a fake view - it should not be possible to access. "
+            "The most common reason for this error is that you have configured "
+            "the BaseCrAdminInstance with flatten_rolefrontpage_url, and not "
+            "provided a URL at the root of the the rolefrontpage_appname "
+            "crapp.App."
+        )
 
 
 class BaseCrAdminInstance(object):
@@ -75,6 +75,7 @@ class BaseCrAdminInstance(object):
     Attributes:
         request (HttpRequest): The current HttpRequest.
     """
+
     #: The ID of the cradmin instance. Must be unique for the Django
     #: instance/site. Must be a string.
     #: This is typically a short readable slug that describes what
@@ -85,7 +86,7 @@ class BaseCrAdminInstance(object):
 
     #: The regex for matching the role id.
     #: Defaults to ``\d+``.
-    roleid_regex = r'\d+'
+    roleid_regex = r"\d+"
 
     #: The renderable class for the main menu.
     #: See :meth:`.get_main_menu_renderable`.
@@ -204,9 +205,9 @@ class BaseCrAdminInstance(object):
         """
         descriptiontext = self.get_descriptiontext_for_role(role)
         if descriptiontext:
-            return format_html(u'<p>{}</p>', descriptiontext)
+            return format_html("<p>{}</p>", descriptiontext)
         else:
-            return ''
+            return ""
 
     def get_roleid(self, role):
         """
@@ -239,10 +240,11 @@ class BaseCrAdminInstance(object):
             django.http.HttpResponse: Defaults to rendering
                 ``django_cradmin/invalid_roleid.django.html``.
         """
-        return render(self.request, 'django_cradmin/invalid_roleid.django.html', {
-            'roleid': roleid,
-            'cradmin_javascriptregistry_component_ids': []
-        })
+        return render(
+            self.request,
+            "django_cradmin/invalid_roleid.django.html",
+            {"roleid": roleid, "cradmin_javascriptregistry_component_ids": []},
+        )
 
     def get_role_from_rolequeryset(self, role):
         """
@@ -262,10 +264,14 @@ class BaseCrAdminInstance(object):
             django.http.HttpResponse: Defaults to rendering
                 ``django_cradmin/missing_role.django.html``
         """
-        return render(self.request, 'django_cradmin/missing_role.django.html', {
-            'role': role,
-            'cradmin_javascriptregistry_component_ids': self.get_default_javascriptregistry_component_ids()
-        })
+        return render(
+            self.request,
+            "django_cradmin/missing_role.django.html",
+            {
+                "role": role,
+                "cradmin_javascriptregistry_component_ids": self.get_default_javascriptregistry_component_ids(),
+            },
+        )
 
     def get_menu_item_renderables(self):
         return []
@@ -286,14 +292,13 @@ class BaseCrAdminInstance(object):
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        menu_renderable = self.main_menu_renderable_class(request=self.request,
-                                                          cradmin_instance=self)
+        menu_renderable = self.main_menu_renderable_class(request=self.request, cradmin_instance=self)
         menu_renderable.extend(self.get_main_menu_item_renderables())
         return menu_renderable
 
     @property
     def main_menu_renderable(self):
-        if not hasattr(self, '_main_menu_renderable_cached'):
+        if not hasattr(self, "_main_menu_renderable_cached"):
             self._main_menu_renderable_cached = self.get_main_menu_renderable()
         return self._main_menu_renderable_cached
 
@@ -309,18 +314,17 @@ class BaseCrAdminInstance(object):
         Returns:
             django_cradmin.crmenu.AbstractMenuRenderable: An AbstractMenuRenderable object.
         """
-        menu_renderable = self.expandable_menu_renderable_class(request=self.request,
-                                                                cradmin_instance=self)
+        menu_renderable = self.expandable_menu_renderable_class(request=self.request, cradmin_instance=self)
         menu_renderable.extend(self.get_expandable_menu_item_renderables())
         return menu_renderable
 
     @property
     def expandable_menu_renderable(self):
-        if not hasattr(self, '_expandable_menu_renderable_cached'):
+        if not hasattr(self, "_expandable_menu_renderable_cached"):
             self._expandable_menu_renderable_cached = self.get_expandable_menu_renderable()
         return self._expandable_menu_renderable_cached
 
-    def get_header_renderable(self, headername='default'):
+    def get_header_renderable(self, headername="default"):
         """
         Get the header renderable for this cradmin instance.
 
@@ -427,13 +431,7 @@ class BaseCrAdminInstance(object):
             roleid: The roleid. Defaults to the ID of the current role
                 (or None if there is no current role).
         """
-        kwargs = {
-            'instanceid': self.id,
-            'appname': appname,
-            'viewname': viewname,
-            'args': args,
-            'kwargs': kwargs
-        }
+        kwargs = {"instanceid": self.id, "appname": appname, "viewname": viewname, "args": args, "kwargs": kwargs}
         if self.roleclass:
             if roleid is None:
                 try:
@@ -444,7 +442,7 @@ class BaseCrAdminInstance(object):
                     )
                     raise AttributeError(error_message)
 
-            kwargs['roleid'] = roleid
+            kwargs["roleid"] = roleid
         return reverse_cradmin_url(**kwargs)
 
     def appindex_url(self, appname, args=None, kwargs=None, roleid=None):
@@ -462,8 +460,7 @@ class BaseCrAdminInstance(object):
             roleid: The roleid. Defaults to the ID of the current role
                 (or None if there is no current role).
         """
-        return self.reverse_url(appname, viewname=crapp.INDEXVIEW_NAME, roleid=roleid,
-                                args=args, kwargs=kwargs)
+        return self.reverse_url(appname, viewname=crapp.INDEXVIEW_NAME, roleid=roleid, args=args, kwargs=kwargs)
 
     def rolefrontpage_url(self, roleid=None):
         """
@@ -520,7 +517,7 @@ class BaseCrAdminInstance(object):
         Returns:
             The viewname if specified in settings, else it returns ``None``.
         """
-        return getattr(settings, 'DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME', None)
+        return getattr(settings, "DJANGO_CRADMIN_TWO_FACTOR_AUTH_URLNAME", None)
 
     def get_foreignkeyselectview_url(self, model_class):
         """
@@ -591,8 +588,9 @@ class BaseCrAdminInstance(object):
         if cls.roleclass:
             return cls.get_roleselect_view()
         else:
-            raise NotImplementedError('When you do not define a roleclass, you have '
-                                      'to override get_instance_frontpage_view()')
+            raise NotImplementedError(
+                "When you do not define a roleclass, you have to override get_instance_frontpage_view()"
+            )
 
     @classmethod
     def get_apps(cls):
@@ -607,18 +605,15 @@ class BaseCrAdminInstance(object):
         flatten = cls.rolefrontpage_appname == appname and cls.flatten_rolefrontpage_url
         if cls.roleclass:
             if flatten:
-                return re_path(r'^(?P<roleid>{})/'.format(cls.roleid_regex),
-                               include(appurlpatterns))
+                return re_path(r"^(?P<roleid>{})/".format(cls.roleid_regex), include(appurlpatterns))
             else:
-                return re_path(r'^(?P<roleid>{})/{}/'.format(cls.roleid_regex, appname),
-                               include(appurlpatterns))
+                return re_path(r"^(?P<roleid>{})/{}/".format(cls.roleid_regex, appname), include(appurlpatterns))
 
         else:
             if flatten:
-                return re_path(r'^', include(appurlpatterns))
+                return re_path(r"^", include(appurlpatterns))
             else:
-                return re_path(r'^{}/'.format(appname),
-                               include(appurlpatterns))
+                return re_path(r"^{}/".format(appname), include(appurlpatterns))
 
     @classmethod
     def _get_app_urls(cls):
@@ -639,11 +634,9 @@ class BaseCrAdminInstance(object):
         cradmin_instance_registry.add(cls)
         urls = cls._get_app_urls()
         if cls.__no_role_and_flatten_rolefrontpage_url():
-            urls.append(path('', FakeRoleFrontpageView.as_view(),
-                             name=cls.id))
+            urls.append(path("", FakeRoleFrontpageView.as_view(), name=cls.id))
         else:
-            urls.append(path('', cls.get_instance_frontpage_view(),
-                             name=cls.id))
+            urls.append(path("", cls.get_instance_frontpage_view(), name=cls.id))
         return urls
 
     def add_extra_instance_variables_to_request(self, request):
@@ -674,7 +667,7 @@ class BaseCrAdminInstance(object):
         This method only joins the list returned by that method to make it
         easier to use in Django templates.
         """
-        return ' '.join(self.get_body_css_classes_list())
+        return " ".join(self.get_body_css_classes_list())
 
     @property
     def page_cover_bem_block(self):
@@ -698,7 +691,7 @@ class BaseCrAdminInstance(object):
             - ``django_cradmin/standalone-base.django.html``
             - ``django_cradmin/base.django.html``
         """
-        return 'adminui-page-cover'
+        return "adminui-page-cover"
 
     def get_default_javascriptregistry_component_ids(self):
         """
@@ -723,6 +716,7 @@ class NoRoleMixin(object):
 
     Must be mixed in before :class:`.BaseCrAdminInstance`.
     """
+
     flatten_rolefrontpage_url = True
 
     def get_titletext_for_role(self, role):
@@ -735,6 +729,7 @@ class NoLoginMixin(object):
 
     Must be mixed in before :class:`.BaseCrAdminInstance`.
     """
+
     def has_access(self):
         """
         We give any user access to this instance, including unauthenticated users.

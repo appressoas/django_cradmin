@@ -48,7 +48,8 @@ class CradminDeprecated(object):
             CradminDeprecated(message='This is deprecated and should not be used!')\
                 .show_warning(name=__name__)
     """
-    def __init__(self, message='Deprecated'):
+
+    def __init__(self, message="Deprecated"):
         self.message = message
 
     def generate_message(self):
@@ -56,13 +57,12 @@ class CradminDeprecated(object):
 
     def show_warning(self, name):
         with warnings.catch_warnings(record=False):
-            warnings.simplefilter('always', DeprecationWarning)  # turn off filter
+            warnings.simplefilter("always", DeprecationWarning)  # turn off filter
             warnings.warn(
-                "{name}: {message}.".format(
-                    name=name,
-                    message=self.generate_message()),
+                "{name}: {message}.".format(name=name, message=self.generate_message()),
                 category=DeprecationWarning,
-                stacklevel=2)
+                stacklevel=2,
+            )
 
     def __call__(self, func):
         @functools.wraps(func)
@@ -70,15 +70,16 @@ class CradminDeprecated(object):
 
             self.show_warning(name=func.__name__)
             return func(*args, **kwargs)
+
         return wrapper
 
 
 class CradminDeprecatedSinceV4(CradminDeprecated):
-    def __init__(self, message=''):
+    def __init__(self, message=""):
         super(CradminDeprecatedSinceV4, self).__init__(message=message)
 
     def generate_message(self):
-        full_message = 'Deprecated in django_cradmin 4.x. Will be removed in a future release'
+        full_message = "Deprecated in django_cradmin 4.x. Will be removed in a future release"
         if self.message:
-            full_message = '{}: {}'.format(full_message, self.message)
+            full_message = "{}: {}".format(full_message, self.message)
         return full_message

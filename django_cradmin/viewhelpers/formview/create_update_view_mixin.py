@@ -8,8 +8,7 @@ from . import formviewmixin
 from . import previewmixin
 
 
-class CreateUpdateViewMixin(previewmixin.PreviewMixin,
-                            formviewmixin.FormViewMixin):
+class CreateUpdateViewMixin(previewmixin.PreviewMixin, formviewmixin.FormViewMixin):
     """
     Mixin class for Update and Create views.
 
@@ -88,7 +87,7 @@ class CreateUpdateViewMixin(previewmixin.PreviewMixin,
         """
         self.add_preview_mixin_context_data(context=context)
         self.add_formview_mixin_context_data(context=context)
-        context['model_verbose_name'] = self.model_verbose_name
+        context["model_verbose_name"] = self.model_verbose_name
 
     def set_automatic_attributes(self, obj, form):
         """
@@ -184,7 +183,7 @@ class CreateUpdateViewMixin(previewmixin.PreviewMixin,
         You can safely override this, but you will also have to override
         :meth:`deserialize_preview`.
         """
-        return serializers.serialize('json', [self.save_object(form, commit=False)])
+        return serializers.serialize("json", [self.save_object(form, commit=False)])
 
     @classmethod
     def deserialize_preview(cls, serialized):
@@ -194,7 +193,7 @@ class CreateUpdateViewMixin(previewmixin.PreviewMixin,
         You must override this and :meth:`.serialize_preview` - they work together
         to send the preview to the preview View.
         """
-        return list(serializers.deserialize('json', serialized))[0].object
+        return list(serializers.deserialize("json", serialized))[0].object
 
     @classmethod
     def get_preview_sessionkey(cls):
@@ -209,7 +208,7 @@ class CreateUpdateViewMixin(previewmixin.PreviewMixin,
         you fetch preview data from create or update views
         for the same model (to simplify implementing preview views).
         """
-        sessionkey = 'django_cradmin__{module}.{classname}'.format(
-            module=cls.model.__module__,
-            classname=cls.model.__name__)
+        sessionkey = "django_cradmin__{module}.{classname}".format(
+            module=cls.model.__module__, classname=cls.model.__name__
+        )
         return sessionkey

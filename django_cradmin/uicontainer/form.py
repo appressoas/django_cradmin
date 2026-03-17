@@ -8,9 +8,12 @@ class Form(container.AbstractContainerRenderable):
     """
     Renderable for a ``<form>``.
     """
-    template_name = 'django_cradmin/uicontainer/form.django.html'
 
-    def __init__(self, form, action=None, method=None, messages_container=None, disable_submit_on_enter=False, **kwargs):
+    template_name = "django_cradmin/uicontainer/form.django.html"
+
+    def __init__(
+        self, form, action=None, method=None, messages_container=None, disable_submit_on_enter=False, **kwargs
+    ):
         """
 
         Args:
@@ -34,21 +37,19 @@ class Form(container.AbstractContainerRenderable):
         self.messages_container = messages_container or self.get_default_messages_container()
         self._fieldrenderable_map = {}
         super(Form, self).__init__(**kwargs)
-        self.properties['formrenderable'] = self
+        self.properties["formrenderable"] = self
 
     def get_default_dom_id(self):
-        return 'id_form'
+        return "id_form"
 
     def prepopulate_children_list(self):
         if self.messages_container:
-            return [
-                self.messages_container
-            ]
+            return [self.messages_container]
         else:
             return []
 
     def get_default_html_tag(self):
-        return 'form'
+        return "form"
 
     def get_default_method(self):
         """
@@ -56,7 +57,7 @@ class Form(container.AbstractContainerRenderable):
 
         Defaults to ``"POST"``.
         """
-        return 'POST'
+        return "POST"
 
     @property
     def method(self):
@@ -75,13 +76,13 @@ class Form(container.AbstractContainerRenderable):
 
     def get_html_element_attributes(self):
         html_element_attributes = super(Form, self).get_html_element_attributes()
-        html_element_attributes['method'] = self.method
+        html_element_attributes["method"] = self.method
         if not self.action_is_redirect_to_self():
             # if action is ``None`` (I.E.: redirect to self), we add this attribute in the
             # template, so it is not added here.
             # We have to do it this way because we do not have access to the request
             # object here.
-            html_element_attributes['action'] = self.action
+            html_element_attributes["action"] = self.action
         return html_element_attributes
 
     def register_field_wrapper_renderable(self, field_wrapper_renderable):
@@ -133,9 +134,7 @@ class Form(container.AbstractContainerRenderable):
 
         Must implement :class:`django_cradmin.uicontainer.messagecontainer.AbstractMessageContainerMixin`.
         """
-        return messagescontainer.BoxMessagesContainer(
-            test_css_class_suffixes_list=['form-globalmessages']
-        )
+        return messagescontainer.BoxMessagesContainer(test_css_class_suffixes_list=["form-globalmessages"])
 
     def validate(self):
         if self.form.is_valid():
@@ -147,43 +146,37 @@ class Form(container.AbstractContainerRenderable):
         pass
 
     def add_global_form_validation_errors(self, validationerror_list):
-        self.messages_container.add_validationerror_list(
-            validationerror_list=validationerror_list)
+        self.messages_container.add_validationerror_list(validationerror_list=validationerror_list)
 
     def add_global_field_errors_message(self):
-        self.messages_container.add_warning(
-            text=gettext_lazy('Please fix the errors below.')
-        )
+        self.messages_container.add_warning(text=gettext_lazy("Please fix the errors below."))
 
     def add_field_validation_errors(self, field_wrapper_renderable, validationerror_list):
-        field_wrapper_renderable.messages_container.add_validationerror_list(
-            validationerror_list=validationerror_list)
+        field_wrapper_renderable.messages_container.add_validationerror_list(validationerror_list=validationerror_list)
 
     def add_field_validation_errors_field_not_child(self, fieldname, validationerror_list):
         field_label = self.form.fields[fieldname].label
         if not field_label:
             field_label = fieldname
-        self.messages_container.add_validationerror_list(
-            validationerror_list=validationerror_list,
-            prefix=field_label)
+        self.messages_container.add_validationerror_list(validationerror_list=validationerror_list, prefix=field_label)
 
     def form_invalid(self):
         has_field_errors = False
         for fieldname, validationerror_list in self.form.errors.as_data().items():
-            if fieldname == '__all__':
+            if fieldname == "__all__":
                 self.add_global_form_validation_errors(validationerror_list=validationerror_list)
             else:
                 try:
                     field_wrapper_renderable = self.get_field_wrapper_renderable(fieldname=fieldname)
                 except KeyError:
                     self.add_field_validation_errors_field_not_child(
-                        fieldname=fieldname,
-                        validationerror_list=validationerror_list)
+                        fieldname=fieldname, validationerror_list=validationerror_list
+                    )
                 else:
                     has_field_errors = True
                     self.add_field_validation_errors(
-                        field_wrapper_renderable=field_wrapper_renderable,
-                        validationerror_list=validationerror_list)
+                        field_wrapper_renderable=field_wrapper_renderable, validationerror_list=validationerror_list
+                    )
 
         if has_field_errors:
             self.add_global_field_errors_message()

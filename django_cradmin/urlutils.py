@@ -49,13 +49,9 @@ def update_querystring(url, querystringargs, ignore_none_values=True):
                 {'search': 'updated'})
     """
     parsed_url = urlsplit(url)
-    querydict = create_querydict(querystringargs=querystringargs,
-                                 initial_query_string=parsed_url.query,
-                                 ignore_none_values=ignore_none_values)
-    return urlunsplit((
-        parsed_url.scheme,
-        parsed_url.netloc,
-        parsed_url.path,
-        querydict.urlencode(),
-        parsed_url.fragment
-    ))
+    querydict = create_querydict(
+        querystringargs=querystringargs, initial_query_string=parsed_url.query, ignore_none_values=ignore_none_values
+    )
+    return urlunsplit(
+        (parsed_url.scheme, parsed_url.netloc, parsed_url.path, querydict.urlencode(), parsed_url.fragment)
+    )

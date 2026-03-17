@@ -10,7 +10,7 @@ from model_bakery import baker
 
 def _indent_string(string):
     try:
-        return '\n'.join(['   {}'.format(line) for line in string.split('\n')])
+        return "\n".join(["   {}".format(line) for line in string.split("\n")])
     except:
         return string
 
@@ -35,6 +35,7 @@ class MockRequestResponse(object):
         response as input. Only available when using
         :meth:`.TestCaseMixin.mock_http200_getrequest_htmls`.
     """
+
     def __init__(self, response, request):
         self.response = response
         self.request = request
@@ -64,7 +65,7 @@ class AbstractTestCaseMixin(object):
         """
         viewclass = self.get_viewclass()
         if self.viewclass is None:
-            raise NotImplementedError('You must set the viewclass attribute on TestCase classes using TestCaseMixin.')
+            raise NotImplementedError("You must set the viewclass attribute on TestCase classes using TestCaseMixin.")
         return viewclass.as_view()
 
     def get_requestfactory_class(self):
@@ -114,9 +115,7 @@ class AbstractTestCaseMixin(object):
         Returns:
             The created request object.
         """
-        requestkwargs_full = {
-            'path': '/'
-        }
+        requestkwargs_full = {"path": "/"}
         if requestkwargs:
             requestkwargs_full.update(requestkwargs)
         if httpheaders:
@@ -124,8 +123,9 @@ class AbstractTestCaseMixin(object):
         request = getattr(self.make_requestfactory(), method)(**requestkwargs_full)
         return request
 
-    def add_essential_cradmin_attributes_to_request(self, request, requestuser, cradmin_role, cradmin_app,
-                                                    cradmin_instance, sessionmock, messagesmock):
+    def add_essential_cradmin_attributes_to_request(
+        self, request, requestuser, cradmin_role, cradmin_app, cradmin_instance, sessionmock, messagesmock
+    ):
         request.user = requestuser or self.create_default_user_for_mock_request()
         request.cradmin_role = cradmin_role or mock.MagicMock()
         request.cradmin_app = cradmin_app or mock.MagicMock()
@@ -145,46 +145,42 @@ class AbstractTestCaseMixin(object):
         raise NotImplementedError()
 
     def prettyformat_response_meta(self, response):
-        return (
-            'status_code={status_code}\n'
-            'charset={charset}\n'
-            'reason_phrase={reason_phrase}'
-        ).format(
+        return ("status_code={status_code}\ncharset={charset}\nreason_phrase={reason_phrase}").format(
             status_code=response.status_code,
             charset=response.charset,
-            reason_phrase=response.reason_phrase,)
+            reason_phrase=response.reason_phrase,
+        )
 
     def prettyformat_response(self, response):
         meta = self.prettyformat_response_meta(response)
         content, warnings = self.prettyformat_response_content(response)
-        return '[cradmin TestCaseMixin info]: HttpRequest meta:\n{meta}\n{warnings}\n{content}'.format(
-            meta=_indent_string(meta),
-            warnings='\n'.join(warnings),
-            content=content
+        return "[cradmin TestCaseMixin info]: HttpRequest meta:\n{meta}\n{warnings}\n{content}".format(
+            meta=_indent_string(meta), warnings="\n".join(warnings), content=content
         )
 
     def assert_status_code_of_response(self, response, expected_statuscode):
-        errormessage = 'Expected HTTP response with status code {expected}. Got {actual}.'.format(
-            expected=expected_statuscode,
-            actual=response.status_code
+        errormessage = "Expected HTTP response with status code {expected}. Got {actual}.".format(
+            expected=expected_statuscode, actual=response.status_code
         )
-        self.assertEqual(response.status_code, expected_statuscode,
-                         msg=errormessage)
+        self.assertEqual(response.status_code, expected_statuscode, msg=errormessage)
 
-    def mock_request(self, method,
-                     cradmin_role=None,
-                     cradmin_app=None,
-                     cradmin_instance=None,
-                     requestuser=None,
-                     messagesmock=None,
-                     sessionmock=None,
-                     requestattributes=None,
-                     httpheaders=None,
-                     requestkwargs=None,
-                     viewkwargs=None,
-                     expected_statuscode=None,
-                     htmls_selector=False,
-                     verbose=False):
+    def mock_request(
+        self,
+        method,
+        cradmin_role=None,
+        cradmin_app=None,
+        cradmin_instance=None,
+        requestuser=None,
+        messagesmock=None,
+        sessionmock=None,
+        requestattributes=None,
+        httpheaders=None,
+        requestkwargs=None,
+        viewkwargs=None,
+        expected_statuscode=None,
+        htmls_selector=False,
+        verbose=False,
+    ):
         """
         Create a mocked request using :meth:`.make_requestfactory` and :class:`mock.MagicMock`.
 
@@ -215,9 +211,7 @@ class AbstractTestCaseMixin(object):
                 but should be ``False`` when you are not debugging. Defaults
                 to ``False``.
         """
-        request = self.make_minimal_request(method=method,
-                                            requestkwargs=requestkwargs,
-                                            httpheaders=httpheaders)
+        request = self.make_minimal_request(method=method, requestkwargs=requestkwargs, httpheaders=httpheaders)
         if requestattributes:
             for key, value in requestattributes.items():
                 setattr(request, key, value)
@@ -228,7 +222,7 @@ class AbstractTestCaseMixin(object):
             cradmin_app=cradmin_app,
             cradmin_instance=cradmin_instance,
             sessionmock=sessionmock,
-            messagesmock=messagesmock
+            messagesmock=messagesmock,
         )
         viewkwargs = viewkwargs or {}
         response = self.make_view()(request, **viewkwargs)
@@ -237,51 +231,50 @@ class AbstractTestCaseMixin(object):
             print(self.prettyformat_response(response=response))
 
         if expected_statuscode is not None:
-            self.assert_status_code_of_response(
-                response=response, expected_statuscode=expected_statuscode)
+            self.assert_status_code_of_response(response=response, expected_statuscode=expected_statuscode)
         mockresponse = MockRequestResponse(response=response, request=request)
         if htmls_selector:
             self.__add_selector_to_mockresponse(mockresponse)
         return mockresponse
 
     def mock_getrequest(self, **kwargs):
-        return self.mock_request(method='get', **kwargs)
+        return self.mock_request(method="get", **kwargs)
 
     def mock_http302_getrequest(self, **kwargs):
-        kwargs['expected_statuscode'] = 302
+        kwargs["expected_statuscode"] = 302
         return self.mock_getrequest(**kwargs)
 
     def mock_postrequest(self, **kwargs):
-        return self.mock_request(method='post', **kwargs)
+        return self.mock_request(method="post", **kwargs)
 
     def mock_http302_postrequest(self, **kwargs):
-        kwargs['expected_statuscode'] = 302
+        kwargs["expected_statuscode"] = 302
         return self.mock_postrequest(**kwargs)
 
     def mock_http200_postrequest(self, **kwargs):
-        kwargs['expected_statuscode'] = 200
+        kwargs["expected_statuscode"] = 200
         return self.mock_postrequest(**kwargs)
 
     def mock_http201_postrequest(self, **kwargs):
-        kwargs['expected_statuscode'] = 201
+        kwargs["expected_statuscode"] = 201
         return self.mock_postrequest(**kwargs)
 
     def mock_http400_postrequest(self, **kwargs):
-        kwargs['expected_statuscode'] = 400
+        kwargs["expected_statuscode"] = 400
         return self.mock_postrequest(**kwargs)
 
     def mock_http403_postrequest(self, **kwargs):
-        kwargs['expected_statuscode'] = 403
+        kwargs["expected_statuscode"] = 403
         return self.mock_postrequest(**kwargs)
 
     def mock_putrequest(self, **kwargs):
-        return self.mock_request(method='put', **kwargs)
+        return self.mock_request(method="put", **kwargs)
 
     def mock_patchrequest(self, **kwargs):
-        return self.mock_request(method='patch', **kwargs)
+        return self.mock_request(method="patch", **kwargs)
 
     def mock_deleterequest(self, **kwargs):
-        return self.mock_request(method='delete', **kwargs)
+        return self.mock_request(method="delete", **kwargs)
 
 
 class TestCaseMixin(AbstractTestCaseMixin):
@@ -438,38 +431,37 @@ class TestCaseMixin(AbstractTestCaseMixin):
     def prettyformat_response_content(self, response):
         warnings = []
         output = None
-        if hasattr(response, 'render'):
+        if hasattr(response, "render"):
             try:
                 response.render()
             except Exception as e:
-                warnings.append('[cradmin TestCaseMixin warning] response.render() failed with: {}'.format(e))
+                warnings.append("[cradmin TestCaseMixin warning] response.render() failed with: {}".format(e))
             else:
                 try:
-                    output = '[cradmin TestCaseMixin info]: Prettyformatted response.content:\n{}'.format(
+                    output = "[cradmin TestCaseMixin info]: Prettyformatted response.content:\n{}".format(
                         _indent_string(htmls.S(response.content).prettify())
                     )
                 except:
                     pass
         if output is None:
             try:
-                content = response.content.decode('utf-8')
+                content = response.content.decode("utf-8")
             except UnicodeError:
                 content = response.content
             if content:
-                output = '[cradmin TestCaseMixin info]: response.content:\n{}'.format(
-                    _indent_string(content))
+                output = "[cradmin TestCaseMixin info]: response.content:\n{}".format(_indent_string(content))
             else:
-                output = '[cradmin TestCaseMixin info]: response.content is empty.'
+                output = "[cradmin TestCaseMixin info]: response.content is empty."
         return output, warnings
 
     def mock_http200_getrequest_htmls(self, **kwargs):
-        kwargs['expected_statuscode'] = 200
-        kwargs['htmls_selector'] = True
+        kwargs["expected_statuscode"] = 200
+        kwargs["htmls_selector"] = True
         return self.mock_getrequest(**kwargs)
 
     def mock_http200_postrequest_htmls(self, **kwargs):
-        kwargs['expected_statuscode'] = 200
-        kwargs['htmls_selector'] = True
+        kwargs["expected_statuscode"] = 200
+        kwargs["htmls_selector"] = True
         return self.mock_postrequest(**kwargs)
 
 
@@ -478,6 +470,7 @@ class NoLoginTestCaseMixin(TestCaseMixin):
     Use this instead of :class:`.TestCaseMixin` if you do not require
     an authenticated user in your view.
     """
+
     def create_default_user_for_mock_request(self):
         """
         Overridden to return a :class:`django.contrib.auth.models.AnonymousUser`
@@ -498,33 +491,35 @@ class RestFrameworkApiTestCaseMixin(TestCaseMixin):
     You can also make it work with viewsets by overriding :meth:`~.AbstractTestCaseMixin.make_view`
     and use ``return ViewSetClass.as_view({...})`` there.
     """
+
     def get_requestfactory_class(self):
         # Importing it here to avoid har dependency on rest framework.
         from rest_framework.test import APIRequestFactory
+
         return APIRequestFactory
 
     def prettyformat_response_content(self, response):
         warnings = []
         output = None
-        if hasattr(response, 'data'):
+        if hasattr(response, "data"):
             output = _indent_string(json.dumps(response.data, indent=4))
         else:
-            warnings.append('[cradmin RestFrameworkApiTestCaseMixin warning] '
-                            'Response has no data attribute.')
+            warnings.append("[cradmin RestFrameworkApiTestCaseMixin warning] Response has no data attribute.")
         if output is None:
             try:
-                content = response.content.decode('utf-8')
+                content = response.content.decode("utf-8")
             except UnicodeError:
                 content = response.content
             if content:
-                output = '[cradmin RestFrameworkApiTestCaseMixin info]: response.content:\n{}'.format(
-                    _indent_string(content))
+                output = "[cradmin RestFrameworkApiTestCaseMixin info]: response.content:\n{}".format(
+                    _indent_string(content)
+                )
             else:
-                output = '[cradmin RestFrameworkApiTestCaseMixin info]: response.content is empty.'
+                output = "[cradmin RestFrameworkApiTestCaseMixin info]: response.content is empty."
         return output, warnings
 
     def mock_request(self, **kwargs):
-        requestkwargs = kwargs.pop('requestkwargs', {})
-        requestkwargs['format'] = requestkwargs.get('format', 'json')
-        kwargs['requestkwargs'] = requestkwargs
+        requestkwargs = kwargs.pop("requestkwargs", {})
+        requestkwargs["format"] = requestkwargs.get("format", "json")
+        kwargs["requestkwargs"] = requestkwargs
         return super(RestFrameworkApiTestCaseMixin, self).mock_request(**kwargs)

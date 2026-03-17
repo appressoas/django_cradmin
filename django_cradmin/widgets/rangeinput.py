@@ -2,4 +2,4 @@ from django import forms
 
 
 class RangeInput(forms.NumberInput):
-    input_type = 'range'
+    input_type = "range"

@@ -30,6 +30,6 @@ class SortableModelAdmin(admin.ModelAdmin):
         readonly_fields = super(SortableModelAdmin, self).get_readonly_fields(request, obj=obj)
         if self.make_sort_index_readonly:
             readonly_fields = list(readonly_fields)
-            if 'sort_index' not in readonly_fields:
-                readonly_fields.append('sort_index')
+            if "sort_index" not in readonly_fields:
+                readonly_fields.append("sort_index")
         return readonly_fields

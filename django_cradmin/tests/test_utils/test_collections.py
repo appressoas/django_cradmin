@@ -10,13 +10,13 @@ class TestOrderedSet(test.TestCase):
 
     def test_sanity(self):
         ordered_set = cradmin_collections.OrderedSet()
-        ordered_set.add('a')
-        ordered_set.add('b')
-        self.assertEqual(['a', 'b'], list(ordered_set))
+        ordered_set.add("a")
+        ordered_set.add("b")
+        self.assertEqual(["a", "b"], list(ordered_set))
 
     def test_duplicates(self):
         ordered_set = cradmin_collections.OrderedSet()
-        ordered_set.add('a')
-        ordered_set.add('b')
-        ordered_set.add('a')
-        self.assertEqual(['a', 'b'], list(ordered_set))
+        ordered_set.add("a")
+        ordered_set.add("b")
+        ordered_set.add("a")
+        self.assertEqual(["a", "b"], list(ordered_set))

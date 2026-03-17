@@ -12,12 +12,11 @@ class EmailListField(forms.Field):
     The input can be a list, tuple or string. If it is a string,
     we split the email addresses by whitespace or comma.
     """
-    default_error_messages = {
-        'invalid': _('Type email-addresses separated by newlines, whitespace or comma.')
-    }
-    default_help_text = _('Type email-addresses separated by newlines, whitespace or comma.')
+
+    default_error_messages = {"invalid": _("Type email-addresses separated by newlines, whitespace or comma.")}
+    default_help_text = _("Type email-addresses separated by newlines, whitespace or comma.")
     widget = forms.Textarea
-    stringsplit_regex = re.compile(r'(?:\s*,\s*)|\s+')
+    stringsplit_regex = re.compile(r"(?:\s*,\s*)|\s+")
     email_validator = EmailValidator()
 
     def __init__(self, *args, **kwargs):
@@ -28,11 +27,11 @@ class EmailListField(forms.Field):
         addition of the ``extra_help_text`` parameter. The ``extra_help_text``
         parameter can be used to append help text to the default help text.
         """
-        if 'help_text' not in kwargs:
-            kwargs['help_text'] = self.default_help_text
-        extra_help_text = kwargs.pop('extra_help_text', None)
+        if "help_text" not in kwargs:
+            kwargs["help_text"] = self.default_help_text
+        extra_help_text = kwargs.pop("extra_help_text", None)
         if extra_help_text:
-            kwargs['help_text'] = u'{} {}'.format(kwargs['help_text'], extra_help_text)
+            kwargs["help_text"] = "{} {}".format(kwargs["help_text"], extra_help_text)
         super(EmailListField, self).__init__(*args, **kwargs)
 
     def string_to_list(self, value):
@@ -52,14 +51,14 @@ class EmailListField(forms.Field):
         elif isinstance(value, str):
             return self.string_to_list(value)
         else:
-            raise TypeError('Invalid type for EmailListField: {}'.format(type(value)))
+            raise TypeError("Invalid type for EmailListField: {}".format(type(value)))
 
     def validate_list_of_emails(self, list_of_emails):
         for email in list_of_emails:
             try:
                 self.email_validator(email)
             except forms.ValidationError:
-                errormessage = _('Invalid email address: %(email)s') % {'email': email}
+                errormessage = _("Invalid email address: %(email)s") % {"email": email}
                 raise forms.ValidationError(errormessage)
 
     def to_python(self, value):

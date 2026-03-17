@@ -38,7 +38,7 @@ class MinimalViewMixin(object):
             context (dict): A template context.
 
         """
-        context['cradmin_javascriptregistry_component_ids'] = self.get_javascriptregistry_component_ids()
+        context["cradmin_javascriptregistry_component_ids"] = self.get_javascriptregistry_component_ids()
 
 
 class StandaloneBaseViewMixin(MinimalViewMixin):
@@ -49,8 +49,9 @@ class StandaloneBaseViewMixin(MinimalViewMixin):
     DO NOT use for views that use the ``django_cradmin/base.django.html`` template,
     use :class:`.ViewMixin` for that.
     """
+
     def get_javascriptregistry_component_ids(self):
-        if getattr(self.request, 'cradmin_instance', None):
+        if getattr(self.request, "cradmin_instance", None):
             return self.request.cradmin_instance.get_default_javascriptregistry_component_ids()
         else:
             return super(StandaloneBaseViewMixin, self).get_javascriptregistry_component_ids()
@@ -60,8 +61,9 @@ class WithinRoleViewMixin(StandaloneBaseViewMixin):
     """
     Use with views that use the ``django_cradmin/base.django.html`` template.
     """
+
     def get_javascriptregistry_component_ids(self):
-        if getattr(self.request, 'cradmin_instance', None):
+        if getattr(self.request, "cradmin_instance", None):
             return self.request.cradmin_instance.get_default_within_role_javascriptregistry_component_ids()
         else:
             return super(WithinRoleViewMixin, self).get_javascriptregistry_component_ids()

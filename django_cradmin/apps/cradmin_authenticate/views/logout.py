@@ -12,7 +12,5 @@ class CradminLogoutView(auth_views.LogoutView):
         return context
 
 
-def cradmin_logoutview(
-    request, template_name="cradmin_authenticate/logout.django.html"
-):
+def cradmin_logoutview(request, template_name="cradmin_authenticate/logout.django.html"):
     return CradminLogoutView.as_view(template_name=template_name)(request)

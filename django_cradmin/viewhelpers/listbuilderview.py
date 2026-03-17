@@ -25,7 +25,8 @@ class ViewMixin(object):
     - :meth:`.get_listbuilder_list_value_iterable`
     - :meth:`.get_no_items_message`
     """
-    template_name = 'django_cradmin/viewhelpers/listbuilderview/default.django.html'
+
+    template_name = "django_cradmin/viewhelpers/listbuilderview/default.django.html"
 
     #: See :meth:`~ViewMixin.get_listbuilder_class`.
     listbuilder_class = listbuilder.lists.RowList
@@ -65,7 +66,7 @@ class ViewMixin(object):
         You can override this, or set :obj:`.hide_page_header`, or hide the page header
         in all form views with the ``DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTVIEWS`` setting.
         """
-        return self.hide_page_header or getattr(settings, 'DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTVIEWS', False)
+        return self.hide_page_header or getattr(settings, "DJANGO_CRADMIN_HIDE_PAGEHEADER_IN_LISTVIEWS", False)
 
     def get_enable_previews(self):
         """
@@ -157,7 +158,8 @@ class ViewMixin(object):
             value_renderer_class=self.get_value_renderer_class(),
             frame_renderer_class=self.get_frame_renderer_class(),
             value_and_frame_renderer_kwargs=self.get_value_and_frame_renderer_kwargs(),
-            **self.get_listbuilder_list_kwargs())
+            **self.get_listbuilder_list_kwargs(),
+        )
 
     def get_no_items_message(self):
         """
@@ -168,15 +170,15 @@ class ViewMixin(object):
         raise NotImplementedError()
 
     def add_listview_context_data(self, context):
-        context['listbuilder_list'] = self.get_listbuilder_list(context)
-        context['pagetitle'] = self.get_pagetitle()
-        context['hide_pageheader'] = self.get_hide_page_header()
-        context['pageheading'] = self.get_pageheading()
-        context['no_items_message'] = self.get_no_items_message()
-        context['enable_previews'] = self.get_enable_previews()
-        context['pre_include_template'] = self.get_pre_include_template()
-        context['buttons_include_template'] = self.get_buttons_include_template()
-        context['post_include_template'] = self.get_post_include_template()
+        context["listbuilder_list"] = self.get_listbuilder_list(context)
+        context["pagetitle"] = self.get_pagetitle()
+        context["hide_pageheader"] = self.get_hide_page_header()
+        context["pageheading"] = self.get_pageheading()
+        context["no_items_message"] = self.get_no_items_message()
+        context["enable_previews"] = self.get_enable_previews()
+        context["pre_include_template"] = self.get_pre_include_template()
+        context["buttons_include_template"] = self.get_buttons_include_template()
+        context["post_include_template"] = self.get_post_include_template()
 
     def get_pre_include_template(self):
         """
@@ -211,12 +213,12 @@ class ViewCreateButtonMixin(object):
     with a template that renders a create button that assumes the
     create view is named ``"create"``.
     """
+
     def get_buttons_include_template(self):
         return "django_cradmin/viewhelpers/listbuilderview/includes/create-button.django.html"
 
 
-class View(javascriptregistry.viewmixin.WithinRoleViewMixin,
-           CommonCradminViewMixin, ViewMixin, ListView):
+class View(javascriptregistry.viewmixin.WithinRoleViewMixin, CommonCradminViewMixin, ViewMixin, ListView):
     """
     View using the :doc:`viewhelpers_listbuilder`.
 
@@ -262,7 +264,7 @@ class View(javascriptregistry.viewmixin.WithinRoleViewMixin,
         return defaultfilters.capfirst(self.get_model_class()._meta.verbose_name_plural)
 
     def get_listbuilder_list_value_iterable(self, context):
-        return context['object_list']
+        return context["object_list"]
 
     def get_queryset_for_role(self):
         """
@@ -282,13 +284,13 @@ class View(javascriptregistry.viewmixin.WithinRoleViewMixin,
         """
         Get the message to show when there are no items.
         """
-        return _('No %(modelname_plural)s') % {
-            'modelname_plural': self.get_model_class()._meta.verbose_name_plural.lower(),
+        return _("No %(modelname_plural)s") % {
+            "modelname_plural": self.get_model_class()._meta.verbose_name_plural.lower(),
         }
 
     def get_context_data(self, **kwargs):
         context = super(View, self).get_context_data(**kwargs)
-        context['cradmin_hide_menu'] = self.hide_menu
+        context["cradmin_hide_menu"] = self.hide_menu
         self.add_javascriptregistry_component_ids_to_context(context=context)
         self.add_common_view_mixin_data_to_context(context=context)
         return context

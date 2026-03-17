@@ -6,6 +6,7 @@ class QuerysetForRoleMixin(object):
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.mixins.QuerysetForRoleMixin``.
     """
+
     def get_queryset_for_role(self):
         """
         Get a queryset with all objects of ``self.model``  that
@@ -29,6 +30,7 @@ class CommonCradminViewMixin(object):
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.mixins.CommonCradminViewMixin``.
     """
+
     def add_breadcrumb_list_items(self, breadcrumb_item_list):
         """
         Add items to the breadcrumb item list.
@@ -71,7 +73,7 @@ class CommonCradminViewMixin(object):
 
         .. seealso:: :doc:`/crbreadcrumb`
         """
-        if hasattr(self.request, 'cradmin_app'):
+        if hasattr(self.request, "cradmin_app"):
             breadcrumb_item_list = self.request.cradmin_app.get_breadcrumb_item_list_renderable()
             if breadcrumb_item_list is not None:
                 self.add_breadcrumb_list_items(breadcrumb_item_list=breadcrumb_item_list)
@@ -88,4 +90,4 @@ class CommonCradminViewMixin(object):
         Args:
             context (dict): A template context.
         """
-        context['cradmin_breadcrumb_item_list'] = self.get_breadcrumb_item_list_renderable()
+        context["cradmin_breadcrumb_item_list"] = self.get_breadcrumb_item_list_renderable()

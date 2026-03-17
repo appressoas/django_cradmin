@@ -31,8 +31,9 @@ class EmailUserCreateAccountForm(AbstractCreateAccountWithPasswordForm):
                 return field_renderables
 
     """
+
     class Meta(AbstractCreateAccountWithPasswordForm.Meta):
-        fields = ['email']
+        fields = ["email"]
 
     def deactivate_user(self, user):
         user.is_active = False
@@ -40,13 +41,8 @@ class EmailUserCreateAccountForm(AbstractCreateAccountWithPasswordForm):
     def get_field_renderables(self):
         return [
             uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='email',
-                field_renderable=uicontainer.field.Field(autofocus=True)
+                fieldname="email", field_renderable=uicontainer.field.Field(autofocus=True)
             ),
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password1'
-            ),
-            uicontainer.fieldwrapper.FieldWrapper(
-                fieldname='password2'
-            ),
+            uicontainer.fieldwrapper.FieldWrapper(fieldname="password1"),
+            uicontainer.fieldwrapper.FieldWrapper(fieldname="password2"),
         ]

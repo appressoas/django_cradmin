@@ -7,7 +7,7 @@ from django_cradmin.javascriptregistry.component import AbstractJsComponent
 class MinimalAbstractJsComponent(javascriptregistry.component.AbstractJsComponent):
     @classmethod
     def get_component_id(cls):
-        return 'minimal'
+        return "minimal"
 
 
 class TestAbstractJsComponent(test.TestCase):
@@ -19,7 +19,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return 'Hello'
+                return "Hello"
 
         with self.assertRaises(javascriptregistry.component.ComponentIdFormatError):
             MockJsComponent(request=None)
@@ -28,7 +28,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return 'he-lo'
+                return "he-lo"
 
         with self.assertRaises(javascriptregistry.component.ComponentIdFormatError):
             MockJsComponent(request=None)
@@ -37,7 +37,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return 'hello_'
+                return "hello_"
 
         with self.assertRaises(javascriptregistry.component.ComponentIdFormatError):
             MockJsComponent(request=None)
@@ -46,7 +46,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return '_hello'
+                return "_hello"
 
         with self.assertRaises(javascriptregistry.component.ComponentIdFormatError):
             MockJsComponent(request=None)
@@ -55,7 +55,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return '1hello'
+                return "1hello"
 
         with self.assertRaises(javascriptregistry.component.ComponentIdFormatError):
             MockJsComponent(request=None)
@@ -64,7 +64,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return 'he_lo'
+                return "he_lo"
 
         MockJsComponent(request=None)  # No ComponentIdFormatError
 
@@ -72,7 +72,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return 'he3lo'
+                return "he3lo"
 
         MockJsComponent(request=None)  # No ComponentIdFormatError
 
@@ -80,7 +80,7 @@ class TestAbstractJsComponent(test.TestCase):
         class MockJsComponent(AbstractJsComponent):
             @classmethod
             def get_component_id(cls):
-                return 'hello1'
+                return "hello1"
 
         MockJsComponent(request=None)  # No ComponentIdFormatError
 
@@ -100,5 +100,4 @@ class TestAbstractJsComponent(test.TestCase):
         self.assertIsNone(MinimalAbstractJsComponent(request=None).get_javascript_code_after_sourceurls())
 
     def test_get_static_url(self):
-        self.assertEqual(
-            '/static/test', MinimalAbstractJsComponent(request=None).get_static_url(path='test'))
+        self.assertEqual("/static/test", MinimalAbstractJsComponent(request=None).get_static_url(path="test"))

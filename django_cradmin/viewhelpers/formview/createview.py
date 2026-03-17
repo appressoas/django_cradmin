@@ -18,7 +18,7 @@ class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 
     #: The viewname within this app for the edit view.
     #: See :meth:`.get_editurl`.
-    editview_appurl_name = 'edit'
+    editview_appurl_name = "edit"
 
     def get_pagetitle(self):
         """
@@ -26,13 +26,13 @@ class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
 
         Defaults to ``Create <verbose_name model>``.
         """
-        return gettext_lazy('Create %(what)s') % {'what': self.model_verbose_name}
+        return gettext_lazy("Create %(what)s") % {"what": self.model_verbose_name}
 
     def get_success_message(self, obj):
         """
         Defaults to ``"Created "<str(obj)>".``
         """
-        return gettext_lazy('Created "%(object)s"') % {'object': obj}
+        return gettext_lazy('Created "%(object)s"') % {"object": obj}
 
     def get_editurl(self, obj):
         """
@@ -57,16 +57,14 @@ class CreateViewMixin(create_update_view_mixin.CreateUpdateViewMixin):
             obj: A saved model object.
         """
         url = self.get_editurl(obj)
-        if 'success_url' in self.request.GET:
-            url = '{}?{}'.format(
-                url, urllib.parse.urlencode({
-                    'success_url': self.request.GET['success_url']}))
+        if "success_url" in self.request.GET:
+            url = "{}?{}".format(url, urllib.parse.urlencode({"success_url": self.request.GET["success_url"]}))
         return url
 
 
-class WithinRoleCreateView(CreateViewMixin,
-                           DjangoCreateView, CommonCradminViewMixin,
-                           javascriptregistry.viewmixin.WithinRoleViewMixin):
+class WithinRoleCreateView(
+    CreateViewMixin, DjangoCreateView, CommonCradminViewMixin, javascriptregistry.viewmixin.WithinRoleViewMixin
+):
     """
     Create view with the correct context data and sane base template
     for views where we have a cradmin role.
@@ -74,7 +72,8 @@ class WithinRoleCreateView(CreateViewMixin,
     .. note:: You should import this class with ``from django_cradmin import viewhelpers``,
         and refer to it using ``viewhelpers.formview.WithinRoleCreateView``.
     """
-    template_name = 'django_cradmin/viewhelpers/formview/within_role_create_view.django.html'
+
+    template_name = "django_cradmin/viewhelpers/formview/within_role_create_view.django.html"
 
     def get_context_data(self, **kwargs):
         context = super(WithinRoleCreateView, self).get_context_data(**kwargs)

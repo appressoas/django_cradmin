@@ -28,7 +28,7 @@ class AbstractCreateAccountForm(forms.ModelForm):
 
         Override this to provide a custom label.
         """
-        return _('Sign up for %(sitename)s') % {'sitename': settings.DJANGO_CRADMIN_SITENAME}
+        return _("Sign up for %(sitename)s") % {"sitename": settings.DJANGO_CRADMIN_SITENAME}
 
     def set_password(self, user):
         """
@@ -74,9 +74,7 @@ class AbstractCreateAccountForm(forms.ModelForm):
         raise NotImplementedError()
 
     def get_submit_button_renderables(self):
-        return [
-            uicontainer.button.SubmitPrimary(text=self.get_submit_button_label())
-        ]
+        return [uicontainer.button.SubmitPrimary(text=self.get_submit_button_label())]
 
     def get_form_renderable(self):
         """
@@ -98,7 +96,7 @@ class AbstractCreateAccountForm(forms.ModelForm):
                 uicontainer.layout.AdminuiPageSectionTight(
                     children=self.get_field_renderables() + self.get_submit_button_renderables()
                 )
-            ]
+            ],
         ).bootstrap()
 
     def save(self, commit=True):
@@ -127,14 +125,10 @@ class AbstractCreateAccountWithPasswordForm(AbstractCreateAccountForm):
     """
 
     #: The first password.
-    password1 = forms.CharField(
-        label=_('Type your password'),
-        widget=forms.PasswordInput)
+    password1 = forms.CharField(label=_("Type your password"), widget=forms.PasswordInput)
 
     #: The repeat password fields.
-    password2 = forms.CharField(
-        label=_('Type your password one more time'),
-        widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_("Type your password one more time"), widget=forms.PasswordInput)
 
     def set_password(self, user):
         """
@@ -142,7 +136,7 @@ class AbstractCreateAccountWithPasswordForm(AbstractCreateAccountForm):
 
         Does not save the user.
         """
-        raw_password = self.cleaned_data['password1']
+        raw_password = self.cleaned_data["password1"]
         user.set_password(raw_password)
 
     def clean(self):
@@ -167,7 +161,5 @@ class AbstractCreateAccountWithPasswordForm(AbstractCreateAccountForm):
 
         if password1 and password2:
             if password1 != password2:
-                raise forms.ValidationError(
-                    message=_('The passwords do not match.'),
-                    code='passwords_do_not_match')
+                raise forms.ValidationError(message=_("The passwords do not match."), code="passwords_do_not_match")
         return cleaned_data

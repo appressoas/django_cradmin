@@ -16,6 +16,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
     You must use this as a base class if you want to create
     a custom queryset class for models extending :class:`.SortableBase`.
     """
+
     parent_attribute = None
 
     def __set_extra_item_attrs_before_save(self, item, item_attrs_dict):
@@ -43,7 +44,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
 
     def _get_filtered_by_parentobject_queryset(self, parentobject, none_values_order_by):
         filter_kwargs = {self.parent_attribute: parentobject}
-        order_by = ['sort_index']
+        order_by = ["sort_index"]
         if none_values_order_by:
             order_by.extend(none_values_order_by)
         return self.filter(**filter_kwargs).order_by(*order_by)
@@ -54,8 +55,7 @@ class SortableQuerySetBase(NullsLastQuerySet):
         item.
         """
         parentobject = getattr(item, self.parent_attribute)
-        queryset = self._get_filtered_by_parentobject_queryset(
-            parentobject, none_values_order_by)
+        queryset = self._get_filtered_by_parentobject_queryset(parentobject, none_values_order_by)
         return queryset
 
     def _get_last_sortindex_within_parentobject(self, item, none_values_order_by):
@@ -73,12 +73,13 @@ class SortableQuerySetBase(NullsLastQuerySet):
         ONLY USE THIS FOR NEWLY CREATED ITEMS.
         """
         if item.sort_index is not None or item.pk is not None:
-            raise ValueError('set_newitem_sort_index_to_last should only be used '
-                             'when creating new items. sort_index or pk is something '
-                             'other than None, which indicates that this is not a new '
-                             'item - thus the ValueError.')
-        item.sort_index = self._get_last_sortindex_within_parentobject(
-            item, none_values_order_by)
+            raise ValueError(
+                "set_newitem_sort_index_to_last should only be used "
+                "when creating new items. sort_index or pk is something "
+                "other than None, which indicates that this is not a new "
+                "item - thus the ValueError."
+            )
+        item.sort_index = self._get_last_sortindex_within_parentobject(item, none_values_order_by)
 
     def __increase_sort_index_in_range(self, queryset, items, from_index, to_index, distance=1, item_attrs_dict=None):
         """
@@ -86,8 +87,9 @@ class SortableQuerySetBase(NullsLastQuerySet):
         """
         attrs_dict = item_attrs_dict or {}
         increase_index_for_items = [item.id for item in items[from_index:to_index]]
-        queryset.filter(id__in=increase_index_for_items).update(sort_index=models.F('sort_index') + distance,
-                                                                **attrs_dict)
+        queryset.filter(id__in=increase_index_for_items).update(
+            sort_index=models.F("sort_index") + distance, **attrs_dict
+        )
 
     def __decrease_sort_index_in_range(self, queryset, items, from_index, to_index, distance=1, item_attrs_dict=None):
         """
@@ -95,8 +97,9 @@ class SortableQuerySetBase(NullsLastQuerySet):
         """
         attrs_dict = item_attrs_dict or {}
         decrease_index_for_items = [item.id for item in items[from_index:to_index]]
-        queryset.filter(id__in=decrease_index_for_items).update(sort_index=models.F('sort_index') - distance,
-                                                                **attrs_dict)
+        queryset.filter(id__in=decrease_index_for_items).update(
+            sort_index=models.F("sort_index") - distance, **attrs_dict
+        )
 
     def __fix_sort_order(self, item, sort_before_id, none_values_order_by, item_attrs_dict):
         """
@@ -131,16 +134,20 @@ class SortableQuerySetBase(NullsLastQuerySet):
             else:
                 if index < current_item.sort_index:
                     # Found gap, need to move rest of list <size-of-gap> step(s) down
-                    self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset, index,
-                                                        len(itemsqueryset),
-                                                        current_item.sort_index - index,
-                                                        item_attrs_dict=item_attrs_dict)
+                    self.__decrease_sort_index_in_range(
+                        itemsqueryset,
+                        itemsqueryset,
+                        index,
+                        len(itemsqueryset),
+                        current_item.sort_index - index,
+                        item_attrs_dict=item_attrs_dict,
+                    )
                     itemsqueryset = self._get_siblings_queryset(item, none_values_order_by).all()
                 if index > current_item.sort_index:
                     # Found duplicate sort_index, need to move rest of list one step up
-                    self.__increase_sort_index_in_range(itemsqueryset, itemsqueryset, index,
-                                                        len(itemsqueryset),
-                                                        item_attrs_dict=item_attrs_dict)
+                    self.__increase_sort_index_in_range(
+                        itemsqueryset, itemsqueryset, index, len(itemsqueryset), item_attrs_dict=item_attrs_dict
+                    )
                     itemsqueryset = self._get_siblings_queryset(item, none_values_order_by).all()
 
             if item.id == current_item.id:
@@ -152,9 +159,13 @@ class SortableQuerySetBase(NullsLastQuerySet):
     def __sort_last(self, itemsqueryset, item, original_item_index, item_attrs_dict):
         if original_item_index is not None:
             # fill gap left when moving item to end
-            self.__decrease_sort_index_in_range(itemsqueryset, itemsqueryset,
-                                                original_item_index + 1, len(itemsqueryset),
-                                                item_attrs_dict=item_attrs_dict)
+            self.__decrease_sort_index_in_range(
+                itemsqueryset,
+                itemsqueryset,
+                original_item_index + 1,
+                len(itemsqueryset),
+                item_attrs_dict=item_attrs_dict,
+            )
             item.sort_index = len(itemsqueryset) - 1
         else:
             item.sort_index = len(itemsqueryset)
@@ -163,27 +174,33 @@ class SortableQuerySetBase(NullsLastQuerySet):
     def __sort_not_last(self, itemsqueryset, item, detected_item_sort_index, original_item_index, item_attrs_dict):
         if original_item_index is None:
             # new item, move rest of list one step up, and place the new item
-            self.__increase_sort_index_in_range(itemsqueryset,
-                                                itemsqueryset,
-                                                detected_item_sort_index,
-                                                len(itemsqueryset),
-                                                item_attrs_dict=item_attrs_dict)
+            self.__increase_sort_index_in_range(
+                itemsqueryset,
+                itemsqueryset,
+                detected_item_sort_index,
+                len(itemsqueryset),
+                item_attrs_dict=item_attrs_dict,
+            )
             item.sort_index = detected_item_sort_index
         elif original_item_index < detected_item_sort_index:
             # Move up, and fill gap left behind by moving items in the gap down
-            self.__decrease_sort_index_in_range(itemsqueryset,
-                                                itemsqueryset,
-                                                original_item_index + 1,
-                                                detected_item_sort_index,
-                                                item_attrs_dict=item_attrs_dict)
+            self.__decrease_sort_index_in_range(
+                itemsqueryset,
+                itemsqueryset,
+                original_item_index + 1,
+                detected_item_sort_index,
+                item_attrs_dict=item_attrs_dict,
+            )
             item.sort_index = detected_item_sort_index - 1
         elif original_item_index > detected_item_sort_index:
             # Move down, and fill/create gap by moving other objects up
-            self.__increase_sort_index_in_range(itemsqueryset,
-                                                itemsqueryset,
-                                                detected_item_sort_index,
-                                                original_item_index,
-                                                item_attrs_dict=item_attrs_dict)
+            self.__increase_sort_index_in_range(
+                itemsqueryset,
+                itemsqueryset,
+                detected_item_sort_index,
+                original_item_index,
+                item_attrs_dict=item_attrs_dict,
+            )
             item.sort_index = detected_item_sort_index
         else:
             # Item is already in the correct place
@@ -209,18 +226,24 @@ class SortableQuerySetBase(NullsLastQuerySet):
         """
         with transaction.atomic():
             itemsqueryset, detected_item_sort_index, original_item_index = self.__fix_sort_order(
-                item, sort_before_id, none_values_order_by, item_attrs_dict=item_attrs_dict)
+                item, sort_before_id, none_values_order_by, item_attrs_dict=item_attrs_dict
+            )
 
             if detected_item_sort_index is None:
-                self.__sort_last(itemsqueryset=itemsqueryset, item=item,
-                                 original_item_index=original_item_index,
-                                 item_attrs_dict=item_attrs_dict)
+                self.__sort_last(
+                    itemsqueryset=itemsqueryset,
+                    item=item,
+                    original_item_index=original_item_index,
+                    item_attrs_dict=item_attrs_dict,
+                )
             else:
-                self.__sort_not_last(itemsqueryset=itemsqueryset,
-                                     item=item,
-                                     detected_item_sort_index=detected_item_sort_index,
-                                     original_item_index=original_item_index,
-                                     item_attrs_dict=item_attrs_dict)
+                self.__sort_not_last(
+                    itemsqueryset=itemsqueryset,
+                    item=item,
+                    detected_item_sort_index=detected_item_sort_index,
+                    original_item_index=original_item_index,
+                    item_attrs_dict=item_attrs_dict,
+                )
 
     def sort_last(self, item, none_values_order_by=None, item_attrs_dict=None):
         """
@@ -230,14 +253,14 @@ class SortableQuerySetBase(NullsLastQuerySet):
 
         See ``sort_before`` docstring more info about the arguments.
         """
-        self.sort_before(item, sort_before_id=None,
-                         none_values_order_by=none_values_order_by,
-                         item_attrs_dict=item_attrs_dict)
+        self.sort_before(
+            item, sort_before_id=None, none_values_order_by=none_values_order_by, item_attrs_dict=item_attrs_dict
+        )
 
 
 def validate_sort_index(value):
     if value < 0:
-        raise ValidationError(u'Sort index must be 0 or higher.')
+        raise ValidationError("Sort index must be 0 or higher.")
 
 
 class SortableBase(models.Model):
@@ -247,10 +270,7 @@ class SortableBase(models.Model):
 
     #: Sort index - ``0`` or higher.
     sort_index = models.PositiveIntegerField(
-        blank=True, null=True,
-        default=None,
-        verbose_name=gettext_lazy('Sort index'),
-        validators=[validate_sort_index]
+        blank=True, null=True, default=None, verbose_name=gettext_lazy("Sort index"), validators=[validate_sort_index]
     )
 
     class Meta(object):

@@ -1,6 +1,7 @@
 """
 An example app using Sortable.
 """
+
 from django.db import models
 
 from django_cradmin.sortable.models import SortableBase, SortableQuerySetBase
@@ -12,16 +13,13 @@ class ItemContainer(models.Model):
 
     It has a name field only for testing purposes.
     """
-    parent_attribute = 'container'
 
-    name = models.CharField(
-        max_length=255,
-        blank=True,
-        null=False,
-        default='')
+    parent_attribute = "container"
+
+    name = models.CharField(max_length=255, blank=True, null=False, default="")
 
     def __str__(self):
-        return 'Item container {}, {}'.format(self.id, self.name)
+        return "Item container {}, {}".format(self.id, self.name)
 
 
 class SortableItemQuerySet(SortableQuerySetBase):
@@ -32,7 +30,8 @@ class SortableItemQuerySet(SortableQuerySetBase):
     The `parent_attribute` must be set, and it must have the name
     of the parent in which the items belong.
     """
-    parent_attribute = 'container'
+
+    parent_attribute = "container"
 
 
 class SortableItem(SortableBase):
@@ -41,21 +40,10 @@ class SortableItem(SortableBase):
 
     The `sort_index` field is inherited from SortableBase.
     """
-    container = models.ForeignKey(
-        to=ItemContainer,
-        blank=False, null=False,
-        on_delete=models.CASCADE)
-    name = models.CharField(
-        max_length=255,
-        blank=True,
-        null=False,
-        default='')
+
+    container = models.ForeignKey(to=ItemContainer, blank=False, null=False, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=True, null=False, default="")
     objects = SortableItemQuerySet.as_manager()
 
     def __str__(self):
-        return 'Id: {}, Sort index: {}, Name: {}, {}'.format(
-            self.id,
-            self.sort_index,
-            self.name,
-            self.container
-        )
+        return "Id: {}, Sort index: {}, Name: {}, {}".format(self.id, self.sort_index, self.name, self.container)
