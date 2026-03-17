@@ -12,7 +12,8 @@ Django cradmin is in BETA. The system is fairly stable, but:
 
 ## Develop
 Requires:
-- https://github.com/pyenv/pyenv
+
+- https://docs.astral.sh/uv/ or (deprecated) https://github.com/pyenv/pyenv
 
 
 ### Use conventional commits for GIT commit messages
@@ -32,12 +33,18 @@ conventional commits for your commit messages
 
 First install pipx with:
 ```bash
+# NOTE: Not needed with uv
 brew install pipx
 pipx ensurepath
 ```
 
 Then install hatch and commitizen:
 ```bash
+# with uv
+uv tool install hatch
+uv tool install commitizen
+
+# with pipx
 pipx install hatch
 pipx install commitizen
 ```
@@ -49,13 +56,22 @@ needed, but we really recommend using pipx since that is isolated.
 
 ### Install development dependencies
 
-Install a local python version with pyenv:
+(deprecated - use UV) Install a local python version with pyenv:
+
 ```bash
 pyenv install $(pyenv latest -k 3.12)
 pyenv local 3.12
 ```
 
-#### Create virtualenv
+##### Create virtualenv
+
+#### With UV
+
+```bash
+uv venv
+```
+
+##### (deprecated) with pyenv/pip
 ```bash
 ./tools/recreate-virtualenv.sh
 ```
@@ -68,13 +84,18 @@ pyenv local 3.12
 > across different repos because some repos will require extra setup in the virtualenv
 > for package authentication etc.
 
+
 #### Install dependencies
+
 ```bash
-source .venv/bin/activate
-pip install -e ".[dev, test]"
-# install dependencies in virtualenv without "activate"
+# with uv:
+uv pip install -e ".[dev,test]"
+
+# with pip:
+source .venv/bin/activate   # enable virtualenv
 .venv/bin/pip install -e ".[dev,test]"
 ```
+
 
 ### Run dev server
 ```bash

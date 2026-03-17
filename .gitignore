@@ -39,7 +39,5 @@ npm-debug.log
 
 .vscode/
 .vscode-atest-temp/
-.python-version
-.nvmrc
 
 .venv/

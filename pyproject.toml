@@ -56,6 +56,8 @@ dev = [
     "sphinx",
     "sphinx-rtd-theme",
     "psycopg2",
+    "ruff",
+    "django-types",  # Helps LSPs like pyright to understand the types of Django objects better, and thus provide better type checking and autocompletion
 ]
 test = [
     "coverage",
@@ -69,6 +71,11 @@ test = [
 
 [project.urls]
 Homepage = "https://github.com/appressoas/django_cradmin"
+
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["migrations", "node_modules", "static"]
 
 [tool.hatch.version]
 path = "django_cradmin/__init__.py"
