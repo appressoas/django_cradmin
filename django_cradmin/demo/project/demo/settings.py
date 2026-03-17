@@ -9,10 +9,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 import os
-import django_cradmin
-from ievv_opensource.utils import ievvbuildstatic
-from ievv_opensource.utils import ievvdevrun
 
+from ievv_opensource.utils import ievvbuildstatic, ievvdevrun
+
+import django_cradmin
 
 THIS_DIR = os.path.dirname(__file__)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -60,8 +60,6 @@ INSTALLED_APPS = (
     "django_cradmin.deprecated_apps.cradmin_imagearchive",
     "django_cradmin.deprecated_apps.cradmin_temporaryfileuploadstore",
     "django_cradmin.uicontainer",
-    # For the styleguide for themes
-    "django_cradmin.apps.cradmin_kss_styleguide",
     # Just here to get the demo overview view.
     "django_cradmin.demo.project.demo",
     "django_cradmin.demo.no_role_demo",

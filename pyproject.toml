@@ -51,7 +51,6 @@ dev = [
     "Pygments",
     "beautifulsoup4",
     "html5lib",
-    "pythonkss",
     "mock-django",
     "sphinx",
     "sphinx-rtd-theme",

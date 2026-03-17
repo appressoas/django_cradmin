@@ -1,7 +1,7 @@
 from django.conf import settings
-from django.urls import path, include
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.urls import include, path
 from django.views import static
 
 from django_cradmin.demo.no_role_demo.cradmin import NoRoleCrAdminInstance
@@ -15,7 +15,6 @@ urlpatterns = [
     path("resetpassword/", include("django_cradmin.apps.cradmin_resetpassword.urls")),
     path("activate_account/", include("django_cradmin.apps.cradmin_activate_account.urls")),
     path("register/", include("django_cradmin.apps.cradmin_register_account.urls")),
-    path("styleguide/", include("django_cradmin.apps.cradmin_kss_styleguide.urls")),
     path("cradmin_email/", include("django_cradmin.apps.cradmin_email.urls")),
     path("djangoadmin/", admin.site.urls),
     path("javascript_demos/", include("django_cradmin.demo.cradmin_javascript_demos.urls")),
