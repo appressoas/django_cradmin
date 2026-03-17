@@ -1,3 +1,14 @@
+## 12.1.0 (2026-03-17)
+
+### Feat
+
+- Remove cradmin_kss_styleguide and the pythonkss dependency.
+
+### Fix
+
+- Remove WithStyleguideAppConfig stuff from INSTALLED_APPS in settings.
+- Dummy commit to trigger release with ruff formatted code.
+
 ## 12.0.0 (2025-04-09)
 
 ### BREAKING CHANGE
