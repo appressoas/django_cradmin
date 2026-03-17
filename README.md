@@ -118,6 +118,24 @@ ievv buildstatic
 ievv buildstatic --watch
 ```
 
+### Run tests
+
+```bash
+source .venv/bin/activate   # enable virtualenvbash
+pytest django_cradmin
+```
+
+
+### Autoformat code with ruff
+
+If you have not configured your editor to autoformat with ruff, you can run the
+following command to autoformat all code in the repo:
+
+```bash
+source .venv/bin/activate   # enable virtualenvbash
+ruff format .
+```
+
 
 ## Docs
 http://django-cradmin.readthedocs.org
