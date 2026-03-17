@@ -188,6 +188,6 @@ See _How to revert a bump_ in the [commitizen FAQ](https://commitizen-tools.gith
 ## Release to pypi:
 ```bash
 hatch build -t sdist
-hatch publish
+hatch publish -u __token__
 rm dist/*              # optional cleanup
 ```
