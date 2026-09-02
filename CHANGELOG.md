@@ -1,3 +1,9 @@
+## 12.1.1 (2026-09-02)
+
+### Fix
+
+- Remove `appresso-sphinx-extensions` as a core dependency (only neede for doc building).
+
 ## 12.1.0 (2026-03-17)
 
 ### Feat
