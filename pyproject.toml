@@ -36,7 +36,6 @@ dependencies = [
     "Django>=5.2.0,<6.0.0",
     "html2text",
     "ievv_opensource>=12.0.0,<13.0.0",
-    "appresso-sphinx-extensions",
     "djangorestframework",
     "importlib-metadata",
 ]
@@ -54,6 +53,7 @@ dev = [
     "mock-django",
     "sphinx",
     "sphinx-rtd-theme",
+    "appresso-sphinx-extensions",
     "psycopg2",
     "ruff",
     "django-types",  # Helps LSPs like pyright to understand the types of Django objects better, and thus provide better type checking and autocompletion
